@@ -1094,12 +1094,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #convert VPCZoneIdentifier to REF
         vpcZoneIdentifier = []
-        firstSubnetComp = ""
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
           if subnetComp
-            if not firstSubnetComp
-              firstSubnetComp = subnetComp
             vpcZoneIdentifier.push CREATE_REF( subnetComp, "resource.SubnetId" )
         if vpcZoneIdentifier.length is 0
           #asg is not in current VPC
@@ -1121,12 +1118,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         asgRes.AvailabilityZones = az
 
         asgComp = @add( "ASG", asgRes, TAG_NAME(aws_asg) or aws_asg.Name )
-        @addLayout( asgComp, true, firstSubnetComp )
 
-        #add ExpandAsg layout
+        origSubnetComp = ""
+        origSubnetLayout = @originalJson.layout[asgComp.uid]
+        addOriginal = false
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
-          if subnetComp.uid != firstSubnetComp.uid
+          if (not addOriginal) and ( (origSubnetLayout and origSubnetLayout.groupUId is subnetComp.uid) or (not origSubnetLayout) )
+            #add original ASG layout 
+            me.addLayout asgComp, true, subnetComp
+            addOriginal = true
+          else
+            #add ExpandAsg layout
             me.addExpandedAsg asgComp,subnetComp
 
         @asgs[ aws_asg.Name ] = asgComp

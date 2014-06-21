@@ -42,9 +42,11 @@ define [
       @resourcePanel.recalcAccordion()
       return
 
-    removeSubviews : ()->
+    remove : ()->
       @resourcePanel.remove()
       @statusbar.remove()
+
+      OpsViewBase.prototype.remove.call this
       return
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"

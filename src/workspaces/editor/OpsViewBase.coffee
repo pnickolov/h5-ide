@@ -114,7 +114,4 @@ define [
     recoverSubviews : ()-> return
     # Called when the OpsEditor sleeps
     backupSubviews  : ()-> return
-
-    # Called when the OpsEditor is closed.
-    removeSubviews   : ()-> return
   }

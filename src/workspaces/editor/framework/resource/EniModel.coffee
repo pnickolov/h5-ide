@@ -308,13 +308,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if ips.length >= maxIp
         return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
-      subent = if @__embedInstance then @__embedInstance.parent() else @parent()
+      subnet = if @__embedInstance then @__embedInstance.parent() else @parent()
 
       result = true
       # Add an fake item to see if there's an error in subnet
       ips.push( { ip : "fake" } )
 
-      if not subent.isCidrEnoughForIps()
+      if not subnet.isCidrEnoughForIps()
         result = "Ip count limit has reached in #{subnet.get('name')}"
 
       # Remove the fake item

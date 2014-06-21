@@ -521,8 +521,8 @@ define [
       ncMap = {}
 
       for nc in ncs
-        id = item.AutoScalingGroupName + "-" + item.TopicARN
         item = ncMap[ id ] || ( ncMap[id] = {} )
+        id = item.AutoScalingGroupName + "-" + item.TopicARN
         if not item
           item = ncMap[ id ] = {
             id                   : id

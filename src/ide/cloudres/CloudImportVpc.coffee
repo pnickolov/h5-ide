@@ -1326,6 +1326,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           instanceComp = originComps[instanceUID]
           if instanceComp
             return instanceComp.serverGroupUid
+      if resType is constant.RESTYPE.EIP
+        eniRef = comp.resource.NetworkInterfaceId
+        if eniRef
+          eniUID = MC.extractID(eniRef)
+          eniComp = originComps[eniUID]
+          if eniComp
+            return getRelatedInstanceGroupUID(eniComp)
       return ''
 
     # find all server group related res
@@ -1384,14 +1391,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
                   comp.index = 0 if comp.index
                   comp.serverGroupUid = comp.uid if comp.serverGroupUid
 
-    # process eni connected instance server group
+    # process added/removed related res for instance server group
     newAddRemoveComps = {}
-    oldAddRemoveComps = {} # only include eni and eip
+    oldAddRemoveComps = {}
     _.each newComps, (insComp) ->
-      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP]
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
         newAddRemoveComps[insComp.uid] = insComp if not originComps[insComp.uid]
     _.each originComps, (insComp) ->
-      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP]
+      if insComp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
         oldAddRemoveComps[insComp.uid] = insComp if not newComps[insComp.uid]
       null
 

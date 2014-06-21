@@ -48,6 +48,7 @@ define [
                 template: @el
                 title: 'App Changes'
                 disableClose: true
+                hideClose: true
                 confirm:
                     text: okText
                 width: '608px'
@@ -250,6 +251,37 @@ define [
 
             _genTree.call that, diffComps, null, [], $container
 
+        getRelatedInstanceGroupUID: (originComps, comp) ->
+
+            that = this
+
+            resType = comp.type
+            if resType is constant.RESTYPE.INSTANCE
+                return comp.serverGroupUid
+            if resType is constant.RESTYPE.ENI
+                instanceRef = comp.resource.Attachment.InstanceId
+            if instanceRef
+                instanceUID = MC.extractID(instanceRef)
+                instanceComp = originComps[instanceUID]
+                if instanceComp
+                    return instanceComp.serverGroupUid
+            if resType is constant.RESTYPE.VOL
+                instanceRef = comp.resource.AttachmentSet.InstanceId
+            if instanceRef
+                instanceUID = MC.extractID(instanceRef)
+                instanceComp = originComps[instanceUID]
+                if instanceComp
+                    return instanceComp.serverGroupUid
+            if resType is constant.RESTYPE.EIP
+                eniRef = comp.resource.NetworkInterfaceId
+            if eniRef
+                eniUID = MC.extractID(eniRef)
+                eniComp = originComps[eniUID]
+                if eniComp
+                    return that.getRelatedInstanceGroupUID(originComps, eniComp)
+
+            return ''
+
         getChangeInfo: () ->
 
             that = this
@@ -264,7 +296,9 @@ define [
                 that.newAppJSON.layout[ comp.uid ]
 
             # if have elb and attached server group change, update layout
+            newComps = that.newAppJSON.component
             oldComps = that.oldAppJSON.component
+
             _.each that.modifiedComps, (comp, uid) ->
                 if oldComps[uid] and oldComps[uid].type is constant.RESTYPE.ELB
                     if comp and comp.resource and comp.resource.Instances
@@ -282,7 +316,6 @@ define [
                 null
 
             # if have asg AvailabilityZones or VPCZoneIdentifier change, update layout
-            newComps = that.newAppJSON.component
             _.each that.modifiedComps, (comp, uid) ->
                 if newComps[uid] and newComps[uid].type is constant.RESTYPE.ASG
                     if comp and comp.resource and comp.resource.AvailabilityZones
@@ -291,18 +324,14 @@ define [
                         needUpdateLayout = true
                 null
 
-            # if have eni change about server group, update layout
-            # oldComps = that.oldAppJSON.component
-            # _.each that.modifiedComps, (comp, uid) ->
-            #     if oldComps[uid] and oldComps[uid].type is constant.RESTYPE['ENI']
-            #         if comp and comp.resource and comp.resource.Attachment and comp.resource.Attachment.InstanceId
-            #             uidRefObj = comp.resource.Attachment.InstanceId
-            #             uidRef = uidRefObj.__old__ or uidRefObj.__new__
-            #             uid = MC.extractID(uidRef)
-            #             if oldComps[uid] and oldComps[uid].number > 1
-            #                 needUpdateLayout = true
-            #             null
-            #     null
+            # if have any change about server group, update layout
+            _.each that.removedComps, (comp) ->
+                if comp.type in [constant.RESTYPE.ENI, constant.RESTYPE.EIP, constant.RESTYPE.INSTANCE, constant.RESTYPE.VOL]
+                    serverGroupUid = that.getRelatedInstanceGroupUID(oldComps, comp)
+                    originComp = oldComps[serverGroupUid]
+                    if originComp and originComp.number > 1
+                        needUpdateLayout = true
+                null
 
             return {
                 hasResChange: hasResChange,

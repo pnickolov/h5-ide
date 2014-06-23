@@ -2,8 +2,8 @@
 <div class="scroll-wrap scroll-wrap-res-diff">
 	<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 	<div class="content_wrap scroll-content">
-		<p>Resources of this app has been externally changed. The change has been synced to app. The diagram may be re-generated to reflect the change.</p>
-		<h5>What has been changed:</h5>
+		<p>Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s).</p>
+		<h5>What have been changed:</h5>
 		<article></article>
 	</div>
 </div>

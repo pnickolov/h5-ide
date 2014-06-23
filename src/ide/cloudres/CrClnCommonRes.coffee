@@ -667,7 +667,9 @@ define [
               sg.ipPermissionsEgress[idx][key] = e?.item || []
 
         sg.id = sg.groupId
+        sg.Name = sg.groupName
         # delete sg.groupId
+        # delete sg.groupName
       sgs
     parseExternalData: ( data ) ->
       @unifyApi data, @type
@@ -675,6 +677,7 @@ define [
 
       for sg in data
         sg.id = sg.groupId
+        sg.Name = sg.groupName
         sg.ipPermissions = sg.ipPermissions || []
         sg.ipPermissionsEgress = sg.ipPermissionsEgress || []
         sgRuls = sg.ipPermissions.concat(sg.ipPermissionsEgress)

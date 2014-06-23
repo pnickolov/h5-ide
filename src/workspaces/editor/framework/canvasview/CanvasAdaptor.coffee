@@ -31,6 +31,9 @@ define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notific
       return null
 
   $canvas.setLineStyle = (ls)->
+    if ls is not 4 and Design.instance() and Design.instance().mode() is "appview"
+      #force set sg line to hide
+      ls = 4
     localStorage.setItem("canvas/lineStyle", ls)
     Design.instance().canvas.setLineStyle( ls )
 

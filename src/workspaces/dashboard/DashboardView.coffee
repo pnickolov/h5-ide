@@ -158,7 +158,7 @@ define [
 
         console.log "Dashboard Updated due to app progress changes."
 
-        $li = $("#region-resource-app-wrap").children("[data-appid='#{model.id}']")
+        $li = $("#region-resource-app-wrap").children("[data-id='#{model.id}']")
         if not $li.length then return
         $li.children(".region-resource-progess").show().css({width:model.get("progress")+"%"})
         return

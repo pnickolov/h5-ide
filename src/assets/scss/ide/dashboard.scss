@@ -740,7 +740,7 @@
     left     : 0;
     bottom   : 0;
     height   : 27px;
-    z-index  : 2;
+    z-index  : 1;
     border-radius : 0 0 0 5px;
 
     $stripeColor1 : #ad77d7;
@@ -760,7 +760,7 @@
 
     + .region-resource-info {
       position : relative;
-      z-index  : 1;
+      z-index  : 2;
     }
   }
 

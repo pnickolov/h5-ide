@@ -55,6 +55,11 @@ define [
             @done = true
 
         when OpsModel.State.Destroyed
+          # If the app runs successfully and get destroyed, we just close the tab
+          if @done
+            @close()
+            return
+
           @$el.children().hide()
           @$el.find(".fail").show()
           @$el.find(".detail").text @model.get("opsActionError")

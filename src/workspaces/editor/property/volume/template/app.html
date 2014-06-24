@@ -18,6 +18,8 @@
     {{/if}}
     <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
     <dd>{{emptyStr size}} GB</dd>
+    <dt>{{i18n "PROP_VOLUME_ENCRYPTED"}}</dt>
+    <dd>{{#if encrypted}}Yes{{else}}No{{/if}}</dd>
     {{#if iops}}
     <dt>IOPS</dt>
     <dd>{{iops}}</dd>

@@ -2493,6 +2493,10 @@ module.exports =
       en: "Volume Type"
       zh: "磁盘类型"
 
+    PROP_VOLUME_ENCRYPTED:
+      en: "Encrypted"
+      zh: ""
+
     PROP_VOLUME_TYPE_STANDARD:
       en: "Standard"
       zh: "标准"
@@ -2504,6 +2508,10 @@ module.exports =
     PROP_VOLUME_MSG_WARN:
       en: "Volume size must be at least 10 GB to use Provisioned IOPS volume type."
       zh: "要使用预配置IOPS,磁盘必须最少10GB"
+
+    PROP_VOLUME_ENCRYPTED_LABEL:
+      en: "Encrypt this volume"
+      zh: ""
 
     PROP_ENI_LBL_ATTACH_WARN:
       en: "Attach the Network Interface to an instance within the same availability zone."

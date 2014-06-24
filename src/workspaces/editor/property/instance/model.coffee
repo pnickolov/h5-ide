@@ -126,6 +126,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					name : rdName
 					size : parseInt( comp.get("rdSize"), 10 )
 					iops : comp.get("rdIops")
+					encrypted : rdEbs.encrypted
 
 				if rootDevice.size < 10
 					rootDevice.iops = ""

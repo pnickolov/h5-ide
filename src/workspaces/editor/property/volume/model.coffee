@@ -15,6 +15,11 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 console.error "[volume property] can not found owner of volume!"
                 return false
 
+            supportEncrypted = component.isSupportEncrypted()
+
+            isEncrypted = false
+            isEncrypted = (res.encrypted in ['true', true]) if supportEncrypted
+
             volume_detail =
                 isWin       : res.name[0] != '/'
                 isStandard  : res.volumeType is 'standard'
@@ -22,6 +27,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId
                 name        : res.name
+                support_encrypted : supportEncrypted
+                encrypted   : isEncrypted
 
             if volume_detail.isWin
                 volume_detail.editName = volume_detail.name.slice(-1)
@@ -137,6 +144,12 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             null
 
+        setEncrypted : ( value ) ->
+
+            uid = @get "uid"
+            Design.instance().component( uid ).set 'encrypted', value
+            null
+
         genFullName: ( name ) ->
             if comp.name[0] != '/'
                         if comp.name == "xvd" + name
@@ -170,7 +183,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 fullName = v.genFullName name
                 if v isnt volume and v.get( 'name' ) is fullName
                     true
-
 
     }
 

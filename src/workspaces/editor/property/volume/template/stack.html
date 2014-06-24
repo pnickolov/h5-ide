@@ -62,4 +62,16 @@
         <label for="volume-property-ranged-number" ></label>
         </div>
     </section>
+
+    <section class="property-control-group">
+        <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
+        <div>
+            <div class="checkbox">
+                <input id="volume-property-encrypted-check" type="checkbox" {{#unless volume_detail.support_encrypted}}disabled="disabled"{{/unless}} {{#if volume_detail.encrypted}}checked="checked" {{/if}} />
+                <label for="volume-property-encrypted-check"></label>
+            </div>
+            <label for="volume-property-encrypted-check">{{ i18n "PROP_VOLUME_ENCRYPTED_LABEL" }}</label>
+        </div>
+    </section>
+
 </article>

@@ -16,7 +16,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
       appId      : ''
       volumeType : 'standard'
       iops       : ''
-
+      encrypted  : false
 
     type : constant.RESTYPE.VOL
 
@@ -154,6 +154,9 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
         if !@attributes.name
           return false
 
+      if not @isSupportEncrypted()
+        @attributes.encrypted = false
+
       volumeList = owner.get 'volumeList'
       if volumeList
         volumeList.push( this )
@@ -162,6 +165,21 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
 
       owner.draw()
       true
+
+    isSupportEncrypted : () ->
+
+      supportedEncryptedType = ['m3.medium', 'm3.large', 'm3.xlarge', 'm3.2xlarge', 'c3.large', 'c3.xlarge',
+          'c3.2xlarge', 'c3.4xlarge', 'c3.8xlarge', 'cr1.8xlarge', 'r3.large', 'r3.xlarge', 'r3.2xlarge',
+          'r3.4xlarge', 'r3.8xlarge', 'i2.xlarge', 'i2.2xlarge', 'i2.4xlarge', 'i2.8xlarge', 'g2.2xlarge']
+
+      owner = @attributes.owner
+      instanceType = owner.get('instanceType')
+      snapshotId = @attributes.snapshotId
+
+      supportEncrypted = false
+      supportEncrypted = true if (instanceType in supportedEncryptedType and not snapshotId)
+
+      return supportEncrypted
 
     getDeviceName : (owner)->
 
@@ -258,6 +276,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
           AttachmentSet :
             InstanceId : instanceId
             Device     : @get("name")
+          Encrypted    : @get("encrypted")
       }
 
 
@@ -322,7 +341,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
         volumeType : data.resource.VolumeType
         iops       : data.resource.Iops
         appId      : data.resource.VolumeId
-
+        encrypted  : data.resource.Encrypted
 
       model = new Model attr, {noNeedGenName:true}
 

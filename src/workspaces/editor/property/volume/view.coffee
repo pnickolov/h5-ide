@@ -17,6 +17,7 @@ define [ '../base/view',
             'keyup  #volume-size-ranged' : 'processIops'
             'keyup #iops-ranged' : 'sizeChanged'
             'click #snapshot-info-group' : 'showSnapshotDetail'
+            'change #volume-property-encrypted-check' : 'encryptedCheck'
 
         render     : () ->
             @$el.html( template( @model.attributes ) )
@@ -113,6 +114,10 @@ define [ '../base/view',
 
         showSnapshotDetail : ( event ) ->
             @trigger "OPEN_SNAPSHOT", $("#snapshot-info-group").data("uid")
+            null
+
+        encryptedCheck : ( event ) ->
+            @model.setEncrypted event.target.checked
             null
     }
 

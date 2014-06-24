@@ -2501,6 +2501,10 @@ module.exports =
       en: "Standard"
       zh: "标准"
 
+    PROP_VOLUME_TYPE_SSD:
+      en: "SSD"
+      zh: "SSD"
+
     PROP_VOLUME_TYPE_IOPS:
       en: "Provisioned IOPS"
       zh: "预配置IOPS"

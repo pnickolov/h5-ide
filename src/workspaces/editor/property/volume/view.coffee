@@ -40,12 +40,15 @@ define [ '../base/view',
         volumeTypeChecked : ( event ) ->
             @processIops()
 
-            if($('#volume-type-radios input:checked').val() is 'radio-standard')
+            type = $('#volume-type-radios input:checked').val()
+            iops = if type is 'io1' then value else ''
+
+            if( type isnt 'iops')
                 $( '#iops-group' ).hide()
-                @model.setVolumeTypeStandard()
             else
                 $( '#iops-group' ).show()
-                @model.setVolumeTypeIops $( '#iops-ranged' ).val()
+
+            @model.setVolumeType type, iops
 
             @sizeChanged()
 

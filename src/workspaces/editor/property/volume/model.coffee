@@ -23,6 +23,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             volume_detail =
                 isWin       : res.name[0] != '/'
                 isStandard  : res.volumeType is 'standard'
+                isIops      : res.volumeType is 'io1'
+                isSsd       : res.volumeType is 'gp2'
                 iops        : res.iops
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId
@@ -125,22 +127,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             null
 
-        setVolumeTypeStandard : () ->
-            uid = @get "uid"
+        setVolumeType: ( type, iops ) ->
+            volume = Design.instance().component( @get "uid" )
 
-            volume = Design.instance().component( uid )
-            volume.set { 'volumeType': 'standard', 'iops': '' }
-
-        setVolumeTypeIops : ( value ) ->
-            uid = @get "uid"
-
-            volume = Design.instance().component( uid )
-            volume.set { 'volumeType': 'io1', 'iops': value }
-
-        setVolumeIops : ( value )->
-
-            uid = @get "uid"
-            Design.instance().component( uid ).set 'iops', value
+            volume.set 'volumeType': type, 'iops': iops
 
             null
 

@@ -129,7 +129,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       iamComp = @iams[ arn ]
       if iamComp then return iamComp
 
-      reg_iam=/arn:aws:iam::.*:server-certificate\/cf-test/g
+      reg_iam=/arn:aws:iam::.*:server-certificate\/.*/g
       if not arn.match(reg_iam)
         console.error "[addIam] not a valid iam arn"
         return null
@@ -205,7 +205,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "name": comp.name
       compMap
 
-
+    _removeAppId : ( name ) ->
+      reg_app = /app-[a-z0-9]{8}$/g
+      rlt = name.match(reg_app)
+      if rlt and rlt.length is 1
+        #match app-id succeed
+        name = name.replace(rlt[0],"")
+      name
 
   # The order of Converters functions are important!
   # Some converter must be behind other converters.
@@ -259,14 +265,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         EnableDnsHostnames : vpc.attributes.enableDnsHostnames
         EnableDnsSupport   : vpc.attributes.enableDnsSupport
-      }, TAG_NAME(vpc.attributes))
+      }, TAG_NAME(vpc.attributes) or @vpcId)
 
       @addLayout( vpcComp, true )
       return
 
 
     ()-> # Subnets
-      for sb, idx in @CrPartials( "SUBNET" ).where({vpcId:@vpcId}) || []
+      for sb, idx in @getResourceByType("SUBNET") || []
         sb = sb.attributes
         azComp = @addAz(sb.availabilityZone)
         sbComp = @add( "SUBNET", {
@@ -274,7 +280,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           CidrBlock        : sb.cidrBlock
           SubnetId         : sb.id
           VpcId            : CREATE_REF( @theVpc, "resource.VpcId" )
-        }, TAG_NAME(sb))
+        }, TAG_NAME(sb) or sb.id )
 
         @subnets[ sb.id ] = sbComp
 
@@ -283,7 +289,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
 
     ()-> # IGW
-      for aws_igw in @CrPartials( "IGW" ).where({vpcId:@vpcId}) || []
+      for aws_igw in @getResourceByType("IGW") || []
         aws_igw = aws_igw.attributes
         if not (aws_igw.attachmentSet and aws_igw.attachmentSet.length>0)
           continue
@@ -467,7 +473,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           for sg_rule in aws_sg.ipPermissionsEgress || []
             genRules.call(@, sg_rule, sgRes.IpPermissionsEgress)
 
-        sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || aws_sg.groupName )
+        sgComp = @add( "SG", sgRes, TAG_NAME(aws_sg) || @_removeAppId(aws_sg.groupName) )
         if aws_sg.groupName is "default"
           vpcDefaultSg = aws_sg
         else if aws_sg.groupName.indexOf("-DefaultSG-app-") isnt -1
@@ -615,7 +621,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if aws_ins.keyName
             insRes.KeyName = aws_ins.keyName
           else
-            insRes.KeyName = CREATE_REF( DEFAULT_KP, "resource.KeyName" )
+            insRes.KeyName = CREATE_REF( @DEFAULT_KP, "resource.KeyName" )
 
         vol_in_instance = []
 
@@ -772,7 +778,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
 
     ()-> # Rtbs
-      for aws_rtb in @CrPartials( "RT" ).where({vpcId:@vpcId}) || []
+      for aws_rtb in @getResourceByType("RT") || []
         aws_rtb = aws_rtb.attributes
         rtbRes =
           "AssociationSet" : []
@@ -811,7 +817,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkInterfaceId" : if i.networkInterfaceId and eniComp then CREATE_REF( eniComp, 'resource.NetworkInterfaceId' ) else ""
             "Origin"         : if i.gatewayId is "local" then i.origin else ""
           if i.gatewayId
-            xgw_in_route[route.GatewayId] = true
+            xgw_in_route[i.gatewayId] = true
             if i.gatewayId isnt "local" and gwComp
               if gwComp.type is "AWS.VPC.VPNGateway"
                 route.GatewayId = CREATE_REF( gwComp, 'resource.VpnGatewayId' )
@@ -1143,7 +1149,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         _.each aws_asg.Subnets, (e,key)->
           subnetComp = me.subnets[e]
           if (not addOriginal) and ( (origSubnetLayout and origSubnetLayout.groupUId is subnetComp.uid) or (not origSubnetLayout) )
-            #add original ASG layout 
+            #add original ASG layout
             me.addLayout asgComp, true, subnetComp
             addOriginal = true
           else
@@ -1258,7 +1264,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         reg_sp    = /arn:aws:autoscaling:.*:scalingPolicy:/g
         reg_topic = /arn:aws:sns:.*:.*/g
 
-      
+
         #get valid alarmAction
         validAlarmAction = []
         hasSP = false

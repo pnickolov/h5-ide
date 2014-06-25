@@ -283,7 +283,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     __handleRequestChange : ( request )->
       # This method is used to update the state of an app OpsModel
 
-      if not App.WS.isReady() then return # only updates when WS has finished pushing the initial data.
+      if not App.WS.isReady() and not request.state.processing then return # only updates when WS has finished pushing the initial data.
 
       if request.state.pending then return
 

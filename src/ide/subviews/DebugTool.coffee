@@ -120,7 +120,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 
 
   debugSession = ()->
-    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.href = '#{window.location.href}'; })();"
+    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.href = window.location.protocol + '//' + window.location.host + '#{window.location.pathname}'; })();"
 
     modal SessionDialog
     $("#DebugShareSession").html(session).select()

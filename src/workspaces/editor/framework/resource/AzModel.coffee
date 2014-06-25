@@ -24,11 +24,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
       @draw(true)
       null
 
-    setName : ()->
-      GroupModel.prototype.setName.apply this, arguments
-      @design().trigger Design.EVENT.AzUpdated
-      return
-
     isRemovable : ()->
       if @children().length > 0
         # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )

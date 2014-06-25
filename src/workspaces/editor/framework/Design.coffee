@@ -136,8 +136,6 @@ define [
     # Restore these two attr
     canvas_data.component = component
     canvas_data.layout    = layout
-
-    @on Design.EVENT.AwsResourceUpdated, @onAwsResourceUpdated
     null
 
 
@@ -161,8 +159,7 @@ define [
     Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
-    AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
-    AzUpdated          : "AZ_UPDATED"
+    ChangeResource : "CHANGE_RESOURCE"
 
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
@@ -743,18 +740,6 @@ define [
         return false
     true
 
-  DesignImpl.prototype.onAwsResourceUpdated = ()->
-    ######
-    # Quick Hack to redraw all the node when resource is updated.
-    # Should find a better way to handle this.
-    ######
-    if @modeIsStack() then return
-    for uid, comp of @__componentMap
-      if comp.node_line or comp.node_group then continue
-      if comp.draw
-        comp.draw()
-    null
-
   DesignImpl::instancesNoUserData = ()->
     result = true
     instanceModels = Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
@@ -768,13 +753,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-  DesignImpl.prototype.on = ( event )->
-    # Do nothing for AwsResourceUpdated if it's in stack mode.
-    if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
-      return
-
-    Backbone.Events.on.apply( this, arguments )
-
 
   # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )

@@ -71,7 +71,7 @@ define [
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
 
       design = @workspace.design
-      @listenTo design, Design.EVENT.AzUpdated,      @updateDisableItems
+      @listenTo design, Design.EVENT.ChangeResource, @onResChanged
       @listenTo design, Design.EVENT.AddResource,    @updateDisableItems
       @listenTo design, Design.EVENT.RemoveResource, @updateDisableItems
 
@@ -157,6 +157,12 @@ define [
         if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
           @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
       , @
+
+    onResChanged : ( resModel )->
+      if not resModel then return
+      if resModel.type isnt constant.RESTYPE.AZ then return
+      @updateAZ()
+      return
 
     updateAZ : ()->
       if not @workspace.isAwake() then return

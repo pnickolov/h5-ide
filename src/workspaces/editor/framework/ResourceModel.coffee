@@ -241,7 +241,13 @@ define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent ,
       Design.trigger Design.EVENT.AddResource, this
       design.trigger Design.EVENT.AddResource, this
 
+      @listenTo @, "change", @__triggerChangeInDesign
+
       this
+
+    __triggerChangeInDesign : ()->
+      @design().trigger Design.EVENT.ChangeResource, @
+      return
 
     getNewName : ( base )->
       if not @newNameTmpl

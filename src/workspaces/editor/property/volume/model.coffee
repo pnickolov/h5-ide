@@ -16,7 +16,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 return false
 
             supportEncrypted = component.isSupportEncrypted()
-            
+
             displayEncrypted = true
             if not supportEncrypted
                 displayEncrypted = false
@@ -31,7 +31,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 isWin       : res.name[0] != '/'
                 isStandard  : res.volumeType is 'standard'
                 isIo1       : res.volumeType is 'io1'
-                isGd2       : res.volumeType is 'gp2'
+                isGp2       : res.volumeType is 'gp2'
                 iops        : res.iops
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId

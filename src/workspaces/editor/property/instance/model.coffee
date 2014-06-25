@@ -131,7 +131,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!nls/lang.js' ], ( PropertyM
 					encrypted : rdEbs.encrypted
 					isStandard: deviceType is 'standard'
 					isIo1 : deviceType is 'io1'
-					isGd2 : deviceType is 'gd2'
+					isGp2 : deviceType is 'gp2'
 
 
 

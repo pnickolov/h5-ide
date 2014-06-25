@@ -156,7 +156,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
           encrypted : rdEbs.encrypted
           isStandard: deviceType is 'standard'
           isIo1 : deviceType is 'io1'
-          isGd2 : deviceType is 'gd2'
+          isGp2 : deviceType is 'gp2'
 
         if rootDevice.size < 10
           rootDevice.iops = ""

@@ -36,7 +36,7 @@
       </dl>
       <dl class="dl-vertical">
         <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
-        <dd>{{emptyStr rootDevice.Ebs.VolumeType}}</dd>
+        <dd>{{readableVt rootDevice.Ebs.VolumeType}}</dd>
         {{#if rootDevice.Ebs.SnapshotId}}
         <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
         <dd>{{rootDevice.Ebs.SnapshotId}}</dd>

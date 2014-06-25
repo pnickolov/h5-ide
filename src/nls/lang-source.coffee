@@ -2498,15 +2498,15 @@ module.exports =
       zh: ""
 
     PROP_VOLUME_TYPE_STANDARD:
-      en: "Standard"
-      zh: "标准"
+      en: "Magnetic"
+      zh: "传统磁盘"
 
-    PROP_VOLUME_TYPE_SSD:
-      en: "SSD"
-      zh: "SSD"
+    PROP_VOLUME_TYPE_GP2:
+      en: "General Purpose (SSD)"
+      zh: "通用（SSD）"
 
-    PROP_VOLUME_TYPE_IOPS:
-      en: "Provisioned IOPS"
+    PROP_VOLUME_TYPE_IO1:
+      en: "Provisioned IOPS (SSD)"
       zh: "预配置IOPS"
 
     PROP_VOLUME_MSG_WARN:

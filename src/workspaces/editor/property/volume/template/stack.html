@@ -47,7 +47,7 @@
                     <input id="radio-ssd" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2"/>
                     <label for="radio-ssd"></label>
                 </div>
-                <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_SSD" }}</label>
+                <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
             </div>
 
             <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}"{{/if}}>
@@ -55,7 +55,7 @@
                     <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
                     <label for="radio-iops"></label>
                 </div>
-                <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
+                <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
             </div>
 
         </div>

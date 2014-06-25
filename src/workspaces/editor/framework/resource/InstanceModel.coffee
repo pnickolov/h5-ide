@@ -27,6 +27,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       # RootDevice
       rdSize : 0
       rdIops : 0
+      rdType : 'standard'
 
       cachedAmi : null
 
@@ -340,13 +341,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
           Ebs : {
             SnapshotId : rdEbs.snapshotId
             VolumeSize : @get("rdSize") || rdEbs.volumeSize
-            VolumeType : "standard"
+            VolumeType : @get 'rdType'
           }
         }]
 
         if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
           blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
-          blockDeviceMapping[0].Ebs.VolumeType = "io1"
 
       blockDeviceMapping || []
 
@@ -879,6 +879,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
 
         rdSize : rootDevice.Ebs.VolumeSize
         rdIops : rootDevice.Ebs.Iops
+        rdType : rootDevice.Ebs.VolumeType
 
         parent : resolve( layout_data.groupUId )
 

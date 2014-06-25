@@ -41,9 +41,10 @@ define [ '../base/view',
             @processIops()
 
             type = $('#volume-type-radios input:checked').val()
-            iops = if type is 'io1' then value else ''
+            # Get iops range when type is 'io1'(IOPS)
+            iops = if type is 'io1' then $( '#iops-ranged' ).val() else ''
 
-            if( type isnt 'iops')
+            if( type isnt 'io1') #IOPS
                 $( '#iops-group' ).hide()
             else
                 $( '#iops-group' ).show()
@@ -111,7 +112,7 @@ define [ '../base/view',
             if volumeValidate and iopsValidate
                 this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
                 if iopsEnabled
-                    @model.setVolumeIops $( '#iops-ranged' ).val()
+                    @model.setVolumeType 'io1', $( '#iops-ranged' ).val()
             null
 
 

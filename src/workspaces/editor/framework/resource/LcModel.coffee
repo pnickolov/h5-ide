@@ -26,6 +26,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # RootDevice
       rdSize : 0
       rdIops : ""
+      rdType : 'standard'
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
@@ -403,6 +404,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         if rd and volume.DeviceName is rd.DeviceName
           model.set "rdSize", volume.Ebs.VolumeSize
           model.set "rdIops", volume.Ebs.Iops
+          model.set "rdType", volume.Ebs.VolumeType
         else
           _attr =
             name       : volume.DeviceName

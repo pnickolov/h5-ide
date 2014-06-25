@@ -30,8 +30,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             volume_detail =
                 isWin       : res.name[0] != '/'
                 isStandard  : res.volumeType is 'standard'
-                isIops      : res.volumeType is 'io1'
-                isSsd       : res.volumeType is 'gp2'
+                isIo1       : res.volumeType is 'io1'
+                isGd2       : res.volumeType is 'gp2'
                 iops        : res.iops
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId

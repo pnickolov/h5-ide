@@ -114,24 +114,35 @@
     <section class="property-control-group">
       <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
       <div id="volume-type-radios">
+
       <div>
       	<div class="radio">
-          <input id="radio-standard" type="radio" name="volume-type" {{#unless rootDevice.iops}}checked="checked"{{/unless}}/>
+          <input id="radio-standard" type="radio" name="volume-type" {{#if rootDevice.isStandard}}checked="checked"{{/if}} value="standard"/>
           <label for="radio-standard"></label>
         </div>
         <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
       </div>
+
+      <div>
+        <div class="radio">
+          <input id="radio-ssd" type="radio" name="volume-type" {{#if rootDevice.isGd2}}checked="checked"{{/if}} value="gd2"/>
+          <label for="radio-ssd"></label>
+        </div>
+        <label for="radio-ssd">{{ i18n "PROP_VOLUME_TYPE_SSD" }}</label>
+      </div>
+
       <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
         <div class="radio">
-          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.iops}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}}/>
+          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.isIo1}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}} value="io1"/>
           <label for="radio-iops"></label>
         </div>
         <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
       </div>
+
       </div>
     </section>
 
-    <section class="property-control-group" id="iops-group" {{#unless rootDevice.iops}}style="display:none"{{/unless}}>
+    <section class="property-control-group" id="iops-group" {{#unless rootDevice.isIo1}}style="display:none"{{/unless}}>
         <label>IOPS</label>
         <div class="ranged-number-input">
           <label for="iops-ranged"></label>

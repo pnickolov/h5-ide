@@ -55,10 +55,6 @@ define [
 
       @setElement( $(template(data)).eq(0).appendTo("#main") )
 
-      @$el.show()
-      @$el.children("#global-region-wrap").nanoScroller()
-      @$el.hide()
-
       # Need to do a init update because the data might arrive first
       @updateOpsList()
       @updateDemoView()
@@ -75,6 +71,13 @@ define [
       MC.template.dashboardBubble = _.bind @dashboardBubble, @
       MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
       return
+
+    awake : ()->
+      @$el.show().children("#global-region-wrap").nanoScroller()
+      return
+
+    sleep : ()->
+      @$el.hide()
 
     dashboardBubbleSub: (data)->
         renderData = {}

@@ -2784,17 +2784,17 @@ html[dir="rtl"] .select2-search-choice-close {
   top        : 0;
   bottom     : 0;
   opacity    : .01;
-  -webkit-transition    : .2s;
-  -moz-transition       : .2s;
-  -o-transition         : .2s;
-  transition            : .2s;
-  border-radius         : 5px;
+
+  -webkit-transition : .2s;
+  -moz-transition    : .2s;
+  -o-transition      : .2s;
+  transition         : .2s;
 }
 .nano > .nano-pane > .nano-slider {
   background    : #999;
   position      : relative;
   margin        : 0 1px;
-  border-radius : 3px;
+  border-radius : 4px;
 }
 .nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
   opacity    : 0.99;

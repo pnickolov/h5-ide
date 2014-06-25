@@ -143,9 +143,8 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     logout : ()->
       domain = { "domain" : window.location.hostname.replace("ide", "") }
       for ckey, cValue of $.cookie()
-        if ckey isnt 'stack_store_id_local' and ckey isnt 'stack_store_id'
-          $.removeCookie ckey, domain
-          $.removeCookie ckey
+        $.removeCookie ckey, domain
+        $.removeCookie ckey
       return
 
     changePassword : ( oldPwd, newPwd )->

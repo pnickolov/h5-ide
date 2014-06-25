@@ -146,36 +146,4 @@ define [
     editor.activate()
     editor
 
-  VisualOps.prototype.openSampleStack = (fromWelcome) ->
-
-    that = this
-
-    try
-
-      isFirstVisit = @user.isFirstVisit()
-
-      if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
-
-        stackStoreIdStamp = $.cookie('stack_store_id') or ''
-        localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
-
-        stackStoreId = stackStoreIdStamp.split('#')[0]
-
-        if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
-
-          $.cookie('stack_store_id_local', stackStoreIdStamp, {expires: 30})
-
-          gitBranch = 'master'
-
-          ApiRequest('stackstore_fetch_stackstore', {
-            sub_path: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
-          }).then (result) ->
-
-            jsonDataStr = result
-            that.importJson(jsonDataStr)
-
-    catch err
-
-      console.log('Open store stack failed')
-
   VisualOps

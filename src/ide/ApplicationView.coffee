@@ -41,7 +41,6 @@ define [
 
       $(window).on "beforeunload", @checkUnload
       $(document).on 'keydown', @globalKeyEvent
-      $(window).one 'focus', () -> App.openSampleStack()
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE

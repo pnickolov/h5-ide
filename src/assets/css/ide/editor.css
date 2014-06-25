@@ -222,7 +222,7 @@
 
 .resource-item {
   width: 70px;
-  padding-top: 60px;
+  padding-top: 65px;
   margin: 0 5px 5px 0;
   border-radius: 4px;
   cursor: pointer;
@@ -234,7 +234,7 @@
   overflow: hidden;
   line-height: 1.2em;
   color: #eee;
-  background: transparent center top no-repeat;
+  background: transparent center 5px no-repeat;
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab; }
@@ -327,7 +327,6 @@
   margin: 0;
   padding: 0;
   height: 70px;
-  margin-top: -5px;
   background-position: center;
   -webkit-transition: all ease-in 0.15s;
   -moz-transition: all ease-in 0.15s;
@@ -349,7 +348,7 @@
     #ResourceDragItem.resource-icon-az .az-name {
       position: absolute;
       left: 0;
-      top: 0;
+      top: 4px;
       color: transparent;
       border: 3px dashed #f69300;
       border-radius: 4px;
@@ -361,13 +360,13 @@
       transition: all ease-in 0.15s; }
     #ResourceDragItem.resource-icon-az.add-to-dom {
       color: #f69300;
-      width: 185px;
-      height: 210px;
+      width: 220px;
+      height: 240px;
       line-height: 50px;
-      padding-left: 25px; }
+      padding-left: 20px; }
       #ResourceDragItem.resource-icon-az.add-to-dom .az-name {
-        width: 180px;
-        height: 180px; }
+        width: 206px;
+        height: 206px; }
   #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet {
     background-image: none; }
     #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before {

@@ -117,6 +117,7 @@ require.config {
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
 		'UI.tour'            : 'ui/UI.tour'
+		'UI.nanoscroller'    : 'ui/UI.nanoscroller'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
 		'UI.modalplus'       : 'ui/UI.modalplus'
@@ -245,6 +246,7 @@ require.config {
 			"jqpagination"
 			'jquerysort'
 			"UI.modalplus"
+			"UI.nanoscroller"
 		]
 		"api/api" : ["ApiRequest"]
 		"service/service" : [

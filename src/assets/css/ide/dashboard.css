@@ -106,8 +106,9 @@
     margin: 0; }
 
 #global-region-wrap {
-  height: 100%;
   background: #f0f0f0; }
+  #global-region-wrap > .nano-pane {
+    z-index: 6; }
 
 /* The map */
 .global-map-item {
@@ -670,7 +671,7 @@
   right: 0;
   top: -49px;
   border-radius: 5px 5px 0 0;
-  z-index: 5;
+  z-index: 4;
   box-shadow: 3px -2px 3px rgba(0, 0, 0, 0.05); }
   #region-resource-tab > li {
     float: left;

@@ -379,7 +379,7 @@ textarea[readonly]  {
 	border: 1px solid transparent;
 }
 
-.property-control-group .input.input-short, 
+.property-control-group .input.input-short,
 .input.input-short {
 	width: 160px;
 }
@@ -1949,7 +1949,7 @@ input.parsley-error {
 	width      : 100%;
 	height     : 100%;
 	z-index    : 100000;
-	background : rgba(0,0,0,.9);
+	background : #030304;
 }
 
 #GlobalLoading:before,
@@ -2747,4 +2747,55 @@ html[dir="rtl"] .select2-search-choice-close {
     .select2-search input {
         background-position: 100% -21px !important;
     }
+}
+
+
+/* NanoScroller */
+/** initial setup **/
+.nano {
+  position : relative;
+  width    : 100%;
+  height   : 100%;
+  overflow : hidden;
+}
+.nano > .nano-content {
+  position      : absolute;
+  overflow      : scroll;
+  overflow-x    : hidden;
+  top           : 0;
+  right         : 0;
+  bottom        : 0;
+  left          : 0;
+}
+.nano > .nano-content:focus {
+  outline: thin dotted;
+}
+.nano > .nano-content::-webkit-scrollbar {
+  visibility: hidden;
+}
+.has-scrollbar > .nano-content::-webkit-scrollbar {
+  visibility: visible;
+}
+.nano > .nano-pane {
+  background : rgba(100, 100, 100, 0.2);
+  position   : absolute;
+  width      : 10px;
+  right      : 0;
+  top        : 0;
+  bottom     : 0;
+  opacity    : .01;
+  -webkit-transition    : .2s;
+  -moz-transition       : .2s;
+  -o-transition         : .2s;
+  transition            : .2s;
+  border-radius         : 5px;
+}
+.nano > .nano-pane > .nano-slider {
+  background    : #999;
+  position      : relative;
+  margin        : 0 1px;
+  border-radius : 3px;
+}
+.nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
+  opacity    : 0.99;
 }

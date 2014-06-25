@@ -11,20 +11,8 @@ define [
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
+  "UI.nanoscroller"
 ], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang )->
-
-  Helper = {
-    scrollToResource: ->
-      scrollContent = $( '#global-region-wrap .scroll-content' )
-      scrollContent.addClass 'scroll-transition'
-      setTimeout ->
-        scrollContent.removeClass( 'scroll-transition' )
-        null
-      , 100
-
-      scrollTo = $('#global-region-map-wrap').height() + 7
-      scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
-  }
 
   Backbone.View.extend {
 
@@ -65,7 +53,11 @@ define [
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
-      @setElement( $(template(data)).appendTo("#main") )
+      @setElement( $(template(data)).eq(0).appendTo("#main") )
+
+      @$el.show()
+      @$el.children("#global-region-wrap").nanoScroller()
+      @$el.hide()
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()
@@ -193,7 +185,7 @@ define [
       region = $li.attr("id") || $li.attr("data-region")
 
       $( "#region-switch-list li[data-region=#{region}]" ).click()
-      Helper.scrollToResource()
+      $("#global-region-wrap").nanoScroller({ scrollTop : $('#global-region-map-wrap').height() })
 
       $("#region-resource-tab").children().eq( if $tgt.hasClass("app") then 0 else 1 ).click()
       return false

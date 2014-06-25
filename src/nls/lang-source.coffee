@@ -2494,7 +2494,7 @@ module.exports =
       zh: "磁盘类型"
 
     PROP_VOLUME_ENCRYPTED:
-      en: "Encryption"
+      en: "Encrypted"
       zh: ""
 
     PROP_VOLUME_TYPE_STANDARD:

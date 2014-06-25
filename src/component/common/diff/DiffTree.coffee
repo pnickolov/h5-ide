@@ -26,9 +26,13 @@ define [], () ->
             'resource.Iops': true
         }
 
-        option.filterResMap = {
-            'AWS.EC2.Instance'
-        }
+        option.filterResMap = {}
+
+        if option.state is 'stop'
+
+            option.filterResMap = {
+                'AWS.AutoScaling.Group': true
+            }
 
         isArray = (value) ->
             

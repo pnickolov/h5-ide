@@ -43,6 +43,8 @@
         {{/if}}
         <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
         <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
+        <dt>{{i18n "PROP_VOLUME_ENCRYPTED"}}</dt>
+        <dd>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</dd>
         {{#if rootDevice.Ebs.Iops}}
         <dt>IOPS</dt>
         <dd>{{rootDevice.Ebs.Iops}}</dd>

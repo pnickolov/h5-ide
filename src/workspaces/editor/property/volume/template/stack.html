@@ -74,6 +74,7 @@
         </div>
     </section>
 
+    {{#if volume_detail.displayEncrypted}}
     <section class="property-control-group">
         <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
         <div>
@@ -84,5 +85,6 @@
             <label for="volume-property-encrypted-check">{{ i18n "PROP_VOLUME_ENCRYPTED_LABEL" }}</label>
         </div>
     </section>
+    {{/if}}
 
 </article>

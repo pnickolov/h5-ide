@@ -122,6 +122,12 @@
           <input id="iops-ranged" type="text" class="input" min="100" max="2000" value="{{rootDevice.iops}}">
         </div>
     </section>
+
+    <section class="property-control-group">
+        <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
+        <div>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</div>
+    </section>
+
 	</div>
   {{/if}}
 

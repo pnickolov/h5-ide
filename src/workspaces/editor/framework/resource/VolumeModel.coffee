@@ -174,10 +174,9 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
 
       owner = @attributes.owner
       instanceType = owner.get('instanceType')
-      snapshotId = @attributes.snapshotId
 
       supportEncrypted = false
-      supportEncrypted = true if (instanceType in supportedEncryptedType and not snapshotId)
+      supportEncrypted = true if (instanceType in supportedEncryptedType)
 
       return supportEncrypted
 

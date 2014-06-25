@@ -16,6 +16,13 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 return false
 
             supportEncrypted = component.isSupportEncrypted()
+            
+            displayEncrypted = true
+            if not supportEncrypted
+                displayEncrypted = false
+
+            if res.snapshotId
+                supportEncrypted = false
 
             isEncrypted = false
             isEncrypted = (res.encrypted in ['true', true]) if supportEncrypted
@@ -29,8 +36,9 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId
                 name        : res.name
+                displayEncrypted : displayEncrypted
                 support_encrypted : supportEncrypted
-                encrypted   : isEncrypted
+                encrypted : isEncrypted
 
             if volume_detail.isWin
                 volume_detail.editName = volume_detail.name.slice(-1)
@@ -137,7 +145,29 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         setEncrypted : ( value ) ->
 
             uid = @get "uid"
-            Design.instance().component( uid ).set 'encrypted', value
+            volume = Design.instance().component( uid )
+
+            if not volume
+
+                realuid     = uid.split('_')
+                device_name = realuid[2]
+                lcUid       = realuid[0]
+
+                lc = Design.instance().component( lcUid )
+
+                volumeModel = Design.modelClassForType constant.RESTYPE.VOL
+                allVolume = volumeModel and volumeModel.allObjects() or []
+
+                for v in allVolume
+                    if v.get( 'owner' ) is lc
+                        if v.get( 'name' ) is device_name
+                            v.set 'encrypted', value
+                            break
+
+
+            else
+                volume.set 'encrypted', value
+
             null
 
         genFullName: ( name ) ->

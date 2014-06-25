@@ -455,6 +455,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       if not @isEbsOptimizedEnabled()
         @set("ebsOptimized", false)
 
+      # change encryted volume to false
+      volumeList = @get('volumeList')
+      if volumeList
+        _.each volumeList, (vol) ->
+          if not vol.isSupportEncrypted()
+            vol.set('encrypted', false)
+          null
+
       # Well, LC borrows setInstanceType of Instance,
       # but LC doesn't have getEmbedEni
       if @getEmbedEni

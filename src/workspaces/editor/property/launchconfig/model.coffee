@@ -151,6 +151,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
           name : rdName
           size : parseInt( comp.get("rdSize"), 10 )
           iops : comp.get("rdIops")
+          encrypted : rdEbs.encrypted
 
         if rootDevice.size < 10
           rootDevice.iops = ""

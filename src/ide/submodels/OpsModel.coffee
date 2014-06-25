@@ -160,15 +160,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           }
         }
       if not json.property
-        json.property = {
-          stoppable : true
-          policy : { ha : "" }
-          lease  : { action: "", length: null, due: null }
-          schedule :
-            stop   : { run: null, when: null, during: null }
-            backup : { when : null, day : null }
-            start  : { when : null }
-        }
+        json.property = { stoppable : true }
 
       ###
       Old JSON will have structure like :
@@ -618,12 +610,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           tag  : App.user.get("tag")
       property :
         stoppable : true
-        policy : { ha : "" }
-        lease  : { action: "", length: null, due: null }
-        schedule :
-          stop   : { run: null, when: null, during: null }
-          backup : { when : null, day : null }
-          start  : { when : null }
 
     __initJsonData : ()->
       json   = @__createRawJson()

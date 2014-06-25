@@ -5,14 +5,6 @@ define [
   'CloudResources'
 ], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
 
-  PropertyDefination =
-    policy : { ha : "" }
-    lease  : { action: "", length: null, due: null }
-    schedule :
-      stop   : { run: null, when: null, during: null },
-      backup : { when : null, day : null },
-      start  : { when : null }
-
   # The recursiveCheck is not fully working.
   ### env:prod ###
   createRecursiveCheck = ()->
@@ -578,7 +570,8 @@ define [
     # 1. save $canvas's size to layout
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
-    data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
+    data.property = @attributes.property || {}
+    data.property.stoppable = @isStoppable()
 
     data.version = "2014-02-17"
     data.state   = @__opsModel.getStateDesc() || "Enabled"

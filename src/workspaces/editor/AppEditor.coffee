@@ -147,7 +147,7 @@ define [
 
       self = @
       @__applyingUpdate = true
-      fastUpdate = !modfied.component
+      fastUpdate = not modfied.component and not @opsModel.testState( OpsModel.State.Stopped )
 
       @opsModel.update( modfied.newData, fastUpdate ).then ()->
         if fastUpdate

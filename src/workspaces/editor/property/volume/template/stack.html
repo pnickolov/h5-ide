@@ -44,18 +44,18 @@
 
             <div>
                 <div class="radio">
-                    <input id="radio-ssd" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2"/>
-                    <label for="radio-ssd"></label>
+                    <input id="radio-gp2" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2"/>
+                    <label for="radio-gp2"></label>
                 </div>
-                <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
+                <label for="radio-gp2">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
             </div>
 
             <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}"{{/if}}>
                 <div class="radio">
-                    <input id="radio-iops" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
-                    <label for="radio-iops"></label>
+                    <input id="radio-io1" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
+                    <label for="radio-io1"></label>
                 </div>
-                <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
+                <label for="radio-io1">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
             </div>
 
         </div>

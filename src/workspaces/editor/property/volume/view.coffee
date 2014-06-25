@@ -77,7 +77,7 @@ define [ '../base/view',
 
         processIops: ( event ) ->
             size = parseInt $( '#volume-size-ranged' ).val(), 10
-            opsCheck = $( '#radio-iops' ).is ':checked'
+            opsCheck = $( '#radio-io1' ).is ':checked'
 
             if size >= 10
                 @enableIops()
@@ -105,7 +105,7 @@ define [ '../base/view',
             volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
             iopsValidate = true
             volumeValidate = $( '#volume-size-ranged' ).parsley 'validate'
-            iopsEnabled = $( '#radio-iops' ).is ':checked'
+            iopsEnabled = $( '#radio-io1' ).is ':checked'
 
             if iopsEnabled
                 iopsValidate = $( '#iops-ranged' ).parsley 'validate'

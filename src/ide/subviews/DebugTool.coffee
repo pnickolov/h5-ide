@@ -30,7 +30,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 </div>"""
 
   DebugTool = ()->
-    $("head").append('<link rel="stylesheet" href="./assets/css/debugger.css"></link>')
+    $("head").append('<link rel="stylesheet" href="/assets/css/debugger.css"></link>')
     $(tmpl).appendTo("body")
     $("#DebugTool").on "click", "li", dispatchClick
 

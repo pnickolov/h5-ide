@@ -319,6 +319,9 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
       notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return false
 
+    if attribute and _.isString(attribute.encrypted)
+      attribute.encrypted = attribute.encrypted is 'true'
+
     attribute = $.extend {}, attribute
     attribute.owner = @model
     VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )

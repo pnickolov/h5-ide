@@ -164,8 +164,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                             v.set 'encrypted', value
                             break
 
-
             else
+
                 volume.set 'encrypted', value
 
             null

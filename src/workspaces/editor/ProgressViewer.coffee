@@ -106,6 +106,7 @@ define [
     isWorkingOn : ( attribute )-> @opsModel is attribute
     tabClass    : ()-> "icon-app-pending"
     title       : ()-> @opsModel.get("name") + " - app"
+    url         : ()-> @opsModel.url()
     constructor : ( opsModel )->
 
       if not opsModel
@@ -123,6 +124,8 @@ define [
     initialize : ()->
       @view = new OpsProgressView({model:@opsModel})
       @view.workspace = @
+
+      @listenTo @opsModel, "change:id", ()-> @updateUrl(); return
 
       self = @
       @view.on "close", ()-> self.remove()

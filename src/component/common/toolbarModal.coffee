@@ -12,7 +12,7 @@ Refer to kpView.coffee
 
 ###
 
-define [ './component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
+define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
 
 
     Backbone.View.extend

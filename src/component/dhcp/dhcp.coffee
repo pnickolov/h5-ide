@@ -1,4 +1,4 @@
-define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!nls/lang.js', './component/dhcp/dhcp_template.js'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
+define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_modal', 'i18n!/nls/lang.js', 'component/dhcp/dhcp_template'], ( CloudResources, constant, comboDropdown, modalPlus, toolbarModal, lang, template )->
     fetched = false
     fetching  = false
     regionsMark = {}

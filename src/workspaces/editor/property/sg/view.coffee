@@ -6,7 +6,7 @@ define [ '../base/view',
          './template/stack',
          './template/app',
          'constant',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, app_template, constant, lang ) ->
 
     SgView = PropertyView.extend {

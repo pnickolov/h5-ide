@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './component/sns/snsTpl', 'i18n!nls/lang.js' ], ( constant, CloudResources, snsManage, comboDropdown, template, lang ) ->
+define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './component/sns/snsTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, snsManage, comboDropdown, template, lang ) ->
 
     subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, 'us-east-1'
     topicCol = CloudResources constant.RESTYPE.TOPIC, 'us-east-1'

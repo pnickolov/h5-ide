@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager,lang )->
 
   CeEni = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeEni, constant.RESTYPE.ENI )

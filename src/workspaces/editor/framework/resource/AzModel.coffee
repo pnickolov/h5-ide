@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design", "CloudResources" ], ( GroupModel, VpcModel, constant, lang, Design, CloudResources )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design", "CloudResources" ], ( GroupModel, VpcModel, constant, lang, Design, CloudResources )->
 
   Model = GroupModel.extend {
 

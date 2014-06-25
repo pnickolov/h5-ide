@@ -75,7 +75,7 @@
         exclude: traceMode ? [] : exclude.concat(bundleExcludes[bundleName] || [])
       });
       if (exclude.length === 0) {
-        exclude.push("i18n!nls/lang.js");
+        exclude.push("i18n!/nls/lang.js");
       }
       exclude.push(bundleName);
     }

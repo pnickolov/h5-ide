@@ -6,6 +6,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
     isFixed  : ()-> true
     tabClass : ()-> "icon-dashboard"
     title    : ()-> "Dashboard"
+    url      : ()-> "/"
 
 
     initialize : ()->

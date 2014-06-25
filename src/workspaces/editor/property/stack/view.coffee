@@ -7,7 +7,7 @@ define [ '../base/view',
          './template/acl',
          './template/sub',
          'event',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
 
     StackView = PropertyView.extend {

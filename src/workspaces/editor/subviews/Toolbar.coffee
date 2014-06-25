@@ -5,7 +5,7 @@ define [
   "ThumbnailUtil"
   "JsonExporter"
   "ApiRequest"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
   "UI.modalplus"
   'kp_dropdown'
   'constant'

@@ -89,12 +89,12 @@
 {{#each this}}{{#with attributes}}
 <li class="bubble resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{id}}"}' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
   {{#if ../../fav}}<button class="btn-fav-ami fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
-  <div class="resource-icon-instance"><img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}
 </li>{{/with}}{{/each}}
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >
-    <img src="assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+    <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
   </div>
 <div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>

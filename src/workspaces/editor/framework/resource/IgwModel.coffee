@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!nls/lang.js" ], ( ComplexResModel, VpcModel, Design, constant, lang )->
+define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel, VpcModel, Design, constant, lang )->
 
   Model = ComplexResModel.extend {
 

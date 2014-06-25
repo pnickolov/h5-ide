@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ 'i18n!nls/lang.js', '../base/view', './template/stack', 'constant', "Design" ], ( lang, PropertyView, template, constant, Design ) ->
+define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "Design" ], ( lang, PropertyView, template, constant, Design ) ->
 
     CGWView = PropertyView.extend {
 

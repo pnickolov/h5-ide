@@ -10,7 +10,7 @@ define [
   'sns_manage'
   'kp_manage'
   './AmiBrowser'
-  'i18n!nls/lang.js'
+  'i18n!/nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'

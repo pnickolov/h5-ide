@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
+define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
   emptyArray = []
 

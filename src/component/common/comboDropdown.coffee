@@ -12,7 +12,7 @@ Refer to kpView.coffee
 
 ###
 
-define [ './component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template, Backbone, $ ) ->
+define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template, Backbone, $ ) ->
 
 
     Backbone.View.extend

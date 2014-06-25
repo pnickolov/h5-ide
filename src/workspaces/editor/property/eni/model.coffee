@@ -2,7 +2,7 @@
 #  View Mode for design/property/eni
 #############################
 
-define [ '../base/model', 'constant', "Design", 'i18n!nls/lang.js', 'CloudResources'  ], ( PropertyModel, constant, Design, lang, CloudResources ) ->
+define [ '../base/model', 'constant', "Design", 'i18n!/nls/lang.js', 'CloudResources'  ], ( PropertyModel, constant, Design, lang, CloudResources ) ->
 
 	ENIModel = PropertyModel.extend {
 

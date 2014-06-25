@@ -2,7 +2,7 @@
 This file use for validate state.
 ###
 
-define [ 'constant', 'MC', 'i18n!nls/lang.js' ], ( CONST, MC, lang ) ->
+define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
 
     ########## Functional Method ##########
     #errors = []

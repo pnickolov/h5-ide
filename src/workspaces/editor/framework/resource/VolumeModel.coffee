@@ -1,5 +1,5 @@
 
-define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, ComplexResModel, constant )->
+define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, ComplexResModel, constant )->
 
   Model = ComplexResModel.extend {
 

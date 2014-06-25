@@ -30,7 +30,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 </div>"""
 
   DebugTool = ()->
-    $("head").append('<link rel="stylesheet" href="./assets/css/debugger.css"></link>')
+    $("head").append('<link rel="stylesheet" href="/assets/css/debugger.css"></link>')
     $(tmpl).appendTo("body")
     $("#DebugTool").on "click", "li", dispatchClick
 
@@ -120,7 +120,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 
 
   debugSession = ()->
-    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.reload(); })();"
+    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.href = '#{window.location.href}'; })();"
 
     modal SessionDialog
     $("#DebugShareSession").html(session).select()

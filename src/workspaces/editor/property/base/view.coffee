@@ -4,7 +4,7 @@
 ####################################
 
 define [ 'constant',
-         'i18n!nls/lang.js',
+         'i18n!/nls/lang.js',
          'backbone',
          'jquery',
          'handlebars',

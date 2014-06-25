@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', "CloudResources", '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService, CloudResources ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', "CloudResources", '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService, CloudResources ) ->
 
 	getAZAryForDefaultVPC = (elbUID) ->
 

@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack',
-         'i18n!nls/lang.js', 'constant', 'kp_dropdown' ], ( PropertyView, template, lang, constant, kp ) ->
+         'i18n!/nls/lang.js', 'constant', 'kp_dropdown' ], ( PropertyView, template, lang, constant, kp ) ->
 
     noop = ()-> null
 

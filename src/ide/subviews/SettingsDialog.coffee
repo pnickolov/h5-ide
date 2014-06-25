@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./SettingsDialogTpl", 'i18n!nls/lang.js', "ApiRequest", "backbone" ], ( SettingsTpl, lang, ApiRequest ) ->
+define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ], ( SettingsTpl, lang, ApiRequest ) ->
 
     SettingsDialog = Backbone.View.extend {
 

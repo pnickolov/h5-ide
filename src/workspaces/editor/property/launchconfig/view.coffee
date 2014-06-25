@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
+define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
 
     LanchConfigView = PropertyView.extend {
 

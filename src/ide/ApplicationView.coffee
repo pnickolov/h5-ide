@@ -13,7 +13,7 @@ define [
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
   "./subviews/AppTpl"
-  'i18n!nls/lang.js'
+  'i18n!/nls/lang.js'
 ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang )->
 
   Backbone.View.extend {

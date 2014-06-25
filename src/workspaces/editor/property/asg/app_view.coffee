@@ -6,7 +6,7 @@ define [ '../base/view',
          './template/app',
          './template/policy',
          './template/term',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
          'sns_dropdown'
          'UI.modalplus'
 ], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus )->

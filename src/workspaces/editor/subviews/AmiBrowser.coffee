@@ -2,7 +2,7 @@
 #  View(UI logic) for component/amis
 #############################
 
-define ['../template/TplAmiBrowser', 'i18n!nls/lang.js', 'UI.modalplus', "ApiRequest", 'CloudResources', 'backbone', 'jqpagination'], ( TplAmiBrowser, lang, Modal, ApiRequest, CloudResources ) ->
+define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRequest", 'CloudResources', 'backbone', 'jqpagination'], ( TplAmiBrowser, lang, Modal, ApiRequest, CloudResources ) ->
 
     Backbone.View.extend {
         events   :

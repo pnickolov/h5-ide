@@ -8,7 +8,7 @@ define [ '../base/view',
          './template/stack',
          './template/rule_item',
          './template/dialog',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, Design, constant, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
 
     ACLView = PropertyView.extend {

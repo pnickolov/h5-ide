@@ -2,7 +2,7 @@
 This file use for validate state.
 ###
 
-define [ 'Design', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC' ], ( Design, constant, lang ) ->
+define [ 'Design', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC' ], ( Design, constant, lang ) ->
 
     Message = {}
 

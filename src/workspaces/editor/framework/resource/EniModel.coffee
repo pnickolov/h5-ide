@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
+define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!/nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
 
   ###
   IpObject is used to represent an ip in Eni

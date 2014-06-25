@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!nls/lang.js', "CloudResources" ], ( CanvasElement, CeInstance, constant, CanvasManager, lang, CloudResources )->
+define [ "./CanvasElement", "./CeInstance", "constant", "CanvasManager", 'i18n!/nls/lang.js', "CloudResources" ], ( CanvasElement, CeInstance, constant, CanvasManager, lang, CloudResources )->
 
   CeLc = ()-> CanvasElement.apply( this, arguments )
 

@@ -4,7 +4,7 @@ define [
   "OpsModel"
   "./template/TplOpsEditor"
   "UI.modalplus"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
 ], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
   StackView.extend {

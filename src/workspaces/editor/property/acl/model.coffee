@@ -2,7 +2,7 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ '../base/model', "Design", 'constant', 'i18n!nls/lang.js' ], ( PropertyModel, Design, constant, lang ) ->
+define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( PropertyModel, Design, constant, lang ) ->
 
     icmpTypeMap = {
         "0": "Echo Reply(0)",

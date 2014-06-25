@@ -5,7 +5,7 @@ define [
   './VisualizeVpcTpl'
   "UI.modalplus"
   "constant"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"

@@ -1,5 +1,5 @@
 
-define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design", "CloudResources" ], ( lang, CanvasElement, constant, CanvasManager, Design, CloudResources )->
+define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design", "CloudResources" ], ( lang, CanvasElement, constant, CanvasManager, Design, CloudResources )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeInstance, constant.RESTYPE.INSTANCE )

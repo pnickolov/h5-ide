@@ -1,4 +1,4 @@
-define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'JsonExporter', "CloudResources", 'i18n!nls/lang.js', 'UI.notification' ], ( toolbar_modal, template, upload, Backbone, $, constant, JsonExporter,CloudResources, lang ) ->
+define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'JsonExporter', "CloudResources", 'i18n!/nls/lang.js', 'UI.notification' ], ( toolbar_modal, template, upload, Backbone, $, constant, JsonExporter,CloudResources, lang ) ->
 
     download = JsonExporter.download
 

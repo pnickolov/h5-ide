@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'i18n!nls/lang.js', 'Design', 'underscore' ], ( CONST, MC, LANG, Design, _ ) ->
+define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'Design', 'underscore' ], ( CONST, MC, LANG, Design, _ ) ->
 
     Inside =
         taReturn: ( type, tip, uid ) ->

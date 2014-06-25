@@ -5,7 +5,7 @@
 define [ '../base/view',
          './template/stack',
          'event',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
 
     VolumeView = PropertyView.extend {

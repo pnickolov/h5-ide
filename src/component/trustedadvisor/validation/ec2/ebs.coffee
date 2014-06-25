@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../result_vo' ], ( constant, $, MC, lang, ebsService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' , '../result_vo' ], ( constant, $, MC, lang, ebsService ) ->
 
 	isSnapshotExist = (callback) ->
 
@@ -14,17 +14,17 @@ define [ 'constant', 'jquery', 'MC','i18n!nls/lang.js', 'ebs_service' , '../resu
 				if compObj.type is constant.RESTYPE.VOL
 					snaphostId = compObj.resource.SnapshotId
 					instanceUID = compObj.resource.AttachmentSet.InstanceId
-					
+
 					if snaphostId and instanceUID
 						if not snaphostMap[snaphostId]
 							snaphostMap[snaphostId] = []
 
 				if compObj.type is constant.RESTYPE.LC
-					
+
 					_.each compObj.resource.BlockDeviceMapping, (blockObj, idx) ->
 
 						if idx > 0
-							
+
 							snaphostId = blockObj.Ebs.SnapshotId
 							instanceUID = compObj.uid
 							if snaphostId and instanceUID

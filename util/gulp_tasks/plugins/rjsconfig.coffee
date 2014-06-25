@@ -53,7 +53,7 @@ transformModules = ( config, traceMode )->
   # So that we can know every dependency of a module.
 
   # Transform the bundles
-  exclude = [] # i18n!nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling. And we always exclude the lang from anything.
+  exclude = [] # i18n!/nls/lang.js must have a suffix `.js`, otherwise, it will have error when compiling. And we always exclude the lang from anything.
 
   config.modules = []
   bundleExcludes = config.bundleExcludes || {}
@@ -67,7 +67,7 @@ transformModules = ( config, traceMode )->
 
     # We assume the first bundle is "requirelib", and "requirelib" cannot have "i18n!xxx" excluded.
     if exclude.length == 0
-      exclude.push "i18n!nls/lang.js"
+      exclude.push "i18n!/nls/lang.js"
 
     exclude.push bundleName
 

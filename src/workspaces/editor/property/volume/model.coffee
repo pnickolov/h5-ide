@@ -24,6 +24,9 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             if res.snapshotId
                 supportEncrypted = false
 
+            if component.get('owner').type is constant.RESTYPE.LC
+                displayEncrypted = false
+
             isEncrypted = false
             isEncrypted = (res.encrypted in ['true', true]) if supportEncrypted
 
@@ -108,6 +111,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             null
 
         setVolumeSize : ( value ) ->
+
             uid        = @get "uid"
 
             volume = Design.instance().component( uid )
@@ -136,8 +140,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             null
 
         setVolumeType: ( type, iops ) ->
-            volume = Design.instance().component( @get "uid" )
 
+            volume = Design.instance().component( @get "uid" )
             volume.set 'volumeType': type, 'iops': iops
 
             null
@@ -149,20 +153,20 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             if not volume
 
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                lcUid       = realuid[0]
+                # realuid     = uid.split('_')
+                # device_name = realuid[2]
+                # lcUid       = realuid[0]
 
-                lc = Design.instance().component( lcUid )
+                # lc = Design.instance().component( lcUid )
 
-                volumeModel = Design.modelClassForType constant.RESTYPE.VOL
-                allVolume = volumeModel and volumeModel.allObjects() or []
+                # volumeModel = Design.modelClassForType constant.RESTYPE.VOL
+                # allVolume = volumeModel and volumeModel.allObjects() or []
 
-                for v in allVolume
-                    if v.get( 'owner' ) is lc
-                        if v.get( 'name' ) is device_name
-                            v.set 'encrypted', value
-                            break
+                # for v in allVolume
+                #     if v.get( 'owner' ) is lc
+                #         if v.get( 'name' ) is device_name
+                #             v.set 'encrypted', value
+                #             break
 
             else
 

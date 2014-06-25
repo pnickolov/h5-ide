@@ -323,7 +323,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           Ebs :
             VolumeSize : volume.get("volumeSize")
             VolumeType : volume.get("volumeType")
-            Encrypted : volume.get("encrypted")
+            # Encrypted : volume.get("encrypted")
 
         if volume.get("volumeType") is "io1"
           vd.Ebs.Iops = volume.get("iops")
@@ -412,7 +412,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
             volumeSize : volume.Ebs.VolumeSize
             iops       : volume.Ebs.Iops
             owner      : model
-            encrypted  : volume.Ebs.Encrypted
+            # encrypted  : volume.Ebs.Encrypted
 
           new VolumeModel(_attr, {noNeedGenName:true})
 

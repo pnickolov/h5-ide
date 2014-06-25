@@ -153,7 +153,7 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
           name : rdName
           size : parseInt( comp.get("rdSize"), 10 )
           iops : comp.get("rdIops")
-          encrypted : rdEbs.encrypted
+          # encrypted : rdEbs.encrypted
           isStandard: deviceType is 'standard'
           isIo1 : deviceType is 'io1'
           isGp2 : deviceType is 'gp2'

@@ -51,7 +51,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         if component.type is CONST.RESTYPE.LC
             for sgId in component.resource.SecurityGroups
                 sgs.push __getComp MC.extractID sgId
-        # instance
+        # Instance
         else if component.type is CONST.RESTYPE.INSTANCE
             enis = __getEniByInstance component
 
@@ -97,7 +97,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         # LC
         else if component.type is CONST.RESTYPE.LC
             component.get( 'publicIp' ) is true
-        # instance
+        # Instance
         else if component.type is CONST.RESTYPE.INSTANCE
 
             enis = component.connectionTargets('EniAttachment')
@@ -115,11 +115,19 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
     __isRouteIgw = ( component ) ->
         uid = component.uid or component.id
         component = Design.instance().component uid
-        rtb = __getSubnetRtb( component )
 
-        rtbConn = rtb.connectionTargets('RTB_Route')
-        igw = _.where rtbConn, type: CONST.RESTYPE.IGW
-        igw.length > 0
+        rtbs = [] # RTB Connected to component or component's ENI
+        rtbs.push __getSubnetRtb( component )
+
+        enis = component.connectionTargets("EniAttachment")
+
+        for eni in enis
+            rtbs.push __getSubnetRtb( eni )
+
+        _.some rtbs, ( rtb ) ->
+            rtbConn = rtb.connectionTargets('RTB_Route')
+            igw = _.where rtbConn, type: CONST.RESTYPE.IGW
+            igw.length > 0
 
     __natOut = ( component ) ->
         if component.type in [ CONST.RESTYPE.INSTANCE, CONST.RESTYPE.LC ]

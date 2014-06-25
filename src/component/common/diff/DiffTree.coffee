@@ -83,6 +83,9 @@ define [], () ->
 
                 else if path.length > 2
 
+                    if _.isArray(a) or _.isArray(b)
+                        console.info('[NEED PROCESS] ' + path.slice(2).join('.'))
+
                     attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
                         num = Number(path)

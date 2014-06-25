@@ -836,7 +836,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<li>
 			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
 				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
-				<span class="asgList-item-icon" style="background-image:url('./assets/images/{{background}}')"></span>
+				<span class="asgList-item-icon" style="background-image:url('/assets/images/{{background}}')"></span>
 				<div class="asgList-item-volume" data-target-id={{id}}>
 					<span class="asgList-item-number">{{../volume}}</span>
 				</div>
@@ -858,7 +858,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<li>
 			<a href="#" class='instanceList-item {{deleted}}' id="{{id}}_{{@index}}" data-id="{{appId}}">
 				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
-				<span class="instanceList-item-icon" style="background-image:url('./assets/images/{{../background}}')"></span>
+				<span class="instanceList-item-icon" style="background-image:url('/assets/images/{{../background}}')"></span>
 				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
 					<span class="instanceList-item-number">{{../volume}}</span>
 				</div>

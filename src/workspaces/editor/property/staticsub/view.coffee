@@ -38,7 +38,7 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
         $("#confirmChangeAmi").hide()
 
       $("#changeAmiDropZone").children().show().filter("p").hide()
-      $("#changeAmiDropZone").find("img").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
+      $("#changeAmiDropZone").find("img").attr("src", "/assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
       $("#changeAmiDropZone").find(".resource-label").html( @model.getAmiName(amiId) )
       null
 
@@ -47,15 +47,6 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
       @model.changeAmi( amiId )
 
       @trigger "AMI_CHANGE"
-
-      # @render()
-      # @setTitle @model.get("name")
-
-      # # A hack to update first property
-      # firstPropertyAmi = $(".property-details #property-ami")
-      # firstPropertyAmi.find(".property-ami-icon").attr("src", "./assets/images/ide/ami/" + @model.getAmiPngName( amiId ) + ".png")
-      # firstPropertyAmi.find(".property-ami-label").html( @model.get("name") )
-
       null
   }
 

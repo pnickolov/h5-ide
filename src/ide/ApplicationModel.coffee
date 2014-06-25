@@ -45,7 +45,6 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     createSampleOps : ( sampleId )->
       m = new OpsModel({
-        name     : @stackList().getNewName()
         sampleId : sampleId
       })
       @attributes.stackList.add m

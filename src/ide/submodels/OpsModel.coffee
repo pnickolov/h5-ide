@@ -27,10 +27,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
-      updateTime     : +(new Date())
-      region         : ""
-      state          : OpsModelState.UnRun
-      stoppable      : true # If the app has instance_store_ami, stoppable is false
+      updateTime : +(new Date())
+      region     : ""
+      state      : OpsModelState.UnRun
+      stoppable  : true # If the app has instance_store_ami, stoppable is false
+      name       : ""
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -119,11 +120,19 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             j = JSON.parse( result )
             delete j.id
             delete j.signature
+            if not self.collection.isNameAvailable( j.name )
+              j.name = self.collection.getNewName( j.name )
             self.attributes.region = j.region
             self.__setJsonData j
           catch e
+            j = null
             self.attributes.region = "us-east-1"
             self.__initJsonData()
+
+          if j
+            try
+              self.set "name", j.name
+            catch e
 
           self
 

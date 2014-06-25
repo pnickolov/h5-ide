@@ -86,6 +86,7 @@ define [
       # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
       @listenTo @opsModel, "change:state", @onOpsModelStateChanged
+      @listenTo @opsModel, "change:name",  @updateTab
       @listenTo @opsModel, "change:id",    ()->
         @updateUrl()
         if @design then @design.set("id", @opsModel.get("id"))

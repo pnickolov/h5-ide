@@ -285,7 +285,7 @@ require.config {
 		]
 
 		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
-		"ide/Application" : [ "Workspace", "OpsModel" ]
+		"ide/Application" : [ "Workspace", "OpsModel", "ide/Router" ]
 
 		"workspaces/Dashboard" : []
 

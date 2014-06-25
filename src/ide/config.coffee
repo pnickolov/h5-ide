@@ -43,8 +43,14 @@
   getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
 
   if not (getCookie('usercode') and getCookie('session_id'))
-  	window.location.href = "/login/"
-  	return
+    p = window.location.pathname
+    if p is "/"
+      p = window.location.hash.replace("#", "/")
+    if p and p isnt "/"
+      window.location.href = "/login?ref=" + p
+    else
+      window.location.href = "/login"
+    return
 
   # Get Version and locale
   scripts = document.getElementsByTagName("script")

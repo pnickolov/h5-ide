@@ -14,7 +14,7 @@ define [ "i18n!nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Complex
       snapshotId : ''
       #extend for instance
       appId      : ''
-      volumeType : 'standard'
+      volumeType : 'gp2'
       iops       : ''
       encrypted  : false
 

@@ -26,7 +26,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # RootDevice
       rdSize : 0
       rdIops : ""
-      rdType : 'standard'
+      rdType : 'gp2'
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"

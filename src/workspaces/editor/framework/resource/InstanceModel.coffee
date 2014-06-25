@@ -27,7 +27,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       # RootDevice
       rdSize : 0
       rdIops : 0
-      rdType : 'standard'
+      rdType : 'gp2'
 
       cachedAmi : null
 

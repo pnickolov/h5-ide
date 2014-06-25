@@ -159,6 +159,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             tag  : App.user.get("tag")
           }
         }
+      if not json.property
+        json.property = {
+          stoppable : true
+          policy : { ha : "" }
+          lease  : { action: "", length: null, due: null }
+          schedule :
+            stop   : { run: null, when: null, during: null }
+            backup : { when : null, day : null }
+            start  : { when : null }
+        }
 
       ###
       Old JSON will have structure like :

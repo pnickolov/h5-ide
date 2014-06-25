@@ -298,8 +298,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       region = @get("region")
 
       # Ensure the json has correct id.
-      toRunJson.id = ""
-      toRunJson.stack_id = @get("id") || ""
+      toRunJson.id = @get("id") || ""
 
       ApiRequest("stack_run_v2",{
         region_name : region

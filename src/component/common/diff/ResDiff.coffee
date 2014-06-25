@@ -1,8 +1,8 @@
 define [
     'UI.modalplus'
     'DiffTree'
-    './component/common/diff/resDiffTpl'
-    './component/common/diff/prepare'
+    'component/common/diff/resDiffTpl'
+    'component/common/diff/prepare'
     'constant'
 ], ( modalplus, DiffTree, template, Prepare, constant ) ->
 

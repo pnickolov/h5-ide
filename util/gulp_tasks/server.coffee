@@ -17,11 +17,11 @@ module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileSer
 
   server = http.createServer ( request, response )->
 
-    REG_RESET    = /^\/reset/
-    REG_LOGIN    = /^\/login/
-    REG_REGISTER = /^\/register/
+    REG_RESET    = /^\/reset(\?\S*)?/
+    REG_LOGIN    = /^\/login(\?\S*)?/
+    REG_REGISTER = /^\/register(\?\S*)?/
     REG_IDE      = /^\/(ops|store)\/?/
-
+    REG_500      = /^\/500(\?\S)?/
     request.addListener 'end', ()->
       url = request.url
 
@@ -43,6 +43,8 @@ module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileSer
         filePath = "/login.html"
       else if REG_IDE.test( url )
         filePath = "/ide.html"
+      else if REG_500.test(url)
+        filePath = '/500.html'
 
       errorHandler = ( e )->
         console.log "[ServerError]", e.message, request.url

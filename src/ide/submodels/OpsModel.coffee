@@ -37,6 +37,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # opsActionError : ""
       # importVpcId    : ""
       # requestId      : ""
+      # sampleId       : ""
 
     initialize : ( attr, options )->
       if options
@@ -46,6 +47,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           @__jsonData = options.jsonData
       return
 
+    url : ()->
+      if @get("id")
+        "ops/#{@get('id')}"
+      else
+        "ops/#{@cid}/unsaved"
 
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun
     isApp      : ()-> @attributes.state isnt OpsModelState.UnRun
@@ -104,7 +110,24 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return d.promise
 
       self = @
-      if @isImported()
+      if @get("sampleId")
+        sampleId = @get("sampleId")
+        return ApiRequest('stackstore_fetch_stackstore', {
+          sub_path: "master/stack/#{sampleId}/#{sampleId}.json"
+        }).then (result) ->
+          try
+            j = JSON.parse( result )
+            delete j.id
+            delete j.signature
+            self.attributes.region = j.region
+            self.__setJsonData j
+          catch e
+            self.attributes.region = "us-east-1"
+            self.__initJsonData()
+
+          self
+
+      else if @isImported()
         return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
           json = self.generateJsonFromRes()
           self.__setJsonData json
@@ -190,6 +213,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     save : ( newJson, thumbnail )->
       if @isApp() or @testState( OpsModelState.Saving ) then return @__returnErrorPromise()
 
+      if not newJson then newJson = @__jsonData
+
       @set "state", OpsModelState.Saving
 
       nameClash = @collection.where({name:newJson.name}) || []
@@ -203,6 +228,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if newJson.state isnt "Enabled"
         console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
         newJson.state = "Enabled"
+
+      newJson.id = @get("id")
 
       self = @
       ApiRequest(api, {
@@ -581,6 +608,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           repo : App.user.get("repo")
           tag  : App.user.get("tag")
       property :
+        stoppable : true
         policy : { ha : "" }
         lease  : { action: "", length: null, due: null }
         schedule :
@@ -589,7 +617,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           start  : { when : null }
 
     __initJsonData : ()->
-      json = @__createRawJson()
+      json   = @__createRawJson()
+      vpcId  = MC.guid()
+      vpcRef = "@{#{vpcId}.resource.VpcId}"
 
       layout =
         VPC :
@@ -597,12 +627,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           size       : [60,60]
         RTB :
           coordinate : [50,5]
+          groupUId   : vpcId
 
       component =
         KP :
           type : "AWS.EC2.KeyPair"
           name : "DefaultKP"
-          resource : { KeyName : "DefaultKP" }
+          resource : {
+            KeyName : "DefaultKP"
+            KeyFingerprint : ""
+          }
         SG :
           type : "AWS.EC2.SecurityGroup"
           name : "DefaultSG"
@@ -612,7 +646,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges   : "0.0.0.0/0",
               FromPort   : "22",
               ToPort     : "22",
-              Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
             }],
             IpPermissionsEgress : [{
               FromPort: "0",
@@ -620,13 +653,19 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges: "0.0.0.0/0",
               ToPort: "65535"
             }],
-            Default          : "true",
-            GroupName        : "DefaultSG",
+            Default          : true
+            GroupId          : ""
+            GroupName        : "DefaultSG"
             GroupDescription : 'default VPC security group'
+            VpcId            : vpcRef
         ACL :
           type : "AWS.VPC.NetworkAcl"
           name : "DefaultACL"
           resource :
+            AssociationSet : []
+            Default        : true
+            NetworkAclId   : ""
+            VpcId          : vpcRef
             EntrySet : [
               {
                 RuleAction : "allow"
@@ -668,21 +707,39 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         VPC :
           type : "AWS.VPC.VPC"
           name : "vpc"
-          resource : {}
-        RTB :
-          type     : "AWS.VPC.RouteTable"
           resource :
-            AssociationSet : [{Main:"true"}]
-            RouteSet       : [{
-                State                : 'active',
-                Origin               : 'CreateRouteTable',
-                GatewayId            : 'local',
-                DestinationCidrBlock : '10.0.0.0/16'
-            }],
+            VpcId              : ""
+            CidrBlock          : "10.0.0.0/16"
+            DhcpOptionsId      : ""
+            EnableDnsHostnames : false
+            EnableDnsSupport   : true
+            InstanceTenancy    : "default"
+        RTB :
+          type : "AWS.VPC.RouteTable"
+          name : "RT-0"
+          resource :
+            VpcId : vpcRef
+            RouteTableId: ""
+            AssociationSet : [{
+              Main:"true"
+              SubnetId : ""
+              RouteTableAssociationId : ""
+            }]
+            PropagatingVgwSet:[]
+            RouteSet : [{
+              InstanceId           : ""
+              NetworkInterfaceId   : ""
+              Origin               : 'CreateRouteTable'
+              GatewayId            : 'local'
+              DestinationCidrBlock : '10.0.0.0/16'
+            }]
 
       # Generate new GUID for each component
       for id, comp of component
-        comp.uid = MC.guid()
+        if id is "VPC"
+          comp.uid = vpcId
+        else
+          comp.uid = MC.guid()
         json.component[ comp.uid ] = comp
         if layout[ id ]
           l = layout[id]

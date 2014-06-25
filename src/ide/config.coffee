@@ -61,7 +61,7 @@
 
 require.config {
 
-	baseUrl     : './'
+	baseUrl     : '/'
 	waitSeconds : 30
 	locale      : language
 	urlArgs     : "v=#{version}"
@@ -319,18 +319,28 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
+
+
 require [
 	'ide/Application'
 	"ide/cloudres/CrBundle"
 	"workspaces/Dashboard"
 	"workspaces/OpsEditor"
+	"ide/Router"
 	"MC"
 	'lib/aws'
-], (  Application, CrBundle, Dashboard, OpsEditor ) ->
+], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 
+	###########
+	# IDE Init
+	###########
 	# There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
+	window.Router    = new Router()
 	window.OpsEditor = OpsEditor
-	(new Application()).initialize().then ()-> new Dashboard(); return
+	(new Application()).initialize().then ()->
+		window.Router.start()
+		window.Dashboard = new Dashboard()
+		return
 
 , ( err )->
 	err = err || { requireType : "timeout" }

@@ -43,13 +43,21 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       @attributes.appList.add m
       m
 
+    createSampleOps : ( sampleId )->
+      m = new OpsModel({
+        name     : @stackList().getNewName()
+        sampleId : sampleId
+      })
+      @attributes.stackList.add m
+      m
+
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
     createStack : ( region )->
       console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
-        name   : @attributes.stackList.getNewName()
+        name   : @stackList().getNewName()
         region : region
       }, {
         initJsonData : true
@@ -59,7 +67,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     createStackByJson : ( json )->
       if not @attributes.stackList.isNameAvailable( json.name )
-        json.name = @attributes.stackList.getNewName()
+        json.name = @stackList().getNewName()
 
       m = new OpsModel({
         name   : json.name

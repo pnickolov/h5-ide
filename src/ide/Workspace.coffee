@@ -88,6 +88,11 @@ define ["backbone"], ()->
     # The attributes should be the same as the initialize(), but can also be anything.
     isWorkingOn : ( attributes )-> false
 
+    updateUrl : ()->
+      if @isAwake()
+        Router.navigate( @url(), {replace:true} )
+      return
+
   _.extend Workspace.prototype, Backbone.Events
 
   Workspace

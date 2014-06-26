@@ -5,26 +5,14 @@ define [
   './VisualizeVpcTpl'
   "UI.modalplus"
   "constant"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
+  "UI.nanoscroller"
 ], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang )->
-
-  Helper = {
-    scrollToResource: ->
-      scrollContent = $( '#global-region-wrap .scroll-content' )
-      scrollContent.addClass 'scroll-transition'
-      setTimeout ->
-        scrollContent.removeClass( 'scroll-transition' )
-        null
-      , 100
-
-      scrollTo = $('#global-region-map-wrap').height() + 7
-      scrollbar.scrollTo( $( '#global-region-wrap' ), { 'top': scrollTo } )
-  }
 
   Backbone.View.extend {
 
@@ -65,7 +53,7 @@ define [
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
-      @setElement( $(template(data)).appendTo("#main") )
+      @setElement( $(template(data)).eq(0).appendTo("#main") )
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()
@@ -83,6 +71,13 @@ define [
       MC.template.dashboardBubble = _.bind @dashboardBubble, @
       MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
       return
+
+    awake : ()->
+      @$el.show().children("#global-region-wrap").nanoScroller()
+      return
+
+    sleep : ()->
+      @$el.hide()
 
     dashboardBubbleSub: (data)->
         renderData = {}
@@ -158,7 +153,7 @@ define [
 
         console.log "Dashboard Updated due to app progress changes."
 
-        $li = $("#region-resource-app-wrap").children("[data-appid='#{model.id}']")
+        $li = $("#region-resource-app-wrap").children("[data-id='#{model.id}']")
         if not $li.length then return
         $li.children(".region-resource-progess").show().css({width:model.get("progress")+"%"})
         return
@@ -193,7 +188,7 @@ define [
       region = $li.attr("id") || $li.attr("data-region")
 
       $( "#region-switch-list li[data-region=#{region}]" ).click()
-      Helper.scrollToResource()
+      $("#global-region-wrap").nanoScroller({ scrollTop : $('#global-region-map-wrap').height() })
 
       $("#region-resource-tab").children().eq( if $tgt.hasClass("app") then 0 else 1 ).click()
       return false

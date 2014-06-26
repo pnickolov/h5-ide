@@ -3,9 +3,8 @@ define [], () ->
     DiffTree = (option) ->
 
         option = {} if not option
-        # option.filterMap = {} if not option.filterMap
 
-        option.filterMap = {
+        option.filterAttrMap = {
             'type': true
             'uid': true
             'name': true
@@ -24,16 +23,25 @@ define [], () ->
             'resource.GroupDescription': true
             'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
             'resource.Attachment.AttachmentId': true
+            'resource.Iops': true
         }
 
+        option.filterResMap = {}
+
+        if option.state is 'stop'
+
+            option.filterResMap = {
+                'AWS.AutoScaling.Group': true
+            }
+
         isArray = (value) ->
-            
+
             return value and typeof value is 'object' and value.constructor is Array
 
         typeofReal = (value) ->
 
             if isArray(value) then 'array' else (if value is null then 'null' else typeof(value))
-        
+
         getType = (value) ->
 
             if (typeA is 'object' or typeA is 'array') then '' else String(a) + ' '
@@ -63,9 +71,22 @@ define [], () ->
                 b = bAry
 
             if path
-                
+
                 path = path.concat([key]) if key
-                if path.length > 2
+
+                if path.length is 2
+
+                    resUID = path[1]
+                    if a and a.type
+                        resType = a.type
+                        return if option.filterResMap[resType]
+
+                else if path.length > 2
+                    ###
+                    if _.isArray(a)
+                        b = []
+                    ###
+                        # console.info('[NEED PROCESS] ' + path.slice(2).join('.'))
 
                     attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
@@ -74,7 +95,7 @@ define [], () ->
                         return path
 
                     attrPath = attrPathAry.join('.')
-                    if option.filterMap[attrPath]
+                    if option.filterAttrMap[attrPath]
                         return
 
             if not a and not b
@@ -92,7 +113,7 @@ define [], () ->
             bString = '' if not bString
 
             changeType = value1 = value2 = ''
-            
+
             if a is undefined
                 changeType = 'added'
                 value2 = bString
@@ -117,7 +138,7 @@ define [], () ->
                 if typeA is 'array' and typeB is 'array'
 
                     diffAryResult = {}
-                    
+
                     if a.length < b.length
                         _diffAry.call(this, a, b)
                     else
@@ -154,7 +175,7 @@ define [], () ->
 
                 if typeofReal(a) is 'number'
                     a = String(a)
-                
+
                 if typeofReal(b) is 'number'
                     b = String(b)
 

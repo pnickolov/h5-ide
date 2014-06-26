@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
+define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
   emptyArray = []
 
@@ -27,6 +27,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       # RootDevice
       rdSize : 0
       rdIops : 0
+      rdType : 'gp2'
 
       cachedAmi : null
 
@@ -340,13 +341,12 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
           Ebs : {
             SnapshotId : rdEbs.snapshotId
             VolumeSize : @get("rdSize") || rdEbs.volumeSize
-            VolumeType : "standard"
+            VolumeType : @get 'rdType'
           }
         }]
 
         if @get("rdIops") and parseInt( @get("rdSize"), 10 ) >= 10
           blockDeviceMapping[0].Ebs.Iops = @get("rdIops")
-          blockDeviceMapping[0].Ebs.VolumeType = "io1"
 
       blockDeviceMapping || []
 
@@ -454,6 +454,14 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
       @set("instanceType", type)
       if not @isEbsOptimizedEnabled()
         @set("ebsOptimized", false)
+
+      # change encryted volume to false
+      volumeList = @get('volumeList')
+      if volumeList
+        _.each volumeList, (vol) ->
+          if not vol.isSupportEncrypted()
+            vol.set('encrypted', false)
+          null
 
       # Well, LC borrows setInstanceType of Instance,
       # but LC doesn't have getEmbedEni
@@ -871,6 +879,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!nls/lang.js", 'CloudR
 
         rdSize : rootDevice.Ebs.VolumeSize
         rdIops : rootDevice.Ebs.Iops
+        rdType : rootDevice.Ebs.VolumeType
 
         parent : resolve( layout_data.groupUId )
 

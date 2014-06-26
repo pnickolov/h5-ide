@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
+define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
 
     LanchConfigView = PropertyView.extend {
 
@@ -26,11 +26,14 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang
 
         changeVolumeType : ( event ) ->
             $this = $( event.currentTarget )
+
             if $this.is(":disabled") then return
 
-            $("#iops-group").toggle( $this.attr("id") is "radio-iops" )
+            type = $this.val()
 
-            if $this.attr("id") is "radio-iops"
+            $("#iops-group").toggle type is "io1"
+
+            if type is "io1"
                 # Init iops
                 volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
                 iops = volumeSize * 10
@@ -39,6 +42,10 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!nls/lang
                 # Reset standard
                 @model.setIops("")
                 $("#iops-ranged").val("")
+
+            @model.setVolumeType type
+
+            null
 
         changeIops : ()->
             if $( '#iops-ranged' ).parsley( 'validate' )

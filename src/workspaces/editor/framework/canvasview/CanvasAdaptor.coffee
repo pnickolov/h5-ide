@@ -1,4 +1,4 @@
-define [ "./CanvasElement", "event", 'i18n!nls/lang.js', "constant", "UI.notification" ], ( CanvasElement, ide_event, lang, constant )->
+define [ "./CanvasElement", "event", 'i18n!/nls/lang.js', "constant", "UI.notification" ], ( CanvasElement, ide_event, lang, constant )->
 
   Design = null
 

@@ -4,11 +4,11 @@
 
 define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
 
-    VolumeView = PropertyView.extend {
+    VolumeView = PropertyView.extend
 
         render : () ->
             @$el.html template @model.attributes
             @model.attributes.name
-    }
+
 
     new VolumeView()

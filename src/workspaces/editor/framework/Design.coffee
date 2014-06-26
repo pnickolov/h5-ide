@@ -5,14 +5,6 @@ define [
   'CloudResources'
 ], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
 
-  PropertyDefination =
-    policy : { ha : "" }
-    lease  : { action: "", length: null, due: null }
-    schedule :
-      stop   : { run: null, when: null, during: null },
-      backup : { when : null, day : null },
-      start  : { when : null }
-
   # The recursiveCheck is not fully working.
   ### env:prod ###
   createRecursiveCheck = ()->
@@ -136,8 +128,6 @@ define [
     # Restore these two attr
     canvas_data.component = component
     canvas_data.layout    = layout
-
-    @on Design.EVENT.AwsResourceUpdated, @onAwsResourceUpdated
     null
 
 
@@ -161,8 +151,7 @@ define [
     Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
-    AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
-    AzUpdated          : "AZ_UPDATED"
+    ChangeResource : "CHANGE_RESOURCE"
 
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
@@ -273,6 +262,11 @@ define [
         ModelClass.postDeserialize( comp, layout_data[uid] )
     null
 
+  DesignImpl.prototype.reload = ( opsModel )->
+    DesignImpl.call this, opsModel
+    json = opsModel.getJsonData()
+    this.deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
   DesignImpl.prototype.finishDeserialization = ()->
     ####################
     # Draw after deserialization
@@ -299,6 +293,17 @@ define [
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null
+
+  DesignImpl.prototype.renderNode = ()->
+    ##########
+    # Hack
+    ##########
+    # This will be removed once the canvas has been refactored.
+    for uid, comp of @__componentMap
+      if comp.draw and not comp.node_line
+        comp.draw( false )
+    return
+
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
@@ -581,7 +586,8 @@ define [
     # 1. save $canvas's size to layout
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
-    data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
+    data.property = @attributes.property || {}
+    data.property.stoppable = @isStoppable()
 
     data.version = "2014-02-17"
     data.state   = @__opsModel.getStateDesc() || "Enabled"
@@ -743,18 +749,6 @@ define [
         return false
     true
 
-  DesignImpl.prototype.onAwsResourceUpdated = ()->
-    ######
-    # Quick Hack to redraw all the node when resource is updated.
-    # Should find a better way to handle this.
-    ######
-    if @modeIsStack() then return
-    for uid, comp of @__componentMap
-      if comp.node_line or comp.node_group then continue
-      if comp.draw
-        comp.draw()
-    null
-
   DesignImpl::instancesNoUserData = ()->
     result = true
     instanceModels = Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
@@ -768,13 +762,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-  DesignImpl.prototype.on = ( event )->
-    # Do nothing for AwsResourceUpdated if it's in stack mode.
-    if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
-      return
-
-    Backbone.Events.on.apply( this, arguments )
-
 
   # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )

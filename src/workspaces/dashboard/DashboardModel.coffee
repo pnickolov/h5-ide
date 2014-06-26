@@ -131,7 +131,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
               obj =
                 id      : vpc
-                name    : tags["Name"] || tags["name"]
+                name    : tags.Name || tags.name
                 subnet  : resourceMap resources["AWS|VPC|Subnet"]
                 ami     : instanceMap resources["AWS|EC2|Instance"]
                 stopped : instanceMap resources["AWS|EC2|Instance"], true

@@ -10,7 +10,7 @@
 		<section class="property-control-group">
 			<label>{{i18n "PROP_INSTANCE_AMI"}}</label>
 			<div id="property-ami" class="property-block-wrap clearfix" data-uid="{{imageId}}">
-				<img class="property-ami-icon left" src="./assets/images/ide/ami/{{instance_ami.icon}}" / >
+				<img class="property-ami-icon left" src="/assets/images/ide/ami/{{instance_ami.icon}}" / >
 				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
 			</div>
 		</section>
@@ -96,32 +96,45 @@
     </section>
 
     <section class="property-control-group">
-      <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
-      <div id="volume-type-radios">
-      <div>
-      	<div class="radio">
-          <input id="radio-standard" type="radio" name="volume-type" {{#unless rootDevice.iops}}checked="checked"{{/unless}}/>
-          <label for="radio-standard"></label>
+        <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+        <div id="volume-type-radios">
+          <div>
+             <div class="radio">
+                  <input id="radio-standard" type="radio" name="volume-type" {{#if rootDevice.isStandard}}checked="checked"{{/if}} value="standard" />
+                  <label for="radio-standard"></label>
+              </div>
+              <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+          </div>
+          <div>
+             <div class="radio">
+                  <input id="radio-gp2" type="radio" name="volume-type" {{#if rootDevice.isGp2}}checked="checked"{{/if}} value="gp2" />
+                  <label for="radio-gp2"></label>
+              </div>
+              <label for="radio-gp2">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
+          </div>
+          <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
+            <div class="radio">
+              <input id="radio-io1" type="radio" name="volume-type" {{#if rootDevice.isIo1}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}} value="io1" />
+              <label for="radio-io1"></label>
+            </div>
+            <label for="radio-io1">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
+          </div>
         </div>
-        <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
-      </div>
-      <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
-        <div class="radio">
-          <input id="radio-iops" type="radio" name="volume-type" {{#if rootDevice.iops}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}}/>
-          <label for="radio-iops"></label>
-        </div>
-        <label for="radio-iops">{{ i18n "PROP_VOLUME_TYPE_IOPS" }}</label>
-      </div>
-      </div>
     </section>
 
-    <section class="property-control-group" id="iops-group" {{#unless rootDevice.iops}}style="display:none"{{/unless}}>
+    <section class="property-control-group" id="iops-group" {{#unless rootDevice.isIo1}}style="display:none"{{/unless}}>
         <label>IOPS</label>
         <div class="ranged-number-input">
           <label for="iops-ranged"></label>
           <input id="iops-ranged" type="text" class="input" min="100" max="2000" value="{{rootDevice.iops}}">
         </div>
     </section>
+
+<!--     <section class="property-control-group">
+        <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
+        <div>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</div>
+    </section> -->
+
 	</div>
   {{/if}}
 

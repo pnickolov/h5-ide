@@ -1,8 +1,8 @@
 define [
     'UI.modalplus'
     'DiffTree'
-    './component/common/diff/resDiffTpl'
-    './component/common/diff/prepare'
+    'component/common/diff/resDiffTpl'
+    'component/common/diff/prepare'
     'constant'
 ], ( modalplus, DiffTree, template, Prepare, constant ) ->
 
@@ -20,6 +20,8 @@ define [
 
             @prepare = new Prepare oldAppJSON: @oldAppJSON, newAppJSON: @newAppJSON
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
+
+            @state = option.state
 
         events:
 
@@ -109,7 +111,9 @@ define [
                     that.addedComps[uid] = newComps[uid]
                 null
 
-            diffTree = new DiffTree({})
+            diffTree = new DiffTree({
+                state: that.state
+            })
 
             that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
             that.modifiedComps = {} if not that.modifiedComps

@@ -6,6 +6,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
     isFixed  : ()-> true
     tabClass : ()-> "icon-dashboard"
     title    : ()-> "Dashboard"
+    url      : ()-> "/"
 
 
     initialize : ()->
@@ -51,13 +52,13 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
 
     sleep : ()->
       @__renderControlMap = {}
-      @view.$el.hide()
+      @view.sleep()
       return
 
     awake : ()->
       @view[method]() for method of @__renderControlMap
       @__renderControlMap = null
-      @view.$el.show()
+      @view.awake()
       return
 
     __renderControl : ( method, args )->

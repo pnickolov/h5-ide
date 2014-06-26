@@ -92,6 +92,7 @@ define [ '../base/model', "Design", "constant", 'CloudResources' ], ( PropertyMo
             _.each ipset, (ipCidr, idx) ->
                 validCIDR = MC.getValidCIDR(ipCidr)
                 ipset[idx] = validCIDR
+                return
             Design.instance().component( @get("uid") ).set("routes", ipset)
             null
 

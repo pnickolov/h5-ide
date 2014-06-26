@@ -23,7 +23,7 @@ body {
 	font-size  : 14px;
 	color      : #666;
 	overflow   : hidden;
-	background : #232226;
+	background : #f0f0f0;
 
 	position   : relative;
 }
@@ -2334,10 +2334,6 @@ a.action-link:hover {
 }
 
 /* Nav Icon */
-.icon-app-nav {
-	background: url('../images/ide/icon-app-nav.png') center center no-repeat;
-}
-
 .icon-stack-nav,
 .icon-stack-tabbar {
 	background: url('../images/ide/icon-stack.png') center center no-repeat;

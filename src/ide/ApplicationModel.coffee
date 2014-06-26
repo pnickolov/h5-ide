@@ -43,13 +43,20 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       @attributes.appList.add m
       m
 
+    createSampleOps : ( sampleId )->
+      m = new OpsModel({
+        sampleId : sampleId
+      })
+      @attributes.stackList.add m
+      m
+
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
     createStack : ( region )->
       console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
-        name   : @attributes.stackList.getNewName()
+        name   : @stackList().getNewName()
         region : region
       }, {
         initJsonData : true
@@ -59,7 +66,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     createStackByJson : ( json )->
       if not @attributes.stackList.isNameAvailable( json.name )
-        json.name = @attributes.stackList.getNewName()
+        json.name = @stackList().getNewName( json.name )
 
       m = new OpsModel({
         name   : json.name
@@ -275,7 +282,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     __handleRequestChange : ( request )->
       # This method is used to update the state of an app OpsModel
 
-      if not App.WS.isReady() then return # only updates when WS has finished pushing the initial data.
+      if not App.WS.isReady() and not request.state.processing then return # only updates when WS has finished pushing the initial data.
 
       if request.state.pending then return
 
@@ -289,6 +296,10 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       if not theApp then return
       if not request.state.processing and not theApp.isProcessing() then return
+
+      if theApp.testState( OpsModel.State.Terminating ) and request.operation isnt "terminate"
+        console.error "We recevied a request notification, which operation is not `terminate`. But the app is terminating.", request
+        return
 
       if request.state.processing
         theApp.setStatusProgress( request.step, request.totalSteps )

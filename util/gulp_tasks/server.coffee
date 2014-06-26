@@ -17,15 +17,16 @@ module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileSer
 
   server = http.createServer ( request, response )->
 
+    REG_RESET    = /^\/reset(\?\S*)?/
+    REG_LOGIN    = /^\/login(\?\S*)?/
+    REG_REGISTER = /^\/register(\?\S*)?/
+    REG_IDE      = /^\/(ops|store)\/?/
+    REG_500      = /^\/500(\?\S)?/
     request.addListener 'end', ()->
       url = request.url
 
       if url is "/"
         filePath = "/ide.html"
-      else if /ide.html$/.test( url )
-        response.writeHead 301, { "Location" : "/" }
-        response.end()
-        return
       else if url[ url.length - 1 ] is "/"
         response.writeHead 301, { "Location" : url.substring(0, url.length-1) }
         response.end()
@@ -34,8 +35,16 @@ module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileSer
         response.writeHead 301, { "Location" : url.replace(".html", "") }
         response.end()
         return
-      else if url.indexOf( ".", 1 ) is -1
-        filePath = url + ".html"
+      else if REG_RESET.test( url )
+        filePath = "/reset.html"
+      else if REG_REGISTER.test( url )
+        filePath = "/register.html"
+      else if REG_LOGIN.test( url )
+        filePath = "/login.html"
+      else if REG_IDE.test( url )
+        filePath = "/ide.html"
+      else if REG_500.test(url)
+        filePath = '/500.html'
 
       errorHandler = ( e )->
         console.log "[ServerError]", e.message, request.url

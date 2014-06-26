@@ -74,9 +74,21 @@ define [ 'constant' ], ( constant ) ->
             parentKey = path[ path.length - 2 ]
             childNode = data.originValue
 
+            pluralKeys = [ 'Dimensions'
+                'AlarmActions'
+                'Instances'
+                'Attachments'
+                'AvailabilityZones'
+                'LoadBalancerNames'
+                'TerminationPolicies'
+                'ListenerDescriptions'
+                'SecurityGroups'
+                'Subnets'
+                'Routes'
+                ]
+
             # Replace keyword
             switch parentKey
-
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
                     data.key = 'Device'
@@ -95,15 +107,19 @@ define [ 'constant' ], ( constant ) ->
                 when 'AssociationSet', 'AttachmentSet', 'PrivateIpAddressSet'
                     data.key = @setToElement parentKey
 
-                when 'Dimensions', 'AlarmActions'
-                    data.key = @pluralToSingular parentKey
-
                 when 'NotificationType'
-                    #data.skip = true
-                    data = data
+                    data.key = 'Type'
 
-                when 'Instances'
-                    data.key = 'Instance'
+                when 'VPCZoneIdentifier'
+                    data.key = 'Subnet'
+
+                when 'RouteSet'
+                    data.key = 'Route'
+
+
+            # Convert need convert pluralKey
+            if parentKey in pluralKeys
+                data.key = @pluralToSingular parentKey
 
             # Replace first level node
             if path.length is 1
@@ -147,6 +163,8 @@ define [ 'constant' ], ( constant ) ->
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
             # data.value = @h.genValue(newValue.type, newValue.__old__, newValue.__new__)
+            data = @h.replaceArrayIndex path, data
+
             data.value = {
                 type: newValue.type,
                 old: newValue.__old__,
@@ -160,7 +178,7 @@ define [ 'constant' ], ( constant ) ->
             newAttr = compAttrObj.newAttr
 
             valueRef = _getRef(data.value)
-            
+
             if valueRef
 
                 attrObj = @h.getNodeMap(valueRef)

@@ -1,5 +1,5 @@
 
-define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ], ( ApiRequest, ApiRequestDefs )->
+define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2", "UI.modal" ], ( ApiRequest, ApiRequestDefs, Modal )->
 
   tmpl = """
 <div id="DebugTool" class="debugToolBg"><ul>
@@ -7,6 +7,8 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 <li id="DtView" class="icon-toolbar-cloudformation tooltip" data-tooltip="Json View"></li>
 <li id="DtApi" class="tooltip debugToolBg" data-tooltip="Debug Api"></li>
 <li id="DtSession" class="icon-user tooltip" data-tooltip="Share Session"></li>
+<li id="DtClearStack" class="icon-delete tooltip" data-tooltip="Clear Stacks"></li>
+<li id="DtClearApp" class="icon-terminate tooltip" data-tooltip="Terminate Apps"></li>
 </ul>
 <div id="DebugTooltip">console输入man查看快捷debug</div>
 </div>
@@ -30,7 +32,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 </div>"""
 
   DebugTool = ()->
-    $("head").append('<link rel="stylesheet" href="./assets/css/debugger.css"></link>')
+    $("head").append('<link rel="stylesheet" href="/assets/css/debugger.css"></link>')
     $(tmpl).appendTo("body")
     $("#DebugTool").on "click", "li", dispatchClick
 
@@ -41,6 +43,26 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
       when "DtView" then dd.view()
       when "DtApi"  then debugApi()
       when "DtSession" then debugSession()
+      when "DtClearApp" then clearApp()
+      when "DtClearStack" then clearStack()
+
+  clearStack = ()->
+    m = new Modal {
+      title     : "删除所有Stack"
+      template  : "你确定要删除所有的Stack吗？是所有哦！！！！！！"
+      onConfirm : ()->
+        App.model.stackList().models.slice(0).forEach ( m )-> m.remove()
+        m.close()
+    }
+
+  clearApp = ()->
+    m = new Modal {
+      title     : "一键删除所有App"
+      template  : "删除APP？删除APP？删除APP？删除APP？删除APP？删除APP？删除APP？删除APP？删除APP？删除APP？"
+      onConfirm : ()->
+        App.model.appList().models.slice(0).forEach ( m )-> m.terminate()
+        m.close()
+    }
 
   debugApi = ()->
     modal ApiDialog
@@ -120,7 +142,7 @@ define [ "ApiRequest", "ApiRequestDefs", "vender/select2/select2", "UI.modal" ],
 
 
   debugSession = ()->
-    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.reload(); })();"
+    session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.href = window.location.protocol + '//' + window.location.host + '#{window.location.pathname}'; })();"
 
     modal SessionDialog
     $("#DebugShareSession").html(session).select()

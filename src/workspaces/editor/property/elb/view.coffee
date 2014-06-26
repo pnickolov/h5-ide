@@ -5,7 +5,7 @@
 define [ '../base/view',
          './template/stack',
          'event',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
 
     Helper =
@@ -28,7 +28,7 @@ define [ '../base/view',
     ElbView = PropertyView.extend {
 
         events   :
-            'change #property-elb-name'  : 'elbNameChange'
+            'keyup #property-elb-name'  : 'elbNameChange'
             'change #elb-scheme-select1' : "schemeSelectChange"
             'change #elb-scheme-select2' : "schemeSelectChange"
 
@@ -409,7 +409,7 @@ define [ '../base/view',
                     $certPanel.show()
 
                 else
-                
+
                     if sslCertDropDown
                         sslCertDropDown.dropdown.setSelection 'None'
                     $certPanel.hide()
@@ -493,7 +493,7 @@ define [ '../base/view',
             null
 
         elbSSLCertAdd : (event) ->
-            
+
             that = this
             that.popSSLCertModal(false)
             return false
@@ -525,7 +525,7 @@ define [ '../base/view',
                     that.model.removeCert(certUID)
                     ide_event.trigger ide_event.REFRESH_PROPERTY
                     modal.close()
-            
+
             return false
 
         changeSSLCert : (event) ->

@@ -3,7 +3,8 @@
   width: 10000px;
   white-space: nowrap;
   position: relative;
-  height: 39px; }
+  height: 39px;
+  background: #232226; }
   #tabbar-wrapper > ul {
     float: left; }
   #tabbar-wrapper > ul > li {

@@ -50,6 +50,7 @@ define [
     ###
     title    : ()-> @opsModel.get("name")
     tabClass : ()-> "icon-stack-tabbar"
+    url      : ()-> @opsModel.url()
 
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.
@@ -85,7 +86,11 @@ define [
       # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
       @listenTo @opsModel, "change:state", @onOpsModelStateChanged
-      @listenTo @opsModel, "change:id",    ()-> if @design then @design.set("id", @opsModel.get("id"))
+      @listenTo @opsModel, "change:name",  @updateTab
+      @listenTo @opsModel, "change:id",    ()->
+        @updateUrl()
+        if @design then @design.set("id", @opsModel.get("id"))
+        return
 
       # Load Datas
       self = @

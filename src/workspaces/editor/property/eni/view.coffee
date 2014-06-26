@@ -5,7 +5,7 @@
 define [ '../base/view',
          './template/stack',
          './template/eni_list',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, list_template, lang ) ->
 
     noop = ()-> null

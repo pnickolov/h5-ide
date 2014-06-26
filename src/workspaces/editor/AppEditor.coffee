@@ -38,7 +38,7 @@ define [
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
-        CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+        @loadVpcResource()
         @fetchAmiData()
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
@@ -126,13 +126,12 @@ define [
     recreateDesign : ()->
       # Layout and component changes, need to construct a new Design.
       @view.emptyCanvas()
-
-      @stopListening @design
-      @design = new Design( @opsModel )
-      @listenTo @design, "change:name", @updateTab
-
-      @initDesign()
+      @design.reload( @opsModel )
+      @design.finishDeserialization()
       return
+
+    loadVpcResource : ()->
+      CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
 
     applyAppEdit : ( modfiedData, force )->
       modfied = modfiedData or @design.isModified( undefined, true )
@@ -147,14 +146,14 @@ define [
 
       self = @
       @__applyingUpdate = true
-      fastUpdate = !modfied.component
+      fastUpdate = not modfied.component and not @opsModel.testState( OpsModel.State.Stopped )
 
       @opsModel.update( modfied.newData, fastUpdate ).then ()->
         if fastUpdate
           self.onAppEditDone()
         else
           self.view.showUpdateStatus( "", true )
-          CloudResources( "OpsResource", self.opsModel.getVpcId() ).init( self.opsModel.get("region") ).fetchForce().then ()-> self.onAppEditDone()
+          self.loadVpcResource().then ()-> self.onAppEditDone()
 
       , ( err )->
         self.__applyingUpdate = false
@@ -171,12 +170,15 @@ define [
       true
 
     onAppEditDone : ()->
+      if @isRemoved() then return
+
       @__appEdit = @__applyingUpdate = false
 
       @view.stopListening @opsModel, "change:progress", @view.updateProgress
       @recreateDesign()
 
       @design.setMode( Design.MODE.App )
+      @design.renderNode()
       @view.showUpdateStatus()
       @view.switchMode( false )
 
@@ -191,7 +193,16 @@ define [
       if @opsModel.testState( OpsModel.State.Saving ) then return
 
       @updateTab()
-      @view.toggleProcessing()
+
+      if @opsModel.isProcessing()
+        @view.toggleProcessing()
+      else if not @__applyingUpdate and not @opsModel.testState( OpsModel.State.Destroyed )
+        self = @
+        @view.showUpdateStatus( "", true )
+        @loadVpcResource().then ()->
+          if self.isRemoved() then return
+          self.design.renderNode()
+          self.view.toggleProcessing()
 
       StackEditor.prototype.onOpsModelStateChanged.call this
 

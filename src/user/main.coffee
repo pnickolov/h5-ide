@@ -100,10 +100,19 @@ api = (option)->
 Handlebars.registerHelper 'i18n', (str)->
     i18n?(str) || str
 
+loadPageVar = (sVar) -> decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"))
+
+getRef = ()->
+    ref = loadPageVar('ref')
+    if ref.charAt(0) is "/"
+        ref
+    else
+        "/"
+getSearch = -> (window.location.search || "")
 # init the page . load i18n source file
 loadLang = (cb)->
     $.ajax({
-        url: './nls/' + langType() + '/lang.js'
+        url: '/nls/' + langType() + '/lang.js'
         jsonp: false
         dataType: "jsonp"
         jsonpCallback: "define"
@@ -183,13 +192,17 @@ init = ->
                         #console.log "Error Verify Code!"
             else if hashTarget == "expire"
                 render '#expire-template'
+                $(".account-instruction a").attr("href", "/login"+getSearch())
             else if hashTarget == "email"
                 render "#email-template"
                 $('form.box-body').find('input').eq(0).focus()
             else if hashTarget == "success"
                 render "#success-template"
+                $(".account-instruction a").attr("href", "/login"+getSearch())
             else
                 render '#default-template'
+                $(".title-link").find("a").eq(0).attr("href", "/register/"+ getSearch())
+                $(".title-link").find("a").eq(1).attr("href", "/login/"+ getSearch())
                 $("#reset-pw-email").focus()
                 $('#reset-pw-email').keyup ->
                     if @value
@@ -205,10 +218,12 @@ init = ->
                     sendEmail($("#reset-pw-email").val())
                     false
         'login': (pathArray, hashArray)->
-            if checkAllCookie() then window.location = '/'
+            if checkAllCookie() then window.location = getRef()
             deepth = 'login'
             #console.log pathArray, hashArray
             render "#login-template"
+            $(".account-btn-wrap a").attr("href", "/reset/"+getSearch()) # pass ref url
+            $("#login-register").find("a").attr("href", "/register/"+getSearch())
             $user = $("#login-user")
             $password = $("#login-password")
             submitBtn = $("#login-btn").attr('disabled',false)
@@ -238,12 +253,13 @@ init = ->
             if hashArray[0] == 'success'
                 render "#success-template"
                 $('#register-get-start').click ->
-                    window.location = "/"
+                    window.location = getRef()
                     return
                     #console.log('Getting start...')
                 return false
-            if checkAllCookie() then window.location = '/'
+            if checkAllCookie() then window.location = getRef()
             render '#register-template'
+            $(".title-link a").attr("href", "/login/"+ getSearch())
             $form = $("#register-form")
             $form.find('input').eq(0).focus()
             $username = $('#register-username')
@@ -503,7 +519,7 @@ ajaxLogin = (params, errorCB)->
         success: (result, statusCode)->
             if(!statusCode)
                 setCredit(result)
-                window.location = '/'
+                window.location = getRef()
                 return
                 #console.log 'Login Now!'
             else

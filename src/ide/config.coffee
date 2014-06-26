@@ -43,8 +43,14 @@
   getCookie = (sKey)-> decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
 
   if not (getCookie('usercode') and getCookie('session_id'))
-  	window.location.href = "/login/"
-  	return
+    p = window.location.pathname
+    if p is "/"
+      p = window.location.hash.replace("#", "/")
+    if p and p isnt "/"
+      window.location.href = "/login?ref=" + p
+    else
+      window.location.href = "/login"
+    return
 
   # Get Version and locale
   scripts = document.getElementsByTagName("script")
@@ -61,7 +67,7 @@
 
 require.config {
 
-	baseUrl     : './'
+	baseUrl     : '/'
 	waitSeconds : 30
 	locale      : language
 	urlArgs     : "v=#{version}"
@@ -117,6 +123,7 @@ require.config {
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
 		'UI.tour'            : 'ui/UI.tour'
+		'UI.nanoscroller'    : 'ui/UI.nanoscroller'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
 		'UI.modalplus'       : 'ui/UI.modalplus'
@@ -245,6 +252,7 @@ require.config {
 			"jqpagination"
 			'jquerysort'
 			"UI.modalplus"
+			"UI.nanoscroller"
 		]
 		"api/api" : ["ApiRequest"]
 		"service/service" : [
@@ -285,7 +293,7 @@ require.config {
 		]
 
 		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
-		"ide/Application" : [ "Workspace", "OpsModel" ]
+		"ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
 		"workspaces/Dashboard" : []
 
@@ -319,18 +327,28 @@ requirejs.onError = ( err )->
 		console.error "[RequireJS Error]", err, err.stack
 
 
+
+
 require [
 	'ide/Application'
 	"ide/cloudres/CrBundle"
 	"workspaces/Dashboard"
 	"workspaces/OpsEditor"
+	"ide/Router"
 	"MC"
 	'lib/aws'
-], (  Application, CrBundle, Dashboard, OpsEditor ) ->
+], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 
+	###########
+	# IDE Init
+	###########
 	# There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
+	window.Router    = new Router()
 	window.OpsEditor = OpsEditor
-	(new Application()).initialize().then ()-> new Dashboard(); return
+	(new Application()).initialize().then ()->
+		window.Router.start()
+		window.Dashboard = new Dashboard()
+		return
 
 , ( err )->
 	err = err || { requireType : "timeout" }

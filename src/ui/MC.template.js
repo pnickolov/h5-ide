@@ -354,6 +354,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		<dt>Size</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n		<dt>Encrypted</dt>\n		<dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.encrypted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
   };
@@ -1154,7 +1156,7 @@ function program1(depth0,data,depth1) {
     + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-tooltip=\""
     + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" ></i>\n				<span class=\"asgList-item-icon\" style=\"background-image:url('./assets/images/"
+    + "\" ></i>\n				<span class=\"asgList-item-icon\" style=\"background-image:url('/assets/images/"
     + escapeExpression(((stack1 = (depth0 && depth0.background)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "')\"></span>\n				<div class=\"asgList-item-volume\" data-target-id="
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1197,7 +1199,7 @@ function program1(depth0,data,depth1) {
     + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-tooltip=\""
     + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"></i>\n				<span class=\"instanceList-item-icon\" style=\"background-image:url('./assets/images/"
+    + "\"></i>\n				<span class=\"instanceList-item-icon\" style=\"background-image:url('/assets/images/"
     + escapeExpression(((stack1 = (depth1 && depth1.background)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "')\"></span>\n				<div class=\"instanceList-item-volume\" data-target-id=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

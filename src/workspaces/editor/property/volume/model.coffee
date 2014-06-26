@@ -15,13 +15,33 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 console.error "[volume property] can not found owner of volume!"
                 return false
 
+            supportEncrypted = component.isSupportEncrypted()
+
+            displayEncrypted = true
+            if not supportEncrypted
+                displayEncrypted = false
+
+            if res.snapshotId
+                supportEncrypted = false
+
+            if component.get('owner').type is constant.RESTYPE.LC
+                displayEncrypted = false
+
+            isEncrypted = false
+            isEncrypted = (res.encrypted in ['true', true]) if supportEncrypted
+
             volume_detail =
                 isWin       : res.name[0] != '/'
                 isStandard  : res.volumeType is 'standard'
+                isIo1       : res.volumeType is 'io1'
+                isGp2       : res.volumeType is 'gp2'
                 iops        : res.iops
                 volume_size : res.volumeSize
                 snapshot_id : res.snapshotId
                 name        : res.name
+                displayEncrypted : displayEncrypted
+                support_encrypted : supportEncrypted
+                encrypted : isEncrypted
 
             if volume_detail.isWin
                 volume_detail.editName = volume_detail.name.slice(-1)
@@ -91,6 +111,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             null
 
         setVolumeSize : ( value ) ->
+
             uid        = @get "uid"
 
             volume = Design.instance().component( uid )
@@ -118,22 +139,38 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             null
 
-        setVolumeTypeStandard : () ->
-            uid = @get "uid"
+        setVolumeType: ( type, iops ) ->
 
+            volume = Design.instance().component( @get "uid" )
+            volume.set 'volumeType': type, 'iops': iops
+
+            null
+
+        setEncrypted : ( value ) ->
+
+            uid = @get "uid"
             volume = Design.instance().component( uid )
-            volume.set { 'volumeType': 'standard', 'iops': '' }
 
-        setVolumeTypeIops : ( value ) ->
-            uid = @get "uid"
+            if not volume
 
-            volume = Design.instance().component( uid )
-            volume.set { 'volumeType': 'io1', 'iops': value }
+                # realuid     = uid.split('_')
+                # device_name = realuid[2]
+                # lcUid       = realuid[0]
 
-        setVolumeIops : ( value )->
+                # lc = Design.instance().component( lcUid )
 
-            uid = @get "uid"
-            Design.instance().component( uid ).set 'iops', value
+                # volumeModel = Design.modelClassForType constant.RESTYPE.VOL
+                # allVolume = volumeModel and volumeModel.allObjects() or []
+
+                # for v in allVolume
+                #     if v.get( 'owner' ) is lc
+                #         if v.get( 'name' ) is device_name
+                #             v.set 'encrypted', value
+                #             break
+
+            else
+
+                volume.set 'encrypted', value
 
             null
 
@@ -170,7 +207,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 fullName = v.genFullName name
                 if v isnt volume and v.get( 'name' ) is fullName
                     true
-
 
     }
 

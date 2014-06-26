@@ -5,6 +5,7 @@
   white-space : nowrap;
   position    : relative;
   height      : 39px;
+  background  : #232226;
 
   > ul {
     float : left;
@@ -39,7 +40,7 @@
       font-weight : bold;
       box-shadow : inset 0 3px 0 #9F62D1;
     }
-    
+
     &.active, &:hover {
       .icon-close { visibility: inherit; }
     }

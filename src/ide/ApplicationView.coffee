@@ -13,7 +13,7 @@ define [
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
   "./subviews/AppTpl"
-  'i18n!nls/lang.js'
+  'i18n!/nls/lang.js'
 ], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang )->
 
   Backbone.View.extend {
@@ -41,7 +41,6 @@ define [
 
       $(window).on "beforeunload", @checkUnload
       $(document).on 'keydown', @globalKeyEvent
-      $(window).one 'focus', () -> App.openSampleStack()
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE

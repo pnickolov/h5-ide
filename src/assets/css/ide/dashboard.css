@@ -106,8 +106,9 @@
     margin: 0; }
 
 #global-region-wrap {
-  height: 100%;
   background: #f0f0f0; }
+  #global-region-wrap > .nano-pane {
+    z-index: 6; }
 
 /* The map */
 .global-map-item {
@@ -597,7 +598,7 @@
   left: 0;
   bottom: 0;
   height: 27px;
-  z-index: -1;
+  z-index: 1;
   border-radius: 0 0 0 5px;
   background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
   background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
@@ -614,6 +615,9 @@
   -webkit-animation: progress-bar 2s linear infinite;
   -moz-animation: progress-bar 2s linear infinite;
   animation: progress-bar 2s linear infinite; }
+  .region-resource-list .region-resource-progess + .region-resource-info {
+    position: relative;
+    z-index: 2; }
 .region-resource-list .region-resource-info {
   padding-left: 12px;
   position: relative;
@@ -667,7 +671,7 @@
   right: 0;
   top: -49px;
   border-radius: 5px 5px 0 0;
-  z-index: 5;
+  z-index: 4;
   box-shadow: 3px -2px 3px rgba(0, 0, 0, 0.05); }
   #region-resource-tab > li {
     float: left;

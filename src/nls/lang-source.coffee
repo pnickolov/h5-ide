@@ -1543,6 +1543,10 @@ module.exports =
       en: "Stack Name"
       zh: "模版名称"
 
+    PROP_APP_LBL_NAME:
+      en: "App Name"
+      zh: "应用名称"
+
     PROP_STACK_LBL_DESCRIPTION:
       en: "Stack Description"
       zh: "模板描述"
@@ -1566,6 +1570,10 @@ module.exports =
     PROP_APP_LBL_ID:
       en: "App ID"
       zh: "应用标识"
+
+    PROP_APP_LBL_RESDIFF:
+      en: "Monitor and report external resource change of this app"
+      zh: ""
 
     PROP_STACK_LBL_USAGE:
       en: "Usage"

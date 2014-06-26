@@ -17,6 +17,7 @@ define [ '../base/view',
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
             'click .sg-list-delete-btn'            : 'deleteAcl'
+            'click #property-app-resdiff'          : 'toggleResDiff'
 
         render     : () ->
             if @model.isApp or @model.isAppEdit
@@ -31,6 +32,8 @@ define [ '../base/view',
             @refreshACLList()
 
             null
+
+        toggleResDiff: ( e ) -> Design.instance().set 'resource_diff', e.currentTarget.checked
 
         stackDescriptionChanged: () ->
             stackDescTextarea = $ "#property-stack-description"

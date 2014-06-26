@@ -473,7 +473,7 @@ define [
         delete comp.state
 
     result = {
-      attribute     : newData.name isnt oldData.name
+      attribute     : newData.name isnt oldData.name or newData.resource_diff isnt oldData.resource_diff
       component     : not _.isEqual( oldData.component, newData.component )
       layout        : not _.isEqual( oldData.layout,    newData.layout )
       instanceState : not _.isEqual( backingState,      dataState )

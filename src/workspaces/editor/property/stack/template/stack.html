@@ -1,20 +1,35 @@
 <article>
 
   {{#unless isStack}}
-  <dl class="dl-horizontal dl-region-type property-control-group">
-    <dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
-    <dd>{{region}}</dd>
-    <dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
-    <dd>{{type}}</dd>
-    <dt><label>{{ i18n "PROP_APP_LBL_ID" }}</label></dt>
-    <dd>{{id}}</dd>
-    {{#if usage}}
-    <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
-    <dd style="text-transform: capitalize">{{usage}}</dd>
+    {{#if isAppEdit}}
+    <section class="property-control-group" data-bind="true">
+        <label class="left" for="property-app-name">{{ i18n "PROP_APP_LBL_NAME" }}</label>
+        <input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-app-name">
+    </section>
     {{/if}}
-    <dt><label>{{ i18n "PROP_STACK_LBL_DESC"}}</label></dt>
-    <dd>{{description}}</dd>
-  </dl>
+    <dl class="dl-horizontal dl-region-type property-control-group">
+      <dt><label>{{ i18n "PROP_STACK_LBL_REGION" }}</label></dt>
+      <dd>{{region}}</dd>
+      <dt><label>{{ i18n "PROP_STACK_LBL_TYPE" }}</label></dt>
+      <dd>{{type}}</dd>
+      <dt><label>{{ i18n "PROP_APP_LBL_ID" }}</label></dt>
+      <dd>{{id}}</dd>
+      {{#if usage}}
+      <dt><label>{{ i18n "PROP_STACK_LBL_USAGE" }}</label></dt>
+      <dd style="text-transform: capitalize">{{usage}}</dd>
+      {{/if}}
+      <dt><label>{{ i18n "PROP_STACK_LBL_DESC"}}</label></dt>
+      <dd>{{description}}</dd>
+    </dl>
+    {{#if isAppEdit}}
+    <section class="property-control-group">
+      <div class="checkbox">
+        <input id="property-app-resdiff" type="checkbox" name="resdiff" {{#if isResDiff}}checked{{/if}} >
+        <label for="property-app-resdiff"></label>
+      </div>
+      <label for="property-app-resdiff">{{ i18n "PROP_APP_LBL_RESDIFF"}}</label>
+    </section>
+    {{/if}}
   {{else}}
 	<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-stack-name">{{ i18n "PROP_STACK_LBL_NAME" }}</label>

@@ -35,11 +35,12 @@
     });
     redirectRegex = /(login|ide|register|reset)\.html$/;
     server = http.createServer(function(request, response) {
-      var REG_IDE, REG_LOGIN, REG_REGISTER, REG_RESET;
-      REG_RESET = /^\/reset/;
-      REG_LOGIN = /^\/login/;
-      REG_REGISTER = /^\/register/;
+      var REG_500, REG_IDE, REG_LOGIN, REG_REGISTER, REG_RESET;
+      REG_RESET = /^\/reset(\?\S*)?/;
+      REG_LOGIN = /^\/login(\?\S*)?/;
+      REG_REGISTER = /^\/register(\?\S*)?/;
       REG_IDE = /^\/(ops|store)\/?/;
+      REG_500 = /^\/500(\?\S)?/;
       request.addListener('end', function() {
         var errorHandler, filePath, url;
         url = request.url;
@@ -65,6 +66,8 @@
           filePath = "/login.html";
         } else if (REG_IDE.test(url)) {
           filePath = "/ide.html";
+        } else if (REG_500.test(url)) {
+          filePath = '/500.html';
         }
         errorHandler = function(e) {
           console.log("[ServerError]", e.message, request.url);

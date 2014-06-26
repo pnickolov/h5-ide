@@ -33,13 +33,14 @@ define [ "../base/main",
             volume = Design.instance().component uid
             owner = volume.get 'owner'
 
+            @model = model
+            @view  = view
+
             # Volume on Running LC
             if owner.type is constant.RESTYPE.LC and owner.get 'appId'
-                @model = app_model
-                @view  = app_view
+                @model.isAppEdit = true
             else
-                @model = model
-                @view  = view
+                @model.isAppEdit = false
 
             null
 

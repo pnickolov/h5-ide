@@ -16,6 +16,9 @@ define [ "Design" ], (Design)->
                     compo.resource.Attachment.AttachmentId = ""
                 when 'AWS.EC2.Instance'
                     compo.resource.InstanceId = ""
+                    _.each compo.resource.BlockDeviceMapping, (e)->
+                        if e.Ebs?.VolumeType and e.Ebs.VolumeType isnt "io1" and e.Ebs.Iops
+                            compo.Ebs.Iops = ""
                 when 'AWS.VPC.Subnet'
                     compo.resource.SubnetId = ""
                 when 'AWS.EC2.EIP'
@@ -45,8 +48,11 @@ define [ "Design" ], (Design)->
                     compo.resource.VpnConnectionId = ""
                 when 'AWS.VPC.CustomerGateway'
                     compo.resource.CustomerGatewayId = ""
-#                when "AWS.EC2.EBS.Volume"
-#                    compo.resource.VolumeId = ""
+                when "AWS.EC2.EBS.Volume"
+                    compo.resource.VolumeId = ""
+                    if  compo.resource.VolumeType and compo.resource.VolumeType isnt "io1" and compo.resource.Iops
+                        compo.resource.Iops = ""
+                        null
 #                when "AWS.VPC.DhcpOptions"
 #                    compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
@@ -63,6 +69,10 @@ define [ "Design" ], (Design)->
                 when 'AWS.AutoScaling.LaunchConfiguration'
                     compo.resource.LaunchConfigurationARN = ""
                     compo.resource.LaunchConfigurationName = compo.name
+                    _.each compo.resource.BlockDeviceMapping, (e)->
+                        if e.Ebs?.VolumeType and e.Ebs.VolumeType isnt 'io1' and e.Ebs.Iops
+                          e.Ebs.Iops = ""
+                          null
                 when 'AWS.AutoScaling.Group'
                     compo.resource.AutoScalingGroupARN = ""
                     compo.resource.AutoScalingGroupName = compo.name

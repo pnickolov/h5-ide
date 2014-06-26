@@ -28,7 +28,7 @@ define [ '../base/view',
     ElbView = PropertyView.extend {
 
         events   :
-            'change #property-elb-name'  : 'elbNameChange'
+            'keyup #property-elb-name'  : 'elbNameChange'
             'change #elb-scheme-select1' : "schemeSelectChange"
             'change #elb-scheme-select2' : "schemeSelectChange"
 

@@ -4306,6 +4306,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "run stack"
       zh: "运行"
 
+    UPDATE_APP_MODAL_NEED_CREDENTIAL:
+      en: "Please set Up Credential First"
+      zh: "请先设置 AWS 凭证"
+
     START_APP:
       en: "start app"
       zh: "启动APP"

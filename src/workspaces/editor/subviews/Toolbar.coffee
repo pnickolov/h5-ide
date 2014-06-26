@@ -124,7 +124,7 @@ define [
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
           notification "info", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_SUCCESS, newJson.name)
-        , ( err )->
+        , ( )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
           notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
@@ -314,7 +314,7 @@ define [
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
 
-    appToStack: (event) ->
+    appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
         stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
@@ -335,13 +335,13 @@ define [
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
-                ,(err)->
+                ,()->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 
         originStackExist = !!stack
         appToStackModal = new Modal
             title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
-            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, orignStackExist: originStackExist}
+            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
             confirm:
                 text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
@@ -362,7 +362,7 @@ define [
           idx = Number(app_name.substr(app_name.lastIndexOf("-") + 1))
           copy_name = prefix
         else
-          if app_name.charAt(name.length-1) is "-"
+          if app_name.charAt(app_name.length-1) is "-"
               #xxxx-
               copy_name = app_name.substr(0,app_name.length-1)
           else
@@ -462,7 +462,7 @@ define [
 
         return
 
-    opsOptionChanged: -> #todo: Almost Done.
+    opsOptionChanged: ->
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
         stateEnabled = $switcher.hasClass("on")
         agent = @workspace.design.get('agent')

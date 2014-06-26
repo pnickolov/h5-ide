@@ -106,6 +106,9 @@ define [ 'constant',
             if not error and @model.isNameDup( name )
                 error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
+            if not error and @model.isOldName( name )
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
             if not error and @model.isReservedName( name )
                 error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 

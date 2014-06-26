@@ -9,6 +9,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
         events:
             'change #property-instance-enable-cloudwatch'   : 'cloudwatchSelect'
             'change #property-instance-user-data'           : 'userdataChange'
+            'keyup #property-instance-name'                : 'checkInstanceName'
 
         kpModalClosed: false
 
@@ -24,7 +25,13 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
         userdataChange : ( event ) ->
             @model.setUserData event.target.value
 
+        elbNameChange: (event) ->
+            target = $ event.currentTarget
+            name = target.val()
 
+            if @checkResName(target, "Launch Configuration")
+                @model.setName name
+                @setTitle name
     }
 
     new LCAppView()

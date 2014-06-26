@@ -45,7 +45,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         if options.initJsonData
           @__initJsonData()
         if options.jsonData
-          @__jsonData = options.jsonData
+          @__setJsonData options.jsonData
       return
 
     url : ()->

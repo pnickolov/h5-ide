@@ -151,6 +151,18 @@
 <p class="modal-text-major">Give this app an appropriate name.</p>
 <div class="modal-control-group">
 <label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
+<div class="modal-control-group app-usage-group clearfix">
+  <label for="">App Usage</label>
+  <div id="app-usage-selectbox" class="selectbox">
+    <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+    <ul class="dropdown" tabindex="-1">
+      <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+      <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+      <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+      <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+    </ul>
+  </div>
+</div>
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->

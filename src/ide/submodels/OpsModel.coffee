@@ -481,6 +481,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set {
           name  : newJson.name
           state : oldState
+          usage : newJson.usage
         }
         self.__saveAppDefer = null
         return

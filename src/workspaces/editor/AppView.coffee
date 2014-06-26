@@ -69,8 +69,10 @@ define [
             return
 
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
-          json = self.workspace.design.serialize()
-          json.name = $ipt.val()
+          json       = self.workspace.design.serialize()
+          json.name  = $ipt.val()
+          json.usage = $("#app-usage-selectbox").find(".item.selected").attr('data-value') || "testing"
+
           self.workspace.opsModel.saveApp(json).then ()->
             self.workspace.design.set "name", json.name
             modal.close()

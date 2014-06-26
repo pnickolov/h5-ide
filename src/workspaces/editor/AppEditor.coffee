@@ -126,12 +126,8 @@ define [
     recreateDesign : ()->
       # Layout and component changes, need to construct a new Design.
       @view.emptyCanvas()
-
-      @stopListening @design
-      @design = new Design( @opsModel )
-      @listenTo @design, "change:name", @updateTab
-
-      @initDesign()
+      @design.reload( @opsModel )
+      @design.finishDeserialization()
       return
 
     applyAppEdit : ( modfiedData, force )->
@@ -177,6 +173,7 @@ define [
       @recreateDesign()
 
       @design.setMode( Design.MODE.App )
+      @design.renderNode()
       @view.showUpdateStatus()
       @view.switchMode( false )
 

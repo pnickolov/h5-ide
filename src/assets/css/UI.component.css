@@ -2772,9 +2772,11 @@ html[dir="rtl"] .select2-search-choice-close {
 }
 .nano > .nano-content::-webkit-scrollbar {
   visibility: hidden;
+  display : none;
 }
 .has-scrollbar > .nano-content::-webkit-scrollbar {
   visibility: visible;
+  display : block;
 }
 .nano > .nano-pane {
   background : rgba(100, 100, 100, 0.2);

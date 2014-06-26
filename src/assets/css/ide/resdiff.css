@@ -139,7 +139,7 @@
       margin-left: 2px; }
     .res_diff_tree .tree .item {
       margin-bottom: 10px;
-      padding-left: 18px;
+      padding-left: 18.5px;
       position: relative;
       border-left: 1px #444 solid; }
       .res_diff_tree .tree .item.removed .meta .name {
@@ -157,7 +157,7 @@
         width: 17px;
         height: 33px;
         position: absolute;
-        margin-left: -19px;
+        margin-left: -19.5px;
         z-index: 0; }
       .res_diff_tree .tree .item::after {
         display: block;
@@ -167,7 +167,7 @@
         border: #148BE6 1px solid;
         border-radius: 50%;
         position: absolute;
-        left: -5.5px;
+        left: -6px;
         top: 2px;
         background: #1a1c1d;
         z-index: 1;

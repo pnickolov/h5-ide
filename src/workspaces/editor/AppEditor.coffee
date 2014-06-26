@@ -196,7 +196,7 @@ define [
 
       if @opsModel.isProcessing()
         @view.toggleProcessing()
-      else if not @__applyingUpdate
+      else if not @__applyingUpdate and not @opsModel.testState( OpsModel.State.Destroyed )
         self = @
         @view.showUpdateStatus( "", true )
         @loadVpcResource().then ()->

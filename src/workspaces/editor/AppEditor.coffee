@@ -38,7 +38,7 @@ define [
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
-        CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+        @loadVpcResource()
         @fetchAmiData()
       ]).then ()->
         # Hack, immediately apply changes when we get data if the app is changed.
@@ -130,6 +130,9 @@ define [
       @design.finishDeserialization()
       return
 
+    loadVpcResource : ()->
+      CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+
     applyAppEdit : ( modfiedData, force )->
       modfied = modfiedData or @design.isModified( undefined, true )
 
@@ -150,7 +153,7 @@ define [
           self.onAppEditDone()
         else
           self.view.showUpdateStatus( "", true )
-          CloudResources( "OpsResource", self.opsModel.getVpcId() ).init( self.opsModel.get("region") ).fetchForce().then ()-> self.onAppEditDone()
+          self.loadVpcResource().then ()-> self.onAppEditDone()
 
       , ( err )->
         self.__applyingUpdate = false
@@ -167,6 +170,8 @@ define [
       true
 
     onAppEditDone : ()->
+      if @isRemoved() then return
+
       @__appEdit = @__applyingUpdate = false
 
       @view.stopListening @opsModel, "change:progress", @view.updateProgress
@@ -188,7 +193,16 @@ define [
       if @opsModel.testState( OpsModel.State.Saving ) then return
 
       @updateTab()
-      @view.toggleProcessing()
+
+      if @opsModel.isProcessing()
+        @view.toggleProcessing()
+      else if not @__applyingUpdate
+        self = @
+        @view.showUpdateStatus( "", true )
+        @loadVpcResource().then ()->
+          if self.isRemoved() then return
+          self.design.renderNode()
+          self.view.toggleProcessing()
 
       StackEditor.prototype.onOpsModelStateChanged.call this
 

@@ -262,6 +262,11 @@ define [
         ModelClass.postDeserialize( comp, layout_data[uid] )
     null
 
+  DesignImpl.prototype.reload = ( opsModel )->
+    DesignImpl.call this, opsModel
+    json = opsModel.getJsonData()
+    this.deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
   DesignImpl.prototype.finishDeserialization = ()->
     ####################
     # Draw after deserialization
@@ -288,6 +293,17 @@ define [
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null
+
+  DesignImpl.prototype.renderNode = ()->
+    ##########
+    # Hack
+    ##########
+    # This will be removed once the canvas has been refactored.
+    for uid, comp of @__componentMap
+      if comp.draw and not comp.node_line
+        comp.draw( false )
+    return
+
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->

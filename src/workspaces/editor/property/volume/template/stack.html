@@ -4,10 +4,10 @@
         <div class="name">
             {{#if volume_detail.isWin}}
             <label for="volume-device">xvd</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1"/>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1" {{#if isAppEdit}}disabled{{/if}}/>
             {{else}}
             <label for="volume-device">/dev/</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5"/>
+            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5" {{#if isAppEdit}}disabled{{/if}}/>
             {{/if}}
         </div>
     </section>
@@ -15,7 +15,7 @@
         <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
         <div class="ranged-number-input">
             <label for="volume-size-ranged"></label>
-            <input id="volume-size-ranged" type="text" class="input" value="{{volume_detail.volume_size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
+            <input id="volume-size-ranged" type="text" class="input" value="{{volume_detail.volume_size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number" {{#if isAppEdit}}disabled{{/if}}/>
         <label for="volume-property-ranged-number" >GB</label>
         </div>
     </section>
@@ -36,7 +36,7 @@
 
             <div>
                 <div class="radio">
-                    <input id="radio-standard" type="radio" name="volume-type" {{#if volume_detail.isStandard}}checked="checked"{{/if}} value="standard"/>
+                    <input id="radio-standard" type="radio" name="volume-type" {{#if volume_detail.isStandard}}checked="checked"{{/if}} value="standard" {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-standard"></label>
                 </div>
                 <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
@@ -44,7 +44,7 @@
 
             <div>
                 <div class="radio">
-                    <input id="radio-gp2" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2"/>
+                    <input id="radio-gp2" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2" {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-gp2"></label>
                 </div>
                 <label for="radio-gp2">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
@@ -52,7 +52,7 @@
 
             <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}"{{/if}}>
                 <div class="radio">
-                    <input id="radio-io1" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}}/>
+                    <input id="radio-io1" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}} {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-io1"></label>
                 </div>
                 <label for="radio-io1">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
@@ -66,9 +66,9 @@
         <div class="ranged-number-input">
             <label for="iops-ranged"></label>
             {{#if volume_detail.isStandard}}
-            <input id="iops-ranged" type="text" class="input" value="100" name="iops-ranged" min="100" max="2000" required="">
+            <input id="iops-ranged" type="text" class="input" value="100" name="iops-ranged" min="100" max="2000" required="" {{#if isAppEdit}}disabled{{/if}}>
             {{else}}
-            <input class="input" id="iops-ranged" type="text" value="{{volume_detail.iops}}" name="iops-ranged" min="100" max="2000" required="">
+            <input class="input" id="iops-ranged" type="text" value="{{volume_detail.iops}}" name="iops-ranged" min="100" max="2000" required="" {{#if isAppEdit}}disabled{{/if}}>
             {{/if}}
         <label for="volume-property-ranged-number" ></label>
         </div>
@@ -79,7 +79,7 @@
         <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
         <div>
             <div class="checkbox">
-                <input id="volume-property-encrypted-check" type="checkbox" {{#unless volume_detail.support_encrypted}}disabled="disabled"{{/unless}} {{#if volume_detail.encrypted}}checked="checked" {{/if}} />
+                <input id="volume-property-encrypted-check" type="checkbox" {{#unless volume_detail.support_encrypted}}disabled="disabled"{{/unless}} {{#if volume_detail.encrypted}}checked="checked" {{/if}}  {{#if isAppEdit}}disabled{{/if}}/>
                 <label for="volume-property-encrypted-check"></label>
             </div>
             <label for="volume-property-encrypted-check">{{ i18n "PROP_VOLUME_ENCRYPTED_LABEL" }}</label>

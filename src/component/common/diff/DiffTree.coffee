@@ -35,13 +35,13 @@ define [], () ->
             }
 
         isArray = (value) ->
-            
+
             return value and typeof value is 'object' and value.constructor is Array
 
         typeofReal = (value) ->
 
             if isArray(value) then 'array' else (if value is null then 'null' else typeof(value))
-        
+
         getType = (value) ->
 
             if (typeA is 'object' or typeA is 'array') then '' else String(a) + ' '
@@ -71,7 +71,7 @@ define [], () ->
                 b = bAry
 
             if path
-                
+
                 path = path.concat([key]) if key
 
                 if path.length is 2
@@ -82,9 +82,10 @@ define [], () ->
                         return if option.filterResMap[resType]
 
                 else if path.length > 2
-
+                    ###
                     if _.isArray(a)
                         b = []
+                    ###
                         # console.info('[NEED PROCESS] ' + path.slice(2).join('.'))
 
                     attrPathAry = path.slice(2)
@@ -112,7 +113,7 @@ define [], () ->
             bString = '' if not bString
 
             changeType = value1 = value2 = ''
-            
+
             if a is undefined
                 changeType = 'added'
                 value2 = bString
@@ -137,7 +138,7 @@ define [], () ->
                 if typeA is 'array' and typeB is 'array'
 
                     diffAryResult = {}
-                    
+
                     if a.length < b.length
                         _diffAry.call(this, a, b)
                     else
@@ -174,7 +175,7 @@ define [], () ->
 
                 if typeofReal(a) is 'number'
                     a = String(a)
-                
+
                 if typeofReal(b) is 'number'
                     b = String(b)
 

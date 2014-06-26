@@ -45,7 +45,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         if options.initJsonData
           @__initJsonData()
         if options.jsonData
-          @__jsonData = options.jsonData
+          @__setJsonData options.jsonData
       return
 
     url : ()->
@@ -481,6 +481,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set {
           name  : newJson.name
           state : oldState
+          usage : newJson.usage
         }
         self.__saveAppDefer = null
         return

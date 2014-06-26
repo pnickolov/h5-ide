@@ -297,6 +297,10 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       if not theApp then return
       if not request.state.processing and not theApp.isProcessing() then return
 
+      if theApp.testState( OpsModel.State.Terminating ) and request.operation isnt "terminate"
+        console.error "We recevied a request notification, which operation is not `terminate`. But the app is terminating.", request
+        return
+
       if request.state.processing
         theApp.setStatusProgress( request.step, request.totalSteps )
       else

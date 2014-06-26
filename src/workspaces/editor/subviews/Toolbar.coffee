@@ -320,7 +320,7 @@ define [
         stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
-            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "radio-replace-stack")
+            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").val() is "replace")
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()

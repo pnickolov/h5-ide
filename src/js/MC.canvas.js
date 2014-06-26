@@ -1536,15 +1536,15 @@ MC.canvas.volume = {
 				}
 			}
 
-			if (
-				MC.canvas.getState() === 'appedit' &&
-				$canvas(target_id).type === 'AWS.AutoScaling.LaunchConfiguration'
-			)
-			{
-				$canvas( target_uid ).select();
+			// if (
+			// 	MC.canvas.getState() === 'appedit' &&
+			// 	$canvas(target_id).type === 'AWS.AutoScaling.LaunchConfiguration'
+			// )
+			// {
+			// 	$canvas( target_uid ).select();
 
-				return false;
-			}
+			// 	return false;
+			// }
 
 			if (volume_length > 0)
 			{

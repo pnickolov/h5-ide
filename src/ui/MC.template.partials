@@ -214,6 +214,8 @@
 		<dd>{{status}}</dd>
 		<dt>Size</dt>
 		<dd>{{size}}</dd>
+		<dt>Encrypted</dt>
+		<dd>{{encrypted}}</dd>
 	</dl>
 </div>
 

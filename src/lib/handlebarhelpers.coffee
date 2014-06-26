@@ -22,6 +22,12 @@ define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
     else
         new Handlebars.SafeString v1
 
+  Handlebars.registerHelper 'readableVt', ( text ) ->
+    if text in [ '', undefined, null ]
+      return '-'
+
+    lang.ide[ "PROP_VOLUME_TYPE_#{text.toUpperCase()}" ]
+
   Handlebars.registerHelper 'UTC', ( text ) ->
     new Handlebars.SafeString new Date( text ).toUTCString()
 

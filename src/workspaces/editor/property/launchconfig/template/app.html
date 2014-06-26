@@ -36,13 +36,15 @@
       </dl>
       <dl class="dl-vertical">
         <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
-        <dd>{{emptyStr rootDevice.Ebs.VolumeType}}</dd>
+        <dd>{{readableVt rootDevice.Ebs.VolumeType}}</dd>
         {{#if rootDevice.Ebs.SnapshotId}}
         <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
         <dd>{{rootDevice.Ebs.SnapshotId}}</dd>
         {{/if}}
         <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
         <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
+<!--         <dt>{{i18n "PROP_VOLUME_ENCRYPTED"}}</dt>
+        <dd>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</dd> -->
         {{#if rootDevice.Ebs.Iops}}
         <dt>IOPS</dt>
         <dd>{{rootDevice.Ebs.Iops}}</dd>

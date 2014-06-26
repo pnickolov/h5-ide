@@ -3,9 +3,8 @@ define [], () ->
     DiffTree = (option) ->
 
         option = {} if not option
-        # option.filterMap = {} if not option.filterMap
 
-        option.filterMap = {
+        option.filterAttrMap = {
             'type': true
             'uid': true
             'name': true
@@ -24,7 +23,16 @@ define [], () ->
             'resource.GroupDescription': true
             'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
             'resource.Attachment.AttachmentId': true
+            'resource.Iops': true
         }
+
+        option.filterResMap = {}
+
+        if option.state is 'stop'
+
+            option.filterResMap = {
+                'AWS.AutoScaling.Group': true
+            }
 
         isArray = (value) ->
             
@@ -65,7 +73,19 @@ define [], () ->
             if path
                 
                 path = path.concat([key]) if key
-                if path.length > 2
+
+                if path.length is 2
+
+                    resUID = path[1]
+                    if a and a.type
+                        resType = a.type
+                        return if option.filterResMap[resType]
+
+                else if path.length > 2
+
+                    if _.isArray(a)
+                        b = []
+                        # console.info('[NEED PROCESS] ' + path.slice(2).join('.'))
 
                     attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
@@ -74,7 +94,7 @@ define [], () ->
                         return path
 
                     attrPath = attrPathAry.join('.')
-                    if option.filterMap[attrPath]
+                    if option.filterAttrMap[attrPath]
                         return
 
             if not a and not b

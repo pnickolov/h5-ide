@@ -15,16 +15,13 @@ define [ '../base/view',
             'change #volume-device' : 'deviceNameChanged'
             'keyup #volume-size-ranged' : 'sizeChanged'
             'keyup  #volume-size-ranged' : 'processIops'
-            #'keyup #volume-size-ranged' : 'sizeChanged'
             'keyup #iops-ranged' : 'sizeChanged'
-            #'keyup #iops-ranged' : 'iopsChanged'
             'click #snapshot-info-group' : 'showSnapshotDetail'
+            'change #volume-property-encrypted-check' : 'encryptedCheck'
 
         render     : () ->
-            console.log 'property:volume render'
-            #
             @$el.html( template( @model.attributes ) )
-            # parsley bind
+
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < 1
@@ -37,18 +34,23 @@ define [ '../base/view',
                     return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
                     return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
-            #
 
             @model.attributes.volume_detail.name
 
         volumeTypeChecked : ( event ) ->
             @processIops()
-            if($('#volume-type-radios input:checked').val() is 'radio-standard')
+
+            type = $('#volume-type-radios input:checked').val()
+            # Get iops range when type is 'io1'(IOPS)
+            iops = if type is 'io1' then $( '#iops-ranged' ).val() else ''
+
+            if( type isnt 'io1') #IOPS
                 $( '#iops-group' ).hide()
-                @model.setVolumeTypeStandard()
             else
                 $( '#iops-group' ).show()
-                @model.setVolumeTypeIops $( '#iops-ranged' ).val()
+
+            @model.setVolumeType type, iops
+
             @sizeChanged()
 
         deviceNameChanged : ( event ) ->
@@ -75,7 +77,8 @@ define [ '../base/view',
 
         processIops: ( event ) ->
             size = parseInt $( '#volume-size-ranged' ).val(), 10
-            opsCheck = $( '#radio-iops' ).is ':checked'
+            opsCheck = $( '#radio-io1' ).is ':checked'
+
             if size >= 10
                 @enableIops()
             else if not opsCheck
@@ -102,18 +105,23 @@ define [ '../base/view',
             volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
             iopsValidate = true
             volumeValidate = $( '#volume-size-ranged' ).parsley 'validate'
-            iopsEnabled = $( '#radio-iops' ).is ':checked'
+            iopsEnabled = $( '#radio-io1' ).is ':checked'
+
             if iopsEnabled
                 iopsValidate = $( '#iops-ranged' ).parsley 'validate'
             if volumeValidate and iopsValidate
                 this.trigger 'VOLUME_SIZE_CHANGED', volumeSize
                 if iopsEnabled
-                    @model.setVolumeIops $( '#iops-ranged' ).val()
+                    @model.setVolumeType 'io1', $( '#iops-ranged' ).val()
             null
 
 
         showSnapshotDetail : ( event ) ->
             @trigger "OPEN_SNAPSHOT", $("#snapshot-info-group").data("uid")
+            null
+
+        encryptedCheck : ( event ) ->
+            @model.setEncrypted event.target.checked
             null
     }
 

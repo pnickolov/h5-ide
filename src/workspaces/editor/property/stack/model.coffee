@@ -32,6 +32,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         isAppEdit : @isAppEdit
         isStack   : @isStack
         isImport  : design.modeIsAppView()
+        isResDiff : design.get 'resource_diff'
         opsEnable : agentData.enabled
       }
 

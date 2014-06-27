@@ -576,6 +576,20 @@ td.table-action a.btn {
 	color      : #d9d9d9;
 }
 
+.resdiff-info {
+	padding-left: 10px;
+}
+
+.resdiff-switch {
+	position: relative;
+}
+
+.resdiff-switch i {
+	color: #148BE6;
+	position: absolute;
+
+}
+
 .property-control-group {
 	padding : 8px 10px;
 }

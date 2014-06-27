@@ -32,6 +32,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state      : OpsModelState.UnRun
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
+
+
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -307,14 +309,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_name    : appName
       }).then ( res )->
         m = new OpsModel({
-          name       : appName
-          requestId  : res[0]
-          state      : OpsModelState.Initializing
-          progress   : 0
-          region     : region
-          usage      : toRunJson.usage
-          updateTime : +(new Date())
-          stoppable  : toRunJson.property.stoppable
+          name          : appName
+          requestId     : res[0]
+          state         : OpsModelState.Initializing
+          progress      : 0
+          region        : region
+          usage         : toRunJson.usage
+          updateTime    : +(new Date())
+          stoppable     : toRunJson.property.stoppable
+          resource_diff : false
         })
         App.model.appList().add m
         m

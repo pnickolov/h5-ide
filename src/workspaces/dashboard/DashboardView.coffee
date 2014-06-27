@@ -203,6 +203,10 @@ define [
       target = $(evt.currentTarget)
       region = target.attr 'data-region'
       if @region is region then return
+
+      if @region is "global" or region is "global"
+        resetScroller = true
+
       @region = region
 
       $( '#region-switch').find('span').text( target.text() )
@@ -217,6 +221,9 @@ define [
         $("#GlobalView" ).hide()
         @updateRegionAppStack()
         @updateRegionResources()
+
+      if resetScroller
+        $("#global-region-wrap").nanoScroller("reset")
       return
 
     switchAppStack: ( evt ) ->

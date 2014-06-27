@@ -1,5 +1,12 @@
 /* svg.js 1.0.0-rc.10-4-gf47dddc - svg selector inventor regex default color array pointarray patharray number viewbox bbox rbox element parent container fx relative event defs group arrange mask clip gradient pattern doc shape symbol use rect ellipse line poly path image text textpath nested hyperlink marker sugar set data memory loader helpers - svgjs.com/license */
 
+// Modified version of svg.js :
+// 1. Every svg element won't have id when created.
+// 2. Every svg element won't have instance referencing the SVG Object
+// 3. Every SVG Object's trans object will only be generated when accessed.
+// 4. Does not set svg attributes when creating the SVG doc
+// 5. SvgElement.classes() can set classes.
+
 define([], function() {
 
   var SVG = this.SVG = function(element) {
@@ -32,7 +39,7 @@ define([], function() {
     var element = document.createElementNS(this.ns, name)
 
     /* apply unique id */
-    element.setAttribute('id', this.eid(name))
+    // element.setAttribute('id', this.eid(name))
 
     return element
   }
@@ -990,6 +997,12 @@ define([], function() {
 
   })
 
+  function getTrans() {
+    if ( this.__trans ) { return this.__trans; }
+    return this.__trans = SVG.defaults.trans()
+  }
+  function setTrans(t) { this.__trans = t; }
+
 
   SVG.Element = SVG.invent({
     // Initialize node
@@ -998,12 +1011,13 @@ define([], function() {
       this._stroke = SVG.defaults.attrs.stroke
 
       /* initialize transformation store with defaults */
-      this.trans = SVG.defaults.trans()
+      Object.defineProperty( this, "trans", {get:getTrans, set:setTrans});
+      // this.trans = SVG.defaults.trans()
 
       /* create circular reference */
       if (this.node = node) {
         this.type = node.nodeName
-        this.node.instance = this
+        // this.node.instance = this
       }
     }
 
@@ -1337,7 +1351,11 @@ define([], function() {
         return this.attr('id')
       }
       // Return array of classes on the node
-    , classes: function() {
+    , classes: function( klasses ) {
+        if ( klasses ) {
+          this.node.setAttribute('class', klasses);
+          return this;
+        }
         var classAttr = this.node.getAttribute('class')
         if (classAttr === null) {
           return []
@@ -2483,9 +2501,9 @@ define([], function() {
         .call(this, this.parent.nodeName == 'svg' ? this.parent : SVG.create('svg'))
 
       /* set svg element attributes */
-      this
-        .attr({ xmlns: SVG.ns, version: '1.1', width: '100%', height: '100%' })
-        .attr('xmlns:xlink', SVG.xlink, SVG.xmlns)
+      // this
+      //   .attr({ xmlns: SVG.ns, version: '1.1', width: '100%', height: '100%' })
+      //   .attr('xmlns:xlink', SVG.xlink, SVG.xmlns)
 
       /* create the <defs> node */
       this._defs = new SVG.Defs

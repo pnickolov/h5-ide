@@ -17,7 +17,7 @@ define [ '../base/view',
             'change #property-app-name'            : 'changeAppName'
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
-            'click .sg-list-delete-btn'            : 'deleteAcl'
+            'click .acl-info-list .sg-list-delete-btn' : 'deleteAcl'
             'click #property-app-resdiff'          : 'toggleResDiff'
 
         render     : () ->
@@ -79,6 +79,7 @@ define [ '../base/view',
             null
 
         refreshACLList : () ->
+            $(@el).find('.acl-info-list-num').text("(#{@model.get('networkAcls').length})")
             $('#stack-property-acl-list').html acl_template @model.attributes
 
         createAcl : ()->
@@ -107,10 +108,12 @@ define [ '../base/view',
                 modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->
                         that.model.removeAcl( aclUID )
+                        that.model.getNetworkACL()
                         that.refreshACLList()
                         modal.close()
             else
                 @model.removeAcl( aclUID )
+                @model.getNetworkACL()
                 @refreshACLList()
     }
 

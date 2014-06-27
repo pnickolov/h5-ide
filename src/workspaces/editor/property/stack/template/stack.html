@@ -29,12 +29,12 @@
     {{/if}}
 
     {{#if isAppEdit}}
-    <section class="property-control-group">
+    <section class="property-control-group resdiff-switch">
       <div class="checkbox">
         <input id="property-app-resdiff" type="checkbox" name="resdiff" {{#if isResDiff}}checked{{/if}} >
         <label for="property-app-resdiff"></label>
       </div>
-      <label for="property-app-resdiff">{{ i18n "PROP_APP_LBL_RESDIFF"}}</label>
+      <label for="property-app-resdiff">{{ i18n "PROP_APP_LBL_RESDIFF"}}</label><i class="icon-info tooltip" data-tooltip="{{ i18n 'PROP_APP_TIP_RESDIFF'}}"></i>
     </section>
     {{/if}}
   {{else}}

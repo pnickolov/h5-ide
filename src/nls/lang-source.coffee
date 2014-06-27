@@ -1575,6 +1575,10 @@ module.exports =
       en: "Monitor and report external resource change of this app"
       zh: ""
 
+    PROP_APP_TIP_RESDIFF:
+      en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
+      zh: ""
+
     PROP_STACK_LBL_USAGE:
       en: "Usage"
       zh: "用途"

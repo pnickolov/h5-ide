@@ -4,12 +4,15 @@ define [
   "./template/TplOpsEditor"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
+  "./subviews/ResourcePanel"
+  "./subviews/Statusbar"
+  "./canvas/CanvasView"
   "UI.modalplus"
 
   "backbone"
   "UI.selectbox"
   "MC.canvas"
-], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, Modal )->
+], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
 
   # LEGACY code
   # Should remove this in the future.
@@ -24,34 +27,30 @@ define [
     constructor : ( options )->
       _.extend this, options
 
-      @propertyPanel = new PropertyPanel()
-      @propertyPanel.workspace = @workspace
-
-      @toolbar = new Toolbar()
-      @toolbar.workspace = @workspace
-
-      @initialize()
-      return
-
-    render : ()->
       console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
-
-      # 1. Generate basic dom structure.
       @setElement $( @createTpl() ).appendTo("#main").show()[0]
       @$el.attr("data-workspace", @workspace.id)
+
+      opt = {
+        workspace : @workspace
+        parent    : @
+      }
+
+      @toolbar       = new Toolbar(opt)
+      @propertyPanel = new PropertyPanel(opt)
+      @resourcePanel = new ResourcePanel(opt)
+      @statusbar     = new Statusbar(opt)
+      @canvas        = new CanvasView(opt)
 
       # 2. Bind Events for MC.canvas.js
       @bindUserEvent()
 
       # 3 Update subviews
-      @toolbar.render()
-      @propertyPanel.render()
+      @statusbar.render()
 
       @renderSubviews()
 
-      # 4. Hack, ask the canvas to init the canvas.
-      # Should decouple the canvas from design.
-      @workspace.design.canvas.init()
+      @initialize()
       return
 
     backup : ()->
@@ -71,6 +70,8 @@ define [
     recover : ()->
       @$el.find(".OEPanelCenter").html @__backupSvg
       @__backupSvg = null
+
+      @resourcePanel.recalcAccordion()
       @recoverSubviews()
       @$el.attr("id", "OpsEditor")
 
@@ -80,6 +81,9 @@ define [
     remove : ()->
       @toolbar.remove()
       @propertyPanel.remove()
+      @resourcePanel.remove()
+      @statusbar.remove()
+      @canvas.remove()
 
       Backbone.View.prototype.remove.call this
       return

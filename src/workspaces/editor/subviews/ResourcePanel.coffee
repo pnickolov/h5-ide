@@ -62,7 +62,8 @@ define [
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
     initialize : (options)->
-      @workspace = options.workspace
+      _.extend this, options
+
       @subViews = []
 
       region = @workspace.opsModel.get("region")
@@ -78,10 +79,8 @@ define [
       @subEventForUpdateReuse()
 
       @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
-      return
 
-    render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelLeft").html LeftPanelTpl.panel({})
+      @setElement @parent.$el.find(".OEPanelLeft").html LeftPanelTpl.panel({})
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
       @recalcAccordion()

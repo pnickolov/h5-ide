@@ -52,6 +52,8 @@ define [
     tabClass : ()-> "icon-stack-tabbar"
     url      : ()-> @opsModel.url()
 
+    viewClass : OpsEditorBase
+
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.
     fetchAdditionalData : ()->
@@ -59,10 +61,6 @@ define [
       d.resolve()
       d.promise
 
-    # Returns a new View
-    createView : ()-> new OpsEditorView({workspace:this})
-    # Returns a new Design object.
-    initDesign : ()-> @design.finishDeserialization()
     # Return true if the data is ready.
     isReady : ()-> !!@__hasAdditionalData
 
@@ -180,13 +178,9 @@ define [
 
       @listenTo @design, "change:name", @updateTab
 
-      @view = @createView()
-      @view.opsModel  = @opsModel
-      @view.workspace = @
       @hideOtherEditor()
-      @view.render()
 
-      @initDesign()
+      @view = new @viewClass({ workspace : @ })
 
       @initEditor()
 
@@ -202,7 +196,10 @@ define [
         Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     showEditor : ()->
-      if @hideOtherEditor()
+      res = @hideOtherEditor()
+      if not @view then return
+
+      if res
         @view.$el.show()
         @view.recover()
       else

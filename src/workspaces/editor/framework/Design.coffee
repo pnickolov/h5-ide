@@ -1,9 +1,8 @@
 define [
   "constant"
   "OpsModel"
-  "workspaces/editor/framework/canvasview/CanvasAdaptor"
   'CloudResources'
-], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
+], ( constant, OpsModel, CloudResources ) ->
 
   # The recursiveCheck is not fully working.
   ### env:prod ###
@@ -108,7 +107,6 @@ define [
     @__shoulddraw   = false # Disable drawing for deserializing, delay it until everything is deserialized
 
     canvas_data = opsModel.getJsonData()
-    @canvas = new CanvasAdaptor( canvas_data.layout.size )
 
     # Mode
     @__mode = Design.MODE.App
@@ -123,7 +121,7 @@ define [
     delete canvas_data.component
     delete canvas_data.layout
 
-    @attributes = $.extend true, {}, canvas_data
+    @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
 
     # Restore these two attr
     canvas_data.component = component
@@ -568,7 +566,9 @@ define [
 
     # Quick Fix for some other property
     # 1. save $canvas's size to layout
-    data.layout.size = @canvas.sizeAry
+    data.layout.size = data.canvasSize
+    delete data.canvasSize
+
     # 2. save stoppable to property
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
@@ -746,9 +746,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-
-  # Inject dependency, so that CanvasAdaptor won't require Design.js
-  CanvasAdaptor.setDesign( Design )
 
   # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
   ### env:dev ###

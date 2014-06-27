@@ -1,20 +1,10 @@
 
-define [
-  "./OpsViewBase"
-  "./subviews/ResourcePanel"
-  "./subviews/Statusbar"
-  "OpsModel"
-], ( OpsViewBase, ResourcePanel, Statusbar, OpsModel )->
+define [ "./OpsViewBase" ], ( OpsViewBase )->
 
   OpsViewBase.extend {
 
     events :
       "SAVE" : "saveStack"
-
-    initialize : ()->
-      @resourcePanel = new ResourcePanel({workspace:@workspace})
-      @statusbar = new Statusbar({workspace:@workspace})
-      return
 
     bindUserEvent : ()->
       # Events
@@ -31,22 +21,6 @@ define [
         .on('selectstart', false)
 
       $("#canvas_body").addClass("canvas_state_stack")
-      return
-
-    renderSubviews : ()->
-      @resourcePanel.render()
-      @statusbar.render()
-      return
-
-    recoverSubviews : ()->
-      @resourcePanel.recalcAccordion()
-      return
-
-    remove : ()->
-      @resourcePanel.remove()
-      @statusbar.remove()
-
-      OpsViewBase.prototype.remove.call this
       return
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"

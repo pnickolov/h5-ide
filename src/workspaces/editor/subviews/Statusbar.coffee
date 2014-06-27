@@ -180,16 +180,15 @@ define [
   Backbone.View.extend
 
     initialize : (options)->
-      workspace = @workspace = options.workspace
+      _.extend this, options
+
+      workspace = @workspace
       @itemViews = []
-      null
+
+      @setElement @parent.$el.find(".OEPanelBottom").html template.frame()
+      @renderItem()
 
     ready: false
-
-    render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelBottom").html template.frame()
-      @renderItem()
-      @
 
     bindItem: ->
       for item, index in jQuery.extend( true, [], items ).reverse()

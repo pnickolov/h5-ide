@@ -197,3 +197,12 @@
         {{/if}}
     </div>
 </div>
+
+<!-- {{svgDefs}} -->
+<svg style="display:none;"><defs>
+  <path d="M-5 0.5l5.5 -5.5l5.5 5.5 l-5.5 5.5z" id="port_diamond"></path>
+  <path d="M8 0.5l-6 -5.5l-2 0 l0 11 l2 0z" id="port_right"></path>
+  <path d="M-8 0.5l6 -5.5l2 0 l0 11 l-2 0z" id="port_left"></path>
+  <path d="M0.5 0l5.5 0l0 -2l-5.5 -6l-5.5 6l0 2z" id="port_top"></path>
+  <path d="M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z" id="port_bottom"></path>
+</defs></svg>

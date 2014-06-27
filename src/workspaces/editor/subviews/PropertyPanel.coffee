@@ -72,8 +72,10 @@ define [
       "click #btn-switch-property" : "switchToProperty"
       "click #btn-switch-state"    : "showStateEditor"
 
-    render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelRight").html( RightPanelTpl() )
+    initialize : ( options )->
+      _.extend this, options
+
+      @setElement @parent.$el.find(".OEPanelRight").html( RightPanelTpl() )
       @$el.toggleClass("hidden", @__rightPanelHidden || false)
 
       if @__backup

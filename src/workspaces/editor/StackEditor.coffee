@@ -15,8 +15,7 @@ define [
     title       : ()-> (@design || @opsModel).get("name") + " - stack"
     tabClass    : ()-> "icon-stack-tabbar"
 
-    createView : ()->
-      new StackView({workspace:this})
+    viewClass : StackView
 
     isReady : ()->
       if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false

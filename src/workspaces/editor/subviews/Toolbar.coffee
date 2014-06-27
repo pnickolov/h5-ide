@@ -53,7 +53,9 @@ define [
       'click .reload-states'          : "reloadState"
       'click .icon-save-app'          : 'appToStack'
 
-    render : ()->
+    initialize : ( options )->
+      _.extend this, options
+
       opsModel = @workspace.opsModel
 
       # Toolbar
@@ -75,7 +77,7 @@ define [
         if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
           tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
-      @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
+      @setElement @parent.$el.find(".OEPanelTop").html( tpl )
 
       @updateTbBtns()
       @updateZoomButtons()
@@ -107,7 +109,7 @@ define [
       @updateZoomButtons()
       return
 
-    setTbLineStyle : ( ls, attr )-> $canvas.setLineStyle( attr[0] )
+    setTbLineStyle : ( ls, attr )-> # $canvas.setLineStyle( attr[0] )
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")
@@ -140,7 +142,7 @@ define [
     zoomIn  : ()-> MC.canvas.zoomIn();  @updateZoomButtons()
     zoomOut : ()-> MC.canvas.zoomOut(); @updateZoomButtons()
     updateZoomButtons : ()->
-      scale = $canvas.scale()
+      scale = 1 #$canvas.scale()
       if scale <= 1
         @$el.find(".icon-zoom-in").attr("disabled", "disabled")
       else

@@ -1430,26 +1430,37 @@ define([], function() {
         return this._children || (this._children = [])
       }
       // Add given element at a position
-    , add: function(element, i) {
-        if (!this.has(element)) {
-          /* define insertion index if none given */
-          i = i == null ? this.children().length : i
-
-          /* remove references from previous parent */
-          if (element.parent)
-            element.parent.children().splice(element.parent.index(element), 1)
-
-          /* add element references */
-          this.children().splice(i, 0, element)
-          this.node.insertBefore(element.node, this.node.childNodes[i] || null)
-          element.parent = this
+    , add: function(elements, i) {
+        if ( !elements.length ) {
+          elements = [ elements ]
         }
+        var element;
+        for ( var j = 0; j < elements.length; ++j ) {
+          element = elements[j];
+          if (!this.has(element)) {
+            /* remove references from previous parent */
+            if (element.parent)
+              element.parent.children().splice(element.parent.index(element), 1)
+
+            if ( i ) {
+              /* add element references */
+              this.children().splice(i, 0, element)
+              this.node.insertBefore(element.node, this.node.childNodes[i] || null)
+            } else {
+              this.children().push( element )
+              this.node.insertBefore(element.node, null)
+            }
+
+            element.parent = this
+          }
+        }
+
 
         /* reposition defs */
-        if (this._defs) {
-          this.node.removeChild(this._defs.node)
-          this.node.appendChild(this._defs.node)
-        }
+        // if (this._defs) {
+        //   this.node.removeChild(this._defs.node)
+        //   this.node.appendChild(this._defs.node)
+        // }
 
         return this
       }
@@ -2506,9 +2517,9 @@ define([], function() {
       //   .attr('xmlns:xlink', SVG.xlink, SVG.xmlns)
 
       /* create the <defs> node */
-      this._defs = new SVG.Defs
-      this._defs.parent = this
-      this.node.appendChild(this._defs.node)
+      // this._defs = new SVG.Defs
+      // this._defs.parent = this
+      // this.node.appendChild(this._defs.node)
 
       /* turn off sub pixel offset by default */
       this.doSpof = false
@@ -2543,6 +2554,11 @@ define([], function() {
 
       // Creates and returns defs element
     , defs: function() {
+        if ( this._defs ) return this._defs;
+
+        this._defs = new SVG.Defs
+        this._defs.parent = this
+        this.node.appendChild(this._defs.node)
         return this._defs
       }
 
@@ -2973,7 +2989,7 @@ define([], function() {
       this._build   = false                  /* disable build mode for adding multiple lines */
 
       /* set default font */
-      this.attr('font-family', SVG.defaults.attrs['font-family'])
+      // this.attr('font-family', SVG.defaults.attrs['font-family'])
     }
 
     // Inherit from

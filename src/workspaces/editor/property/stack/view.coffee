@@ -14,6 +14,7 @@ define [ '../base/view',
         events   :
             'change #property-stack-name'          : 'stackNameChanged'
             'change #property-stack-description'   : 'stackDescriptionChanged'
+            'change #property-app-name'            : 'changeAppName'
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
             'click .sg-list-delete-btn'            : 'deleteAcl'
@@ -31,7 +32,22 @@ define [ '../base/view',
 
             @refreshACLList()
 
+            if @model.isAppEdit
+                @$( '#property-app-name' ).parsley 'custom', @checkAppName
+
             null
+
+        checkAppName: ( val )->
+            repeatApp = App.model.appList().findWhere(name: val)
+            if repeatApp and repeatApp.id isnt Design.instance().get('id')
+                return lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+
+            null
+
+        changeAppName: ( e ) ->
+            $target = $ e.currentTarget
+            if $target.parsley 'validate'
+                Design.instance().set 'name', $target.val()
 
         toggleResDiff: ( e ) -> Design.instance().set 'resource_diff', e.currentTarget.checked
 

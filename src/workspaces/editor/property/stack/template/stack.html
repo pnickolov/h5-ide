@@ -21,6 +21,13 @@
       <dt><label>{{ i18n "PROP_STACK_LBL_DESC"}}</label></dt>
       <dd>{{description}}</dd>
     </dl>
+
+    {{#if isApp}}
+      {{#if isResDiff}}
+      <p class="resdiff-info">{{ i18n "PROP_APP_LBL_RESDIFF"}}</p>
+      {{/if}}
+    {{/if}}
+
     {{#if isAppEdit}}
     <section class="property-control-group">
       <div class="checkbox">

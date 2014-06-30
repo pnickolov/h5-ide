@@ -133,22 +133,18 @@ define [
     loadVpcResource : ()->
       CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
 
-    applyAppEdit : ( modfiedData, force )->
-      modfied = modfiedData or @design.isModified( undefined, true )
-
-      if modfied and not force then return modfied
-
-      if not modfied
+    applyAppEdit : ( newJson, fastUpdate )->
+      if not newJson
         @__appEdit = false
         @design.setMode( Design.MODE.App )
         @view.switchMode( false )
-        return true
+        return
 
       self = @
       @__applyingUpdate = true
-      fastUpdate = not modfied.component and not @opsModel.testState( OpsModel.State.Stopped )
+      fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
-      @opsModel.update( modfied.newData, fastUpdate ).then ()->
+      @opsModel.update( newJson, fastUpdate ).then ()->
         if fastUpdate
           self.onAppEditDone()
         else

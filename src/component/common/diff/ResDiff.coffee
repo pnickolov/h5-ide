@@ -283,10 +283,7 @@ define [
 
             return ''
 
-        renderAppUpdateView: () ->
-
-            $containerDom = $(@el)
-            @_genResGroup($containerDom)
+        renderAppUpdateView: () -> @_genResGroup(@$el)
 
         getDiffInfo: () ->
 

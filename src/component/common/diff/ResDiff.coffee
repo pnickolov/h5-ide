@@ -312,12 +312,14 @@ define [
             # if have state change
             hasStateChange = false
             onlyStateChange = true
-            _.each that.modifiedComps, (comp) ->
+            _.each that.modifiedComps, (comp, uid) ->
                 if comp.state
                     hasStateChange = true
-                if not (_.size(comp) is 1 and comp.state)
+                if _.size(comp) is 1 and comp.state
+                    delete that.modifiedComps[uid]
+                else
                     onlyStateChange = false
-                delete comp.state if comp.state
+                delete comp.state if (comp and comp.state)
                 null
             if onlyStateChange and _.size(that.addedComps) is 0 and _.size(that.removedComps) is 0
                 hasCompChange = false

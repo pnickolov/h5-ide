@@ -129,7 +129,7 @@ define [
 
       # A hack. See DesignImpl.prototype.serialize()
       currentDesignObj = Design.instance()
-      @use()
+      @design.use()
 
       try
         @design.reload( @opsModel )

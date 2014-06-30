@@ -32,7 +32,7 @@ define [], () ->
             
             option.noDiffArrayAttrMap = {
                 'state': true
-                'resource.RouteSet': true
+                # 'resource.RouteSet': true
             }
 
         option.filterResMap = {}

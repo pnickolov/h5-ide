@@ -28,6 +28,11 @@ define [], () ->
                 'resource.Iops': true
             }
 
+        option.noDiffArrayAttrMap = {
+            'state': true
+            'resource.RouteSet': true
+        }
+
         option.filterResMap = {}
 
         isArray = (value) ->
@@ -65,6 +70,8 @@ define [], () ->
 
                 a = aAry
                 b = bAry
+
+            attrPath = ''
 
             if path
 
@@ -128,14 +135,16 @@ define [], () ->
             if typeA is 'object' or typeA is 'array' or typeB is 'object' or typeB is 'array'
 
                 # process array diff
-                if (not option.ignoreArrayCompare) and (typeA is 'array' and typeB is 'array')
+                if typeA is 'array' and typeB is 'array'
+                    
+                    if (not attrPath or (attrPath and not option.noDiffArrayAttrMap[attrPath]))
 
-                    diffAryResult = {}
+                        diffAryResult = {}
 
-                    if a.length < b.length
-                        _diffAry.call(this, a, b)
-                    else
-                        _diffAry.call(this, b, a)
+                        if a.length < b.length
+                            _diffAry.call(this, a, b)
+                        else
+                            _diffAry.call(this, b, a)
 
                 keys = []
                 for v of a

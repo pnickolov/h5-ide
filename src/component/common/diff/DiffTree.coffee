@@ -28,10 +28,12 @@ define [], () ->
                 'resource.Iops': true
             }
 
-        option.noDiffArrayAttrMap = {
-            'state': true
-            'resource.RouteSet': true
-        }
+        if not option.noDiffArrayAttrMap
+            
+            option.noDiffArrayAttrMap = {
+                'state': true
+                'resource.RouteSet': true
+            }
 
         option.filterResMap = {}
 
@@ -136,7 +138,8 @@ define [], () ->
 
                 # process array diff
                 if typeA is 'array' and typeB is 'array'
-                    
+
+                    # ignore array diff of specified in noDiffArrayAttrMap
                     if (not attrPath or (attrPath and not option.noDiffArrayAttrMap[attrPath]))
 
                         diffAryResult = {}

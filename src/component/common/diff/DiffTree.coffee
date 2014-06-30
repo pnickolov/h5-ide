@@ -14,7 +14,7 @@ define [], () ->
                 'number': true
                 'serverGroupUid': true
                 'serverGroupName': true
-                'state': true
+                # 'state': true
                 'resource.PrivateIpAddressSet.n.AutoAssign': true,
                 'resource.AssociatePublicIpAddress': true,
                 'resource.KeyName': true,
@@ -126,7 +126,7 @@ define [], () ->
             if typeA is 'object' or typeA is 'array' or typeB is 'object' or typeB is 'array'
 
                 # process array diff
-                if (not option.disableArrayCompare) and (typeA is 'array' and typeB is 'array')
+                if (not option.ignoreArrayCompare) and (typeA is 'array' and typeB is 'array')
 
                     diffAryResult = {}
 

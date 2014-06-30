@@ -629,7 +629,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         if aws_ins.rootDeviceType is 'ebs'
 
           ##get root device in original component
-          if not originComp
+          if originComp
             insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
             insRes.BlockDeviceMapping = _.filter insRes.BlockDeviceMapping, (bdm) ->
               return false if _.isString(bdm)

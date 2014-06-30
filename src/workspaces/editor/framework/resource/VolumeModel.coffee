@@ -291,19 +291,6 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
 
     handleTypes : constant.RESTYPE.VOL
 
-    diffJson : ( newData, oldData, newComponent, oldComponent )->
-      if not ( newData and oldData and _.isEqual(newData, oldData) )
-        changeData = newData or oldData
-        instance = Design.instance().component( changeData.resource.AttachmentSet.InstanceId )
-        if instance
-          return {
-            id     : instance.id
-            name   : instance.get("name")
-            change : "Update"
-          }
-
-      return
-
     deserialize : ( data, layout_data, resolve )->
 
       # Compact volume for servergroup

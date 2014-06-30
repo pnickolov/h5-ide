@@ -204,6 +204,7 @@ define [ 'constant' ], ( constant ) ->
         if path.length is 2
 
             data.skip = true if path[1] is 'resource'
+            delete data.key if path[1] is 'state'
 
         return data
 

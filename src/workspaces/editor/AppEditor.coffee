@@ -75,6 +75,23 @@ define [
           return
         throw err
 
+
+    delayUntilAwake : ( method )->
+      if @isAwake()
+        method.call this
+      else
+        console.info "AppEditor's action is delayed until wake up."
+        @__calledUponWakeup = method
+      return
+
+    awake : ()->
+      StackEditor.prototype.awake.call this
+      if @__calledUponWakeup
+        @__calledUponWakeup.call this
+        @__calledUponWakeup = null
+
+      return
+
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
     isAppEditMode : ()-> !!@__appEdit
@@ -133,22 +150,18 @@ define [
     loadVpcResource : ()->
       CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
 
-    applyAppEdit : ( modfiedData, force )->
-      modfied = modfiedData or @design.isModified( undefined, true )
-
-      if modfied and not force then return modfied
-
-      if not modfied
+    applyAppEdit : ( newJson, fastUpdate )->
+      if not newJson
         @__appEdit = false
         @design.setMode( Design.MODE.App )
         @view.switchMode( false )
-        return true
+        return
 
       self = @
       @__applyingUpdate = true
-      fastUpdate = not modfied.component and not @opsModel.testState( OpsModel.State.Stopped )
+      fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
-      @opsModel.update( modfied.newData, fastUpdate ).then ()->
+      @opsModel.update( newJson, fastUpdate ).then ()->
         if fastUpdate
           self.onAppEditDone()
         else
@@ -169,7 +182,8 @@ define [
 
       true
 
-    onAppEditDone : ()->
+    onAppEditDone   : ()-> @delayUntilAwake @__onAppEditDone
+    __onAppEditDone : ()->
       if @isRemoved() then return
 
       @__appEdit = @__applyingUpdate = false
@@ -199,12 +213,15 @@ define [
       else if not @__applyingUpdate and not @opsModel.testState( OpsModel.State.Destroyed )
         self = @
         @view.showUpdateStatus( "", true )
-        @loadVpcResource().then ()->
-          if self.isRemoved() then return
-          self.design.renderNode()
-          self.view.toggleProcessing()
+        @loadVpcResource().then ()-> self.delayUntilAwake self.onVpcResLoaded
 
       StackEditor.prototype.onOpsModelStateChanged.call this
+
+    onVpcResLoaded : ()->
+      if @isRemoved() then return
+      @design.renderNode()
+      @view.toggleProcessing()
+      return
 
 
   AppEditor

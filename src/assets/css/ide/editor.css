@@ -35,6 +35,11 @@
       content: "\F125"; }
   .OEPanelRight.state.hidden {
     right: -654px; }
+  .OEPanelRight.no-transition {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none; }
 
 .OEMiddleWrap {
   position: absolute;

@@ -23,18 +23,30 @@
     </dl>
 
     {{#if isApp}}
-      {{#if isResDiff}}
-      <p class="resdiff-info">{{ i18n "PROP_APP_LBL_RESDIFF"}}</p>
+    <dl class="dl-vertical">
+      <dt><label>{{ i18n "PROP_APP_LBL_INSTANCE_STATE"}}</label></dt>
+      {{#if opsEnable}}
+      <dd>Enabled</dd>
+      {{else}}
+      <dd>Disabled</dd>
       {{/if}}
+      <dt><label>{{ i18n "PROP_APP_LBL_RESDIFF_VIEW"}}</label></dt>
+      {{#if isResDiff}}
+      <dd>Enabled</dd>
+      {{else}}
+      <dd>Disabled</dd>
+      {{/if}}
+    </dl>
+
     {{/if}}
 
     {{#if isAppEdit}}
-    <section class="property-control-group">
+    <section class="property-control-group resdiff-switch">
       <div class="checkbox">
         <input id="property-app-resdiff" type="checkbox" name="resdiff" {{#if isResDiff}}checked{{/if}} >
         <label for="property-app-resdiff"></label>
       </div>
-      <label for="property-app-resdiff">{{ i18n "PROP_APP_LBL_RESDIFF"}}</label>
+      <label for="property-app-resdiff">{{ i18n "PROP_APP_LBL_RESDIFF"}}</label><i class="icon-info tooltip" data-tooltip="{{ i18n 'PROP_APP_TIP_RESDIFF'}}"></i>
     </section>
     {{/if}}
   {{else}}
@@ -59,7 +71,7 @@
 
 
 	{{#if networkAcls}}
-	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="property-head-num-wrap">({{networkAcls.length}})</span>
+	<div class="option-group-head pos-r">{{ i18n "PROP_STACK_TIT_ACL" }}<span class="acl-info-list-num property-head-num-wrap">({{networkAcls.length}})</span>
 	</div>
 	<div class="option-group">
     <ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul>

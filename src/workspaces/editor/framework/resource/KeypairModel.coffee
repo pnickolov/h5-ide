@@ -104,8 +104,6 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       defaultKP.set( 'fingerprint', fingerprint or '' )
       defaultKP.set( 'isSet', true )
 
-    diffJson : ()-> # Disable diff for thie Model
-
     handleTypes : constant.RESTYPE.KP
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({

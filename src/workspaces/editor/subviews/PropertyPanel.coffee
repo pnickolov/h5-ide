@@ -269,7 +269,12 @@ define [
 
     forceShow : ()->
       if @__rightPanelHidden
-        @$el.find(".HideOEPanelRight").click()
+        @__rightPanelHidden = false
+        @$el.toggleClass("no-transition", true).removeClass("hidden")
+        self = @
+        setTimeout ()->
+          self.$el.removeClass("no-transition")
+        , 100
       return
 
     refresh : ()->

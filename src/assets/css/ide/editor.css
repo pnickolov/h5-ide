@@ -614,6 +614,13 @@
   fill: #333;
   cursor: default; }
 
+.node-sg-color-border {
+  fill: none;
+  stroke: none; }
+
+.node-label-name-bg {
+  fill: none; }
+
 .group, .node-background {
   fill: transparent; }
 
@@ -637,6 +644,15 @@
     cursor: ns-resize; }
   .group-resizer.bottomright {
     cursor: nwse-resize; }
+
+.selected .node-background {
+  fill: #F2F8FF;
+  stroke-width: 2;
+  stroke: #659FFF; }
+.selected .node-label-name-bg {
+  fill: #659FFF; }
+.selected .node-label {
+  fill: #fff; }
 
 /* port style */
 .port {

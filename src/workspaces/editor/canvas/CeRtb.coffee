@@ -35,9 +35,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         imageY  : 13
         imageW  : 60
         imageH  : 57
-      })
-
-      node.add([
+      }).add([
         svg.text("").move(41, 27).classes('node-label')
 
         svg.use("port_left").attr({

@@ -1431,7 +1431,7 @@ define([], function() {
       }
       // Add given element at a position
     , add: function(elements, i) {
-        if ( !elements.length ) {
+        if ( !_.isArray(elements) ) {
           elements = [ elements ]
         }
         var element;

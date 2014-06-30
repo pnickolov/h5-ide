@@ -90,9 +90,8 @@ define [ "backbone", "svgjs" ], ()->
       ]).id( @cid )
       .classes( 'dragable ' + @type.replace(/\./g, "-") )
 
-      # if option.labelBg
-        # el.add( svg.rect() )
-        # Canvon.rectangle(2,76,86,13).attr({'class':'node-label-name-bg','rx':3,'ry':3})
+      if option.labelBg
+        el.add( svg.use("label_path").classes("node-label-name-bg") )
 
       if option.label
         el.add( svg.text("").move( width/2, height-4 ).classes( "node-label" ) )
@@ -100,11 +99,11 @@ define [ "backbone", "svgjs" ], ()->
       if option.sg
         el.add(
           svg.group().add([
-            Canvon.rectangle(10, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
-            Canvon.rectangle(20, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
-            Canvon.rectangle(30, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
-            Canvon.rectangle(40, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
-            Canvon.rectangle(50, 6, 7, 5).attr({'class' : 'node-sg-color-border tooltip'})
+            svg.rect(7, 5).move(10, 6).classes('node-sg-color-border tooltip')
+            svg.rect(7, 5).move(20, 6).classes('node-sg-color-border tooltip')
+            svg.rect(7, 5).move(30, 6).classes('node-sg-color-border tooltip')
+            svg.rect(7, 5).move(40, 6).classes('node-sg-color-border tooltip')
+            svg.rect(7, 5).move(50, 6).classes('node-sg-color-border tooltip')
           ]).classes("node-sg-color-group").move(8,62)
         )
 

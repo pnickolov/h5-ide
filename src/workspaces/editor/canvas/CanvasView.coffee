@@ -29,12 +29,11 @@ define [
       @setElement @parent.$el.find(".OEPanelCenter")
       @svg = SVG( @$el.find("svg")[0] )
       canvasSize = @design.get("canvasSize")
-      ss = {
+
+      @$el.children(".canvas-view").css({
         width : canvasSize[0] * MC.canvas.GRID_WIDTH
         height: canvasSize[1] * MC.canvas.GRID_WIDTH
-      }
-      @svg.attr( ss )
-      @$el.children(".canvas-view").css(ss)
+      })
 
       @reload()
       return

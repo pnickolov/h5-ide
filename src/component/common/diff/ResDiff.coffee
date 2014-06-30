@@ -286,6 +286,16 @@ define [
 
             return ''
 
+        getDiffInfo: () ->
+
+            that = this
+
+            return {
+                modified: that.modifiedComps,
+                added: that.addedComps,
+                removed: that.removedComps
+            }
+
         getChangeInfo: () ->
 
             that = this

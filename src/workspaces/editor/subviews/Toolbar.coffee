@@ -472,7 +472,7 @@ define [
             if not instancesNoUserData
                 $switcher.removeClass 'on'
                 confirmModal = new Modal(
-                    title: "Conﬁrm to Enable VisualOps"
+                    title: "Confirm to Enable VisualOps"
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"

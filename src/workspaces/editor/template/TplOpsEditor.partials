@@ -143,7 +143,7 @@
 <!-- {{modal.cancelUpdate}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
   <div class="modal-text-major">This app has been changed.</div>
-  <div class="modal-text-major">Do you conﬁrm to discard the changes?</div>
+  <div class="modal-text-major">Do you confirm to discard the changes?</div>
 </div> </div>
 
 <!-- {{modal.confirmImport}} -->

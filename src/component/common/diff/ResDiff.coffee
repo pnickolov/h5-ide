@@ -306,9 +306,22 @@ define [
             if _.size(layoutModifiedComps)
                 hasLayoutChange = true
 
+            # if have state change
+            hasStateChange = false
+            onlyStateChange = true
+            _.each that.modifiedComps, (comp) ->
+                if comp.state
+                    hasStateChange = true
+                if not (_.size(comp) is 1 and comp.state)
+                    onlyStateChange = false
+                null
+            if onlyStateChange and _.size(that.addedComps) is 0 and _.size(that.removedComps) is 0
+                hasCompChange = false
+
             return {
                 compChange: hasCompChange,
                 layoutChange: hasLayoutChange,
+                stateChange: hasStateChange
             }
 
         getChangeInfo: () ->

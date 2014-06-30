@@ -70,6 +70,7 @@ define [], () ->
 
                 path = path.concat([key]) if key
 
+                # ignore resource of specified type
                 if path.length is 2
 
                     resUID = path[1]
@@ -77,6 +78,7 @@ define [], () ->
                         resType = a.type
                         return if option.filterResMap[resType]
 
+                # ignore resource of specified in filterAttrMap
                 else if path.length > 2
 
                     attrPathAry = path.slice(2)

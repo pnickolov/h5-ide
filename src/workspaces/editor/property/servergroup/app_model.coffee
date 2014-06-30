@@ -26,7 +26,7 @@ define [ '../base/model',
 			if ami
 				@set 'ami', {
 					id   : ami_id
-					name : ami.name
+					name : ami.name or ami.description or ami.id
 					icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 				}
 

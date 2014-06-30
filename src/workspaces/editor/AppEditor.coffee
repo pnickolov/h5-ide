@@ -75,6 +75,23 @@ define [
           return
         throw err
 
+
+    delayUntilAwake : ( method )->
+      if @isAwake()
+        method.call this
+      else
+        console.info "AppEditor's action is delayed until wake up."
+        @__calledUponWakeup = method
+      return
+
+    awake : ()->
+      StackEditor.prototype.awake.call this
+      if @__calledUponWakeup
+        @__calledUponWakeup.call this
+        @__calledUponWakeup = null
+
+      return
+
     isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
     isAppEditMode : ()-> !!@__appEdit
@@ -126,18 +143,8 @@ define [
     recreateDesign : ()->
       # Layout and component changes, need to construct a new Design.
       @view.emptyCanvas()
-
-      # A hack. See DesignImpl.prototype.serialize()
-      currentDesignObj = Design.instance()
-      @design.use()
-
-      try
-        @design.reload( @opsModel )
-        @design.finishDeserialization()
-      catch e
-        console.error e
-
-      currentDesignObj.use()
+      @design.reload( @opsModel )
+      @design.finishDeserialization()
       return
 
     loadVpcResource : ()->
@@ -175,7 +182,8 @@ define [
 
       true
 
-    onAppEditDone : ()->
+    onAppEditDone   : ()-> @delayUntilAwake @__onAppEditDone
+    __onAppEditDone : ()->
       if @isRemoved() then return
 
       @__appEdit = @__applyingUpdate = false
@@ -205,12 +213,15 @@ define [
       else if not @__applyingUpdate and not @opsModel.testState( OpsModel.State.Destroyed )
         self = @
         @view.showUpdateStatus( "", true )
-        @loadVpcResource().then ()->
-          if self.isRemoved() then return
-          self.design.renderNode()
-          self.view.toggleProcessing()
+        @loadVpcResource().then ()-> self.delayUntilAwake self.onVpcResLoaded
 
       StackEditor.prototype.onOpsModelStateChanged.call this
+
+    onVpcResLoaded : ()->
+      if @isRemoved() then return
+      @design.renderNode()
+      @view.toggleProcessing()
+      return
 
 
   AppEditor

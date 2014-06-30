@@ -587,7 +587,8 @@ td.table-action a.btn {
 .resdiff-switch i {
 	color: #148BE6;
 	position: absolute;
-
+	bottom: 5px;
+	right: 18px;
 }
 
 .property-control-group {

@@ -286,7 +286,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         cached.rootDeviceType = ami.rootDeviceType
 
       # Update RootDevice Size
-      if ami and ami.blockDeviceMapping
+      if ami and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[ rdName ]
         if not rdEbs
@@ -324,7 +324,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
     getBlockDeviceMapping : ()->
       #get root device of current instance
       ami = @getAmi() || @get("cachedAmi")
-      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
 
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[rdName]
@@ -586,8 +586,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
       # Generate RootDevice
       blockDeviceMapping = @getBlockDeviceMapping()
-      for volume in @get("volumeList") or []
-        blockDeviceMapping.push "#"+volume.id
+
+      ## remove this reference because volume already reference to instance
+      #for volume in @get("volumeList") or []
+      #  blockDeviceMapping.push "#"+volume.id
 
       component =
         type   : @type

@@ -126,8 +126,18 @@ define [
     recreateDesign : ()->
       # Layout and component changes, need to construct a new Design.
       @view.emptyCanvas()
-      @design.reload( @opsModel )
-      @design.finishDeserialization()
+
+      # A hack. See DesignImpl.prototype.serialize()
+      currentDesignObj = Design.instance()
+      @use()
+
+      try
+        @design.reload( @opsModel )
+        @design.finishDeserialization()
+      catch e
+        console.error e
+
+      currentDesignObj.use()
       return
 
     loadVpcResource : ()->

@@ -263,17 +263,7 @@ define [
   DesignImpl.prototype.reload = ( opsModel )->
     DesignImpl.call this, opsModel
     json = opsModel.getJsonData()
-
-    # A hack. See DesignImpl.prototype.serialize()
-    currentDesignObj = Design.instance()
-    @use()
-    try
-      @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-    catch e
-      console.error e
-
-    currentDesignObj.use()
-    @
+    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
 
   DesignImpl.prototype.finishDeserialization = ()->
     ####################

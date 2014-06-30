@@ -283,11 +283,17 @@ define [
 
             return ''
 
-        renderAppUpdateView: () -> @_genResGroup(@$el)
+        renderAppUpdateView: () ->
+
+            @_genResGroup(@$el)
+            return @$el
 
         getDiffInfo: () ->
 
             that = this
+
+            oldAppJSON = _.extend {}, that.oldAppJSON
+            newAppJSON = _.extend {}, that.newAppJSON
 
             # if have component change
             hasCompChange = false
@@ -298,7 +304,7 @@ define [
 
             # if have layout change
             diffTree = new DiffTree()
-            layoutModifiedComps = diffTree.compare that.oldAppJSON.layout, that.newAppJSON.layout
+            layoutModifiedComps = diffTree.compare oldAppJSON.layout, newAppJSON.layout
             hasLayoutChange = false
             if _.size(layoutModifiedComps)
                 hasLayoutChange = true
@@ -311,9 +317,19 @@ define [
                     hasStateChange = true
                 if not (_.size(comp) is 1 and comp.state)
                     onlyStateChange = false
+                delete comp.state if comp.state
                 null
             if onlyStateChange and _.size(that.addedComps) is 0 and _.size(that.removedComps) is 0
                 hasCompChange = false
+
+            # if have app change
+            delete oldAppJSON.component
+            delete oldAppJSON.layout
+            delete newAppJSON.component
+            delete newAppJSON.layout
+            appModifiedComps = diffTree.compare oldAppJSON, newAppJSON
+            if _.size(appModifiedComps) > 0
+                hasLayoutChange = true
 
             return {
                 compChange: hasCompChange,

@@ -469,8 +469,8 @@ define [
         @updateModal?.close()
 
       if result.compChange
-        differ.$el = $("#app-update-summary-table")
-        differ.renderAppUpdateView()
+        $diffTree = differ.renderAppUpdateView()
+        $('#app-update-summary-table').html $diffTree
 
       @renderKpDropdown(@updateModal)
       TA.loadModule('stack').then =>

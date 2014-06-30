@@ -1030,7 +1030,7 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	{{/if}}
 	<div class="scroll-wrap" style="max-height:256px;">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-		<div class="scroll-content" id="app-update-summary-table">
+		<div class="scroll-content res_diff_tree" id="app-update-summary-table">
 		</div>
 	</div>
 	<div class="stack-validation">

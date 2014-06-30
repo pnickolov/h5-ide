@@ -1451,7 +1451,7 @@ function program3(depth0,data) {
   buffer += "<div id=\"app-apply-update\">\n    <div class=\"modal-control-group default-kp-group clearfix\" style=\"display: none;\">\n        <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label><div id=\"kp-runtime-placeholder\"></div>\n        <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n    </div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
+  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))

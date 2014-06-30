@@ -56,7 +56,7 @@
 
   .resource-icon {
     position: absolute;
-    top: 0;
+    top: 5.5px;
     left: 5px;
     background-size: 72%;
   }
@@ -82,7 +82,7 @@
 
 .resource-item {
   width         : 70px;
-  padding-top   : 60px;
+  padding-top   : 65px;
   margin        : 0 5px 5px 0;
   border-radius : 4px;
   cursor        : pointer;
@@ -95,7 +95,7 @@
   line-height   : 1.2em;
   color         : #eee;
 
-  background : transparent center top no-repeat;
+  background : transparent center 5px no-repeat;
 
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -183,7 +183,6 @@
   margin  : 0;
   padding : 0;
   height  : 70px;
-  margin-top : -5px;
 
   background-position : center;
 
@@ -212,7 +211,7 @@
     .az-name {
       position      : absolute;
       left          : 0;
-      top           : 0;
+      top           : 4px;
       color         : transparent;
       border        : 3px dashed #f69300;
       border-radius : 4px;
@@ -226,14 +225,14 @@
     }
     &.add-to-dom {
       color        : #f69300;
-      width        : 185px;
-      height       : 210px;
+      width        : 220px;
+      height       : 240px;
       line-height  : 50px;
-      padding-left : 25px;
+      padding-left : 20px;
 
       .az-name {
-        width  : 180px;
-        height : 180px;
+        width  : 206px;
+        height : 206px;
       }
     }
   }

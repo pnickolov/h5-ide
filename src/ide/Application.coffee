@@ -79,7 +79,15 @@ define [
 
   VisualOps.prototype.logout = ()->
     App.user.logout()
-    window.location.href = "/login/"
+
+    p = window.location.pathname
+    if p is "/"
+      p = window.location.hash.replace("#", "/")
+
+    if p and p isnt "/"
+      window.location.href = "/login?ref=" + p
+    else
+      window.location.href = "/login"
     return
 
   # Return true if the ide can quit now.
@@ -145,37 +153,5 @@ define [
     editor = new OpsEditor( @model.createStack(region) )
     editor.activate()
     editor
-
-  VisualOps.prototype.openSampleStack = (fromWelcome) ->
-
-    that = this
-
-    try
-
-      isFirstVisit = @user.isFirstVisit()
-
-      if (isFirstVisit and fromWelcome) or (not isFirstVisit and not fromWelcome)
-
-        stackStoreIdStamp = $.cookie('stack_store_id') or ''
-        localStackStoreIdStamp = $.cookie('stack_store_id_local') or ''
-
-        stackStoreId = stackStoreIdStamp.split('#')[0]
-
-        if stackStoreId and stackStoreIdStamp isnt localStackStoreIdStamp
-
-          $.cookie('stack_store_id_local', stackStoreIdStamp, {expires: 30})
-
-          gitBranch = 'master'
-
-          ApiRequest('stackstore_fetch_stackstore', {
-            sub_path: "#{gitBranch}/stack/#{stackStoreId}/#{stackStoreId}.json"
-          }).then (result) ->
-
-            jsonDataStr = result
-            that.importJson(jsonDataStr)
-
-    catch err
-
-      console.log('Open store stack failed')
 
   VisualOps

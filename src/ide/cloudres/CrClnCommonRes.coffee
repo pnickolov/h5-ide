@@ -676,6 +676,7 @@ define [
       @convertNumTimeToString data
 
       for sg in data
+        sg.groupName = sg.groupName.trim() #remove space
         sg.id = sg.groupId
         sg.Name = sg.groupName
         sg.ipPermissions = sg.ipPermissions || []

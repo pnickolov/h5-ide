@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant","i18n!nls/lang.js" ], ( CanvasElement, constant,lang )->
+define [ "./CanvasElement", "constant","i18n!/nls/lang.js" ], ( CanvasElement, constant,lang )->
 
   CeVgw = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeVgw, constant.RESTYPE.VGW )

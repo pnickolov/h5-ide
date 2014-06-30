@@ -3,7 +3,7 @@ define [ "constant",
          "Design",
          "../GroupModel",
          "../connection/RtbAsso",
-         "i18n!nls/lang.js"
+         "i18n!/nls/lang.js"
 ], ( constant, Design, GroupModel, RtbAsso, lang )->
 
   Model = GroupModel.extend {
@@ -204,8 +204,6 @@ define [ "constant",
   }, {
 
     handleTypes : constant.RESTYPE.SUBNET
-
-    diffJson : ()-> # Disable diff for thie Model
 
     genCIDRPrefixSuffix : (subnetCIDR) ->
       cutAry = subnetCIDR.split('/')

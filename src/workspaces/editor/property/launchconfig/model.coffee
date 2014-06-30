@@ -147,10 +147,16 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
               null
           null
 
+        deviceType = comp.get("rdType")
+
         rootDevice =
           name : rdName
           size : parseInt( comp.get("rdSize"), 10 )
           iops : comp.get("rdIops")
+          # encrypted : rdEbs.encrypted
+          isStandard: deviceType is 'standard'
+          isIo1 : deviceType is 'io1'
+          isGp2 : deviceType is 'gp2'
 
         if rootDevice.size < 10
           rootDevice.iops = ""
@@ -206,6 +212,10 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
 
     setIops : ( iops )->
       Design.instance().component( @get("uid") ).set("rdIops", iops)
+      null
+
+    setVolumeType: ( type ) ->
+      Design.instance().component( @get("uid") ).set("rdType", type)
       null
 
     setVolumeSize : ( size )->

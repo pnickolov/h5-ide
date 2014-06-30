@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', './template/app', 'i18n!nls/lang.js', 'instance_model', 'kp_upload', 'Design', 'JsonExporter' ], ( PropertyView, template, lang, instance_model, kp_upload, Design, JsonExporter )->
+define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model', 'kp_upload', 'Design', 'JsonExporter' ], ( PropertyView, template, lang, instance_model, kp_upload, Design, JsonExporter )->
 
     download = JsonExporter.download
 

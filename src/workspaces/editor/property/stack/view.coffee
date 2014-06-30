@@ -7,16 +7,18 @@ define [ '../base/view',
          './template/acl',
          './template/sub',
          'event',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
 
     StackView = PropertyView.extend {
         events   :
             'change #property-stack-name'          : 'stackNameChanged'
             'change #property-stack-description'   : 'stackDescriptionChanged'
+            'change #property-app-name'            : 'changeAppName'
             'click #stack-property-new-acl'        : 'createAcl'
             'click #stack-property-acl-list .edit' : 'openAcl'
-            'click .sg-list-delete-btn'            : 'deleteAcl'
+            'click .acl-info-list .sg-list-delete-btn' : 'deleteAcl'
+            'click #property-app-resdiff'          : 'toggleResDiff'
 
         render     : () ->
             if @model.isApp or @model.isAppEdit
@@ -30,7 +32,24 @@ define [ '../base/view',
 
             @refreshACLList()
 
+            if @model.isAppEdit
+                @$( '#property-app-name' ).parsley 'custom', @checkAppName
+
             null
+
+        checkAppName: ( val )->
+            repeatApp = App.model.appList().findWhere(name: val)
+            if repeatApp and repeatApp.id isnt Design.instance().get('id')
+                return lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+
+            null
+
+        changeAppName: ( e ) ->
+            $target = $ e.currentTarget
+            if $target.parsley 'validate'
+                Design.instance().set 'name', $target.val()
+
+        toggleResDiff: ( e ) -> Design.instance().set 'resource_diff', e.currentTarget.checked
 
         stackDescriptionChanged: () ->
             stackDescTextarea = $ "#property-stack-description"
@@ -60,6 +79,7 @@ define [ '../base/view',
             null
 
         refreshACLList : () ->
+            $(@el).find('.acl-info-list-num').text("(#{@model.get('networkAcls').length})")
             $('#stack-property-acl-list').html acl_template @model.attributes
 
         createAcl : ()->
@@ -88,10 +108,12 @@ define [ '../base/view',
                 modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->
                         that.model.removeAcl( aclUID )
+                        that.model.getNetworkACL()
                         that.refreshACLList()
                         modal.close()
             else
                 @model.removeAcl( aclUID )
+                @model.getNetworkACL()
                 @refreshACLList()
     }
 

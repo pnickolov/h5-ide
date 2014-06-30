@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
+define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/EniAttachment", "constant", 'i18n!/nls/lang.js' ], ( ComplexResModel, Design, SgAsso, EniAttachment, constant, lang )->
 
   ###
   IpObject is used to represent an ip in Eni
@@ -532,7 +532,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
   }, {
 
-    # EniModel does not handle EIP's deserialize. It only handles EIP's diffJson
+    # EniModel does not handle EIP's deserialize.
     handleTypes : [ constant.RESTYPE.ENI, constant.RESTYPE.EIP ]
 
     getAvailableIPInCIDR : (ipCidr, filter, maxNeedIPCount) ->
@@ -636,85 +636,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         memberData.ips.push( ipObj )
 
       memberData
-
-    diffEipJson : ( newData, oldData, newComponents, oldComponents )->
-      if _.isEqual( newData, oldData ) then return
-
-      changeData = newData or oldData
-      eni = MC.extractID( changeData.resource.NetworkInterfaceId )
-      eni = newComponents[ eni ] or oldComponents[ eni ]
-      if not eni or eni.index isnt 0 then return
-      if MC.extractID( eni.resource.Attachment.DeviceIndex ) is "0"
-        instance = MC.extractID( eni.resource.Attachment.InstanceId )
-        instance = newComponents[ instance ] or oldComponents[ instance ]
-        if instance
-          return {
-            name   : instance.serverGroupName
-            id     : instance.uid
-            type   : instance.type
-            change : "Update"
-          }
-      else
-        return {
-          name   : eni.serverGroupName
-          id     : eni.uid
-          type   : eni.type
-          change : "Update"
-        }
-      return
-
-    diffJson : ( newData, oldData, newComponents, oldComponents )->
-      changeData = newData or oldData
-
-      if changeData.type is constant.RESTYPE.EIP
-        return @diffEipJson( newData, oldData, newComponents, oldComponents )
-
-      if changeData.index isnt 0 then return
-
-      if newData then attachment = newData.resource.Attachment
-      if not attachment and oldData then attachment = oldData.resource.Attachment
-      if not attachment then return
-
-      instance = MC.extractID(attachment.InstanceId)
-      instance = newComponents[ instance ] or oldComponents[ instance ]
-      if not instance then return
-
-      if attachment.DeviceIndex is "0"
-        if newData and oldData and not _.isEqual( newData, oldData )
-          return {
-            name   : instance.serverGroupName
-            type   : instance.type
-            id     : instance.uid
-            change : "Update"
-          }
-        else
-          return
-
-      change = {
-        id      : changeData.uid
-        type    : constant.RESTYPE.ENI
-        name    : instance.serverGroupName + "-" + changeData.serverGroupName
-        changes : []
-      }
-      if newData and oldData and not _.isEqual( newData.resource, oldData.resource )
-        change.changes.push { name : "Update" }
-
-      newCount = if newData then newData.number else 0
-      oldCount = if oldData then oldData.number else 0
-      if newCount > oldCount
-        change.changes.push {
-          name  : "Create"
-          count : newCount - oldCount
-        }
-      else if newCount < oldCount
-        change.changes.push {
-          name  : "Delete"
-          count : newCount - oldCount
-        }
-      if change.changes.length
-        change
-      else
-        null
 
     deserialize : ( data, layout_data, resolve )->
 

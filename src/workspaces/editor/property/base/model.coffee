@@ -3,7 +3,7 @@
 #  Base Class for Model of Property Module
 ####################################
 
-define [ 'backbone', 'Design' ], ( Backbone, Design )->
+define [ 'backbone', 'Design', "constant" ], ( Backbone, Design, constant )->
 
     ###
 
@@ -43,6 +43,16 @@ define [ 'backbone', 'Design' ], ( Backbone, Design )->
                     dup = true
                     return false
 
+            dup
+
+        isOldName: (newName)->
+            originJson = Design.instance().__opsModel.getJsonData()
+            dup = false
+            if originJson.component
+                _.each originJson.component, (comp, key)->
+                    if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW] and comp.name is newName
+                        dup = true
+                        return false
             dup
 
         isReservedName : ( newName ) ->

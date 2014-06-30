@@ -58,11 +58,11 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
       if workspace.isRemoved() then return
 
-      # if @__awakeSpace is workspace then return
-
       if @__awakeSpace then @__awakeSpace.sleep()
 
       @__awakeSpace = workspace
+
+      @__updateUrl()
 
       @view.activateTab( workspace.id )
 
@@ -76,6 +76,9 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
     update : ( workspace )->
       if not workspace then return
+
+      if workspace is @__awakeSpace
+        @__updateUrl( true )
 
       @view.updateTab workspace.id, workspace.title(), workspace.tabClass()
       workspace
@@ -106,6 +109,9 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
     find : ( attribute )-> _.find @__spaces, ( space )-> space.isWorkingOn( attribute )
 
     hasUnsaveSpaces : ()-> @__spaces.some ( ws )-> ws.isModified()
+
+    __updateUrl : ( replace = false )->
+      Router.navigate(@__awakeSpace.url(), {replace:replace})
 
 
   WorkspaceManager

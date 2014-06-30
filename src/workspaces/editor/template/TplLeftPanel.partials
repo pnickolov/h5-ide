@@ -82,19 +82,19 @@
 <!-- {{snapshot}} -->
 <li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
+<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
 
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}
 <li class="bubble resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{id}}"}' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
   {{#if ../../fav}}<button class="btn-fav-ami fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
-  <div class="resource-icon-instance"><img src="assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}
 </li>{{/with}}{{/each}}
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >
-    <img src="assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+    <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
   </div>
 <div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>

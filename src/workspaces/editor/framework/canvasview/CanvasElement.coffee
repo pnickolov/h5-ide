@@ -1,4 +1,4 @@
-define [ "CanvasManager", "event", "constant", "i18n!nls/lang.js", "CloudResources", "MC.canvas.constant" ], ( CanvasManager, ide_event, constant, lang, CloudResources )->
+define [ "CanvasManager", "event", "constant", "i18n!/nls/lang.js", "CloudResources", "MC.canvas.constant" ], ( CanvasManager, ide_event, constant, lang, CloudResources )->
 
   Design = null
 

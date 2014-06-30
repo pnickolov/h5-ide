@@ -938,8 +938,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         elbRes = @_mapProperty aws_elb, elbRes
 
+        originComp = @getOriginalComp(aws_elb.Name, 'ELB')
         elbRes.ConnectionDraining.Enabled = aws_elb.ConnectionDraining.Enabled
-        elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
+        if originComp
+          elbRes.ConnectionDraining.Timeout = originComp.resource.ConnectionDraining.Timeout
+        else
+          elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
 
         delete elbRes.CanonicalHostedZoneName if elbRes.CanonicalHostedZoneName
         delete elbRes.CanonicalHostedZoneNameID if elbRes.CanonicalHostedZoneNameID

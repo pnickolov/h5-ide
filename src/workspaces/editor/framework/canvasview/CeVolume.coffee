@@ -1,5 +1,5 @@
 
-define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "event" ], ( lang, CanvasElement, constant, CanvasManager, ide_event )->
+define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "event" ], ( lang, CanvasElement, constant, CanvasManager, ide_event )->
 
   CeVolume = ( component )->
     if _.isString( component )

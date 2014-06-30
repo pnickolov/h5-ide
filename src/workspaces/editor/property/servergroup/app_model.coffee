@@ -5,7 +5,7 @@
 define [ '../base/model',
 	'../instance/model'
 	'constant',
-	'i18n!nls/lang.js'
+	'i18n!/nls/lang.js'
 	'Design'
     'CloudResources'
 ], ( PropertyModel, instance_model, constant, lang, Design, CloudResources ) ->

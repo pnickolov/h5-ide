@@ -2,7 +2,7 @@
 This file use for validate state.
 ###
 
-define [ './register', 'constant', 'MC','i18n!nls/lang.js' , '../result_vo' ], ( validators, constant, MC, lang, resultVO ) ->
+define [ './register', 'constant', 'MC','i18n!/nls/lang.js' , '../result_vo' ], ( validators, constant, MC, lang, resultVO ) ->
 
 
     __modifyUid = ( result, uid, index ) ->

@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'Design', 'validation', 'constant', 'i18n!nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( Design, validationTA, constant, lang ) ->
+define [ 'Design', 'validation', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC', 'UI.errortip' ], ( Design, validationTA, constant, lang ) ->
 
     TA = validationTA.state
 

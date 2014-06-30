@@ -27,25 +27,34 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
-      updateTime     : +(new Date())
-      region         : ""
-      state          : OpsModelState.UnRun
-      stoppable      : true # If the app has instance_store_ami, stoppable is false
+      updateTime : +(new Date())
+      region     : ""
+      state      : OpsModelState.UnRun
+      stoppable  : true # If the app has instance_store_ami, stoppable is false
+      name       : ""
+
+
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
       # opsActionError : ""
       # importVpcId    : ""
       # requestId      : ""
+      # sampleId       : ""
 
     initialize : ( attr, options )->
       if options
         if options.initJsonData
           @__initJsonData()
         if options.jsonData
-          @__jsonData = options.jsonData
+          @__setJsonData options.jsonData
       return
 
+    url : ()->
+      if @get("id")
+        "ops/#{@get('id')}"
+      else
+        "ops/#{@cid}/unsaved"
 
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun
     isApp      : ()-> @attributes.state isnt OpsModelState.UnRun
@@ -104,7 +113,32 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return d.promise
 
       self = @
-      if @isImported()
+      if @get("sampleId")
+        sampleId = @get("sampleId")
+        return ApiRequest('stackstore_fetch_stackstore', {
+          sub_path: "master/stack/#{sampleId}/#{sampleId}.json"
+        }).then (result) ->
+          try
+            j = JSON.parse( result )
+            delete j.id
+            delete j.signature
+            if not self.collection.isNameAvailable( j.name )
+              j.name = self.collection.getNewName( j.name )
+            self.attributes.region = j.region
+            self.__setJsonData j
+          catch e
+            j = null
+            self.attributes.region = "us-east-1"
+            self.__initJsonData()
+
+          if j
+            try
+              self.set "name", j.name
+            catch e
+
+          self
+
+      else if @isImported()
         return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
           json = self.generateJsonFromRes()
           self.__setJsonData json
@@ -136,6 +170,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             tag  : App.user.get("tag")
           }
         }
+      if not json.property
+        json.property = { stoppable : true }
 
       ###
       Old JSON will have structure like :
@@ -190,6 +226,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     save : ( newJson, thumbnail )->
       if @isApp() or @testState( OpsModelState.Saving ) then return @__returnErrorPromise()
 
+      if not newJson then newJson = @__jsonData
+
       @set "state", OpsModelState.Saving
 
       nameClash = @collection.where({name:newJson.name}) || []
@@ -203,6 +241,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if newJson.state isnt "Enabled"
         console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
         newJson.state = "Enabled"
+
+      newJson.id = @get("id")
 
       self = @
       ApiRequest(api, {
@@ -261,8 +301,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       region = @get("region")
 
       # Ensure the json has correct id.
-      toRunJson.id = ""
-      toRunJson.stack_id = @get("id") || ""
+      toRunJson.id = @get("id") || ""
 
       ApiRequest("stack_run_v2",{
         region_name : region
@@ -270,14 +309,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_name    : appName
       }).then ( res )->
         m = new OpsModel({
-          name       : appName
-          requestId  : res[0]
-          state      : OpsModelState.Initializing
-          progress   : 0
-          region     : region
-          usage      : toRunJson.usage
-          updateTime : +(new Date())
-          stoppable  : toRunJson.property.stoppable
+          name          : appName
+          requestId     : res[0]
+          state         : OpsModelState.Initializing
+          progress      : 0
+          region        : region
+          usage         : toRunJson.usage
+          updateTime    : +(new Date())
+          stoppable     : toRunJson.property.stoppable
+          resource_diff : false
         })
         App.model.appList().add m
         m
@@ -444,6 +484,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set {
           name  : newJson.name
           state : oldState
+          usage : newJson.usage
         }
         self.__saveAppDefer = null
         return
@@ -581,15 +622,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           repo : App.user.get("repo")
           tag  : App.user.get("tag")
       property :
-        policy : { ha : "" }
-        lease  : { action: "", length: null, due: null }
-        schedule :
-          stop   : { run: null, when: null, during: null }
-          backup : { when : null, day : null }
-          start  : { when : null }
+        stoppable : true
 
     __initJsonData : ()->
-      json = @__createRawJson()
+      json   = @__createRawJson()
+      vpcId  = MC.guid()
+      vpcRef = "@{#{vpcId}.resource.VpcId}"
 
       layout =
         VPC :
@@ -597,12 +635,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           size       : [60,60]
         RTB :
           coordinate : [50,5]
+          groupUId   : vpcId
 
       component =
         KP :
           type : "AWS.EC2.KeyPair"
           name : "DefaultKP"
-          resource : { KeyName : "DefaultKP" }
+          resource : {
+            KeyName : "DefaultKP"
+            KeyFingerprint : ""
+          }
         SG :
           type : "AWS.EC2.SecurityGroup"
           name : "DefaultSG"
@@ -612,7 +654,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges   : "0.0.0.0/0",
               FromPort   : "22",
               ToPort     : "22",
-              Groups     : [{"GroupId":"","UserId":"","GroupName":""}]
             }],
             IpPermissionsEgress : [{
               FromPort: "0",
@@ -620,13 +661,19 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               IpRanges: "0.0.0.0/0",
               ToPort: "65535"
             }],
-            Default          : "true",
-            GroupName        : "DefaultSG",
+            Default          : true
+            GroupId          : ""
+            GroupName        : "DefaultSG"
             GroupDescription : 'default VPC security group'
+            VpcId            : vpcRef
         ACL :
           type : "AWS.VPC.NetworkAcl"
           name : "DefaultACL"
           resource :
+            AssociationSet : []
+            Default        : true
+            NetworkAclId   : ""
+            VpcId          : vpcRef
             EntrySet : [
               {
                 RuleAction : "allow"
@@ -668,21 +715,39 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         VPC :
           type : "AWS.VPC.VPC"
           name : "vpc"
-          resource : {}
-        RTB :
-          type     : "AWS.VPC.RouteTable"
           resource :
-            AssociationSet : [{Main:"true"}]
-            RouteSet       : [{
-                State                : 'active',
-                Origin               : 'CreateRouteTable',
-                GatewayId            : 'local',
-                DestinationCidrBlock : '10.0.0.0/16'
-            }],
+            VpcId              : ""
+            CidrBlock          : "10.0.0.0/16"
+            DhcpOptionsId      : ""
+            EnableDnsHostnames : false
+            EnableDnsSupport   : true
+            InstanceTenancy    : "default"
+        RTB :
+          type : "AWS.VPC.RouteTable"
+          name : "RT-0"
+          resource :
+            VpcId : vpcRef
+            RouteTableId: ""
+            AssociationSet : [{
+              Main:"true"
+              SubnetId : ""
+              RouteTableAssociationId : ""
+            }]
+            PropagatingVgwSet:[]
+            RouteSet : [{
+              InstanceId           : ""
+              NetworkInterfaceId   : ""
+              Origin               : 'CreateRouteTable'
+              GatewayId            : 'local'
+              DestinationCidrBlock : '10.0.0.0/16'
+            }]
 
       # Generate new GUID for each component
       for id, comp of component
-        comp.uid = MC.guid()
+        if id is "VPC"
+          comp.uid = vpcId
+        else
+          comp.uid = MC.guid()
         json.component[ comp.uid ] = comp
         if layout[ id ]
           l = layout[id]

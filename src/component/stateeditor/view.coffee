@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         'i18n!nls/lang.js',
+         'i18n!/nls/lang.js',
          './template',
          './validate',
          'constant',
@@ -1742,7 +1742,7 @@ define [ 'event',
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
                 $propertyPanel = $('#OEPanelRight')
-                if $stateEditorModel.length and not $propertyPanel.hasClass('no-state')
+                if $stateEditorModel.length # and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
                     if $currentElem.parents('#tabbar-wrapper').length
@@ -3477,18 +3477,18 @@ define [ 'event',
                     $codeArea = $('#modal-state-text-expand .editable-area')
                     codeEditor = $codeArea.data('editor')
                     codeEditorValue = codeEditor.getValue()
-                    
+
                     $paraItem = $(originEditor.container).parents('.parameter-item')
                     if $paraItem and $paraItem.hasClass('optional')
                         if codeEditorValue
                             $paraItem.removeClass('disabled')
                         else
                             $paraItem.addClass('disabled')
-                    
+
                     originEditor.setValue(codeEditorValue)
                     originEditor.clearSelection()
                     originEditor.focus()
-                    
+
                     modal.close()
 
     }

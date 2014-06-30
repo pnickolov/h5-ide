@@ -131,8 +131,8 @@ $dark_blue: #2C2F46;
 		}
 
 		.content > .tree > .item > .meta > .type {
-			background-color: #111; 
-		} 
+			background-color: #111;
+		}
 
 		&.removed {
 			.content > .tree > .item > .meta > .name {
@@ -228,7 +228,7 @@ $dark_blue: #2C2F46;
 
 		.item {
 			margin-bottom: 10px;
-			padding-left: 18px;
+			padding-left: 18.5px;
 			position: relative;
 			@include tierline;
 
@@ -253,7 +253,7 @@ $dark_blue: #2C2F46;
 				width: 17px;
 				height: 33px;
 				position: absolute;
-				margin-left: -19px;
+				margin-left: -19.5px;
 				z-index: 0;
 			}
 
@@ -265,7 +265,7 @@ $dark_blue: #2C2F46;
 				border        : #148BE6 1px solid;
 				border-radius : 50%;
 				position      : absolute;
-				left          : -5.5px;
+				left          : -6px;
 				top           : 2px;
 				background    : $bg_body;
 				z-index       : 1;

@@ -1,4 +1,4 @@
-define([ 'i18n!nls/lang.js', "MC.canvas" ], function( lang ){
+define([ 'i18n!/nls/lang.js', "MC.canvas" ], function( lang ){
 
 var constant_data = {
 

@@ -269,7 +269,12 @@ define [
 
     forceShow : ()->
       if @__rightPanelHidden
-        @$el.find(".HideOEPanelRight").click()
+        @__rightPanelHidden = false
+        @$el.toggleClass("no-transition", true).removeClass("hidden")
+        self = @
+        setTimeout ()->
+          self.$el.removeClass("no-transition")
+        , 100
       return
 
     refresh : ()->
@@ -288,8 +293,8 @@ define [
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
       comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.attributes
-      if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
       if not comp then return
+      if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
 
       if not @updateStateSwitcher( comp.type, uid )
         @openPanel( comp.type, uid )

@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel", "i18n!nls/lang.js" ], ( constant, ConnectionModel, lang )->
+define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, ConnectionModel, lang )->
 
   C = ConnectionModel.extend {
 

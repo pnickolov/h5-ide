@@ -1,5 +1,5 @@
 
-define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design", "CloudResources" ], ( GroupModel, VpcModel, constant, lang, Design, CloudResources )->
+define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design", "CloudResources" ], ( GroupModel, VpcModel, constant, lang, Design, CloudResources )->
 
   Model = GroupModel.extend {
 
@@ -23,11 +23,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design"
 
       @draw(true)
       null
-
-    setName : ()->
-      GroupModel.prototype.setName.apply this, arguments
-      @design().trigger Design.EVENT.AzUpdated
-      return
 
     isRemovable : ()->
       if @children().length > 0
@@ -69,8 +64,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!nls/lang.js", "Design"
 
   }, {
     handleTypes : constant.RESTYPE.AZ
-
-    diffJson : ()-> # Disable diff for this Model
 
     deserialize : ( data, layout_data, resolve )->
       new Model({

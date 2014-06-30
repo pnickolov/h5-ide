@@ -1,6 +1,6 @@
 
 
-define ['MC', 'i18n!nls/lang.js'], ( MC, lang ) ->
+define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 	wrap = ( dict ) ->
 		wrappedDict = {}

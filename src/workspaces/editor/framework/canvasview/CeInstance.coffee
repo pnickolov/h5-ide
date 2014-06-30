@@ -1,5 +1,5 @@
 
-define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design", "CloudResources" ], ( lang, CanvasElement, constant, CanvasManager, Design, CloudResources )->
+define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "Design", "CloudResources" ], ( lang, CanvasElement, constant, CanvasManager, Design, CloudResources )->
 
   CeInstance = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeInstance, constant.RESTYPE.INSTANCE )
@@ -318,6 +318,9 @@ define [ "i18n!nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "De
     if Design.instance().modeIsAppEdit() and @model.type is constant.RESTYPE.LC and @model.get("appId")
       notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
       return false
+
+    if attribute and _.isString(attribute.encrypted)
+      attribute.encrypted = attribute.encrypted is 'true'
 
     attribute = $.extend {}, attribute
     attribute.owner = @model

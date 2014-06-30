@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager","i18n!nls/lang.js"], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js"], ( CanvasElement, constant, CanvasManager, lang )->
 
   CeRtb = ()-> CanvasElement.apply( this, arguments )
   CanvasElement.extend( CeRtb, constant.RESTYPE.RT )

@@ -29,9 +29,19 @@ define [ "../base/main",
 
             null
 
-        initStack : ()->
+        initStack : ( uid )->
+            volume = Design.instance().component uid
+            owner = volume.get 'owner'
+
             @model = model
             @view  = view
+
+            # Volume on Running LC
+            if owner.type is constant.RESTYPE.LC and owner.get 'appId'
+                @model.isAppEdit = true
+            else
+                @model.isAppEdit = false
+
             null
 
         initApp : ()->

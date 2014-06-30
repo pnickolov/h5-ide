@@ -8,7 +8,7 @@ define [ '../base/model',
     'instance_model',
     'instance_service'
     'constant',
-    'i18n!nls/lang.js'
+    'i18n!/nls/lang.js'
     'Design'
     'CloudResources'
 

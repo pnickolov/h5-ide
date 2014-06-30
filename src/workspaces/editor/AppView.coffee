@@ -4,7 +4,7 @@ define [
   "OpsModel"
   "./template/TplOpsEditor"
   "UI.modalplus"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
 ], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
   StackView.extend {
@@ -14,7 +14,7 @@ define [
         @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_app').addClass("canvas_state_appedit")
           .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
           .on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.appDrawConnection)
           .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
           .on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
@@ -29,7 +29,7 @@ define [
         @$el.find(".OEPanelCenter")
           .removeClass('canvas_state_appedit').addClass("canvas_state_app")
           .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume', MC.canvas.volume.show)
+          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
           .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
           .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
@@ -69,8 +69,10 @@ define [
             return
 
           modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
-          json = self.workspace.design.serialize()
-          json.name = $ipt.val()
+          json       = self.workspace.design.serialize()
+          json.name  = $ipt.val()
+          json.usage = $("#app-usage-selectbox").find(".item.selected").attr('data-value') || "testing"
+
           self.workspace.opsModel.saveApp(json).then ()->
             self.workspace.design.set "name", json.name
             modal.close()
@@ -138,9 +140,11 @@ define [
       return
 
     switchMode : ( isAppEditMode )->
-      # HACK, Close the volume bubble here!!!!!
+      # HACK, Close the volume, instanceList, asgList bubble here!!!!!
       # Should be removed.
       MC.canvas.volume.close()
+      MC.canvas.instanceList.close()
+      MC.canvas.asgList.close()
 
       @toolbar.updateTbBtns()
       @statusbar.update()

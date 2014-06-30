@@ -6,7 +6,7 @@ define [ '../base/view',
          '../instance/view'
          './template/app',
          './template/ami_list',
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
 ], ( PropertyView, instance_view, template, ami_list_template, lang ) ->
 
     InstanceView = PropertyView.extend {

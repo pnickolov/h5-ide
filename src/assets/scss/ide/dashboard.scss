@@ -136,8 +136,10 @@
 }
 
 #global-region-wrap {
-  height: 100%;
   background : #f0f0f0;
+  > .nano-pane {
+    z-index : 6;
+  }
 }
 
 /* The map */
@@ -740,7 +742,7 @@
     left     : 0;
     bottom   : 0;
     height   : 27px;
-    z-index  : -1;
+    z-index  : 1;
     border-radius : 0 0 0 5px;
 
     $stripeColor1 : #ad77d7;
@@ -757,6 +759,11 @@
     -webkit-animation: progress-bar 2s linear infinite;
        -moz-animation: progress-bar 2s linear infinite;
             animation: progress-bar 2s linear infinite;
+
+    + .region-resource-info {
+      position : relative;
+      z-index  : 2;
+    }
   }
 
   .region-resource-info {
@@ -791,7 +798,7 @@
     i.icon-terminate, i.icon-delete { &:hover { color: #ec3c38; } }
 
     > span {
-      max-width : 120px;
+      max-width : 110px;
     }
 
     > .icon-pending:before {
@@ -828,7 +835,7 @@
   right         : 0;
   top           : -49px;
   border-radius : 5px 5px 0 0;
-  z-index       : 5;
+  z-index       : 4;
   box-shadow    : 3px -2px 3px rgba(0, 0, 0, 0.05);
 
   > li {

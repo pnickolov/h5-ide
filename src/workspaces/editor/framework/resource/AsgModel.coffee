@@ -1,5 +1,5 @@
 
-define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
+define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!/nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -52,8 +52,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
   }, {
 
     handleTypes : constant.RESTYPE.NC
-
-    diffJson : ()-> # Disable diff for this model
 
     typeMap : {
       "autoscaling:EC2_INSTANCE_LAUNCH"          : "instanceLaunch"

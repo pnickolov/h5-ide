@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -26,6 +26,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       # RootDevice
       rdSize : 0
       rdIops : ""
+      rdType : 'gp2'
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
@@ -322,6 +323,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           Ebs :
             VolumeSize : volume.get("volumeSize")
             VolumeType : volume.get("volumeType")
+            # Encrypted : volume.get("encrypted")
 
         if volume.get("volumeType") is "io1"
           vd.Ebs.Iops = volume.get("iops")
@@ -402,13 +404,16 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         if rd and volume.DeviceName is rd.DeviceName
           model.set "rdSize", volume.Ebs.VolumeSize
           model.set "rdIops", volume.Ebs.Iops
+          model.set "rdType", volume.Ebs.VolumeType
         else
           _attr =
             name       : volume.DeviceName
             snapshotId : volume.Ebs.SnapshotId
             volumeSize : volume.Ebs.VolumeSize
+            volumeType : volume.Ebs.VolumeType
             iops       : volume.Ebs.Iops
             owner      : model
+            # encrypted  : volume.Ebs.Encrypted
 
           new VolumeModel(_attr, {noNeedGenName:true})
 

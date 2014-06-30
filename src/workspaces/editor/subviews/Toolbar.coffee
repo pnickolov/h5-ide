@@ -5,15 +5,16 @@ define [
   "ThumbnailUtil"
   "JsonExporter"
   "ApiRequest"
-  "i18n!nls/lang.js"
+  "i18n!/nls/lang.js"
   "UI.modalplus"
   'kp_dropdown'
+  "ResDiff"
   'constant'
   'event'
   'component/trustedadvisor/main'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event, TA )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -124,7 +125,7 @@ define [
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
           notification "info", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_SUCCESS, newJson.name)
-        , ( err )->
+        , ( )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
           notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
@@ -314,13 +315,13 @@ define [
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
 
-    appToStack: (event) ->
+    appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
         stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
-            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "replace_stack")
+            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").val() is "replace")
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
@@ -335,13 +336,13 @@ define [
                     notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
-                ,(err)->
+                ,()->
                     notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
 
         originStackExist = !!stack
         appToStackModal = new Modal
             title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
-            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, orignStackExist: originStackExist}
+            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
             confirm:
                 text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
@@ -362,7 +363,7 @@ define [
           idx = Number(app_name.substr(app_name.lastIndexOf("-") + 1))
           copy_name = prefix
         else
-          if app_name.charAt(name.length-1) is "-"
+          if app_name.charAt(app_name.length-1) is "-"
               #xxxx-
               copy_name = app_name.substr(0,app_name.length-1)
           else
@@ -433,36 +434,50 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
-      result = @workspace.applyAppEdit()
-      console.debug result
-      if result isnt true
-        # Show popup dialog
-        console.debug result
-        @updateModal = new Modal
-            title: lang.ide.UPDATE_APP_MODAL_TITLE
-            template: MC.template.updateApp result
-            disableClose: true
-            width: '450px'
-            height: "515px"
-            confirm:
-                text: if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
-                disabled: true
 
-        @updateModal.on 'confirm', =>
-            if not @defaultKpIsSet()
-                return false
-            result = @workspace.applyAppEdit()
-            @workspace.applyAppEdit( result, true )
-            @updateModal?.close()
+      oldJson = @workspace.opsModel.getJsonData()
+      newJson = @workspace.design.serialize()
 
-        @renderKpDropdown(@updateModal)
-        TA.loadModule('stack').then =>
-            @updateModal and @updateModal.toggleConfirm false
-        # Call this method when user confirm to update
+      differ = new ResDiff({
+        old : oldJson
+        new : newJson
+      })
 
-        return
+      result = differ.getDiffInfo()
+      if not result.compChange and not result.layoutChange and not result.stateChange
+        return @workspace.applyAppEdit()
 
-    opsOptionChanged: -> #todo: Almost Done.
+      @updateModal = new Modal
+        title        : lang.ide.UPDATE_APP_MODAL_TITLE
+        template     : MC.template.updateApp { isRunning : @workspace.opsModel.testState(OpsModel.State.Running) }
+        disableClose : true
+        width        : '450px'
+        height       : "515px"
+        confirm :
+          disabled : true
+          text     : if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
+
+      @updateModal.on 'confirm', =>
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+
+        if not @defaultKpIsSet()
+            return false
+
+        @workspace.applyAppEdit( newJson, not result.compChange )
+        @updateModal?.close()
+
+      if result.compChange
+        $diffTree = differ.renderAppUpdateView()
+        $('#app-update-summary-table').html $diffTree
+
+      @renderKpDropdown(@updateModal)
+      TA.loadModule('stack').then =>
+        @updateModal and @updateModal.toggleConfirm false
+      return
+
+    opsOptionChanged: ->
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
         stateEnabled = $switcher.hasClass("on")
         agent = @workspace.design.get('agent')
@@ -472,7 +487,7 @@ define [
             if not instancesNoUserData
                 $switcher.removeClass 'on'
                 confirmModal = new Modal(
-                    title: "Conﬁrm to Enable VisualOps"
+                    title: "Confirm to Enable VisualOps"
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"

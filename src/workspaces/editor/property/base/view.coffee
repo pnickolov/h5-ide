@@ -4,7 +4,7 @@
 ####################################
 
 define [ 'constant',
-         'i18n!nls/lang.js',
+         'i18n!/nls/lang.js',
          'backbone',
          'jquery',
          'handlebars',
@@ -104,6 +104,9 @@ define [ 'constant',
                 error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
 
             if not error and @model.isNameDup( name )
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+            if not error and @model.isOldName( name )
                 error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
             if not error and @model.isReservedName( name )

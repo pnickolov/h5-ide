@@ -5,14 +5,6 @@ define [
   'CloudResources'
 ], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
 
-  PropertyDefination =
-    policy : { ha : "" }
-    lease  : { action: "", length: null, due: null }
-    schedule :
-      stop   : { run: null, when: null, during: null },
-      backup : { when : null, day : null },
-      start  : { when : null }
-
   # The recursiveCheck is not fully working.
   ### env:prod ###
   createRecursiveCheck = ()->
@@ -119,11 +111,10 @@ define [
     @canvas = new CanvasAdaptor( canvas_data.layout.size )
 
     # Mode
-    @__mode = Design.MODE.App
     if opsModel.testState( OpsModel.State.UnRun )
       @__mode = Design.MODE.Stack
-    else if opsModel.isImported()
-      @__mode = Design.MODE.AppView
+    else
+      @__mode = Design.MODE.App
 
     # Delete these two attr before copying canvas_data.
     component = canvas_data.component
@@ -136,8 +127,6 @@ define [
     # Restore these two attr
     canvas_data.component = component
     canvas_data.layout    = layout
-
-    @on Design.EVENT.AwsResourceUpdated, @onAwsResourceUpdated
     null
 
 
@@ -153,7 +142,6 @@ define [
     Stack   : "stack"
     App     : "app"
     AppEdit : "appedit"
-    AppView : "appview"
   }
 
   Design.EVENT = {
@@ -161,8 +149,7 @@ define [
     Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
-    AwsResourceUpdated : "AWS_RESOURCE_UPDATED"
-    AzUpdated          : "AZ_UPDATED"
+    ChangeResource : "CHANGE_RESOURCE"
 
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
@@ -273,6 +260,11 @@ define [
         ModelClass.postDeserialize( comp, layout_data[uid] )
     null
 
+  DesignImpl.prototype.reload = ( opsModel )->
+    DesignImpl.call this, opsModel
+    json = opsModel.getJsonData()
+    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
   DesignImpl.prototype.finishDeserialization = ()->
     ####################
     # Draw after deserialization
@@ -299,6 +291,17 @@ define [
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null
+
+  DesignImpl.prototype.renderNode = ()->
+    ##########
+    # Hack
+    ##########
+    # This will be removed once the canvas has been refactored.
+    for uid, comp of @__componentMap
+      if comp.draw and not comp.node_line
+        comp.draw( false )
+    return
+
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
@@ -400,7 +403,7 @@ define [
 
   DesignImpl.prototype.modeIsStack   = ()->  @__mode == Design.MODE.Stack
   DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
-  DesignImpl.prototype.modeIsAppView = ()->  @__mode == Design.MODE.AppView
+  DesignImpl.prototype.modeIsAppView = ()->  false
   DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
   DesignImpl.prototype.setMode = (m)-> @__mode = m; return
   DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
@@ -424,73 +427,23 @@ define [
         break
     null
 
-  DesignImpl.prototype.isModified = ( newData, showDetail )->
-
+  DesignImpl.prototype.isModified = ()->
     # This api only compares name / component / layout
-
-    if @modeIsApp() or @modeIsAppView()
+    if @modeIsApp()
       console.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
       return false
 
-    dataToCompare = newData || @attributes
-    backing       = @__opsModel.getJsonData()
-
-    # Detailed Compare.
-    if showDetail then return @__isModifiedDetail( dataToCompare, backing )
+    backing = @__opsModel.getJsonData()
 
     # Shallow Compare.
-    if dataToCompare.name isnt backing.name then return true
+    if @attributes.name isnt backing.name then return true
 
-    if not newData then newData = @serialize()
+    newData = @serialize()
 
     if _.isEqual( backing.component, newData.component )
       if _.isEqual( backing.layout, newData.layout )
         return false
     true
-
-  DesignImpl.prototype.__isModifiedDetail = ( newData, oldData )->
-    backingState = {}
-    dataState    = {}
-
-    if not newData.component then newData = @serialize()
-
-    console.assert( __bsBackup = $.extend true, {}, oldData )
-    console.assert( __dtBackup = $.extend true, {}, newData )
-
-    for uid, comp of oldData.component
-      if comp.type is constant.RESTYPE.LC or comp.type is constant.RESTYPE.INSTANCE
-        backingState[ uid ] = comp.state
-        delete comp.state
-
-    for uid, comp of newData.component
-      if comp.type is constant.RESTYPE.LC or comp.type is constant.RESTYPE.INSTANCE
-        dataState[ uid ] = comp.state
-        delete comp.state
-
-    result = {
-      attribute     : newData.name isnt oldData.name
-      component     : not _.isEqual( oldData.component, newData.component )
-      layout        : not _.isEqual( oldData.layout,    newData.layout )
-      instanceState : not _.isEqual( backingState,      dataState )
-    }
-
-    # Restore
-    oldData.component[ uid ].state = state for uid, state of backingState
-    newData.component[ uid ].state = state for uid, state of dataState
-
-    console.assert _.isEqual( oldData, __bsBackup ), "BackingStore Modified."
-    console.assert _.isEqual( newData, __dtBackup ), "Data Modified."
-
-    if result.attribute or result.component or result.layout or result.instanceState
-      return $.extend result, {
-        result : @diff(newData, oldData)
-        isRunning: @__opsModel.testState( OpsModel.State.Running )
-        isModified: true
-        newData: newData
-      }
-    else
-      return false
-
 
   DesignImpl.prototype.serialize = ( options )->
 
@@ -581,7 +534,8 @@ define [
     # 1. save $canvas's size to layout
     data.layout.size = @canvas.sizeAry
     # 2. save stoppable to property
-    data.property = $.extend { stoppable : @isStoppable() }, PropertyDefination
+    data.property = @attributes.property || {}
+    data.property.stoppable = @isStoppable()
 
     data.version = "2014-02-17"
     data.state   = @__opsModel.getStateDesc() || "Enabled"
@@ -653,84 +607,6 @@ define [
 
     { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
 
-
-  diffHelper = ( newComp, oldComp, result, newComponents, oldComponents )->
-    changeObj = newComp or oldComp
-
-    Model = Design.modelClassForType changeObj.type
-    if Model.diffJson
-      try # Give it a try, because diffJson might be error-prone
-        r = Model.diffJson( newComp, oldComp, newComponents, oldComponents )
-      catch e
-        console.log e
-        r = null
-      if r
-        if r.id
-          result.push r
-        else
-          console.error "Invalid return value when diffing json."
-
-      return
-
-    changeObj =
-      type : changeObj.type
-      name : changeObj.name
-      id   : changeObj.uid
-
-    if not newComp
-      changeObj.change = "Delete"
-    else if not oldComp
-      changeObj.change = "Create"
-    # Only compare resources.
-    else if not _.isEqual newComp.resource, oldComp.resource
-      changeObj.change = "Update"
-
-    if changeObj.change
-      result.push changeObj
-    null
-
-  DesignImpl.prototype.diff = ( newData, oldData )->
-    # Get an detailed diff of the current state of the Design and the last save state.
-
-    ### Diff the Component first ###
-    result = []
-    for uid, comp of newData.component
-      diffHelper( comp, oldData.component[uid], result, newData.component, oldData.component )
-
-    for uid, comp of oldData.component
-      if newData.component[ uid ] then continue
-      diffHelper( undefined, comp, result, newData.component, oldData.component )
-
-    dedupResult = []
-    dedupMap    = {}
-
-    for obj in result
-      if constant.RESNAME[ obj.type ]
-        obj.type = constant.RESNAME[ obj.type ]
-      # Remove duplicate
-      exist = dedupMap[ obj.id ]
-      if not exist
-        exist = dedupMap[ obj.id ] = obj
-        dedupResult.push obj
-      else if obj.change and obj.change isnt "Update"
-        exist.change = obj.change
-
-      if obj.changes
-        exist.changes = obj.changes
-        for c in obj.changes
-          c.info = c.name
-          if c.count < 0
-            c.info = c.name + " " + c.count
-          else if c.count > 0
-            c.info = c.name + " +" + c.count
-
-      if exist.change is "Delete"
-        exist.info = exist.info or "Deletion cannot be rolled back"
-      else if exist.change is "Terminate"
-        exist.info = exist.info or "Termination cannot be rolled back"
-
-    dedupResult
-
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false
     # If the stack contains instance-stor ami.
@@ -742,18 +618,6 @@ define [
       if ami and ami.rootDeviceType is 'instance-store'
         return false
     true
-
-  DesignImpl.prototype.onAwsResourceUpdated = ()->
-    ######
-    # Quick Hack to redraw all the node when resource is updated.
-    # Should find a better way to handle this.
-    ######
-    if @modeIsStack() then return
-    for uid, comp of @__componentMap
-      if comp.node_line or comp.node_group then continue
-      if comp.draw
-        comp.draw()
-    null
 
   DesignImpl::instancesNoUserData = ()->
     result = true
@@ -768,13 +632,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-  DesignImpl.prototype.on = ( event )->
-    # Do nothing for AwsResourceUpdated if it's in stack mode.
-    if event is Design.EVENT.AwsResourceUpdated and @modeIsStack()
-      return
-
-    Backbone.Events.on.apply( this, arguments )
-
 
   # Inject dependency, so that CanvasAdaptor won't require Design.js
   CanvasAdaptor.setDesign( Design )

@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./WelcomeTpl", "UI.modalplus", 'i18n!nls/lang.js', "backbone" ], ( WelcomeTpl, Modal, lang ) ->
+define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( WelcomeTpl, Modal, lang ) ->
 
     WelcomeDialog = Backbone.View.extend {
 
@@ -73,9 +73,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!nls/lang.js', "backbone" ], ( Wel
           $("#WelcomeDoneTitDemo").show()
           $("#WelcomeDoneTit").hide()
 
-      close : ()->
-        @modal.close()
-        App.openSampleStack(true)
+      close : ()-> @modal.close()
 
       updateSubmitBtn : ()->
         account    = $("#CredSetupAccount").val()

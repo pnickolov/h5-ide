@@ -4,7 +4,7 @@
 
 define [ '../base/view',
          './template/stack'
-         'i18n!nls/lang.js'
+         'i18n!/nls/lang.js'
          'dhcp'
          'UI.modalplus'
 ], ( PropertyView, template, lang, dhcp, modalPlus ) ->

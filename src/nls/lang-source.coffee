@@ -1543,6 +1543,10 @@ module.exports =
       en: "Stack Name"
       zh: "模版名称"
 
+    PROP_APP_LBL_NAME:
+      en: "App Name"
+      zh: "应用名称"
+
     PROP_STACK_LBL_DESCRIPTION:
       en: "Stack Description"
       zh: "模板描述"
@@ -1566,6 +1570,22 @@ module.exports =
     PROP_APP_LBL_ID:
       en: "App ID"
       zh: "应用标识"
+
+    PROP_APP_LBL_INSTANCE_STATE:
+      en: "Instance State"
+      zh: ""
+
+    PROP_APP_LBL_RESDIFF:
+      en: "Monitor and report external resource change of this app"
+      zh: ""
+
+    PROP_APP_LBL_RESDIFF_VIEW:
+      en: "Monitor and Report External Change"
+      zh: ""
+
+    PROP_APP_TIP_RESDIFF:
+      en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
+      zh: ""
 
     PROP_STACK_LBL_USAGE:
       en: "Usage"
@@ -2493,17 +2513,29 @@ module.exports =
       en: "Volume Type"
       zh: "磁盘类型"
 
-    PROP_VOLUME_TYPE_STANDARD:
-      en: "Standard"
-      zh: "标准"
+    PROP_VOLUME_ENCRYPTED:
+      en: "Encrypted"
+      zh: ""
 
-    PROP_VOLUME_TYPE_IOPS:
-      en: "Provisioned IOPS"
+    PROP_VOLUME_TYPE_STANDARD:
+      en: "Magnetic"
+      zh: "传统磁盘"
+
+    PROP_VOLUME_TYPE_GP2:
+      en: "General Purpose (SSD)"
+      zh: "通用（SSD）"
+
+    PROP_VOLUME_TYPE_IO1:
+      en: "Provisioned IOPS (SSD)"
       zh: "预配置IOPS"
 
     PROP_VOLUME_MSG_WARN:
       en: "Volume size must be at least 10 GB to use Provisioned IOPS volume type."
       zh: "要使用预配置IOPS,磁盘必须最少10GB"
+
+    PROP_VOLUME_ENCRYPTED_LABEL:
+      en: "Encrypt this volume"
+      zh: ""
 
     PROP_ENI_LBL_ATTACH_WARN:
       en: "Attach the Network Interface to an instance within the same availability zone."
@@ -3138,7 +3170,7 @@ module.exports =
       zh: "抱歉，设计模块正在加载，请稍后重试。"
 
     PROC_TITLE:
-      en: "Gearing up your awesomeness..."
+      en: "Launching your app..."
       zh: "启动您的应用..."
 
     PROC_RLT_DONE_TITLE:
@@ -4305,6 +4337,10 @@ VisualOps API. You cannot UNDO this action.'
     RUN_STACK:
       en: "run stack"
       zh: "运行"
+
+    UPDATE_APP_MODAL_NEED_CREDENTIAL:
+      en: "Please set Up Credential First"
+      zh: "请先设置 AWS 凭证"
 
     START_APP:
       en: "start app"

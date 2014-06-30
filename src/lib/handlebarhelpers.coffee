@@ -2,7 +2,7 @@
 # This file is used to place handlebar helpers. All handlebar helpers should be placed here.
 # Any helper that is not in this file might lead to compile error.
 
-define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
+define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
@@ -21,6 +21,12 @@ define ["handlebars", "i18n!nls/lang.js"], ( Handlebars, lang )->
         '-'
     else
         new Handlebars.SafeString v1
+
+  Handlebars.registerHelper 'readableVt', ( text ) ->
+    if text in [ '', undefined, null ]
+      return '-'
+
+    lang.ide[ "PROP_VOLUME_TYPE_#{text.toUpperCase()}" ]
 
   Handlebars.registerHelper 'UTC', ( text ) ->
     new Handlebars.SafeString new Date( text ).toUTCString()

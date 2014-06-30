@@ -1,5 +1,5 @@
 
-define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent , Backbone, CloudResources)->
+define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design, ideEvent , Backbone, CloudResources, constant)->
 
   deepClone = ( base )->
 
@@ -241,7 +241,13 @@ define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent ,
       Design.trigger Design.EVENT.AddResource, this
       design.trigger Design.EVENT.AddResource, this
 
+      @listenTo @, "change", @__triggerChangeInDesign
+
       this
+
+    __triggerChangeInDesign : ()->
+      @design().trigger Design.EVENT.ChangeResource, @
+      return
 
     getNewName : ( base )->
       if not @newNameTmpl
@@ -258,6 +264,10 @@ define [ "Design", "event", "backbone", 'CloudResources' ], ( Design, ideEvent ,
         if comp.get("name")
           nameMap[ comp.get("name") ] = true
         null
+
+      _.each (@design().__opsModel.getJsonData() || []).component, (comp)->
+        if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW]
+          nameMap[comp.name ] = true
 
       while true
         newName = @newNameTmpl + base

@@ -19,7 +19,7 @@ define [
       new StackView({workspace:this})
 
     isReady : ()->
-      if not @opsModel.hasJsonData() then return false
+      if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false
 
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
@@ -32,11 +32,16 @@ define [
       !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
       @hasAmiData()
 
+    initialize : ()->
+      @listenTo @opsModel, "change:id", @updateUrl
+      return
+
     fetchAdditionalData : ()->
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
 
       Q.all [
+        @opsModel.save()
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()

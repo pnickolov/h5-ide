@@ -68,10 +68,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         })
 
         svg.group().add([
-          svg.rect(20,16).move(36,1).radius(4).classes("server-number-bg")
+          svg.rect(20,14).move(36,2).radius(3).classes("server-number-bg")
           svg.plain("0").move(46,13).classes("server-number")
-        ]).classes("eni-number-group")
-
+        ]).classes("server-number-group")
       ])
 
       @canvas.appendNode svgEl
@@ -91,7 +90,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       # Update SeverGroup Count
       count = m.serverGroupCount()
 
-      numberGroup = @$el.children(".eni-number-group")
+      numberGroup = @$el.children(".server-number-group")
       CanvasManager.toggle @$el.children(".port-eni-rtb"), (count <= 1)
       CanvasManager.toggle numberGroup, (count > 1)
       numberGroup.children("text").text( count )

@@ -61,7 +61,7 @@
   cursor: grab;
 }
 
-.node-label {
+.node-label, .volume-number, .server-number {
   font-size: 12px;
   text-anchor: middle;
   fill: #333;
@@ -109,6 +109,22 @@
   .node-label {
     fill:#fff;
   }
+}
+
+.server-number-bg {
+  stroke-width: 0;
+  fill: #439beb;
+}
+.server-number {
+  fill: #fff;
+  font-size: 11px;
+}
+.volume-number {
+  fill: #74B1FD;
+  pointer-events:none;
+}
+.volume-image, .eip-status {
+  cursor: pointer;
 }
 
 /* port style */

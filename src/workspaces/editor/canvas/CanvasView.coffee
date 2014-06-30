@@ -8,7 +8,12 @@ define [
   "./CeAz"
   "./CeSubnet"
   "./CeRtb"
+  "./CeIgw"
+  "./CeVgw"
+  "./CeCgw"
+  "./CeElb"
   "./CeEni"
+  "./CeInstance"
 
   "backbone"
   "jquery"

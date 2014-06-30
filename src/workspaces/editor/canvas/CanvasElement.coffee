@@ -58,6 +58,8 @@ define [ "backbone", "svgjs" ], ()->
     portPosition : ( portName )->
       if this.portPosMap then this.portPosMap[ portName ] else null
 
+    render : ()->
+
     initNode : ( node, x, y )->
       node.move( x * MC.canvas.GRID_WIDTH, y * MC.canvas.GRID_HEIGHT )
 
@@ -94,7 +96,7 @@ define [ "backbone", "svgjs" ], ()->
         el.add( svg.use("label_path").classes("node-label-name-bg") )
 
       if option.label
-        el.add( svg.text("").move( width/2, height-4 ).classes( "node-label" ) )
+        el.add( svg.plain(option.label).move( width/2, height-4 ).classes( "node-label" ) )
 
       if option.sg
         el.add(
@@ -104,7 +106,7 @@ define [ "backbone", "svgjs" ], ()->
             svg.rect(7, 5).move(30, 6).classes('node-sg-color-border tooltip')
             svg.rect(7, 5).move(40, 6).classes('node-sg-color-border tooltip')
             svg.rect(7, 5).move(50, 6).classes('node-sg-color-border tooltip')
-          ]).classes("node-sg-color-group").move(8,62)
+          ]).classes("node-sg-color-group").move(8,63)
         )
 
       el

@@ -3,18 +3,18 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
 
   CanvasElement.extend {
     ### env:dev ###
-    ClassName : "CeVpc"
+    ClassName : "CeAz"
     ### env:dev:end ###
-    type : constant.RESTYPE.VPC
+    type : constant.RESTYPE.AZ
 
     # Creates a svg element
-    create : ()-> @canvas.appendVpc( @createGroup() )
+    create : ()-> @canvas.appendAz( @createGroup() )
 
     # Update the svg element
     render : ()->
       # Move the group to right place
       m = @model
-      @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
+      CanvasManager.update( @$el.children("text"), m.get("name") )
       @$el[0].instance.move m.x() * MC.canvas.GRID_WIDTH, m.y() * MC.canvas.GRID_WIDTH
 
   }

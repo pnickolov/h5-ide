@@ -5,6 +5,8 @@ define [
   "Design"
 
   "./CeVpc"
+  "./CeAz"
+  "./CeSubnet"
   "./CeRtb"
 
   "backbone"

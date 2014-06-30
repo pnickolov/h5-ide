@@ -672,3 +672,24 @@
   stroke: #C6C4C4; }
 .AWS-VPC-VPC .group-label {
   fill: #aaa; }
+
+.AWS-EC2-AvailabilityZone .group {
+  fill: rgba(252, 190, 23, 0.02);
+  stroke: #f9be76;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2; }
+.AWS-EC2-AvailabilityZone:hover .group {
+  stroke: #F69722; }
+.AWS-EC2-AvailabilityZone .group-label {
+  fill: #F69722; }
+
+.AWS-VPC-Subnet .group {
+  stroke: #dbd7d7;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2; }
+.AWS-VPC-Subnet:hover .group {
+  stroke: #C6C4C4; }
+.AWS-VPC-Subnet .group-label {
+  fill: #999; }

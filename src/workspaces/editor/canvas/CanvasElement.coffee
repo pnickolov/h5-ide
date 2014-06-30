@@ -119,13 +119,6 @@ define [ "backbone", "svgjs" ], ()->
       width  = m.width()  * MC.canvas.GRID_WIDTH
       height = m.height() * MC.canvas.GRID_HEIGHT
 
-      text_pos = {
-        'AWS.VPC.VPC'              : [6, 16]
-        'AWS.EC2.AvailabilityZone' : [4, 14]
-        'AWS.VPC.Subnet'           : [4, 14]
-        'AWS.AutoScaling.Group'    : [4, 14]
-      }[ m.type ]
-
       pad = 10
 
       svg = @canvas.svg
@@ -133,7 +126,6 @@ define [ "backbone", "svgjs" ], ()->
 
       el.add([
         svg.rect(width, height).radius(5).classes("group")
-        svg.text("").move(text_pos[0], text_pos[1]).classes("group-label")
 
         svg.rect( width - 2*pad, pad  ).x(pad).classes("group-resizer top")
         svg.rect( pad, height - 2*pad ).y(pad).classes("group-resizer left")
@@ -144,6 +136,8 @@ define [ "backbone", "svgjs" ], ()->
         svg.rect( pad, pad ).x(width - pad).classes('group-resizer topright')
         svg.rect( pad, pad ).y(height - pad).classes("group-resizer bottomleft")
         svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottomright")
+
+        svg.text("").move(5,15).classes("group-label")
       ]).id( @cid ).classes("dragable " + @type.replace(/\./g, "-") )
 
   }, {

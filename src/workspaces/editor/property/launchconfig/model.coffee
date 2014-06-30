@@ -128,14 +128,14 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         }
       else
         data = {
-          name : ami.name
+          name : ami.name or ami.description or ami.id
           icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
         }
 
       @set 'instance_ami', data
 
 
-      if ami and ami.blockDeviceMapping
+      if ami and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[ rdName ]
         if rdName and not rdEbs

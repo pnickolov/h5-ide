@@ -268,7 +268,8 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
     if data and data.blockDeviceMapping
       for v in data.blockDeviceMapping
-        if data.rootDeviceName.indexOf(v.deviceName) isnt -1 then continue
+        #skip rootdevice
+        if data.rootDeviceType is "ebs" and data.rootDeviceName.indexOf(v.deviceName) isnt -1 then continue
 
         volume = volumeList.get( v.ebs.volumeId )?.attributes
         if not volume then continue

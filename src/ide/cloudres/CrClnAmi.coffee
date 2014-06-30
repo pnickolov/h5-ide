@@ -333,6 +333,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         try
           item = JSON.parse(ami.amiVO)
           item.id = ami.id
+          item.blockDeviceMapping = if $.isEmptyObject(item.blockDeviceMapping) then null else item.blockDeviceMapping
           savedAmis.push item
           favAmiId.push ami.id
         catch e

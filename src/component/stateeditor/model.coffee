@@ -180,7 +180,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 				osType = imageObj.get('osType') or layoutOSType
 
 				# linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
-				linuxDistroRange = ['centos', 'redhat', 'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'sles', 'amazon', 'amaz']
+				linuxDistroRange = ['centos', 'redhat', 'ubuntu', 'rhel', 'debian', 'amazon', 'amaz']
 
 				if osType is 'windows'
 					osPlatform = 'windows'

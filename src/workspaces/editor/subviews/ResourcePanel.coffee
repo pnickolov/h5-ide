@@ -346,7 +346,7 @@ define [
       tgtOffset = $tgt.offset()
       $item = $("#ResourceDragItem")
         .html( $tgt.html() )
-        .attr("class", $tgt.attr("class") )
+        .attr("class", $tgt.attr("class").replace("bubble", "") )
         .css({
           'top'  : tgtOffset.top
           'left' : tgtOffset.left

@@ -61,6 +61,8 @@ define [
       "click .refresh-resource-panel": "refreshPanelData"
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
+      'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
+
     initialize : (options)->
       @workspace = options.workspace
       @subViews = []
@@ -142,6 +144,29 @@ define [
 
         @
 
+    resourceListSortSelectSnapshotEvent : (event) ->
+
+        selectedId = 'date'
+
+        if event
+
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
+        
+        $sortedList = []
+
+        if selectedId is 'date'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
+
+        if selectedId is 'storge'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return Number($(a).data('storge')) - Number($(b).data('storge'))
+
+        if $sortedList.length
+            @$el.find('.resource-list-snapshot-exist').html($sortedList)
 
     renderReuse: ->
       allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
@@ -197,7 +222,7 @@ define [
     updateSnapshot : ()->
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
-      @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
+      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
 
     changeAmiType : ( evt, attr )->

@@ -539,6 +539,14 @@ module.exports =
       en: "New Volume"
       zh: "新的卷"
 
+    RES_LBL_NEW_BLANK_VOL:
+      en: "New Blank Volume"
+      zh: ""
+
+    RES_LBL_NEW_VOL_FROM_SNAPSHOT:
+      en: "New Volume from Snapshot"
+      zh: ""
+
     RES_LBL_NEW_ELB:
       en: "Load Balancer"
       zh: "负载均衡器"

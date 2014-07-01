@@ -220,6 +220,28 @@
 .resource-list-asg .resource-item {
   height: 5em; }
 
+.resource-list-sort-select {
+  margin-top: -6px;
+  float: right;
+  width: 84px;
+  margin-right: -7px; }
+  .resource-list-sort-select .selection {
+    padding-right: 18px;
+    text-align: right;
+    box-shadow: none;
+    border: none;
+    background: transparent; }
+
+.resoruce-list-head {
+  font-size: 12px;
+  margin-bottom: 10px;
+  width: 100%;
+  border-bottom: 1px #666 solid;
+  height: 18px; }
+
+.resource-list-snapshot {
+  display: inline-block; }
+
 .resource-item {
   width: 70px;
   padding-top: 65px;

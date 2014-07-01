@@ -42,7 +42,23 @@
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
-      <ul class="resource-list-snapshot scroll-content"></ul>
+      <div class="scroll-content">
+        <div class="resoruce-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+        <ul class="resource-list-snapshot">
+          <li class="tooltip resource-item resource-icon-volume " data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
+        </ul>
+        <div class="resoruce-list-head">
+          {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
+            <div class="selection">By Date</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">By Date</li>
+              <li class="item" data-id="storge">By Storage</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
+      </div>
     </div>
   </section>
 
@@ -82,9 +98,10 @@
 </li>
 
 <!-- {{snapshot}} -->
-<li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
+<li class="resource-item bubble resource-icon-ebs-snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
+  <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
+</li>{{/with}}{{/each}}
 
 
 <!-- {{ami}} -->

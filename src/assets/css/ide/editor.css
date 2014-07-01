@@ -606,7 +606,8 @@
   cursor: pointer;
   cursor: -moz-grab;
   cursor: -webkit-grab;
-  cursor: grab; }
+  cursor: grab;
+  fill: #fff; }
 
 .node-label, .volume-number, .server-number {
   font-size: 12px;
@@ -669,6 +670,18 @@
 .volume-image, .eip-status {
   cursor: pointer; }
 
+.group-asg {
+  stroke-width: 2;
+  fill: rgba(118, 214, 255, 0.05);
+  stroke: #76d6ff;
+  stroke-linejoin: round;
+  stroke-dasharray: 6, 4;
+  stroke-width: 2; }
+
+.asg-title {
+  fill: #83CBF9;
+  stroke: none; }
+
 /* port style */
 .port {
   stroke-width: 0; }
@@ -724,3 +737,17 @@
   stroke: #C6C4C4; }
 .AWS-VPC-Subnet .group-label {
   fill: #999; }
+
+.ExpandedAsg {
+  opacity: 0.5; }
+
+.prompt_text {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default; }
+
+.asg-resource-dragger {
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }

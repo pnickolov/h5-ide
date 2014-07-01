@@ -89,8 +89,7 @@ define [ "backbone", "svgjs" ], ()->
       el.add([
         svg.rect(width, height).radius(5).classes("node-background")
         svg.image( MC.IMG_URL + option.image, option.imageW, option.imageH ).move( option.imageX, option.imageY )
-      ]).id( @cid )
-      .classes( 'dragable ' + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes( 'dragable ' + @type.replace(/\./g, "-") )
 
       if option.labelBg
         el.add( svg.use("label_path").classes("node-label-name-bg") )
@@ -139,7 +138,7 @@ define [ "backbone", "svgjs" ], ()->
         svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottomright")
 
         svg.text("").move(5,15).classes("group-label")
-      ]).id( @cid ).classes("dragable " + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes("dragable " + @type.replace(/\./g, "-") )
 
   }, {
 

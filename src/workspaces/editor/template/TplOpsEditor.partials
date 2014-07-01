@@ -206,4 +206,17 @@
   <path d="M0.5 0l5.5 0l0 -2l-5.5 -6l-5.5 6l0 2z" id="port_top"></path>
   <path d="M0.5 0l5.5 0l0 2l-5.5 6l-5.5 -6l0 -2z" id="port_bottom"></path>
   <path d="M0 74h90v11a5 5 0 0 1 -5 5h-80a-5 -5 0 0 1 -5 -5z" id="label_path"></path>
+
+  <g id="expanded_asg">
+    <rect class="group-asg" rx="5" ry="5" height="129" x="1" y="1" width="129"></rect>
+    <path d="M0 21l0 -16a5 5 0 0 1 5 -5l121 0a5 5 0 0 1 5 5l0 16z" class="asg-title"></path>
+  </g>
+
+  <text id="prompt_text">
+    <tspan x="25" y="45">Drop AMI from</tspan>
+    <tspan x="20" y="65">resource panel to</tspan>
+    <tspan x="30" y="85">create launch</tspan>
+    <tspan x="30" y="105">configuration</tspan>
+  </text>
+
 </defs></svg>

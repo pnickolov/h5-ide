@@ -14,6 +14,7 @@ define [
   "./CeElb"
   "./CeEni"
   "./CeInstance"
+  "./CeAsg"
 
   "backbone"
   "jquery"

@@ -12,7 +12,7 @@
 /* Define as MC module */
 define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
 
-	Analytics.update "version", window.version
+Analytics.update("version", window.version);
 
 window.Q = Q;
 

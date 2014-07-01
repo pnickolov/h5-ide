@@ -62,6 +62,7 @@ define [ "backbone", "svgjs" ], ()->
     portPosition : ( portName )->
       if this.portPosMap then this.portPosMap[ portName ] else null
 
+    create : ()->
     render : ()->
 
     initNode : ( node, x, y )->

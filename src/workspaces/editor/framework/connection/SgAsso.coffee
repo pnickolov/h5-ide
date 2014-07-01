@@ -5,28 +5,6 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-    initialize : ()->
-
-      # A hack for optimization.
-      # When deserializing, shouldDraw() returns false.
-      # Thus this sgAsso doesn't have a draw() method.
-      # So that the Design won't call it after deserialization.
-      # Then we update all resources in the callback of `deserialized`
-      if Design.instance().shouldDraw()
-        # Assign to draw after deserialization to make sure ConnectionModel
-        # will draw us after connetion is established
-        @draw = @updateLabel
-
-      # Listen to Sg's name change, so that we could update the label tooltip
-      @listenTo @getTarget( constant.RESTYPE.SG ), "change:name", @updateLabel
-
-      # Update target's label after this connection is removed.
-      @on "destroy", @updateLabel
-      null
-
-    # Return false, so that ConnectionModel will not create an line for us.
-    isVisual : ()-> false
-
     # SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
     # Here, we do our own job.
     assignCompsToPorts : (p1Comp, p2Comp)->
@@ -40,6 +18,8 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         return false
 
       true
+
+    isVisual : ()-> true
 
     remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments
@@ -88,42 +68,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         if a_nm <  b_nm then return -1
         if a_nm == b_nm then return 0
         if a_nm >  b_nm then return 1
-
-
-    # Drawing method, drawing method is used to update resource label
-    updateLabel : ()->
-      if not Design.instance().shouldDraw()
-        return
-
-      resource = @getOtherTarget( constant.RESTYPE.SG )
-      res_node = document.getElementById( resource.id )
-
-      if not res_node then return
-
-      sgs = @sortedSgList()
-
-      # Update label
-      for ch, idx in $(res_node).children(".node-sg-color-group").children()
-        if idx < sgs.length
-          CanvasManager.update( ch, sgs[idx].color, "color" )
-          CanvasManager.update( ch, sgs[idx].get("name"), "tooltip" )
-
-        else
-          CanvasManager.update( ch, "none", "color" )
-          CanvasManager.update( ch, "", "tooltip" )
-
-      null
   }
-
-  Design.on Design.EVENT.Deserialized, ()->
-    # After the design is deserialized, we update all resource's label at once.
-    updateMap = {}
-    for asso in SgAsso.allObjects()
-      updateMap[ asso.getOtherTarget( constant.RESTYPE.SG ).id ] = asso
-
-    for resId, asso of updateMap
-      asso.updateLabel()
-    null
 
   SgAsso
 

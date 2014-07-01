@@ -15,6 +15,7 @@ define [
   "./CeEni"
   "./CeInstance"
   "./CeAsg"
+  "./CeSgAsso"
 
   "backbone"
   "jquery"
@@ -61,6 +62,8 @@ define [
     reload : ()->
       console.log "Reloading svg canvas."
 
+      @initializing = true
+
       @svg.clear().add([
         @svg.group().classes("layer_vpc")
         @svg.group().classes("layer_az")
@@ -72,15 +75,24 @@ define [
       @__itemMap = {}
 
       lines = []
+      types = {}
       @design.eachComponent ( comp )->
         if comp.node_line
           lines.push comp
         else
           @addItem(comp)
+        types[ comp.type ] = true
         return
       , @
 
       @addItem(comp) for comp in lines
+
+      for t of types
+        ItemClass = CanvasElement.getClassByType( t )
+        if ItemClass and ItemClass.render
+          ItemClass.render( this )
+
+      @initializing = false
       return
 
     addItem : ( resourceModel )->
@@ -92,6 +104,9 @@ define [
           model  : resourceModel
           canvas : @
         })
+
+        if not item.cid then return
+
         @__itemMap[ resourceModel.id ] = item
         @__itemMap[ item.cid ] = item
       return

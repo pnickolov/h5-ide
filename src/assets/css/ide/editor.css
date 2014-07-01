@@ -751,3 +751,20 @@
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab; }
+
+.line {
+  cursor: pointer;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-width: 2px; }
+  .line:hover {
+    opacity: .8;
+    stroke-width: 4px; }
+
+.fill-line {
+  stroke: #fff;
+  stroke-opacity: 0;
+  stroke-width: 10px; }
+
+.EniAttachment {
+  stroke: #12CD4F; }

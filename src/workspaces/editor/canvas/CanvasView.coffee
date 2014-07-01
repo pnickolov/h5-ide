@@ -16,6 +16,7 @@ define [
   "./CeInstance"
   "./CeAsg"
   "./CeSgAsso"
+  "./CeLine"
 
   "backbone"
   "jquery"

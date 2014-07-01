@@ -59,11 +59,31 @@ define [ "backbone", "svgjs" ], ()->
       $(dom).remove()
       @
 
+    portDirection : ( portName )->
+      if this.portDirMap then this.portDirMap[ portName ] else null
+
     portPosition : ( portName )->
       if this.portPosMap then this.portPosMap[ portName ] else null
 
     create : ()->
     render : ()->
+
+    pos : ( el )->
+      x = @model.x()
+      y = @model.y()
+
+      if el
+        el = el.parentNode
+        while el
+          elId = el.getAttribute("data-id")
+          el = @canvas.getItem( elId )
+          if el
+            x += el.model.x()
+            y += el.model.y()
+      {
+        left : x * 10
+        top  : y * 10
+      }
 
     initNode : ( node, x, y )->
       node.move( x * MC.canvas.GRID_WIDTH, y * MC.canvas.GRID_HEIGHT )

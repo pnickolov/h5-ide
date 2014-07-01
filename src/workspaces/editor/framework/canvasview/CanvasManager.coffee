@@ -97,15 +97,20 @@ define ['CloudResources'], (CloudResources)->
         element.text( MC.truncate value, 17 )
       else if attr is "href" or attr is "image"
         value = MC.IMG_URL + value
-        href = element[0].getAttributeNS("http://www.w3.org/1999/xlink", "href")
-        if href isnt value
-          element[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
+
+        for el in element
+          href = el.getAttributeNS("http://www.w3.org/1999/xlink", "href")
+          if href isnt value
+            el.setAttributeNS("http://www.w3.org/1999/xlink", "href", value)
+
       else if attr is "tooltip"
         element.data("tooltip", value).attr("data-tooltip", value)
-        if value
-          CanvasManager.addClass( element, "tooltip" )
-        else
-          CanvasManager.removeClass( element, "tooltip" )
+        for el in element
+          if value
+            CanvasManager.addClass( el, "tooltip" )
+          else
+            CanvasManager.removeClass( el, "tooltip" )
+
       else if attr is "color"
         element.attr("style", "fill:#{value}")
       else

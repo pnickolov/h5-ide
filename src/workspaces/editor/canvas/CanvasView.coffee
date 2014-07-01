@@ -93,9 +93,17 @@ define [
           canvas : @
         })
         @__itemMap[ resourceModel.id ] = item
+        @__itemMap[ item.cid ] = item
       return
 
     removeItem : ( resourceModel )->
+      item = @getItem( resourceModel.id )
+      delete @__itemMap[ resourceModel.id ]
+      delete @__itemMap[ item.cid ]
+      item.remove()
+      return
+
+    getItem : ( id )-> @__itemMap[ id ]
 
     update : ()->
 

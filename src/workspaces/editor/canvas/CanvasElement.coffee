@@ -48,11 +48,15 @@ define [ "backbone", "svgjs" ], ()->
       return
 
     addView    : ( dom )->
+      if not dom then return @
       @$el = @$el.add if dom.node then dom.node else dom
       @
 
     remvoeView : ( dom )->
-      @$el = @$el.not if dom.node then dom.node else dom
+      if not dom then return @
+      if dom.node then dom = dom.node
+      @$el = @$el.not dom
+      $(dom).remove()
       @
 
     portPosition : ( portName )->

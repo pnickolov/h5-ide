@@ -250,6 +250,18 @@
     position: relative;
     padding-top: 5px;
     height: 132px; }
+  .resource-item .resource-count {
+    margin-left: 47px;
+    margin-top: -70px;
+    height: 15px;
+    width: 15px;
+    background-color: #f22;
+    position: absolute;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 11px; }
 
 .resource-icon-az {
   background-image: url('/assets/images/ide/icon/az-resource.png'); }

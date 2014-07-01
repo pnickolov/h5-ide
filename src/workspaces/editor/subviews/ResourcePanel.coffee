@@ -165,11 +165,33 @@ define [
       return
 
     updateAZ : ()->
+
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
 
-      @$el.find(".resource-list-az").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
-      @updateDisabledAz()
+      allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+      usedAZComp = @workspace.design.componentsOfType(constant.RESTYPE.AZ) || []
+      
+      usedAZ = _.map usedAZComp, (az) ->
+        return az.get('name')
+
+      availableAZ = []
+      _.each allAZComp, (az) ->
+        if not (az.id in usedAZ)
+          availableAZ.push(az.id)
+        null
+
+      availableAZ = availableAZ.sort()
+
+      nextId = ''
+      if availableAZ.length
+        nextId = availableAZ[0]
+
+      @$el.find(".resource-list-az").html LeftPanelTpl.az({
+        id: nextId,
+        count: availableAZ.length
+      })
+
       return
 
     updateSnapshot : ()->
@@ -206,19 +228,20 @@ define [
 
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
-      @updateDisabledAz()
+      @updateAZ()
       @updateDisabledVpcRes()
       return
 
-    updateDisabledAz : ()->
-      $azs = @$el.find(".resource-list-az").children().removeClass("resource-disabled")
-      for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
-        azName = az.get("name")
-        for i in $azs
-          if $(i).text().indexOf(azName) != -1
-            $(i).addClass("resource-disabled")
-            break
-      return
+    # updateDisabledAz : ()->
+    #   $azs = @$el.find(".resource-list-az").children().removeClass("resource-disabled")
+    #   for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
+    #     azName = az.get("name")
+    #     for i in $azs
+    #       if $(i).text().indexOf(azName) != -1
+    #         $(i).addClass("resource-disabled")
+    #         break
+
+    #   return
 
     updateDisabledVpcRes : ()->
       $ul = @$el.find(".resource-icon-igw").parent()

@@ -488,8 +488,8 @@ module.exports =
       zh: ""
 
     RES_TIT_AZ:
-      en: "Availability Zones"
-      zh: "可用区域"
+      en: "AZ & Subnet"
+      zh: ""
 
     RES_TIT_AMI:
       en: "Images"

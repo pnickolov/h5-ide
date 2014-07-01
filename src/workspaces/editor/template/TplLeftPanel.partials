@@ -76,8 +76,10 @@
 </div>
 
 <!-- {{az}} -->
-{{#each this}}{{#with attributes}}
-<li class="tooltip resource-item resource-icon-az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'><div class="az-name">{{lastChar id}}</div>{{id}}</li>{{/with}}{{/each}}
+<li class="tooltip resource-item resource-icon-az {{#unless id}}resource-disabled{{/unless}}" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'>
+  <div class="az-name"></div>AZ & subnet
+  <div class="resource-count">{{count}}</div>
+</li>
 
 <!-- {{snapshot}} -->
 <li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>

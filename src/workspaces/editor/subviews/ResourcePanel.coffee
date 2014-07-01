@@ -39,7 +39,7 @@ define [
       config = App.model.getOsFamilyConfig( data.region )
       config = config[ ami.osFamily ] || config[ constant.OS_TYPE_MAPPING[ami.osType] ]
       config = if ami.rootDeviceType  is "ebs" then config.ebs else config['instance store']
-      config = if ami.architecture is "x86_64" then config["64"] else config["32"]
+      config = config[ ami.architecture ]
       config = config[ ami.virtualizationType || "paravirtual" ]
       ami.instanceType = config.join(", ")
     catch e

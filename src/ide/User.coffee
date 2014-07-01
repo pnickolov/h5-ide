@@ -141,10 +141,11 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         return
 
     logout : ()->
-      domain = { "domain" : window.location.hostname.replace("ide", "") }
+      domain = { "domain" : window.location.hostname.replace("ide", ""), "path" : "/" }
+      def    = { "path" : "/" }
       for ckey, cValue of $.cookie()
         $.removeCookie ckey, domain
-        $.removeCookie ckey
+        $.removeCookie ckey, def
       return
 
     changePassword : ( oldPwd, newPwd )->

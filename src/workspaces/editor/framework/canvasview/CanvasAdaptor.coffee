@@ -185,14 +185,16 @@ define [ "./CanvasElement", "event", 'i18n!/nls/lang.js', "constant", "UI.notifi
       l = lang.ide
 
       switch param.type
-        when res_type.VOL       then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when res_type.SUBNET    then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
-        when res_type.INSTANCE  then info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-        when res_type.ENI       then info = l.CVS_MSG_WARN_NOTMATCH_ENI
-        when res_type.RT        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
-        when res_type.ELB       then info = l.CVS_MSG_WARN_NOTMATCH_ELB
-        when res_type.CGW       then info = l.CVS_MSG_WARN_NOTMATCH_CGW
-        when res_type.ASG       then info = l.CVS_MSG_WARN_NOTMATCH_ASG
+        when res_type.VOL         then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when res_type.SUBNET      then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when res_type.INSTANCE    then info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
+        when res_type.ENI         then info = l.CVS_MSG_WARN_NOTMATCH_ENI
+        when res_type.RT          then info = l.CVS_MSG_WARN_NOTMATCH_RTB
+        when res_type.ELB         then info = l.CVS_MSG_WARN_NOTMATCH_ELB
+        when res_type.CGW         then info = l.CVS_MSG_WARN_NOTMATCH_CGW
+        when res_type.ASG         then info = l.CVS_MSG_WARN_NOTMATCH_ASG
+        when res_type.DBSBG       then info = l.CVS_MSG_WARN_NOTMATCH_SGP_VPC
+        when res_type.DBINSTANCE  then info = l.CVS_MSG_WARN_NOTMATCH_DBINSTANCE_SGP
 
       if info
         notification 'warning', info , false

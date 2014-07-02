@@ -707,6 +707,14 @@ module.exports =
       en: "Instances must be dragged to a subnet or auto scaling group."
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
+    CVS_MSG_WARN_NOTMATCH_SGP_VPC:
+      en: "Subnet Group must be dragged to a vpc."
+      zh: ""
+
+    CVS_MSG_WARN_NOTMATCH_DBINSTANCE_SGP:
+      en: "DB Instance must be dragged to a subnet group."
+      zh: ""
+
     CVS_MSG_WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
       zh: "Auto Scaling组必须拖放到子网。"

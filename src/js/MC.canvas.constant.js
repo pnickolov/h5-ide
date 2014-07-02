@@ -16,7 +16,8 @@ var constant_data = {
 		'AWS.VPC.InternetGateway': [8, 8],
 		'AWS.VPC.VPNGateway': [8, 8],
 		'AWS.AutoScaling.LaunchConfiguration': [9, 9],
-		'AWS.AutoScaling.Group': [13, 13]
+		'AWS.AutoScaling.Group': [13, 13],
+		'AWS.RDS.DBInstance': [10, 10]
 	},
 
 	GROUP_DEFAULT_SIZE:
@@ -65,9 +66,10 @@ var constant_data = {
 		'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 		'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
-		'AWS.RDS.SubnetGroup': ['AWS.VPC.VPC'],
 		'AWS.VPC.VPC': ['Canvas'],
-		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
+		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet'],
+		'AWS.RDS.SubnetGroup': ['AWS.VPC.VPC'],
+		'AWS.RDS.DBInstance': ['AWS.RDS.SubnetGroup']
 	}
 };
 

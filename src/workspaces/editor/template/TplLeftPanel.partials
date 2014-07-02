@@ -129,7 +129,7 @@
 
 <!-- {{rds}} -->
 {{#each this}}
-<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip" data-tooltip="{{name}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"name": {{name}} }'>{{name}}</li>
+<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip" data-tooltip="{{name}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"name": "{{name}}" }'>{{name}}</li>
 {{/each}}
 
 <!-- {{rds_snapshot}} -->

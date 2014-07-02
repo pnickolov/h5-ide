@@ -24,6 +24,7 @@ var constant_data = {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
 		'AWS.EC2.AvailabilityZone': [21, 21],
 		'AWS.VPC.Subnet': [17, 17],
+		'AWS.RDS.SubnetGroup': [17, 17],
 		'AWS.AutoScaling.Group' : [13, 13]
 	},
 
@@ -64,6 +65,7 @@ var constant_data = {
 		'AWS.VPC.VPNGateway': ['AWS.VPC.VPC'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.VPC'],
 		'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
+		'AWS.RDS.SubnetGroup': ['AWS.VPC.VPC'],
 		'AWS.VPC.VPC': ['Canvas'],
 		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet']
 	}

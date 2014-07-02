@@ -1,6 +1,8 @@
 
 define [ "backbone", "svgjs" ], ()->
 
+  CanvasView = null
+
   __detailExtend = Backbone.Model.extend
   ### env:dev ###
   __detailExtend = ( protoProps, staticProps )->
@@ -86,7 +88,7 @@ define [ "backbone", "svgjs" ], ()->
       }
 
     initNode : ( node, x, y )->
-      node.move( x * MC.canvas.GRID_WIDTH, y * MC.canvas.GRID_HEIGHT )
+      node.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
 
       for child in node.children()
         cc = child.node
@@ -105,8 +107,8 @@ define [ "backbone", "svgjs" ], ()->
 
       x      = m.x()
       y      = m.y()
-      width  = m.width()  * MC.canvas.GRID_WIDTH
-      height = m.height() * MC.canvas.GRID_HEIGHT
+      width  = m.width()  * CanvasView.GRID_WIDTH
+      height = m.height() * CanvasView.GRID_HEIGHT
 
       svg = @canvas.svg
       el  = svg.group()
@@ -141,8 +143,8 @@ define [ "backbone", "svgjs" ], ()->
 
       x      = m.x()
       y      = m.y()
-      width  = m.width()  * MC.canvas.GRID_WIDTH
-      height = m.height() * MC.canvas.GRID_HEIGHT
+      width  = m.width()  * CanvasView.GRID_WIDTH
+      height = m.height() * CanvasView.GRID_HEIGHT
 
       pad = 10
 
@@ -187,5 +189,7 @@ define [ "backbone", "svgjs" ], ()->
     PORT_UP_ANGLE     : 90
     PORT_LEFT_ANGLE   : 180
     PORT_DOWN_ANGLE   : 270
+
+  CanvasElement.setCanvasViewClass = ( c )-> CanvasView = c; return
 
   CanvasElement

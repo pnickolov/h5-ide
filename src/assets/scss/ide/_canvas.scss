@@ -263,3 +263,23 @@
 .EniAttachment {
   stroke: #12CD4F;
 }
+
+.RTB_Asso, .ElbSubnetAsso {
+  stroke: #d8d7d6;
+}
+
+.AWS-VPC-VPNConnection {
+  stroke: #bf7aa5;
+}
+
+.RTB_Route {
+  stroke: #6DAEFE;
+  .dash-line {
+    stroke: #9FC9FD;
+    stroke-dasharray: 10px 10px;
+  }
+}
+
+.ElbAmiAsso {
+  stroke: #0973f6;
+}

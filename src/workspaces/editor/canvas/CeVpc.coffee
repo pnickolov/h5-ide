@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, constant, CanvasManager )->
+define [ "./CanvasElement", "constant", "CanvasManager", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, CanvasView )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -15,6 +15,6 @@ define [ "./CanvasElement", "constant", "CanvasManager" ], ( CanvasElement, cons
       # Move the group to right place
       m = @model
       @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
-      @$el[0].instance.move m.x() * MC.canvas.GRID_WIDTH, m.y() * MC.canvas.GRID_WIDTH
+      @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
   }

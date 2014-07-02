@@ -4,23 +4,10 @@ define [
   "./CanvasElement"
   "Design"
 
-  "./CeVpc"
-  "./CeAz"
-  "./CeSubnet"
-  "./CeRtb"
-  "./CeIgw"
-  "./CeVgw"
-  "./CeCgw"
-  "./CeElb"
-  "./CeEni"
-  "./CeInstance"
-  "./CeAsg"
-  "./CeSgAsso"
-  "./CeLine"
-
   "backbone"
   "jquery"
   "svgjs"
+  "MC.canvas.constant"
 ], ( OpsEditorTpl, CanvasElement, Design )->
 
   # Insert svg defs template.
@@ -42,8 +29,8 @@ define [
       canvasSize = @design.get("canvasSize")
 
       @$el.children(".canvas-view").css({
-        width : canvasSize[0] * MC.canvas.GRID_WIDTH
-        height: canvasSize[1] * MC.canvas.GRID_WIDTH
+        width : canvasSize[0] * CanvasView.GRID_WIDTH
+        height: canvasSize[1] * CanvasView.GRID_WIDTH
       })
 
       @reload()
@@ -124,6 +111,11 @@ define [
     update : ()->
 
 
+  }, {
+    GRID_WIDTH  : 10
+    GRID_HEIGHT : 10
   }
+
+  CanvasElement.setCanvasViewClass CanvasView
 
   CanvasView

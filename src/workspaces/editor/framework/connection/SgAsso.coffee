@@ -19,8 +19,6 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
 
       true
 
-    isVisual : ()-> true
-
     remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments
 

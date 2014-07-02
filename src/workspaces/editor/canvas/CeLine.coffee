@@ -31,7 +31,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg.group().add([
         svg.path()
         svg.path().classes("fill-line")
-      ]).attr({"data-id":@cid}).classes("line #{@type}")
+      ]).attr({"data-id":@cid}).classes("line " + @type.replace(/\./g, "-") )
 
     renderConnection : ( item_from, item_to, element1, element2 )->
       connection = @model
@@ -140,7 +140,55 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
   CeLine.extend {
     ### env:dev ###
-    ClassName : "EniAttachment"
+    ClassName : "CeEniAttachment"
     ### env:dev:end ###
     type : "EniAttachment"
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeElbAsso"
+    ### env:dev:end ###
+    type : "ElbAsso"
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeRtbAsso"
+    ### env:dev:end ###
+    type : "RTB_Asso"
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeRtbRoute"
+    ### env:dev:end ###
+    type : "RTB_Route"
+
+    createLine : ()->
+      svg   = @canvas.svg
+      svgEl = CeLine.prototype.createLine.call this
+
+      svgEl.add( svg.path().classes("dash-line") )
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeVpn"
+    ### env:dev:end ###
+    type : constant.RESTYPE.VPN
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeElbSubnetAsso"
+    ### env:dev:end ###
+    type : "ElbSubnetAsso"
+  }
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeElbAmiAsso"
+    ### env:dev:end ###
+    type : "ElbAmiAsso"
   }

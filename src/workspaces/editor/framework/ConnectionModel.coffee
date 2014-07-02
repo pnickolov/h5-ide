@@ -228,9 +228,7 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
         @__view = CanvasElement.createView( @ceType or "Line", @ )
       @__view
 
-    isVisual : ()->
-      # If we have portDefs, then it's considered to be visual line
-      !!@portDefs
+    isVisual : ()-> true
 
     draw : ( isCreate )->
       if not Design.instance().shouldDraw() then return

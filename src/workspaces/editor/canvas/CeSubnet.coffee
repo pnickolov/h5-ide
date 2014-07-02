@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -9,12 +9,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
     portPosition : ( portName )->
       m = @model
-      portY = m.height() * MC.canvas.GRID_HEIGHT / 2 - 5
+      portY = m.height() * CanvasView.GRID_HEIGHT / 2 - 5
 
       if portName is "subnet-assoc-in"
         [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
       else
-        [ m.width() * MC.canvas.GRID_WIDTH + 4, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+        [ m.width() * CanvasView.GRID_WIDTH + 4, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
     # Creates a svg element
     create : ()->
@@ -44,6 +44,6 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svgEl = @$el[0].instance
       @initNode svgEl, m.x(), m.y()
       @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
-      svgEl.move m.x() * MC.canvas.GRID_WIDTH, m.y() * MC.canvas.GRID_WIDTH
+      svgEl.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
   }

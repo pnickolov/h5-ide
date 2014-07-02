@@ -6,7 +6,7 @@ define [
   "./subviews/Toolbar"
   "./subviews/ResourcePanel"
   "./subviews/Statusbar"
-  "./canvas/CanvasView"
+  "./canvas/CanvasBundle"
   "UI.modalplus"
 
   "backbone"

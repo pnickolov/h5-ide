@@ -25,7 +25,11 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     doFetch : ()-> ApiRequest("rds_snap_DescribeDBSnapshots", {region_name : @region()})
     parseFetchData : ( data )->
       rdsSnapshot = []
-      rdsSnapshot = data?.DescribeDBSnapshotsResponse?.DescribeDBSnapshotsResult?.DBSnapshots
+      rdsSnapshots = data?.DescribeDBSnapshotsResponse?.DescribeDBSnapshotsResult?.DBSnapshots
+      if _.isArray(rdsSnapshots.DBSnapshot)
+        rdsSnapshot = rdsSnapshots.DBSnapshot
+      else
+        rdsSnapshot = rdsSnapshots
       rdsSnapshot = _.map rdsSnapshot, (item) ->
         item.id = item.DBSnapshotIdentifier
         return item

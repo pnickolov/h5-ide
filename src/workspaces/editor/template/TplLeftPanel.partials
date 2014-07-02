@@ -43,11 +43,11 @@
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
       <div class="scroll-content">
-        <div class="resoruce-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
         <ul class="resource-list-snapshot">
           <li class="tooltip resource-item resource-icon-volume " data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
         </ul>
-        <div class="resoruce-list-head">
+        <div class="resource-list-head">
           {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
           <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
             <div class="selection">By Date</div>
@@ -58,6 +58,30 @@
           </div>
         </div>
         <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <div class="scroll-content">
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
+        <ul class="resource-list-rds"></ul>
+        <div class="resource-list-head">
+          {{i18n "RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-rds-snapshot">
+            <div class="selection">By Date</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">By Date</li>
+              <li class="item selected" data-id="engine">By Engine</li>
+              <li class="item" data-id="storge">By Storage</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-rds-snapshot resource-list-rds-snapshot-exist"></ul>
       </div>
     </div>
   </section>
@@ -75,8 +99,6 @@
     <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="scroll-content">
-        <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
-
         <li class="tooltip resource-item resource-icon-rt" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
 
         <li class="tooltip resource-item resource-icon-igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
@@ -96,6 +118,8 @@
   <div class="az-name"></div>AZ & subnet
   <div class="resource-count">{{count}}</div>
 </li>
+<li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+<li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="SUBNET_GROUP">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
 
 <!-- {{snapshot}} -->
 {{#each this}}{{#with attributes}}
@@ -103,6 +127,17 @@
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
 </li>{{/with}}{{/each}}
 
+<!-- {{rds}} -->
+{{#each this}}
+<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip" data-tooltip="{{name}}" data-component-type="node" data-type="AWS.RDS.DBInstance" data-option='{"name": {{name}} }'>{{name}}</li>
+{{/each}}
+
+<!-- {{rds_snapshot}} -->
+{{#each this}}
+<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="AWS.RDS.DBInstance" data-option='{"DBInstanceIdentifier": {{DBInstanceIdentifier}} }' data-bubble-template="bubbleDBSnapshotInfo" data-bubble-data='{"AllocatedStorage":"{{AllocatedStorage}}","AvailabilityZone":"{{AvailabilityZone}}","DBInstanceIdentifier":"{{DBInstanceIdentifier}}","DBSnapshotIdentifier":"{{DBSnapshotIdentifier}}","Engine":"{{Engine}}","EngineVersion":"{{EngineVersion}}","InstanceCreateTime":"{{InstanceCreateTime}}","Iops":"{{Iops}}","LicenseModel":"{{LicenseModel}}","MasterUsername":"{{MasterUsername}}","OptionGroupName":"{{OptionGroupName}}","Port":"{{Port}}","SnapshotCreateTime":"{{SnapshotCreateTime}}","SnapshotType":"{{SnapshotType}}","Status":"{{Status}}","VpcId":"{{VpcId}}"}'>
+  <span class="ebs-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
+</li>
+{{/each}}
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}

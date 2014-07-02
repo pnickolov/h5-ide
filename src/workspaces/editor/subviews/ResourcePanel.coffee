@@ -62,6 +62,7 @@ define [
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
       'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
+      'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
     initialize : (options)->
       @workspace = options.workspace
@@ -71,6 +72,7 @@ define [
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+      @listenTo CloudResources( 'DBEngineVersion',     region ), "update", @updateRDSList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
@@ -91,6 +93,8 @@ define [
       @updateAZ()
       @updateSnapshot()
       @updateAmi()
+      @updateRDSList()
+      @updateRDSSnapshotList()
 
       @updateDisableItems()
       @renderReuse()
@@ -143,6 +147,35 @@ define [
           ( @parent or @ ).$el.find(".resource-list-asg").append @el
 
         @
+
+    resourceListSortSelectRdsEvent : (event) ->
+
+        selectedId = 'date'
+
+        if event
+
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
+        
+        $sortedList = []
+
+        if selectedId is 'date'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
+
+        if selectedId is 'engine'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return $(a).data('engine') - $(b).data('engine')
+
+        if selectedId is 'storge'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return Number($(b).data('storge')) - Number($(a).data('storge'))
+
+        if $sortedList.length
+            $('.resource-list-rds-snapshot-exist').html($sortedList)
 
     resourceListSortSelectSnapshotEvent : (event) ->
 
@@ -224,6 +257,39 @@ define [
       region = @workspace.opsModel.get("region")
       @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
       return
+
+    updateRDSList : () ->
+      
+      if not @workspace.isAwake() then return
+      region = @workspace.opsModel.get("region")
+      dbEngineVersion = CloudResources('DBEngineVersion', region).where({category:region}) || []
+
+      rdsList = []
+      engineMap = {}
+      _.each dbEngineVersion, (rds) ->
+        rdsName = rds.get('DBEngineDescription')
+        engineMap[rdsName] = [] if not engineMap[rdsName]
+        engineMap[rdsName].push(rds)
+        null
+      _.each engineMap, (rdsAry, engineName) ->
+        rdsList.push({
+          name: engineName
+        })
+
+      @$el.find(".resource-list-rds").html LeftPanelTpl.rds(rdsList)
+
+    updateRDSSnapshotList : () ->
+
+      if not @workspace.isAwake() then return
+      region = @workspace.opsModel.get("region")
+      rdsSnapshot = CloudResources('RDSSnapshot', region).where({category:region}) || []
+
+      rdsSnapshotList = []
+      _.each rdsSnapshot, (snapshot) ->
+        rdsSnapshotList.push(snapshot.toJSON())
+        null
+
+      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot(rdsSnapshotList)
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"

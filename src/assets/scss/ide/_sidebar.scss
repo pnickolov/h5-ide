@@ -94,12 +94,13 @@
   }
 }
 
-.resoruce-list-head {
+.resource-list-head {
   font-size: 12px;
   margin-bottom: 10px;
   width: 100%;
   border-bottom: 1px #666 solid;
   height: 18px;
+  float: left;
 }
 
 .resource-list-snapshot {
@@ -115,7 +116,7 @@
   float         : left;
   font-size     : 12px;
   text-align    : center;
-  height        : 3em;
+  // height        : 3em;
   word-wrap     : break-word;
   overflow      : hidden;
   line-height   : 1.2em;
@@ -196,6 +197,9 @@
   color       : #676767;
   height      : 1.5em;
   line-height : 1.1em;
+  position: absolute;
+  text-align: center;
+  width: 65px;
 }
 
 .az-name {

@@ -48,6 +48,8 @@ define [
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
+        CloudResources( "DBEngineVersion",     region ).fetch()
+        CloudResources( "RDSSnapshot",         region ).fetch()
         @fetchAmiData()
       ]
 

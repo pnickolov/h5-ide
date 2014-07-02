@@ -496,12 +496,32 @@ module.exports =
       zh: "虚拟机映像"
 
     RES_TIT_VOL:
-      en: "Volume and Snapshots"
+      en: "Volume & Snapshot"
       zh: "虚拟磁盘和快照"
 
     RES_TIT_SNAPSHOT_MANAGE:
       en: "Manage EBS Snapshot"
       zh: "管理 EBS 快照"
+
+    RES_TIT_RDS:
+      en: "RDS & Snapshot"
+      zh: ""
+
+    RES_TIT_RDS_EMPTY:
+      en: "No RDS Snapshot in"
+      zh: ""
+
+    RES_LBL_NEW_RDS_INSTANCE:
+      en: "New DB Instance"
+      zh: ""
+
+    RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT:
+      en: "New DB from Snapshot"
+      zh: ""
+
+    RES_TIT_RDS_SNAPSHOT_EMPTY:
+      en: "No RDS Snapshot in"
+      zh: ""
 
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
@@ -520,8 +540,8 @@ module.exports =
       zh: ""
 
     RES_TIT_VPC:
-      en: "Virtual Private Cloud"
-      zh: "虚拟私有云"
+      en: "Network"
+      zh: ""
 
     RES_LBL_QUICK_START_AMI:
       en: "Quick Start Images"
@@ -562,6 +582,10 @@ module.exports =
     RES_LBL_NEW_SUBNET:
       en: "Subnet"
       zh: "子网"
+
+    RES_LBL_NEW_SUBNET_GROUP:
+      en: "Subnet Group"
+      zh: ""
 
     RES_LBL_NEW_RTB:
       en: "Route Table"
@@ -610,6 +634,10 @@ module.exports =
     RES_TIP_DRAG_NEW_SUBNET:
       en: "Drag to an availability zone to create a new subnet."
       zh: "拖放到一个可用区域来创建一个新子网。"
+
+    RES_TIP_DRAG_NEW_SUBNET_GROUP:
+      en: "Drag to an availability zone to create a new subnet group."
+      zh: ""
 
     RES_TIP_DRAG_NEW_RTB:
       en: "Drag to a VPC to create a new route table."

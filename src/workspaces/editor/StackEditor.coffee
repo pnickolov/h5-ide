@@ -29,6 +29,8 @@ define [
       CloudResources( "QuickStartAmi",       region ).isReady() &&
       CloudResources( "MyAmi",               region ).isReady() &&
       CloudResources( "FavoriteAmi",         region ).isReady() &&
+      CloudResources( "DBEngineVersion",     region ).isReady() &&
+      CloudResources( "RDSSnapshot",         region ).isReady() &&
       !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
       @hasAmiData()
 

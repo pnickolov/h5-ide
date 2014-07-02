@@ -672,7 +672,7 @@
 
 .group-asg {
   stroke-width: 2;
-  fill: rgba(118, 214, 255, 0.05);
+  fill: #f6faf9;
   stroke: #76d6ff;
   stroke-linejoin: round;
   stroke-dasharray: 6, 4;

@@ -213,10 +213,10 @@
   </g>
 
   <text id="prompt_text">
-    <tspan x="25" y="45">Drop AMI from</tspan>
-    <tspan x="20" y="65">resource panel to</tspan>
-    <tspan x="30" y="85">create launch</tspan>
-    <tspan x="30" y="105">configuration</tspan>
+    <tspan x="25" y="47">Drop AMI from</tspan>
+    <tspan x="20" y="67">resource panel to</tspan>
+    <tspan x="30" y="87">create launch</tspan>
+    <tspan x="30" y="107">configuration</tspan>
   </text>
 
 </defs></svg>

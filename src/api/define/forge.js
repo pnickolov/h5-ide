@@ -37,7 +37,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'stack_save'              : { url:'/stack/',	method:'save',	params:['username', 'session_id', 'region_name', 'spec']   },
 		'stack_rename'            : { url:'/stack/',	method:'rename',	params:['username', 'session_id', 'region_name', 'stack_id', 'new_name', 'stack_name']   },
 		'stack_run_v2'            : { url:'/stack/',	method:'run_v2',	params:['username', 'session_id', 'region_name', 'stack', 'app_name']   },
-		'stack_run'               : { url:'/stack/',	method:'run',	params:['username', 'session_id', 'region_name', 'stack']   },
+		'stack_run'               : { url:'/stack/',	method:'run',	params:['username', 'session_id', 'region_name', 'stack_id', 'app_name', 'app_desc', 'app_component', 'app_property', 'app_layout', 'stack_name', 'usage']   },
 		'stack_save_as'           : { url:'/stack/',	method:'save_as',	params:['username', 'session_id', 'region_name', 'stack_id', 'new_name', 'stack_name']   },
 		'stack_info'              : { url:'/stack/',	method:'info',	params:['username', 'session_id', 'region_name', 'stack_ids']   },
 		'stack_list'              : { url:'/stack/',	method:'list',	params:['username', 'session_id', 'region_name', 'stack_ids']   },

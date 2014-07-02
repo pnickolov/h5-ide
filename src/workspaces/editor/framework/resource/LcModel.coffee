@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources', "../connection/LcUsage" ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources, LcUsage )->
 
   emptyArray = []
 
@@ -31,100 +31,19 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    __brothers: []
-    __bigBrother: null
-    __isClone: false
-
     constructor : ( attr, option )->
-      if option and option.createByUser and attr.parent.get("lc")
+      if option and option.createByUser and attr.parent.getLc()
           return
 
-      if option and option.clone
-        @__isClone = true
+      if attr.parent
+        asg = attr.parent
+        delete attr.parent
 
       ComplexResModel.call( this, attr, option )
 
-    privacyAttrs: [ '__parent', '__connections', 'x', 'y' ]
-
-    clone: ->
-      isRun = !!@get 'appId'
-      dolly = new Model null, clone: true
-
-      @addBrother dolly
-
-      for conn in @connections()
-        if conn.type is 'ElbAmiAsso' then continue
-        connClass = Design.modelClassForType( conn.type )
-        target = conn.getOtherTarget @type
-        new connClass dolly, target
-
-      dolly
-
-    syncBorthersConn: ( conn, add ) ->
-      if conn.type is 'ElbAmiAsso' then return
-      if conn.type is 'SgRuleLine' then return
-
-      syncTarget = []
-
-      if @isClone()
-        syncTarget.push @getBigBrother()
-        syncTarget = syncTarget.concat _.without @getBigBrother().__brothers, @
-      else
-        syncTarget = syncTarget.concat @__brothers
-
-
-      connClass = Design.modelClassForType( conn.type )
-      otherTarget = conn.getOtherTarget @type
-
-      for target in syncTarget
-        if add
-          new connClass target, otherTarget
-        else
-          targetConn = target.connections conn.type
-          for c in targetConn
-            if c.getOtherTarget @type is otherTarget
-              c.remove()
-
-
-    getBigBrother: ->
-      @__bigBrother
-
-    isClone: -> @__isClone
-
-    addBrother: ( brother ) ->
-      @__brothers.push brother
-      brother.__bigBrother = @
-      brother.listenTo @, 'all', ->
-        if /^change/.test arguments[ 0 ]
-          brother.trigger.apply brother, arguments
-
-    removeBrother: ( brother ) ->
-      idx = @__brothers.indexOf brother
-      @__brothers.splice idx, 1 if idx > -1
-      brother.stopListening()
-
-    getContext: ( attr ) ->
-      if @__bigBrother and attr not in @privacyAttrs and not (_.intersection _.keys(@privacyAttrs), attr).length
-        return @__bigBrother
-
-      @
-
-    set: ( attr ) ->
-      context = @getContext attr
-      ComplexResModel.prototype.set.apply context, arguments
-
-    get: ( attr ) ->
-      context = @getContext attr
-
-      if attr is 'x'
-        @parent()?.x() + @offset.x
-      else if attr is 'y'
-        @parent()?.y() + @offset.y
-      else
-        ComplexResModel.prototype.get.apply context, arguments
-
-    toJSON: ->
-      ComplexResModel.prototype.toJSON.apply @__bigBrother or @
+      if asg
+        new LcUsage( asg, this )
+      return
 
     draw : ( isCreate ) ->
       if isCreate
@@ -138,8 +57,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
 
     initialize : ( attr, option )->
-      @__brothers = []
-
       # Draw before create SgAsso
       if not option or not option.clone
         @draw(true)
@@ -169,7 +86,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return newName or ""
 
       if base is undefined
-        myKinds = _.filter Design.modelClassForType( @type ).allObjects(), (m) -> m.getBigBrother() is null
         base = myKinds.length
 
       # Collect all the resources name
@@ -206,7 +122,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
           return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-      return true if @__brothers.length > 0 or @isClone()
+      return true if @connections("LcUsage").length > 1
       sprintf lang.ide.CVS_CFM_DEL_LC, @get( 'name' )
 
 
@@ -217,7 +133,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       if not resource_list then return []
 
-      resource = resource_list.get(@parent().get("appId"))?.toJSON()
+      resource = resource_list.get(@connectionTargets("LcUsage")[0].get("appId"))?.toJSON()
       if resource and resource.Instances and resource.Instances.length
         amis = []
         for i in resource.Instances
@@ -259,10 +175,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       if @parent() and cn.type is "SgRuleLine"
         # Create duplicate sgline for each expanded asg
         @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
-
-      @syncBorthersConn cn, true
-
-
       null
 
     disconnect : ( cn )->
@@ -274,9 +186,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
         else if cn.type is "SgRuleLine"
           @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
-
-      @syncBorthersConn cn
-
       null
 
     getStateData                : InstanceModel.prototype.getStateData

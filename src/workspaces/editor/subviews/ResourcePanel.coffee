@@ -146,7 +146,7 @@ define [
       allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
 
       for lc in allLc
-        if not lc.isClone() and not lc.get( 'appId' )
+        if not lc.get( 'appId' )
           @subViews.push new @reuseLc({model:lc, parent : @}).render()
 
       @

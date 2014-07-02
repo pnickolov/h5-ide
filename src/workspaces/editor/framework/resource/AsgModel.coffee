@@ -1,5 +1,5 @@
 
-define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "constant", "i18n!/nls/lang.js" ], ( ResourceModel, ComplexResModel, GroupModel, Design, constant, lang )->
+define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", "../connection/LcUsage" ], ( ResourceModel, ComplexResModel, Design, constant, lang, LcUsage )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -90,9 +90,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
   ExpandedAsgModel = ComplexResModel.extend {
 
     type : "ExpandedAsg"
-    # Even though the ExpandedAsgModel doesn't inherit from GroupModel,
-    # The canvas wants to treat it as a group
-    node_group : true
 
     defaults :
       x           : 0
@@ -134,42 +131,11 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       true
 
-    # Override connections / connectionTargets for "SgAsso"
-    connections : ( type )->
-      context = if type is "SgAsso" then @getLc() else this
-      ComplexResModel.prototype.connections.call( context, type )
-
-    connectionTargets : ( type )->
-      context = if type is "SgAsso" then @getLc() else this
-      ComplexResModel.prototype.connectionTargets.call( context, type )
-
     initialize : ()->
-      # Draw must be call first
-      @draw(true)
-
       @get("originalAsg").__addExpandedAsg( this )
       null
 
-    getLc : ( origin )->
-      lc = @attributes.originalAsg.get("lc")
-      not origin and lc.getBigBrother() or lc
-
-    # disconnect : ( cn )->
-    #   if cn.type isnt "ElbAmiAsso" then return
-
-    #   asg = @get("originalAsg")
-    #   expandedList = asg.get("expandedList")
-    #   # Need to temperory detach ExpandedAsg from original asg's expandedList
-    #   # Because, we are going to remove originalAsg's LC's connection.
-    #   # Which will affect all the expandedList
-    #   expandedList.splice( expandedList.indexOf(@), 1 )
-
-    #   ElbAmiAsso = Design.modelClassForType( "ElbAmiAsso" )
-    #   lcAsso = new ElbAmiAsso( asg.get("lc"), cn.getTarget( constant.RESTYPE.ELB ))
-    #   lcAsso.remove()
-
-    #   expandedList.push( @ )
-    #   null
+    getLc : ()-> @attributes.originalAsg.getLc()
 
     serialize : ()->
       layout = @generateLayout()
@@ -199,7 +165,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
 
 
-  Model = GroupModel.extend {
+  Model = ComplexResModel.extend {
 
     defaults : ()->
       x            : 0
@@ -222,17 +188,9 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
 
-    constructor: ( attributes, options ) ->
-      GroupModel.prototype.constructor.apply @, arguments
-
-      if attributes.lcId
-        lc = Design.instance().component attributes.lcId
-        dolly = lc.clone()
-        @addChild dolly
-        dolly.draw true
-        for conn in dolly.connections()
-          conn.draw() if conn.isVisual() or conn.type is 'SgAsso'
-
+    initialize : ( attributes, options ) ->
+      lc = @design().component attributes.lcId
+      if lc then new LcUsage( this, lc )
       @
 
     isReparentable : ( newParent )->
@@ -246,8 +204,10 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       true
 
+    getLc : ()-> @connectionTargets("LcUsage")[0]
+
     getCost : ( priceMap, currency )->
-      lc = @get("lc")
+      lc = @getLc()
       if not lc then return null
 
       InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
@@ -274,46 +234,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       lcPrice.fee  = Math.round(lcPrice.fee * 100) / 100
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
-
-    addChild : ( lc )->
-
-      GroupModel.prototype.addChild.call this, lc
-      lc.listenTo @, 'change:x', () ->
-        lc.getCanvasView().resetPosition()
-
-      lc.listenTo @, 'change:y', () ->
-        lc.getCanvasView().resetPosition()
-
-
-      oldLc = @get("lc")
-      if oldLc
-        @stopListening( oldLc )
-        for elb in oldLc.connectionTargets("ElbAmiAsso")
-          @updateExpandedAsgAsso( elb, true )
-
-      @set "lc", lc
-      @listenTo lc, "change:name change:imageId", @drawExpanedAsg
-      @listenTo lc, "destroy", @removeChild
-
-      for elb in lc.connectionTargets("ElbAmiAsso")
-        @updateExpandedAsgAsso( elb )
-
-      @draw()
-      @drawExpanedAsg false
-
-      null
-
-    removeChild: ( lc ) ->
-      GroupModel.prototype.removeChild.call this, lc
-
-      # disconnect all asso of expanded asg
-      @removeExpandedAsso()
-
-      # Remove lc from parent ASG
-      @unset "lc"
-      @draw()
-
-      null
 
     drawExpanedAsg: ( isCreate ) ->
       lc = @get 'lc'
@@ -415,7 +335,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
     # Use this method to see if Asg's healthCheckType is EC2 or not.
     # Do not use `@get("healthCheckType") is "EC2"`
     isEC2HealthCheckType : ()->
-      lc = @get("lc")
+      lc = @getLc()
       if lc and lc.connections("ElbAmiAsso").length and @get("healthCheckType") is "ELB"
         return false
 
@@ -436,7 +356,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
       if @get("notification")
         @get("notification").remove()
 
-      GroupModel.prototype.remove.call this
+      ComplexResModel.prototype.remove.call this
       null
 
     __addExpandedAsg : ( expandedAsg )->
@@ -447,7 +367,7 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @listenTo( expandedAsg, "destroy", @__onExpandedAsgRemove )
 
-      lc = @get("lc")
+      lc = @getLc()
       if lc
         # Connect Elb to ExpandedAsg
         ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
@@ -505,15 +425,15 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
           if sbRef then newSubnets.push sbRef
         subnets = newSubnets
 
-      lc = @get("lc")
+      lc = @getLc()
       if lc
-        lcId = ( lc.getBigBrother() or lc ).createRef( "LaunchConfigurationName" )
+        lcId = lc.createRef( "LaunchConfigurationName" )
       else
         lcId = ""
 
       healthCheckType = "EC2"
-      if @get("lc")
-        elbs = @get("lc").connectionTargets( "ElbAmiAsso" )
+      if lc
+        elbs = lc.connectionTargets( "ElbAmiAsso" )
         if elbs.length
           healthCheckType = @get("healthCheckType")
           elbArray = _.map elbs, ( elb )-> elb.createRef( "LoadBalancerName" )
@@ -543,16 +463,6 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
     handleTypes : constant.RESTYPE.ASG
 
-    resolveLc   : ( uid ) ->
-      if not uid then return null
-
-      obj = Design.__instance.__componentMap[ uid ]
-      if obj and not obj.parent() then return obj
-
-      obj.clone()
-
-
-
     deserialize : ( data, layout_data, resolve )->
 
       asg = new Model({
@@ -578,8 +488,8 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       # Associate with LC
       if data.resource.LaunchConfigurationName
-        lc = @resolveLc( MC.extractID(data.resource.LaunchConfigurationName) )
-        asg.addChild( lc )
+        lc = resolve( MC.extractID(data.resource.LaunchConfigurationName) )
+        new LcUsage( asg, lc )
 
         # Elb Association to LC
         ElbAsso = Design.modelClassForType( "ElbAmiAsso" )

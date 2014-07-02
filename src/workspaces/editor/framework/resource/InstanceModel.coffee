@@ -783,7 +783,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         data = data.Instances
         for obj in (data.member or data)
           if obj is instance_id or obj.InstanceId is instance_id
-            return { uid : asg.get("lc").id, mid : instance_id }
+            return { uid : asg.getLc().id, mid : instance_id }
 
       {uid:null,mid:null}
 

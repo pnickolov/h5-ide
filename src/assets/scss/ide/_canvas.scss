@@ -284,3 +284,9 @@
 .ElbAmiAsso {
   stroke: #0973f6;
 }
+
+.AWS-AutoScaling-LaunchConfiguration {
+  + .prompt_text {
+    display : none;
+  }
+}

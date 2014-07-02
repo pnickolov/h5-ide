@@ -12,6 +12,7 @@ define [
   "./CeEni"
   "./CeInstance"
   "./CeAsg"
+  "./CeLc"
   "./CeSgAsso"
   "./CeLine"
 ], ( CanvasView )-> CanvasView

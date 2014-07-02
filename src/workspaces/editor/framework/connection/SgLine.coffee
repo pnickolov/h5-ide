@@ -46,7 +46,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # Hide sglist between lc and expandedasg
       expandAsg = @getTarget "ExpandedAsg"
       lc        = @getTarget TYPE.LC
-      if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
+      if expandAsg and lc and expandAsg.get("originalAsg").getLc() is lc
         return false
 
       # Rules for checking sgline of elb.

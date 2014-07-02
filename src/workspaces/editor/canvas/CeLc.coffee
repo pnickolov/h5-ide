@@ -23,12 +23,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       else
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
-    # Creates a svg element
-    create : ()->
-      @ensureLcView()
-
     ensureLcView : ()->
       lcParentMap = {}
+      for asg in @model.connectionTargets("LcUsage")
+        lcParentMap[ asg.id ] = asg
+        for expanded in asg.get("expandedList")
+          lcParentMap[ expanded.id ] = expanded
 
       for subview in @$el.slice(0)
         parentCid = $(subview.parent).attr("data-id")
@@ -45,6 +45,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg = @canvas.svg
       for uid, parentModel of lcParentMap
         isOriginalAsg = parentModel.type isnt "ExpandedAsg"
+        parentItem = @canvas.getItem( uid )
+        if not parentItem
+          self = @
+          setTimeout ()->
+            self.render()
+          , 10
+          return
+
         svgEl = @createNode({
           image   : "ide/icon/instance-canvas.png"
           imageX  : 15
@@ -58,39 +66,48 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
           # Ami Icon
           svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(30, 15).classes("ami-image")
 
-          svg.use("port_diamond").attr({
+          svg.use("port_diamond").move( 10, 20 ).attr({
             'class'        : 'port port-blue tooltip'
             'data-name'    : 'instance-sg'
             'data-alias'   : 'instance-sg-left'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
-          svg.use("port_diamond").attr({
+          svg.use("port_diamond").move( 80, 20 ).attr({
             'class'        : 'port port-blue tooltip'
             'data-name'    : 'instance-sg'
             'data-alias'   : 'instance-sg-right'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
-        ]).classes("AWS-AutoScaling-LaunchConfiguration")
+        ]).classes("AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
         if isOriginalAsg
           svgEl.add([
             # Volume Image
             svg.image( "", 29, 24 ).move(21, 46).classes('volume-image')
             # Volume Label
-            svg.text( "" ).move(36, 58).classes('volume-number')
+            svg.plain( "" ).move(36, 58).classes('volume-number')
           ])
 
         @addView( svgEl )
+        parentItem.$el.children(":last-child").before( svgEl.node )
 
       return
 
     # Update the svg element
     render : ()->
+      @ensureLcView()
       m = @model
       # Update label
       CanvasManager.update @$el.children(".node-label"), m.get("name")
-
       # Update Image
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
+      # Update Volume
+      volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
+      if volumeCount > 0
+        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
+      else
+        volumeImage = 'ide/icon/instance-volume-not-attached.png'
+      CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
+      CanvasManager.update @$el.children(".volume-number"), volumeCount
 
   }

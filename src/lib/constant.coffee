@@ -70,6 +70,16 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		CW           : 'AWS.CloudWatch.CloudWatch'
 		SUBSCRIPTION : 'AWS.SNS.Subscription'
 		TOPIC        : 'AWS.SNS.Topic'
+		DBINSTANCE   : 'AWS.RDS.DBInstance'
+		DBP          : 'AWS.RDS.Parameter'
+		DBPG         : 'AWS.RDS.ParameterGroup'
+		DBSNAP       : 'AWS.RDS.Snapshot'
+		DBSUBNET     : 'AWS.RDS.SubnetGroup'
+		DBES         : 'AWS.RDS.EventSubscription'
+		DBOG         : 'AWS.RDS.OptionGroup'
+
+
+
 
 	RESNAME =
 		AZ           : "Availability Zone"

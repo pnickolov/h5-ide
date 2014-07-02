@@ -659,16 +659,20 @@
       "name": "",
       "uid": "",
       "resource": {
-        "CreatedBy": "visualops, update by RW, default \"\"",
-        "AllocatedStorage": "",
-        "AutoMinorVersionUpgrade": "",
-        "AvailabilityZone": "",
-        "BackupRetentionPeriod": "",
-        "CharacterSetName": "",
-        "DBInstanceClass": "",
-        "DBInstanceIdentifier": "",
-        "DBInstanceStatus": "",
-        "DBName": "",
+        "CreatedBy": "STRING, default '', RW will update to 'visualops'",
+        "DBInstanceIdentifier": "STRING, RDSInstance resource id, length must be [2,16], start with alphabet",
+        "DBSnapshotIdentifier ": "STRING, id for RestoreDBInstanceFromDBSnapshot ",
+        "ReadReplicaSourceDBInstanceIdentifier": "STRING, Contains the identifier of the source DB instance if this DB instance is a read replica.",
+        "AllocatedStorage": "INT, MySQL and PostgreSQL[5,3072], Oracle[10,3072], SQL Server(EX and WEB)[30,1024], SQL Server(SE and EE)[200,1024]",
+        "AutoMinorVersionUpgrade": "BOOLEAN,[*true|false]",
+        "AvailabilityZone": "STRING,  example: us-east-1d , this parameter cannot be specified if the MultiAZ parameter is set to true. ",
+        "MultiAZ": "BOOLEAN, [true|*false]",
+        "Iops": "INT, >=1000",
+        "BackupRetentionPeriod": "INT, [0,35], default 1, Cannot be set to 0 if the DB instance is a source to read replicas",
+        "CharacterSetName": "STRING, example: AL32UTF8,UTF8",
+        "DBInstanceClass": "STRING, like InstanceType of Instance http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html",
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "DBName": "length must be [1,64], start with alphabet",
         "DBParameterGroups": {
           "DBParameterGroupName": "",
           "ParameterApplyStatus": ""
@@ -696,15 +700,11 @@
           "Address": "",
           "Port": ""
         },
-        "Engine": "",
-        "EngineVersion": "",
-        "InstanceCreateTime": "",
-        "Iops": "",
-        "LatestRestorableTime": "",
-        "LicenseModel": "",
-        "MasterUsername": "",
-        "MasterUserPassword": "",
-        "MultiAZ": "",
+        "Engine": "STRING, [mysql| oracle-se1|oracle-se|oracle-ee| sqlserver-ee|sqlserver-se|sqlserver-ex|sqlserver-web| postgres]",
+        "EngineVersion": "STRING, mysql [5.1.45], ",
+        "LicenseModel": "STRING, [license-included | bring-your-own-license | general-public-license] ",
+        "MasterUsername": "STRING, master username of db, first character must be a letter, mysql length [1,16], oracle length [1,30], sqlserver length [1,128]",
+        "MasterUserPassword": "STRING, The password for the master database user. Can be any printable ASCII character except \"/\", \"\"\", or \"@\".",
         "OptionGroupMembership": {
           "OptionGroupName": "",
           "Status": ""
@@ -719,12 +719,14 @@
           "MultiAZ": "",
           "Port": ""
         },
-        "PreferredBackupWindow": "",
-        "PreferredMaintenanceWindow": "",
-        "ReadReplicaDBInstanceIdentifiers": [],
-        "ReadReplicaSourceDBInstanceIdentifier": "",
-        "PubliclyAccessible": "",
-        "VpcSecurityGroups": []
+        "PreferredBackupWindow": "STRING, ",
+        "PreferredMaintenanceWindow": "STRING, format hh24:mi-hh24:mi , must be at least 30 minutes",
+        "PubliclyAccessible": "BOOLEAN, [true|*false], in VPC, default is false",
+        "VpcSecurityGroups": [
+          {
+            "VpcSecurityGroupId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$DEFAULT-SG.resource.GroupId"
+          }
+        ]
       }
     },
     "$DBSubnetGroup0": {
@@ -732,7 +734,7 @@
       "name": "",
       "uid": "",
       "resource": {
-        "CreatedBy": "visualops, update by RW, default \"\"",
+        "CreatedBy": "STRING, default '', RW will update to 'visualops'",
         "DBSubnetGroupDescription": "",
         "DBSubnetGroupName": "",
         "SubnetGroupStatus": "",
@@ -768,7 +770,7 @@
       "name": "",
       "uid": "",
       "resource": {
-        "CreatedBy": "",
+        "CreatedBy": "STRING, default '', RW will update to 'visualops'",
         "AllowsVpcAndNonVpcInstanceMemberships": "",
         "EngineName": "",
         "MajorEngineVersion": "",

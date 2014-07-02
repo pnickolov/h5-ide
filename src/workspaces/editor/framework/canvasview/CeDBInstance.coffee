@@ -5,9 +5,10 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
   CanvasElement.extend( CeDBInstance, constant.RESTYPE.DBINSTANCE )
   ChildElementProto = CeDBInstance.prototype
 
+  ChildElementProto.iconUrl = ->
+    'ide/icon/ebs-snapshot-resource-1109.png'
 
-
-  ChildElementProto.draw = ( isCreate )->
+  ChildElementProto.draw = ( isCreate ) ->
     m = @model
 
     if isCreate
@@ -28,33 +29,6 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
       node.append(
         # Ami Icon
         Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
-
-        # Volume Image
-        Canvon.image( "", 21, 44, 29, 24 ).attr({
-          'id'    : "#{@id}_volume_status"
-          'class' : 'volume-image'
-        }),
-        # Volume Label
-        Canvon.text( 35, 56, "" ).attr({'class':'node-label volume-number'}),
-        # Volume Hotspot
-        Canvon.rectangle(21, 44, 29, 24).attr({
-          'data-target-id' : @id
-          'class'          : 'instance-volume'
-          'fill'           : 'none'
-        }),
-
-        # Eip
-        Canvon.image( "", 53, 47, 12, 14).attr({'class':'eip-status tooltip'}),
-
-        # Child number
-        Canvon.group().append(
-          Canvon.rectangle(36, 1, 20, 16).attr({'class':'server-number-bg','rx':4,'ry':4}),
-          Canvon.text(46, 13, "0").attr({'class':'node-label server-number'})
-        ).attr({
-          'id'      : "#{@id}_instance-number-group"
-          'class'   : 'instance-number-group'
-          "display" : "none"
-        }),
 
 
         # left port(blue)
@@ -125,30 +99,7 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
     CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
 
 
-    # Update Server number
-    numberGroup = node.children(".instance-number-group")
-    if m.get("count") > 1
-      CanvasManager.toggle node.children(".instance-state"), false
-      CanvasManager.toggle node.children(".port-instance-rtb"), false
-      CanvasManager.toggle numberGroup, true
-      CanvasManager.update numberGroup.children("text"), m.get("count")
-    else
-      CanvasManager.toggle node.children(".instance-state"), true
-      CanvasManager.toggle node.children(".port-instance-rtb"), true
-      CanvasManager.toggle numberGroup, false
 
-
-    # Update Volume
-    volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
-    if volumeCount > 0
-      volumeImage = 'ide/icon/instance-volume-attached-normal.png'
-    else
-      volumeImage = 'ide/icon/instance-volume-not-attached.png'
-    CanvasManager.update node.children(".volume-image"), volumeImage, "href"
-    CanvasManager.update node.children(".volume-number"), volumeCount
-
-    # Update EIP
-    CanvasManager.updateEip node.children(".eip-status"), m
 
     null
 

@@ -76,7 +76,7 @@
             <div class="selection">By Date</div>
             <ul class="dropdown">
               <li class="item selected focused" data-id="date">By Date</li>
-              <li class="item selected" data-id="engine">By Engine</li>
+              <li class="item" data-id="engine">By Engine</li>
               <li class="item" data-id="storge">By Storage</li>
             </ul>
           </div>

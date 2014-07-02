@@ -13,7 +13,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       dbEngineVersion = _.map dbEngineVersion, (item) ->
         item.id = item.Engine + ' ' + item.EngineVersion
         return item
-      # CloudResources('DBEngineVersion', @region()).add dbEngineVersion
       return dbEngineVersion
   }
 

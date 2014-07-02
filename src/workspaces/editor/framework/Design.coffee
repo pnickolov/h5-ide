@@ -258,6 +258,12 @@ define [
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
         ModelClass.postDeserialize( comp, layout_data[uid] )
+
+    ####################
+    # Broadcast event
+    ####################
+    Design.trigger = Backbone.Events.trigger
+    Design.trigger Design.EVENT.Deserialized
     null
 
   DesignImpl.prototype.finishDeserialization = ()->
@@ -279,9 +285,7 @@ define [
     for comp in lines
       comp.draw( true )
 
-    ####################
-    # Broadcast event
-    ####################
+
     # Restore Design.trigger
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized

@@ -761,11 +761,6 @@
     opacity: .8;
     stroke-width: 4px; }
 
-.fill-line {
-  stroke: #fff;
-  stroke-opacity: 0;
-  stroke-width: 10px; }
-
 .EniAttachment {
   stroke: #12CD4F; }
 
@@ -786,3 +781,14 @@
 
 .AWS-AutoScaling-LaunchConfiguration + .prompt_text {
   display: none; }
+
+.SgRuleLine {
+  stroke: #6DAEFE;
+  opacity: 0.2;
+  stroke-dasharray: 10,5; }
+
+.fill-line {
+  stroke: #fff;
+  stroke-opacity: 0;
+  stroke-width: 10px;
+  stroke-dasharray: none; }

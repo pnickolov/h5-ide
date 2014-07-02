@@ -46,6 +46,8 @@ define [
     appendSubnet : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
     appendLine   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
+    appendAsg    : ( svgEl )-> @__appendSvg(svgEl, ".layer_asg")
+    appendSgline : ( svgEl )-> @__appendSvg(svgEl, ".layer_sgline")
 
     reload : ()->
       console.log "Reloading svg canvas."
@@ -57,6 +59,8 @@ define [
         @svg.group().classes("layer_az")
         @svg.group().classes("layer_subnet")
         @svg.group().classes("layer_line")
+        @svg.group().classes("layer_asg")
+        @svg.group().classes("layer_sgline")
         @svg.group().classes("layer_node")
       ])
 
@@ -73,14 +77,14 @@ define [
         return
       , @
 
-      @addItem(comp) for comp in lines
+      @initializing = false
 
       for t of types
         ItemClass = CanvasElement.getClassByType( t )
         if ItemClass and ItemClass.render
           ItemClass.render( this )
 
-      @initializing = false
+      @addItem(comp) for comp in lines
       return
 
     addItem : ( resourceModel )->

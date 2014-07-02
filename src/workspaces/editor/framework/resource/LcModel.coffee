@@ -4,14 +4,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
   emptyArray = []
 
   Model = ComplexResModel.extend {
-    # offset of asg
-    offset:
-      x: 2
-      y: 3
 
     defaults : ()->
-      x        : 0
-      y        : 0
+      x        : 2
+      y        : 3
       width    : 9
       height   : 9
 
@@ -209,9 +205,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
-      if @isClone()
-        return
-
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
       if ami
@@ -287,9 +280,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
-
-        x : layout_data.coordinate[0]
-        y : layout_data.coordinate[1]
       }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType

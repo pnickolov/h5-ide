@@ -78,10 +78,13 @@ define [ "backbone", "svgjs" ], ()->
         el = el.parentNode
         while el
           elId = el.getAttribute("data-id")
-          el = @canvas.getItem( elId )
-          if el
-            x += el.model.x()
-            y += el.model.y()
+          item = @canvas.getItem( elId )
+          if item
+            x += item.model.x()
+            y += item.model.y()
+          else
+            break
+          el = el.parentNode
       {
         left : x * 10
         top  : y * 10

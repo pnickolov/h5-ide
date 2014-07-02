@@ -5,6 +5,8 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
+    isVisual : ()-> true
+
     # SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
     # Here, we do our own job.
     assignCompsToPorts : (p1Comp, p2Comp)->

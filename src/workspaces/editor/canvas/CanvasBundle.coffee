@@ -15,4 +15,5 @@ define [
   "./CeLc"
   "./CeSgAsso"
   "./CeLine"
+  "./CeSgLine"
 ], ( CanvasView )-> CanvasView

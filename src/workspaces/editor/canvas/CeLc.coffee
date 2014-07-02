@@ -45,14 +45,6 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg = @canvas.svg
       for uid, parentModel of lcParentMap
         isOriginalAsg = parentModel.type isnt "ExpandedAsg"
-        parentItem = @canvas.getItem( uid )
-        if not parentItem
-          self = @
-          setTimeout ()->
-            self.render()
-          , 10
-          return
-
         svgEl = @createNode({
           image   : "ide/icon/instance-canvas.png"
           imageX  : 15
@@ -89,12 +81,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
           ])
 
         @addView( svgEl )
-        parentItem.$el.children(":last-child").before( svgEl.node )
+        @canvas.getItem( uid ).$el.children(":last-child").before( svgEl.node )
 
       return
 
     # Update the svg element
     render : ()->
+      if @canvas.initializing then return
+
       @ensureLcView()
       m = @model
       # Update label
@@ -110,4 +104,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
+  }, {
+    render : ( canvas )->
+      for lc in canvas.design.componentsOfType( constant.RESTYPE.LC )
+        canvas.getItem( lc.id ).render()
   }

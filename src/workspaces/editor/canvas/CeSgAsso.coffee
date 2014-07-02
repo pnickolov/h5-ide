@@ -11,14 +11,33 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       # Listen to Sg's name change, so that we could update the label tooltip
       @listenTo @model.getTarget( constant.RESTYPE.SG ), "change:name", @render
 
+      @canvas = canvas = options.canvas
+      @$el = $()
+
+      if not canvas.__sgAssoToRender
+        canvas.__sgAssoToRender = {}
+      toRenderTargetId = @model.getOtherTarget( constant.RESTYPE.SG ).id
+      canvas.__sgAssoToRender[ toRenderTargetId ] = @cid
+
+      self = @
+      _.defer ()->
+        tgtAssoId = canvas.__sgAssoToRender[ toRenderTargetId ]
+        delete canvas.__sgAssoToRender[ toRenderTargetId ]
+        item = canvas.getItem( tgtAssoId )
+        if item then item.render()
+        return
+
       CanvasElement.prototype.initialize.call this, options
       return
 
-    remove : ()-> @render()
+    remove : ()->
+      @render()
+      @stopListening()
+      return
 
     # Update the svg element
-    render : ( force )->
-      if @canvas.initializing and not force then return
+    render : ()->
+      if @canvas.initializing then return
 
       m = @model
       resource = m.getOtherTarget( constant.RESTYPE.SG )
@@ -44,14 +63,4 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         childrens = childrens.next()
       return
 
-  }, {
-    render : ( canvas )->
-      updateMap = {}
-      for asso in canvas.design.componentsOfType( "SgAsso" )
-        updateMap[ asso.getOtherTarget( constant.RESTYPE.SG ).id ] = asso.id
-
-      for resId, assoId of updateMap
-        canvas.getItem( assoId ).render( true )
-
-      return
   }

@@ -47,7 +47,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
       ]).attr({ "data-id" : @cid }).classes( 'dragable AWS-AutoScaling-Group' )
 
-      @canvas.appendNode svgEl
+      @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()
 
       svgEl

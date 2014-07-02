@@ -26,12 +26,15 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
       return
 
-    createLine : ()->
+    createLine : ( pd )->
       svg = @canvas.svg
-      svg.group().add([
-        svg.path()
-        svg.path().classes("fill-line")
+      svgEl = svg.group().add([
+        svg.path(pd)
+        svg.path(pd).classes("fill-line")
       ]).attr({"data-id":@cid}).classes("line " + @type.replace(/\./g, "-") )
+      @canvas.appendLine( svgEl )
+
+      svgEl
 
     renderConnection : ( item_from, item_to, element1, element2 )->
       connection = @model
@@ -119,7 +122,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       else
         controlPoints = MC.canvas.route2( start0, end0 )
         if controlPoints
-          ls = if connection.get("lineType") is 'sg' then $canvas.lineStyle() else 777
+          ls = if connection.get("lineType") is 'sg' then 2 else 777
 
           switch ls
             when 0
@@ -130,10 +133,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
             when 777 then path = MC.canvas._round_corner(controlPoints)
 
       # Create or redraw line
-      svgLine = @createLine()
-      $( svgLine.node ).children().attr("d", path )
-      @canvas.appendLine( svgLine )
-      @addView svgLine
+      @addView @createLine( path )
       return
   }
 
@@ -165,11 +165,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : "RTB_Route"
 
-    createLine : ()->
+    createLine : ( pd )->
       svg   = @canvas.svg
-      svgEl = CeLine.prototype.createLine.call this
-
-      svgEl.add( svg.path().classes("dash-line") )
+      svgEl = CeLine.prototype.createLine.call this, pd
+      svgEl.add( svg.path(pd).classes("dash-line") )
+      svgEl
   }
 
   CeLine.extend {
@@ -192,3 +192,5 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : "ElbAmiAsso"
   }
+
+  CeLine

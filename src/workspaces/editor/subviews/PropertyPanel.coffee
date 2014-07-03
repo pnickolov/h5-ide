@@ -294,7 +294,8 @@ define [
       return
 
     showStateEditor : ( jqueryEvent, uid )->
-      if @__showingState then return false
+      if jqueryEvent?.type is "SHOW_STATEEDITOR" and @__showingState
+        return false
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
       comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.attributes

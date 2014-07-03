@@ -253,10 +253,9 @@ define [
       return
 
     updateSnapshot : ()->
-      if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
-      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
-      return
+      cln    = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
+      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
 
     updateRDSList : () ->
       cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")

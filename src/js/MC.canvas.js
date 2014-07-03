@@ -4162,7 +4162,7 @@ MC.canvas.event.ctrlMove = {
 			event.stopImmediatePropagation();
 
 			var canvas_offset = $canvas.offset(),
-				canvas = $('#canvas'),
+				canvas = $('.OEPanelCenter'),
 				scroll_content = canvas.find('.scroll-content').first()[0];
 
 			$(document).on({

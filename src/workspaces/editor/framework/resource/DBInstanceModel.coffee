@@ -18,14 +18,18 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       ComplexResModel.call( this, attr, option )
 
 
-    initialize : ( attr, option )->
+    initialize : ( attr, option ) ->
       @draw true
 
       null
 
+    category: (type) ->
+      if type then return !!@get("#{type}Id")
+      if @get 'instanceId' then return 'instance'
+      if @get 'snapshotId' then return 'snapshot'
+      if @get 'replicaId' then return 'replica'
 
-
-    serialize : ()->
+    serialize : () ->
       component =
         name : @get("name")
         type : @type

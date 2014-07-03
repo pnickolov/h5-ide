@@ -34,6 +34,13 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         param_group : @id
       })
 
+    resetParams : ()->
+      self = @
+      ApiRequest("", {
+        region      : @collection.region()
+        param_group : @id
+      }).then ()-> self.getParameters().fetchForce()
+
     modifyParams : ( paramNewValueMap )->
       ###
       paramNewValueMap = {
@@ -52,7 +59,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
       requests = []
       params = {
         region_name : @collection.region()
-        param_group : @get("DBParameterGroupName")
+        param_group : @id
         parameters  : []
       }
       i = 0

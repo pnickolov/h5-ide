@@ -78,6 +78,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		DBSNAP       : 'AWS.RDS.Snapshot'
 		DBES         : 'AWS.RDS.EventSubscription'
 		DBOG         : 'AWS.RDS.OptionGroup'
+		DBENGINE     : 'AWS.RDS.DBEngineVersion'
 
 
 

@@ -72,7 +72,7 @@ define [
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
-      @listenTo CloudResources( 'DBEngineVersion',     region ), "update", @updateRDSList
+      @listenTo CloudResources( constant.RESTYPE.DBENGINE, region ), "update", @updateRDSList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
@@ -156,7 +156,7 @@ define [
 
             $currentTarget = $(event.currentTarget)
             selectedId = $currentTarget.find('.selected').data('id')
-        
+
         $sortedList = []
 
         if selectedId is 'date'
@@ -185,7 +185,7 @@ define [
 
             $currentTarget = $(event.currentTarget)
             selectedId = $currentTarget.find('.selected').data('id')
-        
+
         $sortedList = []
 
         if selectedId is 'date'
@@ -229,7 +229,7 @@ define [
 
       allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
       usedAZComp = @workspace.design.componentsOfType(constant.RESTYPE.AZ) || []
-      
+
       usedAZ = _.map usedAZComp, (az) ->
         return az.get('name')
 
@@ -259,37 +259,12 @@ define [
       return
 
     updateRDSList : () ->
-      
-      if not @workspace.isAwake() then return
-      region = @workspace.opsModel.get("region")
-      dbEngineVersion = CloudResources('DBEngineVersion', region).where({category:region}) || []
-
-      rdsList = []
-      engineMap = {}
-      _.each dbEngineVersion, (rds) ->
-        rdsName = rds.get('DBEngineDescription')
-        engineMap[rdsName] = [] if not engineMap[rdsName]
-        engineMap[rdsName].push(rds)
-        null
-      _.each engineMap, (rdsAry, engineName) ->
-        rdsList.push({
-          name: engineName
-        })
-
-      @$el.find(".resource-list-rds").html LeftPanelTpl.rds(rdsList)
+      cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
+      @$el.find(".resource-list-rds").html LeftPanelTpl.rds( cln )
 
     updateRDSSnapshotList : () ->
-
-      if not @workspace.isAwake() then return
-      region = @workspace.opsModel.get("region")
-      rdsSnapshot = CloudResources('RDSSnapshot', region).where({category:region}) || []
-
-      rdsSnapshotList = []
-      _.each rdsSnapshot, (snapshot) ->
-        rdsSnapshotList.push(snapshot.toJSON())
-        null
-
-      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot(rdsSnapshotList)
+      cln = CloudResources( constant.RESTYPE.DBSNAP, @workspace.opsModel.get("region") ).toJSON()
+      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"

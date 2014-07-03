@@ -4159,7 +4159,7 @@ MC.canvas.event.ctrlMove = {
 			(event.ctrlKey || event.metaKey)
 		)
 		{
-			$canvas.selected_node().length = 0;
+			MC.canvas.event.clearSelected();
 			event.stopImmediatePropagation();
 
 			var canvas_offset = $canvas.offset(),

@@ -297,6 +297,9 @@
 .resource-icon-subnet {
   background-image: url('/assets/images/ide/icon/subnet-resource.png'); }
 
+.resource-icon-subnetgroup {
+  background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
+
 .resource-icon-rt {
   background-image: url('/assets/images/ide/icon/rt-resource.png'); }
 
@@ -404,9 +407,9 @@
       #ResourceDragItem.resource-icon-az.add-to-dom .az-name {
         width: 206px;
         height: 206px; }
-  #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet {
+  #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet, #ResourceDragItem.resource-icon-subnetgroup {
     background-image: none; }
-    #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before {
+    #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before, #ResourceDragItem.resource-icon-subnetgroup:before {
       content: " ";
       display: block;
       position: absolute;
@@ -421,10 +424,10 @@
       -webkit-transition: all ease-in 0.15s;
       -moz-transition: all ease-in 0.15s;
       transition: all ease-in 0.15s; }
-    #ResourceDragItem.resource-icon-asg.add-to-dom, #ResourceDragItem.resource-icon-subnet.add-to-dom {
+    #ResourceDragItem.resource-icon-asg.add-to-dom, #ResourceDragItem.resource-icon-subnet.add-to-dom, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
       width: 150px;
       height: 150px; }
-      #ResourceDragItem.resource-icon-asg.add-to-dom:before, #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
+      #ResourceDragItem.resource-icon-asg.add-to-dom:before, #ResourceDragItem.resource-icon-subnet.add-to-dom:before, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
         width: 124px;
         height: 124px; }
   #ResourceDragItem.resource-icon-subnet:before {
@@ -435,6 +438,15 @@
     #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
       width: 164px;
       height: 164px; }
+  #ResourceDragItem.resource-icon-subnetgroup:before {
+    border-color: #e0e0e0; }
+  #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
+    width: 190px;
+    height: 190px; }
+    #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
+      width: 164px;
+      height: 164px; }
+
   #ResourceDragItem.instance {
     margin-top: 0; }
 

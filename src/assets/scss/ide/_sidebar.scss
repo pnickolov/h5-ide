@@ -163,6 +163,7 @@
 .resource-icon-volume { background-image: image-url('ide/icon/volume-resource-1109.png'); }
 .resource-icon-eni    { background-image: image-url('ide/icon/eni-resource.png'); }
 .resource-icon-subnet { background-image: image-url('ide/icon/subnet-resource.png'); }
+.resource-icon-subnetgroup { background-image: image-url('ide/icon/subnetgroup-resource.png'); }
 .resource-icon-rt     { background-image: image-url('ide/icon/rt-resource.png'); }
 .resource-icon-igw    { background-image: image-url('ide/icon/igw-resource.png'); }
 .resource-icon-vgw    { background-image: image-url('ide/icon/vgw-resource.png'); }
@@ -280,7 +281,7 @@
     }
   }
 
-  &.resource-icon-asg,  &.resource-icon-subnet {
+  &.resource-icon-asg,  &.resource-icon-subnet, &.resource-icon-subnetgroup {
     background-image : none;
 
     &:before {
@@ -313,6 +314,22 @@
   }
 
   &.resource-icon-subnet {
+    &:before {
+      border-color  : #e0e0e0;
+    }
+
+    &.add-to-dom {
+      width  : 190px;
+      height : 190px;
+
+      &:before {
+        width  : 164px;
+        height : 164px;
+      }
+    }
+  }
+
+  &.resource-icon-subnetgroup {
     &:before {
       border-color  : #e0e0e0;
     }

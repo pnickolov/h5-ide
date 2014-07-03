@@ -50,7 +50,7 @@ define [ 'Design',
          "./canvasview/CeVolume"
          "./canvasview/CeEni"
          "./canvasview/CeLc"
-         './canvasview/CeDBSBG'
+         './canvasview/CeDBSbg'
          './canvasview/CeDBInstance'
 
 ], ( Design )->

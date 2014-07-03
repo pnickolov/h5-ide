@@ -5,8 +5,26 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
   CanvasElement.extend( CeDBInstance, constant.RESTYPE.DBINSTANCE )
   ChildElementProto = CeDBInstance.prototype
 
+  ###
+  # Child Element's interface.
+  ###
+  ChildElementProto.portPosMap = {
+    "instance-sg-left"  : [ 15, 40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "instance-sg-right" : [ 75, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+  }
+  ChildElementProto.portDirMap = {
+    "instance-sg" : "horizontal"
+  }
+
   ChildElementProto.iconUrl = ->
-    'ide/icon/ebs-snapshot-resource-1109.png'
+    if @model.get("isReadReplica")
+      "ide/icon/dbinstance-read.png"
+    else if @model.get("isSnapshot")
+      "ide/icon/dbinstance-snap.png"
+    else
+      #"ide/icon/dbinstance-source.png"
+      #"ide/icon/dbinstance-read.png"
+      "ide/icon/dbinstance-snap.png"
 
   ChildElementProto.draw = ( isCreate ) ->
     m = @model
@@ -15,7 +33,7 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
       # Call parent's createNode to do basic creation
       node = @createNode({
-        image   : "ide/icon/instance-canvas.png"
+        image   : "ide/icon/dbinstance-canvas.png"
         imageX  : 15
         imageY  : 9
         imageW  : 61
@@ -25,11 +43,10 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         sg      : true
       })
 
-      # Insert Volume / Eip / Port
+      # Insert Type / Port
       node.append(
-        # Ami Icon
-        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 15, 39, 27 ).attr({'class':"ami-image"}),
-
+        # Type Icon
+        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 20, 32, 15 ).attr({'class':"ami-image"}),
 
         # left port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
@@ -53,23 +70,13 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
           'data-tooltip'   : lang.ide.PORT_TIP_D
         })
 
-        # RTB/ENI Port
-        Canvon.path(this.constant.PATH_PORT_RIGHT).attr({
-            'class'      : 'port port-green port-instance-attach tooltip'
-            'data-name'     : 'instance-attach'
-            'data-position' : 'right'
-            'data-type'     : 'attachment'
-            'data-direction': 'out'
-            'data-tooltip'  : lang.ide.PORT_TIP_E
-        })
+      )
 
-        Canvon.path(this.constant.PATH_PORT_BOTTOM).attr({
-            'class'      : 'port port-blue port-instance-rtb tooltip'
-            'data-name'     : 'instance-rtb'
-            'data-position' : 'top'
-            'data-type'     : 'sg'
-            'data-direction': 'in'
-            'data-tooltip'  : lang.ide.PORT_TIP_C
+      node.append(
+        # dragger
+        Canvon.image(MC.IMG_URL + 'ide/icon/dbinstance-resource-dragger.png', 34, 58, 22, 21).attr({
+          'class'        : 'dbinstance-resource-dragger tooltip'
+          'data-tooltip' : 'Expand the group by drag-and-drop in other subnetgroup.'
         })
       )
 

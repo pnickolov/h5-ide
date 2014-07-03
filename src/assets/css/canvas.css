@@ -172,6 +172,11 @@
 	border: 2px dashed #dbd7d7;
 }
 
+#drag_shadow.AWS-RDS-SubnetGroup {
+	background: rgba(250, 250, 250, 0.05);
+	border: 2px dashed #dbd7d7;
+}
+
 #drag_shadow.AWS-EC2-EBS-Volume {
 	background: none;
 	opacity: 1;
@@ -453,33 +458,38 @@
 
 .webkit .AWS-VPC-VPC .group,
 .webkit .AWS-EC2-AvailabilityZone .group,
-.webkit .AWS-VPC-Subnet .group {
+.webkit .AWS-VPC-Subnet .group,
+.webkit .AWS-RDS-SubnetGroup .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
 #svg_canvas .AWS-VPC-VPC.selected .group,
 #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-#svg_canvas .AWS-VPC-Subnet.selected .group {
+#svg_canvas .AWS-VPC-Subnet.selected .group,
+#svg_canvas .AWS-RDS-SubnetGroup.selected .group {
 	shape-rendering:crispEdges;
 }
 
 .firefox .AWS-VPC-VPC .group,
 .firefox .AWS-EC2-AvailabilityZone .group,
-.firefox .AWS-VPC-Subnet .group {
+.firefox .AWS-VPC-Subnet .group,
+.firefox .AWS-RDS-SubnetGroup .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
 .firefox #svg_canvas .AWS-VPC-VPC.selected .group,
 .firefox #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-.firefox #svg_canvas .AWS-VPC-Subnet.selected .group {
+.firefox #svg_canvas .AWS-VPC-Subnet.selected .group,
+.firefox #svg_canvas .AWS-RDS-SubnetGroup.selected .group {
 	shape-rendering:auto;
 }
 
 .webkit #svg_canvas .AWS-VPC-VPC.selected .group,
 .webkit #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-.webkit #svg_canvas .AWS-VPC-Subnet.selected .group {
+.webkit #svg_canvas .AWS-VPC-Subnet.selected .group,
+.webkit #svg_canvas .AWS-RDS-SubnetGroup.selected .group {
 	shape-rendering:auto;
 	-webkit-transform: translate(0.5px, 0.5px);
 	        transform: translate(0.5px, 0.5px);
@@ -559,6 +569,37 @@
 .AWS-VPC-Subnet .group-label {
 	fill: #999;
 }
+
+
+
+.AWS-RDS-SubnetGroup .group {
+	fill: rgba(224, 224, 224, 0.05);
+	stroke: #498fe1;
+	stroke-linejoin: round;
+	stroke-dasharray: 16, 6;
+	stroke-width: 2;
+}
+
+.AWS-RDS-SubnetGroup:hover .group,
+.node-dragging .dropable-group .AWS-RDS-SubnetGroup .group {
+	stroke: #498fe1;
+}
+
+.node-dragging .match-dropable-group.AWS-RDS-SubnetGroup .group {
+	/*stroke: #659FFF;*/
+	stroke-width: 4;
+}
+
+#svg_canvas .AWS-RDS-SubnetGroup.selected .group {
+	stroke: #498fe1;
+	fill: rgba(255, 255, 255, 0);
+	stroke-width: 3;
+}
+
+.AWS-RDS-SubnetGroup .group-label {
+	fill: #498fe1;
+}
+
 
 .group-asg {
 	fill: rgba(118, 214, 255, 0.05);

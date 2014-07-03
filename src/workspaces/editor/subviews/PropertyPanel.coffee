@@ -231,6 +231,7 @@ define [
       @updateStateSwitcher( type, uid )
 
       @$el.toggleClass("state", false)
+      @__showingState = false
       return
 
     restoreAccordion : ( type, uid )->

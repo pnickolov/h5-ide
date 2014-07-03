@@ -48,6 +48,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           @__initJsonData()
         if options.jsonData
           @__setJsonData options.jsonData
+
+      ### env:dev ###
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      ### env:dev:end ###
+      ### env:debug ###
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      ### env:debug:end ###
       return
 
     url : ()->
@@ -508,9 +515,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
 
-    setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
+    setStatusWithApiResult : ( state )->
+      console.info "OpsModel's state changes due to ApiRequest:", state, @
+      @set "state", OpsModelState[ state ]
 
     setStatusWithWSEvent : ( operation, state, error )->
+      console.info "OpsModel's state changes due to WS event:", operation, state, error, @
       # operation can be ["launch", "stop", "start", "update", "terminate"]
       # state can have "completed", "failed", "progressing", "pending"
       switch operation

@@ -754,7 +754,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       try
         data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
         data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
-        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
+        data = data[ ami.architecture ]
         data = data[ ami.virtualizationType || "paravirtual" ]
       catch e
         console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )

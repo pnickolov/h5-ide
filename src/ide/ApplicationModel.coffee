@@ -99,28 +99,36 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # Load Application Data.
-      appdata = ApiRequest("aws_aws",{fields : ["region","price","region_ami_instance_type","instance_type"]}).then ( res )->
+      appdata = ApiRequest("aws_aws",{fields : ["region","price","instance_types"]}).then ( res )->
 
         for i in res
           instanceTypeConfig = {}
 
           self.__appdata[ i.region ] = {
             price              : i.price
-            osFamilyConfig     : i.region_ami_instance_type
+            osFamilyConfig     : i.instance_types.sort
             instanceTypeConfig : instanceTypeConfig
           }
 
           # Format instance type info.
-          for type1, wrapper of i.instance_type
-            for type2, typeInfo of wrapper
-              if not typeInfo then continue
-              desc = [ typeInfo.name || "", "", "", "" ]
-              for d, idx in (typeInfo.description || "").split(",")
-                if idx > 2 then break
-                desc[ idx + 1 ] = d
+          for typeInfo in i.instance_types.info || []
+            if not typeInfo then continue
+            cpu = typeInfo.cpu || {}
+            typeInfo.name = typeInfo.description
 
-              typeInfo.formated_desc = desc
-              instanceTypeConfig[ "#{type1}.#{type2}" ] = typeInfo
+            typeInfo.formated_desc = [
+              typeInfo.name || ""
+              cpu.units + " ECUs"
+              cpu.cores + " vCPUs"
+              typeInfo.memory + " GiB memory"
+            ]
+            typeInfo.description = typeInfo.formated_desc.join(", ")
+
+            storage = typeInfo.storage
+            if storage and storage.ssd is true
+              typeInfo.description += ", #{storage.count} x #{storage.size} GiB SSD Storage Capacity"
+
+            instanceTypeConfig[ typeInfo.typeName ] = typeInfo
 
         return
 

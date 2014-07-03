@@ -124,4 +124,4 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       })
   }
 
-
+  Model

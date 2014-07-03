@@ -6,6 +6,10 @@ define [
   "./CrModelRdsParameter"
 ], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsParamModel )->
 
+  ###
+    This kind of collection can only be obtained by CrModelRdsPGroup.getParameters()
+  ###
+
   ### Parameter ###
   CrCollection.extend {
     ### env:dev ###

@@ -14,6 +14,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
 
     taggable : false
 
+    isDefault : ()-> (@get("DBParameterGroupName") || "").indexOf("default.") is 0
+
     getParameters : ()-> CloudResources( constant.RESTYPE.DBPARAM, @id ).init( @ )
 
     doCreate : ()->
@@ -31,4 +33,37 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         region_name : @collection.region()
         param_group : @id
       })
+
+    modifyParams : ( paramNewValueMap )->
+      ###
+      paramNewValueMap = {
+        "allow-suspicious-udfs" : 0
+        "log_output" : "TABLE"
+      }
+      ###
+      pArray = []
+      for name, value of paramNewValueMap
+        pArray.push {
+          ParameterName  : name
+          ParameterValue : value
+          ApplyMethod    : @get( name ).applyMethod()
+        }
+
+      requests = []
+      params = {
+        region_name : @collection.region()
+        param_group : @get("DBParameterGroupName")
+        parameters  : []
+      }
+      i = 0
+      while i < pArray.length
+        params.parameters = pArray.slice(i, i+20)
+        requests.push ApiRequest("rds_pg_ModifyDBParameterGroup", params)
+        i+=20
+
+      self = @
+      Q.all( requests ).then ()->
+        for name, value of paramNewValueMap
+          @get("name").set("ParameterValue", value)
+        return
   }

@@ -17,4 +17,20 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   "ApplyType"     : "static"
     #   "AllowedValues" : "0,1"
     #   "ParameterName" : "allow-suspicious-udfs"
+    #   "ParameterValue": "/rdsdbbin/mysql"
+
+    isValidValue : ( value )->
+      if not @attributes.AllowedValues then return true
+
+      valueNum = parseInt( value )
+      for allowed in @attributes.AllowedValues.split(",")
+        if allowed.indexOf("-")>=0
+          range = allowed.split("-")
+          if valueNum >= parseInt(range[0]) and valueNum <= parseInt(range[1])
+            return true
+        else if value is allowed
+          return true
+      false
+
+    applyMethod : ()-> if @get("ApplyType") is "dynamic" then "immediate" else "pending-reboot"
   }

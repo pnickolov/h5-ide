@@ -119,7 +119,7 @@
   <div class="resource-count">{{count}}</div>
 </li>
 <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
-<li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
+<li class="tooltip resource-item resource-icon-subnetgroup" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
 
 <!-- {{snapshot}} -->
 {{#each this}}{{#with attributes}}

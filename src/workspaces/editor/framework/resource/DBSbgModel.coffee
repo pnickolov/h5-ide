@@ -17,6 +17,10 @@ define [ "constant",
       width  : 17
       height : 17
 
+      subnets: []
+      description: ''
+
+
     initialize : ( attributes, option )->
       # Draw the node
       @draw(true)
@@ -36,10 +40,13 @@ define [ "constant",
         type : @type
         uid  : @id
         resource :
-          AvailabilityZone : @parent().createRef()
-          VpcId            : @parent().parent().createRef( "VpcId" )
-          SubnetId         : @get("appId")
-          CidrBlock        : @get("cidr")
+          CreatedBy               : @get 'appId'
+          DBSubnetGroupName       : @get 'name'
+          SubnetGroupStatus       : @get 'status'
+          Subnets                 : @get 'Subnets'
+          VpcId                   : @getVpcRef()
+          DBSubnetGroupDescription: @get 'description'
+
 
       { component : component, layout : @generateLayout() }
 
@@ -53,9 +60,11 @@ define [ "constant",
 
         id          : data.uid
         name        : data.name || data.DBSubnetGroupName
+        appId       : data.CreatedBy
 
         description : data.DBSubnetGroupDescription
         status      : data.DBSubnetGroupName
+        subnets     : data.Subnets
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

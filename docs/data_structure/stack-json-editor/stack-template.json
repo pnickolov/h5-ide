@@ -674,58 +674,29 @@
         "ReadReplicaDBInstanceIdentifiers": [],
         "DBName": "length must be [1,64], start with alphabet",
         "DBParameterGroups": {
-          "DBParameterGroupName": "",
-          "ParameterApplyStatus": ""
+          "DBParameterGroupName": ""
         },
-        "DBSecurityGroups": [
-          {
-            "DBSecurityGroupName": "",
-            "Status": ""
-          }
-        ],
+        "DBSecurityGroups": [],
         "DBSubnetGroup": {
-          "DBSubnetGroupDescription": "",
-          "DBSubnetGroupName": "",
-          "SubnetGroupStatus": "",
-          "Subnets": [
-            {
-              "SubnetAvailabilityZone": "",
-              "SubnetIdentifier": "",
-              "SubnetStatus": ""
-            }
-          ],
-          "VpcId": ""
+          "DBSubnetGroupName": ""
         },
         "Endpoint": {
-          "Address": "",
           "Port": ""
         },
         "Engine": "STRING, [mysql| oracle-se1|oracle-se|oracle-ee| sqlserver-ee|sqlserver-se|sqlserver-ex|sqlserver-web| postgres]",
         "EngineVersion": "STRING, mysql [5.1.45], ",
+        "Iops" : "INT",
         "LicenseModel": "STRING, [license-included | bring-your-own-license | general-public-license] ",
         "MasterUsername": "STRING, master username of db, first character must be a letter, mysql length [1,16], oracle length [1,30], sqlserver length [1,128]",
         "MasterUserPassword": "STRING, The password for the master database user. Can be any printable ASCII character except \"/\", \"\"\", or \"@\".",
         "OptionGroupMembership": {
-          "OptionGroupName": "",
-          "Status": ""
-        },
-        "PendingModifiedValues": {
-          "AllocatedStorage": "",
-          "BackupRetentionPeriod": "",
-          "DBInstanceClass": "",
-          "EngineVersion": "",
-          "Iops": "",
-          "MasterUserPassword": "",
-          "MultiAZ": "",
-          "Port": ""
+          "OptionGroupName": ""
         },
         "PreferredBackupWindow": "STRING, ",
         "PreferredMaintenanceWindow": "STRING, format hh24:mi-hh24:mi , must be at least 30 minutes",
         "PubliclyAccessible": "BOOLEAN, [true|*false], in VPC, default is false",
         "VpcSecurityGroups": [
-          {
-            "VpcSecurityGroupId": "reference, STRING, @xxxx.resource.xxxx, required, example:@$DEFAULT-SG.resource.GroupId"
-          }
+           "reference, STRING, @xxxx.resource.xxxx, required, example:@$DEFAULT-SG.resource.GroupId"
         ]
       }
     },
@@ -737,15 +708,9 @@
         "CreatedBy": "STRING, default '', RW will update to 'visualops'",
         "DBSubnetGroupDescription": "",
         "DBSubnetGroupName": "",
-        "SubnetGroupStatus": "",
-        "Subnets": [
-          {
-            "SubnetAvailabilityZone": "",
-            "SubnetIdentifier": "",
-            "SubnetStatus": ""
-          }
-        ],
-        "VpcId": ""
+        "SubnetIds": [
+          "Reference to subnetId"
+        ]
       }
     },
     "$RDSEventSubscription0": {
@@ -779,20 +744,21 @@
         "Options": [
           {
             "DBSecurityGroupMembership": [
-              {
-                "DBSecurityGroupName": "",
-                "Status": ""
-              }
+              ""
             ],
             "OptionDescription": "",
             "OptionName": "",
             "Port": "",
             "ApplyImmediately": "",
             "VpcSecurityGroupMembership": [
+              "sg-12345678"
+            ],
+            "OptionSettings" : [
               {
-                "VpcSecurityGroupId": "",
-                "Status": ""
+                "Name" : "",
+                "Value" : ""
               }
+
             ]
           }
         ],

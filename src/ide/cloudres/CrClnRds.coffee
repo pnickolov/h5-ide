@@ -5,6 +5,7 @@ define [
   "CloudResources"
   "./CrModelRdsSnapshot"
   "./CrModelRdsPGroup"
+  "./CrModelRdsParameter"
 ], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsSnapshotModel, CrRdsPGroupModel )->
 
 
@@ -17,12 +18,14 @@ define [
     type  : constant.RESTYPE.DBENGINE
     doFetch : ()-> ApiRequest("rds_DescribeDBEngineVersions", {region_name : @region()})
     parseFetchData : ( data )->
-      dbEngineVersion = []
-      dbEngineVersion = data?.DescribeDBEngineVersionsResponse?.DescribeDBEngineVersionsResult?.DBEngineVersions?.DBEngineVersion
-      dbEngineVersion = _.map dbEngineVersion, (item) ->
-        item.id = item.Engine + ' ' + item.EngineVersion
-        return item
-      return dbEngineVersion
+      data = data?.DescribeDBEngineVersionsResponse.DescribeDBEngineVersionsResult.DBEngineVersions?.DBEngineVersion || []
+
+      if not _.isArray( data ) then data = [data]
+
+      for i in data
+        i.id = i.Engine + " " + i.EngineVersion
+
+      data
   }
 
 
@@ -37,16 +40,14 @@ define [
 
     doFetch : ()-> ApiRequest("rds_snap_DescribeDBSnapshots", {region_name : @region()})
     parseFetchData : ( data )->
-      rdsSnapshot = []
-      rdsSnapshots = data?.DescribeDBSnapshotsResponse?.DescribeDBSnapshotsResult?.DBSnapshots
-      if _.isArray(rdsSnapshots.DBSnapshot)
-        rdsSnapshot = rdsSnapshots.DBSnapshot
-      else
-        rdsSnapshot = rdsSnapshots
-      rdsSnapshot = _.map rdsSnapshot, (item) ->
-        item.id = item.DBSnapshotIdentifier
-        return item
-      return rdsSnapshot
+      data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots.DBSnapshot || []
+
+      if not _.isArray( data ) then data = [data]
+
+      for i in data
+        i.id = i.DBSnapshotIdentifier
+
+      data
   }
 
 
@@ -61,14 +62,12 @@ define [
 
     doFetch : ()-> ApiRequest("rds_pg_DescribeDBParameterGroups", {region_name : @region()})
     parseFetchData : ( data )->
-      rdsSnapshot = []
-      rdsSnapshots = data?.DescribeDBSnapshotsResponse?.DescribeDBSnapshotsResult?.DBSnapshots
-      if _.isArray(rdsSnapshots.DBSnapshot)
-        rdsSnapshot = rdsSnapshots.DBSnapshot
-      else
-        rdsSnapshot = rdsSnapshots
-      rdsSnapshot = _.map rdsSnapshot, (item) ->
-        item.id = item.DBSnapshotIdentifier
-        return item
-      return rdsSnapshot
+      data = data.DescribeDBParameterGroupsResponse.DescribeDBParameterGroupsResult.DBParameterGroups.DBParameterGroup || []
+
+      if not _.isArray( data ) then data = [data]
+
+      for i in data
+        i.id = i.DBParameterGroupName
+
+      data
   }

@@ -1,0 +1,13 @@
+#property-dbinstance-storage {
+  width: 184px; }
+
+.property-dbinstance-storage {
+  margin-left: 10px; }
+
+.property-input-row {
+  float: left;
+  width: 120px; }
+  .property-input-row label.left {
+    display: block; }
+  .property-input-row input.input {
+    width: 80px; }

@@ -1,0 +1,17 @@
+ // RDS Instance Property
+#property-dbinstance-storage {
+	width: 184px;
+}
+.property-dbinstance-storage {
+	margin-left: 10px;
+}
+.property-input-row {
+	float: left;
+	width: 120px;
+	label.left {
+		display: block;
+	}
+	input.input {
+		width: 80px;
+	}
+}

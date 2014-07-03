@@ -25,7 +25,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
 
 
-
     serialize : ()->
       component =
         name : @get("name")
@@ -70,7 +69,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           PubliclyAccessible                    : @get 'accessible'
 
-          DBSubnetGroupName                     : @parent.get 'name'
+          DBSubnetGroupName                     : @parent().get 'name'
 
 
       { component : component, layout : @generateLayout() }

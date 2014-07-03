@@ -26,6 +26,7 @@ define [ 'Design',
          './resource/ScalingPolicyModel'
          './resource/DBSbgModel'
          './resource/DBInstanceModel'
+         './resource/DBOgModel'
 
          "./util/deserializeVisitor/JsonFixer"
          "./util/deserializeVisitor/EipMerge"

@@ -66,10 +66,10 @@ define [ "constant",
         status      : data.DBSubnetGroupName
         subnets     : data.Subnets
 
-        x      : layout_data.coordinate[0]
-        y      : layout_data.coordinate[1]
-        width  : layout_data.size[0]
-        height : layout_data.size[1]
+        x           : layout_data.coordinate[0]
+        y           : layout_data.coordinate[1]
+        width       : layout_data.size[0]
+        height      : layout_data.size[1]
 
         parent : resolve( layout_data.groupUId )
       }

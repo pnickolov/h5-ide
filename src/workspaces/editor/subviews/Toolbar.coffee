@@ -496,7 +496,7 @@ define [
                         confirmModal.close()
                         $switcher.addClass 'on'
                         workspace.design.set('agent', agent)
-                        ide_event.trigger ide_event.REFRESH_PROPERTY
+                        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
 
                 )
                 null
@@ -507,7 +507,7 @@ define [
         else
             agent.enabled = false
             @workspace.design.set('agent', agent)
-            ide_event.trigger ide_event.REFRESH_PROPERTY
+            ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
 
 
 

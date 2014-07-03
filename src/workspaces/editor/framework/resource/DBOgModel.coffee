@@ -35,13 +35,13 @@ define [ "../ResourceModel", "Design", "constant" ], ( ResourceModel, Design, co
         name   : data.name
         appId  : data.resource.CreatedBy
 
-        engineName    : data.EngineName
-        engineVersion : data.MajorEngineVersion
+        engineName    : data.resource.EngineName
+        engineVersion : data.resource.MajorEngineVersion
 
-        ogDescription : data.OptionGroupDescription
-        ogName        : data.OptionGroupName
+        ogDescription : data.resource.OptionGroupDescription
+        ogName        : data.resource.OptionGroupName
 
-        options       : data.Options
+        options       : data.resource.Options
 
 
 

@@ -57,11 +57,11 @@ define [ "constant",
       new Model {
 
         id          : data.uid
-        name        : data.name || data.DBSubnetGroupName
-        appId       : data.CreatedBy
+        name        : data.name || data.resource.DBSubnetGroupName
+        appId       : data.resource.CreatedBy
 
-        description : data.DBSubnetGroupDescription
-        subnetIds   : data.SubnetIds
+        description : data.resource.DBSubnetGroupDescription
+        subnetIds   : data.resource.SubnetIds
 
         x           : layout_data.coordinate[0]
         y           : layout_data.coordinate[1]

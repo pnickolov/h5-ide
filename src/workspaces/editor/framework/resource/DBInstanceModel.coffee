@@ -79,46 +79,46 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     handleTypes: constant.RESTYPE.DBINSTANCE
 
-    deserialize : ( data, layout_data, resolve )->
+    deserialize : ( data, layout_data, resolve ) ->
       new Model({
 
         id     : data.uid
         name   : data.name
-        appId  : data.CreatedBy
+        appId  : data.resource.CreatedBy
 
-        instanceId                : data.DBInstanceIdentifier
-        snapshotId                : data.DBSnapshotIdentifier
-        replicaId                 : data.ReadReplicaSourceDBInstanceIdentifier
+        instanceId                : data.resource.DBInstanceIdentifier
+        snapshotId                : data.resource.DBSnapshotIdentifier
+        replicaId                 : data.resource.ReadReplicaSourceDBInstanceIdentifier
 
-        allocatedStorage          : data.AllocatedStorage
-        autoMinorVersionUpgrade   : data.AutoMinorVersionUpgrade
-        az                        : data.AvailabilityZone
-        multiAz                   : data.MultiAZ
-        iops                      : data.Iops
-        backupRetentionPeriod     : data.BackupRetentionPeriod
-        characterSetName          : data.CharacterSetName
-        instanceClass             : data.DBInstanceClass
-        replicas                  : data.ReadReplicaDBInstanceIdentifiers
+        allocatedStorage          : data.resource.AllocatedStorage
+        autoMinorVersionUpgrade   : data.resource.AutoMinorVersionUpgrade
+        az                        : data.resource.AvailabilityZone
+        multiAz                   : data.resource.MultiAZ
+        iops                      : data.resource.Iops
+        backupRetentionPeriod     : data.resource.BackupRetentionPeriod
+        characterSetName          : data.resource.CharacterSetName
+        instanceClass             : data.resource.DBInstanceClass
+        replicas                  : data.resource.ReadReplicaDBInstanceIdentifiers
 
-        dbName                    : data.DBName
-        port                      : data.Endpoint?.Port
-        engine                    : data.Engine
-        engineVersion             : data.EngineVersion
-        license                   : data.LicenseModel
-        username                  : data.MasterUsername
-        password                  : data.MasterUserPassword
+        dbName                    : data.resource.DBName
+        port                      : data.resource.Endpoint?.Port
+        engine                    : data.resource.Engine
+        engineVersion             : data.resource.EngineVersion
+        license                   : data.resource.LicenseModel
+        username                  : data.resource.MasterUsername
+        password                  : data.resource.MasterUserPassword
 
-        ogName                    : data.OptionGroupMembership?.OptionGroupName
-        ogStatus                  : data.OptionGroupMembership?.Status
+        ogName                    : data.resource.OptionGroupMembership?.OptionGroupName
+        ogStatus                  : data.resource.OptionGroupMembership?.Status
 
-        pending                   : data.PendingModifiedValues
+        pending                   : data.resource.PendingModifiedValues
 
-        preferredBackupWindow     : data.PreferredBackupWindow
-        preferredMaintenanceWindow: data.PreferredMaintenanceWindow
+        preferredBackupWindow     : data.resource.PreferredBackupWindow
+        preferredMaintenanceWindow: data.resource.PreferredMaintenanceWindow
 
-        accessible                : data.PubliclyAccessible
+        accessible                : data.resource.PubliclyAccessible
 
-        pgName                    : data.DBParameterGroups?.DBParameterGroupName
+        pgName                    : data.resource.DBParameterGroups?.DBParameterGroupName
 
 
         x      : layout_data.coordinate[0]
@@ -126,6 +126,13 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
         parent : resolve( layout_data.groupUId )
       })
+
+      # Asso SG
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      for sg in data.resource.VpcSecurityGroups || []
+        new SgAsso( model, resolve( MC.extractID(sg) ) )
+
+
   }
 
   Model

@@ -17,7 +17,7 @@ define [ "constant",
       width  : 17
       height : 17
 
-      subnets: []
+      subnetIds: []
       description: ''
 
 
@@ -42,9 +42,7 @@ define [ "constant",
         resource :
           CreatedBy               : @get 'appId'
           DBSubnetGroupName       : @get 'name'
-          SubnetGroupStatus       : @get 'status'
-          Subnets                 : @get 'Subnets'
-          VpcId                   : @getVpcRef()
+          SubnetIds               : @get 'subnetIds'
           DBSubnetGroupDescription: @get 'description'
 
 
@@ -63,8 +61,7 @@ define [ "constant",
         appId       : data.CreatedBy
 
         description : data.DBSubnetGroupDescription
-        status      : data.DBSubnetGroupName
-        subnets     : data.Subnets
+        subnetIds   : data.SubnetIds
 
         x           : layout_data.coordinate[0]
         y           : layout_data.coordinate[1]

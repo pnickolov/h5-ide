@@ -39,7 +39,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-          AvailabilityZone                      : @get 'az'
+          AvailabilityZone                      : @get 'adz'
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
@@ -49,7 +49,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           DBName                                : @get 'dbName'
           Endpoint:
-            Address: @get 'address'
             Port: @get 'port'
           Engine                                : @get 'engine'
           EngineVersion                         : @get 'engineVersion'
@@ -61,12 +60,17 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
             OptionGroupName: @get 'ogName'
             Status: @get 'ogStatus'
 
+          DBParameterGroups:
+            DBParameterGroupName: @get 'pgName'
+
           PendingModifiedValues                 : @get 'pending'
 
           PreferredBackupWindow                 : @get 'preferredBackupWindow'
           PreferredMaintenanceWindow            : @get 'preferredMaintenanceWindow'
 
           PubliclyAccessible                    : @get 'accessible'
+
+          DBSubnetGroupName                     : @parent.get 'name'
 
 
       { component : component, layout : @generateLayout() }
@@ -98,7 +102,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         replicas                  : data.ReadReplicaDBInstanceIdentifiers
 
         dbName                    : data.DBName
-        address                   : data.Endpoint?.Address
         port                      : data.Endpoint?.Port
         engine                    : data.Engine
         engineVersion             : data.EngineVersion
@@ -115,6 +118,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         preferredMaintenanceWindow: data.PreferredMaintenanceWindow
 
         accessible                : data.PubliclyAccessible
+
+        pgName                    : data.DBParameterGroups?.DBParameterGroupName
 
 
         x      : layout_data.coordinate[0]

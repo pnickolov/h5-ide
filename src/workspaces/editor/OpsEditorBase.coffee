@@ -193,6 +193,10 @@ define [
       # If the OpsModel doesn't have thumbnail, generate one for it.
       if not @opsModel.getThumbnail()
         @saveThumbnail()
+
+      # Save result of the Design serialization. By doing this, the opsModel will
+      # always have a correct json when the editor is opened.
+      @opsModel.__setJsonData @design.serialize()
       return
 
     initEditor : ()->

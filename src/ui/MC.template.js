@@ -1426,7 +1426,7 @@ TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -1448,87 +1448,10 @@ function program3(depth0,data) {
   return buffer;
   }
 
-function program5(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n	<table class=\"table-head-fix table app-update-summary-table-header\" data-target=\"app-update-summary-table\">\n		<thead> <tr class=\"header-row\">\n			<th class=\"sortable active\" width=\"30%\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_TYPE", {hash:{},data:data}))
-    + "</th>\n			<th class=\"sortable\" width=\"30%\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_NAME", {hash:{},data:data}))
-    + "</th>\n			<th class=\"sortable\" width=\"40%\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_TABLE_CHANGE", {hash:{},data:data}))
-    + "</th> </tr>\n		</thead>\n	</table>\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<table class=\"table scroll-content\" id=\"app-update-summary-table\">\n			<tbody>\n				";
-  stack1 = helpers.each.call(depth0, (depth0 && depth0.result), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</tbody>\n		</table>\n	</div>\n	";
-  return buffer;
-  }
-function program6(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += " <tr>\n				<td width=\"30%\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n				<td width=\"30%\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n				<td width=\"40%\">\n					";
-  stack1 = helpers.each.call(depth0, (depth0 && depth0.changes), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n					";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.extra), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n					";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.info), {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</td>\n				</tr> ";
-  return buffer;
-  }
-function program7(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n					<span class=\"au-summary-label au-summary-"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.info)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n					";
-  return buffer;
-  }
-
-function program9(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n					<span class=\"au-summary-label au-summary-"
-    + escapeExpression(((stack1 = (depth0 && depth0.change)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.change)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n					";
-  return buffer;
-  }
-
-function program11(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "<p class=\"au-summary-extra\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.extra)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>";
-  return buffer;
-  }
-
-function program13(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "<span class=\"tooltip icon-warning\" data-tooltip=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.info)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"></span>";
-  return buffer;
-  }
-
   buffer += "<div id=\"app-apply-update\">\n    <div class=\"modal-control-group default-kp-group clearfix\" style=\"display: none;\">\n        <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label><div id=\"kp-runtime-placeholder\"></div>\n        <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n    </div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.result)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
+  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
@@ -1606,7 +1529,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Conﬁrm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Confirm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
 
@@ -1767,7 +1690,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:343px\" id=\"modal-ssl-cert-setting\">\n	<div class=\"modal-header\"><h3>Server Certiﬁcate</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
+  buffer += "<div style=\"width:343px\" id=\"modal-ssl-cert-setting\">\n	<div class=\"modal-header\"><h3>Server Certificate</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_LBL_LISTENER_NAME", {hash:{},data:data}))
     + "</label>\n			<input class=\"input\" value=\""
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

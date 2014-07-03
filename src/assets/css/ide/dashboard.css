@@ -645,7 +645,7 @@
   .region-resource-list .region-resource-info i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
     color: #ec3c38; }
   .region-resource-list .region-resource-info > span {
-    max-width: 120px; }
+    max-width: 110px; }
   .region-resource-list .region-resource-info > .icon-pending:before {
     font-size: 10px;
     line-height: 10px;

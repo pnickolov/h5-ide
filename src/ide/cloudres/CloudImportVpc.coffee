@@ -625,40 +625,47 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         vol_in_instance = []
 
-        if originComp
-          # add root device
-          insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
-          insRes.BlockDeviceMapping = _.filter insRes.BlockDeviceMapping, (bdm) ->
-            return false if _.isString(bdm)
-            return true
+        #find rootDevice
+        if aws_ins.rootDeviceType is 'ebs'
 
-          # add not root device
-          _.each aws_ins.blockDeviceMapping || [], (e,key)->
-            if aws_ins.rootDeviceName.indexOf( e.deviceName ) is -1
-              # not rootDevice, external volume point to instance
-              volComp = me.volumes[ e.ebs.volumeId ]
-              if volComp
-                insRes.BlockDeviceMapping = _.union insRes.BlockDeviceMapping, ["#" + volComp.uid]
-                #add volume component
-                me.component[ volComp.uid ] = volComp
-                vol_in_instance.push volComp.uid
-        else
-          insRes.BlockDeviceMapping = []
-          volumes = @volumes
+          ##get root device in original component
+          if originComp
+            insRes.BlockDeviceMapping = originComp.resource.BlockDeviceMapping || []
+            insRes.BlockDeviceMapping = _.filter insRes.BlockDeviceMapping, (bdm) ->
+              return false if _.isString(bdm)
+              return true
+
+          ##get root device in instance
+          rootDeviceAry = []
           _.each aws_ins.blockDeviceMapping, (bdm) ->
-            volume = volumes[bdm.ebs.volumeId]
-            volumeSize = ''
-            volumeSize = volume.resource.Size if volume
-            insRes.BlockDeviceMapping.push({
-              DeviceName: bdm.deviceName,
-              Ebs: {
-                AttachTime: bdm.ebs.attachTime,
-                DeleteOnTermination: bdm.ebs.deleteOnTermination,
-                Status: bdm.ebs.status,
-                VolumeId: bdm.ebs.volumeId,
-                VolumeSize: volumeSize
-              }
-            })
+            # get root device from instance
+            if aws_ins.rootDeviceName.indexOf(bdm.deviceName) isnt -1
+              volume = me.volumes[bdm.ebs.volumeId]
+              if volume
+                rootDevice =
+                  DeviceName: bdm.deviceName
+                  Ebs:
+                    #VolumeId: bdm.ebs.volumeId
+                    SnapshotId: volume.resource.SnapshotId
+                    VolumeSize: volume.resource.Size
+                    VolumeType: volume.resource.VolumeType
+                if volume.resource.VolumeType is 'io1'
+                  rootDevice.Ebs.Iops = volume.resource.Iops
+                rootDeviceAry.push rootDevice
+          ##use original data if root device no change
+          if insRes.BlockDeviceMapping.length isnt rootDeviceAry.length
+            insRes.BlockDeviceMapping = rootDeviceAry
+
+        #find external volume
+        _.each aws_ins.blockDeviceMapping || [], (bdm)->
+          # external volume point to instance
+          if aws_ins.rootDeviceType is 'instance-store' or aws_ins.rootDeviceName.indexOf( bdm.deviceName ) is -1
+            volComp = me.volumes[ bdm.ebs.volumeId ]
+            if volComp
+              #add volume component
+              me.component[ volComp.uid ] = volComp
+              vol_in_instance.push volComp.uid
+
 
         #generate instance component
         insComp = @add( "INSTANCE", insRes, TAG_NAME(aws_ins) )
@@ -938,8 +945,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         elbRes = @_mapProperty aws_elb, elbRes
 
+        originComp = @getOriginalComp(aws_elb.Name, 'ELB')
         elbRes.ConnectionDraining.Enabled = aws_elb.ConnectionDraining.Enabled
-        elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
+        if originComp
+          elbRes.ConnectionDraining.Timeout = originComp.resource.ConnectionDraining.Timeout
+        else
+          elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
 
         delete elbRes.CanonicalHostedZoneName if elbRes.CanonicalHostedZoneName
         delete elbRes.CanonicalHostedZoneNameID if elbRes.CanonicalHostedZoneNameID
@@ -1322,9 +1333,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       return
   ]
 
-
-  # getNC       : ()->
-  # getSP       : ()->
 
   processServerGroup = (cd) ->
 

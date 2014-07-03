@@ -1028,34 +1028,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
 	<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
 	{{/if}}
-	{{#if result.length}}
-	<table class="table-head-fix table app-update-summary-table-header" data-target="app-update-summary-table">
-		<thead> <tr class="header-row">
-			<th class="sortable active" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_TYPE'}}</th>
-			<th class="sortable" width="30%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_NAME'}}</th>
-			<th class="sortable" width="40%">{{ i18n 'POP_CONFIRM_UPDATE_TABLE_CHANGE'}}</th> </tr>
-		</thead>
-	</table>
 	<div class="scroll-wrap" style="max-height:256px;">
 		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-		<table class="table scroll-content" id="app-update-summary-table">
-			<tbody>
-				{{#each result}} <tr>
-				<td width="30%">{{type}}</td>
-				<td width="30%">{{name}}</td>
-				<td width="40%">
-					{{#each changes}}
-					<span class="au-summary-label au-summary-{{name}}">{{info}}</span>
-					{{else}}
-					<span class="au-summary-label au-summary-{{change}}">{{change}}</span>
-					{{/each}}
-					{{#if extra}}<p class="au-summary-extra">{{extra}}</p>{{/if}}
-					{{#if info}}<span class="tooltip icon-warning" data-tooltip="{{info}}"></span>{{/if}}</td>
-				</tr> {{/each}}
-			</tbody>
-		</table>
+		<div class="scroll-content res_diff_tree" id="app-update-summary-table">
+		</div>
 	</div>
-	{{/if}}
 	<div class="stack-validation">
 		<details open style="display:none;">
 			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
@@ -1104,7 +1081,7 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- {{modalStackAgentEnable}} -->
 <div style="width:420px">
-	<div class="modal-header"><h3>Conﬁrm to Enable VisualOps</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-header"><h3>Confirm to Enable VisualOps</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body">
 		<div class="modal-text-wraper">
 			<div class="modal-center-align-helper">
@@ -1266,7 +1243,7 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- {{modalSSLCertSetting}} -->
 <div style="width:343px" id="modal-ssl-cert-setting">
-	<div class="modal-header"><h3>Server Certiﬁcate</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>Server Certificate</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:120px;">
 		<div class="modal-ssl-cert-item clearfix">
 			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>

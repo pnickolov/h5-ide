@@ -15,6 +15,7 @@ define [ "jquery" ], ()->
     cloudformation : true
     use_visualops  : true
     app_to_stack   : true
+    version        : true
 
 
   IntercomAnalytics = {

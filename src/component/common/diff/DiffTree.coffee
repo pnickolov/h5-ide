@@ -4,35 +4,38 @@ define [], () ->
 
         option = {} if not option
 
-        option.filterAttrMap = {
-            'type': true
-            'uid': true
-            'name': true
-            'index': true
-            'number': true
-            'serverGroupUid': true
-            'serverGroupName': true
-            'state': true
-            'resource.PrivateIpAddressSet.n.AutoAssign': true,
-            'resource.AssociatePublicIpAddress': true,
-            'resource.KeyName': true,
-            'resource.AssociationSet.n.RouteTableAssociationId': true
-            'resource.AssociationSet.n.NetworkAclAssociationId': true
-            'resource.BlockDeviceMapping': true
-            'resource.VolumeSize': true
-            'resource.GroupDescription': true
-            'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
-            'resource.Attachment.AttachmentId': true
-            'resource.Iops': true
-        }
+        if not option.filterAttrMap
+
+            option.filterAttrMap = {
+                'type': true
+                'uid': true
+                'name': true
+                'index': true
+                'number': true
+                'serverGroupUid': true
+                'serverGroupName': true
+                # 'state': true
+                'resource.PrivateIpAddressSet.n.AutoAssign': true,
+                'resource.AssociatePublicIpAddress': true,
+                'resource.KeyName': true,
+                'resource.AssociationSet.n.RouteTableAssociationId': true
+                'resource.AssociationSet.n.NetworkAclAssociationId': true
+                'resource.BlockDeviceMapping': true
+                'resource.VolumeSize': true
+                'resource.GroupDescription': true
+                'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
+                'resource.Attachment.AttachmentId': true
+                'resource.Iops': true
+            }
+
+        if not option.noDiffArrayAttrMap
+            
+            option.noDiffArrayAttrMap = {
+                'state': true
+                # 'resource.RouteSet': true
+            }
 
         option.filterResMap = {}
-
-        if option.state is 'stop'
-
-            option.filterResMap = {
-                'AWS.AutoScaling.Group': true
-            }
 
         isArray = (value) ->
 
@@ -70,10 +73,13 @@ define [], () ->
                 a = aAry
                 b = bAry
 
+            attrPath = ''
+
             if path
 
                 path = path.concat([key]) if key
 
+                # ignore resource of specified type
                 if path.length is 2
 
                     resUID = path[1]
@@ -81,12 +87,8 @@ define [], () ->
                         resType = a.type
                         return if option.filterResMap[resType]
 
+                # ignore resource of specified in filterAttrMap
                 else if path.length > 2
-                    ###
-                    if _.isArray(a)
-                        b = []
-                    ###
-                        # console.info('[NEED PROCESS] ' + path.slice(2).join('.'))
 
                     attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
@@ -137,12 +139,15 @@ define [], () ->
                 # process array diff
                 if typeA is 'array' and typeB is 'array'
 
-                    diffAryResult = {}
+                    # ignore array diff of specified in noDiffArrayAttrMap
+                    if (not attrPath or (attrPath and not option.noDiffArrayAttrMap[attrPath]))
 
-                    if a.length < b.length
-                        _diffAry.call(this, a, b)
-                    else
-                        _diffAry.call(this, b, a)
+                        diffAryResult = {}
+
+                        if a.length < b.length
+                            _diffAry.call(this, a, b)
+                        else
+                            _diffAry.call(this, b, a)
 
                 keys = []
                 for v of a

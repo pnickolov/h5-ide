@@ -65,8 +65,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
   }, {
     handleTypes : constant.RESTYPE.AZ
 
-    diffJson : ()-> # Disable diff for this Model
-
     deserialize : ( data, layout_data, resolve )->
       new Model({
         id    : data.uid

@@ -36,8 +36,6 @@ define [ "../ResourceModel", "../ComplexResModel", "constant", "../ConnectionMod
     handleTypes  : constant.RESTYPE.TOPIC
     resolveFirst : true
 
-    diffJson : ()-> # Disable diff for this Model
-
     isTopicNeeded : ()->
       ScalingPolicyModel = Design.modelClassForType( constant.RESTYPE.SP )
       for sp in ScalingPolicyModel.allObjects()

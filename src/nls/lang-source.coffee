@@ -1615,8 +1615,16 @@ module.exports =
       en: "App ID"
       zh: "应用标识"
 
+    PROP_APP_LBL_INSTANCE_STATE:
+      en: "Instance State"
+      zh: ""
+
     PROP_APP_LBL_RESDIFF:
       en: "Monitor and report external resource change of this app"
+      zh: ""
+
+    PROP_APP_LBL_RESDIFF_VIEW:
+      en: "Monitor and Report External Change"
       zh: ""
 
     PROP_APP_TIP_RESDIFF:

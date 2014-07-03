@@ -205,8 +205,6 @@ define [ "constant",
 
     handleTypes : constant.RESTYPE.SUBNET
 
-    diffJson : ()-> # Disable diff for thie Model
-
     genCIDRPrefixSuffix : (subnetCIDR) ->
       cutAry = subnetCIDR.split('/')
       ipAddr = cutAry[0]

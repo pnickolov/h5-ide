@@ -15,8 +15,7 @@ define [ '../base/view',
 
         render: () ->
 
-            @$el.html template @model.attributes
-            dbInstanceModel = Design.instance().component( @model.get 'uid' )
+            @$el.html template @model.toJSON()
 
     }
 

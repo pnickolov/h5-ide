@@ -2,15 +2,17 @@
 #  Controller for design/property/dbinstance module
 ####################################
 
-define [ "../base/main",
-         "./model",
-         "./view",
+define [
+         "Design"
+         "../base/main"
+         "./model"
+         "./view"
          # "./app_model",
          # "./app_view",
-         "../sglist/main",
-         "constant",
+         "../sglist/main"
+         "constant"
          "event"
-], ( PropertyModule,
+], ( Design, PropertyModule,
      model, view,
      sglist_main, constant, ide_event ) ->
 
@@ -27,8 +29,8 @@ define [ "../base/main",
             #     PropertyModule.loadSubPanel "STATIC", id
             null
 
-        initStack : ()->
-            @model = model
+        initStack : ( uid )->
+            @model = Design.instance().component uid
             @view  = view
             null
 

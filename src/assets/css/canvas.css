@@ -49,7 +49,7 @@
 
 .node-dragging .node,
 .node-dragging .group-label,
-.node-dragging .asg-resource-dragger {
+.node-dragging .asg-resource-dragger .dbinstance-resource-dragger {
 	cursor: -webkit-grabbing !important;
 	cursor: -moz-grabbing !important;
 	cursor: grabbing !important;
@@ -665,6 +665,20 @@
 .canvas_state_app .asg-resource-dragger {
 	display : none;
 }
+
+.dbinstance-resource-dragger {
+	fill: rgba(118, 214, 255, 1);
+	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+
+.canvas_state_app .dbinstance-resource-dragger {
+	display : none;
+}
+
 
 /*when no LaunchConfiguration in asg*/
 .prompt_text {

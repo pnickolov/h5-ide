@@ -2428,6 +2428,11 @@ MC.canvas.event.dragable = {
 						// For asgExpand
 						MC.canvas.event.dragable.asgExpandup :
 						// Default
+						MC.canvas.event.dragable.mouseup,
+					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('dbinstance-resource-dragger') ?
+						// For rdsCreateReadReplica
+						MC.canvas.event.dragable.rdsCreateReadReplicaup :
+						// Default
 						MC.canvas.event.dragable.mouseup
 				}, {
 					'target': target,
@@ -2958,6 +2963,66 @@ MC.canvas.event.dragable = {
 			asg_item.asgExpand(match_place.target, coordinate.x, coordinate.y);
 
 			asg_item.select();
+		}
+
+		Canvon('.dropable-group').removeClass('dropable-group');
+
+		event.data.shadow.remove();
+
+		event.data.canvas_body.removeClass('node-dragging');
+
+		$('#overlayer').remove();
+
+		$(document).off('.DRAGABLE_EVENT');
+	},
+	rdsCreateReadReplicaup: function (event)
+	{
+		var event_data = event.data,
+			target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			node_type = event_data.nodeType,
+			db_instance_item = $canvas(target_id),
+			svg_canvas = $('#svg_canvas'),
+			canvas_offset = $canvas.offset(),
+			shadow_offset = Canvon(event.data.shadow).offset(),
+			scale_ratio = $canvas.scale(),
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			size = event_data.size,
+			// areaChild = MC.canvas.areaChild(
+			// 	target_id,
+			// 	target_type,
+			// 	coordinate.x,
+			// 	coordinate.y,
+			// 	coordinate.x + size[0],
+			// 	coordinate.y + size[1]
+			// ),
+			match_place = MC.canvas.isMatchPlace(
+				null,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				size[0],
+				size[1]
+			),
+			parentGroup = MC.canvas.parentGroup(
+				target_id,
+				target_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + size[0],
+				coordinate.y + size[1]
+			);
+
+		if (
+			//areaChild.length === 0 &&
+			match_place.is_matched
+		)
+		{
+			db_instance_item.rdsCreateReadReplica(match_place.target, coordinate.x, coordinate.y);
+
+			db_instance_item.select();
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');

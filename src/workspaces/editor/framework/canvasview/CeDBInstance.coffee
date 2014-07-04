@@ -18,12 +18,36 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
   ChildElementProto.iconUrl = ->
     switch @model.category()
-      when "snapshot" then "ide/icon/dbinstance-read.png"
-      when "replica"  then "ide/icon/dbinstance-snap.png"
+      when "snapshot" then "ide/icon/dbinstance-snap.png"
+      when "replica"  then "ide/icon/dbinstance-read.png"
       when "instance" then "ide/icon/dbinstance-source.png"
       else
         console.warn "[iconUrl]unknown category of RDS DBInstance"
         "ide/icon/dbinstance-source.png"
+
+  ChildElementProto.rdsCreateReadReplica = ( parentId, x, y )->
+    design = @model.design()
+
+    # Exapnd
+    comp   = @model
+    target = design.component(parentId)
+
+    if target
+      DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
+      res = new DBInstanceModel({
+        x : x
+        y : y
+        sourceDBInstance : comp
+        parent : target
+      })
+
+    if res and res.id
+      return true
+
+    #targetName = if target.type is "AWS.EC2.AvailabilityZone" then target.get("name") else target.parent().get("name")
+    #notification 'error', sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), targetName
+
+    return false
 
   ChildElementProto.draw = ( isCreate ) ->
     m = @model
@@ -71,13 +95,14 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
       )
 
-      node.append(
-        # dragger
-        Canvon.image(MC.IMG_URL + 'ide/icon/dbinstance-resource-dragger.png', 34, 58, 22, 21).attr({
-          'class'        : 'dbinstance-resource-dragger tooltip'
-          'data-tooltip' : 'Expand the group by drag-and-drop in other subnetgroup.'
-        })
-      )
+      if @model.category() isnt 'replica'
+        node.append(
+          # dragger
+          Canvon.image(MC.IMG_URL + 'ide/icon/dbinstance-resource-dragger.png', 34, 58, 22, 21).attr({
+            'class'        : 'dbinstance-resource-dragger tooltip'
+            'data-tooltip' : 'Expand the group by drag-and-drop in other subnetgroup.'
+          })
+        )
 
       if not @model.design().modeIsStack() and m.get("appId")
         # instance-state

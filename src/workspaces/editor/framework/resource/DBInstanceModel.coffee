@@ -20,6 +20,10 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     init: ->
 
     initialize : ( attr, option ) ->
+      if attr.sourceDBInstance
+        #TODO
+        @set 'replicaId', attr.sourceDBInstance
+
       @draw true
 
       null

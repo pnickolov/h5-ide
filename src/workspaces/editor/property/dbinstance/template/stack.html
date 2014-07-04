@@ -32,7 +32,7 @@
 
         <section class="property-control-group">
             <div class="checkbox">
-                <input id="property-dbinstance-version-update" type="checkbox" checked="true" value="None" name="property-dbinstance-version-update">
+                <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
                 <label for="property-dbinstance-version-update"></label>
             </div>
             <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
@@ -54,28 +54,35 @@
         </section>
 
         <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} value="None" name="property-dbinstance-mutil-az-check">
+                <label for="property-dbinstance-mutil-az-check"></label>
+            </div>
+            <label for="property-dbinstance-mutil-az-check">Multi-AZ Deployment</label>
+        </section>
+
+        <section class="property-control-group">
             <label>Allocated Storage</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <div class="ranged-number-input">
                 <label for="property-dbinstance-storage"></label>
-                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left" value="100" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number">
+                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number">
                 <label for="property-dbinstance-storage" class="property-label-right">GB</label>
             </div>
         </section>
 
         <section class="property-control-group">
             <div class="checkbox">
-                <input id="property-dbinstance-iops-check" type="checkbox" checked="true" value="None" name="property-dbinstance-iops-check">
+                <input id="property-dbinstance-iops-check" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
                 <label for="property-dbinstance-iops-check"></label>
             </div>
             <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
         </section>
 
-        <section class="property-control-group">
+        <section class="property-control-group property-dbinstance-iops-value-section {{#unless iops}}hide{{/unless}}">
             <label class="left">Provisioned IOPS</label>
             <div class="ranged-number-input">
-                <label for="property-dbinstance-iops-value"></label>
-                <input class="input" id="property-dbinstance-iops-value" type="text" value="" name="iops-ranged" min="100" max="2000" required="">
+                <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" min="100" max="2000" required="">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
         </section>
@@ -83,13 +90,13 @@
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="text" id="property-dbinstance-master-username" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore="true" data-required-rollback="true"/>
         </section>
 
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="text" id="property-dbinstance-master-password" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-master-password" value="{{password}}" data-ignore="true" data-required-rollback="true"/>
         </section>
 
     </div>
@@ -99,11 +106,11 @@
         <section class="property-control-group" data-bind="true">
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-database-name" >Database Name</label>
-                <input class="input"  type="text" id="property-dbinstance-database-name" data-ignore="true" data-required-rollback="true"/>
+                <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-database-port" >Database Port</label>
-                <input class="input"  type="text" id="property-dbinstance-database-port" data-ignore="true" data-required-rollback="true"/>
+                <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-required-rollback="true"/>
             </div>
         </section>
 
@@ -131,7 +138,7 @@
 
         <section class="property-control-group">
             <div class="checkbox">
-                <input id="property-dbinstance-public-access-check" type="checkbox" checked="true" value="None" name="property-dbinstance-public-access-check">
+                <input id="property-dbinstance-public-access-check" type="checkbox" {{#if accessible}}checked="true"{{/if}} value="None" name="property-dbinstance-public-access-check">
                 <label for="property-dbinstance-public-access-check"></label>
             </div>
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>

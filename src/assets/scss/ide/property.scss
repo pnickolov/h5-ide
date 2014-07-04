@@ -1,4 +1,5 @@
- // RDS Instance Property
+// RDS Instance Property
+
 .property-dbinstance {
 	input.property-input-left {
 		width: 184px;
@@ -15,6 +16,7 @@
 	.property-input-row {
 		float: left;
 		width: 120px;
+		margin-bottom: 10px;
 		label.left {
 			display: block;
 		}
@@ -24,6 +26,15 @@
 		div.selectbox {
 			width: 115px;
 			margin-top: 2px;
+		}
+	}
+	.property-dbinstance-iops-value-section {
+		label.left {
+			margin-top: 10px;
+			margin-right: 5px;
+		}
+		#property-dbinstance-iops-value {
+			width: 115px;
 		}
 	}
 }

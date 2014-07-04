@@ -42,7 +42,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     serialize : () ->
       component =
-        name : @get("name")
+        name : @get("instanceId")
         type : @type
         uid  : @id
         resource :
@@ -105,7 +105,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       model = new Model({
 
         id     : data.uid
-        name   : data.name
+        name   : data.resource.DBInstanceIdentifier
         appId  : data.resource.CreatedBy
 
         instanceId                : data.resource.DBInstanceIdentifier

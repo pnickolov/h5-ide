@@ -8,17 +8,15 @@ define [ '../base/view'
          'constant'
 ], ( PropertyView, template, lang, constant ) ->
 
-    noop = ()-> null
-
-    DBInstanceView = PropertyView.extend {
+    SubnetGroupView = PropertyView.extend {
 
         events:
             '': ''
 
         render: () ->
-
             @$el.html template @model.toJSON()
+            @
 
     }
 
-    new DBInstanceView()
+    new SubnetGroupView()

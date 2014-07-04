@@ -93,7 +93,11 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     handleTypes: constant.RESTYPE.DBINSTANCE
 
-    filter: () ->
+    getInstances: -> @reject (obj) -> obj.get('replicaId') or obj.get('snapshotId')
+
+    getReplicas: -> @filter (obj) -> !!obj.get('replicaId')
+
+    getSnapShots: -> @filter (obj) -> !!obj.get('snapshotId')
 
 
     deserialize : ( data, layout_data, resolve ) ->

@@ -101,8 +101,6 @@ define [
         MC.canvas.analysis()
         # Clear the thumbnail of the opsmodel, then it will be re-generated.
         @opsModel.saveThumbnail()
-
-      @design.finishDeserialization()
       return
 
     initEditor : ()->
@@ -140,12 +138,7 @@ define [
       @view.switchMode( false )
       true
 
-    recreateDesign : ()->
-      # Layout and component changes, need to construct a new Design.
-      @view.emptyCanvas()
-      @design.reload( @opsModel )
-      @design.finishDeserialization()
-      return
+    recreateDesign : ()-> @design.reload( @opsModel )
 
     loadVpcResource : ()->
       CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()

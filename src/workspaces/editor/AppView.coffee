@@ -163,10 +163,6 @@ define [
       @canvas.switchMode( if isAppEditMode then "appedit" else "app" )
       return
 
-    emptyCanvas : ()->
-      $("#vpc_layer, #az_layer, #subnet_layer, #asg_layer, #line_layer, #node_layer").empty()
-      return
-
     showUpdateStatus : ( error, loading )->
       @$el.find(".ops-process").remove()
 

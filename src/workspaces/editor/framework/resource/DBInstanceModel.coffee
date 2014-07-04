@@ -21,6 +21,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       if attr.sourceDBInstance
         #TODO
         @set 'replicaId', attr.sourceDBInstance
+        @set 'engine', attr.sourceDBInstance.get("engine")
 
       if attr.snapshotId
         @set 'snapshotId', attr.snapshotId

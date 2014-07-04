@@ -16,14 +16,23 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
     "instance-sg" : "horizontal"
   }
 
-  ChildElementProto.iconUrl = ->
-    switch @model.category()
-      when "snapshot" then "ide/icon/dbinstance-snap.png"
-      when "replica"  then "ide/icon/dbinstance-read.png"
-      when "instance" then "ide/icon/dbinstance-source.png"
+  ChildElementProto.iconUrl = ( attr ) ->
+    if attr is "type"
+      switch @model.category()
+        when "snapshot" then "ide/icon/dbinstance-snap.png"
+        when "replica"  then "ide/icon/dbinstance-read.png"
+        when "instance" then "ide/icon/dbinstance-source.png"
+        else
+          console.warn "[iconUrl]unknown category of RDS DBInstance"
+          "ide/icon/dbinstance-source.png"
+
+    else if attr is "engine"
+      engine = @model.get("engine")
+      if engine
+        "ide/engine/" + engine.split("-")[0] + ".png"
       else
-        console.warn "[iconUrl]unknown category of RDS DBInstance"
-        "ide/icon/dbinstance-source.png"
+        console.warn "[iconUrl]unknown engine of RDS DBInstance"
+        "ide/engine/unknown.png"
 
   ChildElementProto.rdsCreateReadReplica = ( parentId, x, y )->
     design = @model.design()
@@ -67,10 +76,12 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         sg      : true
       })
 
-      # Insert Type / Port
+      # Insert Type / Engine / Port
       node.append(
         # Type Icon
-        Canvon.image( MC.IMG_URL + @iconUrl(), 30, 20, 32, 15 ).attr({'class':"ami-image"}),
+        Canvon.image( MC.IMG_URL + @iconUrl("type"), 30, 20, 32, 15 ).attr({'class':"type-image"}),
+        # Engine Icon
+        Canvon.image( MC.IMG_URL + @iconUrl("engine"), 30, 40, 32, 15 ).attr({'class':"engine-image"}),
 
         # left port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
@@ -127,10 +138,9 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
       # Update Instance State in app
       @updateAppState()
 
-    # Update Ami Image
-    CanvasManager.update node.children(".ami-image"), @iconUrl(), "href"
-
-
+    # Update Type and Engine Image
+    CanvasManager.update node.children(".type-image"), @iconUrl("type"), "href"
+    CanvasManager.update node.children(".engine-image"), @iconUrl("engine"), "href"
 
 
     null

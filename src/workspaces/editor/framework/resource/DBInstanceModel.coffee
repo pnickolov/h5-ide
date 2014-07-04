@@ -17,8 +17,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     constructor : ( attr, option ) ->
       ComplexResModel.call( this, attr, option )
 
-    init: ->
-
     initialize : ( attr, option ) ->
       if attr.sourceDBInstance
         #TODO
@@ -101,7 +99,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
 
     deserialize : ( data, layout_data, resolve ) ->
-      new Model({
+      model = new Model({
 
         id     : data.uid
         name   : data.name

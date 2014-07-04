@@ -32,10 +32,11 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
       promise.then ( res )->
         try
-          self.set res.CreateKeyPairResponse
-          keyName = res.CreateKeyPairResponse.keyName
+          res = res.CreateKeyPairResponse || res.ImportKeyPairResponse
+          self.set res
+          keyName = res.keyName
         catch e
-          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid ata." )
+          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid data." )
 
         self.set 'keyName', keyName
         console.log "Created keypair resource", self

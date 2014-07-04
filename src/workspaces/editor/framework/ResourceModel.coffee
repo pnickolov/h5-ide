@@ -570,5 +570,35 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
   Design.registerModelClass ResourceModel.prototype.type, ResourceModel
 
+  # Underscore Quick Links for allObjects
+  _.each [
+    'where'
+    'findWhere'
+    'forEach'
+    'each'
+    'map'
+    'reduce'
+    'find'
+    'filter'
+    'reject'
+    'every'
+    'some'
+    'contains'
+    'invoke'
+    'max'
+    'min'
+    'size'
+    'first'
+    'without'
+    'isEmpty'
+    'chain'
+    'sample'
+  ], (method) ->
+    ResourceModel[method] = ->
+      args = [].slice.call arguments
+      args.unshift @allObjects()
+      _[method].apply _, args
+
+
   ResourceModel
 

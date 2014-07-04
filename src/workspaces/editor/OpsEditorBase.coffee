@@ -190,7 +190,7 @@ define [
 
     saveThumbnail : ()->
       if @opsModel.isPersisted()
-        Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
+        Thumbnail.generate( @view.getSvgElement() ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     isRemovable : ()->
       if not @__inited or not @isModified()

@@ -59,7 +59,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
     if not $wrap.length
       $wrap = $("<div id='ExportPngWrap'></div>").appendTo("body").hide()
 
-    $wrap.attr "class", $svg_canvas_element.parents("#canvas_body").attr("class")
+    $wrap.attr "class", $svg_canvas_element.closest(".canvas-view").attr("class")
 
     clone = $svg_canvas_element[0].cloneNode(true)
     size  = $svg_canvas_element[0].getBBox()
@@ -70,7 +70,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
 
     $wrap.append(clone)
 
-    firstDom = clone.getElementById("group_layer")
+    firstDom = $(clone).children()[0]
 
     # Inline styles
     removeArray = [ clone ] # Detach the clone from document.

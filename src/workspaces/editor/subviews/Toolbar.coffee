@@ -120,7 +120,7 @@ define [
 
       newJson = @workspace.design.serialize()
 
-      Thumbnail.generate( $("#svg_canvas") ).catch( ()->
+      Thumbnail.generate( @parent.getSvgElement() ).catch( ()->
         return null
       ).then ( thumbnail )->
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
@@ -167,7 +167,7 @@ define [
 
       design = @workspace.design
       name   = design.get("name")
-      Thumbnail.exportPNG $("#svg_canvas"), {
+      Thumbnail.exportPNG @parent.getSvgElement(), {
           isExport   : true
           createBlob : true
           name       : name

@@ -103,6 +103,9 @@ define [
       }
       return
 
+    getSvgElement : ()->
+      @$el.children(".OEMiddleWrap").children(".OEPanelCenter").children(".canvas-view").children("svg")
+
     saveOps : ()-> App.saveOps( @workspace.opsModel )
 
     ###

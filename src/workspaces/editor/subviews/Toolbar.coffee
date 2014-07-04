@@ -140,10 +140,10 @@ define [
       App.openOps newOps
       return
 
-    zoomIn  : ()-> MC.canvas.zoomIn();  @updateZoomButtons()
-    zoomOut : ()-> MC.canvas.zoomOut(); @updateZoomButtons()
+    zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
+    zoomOut : ()-> @parent.canvas.zoomOut(); @updateZoomButtons()
     updateZoomButtons : ()->
-      scale = 1 #$canvas.scale()
+      scale = if @parent.canvas then @parent.canvas.scale() else 1
       if scale <= 1
         @$el.find(".icon-zoom-in").attr("disabled", "disabled")
       else

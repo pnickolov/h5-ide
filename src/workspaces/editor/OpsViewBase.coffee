@@ -21,14 +21,75 @@ define [
 
   ### Monitor keypress ###
   $(document).on 'keydown', ( evt )->
+    if $(evt.target).is("input, textarea") or evt.target.contentEditable is "true"
+      evt.stopPropagation()
+      return
+
+    $tgt = $("#OpsEditor")
+    if not $tgt.length then return
+
+    switch evt.keyCode
+      when 8 , 46
+        ### BackSpace & Delete ###
+        if evt.which is 8
+          evt.preventDefault()
+        if not evt.ctrlKey and not evt.metaKey
+          type = "DelSelectItem"
+
+      when 9
+        ### Tab ###
+        if evt.originalEvent.shiftKey
+          type = "SelectPrevItem"
+        else
+          type = "SelectNextItem"
+
+      when 37, 38, 39, 40
+        ### Arrows ###
+        type = "MoveSelectItem"
+
+      when 83
+        ### S ###
+        if evt.ctrlKey || evt.metaKey
+          type = "Save"
+        else
+          type = "ShowStateEditor"
+
+      when 80
+        ### P ###
+        type = "ShowProperty"
+
+      when 187
+        ### + ###
+        type = "ZoomIn"
+
+      when 189
+        ### - ###
+        type = "ZoomOut"
+
+      when 13
+        ### Enter ###
+        type = "ShowStateEditor"
 
 
+    if type
+      $tgt.triggerHandler type, evt.which
+      return false
+
+    return
 
   ### OpsEditorView base class ###
   Backbone.View.extend {
 
     events :
-      "SAVE" : "saveStack"
+      "Save"            : "saveStack"
+      "DelSelectItem"   : "delSelectItem"
+      "SelectPrevItem"  : "selectPrevItem"
+      "SelectNextItem"  : "selectNextItem"
+      "MoveSelectItem"  : "moveSelectItem"
+      "ZoomIn"          : "zoomIn"
+      "ZoomOut"         : "zoomOut"
+      "ShowProperty"    : "showProperty"
+      "ShowStateEditor" : "showStateEditor"
 
     constructor : ( options )->
       _.extend this, options
@@ -59,6 +120,13 @@ define [
       @canvas.switchMode( "stack" )
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
+
+    moveSelectItem : (evt, which)-> @canvas.moveSelectItem( which ); false
+    delSelectItem  : ()-> @canvas.delSelectItem(); false
+    selectPrevItem : ()-> @canvas.selectPrevItem(); false
+    selectNextItem : ()-> @canvas.selectNextItem(); false
+    zoomIn         : ()-> @canvas.zoomIn();  @toolbar.updateZoomButtons(); false
+    zoomOut        : ()-> @canvas.zoomOut(); @toolbar.updateZoomButtons(); false
 
     backup : ()->
       $center = @$el.find(".OEPanelCenter")
@@ -105,8 +173,6 @@ define [
 
     getSvgElement : ()->
       @$el.children(".OEMiddleWrap").children(".OEPanelCenter").children(".canvas-view").children("svg")
-
-    saveOps : ()-> App.saveOps( @workspace.opsModel )
 
     ###
       Override these methods in subclasses.

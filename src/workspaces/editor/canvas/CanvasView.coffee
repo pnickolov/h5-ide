@@ -38,6 +38,8 @@ define [
         height: canvasSize[1] * CanvasView.GRID_WIDTH
       })
 
+      @__scale = 1
+
       @reload()
       return
 
@@ -59,8 +61,39 @@ define [
       @$el.children(".canvas-view").removeClass("stack app appedit").addClass( mode )
       return
 
+    moveSelectItem : (keycode)->
+    delSelectItem  : ()->
+    selectPrevItem : ()->
+    selectNextItem : ()->
+
+    zoomOut : ()-> @zoom(  0.2 )
+    zoomIn  : ()-> @zoom( -0.2 )
+
+    zoom : ( delta )->
+      scale = Math.round( (@__scale + delta) * 10 ) / 10
+      if scale < 1 or scale > 1.6
+        return
+
+      @__scale = scale
+
+      size = @size()
+      realW = size[0] * CanvasView.GRID_WIDTH
+      realH = size[1] * CanvasView.GRID_HEIGHT
+
+      wrapper = @$el.children(".canvas-view")
+      wrapper.css({
+        width  : size[0] * CanvasView.GRID_WIDTH  / scale
+        height : size[1] * CanvasView.GRID_HEIGHT / scale
+      }).children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
+
+      newClass = wrapper.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "")
+      if scale isnt 1
+        newClass += (" zoomlevel_" + scale).replace(".", "_")
+      wrapper.attr("class", newClass)
+
+
     size  : ()-> @design.get("canvasSize")
-    scale : ()-> 1
+    scale : ()-> @__scale
 
     expandHeight : ()-> @resize( "height", 60  )
     shrinkHeight : ()-> @resize( "height", -60 )

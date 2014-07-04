@@ -182,6 +182,7 @@ require.config {
 		'toolbar_modal'    : 'component/common/toolbarModal'
 		'dhcp'             : 'component/dhcp/dhcp'
 		'snapshotManager'  : 'component/snapshot/snapshot'
+		'rds_pg'           : 'component/rds/rds_pg'
 		'sslcert_manage'   : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
 		'state_status'     : 'component/statestatus/main'

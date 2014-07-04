@@ -16,7 +16,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @trigger 'datachange', @
 
         remove: ()->
-            @.isRemoved = ture
+            @.isRemoved = true
             Backbone.View::remove.call @
 
         render: ()->

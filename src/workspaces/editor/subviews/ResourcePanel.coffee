@@ -9,12 +9,13 @@ define [
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
+  'rds_pg'
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -447,6 +448,8 @@ define [
                   new sslCertManager().render()
               when 'dhcp'
                   (new dhcpManager()).manageDhcp()
+              when 'rdspg'
+                  new rdspgManager().render()
     # Copied and enhanced from MC.canvas.js
     startDrag : ( evt )->
       if evt.button isnt 0 then return false

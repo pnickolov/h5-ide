@@ -17,7 +17,8 @@ var constant_data = {
 		'AWS.VPC.VPNGateway': [8, 8],
 		'AWS.AutoScaling.LaunchConfiguration': [9, 9],
 		'AWS.AutoScaling.Group': [13, 13],
-		'AWS.RDS.DBInstance': [10, 10]
+		'AWS.RDS.DBInstance': [10, 10],
+		'AWS.RDS.Snapshot': [10, 10]
 	},
 
 	GROUP_DEFAULT_SIZE:
@@ -69,7 +70,8 @@ var constant_data = {
 		'AWS.VPC.VPC': ['Canvas'],
 		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet'],
 		'AWS.RDS.SubnetGroup': ['AWS.VPC.VPC'],
-		'AWS.RDS.DBInstance': ['AWS.RDS.SubnetGroup']
+		'AWS.RDS.DBInstance': ['AWS.RDS.SubnetGroup'],
+		'AWS.RDS.Snapshot': ['AWS.RDS.SubnetGroup']
 	}
 };
 

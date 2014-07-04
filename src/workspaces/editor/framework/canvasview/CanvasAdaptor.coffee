@@ -82,6 +82,8 @@ define [ "./CanvasElement", "event", 'i18n!/nls/lang.js', "constant", "UI.notifi
         attributes.x = parent.x() + 2
         attributes.y = parent.y() + 3
         type = constant.RESTYPE.LC
+      else if parent.type is constant.RESTYPE.DBSBG
+        type = constant.RESTYPE.DBINSTANCE
       else if parent.type is "ExpandedAsg"
         return false
 

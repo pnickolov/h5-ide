@@ -22,6 +22,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         #TODO
         @set 'replicaId', attr.sourceDBInstance
 
+      if attr.snapshotId
+        @set 'snapshotId', attr.snapshotId
+
       @draw true
 
       null

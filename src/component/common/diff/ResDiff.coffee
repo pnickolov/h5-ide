@@ -21,8 +21,6 @@ define [
             @prepare = new Prepare oldAppJSON: @oldAppJSON, newAppJSON: @newAppJSON
             @_genDiffInfo(@oldAppJSON.component, @newAppJSON.component)
 
-            @state = option.state
-
         events:
 
             'click .item .type': '_toggleTab'
@@ -83,7 +81,8 @@ define [
             #settle frame
             @$el.html template.frame()
 
-            @_genResGroup(@oldAppJSON.component, @newAppJSON.component)
+            $containerDom = @$('article')
+            @_genResGroup($containerDom)
 
             @modal.resize()
 
@@ -111,16 +110,14 @@ define [
                     that.addedComps[uid] = newComps[uid]
                 null
 
-            diffTree = new DiffTree({
-                state: that.state
-            })
+            diffTree = new DiffTree()
 
             that.modifiedComps = diffTree.compare unionOldComps, unionNewComps
             that.modifiedComps = {} if not that.modifiedComps
             # that.modifiedComps = diffTree.compare {x: [{a: 1, b: [{d: 1}, {e: 2}], c: 3}, {a: 4, b: 5, c: 6}, {a: 7, b: 8, c: 9}]},
             #     {x: [{a: 4, b: 5, c: 6}, {a: 1, b: [{e: 2}, {d: 1}], c: 3}, {a: 7, b: 8, c: 9}]}
 
-        _genResGroup: () ->
+        _genResGroup: ($containerDom) ->
 
             that = this
 
@@ -154,7 +151,7 @@ define [
                         type: data.type
                         title: data.title
                         count: compCount
-                    })).appendTo @$( 'article' )
+                    })).appendTo $containerDom
 
                     @_genResTree($group.find('.content'), data.diffComps, data.closed, data.needDiff)
 
@@ -285,6 +282,62 @@ define [
                     return that.getRelatedInstanceGroupUID(originComps, eniComp)
 
             return ''
+
+        renderAppUpdateView: () ->
+
+            @_genResGroup(@$el)
+            return @$el
+
+        getDiffInfo: () ->
+
+            that = this
+
+            oldAppJSON = _.extend {}, that.oldAppJSON
+            newAppJSON = _.extend {}, that.newAppJSON
+
+            # if have component change
+            hasCompChange = false
+            if _.size(that.addedComps) or
+                _.size(that.removedComps) or
+                _.size(that.modifiedComps)
+                    hasCompChange = true
+
+            # if have layout change
+            diffTree = new DiffTree()
+            layoutModifiedComps = diffTree.compare oldAppJSON.layout, newAppJSON.layout
+            hasLayoutChange = false
+            if _.size(layoutModifiedComps)
+                hasLayoutChange = true
+
+            # if have state change
+            hasStateChange = false
+            onlyStateChange = true
+            _.each that.modifiedComps, (comp, uid) ->
+                if comp.state
+                    hasStateChange = true
+                if _.size(comp) is 1 and comp.state
+                    delete that.modifiedComps[uid]
+                else
+                    onlyStateChange = false
+                delete comp.state if (comp and comp.state)
+                null
+            if onlyStateChange and _.size(that.addedComps) is 0 and _.size(that.removedComps) is 0
+                hasCompChange = false
+
+            # if have app change
+            delete oldAppJSON.component
+            delete oldAppJSON.layout
+            delete newAppJSON.component
+            delete newAppJSON.layout
+            appModifiedComps = diffTree.compare oldAppJSON, newAppJSON
+            if _.size(appModifiedComps) > 0
+                hasLayoutChange = true
+
+            return {
+                compChange: hasCompChange,
+                layoutChange: hasLayoutChange,
+                stateChange: hasStateChange
+            }
 
         getChangeInfo: () ->
 

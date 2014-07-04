@@ -39,7 +39,7 @@ define [
       config = App.model.getOsFamilyConfig( data.region )
       config = config[ ami.osFamily ] || config[ constant.OS_TYPE_MAPPING[ami.osType] ]
       config = if ami.rootDeviceType  is "ebs" then config.ebs else config['instance store']
-      config = if ami.architecture is "x86_64" then config["64"] else config["32"]
+      config = config[ ami.architecture ]
       config = config[ ami.virtualizationType || "paravirtual" ]
       ami.instanceType = config.join(", ")
     catch e
@@ -88,7 +88,9 @@ define [
       @updateAZ()
       @updateSnapshot()
       @updateAmi()
-
+      $(document)
+        .off('keydown', @bindKey.bind @)
+        .on('keydown', @bindKey.bind @)
       @updateDisableItems()
       @renderReuse()
       return
@@ -141,6 +143,17 @@ define [
 
         @
 
+    bindKey: (event)->
+      that = this
+      keyCode = event.which
+      metaKey = event.ctrlKey or event.metaKey
+      shiftKey = event.shiftKey
+      tagName = event.target.tagName.toLowerCase()
+      is_input = tagName is 'input' or tagName is 'textarea'
+      # Switch to Resource Pannel [R]
+      if metaKey is false and shiftKey is false and keyCode is 82 and is_input is false
+        that.toggleResourcePanel()
+        return false
 
     renderReuse: ->
       allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
@@ -241,6 +254,9 @@ define [
     toggleLeftPanel : ()->
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
       false
+
+    toggleResourcePanel: ()->
+      @toggleLeftPanel()
 
     updateAccordion : ( event, noAnimate ) ->
       $target    = $( event.currentTarget )
@@ -345,7 +361,7 @@ define [
       tgtOffset = $tgt.offset()
       $item = $("#ResourceDragItem")
         .html( $tgt.html() )
-        .attr("class", $tgt.attr("class") )
+        .attr("class", $tgt.attr("class").replace("bubble", "") )
         .css({
           'top'  : tgtOffset.top
           'left' : tgtOffset.left

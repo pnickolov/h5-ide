@@ -151,21 +151,6 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
 
     handleTypes : [ constant.RESTYPE.SP, constant.RESTYPE.CW ]
 
-    diffJson : ( newData, oldData )->
-      if not ( newData and oldData and _.isEqual( newData, oldData ) )
-        asgId = (newData || oldData).resource
-        asgId = asgId.AutoScalingGroupName || asgId.Dimensions[0].value
-        asg   = Design.instance().component( MC.extractID( asgId ) )
-        if asg
-          return {
-            id     : asgId
-            type   : constant.RESTYPE.ASG
-            name   : asg.get("name")
-            change : "Update"
-          }
-
-      null
-
     deserialize : ( data, layout_data, resolve ) ->
 
       if data.type is constant.RESTYPE.CW

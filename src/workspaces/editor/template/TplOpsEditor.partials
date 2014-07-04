@@ -143,7 +143,7 @@
 <!-- {{modal.cancelUpdate}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
   <div class="modal-text-major">This app has been changed.</div>
-  <div class="modal-text-major">Do you conﬁrm to discard the changes?</div>
+  <div class="modal-text-major">Do you confirm to discard the changes?</div>
 </div> </div>
 
 <!-- {{modal.confirmImport}} -->
@@ -151,6 +151,18 @@
 <p class="modal-text-major">Give this app an appropriate name.</p>
 <div class="modal-control-group">
 <label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
+<div class="modal-control-group app-usage-group clearfix">
+  <label for="">App Usage</label>
+  <div id="app-usage-selectbox" class="selectbox">
+    <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+    <ul class="dropdown" tabindex="-1">
+      <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+      <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+      <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+      <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+    </ul>
+  </div>
+</div>
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->
@@ -165,7 +177,7 @@
         {{#if originStackExist}}
         <div id="replace_stack" style="padding: 10px 0">
             <div class="radio">
-                <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
+                <input id="radio-replace-stack" type="radio" name="save-stack-type" value="replace" checked>
                 <label for="radio-replace-stack"></label>
             </div>
             <label class="modal-text-minor" for="radio-replace-stack">{{ i18n 'TOOL_POP_REPLACE_STACK'}}</label>

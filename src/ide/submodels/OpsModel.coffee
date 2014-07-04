@@ -32,6 +32,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state      : OpsModelState.UnRun
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
+
+
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -45,7 +47,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         if options.initJsonData
           @__initJsonData()
         if options.jsonData
-          @__jsonData = options.jsonData
+          @__setJsonData options.jsonData
+
+      ### env:dev ###
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      ### env:dev:end ###
+      ### env:debug ###
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      ### env:debug:end ###
       return
 
     url : ()->
@@ -307,14 +316,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_name    : appName
       }).then ( res )->
         m = new OpsModel({
-          name       : appName
-          requestId  : res[0]
-          state      : OpsModelState.Initializing
-          progress   : 0
-          region     : region
-          usage      : toRunJson.usage
-          updateTime : +(new Date())
-          stoppable  : toRunJson.property.stoppable
+          name          : appName
+          requestId     : res[0]
+          state         : OpsModelState.Initializing
+          progress      : 0
+          region        : region
+          usage         : toRunJson.usage
+          updateTime    : +(new Date())
+          stoppable     : toRunJson.property.stoppable
+          resource_diff : false
         })
         App.model.appList().add m
         m
@@ -481,6 +491,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set {
           name  : newJson.name
           state : oldState
+          usage : newJson.usage
         }
         self.__saveAppDefer = null
         return
@@ -504,9 +515,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
 
-    setStatusWithApiResult : ( state )-> @set "state", OpsModelState[ state ]
+    setStatusWithApiResult : ( state )->
+      console.info "OpsModel's state changes due to ApiRequest:", state, @
+      @set "state", OpsModelState[ state ]
 
     setStatusWithWSEvent : ( operation, state, error )->
+      console.info "OpsModel's state changes due to WS event:", operation, state, error, @
       # operation can be ["launch", "stop", "start", "update", "terminate"]
       # state can have "completed", "failed", "progressing", "pending"
       switch operation

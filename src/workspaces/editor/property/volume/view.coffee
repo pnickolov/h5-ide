@@ -20,7 +20,7 @@ define [ '../base/view',
             'change #volume-property-encrypted-check' : 'encryptedCheck'
 
         render     : () ->
-            @$el.html( template( @model.attributes ) )
+            @$el.html template _.extend isAppEdit:@model.isAppEdit, @model.toJSON()
 
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val

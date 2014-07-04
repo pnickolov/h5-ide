@@ -50,7 +50,7 @@ define [ 'backbone', 'Design', "constant" ], ( Backbone, Design, constant )->
             dup = false
             if originJson.component
                 _.each originJson.component, (comp, key)->
-                    if comp.type is constant.RESTYPE.ELB and comp.name is newName
+                    if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW] and comp.name is newName
                         dup = true
                         return false
             dup

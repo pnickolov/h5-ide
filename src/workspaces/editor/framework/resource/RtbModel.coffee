@@ -106,6 +106,15 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
     preDeserialize : ( data, layout_data )->
 
       if data.resource.AssociationSet
+        ##move main to first
+        found = -1
+        for assoc,idx in data.resource.AssociationSet
+          if assoc.Main and found is -1
+            found = idx
+        if found > 0
+          main_rt = data.resource.AssociationSet.splice( found,1 )
+          data.resource.AssociationSet.splice( 0, 0, main_rt[0] )
+
         if data.resource.AssociationSet[0]
           asso_main = "" + data.resource.AssociationSet[0].Main is "true"
 

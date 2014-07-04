@@ -4,7 +4,7 @@ define ["backbone"], ()->
   ###########
   # Routers
   ###########
-  IdeRouter = Backbone.Router.extend {
+  Backbone.Router.extend {
 
     routes :
       "" : "openDashboard"

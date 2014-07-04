@@ -286,7 +286,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         cached.rootDeviceType = ami.rootDeviceType
 
       # Update RootDevice Size
-      if ami and ami.blockDeviceMapping
+      if ami and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[ rdName ]
         if not rdEbs
@@ -324,7 +324,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
     getBlockDeviceMapping : ()->
       #get root device of current instance
       ami = @getAmi() || @get("cachedAmi")
-      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping
+      if ami and ami.rootDeviceType is "ebs" and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
 
         rdName = ami.rootDeviceName
         rdEbs  = ami.blockDeviceMapping[rdName]
@@ -586,8 +586,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
       # Generate RootDevice
       blockDeviceMapping = @getBlockDeviceMapping()
-      for volume in @get("volumeList") or []
-        blockDeviceMapping.push "#"+volume.id
+
+      ## remove this reference because volume already reference to instance
+      #for volume in @get("volumeList") or []
+      #  blockDeviceMapping.push "#"+volume.id
 
       component =
         type   : @type
@@ -752,7 +754,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       try
         data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
         data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
-        data = if ami.architecture is "x86_64" then data["64"] else data["32"]
+        data = data[ ami.architecture ]
         data = data[ ami.virtualizationType || "paravirtual" ]
       catch e
         console.error "Invalid instance type list data", ami, App.model.getOsFamilyConfig( region )
@@ -786,46 +788,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
             return { uid : asg.getLc().id, mid : instance_id }
 
       {uid:null,mid:null}
-
-
-
-    diffJson : ( newData, oldData )->
-      changeData = newData or oldData
-
-      if changeData.index isnt 0 then return
-
-      change = {
-        id      : changeData.uid
-        type    : changeData.type
-        name    : changeData.serverGroupName
-        changes : []
-      }
-      if newData and oldData and not _.isEqual( newData.resource, oldData.resource )
-        change.changes.push { name : "Update" }
-
-      newCount = if newData then newData.number else 0
-      oldCount = if oldData then oldData.number else 0
-      if newCount > oldCount
-        change.changes.push {
-          name  : "Create"
-          count : newCount - oldCount
-        }
-      else if newCount < oldCount
-        change.change = "Terminate"
-        change.changes.push {
-          name  : "Terminate"
-          count : newCount - oldCount
-        }
-
-      if newData and oldData
-        if newData.resource.InstanceType isnt oldData.resource.InstanceType or newData.resource.EbsOptimized isnt oldData.resource.EbsOptimized or newData.resource.UserData.Data isnt oldData.resource.UserData.Data
-           change.extra = "Need to restart."
-           change.info  = "If the instance or instance group has been automatically assigned public IP, the IP will change after restart."
-
-      if change.changes.length
-        change
-      else
-        null
 
 
     deserialize : ( data, layout_data, resolve )->

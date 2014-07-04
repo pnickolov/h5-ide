@@ -1742,7 +1742,7 @@ define [ 'event',
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
                 $propertyPanel = $('#OEPanelRight')
-                if $stateEditorModel.length and not $propertyPanel.hasClass('no-state')
+                if $stateEditorModel.length # and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
                     if $currentElem.parents('#tabbar-wrapper').length

@@ -113,6 +113,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'VPCZoneIdentifier'
                     data.key = 'Subnet'
 
+                when 'RouteSet'
+                    data.key = 'Route'
+
 
             # Convert need convert pluralKey
             if parentKey in pluralKeys
@@ -160,6 +163,8 @@ define [ 'constant' ], ( constant ) ->
             newValue.__new__ = @h.getNodeMap(newRef).newAttr if newRef
 
             # data.value = @h.genValue(newValue.type, newValue.__old__, newValue.__new__)
+            data = @h.replaceArrayIndex path, data
+
             data.value = {
                 type: newValue.type,
                 old: newValue.__old__,
@@ -199,6 +204,7 @@ define [ 'constant' ], ( constant ) ->
         if path.length is 2
 
             data.skip = true if path[1] is 'resource'
+            delete data.key if path[1] is 'state'
 
         return data
 

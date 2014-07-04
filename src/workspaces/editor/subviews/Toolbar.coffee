@@ -8,12 +8,13 @@ define [
   "i18n!/nls/lang.js"
   "UI.modalplus"
   'kp_dropdown'
+  "ResDiff"
   'constant'
   'event'
   'component/trustedadvisor/main'
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, constant, ide_event, TA )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -322,7 +323,7 @@ define [
         stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
-            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").attr('id') is "replace_stack")
+            isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").val() is "replace")
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
@@ -435,34 +436,48 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
-      result = @workspace.applyAppEdit()
-      console.debug result
-      if result isnt true
-        # Show popup dialog
-        console.debug result
-        @updateModal = new Modal
-            title: lang.ide.UPDATE_APP_MODAL_TITLE
-            template: MC.template.updateApp result
-            disableClose: true
-            width: '450px'
-            height: "515px"
-            confirm:
-                text: if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
-                disabled: true
 
-        @updateModal.on 'confirm', =>
-            if not @defaultKpIsSet()
-                return false
-            result = @workspace.applyAppEdit()
-            @workspace.applyAppEdit( result, true )
-            @updateModal?.close()
+      oldJson = @workspace.opsModel.getJsonData()
+      newJson = @workspace.design.serialize()
 
-        @renderKpDropdown(@updateModal)
-        TA.loadModule('stack').then =>
-            @updateModal and @updateModal.toggleConfirm false
-        # Call this method when user confirm to update
+      differ = new ResDiff({
+        old : oldJson
+        new : newJson
+      })
 
-        return
+      result = differ.getDiffInfo()
+      if not result.compChange and not result.layoutChange and not result.stateChange
+        return @workspace.applyAppEdit()
+
+      @updateModal = new Modal
+        title        : lang.ide.UPDATE_APP_MODAL_TITLE
+        template     : MC.template.updateApp { isRunning : @workspace.opsModel.testState(OpsModel.State.Running) }
+        disableClose : true
+        width        : '450px'
+        height       : "515px"
+        confirm :
+          disabled : true
+          text     : if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
+
+      @updateModal.on 'confirm', =>
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+
+        if not @defaultKpIsSet()
+            return false
+
+        @workspace.applyAppEdit( newJson, not result.compChange )
+        @updateModal?.close()
+
+      if result.compChange
+        $diffTree = differ.renderAppUpdateView()
+        $('#app-update-summary-table').html $diffTree
+
+      @renderKpDropdown(@updateModal)
+      TA.loadModule('stack').then =>
+        @updateModal and @updateModal.toggleConfirm false
+      return
 
     opsOptionChanged: ->
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
@@ -474,7 +489,7 @@ define [
             if not instancesNoUserData
                 $switcher.removeClass 'on'
                 confirmModal = new Modal(
-                    title: "Conﬁrm to Enable VisualOps"
+                    title: "Confirm to Enable VisualOps"
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"
@@ -483,7 +498,7 @@ define [
                         confirmModal.close()
                         $switcher.addClass 'on'
                         workspace.design.set('agent', agent)
-                        ide_event.trigger ide_event.REFRESH_PROPERTY
+                        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
 
                 )
                 null
@@ -494,7 +509,7 @@ define [
         else
             agent.enabled = false
             @workspace.design.set('agent', agent)
-            ide_event.trigger ide_event.REFRESH_PROPERTY
+            ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
 
 
 

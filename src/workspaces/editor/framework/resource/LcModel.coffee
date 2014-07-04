@@ -309,6 +309,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
             name       : volume.DeviceName
             snapshotId : volume.Ebs.SnapshotId
             volumeSize : volume.Ebs.VolumeSize
+            volumeType : volume.Ebs.VolumeType
             iops       : volume.Ebs.Iops
             owner      : model
             # encrypted  : volume.Ebs.Encrypted

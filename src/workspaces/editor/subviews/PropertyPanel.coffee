@@ -38,7 +38,9 @@ define [
     $("#OEPanelRight").trigger "REFRESH"; return
 
   ide_event.onLongListen ide_event.FORCE_OPEN_PROPERTY, ()->
-    $("#OEPanelRight").trigger "FORCE_SHOW"; return
+    $("#OEPanelRight").trigger "FORCE_SHOW"
+    $("#OEPanelRight").trigger "SHOW_PROPERTY"
+    return
 
   ide_event.onLongListen ide_event.SHOW_STATE_EDITOR, (uid)->
     $("#OEPanelRight").trigger "SHOW_STATEEDITOR", [uid]; return
@@ -69,6 +71,7 @@ define [
       "FORCE_SHOW"        : "forceShow"
       "REFRESH"           : "refresh"
 
+      "SHOW_PROPERTY"              : "switchToProperty"
       "click #btn-switch-property" : "switchToProperty"
       "click #btn-switch-state"    : "showStateEditor"
 
@@ -232,6 +235,7 @@ define [
       @updateStateSwitcher( type, uid )
 
       @$el.toggleClass("state", false)
+      @__showingState = false
       return
 
     restoreAccordion : ( type, uid )->
@@ -273,7 +277,12 @@ define [
 
     forceShow : ()->
       if @__rightPanelHidden
-        @$el.find(".HideOEPanelRight").click()
+        @__rightPanelHidden = false
+        @$el.toggleClass("no-transition", true).removeClass("hidden")
+        self = @
+        setTimeout ()->
+          self.$el.removeClass("no-transition")
+        , 100
       return
 
     refresh : ()->
@@ -289,11 +298,13 @@ define [
       return
 
     showStateEditor : ( jqueryEvent, uid )->
+      if jqueryEvent?.type is "SHOW_STATEEDITOR" and @__showingState
+        return false
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
       comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.attributes
-      if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
       if not comp then return
+      if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
 
       if not @updateStateSwitcher( comp.type, uid )
         @openPanel( comp.type, uid )

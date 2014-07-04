@@ -83,7 +83,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             if keys
                 datas.keys = keys
                 datas.hideDefaultNoKey = true
-            if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
+            if Design.instance() and (Design.instance().modeIsApp() or Design.instance().modeIsAppEdit())
                 datas.isRunTime = true
             content = template.keys datas
             @dropdown.toggleControls true
@@ -130,8 +130,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager?.render 'nocredential'
                 return false
             initManager = @initManager.bind @
-            currentRegion = Design.instance().get('region')
-            if (not fetched and not fetching) or (not regionsMark[currentRegion])
+            currentRegion = Design.instance()?.get('region')
+            if currentRegion and ( (not fetched and not fetching) or (not regionsMark[currentRegion]))
                 fetching = true
                 regionsMark[currentRegion] = true
                 @collection.fetchForce().then initManager, initManager

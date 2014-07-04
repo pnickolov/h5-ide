@@ -53,8 +53,6 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
     handleTypes : constant.RESTYPE.NC
 
-    diffJson : ()-> # Disable diff for this model
-
     typeMap : {
       "autoscaling:EC2_INSTANCE_LAUNCH"          : "instanceLaunch"
       "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"    : "instanceLaunchError"

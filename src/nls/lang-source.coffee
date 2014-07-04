@@ -1543,6 +1543,10 @@ module.exports =
       en: "Stack Name"
       zh: "模版名称"
 
+    PROP_APP_LBL_NAME:
+      en: "App Name"
+      zh: "应用名称"
+
     PROP_STACK_LBL_DESCRIPTION:
       en: "Stack Description"
       zh: "模板描述"
@@ -1566,6 +1570,22 @@ module.exports =
     PROP_APP_LBL_ID:
       en: "App ID"
       zh: "应用标识"
+
+    PROP_APP_LBL_INSTANCE_STATE:
+      en: "Instance State"
+      zh: ""
+
+    PROP_APP_LBL_RESDIFF:
+      en: "Monitor and report external resource change of this app"
+      zh: ""
+
+    PROP_APP_LBL_RESDIFF_VIEW:
+      en: "Monitor and Report External Change"
+      zh: ""
+
+    PROP_APP_TIP_RESDIFF:
+      en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
+      zh: ""
 
     PROP_STACK_LBL_USAGE:
       en: "Usage"
@@ -3150,7 +3170,7 @@ module.exports =
       zh: "抱歉，设计模块正在加载，请稍后重试。"
 
     PROC_TITLE:
-      en: "Gearing up your awesomeness..."
+      en: "Launching your app..."
       zh: "启动您的应用..."
 
     PROC_RLT_DONE_TITLE:

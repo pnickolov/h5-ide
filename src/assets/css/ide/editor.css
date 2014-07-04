@@ -702,7 +702,7 @@
   fill: #d8d7d6;
   stroke: #bebebe; }
 
-.canvas_state_stack .port:hover, .canvas_state_appedit .port:hover {
+.stack .port:hover, .appedit .port:hover {
   fill: #F2F8FF;
   stroke-width: 2;
   cursor: pointer; }

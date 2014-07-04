@@ -15,6 +15,12 @@ define [
 
   CanvasView = Backbone.View.extend {
 
+    events :
+      "click .icon-resize-down"  : "expandHeight"
+      "click .icon-resize-up"    : "shrinkHeight"
+      "click .icon-resize-right" : "expandWidth"
+      "click .icon-resize-left"  : "shrinkWidth"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design
@@ -26,7 +32,7 @@ define [
 
       @setElement @parent.$el.find(".OEPanelCenter")
       @svg = SVG( @$el.find("svg")[0] )
-      canvasSize = @design.get("canvasSize")
+      canvasSize = @size()
 
       @$el.children(".canvas-view").css({
         width : canvasSize[0] * CanvasView.GRID_WIDTH
@@ -48,6 +54,50 @@ define [
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
     appendAsg    : ( svgEl )-> @__appendSvg(svgEl, ".layer_asg")
     appendSgline : ( svgEl )-> @__appendSvg(svgEl, ".layer_sgline")
+
+    switchMode : ( mode )->
+      console.assert( "stack app appedit".indexOf( mode ) >= 0 )
+      @$el.children(".canvas-view").removeClass("stack app appedit").addClass( mode )
+      return
+
+    size  : ()-> @design.get("canvasSize")
+    scale : ()-> 1
+
+    expandHeight : ()-> @resize( "height", 60  )
+    shrinkHeight : ()-> @resize( "height", -60 )
+    expandWidth  : ()-> @resize( "width",  60  )
+    shrinkWidth  : ()-> @resize( "width", -60  )
+    resize : ( dimension, delta )->
+      size  = @size()
+      scale = @scale()
+
+      size[ if dimension is "width" then 0 else 1 ] += delta
+
+      wrapper = @$el.children(".canvas-view")
+
+      realW = size[0] * CanvasView.GRID_WIDTH
+      realH = size[1] * CanvasView.GRID_HEIGHT
+
+      if delta > 0
+        wrapper.children(".icon-resize-up, .icon-resize-left").show()
+      else
+        bbox = wrapper.children("svg")[0].getBBox()
+        if bbox.width + bbox.x + 20 >= realW
+          realW   = bbox.width + bbox.x + 20
+          size[0] = realW / CanvasView.GRID_WIDTH
+          wrapper.children(".icon-resize-left").hide()
+        if bbox.height + bbox.y + 20 >= realH
+          realH   = bbox.height + bbox.y + 20
+          size[1] = realH / CanvasView.GRID_HEIGHT
+          wrapper.children(".icon-resize-up").hide()
+
+      @design.set("canvasSize", size)
+
+      wrapper.css({
+        width  : realW / scale
+        height : realH / scale
+      }).children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
+      return
 
     reload : ()->
       console.log "Reloading svg canvas."

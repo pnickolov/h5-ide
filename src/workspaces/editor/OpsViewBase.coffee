@@ -28,7 +28,7 @@ define [
       _.extend this, options
 
       console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
-      @setElement $( @createTpl() ).appendTo("#main").show()[0]
+      @setElement $( CanvasTpl({}) ).appendTo("#main").show()[0]
       @$el.attr("data-workspace", @workspace.id)
 
       opt = {
@@ -43,7 +43,6 @@ define [
       @canvas        = new CanvasView(opt)
 
       # 2. Bind Events for MC.canvas.js
-      @bindUserEvent()
 
       # 3 Update subviews
       @statusbar.render()
@@ -108,8 +107,6 @@ define [
     ###
       Override these methods in subclasses.
     ###
-    createTpl        : ()-> CanvasTpl({})
-    bindUserEvent    : ()-> return
     # Called when the OpsEditor initialize
     renderSubviews  : ()-> return
     # Called when the OpsEditor wakes up.

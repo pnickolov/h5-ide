@@ -8,40 +8,44 @@ define [
 ], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
   StackView.extend {
-    bindUserEvent : ()->
-      # Events
-      if @workspace.isAppEditMode()
-        @$el.find(".OEPanelCenter")
-          .removeClass('canvas_state_app').addClass("canvas_state_appedit")
-          .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
-          .on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.appDrawConnection)
-          .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
-          .on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
-          .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
-          .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
-          .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
-          .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
-          .on('selectstart.CANVAS_EVENT', false)
-          .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
-          .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
-      else
-        @$el.find(".OEPanelCenter")
-          .removeClass('canvas_state_appedit').addClass("canvas_state_app")
-          .off(".CANVAS_EVENT")
-          .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
-          .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
-          .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
-          .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
-          .on('selectstart.CANVAS_EVENT', false)
-          .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.selectNode)
-          .on('mousedown.CANVAS_EVENT', '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
-          .on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance .instance-number-group', MC.canvas.instanceList.show)
-          .on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface .eni-number-group', MC.canvas.eniList.show)
-          .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
-          .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
-          .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
-      return
+
+    initialize : ()->
+      @canvas.switchMode( "app" )
+
+    # bindUserEvent : ()->
+    #   # Events
+    #   if @workspace.isAppEditMode()
+    #     @$el.find(".OEPanelCenter")
+    #       .removeClass('canvas_state_app').addClass("canvas_state_appedit")
+    #       .off(".CANVAS_EVENT")
+    #       .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
+    #       .on('mousedown.CANVAS_EVENT', '.port', MC.canvas.event.appDrawConnection)
+    #       .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.dragable.mousedown)
+    #       .on('mousedown.CANVAS_EVENT', '.group-resizer', MC.canvas.event.groupResize.mousedown)
+    #       .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
+    #       .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
+    #       .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
+    #       .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
+    #       .on('selectstart.CANVAS_EVENT', false)
+    #       .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
+    #       .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
+    #   else
+    #     @$el.find(".OEPanelCenter")
+    #       .removeClass('canvas_state_appedit').addClass("canvas_state_app")
+    #       .off(".CANVAS_EVENT")
+    #       .on('mousedown.CANVAS_EVENT', '.instance-volume, .instanceList-item-volume, .asgList-item-volume', MC.canvas.volume.show)
+    #       .on('click.CANVAS_EVENT', '.line', MC.canvas.event.selectLine)
+    #       .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
+    #       .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
+    #       .on('selectstart.CANVAS_EVENT', false)
+    #       .on('mousedown.CANVAS_EVENT', '.dragable', MC.canvas.event.selectNode)
+    #       .on('mousedown.CANVAS_EVENT', '.AWS-AutoScaling-LaunchConfiguration .instance-number-group', MC.canvas.asgList.show)
+    #       .on('mousedown.CANVAS_EVENT', '.AWS-EC2-Instance .instance-number-group', MC.canvas.instanceList.show)
+    #       .on('mousedown.CANVAS_EVENT', '.AWS-VPC-NetworkInterface .eni-number-group', MC.canvas.eniList.show)
+    #       .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
+    #       .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
+    #       .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
+    #   return
 
     confirmImport : ()->
       self = @
@@ -151,7 +155,8 @@ define [
       else
         @$el.find(".OEPanelLeft").empty()
       @propertyPanel.openPanel()
-      @bindUserEvent()
+
+      @canvas.switchMode( if isAppEditMode then "appedit" else "app" )
       return
 
     emptyCanvas : ()->

@@ -21,7 +21,7 @@ define [
         handleTypes : [ constant.RESTYPE.DBINSTANCE ]
 
         onUnloadSubPanel : ( id )->
-            # sglist_main.onUnloadSubPanel id
+            sglist_main.onUnloadSubPanel id
             null
 
         setupStack : () ->
@@ -35,7 +35,7 @@ define [
             null
 
         afterLoadStack : ()->
-            # sglist_main.loadModule @model
+            sglist_main.loadModule @model
             null
 
         setupApp : () ->
@@ -62,7 +62,7 @@ define [
             null
 
         afterLoadApp : () ->
-            # sglist_main.loadModule @model
+            sglist_main.loadModule @model
             null
     }
     null

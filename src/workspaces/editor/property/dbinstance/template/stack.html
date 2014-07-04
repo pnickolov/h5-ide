@@ -1,155 +1,245 @@
-<article>
-	<div class="option-group-head expand">DB Instance Details</div>
-	<div class="option-group">
+<article class="property-dbinstance">
+    <div class="option-group-head expand">DB Instance Details</div>
+    <div class="option-group">
 
-		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-dbinstance-name" >DB Instance Identifier</label>
-			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
-		</section>
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-dbinstance-name" >DB Instance Identifier</label>
+            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
+        </section>
 
-		<section class="property-control-group">
-			<label class="left">License Model</label>
-			<div class="selectbox" id="property-dbinstance-license-select">
-				<div class="selection">general-public-license</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="item selected data-id="default">general-public-license</li>
-					<li class="item data-id="dedicated">general-public-license</li>
-				</ul>
-			</div>
-		</section>
-	
-		<section class="property-control-group">
-			<label class="left">DB Engine Version</label>
-			<div class="selectbox" id="property-dbinstance-engine-version-select">
-				<div class="selection">5.6.13</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="item selected data-id="default">5.6.13</li>
-					<li class="item data-id="dedicated">5.6.13</li>
-				</ul>
-			</div>
-		</section>
+        <section class="property-control-group">
+            <label class="left">License Model</label>
+            <div class="selectbox" id="property-dbinstance-license-select">
+                <div class="selection">general-public-license</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="default">general-public-license</li>
+                    <li class="item data-id="dedicated">general-public-license</li>
+                </ul>
+            </div>
+        </section>
+    
+        <section class="property-control-group">
+            <label class="left">DB Engine Version</label>
+            <div class="selectbox" id="property-dbinstance-engine-version-select">
+                <div class="selection">5.6.13</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="default">5.6.13</li>
+                    <li class="item data-id="dedicated">5.6.13</li>
+                </ul>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<div class="checkbox">
-				<input id="property-dbinstance-version-update" type="checkbox" checked="true" value="None" name="property-dbinstance-version-update">
-				<label for="property-dbinstance-version-update"></label>
-			</div>
-			<label for="property-dbinstance-version-update">Auto Minor Version Update</label>
-		</section>
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-version-update" type="checkbox" checked="true" value="None" name="property-dbinstance-version-update">
+                <label for="property-dbinstance-version-update"></label>
+            </div>
+            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
+        </section>
 
-		<section class="property-control-group">
-			<label class="left">DB Instance Class</label>
-			<div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
-				<div class="selection"></div>
-				<ul class="dropdown">
-					{{#each instance_type}}
-					<li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
-						<div class="main truncate">{{main}}</div>
-						<div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
-					</li>
-					{{/each}}
-				</ul>
-			</div>
-		</section>
+        <section class="property-control-group">
+            <label class="left">DB Instance Class</label>
+            <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
+                <div class="selection"></div>
+                <ul class="dropdown">
+                    {{#each instance_type}}
+                    <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
+                        <div class="main truncate">{{main}}</div>
+                        <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<label>Allocated Storage</label>
-			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<div class="ranged-number-input">
-				<label for="property-dbinstance-storage"></label>
-				<input id="property-dbinstance-storage" type="text" class="input parsley-validated" value="100" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number">
-				<label for="property-dbinstance-storage" class="property-dbinstance-storage">GB</label>
-			</div>
-		</section>
+        <section class="property-control-group">
+            <label>Allocated Storage</label>
+            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <div class="ranged-number-input">
+                <label for="property-dbinstance-storage"></label>
+                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left" value="100" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number">
+                <label for="property-dbinstance-storage" class="property-label-right">GB</label>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<div class="checkbox">
-				<input id="property-dbinstance-iops-check" type="checkbox" checked="true" value="None" name="property-dbinstance-iops-check">
-				<label for="property-dbinstance-iops-check"></label>
-			</div>
-			<label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
-		</section>
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-iops-check" type="checkbox" checked="true" value="None" name="property-dbinstance-iops-check">
+                <label for="property-dbinstance-iops-check"></label>
+            </div>
+            <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
+        </section>
 
-		<section class="property-control-group">
-		    <label class="left">Provisioned IOPS</label>
-		    <div class="ranged-number-input">
-		        <label for="property-dbinstance-iops-value"></label>
-		        <input class="input" id="property-dbinstance-iops-value" type="text" value="" name="iops-ranged" min="100" max="2000" required="">
-		    	<label for="property-dbinstance-iops-value"></label>
-		    </div>
-		</section>
+        <section class="property-control-group">
+            <label class="left">Provisioned IOPS</label>
+            <div class="ranged-number-input">
+                <label for="property-dbinstance-iops-value"></label>
+                <input class="input" id="property-dbinstance-iops-value" type="text" value="" name="iops-ranged" min="100" max="2000" required="">
+                <label for="property-dbinstance-iops-value"></label>
+            </div>
+        </section>
 
-		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-dbinstance-master-username" >Master Username</label>
-			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<input class="input"  type="text" id="property-dbinstance-master-username" data-ignore="true" data-required-rollback="true"/>
-		</section>
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-dbinstance-master-username" >Master Username</label>
+            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <input class="input"  type="text" id="property-dbinstance-master-username" data-ignore="true" data-required-rollback="true"/>
+        </section>
 
-		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-dbinstance-master-password" >Master Password</label>
-			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<input class="input"  type="text" id="property-dbinstance-master-password" data-ignore="true" data-required-rollback="true"/>
-		</section>
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-dbinstance-master-password" >Master Password</label>
+            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <input class="input"  type="text" id="property-dbinstance-master-password" data-ignore="true" data-required-rollback="true"/>
+        </section>
 
-	</div>
+    </div>
 
-	<div class="option-group-head">Additional Config</div>
-	<div class="option-group">
-		<section class="property-control-group" data-bind="true">
-			<div class="property-input-row">
-				<label class="left" for="property-dbinstance-database-name" >Database Name</label>
-				<input class="input"  type="text" id="property-dbinstance-database-name" data-ignore="true" data-required-rollback="true"/>
-			</div>
-			<div class="property-input-row">
-				<label class="left" for="property-dbinstance-database-port" >Database Port</label>
-				<input class="input"  type="text" id="property-dbinstance-database-port" data-ignore="true" data-required-rollback="true"/>
-			</div>
-		</section>
+    <div class="option-group-head">Database Config</div>
+    <div class="option-group">
+        <section class="property-control-group" data-bind="true">
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-database-name" >Database Name</label>
+                <input class="input"  type="text" id="property-dbinstance-database-name" data-ignore="true" data-required-rollback="true"/>
+            </div>
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-database-port" >Database Port</label>
+                <input class="input"  type="text" id="property-dbinstance-database-port" data-ignore="true" data-required-rollback="true"/>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<label class="left">Option Group</label>
-			<div class="selectbox" id="property-dbinstance-option-group-select">
-				<div class="selection">default:mysql-5-6</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="item selected data-id="default">default:mysql-5-6</li>
-					<li class="item data-id="dedicated">default:mysql-5-6</li>
-				</ul>
-			</div>
-		</section>
+        <section class="property-control-group">
+            <label class="left">Option Group</label>
+            <div class="selectbox" id="property-dbinstance-option-group-select">
+                <div class="selection">default:mysql-5-6</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="default">default:mysql-5-6</li>
+                    <li class="item data-id="dedicated">default:mysql-5-6</li>
+                </ul>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<label class="left">Parameter Group</label>
-			<div class="selectbox" id="property-dbinstance-parameter-group-select">
-				<div class="selection">default:mysql5.6</div>
-				<ul class="dropdown" tabindex="-1">
-					<li class="item selected data-id="default">default:mysql-5-6</li>
-					<li class="item data-id="dedicated">default:mysql-5-6</li>
-				</ul>
-			</div>
-		</section>
+        <section class="property-control-group">
+            <label class="left">Parameter Group</label>
+            <div class="selectbox" id="property-dbinstance-parameter-group-select">
+                <div class="selection">default:mysql5.6</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="default">default:mysql-5-6</li>
+                    <li class="item data-id="dedicated">default:mysql-5-6</li>
+                </ul>
+            </div>
+        </section>
 
-		<section class="property-control-group">
-			<div class="checkbox">
-				<input id="property-dbinstance-public-access-check" type="checkbox" checked="true" value="None" name="property-dbinstance-public-access-check">
-				<label for="property-dbinstance-public-access-check"></label>
-			</div>
-			<label for="property-dbinstance-public-access-check">Publicly Accessible</label>
-		</section>
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-public-access-check" type="checkbox" checked="true" value="None" name="property-dbinstance-public-access-check">
+                <label for="property-dbinstance-public-access-check"></label>
+            </div>
+            <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
+        </section>
 
-	</div>
+    </div>
 
-	<div class="option-group-head">Management Options</div>
-	<div class="option-group">
+    <div class="option-group-head">Backup Config</div>
+    <div class="option-group">
 
-		<section class="property-control-group">
-			<div class="checkbox">
-				<input id="property-dbinstance-auto-backup-check" type="checkbox" checked="true" value="None" name="property-dbinstance-auto-backup-check">
-				<label for="property-dbinstance-auto-backup-check"></label>
-			</div>
-			<label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
-		</section>
+        <section class="property-control-group" data-bind="true">
+            <label class="left">Backup Retention Period</label>
+            <input class="input property-input-left" title="hours" id="property-dbinstance-backup-period" type="text">
+            <label class="property-label-right" for="property-dbinstance-backup-period">days</label>
+        </section>
 
-	</div>
+        <section class="property-control-group">
+            <label class="left">Backup Window</label>
+            <div class="selectbox" id="property-dbinstance-backup-window-select">
+                <div class="selection">Select Window</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="window">Select Window</li>
+                    <li class="item data-id="no">No Preference</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="property-control-group" data-bind="true">
+            <label class="property-input-row-head">Start Time(UTC)</label>
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-backup-window-start-hour" >Hour</label>
+                <input class="input"  type="text" id="property-dbinstance-backup-window-start-hour" data-ignore="true" data-required-rollback="true"/>
+            </div>
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-backup-window-start-minute" >Minute</label>
+                <input class="input"  type="text" id="property-dbinstance-backup-window-start-minute" data-ignore="true" data-required-rollback="true"/>
+            </div>
+        </section>
+
+        <section class="property-control-group" data-bind="true">
+            <label class="left">Duration</label>
+            <input class="input property-input-left" title="hours" id="property-dbinstance-backup-window-duration" type="text">
+            <label class="property-label-right" for="property-dbinstance-backup-period">hours</label>
+        </section>
+
+    </div>
+
+    <div class="option-group-head">Management Config</div>
+    <div class="option-group">
+
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-auto-backup-check" type="checkbox" checked="true" value="None" name="property-dbinstance-auto-backup-check">
+                <label for="property-dbinstance-auto-backup-check"></label>
+            </div>
+            <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
+        </section>
+
+        <section class="property-control-group">
+            <label class="left">Maintenance Window</label>
+            <div class="selectbox" id="property-dbinstance-maintenance-window-select">
+                <div class="selection">Select Window</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="window">Select Window</li>
+                    <li class="item data-id="no">No Preference</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="property-control-group" data-bind="true">
+            <div class="property-input-row">
+                <label class="left">Start Day</label>
+                <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
+                    <div class="selection">Monday</div>
+                    <ul class="dropdown" tabindex="-1">
+                        <li class="item selected data-id="monday">Monday</li>
+                        <li class="item data-id="monday">Tuesday</li>
+                        <li class="item data-id="wednesday">Wednesday</li>
+                        <li class="item data-id="thursday">Thursday</li>
+                        <li class="item data-id="friday">Friday</li>
+                        <li class="item data-id="saturday">Saturday</li>
+                        <li class="item data-id="sunday">Sunday</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="property-input-row">
+                <label class="left">Duration</label>
+                <div class="ranged-number-input">
+                    <input class="input" title="hours" id="property-dbinstance-maintenance-window-duration" type="text">
+                </div>
+            </div>
+        </section>
+
+        <section class="property-control-group" data-bind="true">
+            <label class="property-input-row-head">Start Time(UTC)</label>
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-maintenance-window-start-hour" >Hour</label>
+                <input class="input"  type="text" id="property-dbinstance-maintenance-window-start-hour" data-ignore="true" data-required-rollback="true"/>
+            </div>
+            <div class="property-input-row">
+                <label class="left" for="property-dbinstance-maintenance-window-start-minute" >Minute</label>
+                <input class="input"  type="text" id="property-dbinstance-maintenance-window-start-minute" data-ignore="true" data-required-rollback="true"/>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
 
 </article>

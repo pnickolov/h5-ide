@@ -1,13 +1,19 @@
-#property-dbinstance-storage {
+.property-dbinstance input.property-input-left {
   width: 184px; }
-
-.property-dbinstance-storage {
+.property-dbinstance .property-label-right {
   margin-left: 10px; }
-
-.property-input-row {
+.property-dbinstance .property-input-row-head {
+  display: inline-block;
+  width: 220px;
+  margin-bottom: 7px;
+  margin-top: 10px; }
+.property-dbinstance .property-input-row {
   float: left;
   width: 120px; }
-  .property-input-row label.left {
+  .property-dbinstance .property-input-row label.left {
     display: block; }
-  .property-input-row input.input {
+  .property-dbinstance .property-input-row input.input {
     width: 80px; }
+  .property-dbinstance .property-input-row div.selectbox {
+    width: 115px;
+    margin-top: 2px; }

@@ -1,17 +1,29 @@
  // RDS Instance Property
-#property-dbinstance-storage {
-	width: 184px;
-}
-.property-dbinstance-storage {
-	margin-left: 10px;
-}
-.property-input-row {
-	float: left;
-	width: 120px;
-	label.left {
-		display: block;
+.property-dbinstance {
+	input.property-input-left {
+		width: 184px;
 	}
-	input.input {
-		width: 80px;
+	.property-label-right {
+		margin-left: 10px;
+	}
+	.property-input-row-head {
+		display: inline-block;
+		width: 220px;
+		margin-bottom: 7px;
+		margin-top: 10px;
+	}
+	.property-input-row {
+		float: left;
+		width: 120px;
+		label.left {
+			display: block;
+		}
+		input.input {
+			width: 80px;
+		}
+		div.selectbox {
+			width: 115px;
+			margin-top: 2px;
+		}
 	}
 }

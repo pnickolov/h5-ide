@@ -17,6 +17,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     constructor : ( attr, option ) ->
       ComplexResModel.call( this, attr, option )
 
+    init: ->
 
     initialize : ( attr, option ) ->
       @draw true
@@ -24,10 +25,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       null
 
     category: (type) ->
-      if type then return !!@get("#{type}Id")
-      if @get 'instanceId' then return 'instance'
+      if type is 'instance'
+        return !(@get('snapshotId') or @get('replicaId'))
+      else if type
+        return !!@get("#{type}Id")
+
       if @get 'snapshotId' then return 'snapshot'
       if @get 'replicaId' then return 'replica'
+
+      return 'instance'
 
     serialize : () ->
       component =
@@ -82,6 +88,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
   }, {
 
     handleTypes: constant.RESTYPE.DBINSTANCE
+
+    filter: () ->
+
 
     deserialize : ( data, layout_data, resolve ) ->
       new Model({

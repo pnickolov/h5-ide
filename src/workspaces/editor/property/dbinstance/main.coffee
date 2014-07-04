@@ -5,15 +5,15 @@
 define [
          "Design"
          "../base/main"
-         "./model"
          "./view"
          # "./app_model",
          # "./app_view",
          "../sglist/main"
          "constant"
          "event"
-], ( Design, PropertyModule,
-     model, view,
+], ( Design,
+     PropertyModule,
+     view,
      sglist_main, constant, ide_event ) ->
 
     DBInstanceModule = PropertyModule.extend {

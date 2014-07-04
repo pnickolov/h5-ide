@@ -17,14 +17,13 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
   }
 
   ChildElementProto.iconUrl = ->
-    if @model.get("isReadReplica")
-      "ide/icon/dbinstance-read.png"
-    else if @model.get("isSnapshot")
-      "ide/icon/dbinstance-snap.png"
-    else
-      #"ide/icon/dbinstance-source.png"
-      #"ide/icon/dbinstance-read.png"
-      "ide/icon/dbinstance-snap.png"
+    switch @model.category()
+      when "snapshot" then "ide/icon/dbinstance-read.png"
+      when "replica"  then "ide/icon/dbinstance-snap.png"
+      when "instance" then "ide/icon/dbinstance-source.png"
+      else
+        console.warn "[iconUrl]unknown category of RDS DBInstance"
+        "ide/icon/dbinstance-source.png"
 
   ChildElementProto.draw = ( isCreate ) ->
     m = @model

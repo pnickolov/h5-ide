@@ -192,7 +192,6 @@ define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', '
                 @switchAction 'processing'
                 @collection.create( {keyName} ).save()
                     .then (res) ->
-                        console.log res
                         that.needDownload true
                         that.genDownload "#{res.attributes.keyName}.pem", res.attributes.keyMaterial
                         that.switchAction 'download'
@@ -200,8 +199,7 @@ define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', '
                         that.M$( '.after-create' ).find( 'span' ).text( res.attributes.keyName ).end().show()
 
                     ,( err ) ->
-                        console.log(err)
-                        that.modal.error err.reason||err.msg
+                        that.modal.error err.awsResult or err.reason or err.msg
                         that.switchAction()
 
         download: () ->
@@ -231,12 +229,15 @@ define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', '
 
                 @collection.create( {keyName:keyName, keyData: keyContent}).save()
                     .then (res) ->
-                        console.log res
                         notification 'info', "#{keyName} is imported."
                         that.cancel()
                     ,( err ) ->
-                        console.log(err)
-                        that.modal.error err.error_message || err.reason ||err.msg
+                        if err.awsResult and err.awsResult.indexOf( 'Length exceeds maximum of 2048' ) >= 0
+                            msg = 'Length exceeds maximum of 2048'
+                        else
+                            msg = err.awsResult or err.error_message or err.reason or err.msg
+
+                        that.modal.error msg
                         that.switchAction 'ready'
 
         cancel: ->

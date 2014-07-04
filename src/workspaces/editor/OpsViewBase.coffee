@@ -11,25 +11,31 @@ define [
 
   "backbone"
   "UI.selectbox"
-  "MC.canvas"
 ], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
 
   # LEGACY code
   # Should remove this in the future.
-  $(document).on('keydown', MC.canvas.event.keyEvent)
-  $('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close)
-  $(document.body).on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown)
+  # $('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close)
+  # $(document.body).on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown)
+
+
+  ### Monitor keypress ###
+  $(document).on 'keydown', ( evt )->
+
 
 
   ### OpsEditorView base class ###
   Backbone.View.extend {
+
+    events :
+      "SAVE" : "saveStack"
 
     constructor : ( options )->
       _.extend this, options
 
       console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
       @setElement $( CanvasTpl({}) ).appendTo("#main").show()[0]
-      @$el.attr("data-workspace", @workspace.id)
+      @$el.attr("data-ws", @workspace.id)
 
       opt = {
         workspace : @workspace
@@ -42,36 +48,31 @@ define [
       @statusbar     = new Statusbar(opt)
       @canvas        = new CanvasView(opt)
 
-      # 2. Bind Events for MC.canvas.js
-
-      # 3 Update subviews
+      # 2 Update subviews
       @statusbar.render()
-
       @renderSubviews()
 
       @initialize()
       return
 
+    initialize : ()->
+      @canvas.switchMode( "stack" )
+
+    saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
+
     backup : ()->
       $center = @$el.find(".OEPanelCenter")
-      @__backupSvg = $center.html()
-      $center.empty()
 
       ###
       Revoke all the IDs of every dom.
       ###
       @propertyPanel.backup()
 
-      @backupSubviews()
       @$el.attr("id", "")
       return
 
     recover : ()->
-      @$el.find(".OEPanelCenter").html @__backupSvg
-      @__backupSvg = null
-
       @resourcePanel.recalcAccordion()
-      @recoverSubviews()
       @$el.attr("id", "OpsEditor")
 
       @propertyPanel.recover()
@@ -109,8 +110,4 @@ define [
     ###
     # Called when the OpsEditor initialize
     renderSubviews  : ()-> return
-    # Called when the OpsEditor wakes up.
-    recoverSubviews : ()-> return
-    # Called when the OpsEditor sleeps
-    backupSubviews  : ()-> return
   }

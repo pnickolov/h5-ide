@@ -1,5 +1,5 @@
 
-define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview/CanvasElement" ], ( Design, CanvasManager, ResourceModel, constant, CanvasElement )->
+define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, CanvasManager, ResourceModel, constant )->
 
   emptyArr = []
 

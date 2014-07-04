@@ -1,13 +1,13 @@
 
 define [
-  "./StackView"
+  "./OpsViewBase"
   "OpsModel"
   "./template/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
-], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
+], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang )->
 
-  StackView.extend {
+  OpsViewBase.extend {
 
     initialize : ()->
       @canvas.switchMode( "app" )

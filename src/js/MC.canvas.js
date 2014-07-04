@@ -10,6 +10,13 @@
 define(["MC", "canvon"], function(MC){
 
 MC.canvas = {
+	GRID_WIDTH: 10,
+	GRID_HEIGHT: 10,
+	GROUP_MIN_PADDING: 120,
+
+	PORT_PADDING: 4, //port padding (to point of junction)
+	CORNER_RADIUS: 8, //cornerRadius of fold line
+
 	getState: function ()
 	{
 		// Quick hack to make this shit work.

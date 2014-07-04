@@ -74,7 +74,9 @@ define [
 
     initialize : ( options )->
       _.extend this, options
+      @render()
 
+    render : ()->
       @setElement @parent.$el.find(".OEPanelRight").html( RightPanelTpl() )
       @$el.toggleClass("hidden", @__rightPanelHidden || false)
 

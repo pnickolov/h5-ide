@@ -147,21 +147,16 @@ define [
         @__initEditor()
       else
         @design.use()
-        @showEditor()
+        @view.$el.show()
+        @view.recover()
       return
 
     sleep : ()->
-      # HACK, Close the volume bubble here!!!!!
-      # Should be removed.
-      MC.canvas.volume.close()
+      if @view and @view.backup then @view.backup()
       Workspace.prototype.sleep.call this
 
     # Override parent's method to do cleaning when the tab is removed.
     cleanup : ()->
-      # HACK, Close the volume bubble here!!!!!
-      # Should be removed.
-      MC.canvas.volume.close()
-
       @stopListening()
       if @view
         @view.remove()
@@ -178,8 +173,6 @@ define [
 
       @listenTo @design, "change:name", @updateTab
 
-      @hideOtherEditor()
-
       @view = new @viewClass({ workspace : @ })
 
       @initEditor()
@@ -194,32 +187,6 @@ define [
     saveThumbnail : ()->
       if @opsModel.isPersisted()
         Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
-
-    showEditor : ()->
-      res = @hideOtherEditor()
-      if not @view then return
-
-      if res
-        @view.$el.show()
-        @view.recover()
-      else
-        # The #OpsEditor DOM is ours, we just need to show it.
-        console.log( "#OpsEditor is current workspace's, just show()-ing it." )
-        @view.$el.show()
-      return
-
-    hideOtherEditor : ()->
-      # If there's a #OpsEditor DOM, need to check if it's ours. If it's not, ask another editor to hide it.
-      $theDOM  = $("#OpsEditor")
-      editorId = $theDOM.attr("data-workspace")
-
-      console.assert( not $theDOM.length or editorId, "There's #OpsEditor, but it doens't have [data-workspace]" )
-
-      if editorId and editorId isnt @id
-        App.workspaces.get( editorId ).view.backup()
-        return true
-
-      editorId isnt @id
 
     isRemovable : ()->
       if not @__inited or not @isModified()

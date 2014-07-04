@@ -1,11 +1,11 @@
 
 define [
   "./OpsEditorBase"
-  "./StackView"
+  "./OpsViewBase"
   "Design"
   "CloudResources"
   "constant"
-], ( OpsEditorBase, StackView, Design, CloudResources, constant )->
+], ( OpsEditorBase, OpsViewBase, Design, CloudResources, constant )->
 
   ###
     StackEditor is mainly for editing a stack
@@ -15,7 +15,7 @@ define [
     title       : ()-> (@design || @opsModel).get("name") + " - stack"
     tabClass    : ()-> "icon-stack-tabbar"
 
-    viewClass : StackView
+    viewClass : OpsViewBase
 
     isReady : ()->
       if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false

@@ -7,7 +7,6 @@ define [
   "backbone"
   "jquery"
   "svgjs"
-  "MC.canvas.constant"
 ], ( OpsEditorTpl, CanvasElement, Design )->
 
   # Insert svg defs template.

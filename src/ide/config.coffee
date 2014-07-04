@@ -100,7 +100,6 @@ require.config {
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
 		'MC.canvas'          : 'js/MC.canvas'
-		'MC.canvas.constant' : 'js/MC.canvas.constant'
 		'constant'           : 'lib/constant'
 		'event'              : 'lib/ide_event'
 
@@ -193,15 +192,8 @@ require.config {
 
 	### env:dev:end ###
 	shim :
-		'canvon'       :
-			deps       : [ 'jquery' ]
-			exports    : 'Canvon'
-
 		'underscore'   :
 			exports    : '_'
-
-		'handlebars'   :
-			exports    : 'Handlebars'
 
 		'Meteor'       :
 			deps       : ['underscore']
@@ -227,7 +219,6 @@ require.config {
 			"MC"
 			"constant"
 			"MC.canvas"
-			"MC.canvas.constant"
 			'MC.validate'
 			"lib/handlebarhelpers"
 			"event"
@@ -337,6 +328,7 @@ require [
 	"workspaces/OpsEditor"
 	"ide/Router"
 	"MC"
+	"MC.canvas"
 	'lib/aws'
 ], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 

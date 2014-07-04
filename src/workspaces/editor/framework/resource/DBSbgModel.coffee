@@ -18,7 +18,7 @@ define [ "constant",
       height : 17
 
       subnetIds: []
-      description: ''
+      description: 'Description Placeholder'
 
 
     initialize : ( attributes, option )->

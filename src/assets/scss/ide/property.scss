@@ -27,3 +27,13 @@
 		}
 	}
 }
+
+.property-subnet-group {
+	.property-az-name {
+		clear: both;
+		padding: 8px 0;
+	}
+	label.left + .property-az-name {
+		padding-top: 0;
+	}
+}

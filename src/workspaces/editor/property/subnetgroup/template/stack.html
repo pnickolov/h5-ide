@@ -1,4 +1,4 @@
-<article>
+<article class="property-subnet-group">
 	<div class="option-group-head expand">DB Instance Details</div>
 	<div class="option-group">
 
@@ -11,8 +11,24 @@
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
 			<span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-			<input class="input"  type="text" value="{{ description }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
+			<input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
 		</section>
+
+		<section class="property-control-group">
+            <label class="left">Selected Subnet ID</label>
+            {{#each azSb}}
+            	<div class='property-az-name'>{{az}} :</div>
+            	{{#each subnets}}
+				<div class="checkbox">
+					<input id="subnet-{{name}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
+					<label for="subnet-{{name}}"></label>
+				</div>
+				<label for="subnet-{{name}}">{{name}}</label>
+				{{/each}}
+            {{/each}}
+        </section>
+
+
 
 	</div>
 

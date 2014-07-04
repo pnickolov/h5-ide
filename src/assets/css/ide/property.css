@@ -17,3 +17,9 @@
   .property-dbinstance .property-input-row div.selectbox {
     width: 115px;
     margin-top: 2px; }
+
+.property-subnet-group .property-az-name {
+  clear: both;
+  padding: 8px 0; }
+.property-subnet-group label.left + .property-az-name {
+  padding-top: 0; }

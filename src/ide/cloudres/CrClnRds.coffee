@@ -23,6 +23,7 @@ define [
       if not _.isArray( data ) then data = [data]
 
       for i in data
+        i.icon = i.Engine.split("-")[0]
         i.id = i.Engine + " " + i.EngineVersion
 
       data
@@ -45,6 +46,7 @@ define [
       if not _.isArray( data ) then data = [data]
 
       for i in data
+        i.icon = i.Engine.split("-")[0]
         i.id = i.DBSnapshotIdentifier
 
       data

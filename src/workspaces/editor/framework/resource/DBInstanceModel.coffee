@@ -12,7 +12,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
 
     type : constant.RESTYPE.DBINSTANCE
-    newNameTmpl : "db-instance-"
+    newNameTmpl : "db-"
 
     constructor : ( attr, option ) ->
       ComplexResModel.call( this, attr, option )

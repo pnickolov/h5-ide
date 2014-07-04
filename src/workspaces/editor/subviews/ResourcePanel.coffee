@@ -275,8 +275,16 @@ define [
       @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
 
     updateRDSList : () ->
+      engineList = []
       cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
-      @$el.find(".resource-list-rds").html LeftPanelTpl.rds( cln )
+      for key of cln
+        item = cln[key]
+        if item[0]
+          engineList.push
+            description: key
+            engine     : item[0].get("Engine")
+            icon       : item[0].get("icon")
+      @$el.find(".resource-list-rds").html LeftPanelTpl.rds( engineList )
 
     updateRDSSnapshotList : () ->
       cln = CloudResources( constant.RESTYPE.DBSNAP, @workspace.opsModel.get("region") ).toJSON()

@@ -129,13 +129,17 @@
 
 <!-- {{rds}} -->
 {{#each this}}
-<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip" data-tooltip="{{@key}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"name":"{{@key}}"}'>{{@key}}</li>
+<li class="resource-item dbinstance tooltip" data-tooltip="{{description}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"engine":"{{engine}}"}'>
+<div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{icon}}.png" width="39" height="27"></div>
+{{description}}
+</li>
 {{/each}}
 
 <!-- {{rds_snapshot}} -->
 {{#each this}}
-<li class="resource-item resource-icon resource-icon-ebs-snapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"DBInstanceIdentifier": {{DBInstanceIdentifier}} }' data-bubble-template="bubbleDBSnapshotInfo" data-bubble-data='{"AllocatedStorage":"{{AllocatedStorage}}","AvailabilityZone":"{{AvailabilityZone}}","DBInstanceIdentifier":"{{DBInstanceIdentifier}}","DBSnapshotIdentifier":"{{DBSnapshotIdentifier}}","Engine":"{{Engine}}","EngineVersion":"{{EngineVersion}}","InstanceCreateTime":"{{InstanceCreateTime}}","Iops":"{{Iops}}","LicenseModel":"{{LicenseModel}}","MasterUsername":"{{MasterUsername}}","OptionGroupName":"{{OptionGroupName}}","Port":"{{Port}}","SnapshotCreateTime":"{{SnapshotCreateTime}}","SnapshotType":"{{SnapshotType}}","Status":"{{Status}}","VpcId":"{{VpcId}}"}'>
-  <span class="ebs-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
+<li class="resource-item dbsnapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"DBInstanceIdentifier": {{DBInstanceIdentifier}} }' data-bubble-template="bubbleDBSnapshotInfo" data-bubble-data='{"AllocatedStorage":"{{AllocatedStorage}}","AvailabilityZone":"{{AvailabilityZone}}","DBInstanceIdentifier":"{{DBInstanceIdentifier}}","DBSnapshotIdentifier":"{{DBSnapshotIdentifier}}","Engine":"{{Engine}}","EngineVersion":"{{EngineVersion}}","InstanceCreateTime":"{{InstanceCreateTime}}","Iops":"{{Iops}}","LicenseModel":"{{LicenseModel}}","MasterUsername":"{{MasterUsername}}","OptionGroupName":"{{OptionGroupName}}","Port":"{{Port}}","SnapshotCreateTime":"{{SnapshotCreateTime}}","SnapshotType":"{{SnapshotType}}","Status":"{{Status}}","VpcId":"{{VpcId}}"}'>
+  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{icon}}.png" width="39" height="27"></div>
+  <span class="rds-snapshot-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
 </li>
 {{/each}}
 

@@ -2989,14 +2989,6 @@ MC.canvas.event.dragable = {
 			scale_ratio = $canvas.scale(),
 			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
 			size = event_data.size,
-			// areaChild = MC.canvas.areaChild(
-			// 	target_id,
-			// 	target_type,
-			// 	coordinate.x,
-			// 	coordinate.y,
-			// 	coordinate.x + size[0],
-			// 	coordinate.y + size[1]
-			// ),
 			match_place = MC.canvas.isMatchPlace(
 				null,
 				target_type,
@@ -3016,13 +3008,10 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
-			//areaChild.length === 0 &&
 			match_place.is_matched
 		)
 		{
 			db_instance_item.rdsCreateReadReplica(match_place.target, coordinate.x, coordinate.y);
-
-			db_instance_item.select();
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');

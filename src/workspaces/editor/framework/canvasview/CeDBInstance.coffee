@@ -42,6 +42,7 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
       })
 
     if res and res.id
+      $canvas(res.id).select();
       return true
 
     #targetName = if target.type is "AWS.EC2.AvailabilityZone" then target.get("name") else target.parent().get("name")

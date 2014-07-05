@@ -35,6 +35,11 @@ define [ "constant",
     isRemovable : () -> !@children().length
 
     serialize : ()->
+      subnetIds = @get 'subnetIds'
+      subnetArray = []
+      Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
+        if sb.get('name') in subnetIds
+          subnetArray.push sb.createRef( "SubnetId" )
 
       component =
         name : @get("name")
@@ -43,7 +48,7 @@ define [ "constant",
         resource :
           CreatedBy               : @get 'appId'
           DBSubnetGroupName       : @get 'name'
-          SubnetIds               : @get 'subnetIds'
+          SubnetIds               : subnetArray
           DBSubnetGroupDescription: @get 'description'
 
 

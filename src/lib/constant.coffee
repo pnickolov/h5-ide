@@ -71,7 +71,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		SUBSCRIPTION : 'AWS.SNS.Subscription'
 		TOPIC        : 'AWS.SNS.Topic'
 
-		DBSBG        : 'AWS.RDS.SubnetGroup'
+		DBSBG        : 'AWS.RDS.DBSubnetGroup'
 		DBINSTANCE   : 'AWS.RDS.DBInstance'
 		DBPARAM      : 'AWS.RDS.Parameter'
 		DBPG         : 'AWS.RDS.ParameterGroup'

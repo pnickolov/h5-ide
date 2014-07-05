@@ -60,8 +60,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         resource :
           CreatedBy                             : @get 'appId'
           DBInstanceIdentifier                  : @get 'instanceId'
-          DBSnapshotIdentifier                  : @get 'snapshotId'
-          ReadReplicaSourceDBInstanceIdentifier : @get 'replicaId'
+          DBSnapshotIdentifier                  : '' #@get 'snapshotId'
+          ReadReplicaSourceDBInstanceIdentifier : '' #@get 'replicaId'
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
@@ -70,24 +70,24 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
-          DBInstanceClass                       : @get 'instanceClass'
-          ReadReplicaDBInstanceIdentifiers      : @get 'replicas'
+          DBInstanceClass                       : 'db.t1.micro' # @get 'instanceClass'
+          ReadReplicaDBInstanceIdentifiers      : '' #@get 'replicas'
 
           DBName                                : @get 'dbName'
           Endpoint:
             Port: @get 'port'
           Engine                                : @get 'engine'
-          EngineVersion                         : @get 'engineVersion'
-          LicenseModel                          : @get 'license'
+          EngineVersion                         : '5.6.17' #@get 'engineVersion'
+          LicenseModel                          : 'general-public-license' #@get 'license'
           MasterUsername                        : @get 'username'
           MasterUserPassword                    : @get 'password'
 
           OptionGroupMembership:
-            OptionGroupName: @get 'ogName'
+            OptionGroupName: 'default:mysql-5-6' # @get 'ogName'
             Status: @get 'ogStatus'
 
           DBParameterGroups:
-            DBParameterGroupName: @get 'pgName'
+            DBParameterGroupName: 'default.mysql5.6' # @get 'pgName'
 
           PendingModifiedValues                 : @get 'pending'
 

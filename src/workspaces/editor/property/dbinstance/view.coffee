@@ -171,7 +171,7 @@ define [ '../base/view'
         changeAllocatedStorage: (event) ->
 
             value = $(event.target).val()
-            @model.set 'allocatedStorage', value
+            @model.set 'allocatedStorage', Number(value)
 
         changeProvisionedIOPSCheck: (event) ->
 
@@ -179,7 +179,7 @@ define [ '../base/view'
             if value
                 $('.property-dbinstance-iops-value-section').show()
                 $('#property-dbinstance-iops-value').val('100')
-                @model.set 'iops', '100'
+                @model.set 'iops', 100
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')

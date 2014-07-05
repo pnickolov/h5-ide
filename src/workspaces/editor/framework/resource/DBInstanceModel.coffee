@@ -113,11 +113,11 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-          AvailabilityZone                      : @get 'adz'
+          AvailabilityZone                      : '' #@get 'adz'
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
-          CharacterSetName                      : @get 'characterSetName'
+          CharacterSetName                      : '' #@get 'characterSetName'
           DBInstanceClass                       : 'db.t1.micro' # @get 'instanceClass'
           ReadReplicaDBInstanceIdentifiers      : '' #@get 'replicas'
 
@@ -144,9 +144,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           PubliclyAccessible                    : @get 'accessible'
 
-          DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
-          VpcSecurityGroups                     : sgArray
-
+          DBSubnetGroup:
+            DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
+          VpcSecurityGroupIds                   : sgArray
 
       { component : component, layout : @generateLayout() }
 
@@ -212,7 +212,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )
-      for sg in data.resource.VpcSecurityGroups || []
+      for sg in data.resource.VpcSecurityGroupIds || []
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
 

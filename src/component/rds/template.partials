@@ -61,7 +61,7 @@
             <div class="control-group clearfix">
                 <label for="property-dbpg-name-create">{{ i18n "PROP_DBPG_SET_NAME" }}</label>
                 <div>
-                    <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true" data-type="database" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
+                    <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true" data-type="database" data-ignore="true" placeholder="Begin with a letter; must contain only ASCII letters, digits, and hyphens; and must not end with a hyphen or contain two consecutive hyphens">
                 </div>
             </div>
 

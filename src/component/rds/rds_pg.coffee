@@ -47,6 +47,21 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         @M$('[data-btn=reset],[data-btn=edit]').prop 'disabled', false
       else
         @M$('[data-btn=reset],[data-btn=edit]').prop 'disabled', true
+      that = @
+      allNotDefault = _.every checked, (e)->
+        val =  not that.collection.findWhere(id: e.data.id).isDefault()
+        console.log(val)
+        return val
+      console.log(allNotDefault,"AllNowDefault")
+      if checked.length >= 1 and allNotDefault
+        window.setTimeout ->
+          that.M$('[data-btn=delete]').prop 'disabled', false
+        ,1
+      else
+        window.setTimeout ->
+          that.M$('[data-btn=delete]').prop 'disabled', true
+        ,1
+
 
     refresh: ->
       fetched = false

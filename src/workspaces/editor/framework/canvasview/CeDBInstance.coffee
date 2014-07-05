@@ -9,11 +9,11 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
   # Child Element's interface.
   ###
   ChildElementProto.portPosMap = {
-    "instance-sg-left"  : [ 15, 40, CanvasElement.constant.PORT_LEFT_ANGLE ]
-    "instance-sg-right" : [ 75, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    "dbinstance-sg-left"  : [ 15, 40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+    "dbinstance-sg-right" : [ 75, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
   }
   ChildElementProto.portDirMap = {
-    "instance-sg" : "horizontal"
+    "dbinstance-sg" : "horizontal"
   }
 
   ChildElementProto.iconUrl = ( attr ) ->
@@ -85,9 +85,9 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
         # left port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-left tooltip'
-          'data-name'      : 'instance-sg' #for identify port
-          'data-alias'     : 'instance-sg-left'
+          'class'          : 'port port-blue port-dbinstance-sg port-dbinstance-sg-left tooltip'
+          'data-name'      : 'dbinstance-sg' #for identify port
+          'data-alias'     : 'dbinstance-sg-left'
           'data-position'  : 'left' #port position: for calc point of junction
           'data-type'      : 'sg'   #color of line
           'data-direction' : 'in'   #direction
@@ -96,9 +96,9 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
         # right port(blue)
         Canvon.path(this.constant.PATH_PORT_DIAMOND).attr({
-          'class'          : 'port port-blue port-instance-sg port-instance-sg-right tooltip'
-          'data-name'      : 'instance-sg'
-          'data-alias'     : 'instance-sg-right'
+          'class'          : 'port port-blue port-dbinstance-sg port-dbinstance-sg-right tooltip'
+          'data-name'      : 'dbinstance-sg'
+          'data-alias'     : 'dbinstance-sg-right'
           'data-position'  : 'right'
           'data-type'      : 'sg'
           'data-direction' : 'out'

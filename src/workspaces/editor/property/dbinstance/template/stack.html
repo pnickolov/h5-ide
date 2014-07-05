@@ -149,7 +149,15 @@
     <div class="option-group-head">Backup Config</div>
     <div class="option-group">
 
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-auto-backup-check" type="checkbox" {{#if backupRetentionPeriod}}checked="true"{{/if}} value="None" name="property-dbinstance-auto-backup-check">
+                <label for="property-dbinstance-auto-backup-check"></label>
+            </div>
+            <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
+        </section>
+
+        <section class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" data-bind="true">
             <label class="left">Backup Retention Period</label>
             <input class="input property-input-left" title="hours" id="property-dbinstance-backup-period" type="text">
             <label class="property-label-right" for="property-dbinstance-backup-period">days</label>
@@ -190,14 +198,6 @@
     <div class="option-group">
 
         <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-auto-backup-check" type="checkbox" checked="true" value="None" name="property-dbinstance-auto-backup-check">
-                <label for="property-dbinstance-auto-backup-check"></label>
-            </div>
-            <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
-        </section>
-
-        <section class="property-control-group">
             <label class="left">Maintenance Window</label>
             <div class="selectbox" id="property-dbinstance-maintenance-window-select">
                 <div class="selection">Select Window</div>
@@ -214,13 +214,13 @@
                 <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
                     <div class="selection">Monday</div>
                     <ul class="dropdown" tabindex="-1">
-                        <li class="item selected data-id="monday">Monday</li>
-                        <li class="item data-id="monday">Tuesday</li>
-                        <li class="item data-id="wednesday">Wednesday</li>
-                        <li class="item data-id="thursday">Thursday</li>
-                        <li class="item data-id="friday">Friday</li>
-                        <li class="item data-id="saturday">Saturday</li>
-                        <li class="item data-id="sunday">Sunday</li>
+                        <li class="item selected data-id="mon">Monday</li>
+                        <li class="item data-id="tue">Tuesday</li>
+                        <li class="item data-id="wed">Wednesday</li>
+                        <li class="item data-id="thu">Thursday</li>
+                        <li class="item data-id="fri">Friday</li>
+                        <li class="item data-id="sat">Saturday</li>
+                        <li class="item data-id="sun">Sunday</li>
                     </ul>
                 </div>
             </div>

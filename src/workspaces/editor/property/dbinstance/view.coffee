@@ -24,6 +24,95 @@ define [ '../base/view'
             'change #property-dbinstance-database-port': 'changeDatabasePort'
             'change #property-dbinstance-public-access-check': 'changePublicAccessCheck'
             'change #property-dbinstance-version-update': 'changeVersionUpdate'
+            'change #property-dbinstance-auto-backup-check': 'changeAutoBackupCheck'
+            'change #property-dbinstance-backup-period': 'changeBackupPeriod'
+
+            'change #property-dbinstance-backup-window-start-hour': 'changeBackupTime'
+            'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
+            'change #property-dbinstance-backup-window-duration': 'changeBackupTime'
+
+            'change #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
+
+        _getTimeData: (timeStr) ->
+
+            timeAry = timeStr.split('-')
+            startTimeStr = timeAry[0]
+            endTimeStr = timeAry[1]
+
+            startTimeAry = startTimeStr.split(':')
+            endTimeAry = endTimeStr.split(':')
+
+            # for mon:hour:min
+            if startTimeAry.length is 3
+
+                startWeekStr = startTimeAry[0]
+                endWeekStr = endTimeAry[0]
+
+                startTimeAry = startTimeAry.slice(1)
+                endTimeAry = endTimeAry.slice(1)
+
+            startHour = Number(startTimeAry[0])
+            startMin = Number(startTimeAry[1])
+
+            endHour = Number(endTimeAry[0])
+            endMin = Number(endTimeAry[1])
+
+            # get duration
+            start = new Date()
+            end = new Date(start)
+            start.setHours(startHour)
+            start.setMinutes(startMin)
+            end.setHours(endHour)
+            end.setMinutes(endMin)
+
+            # duration is hour
+            duration = (end - start)/1000/60/60
+
+            return {
+                startHour: startHour,
+                startMin: startMin,
+                duration: duration,
+                startWeek: startWeekStr
+            }
+
+        _getTimeStr: (startHour, startMin, duration, startWeek) ->
+
+            start = new Date()
+            start.setHours(startHour)
+            start.setMinutes(startMin)
+            end = new Date(start.getTime() + 1000 * 60 * 60 * duration)
+            endHour = end.getHours()
+            endMin = end.getMinutes()
+
+            startTimeStr = "#{startHour}:#{startMin}"
+            endTimeStr = "#{endHour}:#{endMin}"
+
+            if startWeek
+
+                startTimeStr = "#{startWeek}:#{startTimeStr}"
+                endTimeStr = "#{startWeek}:#{endTimeStr}"
+
+            return "#{startTimeStr}-#{endTimeStr}"
+
+        _setBackupTime: () ->
+
+            hour = Number($('#property-dbinstance-backup-window-start-hour').val())
+            min = Number($('#property-dbinstance-backup-window-start-minute').val())
+            duration = Number($('#property-dbinstance-backup-period').val())
+            timeStr = @_getTimeStr(hour, min, duration)
+            @model.set('preferredBackupWindow', timeStr)
+
+        _setMaintenanceTime: () ->
+
+            hour = Number($('#property-dbinstance-backup-window-start-hour').val())
+            min = Number($('#property-dbinstance-backup-window-start-minute').val())
+            duration = Number($('#property-dbinstance-backup-period').val())
+            week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
+            timeStr = @_getTimeStr(hour, min, duration, week)
+            @model.set('preferredMaintenanceWindow', timeStr)
 
         render: () ->
             @$el.html template @model.toJSON()
@@ -61,7 +150,7 @@ define [ '../base/view'
         changeProvisionedIOPS: (event) ->
 
             value = $(event.target).val()
-            @model.set 'iops', value
+            @model.set 'iops', Number(value)
 
         changeUserName: (event) ->
 
@@ -92,6 +181,29 @@ define [ '../base/view'
 
             value = event.target.checked
             @model.set 'autoMinorVersionUpgrade', value
+
+        changeAutoBackupCheck: (event) ->
+
+            value = event.target.checked
+            if value
+                @model.set 'backupRetentionPeriod', 1
+                $('#property-dbinstance-backup-period').val('1')
+            else
+                @model.set 'backupRetentionPeriod', 0
+                $('#property-dbinstance-backup-period').val('')
+
+        changeBackupPeriod: (event) ->
+
+            value = $(event.target).val()
+            @model.set 'backupRetentionPeriod', Number(value)
+
+        changeBackupTime: (event) ->
+
+            @_setBackupTime()
+
+        changeMaintenanceTime: (event) ->
+
+            @_setMaintenanceTime()
 
     }
 

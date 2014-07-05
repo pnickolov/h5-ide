@@ -3281,6 +3281,22 @@ module.exports =
       en: "Fill in the Description"
       zh: ""
 
+    PROP_DBPG_RESMANAGER_FILTER:
+      en: "Filter DB Engine by family name"
+      zh: ""
+
+    PROP_DBPG_SET_FAMILY:
+      en: "Family"
+      zh: ""
+
+    PROP_DBPG_SET_NAME:
+      en: "Parameter Group Name"
+      zh: ""
+
+    PROP_DBPG_SET_DESC:
+      en: "Description"
+      zh: ""
+
     PROC_STEP_REQUEST:
       en: "Processing"
       zh: "处理中"

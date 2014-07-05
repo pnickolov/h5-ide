@@ -225,6 +225,7 @@ define(["jquery"], function(){
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
           , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
+          , database:  "This value should be a valid database name"
           , ascii:     "This value should be a valid ascii."
 
         }
@@ -342,8 +343,12 @@ define(["jquery"], function(){
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
             break;
 
-         case 'awsName':
+          case 'awsName':
            regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;
+           break;
+
+          case 'database':
+           regExp = /(?=[a-zA-Z0-9-]{3,25}$)^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
            break;
 
           case 'domain':

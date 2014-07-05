@@ -1,4 +1,4 @@
-define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/rds/template'], (CloudResources, ApiRequest , constant, modalPlus, toolbar_modal, lang, template)->
+define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropdown', 'toolbar_modal', "i18n!/nls/lang.js", 'component/rds/template'], (CloudResources, ApiRequest , constant, modalPlus, combo_dropdown, toolbar_modal, lang, template)->
   fetched = false
   deleteCount = 0
   deleteErrorCount = 0
@@ -21,7 +21,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
     render: ()->
       @renderManager()
 
-    selectDbpg: ->
+    enableCreate: ->
       @manager.$el.find('[data-action="create"]').prop 'disabled', false
 
     selectRegion: ->
@@ -56,14 +56,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
       fetching = false
       fetched = true
       data = @collection.toJSON()
-      _.each data, (e,f)->
-        if e.progress is 100
-          data[f].completed = true
-        if e.startTime
-          data[f].started = (new Date(e.startTime)).toString()
-        null
       dataSet =
         items: data
+      console.log(data)
       content = template.content dataSet
       @manager?.setContent content
 
@@ -81,6 +76,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
       tpl = template['slide_'+ which]
       slides = @getSlides()
       slides[which]?.call @, tpl, checked
+      $(".slidebox").css("height": "100%")
+      console.log(which)
 
     getSlides: ->
       'delete': (tpl, checked)->
@@ -94,9 +91,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
           data.selectedCount = checkedAmount
         @manager.setSlide tpl data
       'create':(tpl)->
-        data =
-          volumes : {}
-        @manager.setSlide tpl data
+        data ={}
+        @families = CloudResources constant.RESTYPE.DBENGINE, Design.instance().get("region")
+        that = @
+        @families.fetch().then ->
+            families = _.uniq _.pluck that.families.toJSON(), "DBParameterGroupFamily"
+            data = families: families
+            that.manager.setSlide tpl data
+            console.log($("#property-dbpg-name-create").size())
+            $("#property-dbpg-name-create").keyup ()->
+              disableCreate = not $(@).val()
+              that.manager.$el.find('[data-action="create"]').prop 'disabled', disableCreate
+
 
       'duplicate': (tpl, checked)->
         data = {}
@@ -110,13 +116,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
       @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
     do_create: ->
-      volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection .manager-content-main').data('id'))
-      if not volume
+      if not (($( '#property-dbpg-name-create' ).parsley 'validate') and ($( '#property-dbpg-desc-create' ).parsley 'validate'))
         return false
       data =
-        "name": $("#property-dbpg-name-create").val()
-        'volumeId': volume.id
-        'description': $('#property-dbpg-desc-create').val()
+        "DBParameterGroupName": $("#property-dbpg-name-create").val()
+        'DBParameterGroupFamily': $("#property-family .selection").html().trim()
+        'Description': $('#property-dbpg-desc-create').val()
       @switchAction 'processing'
       afterCreated = @afterCreated.bind @
       @collection.create(data).save().then afterCreated, afterCreated
@@ -146,7 +151,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
       if result.error
         notification 'error', "Create failed because of: "+result.msg
         return false
-      notification 'info', "New DHCP Option is created successfully!"
+      notification 'info', "New RDS Parameter Group is created successfully!"
   #@collection.add newDbpg
 
     afterDuplicate: (result)->
@@ -197,13 +202,19 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
         {
           icon: 'new-stack'
           type: 'create'
-          name: 'Create'
+          name: 'Create RDS PG'
+        }
+        {
+          icon: 'edit'
+          type: 'edit'
+          disabled: true
+          name: ' Edit '
         }
         {
           icon: 'duplicate'
           type: 'duplicate'
           disabled: true
-          name: 'Duplicate'
+          name: 'Reset'
         }
         {
           icon: 'del'
@@ -220,24 +231,19 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'toolbar_mod
       columns: [
         {
           sortable: true
-          width: "20%" # or 40%
+          width: "30%" # or 40%
           name: 'Name'
+          rowType: "string"
         }
         {
           sortable: true
-          rowType: 'number'
-          width: "10%" # or 40%
-          name: 'Capicity'
-        }
-        {
-          sortable: true
-          rowType: 'datetime'
-          width: "40%" # or 40%
-          name: 'status'
+          rowType: 'string'
+          width: "30%" # or 40%
+          name: 'Family'
         }
         {
           sortable: false
-          width: "30%" # or 40%
+          width: "40%" # or 40%
           name: 'Description'
         }
       ]

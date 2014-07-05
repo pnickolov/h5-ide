@@ -1,12 +1,7 @@
 <!-- {{keys}} -->
 {{#each data}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">
-        {{#if id}}
-            <div class="manager-content-main" data-id="{{id}}">{{#if tagSet}}{{tagSet.Name}}{{else}}&lt;No Name&gt;{{/if}}</div>
-            <div class="manager-content-sub">{{#if id}}{{id}}{{else}}{{name}}{{/if}} &nbsp;&nbsp;&nbsp;&nbsp;Size: {{size}} GiB</div>
-        {{else}}
-            <div class="manager-content-main" data-id="{{region}}">{{name}}</div>
-        {{/if}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{DBParameterGroupFamily}}" tabindex="-1">
+            <div class="manager-content-main" data-id="{{DBParameterGroupFamily}}">{{DBEngineVersionDescription}}</div>
     </li>
 {{/each}}
 
@@ -20,13 +15,9 @@
                 <label for="{{id}}"></label>
             </div>
         </td>
-        <td><div class="manager-content-main">{{#if name}}{{name}}{{else}}&lt;No Name&gt;{{/if}}</div><span class="manager-content-sub">{{id}}</span></td>
-        <td>{{volumeSize}} GiB</td>
-        <td>
-            <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
-            <span class="manager-content-sub">Started: {{started}}</span>
-        </td>
-        <td>{{description}}</td>
+        <td><div class="manager-content-main">{{DBParameterGroupName}}</div></td>
+        <td>{{DBParameterGroupFamily}}</td>
+        <td>{{Description}}</td>
     </tr>
 {{/each}}
 
@@ -48,24 +39,37 @@
 <div class="slide-create" data-bind="true">
     <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-volume-choose">{{ i18n "PROP_DBPG_SET_FAMILY"}}</label>
+                <div>
+                    <div id="property-family-choose">
+                        <div class="selectbox selectbox-mega" id="property-family">
+                            <div class="selection">{{families.0.}}</div>
+                            <ul class="dropdown" tabindex="-1">
+                                {{#each families}}
+                                    <li class="item" data-id="{{this}}">{{this}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="control-group clearfix">
-                <label for="property-dbpg-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
+                <label for="property-dbpg-name-create">{{ i18n "PROP_DBPG_SET_NAME" }}</label>
                 <div>
-                    <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-type="domain" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
+                    <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true" data-type="database" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
                 </div>
             </div>
 
-            <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_VOLUME"}}</label>
-                <div>
-                    <div id="property-volume-choose"></div>
-                </div>
-            </div>
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-dbpg-desc-create">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+                <label for="property-dbpg-desc-create">{{ i18n "PROP_DBPG_SET_DESC"}}</label>
                 <div>
-                    <input id='property-dbpg-desc-create' class="input" placeholder="Up to 255 characters" type="text"/>
+                    <input id='property-dbpg-desc-create' class="input" placeholder="Up to 255 characters" data-required="true" type="text"/>
                 </div>
             </div>
 

@@ -4,7 +4,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
   CrModel.extend {
 
     ### env:dev ###
-    ClassName : "CrRdsSnapshotModel"
+    ClassName : "CrRdsDbInstanceModel"
     ### env:dev:end ###
 
     taggable : false
@@ -13,7 +13,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   Port                 : 3306
     #   OptionGroupName      : default:mysql-5-6
     #   Engine               : mysql
-    #   Status               : available # creating | avaiable
+    #   Status               : available
     #   SnapshotType         : manual
     #   LicenseModel         : general-public-license
     #   EngineVersion        : 5.6.13
@@ -26,37 +26,41 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   AllocatedStorage     : 5
     #   MasterUsername       : awsmyuser
 
-    isComplete : ()-> @attributes.Status is "avaiable"
+    # isComplete : ()-> @attributes.status is "completed"
+    # isPending  : ()-> @attributes.status is "pending"
 
-    doCreate : ()->
-      self = @
-      ApiRequest("ebs_CreateSnapshot", {
-        region_name : @getCollection().region()
-        source_id   : @get("DBInstanceIdentifier")
-        target_id   : @get("DBSnapshotIdentifier")
-      }).then ( res )->
-        try
-          res    = res.CreateDBSnapshotResponse.CreateDBSnapshotResult.DBSnapshot
-          res.id = res.DBSnapshotIdentifier
-        catch e
-          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot created but aws returns invalid data." )
+    # doCreate : ()->
+    #   self = @
+    #   ApiRequest("ebs_CreateSnapshot", {
+    #     region_name  : @getCollection().region()
+    #     volume_id    : @get("volumeId")
+    #     description  : @get("description")
+    #   }).then ( res )->
+    #     try
+    #       res          = res.CreateSnapshotResponse
+    #       res.id       = res.snapshotId
+    #       res.progress = res.progress || 0
+    #       delete res.snapshotId
+    #       delete res["@attributes"]
+    #     catch e
+    #       throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot created but aws returns invalid ata." )
 
-        self.set res
+    #     self.set res
 
-        console.log "Created DbSnapshot resource", self
+    #     # Ask collection to update the status for this model.
+    #     self.getCollection().startPollingStatus()
+    #     console.log "Created Snapshot resource", self
 
-        # Ask collection to update the status for this model.
-        if not self.isComplete()
-          self.getCollection().startPollingStatus()
+    #     self
 
-        self
+    # set : ( key, value )->
+    #   if key.progress
+    #     key.progress = parseInt( key.progress, 10 ) || 0
+    #   if key.volumeSize
+    #     key.volumeSize = parseInt( key.volumeSize, 10 ) || 1
 
-    set : ( key )->
-      if key.PercentProgress
-        key.PercentProgress = parseInt( key.PercentProgress, 10 ) || 0
-
-      Backbone.Model.prototype.set.apply this, arguments
-      return
+    #   Backbone.Model.prototype.set.apply this, arguments
+    #   return
 
     # copyTo : ( destRegion, newName, description )->
     #   self = @
@@ -84,9 +88,9 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #     model.tagResource()
     #     return model
 
-    doDestroy : ()->
-      ApiRequest("rds_snap_DeleteDBSnapshot", {
-        region_name : @getCollection().region()
-        snapshot_id : @get("id")
-      })
+    # doDestroy : ()->
+    #   ApiRequest("ebs_DeleteSnapshot", {
+    #     region_name : @getCollection().region()
+    #     snapshot_id : @get("id")
+    #   })
   }

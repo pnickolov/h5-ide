@@ -4,9 +4,10 @@ define [
   "constant"
   "CloudResources"
   "./CrModelRdsSnapshot"
+  "./CrModelRdsInstance"
   "./CrModelRdsPGroup"
   "./CrModelRdsParameter"
-], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsSnapshotModel, CrRdsPGroupModel )->
+], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsDbInstanceModel, CrRdsSnapshotModel, CrRdsPGroupModel )->
 
 
   ### Engine ###
@@ -25,6 +26,28 @@ define [
       for i in data
         i.icon = i.Engine.split("-")[0]
         i.id = i.Engine + " " + i.EngineVersion
+
+      data
+  }
+
+
+  ### DB Instance ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrDbInstanceCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.DBINSTANCE
+    model : CrRdsDbInstanceModel
+
+    doFetch : ()-> ApiRequest("rds_ins_DescribeDBInstances", {region_name : @region()})
+    parseFetchData : ( data )->
+      data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances.DBInstance || []
+
+      if not _.isArray( data ) then data = [data]
+
+      for i in data
+        i.id = i.DBName
 
       data
   }

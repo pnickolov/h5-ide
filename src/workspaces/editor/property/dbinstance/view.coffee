@@ -124,7 +124,7 @@ define [ '../base/view'
             min = Number($('#property-dbinstance-backup-window-start-minute').val())
             duration = Number($('#property-dbinstance-backup-window-duration').val())
             timeStr = @_getTimeStr(hour, min, duration)
-            @model.set('preferredBackupWindow', timeStr)
+            @model.set('backupWindow', timeStr)
 
         _setMaintenanceTime: () ->
 
@@ -133,13 +133,13 @@ define [ '../base/view'
             duration = Number($('#property-dbinstance-maintenance-window-duration').val())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
             timeStr = @_getTimeStr(hour, min, duration, week)
-            @model.set('preferredMaintenanceWindow', timeStr)
+            @model.set('maintenanceWindow', timeStr)
 
         render: () ->
             attr = @model.toJSON()
 
-            backupTime = @_getTimeData(attr.preferredBackupWindow) or {}
-            maintenanceTime = @_getTimeData(attr.preferredMaintenanceWindow) or {}
+            backupTime = @_getTimeData(attr.backupWindow) or {}
+            maintenanceTime = @_getTimeData(attr.maintenanceWindow) or {}
 
             attr.backup = backupTime
             attr.maintenance = maintenanceTime

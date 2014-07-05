@@ -10,6 +10,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       width    : 9
       height   : 9
 
+      AllocatedStorage: 100
+      backupWindow: 1
+      maintenanceWindow: ''
+
+      username: 'root'
+      password: '12345678'
+
+
+
 
     instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
 
@@ -33,6 +42,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           license         : @getDefaultLicense()
           engineVersion   : @getDefaultVersion()
           instanceClass   : @getDefaultInstanceClass()
+
+          port            : @getDefaultPort()
+
         }
 
 
@@ -55,7 +67,25 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       null
 
+    defaultPortMap:
+      'mysql'         : 3306
+      'postgres'      : 5432
+
+      'oracle-ee'     : 1521
+      'oracle-se'     : 1521
+      'oracle-se1'    : 1521
+
+      'sqlserver-ee'  : 1433
+      'sqlserver-ex'  : 1433
+      'sqlserver-se'  : 1433
+      'sqlserver-web' : 1433
+
+
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
+
+    getDefaultPort: ->
+      @defaultPortMap[@get('engine')]
+
 
     getDefaultLicense: -> @getSpecifications()?[0].license
 
@@ -161,8 +191,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           PendingModifiedValues                 : @get 'pending'
 
-          PreferredBackupWindow                 : @get 'preferredBackupWindow'
-          PreferredMaintenanceWindow            : @get 'preferredMaintenanceWindow'
+          PreferredBackupWindow                 : @get 'backupWindow'
+          PreferredMaintenanceWindow            : @get 'maintenanceWindow'
 
           PubliclyAccessible                    : @get 'accessible'
 
@@ -218,8 +248,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
         pending                   : data.resource.PendingModifiedValues
 
-        preferredBackupWindow     : data.resource.PreferredBackupWindow
-        preferredMaintenanceWindow: data.resource.PreferredMaintenanceWindow
+        backupWindow              : data.resource.PreferredBackupWindow
+        maintenanceWindow         : data.resource.PreferredMaintenanceWindow
 
         accessible                : data.resource.PubliclyAccessible
 

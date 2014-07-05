@@ -2425,15 +2425,15 @@ MC.canvas.event.dragable = {
 					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : false,
 					'mousemove.DRAGABLE_EVENT': MC.canvas.event.dragable.mousemove,
 					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('asg-resource-dragger') ?
-						// For asgExpand
-						MC.canvas.event.dragable.asgExpandup :
-						// Default
-						MC.canvas.event.dragable.mouseup,
-					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('dbinstance-resource-dragger') ?
-						// For rdsCreateReadReplica
-						MC.canvas.event.dragable.rdsCreateReadReplicaup :
-						// Default
-						MC.canvas.event.dragable.mouseup
+												//For Expand ASG
+												MC.canvas.event.dragable.asgExpandup :
+												(
+													Canvon(event.target).hasClass('dbinstance-resource-dragger') ?
+														//For Create ReadReplica
+														MC.canvas.event.dragable.rdsCreateReadReplicaup :
+														//Default
+														MC.canvas.event.dragable.mouseup
+												)
 				}, {
 					'target': target,
 					'canvas_body': canvas_body,

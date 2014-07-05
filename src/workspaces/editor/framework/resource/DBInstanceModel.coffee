@@ -15,9 +15,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     newNameTmpl : "db-"
 
     constructor : ( attr, option ) ->
-      ComplexResModel.call( this, attr, option )
+      ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
+      if option and option.createByUser
+        # Default Sg
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+        SgAsso = Design.modelClassForType "SgAsso"
+        new SgAsso defaultSg, @
+
       if attr.sourceDBInstance
         #TODO
         @set 'replicaId', attr.sourceDBInstance
@@ -42,6 +48,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       return 'instance'
 
     serialize : () ->
+      sgArray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
+
       component =
         name : @get("instanceId")
         type : @type
@@ -86,6 +94,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           PubliclyAccessible                    : @get 'accessible'
 
           DBSubnetGroupName                     : @parent().get 'name'
+          VpcSecurityGroups                     : sgArray
 
 
       { component : component, layout : @generateLayout() }

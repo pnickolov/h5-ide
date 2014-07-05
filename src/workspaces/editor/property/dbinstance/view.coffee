@@ -27,6 +27,7 @@ define [ '../base/view'
 
         render: () ->
             @$el.html template @model.toJSON()
+            @model.get 'name'
 
         changeInstanceName: (event) ->
 

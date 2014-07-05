@@ -18,12 +18,13 @@ define [ "constant",
       height : 17
 
       subnetIds: []
-      description: 'Description Placeholder'
 
 
     initialize : ( attributes, option )->
       # Draw the node
       @draw(true)
+      if not @get 'description'
+        @set 'description', "#{@get('name')} default description"
 
       null
 

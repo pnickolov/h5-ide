@@ -44,7 +44,7 @@ define [ '../base/view'
             data.azSb = @getAzSb()
 
             @$el.html template data
-            @
+            @model.get 'name'
 
         getAzSb: ->
             azsb = []

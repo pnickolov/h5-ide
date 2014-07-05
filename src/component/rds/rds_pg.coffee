@@ -119,6 +119,19 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
               disableCreate = not $(@).val()
               that.manager.$el.find('[data-action="create"]').prop 'disabled', disableCreate
 
+      'edit': (tpl, checked)->
+        if not checked then return false
+        that = @
+        target = @collection.findWhere(id: checked[0].data.id)
+        parameters = target.getParameters()
+        parameters.fetch().then ->
+          data = data: parameters.toJSON()
+          console.log data
+          that.manager.setSlide tpl data
+          $(".slidebox .content").css(
+            "width": "100%"
+            "margin-top": "0px"
+          )
 
       'reset': (tpl, checked)->
         data = name: checked[0].data.id
@@ -147,6 +160,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       afterDeleted = that.afterDeleted.bind that
       _.each checked, (data)=>
         @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
+
+    do_edit: (invalid, checked)->
+      ###
+      ###
+
 
     do_reset: (invalid, checked)->
       sourceDbpg = checked[0]

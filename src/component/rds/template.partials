@@ -97,3 +97,36 @@
         </div>
     </div>
 </div>
+
+
+<!-- {{slide_edit}} -->
+<div class="slide-reset" data-bind="true">
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="50%">Parameter Name</th>
+                <th width="50%">Edit Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr>
+                <td>
+                    <div class="prop_main">{{ParameterName}}
+                        <div class="prop_sub">{{Source}}</div>
+                    </div>
+                    <div class="prop_sub">{{Description}}</div>
+                </td>
+                <td>
+                    <div class="prop_main">{{ParameterValue}}
+                        <div class="prop_sub">{{AllowedValues}}</div>
+                    </div>
+                    <div class="prop_main">
+                        <div class="prop_sub">Changes will apply %immediately/after rebooting%</div>
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

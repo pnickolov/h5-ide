@@ -3008,7 +3008,8 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
-			match_place.is_matched
+			db_instance_item.model.get("x") !== coordinate.x && db_instance_item.model.get("y") !== coordinate.y
+			&& match_place.is_matched
 		)
 		{
 			db_instance_item.rdsCreateReadReplica(match_place.target, coordinate.x, coordinate.y);

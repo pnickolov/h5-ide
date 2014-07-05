@@ -1,6 +1,7 @@
 
 define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
+
   Model = ComplexResModel.extend {
 
     defaults : () ->
@@ -9,10 +10,12 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       width    : 9
       height   : 9
 
-
+    instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db-"
+
+    __cachedSpecifications: null
 
     constructor : ( attr, option ) ->
       ComplexResModel.call( @, attr, option )
@@ -23,8 +26,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType "SgAsso"
         new SgAsso defaultSg, @
-
-
 
 
       if attr.sourceDBInstance
@@ -38,6 +39,53 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       @draw true
 
       null
+
+    getRdsInstances: -> App.model.getRdsData(@design().region()).instance[@get 'engine']
+    getDefaultLicense: -> _.first(@getDefaultSpecifications()).license
+    getDefaultVersion: -> _.first(@getDefaultSpecifications()).versions[0].version
+
+    getDefaultInstanceClass: ->
+      consoleDefault = 'db.m3.xlarge'
+      instanceClasses = _.pluck @getDefaultSpecifications()[0].versions[0].instanceClasses, 'instanceClass'
+
+      if consoleDefault in instanceClasses
+        consoleDefault
+      else
+        _.first(@getDefaultSpecifications()).versions[0].instanceClasses[0].instanceClass
+
+
+    getSpecifications: ->
+      if @__cachedSpecifications then return @__cachedSpecifications
+
+      that = @
+      instances = @getRdsInstances()
+      spec = {}
+      specArr = []
+
+      for i in instances
+        spec[i.LicenseModel] = {} if not spec[i.LicenseModel]
+        spec[i.LicenseModel][i.EngineVersion] = {} if not spec[i.LicenseModel][i.EngineVersion]
+        spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = multiAZCapable: i.MultiAZCapable
+
+
+      for license, versions of spec
+        lObj = license: license, versions: []
+        for version, classes of versions
+          vObj = version: version, instanceClasses: []
+          for cla, az of classes
+            vObj.instanceClasses.push instanceClass: cla, multiAZCapable: az.multiAZCapable
+
+          vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> that.instanceClassList.indexOf cla.instanceClass
+          lObj.versions.push vObj
+
+        lObj.versions.sort (a, b) -> b.version > a.version
+        specArr.push lObj
+
+      @__cachedSpecifications = specArr
+
+      specArr
+
+
 
     category: (type) ->
       if type is 'instance'
@@ -132,14 +180,14 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         iops                      : data.resource.Iops
         backupRetentionPeriod     : data.resource.BackupRetentionPeriod
         characterSetName          : data.resource.CharacterSetName
-        instanceClass             : data.resource.DBInstanceClass
         replicas                  : data.resource.ReadReplicaDBInstanceIdentifiers
 
         dbName                    : data.resource.DBName
         port                      : data.resource.Endpoint?.Port
         engine                    : data.resource.Engine
-        engineVersion             : data.resource.EngineVersion
         license                   : data.resource.LicenseModel
+        engineVersion             : data.resource.EngineVersion
+        instanceClass             : data.resource.DBInstanceClass
         username                  : data.resource.MasterUsername
         password                  : data.resource.MasterUserPassword
 

@@ -136,7 +136,6 @@ define [ '../base/view'
             @model.set('preferredMaintenanceWindow', timeStr)
 
         render: () ->
-
             attr = @model.toJSON()
 
             backupTime = @_getTimeData(attr.preferredBackupWindow) or {}

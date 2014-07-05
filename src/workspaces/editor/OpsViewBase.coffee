@@ -82,10 +82,10 @@ define [
 
     events :
       "Save"            : "saveStack"
-      "DelSelectItem"   : "delSelectItem"
+      "DelSelectItem"   : "delSelectedItem"
       "SelectPrevItem"  : "selectPrevItem"
       "SelectNextItem"  : "selectNextItem"
-      "MoveSelectItem"  : "moveSelectItem"
+      "MoveSelectItem"  : "moveSelectedItem"
       "ZoomIn"          : "zoomIn"
       "ZoomOut"         : "zoomOut"
       "ShowProperty"    : "showProperty"
@@ -121,8 +121,16 @@ define [
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
 
-    moveSelectItem : (evt, which)-> @canvas.moveSelectItem( which ); false
-    delSelectItem  : ()-> @canvas.delSelectItem(); false
+    moveSelectItem : (evt, which)->
+      switch keycode
+        when 37 then x = -1
+        when 38 then y = -1
+        when 39 then x = 1
+        when 40 then y = 1
+      @canvas.moveSelectedItem( x || 0, y || 0 )
+      false
+
+    delSelectItem  : ()-> @canvas.delSelectedItem(); false
     selectPrevItem : ()-> @canvas.selectPrevItem(); false
     selectNextItem : ()-> @canvas.selectNextItem(); false
     zoomIn         : ()-> @canvas.zoomIn();  @toolbar.updateZoomButtons(); false

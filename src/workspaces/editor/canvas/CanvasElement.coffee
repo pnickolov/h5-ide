@@ -229,6 +229,8 @@ define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Mod
 
       result
 
+    move : ( newX, newY, newParent )->
+
   }, {
 
     getClassByType : ( type )-> SubElements[ type ]

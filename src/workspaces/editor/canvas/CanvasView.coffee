@@ -62,12 +62,17 @@ define [
       @$el.children(".canvas-view").removeClass("stack app appedit").addClass( mode )
       return
 
-    moveSelectItem : (keycode)->
+    moveSelectedItem : ( deltaX, deltaY )->
+      item = @getSelectedItem()
+      if not item then return
+      pos = item.pos()
+      item.move( pos.x + deltax, pos.y + deltaY )
 
-    delSelectItem  : ()->
-      if not @__selected then return
-      @deleteItem( @__selected.getAttribute("data-id") )
+    getSelectedItem : ()->
+      if not @__selected then return null
+      @getItem( @__selected.getAttribute("data-id") )
 
+    delSelectedItem : ()-> @deleteItem( @getSelectedItem() )
     deleteItem : ( itemOrId )->
       if _.isString( itemOrId )
         itemOrId = @getItem( itemOrId )
@@ -225,7 +230,7 @@ define [
       item = @getItem( resourceModel.id )
       if not item then return
 
-      if @__selected and @getItem( @__selected.getAttribute("data-id") ) is item
+      if @getSelectedItem() is item
         @__selected = null
         # ide_event.trigger ide_event.OPEN_PROPERTY
 

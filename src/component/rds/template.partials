@@ -84,44 +84,16 @@
     </div>
 </div>
 
-<!-- {{slide_duplicate}} -->
-<div class="slide-duplicate" data-bind="true">
+<!-- {{slide_reset}} -->
+<div class="slide-reset" data-bind="true">
     <div class="formart_toolbar_modal" data-type="true">
-        <section data-bind="true">
-            <div class="control-group clearfix">
-                <label for="property-dbpg-source">{{ i18n "PROP_SNAPSHOT_SOURCE_SNAPSHOT" }}</label>
-                <div>
-                    <p id="property-dbpg-source">{{originDbpg.id}}</p>
-                </div>
-            </div>
-            <div class="control-group clearfix">
-                <label for="property-dbpg-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
-                <div>
-                    <input id="property-dbpg-name" class="input" type="text" maxlength="255" data-type="domain" value="{{originDbpg.id}}-copy" data-ignore="true">
-                </div>
-            </div>
-
-            <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-region-choose">{{ i18n "PROP_SNAPSHOT_DESTINATION_REGION"}}</label>
-                <div>
-                    <div id="property-region-choose"></div>
-                </div>
-            </div>
-
-            <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-dbpg-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
-                <div>
-                    <input id='property-dbpg-desc' class="input" value="[Copied {{originDbpg.id}} from {{region}}]" type="text"/>
-                </div>
-            </div>
-
-        </section>
+        <div class="modal-text-major">Do you confirm to reset all parameters for {{name}} to their defaults?</div>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="duplicate" disabled>Duplicate</button>
+            <button class="btn btn-red do-action" data-action="reset">Reset</button>
             <button class="btn btn-silver cancel">Cancel</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Duplicating...</button>
+            <button class="btn" disabled>Resetting...</button>
         </div>
     </div>
 </div>

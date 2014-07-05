@@ -25,7 +25,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager.$el.find('[data-action="create"]').prop 'disabled', false
 
     selectRegion: ->
-      @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
+      @manager.$el.find('[data-action="reset"]').prop 'disabled', false
 
     renderManager: ()->
       @manager = new toolbar_modal @getModalOptions()
@@ -34,7 +34,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager.on 'action', @doAction, @
       @manager.on 'close', =>
         @manager.remove()
-      @manager.on 'checked', @processDuplicate, @
+      @manager.on 'checked', @processReset, @
 
       @manager.render()
       if not App.user.hasCredential()
@@ -42,11 +42,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         return false
       @initManager()
 
-    processDuplicate: ( event, checked ) ->
-      if checked.length is 1
-        @M$('[data-btn=duplicate]').prop 'disabled', false
+    processReset: ( event, checked ) ->
+      if checked.length is 1 and not @collection.findWhere( id: checked[0].data.id ).isDefault()
+        @M$('[data-btn=reset],[data-btn=edit]').prop 'disabled', false
       else
-        @M$('[data-btn=duplicate]').prop 'disabled', true
+        @M$('[data-btn=reset],[data-btn=edit]').prop 'disabled', true
 
     refresh: ->
       fetched = false
@@ -58,7 +58,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       data = @collection.toJSON()
       dataSet =
         items: data
-      console.log(data)
       content = template.content dataSet
       @manager?.setContent content
 
@@ -76,8 +75,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       tpl = template['slide_'+ which]
       slides = @getSlides()
       slides[which]?.call @, tpl, checked
-      $(".slidebox").css("height": "100%")
-      console.log(which)
+      if(which == "create")
+        $(".slidebox").css("height": "100%")
+      else
+        $(".slidebox").removeAttr("style")
+
+
 
     getSlides: ->
       'delete': (tpl, checked)->
@@ -91,23 +94,19 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           data.selectedCount = checkedAmount
         @manager.setSlide tpl data
       'create':(tpl)->
-        data ={}
         @families = CloudResources constant.RESTYPE.DBENGINE, Design.instance().get("region")
         that = @
         @families.fetch().then ->
             families = _.uniq _.pluck that.families.toJSON(), "DBParameterGroupFamily"
             data = families: families
             that.manager.setSlide tpl data
-            console.log($("#property-dbpg-name-create").size())
             $("#property-dbpg-name-create").keyup ()->
               disableCreate = not $(@).val()
               that.manager.$el.find('[data-action="create"]').prop 'disabled', disableCreate
 
 
-      'duplicate': (tpl, checked)->
-        data = {}
-        data.originDbpg = checked[0]
-        data.region = Design.instance().get('region')
+      'reset': (tpl, checked)->
+        data = name: checked[0].data.id
         if not checked
           return
         @manager.setSlide tpl data
@@ -134,16 +133,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       _.each checked, (data)=>
         @collection.findWhere(id: data.data.id).destroy().then afterDeleted, afterDeleted
 
-    do_duplicate: (invalid, checked)->
+    do_reset: (invalid, checked)->
       sourceDbpg = checked[0]
-      targetRegion = $('#property-region-choose').find('.selectbox .selection .manager-content-main').data('id')
-      if (@regions.indexOf targetRegion) < 0
-        return false
       @switchAction 'processing'
-      newName = @manager.$el.find('#property-dbpg-name').val()
-      description =  @manager.$el.find('#property-dbpg-desc').val()
-      afterDuplicate = @afterDuplicate.bind @
-      @collection.findWhere(id: sourceDbpg.data.id).copyTo( targetRegion, newName, description).then afterDuplicate, afterDuplicate
+      afterReset = @afterReset.bind @
+      @collection.findWhere(id: sourceDbpg.data.id).resetParams().then afterReset, afterReset
 
 
     afterCreated: (result)->
@@ -154,19 +148,15 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       notification 'info', "New RDS Parameter Group is created successfully!"
   #@collection.add newDbpg
 
-    afterDuplicate: (result)->
+    afterReset: (result)->
       currentRegion = Design.instance().get('region')
       @manager.cancel()
       if result.error
-        notification 'error', "Duplicate failed because of: "+ result.msg
+        notification 'error', "Reset failed because of: "+ result.msg
         return false
       #cancelselect && fetch
-      if result.attributes.region is currentRegion
-        @collection.add result
-        notification 'info', "New RDS Parameter Group is duplicated successfully!"
-      else
-        @initManager()
-        notification 'info', 'New RDS Parameter Group is duplicated to another region, you need to switch region to check the dbpg you just created.'
+      @collection.add result
+      notification 'info', "RDS Parameter Group is resetd successfully!"
 
     afterDeleted: (result)->
       deleteCount--
@@ -211,8 +201,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           name: ' Edit '
         }
         {
-          icon: 'duplicate'
-          type: 'duplicate'
+          icon: 'reset'
+          type: 'reset'
           disabled: true
           name: 'Reset'
         }

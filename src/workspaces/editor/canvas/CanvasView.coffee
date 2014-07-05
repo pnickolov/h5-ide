@@ -20,6 +20,8 @@ define [
       "click .icon-resize-up"    : "shrinkHeight"
       "click .icon-resize-right" : "expandWidth"
       "click .icon-resize-left"  : "shrinkWidth"
+      "click .canvasel"          : "selectItemByClick"
+      "click .line"              : "selectItemByClick"
 
     initialize : ( options )->
       @workspace = options.workspace
@@ -111,6 +113,8 @@ define [
       item = @getItem( @__selected.getAttribute("data-id") )
       item.select( @__selected )
       return
+
+    selectItemByClick : ( evt )-> @selectItem( evt.currentTarget ); false
 
     zoomOut : ()-> @zoom(  0.2 )
     zoomIn  : ()-> @zoom( -0.2 )

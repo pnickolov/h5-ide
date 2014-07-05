@@ -651,13 +651,13 @@
   .group-resizer.bottomright {
     cursor: nwse-resize; }
 
-.selected .node-background {
+.selected > .node-background {
   fill: #F2F8FF;
   stroke-width: 2;
   stroke: #659FFF; }
-.selected .node-label-name-bg {
+.selected > .node-label-name-bg {
   fill: #659FFF; }
-  .selected .node-label-name-bg ~ .node-label {
+  .selected > .node-label-name-bg ~ .node-label {
     fill: #fff; }
 
 .server-number-bg {
@@ -676,16 +676,35 @@
   cursor: pointer; }
 
 .group-asg {
-  stroke-width: 2;
   fill: #f6faf9;
-  stroke: #76d6ff;
   stroke-linejoin: round;
   stroke-dasharray: 6, 4;
   stroke-width: 2; }
 
 .asg-title {
-  fill: #83CBF9;
   stroke: none; }
+
+.asg-frame {
+  fill: #83CBF9;
+  stroke: #76d6ff; }
+  .selected .asg-frame {
+    fill: #049CDD;
+    stroke: #049CDD; }
+
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }
+
+.ExpandedAsg {
+  opacity: 0.5; }
+
+.prompt-text {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default; }
 
 /* port style */
 .port {
@@ -743,20 +762,6 @@
 .AWS-VPC-Subnet .group-label {
   fill: #999; }
 
-.ExpandedAsg {
-  opacity: 0.5; }
-
-.prompt_text {
-  fill: #16B4F9;
-  font-size: 12px;
-  cursor: default; }
-
-.asg-resource-dragger {
-  cursor: pointer;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab; }
-
 .line {
   cursor: pointer;
   stroke-linejoin: round;
@@ -765,6 +770,10 @@
   .line:hover {
     opacity: .8;
     stroke-width: 4px; }
+  .line.selected {
+    display: block !important;
+    opacity: 1 !important;
+    stroke-width: 4px !important; }
 
 .EniAttachment {
   stroke: #12CD4F; }
@@ -784,7 +793,7 @@
 .ElbAmiAsso {
   stroke: #0973f6; }
 
-.AWS-AutoScaling-LaunchConfiguration + .prompt_text {
+.AWS-AutoScaling-LaunchConfiguration + .prompt-text {
   display: none; }
 
 .SgRuleLine {

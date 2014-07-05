@@ -12,7 +12,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg = @canvas.svg
 
       svgEl = svg.group().add([
-        svg.use("expanded_asg")
+        svg.use("asg_frame")
         svg.plain("").move(4,14).classes('group-label')
       ]).attr({ "data-id" : @cid }).classes( 'canvasel group ExpandedAsg')
 
@@ -37,13 +37,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg = @canvas.svg
 
       svgEl = svg.group().add([
-        svg.use("expanded_asg")
+        svg.use("asg_frame").classes("asg-frame")
         svg.plain("").move(4,14).classes('group-label')
         # dragger
-        svg.image(MC.IMG_URL + 'ide/icon/asg-resource-dragger.png', 22, 21).x(109).classes("asg-resource-dragger tooltip").attr({
-          'data-tooltip' : 'Expand the group by drag-and-drop in other availability zone.'
-        })
-        svg.use("prompt_text").classes("prompt_text")
+        svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
+        svg.use("prompt_text").classes("prompt-text")
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel group AWS-AutoScaling-Group' )
 

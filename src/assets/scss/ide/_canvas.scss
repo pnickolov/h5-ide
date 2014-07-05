@@ -99,12 +99,12 @@
 }
 
 .selected {
-  .node-background {
+  > .node-background {
     fill: #F2F8FF;
     stroke-width: 2;
     stroke: #659FFF;
   }
-  .node-label-name-bg {
+  > .node-label-name-bg {
     fill:#659FFF;
     ~ .node-label {
       fill:#fff;
@@ -129,17 +129,39 @@
 }
 
 .group-asg {
-  stroke-width: 2;
   // fill: rgba(118, 214, 255, 0.05);
   fill: #f6faf9;
-  stroke: #76d6ff;
   stroke-linejoin: round;
   stroke-dasharray: 6, 4;
   stroke-width: 2;
 }
 .asg-title {
-  fill: #83CBF9;
   stroke: none;
+}
+.asg-frame {
+  fill: #83CBF9;
+  stroke: #76d6ff;
+  .selected & {
+    fill:   #049CDD;
+    stroke: #049CDD;
+  }
+}
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.ExpandedAsg {
+  opacity: 0.5;
+}
+
+.prompt-text {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default;
 }
 
 /* port style */
@@ -226,23 +248,6 @@
   }
 }
 
-.ExpandedAsg {
-  opacity: 0.5;
-}
-
-.prompt_text {
-  fill: #16B4F9;
-  font-size: 12px;
-  cursor: default;
-}
-
-.asg-resource-dragger {
-  cursor: pointer;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab;
-}
-
 .line {
   cursor: pointer;
   stroke-linejoin: round;
@@ -252,6 +257,12 @@
   &:hover {
     opacity: .8;
     stroke-width: 4px;
+  }
+
+  &.selected {
+    display      : block !important;
+    opacity      : 1 !important;
+    stroke-width : 4px !important;
   }
 }
 
@@ -280,7 +291,7 @@
 }
 
 .AWS-AutoScaling-LaunchConfiguration {
-  + .prompt_text {
+  + .prompt-text {
     display : none;
   }
 }

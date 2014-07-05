@@ -80,7 +80,10 @@
   position: absolute !important;
   width: 100%;
   top: 40px;
-  bottom: 0; }
+  bottom: 0;
+  height: auto; }
+  .OEPanelCenter .nano-pane {
+    opacity: 1; }
 
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap {
   right: 280px; }
@@ -580,7 +583,6 @@
 
 .svg_resizer {
   position: absolute;
-  z-index: 10;
   font-size: 16px;
   width: 32px;
   height: 32px;
@@ -740,6 +742,10 @@
   stroke: #C6C4C4; }
 .AWS-VPC-VPC .group-label {
   fill: #aaa; }
+.AWS-VPC-VPC.selected .group {
+  stroke: #C6C4C4;
+  fill: rgba(255, 255, 255, 0);
+  stroke-width: 5; }
 
 .AWS-EC2-AvailabilityZone .group {
   fill: rgba(252, 190, 23, 0.02);

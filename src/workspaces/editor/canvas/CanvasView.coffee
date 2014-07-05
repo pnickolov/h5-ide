@@ -6,7 +6,7 @@ define [
   "Design"
 
   "backbone"
-  "jquery"
+  "UI.nanoscroller"
   "svgjs"
 ], ( OpsEditorTpl, CanvasElement, CanvasManager, Design )->
 
@@ -36,12 +36,14 @@ define [
       @svg = SVG( @$el.find("svg")[0] )
       canvasSize = @size()
 
-      @$el.children(".canvas-view").css({
+      @__getCanvasView().css({
         width : canvasSize[0] * CanvasView.GRID_WIDTH
         height: canvasSize[1] * CanvasView.GRID_WIDTH
       })
 
       @__scale = 1
+
+      @$el.nanoScroller()
 
       @reload()
       return
@@ -50,6 +52,8 @@ define [
       svgEl.node.instance = svgEl
       $( @svg.node ).children(layer).append( svgEl.node )
       svgEl
+
+    __getCanvasView : ()-> @$el.children().children(".canvas-view")
 
     appendVpc    : ( svgEl )-> @__appendSvg(svgEl, ".layer_vpc")
     appendAz     : ( svgEl )-> @__appendSvg(svgEl, ".layer_az")
@@ -61,7 +65,7 @@ define [
 
     switchMode : ( mode )->
       console.assert( "stack app appedit".indexOf( mode ) >= 0 )
-      @$el.children(".canvas-view").removeClass("stack app appedit").addClass( mode )
+      @__getCanvasView().removeClass("stack app appedit").addClass( mode )
       return
 
     moveSelectedItem : ( deltaX, deltaY )->
@@ -130,11 +134,12 @@ define [
       realW = size[0] * CanvasView.GRID_WIDTH
       realH = size[1] * CanvasView.GRID_HEIGHT
 
-      @$el.children(".canvas-view").css({
+      @__getCanvasView().css({
         width  : size[0] * CanvasView.GRID_WIDTH  / scale
         height : size[1] * CanvasView.GRID_HEIGHT / scale
       })
       .attr("data-scale", scale)
+      .nanoScroller()
       .children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
 
     size  : ()-> @design.get("canvasSize")
@@ -150,7 +155,7 @@ define [
 
       size[ if dimension is "width" then 0 else 1 ] += delta
 
-      wrapper = @$el.children(".canvas-view")
+      wrapper = @__getCanvasView()
 
       realW = size[0] * CanvasView.GRID_WIDTH
       realH = size[1] * CanvasView.GRID_HEIGHT
@@ -173,7 +178,9 @@ define [
       wrapper.css({
         width  : realW / scale
         height : realH / scale
-      }).children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
+      })
+      .nanoScroller()
+      .children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
       return
 
     reload : ()->

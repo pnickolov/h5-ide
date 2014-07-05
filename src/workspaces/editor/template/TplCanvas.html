@@ -6,18 +6,14 @@
 	<nav class="OEPanelTop"></nav>
 	{{#unless noBottomPane}}<div class="OEPanelBottom"></div>{{/unless}}
 
-	<section class="OEPanelCenter scroll-wrap">
-		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-		<div class="scrollbar-horizontal-wrap"><div class="scrollbar-horizontal-thumb"></div></div>
-
-		<div class="scroll-content canvas-view">
+	<section class="OEPanelCenter nano"> <div class="nano-content">
+		<div class="canvas-view">
 			<button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
 			<button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
 			<button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
 			<button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
-
 			<svg width="100%" height="100%"></svg>
 		</div>
-	</section>
+	</div> </section>
 </div>
 </div>

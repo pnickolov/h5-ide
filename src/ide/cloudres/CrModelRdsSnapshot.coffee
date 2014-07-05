@@ -26,7 +26,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   AllocatedStorage     : 5
     #   MasterUsername       : awsmyuser
 
-    isComplete : ()-> @attributes.Status is "avaiable"
+    isComplete  : ()-> @attributes.Status is "avaiable"
+    isAutomated : ()-> @attributes.SnapshotType is "automated"
 
     doCreate : ()->
       self = @
@@ -45,17 +46,48 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
 
         console.log "Created DbSnapshot resource", self
 
-        # Ask collection to update the status for this model.
-        if not self.isComplete()
-          self.getCollection().startPollingStatus()
-
         self
 
     set : ( key )->
       if key.PercentProgress
         key.PercentProgress = parseInt( key.PercentProgress, 10 ) || 0
 
+      if key.Status is "creating"
+        @startPollingStatus()
+
       Backbone.Model.prototype.set.apply this, arguments
+      return
+
+    startPollingStatus : ()->
+      if @__polling then return
+      @__polling = setTimeout @__pollingStatus, 2000
+      return
+
+    stopPollingStatus : ()->
+      clearTimeout @__polling
+      @__polling = null
+      return
+
+    __pollingStatus : ()->
+      self = @
+      ApiRequest("rds_snap_DescribeDBSnapshots", {
+        region_name : @getCollection().region()
+        snapshot_id : @get("DBSnapshotIdentifier")
+      }).then ( res )->
+        self.__polling = null
+        self.__parsePolling( res )
+        return
+      , ()->
+        self.__polling = null
+        self.startPollingStatus()
+
+    __parsePolling : ( res )->
+      res = res.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots.DBSnapshot
+
+      @set {
+        PercentProgress : res.PercentProgress
+        Status : res.Status
+      }
       return
 
     # copyTo : ( destRegion, newName, description )->

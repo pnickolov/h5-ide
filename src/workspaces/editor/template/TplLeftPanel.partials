@@ -124,7 +124,7 @@
 
 <!-- {{snapshot}} -->
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
+<li class="resource-item bubble resource-icon-ebs-snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
 </li>{{/with}}{{/each}}
 
@@ -138,7 +138,7 @@
 
 <!-- {{rds_snapshot}} -->
 {{#each this}}
-<li class="resource-item dbsnapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}" }' data-bubble-template="bubbleDBSnapshotInfo" data-bubble-data='{"AllocatedStorage":"{{AllocatedStorage}}","AvailabilityZone":"{{AvailabilityZone}}","DBInstanceIdentifier":"{{DBInstanceIdentifier}}","DBSnapshotIdentifier":"{{DBSnapshotIdentifier}}","Engine":"{{Engine}}","EngineVersion":"{{EngineVersion}}","InstanceCreateTime":"{{InstanceCreateTime}}","Iops":"{{Iops}}","LicenseModel":"{{LicenseModel}}","MasterUsername":"{{MasterUsername}}","OptionGroupName":"{{OptionGroupName}}","Port":"{{Port}}","SnapshotCreateTime":"{{SnapshotCreateTime}}","SnapshotType":"{{SnapshotType}}","Status":"{{Status}}","VpcId":"{{VpcId}}"}'>
+<li class="resource-item dbsnapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
   <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
   <span class="rds-snapshot-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
 </li>
@@ -157,3 +157,7 @@
     <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
   </div>
 <div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>
+
+<!-- {{resourcePanelBubble}} -->
+<div class="bubble-head">{{id}}</div>
+<dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

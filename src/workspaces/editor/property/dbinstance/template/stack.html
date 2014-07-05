@@ -159,7 +159,7 @@
 
         <section class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" data-bind="true">
             <label class="left">Backup Retention Period</label>
-            <input class="input property-input-left" title="hours" id="property-dbinstance-backup-period" type="text">
+            <input class="input property-input-left" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text">
             <label class="property-label-right" for="property-dbinstance-backup-period">days</label>
         </section>
 
@@ -178,18 +178,18 @@
             <label class="property-input-row-head">Start Time(UTC)</label>
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-backup-window-start-hour" >Hour</label>
-                <input class="input"  type="text" id="property-dbinstance-backup-window-start-hour" data-ignore="true" data-required-rollback="true"/>
+                <input class="input" type="text" id="property-dbinstance-backup-window-start-hour" value="{{backup.startHour}}" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-backup-window-start-minute" >Minute</label>
-                <input class="input"  type="text" id="property-dbinstance-backup-window-start-minute" data-ignore="true" data-required-rollback="true"/>
+                <input class="input"  type="text" id="property-dbinstance-backup-window-start-minute" value="{{backup.startMin}}" data-ignore="true" data-required-rollback="true"/>
             </div>
         </section>
 
         <section class="property-control-group" data-bind="true">
             <label class="left">Duration</label>
-            <input class="input property-input-left" title="hours" id="property-dbinstance-backup-window-duration" type="text">
-            <label class="property-label-right" for="property-dbinstance-backup-period">hours</label>
+            <input class="input property-input-left" title="hours" value="{{backup.duration}}" id="property-dbinstance-backup-window-duration" type="text">
+            <label class="property-label-right" for="property-dbinstance-backup-window-duration">hours</label>
         </section>
 
     </div>
@@ -214,20 +214,20 @@
                 <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
                     <div class="selection">Monday</div>
                     <ul class="dropdown" tabindex="-1">
-                        <li class="item selected data-id="mon">Monday</li>
-                        <li class="item data-id="tue">Tuesday</li>
-                        <li class="item data-id="wed">Wednesday</li>
-                        <li class="item data-id="thu">Thursday</li>
-                        <li class="item data-id="fri">Friday</li>
-                        <li class="item data-id="sat">Saturday</li>
-                        <li class="item data-id="sun">Sunday</li>
+                        <li class="item" data-id="mon">Monday</li>
+                        <li class="item" data-id="tue">Tuesday</li>
+                        <li class="item" data-id="wed">Wednesday</li>
+                        <li class="item" data-id="thu">Thursday</li>
+                        <li class="item" data-id="fri">Friday</li>
+                        <li class="item" data-id="sat">Saturday</li>
+                        <li class="item" data-id="sun">Sunday</li>
                     </ul>
                 </div>
             </div>
             <div class="property-input-row">
                 <label class="left">Duration</label>
                 <div class="ranged-number-input">
-                    <input class="input" title="hours" id="property-dbinstance-maintenance-window-duration" type="text">
+                    <input class="input" title="hours" value="{{maintenance.duration}}" id="property-dbinstance-maintenance-window-duration" type="text">
                 </div>
             </div>
         </section>
@@ -236,11 +236,11 @@
             <label class="property-input-row-head">Start Time(UTC)</label>
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-maintenance-window-start-hour" >Hour</label>
-                <input class="input"  type="text" id="property-dbinstance-maintenance-window-start-hour" data-ignore="true" data-required-rollback="true"/>
+                <input class="input" type="text" id="property-dbinstance-maintenance-window-start-hour" value="{{maintenance.startHour}}" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-maintenance-window-start-minute" >Minute</label>
-                <input class="input"  type="text" id="property-dbinstance-maintenance-window-start-minute" data-ignore="true" data-required-rollback="true"/>
+                <input class="input" type="text" id="property-dbinstance-maintenance-window-start-minute" value="{{maintenance.startMin}}" data-ignore="true" data-required-rollback="true"/>
             </div>
         </section>
 

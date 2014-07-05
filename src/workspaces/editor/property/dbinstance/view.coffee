@@ -31,54 +31,69 @@ define [ '../base/view'
             'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
             'change #property-dbinstance-backup-window-duration': 'changeBackupTime'
 
-            'change #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
+            'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
 
         _getTimeData: (timeStr) ->
 
-            timeAry = timeStr.split('-')
-            startTimeStr = timeAry[0]
-            endTimeStr = timeAry[1]
+            try
 
-            startTimeAry = startTimeStr.split(':')
-            endTimeAry = endTimeStr.split(':')
+                timeAry = timeStr.split('-')
+                startTimeStr = timeAry[0]
+                endTimeStr = timeAry[1]
 
-            # for mon:hour:min
-            if startTimeAry.length is 3
+                startTimeAry = startTimeStr.split(':')
+                endTimeAry = endTimeStr.split(':')
 
-                startWeekStr = startTimeAry[0]
-                endWeekStr = endTimeAry[0]
+                # for mon:hour:min
+                if startTimeAry.length is 3
 
-                startTimeAry = startTimeAry.slice(1)
-                endTimeAry = endTimeAry.slice(1)
+                    startWeekStr = startTimeAry[0]
+                    endWeekStr = endTimeAry[0]
 
-            startHour = Number(startTimeAry[0])
-            startMin = Number(startTimeAry[1])
+                    startTimeAry = startTimeAry.slice(1)
+                    endTimeAry = endTimeAry.slice(1)
 
-            endHour = Number(endTimeAry[0])
-            endMin = Number(endTimeAry[1])
+                startHour = Number(startTimeAry[0])
+                startMin = Number(startTimeAry[1])
 
-            # get duration
-            start = new Date()
-            end = new Date(start)
-            start.setHours(startHour)
-            start.setMinutes(startMin)
-            end.setHours(endHour)
-            end.setMinutes(endMin)
+                endHour = Number(endTimeAry[0])
+                endMin = Number(endTimeAry[1])
 
-            # duration is hour
-            duration = (end - start)/1000/60/60
+                # get duration
+                start = new Date()
+                end = new Date(start)
+                start.setHours(startHour)
+                start.setMinutes(startMin)
+                end.setHours(endHour)
+                end.setMinutes(endMin)
 
-            return {
-                startHour: startHour,
-                startMin: startMin,
-                duration: duration,
-                startWeek: startWeekStr
-            }
+                # duration is hour
+                duration = (end - start)/1000/60/60
+                if duration < 0
+                    duration = 24 + duration
+
+                return {
+                    startHour: startHour,
+                    startMin: startMin,
+                    duration: duration,
+                    startWeek: startWeekStr
+                }
+
+            catch err
+
+                return null
 
         _getTimeStr: (startHour, startMin, duration, startWeek) ->
+
+            addZero = (num) ->
+
+                numStr = String(num)
+                if numStr.length is 1
+                    numStr = '0' + numStr
+                return numStr
 
             start = new Date()
             start.setHours(startHour)
@@ -86,6 +101,12 @@ define [ '../base/view'
             end = new Date(start.getTime() + 1000 * 60 * 60 * duration)
             endHour = end.getHours()
             endMin = end.getMinutes()
+
+            # add zero on number
+            startHour = addZero(startHour)
+            startMin = addZero(startMin)
+            endHour = addZero(endHour)
+            endMin = addZero(endMin)
 
             startTimeStr = "#{startHour}:#{startMin}"
             endTimeStr = "#{endHour}:#{endMin}"
@@ -101,21 +122,38 @@ define [ '../base/view'
 
             hour = Number($('#property-dbinstance-backup-window-start-hour').val())
             min = Number($('#property-dbinstance-backup-window-start-minute').val())
-            duration = Number($('#property-dbinstance-backup-period').val())
+            duration = Number($('#property-dbinstance-backup-window-duration').val())
             timeStr = @_getTimeStr(hour, min, duration)
             @model.set('preferredBackupWindow', timeStr)
 
         _setMaintenanceTime: () ->
 
-            hour = Number($('#property-dbinstance-backup-window-start-hour').val())
-            min = Number($('#property-dbinstance-backup-window-start-minute').val())
-            duration = Number($('#property-dbinstance-backup-period').val())
+            hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
+            min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
+            duration = Number($('#property-dbinstance-maintenance-window-duration').val())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
             timeStr = @_getTimeStr(hour, min, duration, week)
             @model.set('preferredMaintenanceWindow', timeStr)
 
         render: () ->
-            @$el.html template @model.toJSON()
+
+            attr = @model.toJSON()
+
+            backupTime = @_getTimeData(attr.preferredBackupWindow) or {}
+            maintenanceTime = @_getTimeData(attr.preferredMaintenanceWindow) or {}
+
+            attr.backup = backupTime
+            attr.maintenance = maintenanceTime
+
+            @$el.html template attr
+
+            # set Start Day week selection
+            weekStr = maintenanceTime.startWeek
+            if weekStr
+                $item = $('#property-dbinstance-maintenance-window-start-day-select').find(".item[data-id='#{weekStr}']")
+                $item.addClass('selected')
+                $('#property-dbinstance-maintenance-window-start-day-select').find('.selection').text($item.text())
+
             @model.get 'name'
 
         changeInstanceName: (event) ->
@@ -190,7 +228,7 @@ define [ '../base/view'
                 $('#property-dbinstance-backup-period').val('1')
             else
                 @model.set 'backupRetentionPeriod', 0
-                $('#property-dbinstance-backup-period').val('')
+                $('#property-dbinstance-backup-period').val('0')
 
         changeBackupPeriod: (event) ->
 

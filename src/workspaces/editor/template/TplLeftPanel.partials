@@ -139,7 +139,7 @@
 <!-- {{rds_snapshot}} -->
 {{#each this}}
 <li class="resource-item dbsnapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}" }' data-bubble-template="bubbleDBSnapshotInfo" data-bubble-data='{"AllocatedStorage":"{{AllocatedStorage}}","AvailabilityZone":"{{AvailabilityZone}}","DBInstanceIdentifier":"{{DBInstanceIdentifier}}","DBSnapshotIdentifier":"{{DBSnapshotIdentifier}}","Engine":"{{Engine}}","EngineVersion":"{{EngineVersion}}","InstanceCreateTime":"{{InstanceCreateTime}}","Iops":"{{Iops}}","LicenseModel":"{{LicenseModel}}","MasterUsername":"{{MasterUsername}}","OptionGroupName":"{{OptionGroupName}}","Port":"{{Port}}","SnapshotCreateTime":"{{SnapshotCreateTime}}","SnapshotType":"{{SnapshotType}}","Status":"{{Status}}","VpcId":"{{VpcId}}"}'>
-  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{icon}}.png" width="39" height="27"></div>
+  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
   <span class="rds-snapshot-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
 </li>
 {{/each}}

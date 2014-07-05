@@ -179,9 +179,6 @@ define [
 
       res
 
-    #parseExternalData :( res ) ->
-      #TODO map attribute
-
     startPollingStatus : ()->
       if @__polling then return
       @__polling = setTimeout @__pollingStatus, 2000

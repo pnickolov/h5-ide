@@ -10,6 +10,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       width    : 9
       height   : 9
 
+
     instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
 
     type : constant.RESTYPE.DBINSTANCE
@@ -21,6 +22,20 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
+      if option and option.createByUser
+        # Default Sg
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+        SgAsso = Design.modelClassForType "SgAsso"
+        new SgAsso defaultSg, @
+
+        # Default Values
+        @set {
+          license         : @getDefaultLicense()
+          engineVersion   : @getDefaultVersion()
+          instanceClass   : @getDefaultInstanceClass()
+        }
+
+
       if attr.sourceDBInstance
         #TODO
         @set 'replicaId', attr.sourceDBInstance
@@ -40,18 +55,22 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       null
 
-    getRdsInstances: -> App.model.getRdsData(@design().region()).instance[@get 'engine']
-    getDefaultLicense: -> _.first(@getDefaultSpecifications()).license
-    getDefaultVersion: -> _.first(@getDefaultSpecifications()).versions[0].version
+    getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
+
+    getDefaultLicense: -> @getSpecifications()?[0].license
+
+    getDefaultVersion: -> @getSpecifications()?[0].versions[0].version
 
     getDefaultInstanceClass: ->
+      if not @getSpecifications() then return ''
+
       consoleDefault = 'db.m3.xlarge'
-      instanceClasses = _.pluck @getDefaultSpecifications()[0].versions[0].instanceClasses, 'instanceClass'
+      instanceClasses = _.pluck @getSpecifications()[0].versions[0].instanceClasses, 'instanceClass'
 
       if consoleDefault in instanceClasses
         consoleDefault
       else
-        _.first(@getDefaultSpecifications()).versions[0].instanceClasses[0].instanceClass
+        _.first(@getSpecifications()).versions[0].instanceClasses[0].instanceClass
 
 
     getSpecifications: ->
@@ -59,6 +78,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       that = @
       instances = @getRdsInstances()
+
+      if not instances then return null
+
       spec = {}
       specArr = []
 
@@ -117,16 +139,16 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
-          CharacterSetName                      : '' #@get 'characterSetName'
-          DBInstanceClass                       : 'db.t1.micro' # @get 'instanceClass'
+          CharacterSetName                      : @get 'characterSetName'
+          DBInstanceClass                       : @get 'instanceClass'
           ReadReplicaDBInstanceIdentifiers      : '' #@get 'replicas'
 
           DBName                                : @get 'dbName'
           Endpoint:
             Port: @get 'port'
           Engine                                : @get 'engine'
-          EngineVersion                         : '5.6.17' #@get 'engineVersion'
-          LicenseModel                          : 'general-public-license' #@get 'license'
+          EngineVersion                         : @get 'engineVersion'
+          LicenseModel                          : @get 'license'
           MasterUsername                        : @get 'username'
           MasterUserPassword                    : @get 'password'
 

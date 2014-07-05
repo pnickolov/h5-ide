@@ -80,6 +80,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
     getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
     getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
+    getRdsData: ( awsRegion ) -> (@__appdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
 
 
@@ -108,6 +109,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
             price              : i.price
             osFamilyConfig     : i.instance_types.sort
             instanceTypeConfig : instanceTypeConfig
+            rds                : i.instance_types.rds
           }
 
           # Format instance type info.

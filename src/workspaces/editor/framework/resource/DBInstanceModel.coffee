@@ -24,6 +24,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         SgAsso = Design.modelClassForType "SgAsso"
         new SgAsso defaultSg, @
 
+
+
+
       if attr.sourceDBInstance
         #TODO
         @set 'replicaId', attr.sourceDBInstance

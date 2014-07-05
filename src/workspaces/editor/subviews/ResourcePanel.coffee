@@ -679,6 +679,8 @@ define [
               component_size[1] + 2
             )
             node_option.groupUId = match_place.target
+            coordinate.x = Math.round( coordinate.x + 1 )
+            coordinate.y = Math.round( coordinate.y + 1 )
             new_node_id = $canvas.add(target_type, node_option, coordinate)
             if !($canvas.hasVPC() && target_type is constant.RESTYPE.AZ )
               MC.canvas.select(new_node_id)

@@ -48,7 +48,7 @@ var constant_data = {
 
 	GROUP_WEIGHT:
 	{
-		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
+		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group', 'AWS.RDS.SubnetGroup'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
 		'AWS.VPC.Subnet': ['AWS.AutoScaling.Group'],
 		'AWS.AutoScaling.Group': []

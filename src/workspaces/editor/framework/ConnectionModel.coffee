@@ -221,21 +221,9 @@ define [ "./ResourceModel", "Design" ], ( ResourceModel, Design )->
       # Most of the connection don't have to implement serialize()
       null
 
-    getCanvasView : ()->
-      if not @isVisual() then return null
-
-      if @__view is undefined
-        @__view = CanvasElement.createView( @ceType or "Line", @ )
-      @__view
-
     isVisual : ()-> !!@portDefs
 
-    draw : ( isCreate )->
-      if not Design.instance().shouldDraw() then return
-      v = @getCanvasView()
-      if v
-        v.draw( isCreate is true )
-      null
+    draw : ()-> console.warn "ConnectionModel.draw() is deprecated", @
 
   }, {
 

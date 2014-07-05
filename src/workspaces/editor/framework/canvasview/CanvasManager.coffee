@@ -4,7 +4,7 @@ define ['CloudResources'], (CloudResources)->
   CanvasManager = {
 
     removeClass : ( element, theClass )->
-      if element.length
+      if element.length or element.length is 0
         element = element[0]
       if not element
         return this
@@ -18,7 +18,7 @@ define ['CloudResources'], (CloudResources)->
       return this
 
     addClass : ( element, theClass )->
-      if element.length
+      if element.length or element.length is 0
         element = element[0]
       if not element
         return this

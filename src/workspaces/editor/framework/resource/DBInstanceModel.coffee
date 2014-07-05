@@ -21,13 +21,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
-      if option and option.createByUser
-        # Default Sg
-        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
-        SgAsso = Design.modelClassForType "SgAsso"
-        new SgAsso defaultSg, @
-
-
       if attr.sourceDBInstance
         #TODO
         @set 'replicaId', attr.sourceDBInstance
@@ -36,7 +29,14 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       if attr.snapshotId
         @set 'snapshotId', attr.snapshotId
 
+      # Draw before creating SgAsso
       @draw true
+
+      if option and option.createByUser
+        # Default Sg
+        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+        SgAsso = Design.modelClassForType "SgAsso"
+        new SgAsso defaultSg, @
 
       null
 

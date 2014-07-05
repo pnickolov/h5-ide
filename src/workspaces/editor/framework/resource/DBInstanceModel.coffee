@@ -144,7 +144,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           PubliclyAccessible                    : @get 'accessible'
 
-          DBSubnetGroupName                     : @parent().get 'name'
+          DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroups                     : sgArray
 
 

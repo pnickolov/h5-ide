@@ -6,6 +6,7 @@
 // 3. Every SVG Object's trans object will only be generated when accessed.
 // 4. Does not set svg attributes when creating the SVG doc
 // 5. SvgElement.classes() can set classes.
+// 6. Removed Parser related stuff. ( SVG.PointArray and SVG.PathArray )
 
 define([], function() {
 
@@ -13,8 +14,8 @@ define([], function() {
     if (SVG.supported) {
       element = new SVG.Doc(element)
 
-      if (!SVG.parser)
-        SVG.prepare(element)
+      // if (!SVG.parser)
+      //   SVG.prepare(element)
 
       return element
     }
@@ -2882,7 +2883,8 @@ define([], function() {
   , extend: {
       // Plot new poly points
       plot: function(p) {
-        return this.attr('d', (this.array = new SVG.PathArray(p, [['M', 0, 0]])))
+        // return this.attr('d', (this.array = new SVG.PathArray(p, [['M', 0, 0]])))
+         return this.attr('d', p)
       }
       // Move by left top corner
     , move: function(x, y) {

@@ -12,7 +12,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svg = @canvas.svg
 
       svgEl = svg.group().add([
-        svg.use("asg_frame")
+        svg.use("asg_frame").classes("asg-frame")
         svg.plain("").move(4,14).classes('group-label')
       ]).attr({ "data-id" : @cid }).classes( 'canvasel group ExpandedAsg')
 

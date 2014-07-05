@@ -700,7 +700,7 @@
       }
     },
     "$DBSubnetGroup0": {
-      "type": "AWS.RDS.SubnetGroup",
+      "type": "AWS.RDS.DBSubnetGroup",
       "name": "",
       "uid": "",
       "resource": {

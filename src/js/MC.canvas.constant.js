@@ -26,7 +26,7 @@ var constant_data = {
 		'AWS.VPC.VPC': [60, 60], //[width, height]
 		'AWS.EC2.AvailabilityZone': [21, 21],
 		'AWS.VPC.Subnet': [17, 17],
-		'AWS.RDS.SubnetGroup': [17, 17],
+		'AWS.RDS.DBSubnetGroup': [17, 17],
 		'AWS.AutoScaling.Group' : [13, 13]
 	},
 
@@ -48,7 +48,7 @@ var constant_data = {
 
 	GROUP_WEIGHT:
 	{
-		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group', 'AWS.RDS.SubnetGroup'],
+		'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.VPC.Subnet', 'AWS.AutoScaling.Group', 'AWS.RDS.DBSubnetGroup'],
 		'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet', 'AWS.AutoScaling.Group'],
 		'AWS.VPC.Subnet': ['AWS.AutoScaling.Group'],
 		'AWS.AutoScaling.Group': []
@@ -69,9 +69,9 @@ var constant_data = {
 		'AWS.VPC.Subnet': ['AWS.EC2.AvailabilityZone'],
 		'AWS.VPC.VPC': ['Canvas'],
 		'AWS.AutoScaling.Group' : ['AWS.VPC.Subnet'],
-		'AWS.RDS.SubnetGroup': ['AWS.VPC.VPC'],
-		'AWS.RDS.DBInstance': ['AWS.RDS.SubnetGroup'],
-		'AWS.RDS.Snapshot': ['AWS.RDS.SubnetGroup']
+		'AWS.RDS.DBSubnetGroup': ['AWS.VPC.VPC'],
+		'AWS.RDS.DBInstance': ['AWS.RDS.DBSubnetGroup'],
+		'AWS.RDS.Snapshot': ['AWS.RDS.DBSubnetGroup']
 	}
 };
 

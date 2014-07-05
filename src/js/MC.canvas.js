@@ -4722,7 +4722,7 @@ MC.canvas.analysis = function ()
 				'AWS.AutoScaling.Group',
 				'AWS.VPC.NetworkInterface'
 			],
-			'AWS.RDS.SubnetGroup': ['AWS.RDS.DBInstance'],
+			'AWS.RDS.DBSubnetGroup': ['AWS.RDS.DBInstance'],
 			'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
 		},
 
@@ -4736,7 +4736,7 @@ MC.canvas.analysis = function ()
 			'AWS.VPC.VPC': [60, 60],
 			'AWS.EC2.AvailabilityZone': [17, 17],
 			'AWS.VPC.Subnet': [15, 15],
-			'AWS.RDS.SubnetGroup': [15, 15],
+			'AWS.RDS.DBSubnetGroup': [15, 15],
 			'AWS.AutoScaling.Group' : [13, 13]
 		},
 

@@ -102,7 +102,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       sgArray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
       component =
-        name : @get("instanceId")
+        name : @get("name")
         type : @type
         uid  : @id
         resource :
@@ -166,7 +166,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       model = new Model({
 
         id     : data.uid
-        name   : data.resource.DBInstanceIdentifier
+        name   : data.name
         appId  : data.resource.CreatedBy
 
         instanceId                : data.resource.DBInstanceIdentifier

@@ -5,24 +5,24 @@
   min-height : 100%;
   background : #fff image-url('ide/grid_x1.png');
 
-  &.zoomlevel_1_2 { background-image : image-url('ide/grid_x1.2.png'); }
-  &.zoomlevel_1_4 { background-image : image-url('ide/grid_x1.4.png'); }
-  &.zoomlevel_1_6 { background-image : image-url('ide/grid_x1.6.png'); }
+  &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }
+  &[data-scale="1.4"] { background-image : image-url('ide/grid_x1.4.png'); }
+  &[data-scale="1.6"] { background-image : image-url('ide/grid_x1.6.png'); }
 
   @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
     & {
       background-image : image-url('ide/grid_x1@2x.png');
       background-size  : 80px 80px;
     }
-    &.zoomlevel_1_2 {
+    &[data-scale="1.2"] {
       background-image : image-url('ide/grid_x1.2@2x.png');
       background-size  : 64px 64px;
     }
-    &.zoomlevel_1_4 {
+    &[data-scale="1.4"] {
       background-image : image-url('ide/grid_x1.4@2x.png');
       background-size  : 48px 48px;
     }
-    &.zoomlevel_1_6 {
+    &[data-scale="1.6"] {
       background-image : image-url('ide/grid_x1.6@2x.png');
       background-size  : 32px 32px;
     }
@@ -106,9 +106,9 @@
   }
   .node-label-name-bg {
     fill:#659FFF;
-  }
-  .node-label {
-    fill:#fff;
+    ~ .node-label {
+      fill:#fff;
+    }
   }
 }
 

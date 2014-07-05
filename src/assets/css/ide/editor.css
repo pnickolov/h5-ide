@@ -558,23 +558,23 @@
   /* A hack to make sure #canvas_body.scrollHeight is correct. */
   min-height: 100%;
   background: white url('/assets/images/ide/grid_x1.png'); }
-  .canvas-view.zoomlevel_1_2 {
+  .canvas-view[data-scale="1.2"] {
     background-image: url('/assets/images/ide/grid_x1.2.png'); }
-  .canvas-view.zoomlevel_1_4 {
+  .canvas-view[data-scale="1.4"] {
     background-image: url('/assets/images/ide/grid_x1.4.png'); }
-  .canvas-view.zoomlevel_1_6 {
+  .canvas-view[data-scale="1.6"] {
     background-image: url('/assets/images/ide/grid_x1.6.png'); }
   @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
     .canvas-view {
       background-image: url('/assets/images/ide/grid_x1@2x.png');
       background-size: 80px 80px; }
-    .canvas-view.zoomlevel_1_2 {
+    .canvas-view[data-scale="1.2"] {
       background-image: url('/assets/images/ide/grid_x1.2@2x.png');
       background-size: 64px 64px; }
-    .canvas-view.zoomlevel_1_4 {
+    .canvas-view[data-scale="1.4"] {
       background-image: url('/assets/images/ide/grid_x1.4@2x.png');
       background-size: 48px 48px; }
-    .canvas-view.zoomlevel_1_6 {
+    .canvas-view[data-scale="1.6"] {
       background-image: url('/assets/images/ide/grid_x1.6@2x.png');
       background-size: 32px 32px; } }
 
@@ -657,8 +657,8 @@
   stroke: #659FFF; }
 .selected .node-label-name-bg {
   fill: #659FFF; }
-.selected .node-label {
-  fill: #fff; }
+  .selected .node-label-name-bg ~ .node-label {
+    fill: #fff; }
 
 .server-number-bg {
   stroke-width: 0;

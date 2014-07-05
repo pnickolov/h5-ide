@@ -70,7 +70,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
             'data-alias'   : 'instance-sg-right'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
-        ]).classes("AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
+        ]).classes("canvasel AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
         if isOriginalAsg
           svgEl.add([

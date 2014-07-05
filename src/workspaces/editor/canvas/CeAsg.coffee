@@ -14,7 +14,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svgEl = svg.group().add([
         svg.use("expanded_asg")
         svg.plain("").move(4,14).classes('group-label')
-      ]).attr({ "data-id" : @cid }).classes( 'dragable ExpandedAsg')
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel group ExpandedAsg')
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -45,7 +45,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         })
         svg.use("prompt_text").classes("prompt_text")
 
-      ]).attr({ "data-id" : @cid }).classes( 'dragable AWS-AutoScaling-Group' )
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel group AWS-AutoScaling-Group' )
 
       @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()

@@ -518,20 +518,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 </article>
 
-<!-- {{canvasOpConfirm}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{{content}}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="canvas-op-confirm" class="btn modal-close btn-red">{{i18n 'CFM_BTN_DELETE'}}</button>
-		<button class="btn modal-close btn-silver">{{i18n 'CFM_BTN_CANCEL'}}</button>
-	</div>
-</div>
-
 <!-- {{propertyIpList}} -->
 {{#each this}}
 <li class="input-ip-item">

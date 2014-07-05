@@ -1,5 +1,5 @@
 
-define [ "backbone", "svgjs" ], ()->
+define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Modal )->
 
   CanvasView = null
 
@@ -119,7 +119,7 @@ define [ "backbone", "svgjs" ], ()->
       el.add([
         svg.rect(width, height).radius(5).classes("node-background")
         svg.image( MC.IMG_URL + option.image, option.imageW, option.imageH ).move( option.imageX, option.imageY )
-      ]).attr({ "data-id" : @cid }).classes( 'dragable ' + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\./g, "-") )
 
       if option.labelBg
         el.add( svg.use("label_path").classes("node-label-name-bg") )
@@ -168,7 +168,66 @@ define [ "backbone", "svgjs" ], ()->
         svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottomright")
 
         svg.text("").move(5,15).classes("group-label")
-      ]).attr({ "data-id" : @cid }).classes("dragable " + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
+
+    children : ()->
+      if not @model.node_group
+        return []
+
+      canvas = @canvas
+      @model.children().map ( childModel )->
+        @canvas.getItem( childModel.id )
+
+    # Canvas Interaction
+    select  : ( selectedDomElement )->
+
+    destroy : ( selectedDomElement )->
+      if @model.isRemoved()
+        @$el.remove()
+        @$el = $()
+        return
+
+      canvas = @canvas
+      result = @isDestroyable()
+      model  = @model
+      name   = model.get("name")
+
+      # Ask user to confirm to delete an non-empty group
+      if result is true and model.node_group and model.children().length > 0
+        result = sprintf lang.ide.CVS_CFM_DEL_GROUP, name
+
+      if _.isString( result )
+        # Confirmation
+        modal = new Modal {
+          title     : sprintf lang.ide.CVS_CFM_DEL, name
+          template  : result
+          confirm   : { text : lang.ide.CFM_BTN_DELETE, color : "red" }
+          onConfirm : ()->
+            model.remove()
+            modal.close()
+            return
+        }
+
+      else if result.error
+        # Error
+        notification "error", result.error
+
+      else if result is true
+        # Do remove
+        model.remove()
+      return
+
+    isDestroyable : ( selectedDomElement )->
+      result = @model.isRemovable()
+      if result isnt true then return result
+
+      if @model.node_group
+        for ch in @children()
+          result = ch.isDestroyable()
+          if result isnt true
+            break
+
+      result
 
   }, {
 

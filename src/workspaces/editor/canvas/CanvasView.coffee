@@ -2,12 +2,13 @@
 define [
   "../template/TplOpsEditor"
   "./CanvasElement"
+  "CanvasManager"
   "Design"
 
   "backbone"
   "jquery"
   "svgjs"
-], ( OpsEditorTpl, CanvasElement, Design )->
+], ( OpsEditorTpl, CanvasElement, CanvasManager, Design )->
 
   # Insert svg defs template.
   $( OpsEditorTpl.svgDefs() ).appendTo("body")
@@ -62,9 +63,49 @@ define [
       return
 
     moveSelectItem : (keycode)->
+
     delSelectItem  : ()->
+      if not @__selected then return
+      @deleteItem( @__selected.getAttribute("data-id") )
+
+    deleteItem : ( itemOrId )->
+      if _.isString( itemOrId )
+        itemOrId = @getItem( itemOrId )
+
+      if not itemOrId then return
+      itemOrId.destroy()
+
     selectPrevItem : ()->
+      nodes =  $( @svg.node ).find(".canvasel:not(.group)")
+      idx = if @__selected then [].indexOf.call( nodes, @__selected ) - 1 else null
+
+      if idx is null or idx < 0
+        idx = nodes.length - 1
+
+      @selectItem nodes[ idx ]
+
     selectNextItem : ()->
+      nodes =  $( @svg.node ).find(".canvasel:not(.group)")
+      idx = if @__selected then [].indexOf.call( nodes, @__selected ) + 1 else null
+
+      if idx is null or idx >= nodes.length
+        idx = 0
+
+      @selectItem nodes[ idx ]
+
+    selectItem : ( elementOrId )->
+      if @__selected
+        CanvasManager.removeClass @__selected, "selected"
+        @__selected = null
+
+      if _.isString( elementOrId )
+        elementOrId = @getItem( elementOrId ).$el[0]
+
+      @__selected = elementOrId
+      CanvasManager.addClass @__selected, "selected"
+      item = @getItem( @__selected.getAttribute("data-id") )
+      item.select( @__selected )
+      return
 
     zoomOut : ()-> @zoom(  0.2 )
     zoomIn  : ()-> @zoom( -0.2 )
@@ -80,17 +121,12 @@ define [
       realW = size[0] * CanvasView.GRID_WIDTH
       realH = size[1] * CanvasView.GRID_HEIGHT
 
-      wrapper = @$el.children(".canvas-view")
-      wrapper.css({
+      @$el.children(".canvas-view").css({
         width  : size[0] * CanvasView.GRID_WIDTH  / scale
         height : size[1] * CanvasView.GRID_HEIGHT / scale
-      }).children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
-
-      newClass = wrapper.attr("class").replace(/zoomlevel_[^\s]+\s?/g, "")
-      if scale isnt 1
-        newClass += (" zoomlevel_" + scale).replace(".", "_")
-      wrapper.attr("class", newClass)
-
+      })
+      .attr("data-scale", scale)
+      .children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
 
     size  : ()-> @design.get("canvasSize")
     scale : ()-> @__scale
@@ -187,6 +223,12 @@ define [
 
     removeItem : ( resourceModel )->
       item = @getItem( resourceModel.id )
+      if not item then return
+
+      if @__selected and @getItem( @__selected.getAttribute("data-id") ) is item
+        @__selected = null
+        # ide_event.trigger ide_event.OPEN_PROPERTY
+
       delete @__itemMap[ resourceModel.id ]
       delete @__itemMap[ item.cid ]
       item.remove()

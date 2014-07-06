@@ -38,4 +38,20 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
 
     null
 
+  #override CanvasElement.prototype.select() in CanvasElement
+  ChildElementProto.select = ()->
+    m = @model
+    @doSelect( m.type, m.id, m.id )
+    @highlight()
+    true
+
+  #highlight related subnet
+  ChildElementProto.highlight = ()->
+    m = @model
+    Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
+      if sb.get('name') in m.get('subnetIds')
+        Canvon('#' + sb.id).addClass('selected')
+      else
+        Canvon('#' + sb.id).removeClass('selected')
+
   null

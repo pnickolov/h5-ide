@@ -38,6 +38,7 @@ define [ '../base/view'
                 selectedSubnetIds = _.reject selectedSubnetIds, (id) -> id is subnetId
 
             @model.set 'subnetIds', selectedSubnetIds
+            @model.__view.highlight()
 
         render: ->
             data = @model.toJSON()

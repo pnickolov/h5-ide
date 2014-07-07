@@ -11,10 +11,10 @@
         <section class="property-control-group">
             <label class="left">License Model</label>
             <div class="selectbox" id="property-dbinstance-license-select">
-                <div class="selection">general-public-license</div>
+                <div class="selection"></div>
                 <ul class="dropdown" tabindex="-1">
                     {{#each licenses}}
-                    <li class="item data-id="dedicated">{{license}}</li>
+                    <li class="item data-id="{{license}}" {{#if selected}}selected{{/if}}>{{license}}</li>
                     {{/each}}
                 </ul>
             </div>
@@ -23,10 +23,11 @@
         <section class="property-control-group">
             <label class="left">DB Engine Version</label>
             <div class="selectbox" id="property-dbinstance-engine-version-select">
-                <div class="selection">5.6.13</div>
+                <div class="selection"></div>
                 <ul class="dropdown" tabindex="-1">
-                    <li class="item selected data-id="default">5.6.13</li>
-                    <li class="item data-id="dedicated">5.6.13</li>
+                    {{#each versions}}
+                    <li class="item data-id="{{version}}" {{#if selected}}selected{{/if}}>{{version}}</li>
+                    {{/each}}
                 </ul>
             </div>
         </section>
@@ -42,12 +43,12 @@
         <section class="property-control-group">
             <label class="left">DB Instance Class</label>
             <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
-                <div class="selection">{{instanceClass}}</div>
+                <div class="selection"></div>
                 <ul class="dropdown">
-                    {{#each instance_type}}
-                    <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{name}}" {{#if hide}}style="display:none;"{{/if}}>
-                        <div class="main truncate">{{main}}</div>
-                        <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div>
+                    {{#each classes}}
+                    <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{instanceClass}}" {{#if hide}}style="display:none;"{{/if}}>
+                        <div class="main truncate">{{instanceClass}}</div>
+                        <!-- <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div> -->
                     </li>
                     {{/each}}
                 </ul>

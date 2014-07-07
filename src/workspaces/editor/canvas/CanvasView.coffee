@@ -225,30 +225,49 @@ define [
         if ItemClass and ItemClass.render
           ItemClass.render( this )
 
-      @addItem(comp) for comp in lines
+      @addItem(comp, true) for comp in lines
       return
 
-    addItem : ( resourceModel )->
+    __toAddLines : ()->
+      for lineModel in @__toAddLines
+        try
+          @addItem( lineModel, true )
+        catch e
+          console.error e
+      @__toAddLines = null
+      return
+
+    addItem : ( resourceModel, isScheduled )->
       ItemClass = CanvasElement.getClassByType( resourceModel.type )
       if not ItemClass then return
+      if not resourceModel.isVisual() then return
 
-      if resourceModel.isVisual()
-        item = new ItemClass({
-          model  : resourceModel
-          canvas : @
-        })
-
-        if not item.cid then return
-
-        @__itemMap[ resourceModel.id ] = item
-        @__itemMap[ item.cid ] = item
-
-        if resourceModel.node_line
-          @__itemLineMap[ item.cid ] = item
-        else if resourceModel.node_group or resourceModel.type is constant.RESTYPE.ASG
-          @__itemGroupMap[ item.cid ] = item
+      # Delay drawing the line until next event loop
+      if resourceModel.node_line and not isScheduled
+        if not @__toAddLines
+          @__toAddLines = [ resourceModel ]
+          self = @
+          _.defer ()-> self.__batchAddLines()
         else
-          @__itemNodeMap[ item.cid ] = item
+          @__toAddLines.push resourceModel
+        return
+
+      item = new ItemClass({
+        model  : resourceModel
+        canvas : @
+      })
+
+      if not item.cid then return
+
+      @__itemMap[ resourceModel.id ] = item
+      @__itemMap[ item.cid ] = item
+
+      if resourceModel.node_line
+        @__itemLineMap[ item.cid ] = item
+      else if resourceModel.node_group or resourceModel.type is constant.RESTYPE.ASG
+        @__itemGroupMap[ item.cid ] = item
+      else
+        @__itemNodeMap[ item.cid ] = item
       return
 
     removeItem : ( resourceModel )->
@@ -270,8 +289,9 @@ define [
     getItem : ( id )-> @__itemMap[ id ]
 
     update : ()->
-
-
+      for id, item of @__itemNodeMap
+        item.render()
+      return
 
     __clearDragScroll : ()->
       if @__dragScrollInt

@@ -10,14 +10,12 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       width    : 9
       height   : 9
 
-      AllocatedStorage: 100
+      allocatedStorage: 100
       backupWindow: 1
       maintenanceWindow: ''
 
       username: 'root'
       password: '12345678'
-
-
 
 
     instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
@@ -86,7 +84,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getDefaultPort: ->
       @defaultPortMap[@get('engine')]
 
-
     getDefaultLicense: -> @getSpecifications()?[0].license
 
     getDefaultVersion: -> @getSpecifications()?[0].versions[0].version
@@ -101,6 +98,24 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         consoleDefault
       else
         _.first(@getSpecifications()).versions[0].instanceClasses[0].instanceClass
+
+    getLVI: (spec) ->
+      license = _.find spec, (s) =>
+        if s.license is @get 'license'
+          s.selected = true
+          true
+
+      version = _.find license.versions, (v) =>
+        if v.version is @get 'engineVersion'
+          v.selected = true
+          true
+
+      instanceClass = _.find version.instanceClasses, (i) =>
+        if i.instanceClass is @get 'instanceClass'
+          i.selected = true
+          true
+
+      [spec, license.versions, version.instanceClasses]
 
 
     getSpecifications: ->
@@ -118,7 +133,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         spec[i.LicenseModel] = {} if not spec[i.LicenseModel]
         spec[i.LicenseModel][i.EngineVersion] = {} if not spec[i.LicenseModel][i.EngineVersion]
         spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = multiAZCapable: i.MultiAZCapable
-
 
       for license, versions of spec
         lObj = license: license, versions: []

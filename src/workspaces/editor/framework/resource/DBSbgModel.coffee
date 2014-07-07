@@ -1,10 +1,15 @@
 
-define [ "constant",
-         "Design",
-         "../GroupModel",
-         "../connection/RtbAsso",
+define [ "constant"
+         "Design"
+         "../GroupModel"
+         "../connection/RtbAsso"
+         "../ConnectionModel"
          "i18n!/nls/lang.js"
-], ( constant, Design, GroupModel, RtbAsso, lang )->
+], ( constant, Design, GroupModel, RtbAsso, ConnectionModel, lang )->
+
+  SbAsso = ConnectionModel.extend {
+    type : "SbAsso"
+  }
 
   Model = GroupModel.extend {
 
@@ -20,7 +25,7 @@ define [ "constant",
       subnetIds: []
 
 
-    initialize : ( attributes, option )->
+    initialize: ( attributes, option )->
       # Draw the node
       @draw(true)
       if not @get 'description'
@@ -32,14 +37,10 @@ define [ "constant",
 
 
 
-    isRemovable : () -> !@children().length
+    isRemovable: () -> !@children().length
 
-    serialize : ()->
-      subnetIds = @get 'subnetIds'
-      subnetArray = []
-      Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
-        if sb.get('name') in subnetIds
-          subnetArray.push sb.createRef( "SubnetId" )
+    serialize: ()->
+      sbArray = _.map @connectionTargets("SbAsso"), ( sb )-> sb.createRef( "SubnetId" )
 
       component =
         name : @get("name")
@@ -48,7 +49,7 @@ define [ "constant",
         resource :
           CreatedBy               : @get 'appId'
           DBSubnetGroupName       : @get 'name'
-          SubnetIds               : subnetArray
+          SubnetIds               : sbArray
           DBSubnetGroupDescription: @get 'description'
 
 
@@ -60,14 +61,13 @@ define [ "constant",
 
     deserialize : ( data, layout_data, resolve )->
 
-      new Model {
+      model = new Model {
 
         id          : data.uid
         name        : data.name || data.resource.DBSubnetGroupName
         appId       : data.resource.CreatedBy
 
         description : data.resource.DBSubnetGroupDescription
-        subnetIds   : data.resource.SubnetIds
 
         x           : layout_data.coordinate[0]
         y           : layout_data.coordinate[1]
@@ -76,6 +76,11 @@ define [ "constant",
 
         parent : resolve( layout_data.groupUId )
       }
+
+
+      # Asso Subnet
+      for sb in data.resource.SubnetIds || []
+        new SbAsso( model, resolve( MC.extractID(sb) ) )
 
       null
   }

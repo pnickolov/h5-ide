@@ -27,17 +27,17 @@ define [ '../base/view'
                 @model.set 'description', $target.val()
 
         selectSubnetId: (e) ->
-            subnetId = e.currentTarget.id.slice 7
+            sbId = e.currentTarget.id
             checked = e.currentTarget.checked
 
-            selectedSubnetIds = @model.get 'subnetIds'
-
             if checked
-                selectedSubnetIds.push subnetId
+                SbAsso = Design.modelClassForType( "SbAsso" )
+                new SbAsso @model, Design.instance().component sbId
             else
-                selectedSubnetIds = _.reject selectedSubnetIds, (id) -> id is subnetId
+                _.each @model.connections("SbAsso"), ( sbAsso )->
+                    if sbAsso.getTarget(constant.RESTYPE.SUBNET).id is sbId
+                        sbAsso.remove()
 
-            @model.set 'subnetIds', selectedSubnetIds
             @model.__view.highlight()
 
         render: ->
@@ -50,13 +50,13 @@ define [ '../base/view'
         getAzSb: ->
             azsb = []
             azs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
-            selectedSubnetIds = @model.get 'subnetIds'
+            selectedSubnetIds = _.pluck @model.connectionTargets("SbAsso"), 'id'
 
             for az in azs
                 azsb.push {
                     az: az.get('name')
-                    subnets: _.map az.children(), (model) ->
-                        _.extend {checked: model.get('name') in selectedSubnetIds}, model.toJSON()
+                    subnets: _.map az.children(), (sb) ->
+                        _.extend {checked: sb.id in selectedSubnetIds}, sb.toJSON()
                 }
 
             azsb

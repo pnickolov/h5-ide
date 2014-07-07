@@ -13,8 +13,9 @@
             <div class="selectbox" id="property-dbinstance-license-select">
                 <div class="selection">general-public-license</div>
                 <ul class="dropdown" tabindex="-1">
-                    <li class="item selected data-id="default">general-public-license</li>
-                    <li class="item data-id="dedicated">general-public-license</li>
+                    {{#each licenses}}
+                    <li class="item data-id="dedicated">{{license}}</li>
+                    {{/each}}
                 </ul>
             </div>
         </section>

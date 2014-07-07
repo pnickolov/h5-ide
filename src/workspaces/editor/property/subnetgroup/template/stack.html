@@ -20,10 +20,10 @@
             	<div class='property-az-name'>{{az}} :</div>
             	{{#each subnets}}
 				<div class="checkbox">
-					<input id="subnet-{{name}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
-					<label for="subnet-{{name}}"></label>
+					<input id="{{id}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
+					<label for="{{id}}"></label>
 				</div>
-				<label for="subnet-{{name}}">{{name}}</label>
+				<label for="{{id}}">{{name}}</label>
 				{{/each}}
             {{/each}}
         </section>

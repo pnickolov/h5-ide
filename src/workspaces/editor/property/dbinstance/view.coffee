@@ -144,6 +144,14 @@ define [ '../base/view'
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
 
+            spec = @model.getSpecifications()
+            lvi = @model.getLVI spec
+
+            attr.licenses = lvi[0]
+            attr.versions = lvi[1]
+            attr.classes  = lvi[2]
+
+
             @$el.html template attr
 
             # set Start Day week selection

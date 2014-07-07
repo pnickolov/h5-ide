@@ -27,7 +27,7 @@ define [ '../base/view'
                 @model.set 'description', $target.val()
 
         selectSubnetId: (e) ->
-            sbId = e.currentTarget.id
+            sbId = e.currentTarget.id.slice 5
             checked = e.currentTarget.checked
 
             if checked

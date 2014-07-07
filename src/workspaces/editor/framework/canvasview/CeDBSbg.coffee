@@ -48,8 +48,10 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
   #highlight related subnet
   ChildElementProto.showRelatedSubnet = ()->
     m = @model
+    relatedSb = _.map m.connectionTargets("SbAsso"), ( sb )-> sb.id
+
     Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
-      if sb.get('name') in m.get('subnetIds')
+      if sb.id in relatedSb
         Canvon('#' + sb.id).addClass('selected')
       else
         Canvon('#' + sb.id).removeClass('selected')

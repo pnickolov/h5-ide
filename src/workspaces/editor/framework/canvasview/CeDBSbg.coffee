@@ -42,11 +42,11 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
   ChildElementProto.select = ()->
     m = @model
     @doSelect( m.type, m.id, m.id )
-    @highlight()
+    @showRelatedSubnet()
     true
 
   #highlight related subnet
-  ChildElementProto.highlight = ()->
+  ChildElementProto.showRelatedSubnet = ()->
     m = @model
     Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
       if sb.get('name') in m.get('subnetIds')

@@ -1576,6 +1576,13 @@ MC.canvas.volume = {
 				{
 					MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
 				}
+				else if (
+					MC.canvas.getState() === 'app' &&
+					$canvas(target_id).type === 'AWS.AutoScaling.LaunchConfiguration'
+				)
+				{
+					return false;
+				}
 				else
 				{
 					MC.canvas.volume.bubble(target_id);

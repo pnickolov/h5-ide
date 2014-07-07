@@ -38,7 +38,8 @@ define [ '../base/view'
                     if sbAsso.getTarget(constant.RESTYPE.SUBNET).id is sbId
                         sbAsso.remove()
 
-            @model.__view.highlight()
+            #highlight related subnet
+            @model.__view.showRelatedSubnet()
 
         render: ->
             data = @model.toJSON()

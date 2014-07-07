@@ -130,11 +130,11 @@ define [
       @canvas.moveSelectedItem( x || 0, y || 0 )
       false
 
-    delSelectItem  : ()-> @canvas.delSelectedItem(); false
-    selectPrevItem : ()-> @canvas.selectPrevItem(); false
-    selectNextItem : ()-> @canvas.selectNextItem(); false
-    zoomIn         : ()-> @canvas.zoomIn();  @toolbar.updateZoomButtons(); false
-    zoomOut        : ()-> @canvas.zoomOut(); @toolbar.updateZoomButtons(); false
+    delSelectedItem : ()-> @canvas.delSelectedItem(); false
+    selectPrevItem  : ()-> @canvas.selectPrevItem(); false
+    selectNextItem  : ()-> @canvas.selectNextItem(); false
+    zoomIn          : ()-> @canvas.zoomIn();  @toolbar.updateZoomButtons(); false
+    zoomOut         : ()-> @canvas.zoomOut(); @toolbar.updateZoomButtons(); false
 
     backup : ()->
       $center = @$el.find(".OEPanelCenter")

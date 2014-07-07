@@ -4,11 +4,12 @@ define [
   "./CanvasElement"
   "CanvasManager"
   "Design"
+  "constant"
 
   "backbone"
   "UI.nanoscroller"
   "svgjs"
-], ( OpsEditorTpl, CanvasElement, CanvasManager, Design )->
+], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, constant )->
 
   # Insert svg defs template.
   $( OpsEditorTpl.svgDefs() ).appendTo("body")
@@ -202,6 +203,9 @@ define [
       ])
 
       @__itemMap = {}
+      @__itemGroupMap = {}
+      @__itemLineMap  = {}
+      @__itemNodeMap  = {}
 
       lines = []
       types = {}
@@ -238,6 +242,13 @@ define [
 
         @__itemMap[ resourceModel.id ] = item
         @__itemMap[ item.cid ] = item
+
+        if resourceModel.node_line
+          @__itemLineMap[ item.cid ] = item
+        else if resourceModel.node_group or resourceModel.type is constant.RESTYPE.ASG
+          @__itemGroupMap[ item.cid ] = item
+        else
+          @__itemNodeMap[ item.cid ] = item
       return
 
     removeItem : ( resourceModel )->
@@ -250,6 +261,9 @@ define [
 
       delete @__itemMap[ resourceModel.id ]
       delete @__itemMap[ item.cid ]
+      delete @__itemLineMap[ item.cid ]
+      delete @__itemGroupMap[ item.cid ]
+      delete @__itemNodeMap[ item.cid ]
       item.remove()
       return
 
@@ -316,16 +330,67 @@ define [
       return
 
 
+    __localToCanvasCoor : ( x, y )->
+      sc = @$el.children(":first-child")[0]
+      {
+        x : Math.round( (x+sc.scrollLeft) / CanvasView.GRID_WIDTH  * @__scale )
+        y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
+      }
+
+    __groupAtCoor : ( coord )->
+      group = null
+
+      for id, item of @__itemGroupMap
+        if not item.model.width then continue
+
+        x = item.model.x()
+        y = item.model.y()
+        w = item.model.width()
+        h = item.model.height()
+
+        if coord.x >= x and coord.y >= y and coord.x <= x+w and coord.y <= y + h
+          if not group or group.model.width() > w and group.model.height() > h
+            group = item
+
+      group
+
     __addItemDragOver  : ( evt, data )->
       @__scrollOnDrag( evt, data )
 
+      group = @__groupAtCoor( @__localToCanvasCoor(data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1) )
+      if group
+        pg = CanvasView.PARENT_TYPE[ data.dataTransfer.type ]
+        if not pg or pg.indexOf( group.type ) is -1
+          group = null
+
+      if group isnt @__dragHoverGroup
+        if @__dragHoverGroup
+          CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
+        if group
+          CanvasManager.addClass group.$el, "droppable"
+        @__dragHoverGroup = group
+
     __addItemDragLeave : ( evt, data )->
       @__clearDragScroll()
+
+      if @__dragHoverGroup
+        CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
+        @__dragHoverGroup = null
 
 
   }, {
     GRID_WIDTH  : 10
     GRID_HEIGHT : 10
+    PARENT_TYPE : {
+      'AWS.EC2.AvailabilityZone' : ['AWS.VPC.VPC']
+      'AWS.VPC.RouteTable'       : ['AWS.VPC.VPC']
+      'AWS.ELB'                  : ['AWS.VPC.VPC']
+
+      'AWS.VPC.Subnet'           : ['AWS.EC2.AvailabilityZone']
+      'AWS.AutoScaling.Group'    : ['AWS.VPC.Subnet']
+      'AWS.VPC.NetworkInterface' : ['AWS.VPC.Subnet']
+      'AWS.EC2.Instance'         : ['AWS.AutoScaling.Group', 'AWS.VPC.Subnet']
+    }
   }
 
   CanvasElement.setCanvasViewClass CanvasView

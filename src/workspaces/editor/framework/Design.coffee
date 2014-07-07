@@ -98,9 +98,6 @@ define [
 
   DesignImpl = ( opsModel )->
     @__componentMap = {}
-    @__canvasNodes  = {}
-    @__canvasLines  = {}
-    @__canvasGroups = {}
     @__classCache   = {}
     @__usedUidCache = {}
     @__opsModel     = opsModel
@@ -323,23 +320,12 @@ define [
     if not comp
       comp = @__componentMap
       delete @__componentMap[ id ]
-      delete @__canvasGroups[ id ]
-      delete @__canvasNodes[ id ]
 
       # Only in stack mode, we reclaim the id once the component is removed from cache.
       if @modeIsAppEdit()
         @reclaimGuid( id )
     else
       @__componentMap[ id ] = comp
-
-      # Cache them into another cache if they are visual objects
-      if comp.isVisual and comp.isVisual()
-        if comp.node_group
-          @__canvasGroups[ id ] = comp
-        else if comp.node_line
-          @__canvasLines[ id ] = comp
-        else
-          @__canvasNodes[ id ] = comp
     null
 
 

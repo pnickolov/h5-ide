@@ -136,13 +136,13 @@
   // fill: rgba(118, 214, 255, 0.05);
   fill: #f6faf9;
   stroke-linejoin: round;
-  stroke-dasharray: 6, 4;
-  stroke-width: 2;
 }
 .asg-title {
   stroke: none;
 }
 .asg-frame {
+  stroke-dasharray: 6, 4;
+  stroke-width: 2;
   fill: #83CBF9;
   stroke: #76d6ff;
   .selected & {
@@ -315,4 +315,25 @@
   stroke-opacity: 0;
   stroke-width: 10px;
   stroke-dasharray: none;
+}
+
+.droppable {
+  &.AWS-VPC-VPC {
+    > .group { stroke-width: 6px; }
+    @extend .AWS-VPC-VPC:hover;
+  }
+  &.AWS-EC2-AvailabilityZone {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-EC2-AvailabilityZone:hover;
+  }
+  &.AWS-VPC-Subnet {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-VPC-Subnet:hover;
+  }
+  &.AWS-AutoScaling-Group {
+    > .asg-frame {
+      stroke-width     : 4;
+      stroke-dasharray : 0;
+    }
+  }
 }

@@ -42,10 +42,14 @@ define ["jquery"], ( $ )->
 
   cancelDnd = ( evt )->
     $( document ).off(".uidnd")
-    if evt.data.hoverZone
-      evt.data.hoverZone.removeClass("dragOver")
-    if evt.data.shadow
-      evt.data.shadow.remove()
+
+    data = evt.data
+
+    if data.shadow
+      data.shadow.remove()
+
+    if data.hoverZone
+      data.hoverZone.removeClass("dragOver").triggerHandler "#{data.eventPrefix}dragleave", data
     return
 
   detectDrag = ( evt )->
@@ -95,9 +99,13 @@ define ["jquery"], ( $ )->
   onMouseMove = ( evt )->
     data = evt.data
 
+    data.pageX = evt.pageX
+    data.pageY = evt.pageY
+
     for dz, idx in data.dropZones
       if dz.x1 <= evt.pageX <= dz.x2 and dz.y1 <= evt.pageY <= dz.y2
         newZone = data.dropTargets.eq( idx )
+        data.zoneDimension = dz
         break
 
     hoverZone = data.hoverZone

@@ -23,6 +23,9 @@ define [
       "click .canvasel"          : "selectItemByClick"
       "click .line"              : "selectItemByClick"
 
+      "dragover"  : "__addItemDragOver"
+      "dragleave" : "__addItemDragLeave"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design
@@ -253,6 +256,71 @@ define [
     getItem : ( id )-> @__itemMap[ id ]
 
     update : ()->
+
+
+
+    __clearDragScroll : ()->
+      if @__dragScrollInt
+        console.info "Removed drag scroll timer"
+        clearInterval @__dragScrollInt
+        @__dragScrollInt = null
+      return
+
+    __scrollOnDrag : ( evt, data )->
+      dimension     = data.zoneDimension
+      scrollContent = @$el.children(":first-child")[0]
+
+      scrollLeft = scrollContent.scrollLeft
+      scrollTop  = scrollContent.scrollTop
+
+      DETECT_SIZE = 50
+      SCROLL_SIZE = 10
+
+      if data.pageX - dimension.x1 <= DETECT_SIZE
+        if scrollLeft > SCROLL_SIZE
+          continuous  = true
+          scrollX = scrollLeft - SCROLL_SIZE
+        else if scrollLeft > 0
+          scrollX = "0"
+      else if dimension.x2 - data.pageX <= DETECT_SIZE
+        continuous = true
+        scrollX = scrollLeft + SCROLL_SIZE
+
+
+      if data.pageY - dimension.y1 <= DETECT_SIZE
+        if scrollTop > SCROLL_SIZE
+          continuous  = true
+          scrollY = scrollTop - SCROLL_SIZE
+        else if scrollTop > 0
+          scrollY = "0"
+      else if dimension.y2 - data.pageY <= DETECT_SIZE
+        continuous = true
+        scrollY = scrollTop + SCROLL_SIZE
+
+
+      if scrollX isnt undefined
+        @$el.nanoScroller({ scrollLeft : scrollX })
+      if scrollY isnt undefined
+        @$el.nanoScroller({ scrollTop : scrollY })
+
+
+      if continuous
+        if not @__dragScrollInt
+          self = @
+          console.info "Added drag scroll timer"
+          @__dragScrollInt = setInterval ()->
+            self.__scrollOnDrag( evt, data )
+          , 100
+      else
+        @__clearDragScroll()
+      return
+
+
+    __addItemDragOver  : ( evt, data )->
+      @__scrollOnDrag( evt, data )
+
+    __addItemDragLeave : ( evt, data )->
+      @__clearDragScroll()
 
 
   }, {

@@ -30,12 +30,14 @@
       return this;
     };
     cancelDnd = function(evt) {
+      var data;
       $(document).off(".uidnd");
-      if (evt.data.hoverZone) {
-        evt.data.hoverZone.removeClass("dragOver");
+      data = evt.data;
+      if (data.shadow) {
+        data.shadow.remove();
       }
-      if (evt.data.shadow) {
-        evt.data.shadow.remove();
+      if (data.hoverZone) {
+        data.hoverZone.removeClass("dragOver").triggerHandler("" + data.eventPrefix + "dragleave", data);
       }
     };
     detectDrag = function(evt) {
@@ -85,11 +87,14 @@
     onMouseMove = function(evt) {
       var data, dz, hoverZone, idx, newZone, _i, _len, _ref, _ref1, _ref2;
       data = evt.data;
+      data.pageX = evt.pageX;
+      data.pageY = evt.pageY;
       _ref = data.dropZones;
       for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
         dz = _ref[idx];
         if ((dz.x1 <= (_ref1 = evt.pageX) && _ref1 <= dz.x2) && (dz.y1 <= (_ref2 = evt.pageY) && _ref2 <= dz.y2)) {
           newZone = data.dropTargets.eq(idx);
+          data.zoneDimension = dz;
           break;
         }
       }

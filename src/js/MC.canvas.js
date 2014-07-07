@@ -1567,19 +1567,19 @@ MC.canvas.volume = {
 
 			// $canvas(target_uid).select();
 
-			if (target_uid !== bubble_target_id)
+			if (target_uid.split('_')[0] !== bubble_target_id.split('_')[0])
 			{
-				// if (
-				// 	MC.canvas.getState() === 'app' &&
-				// 	volume_type
-				// )
-				// {
-				// 	MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
-				// }
-				// else
-				// {
-				// 	MC.canvas.volume.bubble(target_id);
-				// }
+				if (
+					MC.canvas.getState() === 'app' &&
+					volume_type
+				)
+				{
+					MC.canvas.volume.bubble( target_id, target.parent().data('id'), volume_type );
+				}
+				else
+				{
+					MC.canvas.volume.bubble(target_id);
+				}
 
 				if (MC.canvas.getState() === 'app')
 				{
@@ -4305,6 +4305,9 @@ MC.canvas.event.clickBlank = function (event)
 		//dispatch event when click blank area in canvas
 		$canvas.trigger("CANVAS_NODE_SELECTED", "");
 	}
+
+	MC.canvas.volume.close();
+	MC.canvas.event.clearSelected();
 
 	return true;
 };

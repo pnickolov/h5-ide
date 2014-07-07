@@ -116,10 +116,6 @@ define [ "./ResourceModel", "Design" ], ( ResourceModel, Design )->
           if cn isnt this
             cn.remove( this )
 
-
-      # Draw in the end
-      if @draw then @draw()
-
       this
 
     setDestroyAfterInit : ()->

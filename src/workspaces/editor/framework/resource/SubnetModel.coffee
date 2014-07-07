@@ -22,9 +22,6 @@ define [ "constant",
       if not @attributes.cidr
         @attributes.cidr = @generateCidr()
 
-      # Draw the node
-      @draw(true)
-
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
       new RtbAsso( this, RtbModel.getMainRouteTable(), { implicit : true } )
@@ -43,7 +40,6 @@ define [ "constant",
       # the time we serialize()
       validCIDR = MC.getValidCIDR(cidr)
       @set("cidr", validCIDR)
-      @draw()
       null
 
     setAcl : ( uid )->

@@ -233,14 +233,6 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
-    drawExpanedAsg: ( isCreate ) ->
-      lc = @get 'lc'
-      if lc
-        for asg in @get("expandedList")
-          asg.draw isCreate
-
-      null
-
     getNotification : ()->
       n = @get("notification")
       if n then n.toJSON() else {}

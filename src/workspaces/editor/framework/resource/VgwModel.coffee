@@ -12,10 +12,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
 
     type : constant.RESTYPE.VGW
 
-    initialize : ()->
-      @draw(true)
-      null
-
     serialize : ()->
 
       component =

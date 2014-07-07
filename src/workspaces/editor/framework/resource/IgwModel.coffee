@@ -12,10 +12,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
 
     type : constant.RESTYPE.IGW
 
-    initialize : ()->
-      @draw(true)
-      null
-
     isRemovable : ()->
       # Deleting IGW when ELB/EIP in VPC, should show error
       ElbModel   = Design.modelClassForType( constant.RESTYPE.ELB )

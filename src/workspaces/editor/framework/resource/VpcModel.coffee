@@ -19,8 +19,6 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
     initialize : ()->
       if not @attributes.dhcp
         @attributes.dhcp = new DhcpModel()
-
-      @draw(true)
       null
 
     isRemovable : ()-> false # VPC is always undeletable
@@ -58,7 +56,6 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
 
       validCIDR = MC.getValidCIDR(cidr)
       @set("cidr", validCIDR)
-      @draw()
       true
 
     generateSubnetCidr : ( newCidr, subnetCidrAry )->

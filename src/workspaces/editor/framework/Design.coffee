@@ -266,42 +266,6 @@ define [
     json = opsModel.getJsonData()
     @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
 
-  DesignImpl.prototype.finishDeserialization = ()->
-    ####################
-    # Draw after deserialization
-    ####################
-    # Draw everything after deserialization is done.
-    # Because some resources might just deleted right after it's been created.
-    # And draw lines at the end
-    @__shoulddraw = true
-    lines = []
-    for uid, comp of @__componentMap
-      if not comp.draw then continue
-      if comp.node_line
-        lines.push comp
-      else
-        comp.draw( true )
-
-    for comp in lines
-      comp.draw( true )
-
-
-    # Restore Design.trigger
-    Design.trigger = Backbone.Events.trigger
-    Design.trigger Design.EVENT.Deserialized
-    null
-
-  DesignImpl.prototype.renderNode = ()->
-    ##########
-    # Hack
-    ##########
-    # This will be removed once the canvas has been refactored.
-    for uid, comp of @__componentMap
-      if comp.draw and not comp.node_line
-        comp.draw( false )
-    return
-
-
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
     @__modelClassMap[ type ] = modelClass

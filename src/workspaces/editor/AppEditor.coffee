@@ -185,9 +185,9 @@ define [
       @recreateDesign()
 
       @design.setMode( Design.MODE.App )
-      @design.renderNode()
       @view.showUpdateStatus()
       @view.switchMode( false )
+      @view.canvas.update()
 
       @saveThumbnail()
 
@@ -212,7 +212,7 @@ define [
 
     onVpcResLoaded : ()->
       if @isRemoved() then return
-      @design.renderNode()
+      @view.canvas.update()
       @view.toggleProcessing()
       return
 

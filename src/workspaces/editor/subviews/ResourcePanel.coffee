@@ -347,7 +347,7 @@ define [
                   new sslCertManager().render()
               when 'dhcp'
                   (new dhcpManager()).manageDhcp()
-    # Copied and enhanced from MC.canvas.js
+
     startDrag : ( evt )->
       if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
@@ -357,10 +357,9 @@ define [
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
       console.assert( type )
 
+      dropTargets = ".OEPanelCenter"
       if type is constant.RESTYPE.INSTANCE
-        dropTargets = "#changeAmiDropZone, .OEPanelCenter"
-      else
-        dropTargets = ".OEPanelCenter"
+        dropTargets += ",#changeAmiDropZone"
 
       option = $tgt.data("option") || {}
       option.type = type
@@ -368,247 +367,10 @@ define [
       $tgt.dnd( evt, {
         dropTargets  : $( dropTargets )
         dataTransfer : option
+        eventPrefix  : if type is constant.RESTYPE.VOL then "VOL_" else ""
       })
 
       return false
-
-      # Insert Shadow
-      $("<div id='ResourceDragItem'></div><div id='overlayer' class='grabbing'></div>").appendTo( document.body )
-      tgtOffset = $tgt.offset()
-      $item = $("#ResourceDragItem")
-        .html( $tgt.html() )
-        .attr("class", $tgt.attr("class").replace("bubble", "") )
-        .css({
-          'top'  : tgtOffset.top
-          'left' : tgtOffset.left
-        })
-      setTimeout ()->
-        $item.addClass("add-to-dom")
-      , 10
-
-      # Update Svg
-      if type is constant.RESTYPE.VOL
-        Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable')
-        $(document).on({
-          'mousemove' : MC.canvas.volume.mousemove
-          'mouseup'   : MC.canvas.volume.mouseup
-        }, {
-          'target'        : $tgt
-          'canvas_offset' : $canvas.offset()
-          'canvas_body'   : $('#canvas_body')
-          'shadow'        : $item
-          'action'        : 'add'
-        })
-      else
-        target_group_type = MC.canvas.MATCH_PLACEMENT[ type ]
-        if target_group_type
-          Canvon('.' + target_group_type.join(',').replace(/\./ig, '-').replace(/,/ig, ',.')).addClass('dropable-group')
-
-        if type is constant.RESTYPE.INSTANCE
-          $changeAmiZone = $("#changeAmiDropZone")
-          if $changeAmiZone.is(":visible")
-            drop_zone_offset = $changeAmiZone.offset()
-            drop_zone_data = {
-              'x1' : drop_zone_offset.left
-              'x2' : drop_zone_offset.left + $changeAmiZone.width()
-              'y1' : drop_zone_offset.top
-              'y2' : drop_zone_offset.top + $changeAmiZone.height()
-            }
-
-
-        component_size = MC.canvas.GROUP_DEFAULT_SIZE[ type ]
-        node_type      = "group"
-        placeOffsetX   = 0
-        placeOffsetY   = 0
-        if not component_size
-          component_size = MC.canvas.COMPONENT_SIZE[ type ]
-          node_type = "node"
-          placeOffsetX   = 8
-          placeOffsetY   = 8
-
-        if type is constant.RESTYPE.INSTANCE then placeOffsetY = 0
-        if type is constant.RESTYPE.ASG      then placeOffsetX = -8
-
-        $(document).on({
-          'mousemove.SidebarDrag' : @onDragMove
-          'mouseup.SidebarDrag'   : @onDragStop
-        }, {
-          'target_type'    : type
-          'canvas_offset'  : $canvas.offset()
-          'drop_zone'      : $changeAmiZone
-          'drop_zone_data' : drop_zone_data
-          "comp_size"      : component_size
-          "node_type"      : node_type
-          'offsetX'        : evt.pageX - tgtOffset.left
-          'offsetY'        : evt.pageY - tgtOffset.top
-          "placeOffsetY"   : placeOffsetY
-          "placeOffsetX"   : placeOffsetX
-          'target'         : $tgt
-          "scale"          : $canvas.scale()
-        })
-
-        $('#canvas_body').addClass('node-dragging')
-
-
-      # Cleanup Canvas
-      MC.canvas.volume.close()
-      MC.canvas.event.clearSelected()
-
-      false
-
-    onDragMove : ( evt )->
-      Canvon('.match-dropable-group').removeClass('match-dropable-group')
-
-      event_data    = evt.data
-      canvas_offset = event_data.canvas_offset
-      match_place = MC.canvas.isMatchPlace(
-        null
-        event_data.target_type
-        event_data.node_type
-        (evt.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
-        (evt.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
-        event_data.comp_size[0]
-        event_data.comp_size[1]
-      )
-
-      if match_place.is_matched
-        Canvon('#' + match_place.target).addClass('match-dropable-group')
-
-      # For change AMI hover effect
-      if event_data.drop_zone_data
-        hover = event.pageX > event_data.drop_zone_data.x1 &&
-          event.pageX < event_data.drop_zone_data.x2 &&
-          event.pageY > event_data.drop_zone_data.y1 &&
-          event.pageY < event_data.drop_zone_data.y2
-
-        event_data.drop_zone.toggleClass("hover", hover)
-
-      $("#ResourceDragItem").css {
-        top  : evt.pageY - event_data.offsetY
-        left : evt.pageX - event_data.offsetX
-      }
-      false
-
-    onDragStop : ( event )->
-      $("#overlayer").remove()
-      $item = $("#ResourceDragItem")
-
-      # Cleanup
-      Canvon('.dropable-group').removeClass('dropable-group')
-      Canvon('.match-dropable-group').removeClass('match-dropable-group')
-      $('#canvas_body').removeClass('node-dragging')
-      $(document).off('mousemove.SidebarDrag').off('mouseup.SidebarDrag')
-
-      event_data = event.data
-
-      if event_data.drop_zone_data &&
-        event.pageX > event_data.drop_zone_data.x1 &&
-        event.pageX < event_data.drop_zone_data.x2 &&
-        event.pageY > event_data.drop_zone_data.y1 &&
-        event.pageY < event_data.drop_zone_data.y2
-          event_data.drop_zone.removeClass("hover").trigger("drop", $(event.data.target).data('option').imageId)
-          $item.remove()
-          return false
-
-
-      node_type      = event_data.node_type
-      target_type    = event_data.target_type
-      canvas_offset  = event_data.canvas_offset
-      node_option    = event_data.target.data('option') || {}
-      component_size = event_data.comp_size
-      coordinate     = {
-        x : (event.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
-        y : (event.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
-      }
-
-      if coordinate.x < 0 or coordinate.y < 0
-        $item.remove()
-        return
-
-      if node_type is "node"
-        if target_type is constant.RESTYPE.IGW || target_type is constant.RESTYPE.VGW
-          vpc_id         = $('.AWS-VPC-VPC').attr('id')
-          vpc_item       = $canvas( vpc_id )
-          vpc_coordinate = vpc_item.position()
-          vpc_size       = vpc_item.size()
-          node_option.groupUId = vpc_id
-
-          if coordinate.y > vpc_coordinate[1] + vpc_size[1] - component_size[1]
-            coordinate.y = vpc_coordinate[1] + vpc_size[1] - component_size[1]
-          if coordinate.y < vpc_coordinate[1]
-            coordinate.y = vpc_coordinate[1]
-
-          if target_type is constant.RESTYPE.IGW
-            coordinate.x = vpc_coordinate[0] - (component_size[1] / 2)
-          else
-            coordinate.x = vpc_coordinate[0] + vpc_size[0] - (component_size[1] / 2)
-
-          $canvas.add(target_type, node_option, coordinate)
-        else
-          match_place = MC.canvas.isMatchPlace(
-            null
-            target_type
-            node_type
-            coordinate.x
-            coordinate.y
-            component_size[0]
-            component_size[1]
-          )
-
-          if match_place.is_matched
-            node_option.groupUId = match_place.target
-            new_node_id = $canvas.add(target_type, node_option, coordinate)
-            if new_node_id then MC.canvas.select(new_node_id)
-          else
-            $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {'type':target_type})
-      else
-        match_place = MC.canvas.isMatchPlace(
-          null
-          target_type
-          node_type
-          coordinate.x
-          coordinate.y
-          component_size[0]
-          component_size[1]
-        )
-        areaChild = MC.canvas.areaChild(
-          null
-          target_type
-          coordinate.x
-          coordinate.y
-          coordinate.x + component_size[0]
-          coordinate.y + component_size[1]
-        )
-        if match_place.is_matched
-          if areaChild.length is 0 and MC.canvas.isBlank(
-              ""
-              target_type
-              'group'
-              # Enlarge a little bit to make the drop place correctly.
-              coordinate.x - 1,
-              coordinate.y - 1,
-              component_size[0] + 2
-              component_size[1] + 2
-            )
-            node_option.groupUId = match_place.target
-            new_node_id = $canvas.add(target_type, node_option, coordinate)
-            if !($canvas.hasVPC() && target_type is constant.RESTYPE.AZ )
-              MC.canvas.select(new_node_id)
-          else
-            $canvas.trigger("CANVAS_PLACE_OVERLAP")
-        else
-          $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {type:target_type})
-
-      if target_type is constant.RESTYPE.IGW or target_type is constant.RESTYPE.VGW
-        $item.animate({
-          'left'    : coordinate.x * 10 + canvas_offset.left
-          'top'     : coordinate.y * 10 + canvas_offset.top
-          'opacity' : 0
-        }, ()-> $item.remove() )
-      else
-        $item.remove()
-
-      false
 
     remove: ->
       _.invoke @subViews, 'remove'

@@ -20,8 +20,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
         # instead of the newly created one.
         ####
         option.selectId = m.id
-
-      @draw(true)
       null
 
     isRemovable : ()->

@@ -54,9 +54,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
     initialize : ( attributes, option )->
       option = option || {}
 
-      # Draw first then create SgAsso
-      @draw( true )
-
       if option.createByUser and not option.instance
         # DefaultSg
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()

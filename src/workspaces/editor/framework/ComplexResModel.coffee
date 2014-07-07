@@ -17,10 +17,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
         description : disconnect is called when a connection is removed, subclass should override it to do its own logic. `reason` if not null, it will point to an model, which is the cause to remove the connection.
 
 
-    draw : ( isNewlyCreated : Boolean ) ->
-        description : if the user defines this method, it will be called after object is created. And the framework might call this method at an approprieate time.
-        If the method is defined, it means it's a visual resource
-
     isRemovable   : ()->
         description : When user press delete key in canvas, canvas will ask if the object can be removed. If isRemovable returns a string, it will treat it as a warning, if the string starts with '!', it is a infomation for not allowing the user to delete
 
@@ -64,19 +60,11 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
         attributes.__parent.addChild( this )
       null
 
-    initialize : ()->
-
-      if @draw and Design.instance().shouldDraw()
-        @draw true
-      null
-
     setName : ( name )->
       if @get("name") is name
         return
 
       @set "name", name
-
-      if @draw then @draw()
       null
 
     remove : ()->
@@ -203,19 +191,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
     width  : ()-> @get( 'width' ) or 0
     height : ()-> @get( 'height' ) or 0
 
-  }, {
-    extend : ( protoProps, staticProps )->
-
-      # Force to check if the design should be draw before drawing is done.
-      if protoProps.draw
-        protoProps.draw = (()->
-          draw = protoProps.draw
-          ()->
-            if Design.instance().shouldDraw()
-              draw.apply @, arguments
-        )()
-
-      ResourceModel.extend.call this, protoProps, staticProps
   }
 
   ComplexResModel

@@ -42,7 +42,7 @@ define [
 
     doFetch : ()-> ApiRequest("rds_ins_DescribeDBInstances", {region_name : @region()})
     parseFetchData : ( data )->
-      data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances.DBInstance || []
+      data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
 
       if not _.isArray( data ) then data = [data]
 
@@ -64,7 +64,7 @@ define [
 
     doFetch : ()-> ApiRequest("rds_snap_DescribeDBSnapshots", {region_name : @region()})
     parseFetchData : ( data )->
-      data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots.DBSnapshot || []
+      data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots?.DBSnapshot || []
 
       if not _.isArray( data ) then data = [data]
 
@@ -86,7 +86,7 @@ define [
 
     doFetch : ()-> ApiRequest("rds_pg_DescribeDBParameterGroups", {region_name : @region()})
     parseFetchData : ( data )->
-      data = data.DescribeDBParameterGroupsResponse.DescribeDBParameterGroupsResult.DBParameterGroups.DBParameterGroup || []
+      data = data.DescribeDBParameterGroupsResponse.DescribeDBParameterGroupsResult.DBParameterGroups?.DBParameterGroup || []
 
       if not _.isArray( data ) then data = [data]
 

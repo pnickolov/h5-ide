@@ -48,6 +48,8 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         y : y
         sourceDBInstance : comp
         parent : target
+      }, {
+        createByUser: true
       })
 
     if res and res.id

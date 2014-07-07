@@ -9,14 +9,27 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       y        : 0
       width    : 9
       height   : 9
-
-      allocatedStorage: 100
-      backupWindow: 1
-      maintenanceWindow: ''
-
+      
+      accessible: false
       username: 'root'
       password: '12345678'
-
+      multiAz: true
+      iops: ''
+      autoMinorVersionUpgrade: true
+      backupRetentionPeriod: 1
+      allocatedStorage: 100
+      backupWindow: ''
+      maintenanceWindow: ''
+      characterSetName: ''
+      dbName: ''
+      pending: ''
+      instanceId: ''
+      replicaId: ''
+      snapshotId: ''
+      adz: ''
+      replicas: ''
+      ogName: ''
+      pgName: ''
 
     instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
 
@@ -29,7 +42,14 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
+
+      if attr.sourceDBInstance
+        #TODO
+        @set 'replicaId', attr.sourceDBInstance.createRef('DBInstanceIdentifier')
+        @set 'engine', attr.sourceDBInstance.get("engine")
+
       if option and option.createByUser
+
         # Default Sg
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType "SgAsso"
@@ -40,28 +60,14 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           license         : @getDefaultLicense()
           engineVersion   : @getDefaultVersion()
           instanceClass   : @getDefaultInstanceClass()
-
           port            : @getDefaultPort()
-
         }
-
-
-      if attr.sourceDBInstance
-        #TODO
-        @set 'replicaId', attr.sourceDBInstance
-        @set 'engine', attr.sourceDBInstance.get("engine")
 
       if attr.snapshotId
         @set 'snapshotId', attr.snapshotId
 
       # Draw before creating SgAsso
       @draw true
-
-      if option and option.createByUser
-        # Default Sg
-        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
-        SgAsso = Design.modelClassForType "SgAsso"
-        new SgAsso defaultSg, @
 
       null
 
@@ -174,24 +180,24 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         resource :
           CreatedBy                             : @get 'appId'
           DBInstanceIdentifier                  : @get 'instanceId'
-          DBSnapshotIdentifier                  : '' #@get 'snapshotId'
-          ReadReplicaSourceDBInstanceIdentifier : '' #@get 'replicaId'
+          DBSnapshotIdentifier                  : @get 'snapshotId'
+          ReadReplicaSourceDBInstanceIdentifier : @get 'replicaId'
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-          AvailabilityZone                      : '' #@get 'adz'
+          AvailabilityZone                      : @get 'adz'
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'
-          ReadReplicaDBInstanceIdentifiers      : '' #@get 'replicas'
+          ReadReplicaDBInstanceIdentifiers      : @get 'replicas'
 
           DBName                                : @get 'dbName'
           Endpoint:
             Port: @get 'port'
           Engine                                : @get 'engine'
-          EngineVersion                         : @get 'engineVersion'
+          EngineVersion                         : '5.6.13' # @get 'engineVersion'
           LicenseModel                          : @get 'license'
           MasterUsername                        : @get 'username'
           MasterUserPassword                    : @get 'password'

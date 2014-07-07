@@ -97,11 +97,11 @@
   &.bottomright { cursor: nwse-resize; }
 }
 
-.selected {
+.canvasel.selected {
   > .node-background {
-    fill: #F2F8FF;
-    stroke-width: 2;
-    stroke: #659FFF;
+    fill: #F2F8FF !important;
+    stroke-width: 2 !important;
+    stroke: #659FFF !important;
   }
   > .node-label-name-bg {
     fill:#659FFF;
@@ -109,6 +109,11 @@
       fill:#fff;
     }
   }
+}
+
+.canvasel:hover > .node-background {
+  fill-opacity: 0.5;
+  fill: #F2F8FF;
 }
 
 .server-number-bg {
@@ -161,6 +166,12 @@
   fill: #16B4F9;
   font-size: 12px;
   cursor: default;
+}
+
+.AWS-AutoScaling-LaunchConfiguration {
+  + .prompt-text {
+    display : none;
+  }
 }
 
 /* port style */
@@ -291,12 +302,6 @@
 
 .ElbAmiAsso {
   stroke: #0973f6;
-}
-
-.AWS-AutoScaling-LaunchConfiguration {
-  + .prompt-text {
-    display : none;
-  }
 }
 
 .SgRuleLine {

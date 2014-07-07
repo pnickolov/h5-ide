@@ -7,7 +7,7 @@
 # **********************************************************
 */
 
-define(["MC", "canvon"], function(MC){
+define(["MC"], function(MC){
 
 MC.canvas = {
 	GRID_WIDTH: 10,

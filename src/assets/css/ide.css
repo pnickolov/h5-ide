@@ -3799,67 +3799,6 @@ summary:focus {
 	width: 100%;
 }
 
-/* Change AMI Panel */
-
-#changeAmi {
-	width: 130px;
-}
-
-#changeAmiDropZone {
-	width        : 194px;
-	height       : 194px;
-	background   : rgba(0,0,0,.4);
-	text-align   : center;
-	position     : relative;
-	margin-left  : 30px;
-	border-radius: 2px;
-	border       : 3px dashed #666;
-	margin-bottom: 20px;
-}
-
-#changeAmiDropZone.hover {
-	border-color: #fff;
-}
-
-#changeAmiDropZone p {
-	position  : absolute;
-	margin-top: 80px;
-	left      : 45px;
-	color     : #666;
-}
-
-#changeAmiDropZone .resource-icon {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -30px;
-}
-
-#changeAmiDropZone .resource-label {
-	margin-top  : 18px;
-	width       : 120px;
-	margin-left : -30px;
-	font-size   : 12px;
-}
-
-#cancelChangeAmi {
-	text-align: center;
-	width: 100%;
-}
-
-#confirmChangeAmi {
-	width: 180px;
-	margin-left: 40px;
-}
-
-#changeAmiWarning {
-	color: #ec3c38;
-	background: rgba(236, 60, 56, 0.1);
-	padding: 5px;
-	border-radius: 4px;
-	border: 1px solid #9e2622;
-}
-
 /* App Update Summary */
 /*
 #app-apply-update {

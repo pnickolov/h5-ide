@@ -14,6 +14,7 @@ define [
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
+  "UI.dnd"
 ], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
@@ -97,7 +98,7 @@ define [
 
     reuseLc: Backbone.View.extend
       tagName: 'li'
-      className: 'tooltip resource-item resource-icon-asg resource-reuse'
+      className: 'tooltip resource-item asg resource-reuse'
       inDom: false
       defaultAttr: ->
         'data-type': 'ASG'
@@ -223,20 +224,20 @@ define [
       return
 
     updateDisabledAz : ()->
-      $azs = @$el.find(".resource-list-az").children().removeClass("resource-disabled")
+      $azs = @$el.find(".resource-list-az").children().removeClass("disabled")
       for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
         azName = az.get("name")
         for i in $azs
           if $(i).text().indexOf(azName) != -1
-            $(i).addClass("resource-disabled")
+            $(i).addClass("disabled")
             break
       return
 
     updateDisabledVpcRes : ()->
-      $ul = @$el.find(".resource-icon-igw").parent()
+      $ul = @$el.find(".resource-item.igw").parent()
       design = @workspace.design
-      $ul.children(".resource-icon-igw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
-      $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
+      $ul.children(".resource-item.igw").toggleClass("disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
+      $ul.children(".resource-item.vgw").toggleClass("disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
@@ -350,11 +351,26 @@ define [
     startDrag : ( evt )->
       if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
-      if $tgt.hasClass("resource-disabled") then return false
+      if $tgt.hasClass("disabled") then return false
       if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
 
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
       console.assert( type )
+
+      if type is constant.RESTYPE.INSTANCE
+        dropTargets = "#changeAmiDropZone, .OEPanelCenter"
+      else
+        dropTargets = ".OEPanelCenter"
+
+      option = $tgt.data("option") || {}
+      option.type = type
+
+      $tgt.dnd( evt, {
+        dropTargets  : $( dropTargets )
+        dataTransfer : option
+      })
+
+      return false
 
       # Insert Shadow
       $("<div id='ResourceDragItem'></div><div id='overlayer' class='grabbing'></div>").appendTo( document.body )

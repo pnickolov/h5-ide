@@ -49,8 +49,8 @@
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
     <ul class="resource-list-asg clearfix accordion-body">
-      <li class="tooltip resource-item resource-icon-elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
-      <li class="tooltip resource-item resource-icon-asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
+      <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      <li class="tooltip resource-item asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
   </section>
 
@@ -59,17 +59,17 @@
     <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="scroll-content">
-        <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+        <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
 
-        <li class="tooltip resource-item resource-icon-rt" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
+        <li class="tooltip resource-item rtb" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
 
-        <li class="tooltip resource-item resource-icon-igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
+        <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
+        <li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
+        <li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+        <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
       </ul>
     </article>
   </section>
@@ -77,12 +77,12 @@
 
 <!-- {{az}} -->
 {{#each this}}{{#with attributes}}
-<li class="tooltip resource-item resource-icon-az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'><div class="az-name">{{lastChar id}}</div>{{id}}</li>{{/with}}{{/each}}
+<li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'><div class="az-name">{{lastChar id}}</div>{{id}}</li>{{/with}}{{/each}}
 
 <!-- {{snapshot}} -->
-<li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
+<li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
+<li class="resource-item bubble snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
 
 
 <!-- {{ami}} -->
@@ -95,6 +95,5 @@
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >
-    <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
-  </div>
-<div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>
+  <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+</div>Auto Scaling Group ({{name}})

@@ -84,7 +84,6 @@ require.config {
 		# vender                    # Merge in deploy
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
-		'canvon'             : 'vender/canvon/canvon'
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
 		'handlebars'         : 'vender/handlebars/handlebars.rt'
@@ -122,7 +121,7 @@ require.config {
 		'UI.sortable'        : 'ui/jquery.sortable'
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
-		'UI.tour'            : 'ui/UI.tour'
+		'UI.dnd'             : 'ui/UI.dnd'
 		'UI.nanoscroller'    : 'ui/UI.nanoscroller'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
@@ -211,7 +210,6 @@ require.config {
 			"handlebars"
 			"sprintf"
 			"Meteor"
-			"canvon"
 			"crypto"
 			"q"
 		]
@@ -240,7 +238,7 @@ require.config {
 			'UI.sortable'
 			'UI.parsley'
 			'UI.errortip'
-			'UI.tour'
+			'UI.dnd'
 			"jqpagination"
 			'jquerysort'
 			"UI.modalplus"

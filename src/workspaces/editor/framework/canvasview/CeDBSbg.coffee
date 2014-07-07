@@ -27,14 +27,16 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
 
     if isCreate
       node = @createGroup( label )
-
       @getLayer("subnet_layer").append node
 
       # Move the group to right place
       @initNode node, m.x(), m.y()
+      Canvon('#' + m.id).addClass('tooltip')
 
     else
       CanvasManager.update( @$element().children("text"), label )
+
+    @updateTooltip()
 
     null
 
@@ -42,18 +44,33 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
   ChildElementProto.select = ()->
     m = @model
     @doSelect( m.type, m.id, m.id )
-    @showRelatedSubnet()
+    @showRelatedSubnet( true )
     true
 
   #highlight related subnet
-  ChildElementProto.showRelatedSubnet = ()->
+  ChildElementProto.showRelatedSubnet = ( noNeedUpdateTooltip )->
     m = @model
     relatedSb = _.map m.connectionTargets("SbAsso"), ( sb )-> sb.id
+    if not noNeedUpdateTooltip
+      @updateTooltip()
 
     Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
       if sb.id in relatedSb
         Canvon('#' + sb.id).addClass('selected')
       else
         Canvon('#' + sb.id).removeClass('selected')
+
+  #update tooltip
+  ChildElementProto.updateTooltip = ()->
+    m = @model
+    if !relatedSb
+      relatedSb = _.map m.connectionTargets("SbAsso"), ( sb )-> sb.get('name')
+    if relatedSb and relatedSb.length > 0
+      tooltip = relatedSb.join(', ')
+    else
+      tooltip = "No subnet is assigned to this subnet group yet"
+    Canvon('#' + m.id)
+      .attr('data-tooltip', tooltip)
+      .data('tooltip', tooltip)
 
   null

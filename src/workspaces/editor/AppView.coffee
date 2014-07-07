@@ -22,6 +22,7 @@ define [
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.clearSelected)
           .on('mousedown.CANVAS_EVENT', '#svg_canvas', MC.canvas.event.clickBlank)
           .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
+          .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.group', MC.canvas.event.groupHover)
           .on('selectstart.CANVAS_EVENT', false)
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
           .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
@@ -41,6 +42,7 @@ define [
           .on('mousedown.CANVAS_EVENT', MC.canvas.event.ctrlMove.mousedown)
           .on('mousedown.CANVAS_EVENT', '#node-action-wrap', MC.canvas.nodeAction.popup)
           .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.node', MC.canvas.event.nodeHover)
+          .on('mouseenter.CANVAS_EVENT mouseleave.CANVAS_EVENT', '.group', MC.canvas.event.groupHover)
       return
 
     confirmImport : ()->

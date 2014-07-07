@@ -44,22 +44,21 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
   ChildElementProto.select = ()->
     m = @model
     @doSelect( m.type, m.id, m.id )
-    @showRelatedSubnet( true )
+    @hover( true )
     true
 
-  #highlight related subnet
-  ChildElementProto.showRelatedSubnet = ( noNeedUpdateTooltip )->
+  #highlight related subnet when hover
+  ChildElementProto.hover = ( isHighLight )->
     m = @model
     relatedSb = _.map m.connectionTargets("SbAsso"), ( sb )-> sb.id
-    if not noNeedUpdateTooltip
-      @updateTooltip()
 
     Design.modelClassForType(constant.RESTYPE.SUBNET).each (sb) ->
-      if sb.id in relatedSb
+      if sb.id in relatedSb and isHighLight
         Canvon('#' + sb.id).addClass('selected')
       else
         Canvon('#' + sb.id).removeClass('selected')
-
+    true
+ 
   #update tooltip
   ChildElementProto.updateTooltip = ()->
     m = @model

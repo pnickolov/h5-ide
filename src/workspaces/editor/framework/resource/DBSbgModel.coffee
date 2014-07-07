@@ -9,6 +9,24 @@ define [ "constant"
 
   SbAsso = ConnectionModel.extend {
     type : "SbAsso"
+
+    constructor: ( p1Comp, p2Comp, attr, option ) ->
+      ConnectionModel.prototype.constructor.apply @, arguments
+      null
+
+    initialize: ( attr, option ) ->
+      @draw = @updateToolTip
+
+    remove : ()->
+      ConnectionModel.prototype.remove.apply this, arguments
+      @updateToolTip()
+      null
+
+    updateToolTip : ()->
+      m = @getTarget(constant.RESTYPE.DBSBG)
+      if m and m.__view
+        m.__view.updateTooltip()
+      null
   }
 
   Model = GroupModel.extend {

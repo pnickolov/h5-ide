@@ -4340,6 +4340,19 @@ MC.canvas.event.nodeHover = function (event)
 	return true;
 };
 
+MC.canvas.event.groupHover = function (event)
+{
+	if (this.parentElement && this.parentElement.id && $("#"+this.parentElement.id).length!=0 )
+	{
+		if ($("#"+this.parentElement.id).data().class === "AWS.RDS.DBSubnetGroup" )
+		{
+			var is_highlight = event.handleObj.origType === "mouseenter" ? true : false;
+			$canvas( this.parentElement.id ).hover( is_highlight );
+		}
+	}
+	return true;
+};
+
 MC.canvas.event.clearSelected = function (event)
 {
 	// Except for tab switching

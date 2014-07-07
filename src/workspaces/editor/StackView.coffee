@@ -23,6 +23,7 @@ define [
         .on('mousedown',             '.dragable',         MC.canvas.event.dragable.mousedown)
         .on('mousedown',             '.group-resizer',    MC.canvas.event.groupResize.mousedown)
         .on('mouseenter mouseleave', '.node',             MC.canvas.event.nodeHover)
+        .on('mouseenter mouseleave', '.group',            MC.canvas.event.groupHover)
         .on('click',                 '.line',             MC.canvas.event.selectLine)
         .on('mousedown',             '#svg_canvas',       MC.canvas.event.clickBlank)
         .on('mousedown',             '#node-action-wrap', MC.canvas.nodeAction.popup)

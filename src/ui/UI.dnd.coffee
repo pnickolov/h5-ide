@@ -37,6 +37,7 @@ define ["jquery"], ( $ )->
     $( document ).on({
       "mousemove.uidnd" : detectDrag
       "mousedown.uidnd" : cancelDnd  # Any other user mouse event will cause the drop to be canceld.
+      "mouseup.uidnd"   : cancelDnd  # Any other user mouse event will cause the drop to be canceld.
     }, options )
     return this
 
@@ -71,18 +72,16 @@ define ["jquery"], ( $ )->
     data.shadow = shadow = data.clone( data )
 
     if data.lockToCenter
-      data.offset =
-        x : shadow.outerWidth()  / 2
-        y : shadow.outerHeight() / 2
+      data.offsetX = shadow.outerWidth()  / 2
+      data.offsetY = shadow.outerHeight() / 2
     else
       offset = data.source.offset()
-      data.offset =
-        x : data.startX - offset.left
-        y : data.startY - offset.top
+      data.offsetX = data.startX - offset.left
+      data.offsetY = data.startY - offset.top
 
     shadow.css({
-      left : evt.pageX - data.offset.x
-      top  : evt.pageY - data.offset.y
+      left : evt.pageX - data.offsetX
+      top  : evt.pageY - data.offsetY
     })
 
     data.dropZones = _.map data.dropTargets, ( tgt )->
@@ -121,8 +120,8 @@ define ["jquery"], ( $ )->
       data.hoverZone = newZone
 
     data.shadow.css({
-      left : evt.pageX - data.offset.x
-      top  : evt.pageY - data.offset.y
+      left : evt.pageX - data.offsetX
+      top  : evt.pageY - data.offsetY
     })
 
     data.onDrag( evt )

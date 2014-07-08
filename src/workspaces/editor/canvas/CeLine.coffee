@@ -42,13 +42,18 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       pos_from = item_from.pos( element1 )
       pos_to   = item_to.pos( element2 )
 
+      pos_to.x   *= 10
+      pos_to.y   *= 10
+      pos_from.x *= 10
+      pos_from.y *= 10
+
       from_port = connection.port1("name")
       to_port   = connection.port2("name")
       dirn_from = item_from.portDirection(from_port)
       dirn_to   = item_to.portDirection(to_port)
 
       if dirn_from and dirn_to
-        if pos_from.left > pos_to.left
+        if pos_from.x > pos_to.x
           from_port += "-left"
           to_port   += "-right"
         else
@@ -58,59 +63,59 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         pos_port_from = item_from.portPosition( from_port )
         pos_port_to   = item_to.portPosition( to_port )
 
-        pos_from.left += pos_port_from[0]
-        pos_from.top  += pos_port_from[1]
-        pos_to.left   += pos_port_to[0]
-        pos_to.top    += pos_port_to[1]
+        pos_from.x += pos_port_from[0]
+        pos_from.y += pos_port_from[1]
+        pos_to.x   += pos_port_to[0]
+        pos_to.y   += pos_port_to[1]
 
       else if dirn_from
 
         pos_port_to = item_to.portPosition( to_port )
-        pos_to.left += pos_port_to[0]
-        pos_to.top  += pos_port_to[1]
+        pos_to.x += pos_port_to[0]
+        pos_to.y += pos_port_to[1]
 
         if dirn_from is "vertical"
-          from_port += if pos_to.top > pos_from.top then "-bottom" else "-top"
+          from_port += if pos_to.y > pos_from.y then "-bottom" else "-top"
         else if dirn_from is "horizontal"
-          from_port += if pos_to.left > pos_from.left then "-right" else "-left"
+          from_port += if pos_to.x > pos_from.x then "-right" else "-left"
 
         pos_port_from = item_from.portPosition( from_port )
-        pos_from.left += pos_port_from[0]
-        pos_from.top  += pos_port_from[1]
+        pos_from.x += pos_port_from[0]
+        pos_from.y  += pos_port_from[1]
 
       else if dirn_to
         pos_port_from = item_from.portPosition( from_port )
-        pos_from.left += pos_port_from[0]
-        pos_from.top  += pos_port_from[1]
+        pos_from.x += pos_port_from[0]
+        pos_from.y += pos_port_from[1]
 
         if dirn_to is "vertical"
-          to_port += if pos_from.top > pos_to.top then "-bottom" else "-top"
+          to_port += if pos_from.y > pos_to.y then "-bottom" else "-top"
         else if dirn_to is "horizontal"
-          to_port += if pos_from.left > pos_to.left then "-right" else "-left"
+          to_port += if pos_from.x > pos_to.x then "-right" else "-left"
 
         pos_port_to = item_to.portPosition( to_port )
-        pos_to.left += pos_port_to[0]
-        pos_to.top  += pos_port_to[1]
+        pos_to.x += pos_port_to[0]
+        pos_to.y  += pos_port_to[1]
 
       else
         pos_port_from = item_from.portPosition( from_port )
         pos_port_to   = item_to.portPosition( to_port )
 
-        pos_from.left += pos_port_from[0]
-        pos_from.top  += pos_port_from[1]
-        pos_to.left   += pos_port_to[0]
-        pos_to.top    += pos_port_to[1]
+        pos_from.x += pos_port_from[0]
+        pos_from.y += pos_port_from[1]
+        pos_to.x   += pos_port_to[0]
+        pos_to.y   += pos_port_to[1]
 
       start0 =
-        x     : pos_from.left
-        y     : pos_from.top
+        x     : pos_from.x
+        y     : pos_from.y
         angle : pos_port_from[2]
         type  : connection.port1Comp().type
         name  : from_port
 
       end0 =
-        x     : pos_to.left
-        y     : pos_to.top
+        x     : pos_to.x
+        y     : pos_to.y
         angle : pos_port_to[2]
         type  : connection.port2Comp().type
         name  : to_port

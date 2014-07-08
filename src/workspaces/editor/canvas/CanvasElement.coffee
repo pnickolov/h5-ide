@@ -110,8 +110,8 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
             break
           el = el.parentNode
       {
-        left : x * 10
-        top  : y * 10
+        x : x
+        y : y
       }
 
     initNode : ( node, x, y )->
@@ -202,7 +202,7 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
 
       canvas = @canvas
       @model.children().map ( childModel )->
-        @canvas.getItem( childModel.id )
+        canvas.getItem( childModel.id )
 
     # Canvas Interaction
     select  : ( selectedDomElement )->

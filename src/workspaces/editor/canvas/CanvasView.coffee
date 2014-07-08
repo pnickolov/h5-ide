@@ -445,7 +445,7 @@ define [
         return
 
       if group and defaultSize
-        groupOffset = { x : group.model.x(), y : group.model.y() }
+        groupOffset = group.pos()
         groupSize   = group.size()
         # If we drop near the edge of the group. Make sure the item is inside the group
         if groupOffset.x >= dropPos.x
@@ -459,6 +459,10 @@ define [
 
       # Find best position for the element
       dropPos = @__findEmptyDropPlace( dropPos, defaultSize, group )
+
+      if not dropPos
+        notification "warning", "Not enough space.", false
+        return
 
       # Create attributes.
       createOption = { createByUser : true }
@@ -479,9 +483,51 @@ define [
         _.defer ()-> self.selectItem( model.id )
       return
 
+    __itemAtPos : ( pos, items )->
+      for child in items
+        cp = child.pos()
+        if cp.x == pos.x and cp.y == pos.y then return child
+        if cp.x > pos.x or cp.y < pos.y then continue
+        cs = child.size()
+        if cs.width + cp.x <= pos.x and cs.height + cp.y <= pos.y
+          return child
+      null
+
+    __isRectEmpty : ( pos, size, children )->
+      return true
+
     __findEmptyDropPlace : ( pos, size, group )->
       if not group then return pos
-      pos
+
+      children = group.children()
+
+      child = @__itemAtPos( pos, children )
+      if not child
+        if @__isRectEmpty( pos, size, children )
+          return pos
+        else
+          return null
+
+      # The position is occupied by someone else. Try offset to the left and top.
+      childPos  = child.pos()
+      childSize = child.size()
+      childPos.x += childSize.width
+      childPos.y += childSize.height
+      if childPos.x - pos.x <= childPos.y - pos.y
+        pos.x = childPos.x
+      else
+        pos.y = childPos.y
+
+      if @__isRectEmpty( pos, size, children )
+        return pos
+
+      pos.x = childPos.x
+      pos.y = childPos.y
+
+      if @__isRectEmpty( pos, size, children )
+        return pos
+
+      null
 
   }, {
     GRID_WIDTH  : 10

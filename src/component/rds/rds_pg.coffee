@@ -86,6 +86,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
     renderSlides: (which, checked)->
       tpl = template['slide_'+ which]
+      $(".slidebox .content").removeAttr('style')
       slides = @getSlides()
       slides[which]?.call @, tpl, checked
       if(which == "create")
@@ -138,12 +139,68 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
             "width": "100%"
             "margin-top": "0px"
           )
+          that.bindEditEvent(parameters, tpl)
 
       'reset': (tpl, checked)->
         data = name: checked[0].data.id
         if not checked
           return
         @manager.setSlide tpl data
+
+    bindEditEvent: (parameters,tpl)->
+      that = @
+      getChange = ->
+        changeArray = []
+        parameters.filter (e)->
+          if e.has('newValue') and (e.get("newValue") isnt e.get("ParameterValue"))
+            changeArray.push e.toJSON()
+        changeArray
+
+      _.each parameters.models, (e)->
+        onChange = (event)->
+          $("[data-action='preview']").prop 'disabled', false
+          if e.isValidValue(this.value) or this.value is ""
+            $(this).removeClass "parsley-error"
+            e.set('newValue', this.value)
+            console.log e.toJSON()
+          else
+            $(this).addClass "parsley-error"
+
+        if e.attributes.IsModifiable
+          $(".slidebox").on 'change',"[name="+e.attributes.ParameterName+"]", onChange
+          $(".slidebox").on 'keyup',"[name="+e.attributes.ParameterName+"]", onChange
+
+      $("[data-action='preview']").click ->
+        data = getChange()
+        _.each data, (e)->
+          if e.AllowedValues?.split(',').length>1
+            e.inputType = 'select'
+            e.selections = e.AllowedValues.split(',')
+            return
+          else
+            e.inputType = 'input'
+            return
+        that.manager.setSlide tpl {data:data, preview: true}
+        $("#rds-pg-save").click ->
+          that.modifyParams(parameters, getChange())
+
+    modifyParams: (parameters, change)->
+      changeMap = {}
+      _.each change, (e)->
+        changeMap[e.ParameterName] = e.newValue
+      _.each parameters.models, (d)->
+        d.unset 'newValue' #unset newValue Attribute
+      afterModify = @afterModify.bind @
+      @switchAction 'processing'
+      parameters.groupModel.modifyParams(changeMap).then afterModify, afterModify
+
+    afterModify: (result)->
+      console.log result
+      if (result?.error)
+        notification 'error', "Parameter Group updated failed because of "+result?.msg
+        return false
+      notification 'info', "Parameter Group is updated."
+      @manager.cancel()
 
     doAction: (action, checked)->
       @["do_"+action] and @["do_"+action]('do_'+action,checked)
@@ -195,7 +252,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         return false
       #cancelselect && fetch
       @collection.add result
-      notification 'info', "RDS Parameter Group is resetd successfully!"
+      notification 'info', "RDS Parameter Group is reset successfully!"
 
     afterDeleted: (result)->
       deleteCount--

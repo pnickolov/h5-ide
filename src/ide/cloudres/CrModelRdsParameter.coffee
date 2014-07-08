@@ -25,6 +25,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
       valueNum = parseInt( value )
       for allowed in @attributes.AllowedValues.split(",")
         if allowed.indexOf("-")>=0
+          if not /^[0-9]*$/.test(value)
+            return false
           range = allowed.split("-")
           if valueNum >= parseInt(range[0]) and valueNum <= parseInt(range[1])
             return true

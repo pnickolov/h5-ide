@@ -104,8 +104,15 @@
     <table class="table">
         <thead>
             <tr>
-                <th width="50%">Parameter Name</th>
-                <th width="50%">Edit Value</th>
+                {{#if preview}}
+                    <th width="40%">Parameter Name</th>
+                    <th width="20%">Origin Value</th>
+                    <th width="40%">Edit Value</th>
+                {{else}}
+                    <th width="50%">Parameter Name</th>
+                    <th width="50%">Edit Value</th>
+                {{/if}}
+
             </tr>
         </thead>
         <tbody>
@@ -117,18 +124,29 @@
                     </div>
                     <div class="prop_sub">{{Description}}</div>
                 </td>
+                {{#if ../preview}}
+                    <td>
+                    <div class="prop_main" style="text-align: center">
+                        {{#if ParameterValue}}
+                            {{ParameterValue}}
+                        {{else}}
+                            {{#ifCond inputType 'select'}}&lt;empty&gt;{{else}}&lt;engine-default&gt;{{/ifCond}}
+                        {{/if}}
+                    </div>
+                    </td>
+                {{/if}}
                 <td>
                     <div class="prop_main">
                         {{#ifCond inputType 'select'}}
                             <select name="{{ParameterName}}" class="select" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
                                 <option value="<engine-default>">&lt;engine-default&gt;</option>
                                 {{#each selections}}
-                                    <option value="{{this}}" {{#ifCond ../ParameterValue this}}selected="selected"{{/ifCond}}>{{this}}</option>
+                                   <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
                                 {{/each}}
                             </select>
                         {{/ifCond}}
                         {{#ifCond inputType 'input'}}
-                            <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{ParameterValue}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                            <input type="text" class="input parsley-validated prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
                             {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
                         {{/ifCond}}
                     </div>
@@ -143,9 +161,21 @@
 </div>
 <div class="pg-edit-footer">
     <div class="init action" style="padding: 10px 0">
-        <button class="btn btn-blue do-action" data-action="save" disabled>Save</button>
+        {{#if preview}}
+            <button class="btn do-action" data-action="edit">Back to Editing</button>
+            <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
+        {{else}}
+            <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
+        {{/if}}
         <button class="btn btn-silver cancel">Cancel</button>
     </div>
+    <div class="processing action" style="padding: 10px 0;display: none">
+        <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
+        <button class="btn btn-silver cancel" disabled>Cancel</button>
+    </div>
+
+
+
 </div>
 
 

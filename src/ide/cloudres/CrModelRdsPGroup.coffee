@@ -54,7 +54,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         pArray.push {
           ParameterName  : name
           ParameterValue : value
-          ApplyMethod    : @get( name ).applyMethod()
+          ApplyMethod    : @getParameters().get( name ).applyMethod()
         }
 
       requests = []
@@ -70,8 +70,9 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         i+=20
 
       self = @
+      parameters = self.getParameters()
       Q.all( requests ).then ()->
         for name, value of paramNewValueMap
-          @get("name").set("ParameterValue", value)
+          parameters.get(name).set("ParameterValue", value)
         return
   }

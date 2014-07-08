@@ -10,10 +10,6 @@ define [ "constant"
   SbAsso = ConnectionModel.extend {
     type : "SbAsso"
 
-    constructor: ( p1Comp, p2Comp, attr, option ) ->
-      ConnectionModel.prototype.constructor.apply @, arguments
-      null
-
     initialize: ( attr, option ) ->
       @draw = @updateToolTip
 

@@ -6,9 +6,10 @@ define [ '../base/view'
          './template/stack_instance'
          './template/stack_replica'
          './template/stack_snapshot'
+         './template/component'
          'i18n!/nls/lang.js'
          'constant'
-], ( PropertyView, template_instance, template_replica, template_snapshot, lang, constant ) ->
+], ( PropertyView, template_instance, template_replica, template_snapshot, template_component, lang, constant ) ->
 
     noop = ()-> null
 
@@ -37,6 +38,22 @@ define [ '../base/view'
             'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
+
+            'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
+            'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
+            'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
+
+        changeLicense: ( event, name, data ) ->
+            @model.set 'license', name
+            @renderLVIA()
+
+        changeVersion: ( event, name, data ) ->
+            @model.set 'engineVersion', name
+            @renderLVIA()
+
+        changeClass: ( event, name, data ) ->
+            @model.set 'instanceClass', name
+            @renderLVIA()
 
         _getTimeData: (timeStr) ->
 
@@ -148,7 +165,7 @@ define [ '../base/view'
             attr.maintenance = maintenanceTime
 
             spec = @model.getSpecifications()
-            lvi = @model.getLVI spec
+            lvi = @model.getLVIA spec
 
             attr.licenses = lvi[0]
             attr.versions = lvi[1]
@@ -161,6 +178,7 @@ define [ '../base/view'
             template = template_snapshot if attr.snapshotId
 
             @$el.html template attr
+            @renderLVIA()
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek
@@ -170,6 +188,22 @@ define [ '../base/view'
                 $('#property-dbinstance-maintenance-window-start-day-select').find('.selection').text($item.text())
 
             @model.get 'name'
+
+        # Render License, Version, InstanceClass and multi-AZ
+        renderLVIA: ->
+            spec = @model.getSpecifications()
+            lvi  = @model.getLVIA spec
+
+            data = {
+                licenses : lvi[0]
+                versions : lvi[1]
+                classes  : lvi[2]
+                azCapable: lvi[3]
+            }
+            _.extend data, @model.toJSON()
+
+            $('#lvia-container').html template_component.LVIA data
+            @
 
         changeInstanceName: (event) ->
 

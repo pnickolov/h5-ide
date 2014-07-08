@@ -5,63 +5,12 @@
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
+            <input class="input" type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
 
-        <section class="property-control-group">
-            <label class="left">License Model</label>
-            <div class="selectbox" id="property-dbinstance-license-select">
-                <div class="selection"></div>
-                <ul class="dropdown" tabindex="-1">
-                    {{#each licenses}}
-                    <li class="item data-id="{{license}}" {{#if selected}}selected{{/if}}>{{license}}</li>
-                    {{/each}}
-                </ul>
-            </div>
-        </section>
+        <div id ="lvia-container">
 
-        <section class="property-control-group">
-            <label class="left">DB Engine Version</label>
-            <div class="selectbox" id="property-dbinstance-engine-version-select">
-                <div class="selection"></div>
-                <ul class="dropdown" tabindex="-1">
-                    {{#each versions}}
-                    <li class="item data-id="{{version}}" {{#if selected}}selected{{/if}}>{{version}}</li>
-                    {{/each}}
-                </ul>
-            </div>
-        </section>
-
-        <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
-                <label for="property-dbinstance-version-update"></label>
-            </div>
-            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
-        </section>
-
-        <section class="property-control-group">
-            <label class="left">DB Instance Class</label>
-            <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
-                <div class="selection"></div>
-                <ul class="dropdown">
-                    {{#each classes}}
-                    <li class="{{#if selected}}selected {{/if}}tooltip item" tabindex="-1" data-tooltip="{{main}}" data-id="{{instanceClass}}" {{#if hide}}style="display:none;"{{/if}}>
-                        <div class="main truncate">{{instanceClass}}</div>
-                        <!-- <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div> -->
-                    </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </section>
-
-        <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} value="None" name="property-dbinstance-mutil-az-check">
-                <label for="property-dbinstance-mutil-az-check"></label>
-            </div>
-            <label for="property-dbinstance-mutil-az-check">Multi-AZ Deployment</label>
-        </section>
+        </div>
 
         <section class="property-control-group">
             <label>Allocated Storage</label>
@@ -244,6 +193,14 @@
                 <label class="left" for="property-dbinstance-maintenance-window-start-minute" >Minute</label>
                 <input class="input" type="text" id="property-dbinstance-maintenance-window-start-minute" value="{{maintenance.startMin}}" data-ignore="true" data-required-rollback="true"/>
             </div>
+        </section>
+
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
+                <label for="property-dbinstance-version-update"></label>
+            </div>
+            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
         </section>
 
     </div>

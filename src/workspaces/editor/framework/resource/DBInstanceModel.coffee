@@ -1,6 +1,19 @@
 
 define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
+  versionCompare = (left, right) ->
+    return false  unless typeof left + typeof right is "stringstring"
+    a = left.split(".")
+    b = right.split(".")
+    i = 0
+    len = Math.max(a.length, b.length)
+    while i < len
+      if (a[i] and not b[i] and parseInt(a[i]) > 0) or (parseInt(a[i]) > parseInt(b[i]))
+        return 1
+      else if (b[i] and not a[i] and parseInt(b[i]) > 0) or (parseInt(a[i]) < parseInt(b[i]))
+        return -1
+      i++
+    0
 
   Model = ComplexResModel.extend {
 
@@ -91,38 +104,88 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getDefaultPort: ->
       @defaultPortMap[@get('engine')]
 
-    getDefaultLicense: -> @getSpecifications()?[0].license
+    getLicenseObj: ( getefault ) ->
+      currentLicense = @get 'license'
 
-    getDefaultVersion: -> @getSpecifications()?[0].versions[0].version
+      if currentLicense then obj = _.findWhere @getSpecifications(), license: currentLicense
+      if not obj and getDefault then obj = @getSpecifications()[0]
 
-    getDefaultInstanceClass: ->
-      if not @getSpecifications() then return ''
+      obj
 
-      consoleDefault = 'db.t1.micro'
-      instanceClasses = _.pluck @getSpecifications()[0].versions[0].instanceClasses, 'instanceClass'
+    getVersionObj: ( getDefault ) ->
+      versions = @getLicenseObj(true).versions
+      currentVersion = @get 'engineVersion'
 
-      if consoleDefault in instanceClasses
-        consoleDefault
-      else
-        _.first(@getSpecifications()).versions[0].instanceClasses[0].instanceClass
+      if currentVersion then obj = _.findWhere versions, version: currentVersion
+      if not obj and getDefault then obj = versions[0]
 
-    getLVI: (spec) ->
-      license = _.find spec, (s) =>
-        if s.license is @get 'license'
+      obj
+
+    getInstanceClassObj: ( getDefault ) ->
+      instanceClasses = @getVersionObj(true).instanceClasses
+      currentClass = @get 'instanceClass'
+
+      if currentClass then obj = _.findWhere instanceClasses, instanceClass: currentClass
+      if not obj and getDefault
+        consoleDefault = 'db.t1.micro'
+        obj = _.find instanceClasses, (i) -> i.instanceClass is consoleDefault
+        if not obj then obj = instanceClasses[0]
+
+      obj
+
+    getDefaultLicense: -> @getLicenseObj(true).license
+
+    getDefaultVersion: -> @getVersionObj(true).version
+
+    getDefaultInstanceClass: -> @getInstanceClassObj(true).instanceClass
+
+    # Get and Process License, EngineVersion, InstanceClass and multiAZ
+    getLVIA: (spec) ->
+      if not spec then return []
+
+      currentLicense = @get 'license'
+      currentVersion = @get 'engineVersion'
+      currentClass   = @get 'instanceClass'
+
+      spec[1] = license: 'test', versions: [ { version: '0.0.1', instanceClasses: [{instanceClass:'test', multiAZCapable: false}]} ]
+
+      license = _.first _.filter spec, (s) ->
+        if s.license is currentLicense
           s.selected = true
           true
+        else
+          delete s.selected
+          false
 
-      version = _.find license.versions, (v) =>
-        if v.version is @get 'engineVersion'
+      version = _.first _.filter license.versions, (v) ->
+        if v.version is currentVersion
           v.selected = true
           true
+        else
+          delete v.selected
+          false
 
-      instanceClass = _.find version.instanceClasses, (i) =>
-        if i.instanceClass is @get 'instanceClass'
+      if not version
+        version = @getVersionObj true
+        @set 'engineVersion', version.version
+        _.findWhere(license.versions, {version: version.version})?.selected = true
+
+      instanceClass = _.first _.filter version.instanceClasses, (i) ->
+        if i.instanceClass is currentClass
           i.selected = true
           true
+        else
+          delete i.selected
+          false
 
-      [spec, license.versions, version.instanceClasses]
+      if not instanceClass
+        instanceClass = @getInstanceClassObj true
+        @set 'instanceClass', instanceClass.instanceClass
+        _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
+      if not instanceClass.multiAZCapable
+        @set 'multiAZ', false
+
+      [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable]
 
 
     getSpecifications: ->
@@ -151,7 +214,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> that.instanceClassList.indexOf cla.instanceClass
           lObj.versions.push vObj
 
-        lObj.versions.sort (a, b) -> b.version > a.version
+        lObj.versions.sort (a, b) -> versionCompare b.version, a.version
         specArr.push lObj
 
       @__cachedSpecifications = specArr

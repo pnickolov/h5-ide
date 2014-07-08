@@ -9,7 +9,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       y        : 0
       width    : 9
       height   : 9
-      
+
       accessible: false
       username: 'root'
       password: '12345678'
@@ -39,6 +39,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     __cachedSpecifications: null
 
     constructor : ( attr, option ) ->
+
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->

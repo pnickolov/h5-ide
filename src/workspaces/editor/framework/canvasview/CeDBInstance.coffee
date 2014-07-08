@@ -43,14 +43,15 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
     if target
       DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
-      res = new DBInstanceModel({
+      replicaData = comp.toJSON()
+      replicaData = _.extend(replicaData, {
         x : x
         y : y
         sourceDBInstance : comp
         parent : target
-      }, {
-        createByUser: true
       })
+      delete replicaData.id
+      res = new DBInstanceModel(replicaData, { createByUser: true })
 
     if res and res.id
       $canvas(res.id).select();

@@ -29,11 +29,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CanvasView" ], ( Can
       azModel = CanvasElement.createResource( type, attr, option )
 
       # Create a subnet
-      attr.x += 2
-      attr.y += 2
-      attr.width  -= 4
-      attr.height -= 4
-      attr.parent = azModel
+      CanvasElement.createResource( constant.RESTYPE.SUBNET, {
+        x      : attr.x + 2
+        y      : attr.y + 2
+        width  : attr.width - 4
+        height : attr.height - 4
+        parent : azModel
 
-      CanvasElement.createResource( constant.RESTYPE.SUBNET, attr, option )
+      }, option )
   }

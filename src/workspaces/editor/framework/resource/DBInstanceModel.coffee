@@ -104,7 +104,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getDefaultPort: ->
       @defaultPortMap[@get('engine')]
 
-    getLicenseObj: ( getefault ) ->
+    getLicenseObj: ( getDefault ) ->
       currentLicense = @get 'license'
 
       if currentLicense then obj = _.findWhere @getSpecifications(), license: currentLicense

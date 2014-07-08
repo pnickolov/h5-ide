@@ -3,10 +3,12 @@
 #############################
 
 define [ '../base/view'
-         './template/stack'
+         './template/stack_instance'
+         './template/stack_replica'
+         './template/stack_snapshot'
          'i18n!/nls/lang.js'
          'constant'
-], ( PropertyView, template, lang, constant ) ->
+], ( PropertyView, template_instance, template_replica, template_snapshot, lang, constant ) ->
 
     noop = ()-> null
 
@@ -136,6 +138,7 @@ define [ '../base/view'
             @model.set('maintenanceWindow', timeStr)
 
         render: () ->
+
             attr = @model.toJSON()
 
             backupTime = @_getTimeData(attr.backupWindow) or {}
@@ -151,6 +154,11 @@ define [ '../base/view'
             attr.versions = lvi[1]
             attr.classes  = lvi[2]
 
+            template = template_instance
+            # if replica
+            template = template_replica if attr.replicaId
+            # if snapshot
+            template = template_snapshot if attr.snapshotId
 
             @$el.html template attr
 

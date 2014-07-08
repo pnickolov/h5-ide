@@ -51,6 +51,7 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         parent : target
       })
       delete replicaData.id
+      replicaData.snapshotId = ''
       res = new DBInstanceModel(replicaData, { createByUser: true })
 
     if res and res.id

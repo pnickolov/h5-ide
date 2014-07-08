@@ -97,5 +97,3 @@ define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
       ch
     else
       ""
-
-  null

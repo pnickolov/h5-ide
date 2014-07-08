@@ -50,9 +50,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       that = @
       allNotDefault = _.every checked, (e)->
         val =  not that.collection.findWhere(id: e.data.id).isDefault()
-        console.log(val)
         return val
-      console.log(allNotDefault,"AllNowDefault")
       if checked.length >= 1 and allNotDefault
         window.setTimeout ->
           that.M$('[data-btn=delete]').prop 'disabled', false
@@ -128,13 +126,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         parameters.fetch().then ->
           data = data: parameters.toJSON()
           _.each data.data, (e)->
-            if not e.AllowedValues then console.log(e)
             if e.AllowedValues?.split(',').length>1
               e.inputType = 'select'
               e.selections = e.AllowedValues.split(',')
-              if e.ParameterValue
-                console.log(e.ParameterValue,'---')
-                console.log(e)
               return
             else
               e.inputType = 'input'

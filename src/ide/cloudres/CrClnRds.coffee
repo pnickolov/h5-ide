@@ -45,6 +45,7 @@ define [
       if not _.isArray( data ) then data = [data]
       for i in data
         i.id = i.DBSubnetGroupName
+        i.Subnets = i.Subnets?.Subnet
       data
     parseExternalData: ( data ) ->
       @unifyApi data, @type

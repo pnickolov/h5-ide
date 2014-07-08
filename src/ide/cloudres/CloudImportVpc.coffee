@@ -1337,14 +1337,35 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     ()-> #RDS DBSubnetGroup
       for aws_sbg in @getResourceByType( "DBSBG" )
         aws_sbg = aws_sbg.attributes
-        sbgRes = {}
+        sbgRes =
+          "CreatedBy"        : "",
+          "DBSubnetGroupName": ""
+          "SubnetIds"        : [
+            # "@{6B4B6AF1-789C-4E9F-9297-C670FD579D62.resource.SubnetId}",
+            # "@{E4071FFE-FC60-4D3E-A752-B3251DE7FB8E.resource.SubnetId}"
+          ]
+          "DBSubnetGroupDescription": ""
+
+        sbgRes.DBSubnetGroupName        = aws_sbg.id
+        sbgRes.DBSubnetGroupDescription = aws_sbg.DBSubnetGroupDescription
+
+        for subnet in  aws_sbg.Subnets
+          subnetComp = @subnets[ subnet.SubnetIdentifier ]
+          sbgRes.SubnetIds.push CREATE_REF(subnetComp, "resource.SubnetId")
 
         # Found an original component
         originComp = @getOriginalComp(aws_sbg.id, 'DBSBG')
-        sbgRes = originComp.resource
+        if originComp
+          sbgName = originComp.name
+          sbgRes.CreatedBy = originComp.resource.CreatedBy
+          if sbgRes.SubnetIds.sort().toString() is originComp.resource.SubnetIds.sort().toString()
+            #keep original sequence
+            sbgRes.SubnetIds = originComp.resource.SubnetIds
+        else
+          sbgName = aws_sbg.DBSubnetGroupName
 
         #generate DBSubnetGroup component
-        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or originComp.name )
+        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or sbgName )
         @addLayout( sbgComp, true, @theVpc )
         @sbgs[ aws_sbg.id ] = sbgComp
 

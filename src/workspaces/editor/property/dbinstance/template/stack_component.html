@@ -1,4 +1,3 @@
-<!-- {{LVIA}} -->
 <section class="property-control-group">
     <label class="left">License Model</label>
     <div class="selectbox" id="property-dbinstance-license-select">
@@ -30,7 +29,7 @@
         <ul class="dropdown">
             {{#each classes}}
             <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
-                <div class="main truncate">{{instanceClass}}</div>
+                {{instanceClass}}
                 <!-- <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div> -->
             </li>
             {{/each}}

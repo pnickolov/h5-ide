@@ -211,7 +211,7 @@ define [ '../base/view'
             }
             _.extend data, @model.toJSON()
 
-            $('#lvia-container').html template_component.LVIA data
+            $('#lvia-container').html template_component data
             @
 
         changeInstanceName: (event) ->

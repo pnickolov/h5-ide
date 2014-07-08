@@ -61,8 +61,8 @@ define [ "constant"
         type : @type
         uid  : @id
         resource :
-          CreatedBy               : @get 'appId'
-          DBSubnetGroupName       : @get 'name'
+          CreatedBy               : @get 'createdBy'
+          DBSubnetGroupName       : @get 'appId'
           SubnetIds               : sbArray
           DBSubnetGroupDescription: @get 'description'
 
@@ -79,7 +79,8 @@ define [ "constant"
 
         id          : data.uid
         name        : data.name || data.resource.DBSubnetGroupName
-        appId       : data.resource.CreatedBy
+        appId       : data.resource.DBSubnetGroupName
+        createdBy   : data.resource.CreatedBy
 
         description : data.resource.DBSubnetGroupDescription
 

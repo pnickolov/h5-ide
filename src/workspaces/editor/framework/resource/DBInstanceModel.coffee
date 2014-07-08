@@ -98,7 +98,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getDefaultInstanceClass: ->
       if not @getSpecifications() then return ''
 
-      consoleDefault = 'db.m3.xlarge'
+      consoleDefault = 'db.t1.micro'
       instanceClasses = _.pluck @getSpecifications()[0].versions[0].instanceClasses, 'instanceClass'
 
       if consoleDefault in instanceClasses

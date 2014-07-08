@@ -72,16 +72,23 @@ define [
         i.id   = i.DBInstanceIdentifier #use name as id
         i.Name = i.DBName
         i.sbgId = i.DBSubnetGroup.DBSubnetGroupName
+        i.DBParameterGroups = i.DBParameterGroups?.DBParameterGroup || []
+        i.DBSecurityGroups  = i.DBSecurityGroups?.DBSecurityGroup || []
       data
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       @camelToPascal data
       _.each data, (dataItem) ->
+        #convert DBSubnetGroup
         if dataItem.DBSubnetGroup
           dataItem.DBSubnetGroup.DBSubnetGroupDescription = dataItem.DBSubnetGroup.DbsubnetGroupDescription
           dataItem.DBSubnetGroup.DBSubnetGroupName        = dataItem.DBSubnetGroup.DbsubnetGroupName
           delete dataItem.DBSubnetGroup.DbsubnetGroupDescription
           delete dataItem.DBSubnetGroup.DbsubnetGroupName
+        #convert DBParameterGroups
+        for pg in dataItem.DBParameterGroups
+          pg.DBParameterGroupName = pg.DbparameterGroupName
+          delete pg.DbparameterGroupName
         dataItem.id  = dataItem.DBInstanceIdentifier #use name as id
         dataItem.Name = dataItem.DBName
         dataItem.sbgId = dataItem.DBSubnetGroup.DBSubnetGroupName #subnetGroup

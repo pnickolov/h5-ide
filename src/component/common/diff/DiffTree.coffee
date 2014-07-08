@@ -26,6 +26,7 @@ define [], () ->
                 'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
                 'resource.Attachment.AttachmentId': true
                 'resource.Iops': true
+                'resource.MasterUserPassword': true
             }
 
         if not option.noDiffArrayAttrMap

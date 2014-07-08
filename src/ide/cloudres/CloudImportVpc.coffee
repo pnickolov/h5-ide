@@ -893,8 +893,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if not subnetComp
             continue
           aclRes.AssociationSet.push
-            "NetworkAclAssociationId": acl.networkAclAssociationId
+            #"NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
+
+        originComp = @getOriginalComp( aws_acl.id, "ACL" )
+        if originComp and originComp.resource.AssociationSet.sort().toString() is aclRes.AssociationSet.sort().toString()
+          aclRes.AssociationSet = jQuery.extend(true, {}, originComp.resource.AssociationSet)
 
         aclComp = @add( "ACL", aclRes, aclName )
       return
@@ -1341,13 +1345,13 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "CreatedBy"        : "",
           "DBSubnetGroupName": ""
           "SubnetIds"        : [
-            # "@{6B4B6AF1-789C-4E9F-9297-C670FD579D62.resource.SubnetId}",
-            # "@{E4071FFE-FC60-4D3E-A752-B3251DE7FB8E.resource.SubnetId}"
+            # "@{uid.resource.SubnetId}",
+            # "@{uid.resource.SubnetId}"
           ]
           "DBSubnetGroupDescription": ""
 
-        sbgRes.DBSubnetGroupName        = aws_sbg.id
-        sbgRes.DBSubnetGroupDescription = aws_sbg.DBSubnetGroupDescription
+        sbgRes = @_mapProperty aws_sbg, sbgRes
+        sbgRes.DBSubnetGroupName = aws_sbg.id
 
         for subnet in  aws_sbg.Subnets
           subnetComp = @subnets[ subnet.SubnetIdentifier ]
@@ -1356,16 +1360,16 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         # Found an original component
         originComp = @getOriginalComp(aws_sbg.id, 'DBSBG')
         if originComp
-          sbgName = originComp.name
+          compName = originComp.name
           sbgRes.CreatedBy = originComp.resource.CreatedBy
           if sbgRes.SubnetIds.sort().toString() is originComp.resource.SubnetIds.sort().toString()
             #keep original sequence
-            sbgRes.SubnetIds = originComp.resource.SubnetIds
+            sbgRes.SubnetIds = jQuery.extend(true, {}, originComp.resource.SubnetIds)
         else
-          sbgName = aws_sbg.DBSubnetGroupName
+          compName = aws_sbg.DBSubnetGroupName
 
         #generate DBSubnetGroup component
-        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or sbgName )
+        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or compName )
         @addLayout( sbgComp, true, @theVpc )
         @sbgs[ aws_sbg.id ] = sbgComp
 
@@ -1375,16 +1379,98 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         subnetComp = @sbgs[aws_dbins.sbgId]
         if not subnetComp
+          console.warn "can not found subnet of DBInstance"
           continue
 
-        dbInsRes = {}
+        #dbsubnetgroup
+        sbgComp = @sbgs[ aws_dbins.DBSubnetGroup.DBSubnetGroupName ]
+        if not sbgComp
+          console.warn "can not found DBSubnetGroup of DBInstance"
+          continue
+
+        dbInsRes =
+          "CreatedBy"              : ""
+          "DBInstanceIdentifier"   : ""
+          "DBSnapshotIdentifier"   : ""
+          "ReadReplicaSourceDBInstanceIdentifier": ""
+          "AllocatedStorage"       : 0
+          "AutoMinorVersionUpgrade": false
+          "AvailabilityZone"       : ""
+          "MultiAZ"                : false
+          "Iops"                   : ""
+          "BackupRetentionPeriod"  : 0
+          "CharacterSetName"       : ""
+          "DBInstanceClass"        : ""
+          "ReadReplicaDBInstanceIdentifiers": ""
+          "DBName"  : ""
+          "Endpoint":
+            "Address"  : ""
+            "Port"     : 0
+          "Engine"            : ""
+          "EngineVersion"     : ""
+          "LicenseModel"      : ""
+          "MasterUsername"    : ""
+          "MasterUserPassword": ""
+          "OptionGroupMembership":
+            "OptionGroupName"       : ""
+          "DBParameterGroups"    :
+            "DBParameterGroupName"  : ""
+          "PendingModifiedValues": ""
+          "PreferredBackupWindow": ""
+          "PreferredMaintenanceWindow": ""
+          "PubliclyAccessible": false
+          "DBSubnetGroup":
+            "DBSubnetGroupName": "" #"@{uid.resource.DBSubnetGroupName}"
+          "VpcSecurityGroupIds": [
+            #"@{uid.resource.GroupId}"
+          ]
+
+        dbInsRes = @_mapProperty aws_dbins, dbInsRes
+
+        dbInsRes.AllocatedStorage = Number(aws_dbins.AllocatedStorage)
+        dbInsRes.BackupRetentionPeriod = Number(aws_dbins.BackupRetentionPeriod)
+
+        #endpoint
+        if aws_dbins.Endpoint
+          dbInsRes.Endpoint.Address = aws_dbins.Endpoint.Address
+          dbInsRes.Endpoint.Port = aws_dbins.Endpoint.Port
+
+        #ref to AZ (AZ is not useful?)
+        # azComp = @addAz(aws_dbins.AvailabilityZone)
+        # dbInsRes.AvailabilityZone = CREATE_REF azComp, "resource.ZoneName"
+        dbInsRes.AvailabilityZone = ""
+
+        #ref to OptionGroupMembership
+        if aws_dbins.OptionGroupMemberships[0]
+          dbInsRes.OptionGroupMembership.OptionGroupName = aws_dbins.OptionGroupMemberships[0].OptionGroupName
+
+        #DBParameterGroups
+        if aws_dbins.DBParameterGroups[0]
+          dbInsRes.DBParameterGroups.DBParameterGroupName = aws_dbins.DBParameterGroups[0].DBParameterGroupName
+
+        #ref to DBSubnetGroup
+        dbInsRes.DBSubnetGroup.DBSubnetGroupName = CREATE_REF sbgComp, "resource.DBSubnetGroupName"
+
+        #ref to SecurityGroups
+        for sg in aws_dbins.VpcSecurityGroups
+          sgComp = @sgs[ sg.VpcSecurityGroupId ]
+          if sgComp
+            dbInsRes.VpcSecurityGroupIds.push CREATE_REF sgComp, "resource.GroupId"
+          else
+            console.warn "can not found component for SG " + sg.VpcSecurityGroupId
 
         # Found an original component
         originComp = @getOriginalComp(aws_dbins.id, 'DBINSTANCE')
-        dbInsRes = originComp.resource
+        if originComp
+          compName = originComp.name
+          dbInsRes.CreatedBy     = originComp.resource.CreatedBy
+          if not aws_dbins.Endpoint
+            dbInsRes.Endpoint.Port = originComp.resource.Endpoint.Port
+        else
+          compName = aws_dbins.Name || aws_dbins.DBInstanceIdentifier
 
         #generate DBSubnetGroup component
-        dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or originComp.name )
+        dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or compName )
         @addLayout( dbInsComp, false, subnetComp )
         @dbinstances[ aws_dbins.id ] = dbInsComp
 

@@ -113,16 +113,27 @@
             <tr>
                 <td>
                     <div class="prop_main">{{ParameterName}}
-                        <div class="prop_sub">{{Source}}</div>
+                        <div class="prop_sub">({{Source}})</div>
                     </div>
                     <div class="prop_sub">{{Description}}</div>
                 </td>
                 <td>
-                    <div class="prop_main">{{ParameterValue}}
-                        <div class="prop_sub">{{AllowedValues}}</div>
+                    <div class="prop_main">
+                        {{#ifCond inputType 'select'}}
+                            <select name="{{ParameterName}}" class="select" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
+                                <option value="<engine-default>">&lt;engine-default&gt;</option>
+                                {{#each selections}}
+                                    <option value="{{this}}" {{#ifCond ../ParameterValue this}}selected="selected"{{/ifCond}}>{{this}}</option>
+                                {{/each}}
+                            </select>
+                        {{/ifCond}}
+                        {{#ifCond inputType 'input'}}
+                            <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{ParameterValue}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                            {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
+                        {{/ifCond}}
                     </div>
                     <div class="prop_main">
-                        <div class="prop_sub">Changes will apply %immediately/after rebooting%</div>
+                        <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
                     </div>
                 </td>
             </tr>

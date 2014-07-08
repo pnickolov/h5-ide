@@ -127,7 +127,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         that.manager.setSlide template.loading()
         parameters.fetch().then ->
           data = data: parameters.toJSON()
-          console.log data
+          _.each data.data, (e)->
+            if not e.AllowedValues then console.log(e)
+            if e.AllowedValues?.split(',').length>1
+              e.inputType = 'select'
+              e.selections = e.AllowedValues.split(',')
+              if e.ParameterValue
+                console.log(e.ParameterValue,'---')
+                console.log(e)
+              return
+            else
+              e.inputType = 'input'
+              return
           that.manager.setSlide tpl data
           $(".slidebox .content").css(
             "width": "100%"

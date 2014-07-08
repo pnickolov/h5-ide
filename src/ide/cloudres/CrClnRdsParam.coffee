@@ -22,7 +22,7 @@ define [
     __selfParseData : true
 
     init : ( paramGroupModel )->
-      if @groupModel then return
+      if @groupModel then return @
       @groupModel = paramGroupModel
       @listenTo paramGroupModel, "remove", @reset
       @

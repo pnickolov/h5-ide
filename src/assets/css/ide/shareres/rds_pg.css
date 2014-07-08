@@ -1,0 +1,9 @@
+.prop_main {
+  display: block;
+  color: #fff;
+  font-size: 14px;
+}
+.prop_sub {
+  display: inline-block;
+  color: #999;
+}

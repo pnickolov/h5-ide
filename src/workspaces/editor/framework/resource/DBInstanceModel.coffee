@@ -35,11 +35,13 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       maintenanceWindow: ''
       characterSetName: ''
       dbName: ''
+      address: ''
+      port: ''
       pending: ''
       instanceId: ''
       replicaId: ''
       snapshotId: ''
-      adz: ''
+      az: ''
       replicas: ''
       ogName: ''
       pgName: ''
@@ -306,7 +308,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-          AvailabilityZone                      : @get 'adz'
+          AvailabilityZone                      : @get 'az'
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
@@ -316,7 +318,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           DBName                                : @get 'dbName'
           Endpoint:
-            Port: @get 'port'
+            Port   : @get 'port'
+            Address: @get 'address'
           Engine                                : @get 'engine'
           EngineVersion                         : '5.6.13' # @get 'engineVersion'
           LicenseModel                          : @get 'license'
@@ -377,6 +380,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
         dbName                    : data.resource.DBName
         port                      : data.resource.Endpoint?.Port
+        address                   : data.resource.Endpoint?.Address
         engine                    : data.resource.Engine
         license                   : data.resource.LicenseModel
         engineVersion             : data.resource.EngineVersion

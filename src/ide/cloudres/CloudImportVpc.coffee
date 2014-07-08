@@ -898,7 +898,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         originComp = @getOriginalComp( aws_acl.id, "ACL" )
         if originComp and originComp.resource.AssociationSet.sort().toString() is aclRes.AssociationSet.sort().toString()
-          aclRes.AssociationSet = jQuery.extend(true, {}, originComp.resource.AssociationSet)
+          aclRes.AssociationSet = jQuery.extend(true, [], originComp.resource.AssociationSet)
 
         aclComp = @add( "ACL", aclRes, aclName )
       return
@@ -1353,7 +1353,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         sbgRes = @_mapProperty aws_sbg, sbgRes
         sbgRes.DBSubnetGroupName = aws_sbg.id
 
-        for subnet in  aws_sbg.Subnets
+        for subnet in aws_sbg.Subnets
           subnetComp = @subnets[ subnet.SubnetIdentifier ]
           sbgRes.SubnetIds.push CREATE_REF(subnetComp, "resource.SubnetId")
 
@@ -1364,7 +1364,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           sbgRes.CreatedBy = originComp.resource.CreatedBy
           if sbgRes.SubnetIds.sort().toString() is originComp.resource.SubnetIds.sort().toString()
             #keep original sequence
-            sbgRes.SubnetIds = jQuery.extend(true, {}, originComp.resource.SubnetIds)
+            sbgRes.SubnetIds = jQuery.extend(true, [], originComp.resource.SubnetIds)
         else
           compName = aws_sbg.DBSubnetGroupName
 
@@ -1404,8 +1404,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "ReadReplicaDBInstanceIdentifiers": ""
           "DBName"  : ""
           "Endpoint":
-            "Address"  : ""
             "Port"     : 0
+            "Address"  : ""
           "Engine"            : ""
           "EngineVersion"     : ""
           "LicenseModel"      : ""
@@ -1438,7 +1438,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #ref to AZ (AZ is not useful?)
         # azComp = @addAz(aws_dbins.AvailabilityZone)
         # dbInsRes.AvailabilityZone = CREATE_REF azComp, "resource.ZoneName"
-        dbInsRes.AvailabilityZone = ""
+        #dbInsRes.AvailabilityZone = ""
 
         #ref to OptionGroupMembership
         if aws_dbins.OptionGroupMemberships[0]

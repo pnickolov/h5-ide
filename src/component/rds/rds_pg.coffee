@@ -124,6 +124,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         that = @
         target = @collection.findWhere(id: checked[0].data.id)
         parameters = target.getParameters()
+        that.manager.setSlide template.loading()
         parameters.fetch().then ->
           data = data: parameters.toJSON()
           console.log data

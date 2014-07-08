@@ -100,7 +100,7 @@
 
 
 <!-- {{slide_edit}} -->
-<div class="slide-reset" data-bind="true">
+<div class="slide-reset" data-bind="true" style="height: 345px; overflow: auto;">
     <table class="table">
         <thead>
             <tr>
@@ -130,3 +130,13 @@
         </tbody>
     </table>
 </div>
+<div class="pg-edit-footer">
+    <div class="init action" style="padding: 10px 0">
+        <button class="btn btn-blue do-action" data-action="save" disabled>Save</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+</div>
+
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>

@@ -182,8 +182,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         instanceClass = @getInstanceClassObj true
         @set 'instanceClass', instanceClass.instanceClass
         _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
+
       if not instanceClass.multiAZCapable
-        @set 'multiAZ', false
+        @set 'multiAz', false
 
       [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable]
 

@@ -138,7 +138,16 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         return CanvasElement.createResource( type, attr, option )
       else if attr.parent.type is constant.RESTYPE.ASG
         return CanvasElement.createResource( constant.RESTYPE.LC, attr, option )
-      else
+      else if attr.parent.type is constant.RESTYPE.AZ
         # Auto add subnet for instance
+        attr.parent = CanvasElement.createResource( constant.RESTYPE.SUBNET, {
+          x      : attr.x - 1
+          y      : attr.y - 1
+          width  : 11
+          height : 11
+          parent : attr.parent
+        } , option )
+        return CanvasElement.createResource( constant.RESTYPE.INSTANCE, attr, option )
+
   }
 

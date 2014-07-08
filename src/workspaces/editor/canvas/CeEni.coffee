@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.ENI
 
+    parentType  : [ constant.RESTYPE.SUBNET ]
+    defaultSize : [ 9, 9 ]
+
     portPosMap : {
       "eni-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
       "eni-attach"   : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]

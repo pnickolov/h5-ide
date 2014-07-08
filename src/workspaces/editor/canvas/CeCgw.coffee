@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.CGW
 
+    parentType  : ["SVG"]
+    defaultSize : [17, 10]
+
     portPosMap : {
       "cgw-vpn" : [ 6, 45, CanvasElement.constant.PORT_LEFT_ANGLE ]
     }

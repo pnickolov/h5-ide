@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.RT
 
+    parentType  : [ constant.RESTYPE.VPC ]
+    defaultSize : [ 8, 8 ]
+
     portPosMap : {
       "rtb-tgt-left"   : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "rtb-tgt-right"  : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]

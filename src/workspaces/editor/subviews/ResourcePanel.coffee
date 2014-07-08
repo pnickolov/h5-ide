@@ -76,8 +76,7 @@ define [
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
       @listenTo design, Design.EVENT.AddResource,    @updateDisableItems
       @listenTo design, Design.EVENT.RemoveResource, @updateDisableItems
-
-      @subEventForUpdateReuse()
+      @listenTo design, Design.EVENT.AddResource,    @updateLc
 
       @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
 
@@ -165,11 +164,9 @@ define [
 
       @
 
-    subEventForUpdateReuse: ->
-      @listenTo @workspace.design, Design.EVENT.AddResource, ( resModel ) ->
-        if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
-          @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
-      , @
+    updateLc : ( resModel ) ->
+      if resModel.type is constant.RESTYPE.LC and not resModel.get( 'appId' )
+        @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
 
     onResChanged : ( resModel )->
       if not resModel then return

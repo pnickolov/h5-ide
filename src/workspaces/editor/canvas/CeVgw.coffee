@@ -6,6 +6,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ClassName : "CeVgw"
     ### env:dev:end ###
     type : constant.RESTYPE.VGW
+    defaultSize : [8,8]
 
     portPosMap : {
       "vgw-tgt" : [ 3,  35, CanvasElement.constant.PORT_LEFT_ANGLE ]
@@ -42,4 +43,13 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       svgEl
+  }, {
+    createResource : ( type, attr, option )->
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
+      attr.x = vpc.x() + vpc.width() - 4
+      if attr.y < vpc.y() or attr.y + 8 > vpc.y() + vpc.height()
+        attr.y = vpc.y() + Math.round( vpc.height() / 2 ) - 4
+
+      attr.parent = vpc
+      CanvasElement.createResource( type, attr, option )
   }

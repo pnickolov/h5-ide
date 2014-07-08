@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.ELB
 
+    parentType  : [ constant.RESTYPE.VPC ]
+    defaultSize : [9, 9]
+
     portPosMap : {
       "elb-sg-in"  : [ 2,  35, CanvasElement.constant.PORT_LEFT_ANGLE  ]
       "elb-assoc"  : [ 79, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]

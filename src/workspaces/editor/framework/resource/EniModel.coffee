@@ -32,11 +32,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       assoPublicIp    : false
       name            : "eni"
 
-      x        : 0
-      y        : 0
-      width    : 9
-      height   : 9
-
     type : constant.RESTYPE.ENI
 
     constructor : ( attributes, option )->

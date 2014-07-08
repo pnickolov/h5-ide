@@ -6,11 +6,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
   Model = ComplexResModel.extend {
 
     defaults : ()->
-      x        : 2
-      y        : 3
-      width    : 9
-      height   : 9
-
       imageId      : ""
       ebsOptimized : false
       instanceType : "m1.small"
@@ -82,7 +77,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return newName or ""
 
       if base is undefined
-        base = myKinds.length
+        base = @getAllObjects().length
 
       # Collect all the resources name
       nameMap = {}

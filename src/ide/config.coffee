@@ -91,7 +91,7 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
-		"svgjs"              : 'vender/svgjs/svg'
+		"svg"                : 'vender/svgjs/svg'
 
 		#############################################
 		# MC                        # Merge in deploy

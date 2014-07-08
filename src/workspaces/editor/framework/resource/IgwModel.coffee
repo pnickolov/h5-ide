@@ -4,11 +4,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
   Model = ComplexResModel.extend {
 
     defaults :
-      x        : 0
-      y        : 0
-      width    : 8
-      height   : 8
-      name     : "Internet-gateway"
+      name : "Internet-gateway"
 
     type : constant.RESTYPE.IGW
 

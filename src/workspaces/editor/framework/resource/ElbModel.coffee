@@ -14,11 +14,6 @@ define [ "Design",
 
     defaults : ()->
       {
-        x        : 0
-        y        : 0
-        width    : 9
-        height   : 9
-
         internal  : true
         crossZone : true
 

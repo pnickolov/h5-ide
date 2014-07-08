@@ -15,6 +15,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       "launchconfig-sg" : "horizontal"
     }
 
+    initialize : ( options )->
+      @listenTo @model, "change:__connections", @render
+      CanvasElement.prototype.initialize.call this, options
+      return
+
     iconUrl : ()->
       ami = @model.getAmi() || @model.get("cachedAmi")
 

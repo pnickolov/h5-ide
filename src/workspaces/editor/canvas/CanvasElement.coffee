@@ -1,5 +1,5 @@
 
-define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Modal )->
+define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( Design, lang, Modal )->
 
   CanvasView = null
 
@@ -42,9 +42,14 @@ define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Mod
   SubElements = {}
   CanvasElement = Backbone.View.extend {
 
+    # Override Backbone.View._ensureElement
+    _ensureElement : ()->
+      if not @$el
+        @$el = $()
+      return
+
     initialize : ( options )->
       @canvas = options.canvas
-      @$el = $()
       @addView( @create() )
       @render()
       return
@@ -69,6 +74,25 @@ define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Mod
 
     create : ()->
     render : ()->
+
+    size : ()->
+      if @model.width and @model.width()
+        {
+          width  : @model.width()
+          height : @model.height()
+        }
+      else if @defaultSize
+        {
+          width  : @defaultSize[0]
+          height : @defaultSize[1]
+        }
+      else
+        bbox = @$el[0].getBBox()
+        console.warn "Accessing CanvasElement's size by getBBox(), should implement defaultSize", @
+        {
+          width  : bbox.width
+          height : bbox.height
+        }
 
     pos : ( el )->
       x = @model.x()
@@ -108,10 +132,12 @@ define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Mod
       # A helper function to create a SVG Element to represent a group
       m = @model
 
+      size = @size()
+
       x      = m.x()
       y      = m.y()
-      width  = m.width()  * CanvasView.GRID_WIDTH
-      height = m.height() * CanvasView.GRID_HEIGHT
+      width  = size.width  * CanvasView.GRID_WIDTH
+      height = size.height * CanvasView.GRID_HEIGHT
 
       svg = @canvas.svg
       el  = svg.group()
@@ -232,6 +258,10 @@ define [ "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svgjs" ], ( lang, Mod
     move : ( newX, newY, newParent )->
 
   }, {
+
+    createResource : ( type, attributes, options )->
+      Model = Design.modelClassForType type
+      new Model( attributes, options )
 
     getClassByType : ( type )-> SubElements[ type ]
 

@@ -9,11 +9,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
     newNameTmpl : "host-"
 
     defaults :
-      x      : 2
-      y      : 2
-      width  : 9
-      height : 9
-
       #servergroup
       count  : 1
 

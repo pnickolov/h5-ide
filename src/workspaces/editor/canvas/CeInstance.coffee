@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.INSTANCE
 
+    parentType  : [ constant.RESTYPE.AZ, constant.RESTYPE.SUBNET, constant.RESTYPE.ASG ]
+    defaultSize : [ 9, 9 ]
+
     portPosMap : {
       "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
@@ -128,4 +131,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
+  }, {
+    createResource : ( type, attr, option )->
+      if not attr.parent then return
+      if attr.parent.type is constant.RESTYPE.SUBNET
+        return CanvasElement.createResource( type, attr, option )
+      else if attr.parent.type is constant.RESTYPE.ASG
+        return CanvasElement.createResource( constant.RESTYPE.LC, attr, option )
+      else
+        # Auto add subnet for instance
   }
+

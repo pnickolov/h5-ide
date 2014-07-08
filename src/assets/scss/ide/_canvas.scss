@@ -97,8 +97,14 @@
   &.bottomright { cursor: nwse-resize; }
 }
 
+.canvasel:hover > .node-background {
+  fill-opacity: 0.5;
+  fill: #F2F8FF;
+}
+
 .canvasel.selected {
   > .node-background {
+    fill-opacity : 1;
     fill: #F2F8FF !important;
     stroke-width: 2 !important;
     stroke: #659FFF !important;
@@ -109,11 +115,6 @@
       fill:#fff;
     }
   }
-}
-
-.canvasel:hover > .node-background {
-  fill-opacity: 0.5;
-  fill: #F2F8FF;
 }
 
 .server-number-bg {

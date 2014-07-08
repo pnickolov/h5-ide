@@ -12,10 +12,6 @@ define [ "constant",
     newNameTmpl : "subnet"
 
     defaults :
-      x      : 2
-      y      : 2
-      width  : 17
-      height : 17
       cidr   : ""
 
     initialize : ( attributes, option )->

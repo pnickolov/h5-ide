@@ -7,6 +7,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", ".
     ### env:dev:end ###
     type : constant.RESTYPE.SUBNET
 
+    parentType  : [ constant.RESTYPE.AZ ]
+    defaultSize : [ 19, 19 ]
+
     portPosition : ( portName )->
       m = @model
       portY = m.height() * CanvasView.GRID_HEIGHT / 2 - 5

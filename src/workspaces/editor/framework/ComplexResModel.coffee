@@ -100,8 +100,8 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant" ], ( Design, C
       else
         if idx is -1
           connections.push cn
-          @set "__connections", connections
-
+          @attributes.__connections = connections
+          @trigger "change:__connections", @, connections
       null
 
     connect_base : ( connection )->

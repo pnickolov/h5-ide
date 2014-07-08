@@ -7,6 +7,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : "ExpandedAsg"
 
+    defaultSize : [13, 13]
+
     create : ()->
       m = @model
       svg = @canvas.svg
@@ -31,6 +33,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : constant.RESTYPE.ASG
 
+    parentType  : [ constant.RESTYPE.SUBNET ]
+    defaultSize : [13, 13]
+
     # Creates a svg element
     create : ()->
       m = @model
@@ -52,4 +57,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("name")
+  }, {
+    createResource : ( type, attr, option )->
+      attr.x += 1
+      attr.y += 1
+      CanvasElement.createResource( type, attr, option )
   }

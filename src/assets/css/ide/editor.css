@@ -720,7 +720,12 @@
   .group-resizer.bottomright {
     cursor: nwse-resize; }
 
+.canvasel:hover > .node-background {
+  fill-opacity: 0.5;
+  fill: #F2F8FF; }
+
 .canvasel.selected > .node-background {
+  fill-opacity: 1;
   fill: #F2F8FF !important;
   stroke-width: 2 !important;
   stroke: #659FFF !important; }
@@ -728,10 +733,6 @@
   fill: #659FFF; }
   .canvasel.selected > .node-label-name-bg ~ .node-label {
     fill: #fff; }
-
-.canvasel:hover > .node-background {
-  fill-opacity: 0.5;
-  fill: #F2F8FF; }
 
 .server-number-bg {
   stroke-width: 0;

@@ -5,10 +5,6 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
 
     defaults :
       main     : false
-      x        : 50
-      y        : 5
-      width    : 8
-      height   : 8
       implicit : false
 
     type : constant.RESTYPE.RT

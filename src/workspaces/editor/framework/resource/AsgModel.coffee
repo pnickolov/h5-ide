@@ -90,10 +90,6 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
     type : "ExpandedAsg"
 
     defaults :
-      x           : 0
-      y           : 0
-      width       : 13
-      height      : 13
       originalAsg : null
 
     constructor : ( attributes, options )->
@@ -166,11 +162,6 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
   Model = ComplexResModel.extend {
 
     defaults : ()->
-      x            : 0
-      y            : 0
-      width        : 13
-      height       : 13
-
       cooldown : "300"
       capacity : "1"
       minSize  : "1"

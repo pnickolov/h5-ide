@@ -5,23 +5,6 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
 
     type : constant.RESTYPE.AZ
 
-    defaults :
-      x      : 2
-      y      : 2
-      width  : 21
-      height : 21
-
-    initialize : ( attribute, option )->
-      if option.createByUser
-        SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
-        m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
-        ####
-        # Quick hack to allow user to select another item,
-        # instead of the newly created one.
-        ####
-        option.selectId = m.id
-      null
-
     isRemovable : ()->
       if @children().length > 0
         # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )

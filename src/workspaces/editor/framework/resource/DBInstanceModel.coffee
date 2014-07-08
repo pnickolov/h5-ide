@@ -222,7 +222,63 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       specArr
 
+    getCost : ( priceMap, currency )->
+      if not priceMap.database then return null
 
+      engine = @attributes['engine']
+      if engine == 'postgres'
+        engine = 'postgresql'
+      else if engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
+        engine = 'oracle'
+      else if engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
+        engine = 'sqlserver'
+        sufix = engine.split('-')[1]
+      dbInstanceType = @attributes['instanceClass'].split('.')
+      deploy = if @attributes['multiAz'] then 'multiAZ' else 'standard'
+
+      if not engine or not deploy then return null
+
+      unit = priceMap.database.rds.unit
+      try
+        fee = priceMap.database.rds[ engine ][ dbInstanceType[0] ][ dbInstanceType[1] ][ dbInstanceType[2] ]
+
+        license = null
+        if @attributes['license'] is 'license-included'
+          license = 'li'
+        else if @attributes['license'] is 'bring-your-own-license'
+          license = 'byol'
+
+        if license == 'li' and engine == 'sqlserver'
+          license = license + sufix
+
+        for p in fee
+          if p.deploy != deploy
+            continue
+          if license and license != p.license
+            continue
+
+          fee = p[ currency ]
+          break
+
+        if not fee or typeof(fee) isnt 'number' then return null
+
+        if unit is "pricePerHour"
+          formatedFee = fee + "/hr"
+          fee *= 24 * 30
+        else
+          formatedFee = fee + "/mo"
+
+        priceObj =
+            resource    : @attributes['name']
+            type        : @attributes['instanceClass']
+            fee         : fee
+            formatedFee : formatedFee
+
+        return priceObj
+
+      catch err
+        console.err "Error while get database instance price", err
+      finally
 
     category: (type) ->
       if type is 'instance'
@@ -351,7 +407,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       SgAsso = Design.modelClassForType( "SgAsso" )
       for sg in data.resource.VpcSecurityGroupIds || []
         new SgAsso( model, resolve( MC.extractID(sg) ) )
-
 
   }
 

@@ -38,6 +38,8 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		"AWS.CloudWatch.CloudWatch"					: "AlarmArn"
 		"AWS.SNS.Subscription"						: ""
 		"AWS.SNS.Topic"								: "TopicArn"
+		"AWS.RDS.DBSubnetGroup"                     : "DBSubnetGroupName"
+		"AWS.RDS.DBInstance"                        : "DBInstanceIdentifier"
 	}
 
 	# A short version

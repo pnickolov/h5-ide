@@ -19,22 +19,36 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         attachments: 'attachmentSet'
 
     RT:
-        associations: 'associationSet'
-        routes: 'routeSet'
-        propagatingVgws: 'propagatingVgwSet'
+      associations: 'associationSet'
+      routes: 'routeSet'
+      propagatingVgws: 'propagatingVgwSet'
 
     SG:
-        description : 'groupDescription'
+      description : 'groupDescription'
 
 
     VGW:
-        vpcAttachments : "attachments"
+      vpcAttachments : "attachments"
 
     IGW:
-        attachments : "attachmentSet"
+      attachments : "attachmentSet"
 
     LC:
-        blockDeviceMappings : "BlockDeviceMapping"
+      blockDeviceMappings : "BlockDeviceMapping"
+
+    DBSBG:
+      dbsubnetGroupDescription : "DBSubnetGroupDescription"
+      dbsubnetGroupName        : "DBSubnetGroupName"
+
+    DBINSTANCE:
+      dbinstanceClass      : "DBInstanceClass"
+      dbinstanceIdentifier : "DBInstanceIdentifier"
+      dbinstanceStatus     : "DBInstanceStatus"
+      dbname               : "DBName"
+      dbparameterGroups    : "DBParameterGroups"
+      dbsecurityGroups     : "DBSecurityGroups"
+      dbsubnetGroup        : "DBSubnetGroup"
+      dbname               : "DBName"
 
     # All resource type will be replaced in below list
     ALL:

@@ -30,8 +30,31 @@ define [
       data
   }
 
+  ### DBSubnetGroup ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrDbSubnetGroupCollection"
+    ### env:dev:end ###
 
-  ### DB Instance ###
+    type  : constant.RESTYPE.DBSBG
+    #model : CrRdsDbSubnetGroupModel
+
+    doFetch : ()-> ApiRequest("rds_subgrp_DescribeDBSubnetGroups", {region_name : @region()})
+    parseFetchData : ( data )->
+      data = data.DescribeDBSubnetGroupsResponse.DescribeDBSubnetGroupsResult.DBSubnetGroups?.DBSubnetGroup || []
+      if not _.isArray( data ) then data = [data]
+      for i in data
+        i.id = i.DBSubnetGroupName
+      data
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      @camelToPascal data
+      _.each data, (dataItem) ->
+        dataItem.id  = dataItem.DBSubnetGroupName
+      data
+  }
+
+  ### DBInstance ###
   CrCollection.extend {
     ### env:dev ###
     ClassName : "CrDbInstanceCollection"
@@ -43,12 +66,24 @@ define [
     doFetch : ()-> ApiRequest("rds_ins_DescribeDBInstances", {region_name : @region()})
     parseFetchData : ( data )->
       data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
-
       if not _.isArray( data ) then data = [data]
-
       for i in data
-        i.id = i.DBName
-
+        i.id   = i.DBInstanceIdentifier #use name as id
+        i.Name = i.DBName
+        i.sbgId = i.DBSubnetGroup.DBSubnetGroupName
+      data
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      @camelToPascal data
+      _.each data, (dataItem) ->
+        if dataItem.DBSubnetGroup
+          dataItem.DBSubnetGroup.DBSubnetGroupDescription = dataItem.DBSubnetGroup.DbsubnetGroupDescription
+          dataItem.DBSubnetGroup.DBSubnetGroupName        = dataItem.DBSubnetGroup.DbsubnetGroupName
+          delete dataItem.DBSubnetGroup.DbsubnetGroupDescription
+          delete dataItem.DBSubnetGroup.DbsubnetGroupName
+        dataItem.id  = dataItem.DBInstanceIdentifier #use name as id
+        dataItem.Name = dataItem.DBName
+        dataItem.sbgId = dataItem.DBSubnetGroup.DBSubnetGroupName #subnetGroup
       data
   }
 

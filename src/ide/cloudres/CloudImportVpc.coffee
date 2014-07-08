@@ -42,6 +42,8 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @asgs      = {} # res name => comp
       @topics    = {} # res arn  => comp
       @sps       = {} # res id  => comp
+      @sbgs      = {} # res id(name) => comp
+      @dbinstances = {} # res id(name) => comp
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
@@ -1331,6 +1333,40 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         cwComp = @add( "CW", cwRes, aws_cw.Name )
       return
+
+    ()-> #RDS DBSubnetGroup
+      for aws_sbg in @getResourceByType( "DBSBG" )
+        aws_sbg = aws_sbg.attributes
+        sbgRes = {}
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_sbg.id, 'DBSBG')
+        sbgRes = originComp.resource
+
+        #generate DBSubnetGroup component
+        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or originComp.name )
+        @addLayout( sbgComp, true, @theVpc )
+        @sbgs[ aws_sbg.id ] = sbgComp
+
+    ()-> #RDS DBInstance
+      for aws_dbins in @getResourceByType( "DBINSTANCE" )
+        aws_dbins = aws_dbins.attributes
+
+        subnetComp = @sbgs[aws_dbins.sbgId]
+        if not subnetComp
+          continue
+
+        dbInsRes = {}
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_dbins.id, 'DBINSTANCE')
+        dbInsRes = originComp.resource
+
+        #generate DBSubnetGroup component
+        dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or originComp.name )
+        @addLayout( dbInsComp, false, subnetComp )
+        @dbinstances[ aws_dbins.id ] = dbInsComp
+
   ]
 
 

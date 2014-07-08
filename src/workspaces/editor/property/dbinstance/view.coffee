@@ -3,13 +3,14 @@
 #############################
 
 define [ '../base/view'
+         'optiongroup_dropdown'
          './template/stack_instance'
          './template/stack_replica'
          './template/stack_snapshot'
-         './template/component'
+         './template/stack_component'
          'i18n!/nls/lang.js'
          'constant'
-], ( PropertyView, template_instance, template_replica, template_snapshot, template_component, lang, constant ) ->
+], ( PropertyView, OptionGroupDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant ) ->
 
     noop = ()-> null
 
@@ -177,8 +178,16 @@ define [ '../base/view'
             # if snapshot
             template = template_snapshot if attr.snapshotId
 
+            # if oracle
+            if attr.engine.indexOf('oracle') is 0
+                attr.isOracle = true
+
             @$el.html template attr
             @renderLVIA()
+
+            # init option group
+            optionGroupDropdown = new OptionGroupDropdown()
+            @$el.find('.property-dbinstance-optiongroup-placeholder').html optionGroupDropdown.render().el
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek

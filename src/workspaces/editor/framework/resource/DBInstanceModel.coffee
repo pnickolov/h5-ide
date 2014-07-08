@@ -30,7 +30,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       iops: ''
       autoMinorVersionUpgrade: true
       backupRetentionPeriod: 1
-      allocatedStorage: 100
+      allocatedStorage: 5
       backupWindow: ''
       maintenanceWindow: ''
       characterSetName: ''

@@ -189,7 +189,9 @@ require.config {
 		"ThumbnailUtil"    : "component/exporter/Thumbnail"
 		"JsonExporter"     : "component/exporter/JsonExporter"
 		"ResDiff"          : "component/common/diff/ResDiff"
-		"DiffTree"          : "component/common/diff/DiffTree"
+		"DiffTree"         : "component/common/diff/DiffTree"
+		'optiongroup_manage'   : 'component/optiongroup/optionGroupManage'
+		'optiongroup_dropdown' : 'component/optiongroup/optionGroupDropDown'
 
 	### env:dev:end ###
 	shim :

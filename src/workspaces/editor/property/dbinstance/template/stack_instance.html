@@ -65,16 +65,10 @@
             </div>
         </section>
 
-        <section class="property-control-group">
-            <label class="left">Option Group</label>
-            <div class="selectbox" id="property-dbinstance-option-group-select">
-                <div class="selection">default:mysql-5-6</div>
-                <ul class="dropdown" tabindex="-1">
-                    <li class="item selected data-id="default">default:mysql-5-6</li>
-                    <li class="item data-id="dedicated">default:mysql-5-6</li>
-                </ul>
-            </div>
-        </section>
+        <div class="property-control-group clearfix">
+            <label for="property-dbinstance-optiongroup-placeholder">Option Group</label>
+            <div class="property-dbinstance-optiongroup-placeholder"></div>
+        </div>
 
         <section class="property-control-group">
             <label class="left">Parameter Group</label>
@@ -86,6 +80,19 @@
                 </ul>
             </div>
         </section>
+
+        {{#if isOracle}}
+        <section class="property-control-group">
+            <label class="left">Character Set Name</label>
+            <div class="selectbox" id="property-dbinstance-charset-select">
+                <div class="selection">AL32UTF8</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected data-id="default">AL32UTF8</li>
+                    <li class="item data-id="dedicated">AL32UTF8</li>
+                </ul>
+            </div>
+        </section>
+        {{/if}}
 
         <section class="property-control-group">
             <div class="checkbox">

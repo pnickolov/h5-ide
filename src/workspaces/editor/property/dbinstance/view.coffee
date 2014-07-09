@@ -10,7 +10,8 @@ define [ '../base/view'
          './template/stack_component'
          'i18n!/nls/lang.js'
          'constant'
-], ( PropertyView, OptionGroupDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant ) ->
+         'CloudResources'
+], ( PropertyView, OptionGroupDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources ) ->
 
     noop = ()-> null
 
@@ -43,6 +44,7 @@ define [ '../base/view'
             'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
             'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
             'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
+            'OPTION_CHANGE #property-dbinstance-preferred-az': 'changeAZ'
 
         changeLicense: ( event, name, data ) ->
             @model.set 'license', name
@@ -192,9 +194,29 @@ define [ '../base/view'
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek
             if weekStr
-                $item = $('#property-dbinstance-maintenance-window-start-day-select').find(".item[data-id='#{weekStr}']")
-                $item.addClass('selected')
-                $('#property-dbinstance-maintenance-window-start-day-select').find('.selection').text($item.text())
+                $select = $('#property-dbinstance-maintenance-window-start-day-select')
+                $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
+                $select.find('.selection').text($item.text())
+
+            # set preferred AZ list
+            region = Design.instance().get('region')
+            allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+            allAZ = []
+            allAZName = []
+            _.each allAZComp, (az) ->
+                allAZ.push({
+                    name: az.id
+                })
+                allAZName.push(az.id)
+                null
+            $('#property-dbinstance-preferred-az').html template_component.preferred_az(allAZ)
+            if attr.az and (attr.az in allAZName)
+                selectedAZ = attr.az
+            else
+                selectedAZ = 'no'
+            $preferredAZSelect = $('#property-dbinstance-preferred-az')
+            $item = $preferredAZSelect.find(".item[data-id='#{selectedAZ}']").addClass('selected')
+            $preferredAZSelect.find('.selection').text($item.text())
 
             @model.get 'name'
 
@@ -211,7 +233,7 @@ define [ '../base/view'
             }
             _.extend data, @model.toJSON()
 
-            $('#lvia-container').html template_component data
+            $('#lvia-container').html template_component.lvi(data)
             @
 
         changeInstanceName: (event) ->
@@ -224,7 +246,27 @@ define [ '../base/view'
 
         changeMutilAZ: (event) ->
 
-            @model.set 'multiAz', event.target.checked
+            value = event.target.checked
+            $select = $('.property-dbinstance-preferred-az')
+            if value
+                $select.find('.item').remove('selected')
+                $item = $select.find(".item[data-id='no']").addClass('selected')
+                $select.find('.selection').text($item.text())
+                $select.hide()
+                @model.set 'az', ''
+            else
+                $select.show()
+
+            @model.set 'multiAz', value
+
+        changeAZ: ( event, name, data ) ->
+
+            if name is 'no'
+                @model.set 'az', ''
+            else
+                @model.set 'az', name
+
+            @renderLVIA()
 
         changeAllocatedStorage: (event) ->
 

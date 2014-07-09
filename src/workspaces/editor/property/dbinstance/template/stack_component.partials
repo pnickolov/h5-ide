@@ -1,3 +1,4 @@
+<!-- {{lvi}} -->
 <section class="property-control-group">
     <label class="left">License Model</label>
     <div class="selectbox" id="property-dbinstance-license-select">
@@ -37,10 +38,11 @@
     </div>
 </section>
 
-<section class="property-control-group">
-    <div class="checkbox">
-        <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} {{#unless azCapable}}disabled{{/unless}} value="None" name="property-dbinstance-mutil-az-check">
-        <label for="property-dbinstance-mutil-az-check"></label>
-    </div>
-    <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
-</section>
+<!-- {{preferred_az}} -->
+<div class="selection">Select Window</div>
+<ul class="dropdown" tabindex="-1">
+    <li class="item" data-id="no">No Preference</li>
+    {{#each this}}
+    <li class="item" data-id="{{name}}">{{name}}</li>
+    {{/each}}
+</ul>

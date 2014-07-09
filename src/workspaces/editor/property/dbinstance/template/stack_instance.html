@@ -104,6 +104,25 @@
 
     </div>
 
+    <div class="option-group-head">AZ Deployment</div>
+    <div class="option-group">
+
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
+                <label for="property-dbinstance-mutil-az-check"></label>
+            </div>
+            <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
+        </section>
+
+        <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
+            <label class="left">Preferred Availability Zone</label>
+            <div class="selectbox" id="property-dbinstance-preferred-az"></div>
+        </section>
+
+    </div>
+    
+
     <div class="option-group-head">Backup Config</div>
     <div class="option-group">
 

@@ -218,7 +218,7 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
       # Assign new name
       if not attributes.name
-        attributes.name = @getNewName()
+        attributes.name = @getNewName( attributes )
         if not attributes.name then delete attributes.name
 
       # Cache the object inside the current design.

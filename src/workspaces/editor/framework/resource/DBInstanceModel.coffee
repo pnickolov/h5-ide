@@ -51,6 +51,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
+    newReplicaNameTmpl : "replica"
 
     __cachedSpecifications: null
 
@@ -106,6 +107,33 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       'sqlserver-se'  : 1433
       'sqlserver-web' : 1433
 
+    #override ResourceModel.getNewName()
+    getNewName : ( attr )->
+      base  = 0
+      exist = true
+      if attr.sourceDBInstance
+        #Create ReadReplica
+        repinsAry = Model.getReplicasOfInstance( attr.sourceDBInstance )
+        while exist
+          exist = false
+          for repins in repinsAry
+            if repins.get("name") is attr.sourceName + "-" + @newReplicaNameTmpl + base
+              base++
+              exist = true
+              break
+        newName = attr.sourceName + "-" + @newReplicaNameTmpl + base
+      else
+        #Create new DBInstance or from snapshot
+        dbinsAry = Model.getInstances()
+        while exist
+          exist = false
+          for dbins in dbinsAry
+            if dbins.get("name") is (@newNameTmpl + base)
+              base++
+              exist = true
+              break
+        newName = @newNameTmpl + base
+      newName
 
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
 
@@ -368,6 +396,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     getSnapShots: -> @filter (obj) -> !!obj.get('snapshotId')
 
+    getReplicasOfInstance: ( instance ) -> @filter (obj) -> obj.get('replicaId') is instance.createRef('DBInstanceIdentifier')
+
+    getInstanceOfReplica : ( instance  ) -> @reject (obj) -> obj.createRef('DBInstanceIdentifier') is instance.get('replicaId')
 
     deserialize : ( data, layout_data, resolve ) ->
       model = new Model({

@@ -3,7 +3,7 @@
 #############################
 
 define [ '../base/view'
-         'optiongroup_dropdown'
+         'og_dropdown'
          './template/stack_instance'
          './template/stack_replica'
          './template/stack_snapshot'

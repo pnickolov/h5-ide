@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/optionGroupTpl', 'i18n!/nls/lang.js', 'event' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event ) ->
+define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js', 'event' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event ) ->
 
     Backbone.View.extend
 
@@ -16,7 +16,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
         getModalOptions: ->
 
             that = @
-            region = Design.instance().region()
+            region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
             title: "Edit Option Group"
@@ -37,16 +37,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @modal.on 'checked', @checked, @
             @modal.on 'detail', @detail, @
 
-        initialize: (engine, version) ->
+        initialize: () ->
 
-            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
-            engineOptions = optionCol.getEngineOptions(engine)
-            ogOptions = engineOptions[version] if engineOptions
-
-            # option group data ready for engine and version
-            if engineOptions
-                null 
-            
             @initModal()
             @initCol()
 

@@ -190,8 +190,8 @@ require.config {
 		"JsonExporter"     : "component/exporter/JsonExporter"
 		"ResDiff"          : "component/common/diff/ResDiff"
 		"DiffTree"         : "component/common/diff/DiffTree"
-		'optiongroup_manage'   : 'component/optiongroup/optionGroupManage'
-		'optiongroup_dropdown' : 'component/optiongroup/optionGroupDropDown'
+		'og_manage'        : 'component/optiongroup/optionGroupManage'
+		'og_dropdown'      : 'component/optiongroup/optionGroupDropDown'
 
 	### env:dev:end ###
 	shim :

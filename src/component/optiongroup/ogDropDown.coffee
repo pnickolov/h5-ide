@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'optiongroup_manage', './component/optiongroup/optionGroupTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, optionGroupManage, template, lang ) ->
+define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, optionGroupManage, template, lang ) ->
 
     Backbone.View.extend
 
@@ -23,7 +23,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'optiongroup_manage', '
             @dropdown.on 'quick_create', @quickCreate, @
 
         initialize: () ->
-            
+
             @initDropdown()
             @initCol()
 
@@ -107,18 +107,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'optiongroup_manage', '
             else
                 @renderNoCredential()
 
-        setEngine: (engine, version) ->
-
-            @engine = engine
-            @version = version
-            null
-
         manage: ->
-            
-            new optionGroupManage({
-                engine: @engine,
-                version: @version
-            }).render()
+            new optionGroupManage().render()
 
         set: ( id, data ) ->
 

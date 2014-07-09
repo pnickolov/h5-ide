@@ -37,6 +37,7 @@ define [ "constant"
       height : 17
 
       subnetIds: []
+      createdBy: ""
 
 
     initialize: ( attributes, option )->

@@ -23,6 +23,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       width    : 9
       height   : 9
 
+      createdBy : ""
       accessible: false
       username: 'root'
       password: '12345678'
@@ -305,7 +306,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         type : @type
         uid  : @id
         resource :
-          CreatedBy                             : @get 'appId'
+          CreatedBy                             : @get 'createdBy'
           DBInstanceIdentifier                  : @get 'instanceId'
           DBSnapshotIdentifier                  : @get 'snapshotId'
           ReadReplicaSourceDBInstanceIdentifier : @get 'replicaId'
@@ -371,8 +372,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
         id     : data.uid
         name   : data.name
-        appId  : data.resource.CreatedBy
+        createdBy  : data.resource.CreatedBy
 
+        appId                     : data.resource.DBInstanceIdentifier
         instanceId                : data.resource.DBInstanceIdentifier
         snapshotId                : data.resource.DBSnapshotIdentifier
         replicaId                 : data.resource.ReadReplicaSourceDBInstanceIdentifier

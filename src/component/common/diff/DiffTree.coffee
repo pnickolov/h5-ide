@@ -25,8 +25,11 @@ define [], () ->
                 'resource.GroupDescription': true
                 'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
                 'resource.Attachment.AttachmentId': true
+                #DBINSTANCE
                 'resource.Iops': true
                 'resource.MasterUserPassword': true
+                'resource.AvailabilityZone': true
+                'resource.Endpoint.Address': true
             }
 
         if not option.noDiffArrayAttrMap

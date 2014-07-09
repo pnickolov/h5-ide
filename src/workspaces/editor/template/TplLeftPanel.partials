@@ -129,11 +129,12 @@
 </li>{{/with}}{{/each}}
 
 <!-- {{rds}} -->
-{{#each this}}
-<li class="resource-item dbinstance tooltip" data-tooltip="{{description}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"engine":"{{engine}}"}'>
-<div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{icon}}.png" width="39" height="27"></div>
-{{description}}
+{{#each this}}{{#with this.[0].attributes}}
+<li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
+<div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
+{{@key}}
 </li>
+{{/with}}
 {{/each}}
 
 <!-- {{rds_snapshot}} -->

@@ -30,6 +30,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       multiAz: true
       iops: ''
       autoMinorVersionUpgrade: true
+      allowMajorVersionUpgrade: ''
       backupRetentionPeriod: 1
       allocatedStorage: 5
       backupWindow: ''

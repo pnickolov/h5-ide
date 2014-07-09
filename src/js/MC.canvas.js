@@ -3015,7 +3015,7 @@ MC.canvas.event.dragable = {
 			);
 
 		if (
-			db_instance_item.model.get("x") !== coordinate.x && db_instance_item.model.get("y") !== coordinate.y
+			(db_instance_item.model.get("x") !== coordinate.x || db_instance_item.model.get("y") !== coordinate.y)
 			&& match_place.is_matched
 		)
 		{

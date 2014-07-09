@@ -163,14 +163,13 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       null
 
-    getNewName : ( base )->
+    getNewName : ()->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      if base is undefined
-        myKinds = _.filter Design.modelClassForType( @type ).allObjects(), (m) -> m.getBigBrother() is null
-        base = myKinds.length
+      myKinds = _.filter Design.modelClassForType( @type ).allObjects(), (m) -> m.getBigBrother() is null
+      base = myKinds.length
 
       # Collect all the resources name
       nameMap = {}

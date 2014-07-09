@@ -249,14 +249,13 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
       @design().trigger Design.EVENT.ChangeResource, @
       return
 
-    getNewName : ( base )->
+    getNewName : ()->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      if base is undefined
-        myKinds = Design.modelClassForType( @type ).allObjects()
-        base = myKinds.length
+      myKinds = Design.modelClassForType( @type ).allObjects()
+      base = myKinds.length
 
       # Collect all the resources name
       nameMap = {}

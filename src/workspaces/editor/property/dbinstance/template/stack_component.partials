@@ -13,28 +13,42 @@
 
 <section class="property-control-group">
     <label class="left">DB Engine Version</label>
-    <div class="selectbox" id="property-dbinstance-engine-version-select">
+    <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
         <div class="selection">{{engineVersion}}</div>
-        <ul class="dropdown" tabindex="-1">
-            {{#each versions}}
-            <li class="item {{#if selected}}selected{{/if}}" data-id="{{version}}">{{version}}</li>
-            {{/each}}
-        </ul>
+        <div class="dropdown">
+            <div class="scroll-wrap scrollbar-auto-hide clearfix">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content">
+                    <ul>
+                        {{#each versions}}
+                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{version}}">{{version}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <section class="property-control-group">
     <label class="left">DB Instance Class</label>
-    <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
+    <div class="selectbox selectbox-mega combo-dd" id="property-dbinstance-class-select">
         <div class="selection">{{instanceClass}}</div>
-        <ul class="dropdown">
-            {{#each classes}}
-            <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
-                {{instanceClass}}
-                <!-- <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div> -->
-            </li>
-            {{/each}}
-        </ul>
+        <div class="dropdown">
+            <div class="scroll-wrap scrollbar-auto-hide clearfix">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content">
+                    <ul>
+                        {{#each classes}}
+                        <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
+                            {{instanceClass}}
+                            <!-- <div class="sub"><span>{{ecu}}</span> <span>{{core}}</span> <span>{{mem}}</span></div> -->
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

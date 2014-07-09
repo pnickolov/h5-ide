@@ -84,13 +84,20 @@
         {{#if isOracle}}
         <section class="property-control-group">
             <label class="left">Character Set Name</label>
-            <div class="selectbox" id="property-dbinstance-charset-select">
+            <div class="selectbox combo-dd" id="property-dbinstance-charset-select">
                 <div class="selection"></div>
-                <ul class="dropdown" tabindex="-1">
-                    {{#each oracleCharset}}
-                    <li class="item {{#if selected}}selected{{/if}}" data-id="{{charset}}">{{charset}}</li>
-                    {{/each}}
-                </ul>
+                <div class="dropdown">
+                    <div class="scroll-wrap scrollbar-auto-hide clearfix">
+                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                        <div class="scroll-content">
+                            <ul>
+                                {{#each oracleCharset}}
+                                <li class="item {{#if selected}}selected{{/if}}" data-id="{{charset}}">{{charset}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         {{/if}}

@@ -313,6 +313,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
+          AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
           AvailabilityZone                      : @get 'az'
           MultiAZ                               : @get 'multiAz'
           Iops                                  : @get 'iops'
@@ -381,6 +382,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
         allocatedStorage          : data.resource.AllocatedStorage
         autoMinorVersionUpgrade   : data.resource.AutoMinorVersionUpgrade
+        allowMajorVersionUpgrade  : data.resource.AllowMajorVersionUpgrade
         az                        : data.resource.AvailabilityZone
         multiAz                   : data.resource.MultiAZ
         iops                      : data.resource.Iops

@@ -48,7 +48,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
 
     type : constant.RESTYPE.DBINSTANCE
-    newNameTmpl : "db-"
+    newNameTmpl : "db"
 
     __cachedSpecifications: null
 

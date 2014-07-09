@@ -197,6 +197,7 @@ define [ '../base/view'
 
             # init option group
             optionGroupDropdown = new OptionGroupDropdown()
+            optionGroupDropdown.setEngine(attr.engine, attr.engineVersion)
             @$el.find('.property-dbinstance-optiongroup-placeholder').html optionGroupDropdown.render().el
 
             # set Start Day week selection

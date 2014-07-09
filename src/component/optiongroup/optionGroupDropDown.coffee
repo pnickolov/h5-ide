@@ -107,8 +107,18 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'optiongroup_manage', '
             else
                 @renderNoCredential()
 
+        setEngine: (engine, version) ->
+
+            @engine = engine
+            @version = version
+            null
+
         manage: ->
-            new optionGroupManage().render()
+            
+            new optionGroupManage({
+                engine: @engine,
+                version: @version
+            }).render()
 
         set: ( id, data ) ->
 

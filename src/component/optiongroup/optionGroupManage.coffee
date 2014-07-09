@@ -16,7 +16,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
         getModalOptions: ->
 
             that = @
-            region = Design.instance().get('region')
+            region = Design.instance().region()
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
             title: "Edit Option Group"
@@ -37,7 +37,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @modal.on 'checked', @checked, @
             @modal.on 'detail', @detail, @
 
-        initialize: () ->
+        initialize: (engine, version) ->
+
+            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+            engineOptions = optionCol.getEngineOptions(engine)
+            ogOptions = engineOptions[version] if engineOptions
+
+            # option group data ready for engine and version
+            if engineOptions
+                null 
             
             @initModal()
             @initCol()

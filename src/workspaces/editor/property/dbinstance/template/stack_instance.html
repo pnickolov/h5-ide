@@ -85,10 +85,11 @@
         <section class="property-control-group">
             <label class="left">Character Set Name</label>
             <div class="selectbox" id="property-dbinstance-charset-select">
-                <div class="selection">AL32UTF8</div>
+                <div class="selection"></div>
                 <ul class="dropdown" tabindex="-1">
-                    <li class="item selected data-id="default">AL32UTF8</li>
-                    <li class="item data-id="dedicated">AL32UTF8</li>
+                    {{#each oracleCharset}}
+                    <li class="item {{#if selected}}selected{{/if}}" data-id="{{charset}}">{{charset}}</li>
+                    {{/each}}
                 </ul>
             </div>
         </section>

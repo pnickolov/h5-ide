@@ -46,16 +46,21 @@ define [ '../base/view'
             'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
             'OPTION_CHANGE #property-dbinstance-preferred-az': 'changeAZ'
 
-        changeLicense: ( event, name, data ) ->
-            @model.set 'license', name
+            'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
+
+        changeCharset: ( event, value ,data ) ->
+            @model.set 'characterSetName', value
+
+        changeLicense: ( event, value, data ) ->
+            @model.set 'license', value
             @renderLVIA()
 
-        changeVersion: ( event, name, data ) ->
-            @model.set 'engineVersion', name
+        changeVersion: ( event, value, data ) ->
+            @model.set 'engineVersion', value
             @renderLVIA()
 
-        changeClass: ( event, name, data ) ->
-            @model.set 'instanceClass', name
+        changeClass: ( event, value, data ) ->
+            @model.set 'instanceClass', value
             @renderLVIA()
 
         _getTimeData: (timeStr) ->
@@ -167,6 +172,7 @@ define [ '../base/view'
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
 
+
             spec = @model.getSpecifications()
             lvi = @model.getLVIA spec
 
@@ -183,6 +189,8 @@ define [ '../base/view'
             # if oracle
             if attr.engine.indexOf('oracle') is 0
                 attr.isOracle = true
+                attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
+                    charset: oc, selected: oc is attr.characterSetName
 
             @$el.html template attr
             @renderLVIA()

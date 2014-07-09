@@ -149,6 +149,17 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		AWS_SNS_Topic                             : 'sns_top'
 	}
 
+	DBENGINE =
+		MYSQL     : "mysql"
+		ORA_SE1   : "oracle-se1"
+		ORA_SE    : "oracle-se"
+		ORA_EE    : "oracle-ee"
+		SQLSRV_EE : "sqlserver-ee"
+		SQLSRV_SE : "sqlserver-se"
+		SQLSRV_EX : "sqlserver-ex"
+		SQLSRV_WEB: "sqlserver-web"
+		POSTGRES  : "postgres"
+
 	INSTANCE_STATES = {
 		'pending'      : 0
 		'running'      : 16
@@ -308,7 +319,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-
+	DBENGINE              : DBENGINE
 	INSTANCE_STATES         : INSTANCE_STATES
 
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE

@@ -122,7 +122,8 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
       )
 
-      if @model.category() isnt 'replica'
+      if @model.get('engine') is constant.DBENGINE.MYSQL and @model.category() isnt 'replica'
+        #only mysql support ReadReplica
         node.append(
           # dragger
           Canvon.image(MC.IMG_URL + 'ide/icon/dbinstance-resource-dragger.png', 34, 58, 22, 21).attr({

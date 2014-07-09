@@ -153,7 +153,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         else
           e.inputType = "input"
           return
-      console.log(option?.sort)
       if option?.sort isnt undefined
         data = _.sortBy data, (e)->
           s = e.ParameterName

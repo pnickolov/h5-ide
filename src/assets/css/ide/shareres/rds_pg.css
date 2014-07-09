@@ -19,3 +19,25 @@
   width: 205px;
   border: 0;
 }
+.pg-edit-footer .blue-link {
+  color: #175d99;
+  display: inline-block;
+  margin: 18px 15px;
+}
+#sort-parameter-name {
+  display: inline-block;
+  width: 200px;
+}
+.modal-toolbar .slidebox .pull-left {
+  float: left;
+}
+.modal-toolbar .slidebox .pull-right {
+  float: right;
+}
+#pg-sort-filter {
+  padding: 0 10px;
+  border-bottom: 1px solid #070707;
+}
+#pg-sort-filter input.input {
+  width: 300px;
+}

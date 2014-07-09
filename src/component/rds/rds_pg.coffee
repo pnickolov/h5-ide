@@ -119,23 +119,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
               disableCreate = not $(@).val()
               that.manager.$el.find('[data-action="create"]').prop 'disabled', disableCreate
 
-      'edit': (tpl, checked)->
+      'edit': (tpl, checked, option)->
         if not checked then return false
         that = @
         target = @collection.findWhere(id: checked[0].data.id)
         parameters = target.getParameters()
-        that.manager.setSlide template.loading()
+        if not option then that.manager.setSlide template.loading()
         parameters.fetch().then ->
-          data = data: parameters.toJSON()
-          _.each data.data, (e)->
-            if e.AllowedValues?.split(',').length>1
-              e.inputType = 'select'
-              e.selections = e.AllowedValues.split(',')
-              return
-            else
-              e.inputType = 'input'
-              return
-          that.manager.setSlide tpl data
+          that.renderEditTpl(parameters, tpl, option)
           $(".slidebox .content").css(
             "width": "100%"
             "margin-top": "0px"
@@ -148,6 +139,47 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           return
         @manager.setSlide tpl data
 
+    renderEditTpl: (parameters, tpl, option)->
+      that = @
+      data = if parameters.toJSON then parameters.toJSON() else parameters
+      _.each data, (e)->
+        if e.AllowedValues?.split(',').length > 1
+          e.inputType = "select"
+          e.selections = e.AllowedValues.split(",")
+          return
+        else
+          e.inputType = "input"
+          return
+      if option?.sort isnt undefined
+        data = _.sortBy data, (e)->
+          if option.sort is "ParameterName"
+            e.ParameterName
+          if option.sort is 'IsModifiable'
+            e.IsModifiable
+          if option.sort is "ApplyType"
+            e.ApplyType
+          if option.sort is "Source"
+            e.Source
+
+      if option?.filter isnt undefined
+        data = _.filter data, (e)->
+          (e.ParameterName.toLowerCase().indexOf option.filter.toLowerCase()) > -1
+        $("#parameter-table").html template.filter {data:data}
+        return
+      that.manager.setSlide tpl data:data
+
+    bindFilter: (parameters, tpl)->
+      that = @
+      filter = $("#pg-filter-parameter-name")
+      filter.off('change').on 'change', (e)->
+        val = $(@).val()
+        checked = [
+          data:
+            id: parameters.groupModel.id
+        ]
+        sortType = $("#sort-parameter-name").find(".selection").text().trim()
+        (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+
     bindEditEvent: (parameters,tpl)->
       that = @
       getChange = ->
@@ -156,7 +188,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           if e.has('newValue') and (e.get("newValue") isnt e.get("ParameterValue"))
             changeArray.push e.toJSON()
         changeArray
-
+      that.bindFilter(parameters, tpl)
+      $("#pg-filter-parameter-name").keyup ->
+        $(@).trigger 'change'
       _.each parameters.models, (e)->
         onChange = (event)->
           $("[data-action='preview']").prop 'disabled', false

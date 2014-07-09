@@ -100,7 +100,25 @@
 
 
 <!-- {{slide_edit}} -->
-<div class="slide-reset" data-bind="true" style="height: 345px; overflow: auto;">
+<div class="clearfix" id="pg-sort-filter">
+    <div class="pull-left">
+        Filter: <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+    </div>
+    <div class="pull-right">
+        Sort by:
+        <div class="selectbox" id="sort-parameter-name">
+            <div class="selection">Default</div>
+            <ul class="dropdown" tabindex="-1">
+                <li class="item" data-id="dedicated">Dedicated</li>
+                <li class="item" data-id="ParameterName">Parameter Name</li>
+                <li class="item" data-id="IsModifable">Is Modifiable</li>
+                <li class="item" data-id="ApplyType">Apply Method</li>
+                <li class="item" data-id="Source">Source</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="slide-reset" id="parameter-table" data-bind="true" style="height: 310px; overflow: auto;">
     <table class="table">
         <thead>
             <tr>
@@ -117,7 +135,7 @@
         </thead>
         <tbody>
             {{#each data}}
-            <tr>
+            <tr id="pg-{{ParameterName}}">
                 <td>
                     <div class="prop_main">{{ParameterName}}
                         <div class="prop_sub">({{Source}})</div>
@@ -159,7 +177,8 @@
         </tbody>
     </table>
 </div>
-<div class="pg-edit-footer">
+<div class="pg-edit-footer clearfix">
+    <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Valume Reference</a>
     <div class="init action" style="padding: 10px 0">
         {{#if preview}}
             <button class="btn do-action" data-action="edit">Back to Editing</button>
@@ -173,10 +192,67 @@
         <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
         <button class="btn btn-silver cancel" disabled>Cancel</button>
     </div>
-
-
-
 </div>
+
+
+<!-- {{filter}} -->
+<table class="table">
+    <thead>
+    <tr>
+        {{#if preview}}
+            <th width="40%">Parameter Name</th>
+            <th width="20%">Origin Value</th>
+            <th width="40%">Edit Value</th>
+        {{else}}
+            <th width="50%">Parameter Name</th>
+            <th width="50%">Edit Value</th>
+        {{/if}}
+
+    </tr>
+    </thead>
+    <tbody>
+    {{#each data}}
+        <tr id="pg-{{ParameterName}}">
+            <td>
+                <div class="prop_main">{{ParameterName}}
+                    <div class="prop_sub">({{Source}})</div>
+                </div>
+                <div class="prop_sub">{{Description}}</div>
+            </td>
+            {{#if ../preview}}
+                <td>
+                    <div class="prop_main" style="text-align: center">
+                        {{#if ParameterValue}}
+                            {{ParameterValue}}
+                        {{else}}
+                            {{#ifCond inputType 'select'}}&lt;engine-default&gt;{{else}}&lt;empty&gt;{{/ifCond}}
+                        {{/if}}
+                    </div>
+                </td>
+            {{/if}}
+            <td>
+                <div class="prop_main">
+                    {{#ifCond inputType 'select'}}
+                        <select name="{{ParameterName}}" class="select" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
+                            <option value="<engine-default>">&lt;engine-default&gt;</option>
+                            {{#each selections}}
+                                <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    {{/ifCond}}
+                    {{#ifCond inputType 'input'}}
+                        <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                        {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
+                    {{/ifCond}}
+                </div>
+                <div class="prop_main">
+                    <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                </div>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
 
 
 <!-- {{loading}} -->

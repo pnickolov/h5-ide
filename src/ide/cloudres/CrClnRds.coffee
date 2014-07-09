@@ -17,16 +17,67 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.DBENGINE
-    doFetch : ()-> ApiRequest("rds_DescribeDBEngineVersions", {region_name : @region()})
-    parseFetchData : ( data )->
-      data = data?.DescribeDBEngineVersionsResponse.DescribeDBEngineVersionsResult.DBEngineVersions?.DBEngineVersion || []
+    __selfParseData : true
 
+    initialize : ()->
+      @optionGroupData = {}
+      return
+
+    getEngineOptions : ( engineName )-> @optionGroupData[ engineName ]
+
+    doFetch : ()->
+      self = @
+      ApiRequest("rds_DescribeDBEngineVersions", {region_name : @region()}).then ( data )->
+        try
+          data = data.DescribeDBEngineVersionsResponse.DescribeDBEngineVersionsResult.DBEngineVersions.DBEngineVersion
+        catch e
+          console.error e
+
+        data = data || []
+        if not _.isArray( data ) then data = [data]
+
+        engines = {}
+        for d in data
+          d.id = d.Engine + " " + d.EngineVersion
+          engines[ d.Engine ] = true
+
+        jobs = _.keys( engines ).map ( engine_name )->
+          ApiRequest("rds_og_DescribeOptionGroupOptions", {
+            region_name : self.region()
+            engine_name : engine_name
+          }).then ( data )->
+            try
+              self.__parseOptions( data )
+            catch e
+              console.error e
+            return
+
+        Q.all( jobs ).then ()-> data
+
+    __parseOptions : ( data )->
+      data = data.DescribeOptionGroupOptionsResponse.DescribeOptionGroupOptionsResult.OptionGroupOptions
+
+      if not data then return
+
+      data = data.OptionGroupOption || []
       if not _.isArray( data ) then data = [data]
 
-      for i in data
-        i.id = i.Engine + " " + i.EngineVersion
+      if not data.length then return
 
-      data
+      optionData = {}
+
+      for d in data
+        engineName = d.EngineName
+        if not optionData[ d.MajorEngineVersion ]
+          optionData[ d.MajorEngineVersion ] = []
+
+        if d.OptionGroupOptionSettings and d.OptionGroupOptionSettings.OptionGroupOptionSetting
+          d.OptionGroupOptionSettings = d.OptionGroupOptionSettings.OptionGroupOptionSetting
+
+        optionData[ d.MajorEngineVersion ].push d
+
+      @optionGroupData[ engineName ] = optionData
+      return
   }
 
   ### DBSubnetGroup ###

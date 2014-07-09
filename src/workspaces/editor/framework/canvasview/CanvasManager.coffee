@@ -3,31 +3,33 @@ define ['CloudResources'], (CloudResources)->
 
   CanvasManager = {
 
-    removeClass : ( element, theClass )->
-      if element.length or element.length is 0
-        element = element[0]
-      if not element
+    removeClass : ( elements, theClass )->
+      if not elements
         return this
 
-      klass = element.getAttribute("class") || ""
-      newKlass = klass.replace( new RegExp("\\b#{theClass}\\b", "g"), "" )
+      if not elements.length and elements.length isnt 0 then elements = [ elements ]
 
-      if klass isnt newKlass
-        element.setAttribute "class", newKlass
+      for element in elements
+        klass = element.getAttribute("class") || ""
+        newKlass = klass.replace( new RegExp("\\b#{theClass}\\b", "g"), "" )
+
+        if klass isnt newKlass
+          element.setAttribute "class", newKlass
 
       return this
 
-    addClass : ( element, theClass )->
-      if element.length or element.length is 0
-        element = element[0]
-      if not element
+    addClass : ( elements, theClass )->
+      if not elements
         return this
 
-      klass = element.getAttribute("class") || ""
+      if not elements.length and elements.length isnt 0 then elements = [ elements ]
 
-      if not klass.match( new RegExp("\\b#{theClass}\\b") )
-        klass = $.trim(klass) + " " + theClass
-        element.setAttribute "class", klass
+      for element in elements
+        klass = element.getAttribute("class") || ""
+
+        if not klass.match( new RegExp("\\b#{theClass}\\b") )
+          klass = $.trim(klass) + " " + theClass
+          element.setAttribute "class", klass
 
       return this
 

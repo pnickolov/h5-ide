@@ -269,7 +269,7 @@
   fill: none;
   stroke-width: 2px;
 
-  &:hover {
+  &:hover, &.hover {
     opacity: .8;
     stroke-width: 4px;
   }

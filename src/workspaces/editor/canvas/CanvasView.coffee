@@ -30,6 +30,12 @@ define [
       "dragleave" : "__addItemDragLeave"
       "drop"      : "__addItemDrop"
 
+      "click .group-resizer" : "__resizeGroupDown"
+      "mousedown .port"      : "__drawLineDown"
+
+      "mouseenter .canvasel" : "__hoverEl"
+      "mouseleave .canvasel" : "__hoverOutEl"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design
@@ -304,6 +310,20 @@ define [
         item.render()
       return
 
+    __hoverEl : ( evt )->
+      item = @getItem( evt.currentTarget.getAttribute( "data-id" ) )
+      if not item then return
+      for cn in item.connections()
+        CanvasManager.addClass cn.$el, "hover"
+      return
+
+    __hoverOutEl : ( evt )->
+      item = @getItem( evt.currentTarget.getAttribute( "data-id" ) )
+      if not item then return
+      for cn in item.connections()
+        CanvasManager.removeClass cn.$el, "hover"
+      return
+
     __clearDragScroll : ()->
       if @__dragScrollInt
         console.info "Removed drag scroll timer"
@@ -416,11 +436,16 @@ define [
     __addItemDrop : ( evt, data )->
       ItemClass = CanvasElement.getClassByType( data.dataTransfer.type )
 
+      mousePos = @__localToCanvasCoor(
+        data.pageX - data.zoneDimension.x1,
+        data.pageY - data.zoneDimension.y1
+      )
+
       dropPos = @__localToCanvasCoor(
         data.pageX - data.offsetX - data.zoneDimension.x1,
         data.pageY - data.offsetY - data.zoneDimension.y1
       )
-      group       = @__groupAtCoor( dropPos )
+      group       = @__groupAtCoor( mousePos )
       defaultSize = ItemClass.prototype.defaultSize
 
       groupType = if group then group.type else "SVG"
@@ -483,21 +508,9 @@ define [
         _.defer ()-> self.selectItem( model.id )
       return
 
-    __itemAtPos : ( pos, items )->
-      for child in items
-        cp = child.pos()
-        if cp.x == pos.x and cp.y == pos.y then return child
-        if cp.x > pos.x or cp.y < pos.y then continue
-        cs = child.size()
-        if cs.width + cp.x <= pos.x and cs.height + cp.y <= pos.y
-          return child
-      null
-
-    __isRectEmpty : ( pos, size, children )->
-      return true
-
     __findEmptyDropPlace : ( pos, size, group )->
       if not group then return pos
+      return pos
 
       children = group.children()
 
@@ -528,6 +541,13 @@ define [
         return pos
 
       null
+
+    __resizeGroupDown : ( evt )->
+
+    __drawLineDown : ( evt )->
+      if event.which isnt 1 then return false
+
+
 
   }, {
     GRID_WIDTH  : 10

@@ -204,6 +204,14 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       @model.children().map ( childModel )->
         canvas.getItem( childModel.id )
 
+    connections : ()->
+      cnns = []
+      for cn in @model.connections()
+        cn = @canvas.getItem( cn.id )
+        if cn then cnns.push cn
+
+      cnns
+
     # Canvas Interaction
     select  : ( selectedDomElement )->
 

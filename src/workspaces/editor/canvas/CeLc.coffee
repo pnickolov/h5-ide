@@ -15,6 +15,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       "launchconfig-sg" : "horizontal"
     }
 
+    defaultSize : [9,9]
+
     initialize : ( options )->
       @listenTo @model, "change:__connections", @render
       CanvasElement.prototype.initialize.call this, options
@@ -27,6 +29,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         "ide/ami/ami-not-available.png"
       else
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+
+    pos : ( el )->
+      p = CanvasElement.prototype.pos.call this, el
+      p.x += 2
+      p.y += 3
+      p
 
     ensureLcView : ()->
       lcParentMap = {}

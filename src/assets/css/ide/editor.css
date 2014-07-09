@@ -848,7 +848,7 @@
   stroke-linejoin: round;
   fill: none;
   stroke-width: 2px; }
-  .line:hover {
+  .line:hover, .line.hover {
     opacity: .8;
     stroke-width: 4px; }
   .line.selected {

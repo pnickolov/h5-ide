@@ -125,13 +125,16 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         target = @collection.findWhere(id: checked[0].data.id)
         parameters = target.getParameters()
         if not option then that.manager.setSlide template.loading()
-        parameters.fetch().then ->
+        parameters.fetch().then (result)->
+          if result.error
+            that.manager.cancel()
+            notification 'error', (result.awsResult||result.msg)
           that.renderEditTpl(parameters, tpl, option)
           $(".slidebox .content").css(
             "width": "100%"
             "margin-top": "0px"
           )
-          that.bindEditEvent(parameters, tpl)
+          that.bindEditEvent(parameters, tpl, option)
 
       'reset': (tpl, checked)->
         data = name: checked[0].data.id
@@ -180,7 +183,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         sortType = $("#sort-parameter-name").find(".selection").text().trim()
         (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
 
-    bindEditEvent: (parameters,tpl)->
+    bindEditEvent: (parameters,tpl, option)->
       that = @
       getChange = ->
         changeArray = []
@@ -188,8 +191,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           if e.has('newValue') and (e.get("newValue") isnt e.get("ParameterValue"))
             changeArray.push e.toJSON()
         changeArray
-      that.bindFilter(parameters, tpl)
-      $("#pg-filter-parameter-name").keyup ->
+      unless option then that.bindFilter(parameters, tpl)
+      unless option then $("#pg-filter-parameter-name").keyup ->
         $(@).trigger 'change'
       _.each parameters.models, (e)->
         onChange = (event)->
@@ -201,10 +204,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
             $(this).addClass "parsley-error"
 
         if e.attributes.IsModifiable
-          $(".slidebox").on 'change',"[name="+e.attributes.ParameterName+"]", onChange
-          $(".slidebox").on 'keyup',"[name="+e.attributes.ParameterName+"]", onChange
+          $(".slidebox").on 'change',"[name='"+e.attributes.ParameterName+"']", onChange
+          $(".slidebox").on 'keyup',"[name='"+e.attributes.ParameterName+"']", onChange
 
-      $("[data-action='preview']").click ->
+      unless option then $("[data-action='preview']").click ->
         data = getChange()
         _.each data, (e)->
           if e.AllowedValues?.split(',').length>1

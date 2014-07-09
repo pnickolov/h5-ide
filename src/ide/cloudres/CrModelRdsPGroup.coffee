@@ -25,7 +25,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         param_group_family : @get("DBParameterGroupFamily")
         description        : @get("Description")
       }).then ( res )->
-        self.set( "id" , self.get("DBParameterGroupFamily") )
+        self.set( "id" , self.get("DBParameterGroupName") )
         self
 
     doDestroy : ()->

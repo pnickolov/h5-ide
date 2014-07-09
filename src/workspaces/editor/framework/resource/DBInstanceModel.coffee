@@ -58,16 +58,23 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     initialize : ( attr, option ) ->
 
+      SgAsso = Design.modelClassForType "SgAsso"
+
       if attr.sourceDBInstance
-        #TODO
+        #Create ReadReplica
         @set 'replicaId', attr.sourceDBInstance.createRef('DBInstanceIdentifier')
         @set 'engine', attr.sourceDBInstance.get("engine")
+        # Draw before creating SgAsso
+        @draw true
+        for sg in attr.sgList || []
+          new SgAsso sg, @
 
-      if option and option.createByUser
-
+      else if option and option.createByUser
+        #Create new DBInstance
+        # Draw before creating SgAsso
+        @draw true
         # Default Sg
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
-        SgAsso = Design.modelClassForType "SgAsso"
         new SgAsso defaultSg, @
 
         # Default Values
@@ -78,11 +85,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           port            : @getDefaultPort()
         }
 
-      if attr.snapshotId
-        @set 'snapshotId', attr.snapshotId
-
-      # Draw before creating SgAsso
-      @draw true
+        if attr.snapshotId
+          #Create new DBInstance from snapshot
+          @set 'snapshotId', attr.snapshotId
 
       null
 

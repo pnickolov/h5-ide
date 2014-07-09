@@ -42,8 +42,8 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
     signature = j.signature
     delete j.signature
     ### env:prod ###
-    if CryptoJS.HmacMD5( JSON.stringify( j ) , key ).toString() isnt signature
-      return lang.ide.POP_IMPORT_MODIFIED_ERROR
+    # if CryptoJS.HmacMD5( JSON.stringify( j ) , key ).toString() isnt signature
+    #   return j
     ### env:prod:end ###
 
     return j

@@ -130,7 +130,7 @@
                         {{#if ParameterValue}}
                             {{ParameterValue}}
                         {{else}}
-                            {{#ifCond inputType 'select'}}&lt;empty&gt;{{else}}&lt;engine-default&gt;{{/ifCond}}
+                            {{#ifCond inputType 'select'}}&lt;engine-default&gt;{{else}}&lt;empty&gt;{{/ifCond}}
                         {{/if}}
                     </div>
                     </td>
@@ -146,7 +146,7 @@
                             </select>
                         {{/ifCond}}
                         {{#ifCond inputType 'input'}}
-                            <input type="text" class="input parsley-validated prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                            <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
                             {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
                         {{/ifCond}}
                     </div>

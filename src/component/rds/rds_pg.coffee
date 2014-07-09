@@ -34,6 +34,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager.on 'action', @doAction, @
       @manager.on 'close', =>
         @manager.remove()
+        @collection.remove()
       @manager.on 'checked', @processReset, @
 
       @manager.render()
@@ -162,7 +163,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           if e.isValidValue(this.value) or this.value is ""
             $(this).removeClass "parsley-error"
             e.set('newValue', this.value)
-            console.log e.toJSON()
           else
             $(this).addClass "parsley-error"
 
@@ -195,12 +195,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       parameters.groupModel.modifyParams(changeMap).then afterModify, afterModify
 
     afterModify: (result)->
-      console.log result
+      @manager.cancel()
       if (result?.error)
         notification 'error', "Parameter Group updated failed because of "+result?.msg
         return false
       notification 'info', "Parameter Group is updated."
-      @manager.cancel()
 
     doAction: (action, checked)->
       @["do_"+action] and @["do_"+action]('do_'+action,checked)
@@ -248,10 +247,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       currentRegion = Design.instance().get('region')
       @manager.cancel()
       if result.error
-        notification 'error', "Reset failed because of: "+ result.msg
+        notification 'error', result.awsResult
         return false
       #cancelselect && fetch
-      @collection.add result
       notification 'info', "RDS Parameter Group is reset successfully!"
 
     afterDeleted: (result)->

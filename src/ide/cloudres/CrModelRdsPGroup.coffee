@@ -49,7 +49,6 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
         "log_output" : "TABLE"
       }
       ###
-      that = @
       pArray = []
       for name, value of paramNewValueMap
         pArray.push {
@@ -60,7 +59,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
 
       requests = []
       params = {
-        region_name : that.collection.region()
+        region_name : @collection.region()
         param_group : @id
         parameters  : []
       }

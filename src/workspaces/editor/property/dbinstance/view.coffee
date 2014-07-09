@@ -197,7 +197,7 @@ define [ '../base/view'
 
             # init option group
             optionGroupDropdown = new OptionGroupDropdown()
-            optionGroupDropdown.setEngine(attr.engine, attr.engineVersion)
+            # optionGroupDropdown.setEngine(attr.engine, attr.engineVersion)
             @$el.find('.property-dbinstance-optiongroup-placeholder').html optionGroupDropdown.render().el
 
             # set Start Day week selection
@@ -246,11 +246,10 @@ define [ '../base/view'
             @
 
         changeInstanceName: (event) ->
-
             value = $(event.target).val()
+            @model.setName value
+            @setTitle value
             @model.set 'instanceId', value
-            @model.set 'name', value
-
             null
 
         changeMutilAZ: (event) ->

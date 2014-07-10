@@ -326,15 +326,15 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $(@).hide()
 
     renderDropdown: ->
-      console.log("RenderingDropDown")
       option =
         manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
         filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
-      #@dropdown.setSelection ''
-      @dropdown.on 'open', @initDropdown , @
-      @dropdown.on 'manage', @renderManager, @
-      @dropdown.on 'filter', @filterDropdown, @
+      @dropdown.setSelection @resModel.attributes.pgName
+      @dropdown.on 'open',   (@initDropdown.bind @) , @
+      @dropdown.on 'manage', (@renderManager.bind @), @
+      @dropdown.on 'filter', (@filterDropdown.bind @), @
+      @dropdown.on 'change', (@setParameterGroup.bind @), @
       @dropdown
     initDropdown: ->
       if App.user.hasCredential()
@@ -346,9 +346,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       if not fetched
         @renderLoading()
         @collection.fetch().then =>
-          @render()
+          @renderDefault()
         fetched = true
-      return false
+        return false
       @openDropdown()
 
     renderNoCredential: ->
@@ -358,25 +358,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @dropdown.render('loading').toggleControls false
 
     openDropdown: (keys)->
-      selected = @resModel?.toJSON().dhcp.appId
       data = @collection.toJSON()
-      datas =
-        isRuntime: false
-        keys: data
-      if selected
-        _.each data, (key)->
-          if key.id is selected
-            key.selected = true
-          return
-      else
-        datas.auto = true
-      if selected is ""
-        datas.auto = true
-      else if selected and selected is 'default'
-        datas.default = true
+      selected = @resModel.attributes.pgName
+      _.each data, (e)->
+        if e.DBParameterGroupName is selected
+          e.selected = true
+      datas = keys: data
       if keys
         datas.keys = keys
-        datas.hideDefaultNoKey = true
       if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
         datas.isRunTime = true
       content = template.keys datas
@@ -387,9 +376,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       hitKeys = _.filter @collection.toJSON(), ( data ) ->
         data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
       if keyword
-        @renderDropdown hitKeys
+        @openDropdown hitKeys
       else
-        @renderDropdown()
+        @openDropdown()
+
+    setParameterGroup: (value, data)->
+      val = value || data.id
+      @resModel.set("pgName", val)
+
 
     getModalOptions: ->
       that = @

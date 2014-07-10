@@ -24,14 +24,19 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
 
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
-            ogOptions = engineOptions[option.version] if engineOptions
+            @ogOptions = engineOptions[option.version] if engineOptions
 
             # option group data ready for engine and version
-            if engineOptions
+            if @ogOptions
                 null
 
         render: ->
-            @initModal template.og_modal {}
+            @$el.html template.og_modal {}
+            @renderModal()
+            @
+
+        renderModal: ->
+            @initModal @el
             @
 
 

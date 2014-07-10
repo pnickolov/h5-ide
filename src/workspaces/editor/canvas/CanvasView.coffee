@@ -6,11 +6,12 @@ define [
   "Design"
   "constant"
   "i18n!/nls/lang.js"
+  "UI.modalplus"
 
   "backbone"
   "UI.nanoscroller"
   "svg"
-], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, constant, lang )->
+], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, constant, lang, Modal )->
 
   # Insert svg defs template.
   $( OpsEditorTpl.svgDefs() ).appendTo("body")
@@ -310,6 +311,7 @@ define [
         item.render()
       return
 
+    # Hover effect
     __hoverEl : ( evt )->
       item = @getItem( evt.currentTarget.getAttribute( "data-id" ) )
       if not item then return
@@ -324,6 +326,248 @@ define [
         CanvasManager.removeClass cn.$el, "hover"
       return
 
+    # Create Lines by dnd
+    __drawLineDown : ( evt )->
+      if evt.which isnt 1 then return false
+
+      $port = $( evt.currentTarget )
+      $tgt  = $port.closest("g")
+      item  = @getItem( $tgt.attr( "data-id" ) )
+      if not item then return
+
+      # StartPos
+      portName  = $port.attr("data-name")
+      portAlias = $port.attr("data-alias")
+      pos       = item.pos( $tgt[0] )
+      portPos   = item.portPosition( portAlias || portName )
+      pos.x = pos.x * CanvasView.GRID_WIDTH  + portPos[0]
+      pos.y = pos.y * CanvasView.GRID_HEIGHT + portPos[1]
+
+      # Show element's line.
+      for cn in item.connections()
+        CanvasManager.addClass cn.$el, "hover"
+
+      # Highlight connectable ports.
+      highlightEls = []
+      for type, data of Design.modelClassForType("Framework_CN").connectionData( item.type, portName )
+        for comp in @design.componentsOfType( type )
+          for toPort in data
+            if item.isConnectable( portName, comp.id, toPort )
+              ti = @getItem( comp.id )
+              if ti
+                ports = ti.$el.children("[data-name='#{toPort}']")
+                CanvasManager.addClass ti.$el, "connectable"
+                CanvasManager.addClass ports,  "connectable"
+                highlightEls.push ports
+                highlightEls.push ti.$el
+
+      # Add temporary line.
+      marker  = @svg.marker(3, 3).classes(portName).attr("id", "draw-line-marker").add( @svg.path( "M1.5,0 L1.5,3 L3,1.5 L1.5,0" ) )
+      lineSvg = @svg.line(pos.x, pos.y, pos.x, pos.y).classes( "draw-line #{portName}" ).marker("end", marker)
+
+      @svg.add( lineSvg )
+
+      co = @$el.offset()
+      dimension =
+        x1 : co.left
+        y1 : co.top
+        x2 : co.left + @$el.outerWidth()
+        y2 : co.top  + @$el.outerHeight()
+
+      scrollContent = @$el.children(":first-child")[0]
+
+      $( document ).on({
+        'mousemove.drawline' : @__drawLineMove
+        'mouseup.drawline'   : @__drawLineUp
+      }, {
+        marker        : marker
+        lineSvg       : lineSvg
+        zoneDimension : dimension
+        canvasScale   : @__scale
+        context       : @
+        highlightEls  : highlightEls
+        scrollContent : scrollContent
+        portName      : portName
+        startItem     : item
+        startPos      : pos
+        pageX         : evt.pageX
+        pageY         : evt.pageY
+        startX        : evt.pageX + scrollContent.scrollLeft
+        startY        : evt.pageY + scrollContent.scrollTop
+        overlay       : $("<div></div>").appendTo( @$el ).css({
+          "position" : "absolute"
+          "left"     : "0"
+          "top"      : "0"
+          "bottom"   : "0"
+          "right"    : "0"
+        })
+      })
+
+      false
+
+    __drawLineMove : ( evt )->
+      data = evt.data
+      data.pageX = evt.pageX
+      data.pageY = evt.pageY
+      data.context.__scrollOnDrag( evt, data )
+
+      offsetX = ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
+      offsetY = ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale
+
+      data.lineSvg.plot( data.startPos.x, data.startPos.y, data.startPos.x + offsetX, data.startPos.y + offsetY )
+      false
+
+    __drawLineUp : ( evt )->
+      data = evt.data
+
+      # Cleanup
+      data.context.__clearDragScroll()
+      data.marker.remove()
+      data.lineSvg.remove()
+      data.overlay.remove()
+      $( document ).off(".drawline")
+
+      # Find element
+      canvasX = data.startPos.x + ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
+      canvasY = data.startPos.y + ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale
+      item    = data.context.__itemAtPosForConnect(
+        Math.round( canvasX / CanvasView.GRID_WIDTH ),
+        Math.round( canvasY / CanvasView.GRID_HEIGHT )
+      )
+
+      # Find port
+      if item.type is constant.RESTYPE.ELB and ( data.startItem.type is constant.RESTYPE.INSTANCE or data.startItem.type is constant.RESTYPE.INSTANCE )
+        if canvasX < item.pos().x + item.size().width / 2
+          toPort = "elb-sg-out"
+        else
+          toPort = "elb-sg-in"
+      else if item.type is constant.RESTYPE.ASG or item.type is "ExpandedAsg"
+        item = item.getLc()
+        if item
+          item = data.context.getItem( item.id )
+
+      if not toPort and item
+        toPort = item.$el.find(".connectable").attr("data-name")
+
+      # 2nd Cleanup
+      for $el in data.highlightEls
+        CanvasManager.removeClass $el, "connectable"
+
+      # Connect
+      if not item or not toPort then return
+
+      C = Design.modelClassForPorts( data.portName, toPort )
+      console.assert( C, "Cannot found Class for type: #{data.portName}>#{toPort}" )
+
+      comp1 = data.startItem.model
+      comp2 = item.model
+
+      res = C.isConnectable( comp1, comp2 )
+
+      if res is false then return
+      if _.isString( res )
+        notification "error", res
+        return
+
+      if res is true
+        c = new C( comp1, comp2, undefined, { createByUser : true } )
+        if c.id then _.defer ()-> data.context.selectItem( c.id )
+        return
+
+      if res.confirm
+        self = @
+        modal = new Modal {
+          title    : res.title
+          width    : "420"
+          template : res.template
+          confirm  : {text:res.action, color:"blue"}
+          onConfirm  : ()->
+            modal.close()
+            c = new C( comp1, comp2, undefined, { createByUser : true } )
+            if c.id then _.defer ()-> data.context.selectItem( c.id )
+            return
+        }
+      return
+
+    # Find item by position
+    __itemAtPos : ( x, y )->
+      self = @
+      children = []
+      children = children.concat.apply children, ["CGW", "IGW", "VGW", "VPC"].map (type)->
+        self.design.componentsOfType( constant.RESTYPE[ type ] )
+
+      context = null
+
+      while children
+        chs      = children
+        children = null
+
+        for child in chs
+          childItem = @getItem( child.id )
+          if not childItem then continue
+
+          childPos  = childItem.pos()
+          childSize = childItem.size()
+
+          if childPos.x <= x and
+             childPos.y <= y and
+             childPos.x + childSize.width >= x and
+             childPos.y + childSize.height >= y
+
+            if not childItem.isGroup()
+              return childItem
+
+            context  = @getItem( child.id )
+            children = childItem.model.children()
+            break
+
+      context
+
+    __itemAtPosForConnect : ( x, y )->
+      item = @__itemAtPos( x, y )
+      if not item then return
+      if item.type isnt constant.RESTYPE.AZ then return item
+
+      # Enlarge subnet area.
+      for subnet in item.children()
+        childPos  = subnet.pos()
+        childSize = subnet.size()
+        childPos.x      -= 2
+        childSize.width += 4
+
+        if childPos.x <= x and
+           childPos.y <= y and
+           childPos.x + childSize.width >= x and
+           childPos.y + childSize.height >= y
+
+          return subnet
+      item
+
+    __localToCanvasCoor : ( x, y )->
+      sc = @$el.children(":first-child")[0]
+      {
+        x : Math.round( (x+sc.scrollLeft) / CanvasView.GRID_WIDTH  * @__scale )
+        y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
+      }
+
+    __groupAtCoor : ( coord )->
+      group = null
+
+      for id, item of @__itemGroupMap
+        if not item.model.width then continue
+
+        x = item.model.x()
+        y = item.model.y()
+        w = item.model.width()
+        h = item.model.height()
+
+        if coord.x >= x and coord.y >= y and coord.x <= x+w and coord.y <= y + h
+          if not group or group.model.width() > w and group.model.height() > h
+            group = item
+
+      group
+
+    # Scroll on drag
     __clearDragScroll : ()->
       if @__dragScrollInt
         console.info "Removed drag scroll timer"
@@ -380,31 +624,7 @@ define [
         @__clearDragScroll()
       return
 
-
-    __localToCanvasCoor : ( x, y )->
-      sc = @$el.children(":first-child")[0]
-      {
-        x : Math.round( (x+sc.scrollLeft) / CanvasView.GRID_WIDTH  * @__scale )
-        y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
-      }
-
-    __groupAtCoor : ( coord )->
-      group = null
-
-      for id, item of @__itemGroupMap
-        if not item.model.width then continue
-
-        x = item.model.x()
-        y = item.model.y()
-        w = item.model.width()
-        h = item.model.height()
-
-        if coord.x >= x and coord.y >= y and coord.x <= x+w and coord.y <= y + h
-          if not group or group.model.width() > w and group.model.height() > h
-            group = item
-
-      group
-
+    # Add item by dnd
     __addItemDragOver  : ( evt, data )->
       @__scrollOnDrag( evt, data )
 
@@ -508,6 +728,7 @@ define [
         _.defer ()-> self.selectItem( model.id )
       return
 
+    # Largest empty rectangle
     __findEmptyDropPlace : ( pos, size, group )->
       if not group then return pos
       return pos
@@ -542,12 +763,8 @@ define [
 
       null
 
+    # Resize
     __resizeGroupDown : ( evt )->
-
-    __drawLineDown : ( evt )->
-      if event.which isnt 1 then return false
-
-
 
   }, {
     GRID_WIDTH  : 10

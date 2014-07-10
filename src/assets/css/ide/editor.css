@@ -724,14 +724,14 @@
   fill-opacity: 0.5;
   fill: #F2F8FF; }
 
-.canvasel.selected > .node-background {
+.canvasel.selected > .node-background, .canvasel.connectable > .node-background {
   fill-opacity: 1;
   fill: #F2F8FF !important;
   stroke-width: 2 !important;
   stroke: #659FFF !important; }
-.canvasel.selected > .node-label-name-bg {
+.canvasel.selected > .node-label-name-bg, .canvasel.connectable > .node-label-name-bg {
   fill: #659FFF; }
-  .canvasel.selected > .node-label-name-bg ~ .node-label {
+  .canvasel.selected > .node-label-name-bg ~ .node-label, .canvasel.connectable > .node-label-name-bg ~ .node-label {
     fill: #fff; }
 
 .server-number-bg {
@@ -803,7 +803,7 @@
   fill: #d8d7d6;
   stroke: #bebebe; }
 
-.stack .port:hover, .appedit .port:hover {
+.stack .port:hover, .stack .port.connectable, .appedit .port:hover, .appedit .port.connectable {
   fill: #F2F8FF;
   stroke-width: 2;
   cursor: pointer; }
@@ -894,3 +894,28 @@
 .droppable.AWS-AutoScaling-Group > .asg-frame {
   stroke-width: 4;
   stroke-dasharray: 0; }
+
+.draw-line {
+  stroke-width: 5px; }
+  .draw-line.subnet-assoc-in, .draw-line.subnet-assoc-out, .draw-line.rtb-src, .draw-line.elb-assoc {
+    stroke: #d8d7d6; }
+  .draw-line.elb-sg-out {
+    stroke: #0973f6; }
+  .draw-line.eni-attach, .draw-line.instance-attach {
+    stroke: #12CD4F; }
+  .draw-line.vgw-vpn, .draw-line.cgw-vpn {
+    stroke: #bf7aa5; }
+  .draw-line.igw-tgt, .draw-line.eni-sg, .draw-line.instance-sg, .draw-line.launchconfig-sg, .draw-line.rtb-tgt, .draw-line.elb-sg-in, .draw-line.vgw-tgt, .draw-line.eni-rtb, .draw-line.instance-rtb {
+    stroke: #6DAEFE;
+    stroke-dasharray: 10,5; }
+
+marker.subnet-assoc-in, marker.subnet-assoc-out, marker.rtb-src, marker.elb-assoc {
+  fill: #d8d7d6; }
+marker.elb-sg-out {
+  fill: #0973f6; }
+marker.eni-attach, marker.instance-attach {
+  fill: #12CD4F; }
+marker.vgw-vpn, marker.cgw-vpn {
+  fill: #bf7aa5; }
+marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marker.rtb-tgt, marker.elb-sg-in, marker.vgw-tgt, marker.eni-rtb, marker.instance-rtb {
+  fill: #6DAEFE; }

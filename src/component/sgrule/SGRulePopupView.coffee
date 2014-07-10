@@ -131,14 +131,14 @@ define [ './template', 'i18n!/nls/lang.js', "Design" ], ( template, lang, Design
               $modal.animate({left:'+=100px'}, 300)
 
         onModalClose : ()->
+          modal.close()
+
           lineId = @model.get("lineId")
           component = Design.instance().component( lineId )
           if component
             $canvas( lineId ).select()
           else
             $canvas.clearSelected()
-
-          modal.close()
 
           return false
 

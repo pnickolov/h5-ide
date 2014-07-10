@@ -73,14 +73,14 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
           svg.use("port_diamond").move( 10, 20 ).attr({
             'class'        : 'port port-blue tooltip'
-            'data-name'    : 'instance-sg'
-            'data-alias'   : 'instance-sg-left'
+            'data-name'    : 'launchconfig-sg'
+            'data-alias'   : 'launchconfig-sg-left'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
           svg.use("port_diamond").move( 80, 20 ).attr({
             'class'        : 'port port-blue tooltip'
-            'data-name'    : 'instance-sg'
-            'data-alias'   : 'instance-sg-right'
+            'data-name'    : 'launchconfig-sg'
+            'data-alias'   : 'launchconfig-sg-right'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
         ]).classes("canvasel AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )

@@ -196,6 +196,9 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         svg.text("").move(5,15).classes("group-label")
       ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
 
+
+    isGroup : ()-> !!@model.node_group
+
     children : ()->
       if not @model.node_group
         return []
@@ -211,6 +214,20 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         if cn then cnns.push cn
 
       cnns
+
+    isConnectable : ( fromPort, toId, toPort )->
+      C = Design.modelClassForPorts( fromPort, toPort )
+      if not C then return false
+
+      p1Comp = @model
+      p2Comp = @model.design().component(toId)
+
+      # Don't allow connect to an resource that is already connected.
+      for t in p1Comp.connectionTargets( C.prototype.type )
+        if t is p2Comp
+          return false
+
+      C.isConnectable( p1Comp, p2Comp ) isnt false
 
     # Canvas Interaction
     select  : ( selectedDomElement )->

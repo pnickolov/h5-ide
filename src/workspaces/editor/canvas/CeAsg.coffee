@@ -18,10 +18,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         svg.plain("").move(4,14).classes('group-label')
       ]).attr({ "data-id" : @cid }).classes( 'canvasel group ExpandedAsg')
 
-      @canvas.appendNode svgEl
+      @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()
 
       svgEl
+
+    getLc : ()-> @model.getLc()
 
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("originalAsg").get("name")
@@ -54,6 +56,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       @initNode svgEl, m.x(), m.y()
 
       svgEl
+
+    getLc : ()-> @model.getLc()
 
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("name")

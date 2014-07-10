@@ -17,7 +17,24 @@
 .modal-toolbar .slidebox .content .select {
   background-image: none;
   width: 205px;
-  border: 0;
+  background-color: #1c1c1c;
+  color: #d0d0d0;
+  border: 1px solid #000;
+  display: inline-block;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.modal-toolbar .slidebox .content select.select:active,
+.modal-toolbar .slidebox .content select.select:focus {
+  outline: none;
+}
+.modal-toolbar .slidebox .content select.select:disabled,
+.modal-toolbar .slidebox .content select.select.disabled {
+  background: #3f3f3f;
+  color: #666;
+  border-color: #3f3f3f;
 }
 .pg-edit-footer .blue-link {
   color: #175d99;

@@ -27,7 +27,7 @@ define [
       @listenTo paramGroupModel, "remove", @reset
       @
 
-    region : ()-> @groupModel.collection.region()
+    region : ()-> @groupModel.collection?.region()
 
     doFetch : ( marker )->
       self = @

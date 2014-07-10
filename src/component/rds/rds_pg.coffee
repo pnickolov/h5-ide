@@ -176,15 +176,15 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       that = @
       sortType = $("#sort-parameter-name").find(".item.selected")?.data()?.id
       filter = $("#pg-filter-parameter-name")
-      filter.off('change').on 'change', (e)->
+      filter.off('change').on 'change', ->
         val = $(@).val()
         checked = [
           data:
             id: parameters.groupModel.id
         ]
         (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
-      $("#sort-parameter-name").on 'OPTION_CHANGE', ()->
-        sortType = $("#sort-parameter-name").find(".item.selected")?.data()?.id
+      $("#sort-parameter-name").on 'OPTION_CHANGE', (event, value, data)->
+        sortType = data?.id || value
         filter.trigger 'change'
 
     bindEditEvent: (parameters,tpl, option)->

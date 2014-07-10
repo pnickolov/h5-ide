@@ -342,6 +342,9 @@ var scrollbar = {
 			thumb_max = max_scroll / scale,
 			scroll_value;
 
+		if( scale > 8 ){
+			scale = 8;
+		}
 		if (max_scroll < 0)
 		{
 			return true;

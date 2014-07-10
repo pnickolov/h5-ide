@@ -108,7 +108,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           return
         data = {}
         if checkedAmount is 1
-          data.selectedName = checked[0].data.name
+          data.selectedId = checked[0].data.id
         else
           data.selectedCount = checkedAmount
         @manager.setSlide tpl data

@@ -24,7 +24,7 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} RDS Parameter Group(s) {{/if}}?</div>
+    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}} RDS Parameter{{else}}selected {{selectedCount}} RDS Parameter Groups{{/if}}?</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">Delete</button>
         <button class="btn btn-silver cancel">Cancel</button>

@@ -110,3 +110,12 @@
   margin-left: 20px; }
 #modal-option-group .save-btn {
   margin-right: 10px; }
+#modal-option-group .slidebox .content {
+  margin-top: 8px; }
+#modal-option-group .slidebox .port-sg input {
+  width: 177px; }
+#modal-option-group .slidebox .port-sg > div {
+  padding-bottom: 8px; }
+#modal-option-group .slidebox table input {
+  padding: 1px 6px;
+  max-width: 140px; }

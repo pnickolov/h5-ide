@@ -1,6 +1,9 @@
 define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js', 'event', 'UI.modalplus' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     Backbone.View.extend
+        tagName: 'section'
+        id: 'modal-option-group'
+        className: 'modal-toolbar'
 
         events:
 
@@ -25,7 +28,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @__modalplus.on 'closed', @close, @
 
         initialize: (option) ->
-
+            window.ogManage = @
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
             @ogOptions = engineOptions[option.version] if engineOptions
@@ -34,14 +37,29 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             if @ogOptions
                 null
 
+
         render: ->
             @$el.html template.og_modal {}
             @renderModal()
+            #@slide @ogOptions[0]
             @
 
         renderModal: ->
             @initModal @el
             @
+
+        slide: ( option ) ->
+            #if not option.DefaultPort and not option.OptionGroupOptionSettings
+            #    return false
+
+            @renderSlide option
+            @$('.slidebox').addClass 'show'
+
+
+
+        renderSlide: ( option ) ->
+            @$('.content').html template.og_slide option or {}
+
 
 
         processCol: () ->

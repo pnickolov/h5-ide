@@ -134,4 +134,23 @@
     .save-btn {
         margin-right: 10px;
     }
+
+    .slidebox {
+        .content { margin-top: 8px; }
+
+        .port-sg input {
+            width: 177px;
+        }
+
+        .port-sg > div {
+            padding-bottom: 8px;
+        }
+
+        table {
+            input {
+                padding: 1px 6px;
+                max-width: 140px;
+            }
+        }
+    }
 }

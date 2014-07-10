@@ -7,9 +7,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             classList: 'option-group-manage'
             context: that
 
-        initModal: () ->
+        initModal: (tpl) ->
             options =
-                template        : ''
+                template        : tpl
                 title           : "Edit Option Group"
                 disableFooter   : true
                 disableClose    : true
@@ -18,7 +18,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
                 compact         : true
 
             @__modalplus = new modalplus options
-            @__modalplus.on 'closed', @__close, @
+            @__modalplus.on 'closed', @close, @
 
         initialize: (engine, version) ->
 
@@ -29,38 +29,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             # option group data ready for engine and version
             if engineOptions
                 null
-            @initModal()
-
-        quickCreate: ->
-            @modal.triggerSlide 'create'
-
-        doAction: ( action, checked ) ->
-            @[action] and @[action](@validate(action), checked)
-
-        validate: ( action ) ->
-            switch action
-                when 'create'
-                    true
-
-        switchAction: ( state ) ->
-
-            if not state
-                state = 'init'
-
-            @M$( '.slidebox .action' ).each () ->
-                if $(@).hasClass state
-                    $(@).show()
-                else
-                    $(@).hide()
 
         render: ->
+            @initModal template.og_modal {}
 
-            @modal.render()
-            if App.user.hasCredential()
-                @processCol()
-            else
-                @modal.render 'nocredential'
-            @
 
         processCol: () ->
             @renderList({})
@@ -76,5 +48,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
-        show: ->
-            @processCol()
+        close: -> @remove()
+
+        quickCreate: ->
+

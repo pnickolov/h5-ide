@@ -28,39 +28,39 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @__modalplus.on 'closed', @close, @
 
         initialize: (option) ->
+
             window.ogManage = @
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
             @ogOptions = engineOptions[option.version] if engineOptions
 
-            # option group data ready for engine and version
-            if @ogOptions
-                null
-
-
         render: ->
+
             @$el.html template.og_modal {}
             @renderModal()
-            #@slide @ogOptions[0]
+            @renderOptionList()
             @
 
         renderModal: ->
             @initModal @el
             @
 
+        renderOptionList: ->
+
+            @$el.find('.option-list').html template.og_option_item({
+                ogOptions: @ogOptions
+            })
+
         slide: ( option ) ->
+
             #if not option.DefaultPort and not option.OptionGroupOptionSettings
             #    return false
 
             @renderSlide option
             @$('.slidebox').addClass 'show'
 
-
-
         renderSlide: ( option ) ->
             @$('.content').html template.og_slide option or {}
-
-
 
         processCol: () ->
             @renderList({})
@@ -84,3 +84,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
 
             $switcher = $(event.currentTarget)
             $switcher.toggleClass('on')
+            
+            $optionItem = $switcher.parents('.option-item')
+            optionIdx = Number($optionItem.data('idx'))
+
+            if $switcher.hasClass('on')
+                @slide @ogOptions[optionIdx]

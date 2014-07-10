@@ -43,29 +43,16 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
 
     if target
       DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
-      replicaData = comp.toJSON()
-      #get sg list
-      sg_list = []
-      for conn in replicaData.__connections
-        if conn.type is 'SgAsso'
-          sg = conn.getTarget(constant.RESTYPE.SG)
-          sg_list.push sg
-
-      replicaData = _.extend(replicaData, {
+      attr =
         x : x
         y : y
-        sourceName : replicaData.name
-        sourceDBInstance : comp
         parent : target
-        sgList : sg_list
-      })
-      #remove no useful object
-      delete replicaData.name
-      delete replicaData.__connections
-      delete replicaData.__parent
-      delete replicaData.id
-      replicaData.snapshotId = ''
-      res = new DBInstanceModel(replicaData, { createByUser: true })
+        sourceId : comp.id
+      option =
+        createByUser: true
+        cloneSource : comp
+
+      res = new DBInstanceModel(attr, option)
 
     if res and res.id
       $canvas(res.id).select();

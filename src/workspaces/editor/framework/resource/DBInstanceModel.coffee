@@ -61,23 +61,20 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
-
-      SgAsso = Design.modelClassForType "SgAsso"
-
-      if attr.sourceDBInstance
+      if option and option.cloneSource
         #Create ReadReplica
-        @set 'replicaId', attr.sourceDBInstance.createRef('DBInstanceIdentifier')
-        @set 'engine', attr.sourceDBInstance.get("engine")
-        # Draw before creating SgAsso
+        @set 'engine',    option.cloneSource.get('engine')
+        @set 'replicaId', option.cloneSource.createRef('DBInstanceIdentifier')
+        # Draw before clone
         @draw true
-        for sg in attr.sgList || []
-          new SgAsso sg, @
+        @clone( option.cloneSource )
 
       else if option and option.createByUser
         #Create new DBInstance
         # Draw before creating SgAsso
         @draw true
         # Default Sg
+        SgAsso = Design.modelClassForType "SgAsso"
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         new SgAsso defaultSg, @
 
@@ -112,17 +109,22 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getNewName : ( attr )->
       base  = 0
       exist = true
-      if attr.sourceDBInstance
+      if attr.sourceId
         #Create ReadReplica
-        repinsAry = Model.getReplicasOfInstance( attr.sourceDBInstance )
+        srcComp = Design.instance().component(attr.sourceId)
+        if not srcComp
+          console.error "can not found component for " + attr.sourceId
+          return ""
+        srcName = srcComp.get("name")
+        repinsAry = Model.getReplicasOfInstance( srcComp )
         while exist
           exist = false
           for repins in repinsAry
-            if repins.get("name") is attr.sourceName + "-" + @newReplicaNameTmpl + base
+            if repins.get("name") is srcName + "-" + @newReplicaNameTmpl + base
               base++
               exist = true
               break
-        newName = attr.sourceName + "-" + @newReplicaNameTmpl + base
+        newName = srcName + "-" + @newReplicaNameTmpl + base
       else
         #Create new DBInstance or from snapshot
         dbinsAry = Model.getInstances()
@@ -135,6 +137,12 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
               break
         newName = @newNameTmpl + base
       newName
+
+    clone :( srcTarget )->
+      @cloneAttributes srcTarget, {
+        copyConnection : [ "SgAsso" ]
+      }
+      null
 
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
 

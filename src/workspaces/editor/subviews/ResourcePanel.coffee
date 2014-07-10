@@ -10,12 +10,13 @@ define [
   'sns_manage'
   'kp_manage'
   'rds_pg'
+  'rds_snapshot'
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -461,6 +462,8 @@ define [
                   (new dhcpManager()).manageDhcp()
               when 'rdspg'
                   new rdspgManager().render()
+              when 'rdssnapshot'
+                  new rdsSnapshot().render()
     # Copied and enhanced from MC.canvas.js
     startDrag : ( evt )->
       if evt.button isnt 0 then return false

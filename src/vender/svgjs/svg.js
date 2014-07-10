@@ -10,7 +10,7 @@
 
 define([], function() {
 
-  var SVG = this.SVG = function(element) {
+  var SVG = window.SVG = function(element) {
     if (SVG.supported) {
       element = new SVG.Doc(element)
 
@@ -3726,10 +3726,10 @@ define([], function() {
 
   })
 
-  if (typeof define === 'function' && define.amd)
-    define(function() { return SVG })
-  else if (typeof exports !== 'undefined')
-    exports.SVG = SVG
+  // if (typeof define === 'function' && define.amd)
+  //   define(function() { return SVG })
+  // else if (typeof exports !== 'undefined')
+  //   exports.SVG = SVG
 
   function camelCase(s) {
     return s.toLowerCase().replace(/-(.)/g, function(m, g) {

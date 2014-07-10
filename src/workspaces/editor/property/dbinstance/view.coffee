@@ -11,7 +11,8 @@ define [ '../base/view'
          'i18n!/nls/lang.js'
          'constant'
          'CloudResources'
-], ( PropertyView, OgDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources ) ->
+         'rds_pg'
+], ( PropertyView, OgDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources, parameterGroup ) ->
 
     noop = ()-> null
 
@@ -229,6 +230,9 @@ define [ '../base/view'
 
             @model.get 'name'
 
+            @pgDropdown = new parameterGroup(@model).renderDropdown()
+
+            $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->
             spec = @model.getSpecifications()

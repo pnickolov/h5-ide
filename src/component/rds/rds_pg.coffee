@@ -5,7 +5,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
   fetching = false
   regionsMark = {}
   DbpgRes = Backbone.View.extend
-    constructor: ()->
+    constructor: (model)->
+      if model then @resModel = model
       @collection = CloudResources constant.RESTYPE.DBPG, Design.instance().region()
       @listenTo @collection, 'update', (@onUpdate.bind @)
       @listenTo @collection, 'change', (@onUpdate.bind @)
@@ -43,6 +44,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         return false
       @initManager()
 
+
+    initManager: ()->
+      setContent = @setContent.bind @
+      currentRegion = Design.instance().get('region')
+      if (not fetched and not fetching) or (not regionsMark[currentRegion])
+        fetching = true
+        regionsMark[currentRegion] = true
+        @collection.fetchForce().then setContent, setContent
+      else if not fetching
+        @setContent()
+
+
     processReset: ( event, checked ) ->
       if checked.length is 1 and not @collection.findWhere( id: checked[0].data.id ).isDefault()
         @M$('[data-btn=reset],[data-btn=edit]').prop 'disabled', false
@@ -75,25 +88,16 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       content = template.content dataSet
       @manager?.setContent content
 
-    initManager: ()->
-      setContent = @setContent.bind @
-      currentRegion = Design.instance().get('region')
-      if (not fetched and not fetching) or (not regionsMark[currentRegion])
-        fetching = true
-        regionsMark[currentRegion] = true
-        @collection.fetchForce().then setContent, setContent
-      else if not fetching
-        @setContent()
 
     renderSlides: (which, checked)->
       tpl = template['slide_'+ which]
       $(".slidebox .content").removeAttr('style')
       slides = @getSlides()
       slides[which]?.call @, tpl, checked
-      if(which == "create")
-        $(".slidebox").css("height": "100%")
-      else
-        $(".slidebox").removeAttr("style")
+#      if(which == "create")
+#        $(".slidebox").css("height": "100%")
+#      else
+#        $(".slidebox").removeAttr("style")
 
 
 
@@ -288,7 +292,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         notification 'error', "Create failed because of: "+result.msg
         return false
       notification 'info', "New RDS Parameter Group is created successfully!"
-  #@collection.add newDbpg
+      #@collection.add newDbpg
 
     afterReset: (result)->
       currentRegion = Design.instance().get('region')
@@ -320,6 +324,72 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $(@).show()
         else
           $(@).hide()
+
+    renderDropdown: ->
+      console.log("RenderingDropDown")
+      option =
+        manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
+        filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
+      @dropdown = new combo_dropdown option
+      #@dropdown.setSelection ''
+      @dropdown.on 'open', @initDropdown , @
+      @dropdown.on 'manage', @renderManager, @
+      @dropdown.on 'filter', @filterDropdown, @
+      @dropdown
+    initDropdown: ->
+      if App.user.hasCredential()
+        @renderDefault()
+      else
+        @renderNoCredential()
+
+    renderDefault: ->
+      if not fetched
+        @renderLoading()
+        @collection.fetch().then =>
+          @render()
+        fetched = true
+      return false
+      @openDropdown()
+
+    renderNoCredential: ->
+      @dropdown.render('nocredential').toggleControls false
+
+    renderLoading: ->
+      @dropdown.render('loading').toggleControls false
+
+    openDropdown: (keys)->
+      selected = @resModel?.toJSON().dhcp.appId
+      data = @collection.toJSON()
+      datas =
+        isRuntime: false
+        keys: data
+      if selected
+        _.each data, (key)->
+          if key.id is selected
+            key.selected = true
+          return
+      else
+        datas.auto = true
+      if selected is ""
+        datas.auto = true
+      else if selected and selected is 'default'
+        datas.default = true
+      if keys
+        datas.keys = keys
+        datas.hideDefaultNoKey = true
+      if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
+        datas.isRunTime = true
+      content = template.keys datas
+      @dropdown.toggleControls true
+      @dropdown.setContent content
+
+    filterDropdown: ( keyword ) ->
+      hitKeys = _.filter @collection.toJSON(), ( data ) ->
+        data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
+      if keyword
+        @renderDropdown hitKeys
+      else
+        @renderDropdown()
 
     getModalOptions: ->
       that = @

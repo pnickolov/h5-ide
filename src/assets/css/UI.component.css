@@ -1387,9 +1387,16 @@ textarea {
 	background: #353535;
 	border    : 1px solid #0f0f0f;
 }
-
+.selectbox .scroll-wrap{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
 .selectbox.open .dropdown,
-.selectbox.open .editor {
+.selectbox.open .editor,
+.selectbox.open .scroll-wrap{
 	display: block;
 }
 

@@ -1807,6 +1807,14 @@ module.exports =
       en: "Manage DHCP Options Set"
       zh: ""
 
+    PROP_VPC_MANAGE_RDS_PG:
+      en: "Manage Parameter Group"
+      zh: ""
+
+    PROP_VPC_FILTER_RDS_PG:
+      en: "Filter by Parameter Group Name"
+      zh: ""
+
     PROP_VPC_FILTER_DHCP:
       en: "Filter by DHCP Options Set ID"
       zh: ""

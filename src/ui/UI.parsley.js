@@ -225,7 +225,7 @@ define(["jquery"], function(){
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
           , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
-          , database:  "This value should be a valid database name"
+          , database:  "This value should be a valid Parameter Group name"
           , ascii:     "This value should be a valid ascii."
 
         }

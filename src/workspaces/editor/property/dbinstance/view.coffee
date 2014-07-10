@@ -330,17 +330,33 @@ define [ '../base/view'
 
         changeAutoBackupCheck: (event) ->
 
-            value = event.target.checked
-            if value
-                @model.set 'backupRetentionPeriod', 1
-                $('#property-dbinstance-backup-period').val('1')
+            value = if event.target.checked then '1' else '0'
+            @changeBackupPeriod(null, value)
+
+        changeBackupPeriod: (event, value) ->
+
+            if event
+                #trigger by event
+                value = $(event.target).val()
+                #show/hide checkbox
+                checked = if Number(value) then true else false
+                $("#property-dbinstance-auto-backup-check")
+                    .prop("checked",checked)
+                    .attr("checked",checked)
+            else if value
+                #invokie by manual
+                $("#property-dbinstance-backup-period").val( value )
             else
-                @model.set 'backupRetentionPeriod', 0
-                $('#property-dbinstance-backup-period').val('0')
+                console.error "at least one value in event or value"
+                return null
 
-        changeBackupPeriod: (event) ->
+            #show/hide input
+            if value isnt '0'
+                Canvon("#group-dbinstance-backup-period").removeClass('hide')
+            else
+                Canvon("#group-dbinstance-backup-period").addClass('hide')
 
-            value = $(event.target).val()
+            #update model
             @model.autobackup Number(value) #setter
 
         changeBackupTime: (event) ->

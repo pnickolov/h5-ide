@@ -142,7 +142,7 @@
             <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
         </section>
 
-        <section class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" data-bind="true">
+        <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" data-bind="true">
             <label class="left">Backup Retention Period</label>
             <input class="input property-input-left" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text">
             <label class="property-label-right" for="property-dbinstance-backup-period">days</label>

@@ -28,8 +28,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @initCol()
 
         quickCreate: () ->
-            
-            new optionGroupManage({
+
+            new OgManage({
                 engine: @engine,
                 version: @version
             }).render().quickCreate()
@@ -119,7 +119,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         manage: ->
 
-            new optionGroupManage({
+            new OgManage({
                 engine: @engine,
                 version: @version
             }).render()

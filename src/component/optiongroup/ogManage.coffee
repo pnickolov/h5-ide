@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js', 'event' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event ) ->
+define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js', 'event', 'UI.modalplus' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     Backbone.View.extend
 
@@ -30,7 +30,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             if engineOptions
                 null
             @initModal()
-            @initCol()
 
         quickCreate: ->
             @modal.triggerSlide 'create'

@@ -196,9 +196,9 @@ define [ '../base/view'
             @renderLVIA()
 
             # init option group
-            ogDropdown = new OgDropdown()
-            ogDropdown.setEngine(attr.engine, attr.engineVersion)
-            @$el.find('.property-dbinstance-optiongroup-placeholder').html ogDropdown.render().el
+            optionGroupDropdown = new OptionGroupDropdown()
+            # optionGroupDropdown.setEngine(attr.engine, attr.engineVersion)
+            @$el.find('.property-dbinstance-optiongroup-placeholder').html optionGroupDropdown.render().el
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek
@@ -246,11 +246,10 @@ define [ '../base/view'
             @
 
         changeInstanceName: (event) ->
-
             value = $(event.target).val()
+            @model.setName value
+            @setTitle value
             @model.set 'instanceId', value
-            @model.set 'name', value
-
             null
 
         changeMutilAZ: (event) ->

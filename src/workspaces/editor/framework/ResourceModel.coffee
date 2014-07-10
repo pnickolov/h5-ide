@@ -218,7 +218,7 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
       # Assign new name
       if not attributes.name
-        attributes.name = @getNewName()
+        attributes.name = @getNewName( attributes )
         if not attributes.name then delete attributes.name
 
       # Cache the object inside the current design.
@@ -249,14 +249,13 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
       @design().trigger Design.EVENT.ChangeResource, @
       return
 
-    getNewName : ( base )->
+    getNewName : ()->
       if not @newNameTmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      if base is undefined
-        myKinds = Design.modelClassForType( @type ).allObjects()
-        base = myKinds.length
+      myKinds = Design.modelClassForType( @type ).allObjects()
+      base = myKinds.length
 
       # Collect all the resources name
       nameMap = {}

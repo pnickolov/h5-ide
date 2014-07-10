@@ -54,11 +54,13 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
       replicaData = _.extend(replicaData, {
         x : x
         y : y
+        sourceName : replicaData.name
         sourceDBInstance : comp
         parent : target
         sgList : sg_list
       })
       #remove no useful object
+      delete replicaData.name
       delete replicaData.__connections
       delete replicaData.__parent
       delete replicaData.id

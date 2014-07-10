@@ -107,11 +107,10 @@
     <div class="pull-right">
         Sort by:
         <div class="selectbox" id="sort-parameter-name">
-            <div class="selection">Default</div>
+            <div class="selection">Parameter Name</div>
             <ul class="dropdown" tabindex="-1">
-                <li class="item" data-id="dedicated">Dedicated</li>
-                <li class="item" data-id="ParameterName">Parameter Name</li>
-                <li class="item" data-id="IsModifable">Is Modifiable</li>
+                <li class="item selected" data-id="ParameterName">Parameter Name</li>
+                <li class="item" data-id="IsModifiable">Is Modifiable</li>
                 <li class="item" data-id="ApplyType">Apply Method</li>
                 <li class="item" data-id="Source">Source</li>
             </ul>
@@ -181,7 +180,7 @@
     <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Valume Reference</a>
     <div class="init action" style="padding: 10px 0">
         {{#if preview}}
-            <button class="btn do-action" data-action="edit">Back to Editing</button>
+            <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
             <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
         {{else}}
             <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>

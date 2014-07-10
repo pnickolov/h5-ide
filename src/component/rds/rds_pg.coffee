@@ -155,15 +155,16 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           return
       if option?.sort isnt undefined
         data = _.sortBy data, (e)->
+          s = e.ParameterName
           if option.sort is "ParameterName"
-            e.ParameterName
+            s = e.ParameterName
           if option.sort is 'IsModifiable'
-            e.IsModifiable
+            s = e.IsModifiable
           if option.sort is "ApplyType"
-            e.ApplyType
+            s = e.ApplyType
           if option.sort is "Source"
-            e.Source
-
+            s = e.Source
+          return s
       if option?.filter isnt undefined
         data = _.filter data, (e)->
           (e.ParameterName.toLowerCase().indexOf option.filter.toLowerCase()) > -1
@@ -173,6 +174,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
     bindFilter: (parameters, tpl)->
       that = @
+      sortType = $("#sort-parameter-name").find(".item.selected")?.data()?.id
       filter = $("#pg-filter-parameter-name")
       filter.off('change').on 'change', (e)->
         val = $(@).val()
@@ -180,8 +182,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           data:
             id: parameters.groupModel.id
         ]
-        sortType = $("#sort-parameter-name").find(".selection").text().trim()
         (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+      $("#sort-parameter-name").on 'OPTION_CHANGE', ()->
+        sortType = $("#sort-parameter-name").find(".item.selected")?.data()?.id
+        filter.trigger 'change'
 
     bindEditEvent: (parameters,tpl, option)->
       that = @
@@ -191,15 +195,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           if e.has('newValue') and (e.get("newValue") isnt e.get("ParameterValue"))
             changeArray.push e.toJSON()
         changeArray
+      if getChange().length then $("[data-action='preview']").prop 'disabled', false
       unless option then that.bindFilter(parameters, tpl)
       unless option then $("#pg-filter-parameter-name").keyup ->
         $(@).trigger 'change'
       _.each parameters.models, (e)->
-        onChange = (event)->
+        onChange = ->
           $("[data-action='preview']").prop 'disabled', false
+          if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
+            e.unset('newValue')
           if e.isValidValue(this.value) or this.value is ""
             $(this).removeClass "parsley-error"
-            e.set('newValue', this.value)
+            if this.value isnt "" then e.set('newValue', this.value)
           else
             $(this).addClass "parsley-error"
 
@@ -220,6 +227,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         that.manager.setSlide tpl {data:data, preview: true}
         $("#rds-pg-save").click ->
           that.modifyParams(parameters, getChange())
+        $("#pg-back-to-edit").click ->
+          checked = [data: id: parameters.groupModel.id]
+          (that.getSlides().edit.bind that) tpl, checked
 
     modifyParams: (parameters, change)->
       changeMap = {}

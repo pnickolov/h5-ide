@@ -492,7 +492,7 @@ define [
       @__connectInitItem = startItem
       return
 
-    __getConnectInitItem : ()->
+    __popLineInitiator : ()->
       i = @__connectInitItem
       @__connectInitItem = null
       i

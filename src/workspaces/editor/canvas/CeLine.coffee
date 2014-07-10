@@ -16,7 +16,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       @$el.remove()
       @$el = $()
 
-      initiator = @canvas.__getConnectInitItem()
+      initiator = @canvas.__popLineInitiator()
 
       item1 = @canvas.getItem( @model.port1Comp().id )
       item2 = @canvas.getItem( @model.port2Comp().id )

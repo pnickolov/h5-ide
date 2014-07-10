@@ -176,7 +176,9 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     getDefaultInstanceClass: -> @getInstanceClassObj(true).instanceClass
 
-    getMainVersion: -> @get('engineVersion')?.split('.').slice(0,2).join('.')
+    getMajorVersion: -> @get('engineVersion')?.split('.').slice(0,2).join('.')
+
+    getMinorVersion: -> @get('engineVersion')?.split('.').slice(2).join('.')
 
     # Get and Process License, EngineVersion, InstanceClass and multiAZ
     getLVIA: (spec) ->

@@ -20,11 +20,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @
 
-        initialize: (engine, version) ->
+        initialize: (option) ->
 
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
-            engineOptions = optionCol.getEngineOptions(engine)
-            ogOptions = engineOptions[version] if engineOptions
+            engineOptions = optionCol.getEngineOptions(option.engine)
+            ogOptions = engineOptions[option.version] if engineOptions
 
             # option group data ready for engine and version
             if engineOptions

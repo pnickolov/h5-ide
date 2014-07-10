@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, optionGroupManage, template, lang ) ->
+define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, OgManage, template, lang ) ->
 
     Backbone.View.extend
 
@@ -28,7 +28,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @initCol()
 
         quickCreate: () ->
-            new optionGroupManage().render().quickCreate()
+            new OgManage().render().quickCreate()
 
         render: ->
 
@@ -108,7 +108,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                 @renderNoCredential()
 
         manage: ->
-            new optionGroupManage().render()
+            new OgManage().render()
 
         set: ( id, data ) ->
 

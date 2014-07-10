@@ -11,7 +11,7 @@ define [ '../base/view'
          'i18n!/nls/lang.js'
          'constant'
          'CloudResources'
-], ( PropertyView, OptionGroupDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources ) ->
+], ( PropertyView, OgDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources ) ->
 
     noop = ()-> null
 
@@ -196,9 +196,9 @@ define [ '../base/view'
             @renderLVIA()
 
             # init option group
-            optionGroupDropdown = new OptionGroupDropdown()
-            optionGroupDropdown.setEngine(attr.engine, attr.engineVersion)
-            @$el.find('.property-dbinstance-optiongroup-placeholder').html optionGroupDropdown.render().el
+            ogDropdown = new OgDropdown()
+            ogDropdown.setEngine(attr.engine, attr.engineVersion)
+            @$el.find('.property-dbinstance-optiongroup-placeholder').html ogDropdown.render().el
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek

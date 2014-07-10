@@ -1,10 +1,112 @@
-#modal-option-group {
-  padding: 20px; }
-  #modal-option-group .header {
-    padding: 20px 30px;
-    background-color: #333; }
-  #modal-option-group .left {
+#modal-option-group .header {
+  padding: 20px 30px;
+  background-color: #333; }
+#modal-option-group .container {
+  padding: 20px 30px; }
+#modal-option-group .input-item {
+  margin-top: 10px; }
+  #modal-option-group .input-item .input {
+    width: 300px; }
+  #modal-option-group .input-item .left {
     width: 105px;
     margin-top: 6px; }
-  #modal-option-group .container {
-    padding: 20px; }
+#modal-option-group .switcher {
+  float: right;
+  margin: 5px;
+  width: 70px;
+  height: 27px;
+  border: 1px solid #ccc;
+  background: #dadada;
+  font-size: 12px;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 3px;
+  cursor: pointer;
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+  -webkit-transition-property: opacity background;
+  -moz-transition-property: opacity background;
+  -o-transition-property: opacity background;
+  transition-property: opacity background; }
+  #modal-option-group .switcher .switch-input {
+    position: absolute;
+    top: 0;
+    left: 0; }
+  #modal-option-group .switcher .switch-label {
+    position: relative;
+    display: block;
+    height: 100%; }
+  #modal-option-group .switcher .switch-label:before, #modal-option-group .switcher .switch-label:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -.5em;
+    line-height: 1; }
+  #modal-option-group .switcher .switch-label:before {
+    content: attr(data-off);
+    right: 6px;
+    color: #aaa;
+    font-variant: small-caps; }
+  #modal-option-group .switcher .switch-label:after {
+    content: attr(data-on);
+    left: 6px;
+    color: white;
+    opacity: 0;
+    font-variant: small-caps; }
+  #modal-option-group .switcher .switch-handle {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 33px;
+    height: 21px;
+    background: white;
+    border-radius: 3px;
+    -webkit-transition: left 0.15s ease-out;
+    -moz-transition: left 0.15s ease-out;
+    -o-transition: left 0.15s ease-out;
+    transition: left 0.15s ease-out; }
+#modal-option-group .switcher.on {
+  border-color: #0E8F38;
+  background: #4fb845; }
+  #modal-option-group .switcher.on .switch-label:before {
+    opacity: 0; }
+  #modal-option-group .switcher.on .switch-label:after {
+    opacity: 1; }
+  #modal-option-group .switcher.on .switch-handle {
+    left: 34px; }
+#modal-option-group .option-list-head {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+#modal-option-group .option-list {
+  margin-top: 30px; }
+  #modal-option-group .option-list .option-item {
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px; }
+    #modal-option-group .option-list .option-item .name, #modal-option-group .option-list .option-item .persistent, #modal-option-group .option-list .option-item .permenant {
+      float: left;
+      margin-left: 10px;
+      margin-top: 10px; }
+    #modal-option-group .option-list .option-item .persistent, #modal-option-group .option-list .option-item .permenant {
+      border: 1px #FF9100 solid;
+      color: #FF9100;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 12px; }
+    #modal-option-group .option-list .option-item .permenant {
+      border: 1px #008CFF solid;
+      color: #008CFF; }
+  #modal-option-group .option-list .option-item:nth-child(odd) {
+    background-color: #333; }
+  #modal-option-group .option-list .option-item:nth-child(even) {
+    background-color: #222; }
+#modal-option-group .modal-footer {
+  background-color: #222; }
+#modal-option-group .remove-btn {
+  color: #f00;
+  margin-top: 10px;
+  margin-left: 20px; }
+#modal-option-group .save-btn {
+  margin-right: 10px; }

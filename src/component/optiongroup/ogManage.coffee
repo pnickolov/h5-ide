@@ -2,6 +2,10 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
 
     Backbone.View.extend
 
+        events:
+
+            'click .option-item .switcher': 'optionChanged'
+
         getModalOptions: ->
             title: "Edit Option Group"
             classList: 'option-group-manage'
@@ -58,3 +62,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
 
         quickCreate: ->
 
+        optionChanged: (event) ->
+
+            $switcher = $(event.currentTarget)
+            $switcher.toggleClass('on')

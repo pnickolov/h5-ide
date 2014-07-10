@@ -63,8 +63,8 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     initialize : ( attr, option ) ->
       if option and option.cloneSource
         #Create ReadReplica
-        @set 'engine',    option.cloneSource.get('engine')
-        @set 'replicaId', option.cloneSource.createRef('DBInstanceIdentifier')
+        @set 'engine',    option.cloneSource.get('engine') # for draw
+        @set 'replicaId', option.cloneSource.createRef('DBInstanceIdentifier') # for draw
         # Draw before clone
         @draw true
         @clone( option.cloneSource )
@@ -109,7 +109,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
     getNewName : ( attr )->
       base  = 0
       exist = true
-      if attr.sourceId
+      if attr and attr.sourceId
         #Create ReadReplica
         srcComp = Design.instance().component(attr.sourceId)
         if not srcComp
@@ -140,6 +140,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
     clone :( srcTarget )->
       @cloneAttributes srcTarget, {
+        reserve : "replicaId"
         copyConnection : [ "SgAsso" ]
       }
       null
@@ -350,6 +351,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         #getter
         return @get('backupRetentionPeriod') || 0
 
+    preSerialize : () ->
+      #clone to new readReplica(not include existed readReplica)
+      if @category() is 'instance'
+        for replica in Model.getReplicasOfInstance @
+          if not replica.get('appId')
+            replica.clone @
+            replica.set 'replicaId', @createRef('DBInstanceIdentifier')
+      null
+
     serialize : () ->
       sgArray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
@@ -386,7 +396,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           OptionGroupMembership:
             OptionGroupName: 'default:mysql-5-6' # @get 'ogName'
-            Status: @get 'ogStatus'
 
           DBParameterGroups:
             DBParameterGroupName: 'default.mysql5.6' # @get 'pgName'
@@ -402,7 +411,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           DBSubnetGroup:
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : sgArray
-
 
       { component : component, layout : @generateLayout() }
 
@@ -458,7 +466,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         password                  : data.resource.MasterUserPassword
 
         ogName                    : data.resource.OptionGroupMembership?.OptionGroupName
-        ogStatus                  : data.resource.OptionGroupMembership?.Status
 
         pending                   : data.resource.PendingModifiedValues
 

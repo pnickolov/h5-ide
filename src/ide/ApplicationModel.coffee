@@ -214,7 +214,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       # Mark the item as read if the current tab is the item's tab.
       item.readed = not App.WS.isReady()
 
-      if not item.readed and App.workspaces
+      if not item.readed and App.workspaces and not item.state.failed
         space = App.workspaces.getAwakeSpace()
         ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
         item.readed = space.isWorkingOn( ops )

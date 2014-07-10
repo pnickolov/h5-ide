@@ -112,6 +112,16 @@
 </div>
 
 <!-- {{og_modal}} -->
-
-
-
+<div id="modal-option-group">
+    <div class="header">This Option Group is used for {{dbVersion}}</div>
+    <div class="container">
+        <div class="clearfix">
+            <label class="left">Name</label>
+            <input class="input" value="" type="text" data-required="true" class="og-name"/>
+        </div>
+        <div class="clearfix">
+            <label class="left">Description</label>
+            <input class="input" value="" type="text" data-required="true" class="og-description"/>
+        </div>
+    </div>
+</div>

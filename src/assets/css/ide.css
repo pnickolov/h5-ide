@@ -13,6 +13,7 @@
 @import url("./ide/editor.css");
 @import url("./ide/resdiff.css");
 @import url("./ide/property.css");
+@import url("./ide/optiongroup.css");
 
 html,
 body {

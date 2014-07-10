@@ -151,7 +151,6 @@
 <!-- {{og_modal}} -->
 <div id="modal-option-group">
     <div class="header">This Option Group is used for {{dbVersion}}</div>
-
     <div class="slidebox">
         <div class="content clearfix">
         </div>
@@ -159,7 +158,6 @@
             something wrong
         </div>
     </div>
-
     <div class="container">
         <div class="input-item">
             <label class="left">Name</label>
@@ -170,42 +168,22 @@
             <input class="input" value="" type="text" data-required="true" class="og-description"/>
         </div>
         <div class="left option-list-head">Option</div>
-        <ul class="option-list">
-            <li class="option-item">
-                <div class="name">MEMCACHED</div>
-                <div class="persistent">PERSISTENT</div>
-                <div class="permenant">PERMENANT</div>
-                <label class="switcher">
-                    <span class="switch-label" data-on="" data-off=""></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </li>
-            <li class="option-item">
-                <div class="name">MEMCACHED</div>
-                <div class="persistent">PERSISTENT</div>
-                <div class="permenant">PERMENANT</div>
-                <label class="switcher">
-                    <span class="switch-label" data-on="" data-off=""></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </li>
-        </ul>
+        <ul class="option-list"></ul>
     </div>
     <div class="modal-footer">
         <div class="remove-btn left">Delete Option Group</div>
         <button class="save-btn btn btn-blue">Save</button>
         <button class="cancel-btn btn modal-close">Cancel</button>
     </div>
-
-
-
-<div class="container">
-    <div class="clearfix">
-        <label class="left">Name</label>
-        <input class="input" value="" type="text" data-required="true" class="og-name"/>
-    </div>
-    <div class="clearfix">
-        <label class="left">Description</label>
-        <input class="input" value="" type="text" data-required="true" class="og-description"/>
-    </div>
 </div>
+
+<!-- {{og_option_item}} -->
+<li class="option-item">
+    <div class="name">MEMCACHED</div>
+    <div class="persistent">PERSISTENT</div>
+    <div class="permenant">PERMENANT</div>
+    <label class="switcher">
+        <span class="switch-label" data-on="ON" data-off="OFF"></span>
+        <span class="switch-handle"></span>
+    </label>
+</li>

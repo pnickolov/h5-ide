@@ -703,21 +703,21 @@
   fill: transparent; }
   .group-resizer:hover {
     fill: rgba(200, 200, 200, 0.12); }
-  .group-resizer.topleft {
-    cursor: nwse-resize; }
   .group-resizer.top {
     cursor: ns-resize; }
-  .group-resizer.topright {
-    cursor: nesw-resize; }
   .group-resizer.left {
     cursor: ew-resize; }
   .group-resizer.right {
     cursor: ew-resize; }
-  .group-resizer.bottomleft {
-    cursor: nesw-resize; }
   .group-resizer.bottom {
     cursor: ns-resize; }
-  .group-resizer.bottomright {
+  .group-resizer.top-left {
+    cursor: nwse-resize; }
+  .group-resizer.top-right {
+    cursor: nesw-resize; }
+  .group-resizer.bottom-left {
+    cursor: nesw-resize; }
+  .group-resizer.bottom-right {
     cursor: nwse-resize; }
 
 .canvasel:hover > .node-background {

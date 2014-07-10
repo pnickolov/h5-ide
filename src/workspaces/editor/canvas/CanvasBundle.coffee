@@ -1,6 +1,7 @@
 
 define [
   "./CanvasView"
+  "./CanvasViewGResizer"
   "./CeVpc"
   "./CeAz"
   "./CeSubnet"

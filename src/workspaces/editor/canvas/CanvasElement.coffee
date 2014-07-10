@@ -114,6 +114,24 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         y : y
       }
 
+    effectiveRect : ()->
+      size = @size()
+      x = @model.x()
+      y = @model.y()
+
+      if @isGroup()
+        x -= 1
+        y -= 1
+        size.width  += 2
+        size.height += 2
+
+      {
+        x1 : x
+        y1 : y
+        x2 : x + size.width
+        y2 : y + size.height
+      }
+
     initNode : ( node, x, y )->
       node.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
 
@@ -188,16 +206,23 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         svg.rect( pad, height - 2*pad ).move(width - pad, pad).classes("group-resizer right")
         svg.rect( width - 2*pad, pad  ).move(pad, height - pad).classes("group-resizer bottom")
 
-        svg.rect( pad, pad ).classes("group-resizer topleft")
-        svg.rect( pad, pad ).x(width - pad).classes('group-resizer topright')
-        svg.rect( pad, pad ).y(height - pad).classes("group-resizer bottomleft")
-        svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottomright")
+        svg.rect( pad, pad ).classes("group-resizer top-left")
+        svg.rect( pad, pad ).x(width - pad).classes('group-resizer top-right')
+        svg.rect( pad, pad ).y(height - pad).classes("group-resizer bottom-left")
+        svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottom-right")
 
         svg.text("").move(5,15).classes("group-label")
       ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
 
 
     isGroup : ()-> !!@model.node_group
+
+    parent : ()->
+      p = @model.parent()
+      if p
+        @canvas.getItem( p.id )
+      else
+        null
 
     children : ()->
       if not @model.node_group
@@ -206,6 +231,13 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       canvas = @canvas
       @model.children().map ( childModel )->
         canvas.getItem( childModel.id )
+
+    siblings : ()->
+      s = @parent().children()
+      idx = s.indexOf( this )
+      if idx >= 0
+        s.splice( idx, 1)
+      s
 
     connections : ()->
       cnns = []

@@ -771,8 +771,8 @@ define [
 
       null
 
-    # Resize
-    __resizeGroupDown : ( evt )->
+    # Resize ( Implemented in CanvasViewGResizer )
+    # __resizeGroupDown : ( evt )->
 
   }, {
     GRID_WIDTH  : 10

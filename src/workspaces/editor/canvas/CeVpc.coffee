@@ -10,6 +10,10 @@ define [ "./CanvasElement", "constant", "CanvasManager", "./CanvasView" ], ( Can
     # Creates a svg element
     create : ()-> @canvas.appendVpc( @createGroup() )
 
+    siblings : ()->
+      canvas = @canvas
+      canvas.design.componentsOfType( constant.RESTYPE.CGW ).map ( m )-> canvas.getItem( m.id )
+
     # Update the svg element
     render : ()->
       # Move the group to right place

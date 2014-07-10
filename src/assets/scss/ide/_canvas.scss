@@ -87,14 +87,14 @@
     fill: rgba(200, 200, 200, 0.12);
   }
 
-  &.topleft { cursor: nwse-resize; }
   &.top { cursor: ns-resize; }
-  &.topright { cursor: nesw-resize; }
   &.left { cursor: ew-resize; }
   &.right { cursor: ew-resize; }
-  &.bottomleft { cursor: nesw-resize; }
   &.bottom { cursor: ns-resize; }
-  &.bottomright { cursor: nwse-resize; }
+  &.top-left { cursor: nwse-resize; }
+  &.top-right { cursor: nesw-resize; }
+  &.bottom-left { cursor: nesw-resize; }
+  &.bottom-right { cursor: nwse-resize; }
 }
 
 .canvasel:hover > .node-background {

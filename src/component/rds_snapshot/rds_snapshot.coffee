@@ -6,7 +6,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     regionsMark = {}
     snapshotRes = Backbone.View.extend
         constructor: ()->
-            @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
+            @collection = CloudResources constant.RESTYPE.DBSNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
             @
@@ -26,7 +26,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             option =
                 filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
-            @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
+            @volumes = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 

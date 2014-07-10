@@ -32,6 +32,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
 
         render: ->
             @initModal template.og_modal {}
+            @
 
 
         processCol: () ->

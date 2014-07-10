@@ -327,7 +327,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         return priceObj
 
       catch err
-        console.err "Error while get database instance price", err
+        console.error "Error while get database instance price", err
       finally
 
     category: (type) ->

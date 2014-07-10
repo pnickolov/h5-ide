@@ -108,6 +108,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'refresh', @refresh, @
             @manager.on "slidedown", @renderSlides, @
             @manager.on 'action', @doAction, @
+            @manager.on 'detail', @detail, @
             @manager.on 'close', =>
                 @manager.remove()
             @manager.on 'checked', @processDuplicate, @
@@ -132,11 +133,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             fetching = false
             fetched = true
             data = @collection.toJSON()
+            console.log(data)
             _.each data, (e,f)->
-                if e.progress is 100
-                    data[f].completed = true
-                if e.startTime
-                    data[f].started = (new Date(e.startTime)).toString()
+                if e.PercentProgress is "100"
+                    e.completed = true
+                if e.SnapshotCreateTime
+                    e.started = (new Date(e.SnapshotCreateTime)).toString()
                 null
             dataSet =
                 items: data
@@ -174,8 +176,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     volumes : {}
                 @manager.setSlide tpl data
                 @dropdown = @renderDropdown()
-
                 @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
+                $(".slidebox.show").css('overflow',"visible")
             'duplicate': (tpl, checked)->
                 data = {}
                 data.originSnapshot = checked[0]
@@ -186,8 +188,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @regionsDropdown = @renderRegionDropdown()
                 @regionsDropdown.on 'change', =>
                     @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
-
                 @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
+                $(".slidebox.show").css('overflow',"visible")
 
         doAction: (action, checked)->
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
@@ -268,6 +270,14 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 else
                     $(@).hide()
 
+        detail: (event, data, $tr) ->
+          console.log arguments
+          snapshotId = data.id
+          snapshotData = @collection.get(snapshotId).toJSON()
+          console.log snapshotData
+          detailTpl = template.detail snapshotData
+          @manager.setDetail($tr, detailTpl)
+
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
@@ -303,13 +313,13 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             columns: [
                 {
                     sortable: true
-                    width: "20%" # or 40%
+                    width: "30%" # or 40%
                     name: 'Name'
                 }
                 {
                     sortable: true
                     rowType: 'number'
-                    width: "10%" # or 40%
+                    width: "20%" # or 40%
                     name: 'Capicity'
                 }
                 {
@@ -320,8 +330,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 }
                 {
                     sortable: false
-                    width: "30%" # or 40%
-                    name: 'Description'
+                    width: "10%" # or 40%
+                    name: 'Detail'
                 }
             ]
 

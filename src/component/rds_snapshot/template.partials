@@ -13,20 +13,20 @@
 
 <!-- {{content}} -->
 {{#each items}}
-<tr class="item" data-id="">
+<tr class="item" data-id="{{id}}">
     <td>
         <div class="checkbox">
             <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb">
             <label for="{{id}}"></label>
         </div>
     </td>
-    <td><div class="manager-content-main">{{#if name}}{{name}}{{else}}&lt;No Name&gt;{{/if}}</div><span class="manager-content-sub">{{id}}</span></td>
-    <td>{{volumeSize}} GiB</td>
+    <td><div class="manager-content-main">{{id}}</div></td>
+    <td>{{AllocatedStorage}} GiB</td>
     <td>
-        <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{progress}}%{{/if}}</div>
+        <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{PercentProgress}}%{{/if}}</div>
         <span class="manager-content-sub">Started: {{started}}</span>
     </td>
-    <td>{{description}}</td>
+    <td class="show-detail icon-toolbar-cloudformation"></td>
 </tr>
 {{/each}}
 
@@ -119,5 +119,75 @@
         <div class="processing action" style="display:none;">
             <button class="btn" disabled>Duplicating...</button>
         </div>
+    </div>
+</div>
+
+
+<!-- {{detail}} -->
+<div class="detail-info horizontal">
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>DB Snapshot ID</label>
+            <div>{{id}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Vpc ID</label>
+            <div>{{VpcId}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>DB Engine</label>
+            <div>{{Engine}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>License Model</label>
+            <div>{{LicenseModel}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Status</label>
+            <div>{{Status}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Db Storage</label>
+            <div>{{AllocatedStorage}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Snapshot Creation Time</label>
+            <div>{{SnapshotCreateTime}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Source Region</label>
+            <div>{{AvailabilityZone}}</div>
+        </section>
+    </div>
+    <div class="detail-info-row">
+        <section class="property-control-group">
+            <label>DB Instance Name</label>
+            <div>{{DBInstanceIdentifier}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Snapshot Type</label>
+            <div>{{SnapshotType}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>DB Engine Version</label>
+            <div>{{EngineVersion}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Master Username</label>
+            <div>{{MasterUsername}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Option Groupname</label>
+            <div>{{OptionGroupName}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Port</label>
+            <div>{{Port}}</div>
+        </section>
+        <section class="property-control-group">
+            <label>Instance Creation Time</label>
+            <div>{{InstanceCreateTime}}</div>
+        </section>
+
     </div>
 </div>

@@ -58,3 +58,18 @@
 #pg-sort-filter input.input {
   width: 300px;
 }
+.detail-info.horizontal .detail-info-row {
+  margin-left: 0 !important;
+  padding: 0 5%;
+}
+.detail-info.horizontal .property-control-group > label {
+  width: 145px;
+  text-align: right;
+  padding-right: 10px;
+}
+.detail-info.horizontal .property-control-group > div {
+  display: inline-block;
+}
+.modal-toolbar .table-head-fix .table tr .detail-info.horizontal .detail-info-row {
+  width: 40% !important;
+}

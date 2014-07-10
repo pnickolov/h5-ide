@@ -47,6 +47,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       replicas: ''
       ogName: ''
       pgName: ''
+      applyImmediately: ''
 
 
     type : constant.RESTYPE.DBINSTANCE
@@ -379,6 +380,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
           DBParameterGroups:
             DBParameterGroupName: 'default.mysql5.6' # @get 'pgName'
+          ApplyImmediately                      : @get 'applyImmediately'
 
           PendingModifiedValues                 : @get 'pending'
 
@@ -390,6 +392,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           DBSubnetGroup:
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : sgArray
+
 
       { component : component, layout : @generateLayout() }
 
@@ -455,6 +458,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         accessible                : data.resource.PubliclyAccessible
 
         pgName                    : data.resource.DBParameterGroups?.DBParameterGroupName
+        applyImmediately          : data.resource.ApplyImmediately
 
 
         x      : layout_data.coordinate[0]

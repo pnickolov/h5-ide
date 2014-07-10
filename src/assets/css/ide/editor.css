@@ -919,3 +919,13 @@ marker.vgw-vpn, marker.cgw-vpn {
   fill: #bf7aa5; }
 marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marker.rtb-tgt, marker.elb-sg-in, marker.vgw-tgt, marker.eni-rtb, marker.instance-rtb {
   fill: #6DAEFE; }
+
+.mask-line {
+  -webkit-transition: stroke-dashoffset .3s ease-in-out;
+  -moz-transition: stroke-dashoffset .3s ease-in-out;
+  -o-transition: stroke-dashoffset .3s ease-in-out;
+  transition: stroke-dashoffset .3s ease-in-out;
+  stroke-dashoffset: 0 !important;
+  stroke-width: 8;
+  stroke: #fff;
+  fill: none; }

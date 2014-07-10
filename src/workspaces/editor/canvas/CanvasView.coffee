@@ -236,14 +236,14 @@ define [
         return
       , @
 
-      @initializing = false
-
       for t of types
         ItemClass = CanvasElement.getClassByType( t )
         if ItemClass and ItemClass.render
           ItemClass.render( this )
 
       @addItem(comp, true) for comp in lines
+
+      @initializing = false
       return
 
     __batchAddLines : ()->
@@ -466,13 +466,10 @@ define [
 
       if res is false then return
       if _.isString( res )
-        notification "error", res
-        return
+        return notification "error", res
 
       if res is true
-        c = new C( comp1, comp2, undefined, { createByUser : true } )
-        if c.id then _.defer ()-> data.context.selectItem( c.id )
-        return
+        return data.context.__connect( C, comp1, comp2, data.startItem )
 
       if res.confirm
         self = @
@@ -483,11 +480,22 @@ define [
           confirm  : {text:res.action, color:"blue"}
           onConfirm  : ()->
             modal.close()
-            c = new C( comp1, comp2, undefined, { createByUser : true } )
-            if c.id then _.defer ()-> data.context.selectItem( c.id )
+            data.context.__connect( C, comp1, comp2, data.startItem )
             return
         }
       return
+
+    __connect : ( LineClass, comp1, comp2, startItem )->
+      self = @
+      c    = new LineClass( comp1, comp2, undefined, { createByUser : true } )
+      if c.id then _.defer ()-> self.selectItem( c.id )
+      @__connectInitItem = startItem
+      return
+
+    __getConnectInitItem : ()->
+      i = @__connectInitItem
+      @__connectInitItem = null
+      i
 
     # Find item by position
     __itemAtPos : ( x, y )->

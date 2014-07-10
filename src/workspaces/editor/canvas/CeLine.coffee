@@ -1,6 +1,8 @@
 
 define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
 
+  LineMaskToClear = null
+
   CeLine = CanvasElement.extend {
     ### env:dev ###
     ClassName : "CeLine"
@@ -14,15 +16,17 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       @$el.remove()
       @$el = $()
 
+      initiator = @canvas.__getConnectInitItem()
+
       item1 = @canvas.getItem( @model.port1Comp().id )
       item2 = @canvas.getItem( @model.port2Comp().id )
 
       if item1.$el.length is 1 and item2.$el.length is 1
-        @renderConnection( item1, item2 )
+        @renderConnection( item1, item2, undefined, undefined, initiator )
       else
         for el1 in item1.$el
           for el2 in item2.$el
-            @renderConnection( item1, item2, el1, el2 )
+            @renderConnection( item1, item2, el1, el2, initiator )
 
       return
 
@@ -36,7 +40,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
       svgEl
 
-    renderConnection : ( item_from, item_to, element1, element2 )->
+    renderConnection : ( item_from, item_to, element1, element2, initiator )->
       connection = @model
 
       pos_from = item_from.pos( element1 )
@@ -138,7 +142,43 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
             when 777 then path = MC.canvas._round_corner(controlPoints)
 
       # Create or redraw line
-      @addView @createLine( path )
+      svgEl = @createLine( path )
+      @addView svgEl
+
+      if not @canvas.initializing
+        svg = @canvas.svg
+        maskPath = svg.path( path )
+        length = parseFloat(maskPath.node.getTotalLength()).toFixed(2)
+
+        dirt = if initiator is item_from then -1 else 1
+
+        maskPath.style({
+          "stroke-dasharray"  : length + " " + length
+          "stroke-dashoffset" : length * dirt
+        })
+
+        setTimeout ()->
+          maskPath.classes("mask-line")
+        , 20
+
+        CeLine.cleanLineMask svgEl.maskWith( maskPath )
+      return
+  }, {
+    cleanLineMask : ( line )->
+      if not LineMaskToClear
+        console.log("Clean")
+        LineMaskToClear = [ line ]
+        setTimeout ()->
+          CeLine.__cleanLineMask()
+        , 340
+      else
+        LineMaskToClear.push line
+
+    __cleanLineMask : ()->
+      for line in LineMaskToClear
+        if line.masker
+          line.masker.remove()
+      LineMaskToClear = null
       return
   }
 

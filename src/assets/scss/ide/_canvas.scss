@@ -358,3 +358,15 @@ marker {
   &.vgw-vpn, &.cgw-vpn { fill: #bf7aa5; }
   &.igw-tgt, &.eni-sg, &.instance-sg, &.launchconfig-sg, &.rtb-tgt, &.elb-sg-in, &.vgw-tgt, &.eni-rtb, &.instance-rtb { fill: #6DAEFE; }
 }
+
+.mask-line {
+  -webkit-transition: stroke-dashoffset .3s ease-in-out;
+     -moz-transition: stroke-dashoffset .3s ease-in-out;
+       -o-transition: stroke-dashoffset .3s ease-in-out;
+          transition: stroke-dashoffset .3s ease-in-out;
+
+  stroke-dashoffset: 0 !important;
+  stroke-width:8;
+  stroke:#fff;
+  fill:none;
+}

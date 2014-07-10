@@ -99,8 +99,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       return
 
     # Update the svg element
-    render : ()->
-      if @canvas.initializing then return
+    render : ( force )->
+      if @canvas.initializing and not force then return
 
       @ensureLcView()
       m = @model
@@ -120,5 +120,5 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
   }, {
     render : ( canvas )->
       for lc in canvas.design.componentsOfType( constant.RESTYPE.LC )
-        canvas.getItem( lc.id ).render()
+        canvas.getItem( lc.id ).render( true )
   }

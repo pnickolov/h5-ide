@@ -177,7 +177,7 @@ define([], function() {
     , opacity:            1
       /* position */
     , x:                  0
-    , y:                  0
+    , y:                 0
     , cx:                 0
     , cy:                 0
       /* size */
@@ -2226,6 +2226,7 @@ define([], function() {
     // Initialize node
     create: function() {
       this.constructor.call(this, SVG.create('mask'))
+      this.attr("id", SVG.eid("svgMask"))
 
       /* keep references to masked elements */
       this.targets = []
@@ -3372,7 +3373,8 @@ define([], function() {
     marker: function(width, height, block) {
       // Set default viewbox to match the width and height, set ref to cx and cy and set orient to auto
       return this.put(new SVG.Marker)
-        .size(width, height)
+        .width(  width  == undefined ? 3 : width )
+        .height( height == undefined ? 3 : height )
         .ref(width / 2, height / 2)
         .viewbox(0, 0, width, height)
         .attr('orient', 'auto')

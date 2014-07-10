@@ -28,7 +28,11 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @initCol()
 
         quickCreate: () ->
-            new optionGroupManage().render().quickCreate()
+            
+            new optionGroupManage({
+                engine: @engine,
+                version: @version
+            }).render().quickCreate()
 
         render: ->
 
@@ -107,8 +111,18 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             else
                 @renderNoCredential()
 
+        setEngine: (engine, version) ->
+
+            @engine = engine
+            @version = version
+            null
+
         manage: ->
-            new optionGroupManage().render()
+
+            new optionGroupManage({
+                engine: @engine,
+                version: @version
+            }).render()
 
         set: ( id, data ) ->
 

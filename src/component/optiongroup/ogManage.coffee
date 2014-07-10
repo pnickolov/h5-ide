@@ -37,8 +37,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @modal.on 'checked', @checked, @
             @modal.on 'detail', @detail, @
 
-        initialize: () ->
+        initialize: (engine, version) ->
 
+            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+            engineOptions = optionCol.getEngineOptions(engine)
+            ogOptions = engineOptions[version] if engineOptions
+
+            # option group data ready for engine and version
+            if engineOptions
+                null
             @initModal()
             @initCol()
 

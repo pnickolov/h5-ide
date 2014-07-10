@@ -327,6 +327,16 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
 
       return 'instance'
 
+    autobackup: ( value )->
+      if value isnt undefined
+        #setter : show/hide dragger by this property
+        @set 'backupRetentionPeriod', value
+        @draw()
+        null
+      else
+        #getter
+        return @get('backupRetentionPeriod') || 0
+
     serialize : () ->
       sgArray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 

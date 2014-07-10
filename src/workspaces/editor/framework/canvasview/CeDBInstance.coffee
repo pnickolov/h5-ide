@@ -129,6 +129,7 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         node.append(
           # dragger
           Canvon.image(MC.IMG_URL + 'ide/icon/dbinstance-resource-dragger.png', 34, 58, 22, 21).attr({
+            'id'           : 'dbinstance-dragger-' + m.id
             'class'        : 'dbinstance-resource-dragger tooltip'
             'data-tooltip' : 'Expand the group by drag-and-drop in other subnetgroup.'
           })
@@ -151,6 +152,13 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
       node = @$element()
       # update label
       CanvasManager.update node.children(".node-label-name"), m.get("name")
+
+      if @model.get('engine') is constant.DBENGINE.MYSQL and @model.category() isnt 'replica'
+        # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
+        if @model.autobackup() is 0
+          Canvon( '#dbinstance-dragger-' + m.id ).addClass('hide')
+        else
+          Canvon( '#dbinstance-dragger-' + m.id ).removeClass('hide')
 
     if not @model.design().modeIsStack() and m.get("appId")
       # Update Instance State in app

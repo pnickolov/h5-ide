@@ -341,7 +341,7 @@ define [ '../base/view'
         changeBackupPeriod: (event) ->
 
             value = $(event.target).val()
-            @model.set 'backupRetentionPeriod', Number(value)
+            @model.autobackup Number(value) #setter
 
         changeBackupTime: (event) ->
 

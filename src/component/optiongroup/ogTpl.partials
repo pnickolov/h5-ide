@@ -120,9 +120,10 @@
     </div>
     <div>
         <label for="og-sg">Security Groups</label>
-        <select class="select" type="text" id="og-sg">
-            <option value="ttt">ttt</option>
-            <option value="222">222</option>
+        <select class="select" id="og-sg">
+            {{#each sgs}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
         </select>
     </div>
 </div>
@@ -137,7 +138,17 @@
     {{#each OptionGroupOptionSettings}}
     <tr>
         <td>{{SettingName}}</td>
-        <td><input type="text" class="input" value="{{DefaultValue}}"/></td>
+        <td>
+            {{#if items}}
+            <select>
+                {{#each items}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+            {{else}}
+            <input type="text" class="input" value="{{DefaultValue}}"/>
+            {{/if}}
+        </td>
         <td>{{AllowedValues}}</td>
     </tr>
     {{/each}}

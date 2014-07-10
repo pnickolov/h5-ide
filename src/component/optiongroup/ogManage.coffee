@@ -1,4 +1,13 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js', 'event', 'UI.modalplus' ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
+define [
+    'constant'
+    'CloudResources'
+    'toolbar_modal'
+    './component/optiongroup/ogTpl'
+    'i18n!/nls/lang.js'
+    'event'
+    'UI.modalplus'
+
+], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     Backbone.View.extend
         tagName: 'section'
@@ -8,6 +17,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
         events:
 
             'click .option-item .switcher': 'optionChanged'
+
+            'click .cancel': 'cancel'
 
         getModalOptions: ->
             title: "Edit Option Group"
@@ -59,7 +70,25 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/optiongroup
             @renderSlide option
             @$('.slidebox').addClass 'show'
 
+        cancel: -> @$('.slidebox').removeClass 'show'
+
+
         renderSlide: ( option ) ->
+            option = jQuery.extend(true, {}, option)
+
+            option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) -> obj.toJSON()
+
+            for s in option.OptionGroupOptionSettings
+                if s.AllowedValues.indexOf('-') >= 0
+                    arr = s.AllowedValues.split '-'
+                    start = +arr[0]
+                    end = +arr[1]
+                    if end - start < 10
+                        s.items = _.range start, end + 1
+                else if s.AllowedValues.indexOf(',') >= 0
+                    s.items = s.AllowedValues.split ','
+
+
             @$('.content').html template.og_slide option or {}
 
         processCol: () ->

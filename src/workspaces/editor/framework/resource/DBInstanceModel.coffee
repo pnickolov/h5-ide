@@ -92,6 +92,10 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           #Create new DBInstance from snapshot
           @set 'snapshotId', attr.snapshotId
 
+      if @category() is 'instance'
+        @on 'all', @preSerialize
+        @on 'sgchange', @onSgChange
+
       null
 
     defaultPortMap:
@@ -353,13 +357,34 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         #getter
         return @get('backupRetentionPeriod') || 0
 
-    preSerialize : () ->
-      #clone to new readReplica(not include existed readReplica)
+    # trigger by assignSG or un-assignSG in model of sglist property panel
+    onSgChange : (event) ->
       if @category() is 'instance'
         for replica in Model.getReplicasOfInstance @
           if not replica.get('appId')
+            #force clear all connections
+            num = replica.attributes.__connections.length
+            while num > 0
+              conn = replica.attributes.__connections.pop()
+              conn.remove( {force:true} ) #no need assign defaultSg
+              num--
+            if replica.attributes.__connections.length isnt 0
+              console.error "force clear all SgAsso of DBInstance #{replica.id} failed"
             replica.clone @
-            replica.set 'replicaId', @createRef('DBInstanceIdentifier')
+      null
+
+    preSerialize : ( event ) ->
+      if event and $.type(event) is 'string'
+        event = event.split(":")[0]
+
+      #event is undefined => DesignImpl.prototype.serialize()
+      #event is 'change'  => change attr from property panel
+      if event is undefined or event is 'change'
+        #clone to new readReplica(not include existed readReplica)
+        if @category() is 'instance'
+          for replica in Model.getReplicasOfInstance @
+            if not replica.get('appId')
+              replica.clone @
       null
 
     serialize : () ->

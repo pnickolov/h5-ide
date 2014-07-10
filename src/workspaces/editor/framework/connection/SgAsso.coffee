@@ -5,7 +5,10 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-    initialize : ()->
+    initialize : ( attr, option )->
+
+      # manual assignSG in model of sglist property panel
+      @set 'manual', if option then !!option.manual else false
 
       # A hack for optimization.
       # When deserializing, shouldDraw() returns false.
@@ -41,13 +44,21 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
 
       true
 
-    remove : ()->
+    remove : ( option )->
+
+      # manual un-assignSG in model of sglist property panel
+      @set 'manual', if option then !!option.manual else false
+
       ConnectionModel.prototype.remove.apply this, arguments
 
       # When an SgAsso is removed because of an SecurityGroup is removed.
       # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
       resource = @getOtherTarget( constant.RESTYPE.SG )
       if resource.isRemoved() # and resource.type is 'ExpandedAsg'
+        return
+
+      if option and option.force
+      # when option.force is true(clear connections of DBInstance in 'onSgChange' Event), then no need assign defaultSg
         return
 
       # When A is removed, and A delete an Sg ( SgA ) while removing,
@@ -112,6 +123,11 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
           CanvasManager.update( ch, "none", "color" )
           CanvasManager.update( ch, "", "tooltip" )
 
+      # manual is used when assignSG() in model of sglist property panel
+      # ResourceModel will received this event( currently DBInstanceModel )
+      if @get('manual')
+        resource.trigger 'sgchange'
+        @set 'manual', false
       null
   }
 

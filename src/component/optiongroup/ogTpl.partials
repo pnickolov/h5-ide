@@ -3,51 +3,11 @@
 
 <!-- {{dropdown_list}} -->
 {{#each this}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{OptionGroupName}}" tabindex="-1">
-        {{OptionGroupName}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{name}}" tabindex="-1">
+        {{name}}
+        <div class="icon-edit"></div>
     </li>
 {{/each}}
-
-<!-- {{modal_list}} -->
-{{#each this}}
-<tr class="item" data-id="{{id}}">
-    <td>
-        <div class="checkbox">
-            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
-            <label for="sslcert-select-{{id}}"></label>
-        </div>
-    </td>
-    <td>{{Name}}</td>
-    <td>{{UploadDate}}</td>
-    <td class="show-detail icon-toolbar-cloudformation"></td>
-</tr>
-{{/each}}
-
-
-
-<!-- {{detail_info}} -->
-<div class="detail-info">
-    <div class="detail-info-row">
-        <section class="property-control-group">
-            <label>Server Certificate ID</label>
-            <div>{{id}}</div>
-        </section>
-        <section class="property-control-group">
-            <label>Server Certificate ARN</label>
-            <div>{{Arn}}</div>
-        </section>
-    </div>
-    <div class="detail-info-row">
-        <section class="property-control-group">
-            <label>Expiration Date</label>
-            <div>{{Expiration}}</div>
-        </section>
-        <section class="property-control-group">
-            <label>Path</label>
-            <div>{{Path}}</div>
-        </section>
-    </div>
-</div>
 
 <!-- {{no_option_group}} -->
 <div class="combo-dd-no-data">

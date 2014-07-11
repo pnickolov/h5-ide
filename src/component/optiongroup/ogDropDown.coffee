@@ -23,6 +23,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         render: (option) ->
 
+            that = this
+
             @el = @dropdown.el
             @dropdown.setSelection 'None'
 
@@ -30,14 +32,27 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @version = option.version
 
             @ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
+            ogComps = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
             
-            # filter only have engine, version, default option group
-            @ogDefaultCol = @ogCol.filter (model, idx) ->
+            # only show default og from aws and custom og from stack
+            defaultOGAry = []
+            @ogCol.each (model, idx) ->
                 if model.get('EngineName') is option.engine and
                     model.get('MajorEngineVersion') is option.version and
                         model.get('OptionGroupName').indexOf('default:') is 0
-                            return true
+                            defaultOGAry.push {
+                                id: null,
+                                name: model.get('OptionGroupName')
+                            }
                 return false
+
+            customOGAry = _.map ogComps, (compModel) ->
+                return {
+                    id: compModel.id,
+                    name: compModel.get('name')
+                }
+
+            @ogAry = defaultOGAry.concat customOGAry
 
             @renderDropdownList()
 
@@ -47,17 +62,15 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         renderDropdownList: () ->
 
-            if @ogDefaultCol.length
+            that = this
+            if @ogAry.length
                 selection = @dropdown.getSelection()
-                ogAry = []
-                _.each @ogDefaultCol, (og) ->
-                    ogData = og.toJSON()
-                    ogName = ogData.OptionGroupName
+                _.each @ogAry, (og) ->
+                    ogName = og.name
                     if ogName and ogName is selection
-                        ogData.selected = true
-                    ogAry.push(ogData)
+                        og.selected = true
                     null
-                @dropdown.setContent(template.dropdown_list ogAry).toggleControls true
+                @dropdown.setContent(template.dropdown_list @ogAry).toggleControls true
             else
                 @dropdown.setContent(template.no_option_group({})).toggleControls true
 

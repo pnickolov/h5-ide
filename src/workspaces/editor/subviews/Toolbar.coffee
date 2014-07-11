@@ -174,7 +174,7 @@ define [
             if not modal then return
             modal.tpl.find(".loading-spinner").remove()
             modal.tpl.find("section").show().prepend("<img style='max-height:100%;display:inline-block;' src='#{data.image}' />")
-            btn = modal.tpl.find("a.btn-blue")
+            btn = modal.tpl.find("a.btn-blue").click ()-> modal.close()
             if data.blob
               btn.click ()-> JsonExporter.download( data.blob, "#{name}.png" ); false
             else

@@ -387,7 +387,7 @@ define [
       null
 
     setOptionGroup: ( name ) ->
-      ogComp = Design.modelClassForType('constant.RESTYPE.DBOG').findWhere name: name
+      ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere name: name
 
       if ogComp
         new OgUsage( model, ogComp )

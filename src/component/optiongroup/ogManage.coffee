@@ -28,6 +28,7 @@ define [
             context: that
 
         initModal: (tpl) ->
+
             options =
                 template        : tpl
                 title           : "Edit Option Group"
@@ -44,22 +45,19 @@ define [
 
         initialize: (option) ->
 
-            window.ogManage = @
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
+
             @ogOptions = engineOptions[option.version] if engineOptions
+            @ogModel = option.model
 
             null
 
         render: ->
 
-            @$el.html template.og_modal {}
-            @renderModal()
-            @renderOptionList()
-            @
-
-        renderModal: ->
+            @$el.html template.og_modal @ogModel.toJSON()
             @initModal @el
+            @renderOptionList()
             @
 
         renderOptionList: ->
@@ -94,6 +92,7 @@ define [
             }
 
         renderSlide: ( option ) ->
+
             option = jQuery.extend(true, {}, option)
 
             option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) -> obj.toJSON()
@@ -129,8 +128,6 @@ define [
             @optionCb = null
             @remove()
 
-        quickCreate: ->
-
         optionChanged: (event) ->
 
             $switcher = $(event.currentTarget)
@@ -149,7 +146,5 @@ define [
 
         saveClicked: () ->
 
-            DBOGModel = Design.modelClassForType(constant.RESTYPE.DBOG)
-            dbOGModel = new DBOGModel()
             @modal.close()
             null

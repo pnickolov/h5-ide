@@ -63,10 +63,14 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         quickCreate: () ->
 
+            DBOGModel = Design.modelClassForType(constant.RESTYPE.DBOG)
+            dbOGModel = new DBOGModel()
+
             new OgManage({
                 engine: @engine,
-                version: @version
-            }).render().quickCreate()
+                version: @version,
+                model: dbOGModel
+            }).render()
 
         renderNoCredential: () ->
             @dropdown.render('nocredential').toggleControls false
@@ -80,10 +84,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         manage: ->
 
-            new OgManage({
-                engine: @engine,
-                version: @version
-            }).render()
+            @quickCreate()
 
         set: ( id, data ) ->
 

@@ -5,10 +5,7 @@ define [
   "constant"
 ], ( ResourceModel, Design, constant ) ->
 
-
-
   Model = ResourceModel.extend {
-
 
     newNameTmpl : "option-group-"
 
@@ -26,12 +23,11 @@ define [
           OptionGroupName       : @get 'ogName'
           Options               : @get 'options'
 
-
       { component : component }
 
   }, {
 
-    handleTypes : constant.RESTYPE.CGW
+    handleTypes : constant.RESTYPE.DBOG
 
     deserialize : ( data, layout_data, resolve ) ->
 
@@ -48,8 +44,6 @@ define [
         ogName        : data.resource.OptionGroupName
 
         options       : data.resource.Options
-
-
 
       })
 

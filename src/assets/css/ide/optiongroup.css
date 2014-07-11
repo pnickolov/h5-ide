@@ -119,3 +119,6 @@
 #modal-option-group .slidebox table input {
   padding: 1px 6px;
   max-width: 140px; }
+#modal-option-group .slidebox .error {
+  position: relative;
+  display: block; }

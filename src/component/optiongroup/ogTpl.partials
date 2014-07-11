@@ -99,8 +99,8 @@
 </table>
 {{/if}}
 <div class="action">
-    <button class="btn btn-blue do-action add-option">Add Option</button>
-    <button class="btn btn-silver cancel">Cancel</button>
+    <a class="btn btn-blue do-action add-option">Add Option</a>
+    <a class="btn btn-silver cancel">Cancel</a>
 </div>
 
 <!-- {{og_modal}} -->
@@ -109,7 +109,6 @@
         <form class="content clearfix" data-bind="true">
         </form>
         <div class="error">
-            something wrong
         </div>
     </div>
     <div class="header">This Option Group is used for {{dbVersion}}</div>

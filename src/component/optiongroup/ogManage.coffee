@@ -91,21 +91,22 @@ define [
         addOption: ->
             form = $ 'form'
             if not form.parsley 'validate'
-
+                @$('.error').html 'Some error occured.'
                 return
 
-            @optionCb?({})
-
-            {
-                port: 1
-                sg: 1
-                options: [
-                    {
-                        name: ''
-                        value: ''
-                    }
-                ]
+            data = {
+                options: form.serializeArray()
             }
+
+            port = $('#og-port').val()
+            sgId = $('#og-sg').val()
+
+            if port then data.port = port
+            if sgId then data.sg = Design.instance().component(sgId)?.createRef 'GroupId'
+
+            @optionCb?(data)
+
+            null
 
         renderSlide: ( option ) ->
 

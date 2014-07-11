@@ -89,7 +89,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-
+            # Close Parameter Group Dropdown when Option Group Dropdown is opening
+            $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
             if App.user.hasCredential()
                 @renderDropdownList()
             else

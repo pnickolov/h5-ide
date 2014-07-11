@@ -16,6 +16,20 @@ define [
                 return "The value '#{val}' is not an allowed value."
             null
 
+    capitalizeKey = ( arr ) ->
+        returnArr = []
+
+        for a in arr
+            obj = {}
+            for k, v of a
+                newK = k.charAt(0).toUpperCase() + k.substring(1)
+                obj[ newK ] = v
+
+            returnArr.push obj
+
+        returnArr
+
+
     Backbone.View.extend
 
         id: 'modal-option-group'
@@ -85,8 +99,10 @@ define [
             if not option.DefaultPort and not option.OptionGroupOptionSettings
                 callback {}
                 return
+
             @optionCb = callback
-            @renderSlide option
+            data = @ogDataStore[ option.Name ]
+            @renderSlide option, data
             @$('.slidebox').addClass 'show'
 
         cancel: ->
@@ -94,7 +110,8 @@ define [
             @optionCb?(null)
             null
 
-        addOption: ->
+        addOption: (e) ->
+            optionName = $(e.currentTarget).data 'optionName'
 
             form = $ 'form'
             if not form.parsley 'validate'
@@ -102,30 +119,45 @@ define [
                 return
 
             data = {
-                options: form.serializeArray()
+                OptionSettings: capitalizeKey form.serializeArray()
             }
 
             port = $('#og-port').val()
-            sgId = $('#og-sg').val()
+            sgCbs = $('#og-sg input:checked')
 
-            if port then data.port = port
-            if sgId then data.sg = Design.instance().component(sgId)?.createRef 'GroupId'
+            if port then data.Port = port
+
+            data.VpcSecurityGroupMembership = []
+            sgCbs.each () ->
+                data.VpcSecurityGroupMembership.push Design.instance().component($(this).data('uid')).createRef 'GroupId'
 
             @optionCb?(data)
+            @ogDataStore[optionName] = data
 
             null
 
-        renderSlide: ( option ) ->
+        renderSlide: ( option, data ) ->
 
             option = jQuery.extend(true, {}, option)
 
-            option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) ->
-                json = obj.toJSON()
-                json.ruleCount = obj.ruleCount()
-                json.memberCount = obj.getMemberList().length
-                json
+            if option.DefaultPort
+                option.sgs = []
+                Design.modelClassForType(constant.RESTYPE.SG).each ( obj ) ->
+                    json = obj.toJSON()
+                    json.default = obj.isDefault()
+                    json.color = obj.color
+                    json.ruleCount = obj.ruleCount()
+                    json.memberCount = obj.getMemberList().length
 
-            for s in option.OptionGroupOptionSettings or []
+                    if json.default
+                        if not data then json.checked = true
+                        option.sgs.unshift json
+                    else
+                        option.sgs.push json
+
+
+
+            for s, i in option.OptionGroupOptionSettings or []
                 if s.AllowedValues.indexOf('-') >= 0
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]
@@ -139,6 +171,12 @@ define [
 
                 else if s.AllowedValues.indexOf(',') >= 0
                     s.items = s.AllowedValues.split ','
+
+                if data
+                    s.value = data.OptionSettings[i].Value
+                else
+                    s.value = s.DefaultValue
+
 
             @$('form').html template.og_slide option or {}
 
@@ -227,6 +265,6 @@ define [
                 null
 
             @ogModel.set('options', ogDataAry)
-            
+
             @__modalplus.close()
             null

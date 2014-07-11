@@ -138,12 +138,17 @@
     .slidebox {
         .content { margin-top: 8px; }
 
-        .port-sg input {
-            width: 177px;
-        }
-
-        .port-sg > div {
-            padding-bottom: 8px;
+        .port-sg {
+            margin-bottom: 20px;
+            input {
+                width: 177px;
+            }
+            & > div {
+                padding-bottom: 8px;
+            }
+            #error-sg-required {
+                display: none;
+            }
         }
 
         table {

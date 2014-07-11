@@ -72,7 +72,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     __pollingStatus : ()->
       self = @
       ApiRequest("rds_snap_DescribeDBSnapshots", {
-        region_name : @getCollection().region()
+        region_name : @getCollection()?.region() || Design.instance().region()
         snapshot_id : @get("DBSnapshotIdentifier")
       }).then ( res )->
         self.__polling = null

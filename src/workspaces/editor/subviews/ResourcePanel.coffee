@@ -6,6 +6,7 @@ define [
   "constant"
   'dhcp'
   'snapshotManager'
+  'rds_snapshot'
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
@@ -16,7 +17,7 @@ define [
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -72,7 +73,8 @@ define [
       "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
-      "click .ManageSnapshot"        : "manageSnapshot"
+      "click .ManageEbsSnapshot"     : "manageEbsSnapshot"
+      "click .ManageRdsSnapshot"     : "manageRdsSnapshot"
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
@@ -432,7 +434,8 @@ define [
         @stopListening CloudResources( "FavoriteAmi", region ), "update", @updateFavList
       return false
 
-    manageSnapshot : ()-> new snapshotManager().render()
+    manageEbsSnapshot : ()-> new EbsSnapshotManager().render()
+    manageRdsSnapshot: ()->new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
       $tgt = $( evt.currentTarget )

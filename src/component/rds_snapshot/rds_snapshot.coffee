@@ -65,7 +65,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
-                console.log data
                 dataSet =
                     isRuntime: false
                     data: data
@@ -111,6 +110,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'detail', @detail, @
             @manager.on 'close', =>
                 @manager.remove()
+                @collection.remove()
             @manager.on 'checked', @processDuplicate, @
 
             @manager.render()
@@ -136,7 +136,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             fetching = false
             fetched = true
             data = @collection.toJSON()
-            console.log data
             _.each data, (e,f)->
                 if e.PercentProgress is 100
                     e.completed = true

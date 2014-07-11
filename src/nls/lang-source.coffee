@@ -519,6 +519,10 @@ module.exports =
       en: "New DB from Snapshot"
       zh: ""
 
+    RES_TIT_RDS_SNAPSHOT_MANAGE:
+      en: "Manage RDS Snapshot"
+      zh: "管理 RDS 快照"
+
     RES_TIT_RDS_SNAPSHOT_EMPTY:
       en: "No RDS Snapshot in"
       zh: ""

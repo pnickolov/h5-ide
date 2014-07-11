@@ -43,7 +43,7 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
       <div class="scroll-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
         <ul class="resource-list-snapshot">
@@ -68,7 +68,7 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
       <div class="scroll-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
         <ul class="resource-list-rds"></ul>

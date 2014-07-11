@@ -1,5 +1,13 @@
 
-define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
+define [
+  '../ComplexResModel'
+  '../ConnectionModel'
+  'Design'
+  'constant'
+  'i18n!/nls/lang.js'
+  'CloudResources'
+
+], ( ComplexResModel, ConnectionModel, Design, constant, lang, CloudResources )->
 
   versionCompare = (left, right) ->
     return false  unless typeof left + typeof right is "stringstring"
@@ -14,6 +22,11 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         return -1
       i++
     0
+
+  OgUsage = ConnectionModel.extend {
+    type : "OgUsage"
+    oneToMany: constant.RESTYPE.DBOG
+  }
 
   Model = ComplexResModel.extend {
 
@@ -373,6 +386,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
             replica.clone @
       null
 
+    setOptionGroup: ( name ) ->
+      ogComp = Design.instance().component name
+
+      if ogComp
+        new OgUsage( model, ogComp )
+        @unset 'ogName'
+      else
+        @set 'ogName', name
+
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'
         event = event.split(":")[0]
@@ -388,7 +410,10 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       null
 
     serialize : () ->
-      sgArray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
+      sgArray = _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
+
+      ogName = @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName'
+      if not ogName then ogName = @get( 'ogName' )
 
       component =
         name : @get("name")
@@ -423,7 +448,7 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
           MasterUserPassword                    : @get 'password'
 
           OptionGroupMembership:
-            OptionGroupName: 'default:mysql-5-6' # @get 'ogName'
+            OptionGroupName: ogName
 
           DBParameterGroups:
             DBParameterGroupName: 'default.mysql5.6' # @get 'pgName'
@@ -494,8 +519,6 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
         username                  : data.resource.MasterUsername
         password                  : data.resource.MasterUserPassword
 
-        ogName                    : data.resource.OptionGroupMembership?.OptionGroupName
-
         pending                   : data.resource.PendingModifiedValues
 
         backupWindow              : data.resource.PreferredBackupWindow
@@ -517,6 +540,15 @@ define [ "../ComplexResModel", "Design", "constant", 'i18n!/nls/lang.js', 'Cloud
       SgAsso = Design.modelClassForType( "SgAsso" )
       for sg in data.resource.VpcSecurityGroupIds || []
         new SgAsso( model, resolve( MC.extractID(sg) ) )
+
+      # Asso OptionGroup
+      ogName = data.resource.OptionGroupMembership?.OptionGroupName
+      if ogName
+        ogComp = resolve ogName
+
+        if not ogComp then new OgUsage( model, ogComp )
+        else model.set 'ogName', ogName
+
 
   }
 

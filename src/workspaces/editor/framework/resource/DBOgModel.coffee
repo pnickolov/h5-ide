@@ -1,5 +1,11 @@
 
-define [ "../ResourceModel", "Design", "constant" ], ( ResourceModel, Design, constant )->
+define [
+  "../ResourceModel"
+  "Design"
+  "constant"
+], ( ResourceModel, Design, constant ) ->
+
+
 
   Model = ResourceModel.extend {
 

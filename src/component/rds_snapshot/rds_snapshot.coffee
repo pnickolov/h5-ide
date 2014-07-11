@@ -197,6 +197,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
+            if not $('#property-snapshot-name-create').parsley 'validate'
+              return false
             dbInstance = @volumes.findWhere('id': $('#property-db-instance-choose').find('.selectbox .selection .manager-content-main').data('id'))
             if not dbInstance
                 return false

@@ -51,7 +51,7 @@
             <div class="control-group clearfix">
                 <label for="property-snapshot-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
                 <div>
-                    <input id="property-snapshot-name-create" class="input" type="text" maxlength="255" data-type="domain" data-ignore="true" placeholder="Allow alpha number, _ or - up to 255 characters.">
+                    <input id="property-snapshot-name-create" class="input" type="text" maxlength="255" data-type="database" data-ignore="true" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true"  placeholder="Allow alpha number, _ or - up to 255 characters.">
                 </div>
             </div>
 

@@ -9,6 +9,13 @@ define [
 
 ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
+    valueInRange = ( start, end ) ->
+        ( val ) ->
+            val = +val
+            if val > end or val < start
+                return "The value '#{val}' is not an allowed value."
+            null
+
     Backbone.View.extend
 
         tagName: 'section'
@@ -21,6 +28,10 @@ define [
             'click .cancel': 'cancel'
             'click .add-option': 'addOption'
             'click .save-btn': 'saveClicked'
+            'submit form': 'doNothing'
+
+
+        doNothing: -> false
 
         getModalOptions: ->
             title: "Edit Option Group"
@@ -78,6 +89,11 @@ define [
         cancel: -> @$('.slidebox').removeClass 'show'
 
         addOption: ->
+            form = $ 'form'
+            if not form.parsley 'validate'
+
+                return
+
             @optionCb?({})
 
             {
@@ -102,13 +118,29 @@ define [
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]
                     end = +arr[1]
+
+                    s.start = start
+                    s.end = end
+
                     if end - start < 10
                         s.items = _.range start, end + 1
+
                 else if s.AllowedValues.indexOf(',') >= 0
                     s.items = s.AllowedValues.split ','
 
+            @$('form').html template.og_slide option or {}
 
-            @$('.content').html template.og_slide option or {}
+            # Parsley
+            $('form input').each ->
+                $this = $ @
+                start = +$this.data 'start'
+                end = +$this.data 'end'
+
+                if start and end
+                    $this.parsley 'custom', valueInRange start, end
+
+            null
+
 
         processCol: () ->
             @renderList({})

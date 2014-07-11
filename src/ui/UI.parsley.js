@@ -1555,7 +1555,8 @@ define(["jquery"], function(){
         self.addItem( this );
       });
 
-      this.$element.on( 'submit.' + this.type , false, $.proxy( this.validate, this ) );
+      // Do not support submit event
+      //this.$element.on( 'submit.' + this.type , false, $.proxy( this.validate, this ) );
 
       // hack
       this.$element.addClass( 'parsley-validated' );
@@ -1886,8 +1887,9 @@ var formValidate = function( e ) {
   form.parsley('validate');
 }
 
+// Do not support submit
 // form submit auto bind
-$(document.body).on( 'submit', 'form[data-validate="parsley"]', bindForm);
+//$(document.body).on( 'submit', 'form[data-validate="parsley"]', bindForm);
 
 // element.parsley-submit click auto bind
 $(document.body).on( 'click', '.parsley-submit', bindForm);

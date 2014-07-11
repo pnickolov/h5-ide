@@ -27,12 +27,12 @@ define [
       "click .line"              : "selectItemByClick"
       "click svg"                : "deselectItem"
 
-      "dragover"  : "__addItemDragOver"
-      "dragleave" : "__addItemDragLeave"
-      "drop"      : "__addItemDrop"
+      "addItem_dragover"  : "__addItemDragOver"
+      "addItem_dragleave" : "__addItemDragLeave"
+      "addItem_drop"      : "__addItemDrop"
 
-      "click .group-resizer" : "__resizeGroupDown"
-      "mousedown .port"      : "__drawLineDown"
+      "mousedown .group-resizer" : "__resizeGroupDown"
+      "mousedown .port"          : "__drawLineDown"
 
       "mouseenter .canvasel" : "__hoverEl"
       "mouseleave .canvasel" : "__hoverOutEl"
@@ -52,7 +52,7 @@ define [
 
       @__getCanvasView().css({
         width : canvasSize[0] * CanvasView.GRID_WIDTH
-        height: canvasSize[1] * CanvasView.GRID_WIDTH
+        height: canvasSize[1] * CanvasView.GRID_HEIGHT
       })
 
       @__scale = 1

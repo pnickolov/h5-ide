@@ -364,7 +364,7 @@ define [
       $tgt.dnd( evt, {
         dropTargets  : $( dropTargets )
         dataTransfer : option
-        eventPrefix  : if type is constant.RESTYPE.VOL then "VOL_" else ""
+        eventPrefix  : if type is constant.RESTYPE.VOL then "VOL_" else "addItem_"
       })
 
       return false

@@ -16,10 +16,10 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       @$el.remove()
       @$el = $()
 
-      initiator = @canvas.__popLineInitiator()
-
       item1 = @canvas.getItem( @model.port1Comp().id )
       item2 = @canvas.getItem( @model.port2Comp().id )
+
+      initiator = @canvas.__popLineInitiator() || item1
 
       if item1.$el.length is 1 and item2.$el.length is 1
         @renderConnection( item1, item2, undefined, undefined, initiator )
@@ -28,6 +28,20 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
           for el2 in item2.$el
             @renderConnection( item1, item2, el1, el2, initiator )
 
+      return
+
+    update : ()->
+      item1 = @canvas.getItem( @model.port1Comp().id )
+      item2 = @canvas.getItem( @model.port2Comp().id )
+
+      if item1.$el.length is 1 and item2.$el.length is 1
+        @$el.children().attr( "d", @generatePath( item1, item2, undefined, undefined ) )
+      else
+        i = 0
+        for el1 in item1.$el
+          for el2 in item2.$el
+            @$el.eq(0).children().attr( "d", @generatePath( item1, item2, undefined, undefined ) )
+            ++i
       return
 
     createLine : ( pd )->
@@ -41,6 +55,31 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svgEl
 
     renderConnection : ( item_from, item_to, element1, element2, initiator )->
+      path = @generatePath( item_from, item_to, element1, element2 )
+      # Create or redraw line
+      svgEl = @createLine( path )
+      @addView svgEl
+
+      if not @canvas.initializing and initiator
+        svg = @canvas.svg
+        maskPath = svg.path( path )
+        length = parseFloat(maskPath.node.getTotalLength()).toFixed(2)
+
+        dirt = if initiator is item_from then -1 else 1
+
+        maskPath.style({
+          "stroke-dasharray"  : length + " " + length
+          "stroke-dashoffset" : length * dirt
+        })
+
+        setTimeout ()->
+          maskPath.classes("mask-line")
+        , 20
+
+        CeLine.cleanLineMask svgEl.maskWith( maskPath )
+      return
+
+    generatePath : ( item_from, item_to, element1, element2 )->
       connection = @model
 
       pos_from = item_from.pos( element1 )
@@ -141,28 +180,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
             when 3 then path = MC.canvas._bezier_qt_corner(controlPoints)
             when 777 then path = MC.canvas._round_corner(controlPoints)
 
-      # Create or redraw line
-      svgEl = @createLine( path )
-      @addView svgEl
+      path
 
-      if not @canvas.initializing
-        svg = @canvas.svg
-        maskPath = svg.path( path )
-        length = parseFloat(maskPath.node.getTotalLength()).toFixed(2)
-
-        dirt = if initiator is item_from then -1 else 1
-
-        maskPath.style({
-          "stroke-dasharray"  : length + " " + length
-          "stroke-dashoffset" : length * dirt
-        })
-
-        setTimeout ()->
-          maskPath.classes("mask-line")
-        , 20
-
-        CeLine.cleanLineMask svgEl.maskWith( maskPath )
-      return
   }, {
     cleanLineMask : ( line )->
       if not LineMaskToClear

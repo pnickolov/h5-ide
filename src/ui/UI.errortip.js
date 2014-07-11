@@ -155,7 +155,7 @@ define(["jquery"], function($){
         purge({currentTarget: target});
       }, 2000);
 
-      $(window).one('reset', function() {
+      $(window).one('resize', function() {
         purge({currentTarget: target});
       });
 

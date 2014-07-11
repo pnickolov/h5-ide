@@ -89,7 +89,10 @@ define [
             @renderSlide option
             @$('.slidebox').addClass 'show'
 
-        cancel: -> @$('.slidebox').removeClass 'show'
+        cancel: ->
+            @$('.slidebox').removeClass 'show'
+            @optionCb?(null)
+            null
 
         addOption: ->
 
@@ -116,7 +119,11 @@ define [
 
             option = jQuery.extend(true, {}, option)
 
-            option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) -> obj.toJSON()
+            option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) ->
+                json = obj.toJSON()
+                json.ruleCount = obj.ruleCount()
+                json.memberCount = obj.getMemberList().length
+                json
 
             for s in option.OptionGroupOptionSettings or []
                 if s.AllowedValues.indexOf('-') >= 0

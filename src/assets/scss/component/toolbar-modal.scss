@@ -177,6 +177,10 @@ $dark-blue: #001324;
 			color:   #ccc;
 		}
 
+		.checkbox > label, .radio > label {
+			width: 14px;
+		}
+
 		label.select-file-link {
 			width: auto;
 			color: #148BE6;

@@ -62,14 +62,26 @@
         <label for="og-port">Port</label>
         <input type="text" id="og-port" class="input" value="{{DefaultPort}}" data-required="true" data-type="number"/>
     </div>
-    <div>
-        <label for="og-sg">Security Groups</label>
-        <select class="select" id="og-sg">
-            {{#each sgs}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select>
-    </div>
+    <ul class="acl-sg-info-list property-list" id="og-sg">
+        {{#each sgs}}
+        <li class="clearfix" data-uid="{{id}}">
+            <div class="checkbox-wrap col1">
+                <div class="checkbox">
+                    <input class="sg-list-association-check" type="checkbox" {{#if used}}checked="checked"{{/if}} id="sg-list-{{@index}}"/>
+                    <label for="sg-list-{{@index}}"></label>
+                </div>
+            </div>
+
+            <div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP_SGLIST_TIP_VIEW_DETAIL" }}'></div>
+
+            <div class="col2">
+                <div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
+                <div class="col2-2 truncate">{{description}}</div>
+                <div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
 </div>
 {{/if}}
 {{#if OptionGroupOptionSettings}}

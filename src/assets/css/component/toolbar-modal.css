@@ -100,6 +100,8 @@
       width: 168px;
       display: inline-block;
       color: #ccc; }
+    .modal-toolbar .slidebox .content .checkbox > label, .modal-toolbar .slidebox .content .radio > label {
+      width: 14px; }
     .modal-toolbar .slidebox .content label.select-file-link {
       width: auto;
       color: #148BE6; }

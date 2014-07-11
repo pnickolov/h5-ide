@@ -149,4 +149,7 @@ define [
 
         saveClicked: () ->
 
+            DBOGModel = Design.modelClassForType(constant.RESTYPE.DBOG)
+            dbOGModel = new DBOGModel()
+            @modal.close()
             null

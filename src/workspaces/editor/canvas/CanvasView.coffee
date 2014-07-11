@@ -632,147 +632,17 @@ define [
         @__clearDragScroll()
       return
 
-    # Add item by dnd
-    __addItemDragOver  : ( evt, data )->
-      @__scrollOnDrag( evt, data )
-
-      group = @__groupAtCoor( @__localToCanvasCoor(data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1) )
-      if group
-        ItemClass  = CanvasElement.getClassByType( data.dataTransfer.type )
-        parentType = ItemClass.prototype.parentType
-        if not parentType or parentType.indexOf( group.type ) is -1
-          group = null
-
-      # HoverEffect
-      if group isnt @__dragHoverGroup
-        if @__dragHoverGroup
-          CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
-        if group
-          CanvasManager.addClass group.$el, "droppable"
-        @__dragHoverGroup = group
-
-      # Fancy auto add subnet effect for instance
-      return
-
-    __addItemDragLeave : ( evt, data )->
-      @__clearDragScroll()
-
-      if @__dragHoverGroup
-        CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
-        @__dragHoverGroup = null
-
-    __addItemDrop : ( evt, data )->
-      ItemClass = CanvasElement.getClassByType( data.dataTransfer.type )
-
-      mousePos = @__localToCanvasCoor(
-        data.pageX - data.zoneDimension.x1,
-        data.pageY - data.zoneDimension.y1
-      )
-
-      dropPos = @__localToCanvasCoor(
-        data.pageX - data.offsetX - data.zoneDimension.x1,
-        data.pageY - data.offsetY - data.zoneDimension.y1
-      )
-      group       = @__groupAtCoor( mousePos )
-      defaultSize = ItemClass.prototype.defaultSize
-
-      groupType = if group then group.type else "SVG"
-
-      # See if the element should be dropped
-      parentType = ItemClass.prototype.parentType
-      if parentType and parentType.indexOf( groupType ) is -1
-        RT = constant.RESTYPE
-        l  = lang.ide
-
-        switch ItemClass.prototype.type
-          when RT.VOL       then info = l.CVS_MSG_WARN_NOTMATCH_VOLUME
-          when RT.SUBNET    then info = l.CVS_MSG_WARN_NOTMATCH_SUBNET
-          when RT.INSTANCE  then info = l.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-          when RT.ENI       then info = l.CVS_MSG_WARN_NOTMATCH_ENI
-          when RT.RT        then info = l.CVS_MSG_WARN_NOTMATCH_RTB
-          when RT.ELB       then info = l.CVS_MSG_WARN_NOTMATCH_ELB
-          when RT.CGW       then info = l.CVS_MSG_WARN_NOTMATCH_CGW
-          when RT.ASG       then info = l.CVS_MSG_WARN_NOTMATCH_ASG
-
-        if info then notification 'warning', info , false
-        return
-
-      if group and defaultSize
-        groupOffset = group.pos()
-        groupSize   = group.size()
-        # If we drop near the edge of the group. Make sure the item is inside the group
-        if groupOffset.x >= dropPos.x
-          dropPos.x = groupOffset.x + 1
-        else if groupOffset.x + groupSize.width <= dropPos.x + defaultSize[0]
-          dropPos.x = groupOffset.x + groupSize.width - defaultSize[0] - 1
-        if groupOffset.y  >= dropPos.y
-          dropPos.y = groupOffset.y + 1
-        else if groupOffset.y + groupSize.height <= dropPos.y + defaultSize[1]
-          dropPos.y = groupOffset.y + groupSize.height - defaultSize[0] - 1
-
-      # Find best position for the element
-      dropPos = @__findEmptyDropPlace( dropPos, defaultSize, group )
-
-      if not dropPos
-        notification "warning", "Not enough space.", false
-        return
-
-      # Create attributes.
-      createOption = { createByUser : true }
-      attributes   = $.extend dropPos, data.dataTransfer
-      delete attributes.type
-      if group
-        attributes.parent = group.model
-
-      if defaultSize
-        attributes.width  = defaultSize[0]
-        attributes.height = defaultSize[1]
-
-
-      model = ItemClass.createResource( ItemClass.prototype.type, attributes, createOption )
-
-      if model
-        self = @
-        _.defer ()-> self.selectItem( model.id )
-      return
-
-    # Largest empty rectangle
-    __findEmptyDropPlace : ( pos, size, group )->
-      if not group then return pos
-      return pos
-
-      children = group.children()
-
-      child = @__itemAtPos( pos, children )
-      if not child
-        if @__isRectEmpty( pos, size, children )
-          return pos
-        else
-          return null
-
-      # The position is occupied by someone else. Try offset to the left and top.
-      childPos  = child.pos()
-      childSize = child.size()
-      childPos.x += childSize.width
-      childPos.y += childSize.height
-      if childPos.x - pos.x <= childPos.y - pos.y
-        pos.x = childPos.x
-      else
-        pos.y = childPos.y
-
-      if @__isRectEmpty( pos, size, children )
-        return pos
-
-      pos.x = childPos.x
-      pos.y = childPos.y
-
-      if @__isRectEmpty( pos, size, children )
-        return pos
-
-      null
-
+    ###
     # Resize ( Implemented in CanvasViewGResizer )
-    # __resizeGroupDown : ( evt )->
+    __resizeGroupDown : ( evt )->
+    ###
+
+    ###
+    # Drop to add ( Implemented in CanvasViewDnd )
+    __addItemDragOver : ( evt )->
+    __addItemDragLeave : ( evt )->
+    __addItemDrop : ( evt )->
+    ###
 
   }, {
     GRID_WIDTH  : 10

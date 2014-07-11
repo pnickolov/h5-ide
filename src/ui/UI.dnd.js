@@ -26,7 +26,8 @@
       $(document).on({
         "mousemove.uidnd": detectDrag,
         "mousedown.uidnd": cancelDnd,
-        "mouseup.uidnd": cancelDnd
+        "mouseup.uidnd": cancelDnd,
+        "urlroute.uidnd": cancelDnd
       }, options);
       return this;
     };

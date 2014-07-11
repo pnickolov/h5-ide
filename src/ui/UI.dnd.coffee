@@ -38,6 +38,7 @@ define ["jquery"], ( $ )->
       "mousemove.uidnd" : detectDrag
       "mousedown.uidnd" : cancelDnd  # Any other user mouse event will cause the drop to be canceld.
       "mouseup.uidnd"   : cancelDnd  # Any other user mouse event will cause the drop to be canceld.
+      "urlroute.uidnd"  : cancelDnd
     }, options )
     return this
 

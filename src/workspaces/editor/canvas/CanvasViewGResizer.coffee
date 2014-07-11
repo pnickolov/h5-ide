@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
+define [ "./CanvasView" ], ( CanvasView )->
 
   ###
   ________visualizeResize = ( data )->

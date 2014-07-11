@@ -2,8 +2,8 @@
 {{#each data}}
 <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">
     {{#if id}}
-    <div class="manager-content-main" data-id="{{id}}">{{#if tagSet}}{{tagSet.Name}}{{else}}&lt;No Name&gt;{{/if}}</div>
-    <div class="manager-content-sub">{{#if id}}{{id}}{{else}}{{name}}{{/if}} &nbsp;&nbsp;&nbsp;&nbsp;Size: {{size}} GiB</div>
+    <div class="manager-content-main" data-id="{{id}}">{{id}}</div>
+    <div class="manager-content-sub">Engine: {{Engine}} &nbsp;&nbsp;Size: {{AllocatedStorage}} GiB</div>
     {{else}}
     <div class="manager-content-main" data-id="{{region}}">{{name}}</div>
     {{/if}}
@@ -23,7 +23,7 @@
     <td><div class="manager-content-main">{{id}}</div></td>
     <td>{{AllocatedStorage}} GiB</td>
     <td>
-        <div class="manager-content-main">{{#if completed}}<i class="status status-green icon-label"></i> Completed{{else}}<i class="status status-yellow icon-label"></i> Pending - {{PercentProgress}}%{{/if}}</div>
+        <div class="manager-content-main">{{#ifCond Status "creating"}}<i class="status status-yellow icon-label"></i>{{Status}} - {{PercentProgress}}%{{else}}<i class="status status-green icon-label"></i>{{Status}} {{/ifCond}}</div>
         <span class="manager-content-sub">Started: {{started}}</span>
     </td>
     <td class="show-detail icon-toolbar-cloudformation"></td>
@@ -58,14 +58,7 @@
             <div class="control-group clearfix property-content" style="background: none">
                 <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_VOLUME"}}</label>
                 <div>
-                    <div id="property-volume-choose"></div>
-                </div>
-            </div>
-
-            <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-snapshot-desc-create">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
-                <div>
-                    <input id='property-snapshot-desc-create' class="input" placeholder="Up to 255 characters" type="text"/>
+                    <div id="property-db-instance-choose"></div>
                 </div>
             </div>
 

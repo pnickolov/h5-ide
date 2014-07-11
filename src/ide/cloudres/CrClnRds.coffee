@@ -6,8 +6,7 @@ define [
   "./CrModelRdsSnapshot"
   "./CrModelRdsInstance"
   "./CrModelRdsPGroup"
-  "./CrModelRdsParameter"
-], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsDbInstanceModel, CrRdsSnapshotModel, CrRdsPGroupModel )->
+], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsSnapshotModel, CrRdsDbInstanceModel, CrRdsPGroupModel )->
 
 
   ### Engine ###

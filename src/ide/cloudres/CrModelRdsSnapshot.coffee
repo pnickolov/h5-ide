@@ -13,7 +13,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   Port                 : 3306
     #   OptionGroupName      : default:mysql-5-6
     #   Engine               : mysql
-    #   Status               : available # creating | avaiable
+    #   Status               : available # creating | available
     #   SnapshotType         : manual
     #   LicenseModel         : general-public-license
     #   EngineVersion        : 5.6.13
@@ -26,15 +26,15 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     #   AllocatedStorage     : 5
     #   MasterUsername       : awsmyuser
 
-    isComplete  : ()-> @attributes.Status is "avaiable"
+    isComplete  : ()-> @attributes.Status is "available"
     isAutomated : ()-> @attributes.SnapshotType is "automated"
 
     doCreate : ()->
       self = @
-      ApiRequest("ebs_CreateSnapshot", {
+      ApiRequest("rds_snap_CreateDBSnapshot", {
         region_name : @getCollection().region()
         source_id   : @get("DBInstanceIdentifier")
-        target_id   : @get("DBSnapshotIdentifier")
+        snapshot_id   : @get("DBSnapshotIdentifier")
       }).then ( res )->
         try
           res    = res.CreateDBSnapshotResponse.CreateDBSnapshotResult.DBSnapshot
@@ -60,7 +60,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
 
     startPollingStatus : ()->
       if @__polling then return
-      @__polling = setTimeout @__pollingStatus, 2000
+      ___pollingStatus = @__pollingStatus.bind @
+      @__polling = setTimeout ___pollingStatus, 2000
       return
 
     stopPollingStatus : ()->

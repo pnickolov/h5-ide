@@ -65,9 +65,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
-                currentRegion = Design.instance().get('region')
-                data = _.filter data, (volume)->
-                    volume.category == currentRegion
+                console.log data
                 dataSet =
                     isRuntime: false
                     data: data
@@ -98,6 +96,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
 
         selectSnapshot: (e)->
+            $("#property-db-instance-choose .selection .manager-content-sub").remove()
             @manager.$el.find('[data-action="create"]').prop 'disabled', false
 
         selectRegion: (e)->
@@ -107,6 +106,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager = new toolbar_modal @getModalOptions()
             @manager.on 'refresh', @refresh, @
             @manager.on "slidedown", @renderSlides, @
+            @manager.on "slideup", @resetSlide, @
             @manager.on 'action', @doAction, @
             @manager.on 'detail', @detail, @
             @manager.on 'close', =>
@@ -118,6 +118,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @manager?.render 'nocredential'
                 return false
             @initManager()
+
+        resetSlide: ->
+          @manager.$el.find(".slidebox").removeAttr('style')
 
         processDuplicate: ( event, checked ) ->
             if checked.length is 1
@@ -133,9 +136,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             fetching = false
             fetched = true
             data = @collection.toJSON()
-            console.log(data)
+            console.log data
             _.each data, (e,f)->
-                if e.PercentProgress is "100"
+                if e.PercentProgress is 100
                     e.completed = true
                 if e.SnapshotCreateTime
                     e.started = (new Date(e.SnapshotCreateTime)).toString()
@@ -176,8 +179,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     volumes : {}
                 @manager.setSlide tpl data
                 @dropdown = @renderDropdown()
-                @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
-                $(".slidebox.show").css('overflow',"visible")
+                @manager.$el.find('#property-db-instance-choose').html(@dropdown.$el)
+                @manager.$el.find(".slidebox").css('overflow',"visible")
             'duplicate': (tpl, checked)->
                 data = {}
                 data.originSnapshot = checked[0]
@@ -189,19 +192,18 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @regionsDropdown.on 'change', =>
                     @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
                 @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
-                $(".slidebox.show").css('overflow',"visible")
+                @manager.$el.find(".slidebox").css('overflow',"visible")
 
         doAction: (action, checked)->
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
-            volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection .manager-content-main').data('id'))
-            if not volume
+            dbInstance = @volumes.findWhere('id': $('#property-db-instance-choose').find('.selectbox .selection .manager-content-main').data('id'))
+            if not dbInstance
                 return false
             data =
-                "name": $("#property-snapshot-name-create").val()
-                'volumeId': volume.id
-                'description': $('#property-snapshot-desc-create').val()
+                "DBSnapshotIdentifier": $("#property-snapshot-name-create").val()
+                'DBInstanceIdentifier': dbInstance.id
             @switchAction 'processing'
             afterCreated = @afterCreated.bind @
             @collection.create(data).save().then afterCreated, afterCreated
@@ -271,10 +273,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     $(@).hide()
 
         detail: (event, data, $tr) ->
-          console.log arguments
           snapshotId = data.id
           snapshotData = @collection.get(snapshotId).toJSON()
-          console.log snapshotData
           detailTpl = template.detail snapshotData
           @manager.setDetail($tr, detailTpl)
 
@@ -292,12 +292,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     type: 'create'
                     name: 'Create Snapshot'
                 }
-                {
-                    icon: 'duplicate'
-                    type: 'duplicate'
-                    disabled: true
-                    name: 'Duplicate'
-                }
+#                {
+#                    icon: 'duplicate'
+#                    type: 'duplicate'
+#                    disabled: true
+#                    name: 'Duplicate'
+#                }
                 {
                     icon: 'del'
                     type: 'delete'

@@ -15,6 +15,7 @@ define [], () ->
                 'serverGroupUid': true
                 'serverGroupName': true
                 # 'state': true
+                'resource.UserData': true
                 'resource.PrivateIpAddressSet.n.AutoAssign': true,
                 'resource.AssociatePublicIpAddress': true,
                 'resource.KeyName': true,

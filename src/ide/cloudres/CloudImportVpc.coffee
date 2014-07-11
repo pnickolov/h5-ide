@@ -1058,16 +1058,26 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #generate BlockDeviceMapping
         bdm = lcRes.BlockDeviceMapping
         _.each aws_lc.BlockDeviceMapping || [], (e,key)->
-          data =
-            "DeviceName": e.DeviceName
-            "Ebs":
-              "VolumeSize": Number(e.Ebs.VolumeSize)
-              "VolumeType": e.Ebs.VolumeType
-          if e.Ebs.SnapshotId
-            data.Ebs.SnapshotId = e.Ebs.SnapshotId
-          if data.Ebs.VolumeType is "io1"
-            data.Ebs.Iops = e.Ebs.Iops
-          bdm.push data
+          if e.Ebs is null and e.VirtualName
+            #instance-store, ignore
+            data =
+              "DeviceName" : e.DeviceName
+              "Ebs"        : null
+              "NoDevice"   : e.NoDevice
+              "VirtualName": e.VirtualName
+          else
+            #ebs
+            data =
+              "DeviceName": e.DeviceName
+              "Ebs":
+                "VolumeSize": if e.Ebs then Number(e.Ebs.VolumeSize) else 0
+                "VolumeType": if e.Elb then e.Ebs.VolumeType else ""
+            if e.Ebs
+              if e.Ebs.SnapshotId
+                data.Ebs.SnapshotId = e.Ebs.SnapshotId
+              if data.Ebs.VolumeType is "io1"
+                data.Ebs.Iops = e.Ebs.Iops
+            bdm.push data
 
         #generate KeyName for lc
         keyPairComp = @getOriginalComp(aws_lc.KeyName, 'KP')

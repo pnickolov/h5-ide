@@ -18,8 +18,8 @@ define [
 
     Backbone.View.extend
 
-        tagName: 'section'
         id: 'modal-option-group'
+        tagName: 'section'
         className: 'modal-toolbar'
 
         events:
@@ -62,6 +62,9 @@ define [
             @ogOptions = engineOptions[option.version] if engineOptions
             @ogModel = option.model
 
+            # for option data store
+            @ogDataStore = {}
+
             null
 
         render: ->
@@ -89,6 +92,7 @@ define [
         cancel: -> @$('.slidebox').removeClass 'show'
 
         addOption: ->
+
             form = $ 'form'
             if not form.parsley 'validate'
                 @$('.error').html 'Some error occured.'
@@ -142,42 +146,80 @@ define [
 
             null
 
-
         processCol: () ->
+
             @renderList({})
 
         renderList: ( data ) ->
+
             @modal.setContent( template.modal_list data )
 
         renderNoCredential: () ->
+
             @modal.render('nocredential').toggleControls false
 
         renderSlides: ( which, checked ) ->
+
             tpl = template[ "slide_#{which}" ]
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
         close: ->
+
             @optionCb = null
             @remove()
 
         optionChanged: (event) ->
+
+            that = this
 
             $switcher = $(event.currentTarget)
             $switcher.toggleClass('on')
 
             $optionItem = $switcher.parents('.option-item')
             optionIdx = Number($optionItem.data('idx'))
+            optionName = Number($optionItem.data('name'))
 
             if $switcher.hasClass('on')
-                @slide @ogOptions[optionIdx]
+                @slide @ogOptions[optionIdx], (optionData) ->
+                    if optionData
+                        that.ogDataStore[optionName] = optionData
+                    else
+                        that.setOption($optionItem, false)
 
         setOption: ($item, value) ->
 
             $switcher = $item.find('.switcher')
             if value then $switcher.addClass('on') else $switcher.removeClass('on')
 
+        getOption: ($item) ->
+
+            $switcher = $item.find('.switcher')
+            return $switcher.hasClass('on')
+
         saveClicked: () ->
 
-            @modal.close()
+            that = this
+
+            # set name and desc
+            ogName = @$('.og-name').val()
+            ogDesc = @$('.og-description').val()
+            @ogModel.set('name', ogName)
+            @ogModel.set('ogDescription', ogDesc)
+
+            # set option
+            ogDataAry = []
+            $ogItemList = @$('.option-list .option-item')
+            _.each $ogItemList, (ogItem) ->
+                $ogItem = $(ogItem)
+                option = that.getOption($ogItem)
+                if option
+                    ogName = $ogItem.data('name')
+                    ogData = that.ogDataStore[ogName]
+                    ogDataAry.push(ogData)
+                null
+
+            @ogModel.set('options', ogDataAry)
+            
+            @__modalplus.close()
             null

@@ -115,11 +115,11 @@
     <div class="container">
         <div class="input-item">
             <label class="left">Name</label>
-            <input class="input" value="{{name}}" type="text" data-required="true" class="og-name"/>
+            <input class="input og-name" value="{{name}}" type="text" data-required="true"/>
         </div>
         <div class="input-item">
             <label class="left">Description</label>
-            <input class="input" value="{{ogDescription}}" type="text" data-required="true" class="og-description"/>
+            <input class="input og-description" value="{{ogDescription}}" type="text" data-required="true"/>
         </div>
         <div class="left option-list-head">Option</div>
         <ul class="option-list"></ul>
@@ -133,7 +133,7 @@
 
 <!-- {{og_option_item}} -->
 {{#each ogOptions}}
-<li class="option-item" data-idx="{{@index}}">
+<li class="option-item" data-idx="{{@index}}" data-name="{{Name}}">
     <div class="name">{{Name}}</div>
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}

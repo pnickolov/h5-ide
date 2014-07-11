@@ -52,8 +52,6 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
             event.stopPropagation()
 
         __optionShow: ->
-            # Close Parameter Group Dropdown
-            $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
             if not @$('.combo-dd-content').html().trim()
                 @render 'loading'
 

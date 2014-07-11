@@ -140,3 +140,8 @@ define [
 
             if $switcher.hasClass('on')
                 @slide @ogOptions[optionIdx]
+
+        setOption: ($item, value) ->
+
+            $switcher = $item.find('.switcher')
+            if value then $switcher.addClass('on') else $switcher.removeClass('on')

@@ -44,6 +44,12 @@
 </div>
 
 
+<!-- {{noinstance}} -->
+<div class="no-credential tac">
+    <p>There are no available instance here.</p>
+</div>
+
+
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="formart_toolbar_modal" data-type="true">

@@ -26,7 +26,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             option =
                 filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
-            @volumes = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
+            @instances = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
@@ -63,8 +63,11 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @regionsDropdown.setContent content
 
         openDropdown: (keySet)->
-            @volumes.fetch().then =>
-                data = @volumes.toJSON()
+            @instances.fetch().then =>
+                data = @instances.toJSON()
+                if data.length < 1
+                  @dropdown.setContent template.noinstance()
+                  return false
                 dataSet =
                     isRuntime: false
                     data: data
@@ -77,7 +80,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @dropdown.setContent content
 
         filterDropdown: (keyword)->
-            hitKeys = _.filter @volumes.toJSON(), ( data ) ->
+            hitKeys = _.filter @instances.toJSON(), ( data ) ->
                 data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
             if keyword
                 @openDropdown hitKeys
@@ -199,7 +202,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         do_create: (validate, checked)->
             if not $('#property-snapshot-name-create').parsley 'validate'
               return false
-            dbInstance = @volumes.findWhere('id': $('#property-db-instance-choose').find('.selectbox .selection .manager-content-main').data('id'))
+            dbInstance = @instances.findWhere('id': $('#property-db-instance-choose').find('.selectbox .selection .manager-content-main').data('id'))
             if not dbInstance
                 return false
             data =

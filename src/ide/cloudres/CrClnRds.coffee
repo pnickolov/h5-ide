@@ -104,6 +104,29 @@ define [
       data
   }
 
+  ### DBOptionGroup ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrDbOptionGroupCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.DBOG
+
+    doFetch : ()-> ApiRequest("rds_og_DescribeOptionGroups", {region_name : @region()})
+    parseFetchData : ( data )->
+      data = data.DescribeOptionGroupsResponse.DescribeOptionGroupsResult.OptionGroupsList.OptionGroup || []
+      if not _.isArray( data ) then data = [data]
+      for i in data
+        i.id = i.OptionGroupName
+      data
+    parseExternalData: ( data ) ->
+      @unifyApi data, @type
+      @camelToPascal data
+      _.each data, (dataItem) ->
+        dataItem.id  = dataItem.OptionGroupName
+      data
+  }
+
   ### DBInstance ###
   CrCollection.extend {
     ### env:dev ###

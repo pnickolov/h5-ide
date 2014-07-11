@@ -198,8 +198,10 @@ define [ '../base/view'
 
             # init option group
             ogDropdown = new OgDropdown()
-            ogDropdown.setEngine(attr.engine, @model.getMajorVersion())
-            @$el.find('.property-dbinstance-optiongroup-placeholder').html ogDropdown.render().el
+            @$el.find('.property-dbinstance-optiongroup-placeholder').html ogDropdown.render({
+                    engine: attr.engine,
+                    version: @model.getMajorVersion()
+                }).el
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek

@@ -10,6 +10,7 @@ define [
 ], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     Backbone.View.extend
+
         tagName: 'section'
         id: 'modal-option-group'
         className: 'modal-toolbar'
@@ -17,9 +18,9 @@ define [
         events:
 
             'click .option-item .switcher': 'optionChanged'
-
             'click .cancel': 'cancel'
             'click .add-option': 'addOption'
+            'click .save-btn': 'saveClicked'
 
         getModalOptions: ->
             title: "Edit Option Group"
@@ -145,3 +146,7 @@ define [
 
             $switcher = $item.find('.switcher')
             if value then $switcher.addClass('on') else $switcher.removeClass('on')
+
+        saveClicked: () ->
+
+            null

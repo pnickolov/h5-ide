@@ -27,6 +27,7 @@ define [
       CloudResources( constant.RESTYPE.AZ, region ).isReady()   &&
       CloudResources( constant.RESTYPE.SNAP, region ).isReady() &&
       CloudResources( constant.RESTYPE.DBENGINE, region ).isReady() &&
+      CloudResources( constant.RESTYPE.DBOG, region ).isReady() &&
       CloudResources( constant.RESTYPE.DBSNAP,   region ).isReady() &&
       CloudResources( "QuickStartAmi",       region ).isReady() &&
       CloudResources( "MyAmi",               region ).isReady() &&
@@ -48,6 +49,7 @@ define [
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
         CloudResources( constant.RESTYPE.DBENGINE, region ).fetch()
+        CloudResources( constant.RESTYPE.DBOG, region ).fetch()
         CloudResources( constant.RESTYPE.DBSNAP,   region ).fetch()
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()

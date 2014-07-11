@@ -36,6 +36,7 @@ define [
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
         CloudResources( constant.RESTYPE.DHCP, region ).fetch()
         CloudResources( constant.RESTYPE.DBENGINE, region ).fetch()
+        CloudResources( constant.RESTYPE.DBOG, region ).fetch()
         CloudResources( constant.RESTYPE.DBSNAP,   region ).fetch()
         CloudResources( "QuickStartAmi",       region ).fetch()
         CloudResources( "MyAmi",               region ).fetch()

@@ -3,8 +3,8 @@
 
 <!-- {{dropdown_list}} -->
 {{#each this}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{Name}}" tabindex="-1">
-        {{Name}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{OptionGroupName}}" tabindex="-1">
+        {{OptionGroupName}}
     </li>
 {{/each}}
 

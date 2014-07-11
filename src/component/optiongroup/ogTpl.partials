@@ -137,8 +137,8 @@
     </tr>
     {{#each OptionGroupOptionSettings}}
     <tr>
-        <td>{{SettingName}}</td>
-        <td>
+        <td class="name">{{SettingName}}</td>
+        <td class="value">
             {{#if items}}
             <select>
                 {{#each items}}
@@ -155,13 +155,12 @@
 </table>
 {{/if}}
 <div class="action">
-    <button class="btn btn-blue do-action" data-action="add">Add Option</button>
+    <button class="btn btn-blue do-action add-option">Add Option</button>
     <button class="btn btn-silver cancel">Cancel</button>
 </div>
 
 <!-- {{og_modal}} -->
 <div id="modal-option-group">
-    <div class="header">This Option Group is used for {{dbVersion}}</div>
     <div class="slidebox">
         <div class="content clearfix">
         </div>
@@ -169,6 +168,7 @@
             something wrong
         </div>
     </div>
+    <div class="header">This Option Group is used for {{dbVersion}}</div>
     <div class="container">
         <div class="input-item">
             <label class="left">Name</label>

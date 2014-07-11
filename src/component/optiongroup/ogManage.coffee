@@ -19,6 +19,7 @@ define [
             'click .option-item .switcher': 'optionChanged'
 
             'click .cancel': 'cancel'
+            'click .add-option': 'addOption'
 
         getModalOptions: ->
             title: "Edit Option Group"
@@ -38,12 +39,16 @@ define [
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @
 
+            null
+
         initialize: (option) ->
 
             window.ogManage = @
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
             @ogOptions = engineOptions[option.version] if engineOptions
+
+            null
 
         render: ->
 
@@ -62,23 +67,37 @@ define [
                 ogOptions: @ogOptions
             })
 
-        slide: ( option ) ->
+        slide: ( option, callback ) ->
 
-            #if not option.DefaultPort and not option.OptionGroupOptionSettings
-            #    return false
-
+            if not option.DefaultPort and not option.OptionGroupOptionSettings
+                callback {}
+                return
+            @optionCb = callback
             @renderSlide option
             @$('.slidebox').addClass 'show'
 
         cancel: -> @$('.slidebox').removeClass 'show'
 
+        addOption: ->
+            @optionCb?({})
+
+            {
+                port: 1
+                sg: 1
+                options: [
+                    {
+                        name: ''
+                        value: ''
+                    }
+                ]
+            }
 
         renderSlide: ( option ) ->
             option = jQuery.extend(true, {}, option)
 
             option.sgs = Design.modelClassForType(constant.RESTYPE.SG).map ( obj ) -> obj.toJSON()
 
-            for s in option.OptionGroupOptionSettings
+            for s in option.OptionGroupOptionSettings or []
                 if s.AllowedValues.indexOf('-') >= 0
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]
@@ -105,7 +124,9 @@ define [
             slides = @getSlides()
             slides[ which ]?.call @, tpl, checked
 
-        close: -> @remove()
+        close: ->
+            @optionCb = null
+            @remove()
 
         quickCreate: ->
 
@@ -113,7 +134,7 @@ define [
 
             $switcher = $(event.currentTarget)
             $switcher.toggleClass('on')
-            
+
             $optionItem = $switcher.parents('.option-item')
             optionIdx = Number($optionItem.data('idx'))
 

@@ -894,6 +894,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
+        originComp = @getOriginalComp( aws_acl.id, "ACL" )
+        if originComp and originComp.resource.AssociationSet.sort().toString() is aclRes.AssociationSet.sort().toString()
+          aclRes.AssociationSet = jQuery.extend(true, [], originComp.resource.AssociationSet)
+
         aclComp = @add( "ACL", aclRes, aclName )
       return
 

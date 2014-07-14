@@ -31,6 +31,9 @@ define [
       "addItem_dragleave" : "__addItemDragLeave"
       "addItem_drop"      : "__addItemDrop"
 
+      "mousedown .canvasel"    : "__moveItemMouseDown"
+      "mousedown .group-label" : "__moveItemMouseDown"
+
       "mousedown .group-resizer" : "__resizeGroupDown"
       "mousedown .port"          : "__drawLineDown"
 
@@ -88,11 +91,7 @@ define [
       @__getCanvasView().removeClass("stack app appedit").addClass( mode )
       return
 
-    moveSelectedItem : ( deltaX, deltaY )->
-      item = @getSelectedItem()
-      if not item then return
-      pos = item.pos()
-      item.move( pos.x + deltax, pos.y + deltaY )
+    moveSelectedItem : ( deltaX, deltaY )-> @getSelectedItem()?.moveBy( deltax, deltaY )
 
     getSelectedItem : ()->
       if not @__selected then return null
@@ -396,11 +395,22 @@ define [
         y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
       }
 
-    __groupAtCoor : ( coord )->
+    __groupAtCoor : ( coord, excludeSubject )->
       group = null
 
       for id, item of @__itemGroupMap
         if not item.model.width then continue
+
+        p = item
+        while p
+          if p is excludeSubject
+            exclude = true
+            break
+          p = p.parent()
+
+        if exclude
+          exclude = false
+          continue
 
         x = item.model.x()
         y = item.model.y()
@@ -421,7 +431,7 @@ define [
         @__dragScrollInt = null
       return
 
-    __scrollOnDrag : ( evt, data )->
+    __scrollOnDrag : ( data )->
       dimension     = data.zoneDimension
       scrollContent = @$el.children(":first-child")[0]
 
@@ -464,7 +474,7 @@ define [
           self = @
           console.info "Added drag scroll timer"
           @__dragScrollInt = setInterval ()->
-            self.__scrollOnDrag( evt, data )
+            self.__scrollOnDrag( data )
           , 50
       else
         @__clearDragScroll()
@@ -487,6 +497,8 @@ define [
     __addItemDragOver : ( evt )->
     __addItemDragLeave : ( evt )->
     __addItemDrop : ( evt )->
+    __bestFitRect : ()->
+    __moveItemMouseDown : ( evt )->
     ###
 
   }, {

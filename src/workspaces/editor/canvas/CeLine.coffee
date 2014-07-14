@@ -9,6 +9,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     ### env:dev:end ###
     type : "CeLine"
 
+    node_line : true
+
     portName : ( targetId )-> @model.port( targetId, "name" )
 
     # Update the svg element

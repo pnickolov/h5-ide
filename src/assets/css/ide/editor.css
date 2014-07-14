@@ -277,7 +277,8 @@
   background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
   #DndItem .resource-icon-instance {
     padding-top: 28px;
-    height: 62px; }
+    height: 62px;
+    position: relative; }
   .resource-item.asg > .resource-icon-instance {
     background: #fff;
     border-radius: 4px;
@@ -429,7 +430,31 @@
     #DndItem.asg.dragOver:after {
       height: 21px; }
   #DndItem.instance {
-    margin-top: 0; }
+    margin-top: 0;
+    overflow: visible; }
+    #DndItem.instance:before {
+      content: "subnet";
+      border-radius: 4px;
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: #aaa;
+      height: 40px;
+      width: 40px;
+      margin-left: -10px;
+      margin-top: -10px;
+      padding-left: 3px;
+      text-align: left;
+      border: 2px dashed #dbd7d7;
+      -webkit-transition: all .15s ease-in;
+      -moz-transition: all .15s ease-in;
+      -o-transition: all .15s ease-in;
+      transition: all .15s ease-in; }
+    #DndItem.instance.autoparent:before {
+      top: 0;
+      left: 0;
+      width: 105px;
+      height: 108px; }
 
 .resource-select.selectbox .selection {
   background: #143553;
@@ -929,3 +954,6 @@ marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marke
   stroke-width: 8;
   stroke: #fff;
   fill: none; }
+
+g.shadow {
+  opacity: 0.8; }

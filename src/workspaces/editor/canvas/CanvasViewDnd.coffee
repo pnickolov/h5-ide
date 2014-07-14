@@ -14,8 +14,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       groupRect =
         x1 : groupOffset.x
         y1 : groupOffset.y
-        x2 : groupOffset.x + groupOffset.width
-        y2 : groupOffset.y + groupOffset.height
+        x2 : groupOffset.x + groupSize.width
+        y2 : groupOffset.y + groupSize.height
       children = group.children()
     else
       groupRect =
@@ -101,7 +101,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
   # Add item by dnd
   CanvasViewProto.__addItemDragOver = ( evt, data )->
-    @__scrollOnDrag( evt, data )
+    @__scrollOnDrag( data )
 
     group = @__groupAtCoor( @__localToCanvasCoor(data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1) )
     if group
@@ -118,40 +118,46 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
         CanvasManager.addClass group.$el, "droppable"
       @__dragHoverGroup = group
 
-    # Fancy auto add subnet effect for instance
+      # Fancy auto add subnet effect for instance
+      data.shadow.toggleClass( "autoparent", group and not ItemClass.isDirectParentType( group.type ) )
 
     #________visualizeOnMove.call this, data
     return
 
-  CanvasViewProto.__addItemDragLeave = ( evt, data )->
+  CanvasViewProto.__addItemDragLeave = ()->
     @__clearDragScroll()
 
     if @__dragHoverGroup
       CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
       @__dragHoverGroup = null
 
-  CanvasViewProto.__addItemDrop = ( evt, data )->
-    self           = @
+  CanvasViewProto.__handleDropData = ( data, excludeChild, parentMustBeDirect )->
     ItemClass      = CanvasElement.getClassByType( data.dataTransfer.type )
     ItemClassProto = ItemClass.prototype
 
-    group = @__groupAtCoor( @__localToCanvasCoor( data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1 ) )
+    group = @__groupAtCoor( @__localToCanvasCoor(
+      data.pageX - data.zoneDimension.x1,
+      data.pageY - data.zoneDimension.y1
+    ), excludeChild )
 
     # See if the element should be dropped
     parentType = ItemClassProto.parentType
-    if parentType and parentType.indexOf( if group then group.type else "SVG" ) is -1
-      switch ItemClassProto.type
-        when constant.RESTYPE.VOL       then info = lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when constant.RESTYPE.SUBNET    then info = lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET
-        when constant.RESTYPE.INSTANCE  then info = lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-        when constant.RESTYPE.ENI       then info = lang.ide.CVS_MSG_WARN_NOTMATCH_ENI
-        when constant.RESTYPE.RT        then info = lang.ide.CVS_MSG_WARN_NOTMATCH_RTB
-        when constant.RESTYPE.ELB       then info = lang.ide.CVS_MSG_WARN_NOTMATCH_ELB
-        when constant.RESTYPE.CGW       then info = lang.ide.CVS_MSG_WARN_NOTMATCH_CGW
-        when constant.RESTYPE.ASG       then info = lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
+    groupType  = if group then group.type else "SVG"
 
-      if info then notification 'warning', info , false
-      return
+    if parentMustBeDirect and not ItemClass.isDirectParentType( groupType )
+      return ""
+
+    if parentType and parentType.indexOf( groupType ) is -1
+      switch ItemClassProto.type
+        when constant.RESTYPE.VOL       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when constant.RESTYPE.SUBNET    then return lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when constant.RESTYPE.INSTANCE  then return lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
+        when constant.RESTYPE.ENI       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ENI
+        when constant.RESTYPE.RT        then return lang.ide.CVS_MSG_WARN_NOTMATCH_RTB
+        when constant.RESTYPE.ELB       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ELB
+        when constant.RESTYPE.CGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_CGW
+        when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
+      return ""
 
     # Find best place to drop
     if group
@@ -160,9 +166,11 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       groupRect =
         x1 : groupOffset.x
         y1 : groupOffset.y
-        x2 : groupOffset.x + groupOffset.width
-        y2 : groupOffset.y + groupOffset.height
+        x2 : groupOffset.x + groupSize.width
+        y2 : groupOffset.y + groupSize.height
       children = group.children()
+      idx = children.indexOf( excludeChild )
+      if idx >= 0 then children.splice( idx, 1 )
     else
       groupRect =
         x1 : 5
@@ -171,42 +179,75 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
         y2 : @size()[1] - 3
 
       children = []
-      children = children.concat.apply children, ["CGW", "IGW", "VGW", "VPC"].map (type)->
-        self.design.componentsOfType( constant.RESTYPE[ type ] )
-      children = children.map (i)-> self.getItem(i.id)
+      for type in ["CGW", "IGW", "VGW", "VPC"]
+        children.push(@getItem(i.id)) for i in @design.componentsOfType( constant.RESTYPE[type] )
 
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
       data.pageY - data.offsetY - data.zoneDimension.y1
     )
 
-    dropRect = @__bestFitRect({
-      x1 : dropPos.x
-      y1 : dropPos.y
-      x2 : dropPos.x + ItemClassProto.defaultSize[0]
-      y2 : dropPos.y + ItemClassProto.defaultSize[1]
-    }, groupRect, children )
+    # If we need to auto add a parent, then we need to enlarge the drop rectangle.
+    if group and not ItemClass.isDirectParentType( group.type )
+      dropRect = {
+        x1 : dropPos.x - 2
+        y1 : dropPos.y - 2
+        x2 : dropPos.x + data.itemWidth  + 4
+        y2 : dropPos.y + data.itemHeight + 4
+      }
+    else
+      dropRect = {
+        x1 : dropPos.x
+        y1 : dropPos.y
+        x2 : dropPos.x + data.itemWidth
+        y2 : dropPos.y + data.itemHeight
+      }
+
+    dropRect = @__bestFitRect(dropRect, groupRect, children )
 
     if not dropRect
-      notification "warning", "Not enough space.", false
+      return "Not enough space."
+
+    {
+      group    : group
+      dropRect : dropRect
+    }
+
+  CanvasViewProto.__addItemDrop = ( evt, data )->
+    ItemClass      = CanvasElement.getClassByType( data.dataTransfer.type )
+    ItemClassProto = ItemClass.prototype
+
+    data.itemWidth  = ItemClassProto.defaultSize[0]
+    data.itemHeight = ItemClassProto.defaultSize[1]
+    result = @__handleDropData( data )
+
+    if _.isString( result )
+      if result
+        notification 'warning', result, false
       return
 
     # Create the model
-    createOption = { createByUser : true }
-    attributes   = $.extend {
-      x : dropRect.x1 / CanvasView.GRID_WIDTH
-      y : dropRect.y1 / CanvasView.GRID_HEIGHT
+    attributes = $.extend {
+      x      : result.dropRect.x1
+      y      : result.dropRect.y1
+      width  : ItemClassProto.defaultSize[0]
+      height : ItemClassProto.defaultSize[1]
     }, data.dataTransfer
+
+    # Shrink drop rect if the item is a group
+    if Design.modelClassForType( attributes.type ).prototype.node_group
+      attributes.x += 1
+      attributes.y += 1
+      attributes.width  -= 2
+      attributes.height -= 2
+
     delete attributes.type
-    if group
-      attributes.parent = group.model
+    if result.group
+      attributes.parent = result.group.model
 
-    attributes.width  = ItemClassProto.defaultSize[0]
-    attributes.height = ItemClassProto.defaultSize[1]
-
-    model = ItemClass.createResource( ItemClassProto.type, attributes, createOption )
-
-    if model
+    model = ItemClass.createResource( ItemClassProto.type, attributes, { createByUser : true } )
+    if model and model.id
+      self = @
       _.defer ()-> self.selectItem( model.id )
     return
 
@@ -273,6 +314,9 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
     width  = rect.x2 - rect.x1
     height = rect.y2 - rect.y1
+
+    if width >= parentRect.x2 - parentRect.x1 or height >= parentRect.y2 - parentRect.y1 then return null
+
     halfW  = Math.round( width / 2 )
     halfH  = Math.round( height / 2 )
 
@@ -339,4 +383,154 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
     #________visualizeBestfit( bestFit, rect, colliders, alignEdges, @ )
     return bestFit
+
+
+  # Move item by dnd
+  CanvasViewProto.__moveItemMouseDown = ( evt )->
+    @dragItem( evt, {
+      onDragEnd : __moveItemDrop
+      altState  : true
+    } )
+
+  CanvasViewProto.dragItem = ( evt, options )->
+    ###
+     options = {
+        altState : false
+        onDrop   : ()->
+     }
+    ###
+    $tgt = $( evt.currentTarget )
+    if $tgt.hasClass("group") or $tgt.hasClass("fixed") then return
+
+    $tgt = $tgt.closest("g")
+    item = @getItem( $tgt.attr("data-id") )
+    if not item then return
+
+    @selectItem( $tgt[0] )
+
+    canvasOffset = @$el.offset()
+
+    options = $.extend options, {
+      dropTargets  : $( "#OpsEditor .OEPanelCenter" )
+      dataTransfer : { type : item.type }
+      item         : item
+      targetSvg    : $tgt[0].instance
+      context      : @
+      eventPrefix  : "moveItem_"
+      noShadow     : true
+      lockToCenter : false
+      canvasX      : canvasOffset.left
+      canvasY      : canvasOffset.top
+
+      onDragStart : __moveItemStart
+      onDrag      : __moveItemDrag
+      onDragEnd   : __moveItemDrop
+      onDrop      : __moveItemDidDrop
+    }
+    $tgt.dnd( evt, options )
+    false
+
+  __moveItemStart = ( data )->
+    svg           = data.context.svg
+    targetSvg     = data.targetSvg.attr("id", "svgDragTarget")
+    data.cloneSvg = svg.group().add(
+      svg.use("svgDragTarget").move( -targetSvg.x(), -targetSvg.y() )
+    )
+    .classes("shadow")
+    .move( targetSvg.x(), targetSvg.y() )
+
+    if data.altState
+      size = data.item.size()
+      data.cloneSvg.add(
+        svg.use("clone_indicator").move(
+          size.width  * CanvasView.GRID_WIDTH  - 12,
+          size.height * CanvasView.GRID_HEIGHT - 12
+        ).classes("indicator").hide()
+      )
+    return
+
+  __moveItemDrag = ( evt )->
+    data = evt.data
+
+    ctx = data.context
+
+    # Drag Effects
+    ctx.__scrollOnDrag( data )
+
+    group = ctx.__groupAtCoor(
+      ctx.__localToCanvasCoor( data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1 )
+    , data.item )
+
+    if group
+      ItemClass  = CanvasElement.getClassByType( data.dataTransfer.type )
+      parentType = ItemClass.prototype.parentType
+      if not parentType or parentType.indexOf( group.type ) is -1 or not ItemClass.isDirectParentType( group.type )
+        group = null
+
+    # HoverEffect
+    if group isnt ctx.__dragHoverGroup
+      if ctx.__dragHoverGroup
+        CanvasManager.removeClass ctx.__dragHoverGroup.$el, "droppable"
+      if group
+        CanvasManager.addClass group.$el, "droppable"
+      ctx.__dragHoverGroup = group
+
+    mousePos = data.context.__localToCanvasCoor(
+      data.pageX - data.canvasX - data.offsetX,
+      data.pageY - data.canvasY - data.offsetY
+    )
+
+    data.cloneSvg.move(
+      Math.round( mousePos.x ) * CanvasView.GRID_WIDTH,
+      Math.round( mousePos.y ) * CanvasView.GRID_HEIGHT
+    )
+
+    if data.altState
+      stateIcn = data.cloneSvg.get(1)
+      if evt.altKey
+        stateIcn.show()
+      else
+        stateIcn.hide()
+
+    return
+
+  __moveItemDrop = ( evt )->
+    data = evt.data
+
+    # Cleanup
+    data.context.__addItemDragLeave()
+    data.targetSvg.attr("id", "")
+    if data.cloneSvg then data.cloneSvg.remove()
+
+    # Drop
+    # Offset the group by -10, -10. So that it will not be dropped overlapping the parent.
+    size = data.item.size()
+    data.itemWidth  = size.width
+    data.itemHeight = size.height
+
+    if data.item.isGroup()
+      data.pageX      -= CanvasView.GRID_WIDTH
+      data.pageY      -= CanvasView.GRID_HEIGHT
+      data.itemWidth  += 2
+      data.itemHeight += 2
+
+    result = data.context.__handleDropData( data, data.item, true )
+    if _.isString( result ) then return
+
+    data.dataTransfer.item   = data.item
+    data.dataTransfer.parent = result.group
+    data.dataTransfer.x      = result.dropRect.x1
+    data.dataTransfer.y      = result.dropRect.y1
+
+    if data.item.isGroup()
+      data.dataTransfer.x += 1
+      data.dataTransfer.y += 1
+
+    data.onDrop( evt, data.dataTransfer )
+    return
+
+  __moveItemDidDrop = ( evt, dataTransfer )->
+    dataTransfer.item[ if evt.altKey then "cloneTo" else "changeParent" ]( dataTransfer.parent, dataTransfer.x, dataTransfer.y )
+    return
+
   null

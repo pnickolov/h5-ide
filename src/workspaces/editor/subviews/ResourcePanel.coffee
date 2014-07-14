@@ -353,7 +353,7 @@ define [
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
       console.assert( type )
 
-      dropTargets = ".OEPanelCenter"
+      dropTargets = "#OpsEditor .OEPanelCenter"
       if type is constant.RESTYPE.INSTANCE
         dropTargets += ",#changeAmiDropZone"
 

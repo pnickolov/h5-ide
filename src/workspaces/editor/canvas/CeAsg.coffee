@@ -16,7 +16,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       svgEl = svg.group().add([
         svg.use("asg_frame").classes("asg-frame")
         svg.plain("").move(4,14).classes('group-label')
-      ]).attr({ "data-id" : @cid }).classes( 'canvasel group ExpandedAsg')
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel ExpandedAsg')
 
       @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()
@@ -50,7 +50,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
         svg.use("prompt_text").classes("prompt-text")
 
-      ]).attr({ "data-id" : @cid }).classes( 'canvasel group AWS-AutoScaling-Group' )
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel AWS-AutoScaling-Group' )
 
       @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()

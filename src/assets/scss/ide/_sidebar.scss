@@ -122,6 +122,7 @@ $dndDuration : 0.2s;
   #DndItem & {
     padding-top : 28px;
     height      : 62px;
+    position    : relative;
   }
 
   .resource-item.asg > & {
@@ -319,6 +320,36 @@ $dndDuration : 0.2s;
 
   &.instance {
     margin-top : 0;
+    overflow   : visible;
+
+    &:before {
+      content       : "subnet";
+      border-radius : 4px;
+
+      position     : absolute;
+      top          : 30px;
+      left         : 30px;
+      color        : #aaa;
+      height       : 40px;
+      width        : 40px;
+      margin-left  : -10px;
+      margin-top : -10px;
+      padding-left : 3px;
+      text-align   : left;
+      border       : 2px dashed #dbd7d7;
+
+      -webkit-transition: all .15s ease-in;
+      -moz-transition   : all .15s ease-in;
+      -o-transition     : all .15s ease-in;
+      transition        : all .15s ease-in;
+    }
+
+    &.autoparent:before {
+      top    : 0;
+      left   : 0;
+      width  : 105px;
+      height : 108px;
+    }
   }
 }
 

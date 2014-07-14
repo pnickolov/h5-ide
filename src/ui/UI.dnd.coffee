@@ -2,19 +2,22 @@
 define ["jquery"], ( $ )->
 
   cloneElement = ( data )->
-    $("<div id='DndItem'></div>")
-      .appendTo( document.body )
-      .html( data.source.html() )
-      .attr("class", data.source.attr("class").replace("bubble", "").replace("tooltip", "") )
+    if data.noShadow
+      return $()
+    else
+      $("<div id='DndItem'></div>")
+        .appendTo( document.body )
+        .html( data.source.html() )
+        .attr("class", data.source.attr("class").replace("bubble", "").replace("tooltip", "") )
 
   emptyFunction = ()->
 
   defaultOptions = {
     clone        : cloneElement
-    grid         : 0
     eventPrefix  : ""
     minDistance  : 4
     lockToCenter : true
+    noShadow     : false
     # dropTargets  : $()
     # dataTransfer : {}
 
@@ -132,7 +135,10 @@ define ["jquery"], ( $ )->
     data = evt.data
 
     cancelDnd( evt )
-    data.onDragEnd()
+
+    data.pageX = evt.pageX
+    data.pageY = evt.pageY
+    data.onDragEnd( evt )
 
     if data.hoverZone
       data.hoverZone.triggerHandler "#{data.eventPrefix}drop", data

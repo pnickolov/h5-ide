@@ -2,15 +2,19 @@
   define(["jquery"], function($) {
     var cancelDnd, cloneElement, defaultOptions, detectDrag, emptyFunction, onMouseMove, onMouseUp, startDrag;
     cloneElement = function(data) {
-      return $("<div id='DndItem'></div>").appendTo(document.body).html(data.source.html()).attr("class", data.source.attr("class").replace("bubble", "").replace("tooltip", ""));
+      if (data.noShadow) {
+        return $();
+      } else {
+        return $("<div id='DndItem'></div>").appendTo(document.body).html(data.source.html()).attr("class", data.source.attr("class").replace("bubble", "").replace("tooltip", ""));
+      }
     };
     emptyFunction = function() {};
     defaultOptions = {
       clone: cloneElement,
-      grid: 0,
       eventPrefix: "",
       minDistance: 4,
       lockToCenter: true,
+      noShadow: false,
       onDragStart: emptyFunction,
       onDrag: emptyFunction,
       onDragEnd: emptyFunction
@@ -120,7 +124,9 @@
       var data;
       data = evt.data;
       cancelDnd(evt);
-      data.onDragEnd();
+      data.pageX = evt.pageX;
+      data.pageY = evt.pageY;
+      data.onDragEnd(evt);
       if (data.hoverZone) {
         data.hoverZone.triggerHandler("" + data.eventPrefix + "drop", data);
       }

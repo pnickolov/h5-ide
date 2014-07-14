@@ -139,7 +139,7 @@ define [ "./CanvasView", "Design", "constant", "CanvasManager", "i18n!/nls/lang.
     data = evt.data
     data.pageX = evt.pageX
     data.pageY = evt.pageY
-    data.context.__scrollOnDrag( evt, data )
+    data.context.__scrollOnDrag( data )
 
     offsetX = ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
     offsetY = ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale

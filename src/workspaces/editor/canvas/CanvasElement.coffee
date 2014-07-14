@@ -243,7 +243,7 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       cnns = []
       for cn in @model.connections()
         cn = @canvas.getItem( cn.id )
-        if cn then cnns.push cn
+        if cn and cn.node_line then cnns.push cn
 
       cnns
 
@@ -312,9 +312,69 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
 
       result
 
-    move : ( newX, newY, newParent )->
+    cloneTo : ( parent, x, y )->
+      if not @model.clone then return
 
+      # If the model supports clone() interface, then clone the target.
+      name = @model.get("name")
+      nameMatch = name.match /(.+-copy)(\d*)$/
+      if nameMatch
+        name = nameMatch[1] + ((parseInt(nameMatch[2],10) || 0) + 1)
+      else
+        name += "-copy"
+
+      model = CanvasElement.getClassByType(@type).createResource( @type, {
+        parent : parent.model,
+        name   : name
+        x      : x
+        y      : y
+      }, { cloneSource : @model })
+
+      if model and model.id
+        self = @
+        _.defer ()-> self.canvas.selectItem( model.id )
+      return
+
+
+    changeParent : ( newParent, x, y )->
+      if @parent() is newParent
+        if @model.x() is x and @model.y() is y then return
+        @moveBy( x - @model.x(), y - @model.y() )
+        return
+
+      # Do not support changing existing resource's parent.
+      if @model.get("appId")
+        notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+        return
+
+      parentModel = newParent.model
+      res = @model.isReparentable( parentModel )
+
+      if _.isString( res )
+        # Error
+        notification "error", res
+        return
+
+      if res is true
+        parentModel.addChild( @model )
+        @moveBy( x - @model.x(), y - @model.y() )
+      return
+
+    moveBy : ( deltaX, deltaY )->
+      if @isGroup()
+        for ch in @children()
+          ch.moveBy( deltaX, deltaY )
+
+      deltaX += @model.x()
+      deltaY += @model.y()
+      @model.set { x : deltaX, y : deltaY }
+      @$el[0].instance.move( deltaX * CanvasView.GRID_WIDTH, deltaY * CanvasView.GRID_HEIGHT )
+
+      cn.update() for cn in @connections()
+      return
   }, {
+
+    isDirectParentType : ( type )-> true
 
     createResource : ( type, attributes, options )->
       Model = Design.modelClassForType type

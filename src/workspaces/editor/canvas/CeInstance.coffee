@@ -132,6 +132,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
   }, {
+    isDirectParentType : ( t )-> return t isnt constant.RESTYPE.AZ
+
     createResource : ( type, attr, option )->
       if not attr.parent then return
       if attr.parent.type is constant.RESTYPE.SUBNET
@@ -141,12 +143,16 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       else if attr.parent.type is constant.RESTYPE.AZ
         # Auto add subnet for instance
         attr.parent = CanvasElement.createResource( constant.RESTYPE.SUBNET, {
-          x      : attr.x - 1
-          y      : attr.y - 1
+          x      : attr.x + 1
+          y      : attr.y + 1
           width  : 11
           height : 11
           parent : attr.parent
         } , option )
+
+        attr.x += 2
+        attr.y += 2
+
         return CanvasElement.createResource( constant.RESTYPE.INSTANCE, attr, option )
 
   }

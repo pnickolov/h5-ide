@@ -405,10 +405,11 @@ define [
       ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere name: name
 
       if ogComp
-        new OgUsage( model, ogComp )
+        new OgUsage @, ogComp
         @unset 'ogName'
       else
         @set 'ogName', name
+        _.invoke @connections('OgUsage'), 'remove'
 
     getOptionGroupName: -> @get( 'ogName' ) or @connectionTargets('OgUsage')[0]?.get 'name'
 

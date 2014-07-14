@@ -109,11 +109,9 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             # render dropdown list only if no item there
             if not @dropdown.$( '.item' ).length then @renderDropdownList()
 
-        manage: ->
+        manage: -> @quickCreate()
 
-            @quickCreate()
-
-        set: ( id, data ) ->
+        set: ( id, data ) -> @dbInstance.setOptionGroup data.name
 
         filter: (keyword) ->
 

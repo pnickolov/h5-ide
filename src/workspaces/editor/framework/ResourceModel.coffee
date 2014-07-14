@@ -571,8 +571,6 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
   # Underscore Quick Links for allObjects
   _.each [
-    'where'
-    'findWhere'
     'forEach'
     'each'
     'map'
@@ -592,11 +590,22 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
     'isEmpty'
     'chain'
     'sample'
-  ], (method) ->
-    ResourceModel[method] = ->
+  ], ( method ) ->
+    ResourceModel[ method ] = ->
       args = [].slice.call arguments
       args.unshift @allObjects()
-      _[method].apply _, args
+      _[ method ].apply _, args
+
+
+  ResourceModel.where = ( attrs, first ) ->
+    if _.isEmpty attrs then return first ? null : []
+    @[ first and 'find' or 'filter' ] ( model ) ->
+      for key of attrs
+        if attrs[ key ] isnt model.get( key ) then return false
+      true
+
+  ResourceModel.findWhere = ( attrs ) -> @where attrs, true
+
 
 
   ResourceModel

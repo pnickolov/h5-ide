@@ -1,15 +1,17 @@
 
 define [
-  "../ResourceModel"
+  "../ComplexResModel"
   "Design"
   "constant"
-], ( ResourceModel, Design, constant ) ->
+], ( ComplexResModel, Design, constant ) ->
 
-  Model = ResourceModel.extend {
+  Model = ComplexResModel.extend {
 
     newNameTmpl : "option-group-"
 
     type : constant.RESTYPE.DBOG
+
+    isVisual : () -> false
 
     defaults : () ->
 
@@ -32,7 +34,7 @@ define [
           OptionGroupDescription: @get 'ogDescription'
           OptionGroupName       : @get 'ogName'
           Options               : @get 'options'
-          VpcId                 : vpc.createRef( "VpcId" )
+          VpcId                 : @getVpcRef()
 
       { component : component }
 

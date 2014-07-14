@@ -13,11 +13,15 @@ define [
 
     isVisual : () -> false
 
-    defaults : () ->
+    initialize: ( attributes, option )->
+      if not @get 'description'
+        @set 'description', "#{@get('name')} default description"
 
+      null
+
+    defaults : () ->
         engineName    : ''
         engineVersion : ''
-        ogDescription : ''
         ogName        : ''
         options       : []
 
@@ -35,7 +39,7 @@ define [
           CreatedBy             : @get('createdBy') or ''
           EngineName            : @get 'engineName'
           MajorEngineVersion    : @get 'engineVersion'
-          OptionGroupDescription: @get 'ogDescription'
+          OptionGroupDescription: @get 'description'
           OptionGroupName       : @get 'ogName'
           Options               : @get 'options'
           VpcId                 : @getVpcRef()
@@ -59,7 +63,7 @@ define [
         engineName    : data.resource.EngineName
         engineVersion : data.resource.MajorEngineVersion
 
-        ogDescription : data.resource.OptionGroupDescription
+        description   : data.resource.OptionGroupDescription
         ogName        : data.resource.OptionGroupName
         options       : data.resource.Options
 

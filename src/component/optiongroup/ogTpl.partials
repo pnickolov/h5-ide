@@ -90,7 +90,7 @@
         </div>
         <div class="input-item">
             <label class="left">Description</label>
-            <input class="input og-description" value="{{ogDescription}}" type="text" data-required="true"/>
+            <input class="input og-description" value="{{description}}" type="text" data-required="true"/>
         </div>
         <div class="left option-list-head">Option</div>
         <ul class="option-list"></ul>

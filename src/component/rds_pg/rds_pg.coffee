@@ -207,7 +207,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       _.each parameters.models, (e)->
         onChange = ->
           $("[data-action='preview']").prop 'disabled', false
-          console.log this.value, e.attributes, e.isValidValue(this.value), e.attributes.AllowedValues
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
           if e.isValidValue(this.value) or this.value is ""
@@ -335,9 +334,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @dropdown = new combo_dropdown option
       @collection.fetch().then ->
         data = that.collection.toJSON()
-        console.log(data)
 
-      console.log(@resModel.toJSON())
       @dropdown.setSelection @resModel.attributes.pgName
       @dropdown.on 'open',   (@initDropdown.bind @) , @
       @dropdown.on 'manage', (@renderManager.bind @), @

@@ -108,7 +108,7 @@
     <div class="name">{{Name}}</div>
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
-    <label class="switcher">
+    <label class="switcher{{#if checked}} on{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>
     </label>

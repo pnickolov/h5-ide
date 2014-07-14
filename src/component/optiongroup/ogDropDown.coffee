@@ -6,7 +6,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         events:
 
-            'click .dropdown .item' : 'editClicked'
+            'click .item' : 'editClicked'
 
         initDropdown: ->
 

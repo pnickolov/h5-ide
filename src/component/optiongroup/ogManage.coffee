@@ -78,6 +78,7 @@ define [
 
         initialize: (option) ->
 
+            that = this
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
 
@@ -88,7 +89,15 @@ define [
             @ogDataStore = {}
             optionAry = @ogModel.get('options')
             _.each optionAry, (option) ->
-                @ogDataStore[option.OptionName] = option
+                that.ogDataStore[option.OptionName] = option
+
+            # set checked for option list
+            _.each @ogOptions, (option) ->
+                if that.ogDataStore[option.Name]
+                    option.checked = true
+                else
+                    option.checked = false
+                null
 
             null
 
@@ -279,6 +288,7 @@ define [
                 if option
                     ogName = $ogItem.data('name')
                     ogData = that.ogDataStore[ogName]
+                    ogData.OptionName = ogName
                     ogDataAry.push(ogData)
                 null
 

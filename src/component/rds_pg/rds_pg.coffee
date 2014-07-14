@@ -337,14 +337,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           modelData = that.resModel?.toJSON()
           defaultPG = (modelData.engine + modelData.engineVersion)
           defaultPg = that.collection.find (e)->
-            console.log e.toJSON(), that.resModel.toJSON()
             e.isDefault() and (defaultPG.indexOf e.attributes.DBParameterGroupName.split('default.')[1])> -1
           if not defaultPg
             defaultPg = that.collection.find (e)->
               e.isDefault() and ((e.attributes.DBParameterGroupName.split('default.')[1]).indexOf modelData.engine) > -1
           if defaultPg
             that.resModel.set("pgName", defaultPg.attributes.DBParameterGroupName)
-            console.log that.resModel.toJSON(), defaultPg, defaultPG
             that.dropdown.setSelection that.resModel.attributes.pgName
           else
             that.dropdown.setSelection "Please Select Parameter Group"

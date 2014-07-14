@@ -78,6 +78,9 @@ define [
 
             # for option data store
             @ogDataStore = {}
+            optionAry = @ogModel.get('options')
+            _.each optionAry, (option) ->
+                @ogDataStore[option.OptionName] = option
 
             null
 
@@ -226,7 +229,7 @@ define [
 
             $optionItem = $switcher.parents('.option-item')
             optionIdx = Number($optionItem.data('idx'))
-            optionName = Number($optionItem.data('name'))
+            optionName = $optionItem.data('name')
 
             if $switcher.hasClass('on')
                 @slide @ogOptions[optionIdx], (optionData) ->

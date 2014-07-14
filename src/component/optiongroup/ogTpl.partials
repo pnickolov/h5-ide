@@ -5,7 +5,7 @@
 {{#each this}}
     <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{name}}" tabindex="-1">
         {{name}}
-        <div class="icon-edit"></div>
+        {{#if id}}<div class="icon-edit"></div>{{/if}}
     </li>
 {{/each}}
 

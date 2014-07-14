@@ -4,6 +4,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         tagName: 'section'
 
+        events:
+
+            'click .item' : 'editClicked'
+
         initDropdown: ->
 
             options =
@@ -77,7 +81,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         quickCreate: () ->
 
             DBOGModel = Design.modelClassForType(constant.RESTYPE.DBOG)
-            dbOGModel = new DBOGModel()
+            dbOGModel = new DBOGModel({
+                engineName: @engine,
+                engineVersion: @version
+            })
 
             new OgManage({
                 engine: @engine,
@@ -103,3 +110,15 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         set: ( id, data ) ->
 
         filter: (keyword) ->
+
+        editClicked: (event) ->
+
+            $item = $(event.currentTarget)
+            ogUID = $item.data('id')
+            if ogUID
+                ogModel = Design.instance().component(ogUID)
+                new OgManage({
+                    engine: @engine,
+                    version: @version,
+                    model: ogModel
+                }).render()

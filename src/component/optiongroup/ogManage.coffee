@@ -161,9 +161,9 @@ define [
 
             if port then data.Port = port
 
-            data.VpcSecurityGroupMembership = []
+            data.VpcSecurityGroupMemberships = VpcSecurityGroupId: []
             sgCbs.each () ->
-                data.VpcSecurityGroupMembership.push Design.instance().component($(this).data('uid')).createRef 'GroupId'
+                data.VpcSecurityGroupMemberships.VpcSecurityGroupId.push Design.instance().component($(this).data('uid')).createRef 'GroupId'
 
             @optionCb?(data)
             @ogDataStore[optionName] = data

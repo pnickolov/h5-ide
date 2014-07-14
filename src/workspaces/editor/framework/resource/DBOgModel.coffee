@@ -21,6 +21,9 @@ define [
         ogName        : ''
         options       : []
 
+    remove: ->
+       ComplexResModel.prototype.remove.apply @, arguments
+
     serialize : ()->
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
@@ -29,6 +32,7 @@ define [
         type : @type
         uid  : @id
         resource :
+          CreatedBy             : @get('createdBy') or ''
           EngineName            : @get 'engineName'
           MajorEngineVersion    : @get 'engineVersion'
           OptionGroupDescription: @get 'ogDescription'
@@ -49,6 +53,8 @@ define [
         id     : data.uid
         name   : data.name
         appId  : data.resource.CreatedBy
+
+        createdBy     : data.resource.CreatedBy
 
         engineName    : data.resource.EngineName
         engineVersion : data.resource.MajorEngineVersion

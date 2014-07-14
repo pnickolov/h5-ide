@@ -413,6 +413,25 @@ define [
 
     getOptionGroupName: -> @get( 'ogName' ) or @connectionTargets('OgUsage')[0]?.get 'name'
 
+    getDefaultParameterGroup: ->
+      pgData = App.model.getRdsData(@design().region())?.defaultParameterGroup
+      if pgData
+        engine = pgData[ @get 'engine' ]
+        if engine
+          defaultPG = pgData[ @get 'engine' ][ @get 'engineVersion' ]
+      defaultPG = defaultPG || ""
+      if defaultPG
+        defaultPG = 'default.' + defaultPG
+      else
+        console.warn "can not get default parametergroup for #{@get 'engine'} #{@get 'engineVersion'}"
+      defaultPG || ""
+
+    getParameterGroupName: ->
+      pgName = @get 'pgName'
+      if not pgName
+        pgName = @getDefaultParameterGroup()
+      pgName
+
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'
         event = event.split(":")[0]
@@ -432,6 +451,8 @@ define [
 
       ogName = @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName'
       if not ogName then ogName = @get( 'ogName' )
+
+      pgName = @getParameterGroupName()
 
       component =
         name : @get("name")
@@ -468,7 +489,7 @@ define [
             OptionGroupName: ogName
 
           DBParameterGroups:
-            DBParameterGroupName                : @get 'pgName'
+            DBParameterGroupName                : pgName
           ApplyImmediately                      : @get 'applyImmediately'
 
           PendingModifiedValues                 : @get 'pending'

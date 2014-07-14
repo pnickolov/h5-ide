@@ -543,7 +543,7 @@ define [
       if ogName
         ogComp = resolve ogName
 
-        if not ogComp then new OgUsage( model, ogComp )
+        if ogComp then new OgUsage( model, ogComp )
         else model.set 'ogName', ogName
 
 

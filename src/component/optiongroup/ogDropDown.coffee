@@ -6,7 +6,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         events:
 
-            'click .item' : 'editClicked'
+            'click .dropdown .item' : 'editClicked'
 
         initDropdown: ->
 
@@ -115,10 +115,14 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
             $item = $(event.currentTarget)
             ogUID = $item.data('id')
+            
             if ogUID
+            
                 ogModel = Design.instance().component(ogUID)
                 new OgManage({
                     engine: @engine,
                     version: @version,
                     model: ogModel
                 }).render()
+
+            return false

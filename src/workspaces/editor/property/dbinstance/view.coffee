@@ -197,8 +197,11 @@ define [ '../base/view'
             @renderLVIA()
 
             # init option group
-            ogDropdown = new OgDropdown()
-            @$el.find('.property-dbinstance-optiongroup-placeholder').html ogDropdown.render({
+            $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
+            ogDropdown = new OgDropdown({
+                el: $ogDropdown
+            })
+            $ogDropdown.html ogDropdown.render({
                     engine: attr.engine,
                     version: @model.getMajorVersion()
                 }).el

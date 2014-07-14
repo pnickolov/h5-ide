@@ -52,7 +52,6 @@ define [
 
     events :
       "click .btn-fav-ami"           : "toggleFav"
-      "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
       "click .ManageSnapshot"        : "manageSnapshot"
@@ -251,7 +250,7 @@ define [
 
     toggleLeftPanel : ()->
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
-      false
+      null
 
     toggleResourcePanel: ()->
       @toggleLeftPanel()

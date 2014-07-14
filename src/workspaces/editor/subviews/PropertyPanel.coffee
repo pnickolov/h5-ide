@@ -58,7 +58,6 @@ define [
   Backbone.View.extend {
 
     events :
-      "click .HideOEPanelRight"  : "toggleRightPanel"
       "click .HideSecondPanel"   : "hideSecondPanel"
       "click .option-group-head" : "updateRightPanelOption"
 
@@ -105,7 +104,7 @@ define [
 
     toggleRightPanel : ()->
       @__rightPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
-      false
+      null
 
     showSecondPanel : ( type, id ) ->
       @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())

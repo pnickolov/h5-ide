@@ -91,6 +91,9 @@ define [
       "ShowProperty"    : "showProperty"
       "ShowStateEditor" : "showStateEditor"
 
+      "click .HideOEPanelLeft"  : "toggleLeftPanel"
+      "click .HideOEPanelRight" : "toggleRightPanel"
+
     constructor : ( options )->
       _.extend this, options
 
@@ -115,6 +118,16 @@ define [
 
       @initialize()
       return
+
+    toggleLeftPanel  : ()->
+      @resourcePanel.toggleLeftPanel()
+      @canvas.updateSize()
+      false
+
+    toggleRightPanel : ()->
+      @propertyPanel.toggleRightPanel()
+      @canvas.updateSize()
+      false
 
     initialize : ()->
       @canvas.switchMode( "stack" )

@@ -62,6 +62,12 @@ define [
       @reload()
       return
 
+    updateSize : ()->
+      self = @
+      setTimeout ()->
+        self.$el.nanoScroller()
+      , 150
+
     __appendSvg : ( svgEl, layer )->
       svgEl.node.instance = svgEl
       $( @svg.node ).children(layer).append( svgEl.node )
@@ -161,8 +167,10 @@ define [
         height : size[1] * CanvasView.GRID_HEIGHT / scale
       })
       .attr("data-scale", scale)
-      .nanoScroller()
       .children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
+
+      @$el.nanoScroller()
+      return
 
     size  : ()-> @design.get("canvasSize")
     scale : ()-> @__scale
@@ -201,8 +209,9 @@ define [
         width  : realW / scale
         height : realH / scale
       })
-      .nanoScroller()
       .children("svg")[0].setAttribute( "viewBox", "0 0 #{realW} #{realH}" )
+
+      @$el.nanoScroller()
       return
 
     reload : ()->

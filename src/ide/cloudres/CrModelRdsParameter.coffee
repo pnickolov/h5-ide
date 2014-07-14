@@ -23,6 +23,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
       if not @attributes.AllowedValues then return true
 
       valueNum = parseInt( value )
+      if value in @attributes.AllowedValues.split(",")
+        return true
       for allowed in @attributes.AllowedValues.split(",")
         if allowed.indexOf("-")>=0
           if not /^[0-9]*$/.test(value)
@@ -30,8 +32,6 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
           range = allowed.split("-")
           if valueNum >= parseInt(range[0]) and valueNum <= parseInt(range[1])
             return true
-        else if value is allowed
-          return true
       false
 
     applyMethod : ()-> if @get("ApplyType") is "dynamic" then "immediate" else "pending-reboot"

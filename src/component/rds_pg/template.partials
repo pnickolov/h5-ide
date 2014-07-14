@@ -123,8 +123,10 @@
     </div>
 </div>
 <div class="scroll-wrap" style="height: 310px">
-    <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
+    <div class="scrollbar-veritical-wrap" style="display: block;">
+        <div class="scrollbar-veritical-thumb"></div>
+    </div>
+    <div class="scroll-content" id="parameter-table">
         <table class="table">
             <thead>
             <tr>

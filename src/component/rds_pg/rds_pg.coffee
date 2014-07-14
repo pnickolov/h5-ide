@@ -157,7 +157,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         else
           e.inputType = "input"
           return
-      if option?.sort isnt undefined
+      if option?.sort
         data = _.sortBy data, (e)->
           s = e.ParameterName
           if option.sort is "ParameterName"
@@ -169,11 +169,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           if option.sort is "Source"
             s = e.Source
           return s
-      if option?.filter isnt undefined
+        $("#parameter-table").html template.filter {data:data}
+      if option?.filter
         data = _.filter data, (e)->
           (e.ParameterName.toLowerCase().indexOf option.filter.toLowerCase()) > -1
         $("#parameter-table").html template.filter {data:data}
-        return
+      if option?.filter or option?.sort then return false
       that.manager.setSlide tpl data:data
 
     bindFilter: (parameters, tpl)->
@@ -206,6 +207,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       _.each parameters.models, (e)->
         onChange = ->
           $("[data-action='preview']").prop 'disabled', false
+          console.log this.value, e.attributes, e.isValidValue(this.value), e.attributes.AllowedValues
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
           if e.isValidValue(this.value) or this.value is ""
@@ -326,10 +328,16 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $(@).hide()
 
     renderDropdown: ->
+      that = this
       option =
         manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
         filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
+      @collection.fetch().then ->
+        data = that.collection.toJSON()
+        console.log(data)
+
+      console.log(@resModel.toJSON())
       @dropdown.setSelection @resModel.attributes.pgName
       @dropdown.on 'open',   (@initDropdown.bind @) , @
       @dropdown.on 'manage', (@renderManager.bind @), @

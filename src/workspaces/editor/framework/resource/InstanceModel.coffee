@@ -30,14 +30,18 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
     initialize : ( attr, option )->
 
+      option = option || {}
+
+      if option.cloneSource
+        attr.imageId = option.cloneSource.get("imageId")
+
       console.assert( attr.imageId, "Invalid attributes when creating InstanceModel", attr )
 
-      option = option || {}
 
       @setAmi( attr.imageId )
 
       # Create Eni0 if necessary
-      if option.createByUser
+      if option.createByUser or option.cloneSource
         #create eni0
         EniModel = Design.modelClassForType( constant.RESTYPE.ENI )
         @setEmbedEni( new EniModel({

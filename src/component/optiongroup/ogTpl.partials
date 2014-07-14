@@ -27,7 +27,7 @@
         <li class="clearfix">
             <div class="checkbox-wrap col1">
                 <div class="checkbox">
-                    <input type="checkbox" {{#if used}}checked="checked"{{/if}} data-uid="{{id}}" id="og-sg-{{@index}}"/>
+                    <input type="checkbox" {{#if used}}checked="checked"{{/if}} data-uid="{{id}}" id="og-sg-{{@index}}" {{#if checked}}checked{{/if}} />
                     <label for="og-sg-{{@index}}"></label>
                 </div>
             </div>

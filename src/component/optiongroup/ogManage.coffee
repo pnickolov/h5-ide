@@ -38,12 +38,20 @@ define [
 
         events:
 
-            'click .option-item .switcher': 'optionChanged'
-            'click .cancel': 'cancel'
-            'click .add-option': 'addOption'
-            'click .save-btn': 'saveClicked'
-            'submit form': 'doNothing'
+            'click .option-item .switcher'  : 'optionChanged'
+            'click .cancel'                 : 'cancel'
+            'click .add-option'             : 'addOption'
+            'click .save-btn'               : 'saveClicked'
+            'submit form'                   : 'doNothing'
+            'click #og-sg input'           : 'changeSg'
 
+
+        changeSg: (e) ->
+            checked = e.currentTarget.checked
+            sgCbs = $('#og-sg input:checked')
+            if not sgCbs.length then return false
+
+            null
 
         doNothing: -> false
 
@@ -154,6 +162,10 @@ define [
                     json.color = obj.color
                     json.ruleCount = obj.ruleCount()
                     json.memberCount = obj.getMemberList().length
+
+                    if data and data.VpcSecurityGroupMembership
+                        if obj.createRef( 'GroupId' ) in data.VpcSecurityGroupMembership
+                            json.checked = true
 
                     if json.default
                         if not data then json.checked = true

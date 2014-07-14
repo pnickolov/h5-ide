@@ -1097,6 +1097,58 @@
 	margin-top : 12px;
 }
 
+/* dbinstance state */
+.dbinstance-state {
+	stroke-width:1;
+	stroke:white;
+	opacity: 0.8;
+	display: block;
+}
+
+.dbinstance-state-stack {
+	display: none;
+}
+
+.dbinstance-state-unknown {
+	fill: gray;
+}
+.dbinstance-state-available {
+	fill: green;
+}
+.dbinstance-state-creating {
+	fill: yellow;
+}
+.dbinstance-state-modifying {
+	fill: yellow;
+}
+.dbinstance-state-rebooting {
+	fill: yellow;
+}
+.dbinstance-state-deleting {
+	fill: yellow;
+}
+.dbinstance-state-deleted {
+	fill: red;
+}
+.dbinstance-state-backing-up {
+	fill: yellow;
+}
+.dbinstance-state-resetting-master-credentials {
+	fill: yellow;
+}
+.dbinstance-state-failed {
+	fill: red;
+}
+.dbinstance-state-incompatible-restore {
+	fill: yellow;
+}
+.dbinstance-state-incompatible-parameters {
+	fill: yellow;
+}
+.dbinstance-state-storage-full {
+	fill: red;
+}
+
 /* instance state */
 .instance-state {
 	stroke-width:1;

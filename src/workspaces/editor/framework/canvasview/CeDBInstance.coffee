@@ -123,11 +123,11 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
         )
 
       if not @model.design().modeIsStack() and m.get("appId")
-        # instance-state
+        # dbinstance-state
         node.append(
           Canvon.circle(68, 15, 5,{}).attr({
-            'id'    : "#{@id}_instance-state"
-            'class' : 'instance-state instance-state-unknown'
+            'id'    : "#{@id}_dbinstance-state"
+            'class' : 'dbinstance-state dbinstance-state-unknown'
           })
         )
 
@@ -154,10 +154,40 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
     # Update Type and Engine Image
     CanvasManager.update node.children(".type-image"), @iconUrl("type"), "href"
     CanvasManager.update node.children(".engine-image"), @iconUrl("engine"), "href"
-
-
     null
 
+  ChildElementProto.updateAppState = ()->
+    m = @model
+    if m.design().modeIsStack() or not m.get("appId")
+      return
+
+    # Check icon
+    if $("##{@id}_dbinstance-state").length is 0
+      return
+
+    # Init icon to unknown state
+    el = @element()
+    CanvasManager.removeClass el, "deleted"
+
+    # Get instance state
+
+    if m.type and m.design().region()
+      res_list = CloudResources( m.type, m.design().region() )
+      instance_data = res_list.get(m.get('appId'))
+
+    if instance_data
+      dbinstanceState = instance_data.get "DBInstanceStatus"
+      CanvasManager.addClass el, "deleted" if dbinstanceState is "deleted"
+    else
+      #instance data not found, or maybe instance already terminated
+      dbinstanceState = "unknown"
+      CanvasManager.addClass el, "deleted"
+
+    #update icon state and tooltip
+    stateClass = "dbinstance-state tooltip dbinstance-state-#{dbinstanceState} dbinstance-state-#{m.design().mode()}"
+    stateEl = $("##{@id}_dbinstance-state").attr({ "class" : stateClass })
+    CanvasManager.update stateEl, dbinstanceState, "data-tooltip"
+    null
 
 
 

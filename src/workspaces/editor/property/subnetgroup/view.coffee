@@ -29,6 +29,9 @@ define [ '../base/view'
         selectSubnetId: (e) ->
             sbId = e.currentTarget.id.slice 5
             checked = e.currentTarget.checked
+            sbCount = @$('.property-control-group input:checked').size()
+
+            @$('.property-head-num-wrap').html "(#{sbCount})"
 
             if checked
                 SbAsso = Design.modelClassForType( "SbAsso" )
@@ -41,6 +44,7 @@ define [ '../base/view'
         render: ->
             data = @model.toJSON()
             data.azSb = @getAzSb()
+            data.sbCount = @model.connectionTargets("SbAsso").length
 
             @$el.html template data
             @model.get 'name'

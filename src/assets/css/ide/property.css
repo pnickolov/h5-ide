@@ -28,6 +28,8 @@
 
 .property-subnet-group .property-az-name {
   clear: both;
-  padding: 8px 0; }
-.property-subnet-group label.left + .property-az-name {
-  padding-top: 0; }
+  padding: 5px 0 5px 12px;
+  background: #515151;
+  margin: 5px -10px 5px; }
+.property-subnet-group .property-az-name:first-child {
+  margin-top: -8px; }

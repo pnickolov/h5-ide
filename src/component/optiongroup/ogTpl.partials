@@ -82,7 +82,7 @@
         <div class="error">
         </div>
     </div>
-    <div class="header">This Option Group is used for {{dbVersion}}</div>
+    <div class="header">This Option Group is used for {{engineName}} {{engineVersion}}</div>
     <div class="container">
         <div class="input-item">
             <label class="left">Name</label>

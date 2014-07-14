@@ -20,7 +20,7 @@
 <div class="port-sg">
     <div>
         <label for="og-port">Port</label>
-        <input type="text" id="og-port" class="input" value="{{port}}" data-required="true" data-type="number"/>
+        <input type="text" id="og-port" class="input" value="{{port}}" data-required="true" data-type="number" autocomplete="off"/>
     </div>
     <ul class="acl-sg-info-list property-list" id="og-sg">
         {{#each sgs}}
@@ -61,7 +61,7 @@
                 {{/each}}
             </select>
             {{else}}
-            <input name="{{SettingName}} data-required="true" data-type="number" class="option-setting" type="text" class="input" value="{{value}}" data-start="{{start}}" data-end="{{end}}"/>
+            <input name="{{SettingName}}" data-required="true" data-type="number" class="option-setting" type="text" class="input" value="{{value}}" data-start="{{start}}" data-end="{{end}}"/>
             {{/if}}
         </td>
         <td>{{AllowedValues}}</td>

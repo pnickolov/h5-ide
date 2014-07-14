@@ -394,6 +394,8 @@ define [
       else
         @set 'ogName', name
 
+    getOptionGroupName: -> @get( ogName ) or @connectionTargets('OgUsage')?.get 'name'
+
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'
         event = event.split(":")[0]

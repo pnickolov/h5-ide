@@ -200,6 +200,7 @@ define [ '../base/view'
             $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
             ogDropdown = new OgDropdown({
                 el: $ogDropdown
+                dbInstance: @model
             })
             $ogDropdown.html ogDropdown.render({
                     engine: attr.engine,

@@ -5,8 +5,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         tagName: 'section'
 
         events:
-
-            'click .item' : 'editClicked'
+            'click .icon-edit' : 'editClicked'
 
         initDropdown: ->
 
@@ -21,9 +20,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @dropdown.on 'filter', @filter, @
             @dropdown.on 'quick_create', @quickCreate, @
 
-        initialize: () ->
+        initialize: (option) ->
 
             @initDropdown()
+            @dbInstance = option.dbInstance
 
         render: (option) ->
 
@@ -37,7 +37,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
             @ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
             ogComps = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
-            
+
             # only show default og from aws and custom og from stack
             defaultOGAry = []
             @ogCol.each (model, idx) ->
@@ -98,10 +98,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         show: ->
             # Close Parameter Group Dropdown when Option Group Dropdown is opening
             $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
-            if App.user.hasCredential()
-                @renderDropdownList()
-            else
-                @renderNoCredential()
+            @renderDropdownList()
 
         manage: ->
 
@@ -113,11 +110,11 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
         editClicked: (event) ->
 
-            $item = $(event.currentTarget)
+            $item = $(event.currentTarget).parent()
             ogUID = $item.data('id')
-            
+
             if ogUID
-            
+
                 ogModel = Design.instance().component(ogUID)
                 new OgManage({
                     engine: @engine,

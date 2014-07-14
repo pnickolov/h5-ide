@@ -1384,9 +1384,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         @sbgs[ aws_sbg.id ] = sbgComp
 
     ()-> #RDS DBInstance
+      dbinsAry = []
+      #sort, DBInstance -> ReadReplica
       for aws_dbins in @getResourceByType( "DBINSTANCE" )
         aws_dbins = aws_dbins.attributes
-
+        if aws_dbins.ReadReplicaSourceDBInstanceIdentifier
+          #ReadReplica
+          dbinsAry.push aws_dbins
+        else
+          #DBInstance
+          dbinsAry.unshift aws_dbins
+      #
+      for aws_dbins in dbinsAry
         subnetComp = @sbgs[aws_dbins.sbgId]
         if not subnetComp
           console.warn "can not found subnet of DBInstance"
@@ -1440,15 +1449,18 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         dbInsRes.AllocatedStorage = Number(aws_dbins.AllocatedStorage)
         dbInsRes.BackupRetentionPeriod = Number(aws_dbins.BackupRetentionPeriod)
 
+        if aws_dbins.ReadReplicaSourceDBInstanceIdentifier
+          #ReadReplica
+          srcDbInsComp = @dbinstances[ aws_dbins.ReadReplicaSourceDBInstanceIdentifier ]
+          if srcDbInsComp
+            dbInsRes.ReadReplicaSourceDBInstanceIdentifier = CREATE_REF srcDbInsComp, "resource.DBInstanceIdentifier"
+          else
+            console.error "can not find Source DBInstance for ReadReplica #{aws_dbins.ReadReplicaSourceDBInstanceIdentifier}"        
+
         #endpoint
         if aws_dbins.Endpoint
           dbInsRes.Endpoint.Address = aws_dbins.Endpoint.Address
           dbInsRes.Endpoint.Port = aws_dbins.Endpoint.Port
-
-        #ref to AZ (AZ is not useful?)
-        # azComp = @addAz(aws_dbins.AvailabilityZone)
-        # dbInsRes.AvailabilityZone = CREATE_REF azComp, "resource.ZoneName"
-        #dbInsRes.AvailabilityZone = ""
 
         #ref to OptionGroupMembership
         if aws_dbins.OptionGroupMemberships[0]

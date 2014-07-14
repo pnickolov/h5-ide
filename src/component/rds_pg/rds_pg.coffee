@@ -332,9 +332,22 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
         filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
-      @collection.fetch().then ->
-        data = that.collection.toJSON()
-
+      if @resModel and  not @resModel.attributes.pgName
+        @collection.fetch().then ->
+          modelData = that.resModel?.toJSON()
+          defaultPG = (modelData.engine + modelData.engineVersion)
+          defaultPg = that.collection.find (e)->
+            console.log e.toJSON(), that.resModel.toJSON()
+            e.isDefault() and (defaultPG.indexOf e.attributes.DBParameterGroupName.split('default.')[1])> -1
+          if not defaultPg
+            defaultPg = that.collection.find (e)->
+              e.isDefault() and ((e.attributes.DBParameterGroupName.split('default.')[1]).indexOf modelData.engine) > -1
+          if defaultPg
+            that.resModel.set("pgName", defaultPg.attributes.DBParameterGroupName)
+            console.log that.resModel.toJSON(), defaultPg, defaultPG
+            that.dropdown.setSelection that.resModel.attributes.pgName
+          else
+            that.dropdown.setSelection "Please Select Parameter Group"
       @dropdown.setSelection @resModel.attributes.pgName
       @dropdown.on 'open',   (@initDropdown.bind @) , @
       @dropdown.on 'manage', (@renderManager.bind @), @

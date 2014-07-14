@@ -2,6 +2,7 @@
 define [
   "./CanvasView"
   "./CanvasViewDnd"
+  "./CanvasViewConnect"
   "./CanvasViewGResizer"
   "./CeVpc"
   "./CeAz"

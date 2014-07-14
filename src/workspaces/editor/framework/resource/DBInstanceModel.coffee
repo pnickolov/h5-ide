@@ -451,7 +451,7 @@ define [
             OptionGroupName: ogName
 
           DBParameterGroups:
-            DBParameterGroupName: 'default.mysql5.6' # @get 'pgName'
+            DBParameterGroupName                : @get 'pgName'
           ApplyImmediately                      : @get 'applyImmediately'
 
           PendingModifiedValues                 : @get 'pending'

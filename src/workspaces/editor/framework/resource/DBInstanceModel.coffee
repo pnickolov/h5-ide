@@ -59,7 +59,6 @@ define [
       replicaId: ''
       snapshotId: ''
       az: ''
-      replicas: ''
       ogName: ''
       pgName: ''
       applyImmediately: ''
@@ -435,7 +434,6 @@ define [
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'
-          ReadReplicaDBInstanceIdentifiers      : @get 'replicas'
 
           DBName                                : @get 'dbName'
           Endpoint:
@@ -507,7 +505,6 @@ define [
         iops                      : data.resource.Iops
         backupRetentionPeriod     : data.resource.BackupRetentionPeriod
         characterSetName          : data.resource.CharacterSetName
-        replicas                  : data.resource.ReadReplicaDBInstanceIdentifiers
 
         dbName                    : data.resource.DBName
         port                      : data.resource.Endpoint?.Port

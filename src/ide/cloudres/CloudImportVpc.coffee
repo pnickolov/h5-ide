@@ -1411,7 +1411,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "CreatedBy"              : ""
           "DBInstanceIdentifier"   : ""
           "DBSnapshotIdentifier"   : ""
-          "ReadReplicaSourceDBInstanceIdentifier": ""
           "AllocatedStorage"       : 0
           "AutoMinorVersionUpgrade": false
           "AvailabilityZone"       : ""
@@ -1420,7 +1419,6 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "BackupRetentionPeriod"  : 0
           "CharacterSetName"       : ""
           "DBInstanceClass"        : ""
-          "ReadReplicaDBInstanceIdentifiers": ""
           "DBName"  : ""
           "Endpoint":
             "Port"     : 0

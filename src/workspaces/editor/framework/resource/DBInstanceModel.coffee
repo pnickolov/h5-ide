@@ -410,7 +410,7 @@ define [
       else
         @set 'ogName', name
 
-    getOptionGroupName: -> @get( ogName ) or @connectionTargets('OgUsage')?.get 'name'
+    getOptionGroupName: -> @get( 'ogName' ) or @connectionTargets('OgUsage')[0]?.get 'name'
 
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'

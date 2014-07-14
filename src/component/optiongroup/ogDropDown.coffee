@@ -72,10 +72,9 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @renderDropdownList()
 
         renderDropdownList: () ->
-
             that = this
             if @ogAry.length
-                selection = @dropdown.getSelection()
+                selection = @dbInstance.getOptionGroupName()
                 _.each @ogAry, (og) ->
                     ogName = og.name
                     if ogName and ogName is selection
@@ -107,7 +106,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         show: ->
             # Close Parameter Group Dropdown when Option Group Dropdown is opening
             $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
-            @renderDropdownList()
+            # render dropdown list only if no item there
+            if not @dropdown.$( '.item' ).length then @renderDropdownList()
 
         manage: ->
 

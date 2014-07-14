@@ -3,7 +3,7 @@
 
 <!-- {{dropdown_list}} -->
 {{#each this}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{name}}" tabindex="-1">
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}abc" data-name="{{name}}" tabindex="-1">
         {{name}}
         {{#if id}}<div class="icon-edit"></div>{{/if}}
     </li>

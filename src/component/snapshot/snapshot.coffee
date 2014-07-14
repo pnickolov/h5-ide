@@ -145,8 +145,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         initManager: ()->
             setContent = @setContent.bind @
-            currentRegion = Design.instance().get('region')
-            if (not fetched and not fetching) or (not regionsMark[currentRegion])
+            currentRegion = Design.instance()?.get('region')
+            if currentRegion and ((not fetched and not fetching) or (not regionsMark[currentRegion]))
                 fetching = true
                 regionsMark[currentRegion] = true
                 @collection.fetchForce().then setContent, setContent

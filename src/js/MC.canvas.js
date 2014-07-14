@@ -1567,7 +1567,7 @@ MC.canvas.volume = {
 
 			// $canvas(target_uid).select();
 
-			if (target_uid.split("_")[0] !== bubble_target_id.split("_")[0])
+			if (target_uid.split('_')[0] !== bubble_target_id.split('_')[0])
 			{
 				if (
 					MC.canvas.getState() === 'app' &&

@@ -185,7 +185,6 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
   }, {
     cleanLineMask : ( line )->
       if not LineMaskToClear
-        console.log("Clean")
         LineMaskToClear = [ line ]
         setTimeout ()->
           CeLine.__cleanLineMask()

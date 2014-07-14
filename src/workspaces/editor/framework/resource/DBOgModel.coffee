@@ -19,7 +19,9 @@ define [
         ogName        : ''
         options       : []
 
-    serialize : () ->
+    serialize : ()->
+      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
+
       component =
         name : @get("name")
         type : @type
@@ -30,6 +32,7 @@ define [
           OptionGroupDescription: @get 'ogDescription'
           OptionGroupName       : @get 'ogName'
           Options               : @get 'options'
+          VpcId                 : vpc.createRef( "VpcId" )
 
       { component : component }
 
@@ -50,7 +53,6 @@ define [
 
         ogDescription : data.resource.OptionGroupDescription
         ogName        : data.resource.OptionGroupName
-
         options       : data.resource.Options
 
       })

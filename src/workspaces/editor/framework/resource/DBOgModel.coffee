@@ -26,7 +26,8 @@ define [
         options       : []
 
     remove: ->
-       ComplexResModel.prototype.remove.apply @, arguments
+      _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOption'
+      ComplexResModel.prototype.remove.apply @, arguments
 
     serialize : ()->
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()

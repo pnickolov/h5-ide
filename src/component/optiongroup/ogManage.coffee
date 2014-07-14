@@ -85,8 +85,9 @@ define [
 
             that = this
 
-            @dropdown = option.dropdown
-            @isCreate = option.isCreate
+            @dropdown   = option.dropdown
+            @isCreate   = option.isCreate
+            @dbInstance = option.dbInstance
 
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
@@ -316,6 +317,7 @@ define [
 
             that = this
             @ogModel.remove()
+            @dropdown.setSelection @dbInstance.getOptionGroupName()
             @dropdown.refresh()
             @__modalplus.close()
 

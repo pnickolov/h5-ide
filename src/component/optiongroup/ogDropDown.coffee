@@ -93,6 +93,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             })
 
             new OgManage({
+                dbInstance: @dbInstance
                 engine: @engine,
                 version: @version,
                 model: dbOGModel,
@@ -124,6 +125,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
 
                 ogModel = Design.instance().component(ogUID)
                 new OgManage({
+                    dbInstance: @dbInstance
                     engine: @engine,
                     version: @version,
                     model: ogModel,
@@ -131,3 +133,6 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                 }).render()
 
             return false
+
+        setSelection: -> @dropdown.setSelection.apply @, arguments
+

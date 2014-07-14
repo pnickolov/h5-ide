@@ -105,8 +105,10 @@ define [
             @renderSlide option, data
             @$('.slidebox').addClass 'show'
 
+        slideUp: -> @$('.slidebox').removeClass 'show'
+
         cancel: ->
-            @$('.slidebox').removeClass 'show'
+            @slideUp()
             @optionCb?(null)
             null
 
@@ -134,6 +136,7 @@ define [
             @optionCb?(data)
             @ogDataStore[optionName] = data
 
+            @slideUp()
             null
 
         renderSlide: ( option, data ) ->

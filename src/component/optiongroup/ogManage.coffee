@@ -42,8 +42,9 @@ define [
             'click .cancel'                 : 'cancel'
             'click .add-option'             : 'addOption'
             'click .save-btn'               : 'saveClicked'
+            'click .remove-btn'             : 'removeClicked'
             'submit form'                   : 'doNothing'
-            'click #og-sg input'           : 'changeSg'
+            'click #og-sg input'            : 'changeSg'
 
 
         changeSg: (e) ->
@@ -297,3 +298,9 @@ define [
 
             @__modalplus.close()
             null
+
+        removeClicked: () ->
+
+            that = this
+            @ogModel.remove()
+            @__modalplus.close()

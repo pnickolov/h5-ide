@@ -11,17 +11,15 @@ define [
 
     type : constant.RESTYPE.DBOG
 
-    default :
+    defaults : () ->
 
         engineName    : ''
         engineVersion : ''
-
         ogDescription : ''
         ogName        : ''
-
         options       : []
 
-    serialize : ()->
+    serialize : () ->
       component =
         name : @get("name")
         type : @type

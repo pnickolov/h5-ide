@@ -96,9 +96,9 @@
         <ul class="option-list"></ul>
     </div>
     <div class="modal-footer">
-        <div class="remove-btn left">Delete Option Group</div>
+        {{#unless isCreate}}<div class="remove-btn left">Delete Option Group</div>{{/unless}}
         <button class="save-btn btn btn-blue">Save</button>
-        <button class="cancel-btn btn modal-close">Cancel</button>
+        <button class="btn btn-silver cancel-btn">Cancel</button>
     </div>
 </div>
 

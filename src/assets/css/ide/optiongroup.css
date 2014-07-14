@@ -67,6 +67,8 @@
     -moz-transition: left 0.15s ease-out;
     -o-transition: left 0.15s ease-out;
     transition: left 0.15s ease-out; }
+#modal-option-group .remove-btn {
+  cursor: pointer; }
 #modal-option-group .switcher.on {
   border-color: #0E8F38;
   background: #4fb845; }

@@ -12,6 +12,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             options =
                 manageBtnValue      : 'Create New Option Group ...'
                 filterPlaceHolder   : 'Filter by Option Group name'
+                noFilter            : true
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -57,11 +58,14 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                             }
                 return false
 
-            customOGAry = _.map ogComps, (compModel) ->
-                return {
-                    id: compModel.id,
-                    name: compModel.get('name')
-                }
+            customOGAry = []
+            _.each ogComps, (compModel) ->
+                if compModel.get('engineName') is that.engine and
+                    compModel.get('engineVersion') is that.version
+                        customOGAry.push({
+                            id: compModel.id,
+                            name: compModel.get('name')
+                        })
 
             @ogAry = defaultOGAry.concat customOGAry
 
@@ -93,7 +97,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                 engine: @engine,
                 version: @version,
                 model: dbOGModel,
-                dropdown: @
+                dropdown: @,
+                isCreate: true
             }).render()
 
         renderNoCredential: () ->

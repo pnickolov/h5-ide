@@ -43,6 +43,7 @@ define [
             'click .add-option'             : 'addOption'
             'click .save-btn'               : 'saveClicked'
             'click .remove-btn'             : 'removeClicked'
+            'click .cancel-btn'             : 'cancelClicked'
             'submit form'                   : 'doNothing'
             'click #og-sg input'            : 'changeSg'
 
@@ -63,6 +64,8 @@ define [
 
         initModal: (tpl) ->
 
+            that = this
+
             options =
                 template        : tpl
                 title           : "Edit Option Group"
@@ -71,6 +74,7 @@ define [
                 width           : '855px'
                 height          : '473px'
                 compact         : true
+                hideClose       : true
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @
@@ -82,6 +86,7 @@ define [
             that = this
 
             @dropdown = option.dropdown
+            @isCreate = option.isCreate
 
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
@@ -107,9 +112,12 @@ define [
 
         render: ->
 
-            @$el.html template.og_modal @ogModel.toJSON()
+            ogData = @ogModel.toJSON()
+            ogData.isCreate = @isCreate
+            @$el.html template.og_modal(ogData)
             @initModal @el
             @renderOptionList()
+            @__modalplus.resize()
             @
 
         renderOptionList: ->
@@ -309,4 +317,10 @@ define [
             that = this
             @ogModel.remove()
             @dropdown.refresh()
+            @__modalplus.close()
+
+        cancelClicked: () ->
+
+            that = this
+            @ogModel.remove() if @isCreate
             @__modalplus.close()

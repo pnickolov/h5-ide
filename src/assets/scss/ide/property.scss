@@ -37,6 +37,10 @@
 			width: 115px;
 		}
 	}
+
+	.property-dbinstance-optiongroup-placeholder {
+		.selectbox .selection .icon-edit { display: none; }
+	}
 }
 
 .property-subnet-group {

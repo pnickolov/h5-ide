@@ -23,6 +23,8 @@
   margin-right: 5px; }
 .property-dbinstance .property-dbinstance-iops-value-section #property-dbinstance-iops-value {
   width: 115px; }
+.property-dbinstance .property-dbinstance-optiongroup-placeholder .selectbox .selection .icon-edit {
+  display: none; }
 
 .property-subnet-group .property-az-name {
   clear: both;

@@ -164,6 +164,7 @@ define [
             option = jQuery.extend(true, {}, option)
 
             if option.DefaultPort
+                option.port = data?.Port or option.DefaultPort
                 option.sgs = []
                 Design.modelClassForType(constant.RESTYPE.SG).each ( obj ) ->
                     json = obj.toJSON()

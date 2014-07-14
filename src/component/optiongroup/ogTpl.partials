@@ -20,7 +20,7 @@
 <div class="port-sg">
     <div>
         <label for="og-port">Port</label>
-        <input type="text" id="og-port" class="input" value="{{DefaultPort}}" data-required="true" data-type="number"/>
+        <input type="text" id="og-port" class="input" value="{{port}}" data-required="true" data-type="number"/>
     </div>
     <ul class="acl-sg-info-list property-list" id="og-sg">
         {{#each sgs}}

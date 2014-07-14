@@ -442,7 +442,7 @@ define [
             Port   : @get 'port'
             Address: @get 'address'
           Engine                                : @get 'engine'
-          EngineVersion                         : '5.6.13' # @get 'engineVersion'
+          EngineVersion                         : @get 'engineVersion'
           LicenseModel                          : @get 'license'
           MasterUsername                        : @get 'username'
           MasterUserPassword                    : @get 'password'

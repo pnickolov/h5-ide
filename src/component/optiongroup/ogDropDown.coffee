@@ -35,14 +35,21 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @engine = option.engine
             @version = option.version
 
+            @refresh()
+
+            @
+
+        refresh: () ->
+
+            that = this
             @ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
             ogComps = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
 
             # only show default og from aws and custom og from stack
             defaultOGAry = []
             @ogCol.each (model, idx) ->
-                if model.get('EngineName') is option.engine and
-                    model.get('MajorEngineVersion') is option.version and
+                if model.get('EngineName') is that.engine and
+                    model.get('MajorEngineVersion') is that.version and
                         model.get('OptionGroupName').indexOf('default:') is 0
                             defaultOGAry.push {
                                 id: null,
@@ -59,10 +66,6 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @ogAry = defaultOGAry.concat customOGAry
 
             @renderDropdownList()
-
-            null
-
-            @
 
         renderDropdownList: () ->
 
@@ -89,7 +92,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             new OgManage({
                 engine: @engine,
                 version: @version,
-                model: dbOGModel
+                model: dbOGModel,
+                dropdown: @
             }).render()
 
         renderNoCredential: () ->
@@ -119,7 +123,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                 new OgManage({
                     engine: @engine,
                     version: @version,
-                    model: ogModel
+                    model: ogModel,
+                    dropdown: @
                 }).render()
 
             return false

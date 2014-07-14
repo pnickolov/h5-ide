@@ -75,6 +75,7 @@ define [
       ComplexResModel.call( @, attr, option )
 
     initialize : ( attr, option ) ->
+
       if option and option.cloneSource
         #Create ReadReplica
         @set 'engine',    option.cloneSource.get('engine') # for draw
@@ -108,7 +109,22 @@ define [
         @on 'all', @preSerialize
         @on 'sgchange', @onSgChange
 
-      null
+      if not @get('ogName')
+        @setDefaultOption()
+
+    setDefaultOption: () ->
+
+      # set default option group
+      that = this
+      ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
+      defaultOGAry = []
+      ogCol.each (model, idx) ->
+          if model.get('EngineName') is that.get('engine') and
+              model.get('MajorEngineVersion') is that.getMajorVersion() and
+                  model.get('OptionGroupName').indexOf('default:') is 0
+                      defaultOGAry.push(model.get('OptionGroupName'))
+      if defaultOGAry[0]
+        @set('ogName', defaultOGAry[0])
 
     defaultPortMap:
       'mysql'         : 3306

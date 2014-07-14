@@ -80,6 +80,9 @@ define [
         initialize: (option) ->
 
             that = this
+
+            @dropdown = option.dropdown
+
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getEngineOptions(option.engine)
 
@@ -296,6 +299,8 @@ define [
 
             @ogModel.set('options', ogDataAry)
 
+            @dropdown.refresh()
+
             @__modalplus.close()
             null
 
@@ -303,4 +308,5 @@ define [
 
             that = this
             @ogModel.remove()
+            @dropdown.refresh()
             @__modalplus.close()

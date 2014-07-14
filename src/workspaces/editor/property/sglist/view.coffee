@@ -8,7 +8,10 @@ define [ './template/stack' ], ( template ) ->
 
 		events   :
 			'click #sg-info-list .sg-edit-icon'    : 'openSgPanel'
-
+			'click #add-sg-btn'                    : 'openSgPanel'
+			'click .sg-list-association-check'     : 'assignSGToComp'
+			'click .sg-list-delete-btn'            : 'deleteSGFromComp'
+			'OPTION_CHANGE #sg-rule-filter-select' : 'sortSgRule'
 
 		render     : () ->
 			@model.getSGInfoList()

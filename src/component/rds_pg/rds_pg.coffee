@@ -333,20 +333,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
       if @resModel and  not @resModel.attributes.pgName
-        @collection.fetch().then ->
-          modelData = that.resModel?.toJSON()
-          defaultPG = (modelData.engine + modelData.engineVersion)
-          defaultPg = that.collection.find (e)->
-            e.isDefault() and (defaultPG.indexOf e.attributes.DBParameterGroupName.split('default.')[1])> -1
-          if not defaultPg
-            defaultPg = that.collection.find (e)->
-              e.isDefault() and ((e.attributes.DBParameterGroupName.split('default.')[1]).indexOf modelData.engine) > -1
-          if defaultPg
-            that.resModel.set("pgName", defaultPg.attributes.DBParameterGroupName)
-            that.dropdown.setSelection that.resModel.attributes.pgName
-          else
-            that.dropdown.setSelection "Please Select Parameter Group"
-      @dropdown.setSelection @resModel.attributes.pgName
+        that.dropdown.setSelection "Please Select Parameter Group"
+      else
+        @dropdown.setSelection @resModel.attributes.pgName
       @dropdown.on 'open',   (@initDropdown.bind @) , @
       @dropdown.on 'manage', (@renderManager.bind @), @
       @dropdown.on 'filter', (@filterDropdown.bind @), @
@@ -384,6 +373,17 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         datas.keys = keys
       if Design.instance().modeIsApp() or Design.instance().modeIsAppEdit()
         datas.isRunTime = true
+
+      resData = App.model.getRdsData('us-east-1')
+      defaultInfo = resData.defaultInfo
+      modelData = @resModel.attributes
+      console.log modelData, resData
+
+      targetFamily = defaultInfo[modelData.engine]?[modelData.engineVersion]?.family
+      if targetFamily
+        datas.keys = _.filter datas.keys, (e)->
+          e.DBParameterGroupFamily == targetFamily
+
       content = template.keys datas
       @dropdown.toggleControls true
       @dropdown.setContent content

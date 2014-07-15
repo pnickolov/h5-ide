@@ -6,15 +6,17 @@ define [
          "Design"
          "../base/main"
          "./view"
-         # "./app_model",
-         # "./app_view",
+         "./app_model",
+         "./app_view",
          "../sglist/main"
          "constant"
          "event"
 ], ( Design,
      PropertyModule,
      view,
-     sglist_main, constant, ide_event ) ->
+     app_model,
+     app_view,
+     sglist_main, constant ) ->
 
     DBInstanceModule = PropertyModule.extend {
 
@@ -38,7 +40,7 @@ define [
 
         setupApp : () ->
 
-            me = this
+            #me = this
 
             null
 
@@ -52,3 +54,5 @@ define [
             null
     }
     null
+
+    DBInstanceModule

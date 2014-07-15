@@ -1,0 +1,6 @@
+<!-- {{test}} -->
+<h3>Test</h3>
+{{#each data}}
+    {{@key}}{{this}}
+    <br/>
+{{/each}}

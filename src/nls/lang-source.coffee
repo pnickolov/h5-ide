@@ -3325,13 +3325,17 @@ module.exports =
       en: "Status"
       zh: ""
 
+    PROP_DBINSTANCE_ENGINE:
+      en: "Engine"
+      zh: ""
+
     PROP_DBINSTANCE_AUTO_UPGRADE:
       en: "Auto Minor Version Upgrade"
       zh: ""
 
     PROP_DBINSTANCE_CLASS:
       en: "DB Instance Class"
-      zh:
+      zh: ""
 
     PROP_DBINSTANCE_IOPS:
       en: "IPOS"

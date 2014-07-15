@@ -1377,7 +1377,7 @@ textarea {
 .selectbox .dropdown {
 	display   : none;
 	position  : absolute;
-	left      : 0;
+	/*left      : 0;*/
 	width     : 100%;
 	min-width : 160px;
 	margin-top: 1px;

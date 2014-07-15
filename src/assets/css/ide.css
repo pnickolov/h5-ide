@@ -759,11 +759,14 @@ td.table-action a.btn {
 	overflow   : hidden;
 }
 
-.property-ami-icon {
-	margin  : -5px 5px -5px -5px;
+.property-engine-icon {
+	margin  : 0px 0px -5px -5px;
 	padding : 11px 2px;
 
-	background    : #7A7A7A;
+	height: 7px;
+	width:  35px;
+
+	background    : white;
 	border-radius : 4px 0 0 4px;
 	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
 
@@ -774,7 +777,37 @@ td.table-action a.btn {
 	transition         : background .2s;
 }
 
-.property-block-wrap:hover .property-ami-icon {
+.property-engine-label {
+	margin  : 0px 0px -5px -5px;
+	padding : 11px 2px;
+
+	text-align: left;
+	line-height: 5px;
+	height: 7px;
+	width:  90px;
+
+	color         : #d0d0d0;
+	background    : #7A7A7A;
+	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
+
+	-webkit-transition : background .2s;
+	-moz-transition    : background .2s;
+	-ms-transition     : background .2s;
+	-o-transition      : background .2s;
+	transition         : background .2s;
+}
+
+.property-engineversion-label {
+	padding    : 6px 0;
+	height     : 15px;
+	overflow   : hidden;
+}
+
+.property-engineversion-dropdown {
+	left : 123px;
+}
+
+.property-block-wrap:hover .property-ami-icon .property-engine-icon {
 	background : #7f7f7f;
 }
 

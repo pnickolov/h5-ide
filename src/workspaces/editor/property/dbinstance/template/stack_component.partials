@@ -14,8 +14,10 @@
 <section class="property-control-group">
     <label class="left">DB Engine Version</label>
     <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
-        <div class="selection">{{engineVersion}}</div>
-        <div class="dropdown">
+        <img class="property-engine-icon left" src="/assets/images/ide/engine/{{engine}}.png"></img>
+        <div class="property-engine-label left" >{{engine}}</div>
+        <div class="property-engineversion-label selection">{{engineVersion}}</div>
+        <div class="property-engineversion-dropdown dropdown">
             <div class="scroll-wrap scrollbar-auto-hide clearfix">
                 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                 <div class="scroll-content">

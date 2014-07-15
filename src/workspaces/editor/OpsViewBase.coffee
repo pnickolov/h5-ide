@@ -135,7 +135,7 @@ define [
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
 
     moveSelectedItem : (evt, which)->
-      switch keycode
+      switch which
         when 37 then x = -1
         when 38 then y = -1
         when 39 then x = 1

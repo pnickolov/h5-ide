@@ -40,7 +40,7 @@
             <dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
             <dd>{{name}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
-            <dd>{{Endpoint.Port}}</dd>
+            <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
             <dd>{{#each optionGroups}}
                 {{#if isDefault}}

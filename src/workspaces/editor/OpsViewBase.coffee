@@ -36,12 +36,12 @@ define [
         if not evt.ctrlKey and not evt.metaKey
           type = "DelSelectItem"
 
-      when 9
-        ### Tab ###
-        if evt.originalEvent.shiftKey
-          type = "SelectPrevItem"
-        else
-          type = "SelectNextItem"
+      # when 9
+      #   ### Tab ###
+      #   if evt.originalEvent.shiftKey
+      #     type = "SelectPrevItem"
+      #   else
+      #     type = "SelectNextItem"
 
       when 37, 38, 39, 40
         ### Arrows ###

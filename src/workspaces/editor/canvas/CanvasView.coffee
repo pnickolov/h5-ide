@@ -85,7 +85,45 @@ define [
       @__getCanvasView().removeClass("stack app appedit").addClass( mode )
       return
 
-    moveSelectedItem : ( deltaX, deltaY )-> @getSelectedItem()?.moveBy( deltax, deltaY )
+    canvasRect : ()->
+      s = @size()
+      {
+        x1 : 5
+        y1 : 3
+        x2 : s[0] - 5
+        y2 : s[1] - 3
+      }
+
+    isRectAvailableForItem : ( subRect, item )->
+      if item.parent()
+        parentRect = item.parent().rect()
+        children   = item.parent().children()
+      else
+        parentRect = @canvasRect()
+        children   = @__itemTopLevel.slice(0)
+
+      if parentRect.x1 >= subRect.x1 or parentRect.y1 >= subRect.y1 or parentRect.x2 <= subRect.x2 or parentRect.y2 <= subRect.y2
+        return false
+
+      for ch in children
+        if ch is item then continue
+        parentRect = ch.effectiveRect()
+        if not ( parentRect.x1 >= subRect.x2 or parentRect.x2 <= subRect.x1 or parentRect.y1 >= subRect.y2 or parentRect.y2 <= subRect.y1 )
+          return false
+
+      true
+
+    moveSelectedItem : ( deltaX, deltaY )->
+      item = @getSelectedItem()
+      if not item then return
+      rect = item.effectiveRect()
+      rect.x1 += deltaX
+      rect.y1 += deltaY
+      rect.x2 += deltaX
+      rect.y2 += deltaY
+      if @isRectAvailableForItem( rect, item )
+        item.moveBy( deltaX, deltaY )
+      return
 
     getSelectedItem : ()->
       if not @__selected then return null

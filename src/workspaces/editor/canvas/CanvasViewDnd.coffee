@@ -13,20 +13,6 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     if (ItemClassProto.parentType || []).indexOf( if group then group.type else "SVG" ) is -1
       return
 
-    if group
-      children  = group.children()
-      groupRect = group.rect()
-    else
-      children  = @__itemTopLevel.slice(0)
-      groupRect =
-        x1 : 5
-        y1 : 3
-        x2 : @size()[0] - 5
-        y2 : @size()[1] - 3
-
-    idx = children.indexOf( excludeChild )
-    if idx >= 0 then children.splice( idx, 1 )
-
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
       data.pageY - data.offsetY - data.zoneDimension.y1
@@ -37,7 +23,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       y1 : dropPos.y
       x2 : dropPos.x + if excludeChild then excludeChild.size().width  else ItemClassProto.defaultSize[0]
       y2 : dropPos.y + if excludeChild then excludeChild.size().height else ItemClassProto.defaultSize[1]
-    }, groupRect, children )
+    }, group, excludeChild )
 
   ________visBestfit = ( bestFit, fits, colliders, alignEdges, detect )->
     svg = @svg
@@ -137,27 +123,11 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     if ( parentMustBeDirect and not ItemClass.isDirectParentType( groupType ) ) or (ItemClassProto.parentType || []).indexOf( groupType ) is -1
       return @errorMessageForDrop( ItemClassProto.type ) || ""
 
-    # Find best place to drop
-    if group
-      children  = group.children()
-      groupRect = group.rect()
-    else
-      children  = @__itemTopLevel.slice(0)
-      groupRect =
-        x1 : 5
-        y1 : 3
-        x2 : @size()[0] - 5
-        y2 : @size()[1] - 3
-
-    idx = children.indexOf( excludeChild )
-    if idx >= 0 then children.splice( idx, 1 )
-
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
       data.pageY - data.offsetY - data.zoneDimension.y1
     )
 
-    # If we need to auto add a parent, then we need to enlarge the drop rectangle.
     dropRect =
       x1 : dropPos.x
       y1 : dropPos.y
@@ -165,12 +135,13 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       y2 : dropPos.y + data.itemHeight
 
     if group and not ItemClass.isDirectParentType( group.type )
+      # If we need to auto add a parent, then we need to enlarge the drop rectangle.
       dropRect.x1 -= 2
       dropRect.y1 -= 2
       dropRect.x2 += 2
       dropRect.y2 += 2
 
-    dropRect = @__bestFitRect( dropRect, groupRect, children )
+    dropRect = @__bestFitRect( dropRect, group, excludeChild )
 
     if not dropRect then return "Not enough space."
 
@@ -268,12 +239,22 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
     fits
 
-  CanvasViewProto.__bestFitRect = ( rect, parentRect, children )->
+  CanvasViewProto.__bestFitRect = ( rect, group, item )->
 
-    width  = __rectWidth( rect )
-    height = __rectHeight( rect )
+    # Prepare
+    if group
+      children   = group.children()
+      parentRect = group.rect()
+    else
+      children  = @__itemTopLevel.slice(0)
+      parentRect = @canvasRect()
+    idx = children.indexOf( item )
+    if idx >= 0 then children.splice( idx, 1 )
+
 
     # Expand the detect area by 12 at most
+    width  = __rectWidth( rect )
+    height = __rectHeight( rect )
     halfW  = Math.round( width / 2 )
     halfH  = Math.round( height / 2 )
     if halfW > 12 then halfW = 12

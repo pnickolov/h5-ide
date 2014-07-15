@@ -47,11 +47,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         parentCid = $(subview.parent).attr("data-id")
         parentItem = @canvas.getItem( parentCid )
         if not parentItem
-          @remvoeView( subview )
+          @removeView( subview )
 
         parentModel = parentItem.model
         if not lcParentMap[ parentItem.model.id ]
-          @remvoeView( subview )
+          @removeView( subview )
         else
           delete lcParentMap[ parentItem.model.id ]
 

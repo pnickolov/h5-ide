@@ -59,7 +59,7 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       @$el = @$el.add if dom.node then dom.node else dom
       @
 
-    remvoeView : ( dom )->
+    removeView : ( dom )->
       if not dom then return @
       if dom.node then dom = dom.node
       @$el = @$el.not dom
@@ -137,10 +137,10 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       rect = @rect()
 
       if @isGroup()
-        rect.x -= 1
-        rect.y -= 1
-        rect.size.width  += 2
-        rect.size.height += 2
+        rect.x1 -= 1
+        rect.y1 -= 1
+        rect.x2 += 1
+        rect.y2 += 1
 
       rect
 

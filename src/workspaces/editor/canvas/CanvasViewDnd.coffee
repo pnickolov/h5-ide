@@ -395,6 +395,9 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     } )
 
   CanvasViewProto.dragItem = ( evt, options )->
+
+    if evt.which isnt 1 then return false
+
     ###
      options = {
         altState : false

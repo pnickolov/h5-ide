@@ -22,7 +22,6 @@ define [
     defaults : () ->
         engineName    : ''
         engineVersion : ''
-        ogName        : ''
         options       : []
 
     remove: ->
@@ -41,7 +40,7 @@ define [
           EngineName            : @get 'engineName'
           MajorEngineVersion    : @get 'engineVersion'
           OptionGroupDescription: @get 'description'
-          OptionGroupName       : @get 'ogName'
+          OptionGroupName       : @get('appId') or ''
           Options               : @get 'options'
           VpcId                 : @getVpcRef()
 
@@ -57,7 +56,7 @@ define [
 
         id     : data.uid
         name   : data.name
-        appId  : data.resource.CreatedBy
+        appId  : data.resource.OptionGroupName
 
         createdBy     : data.resource.CreatedBy
 
@@ -65,7 +64,6 @@ define [
         engineVersion : data.resource.MajorEngineVersion
 
         description   : data.resource.OptionGroupDescription
-        ogName        : data.resource.OptionGroupName
         options       : data.resource.Options
 
       })

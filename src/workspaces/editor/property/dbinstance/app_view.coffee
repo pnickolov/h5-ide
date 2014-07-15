@@ -11,14 +11,15 @@ define [ '../base/view', './template/app', 'og_manage_app', 'constant' ], ( Prop
         'click .db-og-in-app': 'openOgModal'
 
     openOgModal: ->
-        new ogManageApp @model.appId
+        ogModel = @resModel.connectionTargets('OgUsage')[0]
+        new ogManageApp model: ogModel
 
     render : () ->
         if not @model then return
 
         data = @model.toJSON()
         data.optionGroups = _.map data.OptionGroupMemberships, (ogm) ->
-            ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere ogName: ogm.OptionGroupName
+            ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere appId: ogm.OptionGroupName
             _.extend {}, ogm, { isDefault: !ogComp, uid: ogComp?.id or '' }
 
         @$el.html template.appView data

@@ -17,7 +17,7 @@ define [
         initModal: (tpl) ->
             options =
                 template        : tpl
-                title           : "Edit Option Group"
+                title           : @model.get 'appId'
                 disableFooter   : true
                 disableClose    : true
                 width           : '855px'
@@ -30,10 +30,9 @@ define [
 
             null
 
-        initialize: (appId) ->
-            @appId = appId
-
-            @appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(@appId)?.toJSON()
+        initialize: ( options ) ->
+            appId = @model.get 'appId'
+            @appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
             if not @appData then return false
 
             @render()

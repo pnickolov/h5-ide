@@ -584,7 +584,7 @@ define [
       # Asso OptionGroup
       ogName = data.resource.OptionGroupMembership?.OptionGroupName
       if ogName
-        ogComp = resolve ogName
+        ogComp = resolve MC.extractID ogName
 
         if ogComp then new OgUsage( model, ogComp )
         else model.set 'ogName', ogName

@@ -58,7 +58,8 @@ define [ '../base/view'
 
         changeVersion: ( event, value, data ) ->
             @model.set 'engineVersion', value
-            @model.setDefaultOption()
+            @model.setDefaultParameterGroup()
+            @model.setDefaultOptionGroup()
             @renderOptionGroup()
             @renderLVIA()
 

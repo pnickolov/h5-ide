@@ -106,8 +106,8 @@ define [
           @set 'snapshotId', attr.snapshotId
 
         #set default optiongroup and parametergroup
-        @setDefaultOption()
-        @setDefaultParameter()
+        @setDefaultOptionGroup()
+        @setDefaultParameterGroup()
 
 
       if @category() is 'instance'
@@ -115,7 +115,7 @@ define [
         @on 'sgchange', @onSgChange
       null
 
-    setDefaultOption: () ->
+    setDefaultOptionGroup: () ->
       # set default option group
       that = this
       ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
@@ -133,7 +133,7 @@ define [
       @set('ogName', defaultOG )
       null
 
-    setDefaultParameter:() ->
+    setDefaultParameterGroup:() ->
       pgData = App.model.getRdsData(@design().region())?.defaultParameterGroup
       if pgData
         engine = pgData[ @get 'engine' ]

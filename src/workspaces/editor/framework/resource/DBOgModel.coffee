@@ -26,7 +26,7 @@ define [
         options       : []
 
     remove: ->
-      _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOption'
+      _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOptionGroup'
       ComplexResModel.prototype.remove.apply @, arguments
 
     serialize : ()->

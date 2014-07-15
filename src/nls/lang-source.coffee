@@ -3353,6 +3353,10 @@ module.exports =
       en: "Read Replicas"
       zh: ""
 
+    PROP_DBINSTANCE_REPLICAS_SOURCE:
+      en: "Read Replicas Source"
+      zh: ""
+
     PROP_DBINSTANCE_DBCONFIG:
       en: "Database Config"
       zh: ""

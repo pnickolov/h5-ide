@@ -6,9 +6,9 @@
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
-            <dd>{{Endpoint.Address }}:{{Endpoint.Port}}</dd>
+            <dd>{{#if Endppint}}{{Endpoint.Address }}:{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
-            <dd><i class="status status-{{DBInstanceStatus}}"></i>{{DBInstanceStatus}}</dd>
+            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{DBInstanceStatus}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
             <dd>{{Engine}}({{EngineVersion}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
@@ -16,13 +16,21 @@
             <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>
             <dd>{{DBInstanceClass}}{{#if PendingModifiedValues.DbinstanceClass}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
-            <dd>{{Iops}}{{#if PendingModifiedValues.Iops}}(Pending Apply){{/if}}</dd>
+            <dd>{{Iops}}{{#if PendingModifiedValues.Iops}}(Pending Apply){{else}}None{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
             <dd>{{AllocatedStorage}}{{#if PendingModifiedValues.AllocatedStorage}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
             <dd>{{MasterUsername}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_READ_REPLICAS" }}</dt>
-            <dd>{{ReadReplicaSourceDBInstanceIdentifier}}</dd>
+            {{#if ReadReplicaDBInstanceIdentifiers.length}}
+                {{#each ReadReplicaDBInstanceIdentifiers}}
+                    <dt>{{ i18n "PROP_DBINSTANCE_READ_REPLICAS" }}</dt>
+                    <dd>{{this}}</dd>
+                {{/each}}
+            {{/if}}
+            {{#if ReadReplicaSourceDBInstanceIdentifier}}
+                <dt>{{ i18n "PROP_DBINSTANCE_REPLICAS_SOURCE" }}</dt>
+                <dd>{{ReadReplicaSourceDBInstanceIdentifier}}</dd>
+            {{/if}}
         </dl>
     </div>
 
@@ -35,36 +43,39 @@
             <dd>{{Endpoint.Port}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
             <dd>{{#each OptionGroupMemberships}}
-                    <a href="">{{OptionGroupName}}({{status}})</a>
+                    <a href="">{{OptionGroupName}}({{Status}})</a>
                 {{/each}}
             </dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
             <dd>
                 {{#each DBParameterGroups}}
-                    {{DBParameterGroupName}}({{status}})
+                    {{DBParameterGroupName}}({{ParameterApplyStatus}})
                 {{/each}}
             </dd>
         </dl>
     </div>
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
-    <div class="option-group">
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
+    <div class="option-group" style="display: none">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
             <dd>{{DBSubnetGroup.DBSubnetGroupName}}
-                ({{#each DBSubnetGroup.Subnets}}{{Name}}, {{/each}})</dd>
+                ({{#each DBSubnetGroup.Subnets}}{{SubnetIdentifier}}, {{/each}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
             <dd>{{AvailabilityZone}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
-            <dd>{{SecondaryAvailabilityZone}}</dd>
+            {{#if SecondaryAvailabilityZone}}
+                <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
+                <dd>{{SecondaryAvailabilityZone}}</dd>
+            {{/if}}
+
         </dl>
     </div>
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
-    <div class="option-group">
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
+    <div class="option-group" style="display: none">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
             <dd>{{#if BackupRetentionPeriod}}Enabled ({{BackupRetentionPeriod}} day){{else}}Disabled{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
-            <dd>{{LatestRestorableTime}}</dd>
+            <dd>{{timeStr LatestRestorableTime}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
             <dd>{{PreferredBackupWindow}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
@@ -72,13 +83,8 @@
         </dl>
     </div>
 
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_SECURITY_GROUP" }}</div>
-    <div class="option-group">
-        <dl class="dl-vertical">
-            <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
-            <dd>{{this}}</dd>
-        </dl>
-    </div>
+    <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
 
 
 </article>

@@ -30,37 +30,45 @@
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{name}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{Endpoint.Port}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{#each OptionGroupMemberships}}
+                    <a href="">{{OptionGroupName}}({{status}})</a>
+                {{/each}}
+            </dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>
+                {{#each DBParameterGroups}}
+                    {{DBParameterGroupName}}({{status}})
+                {{/each}}
+            </dd>
         </dl>
     </div>
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{DBSubnetGroup.DBSubnetGroupName}}
+                ({{#each DBSubnetGroup.Subnets}}{{Name}}, {{/each}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{AvailabilityZone}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{SecondaryAvailabilityZone}}</dd>
         </dl>
     </div>
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{#if BackupRetentionPeriod}}Enabled ({{BackupRetentionPeriod}} day){{else}}Disabled{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{LatestRestorableTime}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{PreferredBackupWindow}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{PreferredMaintenanceWindow}}</dd>
         </dl>
     </div>
 

@@ -110,7 +110,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
             defaultParameterGroup = {}
             for engine in i.instance_types.rds?.engine || []
               defaultParameterGroup[ engine.Engine ] = {}
-              defaultParameterGroup[ engine.Engine ][ engine.EngineVersion ] = engine.DBParameterGroupFamily
+              defaultParameterGroup[ engine.Engine ][ engine.EngineVersion ] = 'default.' + engine.DBParameterGroupFamily
             i.instance_types.rds.defaultParameterGroup = defaultParameterGroup
 
           self.__appdata[ i.region ] = {

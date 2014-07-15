@@ -112,8 +112,10 @@ define [
       if not @get('ogName')
         @setDefaultOption()
 
-    setDefaultOption: () ->
+      if not @get('pgName')
+        @setDefaultParameter()
 
+    setDefaultOption: () ->
       # set default option group
       that = this
       ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
@@ -123,8 +125,26 @@ define [
               model.get('MajorEngineVersion') is that.getMajorVersion() and
                   model.get('OptionGroupName').indexOf('default:') is 0
                       defaultOGAry.push(model.get('OptionGroupName'))
-      if defaultOGAry[0]
-        @set('ogName', defaultOGAry[0])
+      if defaultOGAry.length > 0 and defaultOGAry[0]
+        defaultOG = defaultOGAry[0]
+      else
+        defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
+        console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
+      @set('ogName', defaultOG )
+      null
+
+    setDefaultParameter:() ->
+      pgData = App.model.getRdsData(@design().region())?.defaultParameterGroup
+      if pgData
+        engine = pgData[ @get 'engine' ]
+        if engine
+          defaultPG = pgData[ @get 'engine' ][ @get 'engineVersion' ]
+
+      if not defaultPG
+        defaultPG = "default." + @get('engine') + @getMajorVersion()
+        console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"
+      @set 'pgName', defaultPG || ""
+      null
 
     defaultPortMap:
       'mysql'         : 3306
@@ -413,25 +433,6 @@ define [
 
     getOptionGroupName: -> @get( 'ogName' ) or @connectionTargets('OgUsage')[0]?.get 'name'
 
-    getDefaultParameterGroup: ->
-      pgData = App.model.getRdsData(@design().region())?.defaultParameterGroup
-      if pgData
-        engine = pgData[ @get 'engine' ]
-        if engine
-          defaultPG = pgData[ @get 'engine' ][ @get 'engineVersion' ]
-      defaultPG = defaultPG || ""
-      if defaultPG
-        defaultPG = 'default.' + defaultPG
-      else
-        console.warn "can not get default parametergroup for #{@get 'engine'} #{@get 'engineVersion'}"
-      defaultPG || ""
-
-    getParameterGroupName: ->
-      pgName = @get 'pgName'
-      if not pgName
-        pgName = @getDefaultParameterGroup()
-      pgName
-
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'
         event = event.split(":")[0]
@@ -452,7 +453,7 @@ define [
       ogName = @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName'
       if not ogName then ogName = @get( 'ogName' )
 
-      pgName = @getParameterGroupName()
+      pgName = @get 'pgName'
 
       component =
         name : @get("name")

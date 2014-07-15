@@ -1,4 +1,7 @@
 #modal-option-group {
+    .invisible {
+        visibility: hidden; 
+    }
     .header {
         padding: 20px 30px;
         background-color: #333;
@@ -118,6 +121,17 @@
                 border: 1px #008CFF solid;
                 color: #008CFF;
             }
+            .option-edit-btn {
+                float: right;
+                margin-right: 10px;
+                cursor: pointer;
+                margin-left: 10px;
+                margin-top: 12px;
+                color: #aaa;
+                &:hover {
+                    color: #bbb;
+                }
+            }
         }
         .option-item:nth-child(odd) {
             background-color: #333;
@@ -137,7 +151,9 @@
     .save-btn {
         margin-right: 10px;
     }
-
+    .slide-delete {
+        margin-top: 20px;
+    }
     .slidebox {
         .content { margin-top: 8px; }
 

@@ -25,6 +25,8 @@
   width: 115px; }
 .property-dbinstance .property-dbinstance-optiongroup-placeholder .selectbox .selection .icon-edit {
   display: none; }
+.property-dbinstance .property-dbinstance-optiongroup-placeholder .selectbox .selection .option-preview {
+  display: none; }
 
 .property-subnet-group .property-az-name {
   clear: both;

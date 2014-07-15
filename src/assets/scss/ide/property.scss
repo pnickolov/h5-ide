@@ -39,7 +39,10 @@
 	}
 
 	.property-dbinstance-optiongroup-placeholder {
-		.selectbox .selection .icon-edit { display: none; }
+		.selectbox .selection {
+			.icon-edit { display: none; }
+			.option-preview { display: none; }	
+		}
 	}
 }
 

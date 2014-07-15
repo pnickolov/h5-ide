@@ -17,6 +17,7 @@ define [
             null
 
     capitalizeKey = ( arr ) ->
+
         returnArr = []
 
         for a in arr
@@ -29,7 +30,6 @@ define [
 
         returnArr
 
-
     Backbone.View.extend
 
         id: 'modal-option-group'
@@ -39,6 +39,7 @@ define [
         events:
 
             'click .option-item .switcher'  : 'optionChanged'
+            'click .option-item .option-edit-btn' : 'optionEditClicked'
             'click .cancel'                 : 'cancel'
             'click .add-option'             : 'addOption'
             'click .save-btn'               : 'saveClicked'
@@ -46,7 +47,8 @@ define [
             'click .cancel-btn'             : 'cancelClicked'
             'submit form'                   : 'doNothing'
             'click #og-sg input'            : 'changeSg'
-
+            'click .remove-confirm'         : 'removeConfirm'
+            'click .remove-cancel'         : 'removeCancel'
 
         changeSg: (e) ->
             checked = e.currentTarget.checked
@@ -141,11 +143,25 @@ define [
         slideUp: -> @$('.slidebox').removeClass 'show'
 
         cancel: ->
+
             @slideUp()
             @optionCb?(null)
             null
 
+        removeConfirm: ->
+
+            @ogModel.remove()
+            @dropdown.setSelection @dbInstance.getOptionGroupName()
+            @dropdown.refresh()
+            @slideUp()
+            @__modalplus.close()
+
+        removeCancel: ->
+
+            @slideUp()
+
         addOption: (e) ->
+
             optionName = $(e.currentTarget).data 'optionName'
 
             form = $ 'form'
@@ -232,6 +248,11 @@ define [
 
             null
 
+        renderRemoveConfirm: () ->
+
+            @$('.slidebox').addClass 'show'
+            @$('form').html template.og_slide_remove {}
+
         processCol: () ->
 
             @renderList({})
@@ -253,13 +274,15 @@ define [
         close: ->
 
             @optionCb = null
-            @remove()
+            # @remove()
 
         optionChanged: (event) ->
 
             that = this
 
             $switcher = $(event.currentTarget)
+            $optionEdit = $switcher.siblings('.option-edit-btn')
+
             $switcher.toggleClass('on')
 
             $optionItem = $switcher.parents('.option-item')
@@ -267,16 +290,41 @@ define [
             optionName = $optionItem.data('name')
 
             if $switcher.hasClass('on')
+
+                $optionEdit.removeClass('invisible')
+
                 @slide @ogOptions[optionIdx], (optionData) ->
                     if optionData
                         that.ogDataStore[optionName] = optionData
                     else
                         that.setOption($optionItem, false)
 
+            else
+
+                $optionEdit.addClass('invisible')
+
+        optionEditClicked: (event) ->
+
+            that = this
+            $optionEdit = $(event.currentTarget)
+            $optionItem = $optionEdit.parents('.option-item')
+            optionIdx = Number($optionItem.data('idx'))
+            optionName = $optionItem.data('name')
+
+            @slide @ogOptions[optionIdx], (optionData) ->
+                if optionData
+                    that.ogDataStore[optionName] = optionData
+
         setOption: ($item, value) ->
 
             $switcher = $item.find('.switcher')
-            if value then $switcher.addClass('on') else $switcher.removeClass('on')
+            $optionEdit = $switcher.siblings('.option-edit-btn')
+            if value
+                $switcher.addClass('on')
+                $optionEdit.removeClass('invisible')
+            else
+                $switcher.removeClass('on')
+                $optionEdit.addClass('invisible')
 
         getOption: ($item) ->
 
@@ -316,10 +364,7 @@ define [
         removeClicked: () ->
 
             that = this
-            @ogModel.remove()
-            @dropdown.setSelection @dbInstance.getOptionGroupName()
-            @dropdown.refresh()
-            @__modalplus.close()
+            @renderRemoveConfirm()
 
         cancelClicked: () ->
 

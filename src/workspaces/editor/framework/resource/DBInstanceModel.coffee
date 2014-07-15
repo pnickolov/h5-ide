@@ -231,7 +231,7 @@ define [
       currentVersion = @get 'engineVersion'
       currentClass   = @get 'instanceClass'
 
-      spec[1] = license: 'test', versions: [ { version: '0.0.1', instanceClasses: [{instanceClass:'test', multiAZCapable: false}]} ]
+      # spec[1] = license: 'test', versions: [ { version: '0.0.1', instanceClasses: [{instanceClass:'test', multiAZCapable: false}]} ]
 
       license = _.first _.filter spec, (s) ->
         if s.license is currentLicense

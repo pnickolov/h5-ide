@@ -5,7 +5,7 @@
 {{#each this}}
     <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{name}}" tabindex="-1">
         {{name}}
-        <div class="option-preview">MEMCACHED NIASDHI NIDFJO NOISDJI</div>
+        <div class="option-preview">{{preview}}</div>
         {{#if id}}<div class="icon-edit"></div>{{/if}}
     </li>
 {{/each}}
@@ -75,6 +75,15 @@
     <a class="btn btn-silver cancel">Cancel</a>
 </div>
 
+<!-- {{og_slide_remove}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete this option group?</div>
+    <div class="init action">
+        <button class="btn btn-red remove-confirm">Delete</button>
+        <button class="btn btn-silver remove-cancel">Cancel</button>
+    </div>
+</div>
+
 <!-- {{og_modal}} -->
 <div id="modal-option-group">
     <div class="slidebox">
@@ -109,6 +118,7 @@
     <div class="name">{{Name}}</div>
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+    <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
     <label class="switcher{{#if checked}} on{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>

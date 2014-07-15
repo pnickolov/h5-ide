@@ -1,3 +1,5 @@
+#modal-option-group .invisible {
+  visibility: hidden; }
 #modal-option-group .header {
   padding: 20px 30px;
   background-color: #333; }
@@ -100,6 +102,15 @@
     #modal-option-group .option-list .option-item .permenant {
       border: 1px #008CFF solid;
       color: #008CFF; }
+    #modal-option-group .option-list .option-item .option-edit-btn {
+      float: right;
+      margin-right: 10px;
+      cursor: pointer;
+      margin-left: 10px;
+      margin-top: 12px;
+      color: #aaa; }
+      #modal-option-group .option-list .option-item .option-edit-btn:hover {
+        color: #bbb; }
   #modal-option-group .option-list .option-item:nth-child(odd) {
     background-color: #333; }
   #modal-option-group .option-list .option-item:nth-child(even) {
@@ -112,6 +123,8 @@
   margin-left: 20px; }
 #modal-option-group .save-btn {
   margin-right: 10px; }
+#modal-option-group .slide-delete {
+  margin-top: 20px; }
 #modal-option-group .slidebox .content {
   margin-top: 8px; }
 #modal-option-group .slidebox .port-sg {

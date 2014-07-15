@@ -64,7 +64,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                     compModel.get('engineVersion') is that.version
                         customOGAry.push({
                             id: compModel.id,
-                            name: compModel.get('name')
+                            name: compModel.get('name'),
+                            data: compModel.toJSON()
                         })
 
             @ogAry = defaultOGAry.concat customOGAry
@@ -72,11 +73,17 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @renderDropdownList()
 
         renderDropdownList: () ->
+
             that = this
             if @ogAry.length
                 selection = @dbInstance.getOptionGroupName()
                 _.each @ogAry, (og) ->
                     ogName = og.name
+                    ogPreviewAry = []
+                    if og.data
+                        _.each og.data.options, (option) ->
+                            ogPreviewAry.push(option.OptionName)
+                        og.preview = ogPreviewAry.join(',')
                     if ogName and ogName is selection
                         og.selected = true
                     null

@@ -124,6 +124,11 @@
     </div>
 </div>
 
-
-
-
+<!-- {{optionGroupDropDown}} -->
+{{#if canCustomOG}}
+<label for="property-dbinstance-optiongroup-placeholder">Option Group</label>
+<div class="property-dbinstance-optiongroup-placeholder"></div>
+{{else}}
+<label>Option Group</label>
+<div>{{ogName}}</div>
+{{/if}}

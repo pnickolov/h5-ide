@@ -58,6 +58,8 @@ define [ '../base/view'
 
         changeVersion: ( event, value, data ) ->
             @model.set 'engineVersion', value
+            @model.setDefaultOption()
+            @renderOptionGroup()
             @renderLVIA()
 
         changeClass: ( event, value, data ) ->
@@ -193,19 +195,10 @@ define [ '../base/view'
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
 
+            # render 
             @$el.html template attr
             @renderLVIA()
-
-            # init option group
-            $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
-            ogDropdown = new OgDropdown({
-                el: $ogDropdown
-                dbInstance: @model
-            })
-            $ogDropdown.html ogDropdown.render({
-                    engine: attr.engine,
-                    version: @model.getMajorVersion()
-                }).el
+            @renderOptionGroup()
 
             # set Start Day week selection
             weekStr = maintenanceTime.startWeek
@@ -239,6 +232,32 @@ define [ '../base/view'
             @pgDropdown = new parameterGroup(@model).renderDropdown()
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
+
+        renderOptionGroup: ->
+
+            # if can create custom og
+            attr = @model.toJSON()
+            attr.canCustomOG = false
+            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+            engineOptions = optionCol.getEngineOptions(attr.engine)
+            ogOptions = engineOptions[@model.getMajorVersion()] if engineOptions
+            attr.canCustomOG = true if engineOptions and ogOptions
+
+            @$el.find('.property-dbinstance-optiongroup').html template_component.optionGroupDropDown(attr)
+
+            # init option group dropdown
+            if attr.canCustomOG
+
+                $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
+                ogDropdown = new OgDropdown({
+                    el: $ogDropdown
+                    dbInstance: @model
+                })
+                $ogDropdown.html ogDropdown.render({
+                        engine: attr.engine,
+                        version: @model.getMajorVersion()
+                    }).el
+
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->
             spec = @model.getSpecifications()

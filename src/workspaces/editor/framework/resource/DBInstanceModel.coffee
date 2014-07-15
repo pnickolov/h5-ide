@@ -125,12 +125,13 @@ define [
               model.get('MajorEngineVersion') is that.getMajorVersion() and
                   model.get('OptionGroupName').indexOf('default:') is 0
                       defaultOGAry.push(model.get('OptionGroupName'))
+
       if defaultOGAry.length > 0 and defaultOGAry[0]
         defaultOG = defaultOGAry[0]
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @set('ogName', defaultOG )
+      @setOptionGroup(defaultOG)
       null
 
     setDefaultParameter:() ->

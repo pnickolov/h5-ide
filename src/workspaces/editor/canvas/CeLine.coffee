@@ -67,7 +67,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         maskPath = svg.path( path )
         length = parseFloat(maskPath.node.getTotalLength()).toFixed(2)
 
-        dirt = if initiator is item_from then -1 else 1
+        dirt = if initiator is item_from then 1 else -1
 
         maskPath.style({
           "stroke-dasharray"  : length + " " + length

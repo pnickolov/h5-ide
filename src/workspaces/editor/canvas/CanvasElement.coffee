@@ -114,16 +114,17 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         y : y
       }
 
-    effectiveRect : ()->
+    containPoint : ( px, py )->
+      x = @model.x()
+      y = @model.y()
+      size = @size()
+
+      x <= px and y <= py and x + size.width >= px and y + size.height >= py
+
+    rect : ()->
       size = @size()
       x = @model.x()
       y = @model.y()
-
-      if @isGroup()
-        x -= 1
-        y -= 1
-        size.width  += 2
-        size.height += 2
 
       {
         x1 : x
@@ -131,6 +132,17 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
         x2 : x + size.width
         y2 : y + size.height
       }
+
+    effectiveRect : ()->
+      rect = @rect()
+
+      if @isGroup()
+        rect.x -= 1
+        rect.y -= 1
+        rect.size.width  += 2
+        rect.size.height += 2
+
+      rect
 
     initNode : ( node, x, y )->
       node.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
@@ -337,6 +349,8 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
 
 
     changeParent : ( newParent, x, y )->
+      if not newParent then return
+
       if @parent() is newParent
         if @model.x() is x and @model.y() is y then return
         @moveBy( x - @model.x(), y - @model.y() )

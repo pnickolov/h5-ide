@@ -4,14 +4,13 @@ define [
   "./CanvasElement"
   "CanvasManager"
   "Design"
-  "constant"
   "i18n!/nls/lang.js"
   "UI.modalplus"
 
   "backbone"
   "UI.nanoscroller"
   "svg"
-], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, constant, lang, Modal )->
+], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, lang, Modal )->
 
   # Insert svg defs template.
   $( OpsEditorTpl.svgDefs() ).appendTo("body")
@@ -78,13 +77,8 @@ define [
 
     __getCanvasView : ()-> @$el.children().children(".canvas-view")
 
-    appendVpc    : ( svgEl )-> @__appendSvg(svgEl, ".layer_vpc")
-    appendAz     : ( svgEl )-> @__appendSvg(svgEl, ".layer_az")
-    appendSubnet : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
     appendLine   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
-    appendAsg    : ( svgEl )-> @__appendSvg(svgEl, ".layer_asg")
-    appendSgline : ( svgEl )-> @__appendSvg(svgEl, ".layer_sgline")
 
     switchMode : ( mode )->
       console.assert( "stack app appedit".indexOf( mode ) >= 0 )
@@ -174,10 +168,10 @@ define [
     size  : ()-> @design.get("canvasSize")
     scale : ()-> @__scale
 
-    expandHeight : ()-> @resize( "height", 60  )
+    expandHeight : ()-> @resize( "height",  60 )
     shrinkHeight : ()-> @resize( "height", -60 )
-    expandWidth  : ()-> @resize( "width",  60  )
-    shrinkWidth  : ()-> @resize( "width", -60  )
+    expandWidth  : ()-> @resize( "width",   60 )
+    shrinkWidth  : ()-> @resize( "width",  -60 )
     resize : ( dimension, delta )->
       size  = @size()
       scale = @scale()
@@ -218,20 +212,12 @@ define [
 
       @initializing = true
 
-      @svg.clear().add([
-        @svg.group().classes("layer_vpc")
-        @svg.group().classes("layer_az")
-        @svg.group().classes("layer_line")
-        @svg.group().classes("layer_subnet")
-        @svg.group().classes("layer_asg")
-        @svg.group().classes("layer_sgline")
-        @svg.group().classes("layer_node")
-      ])
+      @recreateStructure()
 
       @__itemMap = {}
-      @__itemGroupMap = {}
       @__itemLineMap  = {}
       @__itemNodeMap  = {}
+      @__itemTopLevel = []
 
       lines = []
       types = {}
@@ -288,11 +274,13 @@ define [
       @__itemMap[ resourceModel.id ] = item
       @__itemMap[ item.cid ] = item
 
+      if resourceModel.parent and not resourceModel.parent()
+        # Make sure group is after item.
+        @__itemTopLevel[ if item.isGroup() then "push" else "unshift"]( item )
+
       if resourceModel.node_line
         @__itemLineMap[ item.cid ] = item
-      else if resourceModel.node_group or resourceModel.type is constant.RESTYPE.ASG
-        @__itemGroupMap[ item.cid ] = item
-      else
+      else if not resourceModel.node_group
         @__itemNodeMap[ item.cid ] = item
       return
 
@@ -307,17 +295,17 @@ define [
       delete @__itemMap[ resourceModel.id ]
       delete @__itemMap[ item.cid ]
       delete @__itemLineMap[ item.cid ]
-      delete @__itemGroupMap[ item.cid ]
       delete @__itemNodeMap[ item.cid ]
+
+      idx = @__itemTopLevel.indexOf( item )
+      if idx >= 0 then @__itemTopLevel.splice( idx, 1 )
+
       item.remove()
       return
 
     getItem : ( id )-> @__itemMap[ id ]
 
-    update : ()->
-      for id, item of @__itemNodeMap
-        item.render()
-      return
+    update : ()-> item.render() for id, item of @__itemNodeMap; return
 
     # Hover effect
     __hoverEl : ( evt )->
@@ -335,59 +323,6 @@ define [
       return
 
     # Find item by position
-    __itemAtPos : ( x, y )->
-      self = @
-      children = []
-      children = children.concat.apply children, ["CGW", "IGW", "VGW", "VPC"].map (type)->
-        self.design.componentsOfType( constant.RESTYPE[ type ] )
-
-      context = null
-
-      while children
-        chs      = children
-        children = null
-
-        for child in chs
-          childItem = @getItem( child.id )
-          if not childItem then continue
-
-          childPos  = childItem.pos()
-          childSize = childItem.size()
-
-          if childPos.x <= x and
-             childPos.y <= y and
-             childPos.x + childSize.width >= x and
-             childPos.y + childSize.height >= y
-
-            if not childItem.isGroup()
-              return childItem
-
-            context  = @getItem( child.id )
-            children = childItem.model.children()
-            break
-
-      context
-
-    __itemAtPosForConnect : ( x, y )->
-      item = @__itemAtPos( x, y )
-      if not item then return
-      if item.type isnt constant.RESTYPE.AZ then return item
-
-      # Enlarge subnet area.
-      for subnet in item.children()
-        childPos  = subnet.pos()
-        childSize = subnet.size()
-        childPos.x      -= 2
-        childSize.width += 4
-
-        if childPos.x <= x and
-           childPos.y <= y and
-           childPos.x + childSize.width >= x and
-           childPos.y + childSize.height >= y
-
-          return subnet
-      item
-
     __localToCanvasCoor : ( x, y )->
       sc = @$el.children(":first-child")[0]
       {
@@ -395,33 +330,48 @@ define [
         y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
       }
 
+    __itemAtPos : ( coord )->
+      children = @__itemTopLevel
+      context  = null
+
+      while children
+        chs      = children
+        children = null
+
+        for child in chs
+          if not child.containPoint( coord.x, coord.y )
+            continue
+
+          if not child.isGroup() then return child
+
+          context  = child
+          children = child.children()
+          break
+
+      context
+
     __groupAtCoor : ( coord, excludeSubject )->
-      group = null
 
-      for id, item of @__itemGroupMap
-        if not item.model.width then continue
+      children = @__itemTopLevel
+      context  = null
 
-        p = item
-        while p
-          if p is excludeSubject
-            exclude = true
-            break
-          p = p.parent()
+      while children
+        chs      = children
+        children = null
 
-        if exclude
-          exclude = false
-          continue
+        for child in chs
+          if not child.isGroup()
+            continue
+          if child is excludeSubject
+            continue
+          if not child.containPoint( coord.x, coord.y )
+            continue
 
-        x = item.model.x()
-        y = item.model.y()
-        w = item.model.width()
-        h = item.model.height()
+          context  = child
+          children = child.children()
+          break
 
-        if coord.x >= x and coord.y >= y and coord.x <= x+w and coord.y <= y + h
-          if not group or group.model.width() > w and group.model.height() > h
-            group = item
-
-      group
+      context
 
     # Scroll on drag
     __clearDragScroll : ()->

@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "Design", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, Design, constant, CanvasManager, lang )->
+define [ "./CanvasView", "Design", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, lang )->
 
   CanvasViewProto = CanvasView.prototype
 
@@ -141,33 +141,24 @@ define [ "./CanvasView", "Design", "constant", "CanvasManager", "i18n!/nls/lang.
     data.pageY = evt.pageY
     data.context.__scrollOnDrag( data )
 
-    offsetX = ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
-    offsetY = ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale
+    newX = data.startPos.x + ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
+    newY = data.startPos.y + ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale
 
-    data.lineSvg.plot( data.startPos.x, data.startPos.y, data.startPos.x + offsetX, data.startPos.y + offsetY )
+    data.lineSvg.plot( data.startPos.x, data.startPos.y, newX, newY )
     false
 
   __drawLineUp = ( evt )->
     data = evt.data
 
     # Find element
-    canvasX = data.startPos.x + ( data.pageX + data.scrollContent.scrollLeft - data.startX ) * data.canvasScale
-    canvasY = data.startPos.y + ( data.pageY + data.scrollContent.scrollTop  - data.startY ) * data.canvasScale
-    item    = data.context.__itemAtPosForConnect(
-      Math.round( canvasX / CanvasView.GRID_WIDTH ),
-      Math.round( canvasY / CanvasView.GRID_HEIGHT )
-    )
+    offset = $( data.scrollContent ).offset()
+    coord  = data.context.__localToCanvasCoor( data.pageX - offset.left, data.pageY - offset.top )
+    item   = data.context.__itemAtPos( coord )
 
     # Find port
-    if item.type is constant.RESTYPE.ELB and ( data.startItem.type is constant.RESTYPE.INSTANCE or data.startItem.type is constant.RESTYPE.INSTANCE )
-      if canvasX < item.pos().x + item.size().width / 2
-        toPort = "elb-sg-out"
-      else
-        toPort = "elb-sg-in"
-    else if item.type is constant.RESTYPE.ASG or item.type is "ExpandedAsg"
-      item = item.getLc()
-      if item
-        item = data.context.getItem( item.id )
+    fixed  = data.context.fixConnection( coord, data.startItem, item )
+    toPort = fixed.toPort
+    item   = fixed.target
 
     if not toPort and item
       toPort = item.$el.find(".connectable").attr("data-name")

@@ -1,8 +1,10 @@
 
 define [ "./CanvasView" ], ( CanvasView )->
 
-  ###
-  ________visualizeResize = ( data )->
+  ________visualizeResize = ()->
+
+  ### env:dev ###
+  ________vis = ( data )->
     svg = data.context.svg
 
     if not $("#ResizeBound").length
@@ -31,7 +33,10 @@ define [ "./CanvasView" ], ( CanvasView )->
         svg.rect( "100%", (data.rangeY[1] - data.rangeY[0]) * 10 ).move( 0, data.rangeY[0]*10 ).style("fill", "blue")
       )
     return
-  ###
+
+  ________visualizeResize = ________vis
+  ### env:dev:end ###
+
 
   CanvasViewProto = CanvasView.prototype
 
@@ -41,15 +46,15 @@ define [ "./CanvasView" ], ( CanvasView )->
     item      = @getItem( $group.attr("data-id") )
     direction = $resizer.attr("class").replace("group-resizer ", "").split("-")
 
+    target = item.rect()
+
     parent = item.parent()
     if parent
-      pos  = parent.pos()
-      size = parent.size()
-      parent =
-        x1 : pos.x + 2
-        y1 : pos.y + 2
-        x2 : pos.x - 2 + size.width
-        y2 : pos.y - 2 + size.height
+      parent = parent.rect()
+      parent.x1 += 2
+      parent.y1 += 2
+      parent.x2 -= 2
+      parent.y2 -= 2
     else
       size = @size()
       parent =
@@ -57,14 +62,6 @@ define [ "./CanvasView" ], ( CanvasView )->
         y1 : 3
         x2 : size[0] - 5
         y2 : size[1] - 3
-
-    pos  = item.pos()
-    size = item.size()
-    target =
-      x1 : pos.x
-      y1 : pos.y
-      x2 : pos.x + size.width
-      y2 : pos.y + size.height
 
     left = direction.indexOf("left") >= 0
     top  = direction.indexOf("top")  >= 0
@@ -89,7 +86,7 @@ define [ "./CanvasView" ], ( CanvasView )->
       parent     : parent
       siblings   : item.siblings().map ( si )-> si.effectiveRect()
 
-      overlay : $("<div></div>").appendTo( @$el ).css({"position":"absolute","left":"0","top":"0","bottom":"0","right":"0"})
+      overlay : $("<div></div>").appendTo( @$el ).css({"position":"absolute","left":"0","top":"0","bottom":"0","right":"0","cursor":$resizer.css("cursor")})
 
     # Update ranges of the resize
     for dirt in direction
@@ -100,7 +97,7 @@ define [ "./CanvasView" ], ( CanvasView )->
       'mouseup.resizegroup'   : __resizeUp
     }, data)
 
-    # ________visualizeResize( data )
+    ________visualizeResize( data )
     false
 
   __updateRange = ( direction, data )->
@@ -153,6 +150,7 @@ define [ "./CanvasView" ], ( CanvasView )->
     return
 
   __childrenBound = ( item, bound )->
+    # Minimum size of a group is 11x11
     bound = {
       x1 : bound.x2 - 11
       y1 : bound.y2 - 11
@@ -206,7 +204,7 @@ define [ "./CanvasView" ], ( CanvasView )->
 
         if data.rangeY
           __updateRange( data.direction[0], data )
-          # ________visualizeResize( data )
+          ________visualizeResize( data )
 
     if data.rangeY
       newY = data.originalBound[ data.sideY ] + Math.round( (evt.pageY - data.pageY) * scale / CanvasView.GRID_HEIGHT )
@@ -221,7 +219,7 @@ define [ "./CanvasView" ], ( CanvasView )->
 
         if data.rangeX
           __updateRange( data.direction[1], data )
-          # ________visualizeResize( data )
+          ________visualizeResize( data )
 
     if changed then __updateGroupEl( data )
     false
@@ -238,7 +236,6 @@ define [ "./CanvasView" ], ( CanvasView )->
     width  *= CanvasView.GRID_WIDTH
     height *= CanvasView.GRID_HEIGHT
 
-    trim = /\s?group-resizer\s?/
     pad  = 10
     pad2 = 20
 
@@ -267,6 +264,7 @@ define [ "./CanvasView" ], ( CanvasView )->
       else if classes.indexOf("port") >= 0
         ports.push ch
 
+    # Update groups port
     if ports.length
       for p in ports
         name = p.attr("data-alias") or p.attr("data-name")
@@ -276,6 +274,8 @@ define [ "./CanvasView" ], ( CanvasView )->
             p.move( pos[0], pos[1] )
 
       cn.update() for cn in data.item.connections()
+
+    # Todo : Update sticky item.
     return
 
   __resizeUp = ( evt )->

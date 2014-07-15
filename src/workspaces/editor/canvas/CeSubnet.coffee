@@ -49,4 +49,11 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", ".
       @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
       svgEl.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
+    # Override to make the connect-line functionality more tolerant
+    containPoint : ( px, py )->
+      x = @model.x() - 2
+      y = @model.y()
+      size = @size()
+
+      x <= px and y <= py and x + size.width + 4 >= px and y + size.height >= py
   }

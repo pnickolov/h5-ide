@@ -1,12 +1,12 @@
 
 define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, CanvasElement, constant, CanvasManager, lang )->
 
-  ###
-  ________visualizeOnMove = ( data )->
-    group = @__groupAtCoor( @__localToCanvasCoor(
-      data.pageX - data.zoneDimension.x1,
-      data.pageY - data.zoneDimension.y1
-    ) )
+  ________visualizeOnMove = ()->
+  ________visualizeBestfit = ()->
+
+  ### env:dev ###
+  ________visMove = ( data )->
+    group = @__groupAtCoor @__localToCanvasCoor(data.pageX-data.zoneDimension.x1, data.pageY-data.zoneDimension.y1)
 
     if group
       groupOffset = group.pos()
@@ -23,8 +23,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
         y1 : 3
         x2 : @size()[0] - 5
         y2 : @size()[1] - 3
-      children = [].concat.apply [], ["CGW", "IGW", "VGW", "VPC"].map (type)=> @design.componentsOfType( constant.RESTYPE[ type ] )
-      children = children.map (i)=> @getItem(i.id)
+      children = data.context.__itemTopLevel
 
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
@@ -38,7 +37,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       y2 : dropPos.y + CanvasElement.getClassByType( data.dataTransfer.type ).prototype.defaultSize[1]
     }, groupRect, children )
 
-  ________visualizeBestfit = ( bestFit, detect, colliders, alignEdges, context )->
+  ________visBestfit = ( bestFit, detect, colliders, alignEdges, context )->
     svg = context.svg
 
     if not $("#BestFitVis").length
@@ -95,7 +94,10 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
           fitsvg.add( svg.rect( x2 - x1, 2 ).move( x1, y2 - 1 ).style("fill", "#2c3e50") )
 
     return
-  ###
+
+  #________visualizeOnMove  = ________visMove
+  #________visualizeBestfit = ________visBestfit
+  ### env:dev:end ###
 
   CanvasViewProto = CanvasView.prototype
 
@@ -121,7 +123,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       # Fancy auto add subnet effect for instance
       data.shadow.toggleClass( "autoparent", group and not ItemClass.isDirectParentType( group.type ) )
 
-    #________visualizeOnMove.call this, data
+    ________visualizeOnMove.call this, data
     return
 
   CanvasViewProto.__addItemDragLeave = ()->
@@ -342,7 +344,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
         farColliders.push bb
 
     if not colliders.length
-      #________visualizeBestfit( orignalRect, null, null, null, @ )
+      ________visualizeBestfit( orignalRect, null, null, null, @ )
       return orignalRect
 
     colliders = colliders.concat farColliders
@@ -381,7 +383,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
           break
         ++i
 
-    #________visualizeBestfit( bestFit, rect, colliders, alignEdges, @ )
+    ________visualizeBestfit( bestFit, rect, colliders, alignEdges, @ )
     return bestFit
 
 

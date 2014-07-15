@@ -105,15 +105,15 @@ define [
           #Create new DBInstance from snapshot
           @set 'snapshotId', attr.snapshotId
 
+        #set default optiongroup and parametergroup
+        @setDefaultOption()
+        @setDefaultParameter()
+
+
       if @category() is 'instance'
         @on 'all', @preSerialize
         @on 'sgchange', @onSgChange
-
-      if not @get('ogName')
-        @setDefaultOption()
-
-      if not @get('pgName')
-        @setDefaultParameter()
+      null
 
     setDefaultOption: () ->
       # set default option group
@@ -125,13 +125,12 @@ define [
               model.get('MajorEngineVersion') is that.getMajorVersion() and
                   model.get('OptionGroupName').indexOf('default:') is 0
                       defaultOGAry.push(model.get('OptionGroupName'))
-
       if defaultOGAry.length > 0 and defaultOGAry[0]
         defaultOG = defaultOGAry[0]
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @setOptionGroup(defaultOG)
+      @set('ogName', defaultOG )
       null
 
     setDefaultParameter:() ->

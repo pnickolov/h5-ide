@@ -4,17 +4,17 @@
 
 define [
          "Design"
+         "CloudResources"
          "../base/main"
          "./view"
-         "./app_model",
-         "./app_view",
+         "./app_view"
          "../sglist/main"
          "constant"
          "event"
 ], ( Design,
+     CloudResources,
      PropertyModule,
      view,
-     app_model,
      app_view,
      sglist_main, constant ) ->
 
@@ -39,14 +39,13 @@ define [
             null
 
         setupApp : () ->
-
-            #me = this
-
             null
 
-        initApp : () ->
-            @model = app_model
+        initApp : ( uid ) ->
+            resModel = Design.instance().component uid
+            @model = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
             @view  = app_view
+            @view.resModel = resModel
             null
 
         afterLoadApp : () ->

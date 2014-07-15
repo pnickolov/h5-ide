@@ -22,7 +22,7 @@ define [ '../base/view', './template/app', 'og_manage_app', 'constant' ], ( Prop
             _.extend {}, ogm, { isDefault: !ogComp, uid: ogComp?.id or '' }
 
         @$el.html template.appView data
-        @model.get 'ogName'
+        @resModel.get 'name'
   }
 
   new CGWAppView()

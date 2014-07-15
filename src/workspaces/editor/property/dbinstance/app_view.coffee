@@ -9,7 +9,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
 
     render : () ->
       console.log @model.toJSON()
-      @$el.html template.test (data:@model?.toJSON())
+      @$el.html template.appView (data:@model?.toJSON())
       @model.get 'name'
   }
 

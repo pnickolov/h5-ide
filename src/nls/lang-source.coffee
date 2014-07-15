@@ -3309,6 +3309,102 @@ module.exports =
       en: "Description"
       zh: ""
 
+    PROP_DBINSTANCE_TIT_DETAIL:
+      en: "DB Instance Detail"
+      zh: ""
+
+    PROP_DBINSTANCE_APP_DBINSTANCE_ID:
+      en: "DB Instance Identifier"
+      zh: ""
+
+    PROP_DBINSTANCE_ENDPOINT:
+      en: "Endpoint"
+      zh: ""
+
+    PROP_DBINSTANCE_STATUS:
+      en: "Status"
+      zh: ""
+
+    PROP_DBINSTANCE_AUTO_UPGRADE:
+      en: "Auto Minor Version Upgrade"
+      zh: ""
+
+    PROP_DBINSTANCE_CLASS:
+      en: "DB Instance Class"
+      zh:
+
+    PROP_DBINSTANCE_IOPS:
+      en: "IPOS"
+      zh: ""
+
+    PROP_DBINSTANCE_STORAGE:
+      en: 'Storage'
+      zh: ""
+
+    PROP_DBINSTANCE_USERNAME:
+      en: "Username"
+      zh: ""
+
+    PROP_DBINSTANCE_READ_REPLICAS:
+      en: "Read Replicas"
+      zh: ""
+
+    PROP_DBINSTANCE_DBCONFIG:
+      en: "Database Config"
+      zh: ""
+
+    PROP_DBINSTANCE_NAME:
+      en: "Database Name"
+      zh: ""
+
+    PROP_DBINSTANCE_PORT:
+      en: "Database Port"
+      zh: ""
+
+    PROP_DBINSTANCE_OG:
+      en: "Option Group"
+      zh: ""
+
+    PROP_DBINSTANCE_PG:
+      en: "Parameter Group"
+      zh: ""
+
+    PROP_DBINSTANCE_NETWORK_AVAILABILITY:
+      en: "Network & Availability"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNETGROUP:
+      en: "Subnet Group"
+      zh: ""
+
+    PROP_DBINSTANCE_PREFERRED_ZONE:
+      en: "Preferred Availability Zone"
+      zh: ""
+
+    PROP_DBINSTANCE_SECONDARY_ZONE:
+      en: "Secondary Availability Zone"
+      zh: ""
+
+    PROP_DBINSTANCE_BACKUP_MAINTENANCE:
+      en: "Backup & Maintenance"
+      zh: ""
+
+    PROP_DBINSTANCE_LAST_RESTORE:
+      en: "Lastest Restore Time"
+      zh: ""
+
+    PROP_DBINSTANCE_BACKUP_WINDOW:
+      en: "Backup Window"
+      zh: ""
+
+    PROP_DBINSTANCE_MAINTENANCE_WINDOW:
+      en: "Maintenance Window"
+      zh: ""
+
+    PROP_DBINSTANCE_SECURITY_GROUP:
+      en: "Security Group"
+      zh: ""
+
     PROC_STEP_REQUEST:
       en: "Processing"
       zh: "处理中"

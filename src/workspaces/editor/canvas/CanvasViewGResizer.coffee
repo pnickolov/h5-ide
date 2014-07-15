@@ -8,11 +8,9 @@ define [ "./CanvasView" ], ( CanvasView )->
     svg = data.context.svg
 
     if not $("#ResizeBound").length
-      group = svg.group().attr({
-        "id":"ResizeBound",
-        "pointer-events":"none"
-      }).style("fill-opacity", "0.5")
+      group = svg.group().attr({"id":"ResizeBound", "pointer-events":"none"}).style("fill-opacity", "0.5")
       group.node.instance = group
+      svg.node.insertBefore(group.node, svg.node.childNodes[0])
 
     $("#ResizeBound")[0].instance.clear()
 
@@ -22,15 +20,15 @@ define [ "./CanvasView" ], ( CanvasView )->
     y2 = data.innerBound.y2 * 10
 
     group = $("#ResizeBound")[0].instance.add(
-      svg.rect( x2 - x1, y2 - y1 ).move( x1, y1 ).style("fill","red")
+      svg.rect( x2 - x1, y2 - y1 ).move( x1, y1 ).style("fill","#f1c40f")
     )
     if data.rangeX
       group.add(
-        svg.rect( (data.rangeX[1] - data.rangeX[0]) * 10, "100%" ).move( data.rangeX[0]*10, 0 ).style("fill", "yellow")
+        svg.rect( (data.rangeX[1] - data.rangeX[0]) * 10, "100%" ).move( data.rangeX[0]*10, 0 ).style("fill", "#9b59b6")
       )
     if data.rangeY
       group.add(
-        svg.rect( "100%", (data.rangeY[1] - data.rangeY[0]) * 10 ).move( 0, data.rangeY[0]*10 ).style("fill", "blue")
+        svg.rect( "100%", (data.rangeY[1] - data.rangeY[0]) * 10 ).move( 0, data.rangeY[0]*10 ).style("fill", "#9b59b6")
       )
     return
 
@@ -150,12 +148,12 @@ define [ "./CanvasView" ], ( CanvasView )->
     return
 
   __childrenBound = ( item, bound )->
-    # Minimum size of a group is 11x11
+    # Minimum size of a group is 10x10
     bound = {
-      x1 : bound.x2 - 11
-      y1 : bound.y2 - 11
-      x2 : bound.x1 + 11
-      y2 : bound.y1 + 11
+      x1 : bound.x2 - 10
+      y1 : bound.y2 - 10
+      x2 : bound.x1 + 10
+      y2 : bound.y1 + 10
     }
 
     for ch in item.children()

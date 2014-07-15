@@ -105,18 +105,18 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         for i in res
           instanceTypeConfig = {}
 
-          #generate default parametergroup
-          if i.instance_types.rds
-            defaultInfo = {}
-            for engine in i.instance_types.rds?.engine || []
-              if not defaultInfo[ engine.Engine ]
-                defaultInfo[ engine.Engine ] = {}
-              defaultInfo[ engine.Engine ][ engine.EngineVersion ] =
-                family : engine.DBParameterGroupFamily
-                parameterGroup : 'default.' + engine.DBParameterGroupFamily
-                optionGroup : 'default:' + engine.Engine + '-' + engine.EngineVersion.split('.').slice(0,2).join('-')
+          # #generate default parametergroup
+          # if i.instance_types.rds
+          #   defaultInfo = {}
+          #   for engine in i.instance_types.rds?.engine || []
+          #     if not defaultInfo[ engine.Engine ]
+          #       defaultInfo[ engine.Engine ] = {}
+          #     defaultInfo[ engine.Engine ][ engine.EngineVersion ] =
+          #       family : engine.DBParameterGroupFamily
+          #       parameterGroup : 'default.' + engine.DBParameterGroupFamily
+          #       optionGroup : 'default:' + engine.Engine + '-' + engine.EngineVersion.split('.').slice(0,2).join('-')
 
-            i.instance_types.rds.defaultInfo = defaultInfo
+          #   i.instance_types.rds.defaultInfo = defaultInfo
 
           self.__appdata[ i.region ] = {
             price              : i.price

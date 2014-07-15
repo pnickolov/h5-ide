@@ -20,9 +20,19 @@ define [
 
     initialize : ()->
       @optionGroupData = {}
+      @engineDict = {}
       return
 
     getEngineOptions : ( engineName )-> @optionGroupData[ engineName ]
+
+    getEngineByNameVersion : ( engineName, engineVersion )->
+      if not engineName
+        console.warn "please provide engineName"
+      else if not engineVersion
+        console.warn "please provide engineVersion"
+      else
+        family = @engineDict[engineName][engineVersion]
+      family || ""
 
     doFetch : ()->
       self = @
@@ -40,6 +50,15 @@ define [
           d.id = d.Engine + " " + d.EngineVersion
           engines[ d.Engine ] = true
 
+          #generate engine dictionary
+          if not self.engineDict[d.Engine]
+            self.engineDict[d.Engine] = {}
+          self.engineDict[d.Engine][d.EngineVersion] =
+            family : d.DBParameterGroupFamily
+            defaultPGName : 'default.' + d.DBParameterGroupFamily
+            defaultOGName : 'default:' + d.Engine + '-' + d.EngineVersion.split('.').slice(0,2).join('-')
+            canCustomOG   : false
+
         jobs = _.keys( engines ).map ( engine_name )->
           ApiRequest("rds_og_DescribeOptionGroupOptions", {
             region_name : self.region()
@@ -54,6 +73,7 @@ define [
         Q.all( jobs ).then ()-> data
 
     __parseOptions : ( data )->
+      self = @
       data = data.DescribeOptionGroupOptionsResponse.DescribeOptionGroupOptionsResult.OptionGroupOptions
 
       if not data then return
@@ -74,6 +94,12 @@ define [
           d.OptionGroupOptionSettings = d.OptionGroupOptionSettings.OptionGroupOptionSetting
 
         optionData[ d.MajorEngineVersion ].push d
+
+        #generate engine dictionary(optiongroup)
+        engineVersion = d.MajorEngineVersion + "." + d.MinimumRequiredMinorEngineVersion
+        engineInfo = self.engineDict[ d.EngineName ][ engineVersion ]
+        if engineInfo
+          engineInfo.canCustomOG = true
 
       @optionGroupData[ engineName ] = optionData
       return

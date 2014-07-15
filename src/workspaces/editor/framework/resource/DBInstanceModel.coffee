@@ -134,14 +134,12 @@ define [
       null
 
     setDefaultParameterGroup:() ->
-      pgData = App.model.getRdsData(@design().region())?.defaultInfo
-      if pgData
-        engine = pgData[ @get 'engine' ]
-        if engine
-          defaultPG = pgData[ @get 'engine' ][ @get 'engineVersion' ]
+      engineData = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+      if engineData
+        defaultPG = engineData.getEngineByNameVersion @get('engine'), @get('engineVersion')
 
-      if defaultPG and defaultPG.parameterGroup
-        defaultPG = defaultPG.parameterGroup
+      if defaultPG and defaultPG.defaultPGName
+        defaultPG = defaultPG.defaultPGName
       else
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"

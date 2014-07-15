@@ -41,9 +41,10 @@
 	.property-dbinstance-optiongroup-placeholder {
 		.selectbox .selection {
 			.icon-edit { display: none; }
-			.option-preview { display: none; }	
+			.option-preview { display: none; }
 		}
 	}
+
 }
 
 .property-subnet-group {
@@ -55,5 +56,11 @@
 	}
 	.property-az-name:first-child {
 		margin-top: -8px;
+	}
+}
+
+.app-dbinstance {
+	.db-og-in-app {
+		cursor: pointer;
 	}
 }

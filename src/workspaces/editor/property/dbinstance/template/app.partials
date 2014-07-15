@@ -1,5 +1,5 @@
 <!-- {{appView}} -->
-<article class="property-app">
+<article class="property-app app-dbinstance">
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
@@ -42,8 +42,12 @@
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{Endpoint.Port}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
-            <dd>{{#each OptionGroupMemberships}}
-                    <a href="">{{OptionGroupName}}({{Status}})</a>
+            <dd>{{#each optionGroups}}
+                {{#if isDefault}}
+                    {{OptionGroupName}}({{status}})
+                {{else}}
+                    <a class="db-og-in-app">{{OptionGroupName}}({{status}})</a>
+                {{/if}}
                 {{/each}}
             </dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>

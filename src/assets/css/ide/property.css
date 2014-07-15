@@ -35,3 +35,6 @@
   margin: 5px -10px 5px; }
 .property-subnet-group .property-az-name:first-child {
   margin-top: -8px; }
+
+.app-dbinstance .db-og-in-app {
+  cursor: pointer; }

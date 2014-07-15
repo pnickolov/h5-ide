@@ -192,6 +192,7 @@ require.config {
 		"ResDiff"          : "component/common/diff/ResDiff"
 		"DiffTree"         : "component/common/diff/DiffTree"
 		'og_manage'        : 'component/optiongroup/ogManage'
+		'og_manage_app'	   : 'component/optiongroup/ogManageApp'
 		'og_dropdown'      : 'component/optiongroup/ogDropDown'
 
 	### env:dev:end ###

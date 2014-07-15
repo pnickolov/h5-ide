@@ -5,8 +5,9 @@
 define [ "Design"
          "../base/main"
          "./view"
+         './app_view'
          "constant"
-], ( Design, PropertyModule, view, constant ) ->
+], ( Design, PropertyModule, view, app_view,constant ) ->
 
     SubnetGroupModule = PropertyModule.extend {
 
@@ -17,6 +18,10 @@ define [ "Design"
             @view  = view
             null
 
+        initApp : (uid) ->
+            @model = Design.instance().component uid
+            @view  = app_view
+            null
     }
 
     null

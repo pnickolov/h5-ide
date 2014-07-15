@@ -3417,6 +3417,22 @@ module.exports =
       en: "Security Group"
       zh: ""
 
+    PROP_DBINSTANCE_SUBNET_GROUP_NAME:
+      en: "DB Subnet Group Name"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_DESC:
+      en: "DB Subnet Group Description"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_STATUS:
+      en: "Status"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_MEMBERS:
+      en: "Members"
+      zh: ""
+
     PROC_STEP_REQUEST:
       en: "Processing"
       zh: "处理中"

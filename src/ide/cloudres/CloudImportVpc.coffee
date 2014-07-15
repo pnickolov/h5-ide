@@ -1352,6 +1352,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
     ()-> #RDS OptionGroup
       for aws_og in @getResourceByType( "DBOG" )
         aws_og = aws_og.attributes
+        if aws_og.OptionGroupName.indexOf("default:") is 0
+          console.warn "skip default OptionGroup #{aws_og.OptionGroupName}"
+          continue
+
         ogRes =
           "CreatedBy"   : ""
           "EngineName"  : ""
@@ -1499,9 +1503,12 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if ogComp
             dbInsRes.OptionGroupMembership.OptionGroupName = CREATE_REF ogComp, "resource.OptionGroupName"
           else
-            console.error "can not find OptionGroup #{ aws_dbins.OptionGroupMemberships[0].OptionGroupName } for DBInstance"
+            #if no component, then use OptionGroupName
+            dbInsRes.OptionGroupMembership.OptionGroupName = aws_dbins.OptionGroupMemberships[0].OptionGroupName
+            if aws_dbins.OptionGroupMemberships[0].OptionGroupName.indexOf("default:") isnt 0
+              console.warn "can not find OptionGroup #{ aws_dbins.OptionGroupMemberships[0].OptionGroupName } for DBInstance"
 
-        #DBParameterGroups
+        #DBParameterGroups(Share resource)
         if aws_dbins.DBParameterGroups[0]
           dbInsRes.DBParameterGroups.DBParameterGroupName = aws_dbins.DBParameterGroups[0].DBParameterGroupName
 

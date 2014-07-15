@@ -176,7 +176,7 @@ define [
             port = $('#og-port').val()
             sgCbs = $('#og-sg input:checked')
 
-            if port then data.Port = port
+            data.Port = port or ''
 
             data.VpcSecurityGroupMemberships = []
             sgCbs.each () ->
@@ -205,8 +205,8 @@ define [
                     json.ruleCount = obj.ruleCount()
                     json.memberCount = obj.getMemberList().length
 
-                    if data and data.VpcSecurityGroupMembership
-                        if obj.createRef( 'GroupId' ) in data.VpcSecurityGroupMembership
+                    if data and data.VpcSecurityGroupMemberships
+                        if obj.createRef( 'GroupId' ) in data.VpcSecurityGroupMemberships
                             json.checked = true
 
                     if json.default

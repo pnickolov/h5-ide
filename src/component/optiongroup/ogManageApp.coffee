@@ -9,6 +9,7 @@ define [
 ], ( constant, CloudResources, template, lang, ide_event, modalplus ) ->
 
     Backbone.View.extend
+        id: 'modal-option-group'
         tagName: 'section'
         className: 'modal-toolbar'
         events:
@@ -18,12 +19,13 @@ define [
             options =
                 template        : tpl
                 title           : @model.get 'appId'
-                disableFooter   : true
-                disableClose    : true
                 width           : '855px'
                 height          : '473px'
                 compact         : true
-                hideClose       : true
+                confirm         :
+                    hide        : true
+                cancel          :
+                    text        : 'Close'
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @

@@ -129,5 +129,36 @@
 {{/each}}
 
 <!-- {{og_app_modal}} -->
-
+<div class="summary">
+    <dl>
+        <dt>Option Group Name</dt>
+        <dd>{{OptionGroupName}}</dd>
+    </dl>
+    <dl>
+        <dt>Engine</dt>
+        <dd>{{EngineName}}</dd>
+    </dl>
+    <dl>
+        <dt>Option Group Description</dt>
+        <dd>{{OptionGroupDescription}}</dd>
+    </dl>
+    <dl>
+        <dt>Engine Version</dt>
+        <dd>{{MajorEngineVersion}}</dd>
+    </dl>
+</div>
+<ul class="option-list">
+    {{#each ogOptions}}
+    <li class="option-item" data-idx="{{@index}}" data-name="{{Name}}">
+        <div class="name">{{Name}}</div>
+        {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
+        {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+        <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
+        <label class="switcher{{#if checked}} on{{/if}}">
+            <span class="switch-label" data-on="ON" data-off="OFF"></span>
+            <span class="switch-handle"></span>
+        </label>
+    </li>
+    {{/each}}
+</ul>
 

@@ -45,6 +45,23 @@
 		}
 	}
 
+	.property-dbinstance-optiongroup-placeholder {
+		.item .icon-edit {
+			float: right;
+			position: absolute;
+			top: 50%;
+			right: 0;
+			margin-top: -8px;
+			margin-right: 10px;
+		}
+		.option-preview {
+			width: 208px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			color: #aaa;
+		}
+	}
+
 }
 
 .property-subnet-group {

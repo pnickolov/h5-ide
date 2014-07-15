@@ -140,16 +140,11 @@
 #modal-option-group .slidebox .error {
   position: relative;
   display: block; }
-
-.property-dbinstance-optiongroup-placeholder .item .icon-edit {
-  float: right;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  margin-top: -8px;
-  margin-right: 10px; }
-.property-dbinstance-optiongroup-placeholder .option-preview {
-  width: 208px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #aaa; }
+#modal-option-group .summary dl {
+  float: left;
+  width: 350px;
+  margin: 8px 35px; }
+#modal-option-group .summary dt {
+  font-weight: bold; }
+#modal-option-group .summary dd {
+  margin-left: 0; }

@@ -36,7 +36,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     type : constant.RESTYPE.ASG
 
     parentType  : [ constant.RESTYPE.SUBNET ]
-    defaultSize : [13, 13]
+    defaultSize : [15, 15]
 
     # Creates a svg element
     create : ()->

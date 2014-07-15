@@ -134,13 +134,15 @@ define [
       null
 
     setDefaultParameterGroup:() ->
-      pgData = App.model.getRdsData(@design().region())?.defaultParameterGroup
+      pgData = App.model.getRdsData(@design().region())?.defaultInfo
       if pgData
         engine = pgData[ @get 'engine' ]
         if engine
           defaultPG = pgData[ @get 'engine' ][ @get 'engineVersion' ]
 
-      if not defaultPG
+      if defaultPG and defaultPG.parameterGroup
+        defaultPG = defaultPG.parameterGroup
+      else
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"
       @set 'pgName', defaultPG || ""

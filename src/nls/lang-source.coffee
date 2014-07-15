@@ -3393,6 +3393,10 @@ module.exports =
       en: "Backup & Maintenance"
       zh: ""
 
+    PROP_DBINSTANCE_AUTOBACKUP:
+      en: "Automated Backups"
+      zh: ""
+
     PROP_DBINSTANCE_LAST_RESTORE:
       en: "Lastest Restore Time"
       zh: ""

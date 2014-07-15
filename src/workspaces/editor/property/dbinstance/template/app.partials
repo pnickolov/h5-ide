@@ -5,70 +5,71 @@
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{id}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_APP_STATE" }}</dt>
-            <dd><i class="status status-{{state}}"></i>{{state}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_APP_CIDR" }}</dt>
+            <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
+            <dd>{{Endpoint.address }}:{{Endpoint.port}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
             <dd>{{cidrBlock}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_DETAIL_LBL_TENANCY" }}</dt>
+            <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
             <dd>{{instanceTenancy}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_APP_MAIN_RT" }}</dt>
+            <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
             <dd>{{mainRTB}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_APP_DEFAULT_ACL" }}</dt>
+            <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>
             <dd>{{defaultACL}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_READ_REPLICAS" }}</dt>
+            <dd>{{this}}</dd>
         </dl>
     </div>
 
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DHCP_OPTION" }}</div>
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
+        <dl>
+            <dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
+            <dd>{{this}}</dd>
+        </dl>
+    </div>
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
+    <div class="option-group">
+        <dl>
+            <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
+            <dd>{{this}}</dd>
+        </dl>
+    </div>
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
+    <div class="option-group">
+        <dl>
+            <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
+            <dd>{{this}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
+            <dd>{{this}}</dd>
+        </dl>
+    </div>
 
-        {{#if autoDhcp}}
-        <div class="property-control-group">
-            <p>{{ i18n "PROP_DBINSTANCE_DHCP_LBL_DEFAULT" }}</p>
-        {{else}}
-            {{#if defaultDhcp}}
-                <dl class="dl-vertical">
-                    <dd>{{ i18n "PROP_DBINSTANCE_DHCP_LBL_NONE" }}</dd>
-                </dl>
-            </div>
-            {{/if}}
-        {{/if}}
-
-        {{#unless defaultDhcp}}
-            <dl class="dl-vertical">
-                <dt>{{ i18n "PROP_DBINSTANCE_DHCP_OPTION_SET_ID" }}</dt>
-                <dd>{{#if dhcpOptionsId}}{{dhcpOptionsId}}{{else}}{{dhcp.dhcpOptionsId}}{{/if}}</dd>
-
-                {{#if dhcp.domainName}}
-                    <dt>{{ i18n "PROP_DBINSTANCE_DHCP_SPECIFIED_LBL_DOMAIN_NAME" }}</dt>
-                    <dd>{{#each dhcp.domainName}}<p>{{this}}</p>{{/each}}</dd>
-                {{/if}}
-
-                {{#if dhcp.domainNameServers.length}}
-                    <dt>{{ i18n "PROP_DBINSTANCE_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER" }}</dt>
-                    <dd>{{#each dhcp.domainNameServers}}<p>{{this}}</p>{{/each}}
-                    </dd>
-                {{/if}}
-
-                {{#if dhcp.ntpServers.length}}
-                    <dt>{{ i18n "PROP_DBINSTANCE_DHCP_SPECIFIED_LBL_NTP_SERVER" }}</dt>
-                    <dd>{{#each dhcp.ntpServers}}<p>{{this}}</p>{{/each}}
-                    </dd>
-                {{/if}}
-
-
-                {{#if dhcp.netbiosNameServers.length}}
-                    <dt>{{ i18n "PROP_DBINSTANCE_DHCP_SPECIFIED_LBL_NETBIOS_NAME_SERVER" }}</dt>
-                    <dd>{{#each dhcp.netbiosNameServers}}<p>{{this}}</p>{{/each}}
-                    </dd>
-                {{/if}}
-
-                {{#if dhcp.netbiosNodeType}}
-                    <dt>{{ i18n "PROP_DBINSTANCE_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE" }}</dt>
-                    <dd>{{dhcp.netbiosNodeType.[0]}}</dd>
-                {{/if}}
-
-            </dl>
-        {{/unless}}
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_SECURITY_GROUP" }}</div>
+    <div class="option-group">
+        <dl>
+            <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
+            <dd>{{this}}</dd>
+        </dl>
     </div>
 
 

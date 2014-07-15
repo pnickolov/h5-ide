@@ -40,6 +40,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		"AWS.SNS.Topic"								: "TopicArn"
 		"AWS.RDS.DBSubnetGroup"                     : "DBSubnetGroupName"
 		"AWS.RDS.DBInstance"                        : "DBInstanceIdentifier"
+		"AWS.RDS.OptionGroup"                       : "OptionGroupName"
 	}
 
 	# A short version

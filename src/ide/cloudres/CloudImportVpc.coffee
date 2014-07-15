@@ -44,6 +44,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @sps       = {} # res id  => comp
       @sbgs      = {} # res id(name) => comp
       @dbinstances = {} # res id(name) => comp
+      @ogs       = {} # res id(name) => comp
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
@@ -1348,6 +1349,37 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         cwComp = @add( "CW", cwRes, aws_cw.Name )
       return
 
+    ()-> #RDS OptionGroup
+      for aws_og in @getResourceByType( "DBOG" )
+        aws_og = aws_og.attributes
+        ogRes =
+          "CreatedBy"   : ""
+          "EngineName"  : ""
+          "MajorEngineVersion"    : ""
+          "OptionGroupDescription": ""
+          "OptionGroupName" : ""
+          "Options": []
+          "VpcId": "" #"@{uid.resource.VpcId}"
+
+        #ogRes = @_mapProperty aws_og, ogRes
+        #ogRes.OptionGroupName = aws_og.id
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_og.id, 'DBOG')
+        if originComp
+          compName = originComp.name
+          ogRes.CreatedBy = originComp.resource.CreatedBy
+          #temp
+          ogRes = jQuery.extend(true, {}, originComp)
+        else
+          compName = aws_og.OptionGroupName
+          console.error "[temp]can not find original component"
+
+        #generate OptionGroup component
+        ogComp = @add( "DBOG", ogRes, compName )
+        @ogs[ aws_og.id ] = ogComp
+      return
+
     ()-> #RDS DBSubnetGroup
       for aws_sbg in @getResourceByType( "DBSBG" )
         aws_sbg = aws_sbg.attributes
@@ -1382,6 +1414,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or compName )
         @addLayout( sbgComp, true, @theVpc )
         @sbgs[ aws_sbg.id ] = sbgComp
+      return
 
     ()-> #RDS DBInstance
       dbinsAry = []
@@ -1462,7 +1495,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         #ref to OptionGroupMembership
         if aws_dbins.OptionGroupMemberships[0]
-          dbInsRes.OptionGroupMembership.OptionGroupName = aws_dbins.OptionGroupMemberships[0].OptionGroupName
+          ogComp = @ogs[ aws_dbins.OptionGroupMemberships[0].OptionGroupName ]
+          if ogComp
+            dbInsRes.OptionGroupMembership.OptionGroupName = CREATE_REF ogComp, "resource.OptionGroupName"
+          else
+            console.error "can not find OptionGroup #{ aws_dbins.OptionGroupMemberships[0].OptionGroupName } for DBInstance"
 
         #DBParameterGroups
         if aws_dbins.DBParameterGroups[0]
@@ -1493,7 +1530,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or compName )
         @addLayout( dbInsComp, false, subnetComp )
         @dbinstances[ aws_dbins.id ] = dbInsComp
-
+      return
   ]
 
 

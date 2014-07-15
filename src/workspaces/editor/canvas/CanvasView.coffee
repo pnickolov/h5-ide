@@ -383,6 +383,7 @@ define [
 
     __scrollOnDrag : ( data )->
       dimension     = data.zoneDimension
+      if not dimension then return
       scrollContent = @$el.children(":first-child")[0]
 
       scrollLeft = scrollContent.scrollLeft

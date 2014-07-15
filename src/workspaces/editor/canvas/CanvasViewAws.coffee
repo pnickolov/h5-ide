@@ -1,5 +1,5 @@
 
-define [ "./CanvasBundle", "constant" ], ( CanvasView, constant )->
+define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js" ], ( CanvasView, constant, lang )->
 
   AwsCanvasView = CanvasView.extend {
     recreateStructure : ()->
@@ -35,6 +35,17 @@ define [ "./CanvasBundle", "constant" ], ( CanvasView, constant )->
         toPort : toPort
         target : target
       }
+
+    errorMessageForDrop : ( type )->
+      switch type
+        when constant.RESTYPE.VOL       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME
+        when constant.RESTYPE.SUBNET    then return lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET
+        when constant.RESTYPE.INSTANCE  then return lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
+        when constant.RESTYPE.ENI       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ENI
+        when constant.RESTYPE.RT        then return lang.ide.CVS_MSG_WARN_NOTMATCH_RTB
+        when constant.RESTYPE.ELB       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ELB
+        when constant.RESTYPE.CGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_CGW
+        when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
   }
 
   AwsCanvasView

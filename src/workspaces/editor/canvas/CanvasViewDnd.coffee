@@ -5,25 +5,27 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
   ________visualizeBestfit = ()->
 
   ### env:dev ###
-  ________visMove = ( data )->
+  ________visMove = ( data, excludeChild )->
     group = @__groupAtCoor @__localToCanvasCoor(data.pageX-data.zoneDimension.x1, data.pageY-data.zoneDimension.y1)
 
+    ItemClassProto = CanvasElement.getClassByType( data.dataTransfer.type ).prototype
+
+    if (ItemClassProto.parentType || []).indexOf( if group then group.type else "SVG" ) is -1
+      return
+
     if group
-      groupOffset = group.pos()
-      groupSize   = group.size()
-      groupRect =
-        x1 : groupOffset.x
-        y1 : groupOffset.y
-        x2 : groupOffset.x + groupSize.width
-        y2 : groupOffset.y + groupSize.height
-      children = group.children()
+      children  = group.children()
+      groupRect = group.rect()
     else
+      children  = @__itemTopLevel.slice(0)
       groupRect =
         x1 : 5
         y1 : 3
         x2 : @size()[0] - 5
         y2 : @size()[1] - 3
-      children = data.context.__itemTopLevel
+
+    idx = children.indexOf( excludeChild )
+    if idx >= 0 then children.splice( idx, 1 )
 
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
@@ -33,42 +35,35 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     @__bestFitRect( {
       x1 : dropPos.x
       y1 : dropPos.y
-      x2 : dropPos.x + CanvasElement.getClassByType( data.dataTransfer.type ).prototype.defaultSize[0]
-      y2 : dropPos.y + CanvasElement.getClassByType( data.dataTransfer.type ).prototype.defaultSize[1]
+      x2 : dropPos.x + if excludeChild then excludeChild.size().width  else ItemClassProto.defaultSize[0]
+      y2 : dropPos.y + if excludeChild then excludeChild.size().height else ItemClassProto.defaultSize[1]
     }, groupRect, children )
 
-  ________visBestfit = ( bestFit, detect, colliders, alignEdges, context )->
-    svg = context.svg
+  ________visBestfit = ( bestFit, fits, colliders, alignEdges, detect )->
+    svg = @svg
 
     if not $("#BestFitVis").length
-      group = svg.group().attr({
-        "id":"BestFitVis",
-        "pointer-events":"none"
-      }).style("fill-opacity", "0.5")
+      group = svg.group().attr({"id":"BestFitVis", "pointer-events":"none"}).style("fill-opacity", "0.5")
       group.node.instance = group
+      svg.node.insertBefore(group.node, svg.node.childNodes[0])
 
     fitsvg = $("#BestFitVis")[0].instance.clear()
 
-    if bestFit
-      bestFit.x1 *= 10
-      bestFit.x2 *= 10
-      bestFit.y1 *= 10
-      bestFit.y2 *= 10
-
+    for fit in fits || []
       fitsvg.add(
-        svg.rect( bestFit.x2 - bestFit.x1, bestFit.y2 - bestFit.y1 ).move( bestFit.x1, bestFit.y1 ).style("fill", "#27ae60")
+        svg.rect( (fit.x2 - fit.x1)*10, (fit.y2 - fit.y1)*10 ).move( fit.x1*10, fit.y1*10 ).style("fill", "#3498db").style("stroke","#333")
       )
 
-    if not detect
-      return
+    if bestFit
+      fitsvg.add(
+        svg.rect( (bestFit.x2 - bestFit.x1)*10, (bestFit.y2 - bestFit.y1)*10 ).move( bestFit.x1*10, bestFit.y1*10 ).style("fill", "#27ae60").style("stroke","#111")
+      )
 
-    detect.x1 *= 10
-    detect.x2 *= 10
-    detect.y1 *= 10
-    detect.y2 *= 10
+    colliders = colliders || []
+    if not colliders.length then return
 
     fitsvg.add(
-      svg.rect( detect.x2 - detect.x1, detect.y2 - detect.y1 ).move( detect.x1, detect.y1 ).style("fill", "#3498db")
+      svg.rect( (detect.x2 - detect.x1)*10, (detect.y2 - detect.y1)*10 ).move( detect.x1*10, detect.y1*10 ).style("fill", "#34495e")
     )
 
     for co in colliders
@@ -77,26 +72,20 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       y1 = co.y1 * 10
       y2 = co.y2 * 10
 
-      fitsvg.add(
-        svg.rect( x2 - x1, y2 - y1 ).move( x1, y1 ).style("fill", "#f39c12")
-      )
+      fitsvg.add( svg.rect( x2 - x1, y2 - y1 ).move( x1, y1 ).style("fill", "#e67e22") )
       for aex1 in alignEdges.x1
-        if aex1 is co.x1
-          fitsvg.add( svg.rect( 2, y2 - y1 ).move( x1 - 1, y1 ).style("fill", "#2c3e50") )
+        fitsvg.add( svg.rect( 2, y2 - y1 ).move( x2 - 1, y1 ).style("fill", "#222") ) if aex1 is co.x2
       for aex2 in alignEdges.x2
-        if aex2 is co.x2
-          fitsvg.add( svg.rect( 2, y2 - y1 ).move( x2 - 1, y1 ).style("fill", "#2c3e50") )
+        fitsvg.add( svg.rect( 2, y2 - y1 ).move( x1 - 1, y1 ).style("fill", "#222") ) if aex2 is co.x1
       for aey1 in alignEdges.y1
-        if aey1 is co.y1
-          fitsvg.add( svg.rect( x2 - x1, 2 ).move( x1, y1 - 1 ).style("fill", "#2c3e50") )
+        fitsvg.add( svg.rect( x2 - x1, 2 ).move( x1, y2 - 1 ).style("fill", "#222") ) if aey1 is co.y2
       for aey2 in alignEdges.y2
-        if aey2 is co.y2
-          fitsvg.add( svg.rect( x2 - x1, 2 ).move( x1, y2 - 1 ).style("fill", "#2c3e50") )
+        fitsvg.add( svg.rect( x2 - x1, 2 ).move( x1, y1 - 1 ).style("fill", "#222") ) if aey2 is co.y1
 
     return
 
-  #________visualizeOnMove  = ________visMove
-  #________visualizeBestfit = ________visBestfit
+  ________visualizeOnMove  = ________visMove
+  ________visualizeBestfit = ________visBestfit
   ### env:dev:end ###
 
   CanvasViewProto = CanvasView.prototype
@@ -121,7 +110,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       @__dragHoverGroup = group
 
       # Fancy auto add subnet effect for instance
-      data.shadow.toggleClass( "autoparent", group and not ItemClass.isDirectParentType( group.type ) )
+      data.shadow.toggleClass( "autoparent", !!(group and not ItemClass.isDirectParentType( group.type )) )
 
     ________visualizeOnMove.call this, data
     return
@@ -142,47 +131,26 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       data.pageY - data.zoneDimension.y1
     ), excludeChild )
 
-    # See if the element should be dropped
-    parentType = ItemClassProto.parentType
-    groupType  = if group then group.type else "SVG"
+    # See if the element can be dropped
+    groupType = if group then group.type else "SVG"
 
-    if parentMustBeDirect and not ItemClass.isDirectParentType( groupType )
-      return ""
-
-    if parentType and parentType.indexOf( groupType ) is -1
-      switch ItemClassProto.type
-        when constant.RESTYPE.VOL       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VOLUME
-        when constant.RESTYPE.SUBNET    then return lang.ide.CVS_MSG_WARN_NOTMATCH_SUBNET
-        when constant.RESTYPE.INSTANCE  then return lang.ide.CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET
-        when constant.RESTYPE.ENI       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ENI
-        when constant.RESTYPE.RT        then return lang.ide.CVS_MSG_WARN_NOTMATCH_RTB
-        when constant.RESTYPE.ELB       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ELB
-        when constant.RESTYPE.CGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_CGW
-        when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
-      return ""
+    if ( parentMustBeDirect and not ItemClass.isDirectParentType( groupType ) ) or (ItemClassProto.parentType || []).indexOf( groupType ) is -1
+      return @errorMessageForDrop( ItemClassProto.type ) || ""
 
     # Find best place to drop
     if group
-      groupOffset = group.pos()
-      groupSize   = group.size()
-      groupRect =
-        x1 : groupOffset.x
-        y1 : groupOffset.y
-        x2 : groupOffset.x + groupSize.width
-        y2 : groupOffset.y + groupSize.height
-      children = group.children()
-      idx = children.indexOf( excludeChild )
-      if idx >= 0 then children.splice( idx, 1 )
+      children  = group.children()
+      groupRect = group.rect()
     else
+      children  = @__itemTopLevel.slice(0)
       groupRect =
         x1 : 5
         y1 : 3
         x2 : @size()[0] - 5
         y2 : @size()[1] - 3
 
-      children = []
-      for type in ["CGW", "IGW", "VGW", "VPC"]
-        children.push(@getItem(i.id)) for i in @design.componentsOfType( constant.RESTYPE[type] )
+    idx = children.indexOf( excludeChild )
+    if idx >= 0 then children.splice( idx, 1 )
 
     dropPos = @__localToCanvasCoor(
       data.pageX - data.offsetX - data.zoneDimension.x1,
@@ -190,25 +158,21 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     )
 
     # If we need to auto add a parent, then we need to enlarge the drop rectangle.
+    dropRect =
+      x1 : dropPos.x
+      y1 : dropPos.y
+      x2 : dropPos.x + data.itemWidth
+      y2 : dropPos.y + data.itemHeight
+
     if group and not ItemClass.isDirectParentType( group.type )
-      dropRect = {
-        x1 : dropPos.x - 2
-        y1 : dropPos.y - 2
-        x2 : dropPos.x + data.itemWidth  + 4
-        y2 : dropPos.y + data.itemHeight + 4
-      }
-    else
-      dropRect = {
-        x1 : dropPos.x
-        y1 : dropPos.y
-        x2 : dropPos.x + data.itemWidth
-        y2 : dropPos.y + data.itemHeight
-      }
+      dropRect.x1 -= 2
+      dropRect.y1 -= 2
+      dropRect.x2 += 2
+      dropRect.y2 += 2
 
-    dropRect = @__bestFitRect(dropRect, groupRect, children )
+    dropRect = @__bestFitRect( dropRect, groupRect, children )
 
-    if not dropRect
-      return "Not enough space."
+    if not dropRect then return "Not enough space."
 
     {
       group    : group
@@ -224,8 +188,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     result = @__handleDropData( data )
 
     if _.isString( result )
-      if result
-        notification 'warning', result, false
+      notification 'warning', result, false
       return
 
     # Create the model
@@ -254,20 +217,21 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     return
 
   __parentBorderLimit = ( rect, parentRect )->
+    r = $.extend {}, rect
     if rect.x1 <= parentRect.x1
-      rect.x2 -= rect.x1 - parentRect.x1 - 1
-      rect.x1  = parentRect.x1 + 1
+      r.x2 -= rect.x1 - parentRect.x1 - 1
+      r.x1  = parentRect.x1 + 1
     else if rect.x2 >= parentRect.x2
-      rect.x1 += parentRect.x2 - 1 - rect.x2
-      rect.x2  = parentRect.x2 - 1
+      r.x1 += parentRect.x2 - 1 - rect.x2
+      r.x2  = parentRect.x2 - 1
 
     if rect.y1 <= parentRect.y1
-      rect.y2 -= rect.y1 - parentRect.y1 - 1
-      rect.y1  = parentRect.y1 + 1
+      r.y2 -= rect.y1 - parentRect.y1 - 1
+      r.y1  = parentRect.y1 + 1
     else if rect.y2 >= parentRect.y2
-      rect.y1 += parentRect.y2 - 1 - rect.y2
-      rect.y2  = parentRect.y2 - 1
-    return rect
+      r.y1 += parentRect.y2 - 1 - rect.y2
+      r.y2  = parentRect.y2 - 1
+    return r
 
   __isOverlap = ( rect1, rect2 )->
     not ( rect1.x1 >= rect2.x2 or rect1.x2 <= rect2.x1 or rect1.y1 >= rect2.y2 or rect1.y2 <= rect2.y1 )
@@ -278,124 +242,111 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
         return false
     true
 
-  __findBestFit = ( alignEdges, isRightEdge, xAttr, rect, colliders )->
-    y1 = rect.y1
-    y2 = rect.y2
-    x1 = rect.x1
-    x2 = rect.x2
+  __isContain = ( subRect, parentRect )->
+    parentRect.x1 <= subRect.x1 and parentRect.y1 <= subRect.y1 and parentRect.x2 >= subRect.x2 and parentRect.y2 >= subRect.y2
 
-    if isRightEdge
-      if xAttr is null then return
-      rect.x1 = xAttr
-      rect.x2 = xAttr + rect.width
-    else
-      if xAttr is null then return
-      rect.x2 = xAttr
-      rect.x1 = xAttr - rect.width
+  __rectWidth  = ( rect )-> rect.x2 - rect.x1
+  __rectHeight = ( rect )-> rect.y2 - rect.y1
+  __expandRect = ( rect, dx, dy )->
+    rect.x1 -= dx
+    rect.x2 += dx
+    rect.y1 -= dy
+    rect.y2 += dy
+    rect
 
-    if __isRectEmpty( rect, colliders ) then return rect
+  __findFits = ( rect, height, alignEdges, colliders )->
+    fits = []
+    for yyy in alignEdges.y1
+      rect.y1 = yyy
+      rect.y2 = yyy + height
+      if __isRectEmpty( rect, colliders ) then fits.push $.extend({}, rect)
 
-    for yyy, idx in alignEdges.y2
-      if yyy isnt null
-        rect.y1 = yyy
-        rect.y2 = yyy + rect.height
-        if __isRectEmpty( rect, colliders ) then return rect
+    for yyy in alignEdges.y2
+      rect.y2 = yyy
+      rect.y1 = yyy - height
+      if __isRectEmpty( rect, colliders ) then fits.push $.extend({}, rect)
 
-      rect.y2 = alignEdges.y1[ idx ]
-      if rect.y2 isnt null
-        rect.y1 = rect.y2 - rect.height
-        if __isRectEmpty( rect, colliders ) then return rect
-
-    rect.y1 = y1
-    rect.y2 = y2
-    rect.x1 = x1
-    rect.x2 = x2
-    null
+    fits
 
   CanvasViewProto.__bestFitRect = ( rect, parentRect, children )->
 
-    width  = rect.x2 - rect.x1
-    height = rect.y2 - rect.y1
+    width  = __rectWidth( rect )
+    height = __rectHeight( rect )
 
-    if width >= parentRect.x2 - parentRect.x1 or height >= parentRect.y2 - parentRect.y1 then return null
-
+    # Expand the detect area by 12 at most
     halfW  = Math.round( width / 2 )
     halfH  = Math.round( height / 2 )
+    if halfW > 12 then halfW = 12
+    if halfH > 12 then halfH = 12
 
     # Detect Area
-    orignalRect = __parentBorderLimit( $.extend({}, rect), parentRect )
-    rect.x1 -= halfW
-    rect.x2 += halfW
-    rect.y1 -= halfH
-    rect.y2 += halfH
-    rect     = __parentBorderLimit( rect, parentRect )
+    orignalRect = __parentBorderLimit( rect, parentRect )
+    rect        = __parentBorderLimit( __expandRect( rect, halfW, halfH ), parentRect )
 
     # Find colliders
-    available    = true
     colliders    = []
     farColliders = []
 
     for ch in children
       bb = ch.effectiveRect()
-
       if __isOverlap( bb, orignalRect )
         colliders.push bb
       else if __isOverlap( bb, rect )
         farColliders.push bb
 
+    # If the drop rect is occuplied by someone
     if not colliders.length
-      ________visualizeBestfit( orignalRect, null, null, null, @ )
-      return orignalRect
+      if __isContain( orignalRect, parentRect )
+        bestFit = orignalRect
+    else
+      colliders  = colliders.concat farColliders
+      alignEdges =
+        x1 : [ orignalRect.x1 ]
+        x2 : [ orignalRect.x2 ]
+        y1 : [ orignalRect.y1 ]
+        y2 : [ orignalRect.y2 ]
 
-    colliders = colliders.concat farColliders
+      # Find possible edge to align
+      for ch in colliders
+        if ch.x1 - width  >= rect.x1 then alignEdges.x2.push(ch.x1)
+        if ch.y1 - height >= rect.y1 then alignEdges.y2.push(ch.y1)
+        if ch.x2 + width  <= rect.x2 then alignEdges.x1.push(ch.x2)
+        if ch.y2 + height <= rect.y2 then alignEdges.y1.push(ch.y2)
 
-    alignEdges = {
-      x1 : []
-      x2 : []
-      y1 : []
-      y2 : []
-    }
-    # Find possible edge to align
-    for ch in colliders
-      alignEdges.x1.push if ch.x1 - width  >= rect.x1 then ch.x1 else null
-      alignEdges.y1.push if ch.y1 - height >= rect.y1 then ch.y1 else null
-      alignEdges.x2.push if ch.x2 + width  <= rect.x2 then ch.x2 else null
-      alignEdges.y2.push if ch.y2 + height <= rect.y2 then ch.y2 else null
+      # Find possible drop rect
+      fits = []
+      ox   = orignalRect.x1
+      oy   = orignalRect.y1
+      for x1 in alignEdges.x1
+        orignalRect.x1 = x1
+        orignalRect.x2 = x1 + width
+        fits = fits.concat __findFits( orignalRect, height, alignEdges, colliders )
 
-    # Find which best fit rect
-    fit =
-      x1     : orignalRect.x1
-      y1     : orignalRect.y1
-      x2     : orignalRect.x2
-      y2     : orignalRect.y2
-      width  : orignalRect.x2 - orignalRect.x1
-      height : orignalRect.y2 - orignalRect.y1
+      for x2 in alignEdges.x2
+        orignalRect.x2 = x2
+        orignalRect.x1 = x2 - width
+        fits = fits.concat __findFits( orignalRect, height, alignEdges, colliders )
 
-    bestFit = __findBestFit( alignEdges, true, fit.x1, fit, colliders )
-    if not bestFit
-      i = 0
-      while i < colliders.length
-        bestFit = __findBestFit( alignEdges, true,  alignEdges.x2[i], fit, colliders )
-        if bestFit
-          break
-        bestFit = __findBestFit( alignEdges, false, alignEdges.x1[i], fit, colliders )
-        if bestFit
-          break
-        ++i
+      # Get the closest drop rect.
+      minDistance = 0
+      for fit in fits
+        if not __isContain( fit, parentRect ) then continue
 
-    ________visualizeBestfit( bestFit, rect, colliders, alignEdges, @ )
-    return bestFit
+        dis = Math.pow( fit.x1 - ox, 2 ) + Math.pow( fit.y1 - oy, 2 )
+        if not bestFit or minDis > dis
+          bestFit = fit
+          minDis  = dis
 
+    ________visualizeBestfit.call @, bestFit, fits, colliders, alignEdges, rect
+
+    bestFit
 
   # Move item by dnd
   CanvasViewProto.__moveItemMouseDown = ( evt )->
-    @dragItem( evt, {
-      onDragEnd : __moveItemDrop
-      altState  : true
-    } )
+    @dragItem( evt, { onDragEnd : __moveItemDrop, altState  : true } )
+
 
   CanvasViewProto.dragItem = ( evt, options )->
-
     if evt.which isnt 1 then return false
 
     ###
@@ -485,18 +436,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       data.pageY - data.canvasY - data.offsetY
     )
 
-    data.cloneSvg.move(
-      Math.round( mousePos.x ) * CanvasView.GRID_WIDTH,
-      Math.round( mousePos.y ) * CanvasView.GRID_HEIGHT
-    )
+    data.cloneSvg.move( mousePos.x * CanvasView.GRID_WIDTH, mousePos.y * CanvasView.GRID_HEIGHT )
 
     if data.altState
-      stateIcn = data.cloneSvg.get(1)
-      if evt.altKey
-        stateIcn.show()
-      else
-        stateIcn.hide()
+      data.cloneSvg.get(1)[ if evt.altKey then "show" else "hide" ]()
 
+    ________visualizeOnMove.call ctx, data, data.item
     return
 
   __moveItemDrop = ( evt )->
@@ -508,12 +453,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
     if data.cloneSvg then data.cloneSvg.remove()
 
     # Drop
-    # Offset the group by -10, -10. So that it will not be dropped overlapping the parent.
     size = data.item.size()
     data.itemWidth  = size.width
     data.itemHeight = size.height
 
     if data.item.isGroup()
+      # Offset the group by -10, -10. So that it will not be dropped overlapping the parent.
       data.pageX      -= CanvasView.GRID_WIDTH
       data.pageY      -= CanvasView.GRID_HEIGHT
       data.itemWidth  += 2

@@ -4,31 +4,31 @@
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
-            <dd>{{id}}</dd>
+            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
-            <dd>{{Endpoint.address }}:{{Endpoint.port}}</dd>
+            <dd>{{Endpoint.Address }}:{{Endpoint.Port}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
-            <dd>{{cidrBlock}}</dd>
+            <dd><i class="status status-{{DBInstanceStatus}}"></i>{{DBInstanceStatus}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
-            <dd>{{instanceTenancy}}</dd>
+            <dd>{{Engine}}({{EngineVersion}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
-            <dd>{{mainRTB}}</dd>
+            <dd>{{#if AutoMinorVersionUpgrade}}Yes{{else}}No{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>
-            <dd>{{defaultACL}}</dd>
+            <dd>{{DBInstanceClass}}{{#if PendingModifiedValues.DbinstanceClass}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{Iops}}{{#if PendingModifiedValues.Iops}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{AllocatedStorage}}{{#if PendingModifiedValues.AllocatedStorage}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{MasterUsername}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_READ_REPLICAS" }}</dt>
-            <dd>{{this}}</dd>
+            <dd>{{ReadReplicaSourceDBInstanceIdentifier}}</dd>
         </dl>
     </div>
 
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
-        <dl>
+        <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
             <dd>{{this}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
@@ -41,7 +41,7 @@
     </div>
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
     <div class="option-group">
-        <dl>
+        <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
             <dd>{{this}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
@@ -52,7 +52,7 @@
     </div>
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
     <div class="option-group">
-        <dl>
+        <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
             <dd>{{this}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
@@ -66,7 +66,7 @@
 
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_SECURITY_GROUP" }}</div>
     <div class="option-group">
-        <dl>
+        <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
             <dd>{{this}}</dd>
         </dl>

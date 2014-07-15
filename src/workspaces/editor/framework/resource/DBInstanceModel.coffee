@@ -522,7 +522,7 @@ define [
 
     getReplicasOfInstance: ( instance ) -> @filter (obj) -> obj.get('replicaId') is instance.createRef('DBInstanceIdentifier')
 
-    getInstanceOfReplica : ( instance  ) -> @reject (obj) -> obj.createRef('DBInstanceIdentifier') is instance.get('replicaId')
+    getInstanceOfReplica : ( instance  ) -> @filter (obj) -> obj.createRef('DBInstanceIdentifier') is instance.get('replicaId')
 
     deserialize : ( data, layout_data, resolve ) ->
       model = new Model({

@@ -258,6 +258,16 @@
 	/*filter: url(#dropshadow_selected);*/
 }
 
+/*for RDS DBInstance and ReadReplica*/
+#svg_canvas .related .node-background {
+	fill-opacity: 0.6;
+	fill: #F2F8FF;
+	stroke-width: 0;
+	stroke: #659FFF;
+	/*filter: url(#dropshadow_selected);*/
+}
+
+
 /*.deleted.selected .node-background {
 	fill-opacity: 0.6;
 	fill: #FF0000;
@@ -1070,6 +1080,14 @@
 	fill: #008ae3;
 }
 
+/*for RDS DBInstance and ReadReplica*/
+#svg_canvas .related .node-label-name {
+	fill: white;
+}
+
+#svg_canvas .related .node-label-name-bg {
+	fill: #008ae3;
+}
 
 .server-number-bg {
 	stroke-width:0;

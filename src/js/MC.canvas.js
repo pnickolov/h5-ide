@@ -4337,6 +4337,13 @@ MC.canvas.event.nodeHover = function (event)
 
 	Canvon( stack.join(',') )[ event.type === 'mouseenter' ? 'addClass' : 'removeClass' ]( 'view-hover' );
 
+
+	if ($("#"+this.id).data().class === "AWS.RDS.DBInstance" )
+	{
+		var is_highlight = event.handleObj.origType === "mouseenter" ? true : false;
+		$canvas( this.id ).hover( is_highlight );
+	}
+
 	return true;
 };
 

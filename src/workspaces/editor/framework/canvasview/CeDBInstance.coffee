@@ -189,6 +189,33 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
     CanvasManager.update stateEl, dbinstanceState, "data-tooltip"
     null
 
+  #override CanvasElement.prototype.select() in CanvasElement
+  ChildElementProto.select = ()->
+    m = @model
+    @doSelect( m.type, m.id, m.id )
+    @hover( true )
+    true
+
+  #highlight related DBInstance when hover
+  ChildElementProto.hover = ( isHighLight )->
+    m = @model
+    DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE ) 
+
+    if m.category() is 'replica'
+      relatedModelAry = DBInstanceModel.getInstanceOfReplica m
+    else
+      relatedModelAry = DBInstanceModel.getReplicasOfInstance m
+
+    relatedAry = []
+    for item in relatedModelAry
+      relatedAry.push item.id
+
+    Design.modelClassForType(constant.RESTYPE.DBINSTANCE).each (dbins) ->
+      if dbins.id in relatedAry and isHighLight
+        Canvon('#' + dbins.id).addClass('related')
+      else if dbins.id isnt m.id
+        Canvon('#' + dbins.id).removeClass('related')
+    true
 
 
   CeDBInstance

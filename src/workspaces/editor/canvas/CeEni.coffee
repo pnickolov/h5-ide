@@ -21,11 +21,24 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       "eni-sg" : "horizontal"
     }
 
+    events :
+      "mousedown .eip-status" : "toggleEip"
+
     iconUrl : ()->
       if @model.connections( "EniAttachment" ).length
         "ide/icon/eni-canvas-attached.png"
       else
         "ide/icon/eni-canvas-unattached.png"
+
+    toggleEip : ()->
+      toggle = !@model.hasPrimaryEip()
+      @model.setPrimaryEip( toggle )
+
+      if toggle
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+
+      CanvasManager.updateEip @$el.children(".eip-status"), @model
+      false
 
     # Creates a svg element
     create : ()->

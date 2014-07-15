@@ -20,6 +20,9 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       "instance-sg" : "horizontal"
     }
 
+    events :
+      "mousedown .eip-status" : "toggleEip"
+
     iconUrl : ()->
       ami = @model.getAmi() || @model.get("cachedAmi")
 
@@ -27,6 +30,16 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         "ide/ami/ami-not-available.png"
       else
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+
+    toggleEip : ()->
+      toggle = !@model.hasPrimaryEip()
+      @model.setPrimaryEip( toggle )
+
+      if toggle
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+
+      CanvasManager.updateEip @$el.children(".eip-status"), @model
+      false
 
     # Creates a svg element
     create : ()->

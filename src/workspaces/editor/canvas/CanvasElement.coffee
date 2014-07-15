@@ -57,13 +57,16 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
     addView    : ( dom )->
       if not dom then return @
       @$el = @$el.add if dom.node then dom.node else dom
+      @delegateEvents()
       @
 
     removeView : ( dom )->
       if not dom then return @
       if dom.node then dom = dom.node
+      @undelegateEvents()
       @$el = @$el.not dom
       $(dom).remove()
+      @delegateEvents()
       @
 
     portDirection : ( portName )->

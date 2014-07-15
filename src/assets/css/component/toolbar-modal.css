@@ -85,7 +85,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
       overflow: auto; }
-    .modal-toolbar .slidebox.show + .table-head-fix {
+    .modal-toolbar .slidebox.show + .will-be-covered {
       opacity: .4;
       pointer-events: none;
       -webkit-transition: opacity .2s;

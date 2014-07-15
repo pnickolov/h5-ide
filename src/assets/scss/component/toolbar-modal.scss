@@ -159,7 +159,7 @@ $dark-blue: #001324;
 			overflow: auto;
 		}
 
-		&.show + .table-head-fix {
+		&.show + .will-be-covered {
 			opacity:        .4;
 			pointer-events: none;
 			@include op-transition;

@@ -192,6 +192,9 @@ define [
 
             option = jQuery.extend(true, {}, option)
 
+            if option.OptionGroupOptionSettings and not _.isArray option.OptionGroupOptionSettings
+                option.OptionGroupOptionSettings = [ option.OptionGroupOptionSettings ]
+
             if option.DefaultPort
                 option.port = data?.Port or option.DefaultPort
                 option.sgs = []
@@ -215,7 +218,10 @@ define [
 
 
             for s, i in option.OptionGroupOptionSettings or []
-                if s.AllowedValues.indexOf('-') >= 0
+
+                if s.AllowedValues.indexOf(',') >= 0
+                    s.items = s.AllowedValues.split ','
+                else if s.AllowedValues.indexOf('-') >= 0
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]
                     end = +arr[1]
@@ -226,8 +232,7 @@ define [
                     if end - start < 10
                         s.items = _.range start, end + 1
 
-                else if s.AllowedValues.indexOf(',') >= 0
-                    s.items = s.AllowedValues.split ','
+                if s.items then s.AllowedValues = ''
 
                 if data
                     s.value = data.OptionSettings[i].Value

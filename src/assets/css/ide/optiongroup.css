@@ -87,8 +87,7 @@
   margin-top: 30px; }
   #modal-option-group .option-list .option-item {
     display: inline-block;
-    width: 100%;
-    margin-top: 10px; }
+    width: 100%; }
     #modal-option-group .option-list .option-item .name, #modal-option-group .option-list .option-item .persistent, #modal-option-group .option-list .option-item .permenant {
       float: left;
       margin-left: 10px;

@@ -1365,16 +1365,34 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "Options": []
           "VpcId": "" #"@{uid.resource.VpcId}"
 
-        #ogRes = @_mapProperty aws_og, ogRes
-        #ogRes.OptionGroupName = aws_og.id
+        ogRes = @_mapProperty aws_og, ogRes
+        ogRes.OptionGroupName = aws_og.id
+
+        #ref to VpcId
+        ogRes.VpcId = CREATE_REF( @theVpc, "resource.VpcId" )
+
+        #options(different by different ParameterGroupFamily)
+        for op in aws_og.Options || []
+          op_item = @_mapProperty op, { "OptionName":"", "OptionSettings":[], "Port":"", "VpcSecurityGroupMemberships":[] }
+          op_item.Port = if op_item.Port then op_item.Port.toString() else ""
+          #resolve OptionSettings
+          for set in op.OptionSettings
+            set_item = @_mapProperty set, { "Name":"", "Value":"" }
+            op_item.OptionSettings.push set_item
+          #resolve SG
+          for sg in op.VpcSecurityGroupMemberships
+            sgComp = @sgs[ sg.VpcSecurityGroupId ]
+            if sgComp
+              op_item.VpcSecurityGroupMemberships.push CREATE_REF sgComp, "resource.GroupId"
+            else
+              console.error "can not find SG #{sg.VpcSecurityGroupId} for OptionGroup"
+          ogRes.Options.push op_item
 
         # Found an original component
         originComp = @getOriginalComp(aws_og.id, 'DBOG')
         if originComp
           compName = originComp.name
           ogRes.CreatedBy = originComp.resource.CreatedBy
-          #temp
-          ogRes = jQuery.extend(true, {}, originComp)
         else
           compName = aws_og.OptionGroupName
           console.error "[temp]can not find original component"

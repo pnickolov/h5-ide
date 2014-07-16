@@ -32,6 +32,16 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       else
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:imageId", @render
+      @listenTo @model, "change:count", @updateServerCount
+      return
+
+    updateServerCount : ()->
+      @render()
+      @canvas.getItem( eni.id )?.render() for eni in @model.connectionTargets( "EniAttachment" )
+      return
+
     toggleEip : ()->
       toggle = !@model.hasPrimaryEip()
       @model.setPrimaryEip( toggle )

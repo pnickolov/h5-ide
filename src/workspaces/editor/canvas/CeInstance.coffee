@@ -33,6 +33,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
     listenModelEvents : ()->
+      @listenTo @model, "change:primaryEip", @render
       @listenTo @model, "change:imageId", @render
       @listenTo @model, "change:count", @updateServerCount
       return

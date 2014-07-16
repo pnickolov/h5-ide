@@ -109,6 +109,9 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       @__dragHoverGroup = null
 
   CanvasViewProto.__handleDropData = ( data, excludeChild, parentMustBeDirect )->
+
+    if not data.zoneDimension then return ""
+
     ItemClass      = CanvasElement.getClassByType( data.dataTransfer.type )
     ItemClassProto = ItemClass.prototype
 

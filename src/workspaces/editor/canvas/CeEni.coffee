@@ -33,6 +33,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @onConnectionChange
+      @listenTo @model, "change:primaryEip", @render
       return
 
     onConnectionChange : ( cn )-> @render() if cn.type is "EniAttachment"

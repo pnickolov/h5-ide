@@ -75,20 +75,17 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       return @__groupMembers
 
     updateName : ()->
-      oldName = @attributes.name
-
       instance = @__embedInstance
       if instance
-        @attributes.name = "eni0"
+        name = "eni0"
       else
         attachment = @connections( "EniAttachment" )[0]
         if attachment
-          @attributes.name = "eni" + attachment.get("index")
+          name = "eni" + attachment.get("index")
         else
-          @attributes.name = "eni"
+          name = "eni"
 
-      if @attributes.name isnt oldName
-        @draw()
+      @set "name", name
       null
 
 
@@ -146,7 +143,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if not @attachedInstance() then return
 
       @get("ips")[0].hasEip = toggle
-      @draw()
       null
 
     hasPrimaryEip : ()-> @get("ips")[0].hasEip
@@ -270,11 +266,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         ipObj.hasEip = hasEip
 
         if idx is 0
-          if @__embedInstance
-            @__embedInstance.draw()
-          else
-            @draw()
-
+          (@__embedInstance || @).trigger "change:primaryEip"
       null
 
     removeIp : ( idx )->
@@ -319,7 +311,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # See if the instance allows eni to have that much of ips.
       @limitIpAddress()
       @updateName()
-      @draw()
 
       # When an Eni is attached, show SgLine for the Eni
       SgModel = Design.modelClassForType( constant.RESTYPE.SG )
@@ -330,7 +321,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       if connection.type isnt "EniAttachment" then return
 
       @attributes.name = "eni"
-      @draw()
 
       # When an Eni is detached, hide SgLine for the Eni
       reason = { reason : connection }

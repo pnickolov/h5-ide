@@ -105,8 +105,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
           from_port += "-right"
           to_port   += "-left"
 
-        pos_port_from = item_from.portPosition( from_port )
-        pos_port_to   = item_to.portPosition( to_port )
+        pos_port_from = item_from.portPosition( from_port, true )
+        pos_port_to   = item_to.portPosition( to_port, true )
 
         pos_from.x += pos_port_from[0]
         pos_from.y += pos_port_from[1]
@@ -115,7 +115,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
 
       else if dirn_from
 
-        pos_port_to = item_to.portPosition( to_port )
+        pos_port_to = item_to.portPosition( to_port, true )
         pos_to.x += pos_port_to[0]
         pos_to.y += pos_port_to[1]
 
@@ -124,12 +124,12 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         else if dirn_from is "horizontal"
           from_port += if pos_to.x > pos_from.x then "-right" else "-left"
 
-        pos_port_from = item_from.portPosition( from_port )
+        pos_port_from = item_from.portPosition( from_port, true )
         pos_from.x += pos_port_from[0]
         pos_from.y  += pos_port_from[1]
 
       else if dirn_to
-        pos_port_from = item_from.portPosition( from_port )
+        pos_port_from = item_from.portPosition( from_port, true )
         pos_from.x += pos_port_from[0]
         pos_from.y += pos_port_from[1]
 
@@ -138,13 +138,13 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         else if dirn_to is "horizontal"
           to_port += if pos_from.x > pos_to.x then "-right" else "-left"
 
-        pos_port_to = item_to.portPosition( to_port )
+        pos_port_to = item_to.portPosition( to_port, true )
         pos_to.x += pos_port_to[0]
-        pos_to.y  += pos_port_to[1]
+        pos_to.y += pos_port_to[1]
 
       else
-        pos_port_from = item_from.portPosition( from_port )
-        pos_port_to   = item_to.portPosition( to_port )
+        pos_port_from = item_from.portPosition( from_port, true )
+        pos_port_to   = item_to.portPosition( to_port, true )
 
         pos_from.x += pos_port_from[0]
         pos_from.y += pos_port_from[1]

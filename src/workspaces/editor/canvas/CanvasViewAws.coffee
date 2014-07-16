@@ -6,8 +6,8 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js" ], ( CanvasView, cons
       @svg.clear().add([
         @svg.group().classes("layer_vpc")
         @svg.group().classes("layer_az")
-        @svg.group().classes("layer_line")
         @svg.group().classes("layer_subnet")
+        @svg.group().classes("layer_line")
         @svg.group().classes("layer_asg")
         @svg.group().classes("layer_sgline")
         @svg.group().classes("layer_node")

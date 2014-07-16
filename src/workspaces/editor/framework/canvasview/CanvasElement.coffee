@@ -382,7 +382,7 @@ define [ "CanvasManager", "event", "constant", "i18n!/nls/lang.js", "CloudResour
   CanvasElement.prototype.portDirection = ( portName )->
     if this.portDirMap then this.portDirMap[ portName ] else null
 
-  CanvasElement.prototype.portPosition = ( portName )->
+  CanvasElement.prototype.portPosition = ( portName, isAtomic )->
     if this.portPosMap then this.portPosMap[ portName ] else null
 
   CanvasElement.prototype.initNode = ( node, x, y )->

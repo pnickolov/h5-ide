@@ -10,14 +10,17 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", ".
     parentType  : [ constant.RESTYPE.AZ ]
     defaultSize : [ 19, 19 ]
 
-    portPosition : ( portName )->
+    portPosition : ( portName, isAtomic )->
       m = @model
       portY = m.height() * CanvasView.GRID_HEIGHT / 2 - 5
 
       if portName is "subnet-assoc-in"
         [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
       else
-        [ m.width() * CanvasView.GRID_WIDTH + 4, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+        x = m.width() * CanvasView.GRID_WIDTH + 4
+        if isAtomic then x += 6
+        [ x, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+
 
     # Creates a svg element
     create : ()->

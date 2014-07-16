@@ -42,7 +42,7 @@
 
 {{#if production}}
   <div class="modal-body" style="width:390px;">
-    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
+    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
     <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
   </div>

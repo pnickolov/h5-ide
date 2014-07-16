@@ -194,7 +194,7 @@ define [
 
     clone :( srcTarget )->
       @cloneAttributes srcTarget, {
-        reserve : "replicaId"
+        reserve : "replicaId|instanceClass|autoMinorVersionUpgrade|iops|port|accessible" #reserve attributes
         copyConnection : [ "SgAsso" ]
       }
       null

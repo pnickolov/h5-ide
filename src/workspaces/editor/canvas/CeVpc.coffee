@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, CanvasView )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, CanvasView )->
 
   CanvasElement.extend {
     ### env:dev ###

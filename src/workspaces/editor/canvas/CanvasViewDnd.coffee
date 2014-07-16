@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, CanvasElement, constant, CanvasManager, lang )->
 
   ________visualizeOnMove = ()->
   ________visualizeBestfit = ()->

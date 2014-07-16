@@ -4,6 +4,8 @@ define [
   "./CanvasViewDnd"
   "./CanvasViewConnect"
   "./CanvasViewGResizer"
+  "./CanvasManager"
+
   "./CeVpc"
   "./CeAz"
   "./CeSubnet"
@@ -19,4 +21,5 @@ define [
   "./CeSgAsso"
   "./CeLine"
   "./CeSgLine"
+
 ], ( CanvasView )-> CanvasView

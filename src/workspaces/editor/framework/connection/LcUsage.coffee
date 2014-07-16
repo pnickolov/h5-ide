@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( constant, ConnectionModel, CanvasManager, Design )->
+define [ "../ConnectionModel" ], ( ConnectionModel )->
 
   ConnectionModel.extend {
     type : "LcUsage"

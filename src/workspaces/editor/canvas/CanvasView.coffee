@@ -2,7 +2,7 @@
 define [
   "../template/TplOpsEditor"
   "./CanvasElement"
-  "CanvasManager"
+  "./CanvasManager"
   "Design"
   "i18n!/nls/lang.js"
   "UI.modalplus"

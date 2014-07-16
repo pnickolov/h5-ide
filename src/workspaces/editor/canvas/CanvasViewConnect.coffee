@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "Design", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, lang )->
+define [ "./CanvasView", "Design", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, lang )->
 
   CanvasViewProto = CanvasView.prototype
 

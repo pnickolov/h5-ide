@@ -149,7 +149,6 @@ require.config {
 		# opseditor                 # Merge in deploy
 		#############################################
 		'Design'        : 'workspaces/editor/framework/Design'
-		'CanvasManager' : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
 		# deprecated service        # Merge in deploy
@@ -288,7 +287,7 @@ require.config {
 		"workspaces/Dashboard" : []
 
 		"workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
-		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"workspaces/editor/framework/DesignBundle" : [ "Design" ]
 		"workspaces/OpsEditor" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.

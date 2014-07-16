@@ -1,5 +1,5 @@
 
-define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( constant, ConnectionModel, CanvasManager, Design )->
+define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionModel, Design )->
 
   # SgAsso is used to represent that one Resource is using on SecurityGroup
   SgAsso = ConnectionModel.extend {

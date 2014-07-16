@@ -3,7 +3,6 @@
 (()->
     deps = [
         'Design',
-        "CanvasManager",
 
         './connection/EniAttachment',
         './connection/VPNConnection',

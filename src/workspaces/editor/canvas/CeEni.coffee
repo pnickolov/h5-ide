@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "event" ], ( CanvasElement, constant, CanvasManager, lang, ide_event )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "event" ], ( CanvasElement, constant, CanvasManager, lang, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###

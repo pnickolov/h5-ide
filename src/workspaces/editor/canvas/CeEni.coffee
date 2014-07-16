@@ -23,6 +23,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     events :
       "mousedown .eip-status" : "toggleEip"
+      "click .eip-status"     : ()-> false
 
     iconUrl : ()->
       if @model.connections( "EniAttachment" ).length

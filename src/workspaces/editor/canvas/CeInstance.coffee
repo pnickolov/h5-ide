@@ -22,6 +22,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     events :
       "mousedown .eip-status" : "toggleEip"
+      "click .eip-status"     : ()-> false
 
     iconUrl : ()->
       ami = @model.getAmi() || @model.get("cachedAmi")

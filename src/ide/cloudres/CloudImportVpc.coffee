@@ -773,14 +773,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "Domain": aws_eip.domain
           "InstanceId": "" #aws_eip.instanceId
           "NetworkInterfaceId": CREATE_REF( eni, "resource.NetworkInterfaceId" )
-          "PrivateIpAddress": CREATE_REF( eni, "resource.PrivateIpAddressSet.0.PrivateIpAddress" )
+          "PrivateIpAddress": ""
           "PublicIp": aws_eip.publicIp
 
-        # eipRes = @_mapProperty aws_eip, eipRes
-        # eipRes.AllocationId = aws_eip.id
-        # # eipRes.InstanceId   = ""
-        # eipRes.NetworkInterfaceId = CREATE_REF( eni )
-        # eipRes.PrivateIpAddress   = CREATE_REF( eni )
+        idx = 0
+        for ip in eni.resource.PrivateIpAddressSet
+          if ip.PrivateIpAddress is aws_eip.privateIpAddress
+            eipRes.PrivateIpAddress = CREATE_REF( eni, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" )
+          idx++
 
         eipComp = @add( "EIP", eipRes )
       return

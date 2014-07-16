@@ -74,6 +74,15 @@
 	.property-az-name:first-child {
 		margin-top: -8px;
 	}
+
+	.sb-cidr {
+		padding-left: 23px;
+	}
+
+	.property-control-group .checkbox {
+		position: relative;
+		top: 10px;
+	}
 }
 
 .app-dbinstance {

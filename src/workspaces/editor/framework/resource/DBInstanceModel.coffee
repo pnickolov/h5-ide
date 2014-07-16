@@ -70,6 +70,15 @@ define [
 
     __cachedSpecifications: null
 
+    __master: null # Store Master of Replica Instance
+    __source: null # Store Source of Snapshot Instance
+
+    master: -> @__master
+
+    setMaster: ( master ) -> @__master = master
+
+    slaves: -> Model.filter (obj) => obj.master() is @
+
     constructor : ( attr, option ) ->
 
       ComplexResModel.call( @, attr, option )
@@ -78,8 +87,8 @@ define [
 
       if option and option.cloneSource
         #Create ReadReplica
+        @setMaster option.cloneSource
         @set 'engine',    option.cloneSource.get('engine') # for draw
-        @set 'replicaId', option.cloneSource.createRef('DBInstanceIdentifier') # for draw
         # Draw before clone
         @draw true
         @clone( option.cloneSource )
@@ -170,7 +179,7 @@ define [
           console.error "can not found component for " + attr.sourceId
           return ""
         srcName = srcComp.get("name")
-        repinsAry = Model.getReplicasOfInstance( srcComp )
+        repinsAry = srcComp.slaves()
         while exist
           exist = false
           for repins in repinsAry
@@ -194,14 +203,14 @@ define [
 
     clone :( srcTarget )->
       @cloneAttributes srcTarget, {
-        reserve : "replicaId|instanceClass|autoMinorVersionUpgrade|iops|port|accessible" #reserve attributes
+        reserve : "instanceClass|autoMinorVersionUpgrade|iops|port|accessible" #reserve attributes
         copyConnection : [ "SgAsso" ]
       }
       null
 
     #override ResourceModel.isRemovable()
     isRemovable :()->
-      if @category() isnt 'replica' and Model.getReplicasOfInstance( @ ).length > 0
+      if @category() isnt 'replica' and @slaves().length > 0
         # Return a warning, delete DBInstance will remove ReadReplica together
         return sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
       true
@@ -210,7 +219,7 @@ define [
     remove :()->
       #remove readReplica related to current DBInstance
       if @category() isnt 'replica'
-        for related in Model.getReplicasOfInstance( @ )
+        for related in @slaves()
           related.remove()
 
       #remove current node
@@ -406,15 +415,14 @@ define [
       finally
 
     category: (type) ->
-      if type is 'instance'
-        return !(@get('snapshotId') or @get('replicaId'))
-      else if type
-        return !!@get("#{type}Id")
+      switch type
+        when 'instance' then return !(@get('snapshotId') or @master())
+        when 'replica' then return !!@master()
+        when 'snapshot' then return !!@get('snapshotId')
 
       if @get 'snapshotId' then return 'snapshot'
-      if @get 'replicaId' then return 'replica'
 
-      return 'instance'
+      if @master() then 'replica' else 'instance'
 
     autobackup: ( value )->
       if value isnt undefined
@@ -429,7 +437,7 @@ define [
     # trigger by assignSG or un-assignSG in model of sglist property panel
     onSgChange : (event) ->
       if @category() is 'instance'
-        for replica in Model.getReplicasOfInstance @
+        for replica in @slaves()
           if not replica.get('appId')
             #force clear all connections
             num = replica.attributes.__connections.length
@@ -463,7 +471,7 @@ define [
       if event is undefined or event is 'change'
         #clone to new readReplica(not include existed readReplica)
         if @category() is 'instance'
-          for replica in Model.getReplicasOfInstance @
+          for replica in @slaves()
             if not replica.get('appId')
               replica.clone @
       null
@@ -485,7 +493,7 @@ define [
           DBInstanceIdentifier                  : @get 'instanceId'
           NewDBInstanceIdentifier               : @get 'newInstanceId'
           DBSnapshotIdentifier                  : @get 'snapshotId'
-          ReadReplicaSourceDBInstanceIdentifier : @get 'replicaId'
+          ReadReplicaSourceDBInstanceIdentifier : @master()?.createRef 'DBInstanceIdentifier' or ''
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
@@ -536,15 +544,12 @@ define [
 
     oracleCharset: ["AL32UTF8", "JA16EUC", "JA16EUCTILDE", "JA16SJIS", "JA16SJISTILDE", "KO16MSWIN949", "TH8TISASCII", "VN8MSWIN1258", "ZHS16GBK", "ZHT16HKSCS", "ZHT16MSWIN950", "ZHT32EUC", "BLT8ISO8859P13", "BLT8MSWIN1257", "CL8ISO8859P5", "CL8MSWIN1251", "EE8ISO8859P2", "EL8ISO8859P7", "EL8MSWIN1253", "EE8MSWIN1250", "NE8ISO8859P10", "NEE8ISO8859P4", "WE8ISO8859P15", "WE8MSWIN1252", "AR8ISO8859P6", "AR8MSWIN1256", "IW8ISO8859P8", "IW8MSWIN1255", "TR8MSWIN1254", "WE8ISO8859P9", "US7ASCII", "UTF8", "WE8ISO8859P1"]
 
-    getInstances: -> @reject (obj) -> obj.get('replicaId') or obj.get('snapshotId')
+    getInstances: -> @reject (obj) -> obj.master() or obj.get('snapshotId')
 
-    getReplicas: -> @filter (obj) -> !!obj.get('replicaId')
+    getReplicas: -> @filter (obj) -> !!obj.master()
 
     getSnapShots: -> @filter (obj) -> !!obj.get('snapshotId')
 
-    getReplicasOfInstance: ( instance ) -> @filter (obj) -> obj.get('replicaId') is instance.createRef('DBInstanceIdentifier')
-
-    getInstanceOfReplica : ( instance  ) -> @filter (obj) -> obj.createRef('DBInstanceIdentifier') is instance.get('replicaId')
 
     deserialize : ( data, layout_data, resolve ) ->
       model = new Model({
@@ -557,7 +562,6 @@ define [
         instanceId                : data.resource.DBInstanceIdentifier
         newInstanceId             : data.resource.NewDBInstanceIdentifier
         snapshotId                : data.resource.DBSnapshotIdentifier
-        replicaId                 : data.resource.ReadReplicaSourceDBInstanceIdentifier
 
         allocatedStorage          : data.resource.AllocatedStorage
         autoMinorVersionUpgrade   : data.resource.AutoMinorVersionUpgrade
@@ -594,6 +598,10 @@ define [
 
         parent : resolve( layout_data.groupUId )
       })
+
+      # Set master if model is replica
+      if data.resource.ReadReplicaSourceDBInstanceIdentifier
+        model.setMaster resolve MC.extractID data.resource.ReadReplicaSourceDBInstanceIdentifier
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

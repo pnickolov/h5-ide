@@ -199,12 +199,12 @@ define [ "i18n!/nls/lang.js", "./CanvasElement", "constant", "CanvasManager", "D
   #highlight related DBInstance when hover
   ChildElementProto.hover = ( isHighLight )->
     m = @model
-    DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE ) 
+    DBInstanceModel = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
 
     if m.category() is 'replica'
-      relatedModelAry = DBInstanceModel.getInstanceOfReplica m
+      relatedModelAry = [ m.master() ]
     else
-      relatedModelAry = DBInstanceModel.getReplicasOfInstance m
+      relatedModelAry = m.slaves()
 
     relatedAry = []
     for item in relatedModelAry

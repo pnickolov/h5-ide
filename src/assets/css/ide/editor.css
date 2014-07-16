@@ -779,7 +779,7 @@
   stroke-linejoin: round; }
 
 .asg-title {
-  stroke: none; }
+  stroke-width: 0; }
 
 .asg-frame {
   stroke-dasharray: 6, 4;
@@ -800,7 +800,7 @@
 .ExpandedAsg {
   opacity: 0.5; }
 
-.prompt-text {
+.prompt-text, #prompt_text {
   fill: #16B4F9;
   font-size: 12px;
   cursor: default; }

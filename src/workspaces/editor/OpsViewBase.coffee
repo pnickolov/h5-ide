@@ -193,7 +193,13 @@ define [
       return
 
     getSvgElement : ()->
-      @$el.children(".OEMiddleWrap").children(".OEPanelCenter").children(".canvas-view").children("svg")
+      children = @$el.children(".OEMiddleWrap").children(".OEPanelCenter").children()
+      while children.length
+        child = children.filter("svg")
+        if child.length then return child
+        children = children.children()
+
+      return null
 
     ###
       Override these methods in subclasses.

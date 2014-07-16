@@ -22,8 +22,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "./CanvasView" ], ( C
 
   }, {
     createResource : ( type, attr, option )->
-      attr.x += 1
-      attr.y += 1
       attr.width  = 21
       attr.height = 21
       azModel = CanvasElement.createResource( type, attr, option )

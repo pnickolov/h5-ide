@@ -819,6 +819,10 @@ module.exports =
       en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
 
+    CVS_CFM_DEL_DBINSTANCE:
+      en: "Deleting %s will also remove all read replica related it. Are you sure you want to delete it?"
+      zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
+
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
       zh: "在添加新资源前，请重设缩放至100%。"

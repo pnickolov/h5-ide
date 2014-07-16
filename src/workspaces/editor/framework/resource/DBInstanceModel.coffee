@@ -199,6 +199,24 @@ define [
       }
       null
 
+    #override ResourceModel.isRemovable()
+    isRemovable :()->
+      if @category() isnt 'replica' and Model.getReplicasOfInstance( @ ).length > 0
+        # Return a warning, delete DBInstance will remove ReadReplica together
+        return sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
+      true
+
+    #override ResourceModel.remove()
+    remove :()->
+      #remove readReplica related to current DBInstance
+      if @category() isnt 'replica'
+        for related in Model.getReplicasOfInstance( @ )
+          related.remove()
+
+      #remove current node
+      ComplexResModel.prototype.remove.call(this)
+      null
+
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
 
     getDefaultPort: ->

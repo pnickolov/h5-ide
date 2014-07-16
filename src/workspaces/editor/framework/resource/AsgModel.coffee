@@ -233,6 +233,16 @@ define [ "../ResourceModel", "../ComplexResModel", "../GroupModel", "Design", "c
 
       @
 
+    isRemovable: ->
+      lc = @get 'lc'
+
+      if not lc or lc.__brothers.length > 0 or lc.isClone()
+        true
+      else
+        asgName = @get 'name'
+        lcName = lc.get 'name'
+        sprintf lang.ide.CVS_CFM_DEL_ASG, lcName, asgName, asgName, lcName
+
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
         if newParent.type is constant.RESTYPE.SUBNET

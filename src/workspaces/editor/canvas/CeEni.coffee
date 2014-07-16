@@ -31,6 +31,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       else
         "ide/icon/eni-canvas-unattached.png"
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:connections", @onConnectionChange
+      return
+
+    onConnectionChange : ( cn )-> @render() if cn.type is "EniAttachment"
+
     toggleEip : ()->
       toggle = !@model.hasPrimaryEip()
       @model.setPrimaryEip( toggle )

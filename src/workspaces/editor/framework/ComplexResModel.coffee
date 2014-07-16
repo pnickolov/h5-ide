@@ -101,7 +101,8 @@ define [ "Design", "./ResourceModel", "constant" ], ( Design, ResourceModel, con
         if idx is -1
           connections.push cn
           @attributes.__connections = connections
-          @trigger "change:__connections", @, connections
+
+      @trigger "change:connections", cn
       null
 
     connect_base : ( connection )->

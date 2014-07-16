@@ -22,6 +22,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       else
         "ide/icon/elb-internet-canvas.png"
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:internal", @render
+      return
+
     # Creates a svg element
     create : ()->
       m = @model
@@ -66,5 +70,5 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       # Update Image
       CanvasManager.update @$el.children("image"), @iconUrl(), "href"
       # Toggle left port
-      CanvasManager.toggle @$el.children(".port-elb-sg-in"), m.get("internal")
+      CanvasManager.toggle @$el.children('[data-name="elb-sg-in"]'), m.get("internal")
   }

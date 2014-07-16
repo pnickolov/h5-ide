@@ -22,6 +22,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         [ x, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:cidr", @render
+      return
+
     # Creates a svg element
     create : ()->
       svg = @canvas.svg

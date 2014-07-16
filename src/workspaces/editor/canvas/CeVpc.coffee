@@ -7,6 +7,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "./CanvasView" ], ( C
     ### env:dev:end ###
     type : constant.RESTYPE.VPC
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:cidr", @render
+      return
+
     # Creates a svg element
     create : ()-> @canvas.appendVpc( @createGroup() )
 

@@ -52,7 +52,14 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       @canvas = options.canvas
       @addView( @create() )
       @render()
+
+      # Watch model's change
+      @listenTo @model, "change:name", @render
+
+      @listenModelEvents()
       return
+
+    listenModelEvents : ()->
 
     addView    : ( dom )->
       if not dom then return @

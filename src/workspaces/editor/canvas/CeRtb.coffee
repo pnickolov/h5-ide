@@ -24,6 +24,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     iconUrl : ()->
       if @model.get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:main", @render
+      return
+
     # Creates a svg element
     create : ()->
 

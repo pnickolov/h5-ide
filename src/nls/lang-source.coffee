@@ -4434,6 +4434,10 @@ VisualOps API. You cannot UNDO this action.'
       en: " Terminating it will make your service unavailable."
       zh: ""
 
+    POP_CONFIRM_STOP_PROD_APP_MSG:
+      en: " Stopping it will make your service unavailable."
+      zh: ""
+
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
       zh: ""

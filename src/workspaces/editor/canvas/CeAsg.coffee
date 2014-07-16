@@ -9,6 +9,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     defaultSize : [13, 13]
 
+    isGroup : ()-> true
+
     create : ()->
       m = @model
       svg = @canvas.svg
@@ -40,6 +42,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     events :
       "mousedown .asg-dragger" : "dragExpand"
+
+    isGroup : ()-> true
 
     size : ()-> { width : 13, height : 13 }
 

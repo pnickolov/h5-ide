@@ -275,7 +275,6 @@ define [ '../base/view'
             spec = @model.getSpecifications()
             lvi = @model.getLVIA spec
             multiAZCapable = lvi[3]
-            optionalAzAry = lvi[4]
 
             if not multiAZCapable
                 @model.set('multiAz', false)
@@ -299,6 +298,17 @@ define [ '../base/view'
 
             $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
 
+            @renderAZList()
+
+            @
+
+        renderAZList: () ->
+
+            spec = @model.getSpecifications()
+            lvi  = @model.getLVIA spec
+            optionalAzAry = lvi[4]
+            attr = @model.toJSON()
+
             # set preferred AZ list
             region = Design.instance().get('region')
             allAZ = []
@@ -318,8 +328,6 @@ define [ '../base/view'
             $item = $preferredAZSelect.find(".item[data-id='#{selectedAZ}']").addClass('selected')
             $preferredAZSelect.find('.selection').text($item.text())
 
-            @
-
         changeInstanceName: (event) ->
 
             value = $(event.target).val()
@@ -338,6 +346,7 @@ define [ '../base/view'
                 $select.find('.selection').text($item.text())
                 $select.hide()
                 @model.set 'az', ''
+                @renderAZList()
             else
                 $select.show()
 

@@ -83,9 +83,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
           #   new VolumeModel( attribute, {noNeedGenName:true})
 
 
-      # Draw before creating SgAsso
-      @draw(true)
-
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
 
@@ -234,8 +231,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
             @attributes.eipData = {}
           if not @attributes.eipData.id
             @attributes.eipData.id = MC.guid()
-
-      @draw()
+      return
 
     hasPrimaryEip : ()->
       eni = @getEmbedEni()
@@ -256,12 +252,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         if route then route.remove()
 
       # Update my self and connected Eni
-      @draw()
       for eni in @connectionTargets("EniAttachment")
         if count > 1
-          for c in eni.connections("RTB_Route")
-            c.remove()
-        eni.draw()
+          c.remove() for c in eni.connections("RTB_Route")
       null
 
     isDefaultTenancy : ()->
@@ -310,7 +303,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       #     support = true
       #     break
       # if not support then @initInstanceType()
-      @draw()
       null
 
     getAmi : ()->

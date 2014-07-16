@@ -201,7 +201,7 @@ define [ '../base/view'
 
             template = template_instance
             # if replica
-            template = template_replica if attr.replicaId
+            template = template_replica if @model.master()
             # if snapshot
             template = template_snapshot if attr.snapshotId
 
@@ -211,7 +211,7 @@ define [ '../base/view'
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
 
-            # render 
+            # render
             @$el.html template attr
             @renderLVIA()
             @renderOptionGroup()
@@ -256,7 +256,7 @@ define [ '../base/view'
 
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->
-            
+
             spec = @model.getSpecifications()
             lvi  = @model.getLVIA spec
 
@@ -271,7 +271,7 @@ define [ '../base/view'
             $('#lvia-container').html template_component.lvi(data)
 
             attr = @model.toJSON()
-            
+
             spec = @model.getSpecifications()
             lvi = @model.getLVIA spec
             multiAZCapable = lvi[3]
@@ -321,7 +321,7 @@ define [ '../base/view'
             @
 
         changeInstanceName: (event) ->
-            
+
             value = $(event.target).val()
             @model.setName value
             @setTitle value

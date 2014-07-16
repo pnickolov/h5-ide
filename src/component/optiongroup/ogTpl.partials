@@ -129,7 +129,7 @@
 {{/each}}
 
 <!-- {{og_app_modal}} -->
-<div class="summary">
+<div class="summary clearfix">
     <dl>
         <dt>Option Group Name</dt>
         <dd>{{OptionGroupName}}</dd>
@@ -147,17 +147,37 @@
         <dd>{{MajorEngineVersion}}</dd>
     </dl>
 </div>
+<div class="left option-list-head">Option({{Options.length}})</div>
 <ul class="option-list">
-    {{#each ogOptions}}
-    <li class="option-item" data-idx="{{@index}}" data-name="{{Name}}">
-        <div class="name">{{Name}}</div>
-        {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
-        {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
-        <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
-        <label class="switcher{{#if checked}} on{{/if}}">
-            <span class="switch-label" data-on="ON" data-off="OFF"></span>
-            <span class="switch-handle"></span>
-        </label>
+    {{#each Options}}
+    <li class="option-item" data-idx="{{@index}}" data-name="{{OptionName}}">
+        <div class="og-title clearfix">
+            <div class="name">{{OptionName}}</div>
+            {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
+            {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+            <a class="toggle-og-detail show-og-detail">Show details</a>
+            <a class="toggle-og-detail hide-og-detail" style="display:none;">Hide details</a>
+        </div>
+        <div class="og-details">
+            {{#if Port}}
+            <div>
+                <span>Port:</span>
+                <span>{{Port}}</span>
+            </div>
+            {{/if}}
+            {{#each VpcSecurityGroupMemberships}}
+            <div>
+                <span>Security Group:</span>
+                <span>{{VpcSecurityGroupId}}</span>
+            </div>
+            {{/each}}
+            <table class="table">
+                <tr><th>Setting</th><th>Value</th></tr>
+                {{#each OptionSettings}}
+                <tr><td>{{Name}}</td><td>{{Value}}</td></tr>
+                {{/each}}
+            </table>
+        </div>
     </li>
     {{/each}}
 </ul>

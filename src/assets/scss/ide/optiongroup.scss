@@ -180,21 +180,56 @@
     }
 
 
+    &.modal-option-group-app {
+        .summary {
+            dl {
+                float: left;
+                width: 350px;
+                margin: 8px 35px;
+            }
+            dt {
+                font-weight: bold;
+            }
+            dd {
+                margin-left: 0;
+            }
+        }
+        .option-list-head {
+            margin-left: 30px;
+        }
+        .option-list {
+            margin: 30px;
 
+            .og-title { height: 39px; }
 
-    .summary {
-        dl {
-            float: left;
-            width: 350px;
-            margin: 8px 35px;
+            .toggle-og-detail {
+                float: right;
+                margin: 9px 30px 0 0;
+                cursor: pointer;
+                color: #148BE6;
+                &:hover { color: #34A3F8; }
+            }
+
+            .og-details {
+                display: none;
+                div {
+                    margin: 5px 10px 15px;
+                }
+            }
+
+            .show-details .og-details {
+                display: block;
+            }
+
+            .option-item {
+                max-height: 300px;
+                overflow: auto;
+            }
         }
-        dt {
-            font-weight: bold;
-        }
-        dd {
-            margin-left: 0;
-        }
+
     }
+
+
 }
 
 

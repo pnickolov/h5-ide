@@ -11,9 +11,16 @@ define [
     Backbone.View.extend
         id: 'modal-option-group'
         tagName: 'section'
-        className: 'modal-toolbar'
+        className: 'modal-toolbar modal-option-group-app'
         events:
-            '': ""
+            'click .toggle-og-detail': "toggleDetail"
+
+        toggleDetail: (e) ->
+            $target = $ e.currentTarget
+            $li = $target.closest( 'li' )
+            $li.toggleClass( 'show-details' )
+            $li.find( '.toggle-og-detail' ).toggle()
+
 
         initModal: (tpl) ->
             options =

@@ -116,18 +116,7 @@
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
         </section>
 
-        <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
-                <label for="property-dbinstance-mutil-az-check"></label>
-            </div>
-            <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
-        </section>
-
-        <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
-            <label class="left">Preferred Availability Zone</label>
-            <div class="selectbox" id="property-dbinstance-preferred-az"></div>
-        </section>
+        <div id="property-dbinstance-mutil-az"></div>
 
     </div>
     
@@ -160,6 +149,7 @@
             </div>
         </section> -->
 
+        <label>Backup Window</label>
         <div id="property-dbinstance-backup-window-select">
             <div>
                 <div class="radio">
@@ -184,7 +174,7 @@
                 <label>UTC</label>
             </section>
             <section class="property-control-group" data-bind="true">
-                <label class="left">Duration</label>
+                <label class="left">Duration:</label>
                 <input class="input property-input-left" title="hours" value="{{backup.duration}}" id="property-dbinstance-backup-window-duration" type="text">
                 <label class="property-label-right" for="property-dbinstance-backup-window-duration">hour(s)</label>
             </section>
@@ -242,6 +232,7 @@
             </div>
         </section> -->
 
+        <label>Maintenance Window</label>
         <div id="property-dbinstance-maintenance-window-select">
             <div>
                 <div class="radio">
@@ -266,7 +257,7 @@
                 <label>UTC</label>
             </section>
             <section class="property-control-group" data-bind="true">
-                <label class="left">Duration</label>
+                <label class="left">Duration:</label>
                 <input class="input property-input-left" title="hours" value="{{maintenance.duration}}" id="property-dbinstance-maintenance-window-duration" type="text">
                 <label class="property-label-right" for="property-dbinstance-maintenance-window-duration">hour(s)</label>
             </section>

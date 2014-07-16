@@ -109,7 +109,7 @@
         <div class="modal-footer">
             {{#unless isCreate}}<div class="remove-btn left">Delete Option Group</div>{{/unless}}
             <button class="save-btn btn btn-blue">Save</button>
-            <button class="btn btn-silver cancel-btn">Cancel</button>
+            <button class="btn btn-silver modal-close cancel-btn">Cancel</button>
         </div>
     </div>
 </div>

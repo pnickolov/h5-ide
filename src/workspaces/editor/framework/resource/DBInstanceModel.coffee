@@ -308,7 +308,7 @@ define [
       if not instanceClass.multiAZCapable
         @set 'multiAz', false
 
-      [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable]
+      [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable, instanceClass.availabilityZones]
 
 
     getSpecifications: ->
@@ -325,14 +325,17 @@ define [
       for i in instances
         spec[i.LicenseModel] = {} if not spec[i.LicenseModel]
         spec[i.LicenseModel][i.EngineVersion] = {} if not spec[i.LicenseModel][i.EngineVersion]
-        spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = multiAZCapable: i.MultiAZCapable
+        spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = {
+          multiAZCapable: i.MultiAZCapable,
+          availabilityZones: i.AvailabilityZones
+        }
 
       for license, versions of spec
         lObj = license: license, versions: []
         for version, classes of versions
           vObj = version: version, instanceClasses: []
           for cla, az of classes
-            vObj.instanceClasses.push instanceClass: cla, multiAZCapable: az.multiAZCapable
+            vObj.instanceClasses.push instanceClass: cla, multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
 
           vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> Model.instanceClassList.indexOf cla.instanceClass
           lObj.versions.push vObj

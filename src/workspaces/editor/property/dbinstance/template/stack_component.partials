@@ -132,3 +132,23 @@
 <label>Option Group</label>
 <div>{{ogName}}</div>
 {{/if}}
+
+<!-- {{propertyDbinstanceMutilAZ}} -->
+<section class="property-control-group">
+    <div class="checkbox">
+        <input id="property-dbinstance-mutil-az-check" {{#unless multiAZCapable}}disabled="disabled"{{/unless}} type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
+        <label for="property-dbinstance-mutil-az-check"></label>
+    </div>
+    <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
+</section>
+
+{{#if azNotEnough}}
+<section class="property-control-group">
+    <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+</section>
+{{else}}
+<section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
+    <label class="left">Preferred Availability Zone</label>
+    <div class="selectbox" id="property-dbinstance-preferred-az"></div>
+</section>
+{{/if}}

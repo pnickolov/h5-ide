@@ -223,26 +223,6 @@ define [ '../base/view'
                 $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
                 $select.find('.selection').text($item.text())
 
-            # set preferred AZ list
-            region = Design.instance().get('region')
-            allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
-            allAZ = []
-            allAZName = []
-            _.each allAZComp, (az) ->
-                allAZ.push({
-                    name: az.id
-                })
-                allAZName.push(az.id)
-                null
-            $('#property-dbinstance-preferred-az').html template_component.preferred_az(allAZ)
-            if attr.az and (attr.az in allAZName)
-                selectedAZ = attr.az
-            else
-                selectedAZ = 'no'
-            $preferredAZSelect = $('#property-dbinstance-preferred-az')
-            $item = $preferredAZSelect.find(".item[data-id='#{selectedAZ}']").addClass('selected')
-            $preferredAZSelect.find('.selection').text($item.text())
-
             @model.get 'name'
 
             @pgDropdown = new parameterGroup(@model).renderDropdown()
@@ -276,6 +256,7 @@ define [ '../base/view'
 
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->
+            
             spec = @model.getSpecifications()
             lvi  = @model.getLVIA spec
 
@@ -288,9 +269,59 @@ define [ '../base/view'
             _.extend data, @model.toJSON()
 
             $('#lvia-container').html template_component.lvi(data)
+
+            attr = @model.toJSON()
+            
+            spec = @model.getSpecifications()
+            lvi = @model.getLVIA spec
+            multiAZCapable = lvi[3]
+            optionalAzAry = lvi[4]
+
+            if not multiAZCapable
+                @model.set('multiAz', false)
+
+            # set subnet group name
+            sgData = {
+                multiAz: attr.multiAz
+                multiAZCapable: multiAZCapable
+            }
+            subnetGroupModel = @model.parent()
+            sgData.subnetGroupName = subnetGroupModel.get('name')
+            connAry = subnetGroupModel.get('__connections')
+            azUsedMap = {}
+            _.each connAry, (subnetModel) ->
+                azName = subnetModel.getTarget(constant.RESTYPE.SUBNET).parent().get('name')
+                azUsedMap[azName] = true
+                null
+            usedAZCount = _.size(azUsedMap)
+            if usedAZCount < 2
+                sgData.azNotEnough = true
+
+            $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
+
+            # set preferred AZ list
+            region = Design.instance().get('region')
+            allAZ = []
+            allAZName = []
+            _.each optionalAzAry, (az) ->
+                allAZ.push({
+                    name: az
+                })
+                allAZName.push(az)
+                null
+            $('#property-dbinstance-preferred-az').html template_component.preferred_az(allAZ)
+            if attr.az and (attr.az in allAZName)
+                selectedAZ = attr.az
+            else
+                selectedAZ = 'no'
+            $preferredAZSelect = $('#property-dbinstance-preferred-az')
+            $item = $preferredAZSelect.find(".item[data-id='#{selectedAZ}']").addClass('selected')
+            $preferredAZSelect.find('.selection').text($item.text())
+
             @
 
         changeInstanceName: (event) ->
+            
             value = $(event.target).val()
             @model.setName value
             @setTitle value
@@ -319,7 +350,7 @@ define [ '../base/view'
             else
                 @model.set 'az', name
 
-            @renderLVIA()
+            # @renderLVIA()
 
         changeAllocatedStorage: (event) ->
 

@@ -483,6 +483,7 @@ define [
 
     ###
     # Drop to add ( Implemented in CanvasViewDnd )
+    dragItem : ()->
     __addItemDragOver : ( evt )->
     __addItemDragLeave : ( evt )->
     __addItemDrop : ( evt )->

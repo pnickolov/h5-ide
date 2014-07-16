@@ -38,6 +38,34 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
     parentType  : [ constant.RESTYPE.SUBNET ]
     defaultSize : [15, 15]
 
+    events :
+      "mousedown .asg-dragger" : "dragExpand"
+
+    size : ()-> { width : 13, height : 13 }
+
+    dragExpand : ( evt )->
+      @canvas.dragItem( evt, { onDrop : @onDropExpand } )
+      false
+
+    onDropExpand : ( evt, dataTransfer )->
+      item = dataTransfer.item
+
+      design = item.model.design()
+      comp   = item.model
+      target = dataTransfer.parent.model
+
+      ExpandedAsgModel = Design.modelClassForType("ExpandedAsg")
+      res = new ExpandedAsgModel({
+        x           : dataTransfer.x
+        y           : dataTransfer.y
+        parent      : dataTransfer.parent.model
+        originalAsg : item.model
+      })
+      if res and res.id then return
+
+      notification 'error', sprintf(lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), target.parent().get("name"))
+      return
+
     # Creates a svg element
     create : ()->
       m = @model

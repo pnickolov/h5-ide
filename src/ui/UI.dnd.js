@@ -120,7 +120,7 @@
       data.onDrag(evt);
       return false;
     };
-    return onMouseUp = function(evt) {
+    onMouseUp = function(evt) {
       var data;
       data = evt.data;
       cancelDnd(evt);
@@ -131,6 +131,7 @@
         data.hoverZone.triggerHandler("" + data.eventPrefix + "drop", data);
       }
     };
+    return null;
   });
 
 }).call(this);

@@ -144,3 +144,5 @@ define ["jquery"], ( $ )->
       data.hoverZone.triggerHandler "#{data.eventPrefix}drop", data
 
     return
+
+  null

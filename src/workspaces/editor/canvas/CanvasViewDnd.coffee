@@ -324,10 +324,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
   # Move item by dnd
   CanvasViewProto.__moveItemMouseDown = ( evt )->
-    @dragItem( evt, { onDragEnd : __moveItemDrop, altState  : true } )
+    @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
 
 
   CanvasViewProto.dragItem = ( evt, options )->
+    console.assert options.onDrop, "Drop handler is not specified."
+
     if evt.which isnt 1 then return false
 
     ###
@@ -362,7 +364,6 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
       onDragStart : __moveItemStart
       onDrag      : __moveItemDrag
       onDragEnd   : __moveItemDrop
-      onDrop      : __moveItemDidDrop
     }
     $tgt.dnd( evt, options )
     false
@@ -388,6 +389,10 @@ define [ "./CanvasView", "./CanvasElement", "constant", "CanvasManager", "i18n!/
 
   __moveItemDrag = ( evt )->
     data = evt.data
+
+    if not data.zoneDimension
+      # The dragging is not within the canvas.
+      return
 
     ctx = data.context
 

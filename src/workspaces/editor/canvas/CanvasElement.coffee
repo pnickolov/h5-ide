@@ -1,5 +1,5 @@
 
-define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( Design, lang, Modal )->
+define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "svg" ], ( Design, lang, Modal, ide_event )->
 
   CanvasView = null
 
@@ -277,7 +277,9 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "backbone", "svg" ], ( D
       C.isConnectable( p1Comp, p2Comp ) isnt false
 
     # Canvas Interaction
-    select  : ( selectedDomElement )->
+    select : ( selectedDomElement )->
+      ide_event.trigger ide_event.OPEN_PROPERTY, @type, @model.id
+      return
 
     destroy : ( selectedDomElement )->
       if @model.isRemoved()

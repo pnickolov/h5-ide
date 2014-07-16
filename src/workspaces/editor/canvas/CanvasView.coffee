@@ -6,11 +6,12 @@ define [
   "Design"
   "i18n!/nls/lang.js"
   "UI.modalplus"
+  "event"
 
   "backbone"
   "UI.nanoscroller"
   "svg"
-], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, lang, Modal )->
+], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, lang, Modal, ide_event )->
 
   # Insert svg defs template.
   $( OpsEditorTpl.svgDefs() ).appendTo("body")
@@ -328,7 +329,7 @@ define [
 
       if @getSelectedItem() is item
         @__selected = null
-        # ide_event.trigger ide_event.OPEN_PROPERTY
+        ide_event.trigger ide_event.OPEN_PROPERTY
 
       delete @__itemMap[ resourceModel.id ]
       delete @__itemMap[ item.cid ]

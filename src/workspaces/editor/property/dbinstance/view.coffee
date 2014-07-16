@@ -33,10 +33,12 @@ define [ '../base/view'
             'change #property-dbinstance-auto-backup-check': 'changeAutoBackupCheck'
             'change #property-dbinstance-backup-period': 'changeBackupPeriod'
 
+            'click #property-dbinstance-backup-window-select input': 'changeBackupOption'
             'change #property-dbinstance-backup-window-start-hour': 'changeBackupTime'
             'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
             'change #property-dbinstance-backup-window-duration': 'changeBackupTime'
 
+            'click #property-dbinstance-maintenance-window-select input': 'changeMaintenanceOption'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
@@ -109,6 +111,7 @@ define [ '../base/view'
                 return {
                     startHour: startHour,
                     startMin: startMin,
+                    startTime: "#{startHour}:#{startMin}",
                     duration: duration,
                     startWeek: startWeekStr
                 }
@@ -117,7 +120,7 @@ define [ '../base/view'
 
                 return null
 
-        _getTimeStr: (startHour, startMin, duration, startWeek) ->
+        _getTimeStr: (startTimeStr, duration, startWeek) ->
 
             addZero = (num) ->
 
@@ -126,52 +129,64 @@ define [ '../base/view'
                     numStr = '0' + numStr
                 return numStr
 
-            start = new Date()
-            start.setHours(startHour)
-            start.setMinutes(startMin)
-            end = new Date(start.getTime() + 1000 * 60 * 60 * duration)
-            endHour = end.getHours()
-            endMin = end.getMinutes()
+            try
 
-            # add zero on number
-            startHour = addZero(startHour)
-            startMin = addZero(startMin)
-            endHour = addZero(endHour)
-            endMin = addZero(endMin)
+                startTime = startTimeStr.split(':')
+                startHour = Number(startTime[0])
+                startMin = Number(startTime[1])
 
-            startTimeStr = "#{startHour}:#{startMin}"
-            endTimeStr = "#{endHour}:#{endMin}"
+                start = new Date()
+                start.setHours(startHour)
+                start.setMinutes(startMin)
+                end = new Date(start.getTime() + 1000 * 60 * 60 * duration)
+                endHour = end.getHours()
+                endMin = end.getMinutes()
 
-            if startWeek
+                # add zero on number
+                startHour = addZero(startHour)
+                startMin = addZero(startMin)
+                endHour = addZero(endHour)
+                endMin = addZero(endMin)
 
-                startTimeStr = "#{startWeek}:#{startTimeStr}"
-                endTimeStr = "#{startWeek}:#{endTimeStr}"
+                startTimeStr = "#{startHour}:#{startMin}"
+                endTimeStr = "#{endHour}:#{endMin}"
 
-            return "#{startTimeStr}-#{endTimeStr}"
+                if startWeek
+
+                    startTimeStr = "#{startWeek}:#{startTimeStr}"
+                    endTimeStr = "#{startWeek}:#{endTimeStr}"
+
+                return "#{startTimeStr}-#{endTimeStr}"
+
+            catch err
+
+                return ''
 
         _setBackupTime: () ->
 
-            hour = Number($('#property-dbinstance-backup-window-start-hour').val())
-            min = Number($('#property-dbinstance-backup-window-start-minute').val())
+            # hour = Number($('#property-dbinstance-backup-window-start-hour').val())
+            # min = Number($('#property-dbinstance-backup-window-start-minute').val())
+            startTime = $('#property-dbinstance-backup-window-start-time').val()
             duration = Number($('#property-dbinstance-backup-window-duration').val())
-            timeStr = @_getTimeStr(hour, min, duration)
+            timeStr = @_getTimeStr(startTime, duration)
             @model.set('backupWindow', timeStr)
 
         _setMaintenanceTime: () ->
 
-            hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
-            min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
+            # hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
+            # min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
+            startTime = $('#property-dbinstance-maintenance-window-start-time').val()
             duration = Number($('#property-dbinstance-maintenance-window-duration').val())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
-            timeStr = @_getTimeStr(hour, min, duration, week)
+            timeStr = @_getTimeStr(startTime, duration, week)
             @model.set('maintenanceWindow', timeStr)
 
         render: () ->
 
             attr = @model.toJSON()
 
-            backupTime = @_getTimeData(attr.backupWindow) or {}
-            maintenanceTime = @_getTimeData(attr.maintenanceWindow) or {}
+            backupTime = @_getTimeData(attr.backupWindow)
+            maintenanceTime = @_getTimeData(attr.maintenanceWindow)
 
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
@@ -202,7 +217,7 @@ define [ '../base/view'
             @renderOptionGroup()
 
             # set Start Day week selection
-            weekStr = maintenanceTime.startWeek
+            weekStr = maintenanceTime?.startWeek
             if weekStr
                 $select = $('#property-dbinstance-maintenance-window-start-day-select')
                 $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
@@ -388,6 +403,27 @@ define [ '../base/view'
 
             #update model
             @model.autobackup Number(value) #setter
+
+        changeBackupOption: (event) ->
+
+            $backupGroup = $('#property-dbinstance-backup-window-group')
+            selectedValue = $(event.currentTarget).val()
+            if selectedValue is 'window'
+                $backupGroup.show()
+            else
+                $backupGroup.hide()
+                @model.set('backupWindow', '')
+
+
+        changeMaintenanceOption: (event) ->
+
+            $maintenanceGroup = $('#property-dbinstance-maintenance-window-group')
+            selectedValue = $(event.currentTarget).val()
+            if selectedValue is 'window'
+                $maintenanceGroup.show()
+            else
+                $maintenanceGroup.hide()
+                @model.set('maintenanceWindow', '')
 
         changeBackupTime: (event) ->
 

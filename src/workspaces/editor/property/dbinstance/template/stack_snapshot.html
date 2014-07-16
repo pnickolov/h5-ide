@@ -21,14 +21,6 @@
         </section>
 
         <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
-                <label for="property-dbinstance-version-update"></label>
-            </div>
-            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
-        </section>
-
-        <section class="property-control-group">
             <label class="left">DB Instance Class</label>
             <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
                 <div class="selection"></div>
@@ -45,16 +37,20 @@
 
         <section class="property-control-group">
             <div class="checkbox">
+                <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
+                <label for="property-dbinstance-version-update"></label>
+            </div>
+            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
+        </section>
+
+        <section class="property-control-group">
+            <div class="checkbox">
                 <input id="property-dbinstance-mutil-az-check" type="checkbox" {{#if multiAz}}checked="true"{{/if}} value="None" name="property-dbinstance-mutil-az-check">
                 <label for="property-dbinstance-mutil-az-check"></label>
             </div>
             <label for="property-dbinstance-mutil-az-check">Multi-AZ Deployment</label>
         </section>
 
-    </div>
-
-    <div class="option-group-head">Database Config</div>
-    <div class="option-group">
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-database-port" >Database Port</label>
             <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-required-rollback="true"/>

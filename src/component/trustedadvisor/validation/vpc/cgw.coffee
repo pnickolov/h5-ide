@@ -8,11 +8,6 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_servic
 			if !callback
 				callback = () ->
 
-			# currentState = MC.canvas.getState()
-			# if currentState is 'appedit'
-			# 	callback(null)
-			# 	return null
-
 			# get current stack all cgw
 			stackCGWIP = stackCGWName = stackCGWUID = stackCGWId = null
 			_.each MC.canvas_data.component, (compObj) ->

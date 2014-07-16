@@ -93,7 +93,6 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 $('.modal-close').click () -> $('#property-cgw-ip').focus()
 
                 $('#cidr-remove').click () ->
-                    $canvas.clearSelected()
                     Design.instance().component( that.model.get("uid") ).remove()
 
                     that.disabledAllOperabilityArea(false)

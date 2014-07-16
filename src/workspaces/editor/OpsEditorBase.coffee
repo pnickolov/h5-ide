@@ -64,6 +64,11 @@ define [
     # Return true if the data is ready.
     isReady : ()-> !!@__hasAdditionalData
 
+    getSelectedComponent : ()->
+      if not @view.canvas
+        return null
+      @view.canvas.getSelectedComp()
+
     onOpsModelStateChanged : ()->
       switch @opsModel.get("state")
         when OpsModel.State.Destroyed

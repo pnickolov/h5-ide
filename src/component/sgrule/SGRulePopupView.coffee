@@ -134,11 +134,9 @@ define [ './template', 'i18n!/nls/lang.js', "Design" ], ( template, lang, Design
           modal.close()
 
           lineId = @model.get("lineId")
-          component = Design.instance().component( lineId )
-          if component
-            $canvas( lineId ).select()
-          else
-            $canvas.clearSelected()
+          comp = Design.instance().component( lineId )
+          if comp
+            ide_event.trigger ide_event.OPEN_PROPERTY, comp.type, lineId
 
           return false
 

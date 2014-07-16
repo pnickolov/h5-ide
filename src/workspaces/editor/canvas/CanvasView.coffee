@@ -62,6 +62,8 @@ define [
 
       @$el.nanoScroller()
 
+      @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+
       @reload()
       return
 
@@ -130,6 +132,8 @@ define [
       if not @__selected then return null
       @getItem( @__selected.getAttribute("data-id") )
 
+    getSelectedComp : ()-> @getSelectedItem()?.model
+
     delSelectedItem : ()-> @deleteItem( @getSelectedItem() )
     deleteItem : ( itemOrId )->
       if _.isString( itemOrId )
@@ -178,6 +182,17 @@ define [
       if @__selected
         CanvasManager.removeClass @__selected, "selected"
         @__selected = null
+      return
+
+    lineStyle : ()-> @__linestyle
+    updateLineStyle : ()->
+      @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+
+      CanvasManager.toggle $( @svg.node ).children( ".layer_sgline" ), @__linestyle isnt 4
+
+      if @__linestyle isnt 4
+        for cn in Design.modelClassForType("SgRuleLine").allObjects()
+          @getItem( cn.id )?.update()
       return
 
     zoomOut : ()-> @zoom(  0.2 )

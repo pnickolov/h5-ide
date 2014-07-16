@@ -172,7 +172,7 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
       else
         controlPoints = MC.canvas.route2( start0, end0 )
         if controlPoints
-          ls = if connection.get("lineType") is 'sg' then 2 else 777
+          ls = if connection.get("lineType") is 'sg' then @canvas.lineStyle() else 777
 
           switch ls
             when 0

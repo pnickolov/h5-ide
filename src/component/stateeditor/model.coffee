@@ -133,13 +133,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			that.set('groupResSelectData', groupResSelectData)
 
 			# Diffrent view
-			currentState = MC.canvas.getState()
-			if currentState is 'stack'
-				that.set('currentState', 'stack')
-			else if currentState is 'app'
-				that.set('currentState', 'app')
-			else if currentState is 'appedit'
-				that.set('currentState', 'appedit')
+			that.set('currentState', Design.instance().mode())
 
 		sortParaList: (cmdAllParaAry, paraName) ->
 

@@ -483,7 +483,7 @@ define [
 
 
     # Quick Fix for some other property
-    # 1. save $canvas's size to layout
+    # 1. save canvas's size to layout
     data.layout.size = data.canvasSize
     delete data.canvasSize
 

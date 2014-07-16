@@ -147,7 +147,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       @get("ips")[0].hasEip = toggle
       @draw()
-      @trigger "change:primaryEip"
       null
 
     hasPrimaryEip : ()-> @get("ips")[0].hasEip

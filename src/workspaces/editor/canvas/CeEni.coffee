@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "event" ], ( CanvasElement, constant, CanvasManager, lang, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -38,6 +38,8 @@ define [ "./CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], 
         Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
       CanvasManager.updateEip @$el.children(".eip-status"), @model
+
+      ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
 
     # Creates a svg element

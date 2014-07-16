@@ -50,10 +50,6 @@ define [ "constant"
 
     constructor: -> GroupModel.prototype.constructor.apply @, arguments
 
-
-
-    isRemovable: () -> !@children().length
-
     serialize: ()->
       sbArray = _.map @connectionTargets("SbAsso"), ( sb )-> sb.createRef( "SubnetId" )
 

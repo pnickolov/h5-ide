@@ -207,11 +207,12 @@ define [
       hasDBInstance = _.filter comp, (e)->
         e.type == constant.RESTYPE.DBINSTANCE
 
-      dbInstanceName = _.pluck hasDBInstance, 'name'
+      dbInstanceName = _.map hasDBInstance, (e)->
+        return e.resource.DBInstanceIdentifier
       console.log hasDBInstance, "DBINSTANCE"
       hasNotReadyDB = resourceList.filter (e)->
-        #e.get('name') in dbInstanceName
-        return true
+        console.log e
+        (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
       hasAsg = (_.filter comp, (e)->
         e.type == constant.RESTYPE.ASG)?.length

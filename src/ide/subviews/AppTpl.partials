@@ -87,9 +87,7 @@
 
 <!-- {{cantStop}} -->
 <p>DB Instance
-    {{#each cantStop}}
-        {{#if @index}},{{/if}}{{attributes.DBInstanceIdentifier}}({{attributes.DBInstanceStatus}})
-    {{/each}}
+    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
     cannot take final snapshot.</p>
 <p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
 

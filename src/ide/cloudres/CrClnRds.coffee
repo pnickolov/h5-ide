@@ -21,12 +21,21 @@ define [
     initialize : ()->
       @optionGroupData   = {} #existed optiongroup
       @engineDict        = {} #by engineName, engineVersion
-      @parameterGroupData= {} #by family
       @defaultInfo       = {} #by engine
       return
 
-    getEngineOptions : ( regionName, engineName )-> @optionGroupData[regionName][engineName]
+    #return availibale optiongroup array
+    getOptionGroupsByEngine : ( regionName, engineName )->
+      if not regionName
+        console.error "please provide regionName"
+      else if not engineName
+        console.error "please provide engineName"
+      else
+        ogAry = @optionGroupData[regionName][engineName]
+      ogAry || ""
 
+    #return like this: (by parameter)
+    # {family: "mysql5.6", defaultPGName: "default.mysql5.6", defaultOGName: "default:mysql-5-6", canCustomOG: false}
     getDefaultByNameVersion : ( regionName, engineName, engineVersion )->
       if not regionName
         console.error "please provide regionName"
@@ -35,9 +44,10 @@ define [
       else if not engineVersion
         console.error "please provide engineVersion"
       else
-        family = @engineDict[regionName][engineName][engineVersion]
-      family || ""
+        defaultData = @engineDict[regionName][engineName][engineVersion]
+      defaultData || ""
 
+    #result is same as getDefaultByNameVersion()
     getDefaultByFamily : ( regionName, family )->
       if not regionName
         console.error "please provide regionName"
@@ -47,15 +57,6 @@ define [
         defaultData = @defaultInfo[regionName][family]
       defaultData || ""
 
-    getEnginesByFamily : ( regionName, family )->
-      if not regionName
-        console.error "please provide regionName"
-      else if not family
-        console.error "please provide family"
-      else
-        engine = @parameterGroupData[regionName][family]
-      engine || ""
-
     doFetch : ()->
       self = @
       regionName = @region()
@@ -64,7 +65,6 @@ define [
         #init for region
         self.optionGroupData[regionName]    = {}
         self.engineDict[regionName]         = {}
-        self.parameterGroupData[regionName] = {}
         self.defaultInfo[regionName]        = {}
 
         try
@@ -93,11 +93,6 @@ define [
           #generate engine
           if not self.defaultInfo[regionName][d.DBParameterGroupFamily]
             self.defaultInfo[regionName][d.DBParameterGroupFamily] = dict
-
-          #generate engine default data
-          if not self.parameterGroupData[regionName][d.DBParameterGroupFamily]
-            self.parameterGroupData[regionName][d.DBParameterGroupFamily] = []
-          self.parameterGroupData[regionName][d.DBParameterGroupFamily].push d
 
         jobs = _.keys( engines ).map ( engineName )->
           ApiRequest("rds_og_DescribeOptionGroupOptions", {
@@ -136,10 +131,9 @@ define [
         optionData[ d.MajorEngineVersion ].push d
 
         #generate engine dictionary(optiongroup)
-        engineVersion = d.MajorEngineVersion + "." + d.MinimumRequiredMinorEngineVersion
-        engineInfo = self.engineDict[regionName][d.EngineName][engineVersion]
-        if engineInfo
-          engineInfo.canCustomOG = true
+        _.each self.engineDict[regionName][d.EngineName], (item, key) ->
+          if key.indexOf( d.MajorEngineVersion ) is 0
+            item.canCustomOG = true
 
       @optionGroupData[regionName][engineName] = optionData
       return

@@ -85,6 +85,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
                         og.preview = ogPreviewAry.join(',')
                     if ogName and ogName is selection
                         og.selected = true
+                        that.dropdown.setSelection selection
                     null
                 @dropdown.setContent(template.dropdown_list @ogAry).toggleControls true
             else

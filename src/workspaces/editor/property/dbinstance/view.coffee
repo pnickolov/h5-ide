@@ -239,9 +239,8 @@ define [ '../base/view'
             attr             = @model.toJSON()
             attr.canCustomOG = false
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
-            engineOptions = engineCol.getEngineOptions(regionName, attr.engine)
+            engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
             ogOptions     = engineOptions[@model.getMajorVersion()] if engineOptions
-
             defaultInfo = engineCol.getDefaultByNameVersion(regionName, attr.engine, attr.engineVersion)
 
             if defaultInfo and defaultInfo.canCustomOG

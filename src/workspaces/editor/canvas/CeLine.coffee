@@ -39,10 +39,14 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       if item1.$el.length is 1 and item2.$el.length is 1
         @$el.children().attr( "d", @generatePath( item1, item2, undefined, undefined ) )
       else
+        newLength = item1.$el.length * item2.$el.length
+        @$el.slice( newLength ).remove()
+        @$el = @$el.slice( 0, newLength )
+
         i = 0
         for el1 in item1.$el
           for el2 in item2.$el
-            @$el.eq(0).children().attr( "d", @generatePath( item1, item2, undefined, undefined ) )
+            @$el.eq(i).children().attr( "d", @generatePath( item1, item2, el1, el2 ) )
             ++i
       return
 

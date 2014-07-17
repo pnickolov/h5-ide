@@ -35,6 +35,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       @stopListening()
       return
 
+    update : ()-> # Do nothing, this api is just used to make CeSgAsso looks like CeLine
+
     # Update the svg element
     render : ()->
       if @canvas.initializing then return

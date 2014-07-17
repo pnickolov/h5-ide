@@ -48,6 +48,12 @@ define [
             @view.resModel = resModel
             null
 
+        initAppEdit : ( uid ) ->
+            @model = Design.instance().component uid
+            @model.isAppEdit = true
+            @view  = view
+            null
+
         afterLoadApp : () ->
             sglist_main.loadModule @model
             null

@@ -186,6 +186,12 @@ define [ '../base/view'
 
             attr = @model.toJSON()
 
+            # for app edit
+            if @model.isAppEdit
+                
+                attr.isAppEdit = @model.isAppEdit
+                
+
             backupTime = @_getTimeData(attr.backupWindow)
             maintenanceTime = @_getTimeData(attr.maintenanceWindow)
 

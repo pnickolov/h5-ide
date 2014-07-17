@@ -11,6 +11,7 @@
     </div>
 </section>
 
+{{#unless snapshotId}}
 <section class="property-control-group">
     <label class="left">DB Engine Version</label>
     <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
@@ -31,6 +32,7 @@
         </div>
     </div>
 </section>
+{{/unless}}
 
 <section class="property-control-group">
     <label class="left">DB Instance Class</label>

@@ -229,7 +229,8 @@ define [
 #        production : app.get("usage") is "production"
 #      }
 
-      $("#confirmStopApp").on "click", ()->
+      canStop.on "confirm", ()->
+        canStop.close()
         app.stop().fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"

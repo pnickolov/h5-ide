@@ -3342,7 +3342,7 @@ module.exports =
       zh: ""
 
     PROP_DBINSTANCE_IOPS:
-      en: "IPOS"
+      en: "IOPS"
       zh: ""
 
     PROP_DBINSTANCE_STORAGE:

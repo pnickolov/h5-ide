@@ -124,11 +124,18 @@ define [
         @on 'sgchange', @onSgChange
       null
 
-    setDefaultOptionGroup: () ->
+    setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
       regionName  = Design.instance().region()
       engineCol   = CloudResources(constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      if origEngineVersion
+        origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
+
+      if origDefaultInfo and origDefaultInfo.family and defaultInfo and defaultInfo.family
+        if origDefaultInfo.family is defaultInfo.family
+          #family no changed, then no need change OptionGroup
+          return null
 
       if defaultInfo and defaultInfo.defaultOGName
         defaultOG = defaultInfo.defaultOGName
@@ -138,16 +145,21 @@ define [
       @set 'ogName', defaultOG
       null
 
-    setDefaultParameterGroup:() ->
+    setDefaultParameterGroup:( origEngineVersion ) ->
       #set default parameter group
       regionName = Design.instance().region()
       engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      if origEngineVersion
+        origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
 
-      if engineCol
-        defaultPG = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      if origDefaultInfo and origDefaultInfo.family and defaultInfo and defaultInfo.family
+        if origDefaultInfo.family is defaultInfo.family
+          #family no changed, then no need change parametergroup
+          return null
 
-      if defaultPG and defaultPG.defaultPGName
-        defaultPG = defaultPG.defaultPGName
+      if defaultInfo and defaultInfo.defaultPGName
+        defaultPG = defaultInfo.defaultPGName
       else
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"

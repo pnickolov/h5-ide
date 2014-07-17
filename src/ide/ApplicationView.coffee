@@ -207,21 +207,26 @@ define [
       hasDBInstance = _.filter comp, (e)->
         e.type == constant.RESTYPE.DBINSTANCE
 
+      dbInstanceName = _.pluck hasDBInstance, 'name'
       console.log hasDBInstance, "DBINSTANCE"
-      hasNotReadyDB = _.filter hasDBInstance, (e)->
-        DBInstance = resourceList.findWhere(id: e.resource.DBInstanceIdentifier)
-        DBInstance and  DBInstance?.attributes.DBInstanceStatus isnt 'available'
+      hasNotReadyDB = resourceList.filter (e)->
+        e.get('name') in dbInstanceName
 
       hasAsg = (_.filter comp, (e)->
         e.type == constant.RESTYPE.ASG)?.length
 
+      fee = Design.instance().getCost()
+      totalFee = fee.totalFee
+      savingFee = fee.totalFee
+      console.log(fee)
+
       canStop.tpl.find(".modal-footer").show()
       if hasNotReadyDB and hasNotReadyDB.length
-        canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : notReadyDB.toJSON()}
+        canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB.toJSON()}
         canStop.tpl.find('.modal-confirm').remove()
       else
         hasDBInstance = hasDBInstance?.length
-        canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg}
+        canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee}
 
 
 #      modal AppTpl.stopAppConfirm {

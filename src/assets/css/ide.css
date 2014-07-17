@@ -4193,4 +4193,29 @@ summary:focus {
     margin-top: 6px;
 }
 
-
+#modal-wrap .estimate-stop{
+    display: block;
+    position: relative;
+    background: #0f0f0f;
+    padding: 10px 20px;
+}
+#modal-wrap .estimate-stop div{
+    margin: 10px 0;
+    position: relative;
+}
+#modal-wrap .estimate-stop .title{
+    font-size: 16px;
+}
+#modal-wrap .estimate-stop .price{
+    float: right;
+}
+#label-total-fee b{
+    font-weight: normal;
+    font-size: 20px;
+    color:#f8b42d;
+}
+#label-total-saving b{
+    font-weight: normal;
+    color: #8ed72b;
+    font-size: 18px;
+}

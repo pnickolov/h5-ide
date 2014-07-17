@@ -63,6 +63,7 @@ define [ '../base/view'
             @model.setDefaultParameterGroup( origEngineVersion )
             @model.setDefaultOptionGroup( origEngineVersion )
             @renderOptionGroup()
+            @renderParameterGroup()
             @renderLVIA()
 
         changeClass: ( event, value, data ) ->
@@ -265,6 +266,13 @@ define [ '../base/view'
                         engineVersion: attr.engineVersion
                         majorVersion: @model.getMajorVersion()
                     }).el
+
+        renderParameterGroup: ->
+            #close dropdown
+            Canvon(".selectbox.combo-dd.multiopen").removeClass("open")
+            #update selection
+            @pgDropdown.setSelection(@model.get 'pgName')
+            null
 
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->

@@ -191,6 +191,8 @@ define [ '../base/view'
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
 
+            if @model.master()
+                attr.sourceDbName = @model.master().get('name')
 
             spec = @model.getSpecifications()
             lvi = @model.getLVIA spec

@@ -31,6 +31,16 @@
             <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
         </section>
 
+        {{#if masterIops}}
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-iops-check" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
+                <label for="property-dbinstance-iops-check"></label>
+            </div>
+            <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
+        </section>
+        {{/if}}
+
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-database-port" >Database Port</label>
             <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-required-rollback="true"/>
@@ -43,6 +53,8 @@
             </div>
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
         </section>
+
+
 
     </div>
 

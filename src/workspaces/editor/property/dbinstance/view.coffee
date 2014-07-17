@@ -201,7 +201,9 @@ define [ '../base/view'
 
             template = template_instance
             # if replica
-            template = template_replica if @model.master()
+            if @model.master()
+                template = template_replica
+                attr.masterIops = @model.master().get 'iops'
             # if snapshot
             template = template_snapshot if attr.snapshotId
 
@@ -372,16 +374,16 @@ define [ '../base/view'
             if value
                 $('.property-dbinstance-iops-value-section').show()
                 $('#property-dbinstance-iops-value').val('100')
-                @model.set 'iops', 100
+                @model.setIops 100
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
-                @model.set 'iops', ''
+                @model.setIops ''
 
         changeProvisionedIOPS: (event) ->
 
             value = $(event.target).val()
-            @model.set 'iops', Number(value)
+            @model.setIops Number(value)
 
         changeUserName: (event) ->
 

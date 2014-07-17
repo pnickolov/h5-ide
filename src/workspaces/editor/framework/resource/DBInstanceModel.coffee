@@ -155,6 +155,12 @@ define [
       @set 'pgName', defaultPG || ""
       null
 
+    setIops: ( iops ) ->
+      iops = iops and @master() and @master().get('iops') or iops
+      @set 'iops', iops
+
+    getIops: -> @get('iops') and @master() and @master().get('iops') or @get('iops')
+
     defaultPortMap:
       'mysql'         : 3306
       'postgres'      : 5432
@@ -203,7 +209,7 @@ define [
 
     clone :( srcTarget )->
       @cloneAttributes srcTarget, {
-        reserve : "instanceClass|autoMinorVersionUpgrade|iops|port|accessible" #reserve attributes
+        reserve : "instanceClass|autoMinorVersionUpgrade|iops|accessible" #reserve attributes
         copyConnection : [ "SgAsso" ]
       }
       null
@@ -500,7 +506,7 @@ define [
           AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
           AvailabilityZone                      : @get 'az'
           MultiAZ                               : @get 'multiAz'
-          Iops                                  : @get 'iops'
+          Iops                                  : @getIops()
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'

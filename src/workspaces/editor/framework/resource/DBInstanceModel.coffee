@@ -510,7 +510,7 @@ define [
           DBInstanceIdentifier                  : @get 'instanceId'
           NewDBInstanceIdentifier               : @get 'newInstanceId'
           DBSnapshotIdentifier                  : @get 'snapshotId'
-          ReadReplicaSourceDBInstanceIdentifier : @master()?.createRef 'DBInstanceIdentifier' or ''
+          ReadReplicaSourceDBInstanceIdentifier : @master()?.createRef('DBInstanceIdentifier') or ''
 
           AllocatedStorage                      : @get 'allocatedStorage'
           AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'

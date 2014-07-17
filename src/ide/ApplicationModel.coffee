@@ -105,19 +105,6 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         for i in res
           instanceTypeConfig = {}
 
-          # #generate default parametergroup
-          # if i.instance_types.rds
-          #   defaultInfo = {}
-          #   for engine in i.instance_types.rds?.engine || []
-          #     if not defaultInfo[ engine.Engine ]
-          #       defaultInfo[ engine.Engine ] = {}
-          #     defaultInfo[ engine.Engine ][ engine.EngineVersion ] =
-          #       family : engine.DBParameterGroupFamily
-          #       parameterGroup : 'default.' + engine.DBParameterGroupFamily
-          #       optionGroup : 'default:' + engine.Engine + '-' + engine.EngineVersion.split('.').slice(0,2).join('-')
-
-          #   i.instance_types.rds.defaultInfo = defaultInfo
-
           self.__appdata[ i.region ] = {
             price              : i.price
             osFamilyConfig     : i.instance_types.sort
@@ -149,7 +136,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
-      Q.all([ sp, ap ]).then ()->
+      Q.all([ sp, ap, appdata ]).then ()->
         try
           ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
         catch e

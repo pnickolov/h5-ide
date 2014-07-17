@@ -134,7 +134,10 @@ define [
 
     getSelectedComp : ()-> @getSelectedItem()?.model
 
-    delSelectedItem : ()-> @deleteItem( @getSelectedItem() )
+    delSelectedItem : ()->
+      if not @__selected then return null
+      @getItem( @__selected.getAttribute("data-id") ).destroy( @__selected )
+
     deleteItem : ( itemOrId )->
       if _.isString( itemOrId )
         itemOrId = @getItem( itemOrId )
@@ -355,6 +358,7 @@ define [
       if idx >= 0 then @__itemTopLevel.splice( idx, 1 )
 
       item.remove()
+      item.canvas = null
       return
 
     getItem : ( id )-> @__itemMap[ id ]

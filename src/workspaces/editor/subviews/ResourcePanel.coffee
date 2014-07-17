@@ -48,6 +48,36 @@ define [
     return MC.template.bubbleAMIInfo( ami )
 
 
+
+  LcItemView = Backbone.View.extend {
+
+    tagName   : 'li'
+    className : 'resource-item asg'
+
+    initialize: ( options ) ->
+      @parent = options.parent
+      ( @parent or @ ).$el.find(".resource-list-asg").append @$el
+
+      @listenTo @model, 'change:name', @render
+      @listenTo @model, 'change:imageId', @render
+      @listenTo @model, 'destroy', @remove
+
+      @render()
+      @$el.attr({
+        "data-type"   : "ASG"
+        "data-option" : '{"lcId":"' + @model.id + '"}'
+      })
+      return
+
+    render : ()->
+      @$el.html LeftPanelTpl.reuse_lc({
+        name      : @model.get("name")
+        cachedAmi : @model.getAmi() || @model.get("cachedAmi")
+      })
+  }
+
+
+
   Backbone.View.extend {
 
     events :
@@ -94,54 +124,6 @@ define [
       @renderReuse()
       return
 
-    reuseLc: Backbone.View.extend
-      tagName: 'li'
-      className: 'tooltip resource-item asg resource-reuse'
-      inDom: false
-      defaultAttr: ->
-        'data-type': 'ASG'
-
-      defaultData: ->
-        that = @
-
-        'option':
-          lcId: that.model.id
-
-
-      initialize: ( options ) ->
-        options = {} if not options
-        @parent = options.parent
-
-        @settleElement options
-        @bindEvent @model
-
-      bindEvent: ( model ) ->
-        @listenTo model, 'change', @render
-        @listenTo model, 'destroy', ( lc ) ->
-          if lc.__brothers.length
-            @model = lc.__brothers[ 0 ]
-            @stopListening()
-            @bindEvent @model
-            @settleElement {}
-          else
-            @remove()
-
-      settleElement: ( options ) ->
-        @$el.attr _.extend {}, options.attr, @defaultAttr()
-        @$el.data _.extend {}, options.data, @defaultData()
-
-
-      render: ->
-        data = @model.toJSON()
-        data.cachedAmi = @model.getAmi() if not data.cachedAmi
-        @$el.html LeftPanelTpl.reuse_lc data
-
-        if not @inDom
-          @inDom = true
-          ( @parent or @ ).$el.find(".resource-list-asg").append @el
-
-        @
-
     bindKey: (event)->
       that = this
       keyCode = event.which
@@ -155,17 +137,13 @@ define [
         return false
 
     renderReuse: ->
-      allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
-
-      for lc in allLc
-        if not lc.get( 'appId' )
-          @subViews.push new @reuseLc({model:lc, parent : @}).render()
-
+      for lc in @workspace.design.componentsOfType( constant.RESTYPE.LC )
+        new LcItemView({model:lc, parent:@}) if not lc.get( 'appId' )
       @
 
     updateLc : ( resModel ) ->
       if resModel.type is constant.RESTYPE.LC and not resModel.get( 'appId' )
-        @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
+        new LcItemView({model:resModel, parent:@})
 
     onResChanged : ( resModel )->
       if not resModel then return

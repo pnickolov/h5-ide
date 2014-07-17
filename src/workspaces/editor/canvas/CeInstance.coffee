@@ -7,7 +7,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     ### env:dev:end ###
     type : constant.RESTYPE.INSTANCE
 
-    parentType  : [ constant.RESTYPE.AZ, constant.RESTYPE.SUBNET, constant.RESTYPE.ASG ]
+    parentType  : [ constant.RESTYPE.AZ, constant.RESTYPE.SUBNET, constant.RESTYPE.ASG, "ExpandedAsg" ]
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
@@ -163,24 +163,30 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     createResource : ( type, attr, option )->
       if not attr.parent then return
-      if attr.parent.type is constant.RESTYPE.SUBNET
-        return CanvasElement.createResource( type, attr, option )
-      else if attr.parent.type is constant.RESTYPE.ASG
-        return CanvasElement.createResource( constant.RESTYPE.LC, attr, option )
-      else if attr.parent.type is constant.RESTYPE.AZ
-        # Auto add subnet for instance
-        attr.parent = CanvasElement.createResource( constant.RESTYPE.SUBNET, {
-          x      : attr.x + 1
-          y      : attr.y + 1
-          width  : 11
-          height : 11
-          parent : attr.parent
-        } , option )
 
-        attr.x += 2
-        attr.y += 2
+      switch attr.parent.type
+        when constant.RESTYPE.SUBNET
+          return CanvasElement.createResource( type, attr, option )
 
-        return CanvasElement.createResource( constant.RESTYPE.INSTANCE, attr, option )
+        when constant.RESTYPE.ASG, "ExpandedAsg"
+          TYPE_LC = constant.RESTYPE.LC
+          return CanvasElement.getClassByType( TYPE_LC ).createResource( TYPE_LC, attr, option )
 
+        when constant.RESTYPE.AZ
+          # Auto add subnet for instance
+          attr.parent = CanvasElement.createResource( constant.RESTYPE.SUBNET, {
+            x      : attr.x + 1
+            y      : attr.y + 1
+            width  : 11
+            height : 11
+            parent : attr.parent
+          } , option )
+
+          attr.x += 2
+          attr.y += 2
+
+          return CanvasElement.createResource( constant.RESTYPE.INSTANCE, attr, option )
+
+      return
   }
 

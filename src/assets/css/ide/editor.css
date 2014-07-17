@@ -797,9 +797,6 @@
   cursor: -webkit-grab;
   cursor: grab; }
 
-.ExpandedAsg {
-  opacity: 0.5; }
-
 .prompt-text, #prompt_text {
   fill: #16B4F9;
   font-size: 12px;

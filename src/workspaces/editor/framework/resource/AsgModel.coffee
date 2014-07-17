@@ -97,14 +97,10 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
       # If the originalAsg has been expanded to the same parent.
       # Then we do not create the ExpandAsg
-      list = [ attributes.originalAsg ].concat( attributes.originalAsg.get("expandedList") )
-      for expanded in list
-        if attributes.parent.type is constant.RESTYPE.SUBNET
-          if attributes.parent.parent() is expanded.parent().parent()
-            return
-        else
-          if attributes.parent is expanded.parent()
-            return
+      asg = attributes.originalAsg
+      for expanded in [asg].concat( asg.get("expandedList") )
+        if attributes.parent.parent() is expanded.parent().parent()
+          return
 
       # Call Superclass's constructor to finish creating the ExpandAsg
       ComplexResModel.call( this, attributes, options )
@@ -114,20 +110,23 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
       asg = @attributes.originalAsg
 
       for expanded in [asg].concat( asg.get("expandedList") )
-        if expanded is @ then continue
-
-        if newParent.type is constant.RESTYPE.SUBNET
-          if newParent.parent() is expanded.parent().parent()
-            return false
-        else
-          if newParent.parent is expanded.parent()
-            return false
+        if expanded isnt @ and newParent.parent() is expanded.parent().parent()
+          return false
 
       true
 
     initialize : ()->
-      @get("originalAsg").__addExpandedAsg( this )
+      console.assert( @get("originalAsg").get("expandedList").indexOf( @ ) is -1, "The expandedAsg is already in the Asg" )
+
+      @get("originalAsg").get("expandedList").push @
       null
+
+    remove : ()->
+      siblings = @get("originalAsg").get("expandedList")
+      siblings.splice( siblings.indexOf( @ ), 1 )
+
+      ComplexResModel.prototype.remove.call this
+
 
     getLc : ()-> @attributes.originalAsg.getLc()
 
@@ -177,21 +176,18 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
     type : constant.RESTYPE.ASG
     newNameTmpl : "asg"
 
-    initialize : ( attributes, options ) ->
-      lc = @design().component attributes.lcId
-      if lc then new LcUsage( this, lc )
-      @
-
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
-        if newParent.type is constant.RESTYPE.SUBNET
-          if newParent.parent() is expand.parent().parent()
-            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
-        else
-          if newParent.parent is expand.parent()
-            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.get("name")
+        if newParent.parent() is expand.parent().parent()
+          return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
 
       true
+
+    setLc : ( lc )->
+      if @getLc() or not lc then return
+      if _.isString( lc )
+        lc = @design().component( lc )
+      new LcUsage( @, lc )
 
     getLc : ()-> @connectionTargets("LcUsage")[0]
 
@@ -224,9 +220,7 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
-    getNotification : ()->
-      n = @get("notification")
-      if n then n.toJSON() else {}
+    getNotification : ()-> @get("notification")?.toJSON() or {}
 
     getNotiObject: () ->
       @get("notification")
@@ -242,65 +236,9 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
       n
 
-    setNotificationTopic: ( appId, name ) ->
-      n = @get("notification")
-      n?.setTopic appId, name
+    setNotificationTopic: ( appId, name ) -> @get("notification")?.setTopic appId, name
 
-    getNotificationTopicName: ->
-      n = @get("notification")
-      if n
-        return n.getTopicName()
-      null
-
-
-    updateExpandedAsgAsso : ( elb, isRemove )->
-
-      if @attributes.expandedList.length is 0 then return
-
-      # Temperory clear expandList. So that removing ElbAmiAsso will not trigger
-      # this method again.
-      old_expandedList = @attributes.expandedList
-      @attributes.expandedList = []
-
-      ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
-
-      for i in old_expandedList
-        asso = new ElbAsso( i, elb )
-        if isRemove then asso.remove()
-
-      @attributes.expandedList = old_expandedList
-      null
-
-    updateExpandedAsgSgLine : ( sgTarget, isRemove ) ->
-
-      if @attributes.expandedList.length is 0 then return
-
-      # Temperory clear expandList. So that removing ElbAmiAsso will not trigger
-      # this method again.
-      old_expandedList = @attributes.expandedList
-      @attributes.expandedList = []
-
-      SgLine = Design.modelClassForType( "SgRuleLine" )
-
-      createOption = { createByUser : false }
-      removeReason = { reason : sgTarget }
-
-      for i in old_expandedList
-        if i isnt sgTarget
-          sgline = new SgLine( i, sgTarget, createOption )
-          if isRemove then sgline.silentRemove()
-
-      @attributes.expandedList = old_expandedList
-      null
-
-    removeExpandedAsso: () ->
-      for expandedAsg in @get 'expandedList'
-        connections = expandedAsg.connections()
-        while connections.length
-          _.first(connections).remove()
-
-      null
-
+    getNotificationTopicName: -> @get("notification")?.getTopicName()
 
     addScalingPolicy : ( policy )->
       policy.__asg = this
@@ -324,9 +262,7 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
     remove : ()->
       # Remove ExpandedAsg
-      for asg in @get("expandedList")
-        asg.off() # Need to off() first, because we are listening to expandedAsg.
-        asg.remove()
+      asg.remove() for asg in @get("expandedList")
 
       # Remove Policies
       for p in @get("policies")
@@ -334,85 +270,32 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
         p.remove()
 
       # Remove Notification
-      if @get("notification")
-        @get("notification").remove()
+      @get("notification")?.remove()
 
       ComplexResModel.prototype.remove.call this
       null
 
-    __addExpandedAsg : ( expandedAsg )->
-      console.assert( @get("expandedList").indexOf(expandedAsg) is -1 and (not expandedAsg.originalAsg ), "The expandedAsg is already in the Asg" )
-
-      @get("expandedList").push( expandedAsg )
-      expandedAsg.originalAsg = this
-
-      @listenTo( expandedAsg, "destroy", @__onExpandedAsgRemove )
-
-      lc = @getLc()
-      if lc
-        # Connect Elb to ExpandedAsg
-        ElbAsso = Design.modelClassForType( "ElbAmiAsso" )
-        for elb in lc.connectionTargets( "ElbAmiAsso" )
-          new ElbAsso( elb, expandedAsg )
-
-        # Connect other sglilne to expandedAsg
-        Sgline = Design.modelClassForType( "SgRuleLine" )
-        for sgTarget in lc.connectionTargets( "SgRuleLine" )
-          new Sgline( sgTarget, expandedAsg )
-      null
-
-    __onExpandedAsgRemove : ( target )->
-      console.assert( target.type is "ExpandedAsg", "Invalid Parameter" )
-      @get("expandedList").splice( @get("expandedList").indexOf(target), 1 )
-      null
-
     getExpandSubnets : ()->
-      if @parent().type isnt constant.RESTYPE.SUBNET
-        return []
-
       subnets = [ @parent() ]
       for expand in @get("expandedList")
         subnets.push expand.parent()
-
-      _.uniq subnets
+      subnets
 
     getExpandAzs : ()->
-      subnets = [ @parent() ]
-      for expand in @get("expandedList")
-        subnets.push expand.parent()
-      subnets = _.uniq subnets
+      az = []
+      for sb in @getExpandSubnets()
+        az.push sb.parent()
 
-      if @parent().type is constant.RESTYPE.SUBNET
-        azs = _.uniq( _.map subnets, (sb)-> sb.parent() )
-      else
-        azs = subnets
-
-      azs
+      _.uniq az
 
     serialize : ()->
-      subnets = [ @parent() ]
-      for expand in @get("expandedList")
-        subnets.push expand.parent()
-      subnets = _.uniq subnets
+      subnets = @getExpandSubnets()
 
-      if @parent().type is constant.RESTYPE.SUBNET
-        azs = _.uniq( _.map subnets, (sb)-> sb.parent().createRef() )
-        subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
-      else
-        azs = _.uniq( _.map subnets, (az)-> az.createRef() )
-        newSubnets = []
-        for sb in subnets
-          sbRef = sb.getSubnetRef()
-          if sbRef then newSubnets.push sbRef
-        subnets = newSubnets
+      azs     = _.uniq( _.map subnets, (sb)-> sb.parent().createRef() )
+      subnets = _.map subnets, (sb)-> sb.createRef( "SubnetId" )
 
       lc = @getLc()
-      if lc
-        lcId = lc.createRef( "LaunchConfigurationName" )
-      else
-        lcId = ""
 
-      healthCheckType = "EC2"
       if lc
         elbs = lc.connectionTargets( "ElbAmiAsso" )
         if elbs.length
@@ -424,19 +307,19 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
         name : @get("name")
         type : @type
         resource :
-          AvailabilityZones : azs
-          VPCZoneIdentifier : subnets.join(" , ")
-          LoadBalancerNames : elbArray or []
-          AutoScalingGroupARN : @get("appId")
-          DefaultCooldown        : @get("cooldown")
-          MinSize                : @get("minSize")
-          MaxSize                : @get("maxSize")
-          HealthCheckType        : healthCheckType
-          HealthCheckGracePeriod : @get("healthCheckGracePeriod")
-          TerminationPolicies    : @get("terminationPolicies")
-          AutoScalingGroupName   : @get("groupName") or @get("name")
-          DesiredCapacity        : @get("capacity")
-          LaunchConfigurationName : lcId
+          AvailabilityZones       : azs
+          VPCZoneIdentifier       : subnets.join(" , ")
+          LoadBalancerNames       : elbArray or []
+          AutoScalingGroupARN     : @get("appId")
+          DefaultCooldown         : @get("cooldown")
+          MinSize                 : @get("minSize")
+          MaxSize                 : @get("maxSize")
+          HealthCheckType         : healthCheckType || "EC2"
+          HealthCheckGracePeriod  : @get("healthCheckGracePeriod")
+          TerminationPolicies     : @get("terminationPolicies")
+          AutoScalingGroupName    : @get("groupName") or @get("name")
+          DesiredCapacity         : @get("capacity")
+          LaunchConfigurationName : lc?.createRef( "LaunchConfigurationName" ) || ""
 
       { component : component, layout : @generateLayout() }
 

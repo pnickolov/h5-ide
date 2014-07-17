@@ -305,12 +305,13 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
       if _.isString( result )
         # Confirmation
+        self  = @
         modal = new Modal {
           title     : sprintf lang.ide.CVS_CFM_DEL, name
           template  : result
           confirm   : { text : lang.ide.CFM_BTN_DELETE, color : "red" }
           onConfirm : ()->
-            model.remove()
+            self.doDestroyModel()
             modal.close()
             return
         }
@@ -320,9 +321,10 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
         notification "error", result.error
 
       else if result is true
-        # Do remove
-        model.remove()
+        @doDestroyModel()
       return
+
+    doDestroyModel : ()-> @model.remove()
 
     isDestroyable : ( selectedDomElement )->
       result = @model.isRemovable()
@@ -396,8 +398,11 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       @model.set { x : deltaX, y : deltaY }
       @$el[0].instance.move( deltaX * CanvasView.GRID_WIDTH, deltaY * CanvasView.GRID_HEIGHT )
 
-      cn.update() for cn in @connections()
+      @updateConnections()
       return
+
+    updateConnections : ()-> @canvas.getItem( cn.id )?.update() for cn in @connections(); return
+
   }, {
 
     isDirectParentType : ( type )-> true

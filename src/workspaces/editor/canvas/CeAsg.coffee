@@ -1,37 +1,7 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView )->
 
-  CanvasElement.extend {
-    ### env:dev ###
-    ClassName : "CeExpandedAsg"
-    ### env:dev:end ###
-    type : "ExpandedAsg"
-
-    defaultSize : [13, 13]
-
-    isGroup : ()-> true
-
-    create : ()->
-      m = @model
-      svg = @canvas.svg
-
-      svgEl = svg.group().add([
-        svg.use("asg_frame").classes("asg-frame")
-        svg.plain("").move(4,14).classes('group-label')
-      ]).attr({ "data-id" : @cid }).classes( 'canvasel ExpandedAsg')
-
-      @canvas.appendAsg svgEl
-      @initNode svgEl, m.x(), m.y()
-
-      svgEl
-
-    getLc : ()-> @model.getLc()
-
-    render : ()->
-      CanvasManager.update @$el.children("text"), @model.get("originalAsg").get("name")
-  }
-
-  CanvasElement.extend {
+  CeAsg = CanvasElement.extend {
     ### env:dev ###
     ClassName : "CeAsg"
     ### env:dev:end ###
@@ -54,20 +24,22 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     onDropExpand : ( evt, dataTransfer )->
       item = dataTransfer.item
 
-      design = item.model.design()
-      comp   = item.model
+      originalAsg = item.model
+      if originalAsg.type is "ExpandedAsg"
+        originalAsg = originalAsg.get("originalAsg")
+
       target = dataTransfer.parent.model
 
       ExpandedAsgModel = Design.modelClassForType("ExpandedAsg")
       res = new ExpandedAsgModel({
         x           : dataTransfer.x
         y           : dataTransfer.y
-        parent      : dataTransfer.parent.model
-        originalAsg : item.model
+        parent      : target
+        originalAsg : originalAsg
       })
       if res and res.id then return
 
-      notification 'error', sprintf(lang.ide.CVS_MSG_ERR_DROP_ASG, comp.get("name"), target.parent().get("name"))
+      notification 'error', sprintf(lang.ide.CVS_MSG_ERR_DROP_ASG, originalAsg.get("name"), target.parent().get("name"))
       return
 
     # Creates a svg element
@@ -82,7 +54,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
         svg.use("prompt_text").classes("prompt-text")
 
-      ]).attr({ "data-id" : @cid }).classes( 'canvasel AWS-AutoScaling-Group' )
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.split(".").join("-") )
 
       @canvas.appendAsg svgEl
       @initNode svgEl, m.x(), m.y()
@@ -93,9 +65,60 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("name")
+
+    updateConnections : ()-> @canvas.getItem( cn.id )?.update() for cn in @model.getLc().connections(); return
+
+    destroy : ( selectedDomElement )->
+      substitute = @model.get("expandedList")[0]
+
+      if substitute
+        # We delete one of the expanded asg instead.
+        substitute.parent().addChild( @model )
+        x = substitute.get("x")
+        y = substitute.get("y")
+        substitute.remove()
+
+        @moveBy( x - @model.get("x"), y - @model.get("y") )
+        @model.set { x : x, y : y }
+        return
+
+      CanvasElement.prototype.destroy.apply this, arguments
+
   }, {
     createResource : ( type, attr, option )->
+      if attr.lcId
+        lcId = attr.lcId
+        delete attr.lcId
+
       attr.x += 1
       attr.y += 1
-      CanvasElement.createResource( type, attr, option )
+      asgModel = CanvasElement.createResource( type, attr, option )
+
+      asgModel.setLc( lcId )
+      asgModel
   }
+
+
+  CeAsg.extend {
+    ### env:dev ###
+    ClassName : "CeExpandedAsg"
+    ### env:dev:end ###
+    type : "ExpandedAsg"
+
+    initialize : ( options )->
+      CanvasElement.prototype.initialize.call this, options
+
+      self = @
+      _.defer ()->
+        self.canvas.getItem( self.model.getLc().id )?.render()
+      return
+
+    remove : ()->
+      @canvas.getItem( @model.getLc().id )?.render()
+      CeAsg.prototype.remove.apply this, arguments
+
+    render : ()->
+      CanvasManager.update @$el.children("text"), @model.get("originalAsg").get("name")
+  }
+
+  CeAsg

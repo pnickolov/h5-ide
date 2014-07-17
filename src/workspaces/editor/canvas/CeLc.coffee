@@ -17,9 +17,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     defaultSize : [9,9]
 
-    initialize : ( options )->
-      @listenTo @model, "change:__connections", @render
-      CanvasElement.prototype.initialize.call this, options
+    listenModelEvents : ()->
+      @listenTo @model, "change:connections", @render
+      @listenTo @model, "change:imageId", @render
       return
 
     iconUrl : ()->
@@ -31,29 +31,42 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
 
     pos : ( el )->
-      p = CanvasElement.prototype.pos.call this, el
-      p.x += 2
-      p.y += 3
-      p
+      if el
+        parentItem = @canvas.getItem( el.parentNode.getAttribute("data-id") )
+        if parentItem
+          p = parentItem.pos( el.parentNode )
+          p.x += 2
+          p.y += 3
+      else
+        console.warn "Accessing LC' position without svg element"
+
+      p || { x : 0, y : 0 }
 
     ensureLcView : ()->
+      elementChanged = false
+
       lcParentMap = {}
       for asg in @model.connectionTargets("LcUsage")
         lcParentMap[ asg.id ] = asg
         for expanded in asg.get("expandedList")
           lcParentMap[ expanded.id ] = expanded
 
-      for subview in @$el.slice(0)
-        parentCid = $(subview.parent).attr("data-id")
+      views = []
+      views.push(subview) for subview in @$el
+
+      for subview in views
+        parentCid = $(subview.parentNode).attr("data-id")
         parentItem = @canvas.getItem( parentCid )
         if not parentItem
           @removeView( subview )
-
-        parentModel = parentItem.model
-        if not lcParentMap[ parentItem.model.id ]
-          @removeView( subview )
+          elementChanged = true
         else
-          delete lcParentMap[ parentItem.model.id ]
+          parentModel = parentItem.model
+          if not lcParentMap[ parentModel.id ]
+            @removeView( subview )
+            elementChanged = true
+          else
+            delete lcParentMap[ parentModel.id ]
 
       svg = @canvas.svg
       for uid, parentModel of lcParentMap
@@ -65,7 +78,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
           imageW  : 61
           imageH  : 62
           label   : true
-          labelBg : isOriginalAsg
+          labelBg : true
           sg      : isOriginalAsg
         }).add([
           # Ami Icon
@@ -88,13 +101,16 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         if isOriginalAsg
           svgEl.add([
             # Volume Image
-            svg.image( "", 29, 24 ).move(21, 46).classes('volume-image')
+            svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
             # Volume Label
-            svg.plain( "" ).move(36, 58).classes('volume-number')
+            svg.plain( "" ).move(46, 58).classes('volume-number')
           ])
 
         @addView( svgEl )
         @canvas.getItem( uid ).$el.children(":last-child").before( svgEl.node )
+        elementChanged = true
+
+      if elementChanged then @updateConnections()
 
       return
 
@@ -117,8 +133,37 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
+
+    destroy : ( selectedDomElement )->
+      if @model.connections("LcUsage").length > 1
+        # Just need to delete lc usage
+        parentItem = @canvas.getItem( selectedDomElement.parentNode.getAttribute("data-id") )
+        if not parentItem then return
+        LcUsage = Design.modelClassForType("LcUsage")
+
+        parentModel = parentItem.model
+        if parentModel.type is "ExpandedAsg"
+          parentModel = parentModel.get("originalAsg")
+        (new LcUsage(parentModel, @model)).remove()
+        return
+
+      CanvasElement.prototype.destroy.apply this, arguments
+
+    doDestroyModel : ()-> @model.connections("LcUsage")[0]?.remove()
+
   }, {
     render : ( canvas )->
       for lc in canvas.design.componentsOfType( constant.RESTYPE.LC )
         canvas.getItem( lc.id ).render( true )
+
+    createResource : ( t, attr, option )->
+      if not attr.parent then return
+      if attr.parent.getLc() then return
+
+      asg = attr.parent
+      delete attr.parent
+
+      lcModel = CanvasElement.createResource( @type, attr, option )
+      asg.setLc( lcModel )
+      lcModel
   }

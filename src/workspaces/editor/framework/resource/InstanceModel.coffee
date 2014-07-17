@@ -198,7 +198,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       return priceObj
 
     isReparentable : ( newParent )->
-      if newParent.type is constant.RESTYPE.ASG
+      if newParent.type is constant.RESTYPE.ASG or newParent.type is "ExpandedAsg"
         return false
 
       if newParent.type is constant.RESTYPE.SUBNET

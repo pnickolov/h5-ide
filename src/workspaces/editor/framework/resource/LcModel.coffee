@@ -1,5 +1,5 @@
 
-define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources', "../connection/LcUsage" ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources, LcUsage )->
+define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -22,48 +22,17 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    constructor : ( attr, option )->
-      if option and option.createByUser and attr.parent.getLc()
-          return
-
-      if attr.parent
-        asg = attr.parent
-        delete attr.parent
-
-      ComplexResModel.call( this, attr, option )
-
-      if asg
-        new LcUsage( asg, this )
-      return
-
-    draw : ( isCreate ) ->
-      if isCreate
-        ComplexResModel.prototype.draw.apply @, arguments
-      else
-        context = @getBigBrother() or @
-        ComplexResModel.prototype.draw.apply context, arguments
-
-        for brother in context.__brothers
-          ComplexResModel.prototype.draw.apply brother, arguments
-
-
     initialize : ( attr, option )->
-      # Draw before create SgAsso
-      if not option or not option.clone
-        @draw(true)
-
       if option and option.createByUser
 
         @initInstanceType()
 
         # Default Kp
-        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-        KpModel.getDefaultKP().assignTo( this )
+        Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( this )
 
         # Default Sg
-        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
-        new SgAsso( defaultSg, this )
+        new SgAsso( Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg(), this )
 
       if not @get("rdSize")
         #append root device
@@ -109,13 +78,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
       state = @get("state")
-      if (state and _.isArray(state) and state.length > 0) or
-        ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
-          return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      if state and state.length > 0
+        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-      return true if @connections("LcUsage").length > 1
-      sprintf lang.ide.CVS_CFM_DEL_LC, @get( 'name' )
-
+      true
 
     isDefaultTenancy : ()-> true
 
@@ -137,46 +103,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       amis || []
 
     remove : ()->
-      if @__bigBrother
-        @__bigBrother.removeBrother @
-      else if @__brothers.length
-        # Young brother continue his big-brother's duty when the big-brother dying
-        for k, v of @attributes
-          if k not in [ '__parent', '__connections' ]
-            @__brothers[0].attributes[ k ] = v
-
-        @__brothers[0].__bigBrother = null
-        @__brothers[0].__brothers = []
-        @__brothers[0].__isClone = false
-
-        for brother, i in @__brothers
-          if i isnt 0
-            brother.__bigBrother = @__brothers[ 0 ]
-            @__brothers[0].__brothers.push brother
-
       # Remove attached volumes when this lc is last lc
-      else
-        for v in (@get("volumeList") or emptyArray).slice(0)
-          v.remove()
+      for v in (@get("volumeList") or emptyArray).slice(0)
+        v.remove()
 
       ComplexResModel.prototype.remove.call this
-      null
-
-    connect : ( cn )->
-      if @parent() and cn.type is "SgRuleLine"
-        # Create duplicate sgline for each expanded asg
-        @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
-      null
-
-    disconnect : ( cn )->
-      if @parent()
-        if cn.type is "ElbAmiAsso"
-          # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
-          # Because user might just want to asso another Elb right after disconnected.
-          # @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
-
-        else if cn.type is "SgRuleLine"
-          @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
       null
 
     getStateData                : InstanceModel.prototype.getStateData
@@ -206,9 +137,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture
         layout.rootDeviceType = ami.rootDeviceType
-
-
-      sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
       # Generate an array containing the root device and then append all other volumes
       # to the array to form the LC's volume list
@@ -243,7 +171,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           KeyName                  : @get("keyName")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          SecurityGroups           : sgarray
+          SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")

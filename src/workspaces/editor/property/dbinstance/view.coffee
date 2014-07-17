@@ -234,12 +234,19 @@ define [ '../base/view'
         renderOptionGroup: ->
 
             # if can create custom og
+            regionName = Design.instance().region()
             attr = @model.toJSON()
             attr.canCustomOG = false
-            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
-            engineOptions = optionCol.getEngineOptions(attr.engine)
+            optionCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+            engineOptions = optionCol.getEngineOptions(regionName, attr.engine)
             ogOptions = engineOptions[@model.getMajorVersion()] if engineOptions
-            attr.canCustomOG = true if engineOptions and ogOptions
+
+            defaultInfo = optionCol.getDefaultByNameVersion(regionName, attr.engine, attr.engineVersion)
+
+            if defaultInfo and defaultInfo.canCustomOG
+                attr.canCustomOG = defaultInfo.canCustomOG
+            else
+                attr.canCustomOG = true if engineOptions and ogOptions
 
             @$el.find('.property-dbinstance-optiongroup').html template_component.optionGroupDropDown(attr)
 

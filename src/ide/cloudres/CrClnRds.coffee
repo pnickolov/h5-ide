@@ -19,24 +19,48 @@ define [
     __selfParseData : true
 
     initialize : ()->
-      @optionGroupData = {}
-      @engineDict = {}
+      @optionGroupData   = {} #existed optiongroup
+      @engineDict        = {} #by engineName, engineVersion
+      @parameterGroupData= {} #by family
+      @defaultInfo       = {} #by engine
       return
 
-    getEngineOptions : ( engineName )-> @optionGroupData[ engineName ]
+    getEngineOptions : ( regionName, engineName )-> @optionGroupData[regionName][engineName]
 
-    getEngineByNameVersion : ( engineName, engineVersion )->
+    getDefaultByNameVersion : ( regionName, engineName, engineVersion )->
       if not engineName
         console.warn "please provide engineName"
       else if not engineVersion
         console.warn "please provide engineVersion"
       else
-        family = @engineDict[engineName][engineVersion]
+        family = @engineDict[regionName][engineName][engineVersion]
       family || ""
+
+    getDefaultByFamily : ( regionName, family )->
+      if not family
+        console.warn "please provide family"
+      else
+        defaultData = @defaultInfo[regionName][family]
+      defaultData || ""
+
+    getEnginesByFamily : ( regionName, family )->
+      if not family
+        console.warn "please provide family"
+      else
+        engine = @parameterGroupData[regionName][family]
+      engine || ""
 
     doFetch : ()->
       self = @
-      ApiRequest("rds_DescribeDBEngineVersions", {region_name : @region()}).then ( data )->
+      regionName = @region()
+      ApiRequest("rds_DescribeDBEngineVersions", {region_name : regionName}).then ( data )->
+
+        #init for region
+        self.optionGroupData[regionName]    = {}
+        self.engineDict[regionName]         = {}
+        self.parameterGroupData[regionName] = {}
+        self.defaultInfo[regionName]        = {}
+
         try
           data = data.DescribeDBEngineVersionsResponse.DescribeDBEngineVersionsResult.DBEngineVersions.DBEngineVersion
         catch e
@@ -51,28 +75,38 @@ define [
           engines[ d.Engine ] = true
 
           #generate engine dictionary
-          if not self.engineDict[d.Engine]
-            self.engineDict[d.Engine] = {}
-          self.engineDict[d.Engine][d.EngineVersion] =
+          if not self.engineDict[regionName][d.Engine]
+            self.engineDict[regionName][d.Engine] = {}
+          dict =
             family : d.DBParameterGroupFamily
             defaultPGName : 'default.' + d.DBParameterGroupFamily
             defaultOGName : 'default:' + d.Engine + '-' + d.EngineVersion.split('.').slice(0,2).join('-')
             canCustomOG   : false
+          self.engineDict[regionName][d.Engine][d.EngineVersion] = dict
 
-        jobs = _.keys( engines ).map ( engine_name )->
+          #generate engine
+          if not self.defaultInfo[regionName][d.DBParameterGroupFamily]
+            self.defaultInfo[regionName][d.DBParameterGroupFamily] = dict
+
+          #generate engine default data
+          if not self.parameterGroupData[regionName][d.DBParameterGroupFamily]
+            self.parameterGroupData[regionName][d.DBParameterGroupFamily] = []
+          self.parameterGroupData[regionName][d.DBParameterGroupFamily].push d
+
+        jobs = _.keys( engines ).map ( engineName )->
           ApiRequest("rds_og_DescribeOptionGroupOptions", {
-            region_name : self.region()
-            engine_name : engine_name
+            region_name : regionName
+            engine_name : engineName
           }).then ( data )->
             try
-              self.__parseOptions( data )
+              self.__parseOptions( self.category, data )
             catch e
               console.error e
             return
 
         Q.all( jobs ).then ()-> data
 
-    __parseOptions : ( data )->
+    __parseOptions : ( regionName, data )->
       self = @
       data = data.DescribeOptionGroupOptionsResponse.DescribeOptionGroupOptionsResult.OptionGroupOptions
 
@@ -97,11 +131,11 @@ define [
 
         #generate engine dictionary(optiongroup)
         engineVersion = d.MajorEngineVersion + "." + d.MinimumRequiredMinorEngineVersion
-        engineInfo = self.engineDict[ d.EngineName ][ engineVersion ]
+        engineInfo = self.engineDict[regionName][d.EngineName][engineVersion]
         if engineInfo
           engineInfo.canCustomOG = true
 
-      @optionGroupData[ engineName ] = optionData
+      @optionGroupData[regionName][engineName] = optionData
       return
   }
 

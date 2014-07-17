@@ -126,26 +126,23 @@ define [
 
     setDefaultOptionGroup: () ->
       # set default option group
-      that = this
-      ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
-      defaultOGAry = []
-      ogCol.each (model, idx) ->
-          if model.get('EngineName') is that.get('engine') and
-              model.get('MajorEngineVersion') is that.getMajorVersion() and
-                  model.get('OptionGroupName').indexOf('default:') is 0
-                      defaultOGAry.push(model.get('OptionGroupName'))
-      if defaultOGAry.length > 0 and defaultOGAry[0]
-        defaultOG = defaultOGAry[0]
+      regionName = Design.instance().region()
+      engineData = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      defaultInfo = engineData.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      if defaultInfo and defaultInfo.defaultOGName
+        defaultOG = defaultInfo.defaultOGName
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @set('ogName', defaultOG )
+      @set 'ogName', defaultOG
       null
 
     setDefaultParameterGroup:() ->
-      engineData = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+      #set default parameter group
+      regionName = Design.instance().region()
+      engineData = CloudResources(constant.RESTYPE.DBENGINE, regionName)
       if engineData
-        defaultPG = engineData.getEngineByNameVersion @get('engine'), @get('engineVersion')
+        defaultPG = engineData.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
 
       if defaultPG and defaultPG.defaultPGName
         defaultPG = defaultPG.defaultPGName

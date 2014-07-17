@@ -377,7 +377,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       modelData = @resModel.attributes
       engineData = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
       if engineData
-        defaultInfo = engineData.getEngineByNameVersion modelData.engine, modelData.engineVersion
+        defaultInfo = engineData.getDefaultByNameVersion modelData.engine, modelData.engineVersion
         targetFamily = defaultInfo.family
 
       console.log modelData, defaultInfo

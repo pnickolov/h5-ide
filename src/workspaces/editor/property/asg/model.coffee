@@ -25,7 +25,6 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
       @set "has_elb", !!lc.connections("ElbAmiAsso").length
       @set "isEC2HealthCheck", component.isEC2HealthCheckType()
-      @set 'detail_monitor', !!lc.get( 'monitoring' )
 
       # Notification
       n = component.getNotification()

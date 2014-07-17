@@ -357,8 +357,6 @@ define [ '../base/view',
             else
                 data.unit = '%'
 
-            data.detail_monitor = this.model.attributes.detail_monitor
-
             #modal policy_template(data), true
             @openPolicyModal data
 

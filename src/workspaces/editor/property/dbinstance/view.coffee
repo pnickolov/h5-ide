@@ -259,8 +259,9 @@ define [ '../base/view'
                     dbInstance: @model
                 })
                 $ogDropdown.html ogDropdown.render({
-                        engine: attr.engine,
-                        version: @model.getMajorVersion()
+                        engine: attr.engine
+                        engineVersion: attr.engineVersion
+                        majorVersion: @model.getMajorVersion()
                     }).el
 
         # Render License, Version, InstanceClass and multi-AZ

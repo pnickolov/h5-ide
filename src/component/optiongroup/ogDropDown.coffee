@@ -34,7 +34,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
             @dropdown.setSelection 'None'
 
             @engine = option.engine
-            @version = option.version
+            @engineVersion = option.engineVersion
+            @version = option.majorVersion #major version
 
             @refresh()
 
@@ -43,20 +44,18 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './compone
         refresh: () ->
 
             that = this
-            @ogCol = CloudResources(constant.RESTYPE.DBOG, Design.instance().region())
-            ogComps = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
+            regionName = Design.instance().region()
+            engineCol  = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+            ogComps    = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
 
             # only show default og from aws and custom og from stack
             defaultOGAry = []
-            @ogCol.each (model, idx) ->
-                if model.get('EngineName') is that.engine and
-                    model.get('MajorEngineVersion') is that.version and
-                        model.get('OptionGroupName').indexOf('default:') is 0
-                            defaultOGAry.push {
-                                id: null,
-                                name: model.get('OptionGroupName')
-                            }
-                return false
+            defaultOG = engineCol.getDefaultByNameVersion regionName, @engine, @engineVersion
+            if defaultOG and defaultOG.defaultOGName
+                defaultOGAry.push {
+                    id: null,
+                    name: defaultOG.defaultOGName
+                }
 
             customOGAry = []
             _.each ogComps, (compModel) ->

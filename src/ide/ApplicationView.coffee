@@ -194,26 +194,34 @@ define [
           text: lang.ide.TOOL_POP_BTN_STOP_APP
           color: 'red'
           disabled: isProduction
+        disableClose: true
       }
       canStop.tpl.find(".modal-footer").hide()
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
-      resourceList.fetch().then ->
-        console.log resourceList, "----------"
-        comp = Design.instance().serialize().component
-        comp = _.filter comp, (e)->
-          e.type == constant.RESTYPE.DBINSTANCE
-        hasNotReadyDB = _.filter comp, (e)->
-          console.log(e)
-          DBInstance = resourceList.findWhere(id: e.resource.DBInstanceIdentifier)
-          console.log DBInstance, e.resource.DBInstanceIdentifier, e
-          if DBInstance and  DBInstance?.attributes.DBInstanceStatus isnt 'available'
-            return true
-        if hasNotReadyDB
-          canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB.toJSON()}
-        else
-          canStop.tpl.find(".modal-footer").show()
-          canStop.tpl.find('.modal-body').html AppTpl.stopAppConfirm {isProduction , appName}
-          alert "Can Stop"
+      console.log resourceList, "----------"
+      comp = Design.instance().serialize().component
+
+      hasEC2Instance = (_.filter comp, (e)->
+        e.type == constant.RESTYPE.INSTANCE)?.length
+
+      hasDBInstance = _.filter comp, (e)->
+        e.type == constant.RESTYPE.DBINSTANCE
+
+      console.log hasDBInstance, "DBINSTANCE"
+      hasNotReadyDB = _.filter hasDBInstance, (e)->
+        DBInstance = resourceList.findWhere(id: e.resource.DBInstanceIdentifier)
+        DBInstance and  DBInstance?.attributes.DBInstanceStatus isnt 'available'
+
+      hasAsg = (_.filter comp, (e)->
+        e.type == constant.RESTYPE.ASG)?.length
+
+      canStop.tpl.find(".modal-footer").show()
+      if hasNotReadyDB and hasNotReadyDB.length
+        canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : notReadyDB.toJSON()}
+        canStop.tpl.find('.modal-confirm').remove()
+      else
+        hasDBInstance = hasDBInstance?.length
+        canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg}
 
 
 #      modal AppTpl.stopAppConfirm {

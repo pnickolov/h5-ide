@@ -43,8 +43,28 @@
 <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
 <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
 {{else}}
-<div class="modal-center-align-helper">
+<div class="modal-center-align-helper" style="padding: 20px">
     <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+    <ul class="stop-confirm-list">
+        {{#if hasEC2Instance}}
+            <li>
+                EC2 instances will be stopped.
+                <span class="error">Instance-stored instances will be deleted.</span>
+            </li>
+        {{/if}}
+        {{#if hasDBInstance}}
+            <li>
+                DB instances will be deleted final snapshot will be taken.
+                <span>Snapshots will be restored when the app is started.</span>
+            </li>
+        {{/if}}
+        {{#if hasAsg }}
+            <li>
+                Auto Scaling Group will be deleted.
+                <span>Auto Scaling Group will be recreated when the app is started.</span>
+            </li>
+        {{/if}}
+    </ul>
 </div>
 {{/if}}
 

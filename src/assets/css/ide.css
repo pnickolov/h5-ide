@@ -4167,7 +4167,30 @@ summary:focus {
 .modal-toolbar .slidebox .combo-dd.selectbox .combo-dd-filter{
     width: 232px;
 }
-
-
+.stop-confirm-list li{
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 20px;
+}
+.stop-confirm-list li span{
+    display: block;
+    color: #6f6f6f;
+}
+.stop-confirm-list li span.error{
+    color: #F74A48;
+}
+.stop-confirm-list li:before{
+    display: inline-block;
+    content: "";
+    width: 5px;
+    height: 5px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background: #dadada;
+    position: absolute;
+    margin-left: -10px;
+    margin-top: 6px;
+}
 
 

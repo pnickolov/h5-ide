@@ -28,24 +28,30 @@ define [
     getEngineOptions : ( regionName, engineName )-> @optionGroupData[regionName][engineName]
 
     getDefaultByNameVersion : ( regionName, engineName, engineVersion )->
-      if not engineName
-        console.warn "please provide engineName"
+      if not regionName
+        console.error "please provide regionName"
+      else if not engineName
+        console.error "please provide engineName"
       else if not engineVersion
-        console.warn "please provide engineVersion"
+        console.error "please provide engineVersion"
       else
         family = @engineDict[regionName][engineName][engineVersion]
       family || ""
 
     getDefaultByFamily : ( regionName, family )->
-      if not family
-        console.warn "please provide family"
+      if not regionName
+        console.error "please provide regionName"
+      else if not family
+        console.error "please provide family"
       else
         defaultData = @defaultInfo[regionName][family]
       defaultData || ""
 
     getEnginesByFamily : ( regionName, family )->
-      if not family
-        console.warn "please provide family"
+      if not regionName
+        console.error "please provide regionName"
+      else if not family
+        console.error "please provide family"
       else
         engine = @parameterGroupData[regionName][family]
       engine || ""

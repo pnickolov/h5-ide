@@ -126,9 +126,10 @@ define [
 
     setDefaultOptionGroup: () ->
       # set default option group
-      regionName = Design.instance().region()
-      engineData = CloudResources(constant.RESTYPE.DBENGINE, regionName)
-      defaultInfo = engineData.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      regionName  = Design.instance().region()
+      engineCol   = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+
       if defaultInfo and defaultInfo.defaultOGName
         defaultOG = defaultInfo.defaultOGName
       else
@@ -140,9 +141,10 @@ define [
     setDefaultParameterGroup:() ->
       #set default parameter group
       regionName = Design.instance().region()
-      engineData = CloudResources(constant.RESTYPE.DBENGINE, regionName)
-      if engineData
-        defaultPG = engineData.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
+      engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+
+      if engineCol
+        defaultPG = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
 
       if defaultPG and defaultPG.defaultPGName
         defaultPG = defaultPG.defaultPGName

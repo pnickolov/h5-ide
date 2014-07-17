@@ -75,7 +75,7 @@ define [
 
     master: -> @__master
 
-    setMaster: ( master ) -> @__master = master
+    setMaster: ( master ) -> @__master = master; @__master
 
     slaves: -> Model.filter (obj) => obj.master() is @
 
@@ -364,7 +364,7 @@ define [
     getCost : ( priceMap, currency )->
       if not priceMap.database then return null
 
-      engine = @attributes['engine']
+      engine = @attributes.engine
       if engine == 'postgres'
         engine = 'postgresql'
       else if engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
@@ -372,8 +372,8 @@ define [
       else if engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
         engine = 'sqlserver'
         sufix = engine.split('-')[1]
-      dbInstanceType = @attributes['instanceClass'].split('.')
-      deploy = if @attributes['multiAz'] then 'multiAZ' else 'standard'
+      dbInstanceType = @attributes.instanceClass.split('.')
+      deploy = if @attributes.multiAZ then 'multiAZ' else 'standard'
 
       if not engine or not deploy then return null
 
@@ -382,9 +382,9 @@ define [
         fee = priceMap.database.rds[ engine ][ dbInstanceType[0] ][ dbInstanceType[1] ][ dbInstanceType[2] ]
 
         license = null
-        if @attributes['license'] is 'license-included'
+        if @attributes.license is 'license-included'
           license = 'li'
-        else if @attributes['license'] is 'bring-your-own-license'
+        else if @attributes.license is 'bring-your-own-license'
           license = 'byol'
 
         if license == 'li' and engine == 'sqlserver'
@@ -408,8 +408,8 @@ define [
           formatedFee = fee + "/mo"
 
         priceObj =
-            resource    : @attributes['name']
-            type        : @attributes['instanceClass']
+            resource    : @attributes.name
+            type        : @attributes.instanceClass
             fee         : fee
             formatedFee : formatedFee
 

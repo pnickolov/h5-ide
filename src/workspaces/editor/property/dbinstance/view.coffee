@@ -6,13 +6,12 @@ define [ '../base/view'
          'og_dropdown'
          './template/stack_instance'
          './template/stack_replica'
-         './template/stack_snapshot'
          './template/stack_component'
          'i18n!/nls/lang.js'
          'constant'
          'CloudResources'
          'rds_pg'
-], ( PropertyView, OgDropdown, template_instance, template_replica, template_snapshot, template_component, lang, constant, CloudResources, parameterGroup ) ->
+], ( PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
 
     noop = ()-> null
 
@@ -206,7 +205,7 @@ define [ '../base/view'
                 template = template_replica
                 attr.masterIops = @model.master().get 'iops'
             # if snapshot
-            template = template_snapshot if attr.snapshotId
+            template = template_instance if attr.snapshotId
 
             # if oracle
             if attr.engine.indexOf('oracle') is 0

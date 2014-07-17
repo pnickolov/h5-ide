@@ -170,7 +170,7 @@ define [
       iops = iops and @master() and @master().get('iops') or iops
       @set 'iops', iops
 
-    getIops: -> @get('iops') and @master() and @master().get('iops') or @get('iops')
+    getIops: -> ( @get('iops') and @master() or @ ).get('iops')
 
     defaultPortMap:
       'mysql'         : 3306

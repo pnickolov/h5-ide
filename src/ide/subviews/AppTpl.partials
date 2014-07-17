@@ -39,9 +39,12 @@
 
 <!-- {{stopAppConfirm}} -->
 {{#if isProduction}}
-<p><b style="color:#ec3c38;">{{appName}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
-<p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
-<div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
+    <div style="padding: 20px">
+        <p><b style="color:#ec3c38;">{{appName}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
+        <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
+        <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
+    </div>
+
 {{else}}
 <div class="modal-center-align-helper" style="padding: 20px">
     <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
@@ -84,8 +87,8 @@
 
 <!-- {{cantStop}} -->
 <p>DB Instance
-    {{#each cantstop}}
-        {{#if @index}},{{/if}}{{name}}({{DBInstanceStatus}})
+    {{#each cantStop}}
+        {{#if @index}},{{/if}}{{attributes.DBInstanceIdentifier}}({{attributes.DBInstanceStatus}})
     {{/each}}
     cannot take final snapshot.</p>
 <p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>

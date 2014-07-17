@@ -210,7 +210,8 @@ define [
       dbInstanceName = _.pluck hasDBInstance, 'name'
       console.log hasDBInstance, "DBINSTANCE"
       hasNotReadyDB = resourceList.filter (e)->
-        e.get('name') in dbInstanceName
+        #e.get('name') in dbInstanceName
+        return true
 
       hasAsg = (_.filter comp, (e)->
         e.type == constant.RESTYPE.ASG)?.length
@@ -222,7 +223,7 @@ define [
 
       canStop.tpl.find(".modal-footer").show()
       if hasNotReadyDB and hasNotReadyDB.length
-        canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB.toJSON()}
+        canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
         canStop.tpl.find('.modal-confirm').remove()
       else
         hasDBInstance = hasDBInstance?.length
@@ -244,11 +245,10 @@ define [
 
       $("#appNameConfirmIpt").on "keyup change", ()->
         if $("#appNameConfirmIpt").val() is name
-          $("#confirmStopApp").removeAttr "disabled"
+          canStop.tpl.find('.modal-confirm').removeAttr "disabled"
         else
-          $("#confirmStopApp").attr "disabled", "disabled"
+          canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
         return
-
       return
 
     terminateApp : ( id )->

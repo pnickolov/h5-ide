@@ -38,24 +38,26 @@
 </div>
 
 <!-- {{stopAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_STOP_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>
-
-{{#if production}}
-  <div class="modal-body" style="width:390px;">
-    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
-    <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
-    <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
-  </div>
+{{#if isProduction}}
+<p><b style="color:#ec3c38;">{{appName}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
+<p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
+<div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
 {{else}}
-  <div class="modal-body modal-text-wraper" style="width:390px;"> <div class="modal-center-align-helper">
-    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
-  </div> </div>
+<div class="modal-center-align-helper">
+    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+</div>
 {{/if}}
 
-<div class="modal-footer">
-  <button class="btn modal-close btn-red" id="confirmStopApp" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_STOP_APP"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-</div>
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+<!-- {{cantStop}} -->
+<p>DB Instance
+    {{#each cantstop}}
+        {{#if @index}},{{/if}}{{name}}({{DBInstanceStatus}})
+    {{/each}}
+    cannot take final snapshot.</p>
+<p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
 
 <!-- {{terminateAppConfirm}} -->
 <header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>

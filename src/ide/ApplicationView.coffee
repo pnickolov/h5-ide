@@ -14,7 +14,10 @@ define [
   "./subviews/Navigation"
   "./subviews/AppTpl"
   'i18n!/nls/lang.js'
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang )->
+  'CloudResources'
+  'constant'
+  'UI.modalplus'
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang, CloudResources, constant, modalPlus )->
 
   Backbone.View.extend {
 
@@ -179,11 +182,44 @@ define [
     stopApp : ( id )->
       app  = App.model.appList().get( id )
       name = app.get("name")
+      that = this
 
-      modal AppTpl.stopAppConfirm {
-        name       : name
-        production : app.get("usage") is "production"
+      AppTpl.cantStop {}
+      isProduction = app.get('usage') is "production"
+      appName = app.get('name')
+      canStop = new modalPlus {
+        template: AppTpl.loading()
+        title:  if isProduction then lang.ide.TOOL_POP_TIT_STOP_PRD_APP else lang.ide.TOOL_POP_TIT_STOP_APP
+        confirm:
+          text: lang.ide.TOOL_POP_BTN_STOP_APP
+          color: 'red'
+          disabled: isProduction
       }
+      canStop.tpl.find(".modal-footer").hide()
+      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
+      resourceList.fetch().then ->
+        console.log resourceList, "----------"
+        comp = Design.instance().serialize().component
+        comp = _.filter comp, (e)->
+          e.type == constant.RESTYPE.DBINSTANCE
+        hasNotReadyDB = _.filter comp, (e)->
+          console.log(e)
+          DBInstance = resourceList.findWhere(id: e.resource.DBInstanceIdentifier)
+          console.log DBInstance, e.resource.DBInstanceIdentifier, e
+          if DBInstance and  DBInstance?.attributes.DBInstanceStatus isnt 'available'
+            return true
+        if hasNotReadyDB
+          canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB.toJSON()}
+        else
+          canStop.tpl.find(".modal-footer").show()
+          canStop.tpl.find('.modal-body').html AppTpl.stopAppConfirm {isProduction , appName}
+          alert "Can Stop"
+
+
+#      modal AppTpl.stopAppConfirm {
+#        name       : name
+#        production : app.get("usage") is "production"
+#      }
 
       $("#confirmStopApp").on "click", ()->
         app.stop().fail ( err )->

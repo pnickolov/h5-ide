@@ -4243,3 +4243,6 @@ summary:focus {
     display: block;
     margin-left: 23px;
 }
+.confirm-padding{
+    padding: 0 15px;
+}

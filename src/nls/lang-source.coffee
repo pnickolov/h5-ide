@@ -3393,6 +3393,14 @@ module.exports =
       en: "Secondary Availability Zone"
       zh: ""
 
+    PROP_DBINSTANCE_PUBLIC_ACCESS:
+      en: "Publicly Accessible"
+      zh: ""
+
+    PROP_DBINSTANCE_LICENSE_MODEL:
+      en: "License Model"
+      zh: ""
+
     PROP_DBINSTANCE_BACKUP_MAINTENANCE:
       en: "Backup & Maintenance"
       zh: ""

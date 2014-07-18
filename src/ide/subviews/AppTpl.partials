@@ -109,6 +109,7 @@
 <p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
 
 <!-- {{terminateAppConfirm}} -->
+<div class="confirm-padding">
 {{#if production}}
     <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
@@ -130,6 +131,7 @@
             cannot take final snapshot.</p>
     {{/if}}
 {{/if}}
+</div>
 
 <!-- {{disconnectedMsg}} -->
 <section class="disconnected-msg">

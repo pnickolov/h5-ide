@@ -70,7 +70,10 @@
                 <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
                 <dd>{{SecondaryAvailabilityZone}}</dd>
             {{/if}}
-
+            <dt>{{ i18n "PROP_DBINSTANCE_PUBLIC_ACCESS"}}</dt>
+            <dd>{{#if PubliclyAccessible}}true{{else}}false{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_LICENSE_MODEL"}}</dt>
+            <dd>{{LicenseModel}}</dd>
         </dl>
     </div>
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>

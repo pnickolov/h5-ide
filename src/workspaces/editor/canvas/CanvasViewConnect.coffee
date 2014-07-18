@@ -156,9 +156,11 @@ define [ "./CanvasView", "Design", "./CanvasManager", "i18n!/nls/lang.js" ], ( C
     item   = data.context.__itemAtPos( coord )
 
     # Find port
-    fixed  = data.context.fixConnection( coord, data.startItem, item )
-    toPort = fixed.toPort
-    item   = fixed.target
+    if item
+      fixed  = data.context.fixConnection( coord, data.startItem, item )
+      if fixed
+        toPort = fixed.toPort
+        item   = fixed.target
 
     if not toPort and item
       toPort = item.$el.find(".connectable").attr("data-name")

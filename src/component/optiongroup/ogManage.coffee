@@ -92,7 +92,7 @@ define [
             @dbInstance = option.dbInstance
 
             optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
-            engineOptions = optionCol.getOptionGroupsByEngine(option.engine)
+            engineOptions = optionCol.getOptionGroupsByEngine(Design.instance().region(), option.engine)
 
             @ogOptions = engineOptions[option.version] if engineOptions
             @ogModel = option.model

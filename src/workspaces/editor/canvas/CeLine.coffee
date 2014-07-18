@@ -40,8 +40,14 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         @$el.children().attr( "d", @generatePath( item1, item2, undefined, undefined ) )
       else
         newLength = item1.$el.length * item2.$el.length
-        @$el.slice( newLength ).remove()
-        @$el = @$el.slice( 0, newLength )
+        if @$el.length < newLength
+          while @$el.length < newLength
+            svgEl = @createLine( "M0 0Z" )
+            @addView svgEl
+
+        else if @$el.length > newLength
+          @$el.slice( newLength ).remove()
+          @$el = @$el.slice( 0, newLength )
 
         i = 0
         for el1 in item1.$el

@@ -144,9 +144,10 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       dropRect.x2 += 2
       dropRect.y2 += 2
 
-    dropRect = @__bestFitRect( dropRect, group, excludeChild )
-
-    if not dropRect then return "Not enough space."
+    if not ItemClassProto.sticky
+      # Caculate best drop rect for non-sticky item
+      dropRect = @__bestFitRect( dropRect, group, excludeChild )
+      if not dropRect then return "Not enough space."
 
     {
       group    : group
@@ -368,6 +369,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       onDrag      : __moveItemDrag
       onDragEnd   : __moveItemDrop
     }
+
+    if item.sticky
+      options.onDragStart = __moveStickyItemStart
+      options.onDrag      = __moveStickyItemDrag
+      options.onDragEnd   = __moveStickyItemDrop
+
     $tgt.dnd( evt, options )
     false
 
@@ -472,4 +479,28 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     dataTransfer.item[ if evt.altKey then "cloneTo" else "changeParent" ]( dataTransfer.parent, dataTransfer.x, dataTransfer.y )
     return
 
+
+  __moveStickyItemStart = ( evt )->
+
+  __moveStickyItemDrag = ( evt )->
+    data = evt.data
+
+    if not data.zoneDimension
+      # The dragging is not within the canvas.
+      return
+
+    ctx = data.context
+
+    # Drag Effects
+    ctx.__scrollOnDrag( data )
+
+    mousePos = data.context.__localToCanvasCoor(
+      data.pageX - data.canvasX - data.offsetX,
+      data.pageY - data.canvasY - data.offsetY
+    )
+
+    data.item.ensureStickyPos( mousePos.x, mousePos.y )
+    return
+
+  __moveStickyItemDrop = ( evt )-> evt.data.context.__clearDragScroll()
   null

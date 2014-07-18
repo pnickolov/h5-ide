@@ -6,12 +6,16 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeVgw"
     ### env:dev:end ###
     type : constant.RESTYPE.VGW
+
+    parentType  : [ constant.RESTYPE.VPC ]
     defaultSize : [8,8]
 
     portPosMap : {
       "vgw-tgt" : [ 3,  35, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "vgw-vpn" : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
+
+    sticky : "right"
 
     # Creates a svg element
     create : ()->

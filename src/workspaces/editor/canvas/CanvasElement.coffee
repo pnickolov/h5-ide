@@ -57,6 +57,8 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       @listenTo @model, "change:name", @render
 
       @listenModelEvents()
+
+      @ensureStickyPos()
       return
 
     listenModelEvents : ()->
@@ -124,12 +126,18 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
         y : y
       }
 
-    containPoint : ( px, py )->
-      x = @model.x()
-      y = @model.y()
-      size = @size()
+    containPoint : ( px, py, includeStickyChildren )->
+      testRects = [ @rect() ]
 
-      x <= px and y <= py and x + size.width >= px and y + size.height >= py
+      if includeStickyChildren
+        for i in @children( true )
+          testRects.push i.rect() if i.sticky
+
+      for rect in testRects
+        if rect.x1 <= px and rect.y1 <= py and rect.x2 >= px and rect.y2 >= py
+          return true
+
+      false
 
     rect : ()->
       size = @size()
@@ -153,6 +161,36 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
         rect.y2 += 1
 
       rect
+
+    ensureStickyPos : ( newX, newY )->
+      if not @sticky then return
+
+      size  = @size()
+      prect = @parent().rect()
+
+      constrain = ( v, v1, v2 )->
+        return v1 if v <= v1
+        return v2 if v >= v2
+        v
+
+      w = constrain( newX || @model.x(), prect.w1, prect.w2 - size.width )
+      y = constrain( newY || @model.y(), prect.y1, prect.y2 - size.height )
+
+      switch @sticky
+        when "left"   then x = prect.x1 - Math.round( size.width  / 2 )
+        when "right"  then x = prect.x2 - Math.round( size.width  / 2 )
+        when "top"    then y = prect.y1 - Math.round( size.height / 2 )
+        when "bottom" then y = prect.y2 - Math.round( size.height / 2 )
+
+      if @model.attributes.x is x and @model.attributes.y is y then return
+
+      @model.attributes.x = x
+      @model.attributes.y = y
+
+      @$el[0].instance.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
+      @updateConnections()
+      return
+
 
     initNode : ( node, x, y )->
       node.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
@@ -246,16 +284,22 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       else
         null
 
-    children : ()->
+    children : ( includeStickyChildren )->
       if not @model.node_group
         return []
 
       canvas = @canvas
-      @model.children().map ( childModel )->
-        canvas.getItem( childModel.id )
+      items  = []
+      for ch in @model.children()
+        i = canvas.getItem( ch.id )
+        if not i then continue
+        if i.sticky and not includeStickyChildren then continue
+        items.push i
 
-    siblings : ()->
-      s = @parent().children()
+      items
+
+    siblings : ( includeStickyChildren )->
+      s = @parent().children( includeStickyChildren )
       idx = s.indexOf( this )
       if idx >= 0
         s.splice( idx, 1)
@@ -391,7 +435,7 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
     moveBy : ( deltaX, deltaY )->
       if @isGroup()
-        for ch in @children()
+        for ch in @children( true )
           ch.moveBy( deltaX, deltaY )
 
       deltaX += @model.x()

@@ -103,7 +103,7 @@ define [
         children   = item.parent().children()
       else
         parentRect = @canvasRect()
-        children   = @__itemTopLevel.slice(0)
+        children   = @__itemTopLevel
 
       if parentRect.x1 >= subRect.x1 or parentRect.y1 >= subRect.y1 or parentRect.x2 <= subRect.x2 or parentRect.y2 <= subRect.y2
         return false
@@ -388,6 +388,7 @@ define [
         y : Math.round( (y+sc.scrollTop)  / CanvasView.GRID_HEIGHT * @__scale )
       }
 
+    # Returns element at canvas coordinate. Including sticky elements.
     __itemAtPos : ( coord )->
       children = @__itemTopLevel
       context  = null
@@ -397,17 +398,18 @@ define [
         children = null
 
         for child in chs
-          if not child.containPoint( coord.x, coord.y )
+          if not child.containPoint( coord.x, coord.y, true )
             continue
 
           if not child.isGroup() then return child
 
           context  = child
-          children = child.children()
+          children = child.children( true )
           break
 
       context
 
+    # This method ignores sticky items
     __groupAtCoor : ( coord, excludeSubject )->
 
       children = @__itemTopLevel

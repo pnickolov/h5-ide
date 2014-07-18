@@ -274,6 +274,9 @@ define [ "./CanvasView" ], ( CanvasView )->
       cn.update() for cn in data.item.connections()
 
     # Todo : Update sticky item.
+    for ch in data.item.children( true )
+      if ch.sticky
+        ch.ensureStickyPos()
     return
 
   __resizeUp = ( evt )->

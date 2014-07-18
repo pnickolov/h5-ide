@@ -7,11 +7,14 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     ### env:dev:end ###
     type : constant.RESTYPE.IGW
 
+    parentType  : [ constant.RESTYPE.VPC ]
     defaultSize : [8,8]
 
     portPosMap : {
       "igw-tgt" : [ 78, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
+
+    sticky : "left"
 
     # Creates a svg element
     create : ()->
@@ -38,13 +41,4 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @initNode svgEl, m.x(), m.y()
 
       svgEl
-  }, {
-    createResource : ( type, attr, option )->
-      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
-      attr.x = vpc.x() - 4
-      if attr.y < vpc.y() or attr.y + 8 > vpc.y() + vpc.height()
-        attr.y = vpc.y() + Math.round( vpc.height() / 2 ) - 4
-
-      attr.parent = vpc
-      CanvasElement.createResource( type, attr, option )
   }

@@ -46,6 +46,8 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js" ], ( CanvasView, cons
         when constant.RESTYPE.ELB       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ELB
         when constant.RESTYPE.CGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_CGW
         when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
+        when constant.RESTYPE.IGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_IGW
+        when constant.RESTYPE.VGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VGW
   }
 
   AwsCanvasView

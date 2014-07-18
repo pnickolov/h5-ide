@@ -9,11 +9,18 @@
         </dl>
         {{/if}}
 
+        {{#if isAppEdit}}
+        <div class="property-control-group clearfix">
+            <label>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
+            <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</div>
+        </div>
+        {{else}}
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <input class="input" type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
+        {{/if}}
 
         <div id ="lvia-container">
 
@@ -54,11 +61,18 @@
             <label>RDS MySQL supports IOPS / GB ratios between 3 and 10</label>
         </section>
 
+        {{#if isAppEdit}}
+        <div class="property-control-group clearfix">
+            <label>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</label>
+            <div>{{MasterUsername}}</div>
+        </div>
+        {{else}}
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore="true" data-required-rollback="true"/>
         </section>
+        {{/if}}
 
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
@@ -70,6 +84,15 @@
 
     <div class="option-group-head">Database Config</div>
     <div class="option-group">
+
+        {{#if isAppEdit}}
+        <div class="property-control-group clearfix">
+            <label>{{ i18n "PROP_DBINSTANCE_NAME" }}</label>
+            <div>{{name}}</div>
+            <label>{{ i18n "PROP_DBINSTANCE_PORT" }}</label>
+            <div>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</div>
+        </div>
+        {{else}}
         <section class="property-control-group" data-bind="true">
             <div class="property-input-row">
                 <label class="left" for="property-dbinstance-database-name" >Database Name</label>
@@ -80,6 +103,7 @@
                 <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-required-rollback="true"/>
             </div>
         </section>
+        {{/if}}
 
         <div class="property-control-group clearfix property-dbinstance-optiongroup"></div>
 
@@ -115,6 +139,9 @@
     <div class="option-group-head">Network & AZ Deployment</div>
     <div class="option-group">
 
+        {{#if isAppEdit}}
+
+        {{else}}
         <section class="property-control-group">
             <div class="checkbox">
                 <input id="property-dbinstance-public-access-check" type="checkbox" {{#if accessible}}checked="true"{{/if}} value="None" name="property-dbinstance-public-access-check">
@@ -122,6 +149,7 @@
             </div>
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
         </section>
+        {{/if}}
 
         <div id="property-dbinstance-mutil-az"></div>
 

@@ -1,4 +1,7 @@
 <!-- {{lvi}} -->
+{{#if isAppEdit}}
+
+{{else}}
 <section class="property-control-group">
     <label class="left">License Model</label>
     <div class="selectbox" id="property-dbinstance-license-select">
@@ -10,6 +13,7 @@
         </ul>
     </div>
 </section>
+{{/if}}
 
 {{#unless snapshotId}}
 <section class="property-control-group">
@@ -144,13 +148,28 @@
     <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
 </section>
 
-{{#if azNotEnough}}
-<section class="property-control-group">
-    <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
-</section>
+{{#if isAppEdit}}
+
+    <div class="property-control-group clearfix">
+        <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+        <div>{{AvailabilityZone}}</div>
+        {{#if SecondaryAvailabilityZone}}
+        <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+        <div>{{SecondaryAvailabilityZone}}</div>
+        {{/if}}
+    </div>
+
 {{else}}
-<section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
-    <label class="left">Preferred Availability Zone</label>
-    <div class="selectbox" id="property-dbinstance-preferred-az"></div>
-</section>
+
+    {{#if azNotEnough}}
+    <section class="property-control-group">
+        <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+    </section>
+    {{else}}
+    <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
+        <label class="left">Preferred Availability Zone</label>
+        <div class="selectbox" id="property-dbinstance-preferred-az"></div>
+    </section>
+    {{/if}}
+
 {{/if}}

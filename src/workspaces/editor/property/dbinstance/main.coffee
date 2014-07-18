@@ -50,8 +50,12 @@ define [
 
         initAppEdit : ( uid ) ->
             @model = Design.instance().component uid
-            @model.isAppEdit = true
             @view  = view
+            @view.isAppEdit = true
+            null
+
+        afterLoadAppEdit : ()->
+            sglist_main.loadModule @model
             null
 
         afterLoadApp : () ->

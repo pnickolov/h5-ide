@@ -29,21 +29,27 @@
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP"}}</div>
       <ul class="modal-list-items">
+          {{#if hasEC2Instance}}
           <li>
               EC2 instances will be started.
           </li>
+          {{/if}}
+          {{#if hasDBInstance}}
           <li>
               DB instances will be restored from final snapshot.
           </li>
+          {{/if}}
+          {{#if hasASG}}
           <li>
               Auto Scaling Group will be recreated.
           </li>
+          {{/if}}
       </ul>
-      {{#if}}
+      {{#if lostDBSnapshot.length}}
       <div class="modal-shrink">
           <div class="sub-gray">Warning</div>
           <div class="error">
-              DB instance %db-name%’s final snapshot is missing. This DB instance cannot be restored.
+              DB instance {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}}’s final snapshot is missing. This DB instance cannot be restored.
           </div>
       </div>
       {{/if}}

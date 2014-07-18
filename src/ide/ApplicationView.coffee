@@ -169,8 +169,23 @@ define [
 
     startApp : ( id )->
       name = App.model.appList().get( id ).get("name")
+      comp = Design.instance().serialize().component
+      hasEC2Instance =( _.filter comp, (e)->
+        e.type is constant.RESTYPE.INSTANCE).length
+      hasDBInstance = (_.filter comp, (e)->
+        e.type is constant.RESTYPE.DBINSTANCE).length
+      hasASG = (_.filter comp, (e)->
+        e.type is constant.RESTYPE.ASG).length
+
+      dbInstance = _.filter comp, (e)->
+        e.type is constant.RESTYPE.DBINSTANCE
+      console.log dbInstance
+      snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
+      lostDBSnapshot = _.filter dbInstance, (e)->
+        e.resource.DBSnapshotIdentifier and snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
+
       startAppModal = new modalPlus {
-        template: AppTpl.startAppConfirm()
+        template: AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
         title: lang.ide.TOOL_TIP_START_APP
         confirm:
           text: lang.ide.TOOL_POP_BTN_START_APP

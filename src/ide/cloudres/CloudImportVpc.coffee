@@ -1499,6 +1499,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         dbInsRes = @_mapProperty aws_dbins, dbInsRes
 
+        #clear AZ when MultiAZ is true
+        if dbInsRes.MultiAZ
+          dbInsRes.AvailabilityZone = ""
+
         dbInsRes.AllocatedStorage = Number(aws_dbins.AllocatedStorage)
         dbInsRes.BackupRetentionPeriod = Number(aws_dbins.BackupRetentionPeriod)
 

@@ -4627,7 +4627,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
-      en: " Terminating it will make your service unavailable."
+      en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
       zh: ""
 
     POP_CONFIRM_STOP_PROD_APP_MSG:

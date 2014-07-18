@@ -277,19 +277,33 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
 
-      modal AppTpl.terminateAppConfirm {
-        name       : name
-        production : app.get("usage") is "production"
-      }
+      comp = Design.instance().serialize().component
+      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
+      hasDBInstance = _.filter comp, (e)->
+        e.type == constant.RESTYPE.DBINSTANCE
+      dbInstanceName = _.map hasDBInstance, (e)->
+        return e.resource.DBInstanceIdentifier
+      notReadyDB = resourceList.filter (e)->
+        (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+      production = app.get("usage") is 'production'
+      terminateConfirm = new modalPlus(
+        title: if production then lang.ide.TOOL_POP_TIT_TERMINATE_PRD_APP else lang.ide.TOOL_POP_TIT_TERMINATE_APP
+        template: AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
+        confirm: {
+          text: lang.ide.TOOL_POP_BTN_TERMINATE_APP
+          color: "red"
+          disabled: production
+        }
+      )
 
       $("#appNameConfirmIpt").on "keyup change", ()->
         if $("#appNameConfirmIpt").val() is name
-          $("#appTerminateConfirm").removeAttr "disabled"
+          terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
         else
-          $("#appTerminateConfirm").attr "disabled", "disabled"
+          terminateConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
         return
 
-      $("#appTerminateConfirm").on "click", ()->
+      terminateConfirm.on "confirm", ()->
         app.terminate().fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"

@@ -4235,3 +4235,11 @@ summary:focus {
 .modal-shrink .error{
     color: #F74A48;
 }
+.check-final-snapshot{
+    padding: 10px 0;
+    font-size: 16px;
+}
+.cant-snapshot {
+    display: block;
+    margin-left: 23px;
+}

@@ -182,7 +182,7 @@ define [
       console.log dbInstance
       snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
       lostDBSnapshot = _.filter dbInstance, (e)->
-        e.resource.DBSnapshotIdentifier and snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
+        e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
 
       startAppModal = new modalPlus {
         template: AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}

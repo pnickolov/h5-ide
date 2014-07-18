@@ -384,6 +384,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       null
 
+    onParentChanged : () ->
+
+      for ipObj, idx in @get("ips")
+        @setIp( idx, null, true, ipObj.hasEip )
 
     generateJSON : ( index, servergroupOption, eniIndex )->
 

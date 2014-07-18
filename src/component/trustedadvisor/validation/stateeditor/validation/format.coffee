@@ -108,7 +108,10 @@ define [ 'Design', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC'
             else
                 @notnull( val ) and @notblank( val )
 
-        isRef: ( val ) -> constant.REGEXP.stateEditorOriginReference.test val
+        isRef: ( val ) ->
+            if not _.isArray val then val = [val]
+            _.every val, ( v ) ->
+                constant.REGEXP.stateEditorRefOnly.test v
 
         notnull: ( val ) -> val.length > 0
 

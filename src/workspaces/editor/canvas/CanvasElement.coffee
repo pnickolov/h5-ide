@@ -363,9 +363,8 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
 
     changeParent : ( newParent, x, y )->
-      if not newParent then return
 
-      if @parent() is newParent
+      if (@parent() or null) is newParent
         if @model.x() is x and @model.y() is y then return
         @moveBy( x - @model.x(), y - @model.y() )
         return
@@ -374,6 +373,8 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       if @model.get("appId")
         notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
         return
+
+      if not @parent() and newParent then return
 
       parentModel = newParent.model
       res = @model.isReparentable( parentModel )

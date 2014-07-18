@@ -7,6 +7,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "./CanvasView" ], ( C
     ### env:dev:end ###
     type : constant.RESTYPE.VPC
 
+    parentType  : [ "SVG" ]
+
     listenModelEvents : ()->
       @listenTo @model, "change:cidr", @render
       return

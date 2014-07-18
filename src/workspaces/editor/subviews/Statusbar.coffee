@@ -27,6 +27,8 @@ define [
       update: ( $, workspace ) ->
         save_time = jQuery.now() / 1000
 
+        if @timer then clearInterval @timer
+
         @timer = setInterval ()->
           $item    = $('.stack-save-time')
           new_interval_time = MC.intervalDate save_time

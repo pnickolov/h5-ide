@@ -66,7 +66,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("name")
 
-    updateConnections : ()-> @canvas.getItem( cn.id )?.update() for cn in @model.getLc().connections(); return
+    updateConnections : ()-> cn.update() for cn in @canvas.getItem( @model.getLc().id ).connections(); return
 
     destroy : ( selectedDomElement )->
       substitute = @model.get("expandedList")[0]

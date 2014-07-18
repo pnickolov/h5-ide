@@ -401,7 +401,7 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
       @updateConnections()
       return
 
-    updateConnections : ()-> @canvas.getItem( cn.id )?.update() for cn in @connections(); return
+    updateConnections : ()-> cn.update() for cn in @connections(); return
 
   }, {
 

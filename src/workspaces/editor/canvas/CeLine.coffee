@@ -77,7 +77,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         maskPath = svg.path( path )
         length = parseFloat(maskPath.node.getTotalLength()).toFixed(2)
 
-        dirt = if initiator is item_from then 1 else -1
+        dirt = (if initiator is item_from then 1 else -1) * (@__lastDir || 1)
 
         maskPath.style({
           "stroke-dasharray"  : length + " " + length
@@ -136,7 +136,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
         pos_port_from = item_from.portPosition( from_port, true )
         pos_from.x += pos_port_from[0]
-        pos_from.y  += pos_port_from[1]
+        pos_from.y += pos_port_from[1]
 
       else if dirn_to
         pos_port_from = item_from.portPosition( from_port, true )
@@ -175,6 +175,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         type  : connection.port2Comp().type
         name  : to_port
 
+
+      @__lastDir = if start0.y >= end0.y then 1 else -1
 
       # Calculate line path
       if start0.x is end0.x or start0.y is end0.y

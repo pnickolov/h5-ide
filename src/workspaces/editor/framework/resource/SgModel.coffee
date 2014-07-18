@@ -101,7 +101,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     vlineAdd : ( resource )->
       # Don't modify SgLine when Design is not ready for drawing
-      if not Design.instance().shouldDraw() then return
+      if not Design.instance().initializing() then return
 
       connectedResMap = {}
       # Get all the resources that will connect to SG.
@@ -119,7 +119,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     vlineAddBatch : ( otherSg )->
 
-      if not Design.instance().shouldDraw() then return
+      if not Design.instance().initializing() then return
 
       # Do not add visual line for self reference rule
       if otherSg is @ then return
@@ -135,7 +135,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
 
     vlineRemove : ( resource, possibleAffectedRes, reason )->
 
-      if not Design.instance().shouldDraw() then return
+      if not Design.instance().initializing() then return
 
       # Get a list of target resources that might need to update.
       if not possibleAffectedRes
@@ -167,7 +167,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
       null
 
     vlineRemoveBatch : ( otherSg, reason )->
-      if not Design.instance().shouldDraw() then return
+      if not Design.instance().initializing() then return
 
       possibleAffectedRes = otherSg.connectionTargets( "SgAsso" )
 

@@ -101,7 +101,7 @@ define [
     @__classCache   = {}
     @__usedUidCache = {}
     @__opsModel     = opsModel
-    @__shoulddraw   = false # Disable drawing for deserializing, delay it until everything is deserialized
+    @__initializing = false # Disable drawing for deserializing, delay it until everything is deserialized
 
     canvas_data = opsModel.getJsonData()
 
@@ -173,6 +173,7 @@ define [
 
     # Disable triggering event when Design is deserializing
     Design.trigger = noop
+    @__initializing = true
 
 
     # A helper function to let each resource to get its dependency
@@ -257,6 +258,7 @@ define [
     ####################
     # Broadcast event
     ####################
+    @__initializing = true
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null
@@ -361,7 +363,7 @@ define [
   DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
 
 
-  DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
+  DesignImpl.prototype.initializing = ()-> @__initializing
   DesignImpl.prototype.use = ()-> Design.__instance = @; @
   DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
 

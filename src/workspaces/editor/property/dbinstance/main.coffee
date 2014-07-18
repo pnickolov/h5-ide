@@ -43,7 +43,7 @@ define [
 
         initApp : ( uid ) ->
             resModel = Design.instance().component uid
-            @model = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
+            @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
             @view  = app_view
             @view.resModel = resModel
             null

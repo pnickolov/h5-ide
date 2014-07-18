@@ -198,7 +198,6 @@ define [
       }
       canStop.tpl.find(".modal-footer").hide()
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
-      console.log resourceList, "----------"
       comp = Design.instance().serialize().component
 
       hasEC2Instance = (_.filter comp, (e)->
@@ -209,9 +208,7 @@ define [
 
       dbInstanceName = _.map hasDBInstance, (e)->
         return e.resource.DBInstanceIdentifier
-      console.log hasDBInstance, "DBINSTANCE"
       hasNotReadyDB = resourceList.filter (e)->
-        console.log e
         (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
       hasAsg = (_.filter comp, (e)->
@@ -220,7 +217,6 @@ define [
       fee = Design.instance().getCost()
       totalFee = fee.totalFee
       savingFee = fee.totalFee
-      console.log(fee)
 
       canStop.tpl.find(".modal-footer").show()
       if hasNotReadyDB and hasNotReadyDB.length

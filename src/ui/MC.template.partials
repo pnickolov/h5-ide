@@ -507,14 +507,14 @@ Additional Notes and Questions
 {{/each}}
 
 <!-- {{groupedSgRuleListDelConfirm}} -->
-Following rule(s) will be deleted from its(their) security group:</div>
+<p>Following rule(s) will be deleted from its(their) security group:</p>
 <article class="scroll-wrap delete-sgrule-dialog">
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
-{{#each this}}
-<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
-<ul class="sg-rule-list">{{{content}}}</ul>
-{{/each}}
+{{#each this}}<ul>
+<h3 class="sg-create-group"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+{{{content}}}
+</ul>{{/each}}
 </div>
 </article>
 

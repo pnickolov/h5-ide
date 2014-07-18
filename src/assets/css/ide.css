@@ -2147,11 +2147,6 @@ a.action-link:hover {
 .delete-sgrule-dialog .sg-create-rule-item {
 	background: #36373A;
 	padding   : 5px 10px;
-	width     : 360px;
-}
-
-.delete-sgrule-dialog .sg-create-rule-item:last-child {
-	border-bottom: none;
 }
 
 .delete-sgrule-dialog .sg-create-group {
@@ -2159,17 +2154,15 @@ a.action-link:hover {
 	border    : none;
 	color     : #666;
 	padding   : 2px 10px;
-	width     : 360px;
 }
 
 .delete-sgrule-dialog .sg-create-group .sg-color {
-	margin-top : 3px;
+	margin-top   : 3px;
+	width        : 10px;
+	height       : 10px;
+	float        : left;
+	margin-right : 5px;
 }
-
-.delete-sgrule-dialog .sg-rule-connnection {
-	width: 280px;
-}
-
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */

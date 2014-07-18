@@ -52,6 +52,7 @@ define [
             @model = Design.instance().component uid
             @view  = view
             @view.isAppEdit = true
+            @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get @model.get('appId')
             null
 
         afterLoadAppEdit : ()->

@@ -182,12 +182,20 @@ define [ '../base/view'
             timeStr = @_getTimeStr(startTime, duration, week)
             @model.set('maintenanceWindow', timeStr)
 
-        render: () ->
+        getModelJSON: () ->
 
             attr = @model.toJSON()
 
             # for app edit
-            attr.isAppEdit = @isAppEdit
+            if @isAppEdit
+                attr.isAppEdit = @isAppEdit
+                _.extend attr, @appModel.toJSON()
+
+            attr
+
+        render: () ->
+
+            attr = @getModelJSON()
 
             backupTime = @_getTimeData(attr.backupWindow)
             maintenanceTime = @_getTimeData(attr.maintenanceWindow)
@@ -242,7 +250,7 @@ define [ '../base/view'
             # if can create custom og
 
             regionName       = Design.instance().region()
-            attr             = @model.toJSON()
+            attr             = @getModelJSON()
             attr.canCustomOG = false
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
@@ -293,7 +301,7 @@ define [ '../base/view'
 
             $('#lvia-container').html template_component.lvi(data)
 
-            attr = @model.toJSON()
+            attr = @getModelJSON()
 
             spec = @model.getSpecifications()
             lvi = @model.getLVIA spec
@@ -330,7 +338,7 @@ define [ '../base/view'
             spec = @model.getSpecifications()
             lvi  = @model.getLVIA spec
             optionalAzAry = lvi[4]
-            attr = @model.toJSON()
+            attr = @getModelJSON()
 
             # set preferred AZ list
             region = Design.instance().get('region')

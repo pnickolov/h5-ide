@@ -480,7 +480,7 @@ define [
         continue
 
       try
-        json = comp.serialize()
+        json = comp.serialize options
         ### env:prod ###
       catch error
         console.error "Error occur while serializing", error

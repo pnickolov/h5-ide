@@ -29,7 +29,13 @@ define [
       _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOptionGroup'
       ComplexResModel.prototype.remove.apply @, arguments
 
-    serialize : ()->
+    serialize : ( options )->
+      isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
+
+      if isRunOrUpdate and not @connections().length
+        console.debug( "Option Group is not serialized, because nothing use it." )
+        return
+
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       component =

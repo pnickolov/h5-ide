@@ -304,7 +304,7 @@ define [
                 return false
 
             @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
-            @json = @workspace.design.serialize()
+            @json = @workspace.design.serialize usage: 'runStack'
             @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
             @json.name = appNameDom.val()
             @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
@@ -436,7 +436,7 @@ define [
     applyAppEdit    : ()->
 
       oldJson = @workspace.opsModel.getJsonData()
-      newJson = @workspace.design.serialize()
+      newJson = @workspace.design.serialize usage: 'updateApp'
 
       differ = new ResDiff({
         old : oldJson

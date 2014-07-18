@@ -173,8 +173,15 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
         return v2 if v >= v2
         v
 
-      w = constrain( newX || @model.x(), prect.w1, prect.w2 - size.width )
-      y = constrain( newY || @model.y(), prect.y1, prect.y2 - size.height )
+      x = newX || @model.x()
+      y = newY || @model.y()
+
+      # If x,y < 0, it means auto layout
+      if x < 0 then x = Math.round((prect.x2 - prect.x1 - size.width) / 2)
+      if y < 0 then y = Math.round((prect.y2 - prect.y1 - size.height) / 2)
+
+      x = constrain( x, prect.x1, prect.x2 - size.width )
+      y = constrain( y, prect.y1, prect.y2 - size.height )
 
       switch @sticky
         when "left"   then x = prect.x1 - Math.round( size.width  / 2 )

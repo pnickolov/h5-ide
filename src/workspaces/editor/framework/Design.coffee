@@ -258,7 +258,7 @@ define [
     ####################
     # Broadcast event
     ####################
-    @__initializing = true
+    @__initializing = false
     Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
     null

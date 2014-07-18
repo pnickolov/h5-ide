@@ -304,7 +304,8 @@ define [
         return
 
       terminateConfirm.on "confirm", ()->
-        app.terminate().fail ( err )->
+        takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
+        app.terminate(null, takeSnapshot).fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
         return

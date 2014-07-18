@@ -218,13 +218,15 @@ define [
       totalFee = fee.totalFee
       savingFee = fee.totalFee
 
+      hasInstanceStore = not Design.instance().isStoppable()
+
       canStop.tpl.find(".modal-footer").show()
       if hasNotReadyDB and hasNotReadyDB.length
         canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
         canStop.tpl.find('.modal-confirm').remove()
       else
         hasDBInstance = hasDBInstance?.length
-        canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee}
+        canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee, hasInstanceStore}
 
 
 #      modal AppTpl.stopAppConfirm {

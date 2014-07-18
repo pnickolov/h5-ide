@@ -52,7 +52,7 @@
         {{#if hasEC2Instance}}
             <li>
                 EC2 instances will be stopped.
-                <span class="error">Instance-stored instances will be deleted.</span>
+                {{#if hasInstanceStore}}<span class="error">Instance-stored instances will be deleted.</span>{{/if}}
             </li>
         {{/if}}
         {{#if hasDBInstance}}

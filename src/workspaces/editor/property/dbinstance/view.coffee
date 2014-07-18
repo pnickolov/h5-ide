@@ -342,16 +342,22 @@ define [ '../base/view'
 
             # set preferred AZ list
             region = Design.instance().get('region')
-            allAZ = []
-            allAZName = []
+            dragAZs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
+            dragAZs = _.map dragAZs, (azModel) ->
+                return azModel.get('name')
+            avaliableAZ = []
             _.each optionalAzAry, (az) ->
-                allAZ.push({
-                    name: az
-                })
-                allAZName.push(az)
+                avaliableAZ.push(az)
                 null
-            $('#property-dbinstance-preferred-az').html template_component.preferred_az(allAZ)
-            if attr.az and (attr.az in allAZName)
+            avaliableAZ = _.intersection(avaliableAZ, dragAZs)
+
+            # render
+            azData = _.map avaliableAZ, (az) ->
+                return {
+                    name: az
+                }
+            $('#property-dbinstance-preferred-az').html template_component.preferred_az(azData)
+            if attr.az and (attr.az in avaliableAZ)
                 selectedAZ = attr.az
             else
                 selectedAZ = 'no'

@@ -27,15 +27,13 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
       true
 
     serialize : ()->
-      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
-
       component =
         name : @get("name")
         type : @type
         uid  : @id
         resource :
           InternetGatewayId : @get("appId")
-          AttachmentSet     : [{ VpcId : vpc.createRef( "VpcId" ) }]
+          AttachmentSet     : [{ VpcId : @parent().createRef( "VpcId" ) }]
 
       { component : component, layout : @generateLayout() }
 
@@ -55,8 +53,9 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
       vpcH = vpc.height()
 
       new Model({
-        x : vpcX - igwW / 2
-        y : vpcY + ( vpcH - igwH ) / 2
+        x      : vpcX - igwW / 2
+        y      : vpcY + ( vpcH - igwH ) / 2
+        parent : vpc
       })
       null
 
@@ -69,6 +68,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
         id     : data.uid
         name   : data.name
         appId  : data.resource.InternetGatewayId
+        parent : resolve( layout_data.groupUId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

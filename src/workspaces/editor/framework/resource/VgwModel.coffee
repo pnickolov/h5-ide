@@ -9,8 +9,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
     type : constant.RESTYPE.VGW
 
     serialize : ()->
-      vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
-
       component =
         name : @get("name")
         type : @type
@@ -18,7 +16,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
         resource :
           Type         : "ipsec.1"
           VpnGatewayId : @get("appId")
-          Attachments  : [{ VpcId : vpc.createRef( "VpcId" ) }]
+          Attachments  : [{ VpcId : @parent().createRef( "VpcId" ) }]
 
       { component : component, layout : @generateLayout() }
 
@@ -33,6 +31,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
         id     : data.uid
         name   : data.name
         appId  : data.resource.VpnGatewayId
+        parent : resolve( layout_data.groupUId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

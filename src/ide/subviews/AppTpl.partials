@@ -26,16 +26,28 @@
 </div>
 
 <!-- {{startAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}</div>
+      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP"}}</div>
+      <ul class="modal-list-items">
+          <li>
+              EC2 instances will be started.
+          </li>
+          <li>
+              DB instances will be restored from final snapshot.
+          </li>
+          <li>
+              Auto Scaling Group will be recreated.
+          </li>
+      </ul>
+      {{#if}}
+      <div class="modal-shrink">
+          <div class="sub-gray">Warning</div>
+          <div class="error">
+              DB instance %db-name%’s final snapshot is missing. This DB instance cannot be restored.
+          </div>
+      </div>
+      {{/if}}
   </div>
-</div>
-<div class="modal-footer">
-  <button class="btn modal-close btn-blue" id="confirmStartApp">{{i18n "TOOL_POP_BTN_START_APP"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-</div>
 
 <!-- {{stopAppConfirm}} -->
 {{#if isProduction}}
@@ -48,7 +60,7 @@
 {{else}}
 <div class="modal-center-align-helper" style="padding: 20px">
     <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
-    <ul class="stop-confirm-list">
+    <ul class="modal-list-items">
         {{#if hasEC2Instance}}
             <li>
                 EC2 instances will be stopped.

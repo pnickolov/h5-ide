@@ -92,7 +92,9 @@
 .modal-text-major {
   font-size: 16px;
   color: #eee;
-  margin-bottom: 10px; }
+  margin-bottom: 10px; 
+  margin-top: 10px;
+}
 
 .modal-text-minor {
   font-size: 14px;

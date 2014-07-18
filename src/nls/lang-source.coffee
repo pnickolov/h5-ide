@@ -1041,13 +1041,9 @@ module.exports =
       en: "Confirm to Start App"
       zh: "确认恢复"
 
-    TOOL_POP_BODY_START_APP_LEFT:
-      en: "Do you confirm to start app"
-      zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用"
-
-    TOOL_POP_BODY_START_APP_RIGHT:
-      en: "?"
-      zh: " 吗"
+    TOOL_POP_BODY_START_APP:
+      en: "Do you confirm that you would like to start the app?"
+      zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用吗?"
 
     TOOL_POP_BTN_START_APP:
       en: "Start"

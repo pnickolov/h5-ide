@@ -169,14 +169,22 @@ define [
 
     startApp : ( id )->
       name = App.model.appList().get( id ).get("name")
-      modal AppTpl.startAppConfirm { name : name }
-      $("#confirmStartApp").on "click", ()->
+      startAppModal = new modalPlus {
+        template: AppTpl.startAppConfirm()
+        title: lang.ide.TOOL_TIP_START_APP
+        confirm:
+          text: lang.ide.TOOL_POP_BTN_START_APP
+          color: 'blue'
+          disabled: false
+        disableClose: true
+      }
+      startAppModal.on 'confirm', ->
+        startAppModal.close()
         App.model.appList().get( id ).start().fail ( err )->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
-
       return
 
     stopApp : ( id )->

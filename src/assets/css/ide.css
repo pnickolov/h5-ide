@@ -4167,19 +4167,19 @@ summary:focus {
 .modal-toolbar .slidebox .combo-dd.selectbox .combo-dd-filter{
     width: 232px;
 }
-.stop-confirm-list li{
+.modal-list-items li{
     padding-left: 30px;
     position: relative;
     margin-bottom: 20px;
 }
-.stop-confirm-list li span{
+.modal-list-items li span{
     display: block;
     color: #6f6f6f;
 }
-.stop-confirm-list li span.error{
+.modal-list-items li span.error{
     color: #F74A48;
 }
-.stop-confirm-list li:before{
+.modal-list-items li:before{
     display: inline-block;
     content: "";
     width: 5px;
@@ -4221,4 +4221,17 @@ summary:focus {
 }
 .db-stop-status{
     color: #f8b42d;
+}
+.modal-shrink {
+    display: block;
+    background: #020202;
+    margin: 0 -15px;
+    padding: 20px;
+}
+.modal-shrink .sub-gray{
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.modal-shrink .error{
+    color: #F74A48;
 }

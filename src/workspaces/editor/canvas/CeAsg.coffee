@@ -69,9 +69,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     updateConnections : ()-> cn.update() for cn in @canvas.getItem( @model.getLc().id ).connections(); return
 
     destroy : ( selectedDomElement )->
-      substitute = @model.get("expandedList")[0]
+      substitute = @model.get("expandedList")
 
-      if substitute
+      if substitute and substitute[0]
+        substitute = substitute[0]
         # We delete one of the expanded asg instead.
         substitute.parent().addChild( @model )
         x = substitute.get("x")

@@ -243,6 +243,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 	REGEXP =
 		'stateEditorReference'		: /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.\w+\}/g
 		'stateEditorOriginReference': /@\{(([\w-]+)\.(([\w-]+(\[\d+\])?)|state.[\w-]+))\}/g
+		'stateEditorRefOnly'        : /^@\{(([\w-]+)\.(([\w-]+(\[\d+\])?)|state.[\w-]+))\}$/
 		'uid'						: /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/g
 
 

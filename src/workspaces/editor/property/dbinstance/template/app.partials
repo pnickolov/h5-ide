@@ -18,7 +18,7 @@
             <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
             <dd>{{Iops}}{{#if PendingModifiedValues.Iops}}(Pending Apply){{else}}None{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
-            <dd>{{AllocatedStorage}}{{#if PendingModifiedValues.AllocatedStorage}}(Pending Apply){{/if}}</dd>
+            <dd>{{AllocatedStorage}} GB{{#if PendingModifiedValues.AllocatedStorage}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
             <dd>{{MasterUsername}}</dd>
             {{#if ReadReplicaDBInstanceIdentifiers.length}}
@@ -37,16 +37,16 @@
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
-            <dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
-            <dd>{{name}}</dd>
+            {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{name}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
             <dd>{{#each optionGroups}}
                 {{#if isDefault}}
-                    {{OptionGroupName}}({{status}})
+                    {{OptionGroupName}}({{Status}})
                 {{else}}
-                    <a class="db-og-in-app">{{OptionGroupName}}({{status}})</a>
+                    <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
                 {{/if}}
                 {{/each}}
             </dd>

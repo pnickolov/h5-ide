@@ -20,9 +20,10 @@ define [
       null
 
     defaults : () ->
-        engineName    : ''
-        engineVersion : ''
-        options       : []
+        engineName      : ''
+        engineVersion   : ''
+        options         : []
+        applyImmediately: true
 
     remove: ->
       _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOptionGroup'
@@ -42,6 +43,7 @@ define [
           OptionGroupDescription: @get 'description'
           OptionGroupName       : @get('appId') or ''
           Options               : @get 'options'
+          ApplyImmediately      : @get 'applyImmediately'
           VpcId                 : @getVpcRef()
 
       { component : component }
@@ -58,13 +60,14 @@ define [
         name   : data.name
         appId  : data.resource.OptionGroupName
 
-        createdBy     : data.resource.CreatedBy
+        createdBy       : data.resource.CreatedBy
 
-        engineName    : data.resource.EngineName
-        engineVersion : data.resource.MajorEngineVersion
+        engineName      : data.resource.EngineName
+        engineVersion   : data.resource.MajorEngineVersion
 
-        description   : data.resource.OptionGroupDescription
-        options       : data.resource.Options
+        options         : data.resource.Options
+        description     : data.resource.OptionGroupDescription
+        applyImmediately: data.resource.ApplyImmediately
 
       })
 

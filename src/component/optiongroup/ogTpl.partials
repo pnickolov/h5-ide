@@ -105,6 +105,11 @@
             </div>
             <div class="left option-list-head">Option</div>
             <ul class="option-list"></ul>
+            <div class="checkbox">
+                <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{/if}}>
+                <label for="option-apply-immediately"></label>
+            </div>
+            <label for="option-apply-immediately">Apply Immediately</label>
         </div>
         <div class="modal-footer">
             {{#unless isCreate}}<div class="remove-btn left">Delete Option Group</div>{{/unless}}
@@ -120,11 +125,13 @@
     <div class="name">{{Name}}</div>
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+    {{#unless unmodify}}
     <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
     <label class="switcher{{#if checked}} on{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>
     </label>
+    {{/unless}}
 </li>
 {{/each}}
 

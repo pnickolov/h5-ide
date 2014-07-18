@@ -48,7 +48,11 @@ define [
             'submit form'                   : 'doNothing'
             'click #og-sg input'            : 'changeSg'
             'click .remove-confirm'         : 'removeConfirm'
-            'click .remove-cancel'         : 'removeCancel'
+            'click .remove-cancel'          : 'removeCancel'
+            'change #option-apply-immediately': 'changeApplyImmediately'
+
+        changeApplyImmediately: (e) ->
+            @model.set 'applyImmediately', e.currentTarget.checked
 
         changeSg: (e) ->
             checked = e.currentTarget.checked
@@ -87,6 +91,7 @@ define [
 
             that = this
 
+            @isAppEdit  = Design.instance().modeIsAppEdit()
             @dropdown   = option.dropdown
             @isCreate   = option.isCreate
             @dbInstance = option.dbInstance
@@ -109,14 +114,19 @@ define [
                     option.checked = true
                 else
                     option.checked = false
+
+                if @isAppEdit and ( option.Permanent or option.Persistent )
+                    option.unmodify = true
+
                 null
 
             null
 
         render: ->
-
             ogData = @ogModel.toJSON()
             ogData.isCreate = @isCreate
+            ogData.isAppEdit = @isAppEdit
+
             @$el.html template.og_modal(ogData)
             @initModal @el
             @renderOptionList()
@@ -127,6 +137,7 @@ define [
 
             @$el.find('.option-list').html template.og_option_item({
                 ogOptions: @ogOptions
+                isAppEdit: @isAppEdit
             })
 
         slide: ( option, callback ) ->

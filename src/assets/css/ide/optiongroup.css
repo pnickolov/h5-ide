@@ -84,10 +84,11 @@
   margin-top: 20px;
   margin-bottom: 20px; }
 #modal-option-group .option-list {
-  margin-top: 30px; }
+  margin: 30px 0; }
   #modal-option-group .option-list .option-item {
     display: inline-block;
-    width: 100%; }
+    width: 100%;
+    min-height: 39px; }
     #modal-option-group .option-list .option-item .name, #modal-option-group .option-list .option-item .persistent, #modal-option-group .option-list .option-item .permenant {
       float: left;
       margin-left: 10px;

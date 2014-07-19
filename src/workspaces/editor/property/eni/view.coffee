@@ -19,7 +19,7 @@ define [ '../base/view',
             'click .toggle-eip'                     : 'setEip'
             'click #property-eni-ip-add'            : "addIp"
             'click #property-eni-list .icon-remove' : "removeIp"
-            'blur .input-ip'                        : 'syncIPList'
+            'keyup .input-ip'                       : 'syncIPList'
 
         render     : () ->
             @$el.html( template( @model.attributes ) )
@@ -27,6 +27,7 @@ define [ '../base/view',
             @refreshIpList()
 
             $("#prop-appedit-eni-list").html list_template @model.attributes
+            @bindIpItemValidate()
 
             @model.attributes.name
 
@@ -76,7 +77,7 @@ define [ '../base/view',
             ipItems = $('#property-eni-list .input-ip-item')
             $target = $( event.currentTarget )
 
-            if not @validateIpItem( $target ) then return
+            if not $target.parsley 'validate' then return
 
             ipVal = $target.val()
             ip = $target.siblings( ".input-ip-prefix" ).text() + ipVal
@@ -90,41 +91,38 @@ define [ '../base/view',
             @updateIPAddBtnState()
             null
 
-        validateIpItem : ( $item ) ->
+        bindIpItemValidate: ->
             that = this
-            $item.parsley "custom", ( val ) ->
-                validDOM         = $item
-                inputValue       = validDOM.val()
-                inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
-                currentInputIP   = inputValuePrefix + inputValue
-                prefixAry        = inputValuePrefix.split('.')
+            $('.input-ip').each () ->
+                $item = $ @
+                $item.parsley "custom", ( val ) ->
+                    validDOM         = $item
+                    inputValue       = val
+                    inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
+                    currentInputIP   = inputValuePrefix + inputValue
+                    prefixAry        = inputValuePrefix.split('.')
 
-                ###### validation format
-                ipIPFormatCorrect = false
-                # for 10.0.0.
-                if prefixAry.length is 4
-                    if inputValue is 'x'
-                        ipIPFormatCorrect = true
-                    else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                        ipIPFormatCorrect = true
-                # for 10.0.
-                else
-                    if inputValue is 'x.x'
-                        ipIPFormatCorrect = true
-                    else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                        ipIPFormatCorrect = true
+                    ###### validation format
+                    ipIPFormatCorrect = false
+                    # for 10.0.0.
+                    if prefixAry.length is 4
+                        if inputValue is 'x'
+                            ipIPFormatCorrect = true
+                        else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
+                    # for 10.0.
+                    else
+                        if inputValue is 'x.x'
+                            ipIPFormatCorrect = true
+                        else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
 
-                if !ipIPFormatCorrect
-                    return lang.ide.PARSLEY_INVALID_IP_ADDRESS
-                else
-                    result = that.model.isValidIp( currentInputIP )
-                    if result isnt true
-                        return result
-                null
-
-            result = $item.parsley("validate")
-            $item.parsley("custom", noop)
-            return result
+                    if !ipIPFormatCorrect
+                        return 'Invalid IP address'
+                    else
+                        result = that.model.isValidIp( currentInputIP )
+                        if result isnt true
+                            return result
 
         updateIPAddBtnState : ( enabled ) ->
             if enabled is undefined

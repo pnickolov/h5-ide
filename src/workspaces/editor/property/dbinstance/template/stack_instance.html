@@ -2,6 +2,16 @@
     <div class="option-group-head expand">DB Instance Details</div>
     <div class="option-group">
 
+        {{#if isAppEdit}}
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
+                <label for="property-dbinstance-apply-immediately"></label>
+            </div>
+            <label for="property-dbinstance-apply-immediately">Apply Immediately</label>
+        </section>
+        {{/if}}
+
         {{#if snapshotId}}
         <dl class="dl-vertical">
             <dt>DB Snapshot ID</dt>

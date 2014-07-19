@@ -61,7 +61,7 @@ define [
       az: ''
       ogName: ''
       pgName: ''
-      applyImmediately: ''
+      applyImmediately: true
 
 
     type : constant.RESTYPE.DBINSTANCE

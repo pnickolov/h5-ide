@@ -50,8 +50,15 @@ define [ '../base/view'
 
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
+            'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
         changeCharset: ( event, value ,data ) ->
             @model.set 'characterSetName', value
+
+        changeApplyImmediately: (event) ->
+
+            value = event.target.checked
+            @model.set('applyImmediately', value)
 
         changeLicense: ( event, value, data ) ->
             @model.set 'license', value

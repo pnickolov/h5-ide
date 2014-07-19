@@ -154,7 +154,7 @@
 #modal-option-group.modal-option-group-app .option-list-head {
   margin-left: 30px; }
 #modal-option-group.modal-option-group-app .option-list {
-  margin-top: 30px; }
+  margin: 30px 30px 0; }
   #modal-option-group.modal-option-group-app .option-list .og-title {
     height: 39px; }
   #modal-option-group.modal-option-group-app .option-list .toggle-og-detail {

@@ -192,7 +192,7 @@ define [
         e.type is constant.RESTYPE.DBINSTANCE
       console.log dbInstance
       snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
-      snapshots.fetch().then ->
+      snapshots.fetchForce().then ->
         lostDBSnapshot = _.filter dbInstance, (e)->
           e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
 
@@ -227,7 +227,7 @@ define [
       }
       canStop.tpl.find(".modal-footer").hide()
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
-      resourceList.fetch().then ()->
+      resourceList.fetchForce().then ()->
 
         comp = Design.instance().serialize().component
 
@@ -292,8 +292,7 @@ define [
       terminateConfirm.tpl.find('.modal-footer').hide()
       comp = Design.instance().serialize().component
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
-      resourceList.fetch().then ()->
-
+      resourceList.fetchForce().then ()->
         hasDBInstance = _.filter comp, (e)->
           e.type == constant.RESTYPE.DBINSTANCE
         dbInstanceName = _.map hasDBInstance, (e)->
@@ -312,6 +311,7 @@ define [
           return
 
         terminateConfirm.on "confirm", ()->
+          terminateConfirm.close()
           takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
           app.terminate(null, takeSnapshot).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error

@@ -205,11 +205,6 @@ define [ "./ResourceModel", "Design" ], ( ResourceModel, Design )->
       if p1Exist then @__port1Comp.disconnect_base( @, option )
       if p2Exist then @__port2Comp.disconnect_base( @, option )
 
-
-      # Try removing line element in SVG, if the line is visual
-      v = @__view
-      if v then v.detach()
-
       ResourceModel.prototype.remove.call this
       null
 

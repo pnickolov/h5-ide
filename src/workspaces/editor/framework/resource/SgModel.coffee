@@ -91,12 +91,6 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     disconnect : ( cn )->
       if cn.type is "SgAsso"
         @vlineRemove( cn.getOtherTarget( @ ), undefined, cn )
-
-      else if cn.type is "SgRuleSet"
-
-        if cn.port1Comp() is @
-          if cn.port2Comp().type isnt "SgIpTarget"
-            @vlineRemoveBatch( cn.port2Comp(), cn )
       null
 
     vlineAdd : ( resource )->

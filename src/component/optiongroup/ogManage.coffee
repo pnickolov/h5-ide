@@ -143,7 +143,7 @@ define [
         slide: ( option, callback ) ->
 
             if not option.DefaultPort and not option.OptionGroupOptionSettings
-                callback {}
+                callback Port: '', VpcSecurityGroupMemberships: [], OptionSettings: []
                 return
 
             @optionCb = callback

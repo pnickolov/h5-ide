@@ -105,11 +105,15 @@
             </div>
             <div class="left option-list-head">Option</div>
             <ul class="option-list"></ul>
-            <div class="checkbox">
-                <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{/if}}>
-                <label for="option-apply-immediately"></label>
+            {{#if isAppEdit}}
+            <div class="og-apply-immediately">
+                <div class="checkbox">
+                    <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{/if}}>
+                    <label for="option-apply-immediately"></label>
+                </div>
+                <label for="option-apply-immediately">Apply Immediately</label>
             </div>
-            <label for="option-apply-immediately">Apply Immediately</label>
+            {{/if}}
         </div>
         <div class="modal-footer">
             {{#unless isCreate}}<div class="remove-btn left">Delete Option Group</div>{{/unless}}

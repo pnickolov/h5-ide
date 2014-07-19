@@ -328,7 +328,10 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
   # Move item by dnd
   CanvasViewProto.__moveItemMouseDown = ( evt )->
-    @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
+    if evt.metaKey
+      @__dragCanvasMouseDown( evt )
+    else
+      @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
 
 
   CanvasViewProto.dragItem = ( evt, options )->
@@ -503,4 +506,38 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     return
 
   __moveStickyItemDrop = ( evt )-> evt.data.context.__clearDragScroll()
+
+
+  CanvasViewProto.__dragCanvasMouseDown = ( evt )->
+    if not evt.metaKey or evt.which isnt 1 then return false
+
+    scrollContent = @$el.children(":first-child")[0]
+
+    $( document ).on({
+      "mousemove.dragcanvas" : __canvasDrag
+      "mousedown.dragcanvas" : __cancelCanvasDrag  # Any other user mouse event will cause the drop to be canceld.
+      "mouseup.dragcanvas"   : __cancelCanvasDrag  # Any other user mouse event will cause the drop to be canceCanvasDrag
+      "urlroute.dragcanvas"  : __cancelCanvasDrag
+    }, {
+      context    : @
+      startX     : evt.pageX
+      startY     : evt.pageY
+      scrollLeft : scrollContent.scrollLeft
+      scrollTop  : scrollContent.scrollTop
+
+      overlay : $("<div id='overlayer' class='grabbing'></div>").appendTo( "body" )
+    } )
+    false
+
+  __canvasDrag = ( evt )->
+    data = evt.data
+    data.context.$el.nanoScroller({ "scrollLeft" : data.scrollLeft - evt.pageX + data.startX })
+    data.context.$el.nanoScroller({ "scrollTop"  : data.scrollTop  - evt.pageY + data.startY })
+    false
+
+  __cancelCanvasDrag = ( evt )->
+    $( document ).off( ".dragcanvas" )
+    evt.data.overlay.remove()
+    false
+
   null

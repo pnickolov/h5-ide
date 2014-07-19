@@ -40,6 +40,8 @@ define [
       "mouseenter .canvasel" : "__hoverEl"
       "mouseleave .canvasel" : "__hoverOutEl"
 
+      "mousedown svg" : "__dragCanvasMouseDown"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design

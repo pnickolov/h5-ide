@@ -894,7 +894,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if not subnetComp
             continue
           aclRes.AssociationSet.push
-            #"NetworkAclAssociationId": acl.networkAclAssociationId
+            "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
 
         originComp = @getOriginalComp( aws_acl.id, "ACL" )

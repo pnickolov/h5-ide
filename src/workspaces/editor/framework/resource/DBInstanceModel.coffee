@@ -47,7 +47,7 @@ define [
       autoMinorVersionUpgrade: true
       allowMajorVersionUpgrade: ''
       backupRetentionPeriod: 1
-      allocatedStorage: 5
+      allocatedStorage: 10
       backupWindow: ''
       maintenanceWindow: ''
       characterSetName: ''

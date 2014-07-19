@@ -115,8 +115,10 @@ define [
                 else
                     option.checked = false
 
-                if @isAppEdit and ( option.Permanent or option.Persistent )
+                if that.isAppEdit and ( option.Permanent or option.Persistent )
                     option.unmodify = true
+                else
+                    option.unmodify = false
 
                 null
 

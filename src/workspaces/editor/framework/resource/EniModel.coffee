@@ -243,13 +243,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
           # The ip is not necessary correct in Eni.get("ips")
           realIp = eni.getRealIp( ipObj.ip )
-          if realIp is realNewIp
+          if realIp is realNewIp and eni isnt @
             if eni is this
               return 'This IP address conflicts with other IP'
             else
               return 'This IP address conflicts with other network interface’s IP'
 
-      return true
+      true
 
     addIp : ( idx, ip, autoAssign, hasEip )->
       ips = @get("ips")

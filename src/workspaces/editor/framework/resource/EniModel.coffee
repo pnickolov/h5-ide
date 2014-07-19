@@ -224,7 +224,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       cidr = @subnetCidr()
 
       # Check for subnet
-      if not Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
+      validObj = Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
+      if not validObj.isValid
+        if validObj.isReserved
+          return "This IP address is in subnet’s reserved address range"
         return 'This IP address conflicts with subnet’s IP range'
 
       realNewIp = @getRealIp( ip, cidr )

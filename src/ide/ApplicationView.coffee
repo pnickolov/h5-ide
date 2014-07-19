@@ -177,15 +177,8 @@ define [
       hasASG = (_.filter comp, (e)->
         e.type is constant.RESTYPE.ASG).length
 
-      dbInstance = _.filter comp, (e)->
-        e.type is constant.RESTYPE.DBINSTANCE
-      console.log dbInstance
-      snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
-      lostDBSnapshot = _.filter dbInstance, (e)->
-        e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
-
       startAppModal = new modalPlus {
-        template: AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
+        template: AppTpl.loading()
         title: lang.ide.TOOL_TIP_START_APP
         confirm:
           text: lang.ide.TOOL_POP_BTN_START_APP
@@ -193,14 +186,27 @@ define [
           disabled: false
         disableClose: true
       }
-      startAppModal.on 'confirm', ->
-        startAppModal.close()
-        App.model.appList().get( id ).start().fail ( err )->
-          error = if err.awsError then err.error + "." + err.awsError else err.error
-          notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+      startAppModal.tpl.find('.modal-footer').hide()
+
+      dbInstance = _.filter comp, (e)->
+        e.type is constant.RESTYPE.DBINSTANCE
+      console.log dbInstance
+      snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
+      snapshots.fetch().then ->
+        lostDBSnapshot = _.filter dbInstance, (e)->
+          e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
+
+        startAppModal.tpl.find('.modal-footer').show()
+        startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
+
+        startAppModal.on 'confirm', ->
+          startAppModal.close()
+          App.model.appList().get( id ).start().fail ( err )->
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+            return
           return
         return
-      return
 
     stopApp : ( id )->
       app  = App.model.appList().get( id )
@@ -252,6 +258,7 @@ define [
         else
           hasDBInstance = hasDBInstance?.length
           canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee, hasInstanceStore}
+        canStop.resize()
 
         canStop.on "confirm", ()->
           canStop.close()
@@ -296,6 +303,7 @@ define [
 
         terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
         terminateConfirm.tpl.find('.modal-footer').show()
+        terminateConfirm.resize()
         $("#appNameConfirmIpt").on "keyup change", ()->
           if $("#appNameConfirmIpt").val() is name
             terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"

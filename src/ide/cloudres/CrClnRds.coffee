@@ -203,7 +203,7 @@ define [
       for i in data
         i.id   = i.DBInstanceIdentifier #use name as id
         i.Name = i.DBName
-        i.sbgId = i.DBSubnetGroup.DBSubnetGroupName
+        i.sbgId = i.DBSubnetGroup?.DBSubnetGroupName
         i.DBParameterGroups = i.DBParameterGroups?.DBParameterGroup || []
         i.DBSecurityGroups  = i.DBSecurityGroups?.DBSecurityGroup || []
       data

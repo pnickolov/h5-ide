@@ -42,6 +42,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
       p || { x : 0, y : 0 }
 
+    isTopLevel : ()-> false
+
     ensureLcView : ()->
       elementChanged = false
 

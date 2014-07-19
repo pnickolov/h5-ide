@@ -91,10 +91,10 @@ define [
     canvasRect : ()->
       s = @size()
       {
-        x1 : 5
-        y1 : 3
-        x2 : s[0] - 5
-        y2 : s[1] - 3
+        x1 : 4
+        y1 : 2
+        x2 : s[0] - 4
+        y2 : s[1] - 2
       }
 
     isRectAvailableForItem : ( subRect, item )->
@@ -331,7 +331,7 @@ define [
       @__itemMap[ resourceModel.id ] = item
       @__itemMap[ item.cid ] = item
 
-      if resourceModel.parent and not resourceModel.parent()
+      if item.isTopLevel()
         # Make sure group is after item.
         @__itemTopLevel[ if item.isGroup() then "push" else "unshift"]( item )
 

@@ -284,6 +284,12 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
     isGroup : ()-> !!@model.node_group
 
+    isTopLevel : ()->
+      if not @model.parent then return false
+      if @model.parent() then return false
+
+      true
+
     parent : ()->
       p = @model.parent()
       if p

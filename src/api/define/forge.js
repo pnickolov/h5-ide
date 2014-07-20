@@ -6,7 +6,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'app_create'              : { url:'/app/',	method:'create',	params:['username', 'session_id', 'region_name', 'spec']   },
 		'app_update'              : { url:'/app/',	method:'update',	params:['username', 'session_id', 'region_name', 'spec', 'app_id', 'fast_update']   },
 		'app_rename'              : { url:'/app/',	method:'rename',	params:['username', 'session_id', 'region_name', 'app_id', 'new_name', 'app_name']   },
-		'app_terminate'           : { url:'/app/',	method:'terminate',	params:['username', 'session_id', 'region_name', 'app_id', 'app_name', 'flag', 'is_create_snapshot']   },
+		'app_terminate'           : { url:'/app/',	method:'terminate',	params:['username', 'session_id', 'region_name', 'app_id', 'app_name', 'flag', 'create_snapshot']   },
 		'app_start'               : { url:'/app/',	method:'start',	params:['username', 'session_id', 'region_name', 'app_id', 'app_name']   },
 		'app_stop'                : { url:'/app/',	method:'stop',	params:['username', 'session_id', 'region_name', 'app_id', 'app_name', 'force']   },
 		'app_reboot'              : { url:'/app/',	method:'reboot',	params:['username', 'session_id', 'region_name', 'app_id', 'app_name']   },

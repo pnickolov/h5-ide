@@ -116,7 +116,7 @@ define [], ()->
             null
         show: ()->
             @wrap.removeClass("hide")
-            if modalGroup.length > 1 and @option.mode isnt 'panel'
+            if modalGroup.length > 1
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
@@ -245,7 +245,7 @@ define [], ()->
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
-                if @option.mode is 'panel'
+                if toRemove.option.mode is 'panel'
                     toRemove.tpl.addClass('bounce')
                 toRemove.isClosed = true
                 @getLast().childModal = null
@@ -259,16 +259,17 @@ define [], ()->
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
         _fadeOut: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 100
         _fadeIn: ->
-            if @option.mode is 'panel'
-              return false
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 100
         _slideIn: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 300

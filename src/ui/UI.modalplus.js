@@ -104,7 +104,7 @@
       Modal.prototype.show = function() {
         var _base;
         this.wrap.removeClass("hide");
-        if (modalGroup.length > 1 && this.option.mode !== 'panel') {
+        if (modalGroup.length > 1) {
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
@@ -325,7 +325,7 @@
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
-          if (this.option.mode === 'panel') {
+          if (toRemove.option.mode === 'panel') {
             toRemove.tpl.addClass('bounce');
           }
           toRemove.isClosed = true;
@@ -349,6 +349,9 @@
       };
 
       Modal.prototype._fadeOut = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 100);
@@ -364,6 +367,9 @@
       };
 
       Modal.prototype._slideIn = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 300);

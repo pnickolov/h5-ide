@@ -32,6 +32,7 @@ define [
         initStack : ( uid )->
             @model = Design.instance().component uid
             @view  = view
+            @view.isAppEdit = false
             null
 
         afterLoadStack : ()->

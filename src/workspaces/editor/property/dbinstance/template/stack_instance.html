@@ -239,6 +239,21 @@
 
         <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenance}}hide{{/unless}}">
             <section class="property-control-group" data-bind="true">
+                <label class="left">Start Day</label>
+                <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
+                    <div class="selection">Monday</div>
+                    <ul class="dropdown" tabindex="-1">
+                        <li class="item" data-id="mon">Monday</li>
+                        <li class="item" data-id="tue">Tuesday</li>
+                        <li class="item" data-id="wed">Wednesday</li>
+                        <li class="item" data-id="thu">Thursday</li>
+                        <li class="item" data-id="fri">Friday</li>
+                        <li class="item" data-id="sat">Saturday</li>
+                        <li class="item" data-id="sun">Sunday</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="property-control-group" data-bind="true">
                 <label class="property-input-row-head">Start Time:</label>
                 <input class="input" type="text" id="property-dbinstance-maintenance-window-start-time" value="{{maintenance.startTime}}" data-required-rollback="true"/>
                 <label>UTC</label>

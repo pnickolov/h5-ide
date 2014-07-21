@@ -122,7 +122,7 @@
   <div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
 </div> </div>
 <div class="modal-footer">
-  <a class="btn btn-blue modal-close" href="{{data}}" target="_blank" download="{{name}}">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+  <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
   <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
 </div>
 

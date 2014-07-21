@@ -102,8 +102,7 @@ var MC = {
 	prettyStackTrace : function ( popLevel )
 	{
 		function StackTrace (){}
-		var stack = new Error().stack;
-		stack = stack && stack.split("\n") || []
+		var stack = new Error().stack.split("\n");
 		popLevel = (popLevel || 0) + 2;
 		var pretty = new StackTrace();
 		for ( var i = 0; i < stack.length - popLevel; ++i ) {

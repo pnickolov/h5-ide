@@ -25,7 +25,7 @@
 .modal-box.panel{
     position: fixed;
     height: 100%;
-    width: 50%;
+    width: 855px;
     right: 0;
     -webkit-transition: right 0.3s;
     -moz-transition: right 0.3s;

@@ -5382,6 +5382,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
+    TA_MSG_ERROR_STATE_EDITOR_INVALID_FORMAT:
+      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
+      zh: ""
+
     # State
     TA_MSG_ERROR_NOT_CONNECT_OUT:
       en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "

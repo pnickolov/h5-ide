@@ -6,9 +6,9 @@
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
-            <dd>{{#if Endppint}}{{Endpoint.Address }}:{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
+            <dd>{{#if Endpoint}}{{Endpoint.Address }}:{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
-            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{DBInstanceStatus}}</dd>
+            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#unless DBInstanceStatus}}Not Available{{else}}{{DBInstanceStatus}}{{/unless}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
             <dd>{{Engine}}({{EngineVersion}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>

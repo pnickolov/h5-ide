@@ -61,7 +61,7 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
       # Safari doesn't support blob download. We set the content to the link
       $(aTag).attr {
         href     : "data://text/plain;,#{j}"
-        download : fileName
+        target   : "_blank"
       }
 
     else

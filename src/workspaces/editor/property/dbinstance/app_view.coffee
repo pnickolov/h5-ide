@@ -17,7 +17,6 @@ define [ '../base/view', './template/app', 'og_manage_app', 'constant' ], ( Prop
     render : () ->
 
         data = if @model then @model.toJSON() else @view.resModel.serialize().component.resource
-        console.error data
         if not data.Endpoint
           data = @resModel.serialize().component.resource
           data.DBSubnetGroup.DBSubnetGroupName = Design.instance().component(data.DBSubnetGroup.DBSubnetGroupName.split(".")[0].split("{").pop()).serialize().component.resource.DBSubnetGroupName

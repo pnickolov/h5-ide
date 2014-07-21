@@ -223,7 +223,8 @@ define [ '../base/view'
             template = template_instance
             # if replica
             if @model.master()
-                template = template_replica
+                if not @isAppEdit
+                    template = template_replica
                 attr.masterIops = @model.master().get 'iops'
             # if snapshot
             template = template_instance if attr.snapshotId

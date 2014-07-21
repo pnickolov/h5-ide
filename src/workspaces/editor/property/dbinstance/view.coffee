@@ -228,9 +228,12 @@ define [ '../base/view'
             attr.classes  = lvi[2]
 
             template = template_instance
+            
             # if replica
             if @model.master()
-                if not @isAppEdit
+                if @isAppEdit
+                    attr.hideAZConfig = true
+                else
                     template = template_replica
                 attr.masterIops = @model.master().get 'iops'
             # if snapshot
@@ -260,7 +263,7 @@ define [ '../base/view'
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
 
-            null
+            attr.name
 
         renderOptionGroup: ->
 
@@ -327,11 +330,12 @@ define [ '../base/view'
             if not multiAZCapable
                 @model.set('multiAz', false)
 
-            # set subnet group name
+            # set az list
+
             sgData = {
-                multiAz: attr.multiAz
                 multiAZCapable: multiAZCapable
             }
+            sgData = _.extend sgData, attr
             subnetGroupModel = @model.parent()
             sgData.subnetGroupName = subnetGroupModel.get('name')
             connAry = subnetGroupModel.get('__connections')

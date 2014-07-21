@@ -252,6 +252,14 @@ define [ '../base/view'
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
 
+            if attr.engine.indexOf('sqlserver') is 0
+                #Not applicable. Must be null for SQLServer
+                $('#property-dbinstance-database-name').attr 'disabled',true
+            else
+                $('#property-dbinstance-database-name').attr 'disabled',false
+
+            null
+
         renderOptionGroup: ->
 
             # if can create custom og

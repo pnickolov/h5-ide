@@ -108,6 +108,8 @@ define [
           engineVersion   : @getDefaultVersion()
           instanceClass   : @getDefaultInstanceClass()
           port            : @getDefaultPort()
+          dbName          : @getDefaultDBName()
+          characterSetName: @getDefaultCharSet()
         }
 
         if attr.snapshotId
@@ -172,18 +174,43 @@ define [
 
     getIops: -> ( @get('iops') and @master() or @ ).get('iops')
 
-    defaultPortMap:
-      'mysql'         : 3306
-      'postgres'      : 5432
-
-      'oracle-ee'     : 1521
-      'oracle-se'     : 1521
-      'oracle-se1'    : 1521
-
-      'sqlserver-ee'  : 1433
-      'sqlserver-ex'  : 1433
-      'sqlserver-se'  : 1433
-      'sqlserver-web' : 1433
+    defaultMap:
+      'mysql'         :
+        port            : 3306
+        dbname          : ''
+        charset         : ''
+      'postgres'      :
+        port            : 5432
+        dbname          : ''
+        charset         : ''
+      'oracle-ee'     :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'oracle-se'     :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'oracle-se1'    :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'sqlserver-ee'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-ex'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-se'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-web' :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
 
     #override ResourceModel.getNewName()
     getNewName : ( attr )->
@@ -246,7 +273,13 @@ define [
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
 
     getDefaultPort: ->
-      @defaultPortMap[@get('engine')]
+      @defaultMap[@get('engine')].port
+
+    getDefaultDBName: ->
+      @defaultMap[@get('engine')].dbname
+
+    getDefaultCharSet: ->
+      @defaultMap[@get('engine')].charset
 
     getLicenseObj: ( getDefault ) ->
       currentLicense = @get 'license'

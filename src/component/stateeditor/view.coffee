@@ -1007,7 +1007,15 @@ define [ 'event',
 
             editor =  $currentInput.data('editor')
 
-            if editor then editor.clearSelection()
+            if editor
+
+                # trim value
+                if not ($currentInput.hasClass('key') or $currentInput.hasClass('text'))
+
+                    content = $.trim(editor.getValue())
+                    editor.setValue(content)
+
+                editor.clearSelection()
 
         onParaNameClick: (event) ->
 

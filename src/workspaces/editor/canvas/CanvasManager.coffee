@@ -3,6 +3,19 @@ define ['CloudResources'], (CloudResources)->
 
   CanvasManager = {
 
+    hasClass : ( elements, klass )->
+      if not elements
+        return false
+
+      if not elements.length and elements.length isnt 0 then elements = [ elements ]
+
+      for element in elements
+        k = " " + (element.getAttribute("class") || "") + " "
+        if k.indexOf( " #{klass} " ) >= 0
+          return true
+
+      false
+
     removeClass : ( elements, theClass )->
       if not elements
         return this

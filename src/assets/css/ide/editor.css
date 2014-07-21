@@ -954,3 +954,71 @@ marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marke
 
 g.shadow {
   opacity: 0.8; }
+
+.canvas-pp {
+  position: absolute;
+  background: #fff;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d4d4d4;
+  color: #999;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 60; }
+  .canvas-pp.pp-right {
+    margin-left: 10px; }
+    .canvas-pp.pp-right:before, .canvas-pp.pp-right:after {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      width: 0;
+      height: 0;
+      margin-top: -10px;
+      border: transparent 10px solid;
+      border-right-color: #fff; }
+    .canvas-pp.pp-right:before {
+      border-right-color: #ccc;
+      left: -21px; }
+  .canvas-pp .popup-content {
+    width: 300px;
+    max-height: 180px;
+    padding-left: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll; }
+  .canvas-pp .volume-pph {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    border-bottom: 1px solid #EBEBEB;
+    border-radius: 5px 5px 0 0;
+    color: #666; }
+    .canvas-pp .volume-pph > span {
+      font-size: 12px;
+      color: #999; }
+  .canvas-pp .volume-pp-empty {
+    padding: 30px;
+    text-align: center;
+    width: 240px; }
+  .canvas-pp .vpp-name {
+    line-height: 20px; }
+  .canvas-pp .vpp-name, .canvas-pp .vpp-size {
+    margin-top: 10px; }
+  .canvas-pp .vpp-volume, .canvas-pp .vpp-snapshot {
+    cursor: pointer;
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: #fff 2px solid;
+    border-radius: 4px;
+    font-size: 9px;
+    color: #333;
+    text-align: center;
+    background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
+    .canvas-pp .vpp-volume.selected, .canvas-pp .vpp-volume:hover, .canvas-pp .vpp-snapshot.selected, .canvas-pp .vpp-snapshot:hover {
+      background-color: #F3F9FF; }
+    .canvas-pp .vpp-volume.selected, .canvas-pp .vpp-snapshot.selected {
+      border-color: rgba(101, 159, 255, 0.6); }
+  .canvas-pp .vpp-snapshot {
+    background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }

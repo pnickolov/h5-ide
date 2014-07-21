@@ -1,6 +1,6 @@
 
 define [
-  "../template/TplOpsEditor"
+  "./TplSvgDef"
   "./CanvasElement"
   "./CanvasManager"
   "Design"
@@ -11,10 +11,10 @@ define [
   "backbone"
   "UI.nanoscroller"
   "svg"
-], ( OpsEditorTpl, CanvasElement, CanvasManager, Design, lang, Modal, ide_event )->
+], ( SvgDefTpl, CanvasElement, CanvasManager, Design, lang, Modal, ide_event )->
 
   # Insert svg defs template.
-  $( OpsEditorTpl.svgDefs() ).appendTo("body")
+  $( SvgDefTpl() ).appendTo("body")
 
   CanvasView = Backbone.View.extend {
 

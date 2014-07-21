@@ -332,6 +332,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       @__dragCanvasMouseDown( evt )
     else
       @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
+    false
 
 
   CanvasViewProto.dragItem = ( evt, options )->
@@ -345,10 +346,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
         onDrop   : ()->
      }
     ###
-    $tgt = $( evt.currentTarget )
-    if $tgt.hasClass("group") or $tgt.hasClass("fixed") then return
-
-    $tgt = $tgt.closest("g")
+    $tgt = $( evt.currentTarget ).closest("g")
+    if CanvasManager.hasClass( $tgt, "fixed" ) then return
     item = @getItem( $tgt.attr("data-id") )
     if not item then return
 

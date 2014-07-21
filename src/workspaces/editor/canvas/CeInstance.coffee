@@ -1,5 +1,12 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "event" ], ( CanvasElement, constant, CanvasManager, lang, ide_event )->
+define [
+  "./CanvasElement"
+  "constant"
+  "./CanvasManager"
+  "./CpVolume"
+  "i18n!/nls/lang.js"
+  "event"
+], ( CanvasElement, constant, CanvasManager, VolumePopup, lang, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -21,8 +28,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     }
 
     events :
-      "mousedown .eip-status" : "toggleEip"
-      "click .eip-status"     : ()-> false
+      "mousedown .eip-status"   : "toggleEip"
+      "mousedown .volume-image" : "showVolume"
+      "click .eip-status"       : ()-> false
+      "click .volume-image"     : ()-> false
 
     iconUrl : ()->
       ami = @model.getAmi() || @model.get("cachedAmi")
@@ -157,6 +166,20 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         volumeImage = 'ide/icon/instance-volume-not-attached.png'
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
+
+
+    showVolume : ()->
+      if @volPopup then return false
+      self = @
+
+      @volPopup = new VolumePopup {
+        attachment : @$el[0]
+        host       : @model
+        models     : @model.get("volumeList")
+        canvas     : @canvas
+        onRemove   : ()-> _.defer ()-> self.volPopup = null; return
+      }
+      false
 
   }, {
     isDirectParentType : ( t )-> return t isnt constant.RESTYPE.AZ

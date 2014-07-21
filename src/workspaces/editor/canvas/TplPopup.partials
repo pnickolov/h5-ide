@@ -1,0 +1,12 @@
+<!-- {{volume}} -->
+{{#if this.length}}
+<header class="volume-pph">Attached Volume <span>({{this.length}})</span></header>
+<ul class="popup-content clearfix">
+
+{{#each this}}<li data-id="{{id}}" class="{{#if snapshot}}vpp-snapshot{{else}}vpp-volume{{/if}}">
+    <div class="vpp-name">{{name}}</div><div class="vpp-size">{{size}}GB</div></li>{{/each}}
+
+</ul>
+{{else}}
+<div class="volume-pp-empty">No attched Volume</div>
+{{/if}}

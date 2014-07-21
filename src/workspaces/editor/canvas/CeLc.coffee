@@ -33,14 +33,17 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     pos : ( el )->
       if el
         parentItem = @canvas.getItem( el.parentNode.getAttribute("data-id") )
-        if parentItem
-          p = parentItem.pos( el.parentNode )
-          p.x += 2
-          p.y += 3
       else
         console.warn "Accessing LC' position without svg element"
+        parentItem = parentItem = @canvas.getItem( @model.connectionTargets("LcUsage")[0].id )
 
-      p || { x : 0, y : 0 }
+      if parentItem
+        p = parentItem.pos()
+        p.x += 2
+        p.y += 3
+        p
+      else
+        { x : 0, y : 0 }
 
     isTopLevel : ()-> false
 

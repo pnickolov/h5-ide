@@ -57,7 +57,7 @@
         }
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
-        if (modalGroup.length === 1) {
+        if (modalGroup.length === 1 || this.option.mode === "panel") {
           this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
@@ -86,10 +86,10 @@
           modalGroup = [];
           this.trigger('close', this);
           this.trigger('closed', this);
-          this.tpl.addClass('bounce');
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
+          this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
               _this.tpl.remove();
@@ -104,7 +104,7 @@
       Modal.prototype.show = function() {
         var _base;
         this.wrap.removeClass("hide");
-        if (modalGroup.length > 1) {
+        if (modalGroup.length > 1 && this.option.mode !== 'panel') {
           this.getLast().resize(1);
           this.getLast()._slideIn();
           this.getLastButOne()._fadeOut();
@@ -325,6 +325,9 @@
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
+          if (this.option.mode === 'panel') {
+            toRemove.tpl.addClass('bounce');
+          }
           toRemove.isClosed = true;
           this.getLast().childModal = null;
           if (typeof (_base = toRemove.option).onClose === "function") {
@@ -352,6 +355,9 @@
       };
 
       Modal.prototype._fadeIn = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 100);
@@ -364,6 +370,9 @@
       };
 
       Modal.prototype._slideOut = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 300);

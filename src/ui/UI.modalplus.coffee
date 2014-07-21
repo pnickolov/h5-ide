@@ -84,7 +84,7 @@ define [], ()->
             if @option.width then body.parent().css( width : @option.width )
             @tpl.appendTo @wrap
             modalGroup.push(@)
-            if modalGroup.length == 1
+            if modalGroup.length == 1 or @option.mode is "panel"
                 @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.removeClass('bounce')
@@ -105,8 +105,8 @@ define [], ()->
                 modalGroup = []
                 @trigger 'close',@
                 @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
-                @tpl.addClass('bounce')
                 @option.onClose?(@)
+                @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.remove()
                     @wrap.remove()
@@ -116,7 +116,7 @@ define [], ()->
             null
         show: ()->
             @wrap.removeClass("hide")
-            if modalGroup.length > 1
+            if modalGroup.length > 1 and @option.mode isnt 'panel'
                 @getLast().resize(1)
                 @getLast()._slideIn()
                 @getLastButOne()._fadeOut()
@@ -245,6 +245,8 @@ define [], ()->
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
+                if @option.mode is 'panel'
+                    toRemove.tpl.addClass('bounce')
                 toRemove.isClosed = true
                 @getLast().childModal = null
                 toRemove.option.onClose?()
@@ -261,6 +263,8 @@ define [], ()->
                 left: "-="+ $(window).width()
             ,@option.delay || 100
         _fadeIn: ->
+            if @option.mode is 'panel'
+              return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 100
@@ -269,6 +273,7 @@ define [], ()->
                 left: "-="+ $(window).width()
             ,@option.delay || 300
         _slideOut: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300

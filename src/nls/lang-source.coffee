@@ -3281,6 +3281,14 @@ module.exports =
       en: "Volume"
       zh: ""
 
+    PROP_SNAPSHOT_SET_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    PROP_INSTANCE_SNAPSHOT_SELECT:
+      en: "Select Instance from which to create snapshot"
+      zh: ""
+
     PROP_SNAPSHOT_SET_DESC:
       en: "Description"
       zh: ""

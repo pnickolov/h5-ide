@@ -126,6 +126,21 @@ define [
         @on 'sgchange', @onSgChange
       null
 
+    # postgresql, oracle, sqlserver
+    engineType: ->
+      engine = @get 'engine'
+      switch
+        when engine is 'postgres'
+          return 'postgresql'
+        when engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
+          return 'oracle'
+        when engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
+          return 'sqlserver'
+
+    isOracle: -> @engineType() is 'oracle'
+    isSqlserver: -> @engineType() is 'sqlserver'
+    isPostgresql: -> @engineType() is 'postgresql'
+
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
       regionName  = Design.instance().region()
@@ -409,14 +424,10 @@ define [
     getCost : ( priceMap, currency )->
       if not priceMap.database then return null
 
-      engine = @attributes.engine
-      if engine == 'postgres'
-        engine = 'postgresql'
-      else if engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
-        engine = 'oracle'
-      else if engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
-        engine = 'sqlserver'
-        sufix = engine.split('-')[1]
+      engine = @engineType()
+
+      if engine is 'sqlserver' then sufix = engine.split('-')[1]
+
       dbInstanceType = @attributes.instanceClass.split('.')
       deploy = if @attributes.multiAZ then 'multiAZ' else 'standard'
 

@@ -210,6 +210,13 @@ define [ '../base/view'
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
 
+            attr.engineType = @model.engineType()
+            _.extend attr, {
+                isOracle: @model.isOracle()
+                isSqlserver: @model.isSqlserver()
+                isPostgresql: @model.isPostgresql()
+            }
+
             if @model.master()
                 attr.sourceDbName = @model.master().get('name')
 
@@ -230,7 +237,7 @@ define [ '../base/view'
             template = template_instance if attr.snapshotId
 
             # if oracle
-            if attr.engine.indexOf('oracle') is 0
+            if @model.isOracle()
                 attr.isOracle = true
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
@@ -252,12 +259,6 @@ define [ '../base/view'
             @pgDropdown = new parameterGroup(@model).renderDropdown()
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
-
-            if attr.engine.indexOf('sqlserver') is 0
-                #Not applicable. Must be null for SQLServer
-                $('#property-dbinstance-database-name').attr 'disabled',true
-            else
-                $('#property-dbinstance-database-name').attr 'disabled',false
 
             null
 

@@ -1003,7 +1003,7 @@ g.shadow {
     line-height: 20px; }
   .canvas-pp .vpp-name, .canvas-pp .vpp-size {
     margin-top: 10px; }
-  .canvas-pp .vpp-volume, .canvas-pp .vpp-snapshot {
+  .canvas-pp .popup-content > li {
     cursor: pointer;
     float: left;
     width: 60px;
@@ -1016,9 +1016,11 @@ g.shadow {
     color: #333;
     text-align: center;
     background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
-    .canvas-pp .vpp-volume.selected, .canvas-pp .vpp-volume:hover, .canvas-pp .vpp-snapshot.selected, .canvas-pp .vpp-snapshot:hover {
+    .canvas-pp .popup-content > li.selected, .canvas-pp .popup-content > li:hover {
       background-color: #F3F9FF; }
-    .canvas-pp .vpp-volume.selected, .canvas-pp .vpp-snapshot.selected {
+    .canvas-pp .popup-content > li.selected {
       border-color: rgba(101, 159, 255, 0.6); }
+    .canvas-pp .popup-content > li:last-child {
+      margin-bottom: 10px; }
   .canvas-pp .vpp-snapshot {
     background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }

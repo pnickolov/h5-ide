@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CpVolume" ], ( CanvasElement, constant, CanvasManager, lang, VolumePopup )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -16,6 +16,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     }
 
     defaultSize : [9,9]
+
+    events :
+      "mousedown .volume-image" : "showVolume"
+      "click .volume-image"     : ()-> false
 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @render
@@ -155,6 +159,19 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       CanvasElement.prototype.destroy.apply this, arguments
 
     doDestroyModel : ()-> @model.connections("LcUsage")[0]?.remove()
+
+    showVolume : ()->
+      if @volPopup then return false
+      self = @
+
+      @volPopup = new VolumePopup {
+        attachment : @$el[0]
+        host       : @model
+        models     : @model.get("volumeList")
+        canvas     : @canvas
+        onRemove   : ()-> _.defer ()-> self.volPopup = null; return
+      }
+      false
 
   }, {
     render : ( canvas )->

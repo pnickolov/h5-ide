@@ -434,7 +434,7 @@ g.shadow { opacity : 0.8; }
     margin-top : 10px;
   }
 
-  .vpp-volume, .vpp-snapshot {
+  .popup-content > li {
     cursor        : pointer;
     float         : left;
     width         : 60px;
@@ -452,6 +452,8 @@ g.shadow { opacity : 0.8; }
 
     &.selected, &:hover { background-color : #F3F9FF; }
     &.selected { border-color : rgba(101, 159, 255, 0.6); }
+
+    &:last-child { margin-bottom : 10px; }
   }
 
   .vpp-snapshot {

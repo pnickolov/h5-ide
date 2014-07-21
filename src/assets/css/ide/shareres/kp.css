@@ -47,3 +47,8 @@ button#property-app-keypair {
 .default-kp-info {
   color: #34A3F8;
   margin-left: 3px; }
+
+.safari-download-textarea {
+  width: 826px;
+  height: 468px;
+  font-size: 12px; }

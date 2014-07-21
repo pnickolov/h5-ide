@@ -1,4 +1,16 @@
-define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', 'jquery', 'constant', 'JsonExporter', "CloudResources", 'i18n!/nls/lang.js', 'UI.notification' ], ( toolbar_modal, template, upload, Backbone, $, constant, JsonExporter,CloudResources, lang ) ->
+define [
+    'toolbar_modal'
+    'UI.modalplus'
+    'component/kp/kpDialogTpl'
+    'kp_upload'
+    'backbone'
+    'jquery'
+    'constant'
+    'JsonExporter'
+    'CloudResources'
+    'i18n!/nls/lang.js'
+    'UI.notification'
+], ( toolbar_modal, modalplus, template, upload, Backbone, $, constant, JsonExporter,CloudResources, lang ) ->
 
     download = JsonExporter.download
 
@@ -145,13 +157,22 @@ define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', '
                   blob = new Blob [str]
 
                 if not blob
-                  return {
-                    data : "data://text/plain;,#{str}"
-                    name : name
-                  }
+                    options =
+                        template        : template.safari_download keypair: str
+                        title           : 'Keypair Content'
+                        disableFooter   : true
+                        disableClose    : true
+                        width           : '855px'
+                        height          : '473px'
+                        compact         : true
+
+                    new modalplus options
+                    $('.safari-download-textarea').select()
+
+                    return
 
                 download( blob, name )
-                null
+
 
             @__downloadKp
 
@@ -205,6 +226,7 @@ define [ 'toolbar_modal', 'component/kp/kpDialogTpl', 'kp_upload', 'backbone', '
         download: () ->
             @needDownload false
             @__downloadKp and @__downloadKp()
+            null
 
         delete: ( invalid, checked ) ->
             count = checked.length

@@ -1,6 +1,13 @@
 // RDS Instance Property
 
 .property-dbinstance {
+	input.shorter-input {
+		width: 37px;
+		padding-right: 7px;
+	}
+	.selectbox.shorter-dropdown {
+		width: 90px;
+	}
 	input.property-input-left {
 		width: 184px;
 	}
@@ -59,6 +66,12 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			color: #aaa;
+		}
+	}
+	#property-dbinstance-maintenance-window-group
+	, #property-dbinstance-backup-window-group {
+		label {
+			width: 73px;
 		}
 	}
 

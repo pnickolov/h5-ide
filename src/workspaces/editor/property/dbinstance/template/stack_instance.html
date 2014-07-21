@@ -1,4 +1,4 @@
-<article class="property-dbinstance">
+<article class="property-dbinstance" data-bind="true">
     <div class="option-group-head expand">DB Instance Details</div>
     <div class="option-group">
 
@@ -25,7 +25,7 @@
             <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</div>
         </div>
         {{else}}
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group" >
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <input class="input" type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
@@ -77,14 +77,14 @@
             <div>{{MasterUsername}}</div>
         </div>
         {{else}}
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore="true" data-required-rollback="true"/>
         </section>
         {{/if}}
 
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="password" id="property-dbinstance-master-password" value="{{password}}" data-ignore="true" data-required-rollback="true"/>
@@ -104,14 +104,14 @@
         </div>
         {{else}}
         {{#unless isSqlserver}}
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group" >
             <label class="left" for="property-dbinstance-database-name" >Database Name</label>
-            <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required="true"/>
         </section>
         {{/unless}}
-        <section class="property-control-group" data-bind="true">
+        <section class="property-control-group" >
             <label class="left" for="property-dbinstance-database-port" >Database Port</label>
-            <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-type="number" data-required="true"/>
         </section>
         {{/if}}
 
@@ -181,14 +181,14 @@
             <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
         </section>
 
-        <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" data-bind="true">
-            <label class="left">Backup Retention Period</label>
-            <input class="input property-input-left" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text">
+        <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" >
+            <label>Backup Retention Period</label>
+            <input class="input shorter-input" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text" data-type="number" data-min="1" data-max="35" data-ignore="true">
             <label class="property-label-right" for="property-dbinstance-backup-period">day(s)</label>
         </section>
 
-        <label>Backup Window</label>
-        <div id="property-dbinstance-backup-window-select">
+        <section id="property-dbinstance-backup-window-select" class="property-control-group">
+            <label>Backup Window</label>
             <div>
                 <div class="radio">
                     <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backup}}checked="checked"{{/unless}} value="no">
@@ -203,18 +203,27 @@
                 </div>
                 <label for="property-dbinstance-backup-radio-window">Select Window</label>
             </div>
-        </div>
+        </section>
 
-        <div id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}}">
-            <section class="property-control-group" data-bind="true">
-                <label class="property-input-row-head">Start Time:</label>
-                <input class="input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-required-rollback="true"/>
+        <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
+            <section class="property-control-group">
+                <label>Start Time:</label>
+                <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-required-rollback="true"/>
                 <label>UTC</label>
             </section>
-            <section class="property-control-group" data-bind="true">
-                <label class="left">Duration:</label>
-                <input class="input property-input-left" title="hours" value="{{backup.duration}}" id="property-dbinstance-backup-window-duration" type="text">
-                <label class="property-label-right" for="property-dbinstance-backup-window-duration">hour(s)</label>
+            <section class="property-control-group">
+                <label>Duration:</label>
+                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-duration">
+                    <div class="selection">{{backup.duration}}</div>
+                    <ul class="dropdown" tabindex="-1">
+                        <li class="item" data-id="0.5">0.5</li>
+                        <li class="item" data-id="1">1</li>
+                        <li class="item" data-id="1.5">1.5</li>
+                        <li class="item" data-id="2">2</li>
+                        <li class="item" data-id="2.5">2.5</li>
+                        <li class="item" data-id="3">3</li>
+                    </ul>
+                </div>
             </section>
         </div>
 
@@ -223,8 +232,8 @@
     <div class="option-group-head">Maintenance Options</div>
     <div class="option-group">
 
-        <label>Maintenance Window</label>
-        <div id="property-dbinstance-maintenance-window-select">
+        <section id="property-dbinstance-maintenance-window-select" class="property-control-group">
+            <label>Maintenance Window</label>
             <div>
                 <div class="radio">
                     <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenance}}checked="checked"{{/unless}} value="no">
@@ -239,12 +248,12 @@
                 </div>
                 <label for="property-dbinstance-maintenance-radio-window">Select Window</label>
             </div>
-        </div>
+        </section>
 
         <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenance}}hide{{/unless}}">
-            <section class="property-control-group" data-bind="true">
+            <section class="property-control-group" >
                 <label class="left">Start Day</label>
-                <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
+                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-start-day-select">
                     <div class="selection">Monday</div>
                     <ul class="dropdown" tabindex="-1">
                         <li class="item" data-id="mon">Monday</li>
@@ -257,15 +266,25 @@
                     </ul>
                 </div>
             </section>
-            <section class="property-control-group" data-bind="true">
-                <label class="property-input-row-head">Start Time:</label>
-                <input class="input" type="text" id="property-dbinstance-maintenance-window-start-time" value="{{maintenance.startTime}}" data-required-rollback="true"/>
+            <section class="property-control-group" >
+                <label>Start Time:</label>
+                <input class="input shorter-input" type="text" id="property-dbinstance-maintenance-window-start-time" value="{{maintenance.startTime}}" data-required-rollback="true"/>
                 <label>UTC</label>
             </section>
-            <section class="property-control-group" data-bind="true">
-                <label class="left">Duration:</label>
-                <input class="input property-input-left" title="hours" value="{{maintenance.duration}}" id="property-dbinstance-maintenance-window-duration" type="text">
-                <label class="property-label-right" for="property-dbinstance-maintenance-window-duration">hour(s)</label>
+            <section class="property-control-group" >
+                <label>Duration:</label>
+                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-duration">
+                    <div class="selection">{{maintenance.duration}}</div>
+                    <ul class="dropdown" tabindex="-1">
+                        <li class="item" data-id="0.5">0.5</li>
+                        <li class="item" data-id="1">1</li>
+                        <li class="item" data-id="1.5">1.5</li>
+                        <li class="item" data-id="2">2</li>
+                        <li class="item" data-id="2.5">2.5</li>
+                        <li class="item" data-id="3">3</li>
+                    </ul>
+                </div>
+                <label for="property-dbinstance-maintenance-window-duration">hour(s)</label>
             </section>
         </div>
 

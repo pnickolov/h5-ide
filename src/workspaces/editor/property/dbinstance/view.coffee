@@ -126,7 +126,13 @@ define [ '../base/view'
 
             catch err
 
-                return null
+                return {
+                    startHour: '00',
+                    startMin: '00',
+                    startTime: "00:00",
+                    duration: 0.5,
+                    startWeek: 'Mondey'
+                }
 
         _getTimeStr: (startTimeStr, duration, startWeek) ->
 
@@ -452,14 +458,16 @@ define [ '../base/view'
             @model.set 'password', value
 
         changeDatabaseName: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
 
-            value = $(event.target).val()
-            @model.set 'dbName', value
+            @model.set 'dbName', $target.val()
 
         changeDatabasePort: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
 
-            value = $(event.target).val()
-            @model.set 'port', value
+            @model.set 'port', $target.val()
 
         changePublicAccessCheck: (event) ->
 
@@ -478,17 +486,13 @@ define [ '../base/view'
 
         changeBackupPeriod: (event, value) ->
 
-            if event
-                #trigger by event
-                value = $(event.target).val()
-                #show/hide checkbox
-                checked = if Number(value) then true else false
-                $("#property-dbinstance-auto-backup-check")
-                    .prop("checked",checked)
-                    .attr("checked",checked)
+            if event #trigger by event
+                $target = $ event.currentTarget
+                if not $target.parsley 'validate' then return
+                value = $target.val()
             else if value
                 #invokie by manual
-                $("#property-dbinstance-backup-period").val( value )
+                $("#property-dbinstance-backup-period").val( value ).parsley 'validate'
             else
                 console.error "at least one value in event or value"
                 return null

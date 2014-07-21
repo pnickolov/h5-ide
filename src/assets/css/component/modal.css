@@ -22,7 +22,12 @@
   -ms-transition: opacity .1s, margin-top .1s;
   -o-transition: opacity .1s, margin-top .1s;
   transition: opacity .1s, margin-top .1s; }
-
+.modal-box.panel{
+    position: fixed;
+    height: 100%;
+    width: 50%;
+    right: 0;
+}
 #modal-box .input:focus {
   border-color: #010101; }
 
@@ -117,6 +122,13 @@
 .modal-footer {
   padding: 15px 10px;
   text-align: right; }
+
+.modal-box.panel .modal-footer{
+    position: absolute;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
 
 #modal-wrap {
   position: fixed;

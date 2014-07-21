@@ -38,7 +38,8 @@
           },
           hasFooter: !this.option.disableFooter,
           hasScroll: !!this.option.maxHeight,
-          compact: this.option.compact
+          compact: this.option.compact,
+          mode: this.option.mode || "normal"
         }));
         body = this.tpl.find(".modal-body");
         if (typeof this.option.template === "object") {
@@ -168,7 +169,7 @@
             }
           };
         })(this));
-        if (!this.option.disableDrag) {
+        if (!(this.option.disableDrag || (this.option.mode === 'panel'))) {
           diffX = 0;
           diffY = 0;
           dragable = false;
@@ -237,6 +238,9 @@
 
       Modal.prototype.resize = function(slideIn) {
         var height, left, top, width, windowHeight, windowWidth, _ref, _ref1;
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         windowWidth = $(window).width();
         windowHeight = $(window).height();
         width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();

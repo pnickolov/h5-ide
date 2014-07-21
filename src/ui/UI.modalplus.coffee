@@ -75,6 +75,7 @@ define [], ()->
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight
                 compact     : @option.compact
+                mode        : @option.mode || "normal"
             )
             body = @tpl.find(".modal-body")
             if typeof @option.template is "object"
@@ -144,7 +145,7 @@ define [], ()->
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()
-            if not @option.disableDrag
+            if not (@option.disableDrag or (@option.mode is 'panel'))
                 diffX = 0
                 diffY = 0
                 dragable = false
@@ -188,6 +189,7 @@ define [], ()->
                     diffY = 0
                     null
         resize: (slideIn)->
+            if @option.mode is 'panel' then return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
             width = @option.width?.toLowerCase().replace('px','') || @tpl.width()

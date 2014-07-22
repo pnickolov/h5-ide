@@ -449,37 +449,43 @@ g.shadow { opacity : 0.8; }
     text-align : center;
     width      : 240px;
   }
+}
+
+.vpp-volume, .vpp-snapshot {
+  cursor        : pointer;
+  float         : left;
+  width         : 60px;
+  height        : 60px;
+  margin-top    : 10px;
+  margin-right  : 10px;
+  border        : #fff 2px solid;
+  border-radius : 4px;
+
+  font-size  : 9px;
+  color      : #333;
+  text-align : center;
+
+  background : image-url('ide/icon/volume-volume-bubble.png') center no-repeat;
+
+  &:nth-child(4n+1) { clear : left; margin-left : 10px; }
+
+  &.selected, &:hover { background-color : #F3F9FF; }
+  &.selected { border-color : rgba(101, 159, 255, 0.6); }
+
+  &:last-child { margin-bottom : 10px; }
 
   .vpp-name { line-height: 20px; }
   .vpp-name, .vpp-size {
     margin-top : 10px;
   }
+}
 
-  .popup-content > li {
-    cursor        : pointer;
-    float         : left;
-    width         : 60px;
-    height        : 60px;
-    margin-top    : 10px;
-    margin-right  : 10px;
-    border        : #fff 2px solid;
-    border-radius : 4px;
+.vpp-snapshot {
+  background-image: image-url('ide/icon/ebs-snapshot-volume-bubble.png');
+}
 
-    font-size  : 9px;
-    color      : #333;
-    text-align : center;
-
-    background : image-url('ide/icon/volume-volume-bubble.png') center no-repeat;
-
-    &:nth-child(4n+1) { clear : left; margin-left : 10px; }
-
-    &.selected, &:hover { background-color : #F3F9FF; }
-    &.selected { border-color : rgba(101, 159, 255, 0.6); }
-
-    &:last-child { margin-bottom : 10px; }
-  }
-
-  .vpp-snapshot {
-    background-image: image-url('ide/icon/ebs-snapshot-volume-bubble.png');
-  }
+#DndItem.vpp-volume, #DndItem.vpp-snapshot {
+  color  : #333;
+  width  : 60px;
+  height : 60px;
 }

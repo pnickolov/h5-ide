@@ -115,8 +115,9 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
 
       if hoverItem isnt data.hoverItem
         if data.popup then data.popup.remove()
+
+        data.hoverItem = hoverItem
         if hoverItem
-          data.hoverItem = hoverItem
           model = hoverItem.tgt.model
           data.popup = new VolumePopup {
             attachment : hoverItem.el
@@ -141,15 +142,22 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
     __addVolDrop : ( evt, data )->
       if not data.hoverItem then return
 
-      attribute = data.dataTransfer || {}
+      attr = data.dataTransfer || {}
 
-      if _.isString(attribute.encrypted)
-        attribute.encrypted = attribute.encrypted is 'true'
+      owner = data.hoverItem.tgt.model
 
-      attribute.owner = model = data.hoverItem.tgt.model
+      if attr.id
+        # Moving volume
+        @design.component( attr.id ).attachTo( owner )
+        @selectItem( dsata.hoverItem.el )
+        return
+
+      attr.owner = owner
+      if _.isString( attr.encrypted )
+        attr.encrypted = attr.encrypted is 'true'
 
       VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
-      new VolumeModel( attribute )
+      new VolumeModel( attr )
 
       new VolumePopup {
         attachment : data.hoverItem.el

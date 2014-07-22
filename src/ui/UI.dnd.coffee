@@ -50,8 +50,10 @@ define ["jquery"], ( $ )->
 
     data = evt.data
 
-    if data.shadow
-      data.shadow.remove()
+    ###
+    # If we need to style the drag shadow, we can temporary comment out this line.
+    ###
+    if data.shadow then data.shadow.remove()
 
     if data.hoverZone
       data.hoverZone.removeClass("dragOver").triggerHandler "#{data.eventPrefix}dragleave", data

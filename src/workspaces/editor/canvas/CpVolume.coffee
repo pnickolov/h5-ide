@@ -5,7 +5,7 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
     type : "VolumePopup" # Only one popup of each type allowed.
     events :
-      "click li" : "showProperty"
+      "mousedown li" : "clickVolume"
 
     closeOnBlur : true
 
@@ -28,9 +28,10 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
       TplPopup.volume data
 
-    showProperty : ( evt )->
+    clickVolume : ( evt )->
       $vol = $( evt.currentTarget )
-      @canvas.selectVolume( $vol.attr("data-id") )
+      volId = $vol.attr("data-id")
+      @canvas.selectVolume( volId )
 
       if @selected
         $( @selected ).removeClass("selected")
@@ -38,5 +39,13 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
       @selected = evt.currentTarget
 
       ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, $vol.addClass("selected").attr("data-id")
+
+      if evt.which is 1
+        $vol.dnd( evt, {
+          dropTargets  : @canvas.$el
+          dataTransfer : { id : volId }
+          eventPrefix  : "addVol_"
+        })
+
       false
   }

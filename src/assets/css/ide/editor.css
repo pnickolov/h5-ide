@@ -1014,31 +1014,38 @@ g.shadow {
     padding: 30px;
     text-align: center;
     width: 240px; }
-  .canvas-pp .vpp-name {
+
+.vpp-volume, .vpp-snapshot {
+  cursor: pointer;
+  float: left;
+  width: 60px;
+  height: 60px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: #fff 2px solid;
+  border-radius: 4px;
+  font-size: 9px;
+  color: #333;
+  text-align: center;
+  background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
+  .vpp-volume:nth-child(4n+1), .vpp-snapshot:nth-child(4n+1) {
+    clear: left;
+    margin-left: 10px; }
+  .vpp-volume.selected, .vpp-volume:hover, .vpp-snapshot.selected, .vpp-snapshot:hover {
+    background-color: #F3F9FF; }
+  .vpp-volume.selected, .vpp-snapshot.selected {
+    border-color: rgba(101, 159, 255, 0.6); }
+  .vpp-volume:last-child, .vpp-snapshot:last-child {
+    margin-bottom: 10px; }
+  .vpp-volume .vpp-name, .vpp-snapshot .vpp-name {
     line-height: 20px; }
-  .canvas-pp .vpp-name, .canvas-pp .vpp-size {
+  .vpp-volume .vpp-name, .vpp-volume .vpp-size, .vpp-snapshot .vpp-name, .vpp-snapshot .vpp-size {
     margin-top: 10px; }
-  .canvas-pp .popup-content > li {
-    cursor: pointer;
-    float: left;
-    width: 60px;
-    height: 60px;
-    margin-top: 10px;
-    margin-right: 10px;
-    border: #fff 2px solid;
-    border-radius: 4px;
-    font-size: 9px;
-    color: #333;
-    text-align: center;
-    background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
-    .canvas-pp .popup-content > li:nth-child(4n+1) {
-      clear: left;
-      margin-left: 10px; }
-    .canvas-pp .popup-content > li.selected, .canvas-pp .popup-content > li:hover {
-      background-color: #F3F9FF; }
-    .canvas-pp .popup-content > li.selected {
-      border-color: rgba(101, 159, 255, 0.6); }
-    .canvas-pp .popup-content > li:last-child {
-      margin-bottom: 10px; }
-  .canvas-pp .vpp-snapshot {
-    background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }
+
+.vpp-snapshot {
+  background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }
+
+#DndItem.vpp-volume, #DndItem.vpp-snapshot {
+  color: #333;
+  width: 60px;
+  height: 60px; }

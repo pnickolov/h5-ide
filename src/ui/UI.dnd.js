@@ -39,6 +39,10 @@
       var data;
       $(document).off(".uidnd");
       data = evt.data;
+
+      /*
+       * If we need to style the drag shadow, we can temporary comment out this line.
+       */
       if (data.shadow) {
         data.shadow.remove();
       }

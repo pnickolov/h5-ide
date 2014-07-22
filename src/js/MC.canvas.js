@@ -4745,7 +4745,7 @@ MC.canvas.analysis = function ()
 
 		// Initialize group construction
 		SUBGROUP = {
-			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.RDS.DBSubnetGroup'],
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
 			'AWS.VPC.Subnet': [
 				'AWS.EC2.Instance',
@@ -4774,6 +4774,7 @@ MC.canvas.analysis = function ()
 		POSITION_METHOD = {
 			'AWS.VPC.VPC': 'vertical',
 			'AWS.EC2.AvailabilityZone': 'horizontal',
+			'AWS.RDS.DBSubnetGroup': 'horizontal',
 			'AWS.VPC.Subnet': 'matrix',
 			'AWS.AutoScaling.Group': 'center'
 		},

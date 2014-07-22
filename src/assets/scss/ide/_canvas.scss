@@ -489,3 +489,20 @@ g.shadow { opacity : 0.8; }
   width  : 60px;
   height : 60px;
 }
+
+// Instance State Dot
+.instance-state {
+  stroke-width : 1;
+  stroke       : white;
+  opacity      : 0.8;
+  display      : block;
+
+  &.unknown { fill: gray; }
+  &.running { fill: green; }
+  &.pending { fill: yellow; }
+  &.shuttingdown { fill: yellow; }
+  &.stopping { fill: yellow; }
+  &.stopped { fill: red; }
+  &.terminated { fill: red; }
+}
+

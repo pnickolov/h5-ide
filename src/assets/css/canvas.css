@@ -1042,39 +1042,6 @@
 	margin-top : 12px;
 }
 
-/* instance state */
-.instance-state {
-	stroke-width:1;
-	stroke:white;
-	opacity: 0.8;
-	display: block;
-}
-
-.instance-state-stack {
-	display: none;
-}
-
-.instance-state-unknown {
-	fill: gray;
-}
-.instance-state-running {
-	fill: green;
-}
-.instance-state-pending {
-	fill: yellow;
-}
-.instance-state-shuttingdown {
-	fill: yellow;
-}
-.instance-state-stopping {
-	fill: yellow;
-}
-.instance-state-stopped {
-	fill: red;
-}
-.instance-state-terminated {
-	fill: red;
-}
 
 /* volume status */
 .volume-status {

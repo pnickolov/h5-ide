@@ -5,8 +5,9 @@ define [
   "./CanvasManager"
   "./CpVolume"
   "i18n!/nls/lang.js"
+  "CloudResources"
   "event"
-], ( CanvasElement, constant, CanvasManager, VolumePopup, lang, ide_event )->
+], ( CanvasElement, constant, CanvasManager, VolumePopup, lang, CloudResources, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -84,7 +85,7 @@ define [
         sg      : true
       }).add([
         # Ami Icon
-        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(30, 15).classes("ami-image")
+        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
         # Volume Image
         svg.image( "", 29, 24 ).move(21, 46).classes('volume-image')
         # Volume Label
@@ -123,9 +124,7 @@ define [
       ])
 
       if not @model.design().modeIsStack() and m.get("appId")
-        svgEl.add(
-          svg.circle(10).move(68, 15).classes('instance-state unknown')
-        )
+        svgEl.add( svg.circle(8).move(63, 14).classes('instance-state unknown') )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -141,20 +140,22 @@ define [
       # Update Image
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
 
-
-      if not @model.design().modeIsStack() and m.get("appId")
-        # Update Instance State in app
-        @updateAppState()
-
       # Update Server number
       numberGroup = @$el.children(".server-number-group")
+      statusIcon  = @$el.children(".instance-state")
       if m.get("count") > 1
-        CanvasManager.toggle @$el.children(".instance-state"), false
+        CanvasManager.toggle statusIcon, false
         CanvasManager.toggle numberGroup, true
         CanvasManager.update numberGroup.children("text"), m.get("count")
+
       else
-        CanvasManager.toggle @$el.children(".instance-state"), true
+        CanvasManager.toggle statusIcon, true
         CanvasManager.toggle numberGroup, false
+
+        if statusIcon.length
+          instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+          state    = instance?.get("instanceState").name || "unknown"
+          statusIcon.data("tooltip", state).attr("class", "instance-state tooltip #{state}")
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m
@@ -167,7 +168,6 @@ define [
         volumeImage = 'ide/icon/instance-volume-not-attached.png'
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
-
 
     showVolume : ()->
       if @volPopup then return false

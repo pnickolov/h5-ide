@@ -92,7 +92,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
           sg      : isOriginalAsg
         }).add([
           # Ami Icon
-          svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(30, 15).classes("ami-image")
+          svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
 
           svg.use("port_diamond").move( 10, 20 ).attr({
             'class'        : 'port port-blue tooltip'

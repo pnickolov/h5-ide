@@ -159,7 +159,7 @@ define [
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @set 'ogName', defaultOG
+      @setOptionGroup defaultOG
       null
 
     setDefaultParameterGroup:( origEngineVersion ) ->

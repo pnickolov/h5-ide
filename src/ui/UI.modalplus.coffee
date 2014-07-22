@@ -28,6 +28,7 @@
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
+#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal"]
 #   Event:
 #       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:

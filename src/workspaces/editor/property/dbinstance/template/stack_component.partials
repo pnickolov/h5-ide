@@ -15,6 +15,7 @@
 </section>
 {{/if}}
 
+{{#unless isAppEdit}}
 {{#unless snapshotId}}
 <section class="property-control-group">
     <label class="left">DB Engine Version</label>
@@ -36,6 +37,7 @@
         </div>
     </div>
 </section>
+{{/unless}}
 {{/unless}}
 
 <section class="property-control-group">

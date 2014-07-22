@@ -130,13 +130,16 @@ define [
     engineType: ->
       engine = @get 'engine'
       switch
-        when engine is 'postgres'
+        when engine is 'mysql'
+          return 'postgresql'
+        when engine is 'mysql'
           return 'postgresql'
         when engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
           return 'oracle'
         when engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
           return 'sqlserver'
 
+    isMysql: -> @engineType() is 'mysql'
     isOracle: -> @engineType() is 'oracle'
     isSqlserver: -> @engineType() is 'sqlserver'
     isPostgresql: -> @engineType() is 'postgresql'

@@ -73,7 +73,7 @@ define [], ()->
                     hide    : @option.confirm?.hide
                 cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
-                hasScroll   : !!@option.maxHeight
+                hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact
                 mode        : @option.mode || "normal"
             )

@@ -37,7 +37,7 @@
             text: "Cancel"
           },
           hasFooter: !this.option.disableFooter,
-          hasScroll: !!this.option.maxHeight,
+          hasScroll: !!this.option.maxHeight || this.option.hasScroll,
           compact: this.option.compact,
           mode: this.option.mode || "normal"
         }));

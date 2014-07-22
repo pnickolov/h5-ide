@@ -93,7 +93,7 @@
   cursor: move;
   display: block;
   color: #999; }
-.modal-box .modal-header h3{
+.modal-box.panel .modal-header h3{
     cursor: default;
 }
 .modal-body {

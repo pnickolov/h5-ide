@@ -401,10 +401,29 @@ g.shadow { opacity : 0.8; }
     }
   }
 
+  &.pp-left {
+    margin-left : -10px;
+    &:before, &:after {
+      content  : " ";
+      position : absolute;
+      top      : 50%;
+      right    : -20px;
+      width    : 0;
+      height   : 0;
+      margin-top : -10px;
+
+      border : transparent 10px solid;
+      border-left-color : #fff;
+    }
+    &:before {
+      border-left-color : #ccc;
+      right : -21px;
+    }
+  }
+
   .popup-content {
-    width          : 300px;
-    max-height     : 180px;
-    padding-left   : 10px;
+    min-width  : 300px;
+    max-height : 180px;
     overflow-x : hidden;
     overflow-y : scroll;
   }
@@ -449,6 +468,8 @@ g.shadow { opacity : 0.8; }
     text-align : center;
 
     background : image-url('ide/icon/volume-volume-bubble.png') center no-repeat;
+
+    &:nth-child(4n+1) { clear : left; margin-left : 10px; }
 
     &.selected, &:hover { background-color : #F3F9FF; }
     &.selected { border-color : rgba(101, 159, 255, 0.6); }

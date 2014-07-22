@@ -112,7 +112,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
             # Volume Image
             svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
             # Volume Label
-            svg.plain( "" ).move(46, 58).classes('volume-number')
+            svg.plain( "" ).move(45, 58).classes('volume-number')
           ])
 
         @addView( svgEl )
@@ -160,12 +160,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     doDestroyModel : ()-> @model.connections("LcUsage")[0]?.remove()
 
-    showVolume : ()->
+    showVolume : ( evt )->
       if @volPopup then return false
       self = @
 
       @volPopup = new VolumePopup {
-        attachment : @$el[0]
+        attachment : $( evt.currentTarget ).closest("g")[0]
         host       : @model
         models     : @model.get("volumeList")
         canvas     : @canvas

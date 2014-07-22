@@ -5,6 +5,7 @@ define [ "backbone" ], ()->
 
     attachType  : "float" # "float" || "overlay"
     closeOnBlur : false # Close when the clase is clicked
+    className   : "canvas-pp"
 
     initialize : ( data )->
       console.assert data.canvas
@@ -60,10 +61,10 @@ define [ "backbone" ], ()->
       width = @$el.outerWidth( true )
 
       if viewportX > width + 20
-        @$el.attr("class", "canvas-pp pp-left")
+        @$el.addClass("pp-left")
         x = attachment.left - canvasview.left - width
       else
-        @$el.attr("class", "canvas-pp pp-right")
+        @$el.addClass("pp-right")
         x = attachment.right - canvasview.left
 
       @$el.css {

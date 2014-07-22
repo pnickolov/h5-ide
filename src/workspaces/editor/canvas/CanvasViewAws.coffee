@@ -1,7 +1,19 @@
 
-define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js" ], ( CanvasView, constant, lang )->
+define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./CanvasManager", "Design" ], ( CanvasView, constant, lang, VolumePopup, CanvasManager, Design )->
+
+  isPointInRect = ( point, rect )->
+    rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y
 
   AwsCanvasView = CanvasView.extend {
+
+    events : ()->
+      $.extend {
+        "addVol_dragover"  : "__addVolDragOver"
+        "addVol_dragleave" : "__addVolDragLeave"
+        "addVol_drop"      : "__addVolDrop"
+
+      }, CanvasView.prototype.events
+
     recreateStructure : ()->
       @svg.clear().add([
         @svg.group().classes("layer_vpc")
@@ -48,6 +60,104 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js" ], ( CanvasView, cons
         when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
         when constant.RESTYPE.IGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_IGW
         when constant.RESTYPE.VGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VGW
+
+    selectVolume : ( volumeId )->
+      @deselectItem( true )
+      @__selectedVolume = volumeId
+      false
+
+    delSelectedItem : ()->
+      if @__selectedVolume
+        s = @__selectedVolume
+        @__selectedVolume = null
+        @design.component( s ).remove()
+        nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
+        if nextVol.length
+          nextVol.click()
+        else
+          @deselectItem()
+        return
+
+      CanvasView.prototype.delSelectedItem.apply this, arguments
+
+    __addVolDragOver : ( evt, data )->
+      @__scrollOnDrag( data )
+
+      if not data.volDropTargets
+        data.hoverItem = null
+
+        RTP     = constant.RESTYPE
+        targets = @design.componentsOfType( RTP.INSTANCE ).concat( @design.componentsOfType(RTP.LC) )
+
+        data.volDropTargets = dropzones = []
+
+        for tgt in targets
+          tgt = @getItem( tgt.id )
+
+          for el in tgt.$el
+            r = tgt.rect( el )
+            r.tgt = tgt
+            r.el  = el
+            dropzones.push r
+
+      if not data.effect
+        data.effect = true
+        for tgt in data.volDropTargets || []
+          CanvasManager.addClass tgt.tgt.$el, "droppable"
+
+      pos = @__localToCanvasCoor(data.pageX - data.zoneDimension.x1, data.pageY - data.zoneDimension.y1)
+
+      hoverItem = null
+      for tgt in data.volDropTargets
+        if isPointInRect( pos, tgt )
+          hoverItem = tgt
+          break
+
+      if hoverItem isnt data.hoverItem
+        if data.popup then data.popup.remove()
+        if hoverItem
+          data.hoverItem = hoverItem
+          model = hoverItem.tgt.model
+          data.popup = new VolumePopup {
+            attachment : hoverItem.el
+            host       : model
+            models     : model.get("volumeList")
+            canvas     : @
+          }
+
+      return
+
+    __addVolDragLeave : ( evt, data )->
+      @__clearDragScroll()
+
+      for tgt in data.volDropTargets || []
+        CanvasManager.removeClass tgt.tgt.$el, "droppable"
+
+      data.effect = false
+
+      if data.popup then data.popup.remove()
+      return
+
+    __addVolDrop : ( evt, data )->
+      if not data.hoverItem then return
+
+      attribute = data.dataTransfer || {}
+
+      if _.isString(attribute.encrypted)
+        attribute.encrypted = attribute.encrypted is 'true'
+
+      attribute.owner = model = data.hoverItem.tgt.model
+
+      VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
+      new VolumeModel( attribute )
+
+      new VolumePopup {
+        attachment : data.hoverItem.el
+        host       : model
+        models     : model.get("volumeList")
+        canvas     : @
+      }
+      return
   }
 
   AwsCanvasView

@@ -23,6 +23,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @render
+      @listenTo @model, "change:volumeList", @render
       @listenTo @model, "change:imageId", @render
       return
 

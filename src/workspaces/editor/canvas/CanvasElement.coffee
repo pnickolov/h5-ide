@@ -139,16 +139,15 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
       false
 
-    rect : ()->
+    rect : ( el )->
       size = @size()
-      x = @model.x()
-      y = @model.y()
+      pos  = @pos( el )
 
       {
-        x1 : x
-        y1 : y
-        x2 : x + size.width
-        y2 : y + size.height
+        x1 : pos.x
+        y1 : pos.y
+        x2 : pos.x + size.width
+        y2 : pos.y + size.height
       }
 
     effectiveRect : ()->

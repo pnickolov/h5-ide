@@ -44,6 +44,7 @@ define [
     listenModelEvents : ()->
       @listenTo @model, "change:primaryEip", @render
       @listenTo @model, "change:imageId", @render
+      @listenTo @model, "change:volumeList", @render
       @listenTo @model, "change:count", @updateServerCount
       return
 
@@ -87,7 +88,7 @@ define [
         # Volume Image
         svg.image( "", 29, 24 ).move(21, 46).classes('volume-image')
         # Volume Label
-        svg.text( "" ).move(36, 58).classes('volume-number')
+        svg.text( "" ).move(35, 58).classes('volume-number')
         # Eip
         svg.image( "", 12, 14).move(53, 49).classes('eip-status tooltip')
 

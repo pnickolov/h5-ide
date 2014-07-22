@@ -51,7 +51,7 @@ define [
       @listenTo @design, Design.EVENT.AddResource,    @addItem
       @listenTo @design, Design.EVENT.RemoveResource, @removeItem
 
-      @setElement @parent.$el.find(".OEPanelCenter")
+      @setElement @parent.$el.find(".OEPanelCenter"), false
       @svg = SVG( @$el.find("svg")[0] )
       canvasSize = @size()
 
@@ -183,10 +183,13 @@ define [
       return
 
     selectItemByClick : ( evt )-> @selectItem( evt.currentTarget ); false
-    deselectItem : ()->
+    deselectItem : ( silent )->
       if @__selected
         CanvasManager.removeClass @__selected, "selected"
         @__selected = null
+
+      if not silent
+        ide_event.trigger ide_event.OPEN_PROPERTY
       return
 
     lineStyle : ()-> @__linestyle
@@ -348,8 +351,7 @@ define [
       if not item then return
 
       if @getSelectedItem() is item
-        @__selected = null
-        ide_event.trigger ide_event.OPEN_PROPERTY
+        @deselectItem()
 
       delete @__itemMap[ resourceModel.id ]
       delete @__itemMap[ item.cid ]

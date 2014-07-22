@@ -3,12 +3,21 @@ define [ "backbone" ], ()->
 
   Backbone.View.extend {
 
+    type : "CanvasPopup" # Only one popup of each type allowed.
+
     attachType  : "float" # "float" || "overlay"
     closeOnBlur : false # Close when the clase is clicked
     className   : "canvas-pp"
 
     initialize : ( data )->
       console.assert data.canvas
+
+      console.info "Showing canvas popup"
+
+      canvas = data.canvas
+      if not canvas.__popupCache then canvas.__popupCache = {}
+      if canvas.__popupCache[ @type ] then canvas.__popupCache[ @type ].remove()
+      canvas.__popupCache[ @type ] = @
 
       $.extend @, data
 
@@ -74,6 +83,7 @@ define [ "backbone" ], ()->
       return
 
     remove : ()->
+      @canvas.__popupCache[ @type ] = null
       if @onRemove then @onRemove()
       Backbone.View.prototype.remove.call this
 

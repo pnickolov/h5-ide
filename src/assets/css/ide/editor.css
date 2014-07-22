@@ -749,14 +749,15 @@
   fill-opacity: 0.5;
   fill: #F2F8FF; }
 
-.canvasel.selected > .node-background, .canvasel.connectable > .node-background {
+.canvasel.selected > .node-background, .canvasel.connectable > .node-background, .canvasel.droppable > .node-background {
   fill-opacity: 1;
   fill: #F2F8FF !important;
   stroke-width: 2 !important;
   stroke: #659FFF !important; }
-.canvasel.selected > .node-label-name-bg, .canvasel.connectable > .node-label-name-bg {
+
+.canvasel.selected > .node-label-name-bg {
   fill: #659FFF; }
-  .canvasel.selected > .node-label-name-bg ~ .node-label, .canvasel.connectable > .node-label-name-bg ~ .node-label {
+  .canvasel.selected > .node-label-name-bg ~ .node-label {
     fill: #fff; }
 
 .server-number-bg {
@@ -995,7 +996,7 @@ g.shadow {
       border-left-color: #ccc;
       right: -21px; }
   .canvas-pp .popup-content {
-    min-width: 300px;
+    min-width: 306px;
     max-height: 180px;
     overflow-x: hidden;
     overflow-y: scroll; }

@@ -102,13 +102,15 @@
   fill: #F2F8FF;
 }
 
-.canvasel.selected, .canvasel.connectable {
+.canvasel.selected, .canvasel.connectable, .canvasel.droppable {
   > .node-background {
     fill-opacity : 1;
     fill: #F2F8FF !important;
     stroke-width: 2 !important;
     stroke: #659FFF !important;
   }
+}
+.canvasel.selected {
   > .node-label-name-bg {
     fill:#659FFF;
     ~ .node-label {
@@ -422,7 +424,7 @@ g.shadow { opacity : 0.8; }
   }
 
   .popup-content {
-    min-width  : 300px;
+    min-width  : 306px;
     max-height : 180px;
     overflow-x : hidden;
     overflow-y : scroll;

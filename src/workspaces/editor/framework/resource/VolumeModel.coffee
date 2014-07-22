@@ -88,7 +88,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       # Remove reference in owner
       vl = @attributes.owner.get("volumeList")
       vl.splice( vl.indexOf(this), 1 )
-      @attributes.owner.draw()
+      @attributes.owner.trigger "change:volumeList"
 
       ComplexResModel.prototype.remove.call this
       null
@@ -144,7 +144,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       if oldOwner
         vl = oldOwner.get 'volumeList'
         vl.splice( vl.indexOf(this), 1 )
-        oldOwner.draw()
+        oldOwner.trigger "change:volumeList"
 
       @attributes.owner = owner
 
@@ -163,7 +163,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       else
         owner.set 'volumeList', [ this ]
 
-      owner.draw()
+      owner.trigger "change:volumeList"
       true
 
     isSupportEncrypted : () ->

@@ -3,10 +3,18 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
   CanvasPopup.extend {
 
+    type : "VolumePopup" # Only one popup of each type allowed.
     events :
       "click li" : "showProperty"
 
     closeOnBlur : true
+
+    initialize : ()->
+      CanvasPopup.prototype.initialize.apply this, arguments
+
+      if @host
+        @listenTo @host, "change:volumeList", @render
+      return
 
     content : ()->
       data = []
@@ -21,9 +29,14 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
       TplPopup.volume data
 
     showProperty : ( evt )->
-      @$el.find(".selected").removeClass("selected")
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, $( evt.currentTarget ).addClass("selected").attr("data-id")
+      $vol = $( evt.currentTarget )
+      @canvas.selectVolume( $vol.attr("data-id") )
 
+      if @selected
+        $( @selected ).removeClass("selected")
+
+      @selected = evt.currentTarget
+
+      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, $vol.addClass("selected").attr("data-id")
       false
-
   }

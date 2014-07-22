@@ -147,7 +147,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     if not ItemClassProto.sticky
       # Caculate best drop rect for non-sticky item
       dropRect = @__bestFitRect( dropRect, group, excludeChild )
-      if not dropRect then return "Not enough space."
+      if not dropRect then return lang.ide.CVS_MSG_WARN_NO_ENOUGH_SPACE
 
     {
       group    : group
@@ -457,13 +457,16 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
     if data.item.isGroup()
       # Offset the group by -10, -10. So that it will not be dropped overlapping the parent.
-      data.pageX      -= CanvasView.GRID_WIDTH
-      data.pageY      -= CanvasView.GRID_HEIGHT
+      # data.pageX      -= CanvasView.GRID_WIDTH
+      # data.pageY      -= CanvasView.GRID_HEIGHT
       data.itemWidth  += 2
       data.itemHeight += 2
 
     result = data.context.__handleDropData( data, data.item, true )
-    if _.isString( result ) then return
+    if _.isString( result )
+      if result is lang.ide.CVS_MSG_WARN_NO_ENOUGH_SPACE
+        notification "warning", result
+      return
 
     data.dataTransfer.item   = data.item
     data.dataTransfer.parent = result.group

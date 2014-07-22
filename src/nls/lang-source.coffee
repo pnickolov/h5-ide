@@ -703,6 +703,10 @@ module.exports =
       en: "Nodes cannot overlap each other."
       zh: "节点不能互相重叠。"
 
+    CVS_MSG_WARN_NO_ENOUGH_SPACE:
+      en: "No enough space."
+      zh: "没有多余的空间。"
+
     CVS_WARN_EXCEED_ENI_LIMIT:
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
       zh: "%s 的 %s 最多支持%s个网络接口 (包括主要的)。"

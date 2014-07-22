@@ -106,15 +106,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
             'data-alias'   : 'launchconfig-sg-right'
             'data-tooltip' : lang.ide.PORT_TIP_D
           })
-        ]).classes("canvasel fixed AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
-        if isOriginalAsg
-          svgEl.add([
-            # Volume Image
-            svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
-            # Volume Label
-            svg.plain( "" ).move(45, 58).classes('volume-number')
-          ])
+          # Volume Image
+          svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
+          # Volume Label
+          svg.plain( "" ).move(45, 58).classes('volume-number')
+        ]).classes("canvasel fixed AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
         @addView( svgEl )
         @canvas.getItem( uid ).$el.children(":last-child").before( svgEl.node )

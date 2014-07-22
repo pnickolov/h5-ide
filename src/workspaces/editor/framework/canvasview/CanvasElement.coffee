@@ -457,7 +457,7 @@ define [ "CanvasManager", "event", "constant", "i18n!/nls/lang.js", "CloudResour
       'AWS.VPC.VPC'              : [6, 16]
       'AWS.EC2.AvailabilityZone' : [4, 14]
       'AWS.VPC.Subnet'           : [4, 14]
-      'AWS.RDS.DBSubnetGroup'    : [4, 14]
+      'AWS.RDS.DBSubnetGroup'    : [20, 14]
       'AWS.AutoScaling.Group'    : [4, 14]
     }[ m.type ]
 

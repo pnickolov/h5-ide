@@ -1250,6 +1250,10 @@ module.exports =
       en: "Apply"
       zh: ""
 
+    TOOL_START_APP:
+      en: "Start App"
+      zh: ""
+
     PROP_LBL_REQUIRED:
       en: "Required"
       zh: "必填"

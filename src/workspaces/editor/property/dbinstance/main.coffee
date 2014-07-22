@@ -47,10 +47,8 @@ define [
             if resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier
               uid = resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier.split(".")[0].split('{').pop()
               resModel = Design.instance().component uid
-              console.log(resModel, uid)
             @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
             @view  = app_view
-            console.log @model
             @view.resModel = resModel
             null
 

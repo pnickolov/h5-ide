@@ -4,10 +4,11 @@ define [
   "constant"
   "./CanvasManager"
   "./CpVolume"
+  "./CpInstance"
   "i18n!/nls/lang.js"
   "CloudResources"
   "event"
-], ( CanvasElement, constant, CanvasManager, VolumePopup, lang, CloudResources, ide_event )->
+], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -29,10 +30,14 @@ define [
     }
 
     events :
-      "mousedown .eip-status"   : "toggleEip"
-      "mousedown .volume-image" : "showVolume"
-      "click .eip-status"       : ()-> false
-      "click .volume-image"     : ()-> false
+      "mousedown .eip-status"          : "toggleEip"
+      "mousedown .volume-image"        : "showVolume"
+      "mousedown .server-number-group" : "showGroup"
+      "click .eip-status"              : "suppressEvent"
+      "click .volume-image"            : "suppressEvent"
+      "click .server-number-group"     : "suppressEvent"
+
+    suppressEvent : ()-> false
 
     iconUrl : ()->
       ami = @model.getAmi() || @model.get("cachedAmi")
@@ -181,6 +186,15 @@ define [
         onRemove   : ()-> _.defer ()-> self.volPopup = null; return
       }
       false
+
+    showGroup : ()->
+      new InstancePopup {
+        attachment : @$el[0]
+        host       : @model
+        models     : @model.groupMembers()
+        canvas     : @canvas
+      }
+      return
 
   }, {
     isDirectParentType : ( t )-> return t isnt constant.RESTYPE.AZ

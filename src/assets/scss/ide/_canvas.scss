@@ -377,14 +377,15 @@ g.shadow { opacity : 0.8; }
   position      : absolute;
   background    : #fff;
   box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
-  border        : 1px solid #d4d4d4;
   color         : #999;
   font-size     : 12px;
   border-radius : 4px;
   z-index       : 60;
 
-  &.pp-right {
+  &.pp-right, &.pp-left {
     margin-left : 10px;
+    border      : 1px solid #d4d4d4;
+
     &:before, &:after {
       content  : " ";
       position : absolute;
@@ -392,7 +393,6 @@ g.shadow { opacity : 0.8; }
       left     : -20px;
       width    : 0;
       height   : 0;
-      margin-top : -10px;
 
       border : transparent 10px solid;
       border-right-color : #fff;
@@ -406,19 +406,14 @@ g.shadow { opacity : 0.8; }
   &.pp-left {
     margin-left : -10px;
     &:before, &:after {
-      content  : " ";
-      position : absolute;
-      top      : 50%;
+      left     : auto;
       right    : -20px;
-      width    : 0;
-      height   : 0;
-      margin-top : -10px;
-
-      border : transparent 10px solid;
       border-left-color : #fff;
     }
     &:before {
+      border-right-color : transparent;
       border-left-color : #ccc;
+      left  : auto;
       right : -21px;
     }
   }
@@ -431,11 +426,9 @@ g.shadow { opacity : 0.8; }
   }
 
   .volume-pph {
-    padding       : 10px;
+    padding       : 7px 10px;
     font-size     : 14px;
-    font-weight   : normal;
     border-bottom : 1px solid #EBEBEB;
-    border-radius : 5px 5px 0 0;
     color         : #666;
 
     > span {
@@ -470,7 +463,7 @@ g.shadow { opacity : 0.8; }
   &:nth-child(4n+1) { clear : left; margin-left : 10px; }
 
   &.selected, &:hover { background-color : #F3F9FF; }
-  &.selected { border-color : rgba(101, 159, 255, 0.6); }
+  &.selected { border-color : #659FFF; }
 
   &:last-child { margin-bottom : 10px; }
 
@@ -490,12 +483,82 @@ g.shadow { opacity : 0.8; }
   height : 60px;
 }
 
+// Popup - Instance
+.instance-pph {
+  background    : #83CBF9;
+  color         : #fff;
+  padding       : 5px 10px 7px;
+  font-size     : 14px;
+}
+.instance-pph-close {
+  float       : right;
+  color       : #fff;
+  font-size   : 18px;
+  height      : 1em;
+  line-height : 1em;
+  cursor      : pointer;
+}
+.popup-instance {
+  border-top    : none;
+  border-radius : 0 0 4px 4px;
+  min-width     : 402px;
+}
+.vpp-instance {
+  cursor        : pointer;
+  float         : left;
+  width         : 88px;
+  height        : 88px;
+  margin-top    : 5px;
+  margin-right  : 5px;
+  border        : #fff 2px solid;
+  border-radius : 4px;
+  position      : relative;
+
+  background: image-url('ide/icon/instance-canvas.png') 14px 10px no-repeat;
+
+  color      : #333;
+  text-align : center;
+
+
+  &:nth-child(4n+1) { clear : left; margin-left : 10px; }
+
+  &.selected, &:hover { background-color : #F3F9FF; }
+  &.selected { border-color : #659FFF; }
+
+  &:last-child { margin-bottom : 10px; }
+
+  .vpp-ins-state {
+    position      : absolute;
+    left          : 62px;
+    top           : 13px;
+    width         : 8px;
+    height        : 8px;
+    border-radius : 4px;
+  }
+  > img { margin-top : 14px; margin-left : 2px; }
+  .vpp-ins-vol {
+    margin-top    : 5px;
+    margin-bottom : 1px;
+    color         : #74B1FD;
+    height        : image-height('ide/icon/instance-volume-not-attached.png');
+    background    : image-url('ide/icon/instance-volume-not-attached.png') center no-repeat;
+  }
+}
+.instnace-pp-empty {
+  text-align  : center;
+  line-height : 105px;
+  width       : 112px;
+}
+
+.canvas-pp.instance {
+  margin-left : -13px;
+  margin-top  : -37px;
+  border      : 2px solid #83CBF9;
+}
+
 // Instance State Dot
 .instance-state {
-  stroke-width : 1;
-  stroke       : white;
-  opacity      : 0.8;
-  display      : block;
+  opacity : 0.8;
 
   &.unknown { fill: gray; }
   &.running { fill: green; }

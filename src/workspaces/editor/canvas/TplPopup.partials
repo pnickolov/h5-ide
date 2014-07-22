@@ -8,5 +8,19 @@
 
 </ul>
 {{else}}
-<div class="volume-pp-empty">No attached Volume</div>
+<div class="volume-pp-empty">No attached volumes</div>
+{{/if}}
+
+<!-- {{instance}} -->
+<header class="instance-pph">{{name}} <span class="instance-pph-close">×</span></header>
+{{#if this.items.length}}
+<ul class="popup-content popup-instance">
+  {{#each this.items}}<li data-id="{{id}}" class="vpp-instance">
+    <i class="vpp-ins-state tooltip {{state}}" data-tooltip="{{state}}"></i>
+    <img src="/assets/images/ide/ami/{{icon}}.png" width="39" height="27">
+    <div class="vpp-ins-vol">{{volume}}</div>
+    <div class="vpp-ins-name">{{name}}</div> </li>{{/each}}
+</ul>
+{{else}}
+<div class="instance-pp-empty">No instances</div>
 {{/if}}

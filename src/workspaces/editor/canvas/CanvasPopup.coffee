@@ -82,6 +82,16 @@ define [ "backbone" ], ()->
       }
       return
 
+    attachOverlay : ()->
+      attachment    = @attachment.getBoundingClientRect()
+      canvasview    = @canvas.__getCanvasView()[0].getBoundingClientRect()
+
+      @$el.css {
+        left : attachment.left- canvasview.left
+        top  : attachment.top - canvasview.top
+      }
+      return
+
     remove : ()->
       @canvas.__popupCache[ @type ] = null
       if @onRemove then @onRemove()

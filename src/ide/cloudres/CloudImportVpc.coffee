@@ -1501,6 +1501,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         dbInsRes = @_mapProperty aws_dbins, dbInsRes
 
+        #changing DBInstanceClass( avoid json diff )
+        if aws_dbins.PendingModifiedValues and aws_dbins.PendingModifiedValues.DBInstanceClass
+          dbInsRes.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
+
         #clear AZ when MultiAZ is true
         if dbInsRes.MultiAZ
           dbInsRes.AvailabilityZone = ""

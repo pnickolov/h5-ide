@@ -15,9 +15,9 @@
 <header class="instance-pph">{{name}} <span class="instance-pph-close">×</span></header>
 {{#if this.items.length}}
 <ul class="popup-content popup-instance">
-  {{#each this.items}}<li data-id="{{id}}" class="vpp-instance">
-    <i class="vpp-ins-state tooltip {{state}}" data-tooltip="{{state}}"></i>
-    <img src="/assets/images/ide/ami/{{icon}}.png" width="39" height="27">
+  {{#each this.items}}<li data-id="{{id}}" class="vpp-instance {{#unless @index}}selected{{/unless}}">
+    <i class="vpp-ins-state tooltip status-{{state}}" data-tooltip="{{state}}"></i>
+    <img src="/assets/images/{{icon}}" width="39" height="27">
     <div class="vpp-ins-vol">{{volume}}</div>
     <div class="vpp-ins-name">{{name}}</div> </li>{{/each}}
 </ul>

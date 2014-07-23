@@ -17,19 +17,22 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
       return
 
     content : ()->
-      data = []
-      for volume in @models || []
-        data.push {
-          id       : volume.get("id")
-          name     : volume.get("name")
-          size     : volume.get("volumeSize")
-          snapshot : volume.get("snapshotId")
-        }
+      if @models[0] and @models[0].get
+        data = []
+        for volume in @models || []
+          data.push {
+            id       : volume.get("id")
+            name     : volume.get("name")
+            size     : volume.get("volumeSize")
+            snapshot : volume.get("snapshotId")
+          }
+      else
+        data = @models
 
       TplPopup.volume data
 
     clickVolume : ( evt )->
-      $vol = $( evt.currentTarget )
+      $vol = $( evt.currentTarget ).addClass("selected")
       volId = $vol.attr("data-id")
       @canvas.selectVolume( volId )
 
@@ -38,7 +41,7 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
       @selected = evt.currentTarget
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, $vol.addClass("selected").attr("data-id")
+      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, volId
 
       if evt.which is 1
         $vol.dnd( evt, {

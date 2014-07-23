@@ -161,8 +161,8 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
 
       new VolumePopup {
         attachment : data.hoverItem.el
-        host       : model
-        models     : model.get("volumeList")
+        host       : owner
+        models     : owner.get("volumeList")
         canvas     : @
       }
       return

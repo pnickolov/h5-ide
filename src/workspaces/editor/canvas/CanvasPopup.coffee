@@ -21,7 +21,7 @@ define [ "backbone" ], ()->
 
       $.extend @, data
 
-      @$el.insertAfter( @canvas.__getCanvasView() )
+      @$el.appendTo( @canvas.__getCanvasView().parent() )
 
       @render()
 

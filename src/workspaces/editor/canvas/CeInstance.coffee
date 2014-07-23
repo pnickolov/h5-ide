@@ -188,10 +188,38 @@ define [
       false
 
     showGroup : ()->
+      insCln = CloudResources( @type, @model.design().region() )
+      members = (@model.groupMembers() || []).slice(0)
+      members.unshift( { appId : @model.get("appId") } )
+
+      name = @model.get("name")
+      gm   = []
+      icon = @iconUrl()
+      for m, idx in members
+        ins = insCln.get( m.appId )
+        if not ins
+          console.warn "Cannot find instance of `#{m.appId}`"
+          continue
+        ins = ins.attributes
+
+        volume = ins.blockDeviceMapping.length
+        for bdm in ins.blockDeviceMapping
+          if bdm.deviceName is ins.rootDeviceName
+            --volume
+            break
+
+        gm.push {
+          name   : "#{name}-#{idx}"
+          id     : m.appId
+          icon   : icon
+          volume : volume
+          state  : ins.instanceState?.name || "unknown"
+        }
+
       new InstancePopup {
         attachment : @$el[0]
         host       : @model
-        models     : @model.groupMembers()
+        models     : gm
         canvas     : @canvas
       }
       return

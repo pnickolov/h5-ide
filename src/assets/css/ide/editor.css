@@ -974,6 +974,7 @@ g.shadow {
       left: -20px;
       width: 0;
       height: 0;
+      margin-top: -10px;
       border: transparent 10px solid;
       border-right-color: #fff; }
     .canvas-pp.pp-right:before, .canvas-pp.pp-left:before {
@@ -1095,13 +1096,13 @@ g.shadow {
     margin-top: 14px;
     margin-left: 2px; }
   .vpp-instance .vpp-ins-vol {
-    margin-top: 5px;
-    margin-bottom: 1px;
+    margin: 5px auto 1px;
+    width: 26px;
     color: #74B1FD;
     height: 24px;
     background: url('/assets/images/ide/icon/instance-volume-not-attached.png') center no-repeat; }
 
-.instnace-pp-empty {
+.instance-pp-empty {
   text-align: center;
   line-height: 105px;
   width: 112px; }
@@ -1109,7 +1110,8 @@ g.shadow {
 .canvas-pp.instance {
   margin-left: -13px;
   margin-top: -37px;
-  border: 2px solid #83CBF9; }
+  border: 2px solid #83CBF9;
+  min-width: 398px; }
 
 .instance-state {
   opacity: 0.8; }

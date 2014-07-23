@@ -475,7 +475,7 @@ define [
           removeList.push DBInstances.get(e.resource.DBInstanceIdentifier)
 
         removeListNotReady = _.filter removeList, (e)->
-          e.attributes.DBInstanceStatus is "available"
+          e.attributes.DBInstanceStatus isnt "available"
 
         that.updateModal.tpl.children().css 'width', "450px"
         that.updateModal.tpl.find(".modal-body").html( MC.template.updateApp {

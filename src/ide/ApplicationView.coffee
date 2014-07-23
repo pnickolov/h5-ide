@@ -280,6 +280,7 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
+      # renderLoading
       terminateConfirm = new modalPlus(
         title: if production then lang.ide.TOOL_POP_TIT_TERMINATE_PRD_APP else lang.ide.TOOL_POP_TIT_TERMINATE_APP
         template: AppTpl.loading()
@@ -290,19 +291,24 @@ define [
         }
       )
       terminateConfirm.tpl.find('.modal-footer').hide()
+
+      # get Resource list
       comp = Design.instance().serialize().component
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
       resourceList.fetchForce().then ()->
+        # Render Varies
         hasDBInstance = _.filter comp, (e)->
           e.type == constant.RESTYPE.DBINSTANCE
         dbInstanceName = _.map hasDBInstance, (e)->
           return e.resource.DBInstanceIdentifier
         notReadyDB = resourceList.filter (e)->
           (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
-        console.log notReadyDB
+
+        # Render Terminate Confirm
         terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
         terminateConfirm.tpl.find('.modal-footer').show()
         terminateConfirm.resize()
+
         if notReadyDB?.length
           terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
             terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")

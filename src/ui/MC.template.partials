@@ -1033,6 +1033,20 @@ Following rule(s) will be deleted from its(their) security group:</div>
 		<div class="scroll-content res_diff_tree" id="app-update-summary-table">
 		</div>
 	</div>
+    {{#if removeList.length}}
+        <section class="check-final-snapshot checkbox-wrap">
+            <div class="checkbox">
+                <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
+                <label for="take-rds-snapshot"></label>
+            </div>
+            <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+        </section>
+        {{#if notReadyDB.length}}
+            <p class="cant-snapshot">DB Instance
+                {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                cannot take final snapshot.</p>
+        {{/if}}
+    {{/if}}
 	<div class="stack-validation">
 		<details open style="display:none;">
 			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
@@ -1046,6 +1060,16 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	</div>
 
 </div>
+
+
+<!-- {{cantUpdateApp}} -->
+<p>DB Instance
+    {{#each data}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+    cannot take final snapshot.</p>
+<p>Wait for the DB instance(s) to be available. Then try to update the app again.</p>
+
+<!-- {{loadingSpiner}} -->
+<div class="loading-spinner"></div>
 
 <!-- {{nodeAction}} -->
 <div id="node-action-wrap">

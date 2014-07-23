@@ -85,7 +85,6 @@
         } else if (modalGroup.length <= 1) {
           modalGroup = [];
           this.trigger('close', this);
-          this.trigger('closed', this);
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
@@ -93,7 +92,8 @@
           window.setTimeout((function(_this) {
             return function() {
               _this.tpl.remove();
-              return _this.wrap.remove();
+              _this.wrap.remove();
+              return _this.trigger('closed', _this);
             };
           })(this), this.option.delay || 300);
           this.wrap.fadeOut(this.option.delay || 300);

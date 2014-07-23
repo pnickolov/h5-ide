@@ -4547,6 +4547,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Update App"
       zh: "更新 App"
 
+    CANT_UPDATE_APP:
+      en: "Cannot Update App Now"
+      zh: ""
+
     UPDATE_APP_CONFIRM_BTN:
       en: "Update App"
       zh: ""

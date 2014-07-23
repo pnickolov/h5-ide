@@ -105,12 +105,12 @@ define [], ()->
             else if modalGroup.length <= 1
                 modalGroup = []
                 @trigger 'close',@
-                @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 @option.onClose?(@)
                 @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.remove()
                     @wrap.remove()
+                    @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 ,@option.delay||300
                 @wrap.fadeOut(@option.delay || 300)
 

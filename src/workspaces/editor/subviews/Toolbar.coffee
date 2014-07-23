@@ -12,9 +12,10 @@ define [
   'constant'
   'event'
   'component/trustedadvisor/main'
+  "CloudResources"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -436,7 +437,7 @@ define [
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
-
+      that = @
       oldJson = @workspace.opsModel.getJsonData()
       newJson = @workspace.design.serialize usage: 'updateApp'
 
@@ -449,35 +450,64 @@ define [
       if not result.compChange and not result.layoutChange and not result.stateChange
         return @workspace.applyAppEdit()
 
-      @updateModal = new Modal
-        title        : lang.ide.UPDATE_APP_MODAL_TITLE
-        template     : MC.template.updateApp { isRunning : @workspace.opsModel.testState(OpsModel.State.Running) }
-        disableClose : true
-        width        : '450px'
-        height       : "515px"
-        confirm :
-          disabled : true
-          text     : if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
+      changes = differ.modifiedComps
+      removes = differ.removedComps
 
-      @updateModal.on 'confirm', =>
-        if not App.user.hasCredential()
-          App.showSettings App.showSettings.TAB.Credential
+      changeList = []
+      _.each changes, (e)->
+        changeList.push e.resource.DBInstanceIdentifier
+
+      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+      @updateModal = new Modal
+        title: lang.ide.HEAD_INFO_LOADING
+        template: MC.template.loadingSpiner
+        disableClose: true
+
+      DBInstances.fetchForce().then ->
+        notAvailableDB = DBInstances.filter (e)->
+          e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
+        if (notAvailableDB.length)
+          that.updateModal.tpl.find('.modal-body').html MC.template.cantUpdateApp data:notAvailableDB
           return false
 
-        if not @defaultKpIsSet()
+        removeList = []
+        _.each removes, (e)->
+          removeList.push DBInstances.get(e.resource.DBInstanceIdentifier)
+
+        removeListNotReady = _.filter removeList, (e)->
+          e.attributes.DBInstanceStatus is "available"
+
+        that.updateModal.tpl.children().css 'width', "450px"
+        that.updateModal.tpl.find(".modal-body").html( MC.template.updateApp {
+          isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
+          notReadyDB: removeListNotReady
+          removeList: removeList
+        })
+        that.updateModal.tpl.find('.modal-confirm').text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+
+        if removeListNotReady?.length
+          that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
+            that.updateModal.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
+
+        that.updateModal.on 'confirm', =>
+          if not App.user.hasCredential()
+            App.showSettings App.showSettings.TAB.Credential
             return false
 
-        @workspace.applyAppEdit( newJson, not result.compChange )
-        @updateModal?.close()
+          if not that.defaultKpIsSet()
+              return false
 
-      if result.compChange
-        $diffTree = differ.renderAppUpdateView()
-        $('#app-update-summary-table').html $diffTree
+          that.workspace.applyAppEdit( newJson, not result.compChange )
+          that.updateModal?.close()
 
-      @renderKpDropdown(@updateModal)
-      TA.loadModule('stack').then =>
-        @updateModal and @updateModal.toggleConfirm false
-      return
+        if result.compChange
+          $diffTree = differ.renderAppUpdateView()
+          $('#app-update-summary-table').html $diffTree
+
+        that.renderKpDropdown(that.updateModal)
+        TA.loadModule('stack').then =>
+          @updateModal and that.updateModal.toggleConfirm false
+        return
 
     opsOptionChanged: ->
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')

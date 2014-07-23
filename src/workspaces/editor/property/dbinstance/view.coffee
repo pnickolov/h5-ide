@@ -551,6 +551,7 @@ define [ '../base/view'
 
         changeUserName: (event) ->
 
+            that = this
             target = $(event.target)
             value = target.val()
 
@@ -562,13 +563,16 @@ define [ '../base/view'
                         return null
                     if that.resModel.isSqlserver() and val.length >= 1 and val.length <= 128
                         return null
-                return 'Username invalid'
+                    if that.resModel.isPostgresql() and val.length >= 2 and val.length <= 16
+                        return null
+                return "Invalid username"
 
             if target.parsley 'validate'
                 @resModel.set 'username', value
 
         changePassWord: (event) ->
 
+            that = this
             target = $(event.target)
             value = target.val()
 
@@ -579,7 +583,9 @@ define [ '../base/view'
                     return null
                 if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
                     return null
-                return 'Password invalid'
+                if that.resModel.isPostgresql() and val.length >= 8 and val.length <= 128
+                    return null
+                return 'Invalid password'
 
             if target.parsley 'validate'
                 @resModel.set 'password', value
@@ -619,16 +625,16 @@ define [ '../base/view'
                 value = $target.val()
             else if value
                 #invokie by manual
-                $("#property-dbinstance-backup-period").val( value ).parsley 'validate'
+                $("#property-dbinstance-backup-period").val(value)
             else
                 console.error "at least one value in event or value"
                 return null
 
             #show/hide input
             if value isnt '0'
-                Canvon("#group-dbinstance-backup-period").removeClass('hide')
+                Canvon("#property-dbinstance-auto-backup-group").removeClass('hide')
             else
-                Canvon("#group-dbinstance-backup-period").addClass('hide')
+                Canvon("#property-dbinstance-auto-backup-group").addClass('hide')
 
             #update model
             @resModel.autobackup Number(value) #setter
@@ -642,7 +648,6 @@ define [ '../base/view'
             else
                 $backupGroup.hide()
                 @resModel.set('backupWindow', '')
-
 
         changeMaintenanceOption: (event) ->
 

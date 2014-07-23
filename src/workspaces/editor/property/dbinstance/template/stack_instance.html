@@ -65,7 +65,7 @@
         <section class="property-control-group property-dbinstance-iops-value-section {{#unless iops}}hide{{/unless}}">
             <label class="left">Provisioned IOPS</label>
             <div class="ranged-number-input">
-                <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" min="100" max="2000" required="">
+                <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" data-ignore="true" data-required="true" data-type="number">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
             <label class="property-dbinstance-iops-info">{{iopsInfo}}</label>
@@ -80,14 +80,14 @@
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-type="alphanum" data-ignore="true" data-required-rollback="true"/>
         </section>
         {{/if}}
 
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="password" id="property-dbinstance-master-password" value="{{password}}" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="password" id="property-dbinstance-master-password" value="{{password}}" data-required-rollback="true"/>
         </section>
 
     </div>
@@ -181,47 +181,51 @@
             <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>
         </section>
 
-        <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" >
-            <label>Backup Retention Period</label>
-            <input class="input shorter-input" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text" data-type="number" data-min="1" data-max="35" data-ignore="true">
-            <label class="property-label-right" for="property-dbinstance-backup-period">day(s)</label>
-        </section>
+        <div id="property-dbinstance-auto-backup-group" class="{{#unless backupRetentionPeriod}}hide{{/unless}}">
 
-        <section id="property-dbinstance-backup-window-select" class="property-control-group">
-            <label>Backup Window</label>
-            <div>
-                <div class="radio">
-                    <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backup}}checked="checked"{{/unless}} value="no">
-                    <label for="property-dbinstance-backup-radio-no"></label>
-                </div>
-                <label for="property-dbinstance-backup-radio-no">No Preference</label>
-            </div>
-            <div>
-                <div class="radio">
-                    <input id="property-dbinstance-backup-radio-window" name="property-dbinstance-backup-radio" type="radio" {{#if backup}}checked="checked"{{/if}} value="window">
-                    <label for="property-dbinstance-backup-radio-window"></label>
-                </div>
-                <label for="property-dbinstance-backup-radio-window">Select Window</label>
-            </div>
-        </section>
-
-        <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
-            <section class="property-control-group">
-                <label>Start Time:</label>
-                <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-required-rollback="true"/>
-                <label>UTC</label>
+            <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" >
+                <label>Backup Retention Period</label>
+                <input class="input shorter-input" title="hours" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text" data-type="number" data-min="1" data-max="35" data-ignore="true">
+                <label class="property-label-right" for="property-dbinstance-backup-period">day(s)</label>
             </section>
-            <section class="property-control-group">
-                <label>Duration:</label>
-                <div class="selectbox shorter-dropdown" id="property-dbinstance-backup-window-duration">
-                    <div class="selection"></div>
-                    <ul class="dropdown">
-                        {{#each backupDurations}}
-                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{value}}">{{value}}</li>
-                        {{/each}}
-                    </ul>
+
+            <section id="property-dbinstance-backup-window-select" class="property-control-group">
+                <label>Backup Window</label>
+                <div>
+                    <div class="radio">
+                        <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backup}}checked="checked"{{/unless}} value="no">
+                        <label for="property-dbinstance-backup-radio-no"></label>
+                    </div>
+                    <label for="property-dbinstance-backup-radio-no">No Preference</label>
+                </div>
+                <div>
+                    <div class="radio">
+                        <input id="property-dbinstance-backup-radio-window" name="property-dbinstance-backup-radio" type="radio" {{#if backup}}checked="checked"{{/if}} value="window">
+                        <label for="property-dbinstance-backup-radio-window"></label>
+                    </div>
+                    <label for="property-dbinstance-backup-radio-window">Select Window</label>
                 </div>
             </section>
+
+            <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
+                <section class="property-control-group">
+                    <label>Start Time:</label>
+                    <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-required-rollback="true"/>
+                    <label>UTC</label>
+                </section>
+                <section class="property-control-group">
+                    <label>Duration:</label>
+                    <div class="selectbox shorter-dropdown" id="property-dbinstance-backup-window-duration">
+                        <div class="selection"></div>
+                        <ul class="dropdown">
+                            {{#each backupDurations}}
+                            <li class="item {{#if selected}}selected{{/if}}" data-id="{{value}}">{{value}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
         </div>
 
     </div>

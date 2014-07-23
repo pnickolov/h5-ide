@@ -206,8 +206,28 @@ define [ '../base/view'
             if @isAppEdit
                 attr.isAppEdit = @isAppEdit
                 _.extend attr, @appModel.toJSON()
+                _.extend attr, @getOriginAttr()
 
             attr
+
+        getOriginAttr: () ->
+
+            originJson = Design.instance().__opsModel.getJsonData()
+            originComp = originJson.component[@resModel.id]
+            
+            if originComp
+
+                allocatedStorage = originComp.resource.AllocatedStorage
+                iops = originComp.resource.Iops
+
+                return {
+                    originAllocatedStorage: allocatedStorage,
+                    originIOPS: iops
+                }
+
+            else
+
+                return null
 
         render: () ->
 
@@ -514,7 +534,7 @@ define [ '../base/view'
             if @resModel.isSqlserver()
                 minIOPS = maxIOPS = storage * 10
             else
-                minIOPS = Math.max(1000, storage * 3)
+                minIOPS = storage * 3
                 maxIOPS = storage * 10
 
             return {
@@ -531,8 +551,9 @@ define [ '../base/view'
 
             if value
                 $('.property-dbinstance-iops-value-section').show()
-                $('#property-dbinstance-iops-value').val(iopsRange.minIOPS)
-                @resModel.setIops iopsRange.minIOPS
+                if iopsRange.minIOPS >= 1000
+                    $('#property-dbinstance-iops-value').val(iopsRange.minIOPS)
+                    @resModel.setIops iopsRange.minIOPS
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
@@ -549,12 +570,22 @@ define [ '../base/view'
             iopsRange = @_getIOPSRange(storage)
 
             target.parsley 'custom', (val) ->
+
                 iops = Number(val)
+                
+                if iops < 1000
+                    return "Require 1000 IOPS"
+
+                if storage < Math.ceil(iops / 10)
+                    return "Require #{Math.ceil(iops / 10)}-#{Math.ceil(iops / 3)} GB Allocated Storage for #{iops} IOPS"
+
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
+
                 if iopsRange.minIOPS is iopsRange.maxIOPS
                     return "Require #{iopsRange.minIOPS} IOPS"
-                else
+                
+                if iopsRange.minIOPS < iopsRange.maxIOPS
                     return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
 
             if target.parsley 'validate'

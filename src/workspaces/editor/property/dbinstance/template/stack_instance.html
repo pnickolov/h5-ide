@@ -32,9 +32,7 @@
         </section>
         {{/if}}
 
-        <div id ="lvia-container">
-
-        </div>
+        <div id ="lvia-container"></div>
 
         <section class="property-control-group">
             <div class="checkbox">
@@ -52,6 +50,9 @@
                 <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number">
                 <label for="property-dbinstance-storage" class="property-label-right">GB</label>
             </div>
+            {{#if isAppEdit}}
+                <label>Current Allocated Storage: {{originAllocatedStorage}} GB</label>
+            {{/if}}
         </section>
 
         <section class="property-control-group">
@@ -72,6 +73,10 @@
         </section>
 
         {{#if isAppEdit}}
+        <div class="property-info {{#ifCond originIOPS iops}}hide{{/ifCond}}">When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes.</div>
+        {{/if}}
+
+        {{#if isAppEdit}}
         <div class="property-control-group clearfix">
             <label>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</label>
             <div>{{MasterUsername}}</div>
@@ -80,7 +85,7 @@
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-type="alphanum" data-ignore="true" data-required-rollback="true"/>
+            <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$" data-required-rollback="true"/>
         </section>
         {{/if}}
 
@@ -191,6 +196,7 @@
 
             <section id="property-dbinstance-backup-window-select" class="property-control-group">
                 <label>Backup Window</label>
+                {{#unless isAppEdit}}
                 <div>
                     <div class="radio">
                         <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backup}}checked="checked"{{/unless}} value="no">
@@ -205,6 +211,7 @@
                     </div>
                     <label for="property-dbinstance-backup-radio-window">Select Window</label>
                 </div>
+                {{/unless}}
             </section>
 
             <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
@@ -235,6 +242,7 @@
 
         <section id="property-dbinstance-maintenance-window-select" class="property-control-group">
             <label>Maintenance Window</label>
+            {{#unless isAppEdit}}
             <div>
                 <div class="radio">
                     <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenance}}checked="checked"{{/unless}} value="no">
@@ -249,6 +257,7 @@
                 </div>
                 <label for="property-dbinstance-maintenance-radio-window">Select Window</label>
             </div>
+            {{/unless}}
         </section>
 
         <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenance}}hide{{/unless}}">

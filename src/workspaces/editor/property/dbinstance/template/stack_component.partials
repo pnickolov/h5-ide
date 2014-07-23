@@ -153,12 +153,15 @@
 {{#if isAppEdit}}
 
     <div class="property-control-group clearfix">
-        <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
-        <div>{{AvailabilityZone}}</div>
-        {{#if SecondaryAvailabilityZone}}
-        <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
-        <div>{{SecondaryAvailabilityZone}}</div>
-        {{/if}}
+        {{#unless multiAz}}
+            <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+            <div>{{AvailabilityZone}}</div>
+        {{else}}
+            {{#if SecondaryAvailabilityZone}}
+            <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+            <div>{{SecondaryAvailabilityZone}}</div>
+            {{/if}}
+        {{/unless}}
     </div>
 
 {{else}}

@@ -108,6 +108,8 @@ define [
           engineVersion   : @getDefaultVersion()
           instanceClass   : @getDefaultInstanceClass()
           port            : @getDefaultPort()
+          dbName          : @getDefaultDBName()
+          characterSetName: @getDefaultCharSet()
         }
 
         if attr.snapshotId
@@ -123,6 +125,24 @@ define [
         @on 'all', @preSerialize
         @on 'sgchange', @onSgChange
       null
+
+    # postgresql, oracle, sqlserver
+    engineType: ->
+      engine = @get 'engine'
+      switch
+        when engine is 'mysql'
+          return 'postgresql'
+        when engine is 'mysql'
+          return 'postgresql'
+        when engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
+          return 'oracle'
+        when engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
+          return 'sqlserver'
+
+    isMysql: -> @engineType() is 'mysql'
+    isOracle: -> @engineType() is 'oracle'
+    isSqlserver: -> @engineType() is 'sqlserver'
+    isPostgresql: -> @engineType() is 'postgresql'
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
@@ -142,7 +162,7 @@ define [
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @set 'ogName', defaultOG
+      @setOptionGroup defaultOG
       null
 
     setDefaultParameterGroup:( origEngineVersion ) ->
@@ -172,18 +192,43 @@ define [
 
     getIops: -> ( @get('iops') and @master() or @ ).get('iops')
 
-    defaultPortMap:
-      'mysql'         : 3306
-      'postgres'      : 5432
-
-      'oracle-ee'     : 1521
-      'oracle-se'     : 1521
-      'oracle-se1'    : 1521
-
-      'sqlserver-ee'  : 1433
-      'sqlserver-ex'  : 1433
-      'sqlserver-se'  : 1433
-      'sqlserver-web' : 1433
+    defaultMap:
+      'mysql'         :
+        port            : 3306
+        dbname          : ''
+        charset         : ''
+      'postgres'      :
+        port            : 5432
+        dbname          : ''
+        charset         : ''
+      'oracle-ee'     :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'oracle-se'     :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'oracle-se1'    :
+        port            : 1521
+        dbname          : 'ORCL'
+        charset         : 'AL32UTF8'
+      'sqlserver-ee'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-ex'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-se'  :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
+      'sqlserver-web' :
+        port            : 1433
+        dbname          : ''
+        charset         : ''
 
     #override ResourceModel.getNewName()
     getNewName : ( attr )->
@@ -246,7 +291,13 @@ define [
     getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
 
     getDefaultPort: ->
-      @defaultPortMap[@get('engine')]
+      @defaultMap[@get('engine')].port
+
+    getDefaultDBName: ->
+      @defaultMap[@get('engine')].dbname
+
+    getDefaultCharSet: ->
+      @defaultMap[@get('engine')].charset
 
     getLicenseObj: ( getDefault ) ->
       currentLicense = @get 'license'
@@ -376,14 +427,10 @@ define [
     getCost : ( priceMap, currency )->
       if not priceMap.database then return null
 
-      engine = @attributes.engine
-      if engine == 'postgres'
-        engine = 'postgresql'
-      else if engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
-        engine = 'oracle'
-      else if engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
-        engine = 'sqlserver'
-        sufix = engine.split('-')[1]
+      engine = @engineType()
+
+      if engine is 'sqlserver' then sufix = engine.split('-')[1]
+
       dbInstanceType = @attributes.instanceClass.split('.')
       deploy = if @attributes.multiAZ then 'multiAZ' else 'standard'
 

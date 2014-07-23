@@ -6,6 +6,7 @@ define [
          "Design"
          "CloudResources"
          "../base/main"
+         "./model"
          "./view"
          "./app_view"
          "../sglist/main"
@@ -14,6 +15,7 @@ define [
 ], ( Design,
      CloudResources,
      PropertyModule,
+     model,
      view,
      app_view,
      sglist_main, constant ) ->
@@ -30,8 +32,11 @@ define [
             null
 
         initStack : ( uid )->
-            @model = Design.instance().component uid
-            @view  = view
+            
+            @view = view
+            @model = model
+            @view.resModel = Design.instance().component uid
+            @view.isAppEdit = false
             null
 
         afterLoadStack : ()->
@@ -42,25 +47,33 @@ define [
             null
 
         initApp : ( uid ) ->
+
             resModel = Design.instance().component uid
+
+            if resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier
+              uid = resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier.split(".")[0].split('{').pop()
+
             @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
-            @view  = app_view
+            @view = app_view
             @view.resModel = resModel
             null
 
         initAppEdit : ( uid ) ->
-            @model = Design.instance().component uid
-            @view  = view
+
+            resModel = Design.instance().component uid
+            @view = view
+            @model = model
             @view.isAppEdit = true
-            @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get @model.get('appId')
+            @view.resModel = resModel
+            @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
             null
 
         afterLoadAppEdit : ()->
-            sglist_main.loadModule @model
+            sglist_main.loadModule @view.resModel
             null
 
         afterLoadApp : () ->
-            sglist_main.loadModule @model
+            sglist_main.loadModule @view.resModel
             null
     }
     null

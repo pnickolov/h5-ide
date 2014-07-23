@@ -1250,6 +1250,10 @@ module.exports =
       en: "Apply"
       zh: ""
 
+    TOOL_START_APP:
+      en: "Start App"
+      zh: ""
+
     PROP_LBL_REQUIRED:
       en: "Required"
       zh: "必填"
@@ -3279,6 +3283,14 @@ module.exports =
 
     PROP_SNAPSHOT_SET_VOLUME:
       en: "Volume"
+      zh: ""
+
+    PROP_SNAPSHOT_SET_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    PROP_INSTANCE_SNAPSHOT_SELECT:
+      en: "Select Instance from which to create snapshot"
       zh: ""
 
     PROP_SNAPSHOT_SET_DESC:
@@ -5372,6 +5384,10 @@ VisualOps API. You cannot UNDO this action.'
 
     TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
       en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
+      zh: ""
+
+    TA_MSG_ERROR_STATE_EDITOR_INVALID_FORMAT:
+      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
       zh: ""
 
     # State

@@ -456,7 +456,7 @@ define [
               when 'keypair'
                   new keypairManager().render()
               when 'snapshot'
-                  new snapshotManager().render()
+                  new EbsSnapshotManager.render()
               when 'sns'
                   new snsManager().render()
               when 'sslcert'
@@ -475,7 +475,6 @@ define [
       if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
 
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
-      console.assert( type )
 
       # Insert Shadow
       $("<div id='ResourceDragItem'></div><div id='overlayer' class='grabbing'></div>").appendTo( document.body )

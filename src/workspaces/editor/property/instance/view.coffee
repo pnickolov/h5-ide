@@ -32,7 +32,7 @@ define [ '../base/view',
             'click .toggle-eip'                         : 'setEip'
             'click #instance-ip-add'                    : "addIp"
             'click #property-network-list .icon-remove' : "removeIp"
-            'change .input-ip'                          : 'syncIPList'
+            'keyup .input-ip'                           : 'syncIPList'
 
             'click #volume-type-radios input' : 'changeVolumeType'
             'keyup #iops-ranged'              : 'changeIops'
@@ -124,6 +124,8 @@ define [ '../base/view',
                     return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
                     return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+
+            @bindIpItemValidate()
 
             #
 
@@ -243,41 +245,39 @@ define [ '../base/view',
             null
 
 
-        validateIpItem : ( $item ) ->
-
+        bindIpItemValidate: ->
             that = this
-            $item.parsley "custom", ( val ) ->
-                validDOM         = $item
-                inputValue       = validDOM.val()
-                inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
-                currentInputIP   = inputValuePrefix + inputValue
-                prefixAry        = inputValuePrefix.split('.')
+            $('.input-ip').each () ->
+                $item = $ @
+                $item.parsley "custom", ( val ) ->
+                    validDOM         = $item
+                    inputValue       = val
+                    inputValuePrefix = validDOM.siblings(".input-ip-prefix").text()
+                    currentInputIP   = inputValuePrefix + inputValue
+                    prefixAry        = inputValuePrefix.split('.')
 
-                ###### validation format
-                ipIPFormatCorrect = false
-                # for 10.0.0.
-                if prefixAry.length is 4
-                    if inputValue is 'x'
-                        ipIPFormatCorrect = true
-                    else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                        ipIPFormatCorrect = true
-                # for 10.0.
-                else
-                    if inputValue is 'x.x'
-                        ipIPFormatCorrect = true
-                    else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
-                        ipIPFormatCorrect = true
+                    ###### validation format
+                    ipIPFormatCorrect = false
+                    # for 10.0.0.
+                    if prefixAry.length is 4
+                        if inputValue is 'x'
+                            ipIPFormatCorrect = true
+                        else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
+                    # for 10.0.
+                    else
+                        if inputValue is 'x.x'
+                            ipIPFormatCorrect = true
+                        else if MC.validate 'ipaddress', (inputValuePrefix + inputValue)
+                            ipIPFormatCorrect = true
 
-                if !ipIPFormatCorrect
-                    return 'Invalid IP address'
-                else
-                    result = that.model.isValidIp( currentInputIP )
-                    if result isnt true
-                        return result
+                    if !ipIPFormatCorrect
+                        return 'Invalid IP address'
+                    else
+                        result = that.model.isValidIp( currentInputIP )
+                        if result isnt true
+                            return result
 
-            result = $item.parsley("validate")
-            $item.parsley("custom", noop)
-            return result
 
         addIp : () ->
             if $("#instance-ip-add").hasClass("disabled")
@@ -317,7 +317,7 @@ define [ '../base/view',
             ipItems = $('#property-network-list .input-ip-item')
             $target = $( event.currentTarget )
 
-            if not @validateIpItem( $target ) then return
+            if not $target.parsley 'validate' then return
 
             ipVal = $target.val()
             ip = $target.siblings( ".input-ip-prefix" ).text() + ipVal

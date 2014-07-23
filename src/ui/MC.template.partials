@@ -1370,13 +1370,13 @@ Are you sure you want to delete {{name}}?</div>
 {{/each}}
 
 <!-- {{modalTemplate}} -->
-<div class="modal-box">
-    <div style="width: 520px">
+<div class="modal-box{{#ifCond mode "panel"}} panel{{/ifCond}}">
+    <div{{#ifCond mode "panel"}}{{else}} style="width: 520px"{{/ifCond}}>
         <div class="modal-header">
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
         </div>
-        <div class="modal-body  context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" {{#if hasScroll}}style="padding: 0;"{{else}}{{#if compact}} style="padding: 0;"{{/if}}{{/if}}>
+        <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" {{#if hasScroll}}style="padding: 0;"{{else}}{{#if compact}} style="padding: 0;"{{/if}}{{/if}}>
             {{#if hasScroll}}
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                 <div class="scroll-content" {{#if compact}} style="padding: 0;"{{else}}style="padding: 12px 15px"{{/if}}>

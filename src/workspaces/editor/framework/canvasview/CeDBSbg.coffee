@@ -27,11 +27,22 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
 
     if isCreate
       node = @createGroup( label )
+
+      node.append(
+        # dragger
+        Canvon.image(MC.IMG_URL + 'ide/icon/sbg-info.png', 3, 3, 12, 12).attr({
+          'id'           : m.id + '_tooltip'
+          'class'        : 'tooltip'
+          'data-tooltip' : ''
+        })
+      )
+
+
       @getLayer("subnet_layer").append node
 
       # Move the group to right place
       @initNode node, m.x(), m.y()
-      Canvon('#' + m.id).addClass('tooltip')
+      #Canvon('#' + m.id).addClass('tooltip')
 
     else
       CanvasManager.update( @$element().children("text"), label )
@@ -68,7 +79,7 @@ define [ "./CanvasElement", "constant", "CanvasManager","i18n!/nls/lang.js" ], (
       tooltip = relatedSb.join(', ')
     else
       tooltip = "No subnet is assigned to this subnet group yet"
-    Canvon('#' + m.id)
+    Canvon('#' + m.id + '_tooltip' )
       .attr('data-tooltip', tooltip)
       .data('tooltip', tooltip)
 

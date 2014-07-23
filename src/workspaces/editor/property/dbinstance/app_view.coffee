@@ -15,12 +15,15 @@ define [ '../base/view', './template/app', 'og_manage_app', 'constant' ], ( Prop
         new ogManageApp model: ogModel
 
     render : () ->
-        if not @model then return
 
-        data = @model.toJSON()
+        data = if @model then @model.toJSON() else @view.resModel.serialize().component.resource
+        if not data.Endpoint
+          data = @resModel.serialize().component.resource
+          data.DBSubnetGroup.DBSubnetGroupName = Design.instance().component(data.DBSubnetGroup.DBSubnetGroupName.split(".")[0].split("{").pop()).serialize().component.resource.DBSubnetGroupName
         data.optionGroups = _.map data.OptionGroupMemberships, (ogm) ->
             ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere appId: ogm.OptionGroupName
             _.extend {}, ogm, { isDefault: !ogComp, uid: ogComp?.id or '' }
+
 
         @$el.html template.appView data
         @resModel.get 'name'

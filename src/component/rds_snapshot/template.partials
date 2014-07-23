@@ -62,7 +62,7 @@
             </div>
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_VOLUME"}}</label>
+                <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_INSTANCE"}}</label>
                 <div>
                     <div id="property-db-instance-choose"></div>
                 </div>

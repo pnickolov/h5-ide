@@ -98,7 +98,9 @@ define [
         else
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
           @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
-          @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
+          @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle(opsModel.testState(OpsModel.State.Stopped))
+          @$el.children('.icon-update-app').toggle( not opsModel.testState(OpsModel.State.Stopped) )
+
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")

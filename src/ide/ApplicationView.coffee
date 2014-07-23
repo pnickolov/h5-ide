@@ -299,10 +299,14 @@ define [
           return e.resource.DBInstanceIdentifier
         notReadyDB = resourceList.filter (e)->
           (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
-
+        console.log notReadyDB
         terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
         terminateConfirm.tpl.find('.modal-footer').show()
         terminateConfirm.resize()
+        if notReadyDB?.length
+          terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
+            terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
+
         $("#appNameConfirmIpt").on "keyup change", ()->
           if $("#appNameConfirmIpt").val() is name
             terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"

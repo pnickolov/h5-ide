@@ -1,3 +1,8 @@
+.property-dbinstance input.shorter-input {
+  width: 37px;
+  padding-right: 7px; }
+.property-dbinstance .selectbox.shorter-dropdown {
+  width: 90px; }
 .property-dbinstance input.property-input-left {
   width: 184px; }
 .property-dbinstance .property-label-right {
@@ -39,6 +44,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+  width: 73px; }
 
 .property-subnet-group .property-az-name {
   clear: both;

@@ -1395,6 +1395,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           ogRes.CreatedBy = originComp.resource.CreatedBy
         else
           compName = aws_og.OptionGroupName
+          ogRes.CreatedBy = 'user'
           console.error "[temp]can not find original component"
 
         #generate OptionGroup component
@@ -1431,6 +1432,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             sbgRes.SubnetIds = jQuery.extend(true, [], originComp.resource.SubnetIds)
         else
           compName = aws_sbg.DBSubnetGroupName
+          sbgRes.CreatedBy = 'user'
 
         #generate DBSubnetGroup component
         sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or compName )
@@ -1499,6 +1501,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
 
         dbInsRes = @_mapProperty aws_dbins, dbInsRes
 
+        #changing DBInstanceClass( avoid json diff )
+        if aws_dbins.PendingModifiedValues and aws_dbins.PendingModifiedValues.DBInstanceClass
+          dbInsRes.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
+
         #clear AZ when MultiAZ is true
         if dbInsRes.MultiAZ
           dbInsRes.AvailabilityZone = ""
@@ -1554,6 +1560,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
             dbInsRes.Endpoint.Port = originComp.resource.Endpoint.Port
         else
           compName = aws_dbins.Name || aws_dbins.DBInstanceIdentifier
+          dbInsRes.CreatedBy     = 'user' #created by user
 
         #generate DBSubnetGroup component
         dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or compName )

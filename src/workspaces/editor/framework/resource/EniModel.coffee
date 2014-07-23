@@ -224,7 +224,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       cidr = @subnetCidr()
 
       # Check for subnet
-      if not Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
+      validObj = Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
+      if not validObj.isValid
+        if validObj.isReserved
+          return "This IP address is in subnet’s reserved address range"
         return 'This IP address conflicts with subnet’s IP range'
 
       realNewIp = @getRealIp( ip, cidr )
@@ -240,13 +243,13 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
           # The ip is not necessary correct in Eni.get("ips")
           realIp = eni.getRealIp( ipObj.ip )
-          if realIp is realNewIp
+          if realIp is realNewIp and eni isnt @
             if eni is this
               return 'This IP address conflicts with other IP'
             else
               return 'This IP address conflicts with other network interface’s IP'
 
-      return true
+      true
 
     addIp : ( idx, ip, autoAssign, hasEip )->
       ips = @get("ips")
@@ -384,6 +387,10 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
       null
 
+    onParentChanged : () ->
+
+      for ipObj, idx in @get("ips")
+        @setIp( idx, null, true, ipObj.hasEip )
 
     generateJSON : ( index, servergroupOption, eniIndex )->
 

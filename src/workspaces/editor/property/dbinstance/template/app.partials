@@ -1,14 +1,14 @@
 <!-- {{appView}} -->
 <article class="property-app app-dbinstance">
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
-    <div class="option-group">
+    <div class="option-group" style="display: block">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
-            <dd>{{#if Endppint}}{{Endpoint.Address }}:{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
+            <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
-            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{DBInstanceStatus}}</dd>
+            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable({{DBInstanceStatus}}){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
             <dd>{{Engine}}({{EngineVersion}})</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
@@ -34,36 +34,41 @@
         </dl>
     </div>
 
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
             {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
             <dd>{{name}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
-            <dd>{{#each optionGroups}}
-                {{#if isDefault}}
-                    {{OptionGroupName}}({{Status}})
-                {{else}}
-                    <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
-                {{/if}}
+            {{#if optionGroups.length}}
+                <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
+                <dd>{{#each optionGroups}}
+                    {{#if isDefault}}
+                        {{OptionGroupName}}({{Status}})
+                    {{else}}
+                        <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
+                    {{/if}}
                 {{/each}}
-            </dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
-            <dd>
-                {{#each DBParameterGroups}}
-                    {{DBParameterGroupName}}({{ParameterApplyStatus}})
-                {{/each}}
-            </dd>
+                </dd>
+            {{/if}}
+            {{#if DBParameterGroups.length}}
+                <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
+                <dd>
+                    {{#each DBParameterGroups}}
+                        {{DBParameterGroupName}}({{ParameterApplyStatus}})
+                    {{/each}}
+                </dd>
+            {{/if}}
+
         </dl>
     </div>
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
-    <div class="option-group" style="display: none">
+    <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
             <dd>{{DBSubnetGroup.DBSubnetGroupName}}
-                ({{#each DBSubnetGroup.Subnets}}{{SubnetIdentifier}}, {{/each}})</dd>
+                {{#if DBSubnetGroup.Subnets.length}}({{#each DBSubnetGroup.Subnets}}{{SubnetIdentifier}}, {{/each}}){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
             <dd>{{AvailabilityZone}}</dd>
             {{#if SecondaryAvailabilityZone}}
@@ -77,7 +82,7 @@
         </dl>
     </div>
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
-    <div class="option-group" style="display: none">
+    <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
             <dd>{{#if BackupRetentionPeriod}}Enabled ({{BackupRetentionPeriod}} day){{else}}Disabled{{/if}}</dd>

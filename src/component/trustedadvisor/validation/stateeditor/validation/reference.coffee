@@ -71,7 +71,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
             false
 
     __refState = ( ref ) ->
-        ref.attr.indexOf('.' ) isnt -1
+        ref.attr.indexOf( '.' ) isnt -1
 
 
 

@@ -191,6 +191,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 width           : '855px'
                 height          : '473px'
                 compact         : true
+                #hasScroll       : true
+                #mode            : "panel"
 
 
 

@@ -390,7 +390,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id      : @get("id")
         app_name    : @get("name")
         flag        : force
-        is_create_snapshot: create_db_snapshot
+        create_snapshot: create_db_snapshot
       }).then ()->
         if force then self.__destroy()
         return

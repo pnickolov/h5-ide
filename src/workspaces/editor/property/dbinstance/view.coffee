@@ -53,28 +53,28 @@ define [ '../base/view'
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
 
         changeCharset: ( event, value ,data ) ->
-            @model.set 'characterSetName', value
+            @resModel.set 'characterSetName', value
 
         changeApplyImmediately: (event) ->
 
             value = event.target.checked
-            @model.set('applyImmediately', value)
+            @resModel.set('applyImmediately', value)
 
         changeLicense: ( event, value, data ) ->
-            @model.set 'license', value
+            @resModel.set 'license', value
             @renderLVIA()
 
         changeVersion: ( event, value, data ) ->
-            origEngineVersion = @model.get 'engineVersion'
-            @model.set 'engineVersion', value
-            @model.setDefaultParameterGroup( origEngineVersion )
-            @model.setDefaultOptionGroup( origEngineVersion )
+            origEngineVersion = @resModel.get 'engineVersion'
+            @resModel.set 'engineVersion', value
+            @resModel.setDefaultParameterGroup( origEngineVersion )
+            @resModel.setDefaultOptionGroup( origEngineVersion )
             @renderOptionGroup()
             @renderParameterGroup()
             @renderLVIA()
 
         changeClass: ( event, value, data ) ->
-            @model.set 'instanceClass', value
+            @resModel.set 'instanceClass', value
             @renderLVIA()
 
         _getTimeData: (timeStr) ->
@@ -126,7 +126,13 @@ define [ '../base/view'
 
             catch err
 
-                return null
+                return {
+                    startHour: '00',
+                    startMin: '00',
+                    startTime: "00:00",
+                    duration: 0.5,
+                    startWeek: 'Mondey'
+                }
 
         _getTimeStr: (startTimeStr, duration, startWeek) ->
 
@@ -177,7 +183,7 @@ define [ '../base/view'
             startTime = $('#property-dbinstance-backup-window-start-time').val()
             duration = Number($('#property-dbinstance-backup-window-duration').val())
             timeStr = @_getTimeStr(startTime, duration)
-            @model.set('backupWindow', timeStr)
+            @resModel.set('backupWindow', timeStr)
 
         _setMaintenanceTime: () ->
 
@@ -187,11 +193,11 @@ define [ '../base/view'
             duration = Number($('#property-dbinstance-maintenance-window-duration').val())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
             timeStr = @_getTimeStr(startTime, duration, week)
-            @model.set('maintenanceWindow', timeStr)
+            @resModel.set('maintenanceWindow', timeStr)
 
         getModelJSON: () ->
 
-            attr = @model.toJSON()
+            attr = @resModel.toJSON()
 
             # for app edit
             if @isAppEdit
@@ -210,26 +216,37 @@ define [ '../base/view'
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
 
-            if @model.master()
-                attr.sourceDbName = @model.master().get('name')
+            attr.engineType = @resModel.engineType()
+            _.extend attr, {
+                isOracle: @resModel.isOracle()
+                isSqlserver: @resModel.isSqlserver()
+                isPostgresql: @resModel.isPostgresql()
+            }
 
-            spec = @model.getSpecifications()
-            lvi = @model.getLVIA spec
+            if @resModel.master()
+                attr.sourceDbName = @resModel.master().get('name')
+
+            spec = @resModel.getSpecifications()
+            lvi = @resModel.getLVIA spec
 
             attr.licenses = lvi[0]
             attr.versions = lvi[1]
             attr.classes  = lvi[2]
 
             template = template_instance
+            
             # if replica
-            if @model.master()
-                template = template_replica
-                attr.masterIops = @model.master().get 'iops'
+            if @resModel.master()
+                if @isAppEdit
+                    attr.hideAZConfig = true
+                else
+                    template = template_replica
+                attr.masterIops = @resModel.master().get 'iops'
             # if snapshot
             template = template_instance if attr.snapshotId
 
             # if oracle
-            if attr.engine.indexOf('oracle') is 0
+            if @resModel.isOracle()
                 attr.isOracle = true
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
@@ -246,11 +263,13 @@ define [ '../base/view'
                 $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
                 $select.find('.selection').text($item.text())
 
-            @model.get 'name'
+            @resModel.get 'name'
 
-            @pgDropdown = new parameterGroup(@model).renderDropdown()
+            @pgDropdown = new parameterGroup(@resModel).renderDropdown()
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
+
+            attr.name
 
         renderOptionGroup: ->
 
@@ -261,7 +280,7 @@ define [ '../base/view'
             attr.canCustomOG = false
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
-            ogOptions     = engineOptions[@model.getMajorVersion()] if engineOptions
+            ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
             defaultInfo = engineCol.getDefaultByNameVersion(regionName, attr.engine, attr.engineVersion)
 
             if defaultInfo and defaultInfo.canCustomOG
@@ -277,26 +296,26 @@ define [ '../base/view'
                 $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
                 ogDropdown = new OgDropdown({
                     el: $ogDropdown
-                    dbInstance: @model
+                    dbInstance: @resModel
                 })
                 $ogDropdown.html ogDropdown.render({
                         engine: attr.engine
                         engineVersion: attr.engineVersion
-                        majorVersion: @model.getMajorVersion()
+                        majorVersion: @resModel.getMajorVersion()
                     }).el
 
         renderParameterGroup: ->
             #close dropdown
             Canvon(".selectbox.combo-dd.multiopen").removeClass("open")
             #update selection
-            @pgDropdown.setSelection(@model.get 'pgName')
+            @pgDropdown.setSelection(@resModel.get 'pgName')
             null
 
         # Render License, Version, InstanceClass and multi-AZ
         renderLVIA: ->
 
-            spec = @model.getSpecifications()
-            lvi  = @model.getLVIA spec
+            spec = @resModel.getSpecifications()
+            lvi  = @resModel.getLVIA spec
 
             data = {
                 licenses : lvi[0]
@@ -304,25 +323,25 @@ define [ '../base/view'
                 classes  : lvi[2]
                 azCapable: lvi[3]
             }
-            _.extend data, @model.toJSON()
+            attr = @getModelJSON()
+            _.extend data, attr
 
             $('#lvia-container').html template_component.lvi(data)
 
-            attr = @getModelJSON()
-
-            spec = @model.getSpecifications()
-            lvi = @model.getLVIA spec
+            spec = @resModel.getSpecifications()
+            lvi = @resModel.getLVIA spec
             multiAZCapable = lvi[3]
 
             if not multiAZCapable
-                @model.set('multiAz', false)
+                @resModel.set('multiAz', false)
 
-            # set subnet group name
+            # set az list
+
             sgData = {
-                multiAz: attr.multiAz
                 multiAZCapable: multiAZCapable
             }
-            subnetGroupModel = @model.parent()
+            sgData = _.extend sgData, attr
+            subnetGroupModel = @resModel.parent()
             sgData.subnetGroupName = subnetGroupModel.get('name')
             connAry = subnetGroupModel.get('__connections')
             azUsedMap = {}
@@ -342,8 +361,8 @@ define [ '../base/view'
 
         renderAZList: () ->
 
-            spec = @model.getSpecifications()
-            lvi  = @model.getLVIA spec
+            spec = @resModel.getSpecifications()
+            lvi  = @resModel.getLVIA spec
             optionalAzAry = lvi[4]
             attr = @getModelJSON()
 
@@ -374,10 +393,32 @@ define [ '../base/view'
 
         changeInstanceName: (event) ->
 
-            value = $(event.target).val()
-            @model.setName value
-            @setTitle value
-            @model.set 'instanceId', value
+            that = this
+
+            target = $ event.currentTarget
+
+            if @checkResName(target, 'DBInstance')
+
+                value = target.val()
+
+                target.parsley 'custom', ( val ) ->
+
+                    errTip = 'DB Instance name invalid'
+                    if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
+                        return errTip
+                    if val.length > 10 and that.resModel.isSqlserver()
+                        return errTip
+                    if val.length > 58
+                        return errTip
+                    if not MC.validate('letters', val[0])
+                        return errTip
+
+                if target.parsley 'validate'
+
+                    @resModel.setName value
+                    @setTitle value
+                    @resModel.set 'instanceId', value
+            
             null
 
         changeMutilAZ: (event) ->
@@ -389,73 +430,140 @@ define [ '../base/view'
                 $item = $select.find(".item[data-id='no']").addClass('selected')
                 $select.find('.selection').text($item.text())
                 $select.hide()
-                @model.set 'az', ''
+                @resModel.set 'az', ''
                 @renderAZList()
             else
                 $select.show()
 
-            @model.set 'multiAz', value
+            @resModel.set 'multiAz', value
 
         changeAZ: ( event, name, data ) ->
 
             if name is 'no'
-                @model.set 'az', ''
+                @resModel.set 'az', ''
             else
-                @model.set 'az', name
+                @resModel.set 'az', name
 
             # @renderLVIA()
 
         changeAllocatedStorage: (event) ->
 
-            value = $(event.target).val()
-            @model.set 'allocatedStorage', Number(value)
+            that = this
+            target = $(event.target)
+            value = target.val()
+            
+            target.parsley 'custom', (val) ->
+
+                storage = Number(value)
+
+                if that.resModel.isMysql() and not (storage >=5 and storage <= 3072)
+                    return 'Must be an integer from 5 to 3072'
+
+                if that.resModel.isPostgresql() and not (storage >=5 and storage <= 3072)
+                    return 'Must be an integer from 5 to 3072'
+
+                if that.resModel.isOracle() and not (storage >=10 and storage <= 3072)
+                    return 'Must be an integer from 10 to 3072'
+
+                if that.resModel.isSqlserver()
+                    engine = that.resModel.get('engine')
+                    if engine in ['sqlserver-ee', 'sqlserver-se'] and not (storage >=200 and storage <= 1024)
+                        return 'Must be an integer from 200 to 1024'
+                    if engine in ['sqlserver-ex', 'sqlserver-web'] and not (storage >=30 and storage <= 1024)
+                        return 'Must be an integer from 30 to 1024'
+
+            if target.parsley 'validate'
+                that.resModel.set 'allocatedStorage', Number(value)
 
         changeProvisionedIOPSCheck: (event) ->
 
             value = event.target.checked
             if value
                 $('.property-dbinstance-iops-value-section').show()
-                $('#property-dbinstance-iops-value').val('100')
-                @model.setIops 100
+                $('#property-dbinstance-iops-value').val('1000')
+                @resModel.setIops 1000
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
-                @model.setIops ''
+                @resModel.setIops ''
 
         changeProvisionedIOPS: (event) ->
 
-            value = $(event.target).val()
-            @model.setIops Number(value)
+            that = this
+            target = $(event.target)
+            value = target.val()
+            iops = Number(value)
+
+            storage = Number($('#property-dbinstance-storage').val())
+            
+            minIOPS = Math.max(1000, storage * 3)
+            maxIOPS = storage * 10
+
+            target.parsley 'custom', (val) ->
+                iops = Number(val)
+                if iops >= minIOPS and iops <= maxIOPS
+                    return null
+                return "Require #{minIOPS}-#{maxIOPS} IOPS"
+
+            if target.parsley 'validate'
+                @resModel.setIops Number(iops)
 
         changeUserName: (event) ->
 
-            value = $(event.target).val()
-            @model.set 'username', value
+            target = $(event.target)
+            value = target.val()
+
+            target.parsley 'custom', (val) ->
+                if MC.validate('alphanum', val) and MC.validate('letters', val[0])
+                    if that.resModel.isMysql() and val.length >= 1 and val.length <= 16
+                        return null
+                    if that.resModel.isOracle() and val.length >= 1 and val.length <= 30
+                        return null
+                    if that.resModel.isSqlserver() and val.length >= 1 and val.length <= 128
+                        return null
+                return 'Username invalid'
+
+            if target.parsley 'validate'
+                @resModel.set 'username', value
 
         changePassWord: (event) ->
 
-            value = $(event.target).val()
-            @model.set 'password', value
+            target = $(event.target)
+            value = target.val()
+
+            target.parsley 'custom', (val) ->
+                if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
+                    return null
+                if that.resModel.isOracle() and val.length >= 8 and val.length <= 30
+                    return null
+                if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
+                    return null
+                return 'Password invalid'
+
+            if target.parsley 'validate'
+                @resModel.set 'password', value
 
         changeDatabaseName: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
 
-            value = $(event.target).val()
-            @model.set 'dbName', value
+            @resModel.set 'dbName', $target.val()
 
         changeDatabasePort: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
 
-            value = $(event.target).val()
-            @model.set 'port', value
+            @resModel.set 'port', $target.val()
 
         changePublicAccessCheck: (event) ->
 
             value = event.target.checked
-            @model.set 'accessible', value
+            @resModel.set 'accessible', value
 
         changeVersionUpdate: (event) ->
 
             value = event.target.checked
-            @model.set 'autoMinorVersionUpgrade', value
+            @resModel.set 'autoMinorVersionUpgrade', value
 
         changeAutoBackupCheck: (event) ->
 
@@ -464,17 +572,13 @@ define [ '../base/view'
 
         changeBackupPeriod: (event, value) ->
 
-            if event
-                #trigger by event
-                value = $(event.target).val()
-                #show/hide checkbox
-                checked = if Number(value) then true else false
-                $("#property-dbinstance-auto-backup-check")
-                    .prop("checked",checked)
-                    .attr("checked",checked)
+            if event #trigger by event
+                $target = $ event.currentTarget
+                if not $target.parsley 'validate' then return
+                value = $target.val()
             else if value
                 #invokie by manual
-                $("#property-dbinstance-backup-period").val( value )
+                $("#property-dbinstance-backup-period").val( value ).parsley 'validate'
             else
                 console.error "at least one value in event or value"
                 return null
@@ -486,7 +590,7 @@ define [ '../base/view'
                 Canvon("#group-dbinstance-backup-period").addClass('hide')
 
             #update model
-            @model.autobackup Number(value) #setter
+            @resModel.autobackup Number(value) #setter
 
         changeBackupOption: (event) ->
 
@@ -496,7 +600,7 @@ define [ '../base/view'
                 $backupGroup.show()
             else
                 $backupGroup.hide()
-                @model.set('backupWindow', '')
+                @resModel.set('backupWindow', '')
 
 
         changeMaintenanceOption: (event) ->
@@ -507,7 +611,7 @@ define [ '../base/view'
                 $maintenanceGroup.show()
             else
                 $maintenanceGroup.hide()
-                @model.set('maintenanceWindow', '')
+                @resModel.set('maintenanceWindow', '')
 
         changeBackupTime: (event) ->
 

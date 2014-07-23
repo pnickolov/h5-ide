@@ -145,9 +145,9 @@ define(["jquery"], function($){
   // Public Methods
 
   var first = function( target ) {
-    if ( $( target ).is(':hidden') ) return;
 
     setTimeout(function() {
+      if ( $( target ).is(':hidden') ) return;
       errortip.call( target )
 
       id = getEid( target )
@@ -164,7 +164,7 @@ define(["jquery"], function($){
         purge({currentTarget: target});
       });
 
-    }, 1)
+    }, 1);
 
   };
 

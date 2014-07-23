@@ -478,7 +478,7 @@ define [
           removeList.push DBInstances.get(e.resource.DBInstanceIdentifier)
 
         removeListNotReady = _.filter removeList, (e)->
-          e.attributes.DBInstanceStatus is "available"
+          e.attributes.DBInstanceStatus isnt "available"
 
         that.updateModal.tpl.children().css 'width', "450px"
         .find(".modal-footer").show()
@@ -487,6 +487,7 @@ define [
           notReadyDB: removeListNotReady
           removeList: removeList
         })
+        that.updateModal.tpl.find(".modal-header").find("h3").text(lang.ide.UPDATE_APP_MODAL_TITLE)
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         window.setTimeout ->

@@ -39,8 +39,7 @@ define [
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
 
-      Q.all [
-        @opsModel.save()
+      jobs = [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
         CloudResources( constant.RESTYPE.AZ,   region ).fetch()
         CloudResources( constant.RESTYPE.SNAP, region ).fetch()
@@ -49,6 +48,9 @@ define [
         CloudResources( "FavoriteAmi",         region ).fetch()
         @fetchAmiData()
       ]
+
+      if @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )
+      jobs
 
     hasAmiData : ()->
       json = @opsModel.getJsonData()

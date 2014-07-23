@@ -49,8 +49,9 @@ define [
         @fetchAmiData()
       ]
 
-      if @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )
-      jobs
+      if not @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )
+
+      Q.all(jobs)
 
     hasAmiData : ()->
       json = @opsModel.getJsonData()

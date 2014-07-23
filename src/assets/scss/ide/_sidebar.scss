@@ -192,6 +192,28 @@
   }
 }
 
+.resource-icon-dbinstance {
+  padding-top : 12px;
+  height : 60px - 12px;
+  background : image-url('ide/icon/dbinstance-resource.png') center no-repeat;
+
+  #ResourceDragItem & {
+    padding-top : 17px;
+    height : 53px;
+  }
+}
+
+.resource-icon-dbsnapshot {
+  padding-top : 12px;
+  height : 60px - 12px;
+  background : image-url('ide/icon/dbsnapshot-resource.png') center no-repeat;
+
+  #ResourceDragItem & {
+    padding-top : 17px;
+    height : 53px;
+  }
+}
+
 .ebs-size {
   margin-top  : -1.5em;
   font-size   : 12px;

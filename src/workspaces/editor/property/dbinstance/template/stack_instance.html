@@ -68,7 +68,7 @@
                 <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" min="100" max="2000" required="">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
-            <label>RDS MySQL supports IOPS / GB ratios between 3 and 10</label>
+            <label class="property-dbinstance-iops-info">{{iopsInfo}}</label>
         </section>
 
         {{#if isAppEdit}}

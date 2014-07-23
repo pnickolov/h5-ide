@@ -256,6 +256,12 @@ define [ '../base/view'
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
 
+            # iops info
+            if @resModel.isSqlserver()
+                attr.iopsInfo = 'Requires a fixed ratio of 10 IOPS / GB storage'
+            else
+                attr.iopsInfo = 'Supports IOPS / GB ratios between 3 and 10'
+
             # render
             @$el.html template attr
             @renderLVIA()
@@ -492,13 +498,30 @@ define [ '../base/view'
             if target.parsley 'validate'
                 that.resModel.set 'allocatedStorage', Number(value)
 
+        _getIOPSRange: (storage) ->
+
+            if @resModel.isSqlserver()
+                minIOPS = maxIOPS = storage * 10
+            else
+                minIOPS = Math.max(1000, storage * 3)
+                maxIOPS = storage * 10
+
+            return {
+                minIOPS: minIOPS
+                maxIOPS: maxIOPS
+            }
+
         changeProvisionedIOPSCheck: (event) ->
 
             value = event.target.checked
+
+            storage = Number($('#property-dbinstance-storage').val())
+            iopsRange = @_getIOPSRange(storage)
+
             if value
                 $('.property-dbinstance-iops-value-section').show()
-                $('#property-dbinstance-iops-value').val('1000')
-                @resModel.setIops 1000
+                $('#property-dbinstance-iops-value').val(iopsRange.minIOPS)
+                @resModel.setIops iopsRange.minIOPS
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
@@ -512,15 +535,16 @@ define [ '../base/view'
             iops = Number(value)
 
             storage = Number($('#property-dbinstance-storage').val())
-
-            minIOPS = Math.max(1000, storage * 3)
-            maxIOPS = storage * 10
+            iopsRange = @_getIOPSRange(storage)
 
             target.parsley 'custom', (val) ->
                 iops = Number(val)
-                if iops >= minIOPS and iops <= maxIOPS
+                if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
-                return "Require #{minIOPS}-#{maxIOPS} IOPS"
+                if iopsRange.minIOPS is iopsRange.maxIOPS
+                    return "Require #{iopsRange.minIOPS} IOPS"
+                else
+                    return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
 
             if target.parsley 'validate'
                 @resModel.setIops Number(iops)

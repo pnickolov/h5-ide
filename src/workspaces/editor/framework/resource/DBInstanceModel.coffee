@@ -110,6 +110,7 @@ define [
           port            : @getDefaultPort()
           dbName          : @getDefaultDBName()
           characterSetName: @getDefaultCharSet()
+          allocatedStorage: @getDefaultAllocatedStorage()
         }
 
         if attr.snapshotId
@@ -197,38 +198,47 @@ define [
         port            : 3306
         dbname          : ''
         charset         : ''
+        allocatedStorage: 5
       'postgres'      :
         port            : 5432
         dbname          : ''
         charset         : ''
+        allocatedStorage: 5
       'oracle-ee'     :
         port            : 1521
         dbname          : 'ORCL'
         charset         : 'AL32UTF8'
+        allocatedStorage: 10
       'oracle-se'     :
         port            : 1521
         dbname          : 'ORCL'
         charset         : 'AL32UTF8'
+        allocatedStorage: 10
       'oracle-se1'    :
         port            : 1521
         dbname          : 'ORCL'
         charset         : 'AL32UTF8'
+        allocatedStorage: 10
       'sqlserver-ee'  :
         port            : 1433
         dbname          : ''
         charset         : ''
+        allocatedStorage: 200
       'sqlserver-ex'  :
         port            : 1433
         dbname          : ''
         charset         : ''
+        allocatedStorage: 30
       'sqlserver-se'  :
         port            : 1433
         dbname          : ''
         charset         : ''
+        allocatedStorage: 200
       'sqlserver-web' :
         port            : 1433
         dbname          : ''
         charset         : ''
+        allocatedStorage: 30
 
     #override ResourceModel.getNewName()
     getNewName : ( attr )->
@@ -298,6 +308,9 @@ define [
 
     getDefaultCharSet: ->
       @defaultMap[@get('engine')].charset
+
+    getDefaultAllocatedStorage: ->
+      @defaultMap[@get('engine')].allocatedStorage
 
     getLicenseObj: ( getDefault ) ->
       currentLicense = @get 'license'

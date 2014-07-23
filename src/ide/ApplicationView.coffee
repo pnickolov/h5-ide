@@ -298,10 +298,11 @@ define [
         dbInstanceName = _.map hasDBInstance, (e)->
           return e.resource.DBInstanceIdentifier
         notReadyDB = resourceList.filter (e)->
-          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') is 'available'
+        console.log notReadyDB
         if notReadyDB?.length
           console.log "Yes"
-          terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change ->
+          terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).on "change", ->
             terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
         else
           console.log "No"

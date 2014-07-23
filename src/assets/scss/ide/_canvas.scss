@@ -557,6 +557,21 @@ g.shadow { opacity : 0.8; }
   min-width   : 398px;
 }
 
+.vpp-eni {
+  position    : relative;
+  line-height : 148px;
+  background  : image-url('ide/icon/eni-canvas-attached.png') 15px 14px no-repeat;
+}
+
+.vpp-eip {
+  position   : absolute;
+  width      : image-width("ide/icon/eip-on.png");
+  height     : image-height("ide/icon/eip-on.png");
+  background : image-url("ide/icon/eip-on.png");
+  left       : 43px;
+  top        : 36px;
+}
+
 // Instance State Dot
 .instance-state {
   opacity : 0.8;

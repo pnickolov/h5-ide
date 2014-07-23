@@ -175,9 +175,13 @@ define [
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
     showVolume : ()->
+
+      # Only show volume if not in app mode nor servergroup
+      if @canvas.design.modeIsApp() and @model.get("count") > 1
+        return false
+
       if @volPopup then return false
       self = @
-
       @volPopup = new VolumePopup {
         attachment : @$el[0]
         host       : @model
@@ -188,6 +192,9 @@ define [
       false
 
     showGroup : ()->
+      # Only show server group list in app mode.
+      if not @canvas.design.modeIsApp() then return
+
       insCln = CloudResources( @type, @model.design().region() )
       members = (@model.groupMembers() || []).slice(0)
       members.unshift( { appId : @model.get("appId") } )

@@ -186,6 +186,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       if @volPopup then return false
       self = @
 
+      if @canvas.design.modeIsApp() then return false
+
       @volPopup = new VolumePopup {
         attachment : $( evt.currentTarget ).closest("g")[0]
         host       : @model

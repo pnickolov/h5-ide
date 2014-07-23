@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "event" ], ( CanvasElement, constant, CanvasManager, lang, ide_event )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "CloudResources", "./CpEni", "event" ], ( CanvasElement, constant, CanvasManager, lang, CloudResources, EniPopup, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -22,8 +22,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     }
 
     events :
-      "mousedown .eip-status" : "toggleEip"
-      "click .eip-status"     : ()-> false
+      "mousedown .eip-status"          : "toggleEip"
+      "mousedown .server-number-group" : "showGroup"
+      "click .eip-status"              : ()-> false
 
     iconUrl : ()->
       if @model.connections( "EniAttachment" ).length
@@ -123,4 +124,40 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m
+
+    showGroup : ()->
+      # Only show server group list in app mode.
+      if not @canvas.design.modeIsApp() then return
+
+      insCln = CloudResources( @type, @model.design().region() )
+      members = (@model.groupMembers() || []).slice(0)
+      members.unshift( {
+        appId : @model.get("appId")
+        ips   : @model.get("ips")
+      } )
+
+      name = @model.get("name")
+      gm   = []
+      for m, idx in members
+        ins = insCln.get( m.appId )
+        if not ins
+          console.warn "Cannot find eni of `#{m.appId}`"
+          continue
+        ins = ins.attributes
+
+        eip = (m.ips || [])[0]
+
+        gm.push {
+          name : "#{name}-#{idx}"
+          id   : m.appId
+          eip  : eip?.eipData?.publicIp
+        }
+
+      new EniPopup {
+        attachment : @$el[0]
+        host       : @model
+        models     : gm
+        canvas     : @canvas
+      }
+      return
   }

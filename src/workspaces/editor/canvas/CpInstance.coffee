@@ -9,27 +9,26 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
     events :
       "click .instance-pph-close" : "remove"
-      "click .vpp-instance"       : "clickInstance"
+      "click li"                  : "selectItem"
       "click .vpp-ins-vol"        : "showVolume"
 
     initialize : ()->
       CanvasPopup.prototype.initialize.apply this, arguments
-      @clickInstance( { currentTarget : @$el.find(".vpp-instance")[0] })
+      @selectItem( { currentTarget : @$el.find("li")[0] })
       return
 
     content : ()->
-      data =
+      TplPopup.instance {
         name  : @host.get("name")
         items : @models || []
+      }
 
-      TplPopup.instance data
-
-    clickInstance : ( evt )->
+    selectItem : ( evt )->
       @canvas.deselectItem( true )
 
       @$el.find(".selected").removeClass("selected")
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.INSTANCE, $( evt.currentTarget ).addClass("selected").attr("data-id")
+      ide_event.trigger ide_event.OPEN_PROPERTY, @host.type, $( evt.currentTarget ).addClass("selected").attr("data-id")
       false
 
     remove : ()->

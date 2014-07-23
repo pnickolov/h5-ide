@@ -73,7 +73,9 @@ define [
       return
 
     remove : ()->
-      popup.remove() for type, popup of @__popupCache
+      for type, popup of @__popupCache
+        if popup then popup.remove()
+
       item.remove()  for id,   item  of @__itemMap
 
       Backbone.View.prototype.remove.apply this, arguments

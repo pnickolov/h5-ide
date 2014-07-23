@@ -1112,6 +1112,19 @@ g.shadow {
   border: 2px solid #83CBF9;
   min-width: 398px; }
 
+.vpp-eni {
+  position: relative;
+  line-height: 148px;
+  background: url('/assets/images/ide/icon/eni-canvas-attached.png') 15px 14px no-repeat; }
+
+.vpp-eip {
+  position: absolute;
+  width: 12px;
+  height: 14px;
+  background: url('/assets/images/ide/icon/eip-on.png');
+  left: 43px;
+  top: 36px; }
+
 .instance-state {
   opacity: 0.8; }
   .instance-state.unknown {

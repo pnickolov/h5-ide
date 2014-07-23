@@ -259,6 +259,12 @@ define [], ()->
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
+        setContent: (content)->
+            if @option.hasScroll or @option.maxHeight
+              selector = ".scroll-content"
+            else
+              selector = ".modal-body"
+            @tpl.find(selector).html(content)
         _fadeOut: ->
             if @option.mode is 'panel' then return false
             @tpl.animate

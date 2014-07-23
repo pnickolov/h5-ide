@@ -348,6 +348,16 @@
         return this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
       };
 
+      Modal.prototype.setContent = function(content) {
+        var selector;
+        if (this.option.hasScroll || this.option.maxHeight) {
+          selector = ".scroll-content";
+        } else {
+          selector = ".modal-body";
+        }
+        return this.tpl.find(selector).html(content);
+      };
+
       Modal.prototype._fadeOut = function() {
         if (this.option.mode === 'panel') {
           return false;

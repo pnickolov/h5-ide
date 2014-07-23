@@ -78,6 +78,11 @@ define [
     ###
       Internal methods.
     ###
+    onModelIdChange : ()->
+      @updateUrl()
+      if @design then @design.set("id", @opsModel.get("id"))
+      return
+
     isWorkingOn : ( attribute )-> @opsModel is attribute
     constructor : ( opsModel )->
       if not opsModel
@@ -90,10 +95,8 @@ define [
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
       @listenTo @opsModel, "change:state", @onOpsModelStateChanged
       @listenTo @opsModel, "change:name",  @updateTab
-      @listenTo @opsModel, "change:id",    ()->
-        @updateUrl()
-        if @design then @design.set("id", @opsModel.get("id"))
-        return
+      @listenTo @opsModel, "change:id",    @onModelIdChange
+
 
       # Load Datas
       self = @

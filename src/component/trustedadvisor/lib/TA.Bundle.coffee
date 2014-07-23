@@ -19,26 +19,31 @@ define ['MC',
         '../validation/state/state'
         '../validation/ec2/ebs'
         '../validation/ec2/kp'
+        '../validation/rds/dbinstance'
 
-], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs, kp ) ->
+], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance ) ->
 
-        stack : stack
-        instance : instance
-        subnet: subnet
-        vpc : vpc
-        elb : elb
-        sg  : sg
-        asg : asg
-        eip : eip
-        az  : az
-        vgw : vgw
-        vpn : vpn
-        igw : igw
-        acl : acl
-        cgw : cgw
-        eni : eni
-        rtb : rtb
-        stateEditor: stateEditor
-        state: state
-        ebs: ebs
-        kp : kp
+        stack           : stack
+        instance        : instance
+        subnet          : subnet
+        vpc             : vpc
+        elb             : elb
+        sg              : sg
+        asg             : asg
+        eip             : eip
+        az              : az
+        vgw             : vgw
+        vpn             : vpn
+        igw             : igw
+        acl             : acl
+        cgw             : cgw
+        eni             : eni
+        rtb             : rtb
+        stateEditor     : stateEditor
+        state           : state
+        ebs             : ebs
+        kp              : kp
+        dbinstance      : dbinstance
+
+
+

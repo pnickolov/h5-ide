@@ -5438,6 +5438,34 @@ VisualOps API. You cannot UNDO this action.'
       en: "vpc can not use default(none) dhcpoptions when use visualops"
       zh: ""
 
+    TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
+      en: "db.t1.micro instances can only be members of the default option group."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
+      en: "The CIDR blocks in each of your subnets must be large enough to accommodate spare IP addresses for Amazon RDS to use during maintenance activities, including failover and compute scaling. (For each DB instance that you run in a VPC, you should reserve at least one address in each subnet in the DB subnet group for use by Amazon RDS for recovery actions.)"
+      zh: ""
+
+    TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT:
+      en: "If you want to launch a DB instance in a VPC, the instance tenancy attribute of the VPC must be set to default. For information about instance tenancy in a VPC, see Using EC2 Dedicated Instances in the Amazon Virtual Private Cloud User Guide. All default VPCs have the instance tenancy attribute set to default."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_SNAPSHOT_NOT_LARGE_ENOUGH:
+      en: "Snapshot storage need large than original value."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT:
+      en: "available AZ for different family not consistent with subnet group's AZ."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_OG_COMPATIBILITY:
+      en: "App Update: Option Group compatibility."
+      zh: ""
+
+    TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE:
+      en: "warning: unused option group will not be created."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""
@@ -5453,6 +5481,7 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_NOT_READY:
       en: "App Agent is not ready yet, Please try again later."
       zh: ""
+
     ##### Trust Advisor
 
     TIP_KEYPAIR_USED_DEFAULT_KP:

@@ -1505,43 +1505,40 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         if aws_dbins.PendingModifiedValues
           if aws_dbins.PendingModifiedValues.AllocatedStorage
             #modify AllocatedStorage
-            dbInsRes.AllocatedStorage = aws_dbins.PendingModifiedValues.AllocatedStorage
-          else if aws_dbins.PendingModifiedValues.BackupRetentionPeriod
+            dbInsRes.AllocatedStorage = Number(aws_dbins.PendingModifiedValues.AllocatedStorage)
+          if aws_dbins.PendingModifiedValues.BackupRetentionPeriod
             #modify BackupRetentionPeriod
-            dbInsRes.BackupRetentionPeriod = aws_dbins.PendingModifiedValues.BackupRetentionPeriod
-          else if aws_dbins.PendingModifiedValues.DBInstanceClass
+            dbInsRes.BackupRetentionPeriod = Number(aws_dbins.PendingModifiedValues.BackupRetentionPeriod)
+          if aws_dbins.PendingModifiedValues.DBInstanceClass
             #modify DBInstanceClass
             dbInsRes.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
-          else if aws_dbins.PendingModifiedValues.Iops
+          if aws_dbins.PendingModifiedValues.Iops
             #modify Iops
-            dbInsRes.Iops = aws_dbins.PendingModifiedValues.Iops
-          else if aws_dbins.PendingModifiedValues.MultiAZ
+            dbInsRes.Iops = Number(aws_dbins.PendingModifiedValues.Iops)
+          if aws_dbins.PendingModifiedValues.MultiAZ
             #modify MultiAZ
             dbInsRes.MultiAZ = aws_dbins.PendingModifiedValues.MultiAZ
 
           ## disable modify following attribute currently
-          # else if aws_dbins.PendingModifiedValues.DBInstanceIdentifier
+          # if aws_dbins.PendingModifiedValues.DBInstanceIdentifier
           #   #modify DBInstanceIdentifier
           #   dbInsRes.DBInstanceIdentifier = aws_dbins.PendingModifiedValues.DBInstanceIdentifier
 
-          # else if aws_dbins.PendingModifiedValues.EngineVersion
+          # if aws_dbins.PendingModifiedValues.EngineVersion
           #   #modify EngineVersion
           #   dbInsRes.EngineVersion = aws_dbins.PendingModifiedValues.EngineVersion
 
-          # else if aws_dbins.PendingModifiedValues.MasterUserPassword
+          # if aws_dbins.PendingModifiedValues.MasterUserPassword
           #   #modify MasterUserPassword
           #   dbInsRes.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
 
-          # else if aws_dbins.PendingModifiedValues.Port
+          # if aws_dbins.PendingModifiedValues.Port
           #   #modify Port
           #   dbInsRes.Port = aws_dbins.PendingModifiedValues.Port
 
         #clear AZ when MultiAZ is true
         if dbInsRes.MultiAZ
           dbInsRes.AvailabilityZone = ""
-
-        dbInsRes.AllocatedStorage = Number(aws_dbins.AllocatedStorage)
-        dbInsRes.BackupRetentionPeriod = Number(aws_dbins.BackupRetentionPeriod)
 
         if aws_dbins.ReadReplicaSourceDBInstanceIdentifier
           #ReadReplica

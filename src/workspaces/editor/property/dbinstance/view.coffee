@@ -285,6 +285,7 @@ define [ '../base/view'
             attr.name
 
         bindParsley: ->
+            db = @model
             validateStartTime = (val) ->
                 if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
                         'Format error, the right format is 00:00.'
@@ -292,7 +293,17 @@ define [ '../base/view'
             $('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             $('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
 
+            $('#property-dbinstance-database-name').parsley 'custom', ( value ) ->
+                switch db.engineType()
+                    when 'mysql'
+                        if val.length > 64 then return 'Max length is 64.'
+                    when 'postgresql'
+                        if val.length > 63 then return 'Max length is 63.'
+                        if not /[a-z_]/.test val[0] then return 'Must begin with a letter or an underscore'
+                    when 'oracle'
+                        if val.length > 8 then return 'Max length is 8.'
 
+                null
 
         renderOptionGroup: ->
 

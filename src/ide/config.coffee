@@ -172,7 +172,8 @@ require.config {
 		# component                 # Merge in deploy
 		#############################################
 
-		'validation'       : 'component/trustedadvisor/validation'
+		'validation'       : 'component/trustedadvisor/exposure'
+		'TaHelper'		   : 'component/trustedadvisor/lib/TA.Helper'
 		'kp_dropdown'      : 'component/kp/kpDropdown'
 		'kp_manage'        : 'component/kp/kpManage'
 		'kp_upload'        : 'component/kp/kpUpload'
@@ -276,7 +277,7 @@ require.config {
 		]
 
 		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
-		"component/Validation"              : [ "validation", "component/trustedadvisor/main" ]
+		"component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
 		"component/StateStatus"             : ["state_status"]
 		"component/sgrule/SGRulePopup"      : []
 		"component/stateeditor/stateeditor" : []

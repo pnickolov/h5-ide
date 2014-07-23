@@ -2,7 +2,7 @@
 This file use for validate component about state.
 ###
 
-define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, MC, resultVO, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper ) ->
 
     i18n = Helper.i18n.short()
     __wrap = ( method ) ->

@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' , '../result_vo' ], ( constant, $, MC, lang, ebsService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( constant, $, MC, lang, ebsService ) ->
 
 	isSnapshotExist = (callback) ->
 

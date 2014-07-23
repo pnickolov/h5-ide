@@ -11,7 +11,7 @@ define [
   "ResDiff"
   'constant'
   'event'
-  'component/trustedadvisor/main'
+  'component/trustedadvisor/gui/main'
   "CloudResources"
   "UI.notification"
   "backbone"

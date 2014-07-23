@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_service', '../../helper', '../result_vo' ], ( constant, $, MC, lang, cgwService, Helper ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_service', 'TaHelper' ], ( constant, $, MC, lang, cgwService, Helper ) ->
 
 	i18n = Helper.i18n.short()
 

@@ -489,8 +489,24 @@ define [ '../base/view'
 
         changeProvisionedIOPS: (event) ->
 
-            value = $(event.target).val()
-            @resModel.setIops Number(value)
+            that = this
+            target = $(event.target)
+            value = target.val()
+            iops = Number(value)
+
+            storage = Number($('#property-dbinstance-storage').val())
+            
+            minIOPS = Math.max(1000, storage * 3)
+            maxIOPS = storage * 10
+
+            target.parsley 'custom', (val) ->
+                iops = Number(val)
+                if iops >= minIOPS and iops <= maxIOPS
+                    return null
+                return "Require #{minIOPS}-#{maxIOPS} IOPS"
+
+            if target.parsley 'validate'
+                @resModel.setIops Number(iops)
 
         changeUserName: (event) ->
 

@@ -68,7 +68,7 @@
                 <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" min="100" max="2000" required="">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
-            <label>RDS MySQL supports IOPS / GB ratios between 3 and 10</label>
+            <label class="property-dbinstance-iops-info">{{iopsInfo}}</label>
         </section>
 
         {{#if isAppEdit}}
@@ -213,15 +213,12 @@
             </section>
             <section class="property-control-group">
                 <label>Duration:</label>
-                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-duration">
-                    <div class="selection">{{backup.duration}}</div>
-                    <ul class="dropdown" tabindex="-1">
-                        <li class="item" data-id="0.5">0.5</li>
-                        <li class="item" data-id="1">1</li>
-                        <li class="item" data-id="1.5">1.5</li>
-                        <li class="item" data-id="2">2</li>
-                        <li class="item" data-id="2.5">2.5</li>
-                        <li class="item" data-id="3">3</li>
+                <div class="selectbox shorter-dropdown" id="property-dbinstance-backup-window-duration">
+                    <div class="selection"></div>
+                    <ul class="dropdown">
+                        {{#each backupDurations}}
+                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{value}}">{{value}}</li>
+                        {{/each}}
                     </ul>
                 </div>
             </section>
@@ -274,14 +271,11 @@
             <section class="property-control-group" >
                 <label>Duration:</label>
                 <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-duration">
-                    <div class="selection">{{maintenance.duration}}</div>
+                    <div class="selection"></div>
                     <ul class="dropdown" tabindex="-1">
-                        <li class="item" data-id="0.5">0.5</li>
-                        <li class="item" data-id="1">1</li>
-                        <li class="item" data-id="1.5">1.5</li>
-                        <li class="item" data-id="2">2</li>
-                        <li class="item" data-id="2.5">2.5</li>
-                        <li class="item" data-id="3">3</li>
+                        {{#each maintenanceDurations}}
+                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{value}}">{{value}}</li>
+                        {{/each}}
                     </ul>
                 </div>
                 <label for="property-dbinstance-maintenance-window-duration">hour(s)</label>

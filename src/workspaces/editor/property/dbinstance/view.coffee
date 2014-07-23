@@ -33,15 +33,13 @@ define [ '../base/view'
             'change #property-dbinstance-backup-period': 'changeBackupPeriod'
 
             'click #property-dbinstance-backup-window-select input': 'changeBackupOption'
-            'change #property-dbinstance-backup-window-start-hour': 'changeBackupTime'
-            'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
-            'change #property-dbinstance-backup-window-duration': 'changeBackupTime'
+            'change #property-dbinstance-backup-window-start-time': 'changeBackupTime'
+            'OPTION_CHANGE #property-dbinstance-backup-window-duration': 'changeBackupTime'
 
             'click #property-dbinstance-maintenance-window-select input': 'changeMaintenanceOption'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
+            'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-start-time': 'changeMaintenanceTime'
 
             'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
             'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
@@ -51,6 +49,13 @@ define [ '../base/view'
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+        durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
+
+        genDuration: ( selectedValue ) ->
+            _.map @durationOpertions, ( value ) ->
+                value: value, selected: value is selectedValue
+
 
         changeCharset: ( event, value ,data ) ->
             @resModel.set 'characterSetName', value
@@ -78,9 +83,7 @@ define [ '../base/view'
             @renderLVIA()
 
         _getTimeData: (timeStr) ->
-
             try
-
                 timeAry = timeStr.split('-')
                 startTimeStr = timeAry[0]
                 endTimeStr = timeAry[1]
@@ -181,7 +184,7 @@ define [ '../base/view'
             # hour = Number($('#property-dbinstance-backup-window-start-hour').val())
             # min = Number($('#property-dbinstance-backup-window-start-minute').val())
             startTime = $('#property-dbinstance-backup-window-start-time').val()
-            duration = Number($('#property-dbinstance-backup-window-duration').val())
+            duration = Number($('#property-dbinstance-backup-window-duration .selection').text())
             timeStr = @_getTimeStr(startTime, duration)
             @resModel.set('backupWindow', timeStr)
 
@@ -190,7 +193,7 @@ define [ '../base/view'
             # hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
             # min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
             startTime = $('#property-dbinstance-maintenance-window-start-time').val()
-            duration = Number($('#property-dbinstance-maintenance-window-duration').val())
+            duration = Number($('#property-dbinstance-maintenance-window-duration .selection').text())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
             timeStr = @_getTimeStr(startTime, duration, week)
             @resModel.set('maintenanceWindow', timeStr)
@@ -215,6 +218,8 @@ define [ '../base/view'
 
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
+            attr.backupDurations = @genDuration backupTime.duration
+            attr.maintenanceDurations = @genDuration maintenanceTime.duration
 
             attr.engineType = @resModel.engineType()
             _.extend attr, {
@@ -234,7 +239,7 @@ define [ '../base/view'
             attr.classes  = lvi[2]
 
             template = template_instance
-            
+
             # if replica
             if @resModel.master()
                 if @isAppEdit
@@ -250,6 +255,12 @@ define [ '../base/view'
                 attr.isOracle = true
                 attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
                     charset: oc, selected: oc is attr.characterSetName
+
+            # iops info
+            if @resModel.isSqlserver()
+                attr.iopsInfo = 'Requires a fixed ratio of 10 IOPS / GB storage'
+            else
+                attr.iopsInfo = 'Supports IOPS / GB ratios between 3 and 10'
 
             # render
             @$el.html template attr
@@ -269,7 +280,19 @@ define [ '../base/view'
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
 
+            @bindParsley()
+
             attr.name
+
+        bindParsley: ->
+            validateStartTime = (val) ->
+                if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
+                        'Format error, the right format is 00:00.'
+
+            $('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
+            $('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
+
+
 
         renderOptionGroup: ->
 
@@ -418,7 +441,7 @@ define [ '../base/view'
                     @resModel.setName value
                     @setTitle value
                     @resModel.set 'instanceId', value
-            
+
             null
 
         changeMutilAZ: (event) ->
@@ -451,7 +474,7 @@ define [ '../base/view'
             that = this
             target = $(event.target)
             value = target.val()
-            
+
             target.parsley 'custom', (val) ->
 
                 storage = Number(value)
@@ -475,13 +498,30 @@ define [ '../base/view'
             if target.parsley 'validate'
                 that.resModel.set 'allocatedStorage', Number(value)
 
+        _getIOPSRange: (storage) ->
+
+            if @resModel.isSqlserver()
+                minIOPS = maxIOPS = storage * 10
+            else
+                minIOPS = Math.max(1000, storage * 3)
+                maxIOPS = storage * 10
+
+            return {
+                minIOPS: minIOPS
+                maxIOPS: maxIOPS
+            }
+
         changeProvisionedIOPSCheck: (event) ->
 
             value = event.target.checked
+
+            storage = Number($('#property-dbinstance-storage').val())
+            iopsRange = @_getIOPSRange(storage)
+
             if value
                 $('.property-dbinstance-iops-value-section').show()
-                $('#property-dbinstance-iops-value').val('1000')
-                @resModel.setIops 1000
+                $('#property-dbinstance-iops-value').val(iopsRange.minIOPS)
+                @resModel.setIops iopsRange.minIOPS
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
@@ -495,15 +535,16 @@ define [ '../base/view'
             iops = Number(value)
 
             storage = Number($('#property-dbinstance-storage').val())
-            
-            minIOPS = Math.max(1000, storage * 3)
-            maxIOPS = storage * 10
+            iopsRange = @_getIOPSRange(storage)
 
             target.parsley 'custom', (val) ->
                 iops = Number(val)
-                if iops >= minIOPS and iops <= maxIOPS
+                if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
-                return "Require #{minIOPS}-#{maxIOPS} IOPS"
+                if iopsRange.minIOPS is iopsRange.maxIOPS
+                    return "Require #{iopsRange.minIOPS} IOPS"
+                else
+                    return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
 
             if target.parsley 'validate'
                 @resModel.setIops Number(iops)
@@ -614,12 +655,12 @@ define [ '../base/view'
                 @resModel.set('maintenanceWindow', '')
 
         changeBackupTime: (event) ->
-
-            @_setBackupTime()
+            if $('#property-dbinstance-backup-window-start-time').parsley 'validate'
+                @_setBackupTime()
 
         changeMaintenanceTime: (event) ->
-
-            @_setMaintenanceTime()
+            if $('#property-dbinstance-maintenance-window-start-time').parsley 'validate'
+                @_setMaintenanceTime()
 
     }
 

@@ -33,15 +33,13 @@ define [ '../base/view'
             'change #property-dbinstance-backup-period': 'changeBackupPeriod'
 
             'click #property-dbinstance-backup-window-select input': 'changeBackupOption'
-            'change #property-dbinstance-backup-window-start-hour': 'changeBackupTime'
-            'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
+            'change #property-dbinstance-backup-window-start-time': 'changeBackupTime'
             'OPTION_CHANGE #property-dbinstance-backup-window-duration': 'changeBackupTime'
 
             'click #property-dbinstance-maintenance-window-select input': 'changeMaintenanceOption'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-start-time': 'changeMaintenanceTime'
 
             'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
             'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
@@ -276,7 +274,19 @@ define [ '../base/view'
 
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
 
+            @bindParsley()
+
             attr.name
+
+        bindParsley: ->
+            validateStartTime = (val) ->
+                if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
+                        'Format error, the right format is 00:00.'
+
+            $('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
+            $('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
+
+
 
         renderOptionGroup: ->
 
@@ -502,7 +512,7 @@ define [ '../base/view'
             iops = Number(value)
 
             storage = Number($('#property-dbinstance-storage').val())
-            
+
             minIOPS = Math.max(1000, storage * 3)
             maxIOPS = storage * 10
 
@@ -621,12 +631,12 @@ define [ '../base/view'
                 @resModel.set('maintenanceWindow', '')
 
         changeBackupTime: (event) ->
-
-            @_setBackupTime()
+            if $('#property-dbinstance-backup-window-start-time').parsley 'validate'
+                @_setBackupTime()
 
         changeMaintenanceTime: (event) ->
-
-            @_setMaintenanceTime()
+            if $('#property-dbinstance-maintenance-window-start-time').parsley 'validate'
+                @_setMaintenanceTime()
 
     }
 

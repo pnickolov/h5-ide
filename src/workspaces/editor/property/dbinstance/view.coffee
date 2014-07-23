@@ -35,11 +35,11 @@ define [ '../base/view'
             'click #property-dbinstance-backup-window-select input': 'changeBackupOption'
             'change #property-dbinstance-backup-window-start-hour': 'changeBackupTime'
             'change #property-dbinstance-backup-window-start-minute': 'changeBackupTime'
-            'change #property-dbinstance-backup-window-duration': 'changeBackupTime'
+            'OPTION_CHANGE #property-dbinstance-backup-window-duration': 'changeBackupTime'
 
             'click #property-dbinstance-maintenance-window-select input': 'changeMaintenanceOption'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
-            'change #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
+            'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-hour': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-minute': 'changeMaintenanceTime'
 
@@ -51,6 +51,13 @@ define [ '../base/view'
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+        durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
+
+        genDuration: ( selectedValue ) ->
+            _.map @durationOpertions, ( value ) ->
+                value: value, selected: value is selectedValue
+
 
         changeCharset: ( event, value ,data ) ->
             @resModel.set 'characterSetName', value
@@ -78,9 +85,7 @@ define [ '../base/view'
             @renderLVIA()
 
         _getTimeData: (timeStr) ->
-
             try
-
                 timeAry = timeStr.split('-')
                 startTimeStr = timeAry[0]
                 endTimeStr = timeAry[1]
@@ -181,7 +186,7 @@ define [ '../base/view'
             # hour = Number($('#property-dbinstance-backup-window-start-hour').val())
             # min = Number($('#property-dbinstance-backup-window-start-minute').val())
             startTime = $('#property-dbinstance-backup-window-start-time').val()
-            duration = Number($('#property-dbinstance-backup-window-duration').val())
+            duration = Number($('#property-dbinstance-backup-window-duration .selection').text())
             timeStr = @_getTimeStr(startTime, duration)
             @resModel.set('backupWindow', timeStr)
 
@@ -190,7 +195,7 @@ define [ '../base/view'
             # hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
             # min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
             startTime = $('#property-dbinstance-maintenance-window-start-time').val()
-            duration = Number($('#property-dbinstance-maintenance-window-duration').val())
+            duration = Number($('#property-dbinstance-maintenance-window-duration .selection').text())
             week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
             timeStr = @_getTimeStr(startTime, duration, week)
             @resModel.set('maintenanceWindow', timeStr)
@@ -215,6 +220,8 @@ define [ '../base/view'
 
             attr.backup = backupTime
             attr.maintenance = maintenanceTime
+            attr.backupDurations = @genDuration backupTime.duration
+            attr.maintenanceDurations = @genDuration maintenanceTime.duration
 
             attr.engineType = @resModel.engineType()
             _.extend attr, {
@@ -234,7 +241,7 @@ define [ '../base/view'
             attr.classes  = lvi[2]
 
             template = template_instance
-            
+
             # if replica
             if @resModel.master()
                 if @isAppEdit
@@ -418,7 +425,7 @@ define [ '../base/view'
                     @resModel.setName value
                     @setTitle value
                     @resModel.set 'instanceId', value
-            
+
             null
 
         changeMutilAZ: (event) ->
@@ -451,7 +458,7 @@ define [ '../base/view'
             that = this
             target = $(event.target)
             value = target.val()
-            
+
             target.parsley 'custom', (val) ->
 
                 storage = Number(value)

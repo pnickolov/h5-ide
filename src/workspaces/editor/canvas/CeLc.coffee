@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CpVolume" ], ( CanvasElement, constant, CanvasManager, lang, VolumePopup )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CpVolume", "./CpInstance", "CloudResources" ], ( CanvasElement, constant, CanvasManager, lang, VolumePopup, InstancePopup, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -18,8 +18,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     defaultSize : [9,9]
 
     events :
-      "mousedown .volume-image" : "showVolume"
-      "click .volume-image"     : ()-> false
+      "mousedown .server-number-group" : "showGroup"
+      "mousedown .volume-image"        : "showVolume"
+      "click .volume-image"            : "suppressEvent"
+      "click .server-number-group"     : "suppressEvent"
+
+    suppressEvent : ()-> false
 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @render
@@ -111,6 +115,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
           svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
           # Volume Label
           svg.plain( "" ).move(45, 58).classes('volume-number')
+
+          # Servergroup
+          svg.group().add([
+            svg.rect(20,14).move(36,2).radius(3).classes("server-number-bg")
+            svg.plain("0").move(46,13).classes("server-number")
+          ]).classes("server-number-group")
         ]).classes("canvasel fixed AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
         @addView( svgEl )
@@ -139,6 +149,20 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         volumeImage = 'ide/icon/instance-volume-not-attached.png'
       CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
+
+      @$el.children(".server-number-group").hide()
+      if m.design().modeIsApp()
+        @$el.children(".server-number-group").show()
+        asgCln = CloudResources( constant.RESTYPE.ASG, m.design().region() )
+        for el in @$el
+          asg = @canvas.getItem( el.parentNode.getAttribute("data-id") ).model
+          asg = asgCln.get (asg.get("originalAsg") || asg).get("appId")
+          if not asg then continue
+          asg = asg.attributes
+          if asg.Instances?.length
+            numberGroup = $( el ).children(".server-number-group").show()
+            CanvasManager.update numberGroup.children("text"), asg.Instances.length
+      return
 
 
     destroy : ( selectedDomElement )->
@@ -170,6 +194,41 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         onRemove   : ()-> _.defer ()-> self.volPopup = null; return
       }
       false
+
+    showGroup : ( evt )->
+      insCln  = CloudResources( constant.RESTYPE.INSTANCE, @model.design().region() )
+
+      name = @model.get("name")
+      gm   = []
+      icon = @iconUrl()
+      for m, idx in @model.groupMembers()
+        ins = insCln.get( m.appId )
+        if not ins
+          console.warn "Cannot find instance of `#{m.appId}`"
+          continue
+        ins = ins.attributes
+
+        volume = ins.blockDeviceMapping.length
+        for bdm in ins.blockDeviceMapping
+          if bdm.deviceName is ins.rootDeviceName
+            --volume
+            break
+
+        gm.push {
+          name   : "#{name}-#{idx}"
+          id     : m.appId
+          icon   : icon
+          volume : volume
+          state  : ins.instanceState?.name || "unknown"
+        }
+
+      new InstancePopup {
+        attachment : $( evt.currentTarget ).closest(".canvasel")[0]
+        host       : @model
+        models     : gm
+        canvas     : @canvas
+      }
+      return
 
   }, {
     render : ( canvas )->

@@ -19,7 +19,7 @@
     <i class="vpp-ins-state tooltip status-{{state}}" data-tooltip="{{state}}"></i>
     <img src="/assets/images/{{icon}}" width="39" height="27">
     <div class="vpp-ins-vol">{{volume}}</div>
-    <div class="vpp-ins-name">{{name}}</div> </li>{{/each}}
+    <div class="vpp-ins-name">{{id}}</div> </li>{{/each}}
 </ul>
 {{else}}
 <div class="instance-pp-empty">No instances</div>

@@ -14,7 +14,7 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
     initialize : ()->
       CanvasPopup.prototype.initialize.apply this, arguments
-      @canvas.deselectItem( true )
+      @clickInstance( { currentTarget : @$el.find(".vpp-instance")[0] })
       return
 
     content : ()->

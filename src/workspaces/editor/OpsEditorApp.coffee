@@ -1,7 +1,7 @@
 
 define [
-  "./StackEditor"
-  "./AppView"
+  "./OpsEditorStack"
+  "./OpsViewApp"
   "ResDiff"
   "OpsModel"
   "Design"

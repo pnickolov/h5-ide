@@ -17,17 +17,17 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
       return
 
     content : ()->
-      if @models[0] and @models[0].get
+      data = @models || []
+
+      if data[0] and data[0].get
         data = []
-        for volume in @models || []
+        for volume in @models
           data.push {
             id       : volume.get("id")
             name     : volume.get("name")
             size     : volume.get("volumeSize")
             snapshot : volume.get("snapshotId")
           }
-      else
-        data = @models
 
       TplPopup.volume data
 

@@ -625,16 +625,18 @@ define [ '../base/view'
                 value = $target.val()
             else if value
                 #invokie by manual
-                $("#property-dbinstance-backup-period").val(value)
+                $("#property-dbinstance-backup-period").val( value ).parsley 'validate'
             else
                 console.error "at least one value in event or value"
                 return null
 
             #show/hide input
             if value isnt '0'
-                Canvon("#property-dbinstance-auto-backup-group").removeClass('hide')
+                Canvon("#group-dbinstance-backup-period").removeClass('hide')
+                $('#property-dbinstance-auto-backup-group').removeClass('hide')
             else
-                Canvon("#property-dbinstance-auto-backup-group").addClass('hide')
+                Canvon("#group-dbinstance-backup-period").addClass('hide')
+                $('#property-dbinstance-auto-backup-group').addClass('hide')
 
             #update model
             @resModel.autobackup Number(value) #setter
@@ -648,6 +650,7 @@ define [ '../base/view'
             else
                 $backupGroup.hide()
                 @resModel.set('backupWindow', '')
+
 
         changeMaintenanceOption: (event) ->
 

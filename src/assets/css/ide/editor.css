@@ -744,6 +744,8 @@
     cursor: nesw-resize; }
   .group-resizer.bottom-right {
     cursor: nwse-resize; }
+  .canvas-view.app .group-resizer {
+    display: none; }
 
 .canvasel:hover > .node-background {
   fill-opacity: 0.5;
@@ -809,6 +811,8 @@
 /* port style */
 .port {
   stroke-width: 0; }
+  .canvas-view.app .port {
+    pointer-events: none; }
 
 .port-blue {
   fill: #6DAEFE;

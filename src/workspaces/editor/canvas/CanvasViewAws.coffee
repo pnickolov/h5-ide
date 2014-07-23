@@ -66,7 +66,11 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
       @__selectedVolume = volumeId
       false
 
+    isReadOnly : ()-> @design.modeIsApp()
+
     delSelectedItem : ()->
+      if isReadOnly() then return false
+
       if @__selectedVolume
         s = @__selectedVolume
         @__selectedVolume = null

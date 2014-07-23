@@ -40,6 +40,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     onConnectionChange : ( cn )-> @render() if cn.type is "EniAttachment"
 
     toggleEip : ()->
+      if @canvas.design.modeIsApp() then return false
+
       toggle = !@model.hasPrimaryEip()
       @model.setPrimaryEip( toggle )
 

@@ -60,6 +60,8 @@ define [
       return
 
     toggleEip : ()->
+      if @canvas.design.modeIsApp() then return false
+
       toggle = !@model.hasPrimaryEip()
       @model.setPrimaryEip( toggle )
 

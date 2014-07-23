@@ -18,7 +18,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     size : ()-> { width : 13, height : 13 }
 
     dragExpand : ( evt )->
-      @canvas.dragItem( evt, { onDrop : @onDropExpand } )
+      if not @canvas.design.modeIsApp()
+        @canvas.dragItem( evt, { onDrop : @onDropExpand } )
       false
 
     onDropExpand : ( evt, dataTransfer )->

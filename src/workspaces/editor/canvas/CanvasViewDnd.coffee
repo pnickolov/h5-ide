@@ -331,7 +331,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     if evt.metaKey
       @__dragCanvasMouseDown( evt )
     else
-      @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
+      if not @isReadOnly()
+        @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
     false
 
 

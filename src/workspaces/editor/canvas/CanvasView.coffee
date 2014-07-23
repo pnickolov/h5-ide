@@ -72,6 +72,8 @@ define [
       @reload()
       return
 
+    isReadOnly : ()-> false
+
     remove : ()->
       for type, popup of @__popupCache
         if popup then popup.remove()
@@ -130,6 +132,8 @@ define [
       true
 
     moveSelectedItem : ( deltaX, deltaY )->
+      if @isReadOnly() then return
+
       item = @getSelectedItem()
       if not item then return
       rect = item.effectiveRect()
@@ -148,7 +152,8 @@ define [
     getSelectedComp : ()-> @getSelectedItem()?.model
 
     delSelectedItem : ()->
-      if not @__selected then return null
+      if @isReadOnly() or not @__selected then return
+
       @getItem( @__selected.getAttribute("data-id") ).destroy( @__selected )
 
     deleteItem : ( itemOrId )->

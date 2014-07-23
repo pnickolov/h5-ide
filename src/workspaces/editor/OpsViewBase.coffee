@@ -13,12 +13,6 @@ define [
   "UI.selectbox"
 ], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
 
-  # LEGACY code
-  # Should remove this in the future.
-  # $('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close)
-  # $(document.body).on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown)
-
-
   ### Monitor keypress ###
   $(document).on 'keydown', ( evt )->
     if $(evt.target).is("input, textarea") or evt.target.contentEditable is "true"
@@ -97,9 +91,7 @@ define [
     constructor : ( options )->
       _.extend this, options
 
-      console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
-      @setElement $( CanvasTpl({}) ).appendTo("#main").show()[0]
-      @$el.attr("data-ws", @workspace.id)
+      @setElement $( CanvasTpl() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
       opt = {
         workspace : @workspace
@@ -161,6 +153,7 @@ define [
       return
 
     recover : ()->
+      @$el.show()
       @resourcePanel.recalcAccordion()
       @$el.attr("id", "OpsEditor")
 

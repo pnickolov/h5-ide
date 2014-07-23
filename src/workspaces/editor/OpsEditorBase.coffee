@@ -155,7 +155,6 @@ define [
         @__initEditor()
       else
         @design.use()
-        @view.$el.show()
         @view.recover()
       return
 

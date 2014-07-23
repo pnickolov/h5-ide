@@ -60,6 +60,9 @@ define [
         height: canvasSize[1] * CanvasView.GRID_HEIGHT
       })
 
+      @__popupCache = {}
+      @__itemMap    = {}
+
       @__scale = 1
 
       @$el.nanoScroller()
@@ -68,6 +71,12 @@ define [
 
       @reload()
       return
+
+    remove : ()->
+      popup.remove() for type, popup of @__popupCache
+      item.remove()  for id,   item  of @__itemMap
+
+      Backbone.View.prototype.remove.apply this, arguments
 
     updateSize : ()->
       self = @
@@ -272,11 +281,16 @@ define [
     reload : ()->
       console.log "Reloading svg canvas."
 
+      popup.remove() for type, popup of @__popupCache
+      @__popupCache = {}
+
+      item.remove() for id, item of @__itemMap
+      @__itemMap = {}
+
       @initializing = true
 
       @recreateStructure()
 
-      @__itemMap = {}
       @__itemLineMap  = {}
       @__itemNodeMap  = {}
       @__itemTopLevel = []

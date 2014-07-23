@@ -15,7 +15,6 @@ define [ "backbone" ], ()->
       console.info "Showing canvas popup"
 
       canvas = data.canvas
-      if not canvas.__popupCache then canvas.__popupCache = {}
       if canvas.__popupCache[ @type ] then canvas.__popupCache[ @type ].remove()
       canvas.__popupCache[ @type ] = @
 

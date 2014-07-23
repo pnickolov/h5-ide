@@ -79,19 +79,10 @@ define ['CloudResources'], (CloudResources)->
         tootipStr = 'Associate Elastic IP to primary IP'
         imgUrl    = 'ide/icon/eip-off.png'
 
-      if targetModel.design().modeIsApp() or targetModel.design().modeIsAppView()
-        resource_list = CloudResources(targetModel.type, targetModel.design().region())
-        res = resource_list.get(targetModel.get('appId'))
-        if toggle and res
-          res = res?.toJSON()
-          if res.privateIpAddressesSet and res.privateIpAddressesSet.item and res.privateIpAddressesSet.item.length
-            res = res.privateIpAddressesSet.item[0]
-            if res.association and res.association
-              tootipStr = res.association.publicIp || ""
-          else
-            tootipStr = res.ipAddress || ""
-        else
-          tootipStr = ""
+      if targetModel.design().modeIsApp()
+        if targetModel.getEmbedEni then targetModel = targetModel.getEmbedEni()
+        ip = (targetModel.get("ips") || [])[0]
+        tootipStr = ip?.eipData?.publicIp || ""
 
       node.setAttribute "data-tooltip", tootipStr
 

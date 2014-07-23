@@ -463,6 +463,7 @@ define [
         template: MC.template.loadingSpiner
         disableClose: true
 
+      @updateModal.tpl.find(".modal-footer").hide()
       DBInstances.fetchForce().then ->
         notAvailableDB = DBInstances.filter (e)->
           e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
@@ -478,16 +479,17 @@ define [
           e.attributes.DBInstanceStatus isnt "available"
 
         that.updateModal.tpl.children().css 'width', "450px"
+        .find(".modal-footer").show()
         that.updateModal.tpl.find(".modal-body").html( MC.template.updateApp {
           isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
           notReadyDB: removeListNotReady
           removeList: removeList
         })
-        that.updateModal.tpl.find('.modal-confirm').text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
 
         if removeListNotReady?.length
           that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
-            that.updateModal.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
+            that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
         that.updateModal.on 'confirm', =>
           if not App.user.hasCredential()
@@ -506,7 +508,10 @@ define [
 
         that.renderKpDropdown(that.updateModal)
         TA.loadModule('stack').then =>
-          @updateModal and that.updateModal.toggleConfirm false
+          that.updateModal and that.updateModal.toggleConfirm false
+        , =>
+          that.updateModal and that.updateModal.toggleConfirm true
+          that.updateModal and that.updateModal.tpl.find(".modal-confirm").off 'change'
         return
 
     opsOptionChanged: ->

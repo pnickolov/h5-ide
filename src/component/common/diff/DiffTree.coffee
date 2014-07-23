@@ -27,7 +27,7 @@ define ['constant'], (constant) ->
                 '*.resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
                 '*.resource.Attachment.AttachmentId': true
                 #DBINSTANCE
-                'DBINSTANCE.resource.Iops': true
+                #'DBINSTANCE.resource.Iops': true
                 'DBINSTANCE.resource.MasterUserPassword': true
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true

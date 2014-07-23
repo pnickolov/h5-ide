@@ -221,6 +221,12 @@ define [
         for pg in dataItem.DBParameterGroups
           pg.DBParameterGroupName = pg.DbparameterGroupName
           delete pg.DbparameterGroupName
+        #convert PendingModifiedValues
+        if dataItem.PendingModifiedValues
+          dataItem.PendingModifiedValues.DBInstanceClass      = dataItem.PendingModifiedValues.DbinstanceClass
+          dataItem.PendingModifiedValues.DBInstanceIdentifier = dataItem.PendingModifiedValues.DbinstanceIdentifier
+          delete dataItem.PendingModifiedValues.DbinstanceClass
+          delete dataItem.PendingModifiedValues.DbinstanceIdentifier
         dataItem.id  = dataItem.DBInstanceIdentifier #use name as id
         dataItem.Name = dataItem.DBName
         dataItem.sbgId = dataItem.DBSubnetGroup.DBSubnetGroupName #subnetGroup

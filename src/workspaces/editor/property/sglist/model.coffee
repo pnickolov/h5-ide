@@ -18,7 +18,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 				if parent_model.isSGListReadOnly
 					readonly = parent_model.isSGListReadOnly()
 
-			resource_id = parent_model.get("uid")
+			resource_id = @resId
 			resource = design.component( resource_id )
 
 			if resource
@@ -122,15 +122,13 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			SgAsso = Design.modelClassForType( "SgAsso" )
 			design = Design.instance()
 
-			uid = @parent_model.get("uid")
-
-			console.assert( uid, "Resource not found when assigning SG" )
+			console.assert( @resId, "Resource not found when assigning SG" )
 
 			# If an old SgAsso is created, new will return that old SgAsso
-			asso = new SgAsso( design.component( uid ), design.component( sgUID ) )
+			asso = new SgAsso( design.component( @resId ), design.component( sgUID ), null, {manual:true} )
 
 			if sgChecked is false
-				asso.remove()
+				asso.remove({manual:true})
 			null
 
 		deleteSG : (sgUID) ->
@@ -152,7 +150,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 		createNewSG : ()->
 			SgModel = Design.modelClassForType( constant.RESTYPE.SG )
 			model = new SgModel()
-			component = Design.instance().component( @parent_model.get("uid") )
+			component = Design.instance().component( @resId )
 			if component
 				SgAsso = Design.modelClassForType("SgAsso")
 				new SgAsso( model, component )

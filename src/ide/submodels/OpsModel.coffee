@@ -378,7 +378,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw err
 
     # Terminate the app, returns a promise
-    terminate : ( force = false )->
+    terminate : ( force = false , create_db_snapshot = false)->
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
@@ -390,6 +390,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id      : @get("id")
         app_name    : @get("name")
         flag        : force
+        create_snapshot: create_db_snapshot
       }).then ()->
         if force then self.__destroy()
         return

@@ -37,8 +37,9 @@
             text: "Cancel"
           },
           hasFooter: !this.option.disableFooter,
-          hasScroll: !!this.option.maxHeight,
-          compact: this.option.compact
+          hasScroll: !!this.option.maxHeight || this.option.hasScroll,
+          compact: this.option.compact,
+          mode: this.option.mode || "normal"
         }));
         body = this.tpl.find(".modal-body");
         if (typeof this.option.template === "object") {
@@ -56,7 +57,7 @@
         }
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
-        if (modalGroup.length === 1) {
+        if (modalGroup.length === 1 || this.option.mode === "panel") {
           this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
@@ -84,15 +85,15 @@
         } else if (modalGroup.length <= 1) {
           modalGroup = [];
           this.trigger('close', this);
-          this.trigger('closed', this);
-          this.tpl.addClass('bounce');
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
+          this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
               _this.tpl.remove();
-              return _this.wrap.remove();
+              _this.wrap.remove();
+              return _this.trigger('closed', _this);
             };
           })(this), this.option.delay || 300);
           this.wrap.fadeOut(this.option.delay || 300);
@@ -168,7 +169,7 @@
             }
           };
         })(this));
-        if (!this.option.disableDrag) {
+        if (!(this.option.disableDrag || (this.option.mode === 'panel'))) {
           diffX = 0;
           diffY = 0;
           dragable = false;
@@ -237,6 +238,9 @@
 
       Modal.prototype.resize = function(slideIn) {
         var height, left, top, width, windowHeight, windowWidth, _ref, _ref1;
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         windowWidth = $(window).width();
         windowHeight = $(window).height();
         width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();
@@ -321,6 +325,9 @@
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
+          if (toRemove.option.mode === 'panel') {
+            toRemove.tpl.addClass('bounce');
+          }
           toRemove.isClosed = true;
           this.getLast().childModal = null;
           if (typeof (_base = toRemove.option).onClose === "function") {
@@ -341,25 +348,47 @@
         return this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
       };
 
+      Modal.prototype.setContent = function(content) {
+        var selector;
+        if (this.option.hasScroll || this.option.maxHeight) {
+          selector = ".scroll-content";
+        } else {
+          selector = ".modal-body";
+        }
+        return this.tpl.find(selector).html(content);
+      };
+
       Modal.prototype._fadeOut = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 100);
       };
 
       Modal.prototype._fadeIn = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 100);
       };
 
       Modal.prototype._slideIn = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 300);
       };
 
       Modal.prototype._slideOut = function() {
+        if (this.option.mode === 'panel') {
+          return false;
+        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 300);

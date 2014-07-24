@@ -67,7 +67,7 @@ define [
         setTimeout () ->
             MC.ta.validAll()
             btnDom.text(currentText)
-            require [ 'component/trustedadvisor/main' ],
+            require [ 'component/trustedadvisor/gui/main' ],
               ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
         , 50
 

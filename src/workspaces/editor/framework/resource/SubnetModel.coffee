@@ -218,6 +218,8 @@ define [ "constant",
 
     isIPInSubnet : (ipAddr, subnetCIDR) ->
 
+      isValid = true
+
       subnetIPAry = subnetCIDR.split('/')
       subnetSuffix = Number(subnetIPAry[1])
       subnetAddrAry = subnetIPAry[0].split('.')
@@ -250,9 +252,16 @@ define [ "constant",
         null
 
       if ipAddrBinStrDivAnti in filterAry
-        return false
+        return {
+          isValid: false,
+          isReserved: true
+        }
 
-      subnetIPBinStrDiv is ipAddrBinStrDiv
+      isValid = subnetIPBinStrDiv is ipAddrBinStrDiv
+      return {
+          isValid: isValid,
+          isReserved: false
+      }
 
     isCidrConflict : (ipCidr1, ipCidr2) ->
       ipCidr1BinStr = MC.getCidrBinStr(ipCidr1)

@@ -38,6 +38,9 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		"AWS.CloudWatch.CloudWatch"					: "AlarmArn"
 		"AWS.SNS.Subscription"						: ""
 		"AWS.SNS.Topic"								: "TopicArn"
+		"AWS.RDS.DBSubnetGroup"                     : "DBSubnetGroupName"
+		"AWS.RDS.DBInstance"                        : "DBInstanceIdentifier"
+		"AWS.RDS.OptionGroup"                       : "OptionGroupName"
 	}
 
 	# A short version
@@ -70,6 +73,18 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		CW           : 'AWS.CloudWatch.CloudWatch'
 		SUBSCRIPTION : 'AWS.SNS.Subscription'
 		TOPIC        : 'AWS.SNS.Topic'
+
+		DBSBG        : 'AWS.RDS.DBSubnetGroup'
+		DBINSTANCE   : 'AWS.RDS.DBInstance'
+		DBPARAM      : 'AWS.RDS.Parameter'
+		DBPG         : 'AWS.RDS.ParameterGroup'
+		DBSNAP       : 'AWS.RDS.Snapshot'
+		DBES         : 'AWS.RDS.EventSubscription'
+		DBOG         : 'AWS.RDS.OptionGroup'
+		DBENGINE     : 'AWS.RDS.DBEngineVersion'
+
+
+
 
 	RESNAME =
 		AZ           : "Availability Zone"
@@ -134,6 +149,17 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		AWS_SNS_Subscription                      : 'sns_sub'
 		AWS_SNS_Topic                             : 'sns_top'
 	}
+
+	DBENGINE =
+		MYSQL     : "mysql"
+		ORA_SE1   : "oracle-se1"
+		ORA_SE    : "oracle-se"
+		ORA_EE    : "oracle-ee"
+		SQLSRV_EE : "sqlserver-ee"
+		SQLSRV_SE : "sqlserver-se"
+		SQLSRV_EX : "sqlserver-ex"
+		SQLSRV_WEB: "sqlserver-web"
+		POSTGRES  : "postgres"
 
 	INSTANCE_STATES = {
 		'pending'      : 0
@@ -243,6 +269,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 	REGEXP =
 		'stateEditorReference'		: /@\{([A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12})\.\w+\}/g
 		'stateEditorOriginReference': /@\{(([\w-]+)\.(([\w-]+(\[\d+\])?)|state.[\w-]+))\}/g
+		'stateEditorRefOnly'        : /^@\{(([\w-]+)\.(([\w-]+(\[\d+\])?)|state.[\w-]+))\}$/
 		'uid'						: /[A-Z0-9]{8}-([A-Z0-9]{4}-){3}[A-Z0-9]{12}/g
 
 
@@ -294,7 +321,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-
+	DBENGINE              : DBENGINE
 	INSTANCE_STATES         : INSTANCE_STATES
 
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE

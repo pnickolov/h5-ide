@@ -1,0 +1,26 @@
+<!-- {{app}} -->
+<article class="property-app">
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group">
+        <dl class="dl-vertical">
+            <dt>{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_NAME" }}</dt>
+            <dd>{{appId}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_DESC" }}</dt>
+            <dd>{{description}}</dd>
+        </dl>
+    </div>
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_MEMBERS" }}</div>
+    <div class="option-group">
+        {{#each azSb}}
+        <div class="option-group-category">
+            {{az}}
+        </div>
+            {{#each subnets}}
+            <dl class="dl-vertical">
+                <dt>{{name}}</dt>
+                <dd>({{cidr}})</dd>
+            </dl>
+            {{/each}}
+        {{/each}}
+    </div>
+</article>

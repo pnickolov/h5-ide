@@ -84,8 +84,9 @@
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
+      padding-bottom: 5px;
       overflow: auto; }
-    .modal-toolbar .slidebox.show + .table-head-fix {
+    .modal-toolbar .slidebox.show + .will-be-covered {
       opacity: .4;
       pointer-events: none;
       -webkit-transition: opacity .2s;
@@ -100,6 +101,8 @@
       width: 168px;
       display: inline-block;
       color: #ccc; }
+    .modal-toolbar .slidebox .content .checkbox > label, .modal-toolbar .slidebox .content .radio > label {
+      width: 14px; }
     .modal-toolbar .slidebox .content label.select-file-link {
       width: auto;
       color: #148BE6; }

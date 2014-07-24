@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', '../../helper', '../result_vo' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
+define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'TaHelper' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
 
 	i18n = Helper.i18n.short()
 

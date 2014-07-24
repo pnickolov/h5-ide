@@ -1,0 +1,272 @@
+<!-- {{keys}} -->
+{{#each data}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{DBParameterGroupFamily}}" tabindex="-1">
+            <div class="manager-content-main" data-id="{{DBParameterGroupFamily}}">{{DBEngineVersionDescription}}</div>
+    </li>
+{{/each}}
+
+
+<!-- {{content}} -->
+{{#each items}}
+    <tr class="item" data-id="">
+        <td>
+            <div class="checkbox">
+                <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb">
+                <label for="{{id}}"></label>
+            </div>
+        </td>
+        <td><div class="manager-content-main">{{DBParameterGroupName}}</div></td>
+        <td>{{DBParameterGroupFamily}}</td>
+        <td>{{Description}}</td>
+    </tr>
+{{/each}}
+
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}} RDS Parameter{{else}}selected {{selectedCount}} RDS Parameter Groups{{/if}}?</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">Delete</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>Deleting...</button>
+    </div>
+</div>
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="formart_toolbar_modal" data-type="true">
+        <section data-bind="true">
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-volume-choose">{{ i18n "PROP_DBPG_SET_FAMILY"}}</label>
+                <div>
+                    <div id="property-family-choose">
+                        <div class="selectbox selectbox-mega" id="property-family">
+                            <div class="selection">{{families.0.}}</div>
+                            <div class="scroll-wrap" style="height: 160px">
+                                <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                                <div class="scroll-content">
+                                    <ul class="dropdown" tabindex="-1">
+                                        {{#each families}}
+                                        <li class="item" data-id="{{this}}">{{this}}</li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="control-group clearfix">
+                <label for="property-dbpg-name-create">{{ i18n "PROP_DBPG_SET_NAME" }}</label>
+                <div>
+                    <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true" data-type="database" data-ignore="true" placeholder="Begin with a letter; must contain only ASCII letters, digits, and hyphens; and must not end with a hyphen or contain two consecutive hyphens">
+                </div>
+            </div>
+
+
+            <div class="control-group clearfix property-content" style="background: none">
+                <label for="property-dbpg-desc-create">{{ i18n "PROP_DBPG_SET_DESC"}}</label>
+                <div>
+                    <input id='property-dbpg-desc-create' class="input" placeholder="Up to 255 characters" data-required="true" type="text"/>
+                </div>
+            </div>
+
+        </section>
+        <div class="init action">
+            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+            <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+        <div class="processing action" style="display:none;">
+            <button class="btn" disabled>Creating...</button>
+        </div>
+    </div>
+</div>
+
+<!-- {{slide_reset}} -->
+<div class="slide-reset" data-bind="true">
+    <div class="formart_toolbar_modal" data-type="true">
+        <div class="modal-text-major">Do you confirm to reset all parameters for {{name}} to their defaults?</div>
+        <div class="init action">
+            <button class="btn btn-red do-action" data-action="reset">Reset</button>
+            <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+        <div class="processing action" style="display:none;">
+            <button class="btn" disabled>Resetting...</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- {{slide_edit}} -->
+<div class="clearfix" id="pg-sort-filter">
+    <div class="pull-left">
+        Filter: <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+    </div>
+    <div class="pull-right">
+        Sort by:
+        <div class="selectbox" id="sort-parameter-name">
+            <div class="selection">Parameter Name</div>
+            <ul class="dropdown" tabindex="-1">
+                <li class="item selected" data-id="ParameterName">Parameter Name</li>
+                <li class="item" data-id="IsModifiable">Is Modifiable</li>
+                <li class="item" data-id="ApplyType">Apply Method</li>
+                <li class="item" data-id="Source">Source</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="scroll-wrap" style="height: 310px">
+    <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="scroll-content" id="parameter-table">
+        <table class="table">
+            <thead>
+            <tr>
+                {{#if preview}}
+                    <th width="40%">Parameter Name</th>
+                    <th width="20%">Origin Value</th>
+                    <th width="40%">Edit Value</th>
+                {{else}}
+                    <th width="50%">Parameter Name</th>
+                    <th width="50%">Edit Value</th>
+                {{/if}}
+
+            </tr>
+            </thead>
+            <tbody>
+            {{#each data}}
+                <tr id="pg-{{ParameterName}}">
+                    <td>
+                        <div class="prop_main">{{ParameterName}}
+                            <div class="prop_sub">({{Source}})</div>
+                        </div>
+                        <div class="prop_sub">{{Description}}</div>
+                    </td>
+                    {{#if ../preview}}
+                        <td>
+                            <div class="prop_main" style="text-align: center">
+                                {{#if ParameterValue}}
+                                    {{ParameterValue}}
+                                {{else}}
+                                    {{#ifCond inputType 'select'}}&lt;engine-default&gt;{{else}}&lt;empty&gt;{{/ifCond}}
+                                {{/if}}
+                            </div>
+                        </td>
+                    {{/if}}
+                    <td>
+                        <div class="prop_main">
+                            {{#ifCond inputType 'select'}}
+                                <select name="{{ParameterName}}" class="select" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
+                                    <option value="<engine-default>">&lt;engine-default&gt;</option>
+                                    {{#each selections}}
+                                        <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
+                                    {{/each}}
+                                </select>
+                            {{/ifCond}}
+                            {{#ifCond inputType 'input'}}
+                                <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                                {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
+                            {{/ifCond}}
+                        </div>
+                        <div class="prop_main">
+                            <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                        </div>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="pg-edit-footer clearfix">
+    <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Valume Reference</a>
+    <div class="init action" style="padding: 10px 0">
+        {{#if preview}}
+            <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
+            <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
+        {{else}}
+            <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
+        {{/if}}
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="padding: 10px 0;display: none">
+        <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
+        <button class="btn btn-silver cancel" disabled>Cancel</button>
+    </div>
+</div>
+
+
+<!-- {{filter}} -->
+<table class="table">
+    <thead>
+    <tr>
+        {{#if preview}}
+            <th width="40%">Parameter Name</th>
+            <th width="20%">Origin Value</th>
+            <th width="40%">Edit Value</th>
+        {{else}}
+            <th width="50%">Parameter Name</th>
+            <th width="50%">Edit Value</th>
+        {{/if}}
+
+    </tr>
+    </thead>
+    <tbody>
+    {{#each data}}
+        <tr id="pg-{{ParameterName}}">
+            <td>
+                <div class="prop_main">{{ParameterName}}
+                    <div class="prop_sub">({{Source}})</div>
+                </div>
+                <div class="prop_sub">{{Description}}</div>
+            </td>
+            {{#if ../preview}}
+                <td>
+                    <div class="prop_main" style="text-align: center">
+                        {{#if ParameterValue}}
+                            {{ParameterValue}}
+                        {{else}}
+                            {{#ifCond inputType 'select'}}&lt;engine-default&gt;{{else}}&lt;empty&gt;{{/ifCond}}
+                        {{/if}}
+                    </div>
+                </td>
+            {{/if}}
+            <td>
+                <div class="prop_main">
+                    {{#ifCond inputType 'select'}}
+                        <select name="{{ParameterName}}" class="select" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
+                            <option value="<engine-default>">&lt;engine-default&gt;</option>
+                            {{#each selections}}
+                                <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    {{/ifCond}}
+                    {{#ifCond inputType 'input'}}
+                        <input type="text" class="input prop-half-width" name="{{ParameterName}}" value="{{#if newValue}}{{newValue}}{{else}}{{ParameterValue}}{{/if}}" {{#unless IsModifiable}}disabled="disabled"{{/unless}}/>
+                        {{#if AllowedValues}}<div class="prop_sub">({{AllowedValues}})</div>{{/if}}
+                    {{/ifCond}}
+                </div>
+                <div class="prop_main">
+                    <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                </div>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+
+<!-- {{keys}} -->
+{{#each keys}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">{{id}}</li>
+{{/each}}

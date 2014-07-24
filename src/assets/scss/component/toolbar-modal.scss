@@ -159,7 +159,7 @@ $dark-blue: #001324;
 			overflow: auto;
 		}
 
-		&.show + .table-head-fix {
+		&.show + .will-be-covered {
 			opacity:        .4;
 			pointer-events: none;
 			@include op-transition;
@@ -175,6 +175,10 @@ $dark-blue: #001324;
 			width:   168px;
 			display: inline-block;
 			color:   #ccc;
+		}
+
+		.checkbox > label, .radio > label {
+			width: 14px;
 		}
 
 		label.select-file-link {

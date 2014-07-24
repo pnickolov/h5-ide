@@ -66,7 +66,7 @@ define(["jquery"], function($){
           {
             purge( content.attr('id') );
           }
-        }, 200);
+        }, 1000);
 
     }
   };
@@ -132,16 +132,40 @@ define(["jquery"], function($){
     purge.call( this, event );
   };
 
+  var findScrollableParent = function( target ) {
+    if ( target.parent().prop( 'tagName' ) === 'BODY' ) return null;
+
+    var overflow = target.parent().css( 'overflow' );
+    if ( overflow === 'auto' || overflow === 'scroll' ) return target.parent();
+
+    return findScrollableParent( target.parent() );
+
+  };
+
   // Public Methods
 
   var first = function( target ) {
-    if ( $( target ).is(':hidden') ) return;
 
-    errortip.call( target )
-    id = getEid( target )
-    firstTimer[ id ] = setTimeout(function() {
-      purge({currentTarget: target});
-    }, 2000);
+    setTimeout(function() {
+      if ( $( target ).is(':hidden') ) return;
+      errortip.call( target )
+
+      id = getEid( target )
+      firstTimer[ id ] = setTimeout(function() {
+        purge({currentTarget: target});
+      }, 2000);
+
+      $(window).one('resize', function() {
+        purge({currentTarget: target});
+      });
+
+      scrollableParent = findScrollableParent( $(target) );
+      scrollableParent && scrollableParent.one('scroll', function() {
+        purge({currentTarget: target});
+      });
+
+    }, 1);
+
   };
 
   var purge = function ( event )

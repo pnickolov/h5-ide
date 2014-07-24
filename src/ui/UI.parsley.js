@@ -225,6 +225,7 @@ define(["jquery"], function(){
           , awsCidr:   "This value should be a valid CIDR and the netmask ('16') must be between 16 and 28."
           , awsName:   "This value should be a valid AWS name."
           , domain:    "This value should be a valid domain."
+          , database:  "This value should be a valid name"
           , ascii:     "This value should be a valid ascii."
 
         }
@@ -342,8 +343,12 @@ define(["jquery"], function(){
             regExp = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([1][6789]|[2]\d|3[0-2]))$/;
             break;
 
-         case 'awsName':
+          case 'awsName':
            regExp = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;
+           break;
+
+          case 'database':
+           regExp = /(?=[a-zA-Z0-9-]{3,25}$)^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
            break;
 
           case 'domain':
@@ -1550,7 +1555,8 @@ define(["jquery"], function(){
         self.addItem( this );
       });
 
-      this.$element.on( 'submit.' + this.type , false, $.proxy( this.validate, this ) );
+      // Do not support submit event
+      //this.$element.on( 'submit.' + this.type , false, $.proxy( this.validate, this ) );
 
       // hack
       this.$element.addClass( 'parsley-validated' );
@@ -1881,8 +1887,9 @@ var formValidate = function( e ) {
   form.parsley('validate');
 }
 
+// Do not support submit
 // form submit auto bind
-$(document.body).on( 'submit', 'form[data-validate="parsley"]', bindForm);
+//$(document.body).on( 'submit', 'form[data-validate="parsley"]', bindForm);
 
 // element.parsley-submit click auto bind
 $(document.body).on( 'click', '.parsley-submit', bindForm);

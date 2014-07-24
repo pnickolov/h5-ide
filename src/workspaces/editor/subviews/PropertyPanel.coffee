@@ -32,6 +32,9 @@ define [
   '../property/launchconfig/main'
   '../property/asg/main'
 
+  '../property/dbinstance/main'
+  '../property/subnetgroup/main'
+
 ], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->

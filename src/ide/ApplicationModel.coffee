@@ -80,6 +80,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
     getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
     getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
+    getRdsData: ( awsRegion ) -> (@__appdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
 
 
@@ -108,6 +109,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
             price              : i.price
             osFamilyConfig     : i.instance_types.sort
             instanceTypeConfig : instanceTypeConfig
+            rds                : i.instance_types.rds
           }
 
           # Format instance type info.
@@ -134,7 +136,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
-      Q.all([ sp, ap ]).then ()->
+      Q.all([ sp, ap, appdata ]).then ()->
         try
           ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
         catch e
@@ -212,7 +214,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       # Mark the item as read if the current tab is the item's tab.
       item.readed = not App.WS.isReady()
 
-      if not item.readed and App.workspaces
+      if not item.readed and App.workspaces and not item.state.failed
         space = App.workspaces.getAwakeSpace()
         ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
         item.readed = space.isWorkingOn( ops )

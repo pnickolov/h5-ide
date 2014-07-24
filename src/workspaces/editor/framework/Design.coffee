@@ -418,6 +418,11 @@ define [
     connections = []
     mockArray   = []
 
+    # preSerialize for resource ( currently DBIntance has this method )
+    for uid, comp of @__componentMap
+      if comp.preSerialize
+        comp.preSerialize()
+
     # ResourceModel can only add json component.
     for uid, comp of @__componentMap
       if comp.isRemoved()
@@ -429,7 +434,7 @@ define [
         continue
 
       try
-        json = comp.serialize()
+        json = comp.serialize options
         ### env:prod ###
       catch error
         console.error "Error occur while serializing", error

@@ -170,7 +170,8 @@ require.config {
 		# component                 # Merge in deploy
 		#############################################
 
-		'validation'       : 'component/trustedadvisor/validation'
+		'validation'       : 'component/trustedadvisor/exposure'
+		'TaHelper'		   : 'component/trustedadvisor/lib/TA.Helper'
 		'kp_dropdown'      : 'component/kp/kpDropdown'
 		'kp_manage'        : 'component/kp/kpManage'
 		'kp_upload'        : 'component/kp/kpUpload'
@@ -180,13 +181,18 @@ require.config {
 		'toolbar_modal'    : 'component/common/toolbarModal'
 		'dhcp'             : 'component/dhcp/dhcp'
 		'snapshotManager'  : 'component/snapshot/snapshot'
+		'rds_pg'           : 'component/rds_pg/rds_pg'
+		'rds_snapshot'     : 'component/rds_snapshot/rds_snapshot'
 		'sslcert_manage'   : 'component/sslcert/sslCertManage'
 		'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
 		'state_status'     : 'component/statestatus/main'
 		"ThumbnailUtil"    : "component/exporter/Thumbnail"
 		"JsonExporter"     : "component/exporter/JsonExporter"
 		"ResDiff"          : "component/common/diff/ResDiff"
-		"DiffTree"          : "component/common/diff/DiffTree"
+		"DiffTree"         : "component/common/diff/DiffTree"
+		'og_manage'        : 'component/optiongroup/ogManage'
+		'og_manage_app'	   : 'component/optiongroup/ogManageApp'
+		'og_dropdown'      : 'component/optiongroup/ogDropDown'
 
 	### env:dev:end ###
 	shim :
@@ -260,7 +266,7 @@ require.config {
 		]
 
 		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
-		"component/Validation"              : [ "validation", "component/trustedadvisor/main" ]
+		"component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
 		"component/StateStatus"             : ["state_status"]
 		"component/sgrule/SGRulePopup"      : []
 		"component/stateeditor/stateeditor" : []

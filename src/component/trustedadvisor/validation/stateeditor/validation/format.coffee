@@ -108,14 +108,17 @@ define [ 'Design', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC'
             else
                 @notnull( val ) and @notblank( val )
 
-        notnull: ( val ) ->
-            val.length > 0
+        isRef: ( val ) ->
+            if not _.isArray val then val = [val]
+            _.every val, ( v ) ->
+                constant.REGEXP.stateEditorRefOnly.test v
+
+        notnull: ( val ) -> val.length > 0
 
         notblank: ( val ) ->
             'string' is typeof val and '' isnt val.replace( /^\s+/g, '' ).replace( /\s+$/g, '' )
 
-        isBool: ( val ) ->
-            _.isBoolean val
+        isBool: ( val ) -> _.isBoolean val
 
         isStringBool: ( val, allowEmpty ) ->
             /^(true|false)$/i.test val or allowEmpty and val is ''
@@ -187,6 +190,11 @@ define [ 'Design', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC'
                 if param.required is true and not Validator.required( state.parameter[ name ] )
                     tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
                     type = 'requiredParameter'
+                    error.push Helper.buildError tip, data.stateId, type
+
+                else if cmd.module is 'meta.wait' and name is 'state' and not Validator.isRef( state.parameter[ name ] )
+                    tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_INVALID_FORMAT, data.name, data.stateId, 'wait'
+                    type = 'invalidFormat'
                     error.push Helper.buildError tip, data.stateId, type
 
             error

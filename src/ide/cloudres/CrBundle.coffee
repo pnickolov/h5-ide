@@ -6,4 +6,6 @@ define [
   "./CrClnOpsResource"
   "./CrClnAmi"
   "./CloudImportVpc"
+  "./CrClnRds"
+  "./CrClnRdsParam"
 ], ( CloudResources )-> CloudResources

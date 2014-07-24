@@ -30,9 +30,9 @@ define [ 'jquery', 'event', './view', './model' ], ( $, ide_event, View, Model )
                 model.createList()
                 view.render type, status
                 if model.get('error_list').length is 0
-                    deferred.resolve()
+                    deferred.resolve(model)
                 else
-                    deferred.reject()
+                    deferred.reject(model)
 
             MC.ta.validRun()
 

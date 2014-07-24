@@ -6,16 +6,19 @@ define [
   "constant"
   'dhcp'
   'snapshotManager'
+  'rds_snapshot'
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
+  'rds_pg'
+  'rds_snapshot'
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -46,6 +49,22 @@ define [
     catch e
 
     return MC.template.bubbleAMIInfo( ami )
+
+  MC.template.resPanelDbSnapshot = ( data )->
+    if not data.region or not data.id then return
+
+    ss = CloudResources( constant.RESTYPE.DBSNAP, data.region ).get( data.id )
+    if not ss then return
+
+    LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
+
+  MC.template.resPanelSnapshot = ( data )->
+    if not data.region or not data.id then return
+
+    ss = CloudResources( constant.RESTYPE.SNAP, data.region ).get( data.id )
+    if not ss then return
+
+    LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
 
 
 
@@ -84,12 +103,16 @@ define [
       "click .btn-fav-ami"           : "toggleFav"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
-      "click .ManageSnapshot"        : "manageSnapshot"
+      "click .ManageEbsSnapshot"     : "manageEbsSnapshot"
+      "click .ManageRdsSnapshot"     : "manageRdsSnapshot"
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
       "click .refresh-resource-panel": "refreshPanelData"
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
+
+      'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
+      'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
     initialize : (options)->
       _.extend this, options
@@ -100,6 +123,7 @@ define [
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+      @listenTo CloudResources( constant.RESTYPE.DBENGINE, region ), "update", @updateRDSList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
@@ -117,12 +141,69 @@ define [
       @updateAZ()
       @updateSnapshot()
       @updateAmi()
+      @updateRDSList()
+      @updateRDSSnapshotList()
+
       $(document)
         .off('keydown', @bindKey.bind @)
         .on('keydown', @bindKey.bind @)
+
       @updateDisableItems()
       @renderReuse()
       return
+
+    resourceListSortSelectRdsEvent : (event) ->
+
+        selectedId = 'date'
+
+        if event
+
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
+
+        $sortedList = []
+
+        if selectedId is 'date'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
+
+        if selectedId is 'engine'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return $(a).data('engine') - $(b).data('engine')
+
+        if selectedId is 'storge'
+
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return Number($(b).data('storge')) - Number($(a).data('storge'))
+
+        if $sortedList.length
+            $('.resource-list-rds-snapshot-exist').html($sortedList)
+
+    resourceListSortSelectSnapshotEvent : (event) ->
+
+        selectedId = 'date'
+
+        if event
+
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
+
+        $sortedList = []
+
+        if selectedId is 'date'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
+
+        if selectedId is 'storge'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return Number($(a).data('storge')) - Number($(b).data('storge'))
+
+        if $sortedList.length
+            @$el.find('.resource-list-snapshot-exist').html($sortedList)
 
     bindKey: (event)->
       that = this
@@ -152,18 +233,50 @@ define [
       return
 
     updateAZ : ()->
+
       if not @workspace.isAwake() then return
       region = @workspace.opsModel.get("region")
 
-      @$el.find(".resource-list-az").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
-      @updateDisabledAz()
+      allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+      usedAZComp = @workspace.design.componentsOfType(constant.RESTYPE.AZ) || []
+
+      usedAZ = _.map usedAZComp, (az) ->
+        return az.get('name')
+
+      availableAZ = []
+      _.each allAZComp, (az) ->
+        if not (az.id in usedAZ)
+          availableAZ.push(az.id)
+        null
+
+      availableAZ = availableAZ.sort()
+
+      nextId = ''
+      if availableAZ.length
+        nextId = availableAZ[0]
+
+      @$el.find(".resource-list-az").html LeftPanelTpl.az({
+        id: nextId,
+        count: availableAZ.length
+      })
+
       return
 
     updateSnapshot : ()->
-      if not @workspace.isAwake() then return
-      region = @workspace.opsModel.get("region")
-      @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
-      return
+      region     = @workspace.opsModel.get("region")
+      cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
+      cln.region = region
+      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
+
+    updateRDSList : () ->
+      cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
+      @$el.find(".resource-list-rds").html LeftPanelTpl.rds( cln )
+
+    updateRDSSnapshotList : () ->
+      region     = @workspace.opsModel.get("region")
+      cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
+      cln.region = region
+      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"
@@ -193,7 +306,7 @@ define [
 
     updateDisableItems : ()->
       if not @workspace.isAwake() then return
-      @updateDisabledAz()
+      @updateAZ()
       @updateDisabledVpcRes()
       return
 
@@ -293,7 +406,8 @@ define [
         @stopListening CloudResources( "FavoriteAmi", region ), "update", @updateFavList
       return false
 
-    manageSnapshot : ()-> new snapshotManager().render()
+    manageEbsSnapshot : ()-> new EbsSnapshotManager().render()
+    manageRdsSnapshot: ()->new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
       $tgt = $( evt.currentTarget )
@@ -314,13 +428,17 @@ define [
               when 'keypair'
                   new keypairManager().render()
               when 'snapshot'
-                  new snapshotManager().render()
+                  new EbsSnapshotManager.render()
               when 'sns'
                   new snsManager().render()
               when 'sslcert'
                   new sslCertManager().render()
               when 'dhcp'
                   (new dhcpManager()).manageDhcp()
+              when 'rdspg'
+                  new rdspgManager().render()
+              when 'rdssnapshot'
+                  new rdsSnapshot().render()
 
     startDrag : ( evt )->
       if evt.button isnt 0 then return false
@@ -329,7 +447,6 @@ define [
       if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
 
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
-      console.assert( type )
 
       dropTargets = "#OpsEditor .OEPanelCenter"
       if type is constant.RESTYPE.INSTANCE
@@ -343,7 +460,6 @@ define [
         dataTransfer : option
         eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
       })
-
       return false
 
     remove: ->

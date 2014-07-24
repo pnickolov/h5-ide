@@ -1,0 +1,109 @@
+// RDS Instance Property
+
+.property-dbinstance {
+	input.shorter-input {
+		width: 37px;
+		padding-right: 7px;
+	}
+	.selectbox.shorter-dropdown {
+		width: 90px;
+	}
+	input.property-input-left {
+		width: 184px;
+	}
+	.property-label-right {
+		margin-left: 10px;
+	}
+	.property-input-row-head {
+		display: inline-block;
+		width: 220px;
+		margin-bottom: 7px;
+		margin-top: 10px;
+	}
+	.property-input-row {
+		float: left;
+		width: 120px;
+		margin-bottom: 10px;
+		label.left {
+			display: block;
+		}
+		input.input {
+			width: 80px;
+		}
+		div.selectbox {
+			width: 115px;
+			margin-top: 2px;
+		}
+	}
+	.property-dbinstance-iops-value-section {
+		label.left {
+			margin-top: 10px;
+			margin-right: 5px;
+		}
+		#property-dbinstance-iops-value {
+			width: 115px;
+		}
+	}
+
+	.property-dbinstance-iops-info {
+		margin-top: 15px;
+	}
+
+	.property-dbinstance-optiongroup-placeholder {
+		.selectbox .selection {
+			.icon-edit { display: none; }
+			.option-preview { display: none; }
+		}
+	}
+
+	.property-dbinstance-optiongroup-placeholder {
+		.item .icon-edit {
+			float: right;
+			position: absolute;
+			top: 50%;
+			right: 0;
+			margin-top: -8px;
+			margin-right: 10px;
+		}
+		.option-preview {
+			width: 208px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			color: #aaa;
+		}
+	}
+	#property-dbinstance-maintenance-window-group
+	, #property-dbinstance-backup-window-group {
+		label {
+			width: 73px;
+		}
+	}
+
+}
+
+.property-subnet-group {
+	.property-az-name {
+		clear: both;
+		padding: 5px 0 5px 12px;
+		background: #515151;
+		margin: 5px -10px 5px;
+	}
+	.property-az-name:first-child {
+		margin-top: -8px;
+	}
+
+	.sb-cidr {
+		padding-left: 23px;
+	}
+
+	.property-control-group .checkbox {
+		position: relative;
+		top: 10px;
+	}
+}
+
+.app-dbinstance {
+	.db-og-in-app {
+		cursor: pointer;
+	}
+}

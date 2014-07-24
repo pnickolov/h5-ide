@@ -42,6 +42,9 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
       @asgs      = {} # res name => comp
       @topics    = {} # res arn  => comp
       @sps       = {} # res id  => comp
+      @sbgs      = {} # res id(name) => comp
+      @dbinstances = {} # res id(name) => comp
+      @ogs       = {} # res id(name) => comp
       @ins_in_asg= [] # instances in asg
       @component = {}
       @layout    = {}
@@ -770,14 +773,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "Domain": aws_eip.domain
           "InstanceId": "" #aws_eip.instanceId
           "NetworkInterfaceId": CREATE_REF( eni, "resource.NetworkInterfaceId" )
-          "PrivateIpAddress": CREATE_REF( eni, "resource.PrivateIpAddressSet.0.PrivateIpAddress" )
+          "PrivateIpAddress": ""
           "PublicIp": aws_eip.publicIp
 
-        # eipRes = @_mapProperty aws_eip, eipRes
-        # eipRes.AllocationId = aws_eip.id
-        # # eipRes.InstanceId   = ""
-        # eipRes.NetworkInterfaceId = CREATE_REF( eni )
-        # eipRes.PrivateIpAddress   = CREATE_REF( eni )
+        idx = 0
+        for ip in eni.resource.PrivateIpAddressSet
+          if ip.PrivateIpAddress is aws_eip.privateIpAddress
+            eipRes.PrivateIpAddress = CREATE_REF( eni, "resource.PrivateIpAddressSet.#{idx}.PrivateIpAddress" )
+          idx++
 
         eipComp = @add( "EIP", eipRes )
       return
@@ -893,6 +896,10 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           aclRes.AssociationSet.push
             "NetworkAclAssociationId": acl.networkAclAssociationId
             "SubnetId": CREATE_REF( subnetComp, 'resource.SubnetId' )
+
+        originComp = @getOriginalComp( aws_acl.id, "ACL" )
+        if originComp and originComp.resource.AssociationSet.sort().toString() is aclRes.AssociationSet.sort().toString()
+          aclRes.AssociationSet = jQuery.extend(true, [], originComp.resource.AssociationSet)
 
         aclComp = @add( "ACL", aclRes, aclName )
       return
@@ -1058,16 +1065,26 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         #generate BlockDeviceMapping
         bdm = lcRes.BlockDeviceMapping
         _.each aws_lc.BlockDeviceMapping || [], (e,key)->
-          data =
-            "DeviceName": e.DeviceName
-            "Ebs":
-              "VolumeSize": Number(e.Ebs.VolumeSize)
-              "VolumeType": e.Ebs.VolumeType
-          if e.Ebs.SnapshotId
-            data.Ebs.SnapshotId = e.Ebs.SnapshotId
-          if data.Ebs.VolumeType is "io1"
-            data.Ebs.Iops = e.Ebs.Iops
-          bdm.push data
+          if e.Ebs is null and e.VirtualName
+            #instance-store, ignore
+            data =
+              "DeviceName" : e.DeviceName
+              "Ebs"        : null
+              "NoDevice"   : e.NoDevice
+              "VirtualName": e.VirtualName
+          else
+            #ebs
+            data =
+              "DeviceName": e.DeviceName
+              "Ebs":
+                "VolumeSize": if e.Ebs then Number(e.Ebs.VolumeSize) else 0
+                "VolumeType": if e.Elb then e.Ebs.VolumeType else ""
+            if e.Ebs
+              if e.Ebs.SnapshotId
+                data.Ebs.SnapshotId = e.Ebs.SnapshotId
+              if data.Ebs.VolumeType is "io1"
+                data.Ebs.Iops = e.Ebs.Iops
+            bdm.push data
 
         #generate KeyName for lc
         keyPairComp = @getOriginalComp(aws_lc.KeyName, 'KP')
@@ -1330,6 +1347,253 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
         cwRes.AlarmName = aws_cw.Name
 
         cwComp = @add( "CW", cwRes, aws_cw.Name )
+      return
+
+    ()-> #RDS OptionGroup
+      for aws_og in @getResourceByType( "DBOG" )
+        aws_og = aws_og.attributes
+        if aws_og.OptionGroupName.indexOf("default:") is 0
+          console.warn "skip default OptionGroup #{aws_og.OptionGroupName}"
+          continue
+
+        ogRes =
+          "CreatedBy"   : ""
+          "EngineName"  : ""
+          "MajorEngineVersion"    : ""
+          "OptionGroupDescription": ""
+          "OptionGroupName" : ""
+          "Options": []
+          "VpcId": "" #"@{uid.resource.VpcId}"
+
+        ogRes = @_mapProperty aws_og, ogRes
+        ogRes.OptionGroupName = aws_og.id
+
+        #ref to VpcId
+        ogRes.VpcId = CREATE_REF( @theVpc, "resource.VpcId" )
+
+        #options(different by different ParameterGroupFamily)
+        for op in aws_og.Options || []
+          op_item = @_mapProperty op, { "OptionName":"", "OptionSettings":[], "Port":"", "VpcSecurityGroupMemberships":[] }
+          op_item.Port = if op_item.Port then op_item.Port.toString() else ""
+          #resolve OptionSettings
+          for set in op.OptionSettings
+            set_item = @_mapProperty set, { "Name":"", "Value":"" }
+            op_item.OptionSettings.push set_item
+          #resolve SG
+          for sg in op.VpcSecurityGroupMemberships
+            sgComp = @sgs[ sg.VpcSecurityGroupId ]
+            if sgComp
+              op_item.VpcSecurityGroupMemberships.push CREATE_REF sgComp, "resource.GroupId"
+            else
+              console.error "can not find SG #{sg.VpcSecurityGroupId} for OptionGroup"
+          ogRes.Options.push op_item
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_og.id, 'DBOG')
+        if originComp
+          compName = originComp.name
+          ogRes.CreatedBy = originComp.resource.CreatedBy
+        else
+          compName = aws_og.OptionGroupName
+          ogRes.CreatedBy = 'user'
+          console.error "[temp]can not find original component"
+
+        #generate OptionGroup component
+        ogComp = @add( "DBOG", ogRes, compName )
+        @ogs[ aws_og.id ] = ogComp
+      return
+
+    ()-> #RDS DBSubnetGroup
+      for aws_sbg in @getResourceByType( "DBSBG" )
+        aws_sbg = aws_sbg.attributes
+        sbgRes =
+          "CreatedBy"        : "",
+          "DBSubnetGroupName": ""
+          "SubnetIds"        : [
+            # "@{uid.resource.SubnetId}",
+            # "@{uid.resource.SubnetId}"
+          ]
+          "DBSubnetGroupDescription": ""
+
+        sbgRes = @_mapProperty aws_sbg, sbgRes
+        sbgRes.DBSubnetGroupName = aws_sbg.id
+
+        for subnet in aws_sbg.Subnets
+          subnetComp = @subnets[ subnet.SubnetIdentifier ]
+          sbgRes.SubnetIds.push CREATE_REF(subnetComp, "resource.SubnetId")
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_sbg.id, 'DBSBG')
+        if originComp
+          compName = originComp.name
+          sbgRes.CreatedBy = originComp.resource.CreatedBy
+          if sbgRes.SubnetIds.sort().toString() is originComp.resource.SubnetIds.sort().toString()
+            #keep original sequence
+            sbgRes.SubnetIds = jQuery.extend(true, [], originComp.resource.SubnetIds)
+        else
+          compName = aws_sbg.DBSubnetGroupName
+          sbgRes.CreatedBy = 'user'
+
+        #generate DBSubnetGroup component
+        sbgComp = @add( "DBSBG", sbgRes, TAG_NAME(aws_sbg) or compName )
+        @addLayout( sbgComp, true, @theVpc )
+        @sbgs[ aws_sbg.id ] = sbgComp
+      return
+
+    ()-> #RDS DBInstance
+      dbinsAry = []
+      #sort, DBInstance -> ReadReplica
+      for aws_dbins in @getResourceByType( "DBINSTANCE" )
+        aws_dbins = aws_dbins.attributes
+        if aws_dbins.ReadReplicaSourceDBInstanceIdentifier
+          #ReadReplica
+          dbinsAry.push aws_dbins
+        else
+          #DBInstance
+          dbinsAry.unshift aws_dbins
+      #
+      for aws_dbins in dbinsAry
+        subnetComp = @sbgs[aws_dbins.sbgId]
+        if not subnetComp
+          console.warn "can not found subnet of DBInstance"
+          continue
+
+        #dbsubnetgroup
+        sbgComp = @sbgs[ aws_dbins.DBSubnetGroup.DBSubnetGroupName ]
+        if not sbgComp
+          console.warn "can not found DBSubnetGroup of DBInstance"
+          continue
+
+        dbInsRes =
+          "CreatedBy"              : ""
+          "DBInstanceIdentifier"   : ""
+          "DBSnapshotIdentifier"   : ""
+          "AllocatedStorage"       : 0
+          "AutoMinorVersionUpgrade": false
+          "AvailabilityZone"       : ""
+          "MultiAZ"                : false
+          "Iops"                   : ""
+          "BackupRetentionPeriod"  : 0
+          "CharacterSetName"       : ""
+          "DBInstanceClass"        : ""
+          "DBName"  : ""
+          "Endpoint":
+            "Port"     : 0
+            "Address"  : ""
+          "Engine"            : ""
+          "EngineVersion"     : ""
+          "LicenseModel"      : ""
+          "MasterUsername"    : ""
+          "MasterUserPassword": ""
+          "OptionGroupMembership":
+            "OptionGroupName"       : ""
+          "DBParameterGroups"    :
+            "DBParameterGroupName"  : ""
+          "PendingModifiedValues": ""
+          "PreferredBackupWindow": ""
+          "PreferredMaintenanceWindow": ""
+          "PubliclyAccessible": false
+          "DBSubnetGroup":
+            "DBSubnetGroupName": "" #"@{uid.resource.DBSubnetGroupName}"
+          "VpcSecurityGroupIds": [
+            #"@{uid.resource.GroupId}"
+          ]
+
+        dbInsRes = @_mapProperty aws_dbins, dbInsRes
+
+        #changing DBInstance attribute( avoid json diff )
+        if aws_dbins.PendingModifiedValues
+          if aws_dbins.PendingModifiedValues.AllocatedStorage
+            #modify AllocatedStorage
+            dbInsRes.AllocatedStorage = Number(aws_dbins.PendingModifiedValues.AllocatedStorage)
+          if aws_dbins.PendingModifiedValues.BackupRetentionPeriod
+            #modify BackupRetentionPeriod
+            dbInsRes.BackupRetentionPeriod = Number(aws_dbins.PendingModifiedValues.BackupRetentionPeriod)
+          if aws_dbins.PendingModifiedValues.DBInstanceClass
+            #modify DBInstanceClass
+            dbInsRes.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
+          if aws_dbins.PendingModifiedValues.Iops
+            #modify Iops
+            dbInsRes.Iops = Number(aws_dbins.PendingModifiedValues.Iops)
+          if aws_dbins.PendingModifiedValues.MultiAZ
+            #modify MultiAZ
+            dbInsRes.MultiAZ = aws_dbins.PendingModifiedValues.MultiAZ
+
+          ## disable modify following attribute currently
+          # if aws_dbins.PendingModifiedValues.DBInstanceIdentifier
+          #   #modify DBInstanceIdentifier
+          #   dbInsRes.DBInstanceIdentifier = aws_dbins.PendingModifiedValues.DBInstanceIdentifier
+
+          # if aws_dbins.PendingModifiedValues.EngineVersion
+          #   #modify EngineVersion
+          #   dbInsRes.EngineVersion = aws_dbins.PendingModifiedValues.EngineVersion
+
+          # if aws_dbins.PendingModifiedValues.MasterUserPassword
+          #   #modify MasterUserPassword
+          #   dbInsRes.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
+
+          # if aws_dbins.PendingModifiedValues.Port
+          #   #modify Port
+          #   dbInsRes.Port = aws_dbins.PendingModifiedValues.Port
+
+        #clear AZ when MultiAZ is true
+        if dbInsRes.MultiAZ
+          dbInsRes.AvailabilityZone = ""
+
+        if aws_dbins.ReadReplicaSourceDBInstanceIdentifier
+          #ReadReplica
+          srcDbInsComp = @dbinstances[ aws_dbins.ReadReplicaSourceDBInstanceIdentifier ]
+          if srcDbInsComp
+            dbInsRes.ReadReplicaSourceDBInstanceIdentifier = CREATE_REF srcDbInsComp, "resource.DBInstanceIdentifier"
+          else
+            console.error "can not find Source DBInstance for ReadReplica #{aws_dbins.ReadReplicaSourceDBInstanceIdentifier}"        
+
+        #endpoint
+        if aws_dbins.Endpoint
+          dbInsRes.Endpoint.Address = aws_dbins.Endpoint.Address
+          dbInsRes.Endpoint.Port = aws_dbins.Endpoint.Port
+
+        #ref to OptionGroupMembership
+        if aws_dbins.OptionGroupMemberships[0]
+          ogComp = @ogs[ aws_dbins.OptionGroupMemberships[0].OptionGroupName ]
+          if ogComp
+            dbInsRes.OptionGroupMembership.OptionGroupName = CREATE_REF ogComp, "resource.OptionGroupName"
+          else
+            #if no component, then use OptionGroupName
+            dbInsRes.OptionGroupMembership.OptionGroupName = aws_dbins.OptionGroupMemberships[0].OptionGroupName
+            if aws_dbins.OptionGroupMemberships[0].OptionGroupName.indexOf("default:") isnt 0
+              console.warn "can not find OptionGroup #{ aws_dbins.OptionGroupMemberships[0].OptionGroupName } for DBInstance"
+
+        #DBParameterGroups(Share resource)
+        if aws_dbins.DBParameterGroups[0]
+          dbInsRes.DBParameterGroups.DBParameterGroupName = aws_dbins.DBParameterGroups[0].DBParameterGroupName
+
+        #ref to DBSubnetGroup
+        dbInsRes.DBSubnetGroup.DBSubnetGroupName = CREATE_REF sbgComp, "resource.DBSubnetGroupName"
+
+        #ref to SecurityGroups
+        for sg in aws_dbins.VpcSecurityGroups
+          sgComp = @sgs[ sg.VpcSecurityGroupId ]
+          if sgComp
+            dbInsRes.VpcSecurityGroupIds.push CREATE_REF sgComp, "resource.GroupId"
+          else
+            console.warn "can not found component for SG " + sg.VpcSecurityGroupId
+
+        # Found an original component
+        originComp = @getOriginalComp(aws_dbins.id, 'DBINSTANCE')
+        if originComp
+          compName = originComp.name
+          dbInsRes.CreatedBy     = originComp.resource.CreatedBy
+          if not aws_dbins.Endpoint
+            dbInsRes.Endpoint.Port = originComp.resource.Endpoint.Port
+        else
+          compName = aws_dbins.Name || aws_dbins.DBInstanceIdentifier
+          dbInsRes.CreatedBy     = 'user' #created by user
+
+        #generate DBSubnetGroup component
+        dbInsComp = @add( "DBINSTANCE", dbInsRes, TAG_NAME(aws_dbins) or compName )
+        @addLayout( dbInsComp, false, subnetComp )
+        @dbinstances[ aws_dbins.id ] = dbInsComp
       return
   ]
 

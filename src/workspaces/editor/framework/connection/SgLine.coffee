@@ -172,6 +172,14 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
           name : "elb-sg-in"
           type : constant.RESTYPE.ELB
       }
+      {
+        port1 :
+          name : "instance-sg"
+          type : constant.RESTYPE.INSTANCE
+        port2 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+      }
 
       # Eni
       {
@@ -249,6 +257,48 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
         port2 :
           name : "elb-sg-in"
           type : constant.RESTYPE.ELB
+      }
+
+      # DBInstance
+      {
+        port1 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+      }
+      {
+        port1 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "eni-sg"
+          type : constant.RESTYPE.ENI
+      }
+      {
+        port1 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "launchconfig-sg"
+          type : constant.RESTYPE.LC
+      }
+      {
+        port1 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
+      }
+      {
+        port1 :
+          name : "dbinstance-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "instance-sg"
+          type : constant.RESTYPE.INSTANCE
       }
     ]
   }, {

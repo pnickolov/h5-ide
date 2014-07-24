@@ -89,11 +89,11 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   Handlebars.registerHelper "simpleTime", ( time ) -> MC.dateFormat(new Date(time), "yyyy-MM-dd hh:mm:ss")
 
+  Handlebars.registerHelper "firstOfSplit", ( content, splitter )-> content.split("-")[0]
+
   Handlebars.registerHelper "lastChar", ( string )->
     ch = string.charAt( string.length - 1 )
     if (ch >= "A" && ch <= "Z") or (ch >= "a" && ch <= "z" )
       ch
     else
       ""
-
-  null

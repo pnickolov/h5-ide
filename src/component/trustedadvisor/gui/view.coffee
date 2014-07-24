@@ -3,7 +3,7 @@
 #############################
 
 define [ 'event',
-         './template', './modal_template',
+         './tpl/template', './tpl/modal_template',
          'backbone', 'jquery', 'handlebars'
 ], ( ide_event, template, modal_template ) ->
 

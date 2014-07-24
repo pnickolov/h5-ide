@@ -563,6 +563,11 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         }
       null
 
+    onParentChanged : () ->
+
+      eniModel = @getEmbedEni()
+      eniModel.onParentChanged() if eniModel
+
     generateJSON : ()->
       tenancy = @get("tenancy")
 

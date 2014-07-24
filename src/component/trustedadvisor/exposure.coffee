@@ -2,12 +2,13 @@
 #  validation
 #############################
 
-define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trustedadvisor/validation/main', 'component/trustedadvisor/validation/result_vo', 'jquery', 'underscore', "MC" ], ( constant, ide_event, config, validation_main, resultVO ) ->
+define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'component/trustedadvisor/lib/TA.Bundle', 'component/trustedadvisor/lib/TA.Core', 'jquery', 'underscore', "MC" ], ( constant, ide_event, config, TaBundle, TaCore ) ->
+
 
     ########## Functional Method ##########
 
     _init = () ->
-        resultVO.reset()
+        TaCore.reset()
 
     _isGlobal = ( filename, method ) ->
         config.globalList[ filename ] and _.contains config.globalList[ filename ], method
@@ -24,7 +25,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
         [ filename ]
 
     _pushResult = ( result, method, filename, uid ) ->
-        resultVO.set "#{filename}.#{method}", result, uid
+        TaCore.set "#{filename}.#{method}", result, uid
 
     _syncStart = () ->
         ide_event.trigger ide_event.TA_SYNC_START
@@ -63,7 +64,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
                             method = method.slice( 1 )
                         else
                             return
-                    result = validation_main[ filename ][ method ]()
+                    result = TaBundle[ filename ][ method ]()
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
@@ -74,24 +75,24 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
         _.each components, ( component , uid ) ->
             filenames = _getFilename component.type
             _.each filenames, ( filename ) ->
-                _.each validation_main[ filename ], ( func, method ) ->
+                _.each TaBundle[ filename ], ( func, method ) ->
                     if not _isGlobal(filename, method) and not _isAsync(filename, method)
                         try
-                            result = validation_main[ filename ][ method ]( uid )
+                            result = TaBundle[ filename ][ method ]( uid )
                             _pushResult result, method, filename, uid
                         catch err
                             _handleException( err )
 
             # validate state editor
             try
-                _validState validation_main, uid
+                _validState TaBundle, uid
             catch err
                 _handleException( err )
         null
 
-    _validState = ( validation_main, uid ) ->
+    _validState = ( TaBundle, uid ) ->
         if Design.instance().get('agent').enabled is true
-            result = validation_main.stateEditor( uid )
+            result = TaBundle.stateEditor( uid )
             _pushResult result, 'stateEditor', 'stateEditor', uid
 
         null
@@ -107,7 +108,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
         _.each config.asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
-                    result = validation_main[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
+                    result = TaBundle[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
@@ -120,19 +121,19 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
 
         try
 
-            MC.ta.resultVO = resultVO
+            MC.ta.resultVO = TaCore
 
             temp     = type.split '.'
             filename = temp[ 0 ]
             method   = temp[ 1 ]
-            func     = validation_main[ filename ][ method ]
+            func     = TaBundle[ filename ][ method ]
 
             if _.isFunction func
 
                 args = Array.prototype.slice.call arguments, 1
-                result = func.apply validation_main[ filename ], args
+                result = func.apply TaBundle[ filename ], args
 
-                resultVO.set type, result
+                TaCore.set type, result
                 return result
             else
                 console.log 'func not found'
@@ -151,7 +152,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
 
         _validAsync()
 
-        resultVO.result()
+        TaCore.result()
 
 
     validAll = ->
@@ -162,16 +163,15 @@ define [ 'constant', 'event', 'component/trustedadvisor/config', 'component/trus
 
         _validGlobal 'all'
 
-        resultVO.result()
+        TaCore.result()
 
 
-    V =
+    MC.ta =
         validComp   : validComp
         validAll    : validAll
         validRun    : validRun
-        stateEditor : validation_main.stateEditor
+        stateEditor : TaBundle.stateEditor
         list        : []
         state_list  : {}
 
-    MC.ta = V
-    V
+    MC.ta

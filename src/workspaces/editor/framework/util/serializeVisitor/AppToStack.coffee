@@ -87,6 +87,15 @@ define [ "Design" ], (Design)->
                 when 'AWS.CloudWatch.CloudWatch'
                     compo.resource.AlarmArn = ""
                     compo.resource.AlarmName = compo.name
+                when 'AWS.RDS.DBInstance'
+                    compo.resource.CreatedBy = ""
+                    compo.resource.DBInstanceIdentifier = ""
+                    compo.resource.Endpoint.Address = ""
+                    compo.resource.PreferredBackupWindow = ""
+                    compo.resource.PreferredMaintenanceWindow = ""
+                when "AWS.RDS.DBSubnetGroup"
+                    compo.resource.CreatedBy = ''
+                    compo.resource.DBSubnetGroupName = ""
                 else
 
     null

@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'Design', '../../helper', 'keypair_service', 'underscore' ], ( constant, MC, Design, Helper, keypair_service, _ ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper', 'keypair_service', 'underscore' ], ( constant, MC, Design, Helper, keypair_service, _ ) ->
 
 	i18n = Helper.i18n.short()
 

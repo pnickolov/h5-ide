@@ -60,6 +60,8 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
         when constant.RESTYPE.ASG       then return lang.ide.CVS_MSG_WARN_NOTMATCH_ASG
         when constant.RESTYPE.IGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_IGW
         when constant.RESTYPE.VGW       then return lang.ide.CVS_MSG_WARN_NOTMATCH_VGW
+        when res_type.DBSBG             then return lang.ide.CVS_MSG_WARN_NOTMATCH_SGP_VPC
+        when res_type.DBINSTANCE        then return lang.ide.CVS_MSG_WARN_NOTMATCH_DBINSTANCE_SGP
 
     selectVolume : ( volumeId )->
       @deselectItem( true )

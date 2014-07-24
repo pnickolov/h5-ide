@@ -49,7 +49,7 @@
 
 .node-dragging .node,
 .node-dragging .group-label,
-.node-dragging .asg-resource-dragger {
+.node-dragging .asg-resource-dragger .dbinstance-resource-dragger {
 	cursor: -webkit-grabbing !important;
 	cursor: -moz-grabbing !important;
 	cursor: grabbing !important;
@@ -172,6 +172,11 @@
 	border: 2px dashed #dbd7d7;
 }
 
+#drag_shadow.AWS-RDS-DBSubnetGroup {
+	background: rgba(250, 250, 250, 0.05);
+	border: 2px dashed #dbd7d7;
+}
+
 #drag_shadow.AWS-EC2-EBS-Volume {
 	background: none;
 	opacity: 1;
@@ -252,6 +257,16 @@
 	stroke: #659FFF;
 	/*filter: url(#dropshadow_selected);*/
 }
+
+/*for RDS DBInstance and ReadReplica*/
+#svg_canvas .related .node-background {
+	fill-opacity: 0.6;
+	fill: #F2F8FF;
+	stroke-width: 0;
+	stroke: #659FFF;
+	/*filter: url(#dropshadow_selected);*/
+}
+
 
 /*.deleted.selected .node-background {
 	fill-opacity: 0.6;
@@ -453,33 +468,38 @@
 
 .webkit .AWS-VPC-VPC .group,
 .webkit .AWS-EC2-AvailabilityZone .group,
-.webkit .AWS-VPC-Subnet .group {
+.webkit .AWS-VPC-Subnet .group,
+.webkit .AWS-RDS-DBSubnetGroup .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
 #svg_canvas .AWS-VPC-VPC.selected .group,
 #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-#svg_canvas .AWS-VPC-Subnet.selected .group {
+#svg_canvas .AWS-VPC-Subnet.selected .group,
+#svg_canvas .AWS-RDS-DBSubnetGroup.selected .group {
 	shape-rendering:crispEdges;
 }
 
 .firefox .AWS-VPC-VPC .group,
 .firefox .AWS-EC2-AvailabilityZone .group,
-.firefox .AWS-VPC-Subnet .group {
+.firefox .AWS-VPC-Subnet .group,
+.firefox .AWS-RDS-DBSubnetGroup .group {
 	-webkit-transform: translate(0,0);
 	        transform: translate(0,0);
 }
 
 .firefox #svg_canvas .AWS-VPC-VPC.selected .group,
 .firefox #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-.firefox #svg_canvas .AWS-VPC-Subnet.selected .group {
+.firefox #svg_canvas .AWS-VPC-Subnet.selected .group,
+.firefox #svg_canvas .AWS-RDS-DBSubnetGroup.selected .group {
 	shape-rendering:auto;
 }
 
 .webkit #svg_canvas .AWS-VPC-VPC.selected .group,
 .webkit #svg_canvas .AWS-EC2-AvailabilityZone.selected .group,
-.webkit #svg_canvas .AWS-VPC-Subnet.selected .group {
+.webkit #svg_canvas .AWS-VPC-Subnet.selected .group,
+.webkit #svg_canvas .AWS-RDS-DBSubnetGroup.selected .group {
 	shape-rendering:auto;
 	-webkit-transform: translate(0.5px, 0.5px);
 	        transform: translate(0.5px, 0.5px);
@@ -560,6 +580,37 @@
 	fill: #999;
 }
 
+
+
+.AWS-RDS-DBSubnetGroup .group {
+	fill: rgba(224, 224, 224, 0.05);
+	stroke: #498fe1;
+	stroke-linejoin: round;
+	stroke-dasharray: 16, 6;
+	stroke-width: 2;
+}
+
+.AWS-RDS-DBSubnetGroup:hover .group,
+.node-dragging .dropable-group .AWS-RDS-DBSubnetGroup .group {
+	stroke: #498fe1;
+}
+
+.node-dragging .match-dropable-group.AWS-RDS-DBSubnetGroup .group {
+	/*stroke: #659FFF;*/
+	stroke-width: 4;
+}
+
+#svg_canvas .AWS-RDS-DBSubnetGroup.selected .group {
+	stroke: #498fe1;
+	fill: rgba(255, 255, 255, 0);
+	stroke-width: 3;
+}
+
+.AWS-RDS-DBSubnetGroup .group-label {
+	fill: #498fe1;
+}
+
+
 .group-asg {
 	fill: rgba(118, 214, 255, 0.05);
 	stroke: #76d6ff;
@@ -624,6 +675,20 @@
 .canvas_state_app .asg-resource-dragger {
 	display : none;
 }
+
+.dbinstance-resource-dragger {
+	fill: rgba(118, 214, 255, 1);
+	cursor: pointer;
+
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+
+.canvas_state_app .dbinstance-resource-dragger {
+	display : none;
+}
+
 
 /*when no LaunchConfiguration in asg*/
 .prompt_text {
@@ -1015,6 +1080,14 @@
 	fill: #008ae3;
 }
 
+/*for RDS DBInstance and ReadReplica*/
+#svg_canvas .related .node-label-name {
+	fill: white;
+}
+
+#svg_canvas .related .node-label-name-bg {
+	fill: #008ae3;
+}
 
 .server-number-bg {
 	stroke-width:0;
@@ -1042,6 +1115,94 @@
 	margin-top : 12px;
 }
 
+<<<<<<< HEAD
+=======
+/* dbinstance state */
+.dbinstance-state {
+	stroke-width:1;
+	stroke:white;
+	opacity: 0.8;
+	display: block;
+}
+
+.dbinstance-state-stack {
+	display: none;
+}
+
+.dbinstance-state-unknown {
+	fill: gray;
+}
+.dbinstance-state-available {
+	fill: green;
+}
+.dbinstance-state-creating {
+	fill: yellow;
+}
+.dbinstance-state-modifying {
+	fill: yellow;
+}
+.dbinstance-state-rebooting {
+	fill: yellow;
+}
+.dbinstance-state-deleting {
+	fill: yellow;
+}
+.dbinstance-state-deleted {
+	fill: red;
+}
+.dbinstance-state-backing-up {
+	fill: yellow;
+}
+.dbinstance-state-resetting-master-credentials {
+	fill: yellow;
+}
+.dbinstance-state-failed {
+	fill: red;
+}
+.dbinstance-state-incompatible-restore {
+	fill: yellow;
+}
+.dbinstance-state-incompatible-parameters {
+	fill: yellow;
+}
+.dbinstance-state-storage-full {
+	fill: red;
+}
+
+/* instance state */
+.instance-state {
+	stroke-width:1;
+	stroke:white;
+	opacity: 0.8;
+	display: block;
+}
+
+.instance-state-stack {
+	display: none;
+}
+
+.instance-state-unknown {
+	fill: gray;
+}
+.instance-state-running {
+	fill: green;
+}
+.instance-state-pending {
+	fill: yellow;
+}
+.instance-state-shuttingdown {
+	fill: yellow;
+}
+.instance-state-stopping {
+	fill: yellow;
+}
+.instance-state-stopped {
+	fill: red;
+}
+.instance-state-terminated {
+	fill: red;
+}
+>>>>>>> feature/rds-support
 
 /* volume status */
 .volume-status {

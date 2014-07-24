@@ -10,7 +10,18 @@ define [
   OpsViewBase.extend {
 
     initialize : ()->
+      OpsViewBase.prototype.initialize.apply this, arguments
+
       @canvas.switchMode( "app" )
+
+      if @workspace.isAppEditMode()
+        @resourcePanel.render()
+
+      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
+
+      @toggleProcessing()
+      @updateProgress()
+      return
 
     confirmImport : ()->
       self = @
@@ -50,18 +61,6 @@ define [
             modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
-      return
-
-    renderSubviews : ()->
-      if @workspace.isAppEditMode()
-        @resourcePanel.render()
-
-      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
-
-      @statusbar.render()
-
-      @toggleProcessing()
-      @updateProgress()
       return
 
     toggleProcessing : ()->

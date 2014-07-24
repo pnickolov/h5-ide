@@ -27,6 +27,11 @@
       background-size  : 32px 32px;
     }
   }
+
+  &[data-mode="app"] {
+    .group-resizer { display : none; }
+    .port { pointer-events : none; }
+  }
 }
 
 .svg_resizer {
@@ -95,8 +100,6 @@
   &.top-right { cursor: nesw-resize; }
   &.bottom-left { cursor: nesw-resize; }
   &.bottom-right { cursor: nwse-resize; }
-
-  .canvas-view.app & { display: none; }
 }
 
 .canvasel:hover > .node-background {
@@ -178,8 +181,6 @@
 /* port style */
 .port {
   stroke-width:0;
-
-  .canvas-view.app & { pointer-events : none; }
 }
 .port-blue {
   fill: #6DAEFE;

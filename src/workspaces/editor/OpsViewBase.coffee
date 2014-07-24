@@ -93,20 +93,15 @@ define [
 
       @setElement $( CanvasTpl() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
-      opt = {
+      opt =
         workspace : @workspace
         parent    : @
-      }
 
       @toolbar       = new Toolbar(opt)
       @propertyPanel = new PropertyPanel(opt)
       @resourcePanel = new ResourcePanel(opt)
       @statusbar     = new Statusbar(opt)
       @canvas        = new CanvasView(opt)
-
-      # 2 Update subviews
-      @statusbar.render()
-      @renderSubviews()
 
       @initialize()
       return
@@ -120,9 +115,6 @@ define [
       @propertyPanel.toggleRightPanel()
       @canvas.updateSize()
       false
-
-    initialize : ()->
-      @canvas.switchMode( "stack" )
 
     saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
 
@@ -142,8 +134,6 @@ define [
     zoomOut         : ()-> @canvas.zoomOut(); @toolbar.updateZoomButtons(); false
 
     backup : ()->
-      $center = @$el.find(".OEPanelCenter")
-
       ###
       Revoke all the IDs of every dom.
       ###
@@ -153,9 +143,8 @@ define [
       return
 
     recover : ()->
-      @$el.show()
+      @$el.show().attr("id", "OpsEditor")
       @resourcePanel.recalcAccordion()
-      @$el.attr("id", "OpsEditor")
 
       @propertyPanel.recover()
       return
@@ -168,7 +157,6 @@ define [
       @canvas.remove()
 
       Backbone.View.prototype.remove.call this
-      return
 
     showCloseConfirm : ()->
       name = @workspace.design.get('name')
@@ -193,10 +181,4 @@ define [
         children = children.children()
 
       return null
-
-    ###
-      Override these methods in subclasses.
-    ###
-    # Called when the OpsEditor initialize
-    renderSubviews  : ()-> return
   }

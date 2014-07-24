@@ -53,20 +53,20 @@ define [
 
       @setElement @parent.$el.find(".OEPanelCenter"), false
       @svg = SVG( @$el.find("svg")[0] )
-      canvasSize = @size()
 
+      canvasSize = @size()
       @__getCanvasView().css({
         width : canvasSize[0] * CanvasView.GRID_WIDTH
         height: canvasSize[1] * CanvasView.GRID_HEIGHT
       })
 
-      @__popupCache = {}
-      @__itemMap    = {}
-
-      @__scale = 1
-
       @$el.nanoScroller()
 
+      @switchMode("stack")
+
+      @__popupCache = {}
+      @__itemMap    = {}
+      @__scale      = 1
       @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
 
       @reload()
@@ -100,7 +100,7 @@ define [
 
     switchMode : ( mode )->
       console.assert( "stack app appedit".indexOf( mode ) >= 0 )
-      @__getCanvasView().removeClass("stack app appedit").addClass( mode )
+      @__getCanvasView().attr( "data-mode", mode )
       return
 
     canvasRect : ()->

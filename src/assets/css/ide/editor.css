@@ -672,6 +672,10 @@
     .canvas-view[data-scale="1.6"] {
       background-image: url('/assets/images/ide/grid_x1.6@2x.png');
       background-size: 32px 32px; } }
+  .canvas-view[data-mode="app"] .group-resizer {
+    display: none; }
+  .canvas-view[data-mode="app"] .port {
+    pointer-events: none; }
 
 .svg_resizer {
   position: absolute;
@@ -744,8 +748,6 @@
     cursor: nesw-resize; }
   .group-resizer.bottom-right {
     cursor: nwse-resize; }
-  .canvas-view.app .group-resizer {
-    display: none; }
 
 .canvasel:hover > .node-background {
   fill-opacity: 0.5;
@@ -811,8 +813,6 @@
 /* port style */
 .port {
   stroke-width: 0; }
-  .canvas-view.app .port {
-    pointer-events: none; }
 
 .port-blue {
   fill: #6DAEFE;

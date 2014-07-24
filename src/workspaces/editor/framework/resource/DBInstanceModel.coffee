@@ -2,12 +2,13 @@
 define [
   '../ComplexResModel'
   '../ConnectionModel'
+  './DBOgModel'
   'Design'
   'constant'
   'i18n!/nls/lang.js'
   'CloudResources'
 
-], ( ComplexResModel, ConnectionModel, Design, constant, lang, CloudResources )->
+], ( ComplexResModel, ConnectionModel, DBOgModel, Design, constant, lang, CloudResources )->
 
   versionCompare = (left, right) ->
     return false  unless typeof left + typeof right is "stringstring"
@@ -163,8 +164,13 @@ define [
       else
         defaultOG = "default:" + @get('engine') + "-" + @getMajorVersion().replace(".","-")
         console.warn "can not get default optiongroup for #{@get 'engine'} #{@getMajorVersion()}"
-      @setOptionGroup defaultOG
+
+      new OgUsage @, @getDefaultOgInstance defaultOG
+
       null
+
+    getDefaultOgInstance: ( name ) ->
+      DBOgModel.findWhere( name: name, default: true ) or new DBOgModel name: name, default: true
 
     setDefaultParameterGroup:( origEngineVersion ) ->
       #set default parameter group
@@ -528,16 +534,12 @@ define [
       null
 
     setOptionGroup: ( name ) ->
-      ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere name: name
+      ogComp = DBOgModel.findWhere name: name
+      if ogComp then new OgUsage @, ogComp
 
-      if ogComp
-        new OgUsage @, ogComp
-        @unset 'ogName'
-      else
-        @set 'ogName', name
-        _.invoke @connections('OgUsage'), 'remove'
+    getOptionGroup: -> @connectionTargets('OgUsage')[0]
 
-    getOptionGroupName: -> @get( 'ogName' ) or @connectionTargets('OgUsage')[0]?.get 'name'
+    getOptionGroupName: -> @getOptionGroup()?.get 'name'
 
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'
@@ -555,10 +557,7 @@ define [
 
     serialize : () ->
       sgArray = _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
-
       ogName = @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName'
-      if not ogName then ogName = @get( 'ogName' )
-
       pgName = @get 'pgName'
 
       component =
@@ -690,8 +689,7 @@ define [
       if ogName
         ogComp = resolve MC.extractID ogName
 
-        if ogComp then new OgUsage( model, ogComp )
-        else model.set 'ogName', ogName
+        new OgUsage( model, ogComp or @getDefaultOgInstance(ogName) )
 
 
   }

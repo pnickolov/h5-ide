@@ -11,11 +11,15 @@ define [
 
     type : constant.RESTYPE.DBOG
 
+    isDefault: -> !!@get 'default'
+
     isVisual : () -> false
 
     initialize: ( attributes, option )->
       if not @get 'description'
         @set 'description', "#{@get('name')} default description"
+
+      if option.isDefault then @__isDefault = true
 
       null
 
@@ -30,8 +34,9 @@ define [
       ComplexResModel.prototype.remove.apply @, arguments
 
     serialize : ( options )->
-      isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
+      if @isDefault then return # Default OG don't have component.
 
+      isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
       if isRunOrUpdate and not @connections().length
         console.debug( "Option Group is not serialized, because nothing use it." )
         return

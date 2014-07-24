@@ -106,6 +106,7 @@
             <div class="left option-list-head">Option</div>
             <ul class="option-list"></ul>
             {{#if isAppEdit}}
+            {{#if appId}}
             <div class="og-apply-immediately">
                 <div class="checkbox">
                     <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{/if}}>
@@ -113,6 +114,7 @@
                 </div>
                 <label for="option-apply-immediately">Apply Immediately</label>
             </div>
+            {{/if}}
             {{/if}}
         </div>
         <div class="modal-footer">

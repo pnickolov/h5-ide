@@ -33,8 +33,14 @@ define [
       _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOptionGroup'
       ComplexResModel.prototype.remove.apply @, arguments
 
+    createRef: ->
+      if @isDefault()
+        @get 'name'
+      else
+        ComplexResModel.prototype.createRef.apply @, arguments
+
     serialize : ( options )->
-      if @isDefault then return # Default OG don't have component.
+      if @isDefault() then return # Default OG don't have component.
 
       isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
       if isRunOrUpdate and not @connections().length

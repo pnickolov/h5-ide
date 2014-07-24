@@ -284,6 +284,11 @@ define [ '../base/view'
 
             # render
             @$el.html template attr
+
+            @setTitle(attr.name)
+            if @isAppEdit and @appModel.get('DBInstanceStatus') isnt 'available'
+                @prependTitle '<i class="tooltip icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
+
             @renderLVIA()
             @renderOptionGroup()
 
@@ -305,6 +310,9 @@ define [ '../base/view'
             attr.name
 
         bindParsley: ->
+
+            that = this
+
             db = @model
             validateStartTime = (val) ->
                 if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
@@ -324,6 +332,54 @@ define [ '../base/view'
                         if val.length > 8 then return 'Max length is 8.'
 
                 null
+
+            $('#property-dbinstance-storage').parsley 'custom', (val) ->
+
+                storage = Number(val)
+
+                originValue = that.getOriginAttr()
+
+                if originValue and (storage < originValue.originAllocatedStorage)
+                    return 'Allocated storage cannot be reduced.'
+
+                if that.resModel.isMysql() and not (storage >=5 and storage <= 3072)
+                    return 'Must be an integer from 5 to 3072'
+
+                if that.resModel.isPostgresql() and not (storage >=5 and storage <= 3072)
+                    return 'Must be an integer from 5 to 3072'
+
+                if that.resModel.isOracle() and not (storage >=10 and storage <= 3072)
+                    return 'Must be an integer from 10 to 3072'
+
+                if that.resModel.isSqlserver()
+                    engine = that.resModel.get('engine')
+                    if engine in ['sqlserver-ee', 'sqlserver-se'] and not (storage >=200 and storage <= 1024)
+                        return 'Must be an integer from 200 to 1024'
+                    if engine in ['sqlserver-ex', 'sqlserver-web'] and not (storage >=30 and storage <= 1024)
+                        return 'Must be an integer from 30 to 1024'
+
+            $('#property-dbinstance-iops-value').parsley 'custom', (val) ->
+
+                storage = $('#property-dbinstance-storage').val()
+
+                iopsRange = that._getIOPSRange(storage)
+
+                iops = Number(val)
+                
+                if iops < 1000
+                    return "Require 1000 IOPS"
+
+                if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
+                    return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
+
+                if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
+                    return null
+
+                if iopsRange.minIOPS is iopsRange.maxIOPS
+                    return "Require #{iopsRange.minIOPS} IOPS"
+                
+                if iopsRange.minIOPS < iopsRange.maxIOPS
+                    return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
 
         renderOptionGroup: ->
 
@@ -470,7 +526,7 @@ define [ '../base/view'
                 if target.parsley 'validate'
 
                     @resModel.setName value
-                    @setTitle value
+                    @setTitle value    
                     @resModel.set 'instanceId', value
 
             null
@@ -504,30 +560,10 @@ define [ '../base/view'
 
             that = this
             target = $(event.target)
-            value = target.val()
+            value = Number(target.val())
 
-            target.parsley 'custom', (val) ->
-
-                storage = Number(value)
-
-                if that.resModel.isMysql() and not (storage >=5 and storage <= 3072)
-                    return 'Must be an integer from 5 to 3072'
-
-                if that.resModel.isPostgresql() and not (storage >=5 and storage <= 3072)
-                    return 'Must be an integer from 5 to 3072'
-
-                if that.resModel.isOracle() and not (storage >=10 and storage <= 3072)
-                    return 'Must be an integer from 10 to 3072'
-
-                if that.resModel.isSqlserver()
-                    engine = that.resModel.get('engine')
-                    if engine in ['sqlserver-ee', 'sqlserver-se'] and not (storage >=200 and storage <= 1024)
-                        return 'Must be an integer from 200 to 1024'
-                    if engine in ['sqlserver-ex', 'sqlserver-web'] and not (storage >=30 and storage <= 1024)
-                        return 'Must be an integer from 30 to 1024'
-
-            if target.parsley 'validate'
-                that.resModel.set 'allocatedStorage', Number(value)
+            if target.parsley('validate') and that.changeProvisionedIOPS()
+                that.resModel.set 'allocatedStorage', value
 
         _getIOPSRange: (storage) ->
 
@@ -562,34 +598,32 @@ define [ '../base/view'
         changeProvisionedIOPS: (event) ->
 
             that = this
-            target = $(event.target)
-            value = target.val()
-            iops = Number(value)
 
-            storage = Number($('#property-dbinstance-storage').val())
-            iopsRange = @_getIOPSRange(storage)
+            if $('#property-dbinstance-iops-check')[0].checked
 
-            target.parsley 'custom', (val) ->
+                target = $('#property-dbinstance-iops-value')
+                value = target.val()
+                iops = Number(value)
 
-                iops = Number(val)
-                
-                if iops < 1000
-                    return "Require 1000 IOPS"
+                storage = Number($('#property-dbinstance-storage').val())
 
-                if storage < Math.ceil(iops / 10)
-                    return "Require #{Math.ceil(iops / 10)}-#{Math.ceil(iops / 3)} GB Allocated Storage for #{iops} IOPS"
+                if target.parsley 'validate'
 
-                if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
-                    return null
+                    originValue = that.getOriginAttr()
+                    if originValue and (iops isnt originValue.originIOPS)
+                        $('.property-info-iops-adjust-tip').show()
+                    else
+                        $('.property-info-iops-adjust-tip').hide()
 
-                if iopsRange.minIOPS is iopsRange.maxIOPS
-                    return "Require #{iopsRange.minIOPS} IOPS"
-                
-                if iopsRange.minIOPS < iopsRange.maxIOPS
-                    return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
+                    that.resModel.setIops Number(iops)
+                    that.resModel.set 'allocatedStorage', storage
+                    return true
 
-            if target.parsley 'validate'
-                @resModel.setIops Number(iops)
+                return false
+
+            else
+
+                return true
 
         changeUserName: (event) ->
 

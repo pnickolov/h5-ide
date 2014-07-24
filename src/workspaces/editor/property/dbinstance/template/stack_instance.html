@@ -1,16 +1,18 @@
 <article class="property-dbinstance" data-bind="true">
+
+    {{#if isAppEdit}}
+    <section class="property-control-group">
+        <div class="checkbox">
+            <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
+            <label for="property-dbinstance-apply-immediately"></label>
+        </div>
+        <label for="property-dbinstance-apply-immediately">Apply Immediately</label>
+        <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.html#Overview.DBInstance.Modifying" data-tooltip="Click to read AWS documentation on modifying DB instance using Apply Immediately." target="_blank"></a>
+    </section>
+    {{/if}}
+
     <div class="option-group-head expand">DB Instance Details</div>
     <div class="option-group">
-
-        {{#if isAppEdit}}
-        <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
-                <label for="property-dbinstance-apply-immediately"></label>
-            </div>
-            <label for="property-dbinstance-apply-immediately">Apply Immediately</label>
-        </section>
-        {{/if}}
 
         {{#if snapshotId}}
         <dl class="dl-vertical">
@@ -51,7 +53,9 @@
                 <label for="property-dbinstance-storage" class="property-label-right">GB</label>
             </div>
             {{#if isAppEdit}}
+                {{#if originAllocatedStorage}}
                 <label>Current Allocated Storage: {{originAllocatedStorage}} GB</label>
+                {{/if}}
             {{/if}}
         </section>
 
@@ -73,7 +77,7 @@
         </section>
 
         {{#if isAppEdit}}
-        <div class="property-info {{#ifCond originIOPS iops}}hide{{/ifCond}}">When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes.</div>
+        <div class="property-info property-info-iops-adjust-tip {{#ifCond originIOPS iops}}hide{{/ifCond}} {{#unless originIOPS}}hide{{/unless}}">When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes.</div>
         {{/if}}
 
         {{#if isAppEdit}}

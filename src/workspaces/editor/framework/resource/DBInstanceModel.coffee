@@ -630,8 +630,11 @@ define [
 
     getSnapShots: -> @filter (obj) -> !!obj.get('snapshotId')
 
+    getDefaultOgInstance: ( name ) ->
+      DBOgModel.findWhere( name: name, default: true ) or new DBOgModel name: name, default: true
 
     deserialize : ( data, layout_data, resolve ) ->
+      that = @
       model = new Model({
 
         id     : data.uid
@@ -694,8 +697,6 @@ define [
         ogComp = resolve MC.extractID ogName
 
         new OgUsage( model, ogComp or model.getDefaultOgInstance(ogName) )
-
-
   }
 
   Model

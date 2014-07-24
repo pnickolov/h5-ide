@@ -4,9 +4,9 @@
     <div class="option-group" style="display: block">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
-            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply)=>[{{PendingModifiedValues.DbinstanceIdentifier}}]{{/if}}</dd>
+            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.DbinstanceIdentifier}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
-            <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}(Pending Apply)=>[{{PendingModifiedValues.Port}}]{{/if}}{{/if}}</dd>
+            <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
             <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable({{DBInstanceStatus}}){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
@@ -14,11 +14,11 @@
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
             <dd>{{#if AutoMinorVersionUpgrade}}Yes{{else}}No{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>
-            <dd>{{DBInstanceClass}}{{#if PendingModifiedValues.DbinstanceClass}}(Pending Apply)=>[{{PendingModifiedValues.DbinstanceClass}}]{{/if}}</dd>
+            <dd>{{DBInstanceClass}}{{#if PendingModifiedValues.DbinstanceClass}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.DbinstanceClass}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
-            <dd>{{#if Iops}}{{Iops}}{{else}}Disabled{{/if}}{{#if PendingModifiedValues.Iops}}(Pending Apply)=>[{{PendingModifiedValues.Iops}}]{{/if}}</dd>
+            <dd>{{#if Iops}}{{Iops}}{{else}}Disabled{{/if}}{{#if PendingModifiedValues.Iops}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.Iops}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
-            <dd>{{AllocatedStorage}} GB{{#if PendingModifiedValues.AllocatedStorage}}(Pending Apply)=>[{{PendingModifiedValues.AllocatedStorage}} GB]{{/if}}</dd>
+            <dd>{{AllocatedStorage}} GB{{#if PendingModifiedValues.AllocatedStorage}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.AllocatedStorage}} GB]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
             <dd>{{MasterUsername}}</dd>
             {{#if ReadReplicaDBInstanceIdentifiers.length}}
@@ -40,7 +40,7 @@
             {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
             <dd>{{name}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
-            <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}(Pending Apply)=>[{{PendingModifiedValues.Port}}]{{/if}}</dd>
+            <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}</dd>
             {{#if optionGroups.length}}
                 <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
                 <dd>{{#each optionGroups}}

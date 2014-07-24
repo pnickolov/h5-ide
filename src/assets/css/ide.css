@@ -4246,3 +4246,6 @@ summary:focus {
 .confirm-padding{
     padding: 0 15px;
 }
+.highlight-status{
+    color: #f8b42d;
+}

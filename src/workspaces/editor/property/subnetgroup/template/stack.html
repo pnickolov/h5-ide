@@ -1,37 +1,36 @@
 <article class="property-subnet-group">
-    <div class="option-group-head expand">Subnet Groups Details</div>
-    <div class="option-group">
+  <div class="option-group-head expand">Subnet Groups Details</div>
+  <div class="option-group">
 
-       <section class="property-control-group" data-bind="true">
-          <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
-          <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-          <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
-      </section>
-
-
-      <section class="property-control-group" data-bind="true">
-          <label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
-          <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-          <input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
-      </section>
-
-      <div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span></div>
-      <section class="property-control-group">
-        {{#each azSb}}
-        <div class='property-az-name'>{{az}}</div>
-        {{#each subnets}}
-        <div class="checkbox">
-           <input id="sbcb-{{id}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
-           <label for="sbcb-{{id}}"></label>
-       </div>
-       <label for="sbcb-{{id}}">{{name}}</label>
-       <div class="sb-cidr">({{cidr}})</div>
-       {{/each}}
-       {{/each}}
-   </section>
+   <section class="property-control-group" data-bind="true">
+    <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
+    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
+  </section>
 
 
-
+  <section class="property-control-group" data-bind="true">
+    <label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
+    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
+  </section>
 </div>
+
+<div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span></div>
+<section class="property-control-group">
+  {{#each azSb}}
+  <div class='property-az-name'>{{az}}</div>
+  {{#each subnets}}
+  <div class="checkbox">
+   <input id="sbcb-{{id}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
+   <label for="sbcb-{{id}}"></label>
+ </div>
+ <label for="sbcb-{{id}}">{{name}}</label>
+ <div class="sb-cidr">({{cidr}})</div>
+ {{/each}}
+ {{else}}
+    No subnet to select.
+ {{/each}}
+</section>
 
 </article>

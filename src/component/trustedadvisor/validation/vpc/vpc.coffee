@@ -82,9 +82,17 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 
 		null
 
+	isVPCWithRdsTenancyDefault = ( uid ) ->
+		vpc = Design.instance().component uid
+		hasRdsInstance = !!Design.modelClassForType(constant.RESTYPE.DBINSTANCE).size()
 
+		if hasRdsInstance and ( vpc.get('tenancy') isnt 'default' )
+			return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT
+
+		null
 
 
 	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
 	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp
 	isVPCUsingNoneDHCPAndVisualops 	: isVPCUsingNoneDHCPAndVisualops
+	isVPCWithRdsTenancyDefault      : isVPCWithRdsTenancyDefault

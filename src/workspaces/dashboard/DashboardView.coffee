@@ -6,13 +6,14 @@ define [
   "UI.modalplus"
   "constant"
   "i18n!/nls/lang.js"
+  'AppAction'
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
   "UI.nanoscroller"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, AppAction )->
 
   Backbone.View.extend {
 
@@ -303,11 +304,11 @@ define [
         $("#RefreshResource").removeClass("reloading").text("just now")
       return
 
-    deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    duplicateStack : (event)-> App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    startApp       : (event)-> App.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    stopApp        : (event)-> App.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    terminateApp   : (event)-> App.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    deleteStack    : (event)-> AppAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    duplicateStack : (event)-> AppAction.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    startApp       : (event)-> AppAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    stopApp        : (event)-> AppAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    terminateApp   : (event)-> AppAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
 
     updateVisModel : ()->
       if not @visModal then return

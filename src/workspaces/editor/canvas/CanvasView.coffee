@@ -101,6 +101,24 @@ define [
     switchMode : ( mode )->
       console.assert( "stack app appedit".indexOf( mode ) >= 0 )
       @__getCanvasView().attr( "data-mode", mode )
+
+      @clearPopups()
+      return
+
+    registerPopup : ( type, popup, unregister )->
+      oldPopup = @__popupCache[ type ]
+      if unregister
+        if oldPopup is popup
+          delete @__popupCache[ type ]
+      else
+        if oldPopup and oldPopup isnt popup
+          oldPopup.remove()
+        @__popupCache[ type ] = popup
+      return
+
+    clearPopups : ()->
+      popup.remove() for type, popup of @__popupCache
+      @__popupCache = {}
       return
 
     canvasRect : ()->
@@ -208,6 +226,11 @@ define [
         ide_event.trigger ide_event.OPEN_PROPERTY
       return
 
+    clearItems : ()->
+      item.remove() for id, item of @__itemMap
+      @__itemMap = {}
+      return
+
     lineStyle : ()-> @__linestyle
     updateLineStyle : ()->
       @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
@@ -288,11 +311,8 @@ define [
     reload : ()->
       console.log "Reloading svg canvas."
 
-      popup.remove() for type, popup of @__popupCache
-      @__popupCache = {}
-
-      item.remove() for id, item of @__itemMap
-      @__itemMap = {}
+      @clearPopups()
+      @clearItems()
 
       @initializing = true
 

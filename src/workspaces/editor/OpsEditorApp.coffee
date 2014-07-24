@@ -11,8 +11,8 @@ define [
 
   class AppEditor extends StackEditor
 
+    viewClass  : AppView
     title      : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
-    createView : ()-> new AppView({workspace:this})
     tabClass   : ()->
       switch @opsModel.get("state")
         when OpsModel.State.Running
@@ -89,19 +89,17 @@ define [
       if @__calledUponWakeup
         @__calledUponWakeup.call this
         @__calledUponWakeup = null
-
       return
-
-    isModified : ()-> @isAppEditMode() && @design && @design.isModified()
 
     isAppEditMode : ()-> !!@__appEdit
+    isModified    : ()-> @isAppEditMode() && @design && @design.isModified()
 
-    initDesign : ()->
-      if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
-        MC.canvas.analysis()
-        # Clear the thumbnail of the opsmodel, then it will be re-generated.
-        @opsModel.saveThumbnail()
-      return
+    # initDesign : ()->
+    #   if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
+    #     MC.canvas.analysis()
+    #     # Clear the thumbnail of the opsmodel, then it will be re-generated.
+    #     @opsModel.saveThumbnail()
+    #   return
 
     initEditor : ()->
       # Try show differ dialog
@@ -125,7 +123,7 @@ define [
       return
 
     cancelEditMode : ( force )->
-      modfied = if force then true else @design.isModified()
+      modfied = force || @design.isModified()
 
       if modfied and not force then return false
 
@@ -166,7 +164,8 @@ define [
         self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
 
         msg = err.msg
-        if err.result then msg += "<br />" + err.result
+        if err.result then msg += "\n" + err.result
+        msg = msg.replace(/\n/g, "<br />")
 
         self.view.showUpdateStatus( msg )
         return
@@ -187,11 +186,8 @@ define [
       @design.setMode( Design.MODE.App )
       @view.showUpdateStatus()
       @view.switchMode( false )
-      @view.canvas.update()
 
       @saveThumbnail()
-
-      @view.showUpdateStatus()
       return
 
     onOpsModelStateChanged : ()->

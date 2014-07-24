@@ -108,12 +108,6 @@ define [
       return
 
     switchMode : ( isAppEditMode )->
-      # HACK, Close the volume, instanceList, asgList bubble here!!!!!
-      # Should be removed.
-      MC.canvas.volume.close()
-      MC.canvas.instanceList.close()
-      MC.canvas.asgList.close()
-
       @toolbar.updateTbBtns()
       @statusbar.update()
 

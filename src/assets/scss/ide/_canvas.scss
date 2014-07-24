@@ -30,7 +30,7 @@
 
   &[data-mode="app"] {
     .group-resizer { display : none; }
-    .port { pointer-events : none; }
+    .group-label, .port { pointer-events : none; }
   }
 }
 

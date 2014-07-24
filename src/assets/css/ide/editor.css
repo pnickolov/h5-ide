@@ -674,7 +674,7 @@
       background-size: 32px 32px; } }
   .canvas-view[data-mode="app"] .group-resizer {
     display: none; }
-  .canvas-view[data-mode="app"] .port {
+  .canvas-view[data-mode="app"] .group-label, .canvas-view[data-mode="app"] .port {
     pointer-events: none; }
 
 .svg_resizer {

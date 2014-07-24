@@ -15,8 +15,7 @@ define [ "backbone" ], ()->
       console.info "Showing canvas popup"
 
       canvas = data.canvas
-      if canvas.__popupCache[ @type ] then canvas.__popupCache[ @type ].remove()
-      canvas.__popupCache[ @type ] = @
+      canvas.registerPopup( @ )
 
       $.extend @, data
 
@@ -92,7 +91,7 @@ define [ "backbone" ], ()->
       return
 
     remove : ()->
-      @canvas.__popupCache[ @type ] = null
+      @canvas.registerPopup( @ )
       if @onRemove then @onRemove()
       Backbone.View.prototype.remove.call this
 

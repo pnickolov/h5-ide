@@ -2,7 +2,7 @@
 #  validation
 #############################
 
-define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.config', 'component/trustedadvisor/lib/Ta.Bundle', 'component/trustedadvisor/lib/TA.core', 'jquery', 'underscore', "MC" ], ( constant, ide_event, config, TaBundle, TaCore ) ->
+define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'component/trustedadvisor/lib/TA.Bundle', 'component/trustedadvisor/lib/TA.Core', 'jquery', 'underscore', "MC" ], ( constant, ide_event, config, TaBundle, TaCore ) ->
 
 
     ########## Functional Method ##########

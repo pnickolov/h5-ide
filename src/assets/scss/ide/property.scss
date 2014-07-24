@@ -1,5 +1,14 @@
 // RDS Instance Property
 
+.property-panel-wrapper {
+	.property-dbinstance-status-icon-warning {
+		&:hover {
+			background-color: transparent;
+		}
+		color: #f00;
+	}
+}
+
 .property-dbinstance {
 	input.shorter-input {
 		width: 37px;

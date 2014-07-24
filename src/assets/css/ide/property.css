@@ -1,3 +1,8 @@
+.property-panel-wrapper .property-dbinstance-status-icon-warning {
+  color: #f00; }
+  .property-panel-wrapper .property-dbinstance-status-icon-warning:hover {
+    background-color: transparent; }
+
 .property-dbinstance input.shorter-input {
   width: 37px;
   padding-right: 7px; }

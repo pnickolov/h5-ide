@@ -287,7 +287,7 @@ define [ '../base/view'
 
             @setTitle(attr.name)
             if @isAppEdit and @appModel.get('DBInstanceStatus') isnt 'available'
-                @prependTitle '<i class="tooltip icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
+                @prependTitle '<i class="tooltip property-dbinstance-status-icon-warning icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
 
             @renderLVIA()
             @renderOptionGroup()

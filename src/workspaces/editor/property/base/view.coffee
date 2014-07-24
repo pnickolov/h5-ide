@@ -178,7 +178,7 @@ define [ 'constant',
                 resUID = @model.get 'uid'
                 if resUID
                     resComp = Design.instance().component(resUID)
-                    if resComp and resComp.type is constant.RESTYPE.SG
+                    if resComp and (resComp.type is constant.RESTYPE.SG or resComp.type is constant.RESTYPE.DBINSTANCE)
                         return null
 
                 # all other property

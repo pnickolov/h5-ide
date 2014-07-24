@@ -37,6 +37,7 @@ define({
         elb: [ 'isSSLCertExist' ]
         asg: [ 'isTopicNonexist' ]
         vpc: [ 'isVPCUsingNonexistentDhcp' ]
+        og: [ 'unusedOgWontCreate' ]
 
 
 })

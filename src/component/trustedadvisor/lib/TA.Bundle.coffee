@@ -20,8 +20,9 @@ define ['MC',
         '../validation/ec2/ebs'
         '../validation/ec2/kp'
         '../validation/rds/dbinstance'
+        '../validation/rds/og'
 
-], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance ) ->
+], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og ) ->
 
         stack           : stack
         instance        : instance
@@ -44,6 +45,7 @@ define ['MC',
         ebs             : ebs
         kp              : kp
         dbinstance      : dbinstance
+        og              : og
 
 
 

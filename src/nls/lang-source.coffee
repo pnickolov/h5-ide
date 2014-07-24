@@ -5458,6 +5458,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "available AZ for different family not consistent with subnet group's AZ."
       zh: ""
 
+    TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW:
+      en: "Cannot create a publicly accessible DBInstance because customer VPC has no internet gateway attached.  Message: To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
+      zh: ""
+
     TA_MSG_ERROR_RDS_OG_COMPATIBILITY:
       en: "App Update: Option Group compatibility."
       zh: ""

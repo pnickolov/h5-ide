@@ -19,6 +19,18 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT
 
+    isAccessibleHasNoIgw = ( uid ) ->
+        db = Design.instance().component uid
+        if not db.get 'accessible' then return null
 
-    isOgValid: isOgValid
-    isAzExist: isAzExist
+        vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
+        if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
+            return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
+
+
+
+    isOgValid           : isOgValid
+    isAzExist           : isAzExist
+    isAccessibleHasNoIgw:isAccessibleHasNoIgw

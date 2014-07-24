@@ -51,10 +51,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     render : ()->
       # Move the group to right place
       m = @model
-      svgEl = @$el[0].instance
-      @initNode svgEl, m.x(), m.y()
       @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
-      svgEl.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
+      @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
     # Override to make the connect-line functionality more tolerant
     containPoint : ( px, py )->

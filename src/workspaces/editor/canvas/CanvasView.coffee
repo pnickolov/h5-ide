@@ -224,7 +224,7 @@ define [
         CanvasManager.removeClass @__selected, "selected"
         @__selected = null
 
-      if not silent
+      if silent isnt true
         ide_event.trigger ide_event.OPEN_PROPERTY
       return
 

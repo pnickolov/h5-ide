@@ -14,6 +14,19 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
       if @host
         @listenTo @host, "change:volumeList", @render
+
+      # Watch Changes of volume name
+      data = @models || []
+      if data[0] and data[0].get
+        for volume in @models
+          @listenTo volume, "change:name", @updateVolume
+          @listenTo volume, "change:volumeSize", @updateVolume
+      return
+
+    updateVolume : ( volume )->
+      $vol = @$el.find('[data-id=' + volume.id + ']')
+      $vol.children(".vpp-name").text( volume.get("name") )
+      $vol.children(".vpp-size").text( volume.get("volumeSize") + "GB" )
       return
 
     content : ()->

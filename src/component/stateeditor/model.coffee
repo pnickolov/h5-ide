@@ -248,7 +248,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
-			# MC.canvas.nodeAction.show(compData.uid)
 
 		getStateData: () ->
 

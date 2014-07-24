@@ -10,18 +10,16 @@ define [ "backbone" ], ()->
     className   : "canvas-pp"
 
     initialize : ( data )->
-      console.assert data.canvas
-
       console.info "Showing canvas popup"
 
-      canvas = data.canvas
-      canvas.registerPopup( @ )
+      console.assert data.canvas
+      console.assert data.attachment, "Canvas popup must be attached to some element"
 
       $.extend @, data
 
       @$el.appendTo( @canvas.__getCanvasView().parent() )
-
       @render()
+
 
       if @closeOnBlur
         self = @
@@ -31,7 +29,21 @@ define [ "backbone" ], ()->
           return
 
         @canvas.$el[0].addEventListener "mousedown", ac, true
+
+
+      ceItem = @canvas.getItem $( @attachment ).closest( ".canvasel" ).attr("data-id")
+      console.assert ceItem, "Canvas popup must be attached to a canvas element"
+      if not ceItem.__popupCache then ceItem.__popupCache = {}
+      oldPoup = ceItem.__popupCache[ @type ]
+      ceItem.__popupCache[ @type ] = @
+      if oldPoup
+        @migrate( oldPoup )
+        oldPoup.remove()
+
+      @canvas.registerPopup( @ )
       return
+
+    migrate : ( oldPopup )->
 
     autoclose : ( evt )->
       popup = $( evt.target ).closest(".canvas-pp")
@@ -43,14 +55,6 @@ define [ "backbone" ], ()->
 
     render : ()->
       @$el.html( @content() )
-      @attachTo( @attachment )
-      return
-
-    attachTo : ( svgNodeOrCanvasElement )->
-      if svgNodeOrCanvasElement.$el
-        @attachment = svgNodeOrCanvasElement.$el[0]
-      else
-        @attachment = svgNodeOrCanvasElement
 
       if @attachType is "float"
         @attachFloat()
@@ -92,6 +96,12 @@ define [ "backbone" ], ()->
 
     remove : ()->
       @canvas.registerPopup( @ )
+
+      ceItem = @canvas.getItem $( @attachment ).closest( ".canvasel" ).attr("data-id")
+      oldPoup = ceItem.__popupCache[ @type ]
+      if oldPoup is @
+        delete ceItem.__popupCache[ @type ]
+
       if @onRemove then @onRemove()
       Backbone.View.prototype.remove.call this
 

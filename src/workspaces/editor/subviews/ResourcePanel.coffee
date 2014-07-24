@@ -335,7 +335,7 @@ define [
       if type is constant.RESTYPE.INSTANCE
         dropTargets += ",#changeAmiDropZone"
 
-      option = $tgt.data("option") || {}
+      option = $.extend true, {}, $tgt.data("option") || {}
       option.type = type
 
       $tgt.dnd( evt, {

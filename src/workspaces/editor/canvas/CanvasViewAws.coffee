@@ -69,7 +69,7 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
     isReadOnly : ()-> @design.modeIsApp()
 
     delSelectedItem : ()->
-      if isReadOnly() then return false
+      if @isReadOnly() then return false
 
       if @__selectedVolume
         s = @__selectedVolume
@@ -77,7 +77,7 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
         @design.component( s ).remove()
         nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
         if nextVol.length
-          nextVol.click()
+          nextVol.trigger("mousedown")
         else
           @deselectItem()
         return
@@ -153,7 +153,7 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
       if attr.id
         # Moving volume
         @design.component( attr.id ).attachTo( owner )
-        @selectItem( dsata.hoverItem.el )
+        @selectItem( data.hoverItem.el )
         return
 
       attr.owner = owner
@@ -161,13 +161,14 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
         attr.encrypted = attr.encrypted is 'true'
 
       VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
-      new VolumeModel( attr )
+      v = new VolumeModel( attr )
 
       new VolumePopup {
-        attachment : data.hoverItem.el
-        host       : owner
-        models     : owner.get("volumeList")
-        canvas     : @
+        attachment    : data.hoverItem.el
+        host          : owner
+        models        : owner.get("volumeList")
+        canvas        : @
+        selectAtBegin : v
       }
       return
   }

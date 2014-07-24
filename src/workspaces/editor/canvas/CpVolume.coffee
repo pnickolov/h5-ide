@@ -21,6 +21,14 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
         for volume in @models
           @listenTo volume, "change:name", @updateVolume
           @listenTo volume, "change:volumeSize", @updateVolume
+
+      if @selectAtBegin
+        @clickVolume { currentTarget : @$el.find('[data-id=' + @selectAtBegin.id + ']')[0] }
+      return
+
+    migrate : ( oldPopup )->
+      id = oldPopup.$el.find(".selected").attr("data-id")
+      @$el.find('[data-id="' + id + '"]').addClass("selected")
       return
 
     updateVolume : ( volume )->
@@ -64,4 +72,9 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
         })
 
       false
+
+    remove : ()->
+      @canvas.selectVolume( null )
+      CanvasPopup.prototype.remove.call this
+      return
   }

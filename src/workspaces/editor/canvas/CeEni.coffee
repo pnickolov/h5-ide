@@ -35,6 +35,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @onConnectionChange
       @listenTo @model, "change:primaryEip", @render
+
+      @listenTo @canvas, "switchMode", @render # For Eip Tooltip
       return
 
     onConnectionChange : ( cn )-> @render() if cn.type is "EniAttachment"

@@ -52,6 +52,8 @@ define [
       @listenTo @model, "change:imageId", @render
       @listenTo @model, "change:volumeList", @render
       @listenTo @model, "change:count", @updateServerCount
+
+      @listenTo @canvas, "switchMode", @render # For Eip Tooltip
       return
 
     updateServerCount : ()->

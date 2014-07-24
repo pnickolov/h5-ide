@@ -103,6 +103,8 @@ define [
       @__getCanvasView().attr( "data-mode", mode )
 
       @clearPopups()
+
+      @trigger "switchMode", mode
       return
 
     registerPopup : ( type, popup, unregister )->

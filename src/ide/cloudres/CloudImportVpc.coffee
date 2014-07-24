@@ -1586,6 +1586,11 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           dbInsRes.CreatedBy     = originComp.resource.CreatedBy
           if not aws_dbins.Endpoint
             dbInsRes.Endpoint.Port = originComp.resource.Endpoint.Port
+          #when PreferredBackupWindow|PreferredMaintenanceWindow in original component is "", then do not fill back
+          if not originComp.resource.PreferredBackupWindow
+            dbInsRes.PreferredBackupWindow = originComp.resource.PreferredBackupWindow
+          if not originComp.resource.PreferredMaintenanceWindow
+            dbInsRes.PreferredMaintenanceWindow = originComp.resource.PreferredMaintenanceWindow
         else
           compName = aws_dbins.Name || aws_dbins.DBInstanceIdentifier
           dbInsRes.CreatedBy     = 'user' #created by user

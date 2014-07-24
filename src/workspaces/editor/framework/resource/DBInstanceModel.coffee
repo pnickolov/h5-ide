@@ -284,6 +284,9 @@ define [
         reserve : "instanceClass|autoMinorVersionUpgrade|iops|accessible" #reserve attributes
         copyConnection : [ "SgAsso" ]
       }
+      #reset for readReplica
+      @set 'backupRetentionPeriod', 0
+      @set 'multiAz', false
       null
 
     #override ResourceModel.isRemovable()

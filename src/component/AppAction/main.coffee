@@ -13,7 +13,7 @@ define [
   'constant'
   'UI.modalplus'
 ], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus )->
-  Backbone.View.extend
+  AppAction = Backbone.View.extend
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
 
@@ -230,3 +230,4 @@ define [
             notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
+  new AppAction()

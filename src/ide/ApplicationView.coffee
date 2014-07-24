@@ -288,8 +288,8 @@ define [
           text: lang.ide.TOOL_POP_BTN_TERMINATE_APP
           color: "red"
           disabled: production
-          disableClose: true
         }
+        disableClose: true
       )
       terminateConfirm.tpl.find('.modal-footer').hide()
 

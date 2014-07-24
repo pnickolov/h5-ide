@@ -74,8 +74,8 @@ define ["jquery"], ( $ )->
     false
 
   startDrag = ( data, evt )->
-    data.onDragStart( data )
     data.shadow = shadow = data.clone( data )
+    data.onDragStart( data )
 
     if data.lockToCenter
       data.offsetX = shadow.outerWidth()  / 2

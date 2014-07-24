@@ -546,8 +546,8 @@ g.shadow { opacity : 0.8; }
     margin     : 5px auto 1px;
     width      : 26px;
     color      : #74B1FD;
-    height     : image-height('ide/icon/instance-volume-not-attached.png');
-    background : image-url('ide/icon/instance-volume-not-attached.png') center no-repeat;
+    height     : image-height('ide/icon/instance-volume.png');
+    background : image-url('ide/icon/instance-volume.png') center no-repeat;
   }
 }
 .instance-pp-empty {

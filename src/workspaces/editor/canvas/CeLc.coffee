@@ -112,7 +112,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
           })
 
           # Volume Image
-          svg.image( "", 29, 24 ).move(31, 46).classes('volume-image')
+          svg.image( MC.IMG_URL + "ide/icon/instance-volume.png", 29, 24 ).move(31, 46).classes('volume-image')
           # Volume Label
           svg.plain( "" ).move(45, 58).classes('volume-number')
 
@@ -143,11 +143,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
       # Update Volume
       volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
-      if volumeCount > 0
-        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
-      else
-        volumeImage = 'ide/icon/instance-volume-not-attached.png'
-      CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
       @$el.children(".server-number-group").hide()

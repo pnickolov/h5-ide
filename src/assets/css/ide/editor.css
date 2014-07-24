@@ -265,13 +265,12 @@
     cursor: default;
     opacity: .6;
     background-color: transparent; }
-  .resource-item.instance {
-    position: relative;
+  .resource-item.instance, .resource-item.dbinstance {
     padding-top: 5px;
     height: 132px; }
-<<<<<<< HEAD
   .resource-item.az {
-    background-image: url('/assets/images/ide/icon/az-resource.png'); }
+    background-image: url('/assets/images/ide/icon/az-resource.png');
+    position: relative; }
   .resource-item.volume {
     background-image: url('/assets/images/ide/icon/volume-resource-1109.png'); }
   .resource-item.eni {
@@ -293,75 +292,38 @@
     background-image: url('/assets/images/ide/icon/elb-resource.png'); }
   .resource-item.snapshot {
     background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
-=======
-  .resource-item.dbinstance{
-    position: relative;
-    padding-top: 5px;
-    height: 118px; }
-  .resource-item.dbsnapshot{
-    position: relative;
-    padding-top: 5px;
-    height: 90px; }
+  .resource-item.subnetgroup {
+    background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
+  .resource-item.dbinstance {
+    background-image: url('/assets/images/ide/icon/instance-resource.png'); }
+  .resource-item.dbsnapshot {
+    height: 30px;
+    background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
   .resource-item .resource-count {
-    margin-left: 47px;
-    margin-top: -70px;
-    height: 15px;
-    width: 15px;
-    background-color: #f22;
     position: absolute;
-    border-radius: 15px;
+    top: 7px;
+    left: 47px;
+    height: 1em;
+    width: 1em;
+    background: #f22;
+    border-radius: 50%;
     color: #fff;
     font-size: 12px;
     text-align: center;
-    line-height: 11px; }
+    line-height: 1em;
+    padding: 2px; }
+  .resource-item .resource-icon-dbsnapshot {
+    margin-top: -50px; }
 
-.resource-icon-az {
-  background-image: url('/assets/images/ide/icon/az-resource.png'); }
-
-.resource-icon-volume {
-  background-image: url('/assets/images/ide/icon/volume-resource-1109.png'); }
-
-.resource-icon-eni {
-  background-image: url('/assets/images/ide/icon/eni-resource.png'); }
-
-.resource-icon-subnet {
-  background-image: url('/assets/images/ide/icon/subnet-resource.png'); }
-
-.resource-icon-subnetgroup {
-  background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
-
-.resource-icon-rt {
-  background-image: url('/assets/images/ide/icon/rt-resource.png'); }
-
-.resource-icon-igw {
-  background-image: url('/assets/images/ide/icon/igw-resource.png'); }
-
-.resource-icon-vgw {
-  background-image: url('/assets/images/ide/icon/vgw-resource.png'); }
-
-.resource-icon-cgw {
-  background-image: url('/assets/images/ide/icon/cgw-resource.png'); }
-
-.resource-icon-asg {
-  background-image: url('/assets/images/ide/icon/asg-resource.png'); }
-
-.resource-icon-elb {
-  background-image: url('/assets/images/ide/icon/elb-resource.png'); }
-
-.resource-icon-ebs-snapshot {
-  background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
->>>>>>> feature/rds-support
-
-.resource-icon-instance {
+.resource-icon-instance, .resource-icon-dbinstance {
   padding-top: 12px;
   height: 48px;
   background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
-<<<<<<< HEAD
-  #DndItem .resource-icon-instance {
+  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance {
     padding-top: 28px;
     height: 62px;
     position: relative; }
-  .resource-item.asg > .resource-icon-instance {
+  .resource-item.asg > .resource-icon-instance, .resource-item.asg > .resource-icon-dbinstance {
     background: #fff;
     border-radius: 4px;
     position: absolute;
@@ -370,7 +332,7 @@
     width: 36px;
     height: 30px;
     padding-top: 6px; }
-  #DndItem.asg .resource-icon-instance {
+  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance {
     left: 16px;
     top: 16px;
     height: 31px;
@@ -380,45 +342,20 @@
     -webkit-transition: all ease-in 0.2s;
     -moz-transition: all ease-in 0.2s;
     transition: all ease-in 0.2s; }
-  #DndItem.asg.dragOver .resource-icon-instance {
+  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance {
     left: 47px;
     top: 51px;
     width: 53px;
     height: 46px; }
-=======
-
-.resource-icon-dbinstance {
-  padding-top: 12px;
-  height: 48px;
-  background: url('/assets/images/ide/icon/dbinstance-resource.png') center no-repeat; }
-
-.resource-icon-dbsnapshot {
-  padding-top: 12px;
-  height: 48px;
-  background: url('/assets/images/ide/icon/dbinstance-resource.png') center no-repeat; }
-
-
-  #ResourceDragItem .resource-icon-instance {
-    padding-top: 17px;
-    height: 53px; }
-  #ResourceDragItem.resource-icon-asg .resource-icon-instance .resource-icon-dbinstance .resource-icon-dbsnapshot {
-    top: 50%;
-    background-size: 100%;
-    left: 50%;
-    margin-left: -30px;
-    margin-top: -30px;
-    opacity: .6; }
->>>>>>> feature/rds-support
 
 .ebs-size {
   margin-top: -1.5em;
-  font-size: 12px;
   color: #676767;
-  height: 1.5em;
-  line-height: 1.1em;
-  position: absolute;
-  text-align: center;
-  width: 65px; }
+  height: 1.5em; }
+
+.rds-snapshot-size {
+  color: #676767;
+  line-height: 2em; }
 
 .az-name {
   font-size: 16px;
@@ -428,22 +365,7 @@
   margin-top: -60px;
   text-transform: uppercase; }
 
-<<<<<<< HEAD
 #DndItem {
-=======
-.rds-snapshot-size {
-  margin-top: -1.2em;
-  margin-left: -2.6em;
-  font-size: 12px;
-  color: #676767;
-  height: 1.5em;
-  line-height: 1.1em;
-  position: absolute;
-  text-align: center;
-  width: 65px; }
-
-#ResourceDragItem {
->>>>>>> feature/rds-support
   position: absolute;
   background-color: rgba(255, 255, 255, 0.3);
   z-index: 100;
@@ -474,6 +396,8 @@
     width: 170px;
     height: 100px;
     background-position: 17px center; }
+  #DndItem .resource-count {
+    display: none; }
   #DndItem.az {
     color: #eee;
     background-image: none;
@@ -481,9 +405,9 @@
     line-height: 134px;
     text-align: left;
     margin-top: 0;
-    padding-left: 3px;
+    padding-left: 7px;
     height: 76px;
-    width: 57px; }
+    width: 59px; }
     #DndItem.az .az-name {
       position: absolute;
       left: 10px;
@@ -491,8 +415,8 @@
       color: transparent;
       border: 2px dashed #f69300;
       border-radius: 8px;
-      height: 36px;
-      width: 36px;
+      height: 46px;
+      width: 44px;
       margin: 0;
       -webkit-transition: all ease-in 0.2s;
       -moz-transition: all ease-in 0.2s;
@@ -506,17 +430,11 @@
       #DndItem.az.dragOver .az-name {
         width: 206px;
         height: 206px; }
-<<<<<<< HEAD
-  #DndItem.asg, #DndItem.subnet {
+  #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup {
     background-image: none;
     width: 70px;
     height: 70px; }
-    #DndItem.asg:before, #DndItem.subnet:before {
-=======
-  #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet, #ResourceDragItem.resource-icon-subnetgroup {
-    background-image: none; }
-    #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before, #ResourceDragItem.resource-icon-subnetgroup:before {
->>>>>>> feature/rds-support
+    #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before {
       content: " ";
       display: block;
       position: absolute;
@@ -530,10 +448,10 @@
       -webkit-transition: all ease-in 0.2s;
       -moz-transition: all ease-in 0.2s;
       transition: all ease-in 0.2s; }
-    #DndItem.asg.dragOver, #DndItem.subnet.dragOver {
+    #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver {
       width: 190px;
       height: 190px; }
-      #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before {
+      #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before {
         width: 166px;
         height: 166px; }
   #DndItem.asg:before {
@@ -559,13 +477,20 @@
       height: 126px; }
     #DndItem.asg.dragOver:after {
       height: 21px; }
+  #DndItem.resource-icon-subnetgroup:before {
+    border-color: #e0e0e0; }
+  #DndItem.resource-icon-subnetgroup.add-to-dom {
+    width: 190px;
+    height: 190px; }
+    #DndItem.resource-icon-subnetgroup.add-to-dom:before {
+      width: 164px;
+      height: 164px; }
   #DndItem.instance {
     margin-top: 0;
     overflow: visible; }
     #DndItem.instance:before {
       content: "subnet";
       border-radius: 4px;
-<<<<<<< HEAD
       position: absolute;
       top: 30px;
       left: 30px;
@@ -586,38 +511,6 @@
       left: 0;
       width: 105px;
       height: 108px; }
-=======
-      margin: 10px;
-      height: 44px;
-      width: 44px;
-      -webkit-transition: all ease-in 0.15s;
-      -moz-transition: all ease-in 0.15s;
-      transition: all ease-in 0.15s; }
-    #ResourceDragItem.resource-icon-asg.add-to-dom, #ResourceDragItem.resource-icon-subnet.add-to-dom, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
-      width: 150px;
-      height: 150px; }
-      #ResourceDragItem.resource-icon-asg.add-to-dom:before, #ResourceDragItem.resource-icon-subnet.add-to-dom:before, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
-        width: 124px;
-        height: 124px; }
-  #ResourceDragItem.resource-icon-subnet:before {
-    border-color: #e0e0e0; }
-  #ResourceDragItem.resource-icon-subnet.add-to-dom {
-    width: 190px;
-    height: 190px; }
-    #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
-      width: 164px;
-      height: 164px; }
-  #ResourceDragItem.resource-icon-subnetgroup:before {
-    border-color: #e0e0e0; }
-  #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
-    width: 190px;
-    height: 190px; }
-    #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
-      width: 164px;
-      height: 164px; }
-  #ResourceDragItem.instance {
-    margin-top: 0; }
->>>>>>> feature/rds-support
 
 .resource-select.selectbox .selection {
   background: #143553;
@@ -1267,7 +1160,7 @@ g.shadow {
     width: 26px;
     color: #74B1FD;
     height: 24px;
-    background: url('/assets/images/ide/icon/instance-volume-not-attached.png') center no-repeat; }
+    background: url('/assets/images/ide/icon/instance-volume.png') center no-repeat; }
 
 .instance-pp-empty {
   text-align: center;

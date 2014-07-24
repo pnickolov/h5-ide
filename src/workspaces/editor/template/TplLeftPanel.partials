@@ -18,7 +18,15 @@
 <div class="fixedaccordion accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
-    <ul class="resource-list-az clearfix accordion-body"></ul>
+    <ul class="resource-list-az clearfix accordion-body">
+      <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
+        <div class="resource-count">{{count}}</div>
+        <div class="az-name"></div>
+        <div class="res-name">AZ & subnet</div>
+      </li>
+      <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+      <li class="tooltip resource-item subnetgroup" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
+    </ul>
   </section>
 
   <section class="accordion-group">
@@ -47,7 +55,7 @@
       <div class="scroll-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
         <ul class="resource-list-snapshot">
-          <li class="tooltip resource-item resource-icon-volume " data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
+          <li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
         </ul>
         <div class="resource-list-head">
           {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
@@ -115,23 +123,15 @@
   </section>
 </div>
 
-<!-- {{az}} -->
-<li class="tooltip resource-item az {{#unless id}}resource-disabled{{/unless}}" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'>
-  <div class="resource-count">{{count}}</div>
-  AZ & subnet
-</li>
-<li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
-<li class="tooltip resource-item subnetgroup" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
-
 <!-- {{snapshot}} -->
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
+<li class="resource-item bubble snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
 </li>{{/with}}{{/each}}
 
 <!-- {{rds}} -->
 {{#each this}}{{#with this.[0].attributes}}
-<li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-component-type="node" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
+<li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
 <div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
 {{@key}}
 </li>
@@ -140,9 +140,9 @@
 
 <!-- {{rds_snapshot}} -->
 {{#each this}}
-<li class="resource-item dbsnapshot tooltip bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-tooltip="{{DBSnapshotIdentifier}}" data-component-type="node" data-type="DBSNAP" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
+<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBSNAP" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
   <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
-  <span class="rds-snapshot-size">{{AllocatedStorage}} GB</span>{{DBInstanceIdentifier}}
+  <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div>{{DBInstanceIdentifier}}
 </li>
 {{/each}}
 

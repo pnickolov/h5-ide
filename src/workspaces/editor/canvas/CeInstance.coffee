@@ -96,7 +96,7 @@ define [
         # Ami Icon
         svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
         # Volume Image
-        svg.image( "", 29, 24 ).move(21, 46).classes('volume-image')
+        svg.image( MC.IMG_URL + "ide/icon/instance-volume.png", 29, 24 ).move(21, 46).classes('volume-image')
         # Volume Label
         svg.text( "" ).move(35, 58).classes('volume-number')
         # Eip
@@ -171,11 +171,6 @@ define [
 
       # Update Volume
       volumeCount = if m.get("volumeList") then m.get("volumeList").length else 0
-      if volumeCount > 0
-        volumeImage = 'ide/icon/instance-volume-attached-normal.png'
-      else
-        volumeImage = 'ide/icon/instance-volume-not-attached.png'
-      CanvasManager.update @$el.children(".volume-image"), volumeImage, "href"
       CanvasManager.update @$el.children(".volume-number"), volumeCount
 
     showVolume : ()->

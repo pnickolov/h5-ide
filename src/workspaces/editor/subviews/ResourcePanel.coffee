@@ -232,34 +232,20 @@ define [
       @updateAZ()
       return
 
-    updateAZ : ()->
-
+    updateAZ : ( resModel )->
       if not @workspace.isAwake() then return
+
+      if resModel and resModel.type isnt constant.RESTYPE.AZ then return
+
       region = @workspace.opsModel.get("region")
-
-      allAZComp = CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
-      usedAZComp = @workspace.design.componentsOfType(constant.RESTYPE.AZ) || []
-
-      usedAZ = _.map usedAZComp, (az) ->
-        return az.get('name')
+      usedAZ = ( az.get("name") for az in @workspace.design.componentsOfType(constant.RESTYPE.AZ) || [] )
 
       availableAZ = []
-      _.each allAZComp, (az) ->
-        if not (az.id in usedAZ)
+      for az in CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+        if usedAZ.indexOf(az.id) is -1
           availableAZ.push(az.id)
-        null
 
-      availableAZ = availableAZ.sort()
-
-      nextId = ''
-      if availableAZ.length
-        nextId = availableAZ[0]
-
-      @$el.find(".resource-list-az").html LeftPanelTpl.az({
-        id: nextId,
-        count: availableAZ.length
-      })
-
+      @$el.find(".az").toggleClass("disabled", availableAZ.length is 0).data("option", { name : availableAZ[0] }).children(".resource-count").text( availableAZ.length )
       return
 
     updateSnapshot : ()->
@@ -304,20 +290,10 @@ define [
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
 
-    updateDisableItems : ()->
+    updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
-      @updateAZ()
+      @updateAZ( resModel )
       @updateDisabledVpcRes()
-      return
-
-    updateDisabledAz : ()->
-      $azs = @$el.find(".resource-list-az").children().removeClass("disabled")
-      for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
-        azName = az.get("name")
-        for i in $azs
-          if $(i).text().indexOf(azName) != -1
-            $(i).addClass("disabled")
-            break
       return
 
     updateDisabledVpcRes : ()->
@@ -459,6 +435,9 @@ define [
         dropTargets  : $( dropTargets )
         dataTransfer : option
         eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
+        onDragStart  : ( data )->
+          if type is constant.RESTYPE.AZ
+            data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
       })
       return false
 

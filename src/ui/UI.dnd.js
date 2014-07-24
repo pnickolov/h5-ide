@@ -64,8 +64,8 @@
     };
     startDrag = function(data, evt) {
       var offset, shadow;
-      data.onDragStart(data);
       data.shadow = shadow = data.clone(data);
+      data.onDragStart(data);
       if (data.lockToCenter) {
         data.offsetX = shadow.outerWidth() / 2;
         data.offsetY = shadow.outerHeight() / 2;

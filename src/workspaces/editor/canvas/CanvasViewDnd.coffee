@@ -70,8 +70,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
     return
 
-  ________visualizeOnMove  = ________visMove
-  ________visualizeBestfit = ________visBestfit
+  #________visualizeOnMove  = ________visMove
+  #________visualizeBestfit = ________visBestfit
   ### env:dev:end ###
 
   CanvasViewProto = CanvasView.prototype

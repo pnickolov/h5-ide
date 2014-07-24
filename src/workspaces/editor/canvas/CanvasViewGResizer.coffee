@@ -32,7 +32,7 @@ define [ "./CanvasView" ], ( CanvasView )->
       )
     return
 
-  ________visualizeResize = ________vis
+  #________visualizeResize = ________vis
   ### env:dev:end ###
 
 

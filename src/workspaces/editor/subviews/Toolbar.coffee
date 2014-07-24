@@ -78,7 +78,12 @@ define [
 
       @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
 
-      @updateTbBtns()
+      #delay
+      that = @
+      setTimeout(() ->
+        that.updateTbBtns()
+      , 1000)
+
       @updateZoomButtons()
       return
 
@@ -97,7 +102,7 @@ define [
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
         else
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
-          @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
+          @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
           @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
 
       if @__saving

@@ -690,7 +690,7 @@ define [
       if ogName
         ogComp = resolve MC.extractID ogName
 
-        new OgUsage( model, ogComp or @getDefaultOgInstance(ogName) )
+        new OgUsage( model, ogComp or model.getDefaultOgInstance(ogName) )
 
 
   }

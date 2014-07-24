@@ -10,7 +10,7 @@
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
             <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable({{DBInstanceStatus}}){{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
-            <dd>{{Engine}}({{EngineVersion}}){{#if PendingModifiedValues.EngineVersion}}(Pending Apply)=>[{{PendingModifiedValues.EngineVersion}}]{{/if}}</dd>
+            <dd>{{Engine}}({{EngineVersion}}){{#if PendingModifiedValues.EngineVersion}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.EngineVersion}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
             <dd>{{#if AutoMinorVersionUpgrade}}Yes{{else}}No{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>

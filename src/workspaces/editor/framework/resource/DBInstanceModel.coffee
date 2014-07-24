@@ -534,8 +534,9 @@ define [
       null
 
     setOptionGroup: ( name ) ->
-      ogComp = DBOgModel.findWhere name: name
-      if ogComp then new OgUsage @, ogComp
+      ogComp = DBOgModel.findWhere(name: name) or new DBOgModel(name: name, default: true)
+
+      new OgUsage @, ogComp
 
     getOptionGroup: -> @connectionTargets('OgUsage')[0]
 

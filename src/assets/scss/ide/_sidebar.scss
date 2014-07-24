@@ -340,6 +340,12 @@ $dndDuration : 0.2s;
     }
   }
 
+  &.subnetgroup {
+    &:before {
+      border-color : #498fe1;
+    }
+  }
+
   &.asg {
     &:before {
       border-color : #76d6ff;

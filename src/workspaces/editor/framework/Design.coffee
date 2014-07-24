@@ -617,6 +617,17 @@ define [
       ami = comp.getAmi() or comp.get("cachedAmi")
       if ami and ami.rootDeviceType is 'instance-store'
         return false
+
+    vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
+    if vpc.length>0
+      vpcId = vpc[0].get("appId")
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) =>  model.RES_TAG is vpcId
+      for ins in instanceAry
+        ins = ins.attributes
+        for bdm in (ins.blockDeviceMapping || [])
+          if bdm.ebs is null and bdm.VirtualName
+            #blockDevice is instance-store
+            return false
     true
 
   DesignImpl::instancesNoUserData = ()->

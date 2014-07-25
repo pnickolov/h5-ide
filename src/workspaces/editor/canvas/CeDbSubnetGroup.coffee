@@ -11,6 +11,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     defaultSize : [ 19, 19 ]
 
     listenModelEvents : ()->
+      @listenTo @model, "change:connections", @render
       return
 
     # Creates a svg element
@@ -19,7 +20,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
       svgEl = @canvas.appendSubnet( @createGroup() )
       svgEl.add([
-        svg.image(MC.IMG_URL + "/ide/icon/sbg-info.png", 12, 12).move(4, 4).classes("sbg-info tooltip")
+        svg.image(MC.IMG_URL + "/ide/icon/sbg-info.png", 12, 12).move(4, 4).classes("tooltip")
       ])
       $( svgEl.node ).children(".group-label").attr({
         x : "18"
@@ -35,4 +36,11 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       m = @model
       @$el.children("text").text m.get('name')
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
+
+      # Tooltip
+      tt = ""
+      tt += sb.get("name") for sb in m.connectionTargets("SubnetgAsso")
+      CanvasManager.update @$el.children(".tooltip"), tt || "No subnet is assigned to this subnet group yet", "tooltip"
+      return
+
   }

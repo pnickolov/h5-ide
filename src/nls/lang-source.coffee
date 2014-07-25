@@ -5474,6 +5474,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
       zh: ""
 
+    TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS:
+      en: "To allow DB instance to be publicly accessible, VPC must enable DNS hostnames and DNS resolution."
+      zh: ""
+
     TA_MSG_ERROR_RDS_OG_COMPATIBILITY:
       en: "App Update: Option Group compatibility."
       zh: ""

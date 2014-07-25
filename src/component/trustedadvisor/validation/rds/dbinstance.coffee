@@ -25,7 +25,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         if not azName then return null
 
         sbg = db.parent()
-        if _.some(sbg.connectionTargets("SbAsso"), ( sb )-> sb.parent().get( 'name' ) is azName)
+        if _.some(sbg.connectionTargets("SubnetgAsso"), ( sb )-> sb.parent().get( 'name' ) is azName)
             return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT, db.get('name'), azName
@@ -40,8 +40,21 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
 
+    isAccessibleEnableDNS = ( uid ) ->
+        db = Design.instance().component uid
+        if not db.get 'accessible' then return null
+
+        vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
+        if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
+            return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
 
 
-    isOgValid           : isOgValid
-    isAzConsistent      : isAzConsistent
-    isAccessibleHasNoIgw:isAccessibleHasNoIgw
+
+    isOgValid               : isOgValid
+    isAzConsistent          : isAzConsistent
+    isAccessibleHasNoIgw    : isAccessibleHasNoIgw
+    isAccessibleEnableDNS   : isAccessibleEnableDNS
+
+

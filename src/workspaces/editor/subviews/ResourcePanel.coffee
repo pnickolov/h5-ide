@@ -293,14 +293,25 @@ define [
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
       @updateAZ( resModel )
-      @updateDisabledVpcRes()
-      return
 
-    updateDisabledVpcRes : ()->
+      design  = @workspace.design
+      RESTYPE = constant.RESTYPE
+
+      # VPC related
       $ul = @$el.find(".resource-item.igw").parent()
-      design = @workspace.design
-      $ul.children(".resource-item.igw").toggleClass("disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
-      $ul.children(".resource-item.vgw").toggleClass("disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
+      $ul.children(".resource-item.igw").toggleClass("disabled", design.componentsOfType(RESTYPE.IGW).length > 0)
+      $ul.children(".resource-item.vgw").toggleClass("disabled", design.componentsOfType(RESTYPE.VGW).length > 0)
+
+      # Subnet group
+      az = {}
+      for subnet in design.componentsOfType(RESTYPE.SUBNET)
+        az[ subnet.parent().get("name") ] = true
+
+      @sbg = @$el.find(".resource-item.subnetgroup")
+      if _.keys( az ).length < 2
+        @sbg.toggleClass("disabled", true).data("tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
+      else
+        @sbg.toggleClass("disabled", false).data("tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()

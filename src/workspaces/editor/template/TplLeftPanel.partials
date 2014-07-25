@@ -24,7 +24,7 @@
         <div class="res-name">AZ & subnet</div>
       </li>
       <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
-      <li class="tooltip resource-item subnetgroup" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET_GROUP"}}' data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
+      <li class="tooltip resource-item subnetgroup" data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
     </ul>
   </section>
 

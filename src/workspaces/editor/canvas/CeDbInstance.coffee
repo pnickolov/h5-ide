@@ -131,7 +131,7 @@ define [
 
         when constant.RESTYPE.VPC
           # Auto add subnet for instance
-          attr.parent = CanvasElement.createResource( constant.RESTYPE.SUBNET, {
+          attr.parent = CanvasElement.createResource( constant.RESTYPE.DBSBG, {
             x      : attr.x + 1
             y      : attr.y + 1
             width  : 11

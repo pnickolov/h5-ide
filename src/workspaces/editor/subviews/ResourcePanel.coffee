@@ -438,6 +438,8 @@ define [
         onDragStart  : ( data )->
           if type is constant.RESTYPE.AZ
             data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
+          else if type is constant.RESTYPE.ASG
+            data.shadow.text( "ASG" )
       })
       return false
 

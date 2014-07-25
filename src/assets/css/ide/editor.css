@@ -453,7 +453,7 @@
       font-size: 12px;
       color: #498fe1; }
   #DndItem.asg {
-    height: 30px; }
+    text-indent: 23px; }
     #DndItem.asg:before {
       border-color: #76d6ff; }
     #DndItem.asg:after {

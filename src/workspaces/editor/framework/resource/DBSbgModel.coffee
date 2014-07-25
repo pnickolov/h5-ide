@@ -8,7 +8,7 @@ define [ "constant"
 ], ( constant, Design, GroupModel, RtbAsso, ConnectionModel, lang )->
 
   SbAsso = ConnectionModel.extend {
-    type : "SbAsso"
+    type : "SubnetgAsso"
 
     initialize: ( attr, option ) ->
       @draw = @updateToolTip
@@ -51,7 +51,7 @@ define [ "constant"
     constructor: -> GroupModel.prototype.constructor.apply @, arguments
 
     serialize: ()->
-      sbArray = _.map @connectionTargets("SbAsso"), ( sb )-> sb.createRef( "SubnetId" )
+      sbArray = _.map @connectionTargets("SubnetgAsso"), ( sb )-> sb.createRef( "SubnetId" )
 
       component =
         name : @get("name")

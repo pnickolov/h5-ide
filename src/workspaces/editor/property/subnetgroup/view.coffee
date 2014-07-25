@@ -34,17 +34,17 @@ define [ '../base/view'
             @$('.property-head-num-wrap').html "(#{sbCount})"
 
             if checked
-                SbAsso = Design.modelClassForType( "SbAsso" )
+                SbAsso = Design.modelClassForType( "SubnetgAsso" )
                 new SbAsso @model, Design.instance().component sbId
             else
-                _.each @model.connections("SbAsso"), ( sbAsso )->
+                _.each @model.connections("SubnetgAsso"), ( sbAsso )->
                     if sbAsso.getTarget(constant.RESTYPE.SUBNET).id is sbId
                         sbAsso.remove()
 
         render: ->
             data = @model.toJSON()
             data.azSb = @getAzSb()
-            data.sbCount = @model.connectionTargets("SbAsso").length
+            data.sbCount = @model.connectionTargets("SubnetgAsso").length
 
             @$el.html template data
             @model.get 'name'
@@ -52,7 +52,7 @@ define [ '../base/view'
         getAzSb: ->
             azsb = []
             azs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
-            selectedSubnetIds = _.pluck @model.connectionTargets("SbAsso"), 'id'
+            selectedSubnetIds = _.pluck @model.connectionTargets("SubnetgAsso"), 'id'
 
             for az in azs
                 azsb.push {

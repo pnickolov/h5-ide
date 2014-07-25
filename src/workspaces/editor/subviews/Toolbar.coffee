@@ -136,7 +136,7 @@ define [
         return
 
     deleteStack    : ()-> AppAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
-    createStack    : ()-> AppAction.createOps( @workspace.opsModel.get("region") )
+    createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize() )
       App.openOps newOps
@@ -499,7 +499,7 @@ define [
           that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).on "change", ->
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
-        that.updateModal.on 'confirm', =>
+        that.updateModal.on 'confirm', ->
           if not App.user.hasCredential()
             App.showSettings App.showSettings.TAB.Credential
             return false
@@ -515,10 +515,10 @@ define [
           $('#app-update-summary-table').html $diffTree
 
         that.renderKpDropdown(that.updateModal)
-        TA.loadModule('stack').then =>
+        TA.loadModule('stack').then ->
           that.updateModal and that.updateModal.toggleConfirm false
           that.updateModal?.resize()
-        , (err)=>
+        , (err)->
           console.log err
           that.updateModal and that.updateModal.toggleConfirm true
           that.updateModal and that.updateModal.tpl.find("#take-rds-snapshot").off 'change'

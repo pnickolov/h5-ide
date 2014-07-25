@@ -480,36 +480,36 @@
         height: 126px; }
       #DndItem.asg.dragOver:after {
         height: 21px; }
-  #DndItem.instance, #DndItem.dbinstance {
+  #DndItem.instance, #DndItem.dbinstance, #DndItem.dbsnapshot {
     margin-top: 0;
     overflow: visible; }
-    #DndItem.instance:before, #DndItem.dbinstance:before {
-      content: "subnet";
+    #DndItem.instance:before, #DndItem.dbinstance:before, #DndItem.dbsnapshot:before {
+      content: "subnet group";
       border-radius: 4px;
       position: absolute;
       top: 30px;
       left: 30px;
-      color: #aaa;
+      color: #498fe1;
       height: 40px;
       width: 40px;
       margin-left: -10px;
       margin-top: -10px;
       padding-left: 3px;
       text-align: left;
-      border: 2px dashed #dbd7d7;
+      border: 2px dashed #498fe1;
       -webkit-transition: all .15s ease-in;
       -moz-transition: all .15s ease-in;
       -o-transition: all .15s ease-in;
       transition: all .15s ease-in; }
-    #DndItem.instance.autoparent:before, #DndItem.dbinstance.autoparent:before {
+    #DndItem.instance.autoparent:before, #DndItem.dbinstance.autoparent:before, #DndItem.dbsnapshot.autoparent:before {
       top: 0;
       left: 0;
       width: 105px;
       height: 108px; }
-  #DndItem.dbinstance:before {
-    content: "subnet group";
-    border-color: #498fe1;
-    color: #498fe1; }
+  #DndItem.instance:before {
+    content: "subnet";
+    border-color: #dbd7d7;
+    color: #aaa; }
 
 .resource-select.selectbox .selection {
   background: #143553;

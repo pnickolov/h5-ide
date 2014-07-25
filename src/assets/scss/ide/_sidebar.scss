@@ -383,25 +383,25 @@ $dndDuration : .2s;
     }
   }
 
-  &.instance, &.dbinstance {
+  &.instance, &.dbinstance, &.dbsnapshot {
     margin-top : 0;
     overflow   : visible;
 
     &:before {
-      content       : "subnet";
+      content       : "subnet group";
       border-radius : 4px;
 
       position     : absolute;
       top          : 30px;
       left         : 30px;
-      color        : #aaa;
+      color        : #498fe1;
       height       : 40px;
       width        : 40px;
       margin-left  : -10px;
       margin-top : -10px;
       padding-left : 3px;
       text-align   : left;
-      border       : 2px dashed #dbd7d7;
+      border       : 2px dashed #498fe1;
 
       -webkit-transition: all .15s ease-in;
       -moz-transition   : all .15s ease-in;
@@ -416,10 +416,10 @@ $dndDuration : .2s;
       height : 108px;
     }
   }
-  &.dbinstance:before {
-    content : "subnet group";
-    border-color : #498fe1;
-    color : #498fe1;
+  &.instance:before {
+    content : "subnet";
+    border-color : #dbd7d7;
+    color : #aaa;
   }
 }
 

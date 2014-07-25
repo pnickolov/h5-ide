@@ -142,7 +142,7 @@ define [
           attr.x += 2
           attr.y += 2
 
-          return CanvasElement.createResource( constant.RESTYPE.INSTANCE, attr, option )
+          return CanvasElement.createResource( constant.RESTYPE.DBINSTANCE, attr, option )
 
       return
   }

@@ -87,16 +87,19 @@
         </ul>
     </div>
 {{/if}}
-<div class="estimate-stop clearfix">
-    <div>
-        <span class="title">Estimated Cost When Stopping</span>
-        <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
+{{#if totalFee}}
+    <div class="estimate-stop clearfix">
+        <div>
+            <span class="title">Estimated Cost When Stopping</span>
+            <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
+        </div>
+        <div class="hide">
+            <span class="title">Saving Compared to Running App</span>
+            <span class="price" id="label-total-saving"><b>${{savingFee}}</b>/ month</span>
+        </div>
     </div>
-    <div class="hide">
-        <span class="title">Saving Compared to Running App</span>
-        <span class="price" id="label-total-saving"><b>${{savingFee}}</b>/ month</span>
-    </div>
-</div>
+{{/if}}
+
 
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>

@@ -125,7 +125,6 @@ define [
 
       if @category() is 'instance'
         @on 'all', @preSerialize
-        @on 'sgchange', @onSgChange
       null
 
     # postgresql, oracle, sqlserver
@@ -282,7 +281,6 @@ define [
     clone :( srcTarget )->
       @cloneAttributes srcTarget, {
         reserve : "instanceClass|autoMinorVersionUpgrade|iops|accessible" #reserve attributes
-        copyConnection : [ "SgAsso" ]
       }
       #reset for readReplica
       @set 'backupRetentionPeriod', 0
@@ -520,22 +518,6 @@ define [
         #getter
         return @get('backupRetentionPeriod') || 0
 
-    # trigger by assignSG or un-assignSG in model of sglist property panel
-    onSgChange : (event) ->
-      if @category() is 'instance'
-        for replica in @slaves()
-          if not replica.get('appId')
-            #force clear all connections
-            num = replica.attributes.__connections.length
-            while num > 0
-              conn = replica.attributes.__connections.pop()
-              conn.remove( {force:true} ) #no need assign defaultSg
-              num--
-            if replica.attributes.__connections.length isnt 0
-              console.error "force clear all SgAsso of DBInstance #{replica.id} failed"
-            replica.clone @
-      null
-
     setOptionGroup: ( name ) ->
       ogComp = DBOgModel.findWhere(name: name) or new DBOgModel(name: name, default: true)
 
@@ -558,6 +540,15 @@ define [
             if not replica.get('appId')
               replica.clone @
       null
+
+    # Overwrite get
+    # Slave should return master's connection
+    get: (attr) ->
+      context = @
+      if attr is '__connections' and @master()
+        context = @master()
+
+      ComplexResModel.prototype.get.apply context, arguments
 
     serialize : () ->
       sgArray = _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'

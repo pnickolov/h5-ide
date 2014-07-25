@@ -215,7 +215,7 @@ define [ 'ApiRequest'
 
             originJson = Design.instance().__opsModel.getJsonData()
             originComp = originJson.component[@resModel.id]
-            
+
             if originComp
 
                 allocatedStorage = originComp.resource.AllocatedStorage
@@ -366,7 +366,7 @@ define [ 'ApiRequest'
                 iopsRange = that._getIOPSRange(storage)
 
                 iops = Number(val)
-                
+
                 if iops < 1000
                     return "Require 1000 IOPS"
 
@@ -378,7 +378,7 @@ define [ 'ApiRequest'
 
                 if iopsRange.minIOPS is iopsRange.maxIOPS
                     return "Require #{iopsRange.minIOPS} IOPS"
-                
+
                 if iopsRange.minIOPS < iopsRange.maxIOPS
                     return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
 
@@ -416,8 +416,6 @@ define [ 'ApiRequest'
                     }).el
 
         renderParameterGroup: ->
-            #close dropdown
-            Canvon(".selectbox.combo-dd.multiopen").removeClass("open")
             #update selection
             @pgDropdown.setSelection(@resModel.get 'pgName')
             null
@@ -527,7 +525,7 @@ define [ 'ApiRequest'
                 if target.parsley 'validate'
 
                     @resModel.setName value
-                    @setTitle value    
+                    @setTitle value
                     @resModel.set 'instanceId', value
 
             null

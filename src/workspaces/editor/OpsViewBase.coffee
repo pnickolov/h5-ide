@@ -4,75 +4,147 @@ define [
   "./template/TplOpsEditor"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
+  "./subviews/ResourcePanel"
+  "./subviews/Statusbar"
+  "./canvas/CanvasViewAws"
   "UI.modalplus"
 
   "backbone"
   "UI.selectbox"
-  "MC.canvas"
-], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, Modal )->
+], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
 
-  # LEGACY code
-  # Should remove this in the future.
-  $(document).on('keydown', MC.canvas.event.keyEvent)
-  $('#header, #navigation, #tab-bar').on('click', MC.canvas.volume.close)
-  $(document.body).on('mousedown', '#instance_volume_list a', MC.canvas.volume.mousedown)
+  ### Monitor keypress ###
+  $(document).on 'keydown', ( evt )->
+    if $(evt.target).is("input, textarea") or evt.target.contentEditable is "true"
+      evt.stopPropagation()
+      return
 
+    $tgt = $("#OpsEditor")
+    if not $tgt.length then return
+
+    switch evt.keyCode
+      when 8 , 46
+        ### BackSpace & Delete ###
+        if evt.which is 8
+          evt.preventDefault()
+        if not evt.ctrlKey and not evt.metaKey
+          type = "DelSelectItem"
+
+      # when 9
+      #   ### Tab ###
+      #   if evt.originalEvent.shiftKey
+      #     type = "SelectPrevItem"
+      #   else
+      #     type = "SelectNextItem"
+
+      when 37, 38, 39, 40
+        ### Arrows ###
+        type = "MoveSelectItem"
+
+      when 83
+        ### S ###
+        if evt.ctrlKey || evt.metaKey
+          type = "Save"
+        else
+          type = "ShowStateEditor"
+
+      when 80
+        ### P ###
+        type = "ShowProperty"
+
+      when 187
+        ### + ###
+        type = "ZoomIn"
+
+      when 189
+        ### - ###
+        type = "ZoomOut"
+
+      when 13
+        ### Enter ###
+        type = "ShowStateEditor"
+
+
+    if type
+      $tgt.triggerHandler type, evt.which
+      return false
+
+    return
 
   ### OpsEditorView base class ###
   Backbone.View.extend {
 
+    events :
+      "Save"            : "saveStack"
+      "DelSelectItem"   : "delSelectedItem"
+      "SelectPrevItem"  : "selectPrevItem"
+      "SelectNextItem"  : "selectNextItem"
+      "MoveSelectItem"  : "moveSelectedItem"
+      "ZoomIn"          : "zoomIn"
+      "ZoomOut"         : "zoomOut"
+      "ShowProperty"    : "showProperty"
+      "ShowStateEditor" : "showStateEditor"
+
+      "click .HideOEPanelLeft"  : "toggleLeftPanel"
+      "click .HideOEPanelRight" : "toggleRightPanel"
+
     constructor : ( options )->
       _.extend this, options
 
-      @propertyPanel = new PropertyPanel()
-      @propertyPanel.workspace = @workspace
+      @setElement $( CanvasTpl() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
-      @toolbar = new Toolbar()
-      @toolbar.workspace = @workspace
+      opt =
+        workspace : @workspace
+        parent    : @
+
+      @toolbar       = new Toolbar(opt)
+      @propertyPanel = new PropertyPanel(opt)
+      @resourcePanel = new ResourcePanel(opt)
+      @statusbar     = new Statusbar(opt)
+      @canvas        = new CanvasView(opt)
 
       @initialize()
       return
 
-    render : ()->
-      console.assert( not @$el or @$el.attr("id") isnt "OpsEditor", "There should be no #OpsEditor when an editor view is rendered." )
+    toggleLeftPanel  : ()->
+      @resourcePanel.toggleLeftPanel()
+      @canvas.updateSize()
+      false
 
-      # 1. Generate basic dom structure.
-      @setElement $( @createTpl() ).appendTo("#main").show()[0]
-      @$el.attr("data-workspace", @workspace.id)
+    toggleRightPanel : ()->
+      @propertyPanel.toggleRightPanel()
+      @canvas.updateSize()
+      false
 
-      # 2. Bind Events for MC.canvas.js
-      @bindUserEvent()
+    saveStack : ()-> @toolbar.$el.find(".icon-save").trigger "click"
 
-      # 3 Update subviews
-      @toolbar.render()
-      @propertyPanel.render()
+    moveSelectedItem : (evt, which)->
+      switch which
+        when 37 then x = -1
+        when 38 then y = -1
+        when 39 then x = 1
+        when 40 then y = 1
+      @canvas.moveSelectedItem( x || 0, y || 0 )
+      false
 
-      @renderSubviews()
-
-      # 4. Hack, ask the canvas to init the canvas.
-      # Should decouple the canvas from design.
-      @workspace.design.canvas.init()
-      return
+    delSelectedItem : ()-> @canvas.delSelectedItem(); false
+    selectPrevItem  : ()-> @canvas.selectPrevItem(); false
+    selectNextItem  : ()-> @canvas.selectNextItem(); false
+    zoomIn          : ()-> @canvas.zoomIn();  @toolbar.updateZoomButtons(); false
+    zoomOut         : ()-> @canvas.zoomOut(); @toolbar.updateZoomButtons(); false
 
     backup : ()->
-      $center = @$el.find(".OEPanelCenter")
-      @__backupSvg = $center.html()
-      $center.empty()
-
       ###
       Revoke all the IDs of every dom.
       ###
       @propertyPanel.backup()
 
-      @backupSubviews()
       @$el.attr("id", "")
       return
 
     recover : ()->
-      @$el.find(".OEPanelCenter").html @__backupSvg
-      @__backupSvg = null
-      @recoverSubviews()
-      @$el.attr("id", "OpsEditor")
+      @$el.show().attr("id", "OpsEditor")
+      @resourcePanel.recalcAccordion()
 
       @propertyPanel.recover()
       return
@@ -80,9 +152,11 @@ define [
     remove : ()->
       @toolbar.remove()
       @propertyPanel.remove()
+      @resourcePanel.remove()
+      @statusbar.remove()
+      @canvas.remove()
 
       Backbone.View.prototype.remove.call this
-      return
 
     showCloseConfirm : ()->
       name = @workspace.design.get('name')
@@ -99,17 +173,12 @@ define [
       }
       return
 
-    saveOps : ()-> App.saveOps( @workspace.opsModel )
+    getSvgElement : ()->
+      children = @$el.children(".OEMiddleWrap").children(".OEPanelCenter").children()
+      while children.length
+        child = children.filter("svg")
+        if child.length then return child
+        children = children.children()
 
-    ###
-      Override these methods in subclasses.
-    ###
-    createTpl        : ()-> CanvasTpl({})
-    bindUserEvent    : ()-> return
-    # Called when the OpsEditor initialize
-    renderSubviews  : ()-> return
-    # Called when the OpsEditor wakes up.
-    recoverSubviews : ()-> return
-    # Called when the OpsEditor sleeps
-    backupSubviews  : ()-> return
+      return null
   }

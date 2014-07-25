@@ -123,8 +123,6 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 			if !callback
 				callback = () ->
 
-			currentState = MC.canvas.getState()
-
 			# get current all using ami
 			amiAry = []
 			instanceAMIMap = {}

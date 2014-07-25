@@ -507,30 +507,16 @@ Additional Notes and Questions
 {{/each}}
 
 <!-- {{groupedSgRuleListDelConfirm}} -->
-Following rule(s) will be deleted from its(their) security group:</div>
+<p>Following rule(s) will be deleted from its(their) security group:</p>
 <article class="scroll-wrap delete-sgrule-dialog">
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
-{{#each this}}
-<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
-<ul class="sg-rule-list">{{{content}}}</ul>
-{{/each}}
+{{#each this}}<ul>
+<h3 class="sg-create-group"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+{{{content}}}
+</ul>{{/each}}
 </div>
 </article>
-
-<!-- {{canvasOpConfirm}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{{content}}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<button id="canvas-op-confirm" class="btn modal-close btn-red">{{i18n 'CFM_BTN_DELETE'}}</button>
-		<button class="btn modal-close btn-silver">{{i18n 'CFM_BTN_CANCEL'}}</button>
-	</div>
-</div>
 
 <!-- {{propertyIpList}} -->
 {{#each this}}
@@ -813,82 +799,6 @@ Following rule(s) will be deleted from its(their) security group:</div>
 	<div class="property-control-group">{{asgName}} is deleted in stopped app. The auto scaling group will be created when the app is started.</div>
 </article>
 
-<!-- {{instanceVolume}} -->
-<div class="bubble-head">Attached Volume <span id="instance_volume_number">{{this.length}}</span></div>
-<div id="instance_volume_wrap" class="scroll-wrap">
-	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-	<ul id="instance_volume_list" class="clearfix bubble-content scroll-content">
-		{{#each this}}<li>
-			<a href="#" id="{{id}}" data-instance="{{instance_id}}" class="{{#if snapshotId}}snapshot{{else}}volume{{/if}}_item {{deleted}}">
-				<span class="volume_name">{{name}}</span>
-				<span class="volume_size">{{size}}GB</span>
-			</a>
-		</li>{{/each}}
-	</ul>
-</div>
-
-<!-- {{asgList}} -->
-<div id="asgList-wrap">
-	<div id="asgList-header">
-		<span id="asgList-title">{{name}}</span>
-		<a id="asgList-close" href="javascript:void(0)" onclick="MC.canvas.asgList.close()">&times;</a>
-	</div>
-	<ul id="asgList" class="clearfix">
-		{{#each this}}
-		<li>
-			<a href="#" class="asgList-item" id="{{id}}" data-id="{{id}}">
-				<i class="asgList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}" ></i>
-				<span class="asgList-item-icon" style="background-image:url('/assets/images/{{background}}')"></span>
-				<div class="asgList-item-volume" data-target-id={{id}}>
-					<span class="asgList-item-number">{{../volume}}</span>
-				</div>
-				<span class="asgList-item-label">{{id}}</span>
-			</a>
-		</li>
-		{{/each}}
-	</ul>
-</div>
-
-<!-- {{instanceList}} -->
-<div id="instanceList-wrap" data-id="{{this.[0].id}}">
-	<div id="instanceList-header">
-		<span id="instanceList-title">{{this.name}}</span>
-		<a id="instanceList-close" href="javascript:void(0)" onclick="MC.canvas.instanceList.close()">&times;</a>
-	</div>
-	<ul id="instanceList" class="clearfix">
-		{{#each this}}
-		<li>
-			<a href="#" class='instanceList-item {{deleted}}' id="{{id}}_{{@index}}" data-id="{{appId}}">
-				<i class="instanceList-item-status tooltip status status-{{state}}" data-tooltip="{{state}}"></i>
-				<span class="instanceList-item-icon" style="background-image:url('/assets/images/{{../background}}')"></span>
-				<div class="instanceList-item-volume" data-target-id="{{id}}_{{@index}}">
-					<span class="instanceList-item-number">{{../volume}}</span>
-				</div>
-				<span class="instanceList-item-label">{{name}}-{{@index}}</span>
-			</a>
-		</li>
-		{{/each}}
-	</ul>
-</div>
-
-<!-- {{eniList}} -->
-<div id="eniList-wrap">
-	<div id="eniList-header">
-		<span id="eniList-title">{{this.name}}</span>
-		<a id="eniList-close" href="javascript:void(0)" onclick="MC.canvas.eniList.close()">&times;</a>
-	</div>
-	<ul id="eniList" class="clearfix">
-		{{#each this}}
-		<li>
-			<a href="#" class="eniList-item {{deleted}}" id="{{id}}_{{@index}}" data-id="{{appId}}">
-				<i class="eniList-item-eip-status{{#if ../eip}} on{{/if}}"></i>
-				<span class="eniList-item-label">{{appId}}</span>
-			</a>
-		</li>
-		{{/each}}
-	</ul>
-</div>
-
 <!-- {{setupCIDRConfirm}} -->
 <div style="width:420px">
 	<div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
@@ -905,21 +815,11 @@ Following rule(s) will be deleted from its(their) security group:</div>
 </div>
 
 <!-- {{modalAttachingEni}} -->
-<div class="modal-header"> <h3>Attach Network Interface to Instance</h3><i class="modal-close">&times;</i> </div>
 <div class="modal-body">
 	<div class="modal-center-align-helper">
 		<p>{{host}} has been automatically assigned Public IP.</p>
 		<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
 		<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
-	</div>
-</div>
-
-<!-- {{modalCanvasConfirm}} -->
-<div style="width:420px">
-	{{{confirm}}}
-	<div class="modal-footer">
-		<button class="btn modal-close btn-blue" id="canvas-op-confirm" style="width:200px;">{{action}}</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
 	</div>
 </div>
 

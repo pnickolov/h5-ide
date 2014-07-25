@@ -12,18 +12,11 @@ define [ "constant",
     newNameTmpl : "subnet"
 
     defaults :
-      x      : 2
-      y      : 2
-      width  : 17
-      height : 17
       cidr   : ""
 
     initialize : ( attributes, option )->
       if not @attributes.cidr
         @attributes.cidr = @generateCidr()
-
-      # Draw the node
-      @draw(true)
 
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
@@ -43,7 +36,6 @@ define [ "constant",
       # the time we serialize()
       validCIDR = MC.getValidCIDR(cidr)
       @set("cidr", validCIDR)
-      @draw()
       null
 
     setAcl : ( uid )->

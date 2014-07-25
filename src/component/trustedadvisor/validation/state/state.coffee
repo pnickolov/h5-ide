@@ -92,7 +92,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
 
     __hasEipOrPublicIp = ( component ) ->
         if component.type is "ExpandedAsg"
-            lc = component.get( 'originalAsg' ).get 'lc'
+            lc = component.get( 'originalAsg' ).getLc()
             lc.get( 'publicIp' ) is true
         # LC
         else if component.type is CONST.RESTYPE.LC
@@ -157,7 +157,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
             if component.type is 'ExpandedAsg'
-                lc = component.get('originalAsg').get('lc')
+                lc = component.get('originalAsg').getLc()
                 subnetName = component.parent().get 'name'
                 name = lc and lc.get 'name'
 

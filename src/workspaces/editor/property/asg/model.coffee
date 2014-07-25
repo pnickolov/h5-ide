@@ -11,20 +11,20 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
 
       if component.type is "ExpandedAsg"
         component = component.get("originalAsg")
+        uid = component.id
 
       data = component?.toJSON()
       data.uid = uid
       @set( data )
 
-      lc = component.get("lc")
+      lc = component.getLc()
 
       if not lc
         @set "emptyAsg", true
         return
 
-      @set "has_elb", !!component.get("lc").connections("ElbAmiAsso").length
+      @set "has_elb", !!lc.connections("ElbAmiAsso").length
       @set "isEC2HealthCheck", component.isEC2HealthCheckType()
-      @set 'detail_monitor', !!lc.get( 'monitoring' )
 
       # Notification
       n = component.getNotification()

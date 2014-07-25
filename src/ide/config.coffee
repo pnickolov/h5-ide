@@ -84,7 +84,6 @@ require.config {
 		# vender                    # Merge in deploy
 		#############################################
 		'jquery'             : 'vender/jquery/jquery'
-		'canvon'             : 'vender/canvon/canvon'
 		'underscore'         : 'vender/underscore/underscore'
 		'backbone'           : 'vender/backbone/backbone'
 		'handlebars'         : 'vender/handlebars/handlebars.rt'
@@ -92,6 +91,7 @@ require.config {
 		'Meteor'             : 'vender/meteor/meteor'
 		'crypto'             : 'vender/crypto-js/cryptobundle'
 		'q'                  : 'vender/q/q'
+		"svg"                : 'vender/svgjs/svg'
 
 		#############################################
 		# MC                        # Merge in deploy
@@ -99,7 +99,6 @@ require.config {
 		'MC'                 : 'js/MC.core'
 		'MC.validate'        : 'js/MC.validate'
 		'MC.canvas'          : 'js/MC.canvas'
-		'MC.canvas.constant' : 'js/MC.canvas.constant'
 		'constant'           : 'lib/constant'
 		'event'              : 'lib/ide_event'
 
@@ -122,7 +121,7 @@ require.config {
 		'UI.sortable'        : 'ui/jquery.sortable'
 		'UI.parsley'         : 'ui/UI.parsley'
 		'UI.errortip'        : 'ui/UI.errortip'
-		'UI.tour'            : 'ui/UI.tour'
+		'UI.dnd'             : 'ui/UI.dnd'
 		'UI.nanoscroller'    : 'ui/UI.nanoscroller'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
@@ -131,7 +130,7 @@ require.config {
 		#############################################
 		# cloud resources           # Merge in deploy
 		#############################################
-		"CloudResources"     : "ide/cloudres/CloudResources"
+		"CloudResources"     : "cloudres/CloudResources"
 
 		#############################################
 		# api                       # Merge in deploy
@@ -150,7 +149,6 @@ require.config {
 		# opseditor                 # Merge in deploy
 		#############################################
 		'Design'        : 'workspaces/editor/framework/Design'
-		'CanvasManager' : 'workspaces/editor/framework/canvasview/CanvasManager'
 
 		#############################################
 		# deprecated service        # Merge in deploy
@@ -199,15 +197,8 @@ require.config {
 
 	### env:dev:end ###
 	shim :
-		'canvon'       :
-			deps       : [ 'jquery' ]
-			exports    : 'Canvon'
-
 		'underscore'   :
 			exports    : '_'
-
-		'handlebars'   :
-			exports    : 'Handlebars'
 
 		'Meteor'       :
 			deps       : ['underscore']
@@ -225,7 +216,6 @@ require.config {
 			"handlebars"
 			"sprintf"
 			"Meteor"
-			"canvon"
 			"crypto"
 			"q"
 		]
@@ -233,7 +223,6 @@ require.config {
 			"MC"
 			"constant"
 			"MC.canvas"
-			"MC.canvas.constant"
 			'MC.validate'
 			"lib/handlebarhelpers"
 			"event"
@@ -255,7 +244,7 @@ require.config {
 			'UI.sortable'
 			'UI.parsley'
 			'UI.errortip'
-			'UI.tour'
+			'UI.dnd'
 			"jqpagination"
 			'jquerysort'
 			"UI.modalplus"
@@ -299,13 +288,13 @@ require.config {
 			'DiffTree'
 		]
 
-		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
+		"cloudres/CrBundle"  : [ "CloudResources" ]
 		"ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
 		"workspaces/Dashboard" : []
 
 		"workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
-		"workspaces/editor/framework/DesignBundle" : [ "Design", "CanvasManager" ]
+		"workspaces/editor/framework/DesignBundle" : [ "Design" ]
 		"workspaces/OpsEditor" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
@@ -338,11 +327,12 @@ requirejs.onError = ( err )->
 
 require [
 	'ide/Application'
-	"ide/cloudres/CrBundle"
+	"cloudres/CrBundle"
 	"workspaces/Dashboard"
 	"workspaces/OpsEditor"
 	"ide/Router"
 	"MC"
+	"MC.canvas"
 	'lib/aws'
 ], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 

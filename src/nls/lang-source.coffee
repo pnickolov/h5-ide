@@ -739,9 +739,21 @@ module.exports =
       en: "Customer gateways must be dragged outside the VPC."
       zh: "客户网关必须拖放到VPC以外。"
 
+    CVS_MSG_WARN_NOTMATCH_IGW:
+      en: "Internet gateways must be dragged inside a VPC."
+      zh: "互联网网关必须拖放到VPC里。"
+
+    CVS_MSG_WARN_NOTMATCH_VGW:
+      en: "Virtual private gateways must be dragged inside a VPC."
+      zh: "虚拟私有网关必须拖放到VPC里。"
+
     CVS_MSG_WARN_COMPONENT_OVERLAP:
       en: "Nodes cannot overlap each other."
       zh: "节点不能互相重叠。"
+
+    CVS_MSG_WARN_NO_ENOUGH_SPACE:
+      en: "No enough space."
+      zh: "没有多余的空间。"
 
     CVS_WARN_EXCEED_ENI_LIMIT:
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."

@@ -52,6 +52,8 @@ define [
     tabClass : ()-> "icon-stack-tabbar"
     url      : ()-> @opsModel.url()
 
+    viewClass : OpsEditorBase
+
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.
     fetchAdditionalData : ()->
@@ -59,12 +61,13 @@ define [
       d.resolve()
       d.promise
 
-    # Returns a new View
-    createView : ()-> new OpsEditorView({workspace:this})
-    # Returns a new Design object.
-    initDesign : ()-> @design.finishDeserialization()
     # Return true if the data is ready.
     isReady : ()-> !!@__hasAdditionalData
+
+    getSelectedComponent : ()->
+      if not @view.canvas
+        return null
+      @view.canvas.getSelectedComp()
 
     onOpsModelStateChanged : ()->
       switch @opsModel.get("state")
@@ -75,6 +78,11 @@ define [
     ###
       Internal methods.
     ###
+    onModelIdChange : ()->
+      @updateUrl()
+      if @design then @design.set("id", @opsModel.get("id"))
+      return
+
     isWorkingOn : ( attribute )-> @opsModel is attribute
     constructor : ( opsModel )->
       if not opsModel
@@ -87,10 +95,8 @@ define [
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
       @listenTo @opsModel, "change:state", @onOpsModelStateChanged
       @listenTo @opsModel, "change:name",  @updateTab
-      @listenTo @opsModel, "change:id",    ()->
-        @updateUrl()
-        if @design then @design.set("id", @opsModel.get("id"))
-        return
+      @listenTo @opsModel, "change:id",    @onModelIdChange
+
 
       # Load Datas
       self = @
@@ -149,21 +155,15 @@ define [
         @__initEditor()
       else
         @design.use()
-        @showEditor()
+        @view.recover()
       return
 
     sleep : ()->
-      # HACK, Close the volume bubble here!!!!!
-      # Should be removed.
-      MC.canvas.volume.close()
+      if @view and @view.backup then @view.backup()
       Workspace.prototype.sleep.call this
 
     # Override parent's method to do cleaning when the tab is removed.
     cleanup : ()->
-      # HACK, Close the volume bubble here!!!!!
-      # Should be removed.
-      MC.canvas.volume.close()
-
       @stopListening()
       if @view
         @view.remove()
@@ -180,13 +180,7 @@ define [
 
       @listenTo @design, "change:name", @updateTab
 
-      @view = @createView()
-      @view.opsModel  = @opsModel
-      @view.workspace = @
-      @hideOtherEditor()
-      @view.render()
-
-      @initDesign()
+      @view = new @viewClass({ workspace : @ })
 
       @initEditor()
 
@@ -203,30 +197,7 @@ define [
 
     saveThumbnail : ()->
       if @opsModel.isPersisted()
-        Thumbnail.generate( $("#svg_canvas") ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
-
-    showEditor : ()->
-      if @hideOtherEditor()
-        @view.$el.show()
-        @view.recover()
-      else
-        # The #OpsEditor DOM is ours, we just need to show it.
-        console.log( "#OpsEditor is current workspace's, just show()-ing it." )
-        @view.$el.show()
-      return
-
-    hideOtherEditor : ()->
-      # If there's a #OpsEditor DOM, need to check if it's ours. If it's not, ask another editor to hide it.
-      $theDOM  = $("#OpsEditor")
-      editorId = $theDOM.attr("data-workspace")
-
-      console.assert( not $theDOM.length or editorId, "There's #OpsEditor, but it doens't have [data-workspace]" )
-
-      if editorId and editorId isnt @id
-        App.workspaces.get( editorId ).view.backup()
-        return true
-
-      editorId isnt @id
+        Thumbnail.generate( @view.getSvgElement() ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     isRemovable : ()->
       if not @__inited or not @isModified()

@@ -51,5 +51,7 @@ define ["backbone"], ()->
         options = options || {}
         options.replace = true
 
+      $( document ).trigger "urlroute"
+
       Backbone.Router.prototype.navigate.apply this, arguments
   }

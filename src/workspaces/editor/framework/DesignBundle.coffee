@@ -1,5 +1,5 @@
+
 define [ 'Design',
-         "CanvasManager",
 
          './connection/EniAttachment'
          './connection/VPNConnection'
@@ -35,24 +35,6 @@ define [ 'Design',
          "./util/deserializeVisitor/ElbSgNamePatch"
          "./util/serializeVisitor/EniIpAssigner"
          "./util/serializeVisitor/AppToStack"
-
-         "./canvasview/CeLine"
-         './canvasview/CeAz'
-         './canvasview/CeSubnet'
-         './canvasview/CeVpc'
-         "./canvasview/CeCgw"
-         "./canvasview/CeIgw"
-         "./canvasview/CeVgw"
-         "./canvasview/CeRtb"
-         "./canvasview/CeElb"
-         "./canvasview/CeAsg"
-         "./canvasview/CeExpandedAsg"
-         "./canvasview/CeInstance"
-         "./canvasview/CeVolume"
-         "./canvasview/CeEni"
-         "./canvasview/CeLc"
-         './canvasview/CeDBSbg'
-         './canvasview/CeDBInstance'
 
 ], ( Design )->
 

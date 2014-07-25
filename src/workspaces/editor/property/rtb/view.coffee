@@ -143,7 +143,6 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
                 $('.modal-close').click () -> inputElem.focus()
 
                 $('#cidr-remove').click () ->
-                    $canvas.clearSelected()
                     Design.instance().component( dataRef ).remove()
                     that.disabledAllOperabilityArea(false)
                     modal.close()

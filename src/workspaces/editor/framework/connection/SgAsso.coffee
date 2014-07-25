@@ -1,34 +1,11 @@
 
-define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( constant, ConnectionModel, CanvasManager, Design )->
+define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionModel, Design )->
 
   # SgAsso is used to represent that one Resource is using on SecurityGroup
   SgAsso = ConnectionModel.extend {
     type : "SgAsso"
 
-    initialize : ( attr, option )->
-
-      # manual assignSG in model of sglist property panel
-      @set 'manual', if option then !!option.manual else false
-
-      # A hack for optimization.
-      # When deserializing, shouldDraw() returns false.
-      # Thus this sgAsso doesn't have a draw() method.
-      # So that the Design won't call it after deserialization.
-      # Then we update all resources in the callback of `deserialized`
-      if Design.instance().shouldDraw()
-        # Assign to draw after deserialization to make sure ConnectionModel
-        # will draw us after connetion is established
-        @draw = @updateLabel
-
-      # Listen to Sg's name change, so that we could update the label tooltip
-      @listenTo @getTarget( constant.RESTYPE.SG ), "change:name", @updateLabel
-
-      # Update target's label after this connection is removed.
-      @on "destroy", @updateLabel
-      null
-
-    # Return false, so that ConnectionModel will not create an line for us.
-    isVisual : ()-> false
+    isVisual : ()-> true
 
     # SgAsso doesn't have portDefs, so the basic validation implemented in ConnectionModel won't work.
     # Here, we do our own job.
@@ -44,21 +21,13 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
 
       true
 
-    remove : ( option )->
-
-      # manual un-assignSG in model of sglist property panel
-      @set 'manual', if option then !!option.manual else false
-
+    remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments
 
       # When an SgAsso is removed because of an SecurityGroup is removed.
       # If this SgAsso is the last SgAsso of some resources, attach DefaultSg to these resources.
       resource = @getOtherTarget( constant.RESTYPE.SG )
-      if resource.isRemoved() # and resource.type is 'ExpandedAsg'
-        return
-
-      if option and option.force
-      # when option.force is true(clear connections of DBInstance in 'onSgChange' Event), then no need assign defaultSg
+      if resource.isRemoved()
         return
 
       # When A is removed, and A delete an Sg ( SgA ) while removing,
@@ -99,47 +68,7 @@ define [ "constant", "../ConnectionModel", "CanvasManager", "Design" ], ( consta
         if a_nm <  b_nm then return -1
         if a_nm == b_nm then return 0
         if a_nm >  b_nm then return 1
-
-
-    # Drawing method, drawing method is used to update resource label
-    updateLabel : ()->
-      if not Design.instance().shouldDraw()
-        return
-
-      resource = @getOtherTarget( constant.RESTYPE.SG )
-      res_node = document.getElementById( resource.id )
-
-      if not res_node then return
-
-      sgs = @sortedSgList()
-
-      # Update label
-      for ch, idx in $(res_node).children(".node-sg-color-group").children()
-        if idx < sgs.length
-          CanvasManager.update( ch, sgs[idx].color, "color" )
-          CanvasManager.update( ch, sgs[idx].get("name"), "tooltip" )
-
-        else
-          CanvasManager.update( ch, "none", "color" )
-          CanvasManager.update( ch, "", "tooltip" )
-
-      # manual is used when assignSG() in model of sglist property panel
-      # ResourceModel will received this event( currently DBInstanceModel )
-      if @get('manual')
-        resource.trigger 'sgchange'
-        @set 'manual', false
-      null
   }
-
-  Design.on Design.EVENT.Deserialized, ()->
-    # After the design is deserialized, we update all resource's label at once.
-    updateMap = {}
-    for asso in SgAsso.allObjects()
-      updateMap[ asso.getOtherTarget( constant.RESTYPE.SG ).id ] = asso
-
-    for resId, asso of updateMap
-      asso.updateLabel()
-    null
 
   SgAsso
 

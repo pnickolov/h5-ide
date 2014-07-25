@@ -360,6 +360,19 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
           }
       null
 
+    remove : ()->
+      ConnectionModel.prototype.remove.apply this, arguments
+
+      if @getTarget( "SgIpTarget" ) then return
+
+      if @port1Comp().isRemoved()
+        @port2Comp().vlineRemoveBatch( @port1Comp(), @ )
+      else
+        @port1Comp().vlineRemoveBatch( @port2Comp(), @ )
+
+      return
+
+
   }, {
 
     getResourceSgRuleSets : ( resource )->

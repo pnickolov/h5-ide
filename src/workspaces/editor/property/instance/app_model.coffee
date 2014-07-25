@@ -102,7 +102,7 @@ define [ '../base/model',
                 # Eni Data
                 instance.eni = this.getEniData instance
 
-                instance.app_view = if MC.canvas.getState() is 'appview' then true else false
+                instance.app_view = false
 
                 monitoringState = 'disabled'
                 if instance.monitoring and instance.monitoring.state

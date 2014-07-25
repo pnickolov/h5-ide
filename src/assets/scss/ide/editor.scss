@@ -121,6 +121,12 @@ $BottomPanelHeight    : 24px;
   width    : 100%;
   top      : $TopPanelHeight;
   bottom   : 0;
+  height   : auto;
+
+  .nano-pane {
+    display : block;
+    opacity : 1;
+  }
 }
 
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap { right : $RightPanelWidth; }
@@ -222,3 +228,4 @@ $BottomPanelHeight    : 24px;
   }
 }
 @import "sidebar";
+@import "canvas";

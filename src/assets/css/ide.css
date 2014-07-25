@@ -2183,11 +2183,6 @@ a.action-link:hover {
 .delete-sgrule-dialog .sg-create-rule-item {
 	background: #36373A;
 	padding   : 5px 10px;
-	width     : 360px;
-}
-
-.delete-sgrule-dialog .sg-create-rule-item:last-child {
-	border-bottom: none;
 }
 
 .delete-sgrule-dialog .sg-create-group {
@@ -2195,17 +2190,15 @@ a.action-link:hover {
 	border    : none;
 	color     : #666;
 	padding   : 2px 10px;
-	width     : 360px;
 }
 
 .delete-sgrule-dialog .sg-create-group .sg-color {
-	margin-top : 3px;
+	margin-top   : 3px;
+	width        : 10px;
+	height       : 10px;
+	float        : left;
+	margin-right : 5px;
 }
-
-.delete-sgrule-dialog .sg-rule-connnection {
-	width: 280px;
-}
-
 
 /* App Property */
 /* App Property Panel, Mostly Read-Only Elements */
@@ -3833,67 +3826,6 @@ summary:focus {
 .OEPanelRight .sub-stateeditor {
 	height: 100%;
 	width: 100%;
-}
-
-/* Change AMI Panel */
-
-#changeAmi {
-	width: 130px;
-}
-
-#changeAmiDropZone {
-	width        : 194px;
-	height       : 194px;
-	background   : rgba(0,0,0,.4);
-	text-align   : center;
-	position     : relative;
-	margin-left  : 30px;
-	border-radius: 2px;
-	border       : 3px dashed #666;
-	margin-bottom: 20px;
-}
-
-#changeAmiDropZone.hover {
-	border-color: #fff;
-}
-
-#changeAmiDropZone p {
-	position  : absolute;
-	margin-top: 80px;
-	left      : 45px;
-	color     : #666;
-}
-
-#changeAmiDropZone .resource-icon {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -30px;
-}
-
-#changeAmiDropZone .resource-label {
-	margin-top  : 18px;
-	width       : 120px;
-	margin-left : -30px;
-	font-size   : 12px;
-}
-
-#cancelChangeAmi {
-	text-align: center;
-	width: 100%;
-}
-
-#confirmChangeAmi {
-	width: 180px;
-	margin-left: 40px;
-}
-
-#changeAmiWarning {
-	color: #ec3c38;
-	background: rgba(236, 60, 56, 0.1);
-	padding: 5px;
-	border-radius: 4px;
-	border: 1px solid #9e2622;
 }
 
 /* App Update Summary */

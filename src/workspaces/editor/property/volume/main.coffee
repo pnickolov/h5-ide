@@ -12,17 +12,9 @@ define [ "../base/main",
 
     VolumeModule = PropertyModule.extend {
 
-        handleTypes : [ constant.RESTYPE.VOL, "component_asg_volume" ]
+        handleTypes : [ constant.RESTYPE.VOL ]
 
         setupStack : () ->
-            me = this
-            @view.on 'VOLUME_SIZE_CHANGED', ( value ) ->
-                me.model.setVolumeSize value
-                MC.canvas.update model.attributes.uid, "text", "volume_size", value + "GB"
-
-            @model.once 'REFRESH_PANEL', ()->
-                me.view.render()
-
             @view.on "OPEN_SNAPSHOT", (id)->
                 PropertyModule.loadSubPanel "STATIC", id
                 null

@@ -1,5 +1,5 @@
 
-define [ "Design" ], ( Design )->
+define ["Design"], ( Design )->
 
   Design.debug = ()->
     componentMap = Design.instance().__componentMap

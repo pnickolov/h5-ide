@@ -297,8 +297,9 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
         @__isRemoved = !!isRemoved
       null
 
-    isRemoved   : ()-> @__isRemoved is true
-    isRemovable : () -> true
+    isVisual       : ()-> false
+    isRemoved      : ()-> @__isRemoved is true
+    isRemovable    : () -> true
     isReparentable : ()-> true
 
     ### env:dev ###

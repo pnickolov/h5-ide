@@ -2771,6 +2771,9 @@ html[dir="rtl"] .select2-search-choice-close {
   bottom        : 0;
   left          : 0;
 }
+.nano.has-scrollbar-x > .nano-content {
+	overflow : scroll;
+}
 .nano > .nano-content:focus {
   outline: thin dotted;
 }
@@ -2804,4 +2807,19 @@ html[dir="rtl"] .select2-search-choice-close {
 }
 .nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
   opacity    : 0.99;
+}
+.nano > .pane-x {
+	display : none;
+
+  height  : 10px;
+  width   : auto;
+  top     : auto;
+  left    : 0;
+}
+.nano > .pane-x > .nano-slider {
+	margin : 1px 0;
+	height : 8px;
+}
+.has-scrollbar-x > .pane-x {
+	display : block;
 }

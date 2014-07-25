@@ -61,7 +61,6 @@ define [
   Backbone.View.extend {
 
     events :
-      "click .HideOEPanelRight"  : "toggleRightPanel"
       "click .HideSecondPanel"   : "hideSecondPanel"
       "click .option-group-head" : "updateRightPanelOption"
 
@@ -78,8 +77,12 @@ define [
       "click #btn-switch-property" : "switchToProperty"
       "click #btn-switch-state"    : "showStateEditor"
 
+    initialize : ( options )->
+      _.extend this, options
+      @render()
+
     render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelRight").html( RightPanelTpl() )
+      @setElement @parent.$el.find(".OEPanelRight").html( RightPanelTpl() )
       @$el.toggleClass("hidden", @__rightPanelHidden || false)
 
       if @__backup
@@ -104,7 +107,7 @@ define [
 
     toggleRightPanel : ()->
       @__rightPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
-      false
+      null
 
     showSecondPanel : ( type, id ) ->
       @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())

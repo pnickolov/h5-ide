@@ -2,7 +2,7 @@
 # This file is used to place handlebar helpers. All handlebar helpers should be placed here.
 # Any helper that is not in this file might lead to compile error.
 
-define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
+define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->

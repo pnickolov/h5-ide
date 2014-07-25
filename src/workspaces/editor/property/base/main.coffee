@@ -327,14 +327,14 @@ define [ 'event' ], ( ide_event )->
         true
 
     __resetSelectedinGroup = ( restore, model ) ->
-        mid = model.get 'mid'
-        uid = model.get 'uid'
+        # mid = model.get 'mid'
+        # uid = model.get 'uid'
 
-        if restore and mid
-            if mid.length is 38
-                MC.canvas.instanceList.selectById uid, mid
-            else
-                MC.canvas.asgList.selectById uid, mid
+        # if restore and mid
+        #     if mid.length is 38
+        #         MC.canvas.instanceList.selectById uid, mid
+        #     else
+        #         MC.canvas.asgList.selectById uid, mid
 
     PropertyModule.onUnloadSubPanel = () ->
         # Calls `onUnloadSubPanel` callback for current main property module

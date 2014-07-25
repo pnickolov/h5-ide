@@ -56,7 +56,9 @@ define [
       'click .reload-states'          : "reloadState"
       'click .icon-save-app'          : 'appToStack'
 
-    render : ()->
+    initialize : ( options )->
+      _.extend this, options
+
       opsModel = @workspace.opsModel
 
       # Toolbar
@@ -78,7 +80,7 @@ define [
         if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
           tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
-      @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
+      @setElement @parent.$el.find(".OEPanelTop").html( tpl )
 
       @updateTbBtns()
       @updateZoomButtons()
@@ -112,7 +114,11 @@ define [
       @updateZoomButtons()
       return
 
-    setTbLineStyle : ( ls, attr )-> $canvas.setLineStyle( attr[0] )
+    setTbLineStyle : ( ls, attr )->
+      localStorage.setItem("canvas/lineStyle", attr)
+      if @parent.canvas
+        @parent.canvas.updateLineStyle()
+      return
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")
@@ -122,7 +128,7 @@ define [
 
       newJson = @workspace.design.serialize()
 
-      Thumbnail.generate( $("#svg_canvas") ).catch( ()->
+      Thumbnail.generate( @parent.getSvgElement() ).catch( ()->
         return null
       ).then ( thumbnail )->
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
@@ -142,10 +148,10 @@ define [
       App.openOps newOps
       return
 
-    zoomIn  : ()-> MC.canvas.zoomIn();  @updateZoomButtons()
-    zoomOut : ()-> MC.canvas.zoomOut(); @updateZoomButtons()
+    zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
+    zoomOut : ()-> @parent.canvas.zoomOut(); @updateZoomButtons()
     updateZoomButtons : ()->
-      scale = $canvas.scale()
+      scale = if @parent.canvas then @parent.canvas.scale() else 1
       if scale <= 1
         @$el.find(".icon-zoom-in").attr("disabled", "disabled")
       else
@@ -169,7 +175,7 @@ define [
 
       design = @workspace.design
       name   = design.get("name")
-      Thumbnail.exportPNG $("#svg_canvas"), {
+      Thumbnail.exportPNG @parent.getSvgElement(), {
           isExport   : true
           createBlob : true
           name       : name

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
   height: 100%;
@@ -79,7 +80,11 @@
   position: absolute !important;
   width: 100%;
   top: 40px;
-  bottom: 0; }
+  bottom: 0;
+  height: auto; }
+  .OEPanelCenter .nano-pane {
+    display: block;
+    opacity: 1; }
 
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap {
   right: 280px; }
@@ -206,19 +211,6 @@
   background-repeat: no-repeat;
   background-color: transparent; }
 
-.resource-reuse {
-  position: relative; }
-  .resource-reuse .resource-icon {
-    position: absolute;
-    top: 5.5px;
-    left: 5px;
-    background-size: 72%; }
-  .resource-reuse img {
-    position: absolute;
-    top: 17px;
-    left: 14px;
-    width: 32px; }
-
 .elb-asg .resource-item {
   height: 5em; }
 
@@ -269,107 +261,101 @@
     opacity: .5; }
   .resource-item:hover {
     background-color: rgba(255, 255, 255, 0.2); }
-  .resource-item.resource-disabled {
+  .resource-item.disabled {
     cursor: default;
     opacity: .6;
     background-color: transparent; }
-  .resource-item.instance {
-    position: relative;
+  .resource-item.instance, .resource-item.dbinstance {
     padding-top: 5px;
     height: 132px; }
-  .resource-item.dbinstance{
-    position: relative;
-    padding-top: 5px;
-    height: 118px; }
-  .resource-item.dbsnapshot{
-    position: relative;
-    padding-top: 5px;
-    height: 90px; }
+  .resource-item.az {
+    background-image: url('/assets/images/ide/icon/az-resource.png');
+    position: relative; }
+  .resource-item.volume {
+    background-image: url('/assets/images/ide/icon/volume-resource-1109.png'); }
+  .resource-item.eni {
+    background-image: url('/assets/images/ide/icon/eni-resource.png'); }
+  .resource-item.subnet {
+    background-image: url('/assets/images/ide/icon/subnet-resource.png'); }
+  .resource-item.rtb {
+    background-image: url('/assets/images/ide/icon/rt-resource.png'); }
+  .resource-item.igw {
+    background-image: url('/assets/images/ide/icon/igw-resource.png'); }
+  .resource-item.vgw {
+    background-image: url('/assets/images/ide/icon/vgw-resource.png'); }
+  .resource-item.cgw {
+    background-image: url('/assets/images/ide/icon/cgw-resource.png'); }
+  .resource-item.asg {
+    background-image: url('/assets/images/ide/icon/asg-resource.png');
+    position: relative; }
+  .resource-item.elb {
+    background-image: url('/assets/images/ide/icon/elb-resource.png'); }
+  .resource-item.snapshot {
+    background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
+  .resource-item.subnetgroup {
+    background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
+  .resource-item.dbinstance {
+    background-image: url('/assets/images/ide/icon/instance-resource.png'); }
+  .resource-item.dbsnapshot {
+    height: 30px;
+    background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
   .resource-item .resource-count {
-    margin-left: 47px;
-    margin-top: -70px;
-    height: 15px;
-    width: 15px;
-    background-color: #f22;
     position: absolute;
-    border-radius: 15px;
+    top: 7px;
+    left: 47px;
+    height: 1em;
+    width: 1em;
+    background: #f22;
+    border-radius: 50%;
     color: #fff;
     font-size: 12px;
     text-align: center;
-    line-height: 11px; }
+    line-height: 1em;
+    padding: 2px; }
+  .resource-item .resource-icon-dbsnapshot {
+    margin-top: -50px; }
 
-.resource-icon-az {
-  background-image: url('/assets/images/ide/icon/az-resource.png'); }
-
-.resource-icon-volume {
-  background-image: url('/assets/images/ide/icon/volume-resource-1109.png'); }
-
-.resource-icon-eni {
-  background-image: url('/assets/images/ide/icon/eni-resource.png'); }
-
-.resource-icon-subnet {
-  background-image: url('/assets/images/ide/icon/subnet-resource.png'); }
-
-.resource-icon-subnetgroup {
-  background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
-
-.resource-icon-rt {
-  background-image: url('/assets/images/ide/icon/rt-resource.png'); }
-
-.resource-icon-igw {
-  background-image: url('/assets/images/ide/icon/igw-resource.png'); }
-
-.resource-icon-vgw {
-  background-image: url('/assets/images/ide/icon/vgw-resource.png'); }
-
-.resource-icon-cgw {
-  background-image: url('/assets/images/ide/icon/cgw-resource.png'); }
-
-.resource-icon-asg {
-  background-image: url('/assets/images/ide/icon/asg-resource.png'); }
-
-.resource-icon-elb {
-  background-image: url('/assets/images/ide/icon/elb-resource.png'); }
-
-.resource-icon-ebs-snapshot {
-  background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
-
-.resource-icon-instance {
+.resource-icon-instance, .resource-icon-dbinstance {
   padding-top: 12px;
   height: 48px;
   background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
-
-.resource-icon-dbinstance {
-  padding-top: 12px;
-  height: 48px;
-  background: url('/assets/images/ide/icon/dbinstance-resource.png') center no-repeat; }
-
-.resource-icon-dbsnapshot {
-  padding-top: 12px;
-  height: 48px;
-  background: url('/assets/images/ide/icon/dbinstance-resource.png') center no-repeat; }
-
-
-  #ResourceDragItem .resource-icon-instance {
-    padding-top: 17px;
-    height: 53px; }
-  #ResourceDragItem.resource-icon-asg .resource-icon-instance .resource-icon-dbinstance .resource-icon-dbsnapshot {
-    top: 50%;
-    background-size: 100%;
-    left: 50%;
-    margin-left: -30px;
-    margin-top: -30px;
-    opacity: .6; }
+  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance {
+    padding-top: 28px;
+    height: 62px;
+    position: relative; }
+  .resource-item.asg > .resource-icon-instance, .resource-item.asg > .resource-icon-dbinstance {
+    background: #fff;
+    border-radius: 4px;
+    position: absolute;
+    left: 17px;
+    top: 17px;
+    width: 36px;
+    height: 30px;
+    padding-top: 6px; }
+  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance {
+    left: 16px;
+    top: 16px;
+    height: 31px;
+    width: 38px;
+    padding-top: 7px;
+    border: 1px solid #bbb;
+    -webkit-transition: all ease-in 0.2s;
+    -moz-transition: all ease-in 0.2s;
+    transition: all ease-in 0.2s; }
+  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance {
+    left: 47px;
+    top: 51px;
+    width: 53px;
+    height: 46px; }
 
 .ebs-size {
   margin-top: -1.5em;
-  font-size: 12px;
   color: #676767;
-  height: 1.5em;
-  line-height: 1.1em;
-  position: absolute;
-  text-align: center;
-  width: 65px; }
+  height: 1.5em; }
+
+.rds-snapshot-size {
+  color: #676767;
+  line-height: 2em; }
 
 .az-name {
   font-size: 16px;
@@ -379,21 +365,9 @@
   margin-top: -60px;
   text-transform: uppercase; }
 
-.rds-snapshot-size {
-  margin-top: -1.2em;
-  margin-left: -2.6em;
-  font-size: 12px;
-  color: #676767;
-  height: 1.5em;
-  line-height: 1.1em;
-  position: absolute;
-  text-align: center;
-  width: 65px; }
-
-#ResourceDragItem {
+#DndItem {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.3);
-  opacity: 0.8;
   z-index: 100;
   border-radius: 4px;
   color: transparent;
@@ -404,86 +378,141 @@
   padding: 0;
   height: 70px;
   background-position: center;
-  -webkit-transition: all ease-in 0.15s;
-  -moz-transition: all ease-in 0.15s;
-  transition: all ease-in 0.15s;
+  -webkit-transition: all ease-in 0.2s;
+  -moz-transition: all ease-in 0.2s;
+  transition: all ease-in 0.2s;
   -webkit-transition-property: line-height, padding-left, width, height, color;
   -moz-transition-property: line-height, padding-left, width, height, color;
   transition-property: line-height, padding-left, width, height, color; }
-  #ResourceDragItem.add-to-dom {
-    opacity: 1; }
-  #ResourceDragItem.resource-icon-az {
+  #DndItem.rtb, #DndItem.igw, #DndItem.vgw {
+    width: 80px;
+    height: 80px; }
+  #DndItem.elb, #DndItem.instance, #DndItem.eni {
+    width: 90px;
+    height: 90px; }
+  #DndItem.cgw {
+    background-position: 10px center; }
+  #DndItem.cgw.dragOver {
+    width: 170px;
+    height: 100px;
+    background-position: 17px center; }
+  #DndItem .resource-count {
+    display: none; }
+  #DndItem.az {
     color: #eee;
     background-image: none;
     position: relative;
-    line-height: 133px;
+    line-height: 134px;
     text-align: left;
+    margin-top: 0;
     padding-left: 7px;
-    height: 90px;
-    margin-top: 0; }
-    #ResourceDragItem.resource-icon-az .az-name {
+    height: 76px;
+    width: 59px; }
+    #DndItem.az .az-name {
       position: absolute;
-      left: 0;
-      top: 4px;
+      left: 10px;
+      top: 10px;
       color: transparent;
-      border: 3px dashed #f69300;
-      border-radius: 4px;
-      margin: 10px 14px;
-      height: 34px;
-      width: 30px;
-      -webkit-transition: all ease-in 0.15s;
-      -moz-transition: all ease-in 0.15s;
-      transition: all ease-in 0.15s; }
-    #ResourceDragItem.resource-icon-az.add-to-dom {
+      border: 2px dashed #f69300;
+      border-radius: 8px;
+      height: 46px;
+      width: 44px;
+      margin: 0;
+      -webkit-transition: all ease-in 0.2s;
+      -moz-transition: all ease-in 0.2s;
+      transition: all ease-in 0.2s; }
+    #DndItem.az.dragOver {
       color: #f69300;
-      width: 220px;
-      height: 240px;
+      width: 210px;
+      height: 230px;
       line-height: 50px;
       padding-left: 20px; }
-      #ResourceDragItem.resource-icon-az.add-to-dom .az-name {
+      #DndItem.az.dragOver .az-name {
         width: 206px;
         height: 206px; }
-  #ResourceDragItem.resource-icon-asg, #ResourceDragItem.resource-icon-subnet, #ResourceDragItem.resource-icon-subnetgroup {
-    background-image: none; }
-    #ResourceDragItem.resource-icon-asg:before, #ResourceDragItem.resource-icon-subnet:before, #ResourceDragItem.resource-icon-subnetgroup:before {
+  #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup {
+    background-image: none;
+    width: 70px;
+    height: 70px; }
+    #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before {
       content: " ";
       display: block;
       position: absolute;
-      left: 0;
-      top: 0;
+      left: 10px;
+      top: 10px;
       color: transparent;
-      border: 3px dashed #76d6ff;
+      border: 2px dashed #e0e0e0;
+      height: 46px;
+      width: 46px;
+      border-radius: 8px;
+      -webkit-transition: all ease-in 0.2s;
+      -moz-transition: all ease-in 0.2s;
+      transition: all ease-in 0.2s; }
+    #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver {
+      width: 190px;
+      height: 190px; }
+      #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before {
+        width: 166px;
+        height: 166px; }
+  #DndItem.subnetgroup:before {
+    border-color: #498fe1; }
+  #DndItem.asg:before {
+    border-color: #76d6ff; }
+  #DndItem.asg:after {
+    content: " ";
+    display: block;
+    height: 0;
+    width: 130px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #83CBF9;
+    border-radius: 4px 4px 0 0;
+    -webkit-transition: height ease-in 0.2s;
+    -moz-transition: height ease-in 0.2s;
+    transition: height ease-in 0.2s; }
+  #DndItem.asg.dragOver {
+    width: 150px;
+    height: 150px; }
+    #DndItem.asg.dragOver:before {
+      width: 126px;
+      height: 126px; }
+    #DndItem.asg.dragOver:after {
+      height: 21px; }
+  #DndItem.resource-icon-subnetgroup:before {
+    border-color: #e0e0e0; }
+  #DndItem.resource-icon-subnetgroup.add-to-dom {
+    width: 190px;
+    height: 190px; }
+    #DndItem.resource-icon-subnetgroup.add-to-dom:before {
+      width: 164px;
+      height: 164px; }
+  #DndItem.instance {
+    margin-top: 0;
+    overflow: visible; }
+    #DndItem.instance:before {
+      content: "subnet";
       border-radius: 4px;
-      margin: 10px;
-      height: 44px;
-      width: 44px;
-      -webkit-transition: all ease-in 0.15s;
-      -moz-transition: all ease-in 0.15s;
-      transition: all ease-in 0.15s; }
-    #ResourceDragItem.resource-icon-asg.add-to-dom, #ResourceDragItem.resource-icon-subnet.add-to-dom, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
-      width: 150px;
-      height: 150px; }
-      #ResourceDragItem.resource-icon-asg.add-to-dom:before, #ResourceDragItem.resource-icon-subnet.add-to-dom:before, #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
-        width: 124px;
-        height: 124px; }
-  #ResourceDragItem.resource-icon-subnet:before {
-    border-color: #e0e0e0; }
-  #ResourceDragItem.resource-icon-subnet.add-to-dom {
-    width: 190px;
-    height: 190px; }
-    #ResourceDragItem.resource-icon-subnet.add-to-dom:before {
-      width: 164px;
-      height: 164px; }
-  #ResourceDragItem.resource-icon-subnetgroup:before {
-    border-color: #e0e0e0; }
-  #ResourceDragItem.resource-icon-subnetgroup.add-to-dom {
-    width: 190px;
-    height: 190px; }
-    #ResourceDragItem.resource-icon-subnetgroup.add-to-dom:before {
-      width: 164px;
-      height: 164px; }
-  #ResourceDragItem.instance {
-    margin-top: 0; }
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: #aaa;
+      height: 40px;
+      width: 40px;
+      margin-left: -10px;
+      margin-top: -10px;
+      padding-left: 3px;
+      text-align: left;
+      border: 2px dashed #dbd7d7;
+      -webkit-transition: all .15s ease-in;
+      -moz-transition: all .15s ease-in;
+      -o-transition: all .15s ease-in;
+      transition: all .15s ease-in; }
+    #DndItem.instance.autoparent:before {
+      top: 0;
+      left: 0;
+      width: 105px;
+      height: 108px; }
 
 .resource-select.selectbox .selection {
   background: #143553;
@@ -629,3 +658,573 @@
   background-position: -192px 0; }
 .icon-ami-os.linux-other:before {
   background-position: -216px 0; }
+
+#changeAmi {
+  width: 130px; }
+
+#changeAmiDropZone {
+  width: 194px;
+  height: 194px;
+  background: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  position: relative;
+  margin-left: 30px;
+  border-radius: 2px;
+  border: 3px dashed #666;
+  margin-bottom: 20px; }
+  #changeAmiDropZone.dragOver {
+    border-color: #fff; }
+  #changeAmiDropZone p {
+    position: absolute;
+    margin-top: 80px;
+    left: 45px;
+    color: #666; }
+  #changeAmiDropZone .resource-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -30px; }
+  #changeAmiDropZone .resource-label {
+    margin-top: 18px;
+    width: 120px;
+    margin-left: -30px;
+    font-size: 12px; }
+
+#cancelChangeAmi {
+  text-align: center;
+  width: 100%; }
+
+#confirmChangeAmi {
+  width: 180px;
+  margin-left: 40px; }
+
+#changeAmiWarning {
+  color: #ec3c38;
+  background: rgba(236, 60, 56, 0.1);
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #9e2622; }
+
+.canvas-view {
+  position: relative;
+  font-size: 0;
+  /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  min-height: 100%;
+  background: white url('/assets/images/ide/grid_x1.png'); }
+  .canvas-view[data-scale="1.2"] {
+    background-image: url('/assets/images/ide/grid_x1.2.png'); }
+  .canvas-view[data-scale="1.4"] {
+    background-image: url('/assets/images/ide/grid_x1.4.png'); }
+  .canvas-view[data-scale="1.6"] {
+    background-image: url('/assets/images/ide/grid_x1.6.png'); }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .canvas-view {
+      background-image: url('/assets/images/ide/grid_x1@2x.png');
+      background-size: 80px 80px; }
+    .canvas-view[data-scale="1.2"] {
+      background-image: url('/assets/images/ide/grid_x1.2@2x.png');
+      background-size: 64px 64px; }
+    .canvas-view[data-scale="1.4"] {
+      background-image: url('/assets/images/ide/grid_x1.4@2x.png');
+      background-size: 48px 48px; }
+    .canvas-view[data-scale="1.6"] {
+      background-image: url('/assets/images/ide/grid_x1.6@2x.png');
+      background-size: 32px 32px; } }
+  .canvas-view[data-mode="app"] .group-resizer {
+    display: none; }
+  .canvas-view[data-mode="app"] .group-label, .canvas-view[data-mode="app"] .port {
+    pointer-events: none; }
+
+.svg_resizer {
+  position: absolute;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 32px;
+  text-align: center; }
+  .svg_resizer:hover {
+    color: #3781C9; }
+  .svg_resizer.icon-resize-down {
+    left: 7px;
+    bottom: 7px; }
+  .svg_resizer.icon-resize-up {
+    left: 47px;
+    bottom: 7px; }
+  .svg_resizer.icon-resize-right {
+    top: 5px;
+    right: 10px; }
+  .svg_resizer.icon-resize-left {
+    top: 45px;
+    right: 10px; }
+
+.group-label {
+  font-size: 12px;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+  fill: #fff; }
+
+.node-label, .volume-number, .server-number {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: #333;
+  cursor: default; }
+
+.node-sg-color-border {
+  fill: none;
+  stroke: none; }
+
+.node-label-name-bg {
+  fill: none; }
+
+.group, .node-background {
+  fill: transparent; }
+
+.group-resizer {
+  fill: transparent; }
+  .group-resizer:hover {
+    fill: rgba(200, 200, 200, 0.12); }
+  .group-resizer.top {
+    cursor: ns-resize; }
+  .group-resizer.left {
+    cursor: ew-resize; }
+  .group-resizer.right {
+    cursor: ew-resize; }
+  .group-resizer.bottom {
+    cursor: ns-resize; }
+  .group-resizer.top-left {
+    cursor: nwse-resize; }
+  .group-resizer.top-right {
+    cursor: nesw-resize; }
+  .group-resizer.bottom-left {
+    cursor: nesw-resize; }
+  .group-resizer.bottom-right {
+    cursor: nwse-resize; }
+
+.canvasel:hover > .node-background {
+  fill-opacity: 0.5;
+  fill: #F2F8FF; }
+
+.canvasel.selected > .node-background, .canvasel.connectable > .node-background, .canvasel.droppable > .node-background {
+  fill-opacity: 1;
+  fill: #F2F8FF !important;
+  stroke-width: 2 !important;
+  stroke: #659FFF !important; }
+
+.canvasel.selected > .node-label-name-bg {
+  fill: #659FFF; }
+  .canvasel.selected > .node-label-name-bg ~ .node-label {
+    fill: #fff; }
+
+.server-number-bg {
+  stroke-width: 0;
+  fill: #439beb; }
+
+.server-number {
+  fill: #fff;
+  font-size: 11px; }
+
+.volume-number {
+  fill: #74B1FD;
+  pointer-events: none; }
+
+.volume-image, .eip-status {
+  cursor: pointer; }
+
+.group-asg {
+  fill: #f6faf9;
+  stroke-linejoin: round; }
+
+.asg-title {
+  stroke-width: 0; }
+
+.asg-frame {
+  stroke-dasharray: 6, 4;
+  stroke-width: 2;
+  fill: #83CBF9;
+  stroke: #76d6ff; }
+  .selected .asg-frame {
+    fill: #049CDD;
+    stroke: #049CDD; }
+
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }
+
+.dbreplcate {
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }
+
+.prompt-text, #prompt_text {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default; }
+
+.AWS-AutoScaling-LaunchConfiguration + .prompt-text {
+  display: none; }
+
+/* port style */
+.port {
+  stroke-width: 0; }
+
+.port-blue {
+  fill: #6DAEFE;
+  stroke: #6DAEFE; }
+
+.port-green {
+  fill: #12CD4F;
+  stroke: #12CD4F; }
+
+.port-purple {
+  fill: #bf7aa5;
+  stroke: #b22f70; }
+
+.port-gray {
+  fill: #d8d7d6;
+  stroke: #bebebe; }
+
+.stack .port:hover, .stack .port.connectable, .appedit .port:hover, .appedit .port.connectable {
+  fill: #F2F8FF;
+  stroke-width: 2;
+  cursor: pointer; }
+
+.AWS-VPC-VPC .group {
+  stroke: #dcdcdc;
+  stroke-linejoin: round;
+  stroke-dasharray: none;
+  stroke-width: 4; }
+.AWS-VPC-VPC:hover .group, .droppable.AWS-VPC-VPC .group {
+  stroke: #C6C4C4; }
+.AWS-VPC-VPC .group-label {
+  fill: #aaa; }
+.AWS-VPC-VPC.selected .group {
+  stroke: #C6C4C4;
+  fill: rgba(255, 255, 255, 0);
+  stroke-width: 5; }
+
+.AWS-EC2-AvailabilityZone .group {
+  fill: rgba(252, 190, 23, 0.02);
+  stroke: #f9be76;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2; }
+.AWS-EC2-AvailabilityZone:hover .group, .droppable.AWS-EC2-AvailabilityZone .group {
+  stroke: #F69722; }
+.AWS-EC2-AvailabilityZone .group-label {
+  fill: #F69722; }
+
+.AWS-VPC-Subnet .group {
+  stroke: #dbd7d7;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2; }
+.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group {
+  stroke: #C6C4C4; }
+.AWS-VPC-Subnet .group-label {
+  fill: #999; }
+
+.AWS-RDS-DBSubnetGroup .group {
+  fill: rgba(224, 224, 224, 0.1);
+  stroke: #498fe1;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2;
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0); }
+.AWS-RDS-DBSubnetGroup .group-label {
+  fill: #498fe1; }
+.AWS-RDS-DBSubnetGroup:hover .group {
+  stroke: #498fe1; }
+.AWS-RDS-DBSubnetGroup.selected .group {
+  stroke: #498fe1;
+  fill-opacity: 0;
+  stroke-width: 3;
+  -webkit-transform: translate(0.5px, 0.5px);
+  transform: translate(0.5px, 0.5px); }
+
+.line {
+  cursor: pointer;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-width: 2px; }
+  .line:hover, .line.hover {
+    opacity: .8;
+    stroke-width: 4px; }
+  .line.selected {
+    display: block !important;
+    opacity: 1 !important;
+    stroke-width: 4px !important; }
+
+.EniAttachment {
+  stroke: #12CD4F; }
+
+.RTB_Asso, .ElbSubnetAsso {
+  stroke: #d8d7d6; }
+
+.AWS-VPC-VPNConnection {
+  stroke: #bf7aa5; }
+
+.RTB_Route {
+  stroke: #6DAEFE; }
+  .RTB_Route .dash-line {
+    stroke: #9FC9FD;
+    stroke-dasharray: 10px 10px; }
+
+.ElbAmiAsso {
+  stroke: #0973f6; }
+
+.SgRuleLine {
+  stroke: #6DAEFE;
+  opacity: 0.2;
+  stroke-dasharray: 10,5; }
+
+.fill-line {
+  stroke: #fff;
+  stroke-opacity: 0;
+  stroke-width: 10px;
+  stroke-dasharray: none; }
+
+.droppable.AWS-VPC-VPC > .group {
+  stroke-width: 6px; }
+.droppable.AWS-EC2-AvailabilityZone > .group {
+  stroke-width: 4px; }
+.droppable.AWS-VPC-Subnet > .group {
+  stroke-width: 4px; }
+.droppable.AWS-AutoScaling-Group > .asg-frame {
+  stroke-width: 4;
+  stroke-dasharray: 0; }
+
+.draw-line {
+  stroke-width: 5px; }
+  .draw-line.subnet-assoc-in, .draw-line.subnet-assoc-out, .draw-line.rtb-src, .draw-line.elb-assoc {
+    stroke: #d8d7d6; }
+  .draw-line.elb-sg-out {
+    stroke: #0973f6; }
+  .draw-line.eni-attach, .draw-line.instance-attach {
+    stroke: #12CD4F; }
+  .draw-line.vgw-vpn, .draw-line.cgw-vpn {
+    stroke: #bf7aa5; }
+  .draw-line.igw-tgt, .draw-line.eni-sg, .draw-line.instance-sg, .draw-line.launchconfig-sg, .draw-line.rtb-tgt, .draw-line.elb-sg-in, .draw-line.vgw-tgt, .draw-line.eni-rtb, .draw-line.instance-rtb {
+    stroke: #6DAEFE;
+    stroke-dasharray: 10,5; }
+
+marker.subnet-assoc-in, marker.subnet-assoc-out, marker.rtb-src, marker.elb-assoc {
+  fill: #d8d7d6; }
+marker.elb-sg-out {
+  fill: #0973f6; }
+marker.eni-attach, marker.instance-attach {
+  fill: #12CD4F; }
+marker.vgw-vpn, marker.cgw-vpn {
+  fill: #bf7aa5; }
+marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marker.rtb-tgt, marker.elb-sg-in, marker.vgw-tgt, marker.eni-rtb, marker.instance-rtb {
+  fill: #6DAEFE; }
+
+.mask-line {
+  -webkit-transition: stroke-dashoffset .3s ease-in-out;
+  -moz-transition: stroke-dashoffset .3s ease-in-out;
+  -o-transition: stroke-dashoffset .3s ease-in-out;
+  transition: stroke-dashoffset .3s ease-in-out;
+  stroke-dashoffset: 0 !important;
+  stroke-width: 8;
+  stroke: #fff;
+  fill: none; }
+
+g.shadow {
+  opacity: 0.8; }
+
+.canvas-pp {
+  position: absolute;
+  background: #fff;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  color: #999;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 60; }
+  .canvas-pp.pp-right, .canvas-pp.pp-left {
+    margin-left: 10px;
+    border: 1px solid #d4d4d4; }
+    .canvas-pp.pp-right:before, .canvas-pp.pp-right:after, .canvas-pp.pp-left:before, .canvas-pp.pp-left:after {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      width: 0;
+      height: 0;
+      margin-top: -10px;
+      border: transparent 10px solid;
+      border-right-color: #fff; }
+    .canvas-pp.pp-right:before, .canvas-pp.pp-left:before {
+      border-right-color: #ccc;
+      left: -21px; }
+  .canvas-pp.pp-left {
+    margin-left: -10px; }
+    .canvas-pp.pp-left:before, .canvas-pp.pp-left:after {
+      left: auto;
+      right: -20px;
+      border-left-color: #fff; }
+    .canvas-pp.pp-left:before {
+      border-right-color: transparent;
+      border-left-color: #ccc;
+      left: auto;
+      right: -21px; }
+  .canvas-pp .popup-content {
+    min-width: 306px;
+    max-height: 180px;
+    overflow-x: hidden;
+    overflow-y: scroll; }
+  .canvas-pp .volume-pph {
+    padding: 7px 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #EBEBEB;
+    color: #666; }
+    .canvas-pp .volume-pph > span {
+      font-size: 12px;
+      color: #999; }
+  .canvas-pp .volume-pp-empty {
+    padding: 30px;
+    text-align: center;
+    width: 240px; }
+
+.vpp-volume, .vpp-snapshot {
+  cursor: pointer;
+  float: left;
+  width: 60px;
+  height: 60px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: #fff 2px solid;
+  border-radius: 4px;
+  font-size: 9px;
+  color: #333;
+  text-align: center;
+  background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
+  .vpp-volume:nth-child(4n+1), .vpp-snapshot:nth-child(4n+1) {
+    clear: left;
+    margin-left: 10px; }
+  .vpp-volume.selected, .vpp-volume:hover, .vpp-snapshot.selected, .vpp-snapshot:hover {
+    background-color: #F3F9FF; }
+  .vpp-volume.selected, .vpp-snapshot.selected {
+    border-color: #659FFF; }
+  .vpp-volume:last-child, .vpp-snapshot:last-child {
+    margin-bottom: 10px; }
+  .vpp-volume .vpp-name, .vpp-snapshot .vpp-name {
+    line-height: 20px; }
+  .vpp-volume .vpp-name, .vpp-volume .vpp-size, .vpp-snapshot .vpp-name, .vpp-snapshot .vpp-size {
+    margin-top: 10px; }
+
+.vpp-snapshot {
+  background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }
+
+#DndItem.vpp-volume, #DndItem.vpp-snapshot {
+  color: #333;
+  width: 60px;
+  height: 60px; }
+
+.instance-pph {
+  background: #83CBF9;
+  color: #fff;
+  padding: 5px 10px 7px;
+  font-size: 14px; }
+
+.instance-pph-close {
+  float: right;
+  color: #fff;
+  font-size: 18px;
+  height: 1em;
+  line-height: 1em;
+  cursor: pointer; }
+
+.popup-instance {
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  min-width: 402px; }
+
+.vpp-instance {
+  cursor: pointer;
+  float: left;
+  width: 88px;
+  height: 88px;
+  margin-top: 5px;
+  margin-right: 5px;
+  border: #fff 2px solid;
+  border-radius: 4px;
+  position: relative;
+  background: url('/assets/images/ide/icon/instance-canvas.png') 14px 10px no-repeat;
+  color: #333;
+  text-align: center; }
+  .vpp-instance:nth-child(4n+1) {
+    clear: left;
+    margin-left: 10px; }
+  .vpp-instance.selected, .vpp-instance:hover {
+    background-color: #F3F9FF; }
+  .vpp-instance.selected {
+    border-color: #659FFF; }
+  .vpp-instance:last-child {
+    margin-bottom: 10px; }
+  .vpp-instance .vpp-ins-state {
+    position: absolute;
+    left: 62px;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px; }
+  .vpp-instance > img {
+    margin-top: 14px;
+    margin-left: 2px; }
+  .vpp-instance .vpp-ins-vol {
+    margin: 5px auto 1px;
+    width: 26px;
+    color: #74B1FD;
+    height: 24px;
+    background: url('/assets/images/ide/icon/instance-volume.png') center no-repeat; }
+
+.instance-pp-empty {
+  text-align: center;
+  line-height: 105px; }
+
+.canvas-pp.instance {
+  margin-left: -13px;
+  margin-top: -37px;
+  border: 2px solid #83CBF9;
+  min-width: 398px; }
+
+.vpp-eni {
+  position: relative;
+  line-height: 148px;
+  background: url('/assets/images/ide/icon/eni-canvas-attached.png') 15px 14px no-repeat; }
+
+.vpp-eip {
+  position: absolute;
+  width: 12px;
+  height: 14px;
+  background: url('/assets/images/ide/icon/eip-on.png');
+  left: 43px;
+  top: 36px; }
+
+.instance-state {
+  opacity: 0.8; }
+  .instance-state.unknown {
+    fill: gray; }
+  .instance-state.running {
+    fill: green; }
+  .instance-state.pending {
+    fill: yellow; }
+  .instance-state.shuttingdown {
+    fill: yellow; }
+  .instance-state.stopping {
+    fill: yellow; }
+  .instance-state.stopped {
+    fill: red; }
+  .instance-state.terminated {
+    fill: red; }

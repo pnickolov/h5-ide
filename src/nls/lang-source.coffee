@@ -5451,7 +5451,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: "db.t1.micro instances can only be members of the default option group."
+      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
       zh: ""
 
     TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
@@ -5459,7 +5459,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT:
-      en: "If you want to launch a DB instance in a VPC, the instance tenancy attribute of the VPC must be set to default. For information about instance tenancy in a VPC, see Using EC2 Dedicated Instances in the Amazon Virtual Private Cloud User Guide. All default VPCs have the instance tenancy attribute set to default."
+      en: "To launch DB instance, instance tenancy attribute of the VPC must be set to default. "
       zh: ""
 
     TA_MSG_ERROR_RDS_SNAPSHOT_NOT_LARGE_ENOUGH:
@@ -5471,7 +5471,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW:
-      en: "Cannot create a publicly accessible DBInstance because customer VPC has no internet gateway attached.  Message: To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
+      en: "To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
       zh: ""
 
     TA_MSG_ERROR_RDS_OG_COMPATIBILITY:

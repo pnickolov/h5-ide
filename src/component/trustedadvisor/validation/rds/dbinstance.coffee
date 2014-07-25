@@ -2,11 +2,21 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
     i18n = Helper.i18n.short()
 
-    isOgValid = ( uid ) ->
-        db = Design.instance().component uid
-        if (db.get('instanceClass') is 'db.t1.micro') and not db.getOptionGroup().isDefault()
-            return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION
-        null
+    isOgValid = ->
+        dbs = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).filter (db) ->
+            (db.get('instanceClass') is 'db.t1.micro') and not db.getOptionGroup().isDefault()
+
+        if not dbs.length then return null
+
+        taId = ''
+        nameStr = ''
+        for db in dbs
+            nameStr += "<span class='validation-tag'>#{db.get('name')}</span>, "
+            taId += db.id
+
+        nameStr = nameStr.slice 0, -2
+        Helper.message.error taId, i18n.TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION, nameStr
+
 
     isAzConsistent = ( uid ) ->
         db = Design.instance().component uid

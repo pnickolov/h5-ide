@@ -27,6 +27,7 @@ define({
         vpc: [ 'isVPCAbleConnectToOutside' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
         kp: [ 'longLiveNotice' ]
+        dbinstance: [ 'isOgValid' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]

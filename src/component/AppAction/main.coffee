@@ -99,7 +99,7 @@ define [
         disableClose: true
       }
       canStop.tpl.find(".modal-footer").hide()
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
+      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
       resourceList.fetchForce().then ()->
 
         comp = Design.instance().serialize().component
@@ -151,6 +151,7 @@ define [
 
     terminateApp : ( id )->
       app  = App.model.appList().get( id )
+      console.log(id)
       name = app.get("name")
       production = app.get("usage") is 'production'
       # renderLoading
@@ -167,39 +168,42 @@ define [
       terminateConfirm.tpl.find('.modal-footer').hide()
 
       # get Resource list
-      comp = Design.instance().serialize().component
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region())
+      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
       resourceList.fetchForce().then ()->
         # Render Varies
-        hasDBInstance = _.filter comp, (e)->
-          e.type == constant.RESTYPE.DBINSTANCE
-        dbInstanceName = _.map hasDBInstance, (e)->
-          return e.resource.DBInstanceIdentifier
-        notReadyDB = resourceList.filter (e)->
-          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+        app.fetchJsonData().then ->
+          comp = app.getJsonData().component
+          console.log comp
+          console.log resourceList
+          hasDBInstance = _.filter comp, (e)->
+            e.type == constant.RESTYPE.DBINSTANCE
+          dbInstanceName = _.map hasDBInstance, (e)->
+            return e.resource.DBInstanceIdentifier
+          notReadyDB = resourceList.filter (e)->
+            (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
-        # Render Terminate Confirm
-        terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
-        terminateConfirm.tpl.find('.modal-footer').show()
-        terminateConfirm.resize()
+          # Render Terminate Confirm
+          terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
+          terminateConfirm.tpl.find('.modal-footer').show()
+          terminateConfirm.resize()
 
-        if notReadyDB?.length
-          terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
-            terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
+          if notReadyDB?.length
+            terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
+              terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
 
-        $("#appNameConfirmIpt").on "keyup change", ()->
-          if $("#appNameConfirmIpt").val() is name
-            terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
-          else
-            terminateConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
+          $("#appNameConfirmIpt").on "keyup change", ()->
+            if $("#appNameConfirmIpt").val() is name
+              terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
+            else
+              terminateConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
+            return
+
+          terminateConfirm.on "confirm", ()->
+            terminateConfirm.close()
+            takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
+            app.terminate(null, takeSnapshot).fail ( err )->
+              error = if err.awsError then err.error + "." + err.awsError else err.error
+              notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+            return
           return
-
-        terminateConfirm.on "confirm", ()->
-          terminateConfirm.close()
-          takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
-          app.terminate(null, takeSnapshot).fail ( err )->
-            error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
-          return
-        return
   new AppAction()

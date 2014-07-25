@@ -72,11 +72,19 @@ define [
     __cachedSpecifications: null
 
     __master: null # Store Master of Replica Instance
-    __source: null # Store Source of Snapshot Instance
 
     master: -> @__master
 
     setMaster: ( master ) -> @__master = master; @__master
+
+    # Source of Snapshot Instance
+    source: ->
+      snapshotId = @get 'snapshotId'
+      if not snapshotId then reutrn false
+
+      CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).find (s) ->
+        s.id is snapshotId
+
 
     slaves: -> Model.filter (obj) => obj.master() is @
 
@@ -526,6 +534,7 @@ define [
     getOptionGroup: -> @connectionTargets('OgUsage')[0]
 
     getOptionGroupName: -> @getOptionGroup()?.get 'name'
+
 
     preSerialize : ( event ) ->
       if event and $.type(event) is 'string'

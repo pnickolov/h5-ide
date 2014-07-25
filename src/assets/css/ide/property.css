@@ -6,6 +6,10 @@
   position: absolute;
   right: 5px;
   top: -44px; }
+.property-panel-wrapper .property-dbinstance-not-available-info {
+  color: #fff;
+  background-color: #ff6600;
+  padding: 10px; }
 
 .property-dbinstance input.shorter-input {
   width: 37px;

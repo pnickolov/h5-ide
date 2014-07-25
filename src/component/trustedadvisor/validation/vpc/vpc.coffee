@@ -62,9 +62,6 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 
 		Helper.message.warning vpc.id, i18n.TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS
 
-
-
-
 	isVPCUsingNonexistentDhcp = ( callback ) ->
 		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
 		dhcpId = vpc.get( 'dhcp' ).get 'appId'
@@ -90,7 +87,6 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 			return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT
 
 		null
-
 
 	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
 	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp

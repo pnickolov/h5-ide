@@ -19,15 +19,16 @@ define({
         'AWS.VPC.RouteTable'                    : [ 'rtb' ]
         'AWS.EC2.EBS.Volume'                    : [ 'ebs' ]
         'AWS.EC2.KeyPair'                       : [ 'kp' ]
+        'AWS.RDS.DBInstance'                    : [ 'dbinstance' ]
 
     globalList:
         eip: [ 'isHasIGW' ]
         az: [ 'isAZAlone' ]
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
-        vpc: [ 'isVPCAbleConnectToOutside' ]
+        vpc: [ 'isVPCAbleConnectToOutside', 'isHaveEnoughIPForDB' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
         kp: [ 'longLiveNotice' ]
-        dbinstance: [ 'isOgValid' ]
+        dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]
 
     asyncList:
         cgw: [ 'isCGWHaveIPConflict' ]

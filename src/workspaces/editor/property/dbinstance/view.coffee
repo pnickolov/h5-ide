@@ -609,7 +609,7 @@ define [ 'ApiRequest'
                 if target.parsley 'validate'
 
                     originValue = that.getOriginAttr()
-                    if originValue and (iops isnt originValue.originIOPS)
+                    if originValue and originValue.originIOPS and (iops isnt originValue.originIOPS)
                         $('.property-info-iops-adjust-tip').show()
                     else
                         $('.property-info-iops-adjust-tip').hide()
@@ -752,7 +752,8 @@ define [ 'ApiRequest'
                 that.setTitle(that.appModel.get('name'))
                 if showError is true
                     $('.db-status-loading').remove()
-                    tip = '<i class="tooltip property-dbinstance-status-icon-warning icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
+                    $('.property-dbinstance-not-available-info').show()
+                    tip = '<i class="property-dbinstance-status-icon-warning icon-warning"></i>'
                 else if showError is false
                     $('.db-status-loading').remove()
                     tip = ''

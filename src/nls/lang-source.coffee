@@ -5486,6 +5486,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
+    TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
+      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
+      zh: ""
+
+    TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
+      en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""

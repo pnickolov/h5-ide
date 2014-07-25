@@ -13,7 +13,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
 
     createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )
 
-    isCidrEnoughForIps : ( cidr )->
+    getAvailableIPCountInSubnet : ( cidr )->
 
       if not cidr then return true
 
@@ -25,11 +25,11 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
           eni = child
         else
           continue
-
-        ipCount += eni.get("ips").length
+          
+        ipCount += eni.get("ips").length * eni.serverGroupCount()
 
       maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
-      maxIpCount >= ipCount
+      maxIpCount - ipCount
 
     serialize : ()->
       n = @get("name")

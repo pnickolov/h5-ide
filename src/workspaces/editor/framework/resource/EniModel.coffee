@@ -299,7 +299,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       # Add an fake item to see if there's an error in subnet
       ips.push( { ip : "fake" } )
 
-      if not subnet.isCidrEnoughForIps()
+      if subnet.getAvailableIPCountInSubnet() <= 0
         result = "Ip count limit has reached in #{subnet.get('name')}"
 
       # Remove the fake item

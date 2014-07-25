@@ -115,7 +115,7 @@ define [ "constant",
         }
 
       # 3. It must have enough space for its Eni's Ip.
-      if not @isCidrEnoughForIps( cidr )
+      if @getAvailableIPCountInSubnet( cidr ) <= 0
         return {
           error  : "#{cidr} has not enough IP for the ENIs in this subnet."
         }
@@ -132,7 +132,7 @@ define [ "constant",
 
       return false
 
-    isCidrEnoughForIps : ( cidr )->
+    getAvailableIPCountInSubnet : ( cidr )->
       cidr = cidr or @get("cidr")
 
       ipCount = 0
@@ -144,10 +144,10 @@ define [ "constant",
         else
           continue
 
-        ipCount += eni.get("ips").length
+        ipCount += eni.get("ips").length * eni.serverGroupCount()
 
       maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
-      maxIpCount >= ipCount
+      maxIpCount - ipCount
 
     generateCidr : () ->
       currentVPCCIDR = @parent().parent().get("cidr")

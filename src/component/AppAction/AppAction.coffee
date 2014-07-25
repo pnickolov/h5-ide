@@ -116,7 +116,7 @@ define [
         amiRes.fetchAmis( _.keys toFetch ).then ->
           hasInstanceStore = false
           amiRes.each (e)->
-            if e.id in toFetchArray and e.get("rootDeviceType") isnt 'instance-store'
+            if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
               return hasInstanceStore = true
 
           hasEC2Instance = (_.filter comp, (e)->

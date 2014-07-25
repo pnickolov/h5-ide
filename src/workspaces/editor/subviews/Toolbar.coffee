@@ -13,10 +13,10 @@ define [
   'event'
   'component/trustedadvisor/gui/main'
   "CloudResources"
-  "AppAction"
+  "appAction"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -141,7 +141,7 @@ define [
           notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
         return
 
-    deleteStack    : ()-> AppAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
+    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize() )
@@ -438,9 +438,9 @@ define [
 
         true
 
-    startApp  : ()-> AppAction.startApp( @workspace.opsModel.id ); false
-    stopApp   : ()-> AppAction.stopApp( @workspace.opsModel.id );  false
-    terminateApp    : ()-> AppAction.terminateApp( @workspace.opsModel.id ); false
+    startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
+    stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
+    terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.refreshResource(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->

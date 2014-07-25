@@ -180,7 +180,7 @@ require.config {
 		'combo_dropdown'   : 'component/common/comboDropdown'
 		'toolbar_modal'    : 'component/common/toolbarModal'
 		'dhcp'             : 'component/dhcp/dhcp'
-		'AppAction'        : 'component/AppAction/main'
+		'appAction'        : 'component/AppAction/AppAction'
 		'snapshotManager'  : 'component/snapshot/snapshot'
 		'rds_pg'           : 'component/rds_pg/rds_pg'
 		'rds_snapshot'     : 'component/rds_snapshot/rds_snapshot'

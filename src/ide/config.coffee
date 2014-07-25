@@ -268,8 +268,8 @@ require.config {
 
 		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
 		"component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
-		"component/StateStatus"             : ["state_status"]
-		"component/sgrule/SGRulePopup"      : []
+		"component/StateStatus"             : [ "state_status" ]
+		"component/sgrule/SGRulePopup"      : [ "component/dbsbgroup/DbSubnetGPopup"]
 		"component/stateeditor/stateeditor" : []
 
 		"component/sharedrescomp" : [

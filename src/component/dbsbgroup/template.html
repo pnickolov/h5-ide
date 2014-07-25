@@ -1,0 +1,16 @@
+
+<p>Add subnets from at least 2 different availability zones to this subnet group. </p>
+
+{{#each this}}
+<header class="dbsgppp-az">{{@key}}</header>
+{{#each this}}
+<section>
+  <div class="checkbox">
+   <input id="dbsgppp-{{idx}}" class="dbsgppp-subnet" type="checkbox" data-id="{{id}}">
+   <label for="dbsgppp-{{idx}}"></label>
+  </div>
+  <div>{{name}}</div>
+  <div class="dbsgppp-cidr">({{cidr}})</div>
+</section>
+{{/each}}
+{{/each}}

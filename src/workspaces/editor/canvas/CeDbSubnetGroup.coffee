@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CanvasView" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "./CanvasView", "component/dbsbgroup/DbSubnetGPopup" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView, DbSubnetGPopup )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -56,5 +56,11 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       tt += sb.get("name") for sb in m.connectionTargets("SubnetgAsso")
       CanvasManager.update @$el.children(".tooltip"), tt || "No subnet is assigned to this subnet group yet", "tooltip"
       return
+  }, {
 
+    createResource : ( type, attr, option )->
+      if not attr.parent then return
+      model = CanvasElement.createResource( constant.RESTYPE.DBSBG, attr, option )
+      new DbSubnetGPopup({model:model})
+      return
   }

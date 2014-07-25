@@ -3,15 +3,22 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 
     unusedOgWontCreate = ( callback ) ->
-        uid = null
-        ogUnused = Design.modelClassForType(constant.RESTYPE.DBOG).some (og) ->
-            uid = og.id
-            !!og.connections().length
+        ogUnused = Design.modelClassForType(constant.RESTYPE.DBOG).filter (og) ->
+            not (og.isDefault() or og.connections().length)
 
-        if ogUnused
-            callback Helper.message.warning uid, i18n.TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE
-        else
+        if not ogUnused.length
             callback null
+            return null
+
+        taId = ''
+        nameStr = ''
+
+        for og in ogUnused
+            nameStr += "<span class='validation-tag'>#{og.get('name')}</span>, "
+            taId += og.id
+
+        nameStr = nameStr.slice 0, -2
+        callback Helper.message.warning taId, i18n.TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE, nameStr
 
         null
 

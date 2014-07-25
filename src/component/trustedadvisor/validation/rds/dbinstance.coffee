@@ -8,16 +8,17 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
             return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION
         null
 
-    isAzExist = ( uid ) ->
+    isAzConsistent = ( uid ) ->
         db = Design.instance().component uid
         azName = db.get 'az'
 
         if not azName then return null
 
-        if Design.modelClassForType(constant.RESTYPE.AZ).some( (az) -> az.get('name') is azName )
+        sbg = db.parent()
+        if _.some(sbg.connectionTargets("SbAsso"), ( sb )-> sb.parent().get( 'name' ) is azName)
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT, db.get('name'), azName
 
     isAccessibleHasNoIgw = ( uid ) ->
         db = Design.instance().component uid
@@ -32,5 +33,5 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 
     isOgValid           : isOgValid
-    isAzExist           : isAzExist
+    isAzConsistent      : isAzConsistent
     isAccessibleHasNoIgw:isAccessibleHasNoIgw

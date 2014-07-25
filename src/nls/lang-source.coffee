@@ -5467,7 +5467,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT:
-      en: "available AZ for different family not consistent with subnet group's AZ."
+      en: "DB Instance <span class='validation-tag'>%s</span> is assigned to a Preferred AZ <span class='validation-tag'>%s</span> inconsistent with its subnet group."
       zh: ""
 
     TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW:
@@ -5479,7 +5479,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE:
-      en: "warning: unused option group will not be created."
+      en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

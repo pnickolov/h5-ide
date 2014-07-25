@@ -119,8 +119,9 @@ define [
           port            : @getDefaultPort()
           dbName          : @getDefaultDBName()
           characterSetName: @getDefaultCharSet()
-          allocatedStorage: @getDefaultAllocatedStorage()
         }
+
+        if not attr.allocatedStorage then @set 'allocatedStorage', @getDefaultAllocatedStorage()
 
         if attr.snapshotId
           #Create new DBInstance from snapshot

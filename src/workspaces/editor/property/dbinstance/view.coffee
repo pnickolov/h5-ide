@@ -334,6 +334,7 @@ define [ 'ApiRequest'
 
                 null
 
+
             $('#property-dbinstance-storage').parsley 'custom', (val) ->
 
                 storage = Number(val)
@@ -358,6 +359,10 @@ define [ 'ApiRequest'
                         return 'Must be an integer from 200 to 1024'
                     if engine in ['sqlserver-ex', 'sqlserver-web'] and not (storage >=30 and storage <= 1024)
                         return 'Must be an integer from 30 to 1024'
+
+                source = that.resModel.source()
+                if source and storage < +source.get('AllocatedStorage')
+                    return 'Snapshot storage need large than original value'
 
             $('#property-dbinstance-iops-value').parsley 'custom', (val) ->
 

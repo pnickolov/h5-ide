@@ -294,8 +294,6 @@
     background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
   .resource-item.subnetgroup {
     background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
-  .resource-item.dbinstance {
-    background-image: url('/assets/images/ide/icon/instance-resource.png'); }
   .resource-item.dbsnapshot {
     height: 30px;
     background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
@@ -387,7 +385,7 @@
   #DndItem.rtb, #DndItem.igw, #DndItem.vgw {
     width: 80px;
     height: 80px; }
-  #DndItem.elb, #DndItem.instance, #DndItem.eni {
+  #DndItem.elb, #DndItem.instance, #DndItem.eni, #DndItem.dbinstance {
     width: 90px;
     height: 90px; }
   #DndItem.cgw {
@@ -398,43 +396,21 @@
     background-position: 17px center; }
   #DndItem .resource-count {
     display: none; }
-  #DndItem.az {
+  #DndItem.az, #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup {
+    background-image: none;
     color: #eee;
-    background-image: none;
     position: relative;
-    line-height: 134px;
-    text-align: left;
+    line-height: 1em;
     margin-top: 0;
-    padding-left: 7px;
-    height: 76px;
-    width: 59px; }
-    #DndItem.az .az-name {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      color: transparent;
-      border: 2px dashed #f69300;
-      border-radius: 8px;
-      height: 46px;
-      width: 44px;
-      margin: 0;
-      -webkit-transition: all ease-in 0.2s;
-      -moz-transition: all ease-in 0.2s;
-      transition: all ease-in 0.2s; }
-    #DndItem.az.dragOver {
-      color: #f69300;
-      width: 210px;
-      height: 230px;
-      line-height: 50px;
-      padding-left: 20px; }
-      #DndItem.az.dragOver .az-name {
-        width: 206px;
-        height: 206px; }
-  #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup {
-    background-image: none;
     width: 70px;
-    height: 70px; }
-    #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before {
+    height: 15px;
+    padding-top: 65px;
+    text-indent: 16px;
+    text-align: left;
+    -webkit-transition-property: text-indent, padding-top, width, height, color;
+    -moz-transition-property: text-indent, padding-top, width, height, color;
+    transition-property: text-indent, padding-top, width, height, color; }
+    #DndItem.az:before, #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before {
       content: " ";
       display: block;
       position: absolute;
@@ -448,49 +424,66 @@
       -webkit-transition: all ease-in 0.2s;
       -moz-transition: all ease-in 0.2s;
       transition: all ease-in 0.2s; }
-    #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver {
+    #DndItem.az.dragOver, #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver {
       width: 190px;
-      height: 190px; }
-      #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before {
+      height: 176px;
+      padding-top: 14px;
+      text-indent: 16px; }
+      #DndItem.az.dragOver:before, #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before {
         width: 166px;
         height: 166px; }
-  #DndItem.subnetgroup:before {
-    border-color: #498fe1; }
-  #DndItem.asg:before {
-    border-color: #76d6ff; }
-  #DndItem.asg:after {
-    content: " ";
-    display: block;
-    height: 0;
-    width: 130px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #83CBF9;
-    border-radius: 4px 4px 0 0;
-    -webkit-transition: height ease-in 0.2s;
-    -moz-transition: height ease-in 0.2s;
-    transition: height ease-in 0.2s; }
-  #DndItem.asg.dragOver {
-    width: 150px;
-    height: 150px; }
-    #DndItem.asg.dragOver:before {
-      width: 126px;
-      height: 126px; }
-    #DndItem.asg.dragOver:after {
-      height: 21px; }
-  #DndItem.resource-icon-subnetgroup:before {
-    border-color: #e0e0e0; }
-  #DndItem.resource-icon-subnetgroup.add-to-dom {
-    width: 190px;
-    height: 190px; }
-    #DndItem.resource-icon-subnetgroup.add-to-dom:before {
-      width: 164px;
-      height: 164px; }
-  #DndItem.instance {
+  #DndItem.az {
+    text-indent: 8px; }
+    #DndItem.az:before {
+      border-color: #f69300; }
+    #DndItem.az.dragOver {
+      width: 220px;
+      height: 216px;
+      padding-top: 14px;
+      color: #f69300; }
+      #DndItem.az.dragOver:before {
+        width: 206px;
+        height: 206px; }
+  #DndItem.subnetgroup {
+    font-size: 10px;
+    text-indent: 4px; }
+    #DndItem.subnetgroup:before {
+      border-color: #498fe1; }
+    #DndItem.subnetgroup.dragOver {
+      font-size: 12px;
+      color: #498fe1; }
+  #DndItem.asg {
+    height: 30px; }
+    #DndItem.asg:before {
+      border-color: #76d6ff; }
+    #DndItem.asg:after {
+      z-index: -1;
+      content: " ";
+      display: block;
+      height: 0;
+      width: 130px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #83CBF9;
+      border-radius: 4px 4px 0 0;
+      -webkit-transition: height ease-in 0.2s;
+      -moz-transition: height ease-in 0.2s;
+      transition: height ease-in 0.2s; }
+    #DndItem.asg.dragOver {
+      color: #fff;
+      padding-top: 15px;
+      height: 135px;
+      width: 150px; }
+      #DndItem.asg.dragOver:before {
+        width: 126px;
+        height: 126px; }
+      #DndItem.asg.dragOver:after {
+        height: 21px; }
+  #DndItem.instance, #DndItem.dbinstance {
     margin-top: 0;
     overflow: visible; }
-    #DndItem.instance:before {
+    #DndItem.instance:before, #DndItem.dbinstance:before {
       content: "subnet";
       border-radius: 4px;
       position: absolute;
@@ -508,11 +501,15 @@
       -moz-transition: all .15s ease-in;
       -o-transition: all .15s ease-in;
       transition: all .15s ease-in; }
-    #DndItem.instance.autoparent:before {
+    #DndItem.instance.autoparent:before, #DndItem.dbinstance.autoparent:before {
       top: 0;
       left: 0;
       width: 105px;
       height: 108px; }
+  #DndItem.dbinstance:before {
+    content: "subnet group";
+    border-color: #498fe1;
+    color: #498fe1; }
 
 .resource-select.selectbox .selection {
   background: #143553;

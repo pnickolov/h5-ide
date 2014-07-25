@@ -21,7 +21,6 @@
     <ul class="resource-list-az clearfix accordion-body">
       <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
         <div class="resource-count">{{count}}</div>
-        <div class="az-name"></div>
         <div class="res-name">AZ & subnet</div>
       </li>
       <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>

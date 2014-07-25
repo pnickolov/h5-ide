@@ -1,7 +1,7 @@
 
 // Resource Panel
 
-$dndDuration : 0.2s;
+$dndDuration : .2s;
 
 .dropdown-menu.resources-dropdown-wrapper {
   position   : absolute;
@@ -140,7 +140,6 @@ $dndDuration : 0.2s;
   &.snapshot { background-image: image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
   &.subnetgroup { background-image: image-url('ide/icon/subnetgroup-resource.png'); }
 
-  &.dbinstance { background-image : image-url('ide/icon/instance-resource.png'); }
   &.dbsnapshot { height: 30px; background-image : image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
 
   .resource-count {
@@ -252,7 +251,7 @@ $dndDuration : 0.2s;
           transition-property : line-height, padding-left, width, height, color;
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
-  &.elb, &.instance, &.eni { width:90px; height:90px; }
+  &.elb, &.instance, &.eni, &.dbinstance { width:90px; height:90px; }
 
   &.cgw {
     background-position: 10px center;
@@ -267,50 +266,21 @@ $dndDuration : 0.2s;
     display : none;
   }
 
-  &.az {
-    color            : #eee;
+  &.az, &.asg,  &.subnet, &.subnetgroup {
     background-image : none;
-    position         : relative;
-    line-height      : 134px;
-    text-align       : left;
-    margin-top       : 0;
-    padding-left     : 7px;
-    height           : 76px;
-    width            : 59px;
+    color        : #eee;
+    position     : relative;
+    line-height  : 1em;
+    margin-top   : 0;
+    width        : 70px;
+    height       : 15px;
+    padding-top  : 65px;
+    text-indent  : 16px;
+    text-align   : left;
 
-    .az-name {
-      position      : absolute;
-      left          : 10px;
-      top           : 10px;
-      color         : transparent;
-      border        : 2px dashed #f69300;
-      border-radius : 8px;
-      height        : 46px;
-      width         : 44px;
-      margin        : 0;
-
-      -webkit-transition : all ease-in $dndDuration;
-         -moz-transition : all ease-in $dndDuration;
-              transition : all ease-in $dndDuration;
-    }
-    &.dragOver {
-      color        : #f69300;
-      width        : 210px;
-      height       : 230px;
-      line-height  : 50px;
-      padding-left : 20px;
-
-      .az-name {
-        width  : 206px;
-        height : 206px;
-      }
-    }
-  }
-
-  &.asg,  &.subnet, &.subnetgroup {
-    background-image : none;
-    width  : 70px;
-    height : 70px;
+    -webkit-transition-property : text-indent, padding-top, width, height, color;
+       -moz-transition-property : text-indent, padding-top, width, height, color;
+            transition-property : text-indent, padding-top, width, height, color;
 
     &:before {
       content       : " ";
@@ -330,8 +300,10 @@ $dndDuration : 0.2s;
     }
 
     &.dragOver {
-      width  : 190px;
-      height : 190px;
+      width       : 190px;
+      height      : 190px - 14px;
+      padding-top : 14px;
+      text-indent : 16px;
 
       &:before {
         width  : 166px;
@@ -340,17 +312,46 @@ $dndDuration : 0.2s;
     }
   }
 
+  &.az {
+    text-indent : 8px;
+    &:before {
+      border-color : #f69300;
+    }
+
+    &.dragOver {
+      width  : 220px;
+      height : 230px - 14px;
+      padding-top : 14px;
+      color  : #f69300;
+
+      &:before {
+        width  : 206px;
+        height : 206px;
+      }
+    }
+  }
+
   &.subnetgroup {
+    font-size   : 10px;
+    text-indent : 4px;
+
     &:before {
       border-color : #498fe1;
+    }
+    &.dragOver {
+      font-size : 12px;
+      color  : #498fe1;
     }
   }
 
   &.asg {
+    height : 30px;
+
     &:before {
       border-color : #76d6ff;
     }
     &:after {
+      z-index    : -1;
       content    : " ";
       display    : block;
       height     : 0;
@@ -367,8 +368,10 @@ $dndDuration : 0.2s;
     }
 
     &.dragOver {
-      width  : 150px;
-      height : 150px;
+      color       : #fff;
+      padding-top : 15px;
+      height      : 150px - 15px;
+      width       : 150px;
 
       &:before {
         width  : 126px;
@@ -380,23 +383,7 @@ $dndDuration : 0.2s;
     }
   }
 
-  &.resource-icon-subnetgroup {
-    &:before {
-      border-color  : #e0e0e0;
-    }
-
-    &.add-to-dom {
-      width  : 190px;
-      height : 190px;
-
-      &:before {
-        width  : 164px;
-        height : 164px;
-      }
-    }
-  }
-
-  &.instance {
+  &.instance, &.dbinstance {
     margin-top : 0;
     overflow   : visible;
 
@@ -428,6 +415,11 @@ $dndDuration : 0.2s;
       width  : 105px;
       height : 108px;
     }
+  }
+  &.dbinstance:before {
+    content : "subnet group";
+    border-color : #498fe1;
+    color : #498fe1;
   }
 }
 

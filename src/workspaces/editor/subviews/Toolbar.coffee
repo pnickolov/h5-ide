@@ -455,8 +455,8 @@ define [
       removes = differ.removedComps
 
       changeList = []
-      _.each changes, (e)->
-        changeList.push e.resource.DBInstanceIdentifier
+      _.each changes, (e, key)->
+        changeList.push Design.instance().component(key).attributes.appId
 
       DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal

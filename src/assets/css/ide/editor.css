@@ -926,8 +926,9 @@
   stroke-linejoin: round;
   stroke-dasharray: 16, 6;
   stroke-width: 2; }
-.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group {
-  stroke: #C6C4C4; }
+.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group, .AWS-VPC-Subnet.highlight .group {
+  stroke: #C6C4C4;
+  stroke-width: 4px; }
 .AWS-VPC-Subnet .group-label {
   fill: #999; }
 
@@ -936,9 +937,7 @@
   stroke: #498fe1;
   stroke-linejoin: round;
   stroke-dasharray: 16, 6;
-  stroke-width: 2;
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0); }
+  stroke-width: 2; }
 .AWS-RDS-DBSubnetGroup .group-label {
   fill: #498fe1; }
 .AWS-RDS-DBSubnetGroup:hover .group {
@@ -946,9 +945,7 @@
 .AWS-RDS-DBSubnetGroup.selected .group {
   stroke: #498fe1;
   fill-opacity: 0;
-  stroke-width: 3;
-  -webkit-transform: translate(0.5px, 0.5px);
-  transform: translate(0.5px, 0.5px); }
+  stroke-width: 4; }
 
 .line {
   cursor: pointer;

@@ -1,5 +1,5 @@
 
-define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "svg" ], ( Design, lang, Modal, ide_event )->
+define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "svg" ], ( Design, CanvasManager, lang, Modal, ide_event )->
 
   CanvasView = null
 
@@ -83,6 +83,14 @@ define [ "Design", "i18n!/nls/lang.js", "UI.modalplus", "event", "backbone", "sv
 
     portPosition : ( portName )->
       if this.portPosMap then this.portPosMap[ portName ] else null
+
+    hover : ( evt )->
+      CanvasManager.addClass(cn.$el, "hover") for cn in @connections()
+      false
+
+    hoverOut : ( evt )->
+      CanvasManager.removeClass(cn.$el, "hover") for cn in @connections()
+      false
 
     create : ()->
     render : ()->

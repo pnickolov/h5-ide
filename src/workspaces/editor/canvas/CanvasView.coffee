@@ -413,19 +413,8 @@ define [
     update : ()-> item.render() for id, item of @__itemNodeMap; return
 
     # Hover effect
-    __hoverEl : ( evt )->
-      item = @getItem( evt.currentTarget.getAttribute( "data-id" ) )
-      if not item then return
-      for cn in item.connections()
-        CanvasManager.addClass cn.$el, "hover"
-      return
-
-    __hoverOutEl : ( evt )->
-      item = @getItem( evt.currentTarget.getAttribute( "data-id" ) )
-      if not item then return
-      for cn in item.connections()
-        CanvasManager.removeClass cn.$el, "hover"
-      return
+    __hoverEl    : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hover( evt )
+    __hoverOutEl : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hoverOut( evt )
 
     # Find item by position
     __localToCanvasCoor : ( x, y )->

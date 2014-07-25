@@ -10,6 +10,20 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     parentType  : [ constant.RESTYPE.VPC ]
     defaultSize : [ 19, 19 ]
 
+    hover : ( evt )->
+      for subnet in @model.connectionTargets("SubnetgAsso")
+        item = @canvas.getItem( subnet.id )
+        if item
+          CanvasManager.addClass item.$el, "highlight"
+      false
+
+    hoverOut : ( evt )->
+      for subnet in @model.connectionTargets("SubnetgAsso")
+        item = @canvas.getItem( subnet.id )
+        if item
+          CanvasManager.removeClass item.$el, "highlight"
+      false
+
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @render
       return

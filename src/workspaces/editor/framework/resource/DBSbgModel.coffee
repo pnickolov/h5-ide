@@ -1,29 +1,10 @@
 
-define [ "constant"
-         "Design"
-         "../GroupModel"
-         "../connection/RtbAsso"
-         "../ConnectionModel"
-         "i18n!/nls/lang.js"
-], ( constant, Design, GroupModel, RtbAsso, ConnectionModel, lang )->
+define [ "constant", "../GroupModel", "../ConnectionModel" ], ( constant, GroupModel, ConnectionModel )->
 
   SbAsso = ConnectionModel.extend {
     type : "SubnetgAsso"
-
-    initialize: ( attr, option ) ->
-      @draw = @updateToolTip
-
-    remove : ()->
-      ConnectionModel.prototype.remove.apply this, arguments
-      @updateToolTip()
-      null
-
-    updateToolTip : ()->
-      m = @getTarget(constant.RESTYPE.DBSBG)
-      if m and m.__view
-        m.__view.updateTooltip()
-      null
   }
+
 
   Model = GroupModel.extend {
 
@@ -41,14 +22,11 @@ define [ "constant"
 
 
     initialize: ( attributes, option )->
-      # Draw the node
-      @draw(true)
+
       if not @get 'description'
         @set 'description', "#{@get('name')} default description"
 
       null
-
-    constructor: -> GroupModel.prototype.constructor.apply @, arguments
 
     serialize: ()->
       sbArray = _.map @connectionTargets("SubnetgAsso"), ( sb )-> sb.createRef( "SubnetId" )

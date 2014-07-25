@@ -130,7 +130,7 @@ require.config {
 		#############################################
 		# cloud resources           # Merge in deploy
 		#############################################
-		"CloudResources"     : "ide/cloudres/CloudResources"
+		"CloudResources"     : "cloudres/CloudResources"
 
 		#############################################
 		# api                       # Merge in deploy

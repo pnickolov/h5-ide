@@ -287,7 +287,7 @@ require.config {
 			'DiffTree'
 		]
 
-		"ide/cloudres/CrBundle"  : [ "CloudResources" ]
+		"cloudres/CrBundle"  : [ "CloudResources" ]
 		"ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
 		"workspaces/Dashboard" : []
@@ -326,7 +326,7 @@ requirejs.onError = ( err )->
 
 require [
 	'ide/Application'
-	"ide/cloudres/CrBundle"
+	"cloudres/CrBundle"
 	"workspaces/Dashboard"
 	"workspaces/OpsEditor"
 	"ide/Router"

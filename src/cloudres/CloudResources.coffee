@@ -1,5 +1,5 @@
 
-define ["ide/cloudres/CrCollection"], ( CrCollection )->
+define ["cloudres/CrCollection"], ( CrCollection )->
 
   ###
     resourceType : a string used to identified a class of resource

@@ -1,5 +1,5 @@
 
-define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest", "DiffTree"], ( CloudResources, CrCollection, constant, ApiRequest, DiffTree )->
+define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "DiffTree"], ( CloudResources, CrCollection, constant, ApiRequest, DiffTree )->
 
   # Helpers
   CREATE_REF = ( compOrUid, attr ) ->
@@ -1546,7 +1546,7 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           if srcDbInsComp
             dbInsRes.ReadReplicaSourceDBInstanceIdentifier = CREATE_REF srcDbInsComp, "resource.DBInstanceIdentifier"
           else
-            console.error "can not find Source DBInstance for ReadReplica #{aws_dbins.ReadReplicaSourceDBInstanceIdentifier}"        
+            console.error "can not find Source DBInstance for ReadReplica #{aws_dbins.ReadReplicaSourceDBInstanceIdentifier}"
 
         #endpoint
         if aws_dbins.Endpoint

@@ -2,7 +2,8 @@
 #  View(UI logic) for design/property/dbinstacne
 #############################
 
-define [ '../base/view'
+define [ 'ApiRequest'
+         '../base/view'
          'og_dropdown'
          './template/stack_instance'
          './template/stack_replica'
@@ -11,7 +12,7 @@ define [ '../base/view'
          'constant'
          'CloudResources'
          'rds_pg'
-], ( PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
+], ( ApiRequest, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
 
     noop = ()-> null
 
@@ -286,8 +287,6 @@ define [ '../base/view'
             @$el.html template attr
 
             @setTitle(attr.name)
-            if @isAppEdit and @appModel.get('DBInstanceStatus') isnt 'available'
-                @prependTitle '<i class="tooltip property-dbinstance-status-icon-warning icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
 
             @renderLVIA()
             @renderOptionGroup()
@@ -306,6 +305,8 @@ define [ '../base/view'
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
 
             @bindParsley()
+
+            @getInstanceStatus() if @isAppEdit
 
             attr.name
 
@@ -745,6 +746,45 @@ define [ '../base/view'
         changeMaintenanceTime: (event) ->
             if $('#property-dbinstance-maintenance-window-start-time').parsley 'validate'
                 @_setMaintenanceTime()
+
+        getInstanceStatus: () ->
+
+            _setStatus = (showError) ->
+
+                that.setTitle(that.appModel.get('name'))
+                if showError is true
+                    $('.db-status-loading').remove()
+                    tip = '<i class="tooltip property-dbinstance-status-icon-warning icon-warning" data-tooltip="This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."></i>'
+                else if showError is false
+                    $('.db-status-loading').remove()
+                    tip = ''
+                else
+                    tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
+                that.prependTitle tip
+
+            that = this
+            dbId = @appModel.get('DBInstanceIdentifier')
+            _setStatus()
+
+            ApiRequest('rds_ins_DescribeDBInstances', {
+                id: dbId
+            }).then (data) ->
+
+                data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
+                dbData = if not _.isArray(data) then data else data[0]
+
+                if dbData
+
+                    dbStatus = dbData.DBInstanceStatus
+                    if dbStatus isnt 'available'
+                        _setStatus(true)
+                        return
+
+                _setStatus(false)
+
+            , () ->
+
+                _setStatus(false)
 
     }
 

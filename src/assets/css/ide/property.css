@@ -2,6 +2,10 @@
   color: #f00; }
   .property-panel-wrapper .property-dbinstance-status-icon-warning:hover {
     background-color: transparent; }
+.property-panel-wrapper .db-status-loading {
+  position: absolute;
+  right: 5px;
+  top: -44px; }
 
 .property-dbinstance input.shorter-input {
   width: 37px;

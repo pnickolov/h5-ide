@@ -21,6 +21,7 @@ define [
   "./CeSgAsso"
   "./CeLine"
   "./CeSgLine"
-  "./CeSubnetGroup"
+  "./CeDbInstance"
+  "./CeDbSubnetGroup"
 
 ], ( CanvasView )-> CanvasView

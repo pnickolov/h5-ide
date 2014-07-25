@@ -177,7 +177,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
           name : "instance-sg"
           type : constant.RESTYPE.INSTANCE
         port2 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
       }
 
@@ -262,15 +262,15 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # DBInstance
       {
         port1 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
         port2 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
       }
       {
         port1 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
         port2 :
           name : "eni-sg"
@@ -278,7 +278,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       }
       {
         port1 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
         port2 :
           name : "launchconfig-sg"
@@ -286,7 +286,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       }
       {
         port1 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
         port2 :
           name : "launchconfig-sg"
@@ -294,7 +294,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       }
       {
         port1 :
-          name : "dbinstance-sg"
+          name : "db-sg"
           type : constant.RESTYPE.DBINSTANCE
         port2 :
           name : "instance-sg"

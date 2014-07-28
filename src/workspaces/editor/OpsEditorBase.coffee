@@ -48,11 +48,12 @@ define [
     ###
       Override these methods to implement subclasses.
     ###
-    title    : ()-> @opsModel.get("name")
-    tabClass : ()-> "icon-stack-tabbar"
-    url      : ()-> @opsModel.url()
+    title       : ()-> @opsModel.get("name")
+    tabClass    : ()-> "icon-stack-tabbar"
+    url         : ()-> @opsModel.url()
+    isWorkingOn : ( att )-> @opsModel is att
 
-    viewClass : OpsEditorBase
+    viewClass : OpsViewBase
 
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.
@@ -79,7 +80,6 @@ define [
       if @design then @design.set("id", @opsModel.get("id"))
       return
 
-    isWorkingOn : ( attribute )-> @opsModel is attribute
     constructor : ( opsModel )->
       if not opsModel
         @remove()
@@ -93,45 +93,45 @@ define [
       @listenTo @opsModel, "change:name",  @updateTab
       @listenTo @opsModel, "change:id",    @onModelIdChange
 
-
       # Load Datas
-      self = @
-      @opsModel.fetchJsonData().then ()->
-        self.jsonLoaded()
-      , ( err )->
-        if err.error is ApiRequest.Errors.MissingDataInServer
-          # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
-          return
+      s = @
+      @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed())
 
-        notification "error", "Failed to load data, please retry."
-        self.remove()
+      Workspace.apply @, arguments
 
-      return Workspace.apply @, arguments
+    jsonLoadFailed : ( err )->
+      if @isRemoved() then return
+      if err.error is ApiRequest.Errors.MissingDataInServer
+        # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
+        return
+
+      notification "error", "Failed to load data, please retry."
+      @remove()
 
     jsonLoaded : ()->
       if @isRemoved() then return
 
       self = @
-      @fetchAdditionalData().then ()->
-
-        if self.isRemoved() then return
-
-        self.__hasAdditionalData = true
-        self.switchToReady()
-      , ()->
-        notification "error", "Failed to load aws data, please retry."
-        self.remove()
-
+      @fetchAdditionalData().then (()-> self.additionalDataLoaded()), (()-> self.additionalDataLoadFailed())
       return
 
-    switchToReady : ()->
+    additionalDataLoadFailed : ()->
+      if @isRemoved() then return
+
+      notification "error", "Failed to load aws data, please retry."
+      @remove()
+
+    additionalDataLoaded : ()->
+      if @isRemoved() then return
+
+      @__hasAdditionalData = true
+
       if @view and @view.isLoadingView
         @view.remove()
         @view = null
 
       if @isAwake() and not @__inited
         @__initEditor()
-
       return
 
     awake : ()->

@@ -1,21 +1,17 @@
 
 define [
   "./OpsEditorBase"
-  "./OpsViewBase"
   "Design"
   "CloudResources"
   "constant"
-], ( OpsEditorBase, OpsViewBase, Design, CloudResources, constant )->
+], ( OpsEditorBase, Design, CloudResources, constant )->
 
   ###
     StackEditor is mainly for editing a stack
   ###
   class StackEditor extends OpsEditorBase
 
-    title       : ()-> (@design || @opsModel).get("name") + " - stack"
-    tabClass    : ()-> "icon-stack-tabbar"
-
-    viewClass : OpsViewBase
+    title : ()-> (@design || @opsModel).get("name") + " - stack"
 
     isReady : ()->
       if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false
@@ -33,10 +29,6 @@ define [
       CloudResources( "FavoriteAmi",         region ).isReady() &&
       !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
       @hasAmiData()
-
-    initialize : ()->
-      @listenTo @opsModel, "change:id", @updateUrl
-      return
 
     fetchAdditionalData : ()->
       region      = @opsModel.get("region")

@@ -63,8 +63,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       else
         "ops/#{@cid}/unsaved"
 
-    isStack    : ()-> @attributes.state is   OpsModelState.UnRun
-    isApp      : ()-> @attributes.state isnt OpsModelState.UnRun
+    isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
+    isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importVpcId
 
     testState : ( state )-> @attributes.state is state

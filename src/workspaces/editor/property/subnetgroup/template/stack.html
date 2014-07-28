@@ -16,21 +16,13 @@
   </section>
 </div>
 
-<div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span></div>
+<div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span>
+<button class="icon-edit tooltip add-rule" data-tooltip="Edit subnet group"></button></div>
 <section class="property-control-group">
   {{#each azSb}}
   <div class='property-az-name'>{{az}}</div>
-  {{#each subnets}}
-  <div class="checkbox">
-   <input id="sbcb-{{id}}" class="select-subnet-id" type="checkbox" value="None" name="subnet-id" {{#if checked}}checked{{/if}}>
-   <label for="sbcb-{{id}}"></label>
- </div>
- <label for="sbcb-{{id}}">{{name}}</label>
- <div class="sb-cidr">({{cidr}})</div>
- {{/each}}
- {{else}}
-    No subnet to select.
- {{/each}}
+  {{#each subnets}} <div>{{name}}</div> <div>({{cidr}})</div> {{/each}}
+  {{/each}}
 </section>
 
 </article>

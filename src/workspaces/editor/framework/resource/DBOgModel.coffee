@@ -7,7 +7,7 @@ define [
 
   Model = ComplexResModel.extend {
 
-    newNameTmpl : "option-group-"
+    newNameTmpl : "-og"
 
     type : constant.RESTYPE.DBOG
 
@@ -16,8 +16,16 @@ define [
     isVisual : () -> false
 
     initialize: ( attributes, option )->
+
       if not @get 'description'
-        @set 'description', "#{@get('name')} default description"
+
+        # set new name
+        typeName = @engineType()
+        mainVersion = @get('engineVersion').replace(/\./g, '-')
+        @set('name', typeName + mainVersion + @get('name'))
+
+        # set new description
+        @set 'description', "custom option group for #{@get('engineName')} #{@get('engineVersion')}"
 
       if option.isDefault then @__isDefault = true
 
@@ -28,6 +36,19 @@ define [
         engineVersion   : ''
         options         : []
         applyImmediately: true
+
+    # mysql, postgresql, oracle, sqlserver
+    engineType: ->
+      engine = @get 'engineName'
+      switch
+        when engine is 'mysql'
+          return 'mysql'
+        when engine is 'postgresql'
+          return 'postgresql'
+        when engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
+          return 'oracle'
+        when engine in ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
+          return 'sqlserver'
 
     remove: ->
       _.invoke @connectionTargets( 'OgUsage' ), 'setDefaultOptionGroup'

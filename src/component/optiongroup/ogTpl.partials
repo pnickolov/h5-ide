@@ -95,13 +95,13 @@
     <div class="will-be-covered">
         <div class="header">
             This Option Group is used for {{engineName}} {{engineVersion}}
-            {{#ifCond engineName "mysql"}}
+            {{#ifCond engineType "mysql"}}
             <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
             {{/ifCond}}
-            {{#ifCond engineName "oracle"}}
+            {{#ifCond engineType "oracle"}}
             <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Oracle.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
             {{/ifCond}}
-            {{#ifCond engineName "sqlserver"}}
+            {{#ifCond engineType "sqlserver"}}
             <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
             {{/ifCond}}
         </div>

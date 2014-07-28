@@ -136,13 +136,13 @@ define [
         @on 'all', @preSerialize
       null
 
-    # postgresql, oracle, sqlserver
+    # mysql, postgresql, oracle, sqlserver
     engineType: ->
       engine = @get 'engine'
       switch
         when engine is 'mysql'
-          return 'postgresql'
-        when engine is 'mysql'
+          return 'mysql'
+        when engine is 'postgresql'
           return 'postgresql'
         when engine in ['oracle-ee', 'oracle-se', 'oracle-se1']
           return 'oracle'

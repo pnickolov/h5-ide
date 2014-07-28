@@ -135,6 +135,7 @@ define [
             ogData = @ogModel.toJSON()
             ogData.isCreate = @isCreate
             ogData.isAppEdit = @isAppEdit
+            ogData.engineType = @ogModel.engineType()
 
             @$el.html template.og_modal(ogData)
             @initModal @el

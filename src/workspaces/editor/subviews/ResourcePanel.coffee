@@ -18,7 +18,7 @@ define [
   "backbone"
   'UI.radiobuttons'
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdspgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -415,7 +415,7 @@ define [
               when 'keypair'
                   new keypairManager().render()
               when 'snapshot'
-                  new EbsSnapshotManager.render()
+                  new EbsSnapshotManager().render()
               when 'sns'
                   new snsManager().render()
               when 'sslcert'
@@ -423,7 +423,7 @@ define [
               when 'dhcp'
                   (new dhcpManager()).manageDhcp()
               when 'rdspg'
-                  new rdspgManager().render()
+                  new rdsPgManager().render()
               when 'rdssnapshot'
                   new rdsSnapshot().render()
 

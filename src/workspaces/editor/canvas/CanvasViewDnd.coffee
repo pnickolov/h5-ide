@@ -6,7 +6,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
   ### env:dev ###
   ________visMove = ( data, excludeChild )->
-    group = @__groupAtCoor @__localToCanvasCoor(data.pageX-data.zoneDimension.x1, data.pageY-data.zoneDimension.y1)
+    group = @__groupAtCoor @__localToCanvasCoor(data.pageX-data.zoneDimension.x1, data.pageY-data.zoneDimension.y1), excludeChild
 
     ItemClassProto = CanvasElement.getClassByType( data.dataTransfer.type ).prototype
 
@@ -70,8 +70,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
     return
 
-  #________visualizeOnMove  = ________visMove
-  #________visualizeBestfit = ________visBestfit
+  ________visualizeOnMove  = ________visMove
+  ________visualizeBestfit = ________visBestfit
   ### env:dev:end ###
 
   CanvasViewProto = CanvasView.prototype
@@ -255,6 +255,11 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     idx = children.indexOf( item )
     if idx >= 0 then children.splice( idx, 1 )
 
+    if item and item.isGroup()
+      rect.x1 -= 1
+      rect.y1 -= 1
+      rect.x2 += 1
+      rect.y2 += 1
 
     # Expand the detect area by 12 at most
     width  = __rectWidth( rect )
@@ -273,7 +278,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     farColliders = []
 
     for ch in children
-      bb = ch.effectiveRect()
+      bb = ch.rect()
       if __isOverlap( bb, orignalRect )
         colliders.push bb
       else if __isOverlap( bb, rect )
@@ -455,13 +460,6 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     size = data.item.size()
     data.itemWidth  = size.width
     data.itemHeight = size.height
-
-    if data.item.isGroup()
-      # Offset the group by -10, -10. So that it will not be dropped overlapping the parent.
-      # data.pageX      -= CanvasView.GRID_WIDTH
-      # data.pageY      -= CanvasView.GRID_HEIGHT
-      data.itemWidth  += 2
-      data.itemHeight += 2
 
     result = data.context.__handleDropData( data, data.item, true )
     if _.isString( result )

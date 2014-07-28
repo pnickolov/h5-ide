@@ -140,12 +140,12 @@ define [
         parentRect = @canvasRect()
         children   = @__itemTopLevel
 
-      if parentRect.x1 >= subRect.x1 or parentRect.y1 >= subRect.y1 or parentRect.x2 <= subRect.x2 or parentRect.y2 <= subRect.y2
+      if parentRect.x1 > subRect.x1 or parentRect.y1 > subRect.y1 or parentRect.x2 < subRect.x2 or parentRect.y2 < subRect.y2
         return false
 
       for ch in children
         if ch is item then continue
-        parentRect = ch.effectiveRect()
+        parentRect = ch.rect()
         if not ( parentRect.x1 >= subRect.x2 or parentRect.x2 <= subRect.x1 or parentRect.y1 >= subRect.y2 or parentRect.y2 <= subRect.y1 )
           return false
 

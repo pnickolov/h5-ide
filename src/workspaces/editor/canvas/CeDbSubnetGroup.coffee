@@ -10,14 +10,14 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     parentType  : [ constant.RESTYPE.VPC ]
     defaultSize : [ 19, 19 ]
 
-    hover : ( evt )->
+    hover : ()->
       for subnet in @model.connectionTargets("SubnetgAsso")
         item = @canvas.getItem( subnet.id )
         if item
           CanvasManager.addClass item.$el, "highlight"
       false
 
-    hoverOut : ( evt )->
+    hoverOut : ()->
       for subnet in @model.connectionTargets("SubnetgAsso")
         item = @canvas.getItem( subnet.id )
         if item
@@ -56,6 +56,12 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       tt += sb.get("name") for sb in m.connectionTargets("SubnetgAsso")
       CanvasManager.update @$el.children(".tooltip"), tt || "No subnet is assigned to this subnet group yet", "tooltip"
       return
+
+    doDestroyModel : ()->
+      # Disable hover effect before the model is removed.
+      @hoverOut()
+      CanvasElement.prototype.doDestroyModel.apply this, arguments
+
   }, {
 
     createResource : ( type, attr, option )->

@@ -508,13 +508,18 @@ define([], function() {
       return arrayToString(this.value)
     }
     // Move path string
-  , move: function(x, y) {
-      // /* get bounding box of current situation */
+  , move: function(x1, y1) {
+      /* get bounding box of current situation */
       // var box = this.bbox()
 
-      // /* get relative offset */
+      /* get relative offset */
       // x -= box.x
       // y -= box.y
+
+      var x = x1 - (this.x || 0)
+      var y = y1 - (this.y || 0)
+      this.x = x1
+      this.y = y1
 
       if (!isNaN(x) && !isNaN(y)) {
         /* move every point */

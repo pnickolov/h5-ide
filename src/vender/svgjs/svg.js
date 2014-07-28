@@ -2644,9 +2644,9 @@ define([], function() {
     // Add parent method
   , construct: {
       // Create a use element
-      use: function(elementId) {
+      use: function(elementId, readOnly) {
         var element = document.getElementById(elementId);
-        if ( element.getAttribute("data-readonly") ) {
+        if ( readOnly || element.getAttribute("interactive") ) {
           return this.put(new SVG.Use).element(elementId)
         } else {
           // Lower version of chrome doesn't fully support use element
@@ -2665,7 +2665,7 @@ define([], function() {
   })
 
   SVG.ElementMap = {
-    group    : "G",
+    g        : "G",
     mask     : "Mask",
     clip     : "Clip",
     rect     : "Rect",

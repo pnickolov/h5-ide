@@ -385,7 +385,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     svg           = data.context.svg
     targetSvg     = data.targetSvg.attr("id", "svgDragTarget")
     data.cloneSvg = svg.group().add(
-      svg.use("svgDragTarget").move( -targetSvg.x(), -targetSvg.y() )
+      svg.use("svgDragTarget", true).move( -targetSvg.x(), -targetSvg.y() )
     )
     .classes("shadow")
     .move( targetSvg.x(), targetSvg.y() )

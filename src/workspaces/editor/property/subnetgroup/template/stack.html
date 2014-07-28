@@ -20,8 +20,8 @@
 <button class="icon-edit tooltip add-rule" data-tooltip="Edit subnet group"></button></div>
 <section class="property-control-group">
   {{#each azSb}}
-  <div class='property-az-name'>{{az}}</div>
-  {{#each subnets}} <div>{{name}}</div> <div>({{cidr}})</div> {{/each}}
+  <div class='property-az-name'>{{@key}}</div>
+  {{#each this}} <div>{{name}}</div> <div>({{cidr}})</div> {{/each}}
   {{/each}}
 </section>
 

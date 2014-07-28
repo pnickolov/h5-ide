@@ -40,18 +40,13 @@ define [ '../base/view'
             @model.get 'name'
 
         getAzSb: ->
-            azsb = []
-            azs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
-            selectedSubnetIds = _.pluck @model.connectionTargets("SubnetgAsso"), 'id'
-
-            for az in azs
-                azsb.push {
-                    az: az.get('name')
-                    subnets: _.map az.children(), (sb) ->
-                        _.extend {checked: sb.id in selectedSubnetIds}, sb.toJSON()
+            sbs = _.map Design.modelClassForType(constant.RESTYPE.SUBNET).allObjects(), ( sb )->
+                {
+                    name : sb.get("name")
+                    cidr : sb.get("cidr")
+                    az   : sb.parent().get("name")
                 }
-
-            azsb
+            _.groupBy sbs, "az"
 
     }
 

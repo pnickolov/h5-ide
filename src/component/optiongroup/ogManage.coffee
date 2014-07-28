@@ -115,7 +115,7 @@ define [
                 else
                     option.checked = false
 
-                if that.isAppEdit and ( option.Permanent or option.Persistent )
+                if that.isAppEdit and ( option.Permanent or option.Persistent ) and that.ogModel.get('appId')
                     option.unmodify = true
                 else
                     option.unmodify = false

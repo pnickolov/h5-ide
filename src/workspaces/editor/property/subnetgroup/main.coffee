@@ -6,8 +6,9 @@ define [ "Design"
          "../base/main"
          "./view"
          './app_view'
+         'CloudResources'
          "constant"
-], ( Design, PropertyModule, view, app_view,constant ) ->
+], ( Design, PropertyModule, view, app_view, CloudResources, constant ) ->
 
     SubnetGroupModule = PropertyModule.extend {
 
@@ -21,6 +22,7 @@ define [ "Design"
         initApp : (uid) ->
             @model = Design.instance().component uid
             @view  = app_view
+            @view.appModel = CloudResources(constant.RESTYPE.DBSBG, Design.instance().region())?.get @model.get('appId')
             null
 
         initAppEdit : ( uid ) ->

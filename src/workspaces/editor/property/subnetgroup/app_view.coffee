@@ -7,9 +7,10 @@ define [ '../base/view'
          'i18n!/nls/lang.js'
          'constant'
          'Design'
-], ( PropertyView, template, lang, constant, Design ) ->
+         'CloudResources'
+], ( PropertyView, template, lang, constant, Design, CloudResources ) ->
 
-  SubnetGroupView = PropertyView.extend {
+  SubnetGroupView = PropertyView.extend
 
     events:
       'change .select-subnet-id': 'selectSubnetId'
@@ -42,28 +43,27 @@ define [ '../base/view'
             sbAsso.remove()
 
     render: ->
-      data = @model.toJSON()
-      data.azSb = @getAzSb()
-      data.sbCount = @model.connectionTargets("SubnetgAsso").length
+      return if not @appModel
 
-      console.log data
+      data = @appModel.toJSON()
+      data.azSb = @getAzSb()
+      data.sbCount = @appModel.get('Subnets')?.length or 0
+
       @$el.html template.app data
       @model.get 'name'
 
     getAzSb: ->
-      azsb = []
-      azs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
-      selectedSubnetIds = _.pluck @model.connectionTargets("SubnetgAsso"), 'id'
+      azSb = {}
+      sbAppResources = CloudResources(constant.RESTYPE.SUBNET, Design.instance().region())
 
-      for az in azs
-        azsb.push {
-          az: az.get('name')
-          subnets: _.map az.children(), (sb) ->
-            _.extend {checked: sb.id in selectedSubnetIds}, sb.toJSON()
-        }
+      _.each @appModel.get('Subnets'), (sb) ->
+          az = sb.SubnetAvailabilityZone.Name
+          sbApp = sbAppResources.get sb.SubnetIdentifier
+          azSb[az] or azSb[az] = []
+          azSb[az].push name: sbApp.get('subnetId'), cidr: sbApp.get('cidrBlock')
 
-      azsb
+      azSb = _.map azSb, ( subnets, az ) -> az: az, subnets: subnets
+      azSb
 
-  }
 
   new SubnetGroupView()

@@ -4,9 +4,9 @@
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_NAME" }}</dt>
-            <dd>{{appId}}</dd>
+            <dd>{{DBSubnetGroupName}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_DESC" }}</dt>
-            <dd>{{description}}</dd>
+            <dd>{{DBSubnetGroupDescription}}</dd>
         </dl>
     </div>
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_SUBNET_GROUP_MEMBERS" }}</div>

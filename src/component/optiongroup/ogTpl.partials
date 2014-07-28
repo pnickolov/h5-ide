@@ -58,7 +58,7 @@
             {{#if items}}
             <select name="{{SettingName}}" class="option-setting">
                 {{#each items}}
-                <option value="{{this}}">{{this}}</option>
+                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
                 {{/each}}
             </select>
             {{else}}

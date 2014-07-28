@@ -233,7 +233,9 @@ define [
             for s, i in option.OptionGroupOptionSettings or []
 
                 if s.AllowedValues.indexOf(',') >= 0
-                    s.items = s.AllowedValues.split ','
+                    s.items = _.map s.AllowedValues.split(','), (v) ->
+                        value: v, selected: data and v is data.OptionSettings[i].Value
+
                 else if s.AllowedValues.indexOf('-') >= 0
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]

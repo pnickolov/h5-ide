@@ -6,7 +6,7 @@
 {{#each this}}
 <section>
   <div class="checkbox">
-   <input id="dbsgppp-{{idx}}" class="dbsgppp-subnet" type="checkbox" data-id="{{id}}">
+   <input id="dbsgppp-{{idx}}" class="dbsgppp-subnet" type="checkbox" data-id="{{id}}" {{#if checked}}checked="checked"{{/if}}>
    <label for="dbsgppp-{{idx}}"></label>
   </div>
   <div>{{name}}</div>

@@ -12,16 +12,16 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
     initialize : () ->
       self = @
 
-      design  = @model.design()
-      subnets = []
+      assos = @model.connectionTargets("SubnetgAsso")
 
-      for subnet in design.componentsOfType( constant.RESTYPE.SUBNET )
-        subnets.push {
-          az   : subnet.parent().get("name")
-          id   : subnet.id
-          name : subnet.get("name")
-          cidr : subnet.get("cidr")
-          idx  : subnets.length
+      subnets = _.map @model.design().componentsOfType( constant.RESTYPE.SUBNET ), ( subnet, key )->
+        {
+          az      : subnet.parent().get("name")
+          id      : subnet.id
+          name    : subnet.get("name")
+          cidr    : subnet.get("cidr")
+          idx     : key
+          checked : assos.indexOf( subnet ) >= 0
         }
 
       modal = new Modal({
@@ -67,11 +67,11 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
         else
           existSb[ id ] = true
 
-      SubnetGAsso = Design.modelClassForType( "SubnetgAsso" )
+      SubnetgAsso = Design.modelClassForType( "SubnetgAsso" )
       design = @model.design()
       for sb, value of subnets
         if not existSb[ sb ]
-          new SubnetGAsso( @model, design.component( sb ) )
+          new SubnetgAsso( @model, design.component( sb ) )
       return
 
   }

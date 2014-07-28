@@ -1,4 +1,9 @@
 #modal-option-group {
+    .header .icon-info {
+        float: right;
+        margin-top: 4px;
+        color: #148BE6;
+    }
     .invisible {
         visibility: hidden;
     }
@@ -83,6 +88,9 @@
             transition: left 0.15s ease-out;
         }
     }
+    .switcher.disabled {
+        opacity: 0.2;
+    }
     .remove-btn {
         cursor: pointer;
     }
@@ -148,9 +156,17 @@
         background-color: #222;
     }
     .remove-btn {
+        // color: #f00;
+        // margin-top: 10px;
+        margin-left: 20px;
+        // margin-right: 10px;
+        float: left;
+    }
+    .err-tip {
+        margin-left: 20px;
+        float: left;
         color: #f00;
         margin-top: 10px;
-        margin-left: 20px;
     }
     .save-btn {
         margin-right: 10px;

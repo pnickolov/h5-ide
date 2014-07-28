@@ -1,3 +1,7 @@
+#modal-option-group .header .icon-info {
+  float: right;
+  margin-top: 4px;
+  color: #148BE6; }
 #modal-option-group .invisible {
   visibility: hidden; }
 #modal-option-group .header {
@@ -69,6 +73,8 @@
     -moz-transition: left 0.15s ease-out;
     -o-transition: left 0.15s ease-out;
     transition: left 0.15s ease-out; }
+#modal-option-group .switcher.disabled {
+  opacity: 0.2; }
 #modal-option-group .remove-btn {
   cursor: pointer; }
 #modal-option-group .switcher.on {
@@ -120,9 +126,13 @@
 #modal-option-group .modal-footer {
   background-color: #222; }
 #modal-option-group .remove-btn {
+  margin-left: 20px;
+  float: left; }
+#modal-option-group .err-tip {
+  margin-left: 20px;
+  float: left;
   color: #f00;
-  margin-top: 10px;
-  margin-left: 20px; }
+  margin-top: 10px; }
 #modal-option-group .save-btn {
   margin-right: 10px; }
 #modal-option-group .slide-delete {

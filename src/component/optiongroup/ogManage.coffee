@@ -101,6 +101,7 @@ define [
 
             @ogOptions = engineOptions[option.version] if engineOptions
             @ogModel = option.model
+            @ogNameOptionMap = {}
 
             # for option data store
             @ogDataStore = {}
@@ -110,6 +111,9 @@ define [
 
             # set checked for option list
             _.each @ogOptions, (option) ->
+
+                that.ogNameOptionMap[option.Name] = option
+
                 if that.ogDataStore[option.Name]
                     option.checked = true
                 else
@@ -119,6 +123,9 @@ define [
                     option.unmodify = true
                 else
                     option.unmodify = false
+
+                # if option.OptionsDependedOn and option.OptionsDependedOn.OptionName
+                #     option.disabled = true
 
                 null
 
@@ -309,6 +316,25 @@ define [
             optionIdx = Number($optionItem.data('idx'))
             optionName = $optionItem.data('name')
 
+            # _switchOptionItem = (optionName, isOn) ->
+
+            #     $ogItemList = @$('.option-list .option-item')
+            #     _.each $ogItemList, (ogItem) ->
+            #         $ogItem = $(ogItem)
+            #         option = that.getOption($ogItem)
+            #         if option
+            #             ogName = $ogItem.data('name')
+            #             ogDefine = that.ogNameOptionMap[ogName]
+            #             if ogDefine.OptionsDependedOn and ogDefine.OptionsDependedOn.OptionName
+            #                 dependName = ogDefine.OptionsDependedOn.OptionName
+            #                 if dependName.indexOf(optionName) isnt -1
+            #                     that.setOption($ogItem, isOn)
+            #                     if isOn
+            #                         $ogItem.removeClass('disabled')
+            #                     else
+            #                         $ogItem.addClass('disabled')
+            #         null
+
             if $switcher.hasClass('on')
 
                 $optionEdit.removeClass('invisible')
@@ -351,35 +377,89 @@ define [
             $switcher = $item.find('.switcher')
             return $switcher.hasClass('on')
 
+        getOptionByName: (ogName) ->
+
+            $switcher = @$('.option-list .option-item[data-name="' + ogName + '"]').find('.switcher')
+            return $switcher.hasClass('on')
+
         saveClicked: () ->
 
             that = this
 
-            # set name and desc
-            ogName = @$('.og-name').val()
-            ogDesc = @$('.og-description').val()
-            @ogModel.set('name', ogName)
-            @ogModel.set('description', ogDesc)
+            $ogName = @$('.og-name')
+            $ogDesc = @$('.og-description')
 
-            # set option
-            ogDataAry = []
-            $ogItemList = @$('.option-list .option-item')
+            $ogName.parsley 'custom', ( val ) ->
+
+                errTip = 'Option group name invalid'
+                if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
+                    return errTip
+                if val.length < 1 or val.length > 255
+                    return errTip
+                if not MC.validate('letters', val[0])
+                    return errTip
+
+            $ogDesc.parsley 'custom', ( val ) ->
+
+                errTip = 'Option group description invalid'
+                if val.length < 1
+                    return errTip
+
+            # check if option is right depend
+            isRightDepend = true
+            $ogItemList = that.$('.option-list .option-item')
             _.each $ogItemList, (ogItem) ->
+
                 $ogItem = $(ogItem)
                 option = that.getOption($ogItem)
+
                 if option
+
                     ogName = $ogItem.data('name')
-                    ogData = that.ogDataStore[ogName]
-                    ogData.OptionName = ogName
-                    ogDataAry.push(ogData)
+                    ogDefine = that.ogNameOptionMap[ogName]
+
+                    if ogDefine.OptionsDependedOn and ogDefine.OptionsDependedOn.OptionName
+                        dependName = ogDefine.OptionsDependedOn.OptionName
+                        dependAry = dependName.split(',')
+                        needAry = []
+                        _.each dependAry, (depend) ->
+                            isOn = that.getOptionByName(depend)
+                            needAry.push(depend) if not isOn
+                        if needAry.length
+                            isRightDepend = false
+                            errTip = "#{ogName} depend on #{needAry.join(',')} option."
+                            that.$('.err-tip').text(errTip)
                 null
 
-            @ogModel.set('options', ogDataAry)
+            return if not isRightDepend
 
-            @dropdown.refresh()
+            if $ogName.parsley('validate') and $ogDesc.parsley('validate')
 
-            @__modalplus.close()
-            null
+                # set name and desc
+                ogName = $ogName.val()
+                ogDesc = $ogDesc.val()
+                @ogModel.set('name', ogName)
+                @ogModel.set('description', ogDesc)
+
+                # set option
+                ogDataAry = []
+                $ogItemList = @$('.option-list .option-item')
+                _.each $ogItemList, (ogItem) ->
+                    $ogItem = $(ogItem)
+                    option = that.getOption($ogItem)
+                    if option
+                        ogName = $ogItem.data('name')
+                        ogData = that.ogDataStore[ogName]
+                        ogData.OptionName = ogName
+                        ogDataAry.push(ogData)
+                    null
+
+                @ogModel.set('options', ogDataAry)
+
+                @dropdown.refresh()
+                @__modalplus.close()
+
+                null
 
         removeClicked: () ->
 

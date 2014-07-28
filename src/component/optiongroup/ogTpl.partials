@@ -93,15 +93,26 @@
         </div>
     </div>
     <div class="will-be-covered">
-        <div class="header">This Option Group is used for {{engineName}} {{engineVersion}}</div>
+        <div class="header">
+            This Option Group is used for {{engineName}} {{engineVersion}}
+            {{#ifCond engineName "mysql"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+            {{#ifCond engineName "oracle"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Oracle.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+            {{#ifCond engineName "sqlserver"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+        </div>
         <div class="container">
             <div class="input-item">
                 <label class="left">Name</label>
-                <input class="input og-name" value="{{name}}" type="text" data-required="true"/>
+                <input class="input og-name" value="{{name}}" type="text" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="input-item">
                 <label class="left">Description</label>
-                <input class="input og-description" value="{{description}}" type="text" data-required="true"/>
+                <input class="input og-description" value="{{description}}" type="text" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="left option-list-head">Option</div>
             <ul class="option-list"></ul>
@@ -118,7 +129,8 @@
             {{/if}}
         </div>
         <div class="modal-footer">
-            {{#unless isCreate}}<div class="remove-btn left">Delete Option Group</div>{{/unless}}
+            {{#unless isCreate}}<button class="remove-btn btn btn-red">Delete</button>{{/unless}}
+            <span class="err-tip"></span>
             <button class="save-btn btn btn-blue">Save</button>
             <button class="btn btn-silver modal-close cancel-btn">Cancel</button>
         </div>
@@ -133,7 +145,7 @@
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
     {{#unless unmodify}}
     <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
-    <label class="switcher{{#if checked}} on{{/if}}">
+    <label class="switcher{{#if checked}} on{{/if}}{{#if disabled}} disabled{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>
     </label>

@@ -53,7 +53,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         svg.plain("").move(4,14).classes('group-label')
         # dragger
         svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
-        svg.use("prompt_text").classes("prompt-text")
+        svg.use("prompt_text", true).classes("prompt-text")
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.split(".").join("-") )
 

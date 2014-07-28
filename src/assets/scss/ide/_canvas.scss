@@ -208,7 +208,7 @@
   stroke: #bebebe;
 }
 
-.stack, .appedit {
+.canvas-view[data-mode="stack"], .canvas-view[data-mode="appedit"] {
   .port:hover, .port.connectable {
     fill: #F2F8FF;
     stroke-width: 2;

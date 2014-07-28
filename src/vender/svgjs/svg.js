@@ -2639,13 +2639,13 @@ define([], function() {
     // Add parent method
   , construct: {
       // Create a use element
-      use: function(element, createUseTag) {
-        if ( createUseTag ) {
-          return this.put(new SVG.Use).element(element)
+      use: function(elementId) {
+        var element = document.getElementById(elementId);
+        if ( element.getAttribute("data-readonly") ) {
+          return this.put(new SVG.Use).element(elementId)
         } else {
           // Lower version of chrome doesn't fully support use element
           // those element won't have ui event, so we need to do a clone.
-          element = document.getElementById(element);
           var tag = SVG.ElementMap[ element.tagName.toLowerCase() ];
           if ( tag ) {
             var el = new SVG[ tag ];

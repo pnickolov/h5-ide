@@ -891,7 +891,7 @@
   fill: #d8d7d6;
   stroke: #bebebe; }
 
-.stack .port:hover, .stack .port.connectable, .appedit .port:hover, .appedit .port.connectable {
+.canvas-view[data-mode="stack"] .port:hover, .canvas-view[data-mode="stack"] .port.connectable, .canvas-view[data-mode="appedit"] .port:hover, .canvas-view[data-mode="appedit"] .port.connectable {
   fill: #F2F8FF;
   stroke-width: 2;
   cursor: pointer; }

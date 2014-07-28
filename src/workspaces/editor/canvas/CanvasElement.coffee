@@ -211,7 +211,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
       for child in node.children()
         cc = child.node
-        if cc.tagName.toLowerCase() isnt "use" then continue
+        if cc.tagName.toLowerCase() isnt "path" then continue
 
         name = child.attr("data-alias") or child.attr("data-name")
         if name

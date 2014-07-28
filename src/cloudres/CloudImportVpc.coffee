@@ -531,6 +531,10 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
           "VolumeType"      : aws_vol.volumeType
           "AvailabilityZone": CREATE_REF( az, "resource.ZoneName" )
 
+        #for gp2 volumeType, the value is random
+        if aws_vol.volumeType is 'gp2'
+          volRes.Iops = ""
+
         # AttachmentSet
         if aws_vol.attachmentSet
           instance = @instances[ aws_vol.attachmentSet[0].instanceId ]

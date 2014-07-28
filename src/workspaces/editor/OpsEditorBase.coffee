@@ -69,11 +69,7 @@ define [
         return null
       @view.canvas.getSelectedComp()
 
-    onOpsModelStateChanged : ()->
-      switch @opsModel.get("state")
-        when OpsModel.State.Destroyed
-          @remove()
-          return
+    onOpsModelStateChanged : ()-> if @opsModel.get("state") is OpsModel.State.Destroyed then @remove()
 
     ###
       Internal methods.

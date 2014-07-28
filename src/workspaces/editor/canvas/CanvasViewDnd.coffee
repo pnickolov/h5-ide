@@ -70,8 +70,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
     return
 
-  ________visualizeOnMove  = ________visMove
-  ________visualizeBestfit = ________visBestfit
+  # ________visualizeOnMove  = ________visMove
+  # ________visualizeBestfit = ________visBestfit
   ### env:dev:end ###
 
   CanvasViewProto = CanvasView.prototype
@@ -383,7 +383,11 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       options.onDrag      = __moveStickyItemDrag
       options.onDragEnd   = __moveStickyItemDrop
 
-    $tgt.dnd( evt, options )
+    # ui.dnd will use the $tgt to calculate the offset of the item.
+    # If the item is subnet, we might get a wrong offset.
+    # In order to avoid that, we need to use the `rect.group` as $tgt.
+
+    (if item.isGroup() then $tgt.children(".group") else $tgt).dnd( evt, options )
     false
 
   __moveItemStart = ( data )->

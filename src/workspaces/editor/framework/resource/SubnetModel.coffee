@@ -62,6 +62,9 @@ define [ "constant",
 
       az = @parent()
 
+      if @connections("SubnetgAsso").length > 0
+        return { error : "Cannot delete subnet because the subnet is used by a subnet group." }
+
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")
         if cn.isRemovable() isnt true

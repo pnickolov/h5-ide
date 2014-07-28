@@ -199,6 +199,20 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
             #$( '#modal-wrap' ).click @__stopPropagation
+#            that = @
+#            @__modalplus.on "resize", @__resizeModal.bind @
+#            @.on 'rendered', @__resizeModal.bind @
+#            @
+        __resizeModal: ->
+          console.log("Resized!");
+          windowHeight = $(window).height()
+          $modal= @__modalplus.tpl
+          headerHeight= $modal.find(".modal-header").outerHeight()
+          footerHeight = $modal.find('.modal-footer').height() || 0
+          bannerHeight = $modal.find(".modal-body .table-head").height()
+          toolbarHeight = $modal.find(".modal-body .modal-toolbar .toolbar").height()
+          $modal.find(".modal-toolbar .scroll-wrap").css 'height', ( windowHeight - headerHeight - footerHeight - toolbarHeight - bannerHeight )
+          console.log  windowHeight , headerHeight , footerHeight , toolbarHeight , bannerHeight
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading
@@ -237,7 +251,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @__renderContent()
             @$( '.t-m-content' ).html dom
             @__triggerChecked null
-
+            @trigger "rendered", @
             @
 
         setSlide: ( dom ) ->

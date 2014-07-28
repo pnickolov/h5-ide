@@ -190,7 +190,9 @@ define [], ()->
                     diffY = 0
                     null
         resize: (slideIn)->
-            if @option.mode is 'panel' then return false
+            if @option.mode is 'panel'
+              @trigger 'resize', @
+              return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
             width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
@@ -202,6 +204,7 @@ define [], ()->
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
+            @.trigger 'resize', {top: top, left: left}
         getFirst: ->
             return modalGroup?[0]
         getLast: ->

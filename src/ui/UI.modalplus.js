@@ -239,6 +239,7 @@
       Modal.prototype.resize = function(slideIn) {
         var height, left, top, width, windowHeight, windowWidth, _ref, _ref1;
         if (this.option.mode === 'panel') {
+          this.trigger('resize', this);
           return false;
         }
         windowWidth = $(window).width();
@@ -250,8 +251,12 @@
         if (slideIn) {
           left = windowWidth + left;
         }
-        return this.tpl.css({
+        this.tpl.css({
           top: top > 0 ? top : 10,
+          left: left
+        });
+        return this.trigger('resize', {
+          top: top,
           left: left
         });
       };

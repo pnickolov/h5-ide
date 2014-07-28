@@ -6,7 +6,6 @@
 // 3. Every SVG Object's trans object will only be generated when accessed.
 // 4. Does not set svg attributes when creating the SVG doc
 // 5. SvgElement.classes() can set classes.
-// 6. Removed Parser related stuff. ( SVG.PointArray and SVG.PathArray )
 
 define([], function() {
 
@@ -14,8 +13,8 @@ define([], function() {
     if (SVG.supported) {
       element = new SVG.Doc(element)
 
-      // if (!SVG.parser)
-      //   SVG.prepare(element)
+      if (!SVG.parser)
+        SVG.prepare(element)
 
       return element
     }
@@ -510,12 +509,12 @@ define([], function() {
     }
     // Move path string
   , move: function(x, y) {
-      /* get bounding box of current situation */
-      var box = this.bbox()
+      // /* get bounding box of current situation */
+      // var box = this.bbox()
 
-      /* get relative offset */
-      x -= box.x
-      y -= box.y
+      // /* get relative offset */
+      // x -= box.x
+      // y -= box.y
 
       if (!isNaN(x) && !isNaN(y)) {
         /* move every point */
@@ -2640,11 +2639,39 @@ define([], function() {
     // Add parent method
   , construct: {
       // Create a use element
-      use: function(element) {
-        return this.put(new SVG.Use).element(element)
+      use: function(element, createUseTag) {
+        if ( createUseTag ) {
+          return this.put(new SVG.Use).element(element)
+        } else {
+          // Lower version of chrome doesn't fully support use element
+          // those element won't have ui event, so we need to do a clone.
+          element = document.getElementById(element);
+          var tag = SVG.ElementMap[ element.tagName.toLowerCase() ];
+          if ( tag ) {
+            var el = new SVG[ tag ];
+            el.node = element.cloneNode(true);
+            el.node.removeAttribute("id");
+            el.type = element.nodeName;
+            return el;
+          }
+        }
       }
     }
   })
+
+  SVG.ElementMap = {
+    group    : "G",
+    mask     : "Mask",
+    clip     : "Clip",
+    rect     : "Rect",
+    ellipse  : "Ellipse",
+    line     : "Line",
+    polyline : "Polyline",
+    polygon  : "Polygon",
+    path     : "Path",
+    image    : "Image",
+    text     : "Text"
+  };
 
   SVG.Rect = SVG.invent({
     // Initialize node
@@ -2883,13 +2910,20 @@ define([], function() {
     // Add class methods
   , extend: {
       // Plot new poly points
+
+      array: function( p ) {
+        if ( p || !this._array ) {
+          this._array = new SVG.PathArray(p || this.attr("d"), [['M', 0, 0]])
+        }
+        return this._array
+      }
+    ,
       plot: function(p) {
-        // return this.attr('d', (this.array = new SVG.PathArray(p, [['M', 0, 0]])))
-         return this.attr('d', p)
+        return this.attr('d', this.array(p))
       }
       // Move by left top corner
     , move: function(x, y) {
-        return this.attr('d', this.array.move(x, y))
+        return this.attr('d', this.array().move(x, y))
       }
       // Move by left top corner over x-axis
     , x: function(x) {
@@ -2903,7 +2937,7 @@ define([], function() {
     , size: function(width, height) {
         var p = proportionalSize(this.bbox(), width, height)
 
-        return this.attr('d', this.array.size(p.width, p.height))
+        return this.attr('d', this.array().size(p.width, p.height))
       }
       // Set width of element
     , width: function(width) {

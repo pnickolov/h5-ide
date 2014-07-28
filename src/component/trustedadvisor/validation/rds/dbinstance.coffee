@@ -6,7 +6,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         dbs = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).filter (db) ->
             (db.get('instanceClass') is 'db.t1.micro') and not db.getOptionGroup().isDefault()
 
-        if not dbs.length then return null
+        return null if not dbs.length
 
         taId = ''
         nameStr = ''
@@ -22,7 +22,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         db = Design.instance().component uid
         azName = db.get 'az'
 
-        if not azName then return null
+        return null if not azName
 
         sbg = db.parent()
         if _.some(sbg.connectionTargets("SubnetgAsso"), ( sb )-> sb.parent().get( 'name' ) is azName)
@@ -32,7 +32,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
     isAccessibleHasNoIgw = ( uid ) ->
         db = Design.instance().component uid
-        if not db.get 'accessible' then return null
+        return null if not db.get 'accessible'
 
         vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
         if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
@@ -42,7 +42,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
     isAccessibleEnableDNS = ( uid ) ->
         db = Design.instance().component uid
-        if not db.get 'accessible' then return null
+        return null if not db.get 'accessible'
 
         vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
         if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
@@ -106,9 +106,22 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         return null
 
+    isSqlServerCross3Subnet = ( uid ) ->
+        db = Design.instance().component uid
+        return null if not (db.isSqlserver() and db.get('multiAz'))
+
+        sbg = db.parent()
+        azs = _.map sbg.connectionTargets('SubnetgAsso'), (sb) -> sb.parent()
+        return null if _.uniq(azs) > 2
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
+
+
+
     isOgValid               : isOgValid
     isAzConsistent          : isAzConsistent
     isAccessibleHasNoIgw    : isAccessibleHasNoIgw
     isAccessibleEnableDNS   : isAccessibleEnableDNS
     isHaveEnoughIPForDB     : isHaveEnoughIPForDB
     isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
+    isSqlServerCross3Subnet : isSqlServerCross3Subnet

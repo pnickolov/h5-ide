@@ -5486,6 +5486,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
+    TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
+      en: "DB Instance %s is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      zh: ""
+
     TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
       en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
       zh: ""

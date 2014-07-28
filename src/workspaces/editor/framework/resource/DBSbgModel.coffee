@@ -17,7 +17,6 @@ define [ "constant", "../GroupModel", "../ConnectionModel" ], ( constant, GroupM
       width  : 17
       height : 17
 
-      subnetIds: []
       createdBy: ""
 
 

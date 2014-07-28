@@ -19,6 +19,17 @@ define [ "constant", "../GroupModel", "../ConnectionModel" ], ( constant, GroupM
 
       createdBy: ""
 
+    constructor : ()->
+      # If we don't have enough subnet. Don't create the subnet group.
+      design = Design.instance()
+      az = {}
+      for subnet in design.componentsOfType(constant.RESTYPE.SUBNET)
+        az[ subnet.parent().get("name") ] = true
+
+      if _.keys( az ).length < 2
+        return this
+
+      GroupModel.apply this, arguments
 
     initialize: ( attributes, option )->
 

@@ -139,6 +139,10 @@ define [
             parent : attr.parent
           } , option )
 
+          if not attr.parent.id
+            notification "error", "Cannot create subnet group due to insufficient subnets."
+            return
+
           attr.x += 2
           attr.y += 2
 

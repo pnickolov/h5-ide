@@ -2701,6 +2701,10 @@ module.exports =
       en: "Health Check Interval"
       zh: "健康度检查间隔"
 
+    PROP_ELB_IDLE_TIMEOUT:
+      en: "Idle Connection Timeout"
+      zh: ""
+
     PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS:
       en: "Seconds"
       zh: "秒"

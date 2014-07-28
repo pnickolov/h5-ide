@@ -226,7 +226,6 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
             that = this
             elbModel = Design.instance().component( @get("uid") )
 
-
             sslCertDropDown = new SSLCertDropdown()
             sslCertDropDown.uid = @get('uid')
             sslCertDropDown.listenerNum = idx
@@ -236,6 +235,11 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
                 sslCertDropDown.sslCertName = sslCertModel.get('name')
 
             return sslCertDropDown
+
+        setIdletimeout : (value) ->
+
+            elbModel = Design.instance().component( @get("uid") )
+            elbModel.set('idleTimeout', value)
 
     }
 

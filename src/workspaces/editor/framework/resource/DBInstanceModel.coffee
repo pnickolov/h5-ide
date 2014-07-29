@@ -57,7 +57,6 @@ define [
       port: ''
       pending: ''
       instanceId: ''
-      replicaId: ''
       snapshotId: ''
       az: ''
       ogName: ''

@@ -12,36 +12,6 @@ define [ '../base/view'
 
   SubnetGroupView = PropertyView.extend
 
-    events:
-      'change .select-subnet-id': 'selectSubnetId'
-      'change #property-subnet-name': 'setName'
-      'change #property-subnet-desc': 'setDesc'
-
-    setName: (e) ->
-      $target = $ e.currentTarget
-      if $target.parsley 'validate'
-        @model.set 'name', $target.val()
-
-    setDesc: (e) ->
-      $target = $ e.currentTarget
-      if $target.parsley 'validate'
-        @model.set 'description', $target.val()
-
-    selectSubnetId: (e) ->
-      sbId = e.currentTarget.id.slice 5
-      checked = e.currentTarget.checked
-      sbCount = @$('.property-control-group input:checked').size()
-
-      @$('.property-head-num-wrap').html "(#{sbCount})"
-
-      if checked
-        SbAsso = Design.modelClassForType( "SubnetgAsso" )
-        new SbAsso @model, Design.instance().component sbId
-      else
-        _.each @model.connections("SubnetgAsso"), ( sbAsso )->
-          if sbAsso.getTarget(constant.RESTYPE.SUBNET).id is sbId
-            sbAsso.remove()
-
     render: ->
       return if not @appModel
 

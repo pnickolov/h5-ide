@@ -30,6 +30,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             else
                 elb.ConnectionDrainingInfo = 'Disabled'
 
+            elb.IdleTimeout = elb.ConnectionSettings?.IdleTimeout
 
             elb.name = myElbComponent.get 'name'
 

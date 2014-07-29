@@ -1619,6 +1619,11 @@ a.action-link:hover {
 	left        : 0px;
 }
 
+#property-elb-idle-timeout {
+	width: 100px;
+	margin-right: 10px;
+}
+
 #property-elb-health-path {
 	padding-left : 13px;
 	width : 212px;

@@ -63,6 +63,11 @@
 				<label for="elb-connection-draining-input">seconds</label>
 			</div>
 		</section>
+		<section class="property-control-group">
+			<label for="property-elb-idle-timeout" >{{ i18n "PROP_ELB_IDLE_TIMEOUT" }}</label>
+			<input class="input input-short mgt5"  type="text" value="{{idleTimeout}}" name="property-elb-idle-timeout" id="property-elb-idle-timeout" data-required="true" data-type="digits" data-min="1" data-max="3600" data-ignore="true"/>
+			<label class="elb-property-right-text" for="property-elb-idle-timeout" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+		</section>
 	</div>
 
 	<!--

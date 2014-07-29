@@ -17,6 +17,10 @@
         <dd>{{CrossZone}}<dd>
         <dt>{{i18n "PROP_ELB_CONNECTION_DRAIN"}}</dt>
         <dd>{{ConnectionDrainingInfo}}<dd>
+        {{#if IdleTimeout}}
+        <dt>{{i18n "PROP_ELB_IDLE_TIMEOUT"}}</dt>
+        <dd>{{IdleTimeout}} seconds<dd>
+        {{/if}}
       </dl>
   </div>
 

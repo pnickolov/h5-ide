@@ -100,7 +100,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # Load Application Data.
-      appdata = ApiRequest("aws_aws",{fields : ["region","price","instance_types"]}).then ( res )->
+      appdata = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )->
 
         for i in res
           instanceTypeConfig = {}
@@ -109,7 +109,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
             price              : i.price
             osFamilyConfig     : i.instance_types.sort
             instanceTypeConfig : instanceTypeConfig
-            rds                : i.instance_types.rds
+            rds                : i.rds
           }
 
           # Format instance type info.

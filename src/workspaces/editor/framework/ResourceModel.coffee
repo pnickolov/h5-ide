@@ -186,15 +186,6 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
     # serialize()
         description : Must be implemented by the user, otherwise it logs an error in console.
-
-    # storage()
-    # getFromStorage( filter )
-    # addToStorage( resouceModel )
-        description : One can store resourceModels into this.storage().
-        According to `Backbone.Collection.model` and `Backbone.Collection.create()`, collection is ususally used to store the same type/kind of objects.
-        Practically speaking, using this.storage() ( especially using it store different kinds of objects ) are unreasonable. It is uncertain if something is inside this.storage(), thus making it hard to manage these things.
-        Better not to use this api.
-
   ###
 
   ResourceModel = Backbone.Model.extend {
@@ -218,7 +209,7 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
       # Assign new name
       if not attributes.name
-        attributes.name = @getNewName( attributes )
+        attributes.name = @getNewName()
         if not attributes.name then delete attributes.name
 
       # Cache the object inside the current design.
@@ -386,47 +377,6 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
 
       Backbone.Events.listenTo.call this, other, event, callback
 
-
-    # Do Associate, bind asso to the couple model
-    associate: ( resolve, uid ) ->
-      # Associate Map, consisted of key, type and suffix
-      if not @__asso
-        @__asso = []
-      if resolve instanceof ResourceModel
-        model = resolve
-        @addToStorage model
-        model.addToStorage @
-      else if _.isFunction resolve
-        if uid
-          model = resolve uid
-          @associate model
-        else
-          for attr in @__asso
-            keys = attr.key.split '.'
-            masterKey = keys.pop()
-            arns = @get keys
-
-            for k in keys
-              arns = arns[ k ]
-
-            if _.isString arns
-              arns = [ arns ]
-
-            if _.isArray arns
-              for arn in arns
-                uid = MC.extractID arn
-                model = resolve uid
-                if model
-                  @associate model
-              if not keys.length
-                @unset attr.key
-      null
-
-    disassociate: ( filter ) ->
-      removed = @removeFromStorage filter
-      for model in removed
-        model.removeFromStorage @
-
     clone : null
     cloneAttributes : ( srcTarget, option )->
       console.assert srcTarget.type is @type, "Invalid type of target when cloning attributes."
@@ -459,51 +409,6 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
     cloneObjectAttributes : ( attributeName, attributeValue )->
       # Cannot use $.extend here, because $.extend does not deep copy user-defined-objects.
       deepClone( attributeValue )
-
-    # Storage is created when necessary
-    storage : ()->
-      if not this.__storage
-        this.__storage = new Backbone.Collection()
-
-      this.__storage
-
-    getFromStorage : ( filter ) ->
-      storage = this.storage()
-
-      if _.isString filter
-        models = _.filter storage.models, ( res )-> res.type is filter
-
-      else if _.isFunction filter
-        models = _.filter storage.models, filter
-
-      else
-        models = storage.models
-
-      new Backbone.Collection( models )
-
-    removeFromStorage: ( filter ) ->
-      storage = this.storage()
-
-      if _.isString filter
-        models = _.filter storage.models, ( res )-> res.type is filter
-
-      else if _.isFunction filter
-        models = _.filter storage.models, filter
-
-      else if filter instanceof ResourceModel
-        models = filter
-
-      if models
-        storage.remove models
-      else
-        storage.reset()
-
-      models
-
-    addToStorage : ( resource ) ->
-      storage = this.storage()
-      storage.add resource
-      null
 
   }, {
 

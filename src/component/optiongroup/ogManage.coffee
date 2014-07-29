@@ -244,6 +244,7 @@ define [
                     s.items = _.map s.AllowedValues.split(','), (v) ->
                         value: v, selected: data and v is data.OptionSettings[i].Value
 
+
                 else if s.AllowedValues.indexOf('-') >= 0
                     arr = s.AllowedValues.split '-'
                     start = +arr[0]
@@ -251,10 +252,12 @@ define [
 
                     s.start = start
                     s.end = end
-
+                    ###
                     if end - start < 10
                         s.items = _.range start, end + 1
+                    ###
 
+                # Hidden allowed values when input shown as a dropdown.
                 if s.items then s.AllowedValues = ''
 
                 if data
@@ -263,7 +266,8 @@ define [
                     s.value = s.DefaultValue
 
 
-            @$('form').html template.og_slide option or {}
+            @$('.form').html template.og_slide option or {}
+            @$('.error').html ''
 
             # Parsley
             $('form input').each ->

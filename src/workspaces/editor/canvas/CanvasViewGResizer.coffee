@@ -49,10 +49,10 @@ define [ "./CanvasView" ], ( CanvasView )->
     parent = item.parent()
     if parent
       parent = parent.rect()
-      parent.x1 += 2
-      parent.y1 += 2
-      parent.x2 -= 2
-      parent.y2 -= 2
+      parent.x1 += 1
+      parent.y1 += 1
+      parent.x2 -= 1
+      parent.y2 -= 1
     else
       size = @size()
       parent =
@@ -82,7 +82,7 @@ define [ "./CanvasView" ], ( CanvasView )->
       innerBound : __childrenBound( item, target )
       target     : target
       parent     : parent
-      siblings   : item.siblings().map ( si )-> si.effectiveRect()
+      siblings   : item.siblings().map ( si )-> si.rect()
 
       overlay : $("<div></div>").appendTo( @$el ).css({"position":"absolute","left":"0","top":"0","bottom":"0","right":"0","cursor":$resizer.css("cursor")})
 
@@ -136,13 +136,13 @@ define [ "./CanvasView" ], ( CanvasView )->
         blocks.push sibling
 
     if left
-      range = [ __max( blocks, "x2" ), data.innerBound.x1 ]
+      range = [ __max( blocks, "x2" ) + 1, data.innerBound.x1 ]
     else if right
-      range = [ data.innerBound.x2, __min( blocks, "x1" ) ]
+      range = [ data.innerBound.x2, __min( blocks, "x1" ) - 1 ]
     else if top
-      range = [ __max( blocks, "y2" ), data.innerBound.y1 ]
+      range = [ __max( blocks, "y2" ) + 1, data.innerBound.y1 ]
     else
-      range = [ data.innerBound.y2, __min( blocks, "y1" ) ]
+      range = [ data.innerBound.y2, __min( blocks, "y1" ) - 1 ]
 
     data[ key ] = range
     return

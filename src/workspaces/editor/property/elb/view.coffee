@@ -68,6 +68,8 @@ define [ '../base/view',
 
             'click #elb-advanced-proxy-protocol-select' : 'elbAdvancedProxyProtocolSelectChange'
 
+            'change #property-elb-idle-timeout' : 'elbIdleTimeoutChange'
+
         render     : () ->
 
             that = this
@@ -166,6 +168,12 @@ define [ '../base/view',
                 $intervalDom.parsley 'validate'
 
             @model.setHealthTimeout value
+
+        elbIdleTimeoutChange : ( event ) ->
+
+            $target = $ event.currentTarget
+            if $target.parsley 'validate'
+                @model.setIdletimeout Number($target.val())
 
         sliderChanged : ( event, value ) ->
             target = $(event.target)

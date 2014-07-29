@@ -47,6 +47,8 @@ define [ "Design",
           Timeout: 300
         }
 
+        idleTimeout: 60
+
         # Advanced
         otherPoliciesMap: {}
       }
@@ -305,6 +307,9 @@ define [ "Design",
               OtherPolicies : otherPoliciesAry
             }
           BackendServerDescriptions : [ { InstantPort : "", PoliciyNames : "" } ]
+          ConnectionSettings: {
+            IdleTimeout: (@get('idleTimeout') or 60)
+          }
 
       return { component : component, layout : @generateLayout() }
 
@@ -339,6 +344,8 @@ define [ "Design",
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
+
+        idleTimeout : (data.resource?.ConnectionSettings?.IdleTimeout or 60)
 
         otherPoliciesMap: {}
 

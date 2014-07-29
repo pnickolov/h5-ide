@@ -109,7 +109,7 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
             @set {
                 appData    : true
                 isInternet : elb.Scheme is 'internet-facing'
-                DNSName    : elb.DNSName
+                DNSName    : elb.Dnsname
                 CanonicalHostedZoneNameID : elb.CanonicalHostedZoneNameID
             }
             null

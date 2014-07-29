@@ -946,11 +946,14 @@ define ["CloudResources", "ide/cloudres/CrCollection", "constant", "ApiRequest",
           "ConnectionDraining":
             "Enabled" : false
             "Timeout" : null
+          "ConnectionSettings":
+            "IdleTimeout" : 60
 
         elbRes = @_mapProperty aws_elb, elbRes
 
         originComp = @getOriginalComp(aws_elb.Name, 'ELB')
         elbRes.ConnectionDraining.Enabled = aws_elb.ConnectionDraining.Enabled
+        elbRes.ConnectionSettings.IdleTimeout = aws_elb.ConnectionSettings.IdleTimeout
         if originComp
           elbRes.ConnectionDraining.Timeout = originComp.resource.ConnectionDraining.Timeout
         else

@@ -22,6 +22,7 @@ define [
     portPosMap : {
       "db-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "db-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
     portDirMap : {
       "db-sg" : "horizontal"
@@ -34,23 +35,38 @@ define [
       "mousedown .dbreplicate" : "replicate"
 
     listenModelEvents : ()->
+      @listenTo @model, "change:backupRetentionPeriod", @render
+      @listenTo @model, "change:connections", @updateReplicaTip
+      return
+
+    updateReplicaTip : ( cnn )->
+      if cnn.type is "DbReplication"
+        @render()
       return
 
     replicate : ( evt )->
-      if not @canvas.design.modeIsApp()
+      if not @canvas.design.modeIsApp() and @model.slaves().length < 5
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
       false
 
     onDropReplicate : ( evt, dataTransfer )->
+      # If the model supports clone() interface, then clone the target.
+      name = dataTransfer.item.model.get("name")
+      nameMatch = name.match /(.+-replica)(\d*)$/
+      if nameMatch
+        name = nameMatch[1] + ((parseInt(nameMatch[2],10) || 0) + 1)
+      else
+        name += "-replica"
+
       DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
       new DbInstance({
         x        : dataTransfer.x
         y        : dataTransfer.y
+        name     : name
         parent   : dataTransfer.parent.model
         sourceId : dataTransfer.item.model.id
       }, {
-        createByUser: true
-        cloneSource : dataTransfer.item.model
+        master : dataTransfer.item.model
       })
       return
 
@@ -89,12 +105,11 @@ define [
         })
       ])
 
+      svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
+
       if @model.get('engine') is constant.DBENGINE.MYSQL and @model.category() isnt 'replica'
         svgEl.add(
-          svg.image( MC.IMG_URL + "ide/icon/dbinstance-resource-dragger.png", 22, 21 ).move( 34, 58 ).attr({
-            "class"        : "dbreplicate tooltip"
-            'data-tooltip' : 'Expand the group by drag-and-drop in other subnetgroup.'
-          })
+          svg.image( MC.IMG_URL + "ide/icon/dbinstance-resource-dragger.png", 22, 21 ).move( 34, 58 ).attr({"class" : "dbreplicate tooltip"})
         )
 
       @canvas.appendNode svgEl
@@ -115,7 +130,14 @@ define [
       # Update Image
       if m.get('engine') is constant.DBENGINE.MYSQL and m.category() isnt 'replica'
         # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
-        CanvasManager.toggle @$el.children(".dbreplicate"), m.autobackup() isnt 0
+        $r = @$el.children(".dbreplicate")
+        CanvasManager.toggle $r, m.autobackup() isnt 0
+        if @model.slaves().length < 5
+          tip = "Drag to create a read replica."
+        else
+          tip = "Cannot create more read replica."
+
+        CanvasManager.update $r, tip, "tooltip"
 
       return
 

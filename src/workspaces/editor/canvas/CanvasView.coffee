@@ -136,6 +136,10 @@ define [
       if item.parent()
         parentRect = item.parent().rect()
         children   = item.parent().children()
+        parentRect.x1 += 1
+        parentRect.y1 += 1
+        parentRect.x2 -= 1
+        parentRect.y2 -= 1
       else
         parentRect = @canvasRect()
         children   = @__itemTopLevel

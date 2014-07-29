@@ -208,8 +208,8 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
         attributes.id = design.guid()
 
       # Assign new name
-      if not attributes.name
-        attributes.name = @getNewName()
+      if not attributes.name or not @isNameAvailable( attributes.name )
+        attributes.name = @getNewName( undefined, attributes.name )
         if not attributes.name then delete attributes.name
 
       # Cache the object inside the current design.
@@ -240,13 +240,19 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
       @design().trigger Design.EVENT.ChangeResource, @
       return
 
-    getNewName : ( base )->
-      if not @newNameTmpl
+    isNameAvailable : ( name )->
+      for comp in @getAllObjects()
+        if comp.get("name") is name
+          return false
+      true
+
+    getNewName : ( base, tmpl )->
+      tmpl = tmpl || @newNameTmpl
+      if not tmpl
         newName = if @defaults then @defaults.name
         return newName or ""
 
-      if base is undefined
-        base = @getAllObjects().length
+      if base is undefined then base = @getAllObjects().length
 
       # Collect all the resources name
       nameMap = {}
@@ -260,7 +266,7 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
           nameMap[comp.name ] = true
 
       while true
-        newName = @newNameTmpl + base
+        newName = tmpl + base
         if nameMap[ newName ]
           base += 1
         else

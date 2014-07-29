@@ -3,6 +3,7 @@ define [ 'Design',
 
          './connection/EniAttachment'
          './connection/VPNConnection'
+         './connection/DbReplication'
          './resource/InstanceModel'
          './resource/EniModel'
          './resource/VolumeModel'

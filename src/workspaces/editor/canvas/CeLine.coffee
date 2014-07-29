@@ -268,4 +268,11 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     type : "ElbAmiAsso"
   }
 
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeDbReplication"
+    ### env:dev:end ###
+    type : "DbReplication"
+  }
+
   CeLine

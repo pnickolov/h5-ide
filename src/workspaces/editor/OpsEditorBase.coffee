@@ -53,7 +53,7 @@ define [
     url         : ()-> @opsModel.url()
     isWorkingOn : ( att )-> @opsModel is att
 
-    viewClass : OpsViewBase
+    viewClass : OpsEditorView
 
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.

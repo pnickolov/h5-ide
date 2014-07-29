@@ -418,11 +418,6 @@ define [
     connections = []
     mockArray   = []
 
-    # preSerialize for resource ( currently DBIntance has this method )
-    for uid, comp of @__componentMap
-      if comp.preSerialize
-        comp.preSerialize()
-
     # ResourceModel can only add json component.
     for uid, comp of @__componentMap
       if comp.isRemoved()

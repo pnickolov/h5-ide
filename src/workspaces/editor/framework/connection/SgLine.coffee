@@ -125,9 +125,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
     type : "SgRuleLine"
 
     defaults :
-      lineType : "sg"
-      dashLine : true
-      name     : "Security Group Rule"
+      name : "Security Group Rule"
 
     portDefs : [
 

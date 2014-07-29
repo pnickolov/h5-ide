@@ -6,7 +6,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
     type : "EniAttachment"
 
     defaults :
-      lineType : "attachment"
       index : 1
 
     initialize : ( attributes )->

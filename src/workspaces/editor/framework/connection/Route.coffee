@@ -6,9 +6,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     type : "RTB_Route"
 
     defaults : ()->
-      lineType : "rtb-target"
-      dashLine : true
-      routes   : []
+      routes : []
 
     initialize : ( attr, option )->
       igw = @getTarget( constant.RESTYPE.IGW )

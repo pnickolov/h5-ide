@@ -317,7 +317,9 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 			PublicIp         : true
 			MacAddress       : true
 			PrivateIpAddress : true
-
+		AWS_RDS_DBInstance :
+			Address          : true
+			Port             : true
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY

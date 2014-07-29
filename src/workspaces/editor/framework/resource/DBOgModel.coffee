@@ -17,6 +17,8 @@ define [
 
     initialize: ( attributes, option )->
 
+      return if @isDefault()
+
       if not @get 'description'
 
         # set new name
@@ -26,8 +28,6 @@ define [
 
         # set new description
         @set 'description', "custom option group for #{@get('engineName')} #{@get('engineVersion')}"
-
-      if option.isDefault then @__isDefault = true
 
       null
 

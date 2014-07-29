@@ -755,7 +755,8 @@ define [ 'ApiRequest'
         getInstanceStatus: () ->
 
             _setStatus = (showError) ->
-
+                
+                $('.property-dbinstance-status-icon-warning').remove()
                 that.setTitle(that.appModel.get('name'))
                 if showError is true
                     $('.db-status-loading').remove()

@@ -434,7 +434,7 @@
     #DndItem.az:before {
       border-color: #f69300; }
     #DndItem.az.dragOver {
-      width: 220px;
+      width: 230px;
       height: 216px;
       padding-top: 14px;
       color: #f69300; }

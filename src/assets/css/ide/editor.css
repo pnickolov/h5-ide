@@ -921,14 +921,14 @@
   cursor: -webkit-grab;
   cursor: grab; }
 
-.AWS-AutoScaling-Group .group {
+.AWS-AutoScaling-Group .group, .ExpandedAsg .group {
   fill: #f6faf9;
   stroke: #16B4F9;
   stroke-dasharray: 6, 4;
   stroke-width: 2; }
-.AWS-AutoScaling-Group.selected .group {
+.AWS-AutoScaling-Group.selected .group, .ExpandedAsg.selected .group {
   stroke: #049CDD; }
-.AWS-AutoScaling-Group.selected .asg-frame {
+.AWS-AutoScaling-Group.selected .asg-frame, .ExpandedAsg.selected .asg-frame {
   fill: #049CDD; }
 
 .AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {

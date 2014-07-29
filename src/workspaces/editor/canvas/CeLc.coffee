@@ -29,6 +29,13 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @listenTo @model, "change:connections", @render
       @listenTo @model, "change:volumeList", @render
       @listenTo @model, "change:imageId", @render
+
+      # This event is trigger
+      @listenTo @model, "change:expandedList", ()->
+        self = @
+        setTimeout ()->
+          self.render()
+        , 0
       return
 
     iconUrl : ()->
@@ -236,7 +243,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       if not attr.parent then return
       if attr.parent.getLc() then return
 
-      asg = attr.parent
+      asg = attr.parent.get("originalAsg") || attr.parent
       delete attr.parent
 
       lcModel = CanvasElement.createResource( @type, attr, option )

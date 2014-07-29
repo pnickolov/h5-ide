@@ -119,13 +119,18 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
       console.assert( @get("originalAsg").get("expandedList").indexOf( @ ) is -1, "The expandedAsg is already in the Asg" )
 
       @get("originalAsg").get("expandedList").push @
+      @getLc()?.trigger "change:expandedList", @
       null
 
     remove : ()->
+
       siblings = @get("originalAsg").get("expandedList")
       siblings.splice( siblings.indexOf( @ ), 1 )
 
+      @getLc()?.trigger "change:expandedList", @
+
       ComplexResModel.prototype.remove.call this
+
 
 
     getLc : ()-> @attributes.originalAsg.getLc()

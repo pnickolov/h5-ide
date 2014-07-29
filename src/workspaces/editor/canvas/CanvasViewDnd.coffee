@@ -351,7 +351,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
         onDrop   : ()->
      }
     ###
-    $tgt = $( evt.currentTarget ).closest("g")
+    $tgt = $( evt.currentTarget ).closest(".canvasel")
     if CanvasManager.hasClass( $tgt, "fixed" ) then return
     item = @getItem( $tgt.attr("data-id") )
     if not item then return

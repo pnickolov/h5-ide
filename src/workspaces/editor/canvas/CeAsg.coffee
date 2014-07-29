@@ -107,18 +107,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     ### env:dev:end ###
     type : "ExpandedAsg"
 
-    initialize : ( options )->
-      CanvasElement.prototype.initialize.call this, options
-
-      self = @
-      _.defer ()->
-        self.canvas.getItem( self.model.getLc().id )?.render()
-      return
-
-    remove : ()->
-      @canvas.getItem( @model.getLc().id )?.render()
-      CeAsg.prototype.remove.apply this, arguments
-
     render : ()->
       CanvasManager.update @$el.children("text"), @model.get("originalAsg").get("name")
   }

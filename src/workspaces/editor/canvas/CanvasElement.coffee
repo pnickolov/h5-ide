@@ -84,13 +84,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
     portPosition : ( portName )->
       if this.portPosMap then this.portPosMap[ portName ] else null
 
-    hover : ( evt )->
-      CanvasManager.addClass(cn.$el, "hover") for cn in @connections()
-      false
-
-    hoverOut : ( evt )->
-      CanvasManager.removeClass(cn.$el, "hover") for cn in @connections()
-      false
+    hover    : ( evt )-> CanvasManager.addClass(cn.$el, "hover") for cn in @connections(); return
+    hoverOut : ( evt )-> CanvasManager.removeClass(cn.$el, "hover") for cn in @connections(); return
 
     create : ()->
     render : ()->

@@ -78,9 +78,12 @@ define [ "constant", "../ComplexResModel", "../ConnectionModel"  ], ( constant, 
       sslCertList = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()
       needCreate = true
       _.each sslCertList, (sslCertModel) ->
-        if sslCertModel.get('arn') is sslCertData.get('Arn')
-          needCreate = false
-          newSslCert = sslCertModel
+        if sslCertModel.get('body')
+          sslCertModel.remove()
+        else
+          if sslCertModel.get('arn') is sslCertData.get('Arn')
+              needCreate = false
+              newSslCert = sslCertModel
         null
       if needCreate
         newSslCert = new SslCertModel({

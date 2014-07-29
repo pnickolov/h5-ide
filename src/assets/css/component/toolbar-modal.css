@@ -84,7 +84,6 @@
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
-      padding-bottom: 5px;
       overflow: auto; }
     .modal-toolbar .slidebox.show + .will-be-covered {
       opacity: .4;

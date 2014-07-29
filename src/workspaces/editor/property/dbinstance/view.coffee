@@ -271,7 +271,11 @@ define [ 'ApiRequest'
                     template = template_replica
                 attr.masterIops = @resModel.master().get 'iops'
             # if snapshot
-            template = template_instance if attr.snapshotId
+
+            if attr.snapshotId
+                template = template_instance
+                snapshotModel = @resModel.getSnapshotModel()
+                attr.snapshotSize = Number(snapshotModel.get('AllocatedStorage'))
 
             # if oracle
             if @resModel.isOracle()

@@ -133,6 +133,7 @@ define [
 
       if @category() is 'instance'
         @on 'all', @preSerialize
+
       null
 
     # mysql, postgresql, oracle, sqlserver
@@ -515,6 +516,16 @@ define [
       if @get 'snapshotId' then return 'snapshot'
 
       if @master() then 'replica' else 'instance'
+
+    getSnapshotModel: () ->
+
+      if @category() is 'snapshot'
+        regionName = Design.instance().region()
+        snapshotCol = CloudResources(constant.RESTYPE.DBSNAP, regionName)
+        snapshotModel = snapshotCol.findWhere({id: @get('snapshotId')})
+        return snapshotModel
+      else
+        return null
 
     autobackup: ( value )->
       if value isnt undefined

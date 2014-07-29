@@ -718,10 +718,10 @@ define [ 'ApiRequest'
 
             #show/hide input
             if value isnt '0'
-                Canvon("#group-dbinstance-backup-period").removeClass('hide')
+                $("#group-dbinstance-backup-period").removeClass('hide')
                 $('#property-dbinstance-auto-backup-group').removeClass('hide')
             else
-                Canvon("#group-dbinstance-backup-period").addClass('hide')
+                $("#group-dbinstance-backup-period").addClass('hide')
                 $('#property-dbinstance-auto-backup-group').addClass('hide')
 
             #update model

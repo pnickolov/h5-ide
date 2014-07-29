@@ -1447,7 +1447,7 @@ define([], function() {
             if (element.parent)
               element.parent.children().splice(element.parent.index(element), 1)
 
-            if ( i ) {
+            if ( i !== undefined ) {
               /* add element references */
               this.children().splice(i, 0, element)
               this.node.insertBefore(element.node, this.node.childNodes[i] || null)

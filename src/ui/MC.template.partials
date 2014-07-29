@@ -1059,6 +1059,10 @@ Are you sure you want to delete {{name}}?</div>
 						<div class="key pc font-mono">{{i18n "KEY_SCRL_KEY_PC"}}</div>
 						<div class="action">{{i18n "KEY_SCRL_ACTION"}}</div>
 					</li>
+          <li class="key-item">
+            <div class="key">← ↑ → ↓</div>
+            <div class="action">{{i18n "KEY_NUDGE_ITEM_ACTION"}}</div>
+          </li>
 				</ul>
 			</section>
 			<section class="key-state">

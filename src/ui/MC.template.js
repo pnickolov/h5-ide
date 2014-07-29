@@ -1442,7 +1442,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_KEY_PC", {hash:{},data:data}))
     + "</div>\n						<div class=\"action\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">"
+    + "</div>\n					</li>\n          <li class=\"key-item\">\n            <div class=\"key\">← ↑ → ↓</div>\n            <div class=\"action\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_NUDGE_ITEM_ACTION", {hash:{},data:data}))
+    + "</div>\n          </li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_TIT_STATE_GEN", {hash:{},data:data}))
     + "</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_FOCUS_KEY", {hash:{},data:data}))

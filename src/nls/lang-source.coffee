@@ -4987,6 +4987,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Scroll the canvas"
       zh: ""
 
+    KEY_NUDGE_ITEM_ACTION:
+      en: "Nudge the selected item"
+      zh: ""
+
     # State Panel Operation - General
 
     KEY_TIT_STATE_GEN:

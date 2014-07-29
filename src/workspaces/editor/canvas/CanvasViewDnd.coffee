@@ -335,9 +335,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
   CanvasViewProto.__moveItemMouseDown = ( evt )->
     if evt.metaKey
       @__dragCanvasMouseDown( evt )
-    else
-      if not @isReadOnly()
-        @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
+    else if not @isReadOnly()
+      @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
     false
 
 
@@ -376,6 +375,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       onDragStart : __moveItemStart
       onDrag      : __moveItemDrag
       onDragEnd   : __moveItemDrop
+
+      includeSource : ( evt )-> evt.data.altState and !!evt.altKey
     }
 
     if item.sticky
@@ -465,7 +466,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     data.itemWidth  = size.width
     data.itemHeight = size.height
 
-    result = data.context.__handleDropData( data, data.item, true )
+    if ( _.isFunction( data.includeSource ) and data.includeSource( evt ) ) or data.includeSource is true
+      ignore = null
+    else
+      ignore = data.item
+
+    result = data.context.__handleDropData( data, ignore, true )
     if _.isString( result )
       if result is lang.ide.CVS_MSG_WARN_NO_ENOUGH_SPACE
         notification "warning", result

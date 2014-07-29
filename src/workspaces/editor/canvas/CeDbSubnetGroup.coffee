@@ -52,9 +52,11 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
       # Tooltip
-      tt = ""
-      tt += sb.get("name") for sb in m.connectionTargets("SubnetgAsso")
-      CanvasManager.update @$el.children(".tooltip"), tt || "No subnet is assigned to this subnet group yet", "tooltip"
+      tt = []
+      for sb in m.connectionTargets("SubnetgAsso")
+        tt.push(sb.get("name"))
+
+      CanvasManager.update @$el.children(".tooltip"), tt.join(", ") || "No subnet is assigned to this subnet group yet", "tooltip"
       return
 
     doDestroyModel : ()->

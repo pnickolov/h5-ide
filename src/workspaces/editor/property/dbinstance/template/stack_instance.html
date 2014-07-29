@@ -186,9 +186,9 @@
     <div class="option-group-head">Backup Options</div>
     <div class="option-group">
 
-        <section class="property-control-group">
+        <section class="property-control-group tooltip" {{#if hasSlave}}data-tooltip="DB instance serving as replication source must enable automatic backups"{{/if}}>
             <div class="checkbox">
-                <input id="property-dbinstance-auto-backup-check" type="checkbox" {{#if backupRetentionPeriod}}checked="true"{{/if}} value="None" name="property-dbinstance-auto-backup-check">
+                <input id="property-dbinstance-auto-backup-check" type="checkbox" {{#if backupRetentionPeriod}}checked="true"{{/if}} value="None" name="property-dbinstance-auto-backup-check" {{#if hasSlave}}disabled checked{{/if}}>
                 <label for="property-dbinstance-auto-backup-check"></label>
             </div>
             <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>

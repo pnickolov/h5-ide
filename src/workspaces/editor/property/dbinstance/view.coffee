@@ -242,7 +242,9 @@ define [ 'ApiRequest'
             attr.backupDurations = @genDuration backupTime.duration
             attr.maintenanceDurations = @genDuration maintenanceTime.duration
 
+            attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
+
             _.extend attr, {
                 isOracle: @resModel.isOracle()
                 isSqlserver: @resModel.isSqlserver()

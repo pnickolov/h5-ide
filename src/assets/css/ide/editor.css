@@ -455,6 +455,7 @@
   #DndItem.asg {
     text-indent: 23px; }
     #DndItem.asg:before {
+      z-index: -2;
       border-color: #76d6ff; }
     #DndItem.asg:after {
       z-index: -1;
@@ -834,42 +835,11 @@
 .volume-image, .eip-status {
   cursor: pointer; }
 
-.group-asg {
-  fill: #f6faf9;
-  stroke-linejoin: round; }
-
-.asg-title {
-  stroke-width: 0; }
-
-.asg-frame {
-  stroke-dasharray: 6, 4;
-  stroke-width: 2;
-  fill: #83CBF9;
-  stroke: #76d6ff; }
-  .selected .asg-frame {
-    fill: #049CDD;
-    stroke: #049CDD; }
-
-.asg-dragger {
-  fill: #EEF7FC;
-  cursor: pointer;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab; }
-
 .dbreplcate {
   cursor: pointer;
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab; }
-
-.prompt-text, #prompt_text {
-  fill: #16B4F9;
-  font-size: 12px;
-  cursor: default; }
-
-.AWS-AutoScaling-LaunchConfiguration + .prompt-text {
-  display: none; }
 
 /* port style */
 .port {
@@ -931,6 +901,38 @@
   stroke-width: 4px; }
 .AWS-VPC-Subnet .group-label {
   fill: #999; }
+
+.group-asg {
+  fill: none; }
+
+.asg-title {
+  stroke-width: 0; }
+
+.asg-frame {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default;
+  pointer-events: none; }
+
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }
+
+.AWS-AutoScaling-Group .group {
+  fill: #f6faf9;
+  stroke: #16B4F9;
+  stroke-dasharray: 6, 4;
+  stroke-width: 2; }
+.AWS-AutoScaling-Group.selected .group {
+  stroke: #049CDD; }
+.AWS-AutoScaling-Group.selected .asg-frame {
+  fill: #049CDD; }
+
+.AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
+  font-size: 0px; }
 
 .AWS-RDS-DBSubnetGroup .group {
   fill: rgba(224, 224, 224, 0.1);

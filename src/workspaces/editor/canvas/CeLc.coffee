@@ -124,7 +124,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         ]).classes("canvasel fixed AWS-AutoScaling-LaunchConfiguration").move( 20, 30 )
 
         @addView( svgEl )
-        @canvas.getItem( uid ).$el.children(":last-child").before( svgEl.node )
+        @canvas.getItem( uid ).$el.children().eq(0).after( svgEl.node )
         elementChanged = true
 
       if elementChanged then @updateConnections()

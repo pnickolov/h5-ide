@@ -2646,7 +2646,7 @@ define([], function() {
       // Create a use element
       use: function(elementId, readOnly) {
         var element = document.getElementById(elementId);
-        if ( readOnly || element.getAttribute("interactive") ) {
+        if ( readOnly || element.getAttribute("data-readonly") ) {
           return this.put(new SVG.Use).element(elementId)
         } else {
           // Lower version of chrome doesn't fully support use element

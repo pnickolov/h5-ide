@@ -140,48 +140,11 @@
   cursor: pointer;
 }
 
-.group-asg {
-  // fill: rgba(118, 214, 255, 0.05);
-  fill: #f6faf9;
-  stroke-linejoin: round;
-}
-.asg-title {
-  stroke-width: 0;
-}
-.asg-frame {
-  stroke-dasharray: 6, 4;
-  stroke-width: 2;
-  fill: #83CBF9;
-  stroke: #76d6ff;
-  .selected & {
-    fill:   #049CDD;
-    stroke: #049CDD;
-  }
-}
-.asg-dragger {
-  fill: #EEF7FC;
-  cursor: pointer;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab;
-}
 .dbreplcate {
   cursor: pointer;
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
-}
-
-.prompt-text, #prompt_text {
-  fill: #16B4F9;
-  font-size: 12px;
-  cursor: default;
-}
-
-.AWS-AutoScaling-LaunchConfiguration {
-  + .prompt-text {
-    display : none;
-  }
 }
 
 /* port style */
@@ -270,6 +233,42 @@
   .group-label {
     fill: #999;
   }
+}
+
+.group-asg {
+  fill:none;
+}
+.asg-title {
+  stroke-width: 0;
+}
+.asg-frame {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default;
+  pointer-events:none;
+}
+
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.AWS-AutoScaling-Group {
+  .group {
+    fill:#f6faf9;
+    stroke:#16B4F9;
+    stroke-dasharray: 6, 4;
+    stroke-width: 2;
+  }
+  &.selected {
+    .group { stroke:#049CDD; }
+    .asg-frame { fill:#049CDD; }
+  }
+}
+.AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
+  font-size:0px;
 }
 
 

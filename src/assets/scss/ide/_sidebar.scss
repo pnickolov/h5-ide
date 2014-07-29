@@ -348,6 +348,7 @@ $dndDuration : .2s;
     text-indent: 23px;
 
     &:before {
+      z-index      : -2;
       border-color : #76d6ff;
     }
     &:after {

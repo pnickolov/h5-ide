@@ -125,10 +125,10 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			console.assert( @resId, "Resource not found when assigning SG" )
 
 			# If an old SgAsso is created, new will return that old SgAsso
-			asso = new SgAsso( design.component( @resId ), design.component( sgUID ), null, {manual:true} )
+			asso = new SgAsso( design.component( @resId ), design.component( sgUID ) )
 
 			if sgChecked is false
-				asso.remove({manual:true})
+				asso.remove()
 			null
 
 		deleteSG : (sgUID) ->

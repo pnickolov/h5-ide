@@ -126,23 +126,24 @@ define [
     canvasRect : ()->
       s = @size()
       {
-        x1 : 4
-        y1 : 2
-        x2 : s[0] - 4
-        y2 : s[1] - 2
+        x1 : 3
+        y1 : 1
+        x2 : s[0] - 3
+        y2 : s[1] - 1
       }
 
     isRectAvailableForItem : ( subRect, item )->
       if item.parent()
         parentRect = item.parent().rect()
         children   = item.parent().children()
-        parentRect.x1 += 1
-        parentRect.y1 += 1
-        parentRect.x2 -= 1
-        parentRect.y2 -= 1
       else
         parentRect = @canvasRect()
         children   = @__itemTopLevel
+
+      parentRect.x1 += 1
+      parentRect.y1 += 1
+      parentRect.x2 -= 1
+      parentRect.y2 -= 1
 
       if parentRect.x1 > subRect.x1 or parentRect.y1 > subRect.y1 or parentRect.x2 < subRect.x2 or parentRect.y2 < subRect.y2
         return false

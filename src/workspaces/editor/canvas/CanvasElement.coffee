@@ -397,6 +397,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
       result
 
+    isClonable : ()-> !!@model.clone
+
     cloneTo : ( parent, x, y )->
       if not @model.clone then return
 

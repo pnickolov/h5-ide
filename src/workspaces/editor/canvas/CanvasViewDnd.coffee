@@ -379,6 +379,9 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       includeSource : ( evt )-> evt.data.altState and !!evt.altKey
     }
 
+    if not item.isClonable()
+      options.altState = false
+
     if item.sticky
       options.onDragStart = __moveStickyItemStart
       options.onDrag      = __moveStickyItemDrag
@@ -490,7 +493,12 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     return
 
   __moveItemDidDrop = ( evt, dataTransfer )->
-    dataTransfer.item[ if evt.altKey then "cloneTo" else "changeParent" ]( dataTransfer.parent, dataTransfer.x, dataTransfer.y )
+    if dataTransfer.item.isClonable() and evt.altKey
+      m = "cloneTo"
+    else
+      m = "changeParent"
+
+    dataTransfer.item[m]( dataTransfer.parent, dataTransfer.x, dataTransfer.y )
     return
 
 

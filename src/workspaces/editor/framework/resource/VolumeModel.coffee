@@ -59,10 +59,8 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       if @design().modeIsAppEdit()
         parent = @get("owner")
 
-        if parent.type isnt newParent.type
-          return false
-
-        if not @get("appId") then return true
+        return false if parent.type isnt newParent.type
+        return true  if not @get("appId")
 
         # Disable transfering exsiting volume between servergroups and others.
         if parent.get("count") > 1

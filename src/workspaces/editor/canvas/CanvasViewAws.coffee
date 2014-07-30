@@ -154,8 +154,18 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
 
       if attr.id
         # Moving volume
-        @design.component( attr.id ).attachTo( owner )
-        @selectItem( data.hoverItem.el )
+        volume = @design.component( attr.id )
+        doable = volume.isReparentable( owner )
+        if _.isString( doable )
+          return notification "error", doable
+        else if doable
+          volume.attachTo( owner )
+          @selectItem( data.hoverItem.el )
+        return
+
+      # Avoid adding volume for existing LC.
+      if owner.type is constant.RESTYPE.LC and owner.get("appId")
+        notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
         return
 
       attr.owner = owner

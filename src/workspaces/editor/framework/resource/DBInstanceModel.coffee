@@ -518,11 +518,12 @@ define [
         component.name = @get("name")
         component.uid  = @id
         $.extend component.resource, {
-          DBInstanceClass         : @get("instanceClass")
-          AutoMinorVersionUpgrade : @get("autoMinorVersionUpgrade")
-          PubliclyAccessible      : @get("accessible")
-          BackupRetentionPeriod   : 0
-          MultiAZ                 : false
+          DBInstanceClass                       : @get("instanceClass")
+          AutoMinorVersionUpgrade               : @get("autoMinorVersionUpgrade")
+          PubliclyAccessible                    : @get("accessible")
+          BackupRetentionPeriod                 : 0
+          MultiAZ                               : false
+          ReadReplicaSourceDBInstanceIdentifier : master.createRef('DBInstanceIdentifier')
         }
       else
         component =
@@ -534,7 +535,6 @@ define [
             DBInstanceIdentifier                  : @get 'instanceId'
             NewDBInstanceIdentifier               : @get 'newInstanceId'
             DBSnapshotIdentifier                  : @get 'snapshotId'
-            ReadReplicaSourceDBInstanceIdentifier : @master()?.createRef('DBInstanceIdentifier') or ''
 
             AllocatedStorage                      : @get 'allocatedStorage'
             AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'

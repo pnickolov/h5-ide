@@ -64,7 +64,7 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
 
       ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, volId
 
-      if evt.which is 1
+      if not @canvas.design.modeIsApp() and evt.which is 1
         $vol.dnd( evt, {
           dropTargets  : @canvas.$el
           dataTransfer : { id : volId }

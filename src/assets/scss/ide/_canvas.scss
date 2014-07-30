@@ -31,6 +31,9 @@
   &[data-mode="app"] {
     .group-resizer { display : none; }
     .group-label, .port { pointer-events : none; }
+    ~ .canvas-pp {
+      .vpp-volume, .vpp-snapshot { cursor: default; }
+    }
   }
 }
 

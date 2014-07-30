@@ -729,6 +729,8 @@
     display: none; }
   .canvas-view[data-mode="app"] .group-label, .canvas-view[data-mode="app"] .port {
     pointer-events: none; }
+  .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot {
+    cursor: default; }
 
 .svg_resizer {
   position: absolute;

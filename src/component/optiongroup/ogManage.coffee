@@ -64,12 +64,25 @@ define [
         doNothing: -> false
 
         getModalOptions: ->
-            title: "Edit Option Group"
+            title: lang.ide.RDS_EDIT_OPTION_GROUP
             classList: 'option-group-manage'
             context: that
 
-        initModal: (tpl) ->
+        isAppPortChanged: ->
+            unless @isAppEdit then return false
 
+            appId = @ogModel.get 'appId'
+            appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
+
+            unless appData then return false
+            appOptions = {}
+            that = @
+
+            _.each appData.Options, (option) -> appOptions[option.OptionName] = option
+            _.some appOptions, ( option, name ) -> +that.ogDataStore[ name ].Port isnt +option.Port
+
+
+        initModal: (tpl) ->
             that = this
 
             options =
@@ -137,6 +150,7 @@ define [
             ogData.isCreate = @isCreate
             ogData.isAppEdit = @isAppEdit
             ogData.engineType = @ogModel.engineType()
+            ogData.isAppPortChanged = @isAppPortChanged()
 
             @$el.html template.og_modal(ogData)
             @initModal @el
@@ -307,6 +321,22 @@ define [
             @optionCb = null
             @remove()
 
+        handleApplyImmediately: ->
+            # Disable and check apply-immediately checkbox, show tooltip
+            # when port is changed, add or removed in appEdit mode.
+            if @isAppPortChanged()
+                @$('#option-apply-immediately')
+                    .prop('disabled', true)
+                    .prop('checked', true)
+                    .parent()
+                    .data('tooltip', lang.ide.RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY)
+
+            else
+                @$('#option-apply-immediately')
+                    .prop('disabled', false)
+                    .parent()
+                    .removeAttr('data-tooltip')
+
         optionChanged: (event) ->
 
             that = this
@@ -348,7 +378,8 @@ define [
                         that.ogDataStore[optionName] = optionData
                     else
                         that.setOption($optionItem, false)
-                    null
+
+                @handleApplyImmediately()
 
             else
 
@@ -367,7 +398,8 @@ define [
             @slide @ogOptions[optionIdx], (optionData) ->
                 if optionData
                     that.ogDataStore[optionName] = optionData
-                null
+
+                @handleApplyImmediately()
 
         setOption: ($item, value) ->
 

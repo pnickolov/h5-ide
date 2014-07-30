@@ -120,8 +120,8 @@
             {{#if isAppEdit}}
             {{#if appId}}
             <div class="og-apply-immediately">
-                <div class="checkbox">
-                    <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{/if}}>
+                <div class="checkbox tooltip" {{#if isAppPortChanged}}data-tooltip={{i18n "RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY"}}{{/if}}>
+                    <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{else}}{{#if isAppPortChanged}}checked{{/if}}{{/if}} {{#if isAppPortChanged}}disabled{{/if}}>
                     <label for="option-apply-immediately"></label>
                 </div>
                 <label for="option-apply-immediately">Apply Immediately</label>

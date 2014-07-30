@@ -5218,6 +5218,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Some error occured"
       zh: ""
 
+    RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY:
+      en: "Edits with port change requires changes to be applied immediately."
+      zh: ""
+
 
 
     ##### RDS

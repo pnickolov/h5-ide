@@ -275,6 +275,14 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeDbReplication"
     ### env:dev:end ###
     type : "DbReplication"
+
+    createLine : ( pd )->
+      svg   = @canvas.svg
+      svgEl = CeLine.prototype.createLine.call this, pd
+      svgEl.add( svg.path(pd).classes("dash-line") )
+      svgEl
+
+    lineStyle : ()-> @canvas.lineStyle()
   }
 
   CeLine

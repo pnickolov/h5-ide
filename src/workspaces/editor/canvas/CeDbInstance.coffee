@@ -28,6 +28,16 @@ define [
       "db-sg" : "horizontal"
     }
 
+    # portPosition : ( portName, isAtomic )->
+    #   p = @portPosMap[ portName ]
+    #   if portName is "replica"
+    #     p = p.slice(0)
+    #     if @model.master()
+    #       p[1] = 45
+    #     else
+    #       p[1] = 65
+    #   p
+
     typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
     engineIcon : ()-> "ide/icon/rds-" + (@model.get("engine")||"").split("-")[0] + ".png"
 
@@ -104,9 +114,8 @@ define [
         })
       ])
 
-      svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
-
       if @model.get('engine') is constant.DBENGINE.MYSQL
+        svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
         else

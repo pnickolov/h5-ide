@@ -32,22 +32,19 @@ define [ '../base/view'
             return false
 
         render: ->
-            data = @model.toJSON()
-            data.azSb = @getAzSb()
-            data.sbCount = @model.connectionTargets("SubnetgAsso").length
-
-            @$el.html template data
-            @model.get 'name'
-
-        getAzSb: ->
-            sbs = _.map Design.modelClassForType(constant.RESTYPE.SUBNET).allObjects(), ( sb )->
+            subnets = @model.connectionTargets("SubnetgAsso").map ( sb )->
                 {
                     name : sb.get("name")
                     cidr : sb.get("cidr")
                     az   : sb.parent().get("name")
                 }
-            _.groupBy sbs, "az"
 
+            data         = @model.toJSON()
+            data.sbCount = subnets.length
+            data.azSb    = _.groupBy subnets, "az"
+
+            @$el.html template data
+            @model.get 'name'
     }
 
     new SubnetGroupView()

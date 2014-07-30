@@ -5201,6 +5201,23 @@ VisualOps API. You cannot UNDO this action.'
 
     ##### State Editor
 
+    ##### RDS
+    RDS_VALUE_IS_NOT_ALLOWED:
+      en: "The value %s is not an allowed value."
+      zh: ""
+
+    RDS_EDIT_OPTION_GROUP:
+      en: "Edit Option Group"
+      zh: ""
+
+    RDS_SOME_ERROR_OCCURED:
+      en: "Some error occured"
+      zh: ""
+
+
+
+    ##### RDS
+
     ##### Trust Advisor
 
     # VPC

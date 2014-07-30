@@ -13,7 +13,7 @@ define [
         ( val ) ->
             val = +val
             if val > end or val < start
-                return "The value '#{val}' is not an allowed value."
+                return sprintf lang.ide.RDS_VALUE_IS_NOT_ALLOWED, val
             null
 
     capitalizeKey = ( arr ) ->
@@ -74,7 +74,7 @@ define [
 
             options =
                 template        : tpl
-                title           : "Edit Option Group"
+                title           : lang.ide.RDS_EDIT_OPTION_GROUP
                 disableFooter   : true
                 disableClose    : true
                 width           : '855px'
@@ -108,6 +108,7 @@ define [
             optionAry = @ogModel.get('options')
             _.each optionAry, (option) ->
                 that.ogDataStore[option.OptionName] = option
+                null
 
             # set checked for option list
             _.each @ogOptions, (option) ->
@@ -187,7 +188,7 @@ define [
 
             form = $ 'form'
             if not form.parsley 'validate'
-                @$('.error').html 'Some error occured.'
+                @$('.error').html lang.ide.RDS_SOME_ERROR_OCCURED
                 return
 
             data = {
@@ -235,7 +236,6 @@ define [
                         option.sgs.unshift json
                     else
                         option.sgs.push json
-
 
 
             for s, i in option.OptionGroupOptionSettings or []
@@ -304,9 +304,8 @@ define [
             slides[ which ]?.call @, tpl, checked
 
         close: ->
-
             @optionCb = null
-            # @remove()
+            @remove()
 
         optionChanged: (event) ->
 
@@ -349,10 +348,13 @@ define [
                         that.ogDataStore[optionName] = optionData
                     else
                         that.setOption($optionItem, false)
+                    null
 
             else
 
                 $optionEdit.addClass('invisible')
+
+            null
 
         optionEditClicked: (event) ->
 
@@ -365,6 +367,7 @@ define [
             @slide @ogOptions[optionIdx], (optionData) ->
                 if optionData
                     that.ogDataStore[optionName] = optionData
+                null
 
         setOption: ($item, value) ->
 

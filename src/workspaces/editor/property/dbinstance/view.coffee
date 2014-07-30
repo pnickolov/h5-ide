@@ -347,8 +347,10 @@ define [ 'ApiRequest'
 
                 originValue = that.getOriginAttr()
 
-                if originValue and (storage < originValue.originAllocatedStorage)
-                    return 'Allocated storage cannot be reduced.'
+                if @isAppEdit()
+
+                    if originValue and (storage < originValue.originAllocatedStorage)
+                        return 'Allocated storage cannot be reduced.'
 
                 if that.resModel.isMysql() and not (storage >=5 and storage <= 3072)
                     return 'Must be an integer from 5 to 3072'

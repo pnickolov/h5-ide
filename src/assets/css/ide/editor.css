@@ -1122,7 +1122,8 @@ g.shadow {
 #DndItem.vpp-volume, #DndItem.vpp-snapshot {
   color: #333;
   width: 60px;
-  height: 60px; }
+  height: 60px;
+  border: none; }
 
 .instance-pph {
   background: #83CBF9;

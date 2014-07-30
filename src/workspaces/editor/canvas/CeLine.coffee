@@ -184,7 +184,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       else
         controlPoints = MC.canvas.route2( start0, end0 )
         if controlPoints
-          switch @canvas.lineStyle()
+          switch @lineStyle()
             when 0
               path = "M#{controlPoints[0].x} #{controlPoints[0].y} L#{controlPoints[1].x} #{controlPoints[1].y} L#{controlPoints[controlPoints.length-2].x} #{controlPoints[controlPoints.length-2].y} L#{controlPoints[controlPoints.length-1].x} #{controlPoints[controlPoints.length-1].y}"
             when 1 then path = MC.canvas._round_corner(controlPoints)
@@ -193,6 +193,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
             when 777 then path = MC.canvas._round_corner(controlPoints)
 
       path
+
+    lineStyle : ()-> 777
 
   }, {
     cleanLineMask : ( line )->

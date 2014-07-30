@@ -34,7 +34,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
       svgEl = @canvas.appendSubnet( @createGroup() )
       svgEl.add([
-        svg.image(MC.IMG_URL + "/ide/icon/sbg-info.png", 12, 12).move(4, 4).classes("tooltip")
+        svg.image(MC.IMG_URL + "/ide/icon/icn-sbginfo.png", 12, 12).move(4, 4).classes("tooltip")
       ])
       $( svgEl.node ).children(".group-label").attr({
         x : "18"

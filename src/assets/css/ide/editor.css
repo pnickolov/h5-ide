@@ -266,34 +266,34 @@
     padding-top: 5px;
     height: 132px; }
   .resource-item.az {
-    background-image: url('/assets/images/ide/icon/az-resource.png');
+    background-image: url('/assets/images/ide/icon/res-az.png');
     position: relative; }
   .resource-item.volume {
-    background-image: url('/assets/images/ide/icon/volume-resource-1109.png'); }
+    background-image: url('/assets/images/ide/icon/res-vol.png'); }
   .resource-item.eni {
-    background-image: url('/assets/images/ide/icon/eni-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-eni.png'); }
   .resource-item.subnet {
-    background-image: url('/assets/images/ide/icon/subnet-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-subnet.png'); }
   .resource-item.rtb {
-    background-image: url('/assets/images/ide/icon/rt-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-rtb.png'); }
   .resource-item.igw {
-    background-image: url('/assets/images/ide/icon/igw-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-igw.png'); }
   .resource-item.vgw {
-    background-image: url('/assets/images/ide/icon/vgw-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-vgw.png'); }
   .resource-item.cgw {
-    background-image: url('/assets/images/ide/icon/cgw-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-cgw.png'); }
   .resource-item.asg {
-    background-image: url('/assets/images/ide/icon/asg-resource.png');
+    background-image: url('/assets/images/ide/icon/res-asg.png');
     position: relative; }
   .resource-item.elb {
-    background-image: url('/assets/images/ide/icon/elb-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-elb.png'); }
   .resource-item.snapshot {
-    background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
+    background-image: url('/assets/images/ide/icon/res-snapshot.png'); }
   .resource-item.subnetgroup {
-    background-image: url('/assets/images/ide/icon/subnetgroup-resource.png'); }
+    background-image: url('/assets/images/ide/icon/res-subnetg.png'); }
   .resource-item.dbsnapshot {
     height: 30px;
-    background-image: url('/assets/images/ide/icon/ebs-snapshot-resource-1109.png'); }
+    background-image: url('/assets/images/ide/icon/res-rdssnap.png'); }
   .resource-item .resource-count {
     position: absolute;
     top: 7px;
@@ -313,7 +313,7 @@
 .resource-icon-instance, .resource-icon-dbinstance {
   padding-top: 12px;
   height: 48px;
-  background: url('/assets/images/ide/icon/instance-resource.png') center no-repeat; }
+  background: url('/assets/images/ide/icon/res-instance.png') center no-repeat; }
   #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance {
     padding-top: 28px;
     height: 62px;
@@ -342,6 +342,9 @@
     top: 51px;
     width: 53px;
     height: 46px; }
+
+.resource-icon-dbinstance {
+  background-image: url('/assets/images/ide/icon/res-rds.png'); }
 
 .ebs-size {
   margin-top: -1.5em;
@@ -485,16 +488,17 @@
       content: "subnet group";
       border-radius: 4px;
       position: absolute;
-      top: 30px;
-      left: 30px;
+      top: 35px;
+      left: 35px;
       color: #498fe1;
-      height: 40px;
-      width: 40px;
+      height: 30px;
+      width: 30px;
       margin-left: -10px;
       margin-top: -10px;
       padding-left: 3px;
       text-align: left;
       border: 2px dashed #498fe1;
+      overflow: hidden;
       -webkit-transition: all .15s ease-in;
       -moz-transition: all .15s ease-in;
       -o-transition: all .15s ease-in;
@@ -634,7 +638,7 @@
   width: 24px;
   height: 24px;
   margin-right: 5px;
-  background: url('/assets/images/ide/icon/icon-ami-os.png') left top no-repeat; }
+  background: url('/assets/images/ide/icon/icn-amios.png') left top no-repeat; }
 .icon-ami-os.centos:before {
   background-position: -24px 0; }
 .icon-ami-os.debian:before {
@@ -1103,7 +1107,7 @@ g.shadow {
   font-size: 9px;
   color: #333;
   text-align: center;
-  background: url('/assets/images/ide/icon/volume-volume-bubble.png') center no-repeat; }
+  background: url('/assets/images/ide/icon/cvs-vol.png') center no-repeat; }
   .vpp-volume:nth-child(4n+1), .vpp-snapshot:nth-child(4n+1) {
     clear: left;
     margin-left: 10px; }
@@ -1119,7 +1123,7 @@ g.shadow {
     margin-top: 10px; }
 
 .vpp-snapshot {
-  background-image: url('/assets/images/ide/icon/ebs-snapshot-volume-bubble.png'); }
+  background-image: url('/assets/images/ide/icon/cvs-snapshot.png'); }
 
 #DndItem.vpp-volume, #DndItem.vpp-snapshot {
   color: #333;
@@ -1156,7 +1160,7 @@ g.shadow {
   border: #fff 2px solid;
   border-radius: 4px;
   position: relative;
-  background: url('/assets/images/ide/icon/instance-canvas.png') 14px 10px no-repeat;
+  background: url('/assets/images/ide/icon/cvs-instance.png') 14px 10px no-repeat;
   color: #333;
   text-align: center; }
   .vpp-instance:nth-child(4n+1) {
@@ -1183,7 +1187,7 @@ g.shadow {
     width: 26px;
     color: #74B1FD;
     height: 24px;
-    background: url('/assets/images/ide/icon/instance-volume.png') center no-repeat; }
+    background: url('/assets/images/ide/icon/icn-vol.png') center no-repeat; }
 
 .instance-pp-empty {
   text-align: center;
@@ -1198,13 +1202,13 @@ g.shadow {
 .vpp-eni {
   position: relative;
   line-height: 148px;
-  background: url('/assets/images/ide/icon/eni-canvas-attached.png') 15px 14px no-repeat; }
+  background: url('/assets/images/ide/icon/cvs-eni-att.png') 15px 14px no-repeat; }
 
 .vpp-eip {
   position: absolute;
   width: 12px;
   height: 14px;
-  background: url('/assets/images/ide/icon/eip-on.png');
+  background: url('/assets/images/ide/icon/icn-eipon.png');
   left: 43px;
   top: 36px; }
 

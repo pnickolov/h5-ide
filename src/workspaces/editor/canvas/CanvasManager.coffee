@@ -74,10 +74,10 @@ define ['CloudResources'], (CloudResources)->
 
       if toggle
         tootipStr = 'Detach Elastic IP from primary IP'
-        imgUrl    = 'ide/icon/eip-on.png'
+        imgUrl    = 'ide/icon/icn-eipon.png'
       else
         tootipStr = 'Associate Elastic IP to primary IP'
-        imgUrl    = 'ide/icon/eip-off.png'
+        imgUrl    = 'ide/icon/icn-eipoff.png'
 
       if targetModel.design().modeIsApp()
         if targetModel.getEmbedEni then targetModel = targetModel.getEmbedEni()

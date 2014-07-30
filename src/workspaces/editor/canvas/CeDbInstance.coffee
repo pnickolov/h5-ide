@@ -28,7 +28,7 @@ define [
       "db-sg" : "horizontal"
     }
 
-    typeIcon   : ()-> "ide/icon/dbinstance-#{@model.category()}.png"
+    typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
     engineIcon : ()-> "ide/engine/" + (@model.get("engine")||"").split("-")[0] + ".png"
 
     events :
@@ -79,7 +79,7 @@ define [
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image   : "ide/icon/dbinstance-canvas.png"
+        image   : "ide/icon/cvs-rds.png"
         imageX  : 15
         imageY  : 11
         imageW  : 61

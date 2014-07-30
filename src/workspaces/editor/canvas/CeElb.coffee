@@ -18,9 +18,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     iconUrl : ()->
       if @model.get("internal")
-        "ide/icon/elb-internal-canvas.png"
+        "ide/icon/cvs-elb-int.png"
       else
-        "ide/icon/elb-internet-canvas.png"
+        "ide/icon/cvs-elb-ext.png"
 
     listenModelEvents : ()->
       @listenTo @model, "change:internal", @render

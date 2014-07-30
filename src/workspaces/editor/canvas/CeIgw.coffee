@@ -23,7 +23,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image   : "ide/icon/igw-canvas.png"
+        image   : "ide/icon/cvs-igw.png"
         imageX  : 10
         imageY  : 16
         imageW  : 60

@@ -84,7 +84,7 @@ define [
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image   : "ide/icon/instance-canvas.png"
+        image   : "ide/icon/cvs-instance.png"
         imageX  : 15
         imageY  : 11
         imageW  : 61
@@ -96,7 +96,7 @@ define [
         # Ami Icon
         svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
         # Volume Image
-        svg.image( MC.IMG_URL + "ide/icon/instance-volume.png", 29, 24 ).move(21, 46).classes('volume-image')
+        svg.image( MC.IMG_URL + "ide/icon/icn-vol.png", 29, 24 ).move(21, 46).classes('volume-image')
         # Volume Label
         svg.text( "" ).move(35, 58).classes('volume-number')
         # Eip

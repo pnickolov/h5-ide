@@ -28,9 +28,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     iconUrl : ()->
       if @model.connections( "EniAttachment" ).length
-        "ide/icon/eni-canvas-attached.png"
+        "ide/icon/cvs-eni-att.png"
       else
-        "ide/icon/eni-canvas-unattached.png"
+        "ide/icon/cvs-eni-unatt.png"
 
     listenModelEvents : ()->
       @listenTo @model, "change:connections", @onConnectionChange

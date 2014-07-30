@@ -497,7 +497,7 @@ g.shadow { opacity : 0.8; }
   color      : #333;
   text-align : center;
 
-  background : image-url('ide/icon/volume-volume-bubble.png') center no-repeat;
+  background : image-url('ide/icon/cvs-vol.png') center no-repeat;
 
   &:nth-child(4n+1) { clear : left; margin-left : 10px; }
 
@@ -513,7 +513,7 @@ g.shadow { opacity : 0.8; }
 }
 
 .vpp-snapshot {
-  background-image: image-url('ide/icon/ebs-snapshot-volume-bubble.png');
+  background-image: image-url('ide/icon/cvs-snapshot.png');
 }
 
 #DndItem.vpp-volume, #DndItem.vpp-snapshot {
@@ -554,7 +554,7 @@ g.shadow { opacity : 0.8; }
   border-radius : 4px;
   position      : relative;
 
-  background: image-url('ide/icon/instance-canvas.png') 14px 10px no-repeat;
+  background: image-url('ide/icon/cvs-instance.png') 14px 10px no-repeat;
 
   color      : #333;
   text-align : center;
@@ -580,8 +580,8 @@ g.shadow { opacity : 0.8; }
     margin     : 5px auto 1px;
     width      : 26px;
     color      : #74B1FD;
-    height     : image-height('ide/icon/instance-volume.png');
-    background : image-url('ide/icon/instance-volume.png') center no-repeat;
+    height     : image-height('ide/icon/icn-vol.png');
+    background : image-url('ide/icon/icn-vol.png') center no-repeat;
   }
 }
 .instance-pp-empty {
@@ -599,14 +599,14 @@ g.shadow { opacity : 0.8; }
 .vpp-eni {
   position    : relative;
   line-height : 148px;
-  background  : image-url('ide/icon/eni-canvas-attached.png') 15px 14px no-repeat;
+  background  : image-url('ide/icon/cvs-eni-att.png') 15px 14px no-repeat;
 }
 
 .vpp-eip {
   position   : absolute;
-  width      : image-width("ide/icon/eip-on.png");
-  height     : image-height("ide/icon/eip-on.png");
-  background : image-url("ide/icon/eip-on.png");
+  width      : image-width("ide/icon/icn-eipon.png");
+  height     : image-height("ide/icon/icn-eipon.png");
+  background : image-url("ide/icon/icn-eipon.png");
   left       : 43px;
   top        : 36px;
 }

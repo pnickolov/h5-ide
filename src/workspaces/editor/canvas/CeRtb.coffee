@@ -22,7 +22,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     }
 
     iconUrl : ()->
-      if @model.get("main") then "ide/icon/rt-main-canvas.png" else "ide/icon/rt-canvas.png"
+      if @model.get("main") then "ide/icon/cvs-rtb-main.png" else "ide/icon/cvs-rtb.png"
 
     listenModelEvents : ()->
       @listenTo @model, "change:main", @render

@@ -127,20 +127,20 @@ $dndDuration : .2s;
     height      : 132px;
   }
 
-  &.az       { background-image: image-url('ide/icon/az-resource.png'); position: relative; }
-  &.volume   { background-image: image-url('ide/icon/volume-resource-1109.png'); }
-  &.eni      { background-image: image-url('ide/icon/eni-resource.png'); }
-  &.subnet   { background-image: image-url('ide/icon/subnet-resource.png'); }
-  &.rtb      { background-image: image-url('ide/icon/rt-resource.png'); }
-  &.igw      { background-image: image-url('ide/icon/igw-resource.png'); }
-  &.vgw      { background-image: image-url('ide/icon/vgw-resource.png'); }
-  &.cgw      { background-image: image-url('ide/icon/cgw-resource.png'); }
-  &.asg      { background-image: image-url('ide/icon/asg-resource.png'); position: relative; }
-  &.elb      { background-image: image-url('ide/icon/elb-resource.png'); }
-  &.snapshot { background-image: image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
-  &.subnetgroup { background-image: image-url('ide/icon/subnetgroup-resource.png'); }
+  &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
+  &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
+  &.eni      { background-image: image-url('ide/icon/res-eni.png'); }
+  &.subnet   { background-image: image-url('ide/icon/res-subnet.png'); }
+  &.rtb      { background-image: image-url('ide/icon/res-rtb.png'); }
+  &.igw      { background-image: image-url('ide/icon/res-igw.png'); }
+  &.vgw      { background-image: image-url('ide/icon/res-vgw.png'); }
+  &.cgw      { background-image: image-url('ide/icon/res-cgw.png'); }
+  &.asg      { background-image: image-url('ide/icon/res-asg.png'); position: relative; }
+  &.elb      { background-image: image-url('ide/icon/res-elb.png'); }
+  &.snapshot { background-image: image-url('ide/icon/res-snapshot.png'); }
+  &.subnetgroup { background-image: image-url('ide/icon/res-subnetg.png'); }
 
-  &.dbsnapshot { height: 30px; background-image : image-url('ide/icon/ebs-snapshot-resource-1109.png'); }
+  &.dbsnapshot { height: 30px; background-image : image-url('ide/icon/res-rdssnap.png'); }
 
   .resource-count {
     position      : absolute;
@@ -165,7 +165,7 @@ $dndDuration : .2s;
 .resource-icon-instance, .resource-icon-dbinstance {
   padding-top : 12px;
   height : 60px - 12px;
-  background : image-url('ide/icon/instance-resource.png') center no-repeat;
+  background : image-url('ide/icon/res-instance.png') center no-repeat;
 
   #DndItem & {
     padding-top : 28px;
@@ -203,6 +203,10 @@ $dndDuration : .2s;
     width  : 53px;
     height : 46px;
   }
+}
+
+.resource-icon-dbinstance {
+  background-image : image-url('ide/icon/res-rds.png');
 }
 
 .ebs-size {
@@ -393,16 +397,17 @@ $dndDuration : .2s;
       border-radius : 4px;
 
       position     : absolute;
-      top          : 30px;
-      left         : 30px;
+      top          : 35px;
+      left         : 35px;
       color        : #498fe1;
-      height       : 40px;
-      width        : 40px;
+      height       : 30px;
+      width        : 30px;
       margin-left  : -10px;
-      margin-top : -10px;
+      margin-top   : -10px;
       padding-left : 3px;
       text-align   : left;
       border       : 2px dashed #498fe1;
+      overflow     : hidden;
 
       -webkit-transition: all .15s ease-in;
       -moz-transition   : all .15s ease-in;
@@ -589,7 +594,7 @@ $dndDuration : .2s;
     width        : 24px;
     height       : 24px;
     margin-right : 5px;
-    background   : image-url('ide/icon/icon-ami-os.png') left top no-repeat;
+    background   : image-url('ide/icon/icn-amios.png') left top no-repeat;
   }
 
   &.centos:before { background-position: -24px 0; }

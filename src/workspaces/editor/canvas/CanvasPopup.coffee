@@ -31,8 +31,8 @@ define [ "backbone" ], ()->
         @canvas.$el[0].addEventListener "mousedown", ac, true
 
 
-      ceItem = @canvas.getItem $( @attachment ).closest( ".canvasel" ).attr("data-id")
-      console.assert ceItem, "Canvas popup must be attached to a canvas element"
+      ceItem = @canvas.getItem($( @attachment ).closest( ".canvasel" ).attr("data-id")) || @attachment
+
       if not ceItem.__popupCache then ceItem.__popupCache = {}
       oldPoup = ceItem.__popupCache[ @type ]
       ceItem.__popupCache[ @type ] = @
@@ -40,7 +40,7 @@ define [ "backbone" ], ()->
         @migrate( oldPoup )
         oldPoup.remove()
 
-      @canvas.registerPopup( @ )
+      @canvas.registerPopup( @type, @ )
       return
 
     migrate : ( oldPopup )->
@@ -95,9 +95,9 @@ define [ "backbone" ], ()->
       return
 
     remove : ()->
-      @canvas.registerPopup( @ )
+      @canvas.registerPopup( @type, @, false )
 
-      ceItem = @canvas.getItem $( @attachment ).closest( ".canvasel" ).attr("data-id")
+      ceItem = @canvas.getItem($( @attachment ).closest( ".canvasel" ).attr("data-id")) || @attachment
       oldPoup = ceItem.__popupCache[ @type ]
       if oldPoup is @
         delete ceItem.__popupCache[ @type ]

@@ -56,13 +56,11 @@ define ['CloudResources'], (CloudResources)->
         isShow = element.getAttribute("display") is "none"
 
       if isShow
-        element.setAttribute "display", "inline"
-        element.setAttribute "style", ""
+        element.setAttribute "display", ""
         if element.getAttribute "data-tooltip"
           @addClass element, "tooltip"
       else
         element.setAttribute "display", "none"
-        element.setAttribute "style", "opacity:0"
         @removeClass element, "tooltip"
 
       return this

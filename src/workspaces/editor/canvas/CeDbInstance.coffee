@@ -88,7 +88,6 @@ define [
         labelBg : true
         sg      : true
       }).add([
-        svg.image( MC.IMG_URL + @typeIcon(),   32, 15 ).move(30, 20).classes("type-image")
         svg.image( MC.IMG_URL + @engineIcon(), 46, 33 ).move(22, 18).classes('engine-image')
 
         svg.use("port_diamond").attr({
@@ -107,10 +106,11 @@ define [
 
       svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
 
-      if @model.get('engine') is constant.DBENGINE.MYSQL and @model.category() isnt 'replica'
-        svgEl.add(
-          svg.image( MC.IMG_URL + "ide/icon/dbinstance-resource-dragger.png", 22, 21 ).move( 34, 58 ).attr({"class" : "dbreplicate tooltip"})
-        )
+      if @model.get('engine') is constant.DBENGINE.MYSQL
+        if @model.master()
+          svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
+        else
+          svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()

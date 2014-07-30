@@ -7,8 +7,8 @@ define [
   "./CpInstance"
   "i18n!/nls/lang.js"
   "CloudResources"
-  "event"
-], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, ide_event )->
+  "component/dbsbgroup/DbSubnetGPopup"
+], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, DbSubnetGPopup )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -20,8 +20,8 @@ define [
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
-      "db-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "db-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "db-sg-left"  : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "db-sg-right" : [ 80, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
       "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
     portDirMap : {
@@ -81,7 +81,7 @@ define [
       svgEl = @createNode({
         image   : "ide/icon/cvs-rds.png"
         imageX  : 15
-        imageY  : 11
+        imageY  : 8
         imageW  : 61
         imageH  : 62
         label   : true
@@ -89,7 +89,7 @@ define [
         sg      : true
       }).add([
         svg.image( MC.IMG_URL + @typeIcon(),   32, 15 ).move(30, 20).classes("type-image")
-        svg.image( MC.IMG_URL + @engineIcon(), 32, 15 ).move(30, 40).classes('engine-image')
+        svg.image( MC.IMG_URL + @engineIcon(), 46, 33 ).move(22, 18).classes('engine-image')
 
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
@@ -177,6 +177,8 @@ define [
 
           attr.x += 2
           attr.y += 2
+
+          new DbSubnetGPopup({model:attr.parent})
 
           return CanvasElement.createResource( constant.RESTYPE.DBINSTANCE, attr, option )
 

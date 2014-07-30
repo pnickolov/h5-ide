@@ -255,11 +255,15 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     idx = children.indexOf( item )
     if idx >= 0 then children.splice( idx, 1 )
 
-    if item and item.isGroup()
-      rect.x1 -= 1
-      rect.y1 -= 1
-      rect.x2 += 1
-      rect.y2 += 1
+    rectMethod = "rect"
+    if item
+      if item.isGroup()
+        rect.x1 -= 1
+        rect.y1 -= 1
+        rect.x2 += 1
+        rect.y2 += 1
+      else
+        rectMethod = "effectiveRect"
 
     # Expand the detect area by 12 at most
     width  = __rectWidth( rect )
@@ -278,7 +282,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     farColliders = []
 
     for ch in children
-      bb = ch.rect()
+      bb = ch[rectMethod]()
       if __isOverlap( bb, orignalRect )
         colliders.push bb
       else if __isOverlap( bb, rect )

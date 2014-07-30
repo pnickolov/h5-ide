@@ -147,6 +147,16 @@ define [
     createResource : ( type, attr, option )->
       if not attr.parent then return
 
+      if option and option.cloneSource?.master()
+        # If we are cloning a replica, we should check if we can
+        # If the model supports clone() interface, then clone the target.
+        if option.cloneSource.master().slaves().length >= 5
+          notification "error", "Cannot create more read replica."
+          return
+        else
+          option.master = option.cloneSource.master()
+          delete option.cloneSource
+
       switch attr.parent.type
         when constant.RESTYPE.DBSBG
           return CanvasElement.createResource( type, attr, option )

@@ -21,7 +21,7 @@ define [
 
     portPosMap : {
       "db-sg-left"  : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "db-sg-right" : [ 80, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "db-sg-right" : [ 79, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
       "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
     portDirMap : {
@@ -29,7 +29,7 @@ define [
     }
 
     typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
-    engineIcon : ()-> "ide/engine/" + (@model.get("engine")||"").split("-")[0] + ".png"
+    engineIcon : ()-> "ide/icon/rds-" + (@model.get("engine")||"").split("-")[0] + ".png"
 
     events :
       "mousedown .dbreplicate" : "replicate"
@@ -80,10 +80,10 @@ define [
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
         image   : "ide/icon/cvs-rds.png"
-        imageX  : 15
+        imageX  : 14
         imageY  : 8
-        imageW  : 61
-        imageH  : 62
+        imageW  : 62
+        imageH  : 66
         label   : true
         labelBg : true
         sg      : true

@@ -3998,6 +3998,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Running Instance"
       zh: "运行的实例"
 
+    DASH_LBL_RDS:
+      en: "DB Instance"
+      zh: ""
+
     DASH_LBL_ELASTIC_IP:
       en: "Elastic IP"
       zh: "弹性IP"

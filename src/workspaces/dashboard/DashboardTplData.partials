@@ -44,6 +44,13 @@
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
+<li class="rds" data-type="RDS">
+  <hgroup><span class="resource-count">{{vpns.totalCount}}</span><h5>{{i18n "DASH_LBL_RDS"}}</h5></hgroup>
+  <ul>{{#each vpns}}<li data-region="{{region}}" class="global-resource-li">
+    <span class="count">{{data.length}}</span>
+    <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
+  </li>{{/each}}</ul>
+</li>
 <li class="eips" data-type="EIP">
   <hgroup><span class="resource-count">{{eips.totalCount}}</span><h5>{{i18n "DASH_LBL_ELASTIC_IP"}}</h5></hgroup>
   <ul>{{#each eips}}<li data-region="{{region}}" class="global-resource-li">

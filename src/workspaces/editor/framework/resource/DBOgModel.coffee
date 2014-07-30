@@ -68,6 +68,9 @@ define [
         console.debug( "Option Group is not serialized, because nothing use it." )
         return
 
+      if not @connections().length
+        return
+
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 
       component =

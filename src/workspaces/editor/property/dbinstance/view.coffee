@@ -426,6 +426,10 @@ define [ 'ApiRequest'
                         majorVersion: @resModel.getMajorVersion()
                     }).el
 
+            else
+
+                @$el.find('.property-dbinstance-optiongroup').hide()
+
         renderParameterGroup: ->
             #update selection
             @pgDropdown.setSelection(@resModel.get 'pgName')

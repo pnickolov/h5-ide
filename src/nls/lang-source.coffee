@@ -691,6 +691,14 @@ module.exports =
       en: "Failed to remove AMI from Favorite"
       zh: "映像从收藏列表移除失败"
 
+    RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
+      en: "Cannot delete subnet because the subnet is used by a subnet group."
+      zh: ""
+
+    RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:
+      en: "Cannot delete availability zone because some subnet in it is used by a subnet group."
+      zh: ""
+
     CVS_MSG_WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
       zh: "卷和快照必须拖放到实例或映像。"

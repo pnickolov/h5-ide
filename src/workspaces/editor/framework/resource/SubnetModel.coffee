@@ -63,7 +63,7 @@ define [ "constant",
       az = @parent()
 
       if @connections("SubnetgAsso").length > 0
-        return { error : "Cannot delete subnet because the subnet is used by a subnet group." }
+        return { error : lang.ide.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG }
 
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")

@@ -6,6 +6,9 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
     type : constant.RESTYPE.AZ
 
     isRemovable : ()->
+      if (_.some @children(), ( sb ) -> sb.connections("SubnetgAsso").length > 0)
+        return { error : lang.ide.RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG }
+
       if @children().length > 0
         # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
@@ -25,7 +28,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
           eni = child
         else
           continue
-          
+
         ipCount += eni.get("ips").length * eni.serverGroupCount()
 
       maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )

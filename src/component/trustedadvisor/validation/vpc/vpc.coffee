@@ -88,7 +88,31 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 
 		null
 
+
+	isVPCWithRdsAccessibleHasNoIgw = ( uid ) ->
+        vpc = Design.instance().component uid
+        hasRdsAccessible = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).some (db) ->
+        	db.get 'accessible'
+
+        return null unless hasRdsAccessible
+        return null if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
+
+    isVPCWithRdsAccessibleEnableDNS = ( uid ) ->
+        vpc = Design.instance().component uid
+        hasRdsAccessible = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).some (db) ->
+        	db.get 'accessible'
+
+        return null unless hasRdsAccessible
+        return null if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
+
 	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
 	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp
 	isVPCUsingNoneDHCPAndVisualops 	: isVPCUsingNoneDHCPAndVisualops
 	isVPCWithRdsTenancyDefault      : isVPCWithRdsTenancyDefault
+	isVPCWithRdsAccessibleHasNoIgw  : isVPCWithRdsAccessibleHasNoIgw
+	isVPCWithRdsAccessibleEnableDNS : isVPCWithRdsAccessibleEnableDNS
+

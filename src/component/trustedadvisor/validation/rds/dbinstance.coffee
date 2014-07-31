@@ -30,26 +30,6 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT, db.get('name'), azName
 
-    isAccessibleHasNoIgw = ( uid ) ->
-        db = Design.instance().component uid
-        return null if not db.get 'accessible'
-
-        vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
-        if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
-            return null
-
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
-
-    isAccessibleEnableDNS = ( uid ) ->
-        db = Design.instance().component uid
-        return null if not db.get 'accessible'
-
-        vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
-        if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
-            return null
-
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
-
     isHaveEnoughIPForDB = (uid) ->
 
         _getSubnetRemainIPCount = (subnetModel) ->
@@ -120,8 +100,6 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
     isOgValid               : isOgValid
     isAzConsistent          : isAzConsistent
-    isAccessibleHasNoIgw    : isAccessibleHasNoIgw
-    isAccessibleEnableDNS   : isAccessibleEnableDNS
     isHaveEnoughIPForDB     : isHaveEnoughIPForDB
     isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
     isSqlServerCross3Subnet : isSqlServerCross3Subnet

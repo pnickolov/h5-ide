@@ -98,7 +98,7 @@ define [ "backbone" ], ()->
       @canvas.registerPopup( @type, @, false )
 
       ceItem = @canvas.getItem($( @attachment ).closest( ".canvasel" ).attr("data-id")) || @attachment
-      oldPoup = ceItem.__popupCache[ @type ]
+      oldPoup = (ceItem.__popupCache || {})[ @type ]
       if oldPoup is @
         delete ceItem.__popupCache[ @type ]
 

@@ -137,7 +137,7 @@ define [
       CanvasManager.update @$el.children(".type-image"), @typeIcon(), "href"
       CanvasManager.update @$el.children(".engine-image"), @engineIcon(), "href"
 
-      CanvasManager.toggle @$el.children("master-text"), m.design().modeIsApp() and m.slaves().length
+      CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
       # Update Image
       if m.get('engine') is constant.DBENGINE.MYSQL and m.category() isnt 'replica'

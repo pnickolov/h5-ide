@@ -925,7 +925,8 @@
   cursor: grab; }
 
 .dbreplicate {
-  fill: #6daefe; }
+  fill: #6daefe;
+  cursor: pointer; }
   .dbreplicate .replica-bg {
     stroke: #b2bccc;
     fill: #fff; }
@@ -996,8 +997,13 @@
     stroke: #9FC9FD;
     stroke-dasharray: 10px 10px; }
 
-.ElbAmiAsso, .DbReplication {
+.ElbAmiAsso {
   stroke: #0973f6; }
+
+.DbReplication {
+  stroke: #ccc;
+  stroke-width: 1px;
+  stroke-dasharray: 4px 4px; }
 
 .SgRuleLine {
   stroke: #6DAEFE;

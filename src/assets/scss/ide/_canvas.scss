@@ -260,10 +260,11 @@
 }
 
 .dbreplicate {
-  fill:#6daefe;
+  fill   : #6daefe;
+  cursor : pointer;
   .replica-bg {
-    stroke:#b2bccc;
-    fill:#fff;
+    stroke : #b2bccc;
+    fill   : #fff;
   }
 
   &:hover {
@@ -359,8 +360,14 @@
   }
 }
 
-.ElbAmiAsso, .DbReplication {
+.ElbAmiAsso {
   stroke: #0973f6;
+}
+
+.DbReplication {
+  stroke: #ccc;
+  stroke-width: 1px;
+  stroke-dasharray: 4px 4px;
 }
 
 .SgRuleLine {

@@ -2371,11 +2371,11 @@ a.action-link:hover {
 
 .icon-app-stopped,
 .icon-app-Stopped {
-	background: url('../images/ide/icon/icon-app-stopped.png') center center no-repeat;
+	background: url('../images/ide/icon-app-stopped.png') center center no-repeat;
 }
 
 .icon-app-pending {
-	background: url('../images/ide/icon/icon-app-pending.png') center center no-repeat;
+	background: url('../images/ide/icon-app-pending.png') center center no-repeat;
 }
 
 /* Nav Icon */

@@ -148,7 +148,7 @@ define [
           }
 
         # Default Values
-        _.defaults attr, {
+        @set _.defaults attr, {
           license         : @getDefaultLicense()
           engineVersion   : @getDefaultVersion()
           instanceClass   : @getDefaultInstanceClass()
@@ -159,6 +159,7 @@ define [
           snapshotId      : ""
           multiAz         : !!attr.multiAz
         }
+
 
         #set default optiongroup and parametergroup
         @setDefaultOptionGroup()

@@ -937,7 +937,8 @@
 .replica-text {
   font-size: 8px;
   fill: #9ea7b5;
-  text-anchor: middle; }
+  text-anchor: middle;
+  pointer-events: none; }
 
 .AWS-AutoScaling-Group .group, .ExpandedAsg .group {
   fill: #f6faf9;

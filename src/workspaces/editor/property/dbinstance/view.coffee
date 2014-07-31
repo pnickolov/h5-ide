@@ -84,7 +84,11 @@ define [ 'ApiRequest'
             @renderLVIA()
 
         _getTimeData: (timeStr) ->
+
             try
+
+                _appendZero = (str) -> if str.length is 1 then return "0#{str}" else return str
+
                 timeAry = timeStr.split('-')
                 startTimeStr = timeAry[0]
                 endTimeStr = timeAry[1]
@@ -120,10 +124,13 @@ define [ 'ApiRequest'
                 if duration < 0
                     duration = 24 + duration
 
+                startHourStr = _appendZero(String(startHour))
+                startMinStr = _appendZero(String(startMin))
+
                 return {
-                    startHour: startHour,
-                    startMin: startMin,
-                    startTime: "#{startHour}:#{startMin}",
+                    startHour: startHourStr,
+                    startMin: startMinStr,
+                    startTime: "#{startHourStr}:#{startMinStr}",
                     duration: duration,
                     startWeek: startWeekStr
                 }
@@ -270,8 +277,8 @@ define [ 'ApiRequest'
                 else
                     template = template_replica
                 attr.masterIops = @resModel.master().get 'iops'
-            # if snapshot
 
+            # if snapshot
             if attr.snapshotId
                 template = template_instance
                 snapshotModel = @resModel.getSnapshotModel()

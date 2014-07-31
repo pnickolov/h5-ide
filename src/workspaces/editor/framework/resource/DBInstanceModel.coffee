@@ -129,6 +129,24 @@ define [
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         new SgAsso defaultSg, @
 
+        # if is snapshot
+        snapshotModel = @getSnapshotModel()
+        if snapshotModel
+
+          @set {
+            "engine": snapshotModel.get('Engine'),
+            "engineVersion": snapshotModel.get('EngineVersion'),
+            "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
+            "allocatedStorage": snapshotModel.get('AllocatedStorage'),
+            "port": snapshotModel.get('Port'),
+            "iops": snapshotModel.get('Iops'),
+            "multiAZ": snapshotModel.get('MultiAZ'),
+            "ogName": snapshotModel.get('OptionGroupName'),
+            "license": snapshotModel.get('LicenseModel'),
+            "az": snapshotModel.get('AvailabilityZone'),
+            "username": snapshotModel.get('MasterUsername')
+          }
+
         # Default Values
         _.defaults attr, {
           license         : @getDefaultLicense()

@@ -8,7 +8,7 @@
             <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
             <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
-            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable({{DBInstanceStatus}}){{/if}}</dd>
+            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
             <dd>{{Engine}}({{EngineVersion}}){{#if PendingModifiedValues.EngineVersion}}<span class="highlight-status">(Pending Apply)=>[{{PendingModifiedValues.EngineVersion}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
@@ -69,8 +69,10 @@
             <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
             <dd>{{DBSubnetGroup.DBSubnetGroupName}}
                 {{#if DBSubnetGroup.Subnets.length}}({{#each DBSubnetGroup.Subnets}}{{SubnetIdentifier}}, {{/each}}){{/if}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
-            <dd>{{AvailabilityZone}}</dd>
+            {{#if AvailabilityZone}}
+                <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
+                <dd>{{AvailabilityZone}}</dd>
+            {{/if}}
             {{#if SecondaryAvailabilityZone}}
                 <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
                 <dd>{{SecondaryAvailabilityZone}}</dd>
@@ -88,10 +90,14 @@
             <dd>{{#if BackupRetentionPeriod}}Enabled ({{BackupRetentionPeriod}} day){{else}}Disabled{{/if}}</dd>
             <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
             <dd>{{timeStr LatestRestorableTime}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
-            <dd>{{PreferredBackupWindow}}</dd>
-            <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
-            <dd>{{PreferredMaintenanceWindow}}</dd>
+            {{#if PreferredBackupWindow}}
+                <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
+                <dd>{{PreferredBackupWindow}}</dd>
+            {{/if}}
+            {{#if PreferredMaintenanceWindow}}
+                <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
+                <dd>{{PreferredMaintenanceWindow}}</dd>
+            {{/if}}
         </dl>
     </div>
 

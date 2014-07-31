@@ -55,7 +55,7 @@
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
             <div class="ranged-number-input">
                 <label for="property-dbinstance-storage"></label>
-                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left tooltip" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number" {{#if isSqlserver}}disabled data-tooltip="Scalling storage after launch a DB Instance is currently not supported for SQL Server."{{/if}}>
+                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left tooltip" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number" {{#if isAppEdit}}{{#if isSqlserver}}disabled data-tooltip="Scalling storage after launch a DB Instance is currently not supported for SQL Server."{{/if}}{{/if}}>
                 <label for="property-dbinstance-storage" class="property-label-right">GB</label>
             </div>
             {{#if isAppEdit}}

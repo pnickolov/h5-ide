@@ -2361,12 +2361,12 @@ a.action-link:hover {
 }
 
 .icon-stack {
-	background: url('../images/ide/icon/icon-stack.png') center center no-repeat;
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
 }
 
 .icon-app-running,
 .icon-app-Running {
-	background: url('../images/ide/icon/icon-app-running.png') center center no-repeat;
+	background: url('../images/ide/icon-app-running.png') center center no-repeat;
 }
 
 .icon-app-stopped,

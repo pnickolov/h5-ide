@@ -130,15 +130,15 @@ define [
         new SgAsso defaultSg, @
 
         # Default Values
-        @set {
-          license         : attr.license or @getDefaultLicense()
-          engineVersion   : attr.engineVersion or @getDefaultVersion()
-          instanceClass   : attr.instanceClass or @getDefaultInstanceClass()
-          port            : attr.port or @getDefaultPort()
-          dbName          : attr.dbName or @getDefaultDBName()
-          characterSetName: attr.characterSetName or @getDefaultCharSet()
-          allocatedStorage: attr.allocatedStorage or @getDefaultAllocatedStorage()
-          snapshotId      : attr.snapshotId or ""
+        _.defaults attr, {
+          license         : @getDefaultLicense()
+          engineVersion   : @getDefaultVersion()
+          instanceClass   : @getDefaultInstanceClass()
+          port            : @getDefaultPort()
+          dbName          : @getDefaultDBName()
+          characterSetName: @getDefaultCharSet()
+          allocatedStorage: @getDefaultAllocatedStorage()
+          snapshotId      : ""
           multiAz         : !!attr.multiAz
         }
 

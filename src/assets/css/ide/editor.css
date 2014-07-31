@@ -952,6 +952,9 @@
   stroke: #049CDD; }
 .AWS-AutoScaling-Group.selected .asg-frame, .ExpandedAsg.selected .asg-frame {
   fill: #049CDD; }
+.AWS-AutoScaling-Group.droppable .group, .ExpandedAsg.droppable .group {
+  stroke-dasharray: 0,0;
+  stroke-width: 4; }
 
 .AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
   font-size: 0px; }

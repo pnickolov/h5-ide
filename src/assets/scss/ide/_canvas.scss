@@ -293,6 +293,13 @@
     .group { stroke:#049CDD; }
     .asg-frame { fill:#049CDD; }
   }
+
+  &.droppable {
+    .group {
+      stroke-dasharray: 0,0;
+      stroke-width: 4;
+    }
+  }
 }
 .AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
   font-size:0px;

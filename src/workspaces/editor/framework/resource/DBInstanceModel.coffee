@@ -131,14 +131,15 @@ define [
 
         # Default Values
         @set {
-          license         : @getDefaultLicense()
-          engineVersion   : @getDefaultVersion()
-          instanceClass   : @getDefaultInstanceClass()
-          port            : @getDefaultPort()
-          dbName          : @getDefaultDBName()
-          characterSetName: @getDefaultCharSet()
-          allocatedStorage: attr.allocatedStorage || @getDefaultAllocatedStorage()
-          snapshotId      : attr.snapshotId || ""
+          license         : attr.license or @getDefaultLicense()
+          engineVersion   : attr.engineVersion or @getDefaultVersion()
+          instanceClass   : attr.instanceClass or @getDefaultInstanceClass()
+          port            : attr.port or @getDefaultPort()
+          dbName          : attr.dbName or @getDefaultDBName()
+          characterSetName: attr.characterSetName or @getDefaultCharSet()
+          allocatedStorage: attr.allocatedStorage or @getDefaultAllocatedStorage()
+          snapshotId      : attr.snapshotId or ""
+          multiAz         : !!attr.multiAz
         }
 
         #set default optiongroup and parametergroup
@@ -426,7 +427,7 @@ define [
       if engine is 'sqlserver' then sufix = engine.split('-')[1]
 
       dbInstanceType = @attributes.instanceClass.split('.')
-      deploy = if @attributes.multiAZ then 'multiAZ' else 'standard'
+      deploy = if @attributes.multiAz then 'multiAZ' else 'standard'
 
       if not engine or not deploy then return null
 

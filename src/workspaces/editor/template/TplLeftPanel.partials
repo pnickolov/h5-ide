@@ -139,7 +139,7 @@
 
 <!-- {{rds_snapshot}} -->
 {{#each this}}
-<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
+<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "engineVersion": "{{EngineVersion}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": {{AllocatedStorage}},"port": {{Port}},"iops":{{Iops}},"multiAZ":"{{MultiAZ}}","ogName": "{{OptionGroupName}}", "license": "{{LicenseModel}}", "az": "{{AvailabilityZone}}", "username": "{{MasterUsername}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
   <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
   <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div>{{DBInstanceIdentifier}}
 </li>

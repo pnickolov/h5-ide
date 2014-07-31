@@ -11,7 +11,7 @@
     <tr class="item" data-id="">
         <td>
             <div class="checkbox">
-                <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb">
+                <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" data-name="{{name}}" class="one-cb" {{#if isDefault}}disabled{{/if}}>
                 <label for="{{id}}"></label>
             </div>
         </td>

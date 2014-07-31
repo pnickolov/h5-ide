@@ -83,6 +83,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       fetching = false
       fetched = true
       data = @collection.toJSON()
+
+      _.each data, (e)->
+        if e.DBParameterGroupName.indexOf("default.") is 0
+          e.isDefault = true
+
       dataSet =
         items: data
       content = template.content dataSet

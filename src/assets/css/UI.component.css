@@ -571,7 +571,11 @@ textarea {
 .property-content .radio input:disabled + label,
 .property-content .radio input[disabled] + label,
 .property-content .checkbox input:disabled + label,
-.property-content .checkbox input[disabled] + label {
+.property-content .checkbox input[disabled] + label,
+.modal-toolbar .checkbox input:disabled + label,
+.modal-toolbar .radio input[disabled] + label,
+.modal-toolbar .checkbox input:disabled + label,
+.modal-toolbar .radio input[disabled] + label{
 	opacity : 0.3;
 }
 

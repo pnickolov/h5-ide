@@ -544,6 +544,8 @@ define [
           BackupRetentionPeriod                 : 0
           MultiAZ                               : false
           ReadReplicaSourceDBInstanceIdentifier : master.createRef('DBInstanceIdentifier')
+          DBSubnetGroup                         :
+            DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
         }
       else
         component =

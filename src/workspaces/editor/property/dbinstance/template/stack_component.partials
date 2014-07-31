@@ -154,8 +154,10 @@
 
     <div class="property-control-group clearfix">
         {{#unless multiAz}}
-            <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
-            <div>{{AvailabilityZone}}</div>
+            {{#if AvailabilityZone}}
+                <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+                <div>{{AvailabilityZone}}</div>
+            {{/if}}
         {{else}}
             {{#if SecondaryAvailabilityZone}}
             <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>

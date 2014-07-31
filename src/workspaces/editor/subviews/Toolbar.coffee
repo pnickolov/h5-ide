@@ -216,14 +216,20 @@ define [
         }
 
     exportCF : ()->
+      design = @workspace.design
+      hasCustomOG = false
+      components = design.serialize(usage: 'runStack').component
+      _.each components, (e)->
+        if e.type is constant.RESTYPE.DBOG
+          hasCustomOG = true
+
       modal = new Modal {
         title         : lang.ide.TOOL_POP_EXPORT_CF
-        template      : OpsEditorTpl.export.CF()
+        template      : OpsEditorTpl.export.CF({hasCustomOG})
         width         : "470"
         disableFooter : true
       }
 
-      design = @workspace.design
       name   = design.get("name")
 
       ApiRequest("stack_export_cloudformation", {

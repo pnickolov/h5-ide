@@ -381,7 +381,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         defaultInfo  = engineCol.getDefaultByNameVersion regionName, modelData.engine, modelData.engineVersion
         targetFamily = defaultInfo.family
 
-      console.log modelData, defaultInfo
 
       if targetFamily
         datas.keys = _.filter datas.keys, (e)->

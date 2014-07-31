@@ -108,7 +108,10 @@
 
 <!-- {{export.CF}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major"></div>
+  {{#if hasCustomOG}}<div class="modal-text-highlight">
+      DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be
+      used instead.
+  </div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
 <div style="padding-top:20px;text-align:right;">

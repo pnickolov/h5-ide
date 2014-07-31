@@ -3240,7 +3240,13 @@ summary:focus {
 #tpl-download .modal-text-wraper {
 	width: 415px;
 }
-
+.modal-text-highlight{
+    color: #f8b42d;
+}
+div.modal-text-highlight{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 /* Guide tour */
 #guide-carousel {
 	padding: 0;

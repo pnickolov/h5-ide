@@ -166,7 +166,10 @@ define [
       rect.y1 += deltaY
       rect.x2 += deltaX
       rect.y2 += deltaY
-      if @isRectAvailableForItem( rect, item )
+
+      if item.sticky
+        item.ensureStickyPos( rect.x1, rect.y1 )
+      else if @isRectAvailableForItem( rect, item )
         item.moveBy( deltaX, deltaY )
       return
 

@@ -17,4 +17,5 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     master : ()-> @__port1Comp
     slave  : ()-> @__port2Comp
 
+    isRemovable : ()-> false
   }

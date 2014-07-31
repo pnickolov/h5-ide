@@ -102,7 +102,7 @@
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
             <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-            <input class="input"  type="password" id="property-dbinstance-master-password" value="{{password}}" data-required-rollback="true"/>
+            <input class="input tooltip" data-tooltip="Last password: {{password}}" type="password" placeholder="****" id="property-dbinstance-master-password" value="{{#ifCond password "****"}}{{else}}{{password}}{{/ifCond}}" data-required-rollback="true"/>
         </section>
 
     </div>

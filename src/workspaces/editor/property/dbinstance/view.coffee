@@ -655,6 +655,7 @@ define [ 'ApiRequest'
             value = target.val()
 
             target.parsley 'custom', (val) ->
+
                 if MC.validate('alphanum', val) and MC.validate('letters', val[0])
                     if that.resModel.isMysql() and val.length >= 1 and val.length <= 16
                         return null
@@ -676,6 +677,7 @@ define [ 'ApiRequest'
             value = target.val()
 
             target.parsley 'custom', (val) ->
+
                 if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
                     return null
                 if that.resModel.isOracle() and val.length >= 8 and val.length <= 30

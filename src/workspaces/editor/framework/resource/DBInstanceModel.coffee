@@ -536,6 +536,8 @@ define [
         component.name = @get("name")
         component.uid  = @id
         $.extend component.resource, {
+          CreatedBy                             : ''
+          DBInstanceIdentifier                  : ''
           DBInstanceClass                       : @get("instanceClass")
           AutoMinorVersionUpgrade               : @get("autoMinorVersionUpgrade")
           PubliclyAccessible                    : @get("accessible")

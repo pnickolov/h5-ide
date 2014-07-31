@@ -124,7 +124,7 @@ define [
             "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
             "allocatedStorage": snapshotModel.get('AllocatedStorage'),
             "port": snapshotModel.get('Port'),
-            "iops": snapshotModel.get('Iops'),
+            "iops": snapshotModel.get('Iops') or '',
             "multiAZ": snapshotModel.get('MultiAZ'),
             "ogName": snapshotModel.get('OptionGroupName'),
             "license": snapshotModel.get('LicenseModel'),

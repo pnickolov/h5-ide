@@ -956,6 +956,10 @@
 .AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
   font-size: 0px; }
 
+#sbg_info {
+  fill: #498fe1;
+  pointer-events: none; }
+
 .AWS-RDS-DBSubnetGroup .group {
   fill: rgba(224, 224, 224, 0.1);
   stroke: #498fe1;
@@ -963,7 +967,8 @@
   stroke-dasharray: 16, 6;
   stroke-width: 2; }
 .AWS-RDS-DBSubnetGroup .group-label {
-  fill: #498fe1; }
+  fill: #498fe1;
+  white-space: pre; }
 .AWS-RDS-DBSubnetGroup:hover .group {
   stroke: #498fe1; }
 .AWS-RDS-DBSubnetGroup.selected .group {

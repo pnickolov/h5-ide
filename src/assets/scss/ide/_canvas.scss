@@ -298,6 +298,10 @@
   font-size:0px;
 }
 
+#sbg_info {
+  fill: #498fe1;
+  pointer-events:none;
+}
 
 .AWS-RDS-DBSubnetGroup {
   .group {
@@ -310,6 +314,7 @@
 
   .group-label {
     fill: #498fe1;
+    white-space:pre;
   }
 
   &:hover {

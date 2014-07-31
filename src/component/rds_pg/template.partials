@@ -15,7 +15,7 @@
                 <label for="{{id}}"></label>
             </div>
         </td>
-        <td><div class="manager-content-main">{{DBParameterGroupName}}</div></td>
+        <td>{{DBParameterGroupName}}</td>
         <td>{{DBParameterGroupFamily}}</td>
         <td>{{Description}}</td>
     </tr>

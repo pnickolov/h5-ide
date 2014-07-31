@@ -487,7 +487,7 @@ Additional Notes and Questions
 {{#if ../deletable}}
 <li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
 {{else}}
-<li class="sg-create-rule-item">
+<li class="sg-create-rule-item modal-list-body">
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
@@ -502,7 +502,7 @@ Additional Notes and Questions
 
 <!-- {{groupedSgRuleList}} -->
 {{#each groups}}
-<h3 class="sg-create-group truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<h3 class="truncate sg-create-group"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
 <ul class="sg-rule-list">{{{content}}}</ul>
 {{/each}}
 
@@ -512,7 +512,7 @@ Additional Notes and Questions
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
 {{#each this}}<ul>
-<h3 class="sg-create-group"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<h3 class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
 {{{content}}}
 </ul>{{/each}}
 </div>

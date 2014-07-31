@@ -672,7 +672,7 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   
-  return "\n<li class=\"sg-create-rule-item\">\n";
+  return "\n<li class=\"sg-create-rule-item modal-list-body\">\n";
   }
 
 function program6(depth0,data) {
@@ -732,7 +732,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<h3 class=\"sg-create-group truncate\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "\n<h3 class=\"truncate sg-create-group\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -758,7 +758,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<ul>\n<h3 class=\"sg-create-group\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "<ul>\n<h3 class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

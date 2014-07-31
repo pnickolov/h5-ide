@@ -1914,10 +1914,11 @@ a.action-link:hover {
 }
 
 .sg-rule-create-h, #sg-rule-create-modal {
-	background: rgb(32,32,32);
-	position : relative;
-	left : 0;
-	-webkit-transition: left .3s ease-in-out;
+	background         : rgb(32,32,32);
+	border-radius      : 3px;
+	position           : relative;
+	left               : 0;
+	-webkit-transition : left .3s ease-in-out;
 	   -moz-transition: left .3s ease-in-out;
 	    -ms-transition: left .3s ease-in-out;
 	     -o-transition: left .3s ease-in-out;
@@ -2180,11 +2181,11 @@ a.action-link:hover {
 	max-height: 300px;
 	border-radius: 4px;
 }
-
+/*
 .delete-sgrule-dialog .sg-create-rule-item {
 	background: #36373A;
 	padding   : 5px 10px;
-}
+}*/
 
 .delete-sgrule-dialog .sg-create-group {
 	background: #161616;
@@ -2193,8 +2194,8 @@ a.action-link:hover {
 	padding   : 2px 10px;
 }
 
-.delete-sgrule-dialog .sg-create-group .sg-color {
-	margin-top   : 3px;
+.delete-sgrule-dialog .sg-color {
+	margin-top   : 7px;
 	width        : 10px;
 	height       : 10px;
 	float        : left;
@@ -4188,3 +4189,22 @@ div.modal-text-highlight{
 .highlight-status{
     color: #f8b42d;
 }
+
+/* Select Subnet for Subnet Group Modal */
+
+.dbsgppp-az {
+	color: #F69722;
+}
+
+.dbsgppp-sbname {
+	color: #ccc;
+	cursor: pointer;;
+}
+
+.dbsgppp-cidr {
+	font-size   : 12px;
+	color       : #666;
+	display     : inline-block;
+	margin-left : 5px;
+}
+

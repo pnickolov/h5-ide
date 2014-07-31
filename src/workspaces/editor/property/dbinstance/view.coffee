@@ -354,7 +354,7 @@ define [ 'ApiRequest'
 
                 originValue = that.getOriginAttr()
 
-                if @isAppEdit()
+                if that.isAppEdit
 
                     if originValue and (storage < originValue.originAllocatedStorage)
                         return 'Allocated storage cannot be reduced.'

@@ -119,49 +119,52 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         d.resolve @
         return d.promise
 
-      self = @
-      if @get("sampleId")
-        sampleId = @get("sampleId")
-        return ApiRequest('stackstore_fetch_stackstore', {
-          sub_path: "master/stack/#{sampleId}/#{sampleId}.json"
-        }).then (result) ->
-          try
-            j = JSON.parse( result )
-            delete j.id
-            delete j.signature
-            if not self.collection.isNameAvailable( j.name )
-              j.name = self.collection.getNewName( j.name )
-            self.attributes.region = j.region
-            self.__setJsonData j
-          catch e
-            j = null
-            self.attributes.region = "us-east-1"
-            self.__initJsonData()
+      @__fjdTemplate( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 
-          if j
-            try
-              self.set "name", j.name
-            catch e
+    __fjdTemplate : ( self )->
+      sampleId = @get("sampleId")
+      if not sampleId then return
 
-          self
+      ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{sampleId}/#{sampleId}.json" })
+      .then (result) ->
+        try
+          j = JSON.parse( result )
+          delete j.id
+          delete j.signature
+          if not self.collection.isNameAvailable( j.name )
+            j.name = self.collection.getNewName( j.name )
+          self.attributes.region = j.region
+          self.__setJsonData j
+        catch e
+          j = null
+          self.attributes.region = "us-east-1"
+          self.__initJsonData()
 
-      else if @isImported()
-        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
-          json = self.generateJsonFromRes()
-          self.__setJsonData json
-          self.attributes.name = json.name
-          self
+        if j then self.set "name", j.name
+        self
 
-      else if @isStack()
-        return ApiRequest("stack_info", {
-          region_name : @get("region")
-          stack_ids   : [@get("id")]
-        }).then (ds)-> self.__setJsonData( ds[0] )
-      else
-        return ApiRequest("app_info", {
-          region_name : @get("region")
-          app_ids     : [@get("id")]
-        }).then (ds)-> self.__setJsonData( ds[0] )
+    __fjdImport : ( self )->
+      if not @isImported() then return
+
+      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
+        json = self.generateJsonFromRes()
+        self.__setJsonData json
+        self.attributes.name = json.name
+        self
+
+    __fjdStack : ( self )->
+      if not @isStack() then return
+      ApiRequest("stack_info", {
+        region_name : @get("region")
+        stack_ids   : [@get("id")]
+      }).then (ds)-> self.__setJsonData( ds[0] )
+
+    __fjdApp : ( self )->
+      if not @isApp() then return
+      ApiRequest("app_info", {
+        region_name : @get("region")
+        app_ids     : [@get("id")]
+      }).then (ds)-> self.__setJsonData( ds[0] )
 
     __setJsonData : ( json )->
 

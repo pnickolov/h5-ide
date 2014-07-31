@@ -1038,7 +1038,7 @@
     stroke: #12CD4F; }
   .draw-line.vgw-vpn, .draw-line.cgw-vpn {
     stroke: #bf7aa5; }
-  .draw-line.igw-tgt, .draw-line.eni-sg, .draw-line.instance-sg, .draw-line.launchconfig-sg, .draw-line.rtb-tgt, .draw-line.elb-sg-in, .draw-line.vgw-tgt, .draw-line.eni-rtb, .draw-line.instance-rtb {
+  .draw-line.db-sg, .draw-line.igw-tgt, .draw-line.eni-sg, .draw-line.instance-sg, .draw-line.launchconfig-sg, .draw-line.rtb-tgt, .draw-line.elb-sg-in, .draw-line.vgw-tgt, .draw-line.eni-rtb, .draw-line.instance-rtb {
     stroke: #6DAEFE;
     stroke-dasharray: 10,5; }
 
@@ -1050,7 +1050,7 @@ marker.eni-attach, marker.instance-attach {
   fill: #12CD4F; }
 marker.vgw-vpn, marker.cgw-vpn {
   fill: #bf7aa5; }
-marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marker.rtb-tgt, marker.elb-sg-in, marker.vgw-tgt, marker.eni-rtb, marker.instance-rtb {
+marker.db-sg, marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchconfig-sg, marker.rtb-tgt, marker.elb-sg-in, marker.vgw-tgt, marker.eni-rtb, marker.instance-rtb {
   fill: #6DAEFE; }
 
 .mask-line {

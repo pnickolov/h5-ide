@@ -11,8 +11,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     defaultSize : [ 19, 19 ]
 
     events :
-      "mouseenter .group-label" : "hoverLabel"
-      "mouseleave .group-label" : "hoverOutLabel"
+      "mouseenter .tooltip" : "hoverLabel"
+      "mouseleave .tooltip" : "hoverOutLabel"
 
     hoverLabel : ( evt )->
       for subnet in @model.connectionTargets("SubnetgAsso")
@@ -37,12 +37,15 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       svg = @canvas.svg
 
       svgEl = @canvas.appendSubnet( @createGroup() )
-      svgEl.add( svg.use("sbg_info") )
+      svgEl.add([
+        svg.use("sbg_info")
+        svg.rect(16,14).move(4,4).classes("tooltip")
+      ])
 
       $( svgEl.node ).children(".group-label").attr({
         "class" : "tooltip group-label"
-        x : "3"
-        y : "13"
+        x : "17"
+        y : "14"
       })
       m = @model
       @initNode svgEl, m.x(), m.y()
@@ -52,7 +55,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     render : ()->
       # Move the group to right place
       m = @model
-      @$el.children("text").text( "      " + m.get('name') )
+      @$el.children("text").text( m.get('name') )
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
       # Tooltip

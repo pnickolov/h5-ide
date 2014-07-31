@@ -119,6 +119,7 @@ define [
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
         else
+          svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
 
       @canvas.appendNode svgEl
@@ -135,6 +136,8 @@ define [
       # Update Type and Engine Image
       CanvasManager.update @$el.children(".type-image"), @typeIcon(), "href"
       CanvasManager.update @$el.children(".engine-image"), @engineIcon(), "href"
+
+      CanvasManager.toggle @$el.children("master-text"), m.design().modeIsApp() and m.slaves().length
 
       # Update Image
       if m.get('engine') is constant.DBENGINE.MYSQL and m.category() isnt 'replica'

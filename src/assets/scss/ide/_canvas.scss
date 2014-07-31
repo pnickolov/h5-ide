@@ -34,6 +34,7 @@
     ~ .canvas-pp {
       .vpp-volume, .vpp-snapshot { cursor: default; }
     }
+    .dbreplicate { display:none; }
   }
 }
 
@@ -273,7 +274,7 @@
   }
 }
 
-.replica-text {
+.replica-text, .master-text {
   font-size:xx-small;
   fill: #9ea7b5;
   text-anchor: middle;

@@ -735,6 +735,8 @@
     pointer-events: none; }
   .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot {
     cursor: default; }
+  .canvas-view[data-mode="app"] .dbreplicate {
+    display: none; }
 
 .svg_resizer {
   position: absolute;
@@ -935,7 +937,7 @@
     .dbreplicate:hover .replica-bg {
       stroke: #6daefe; }
 
-.replica-text {
+.replica-text, .master-text {
   font-size: xx-small;
   fill: #9ea7b5;
   text-anchor: middle;

@@ -112,6 +112,28 @@ define [
             break
       return
 
+    constructor : ( attr, option )->
+      if option and not option.master and option.createByUser
+
+      # Initialize Snapshot
+        if attr.snapshotId
+          snapshotModel = @getSnapshotModel attr.snapshotId
+          _.extend attr, {
+            "engine": snapshotModel.get('Engine'),
+            "engineVersion": snapshotModel.get('EngineVersion'),
+            "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
+            "allocatedStorage": snapshotModel.get('AllocatedStorage'),
+            "port": snapshotModel.get('Port'),
+            "iops": snapshotModel.get('Iops'),
+            "multiAZ": snapshotModel.get('MultiAZ'),
+            "ogName": snapshotModel.get('OptionGroupName'),
+            "license": snapshotModel.get('LicenseModel'),
+            "az": snapshotModel.get('AvailabilityZone'),
+            "username": snapshotModel.get('MasterUsername')
+          }
+
+      ComplexResModel.call @, attr, option
+
     initialize : ( attr, option ) ->
       option = option || {}
 
@@ -129,25 +151,7 @@ define [
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         new SgAsso defaultSg, @
 
-        # if is snapshot
-        snapshotModel = @getSnapshotModel()
-        if snapshotModel
-
-          @set {
-            "engine": snapshotModel.get('Engine'),
-            "engineVersion": snapshotModel.get('EngineVersion'),
-            "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
-            "allocatedStorage": snapshotModel.get('AllocatedStorage'),
-            "port": snapshotModel.get('Port'),
-            "iops": snapshotModel.get('Iops'),
-            "multiAZ": snapshotModel.get('MultiAZ'),
-            "ogName": snapshotModel.get('OptionGroupName'),
-            "license": snapshotModel.get('LicenseModel'),
-            "az": snapshotModel.get('AvailabilityZone'),
-            "username": snapshotModel.get('MasterUsername')
-          }
-
-        # Default Values
+        # Set Complex Default Values
         @set _.defaults attr, {
           license         : @getDefaultLicense()
           engineVersion   : @getDefaultVersion()
@@ -159,7 +163,6 @@ define [
           snapshotId      : ""
           multiAz         : !!attr.multiAz
         }
-
 
         #set default optiongroup and parametergroup
         @setDefaultOptionGroup()
@@ -502,15 +505,10 @@ define [
 
       if @master() then 'replica' else 'instance'
 
-    getSnapshotModel: () ->
-
-      if @category() is 'snapshot'
-        regionName = Design.instance().region()
-        snapshotCol = CloudResources(constant.RESTYPE.DBSNAP, regionName)
-        snapshotModel = snapshotCol.findWhere({id: @get('snapshotId')})
-        return snapshotModel
-      else
-        return null
+    getSnapshotModel: ( snapshotId ) ->
+      CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).findWhere {
+        id: snapshotId or @get( 'snapshotId' )
+      }
 
     autobackup: ( value )->
       if value isnt undefined

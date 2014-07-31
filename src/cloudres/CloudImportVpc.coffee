@@ -1764,6 +1764,10 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
       catch err
         console.info('Server Group process exception when convert app json')
 
+    #for debug, to compare with xu's app_json
+    app_json_xu = CloudResources( 'OpsResource', vpcId )
+    console.info "app_json_xu", app_json_xu
+
     cd
 
   __createRequestParam = ( region, vpcId )->

@@ -41,6 +41,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     parseFetchData : ( data )->
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
       delete data.vpc
+      app_json = data.app_json
+      delete data.app_json
 
       extraAttr = { RES_TAG : @category }
 
@@ -53,5 +55,5 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
       # Nasty, but it should work.
       # Describe instances belongs to ASG.
-      return
+      return [app_json]
   }

@@ -91,7 +91,7 @@ define [
       })
 
       if differ.getChangeInfo().hasResChange
-        self.diff.render()
+        diff.render()
         return true
 
       false

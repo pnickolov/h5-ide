@@ -360,8 +360,6 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     item = @getItem( $tgt.attr("data-id") )
     if not item then return
 
-    @selectItem( $tgt[0] )
-
     canvasOffset = @$el.offset()
 
     options = $.extend options, {
@@ -396,6 +394,9 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     # In order to avoid that, we need to use the `rect.group` as $tgt.
 
     (if item.isGroup() then $tgt.children(".group") else $tgt).dnd( evt, options )
+
+    # Make selectItem the last, since PropertyPanel is really easy to throw error
+    @selectItem( $tgt[0] )
     false
 
   __moveItemStart = ( data )->

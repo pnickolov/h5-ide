@@ -224,11 +224,8 @@ define [
       # Tell `PropertyBaseModule` to load corresponding property panel.
       try
         PropertyBaseModule.load type, uid, tab_type
-        ### env:prod ###
       catch error
         console.error error
-        ### env:prod:end ###
-      finally
 
       # Restore accordion
       @restoreAccordion( type , uid )

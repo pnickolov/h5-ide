@@ -481,7 +481,7 @@
             </tr> </thead>
             <tbody> {{#each this}}{{#with attributes}}<tr>
                 <td>
-                    <div>{{DBInstanceIdentifier}}<span class="resource-id"> {{#if DBName}}({{DBName}}){{else}}{{#if Name}}({{Name}}){{/if}}{{/if}}</span></div>
+                    <div>{{DBInstanceIdentifier}}</div>
                 </td>
                 <td><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}} icon-label"></i>{{ DBInstanceStatus }}</td>
                 <td>{{Engine}} {{EngineVersion}}</td>

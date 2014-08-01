@@ -533,7 +533,6 @@ define [
               "Option Group": data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
               "Parameter Group": data.DBParameterGroups?.DBParameterGroupName || "None"
               "Availability Zone": data.AvailabilityZone
-              "VPC ID":     data.VpcId || "None"
               "Subnet Group": data.sbgId || "None"
               "Publicly Accessible": data.PubliclyAccessible.toString()
               "IOPS": data.Iops || "OFF"

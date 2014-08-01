@@ -423,7 +423,6 @@ define [
             Tenancy : data.instanceTenancy
           }
         when "ASG"
-          console.debug data
           return {
             "title" : data.Name
             "Name"  : data.Name
@@ -525,6 +524,27 @@ define [
                 'Alarm Actions'     : data.AlarmActions.member
                 'Alarm Arn'         : data.id
             }
+        when "DBINSTANCE"
+            json =  {
+              "Status"    : data.DBInstanceStatus
+              "Endpoint"  : data.Endpoint.Address + "" + data.Endpoint.Port
+              "Engine"    : data.Engine
+              "DB Name":    data.name || data.Name || data.DBName || "None"
+              "Option Group": data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
+              "Parameter Group": data.DBParameterGroups?.DBParameterGroupName || "None"
+              "Availability Zone": data.AvailabilityZone
+              "VPC ID":     data.VpcId || "None"
+              "Subnet Group": data.sbgId || "None"
+              "Publicly Accessible": data.PubliclyAccessible.toString()
+              "IOPS": data.Iops || "OFF"
+              "Multi AZ": data.MultiAZ.toString()
+              "Automated Backup": data.AutoMinorVersionUpgrade
+              "Latest Restore Time": data.LatestRestorableTime
+              "Auto Minor Version Upgrade": data.AutoMinorVersionUpgrade
+              "Maintenance Window": data.PreferredMaintenanceWindow
+              "Backup Window": data.PreferredBackupWindow
+            }
+            return json
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.

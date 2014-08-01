@@ -461,11 +461,11 @@
 
 <!-- {{resourceDBINSTANCE}} -->
 <table class="table-head"> <thead><tr>
-    <th class="sortable">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
+    <th class="sortable">{{i18n "DASH_LBL_DBINSTANCE_NAME"}}</th>
     <th class="sortable" style="width:18%">{{i18n "DASH_LBL_STATUS"}}</th>
-    <th class="sortable" style="width:21%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
-    <th class="sortable" style="width:15%">{{i18n "DASH_LBL_AMI"}}</th>
-    <th class="sortable" style="width:15%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
+    <th class="sortable" style="width:21%" data-row-type="datetime">{{i18n "DASH_LBL_FAMILY"}}</th>
+    <th class="sortable" style="width:15%">{{i18n "DASH_LBL_CLASS"}}</th>
+    <th class="sortable" style="width:15%">{{i18n "DASH_LBL_STORAGE"}}</th>
     <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr></thead> </table>
 <div class="scroll-wrap"> <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
@@ -481,17 +481,12 @@
             </tr> </thead>
             <tbody> {{#each this}}{{#with attributes}}<tr>
                 <td>
-                    {{#doubleIf tagSet tagSet.app }}
-                        <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
-                    {{else}}
-                        <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-                    {{/doubleIf}}
-                    <div>{{#if tagSet}}{{or tagSet.name tagSet.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
+                    <div>{{DBInstanceIdentifier}}<span class="resource-id"> {{#if DBName}}({{DBName}}){{else}}{{#if Name}}({{Name}}){{/if}}{{/if}}</span></div>
                 </td>
                 <td><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}} icon-label"></i>{{ DBInstanceStatus }}</td>
-                <td>{{simpleTime launchTime}}</td>
-                <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
-                <td>{{placement.availabilityZone}}</td>
+                <td>{{Engine}} {{EngineVersion}}</td>
+                <td>{{DBInstanceClass}}</td>
+                <td>{{AllocatedStorage}} GB</td>
                 <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
             </tr>{{/with}}
             {{else}}

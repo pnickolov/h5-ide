@@ -4306,6 +4306,22 @@ VisualOps API. You cannot UNDO this action.'
       en: "Topic ARN"
       zh: "主题 ARN"
 
+    DASH_LBL_DBINSTANCE_NAME:
+      en: "Name"
+      zh: ""
+
+    DASH_LBL_CLASS:
+      en: "Class"
+      zh: ""
+
+    DASH_LBL_FAMILY:
+      en: "Family"
+      zh: ""
+
+    DASH_LBL_STORAGE:
+      en: "Storage"
+      zh: ""
+
     DASH_BUB_NAME:
       en: "Name"
       zh: "名称"

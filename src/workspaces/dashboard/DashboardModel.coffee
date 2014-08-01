@@ -218,7 +218,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
             data: CloudResources( constant.RESTYPE.DBINSTANCE, e ).models || []
             regionName: constant.REGION_SHORT_LABEL[ e ]
             regionArea: constant.REGION_LABEL[ e ]
-          DBInstancesCount += 2
+          DBInstancesCount += data.data.length
           DBInstances.push data
         DBInstances.totalCount = DBInstancesCount
         return {
@@ -248,7 +248,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         vpcs         : "VPC"
         asgs         : "ASG"
         cloudwatches : "CW"
-        rds          : "DBINSTANCE"
       }
       d = {}
       for key, type of data
@@ -258,6 +257,11 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         else
           d[ key ] = ""
 
+      rdsCollection = CloudResources(constant.RESTYPE.DBINSTANCE, region)
+      if rdsCollection.isReady()
+        d.rds = rdsCollection.models.length
+      else
+        d.rds = ""
       collection = CloudResources( constant.RESTYPE.SUBSCRIPTION, region )
       if collection.isReady()
         d.snss = collection.models.length

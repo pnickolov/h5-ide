@@ -85,6 +85,16 @@ define [ 'ApiRequest'
 
         _getTimeData: (timeStr) ->
 
+            defaultValue = {
+                startHour: '00',
+                startMin: '00',
+                startTime: "00:00",
+                duration: 0.5,
+                startWeek: 'Mondey'
+            }
+
+            return defaultValue if not timeStr
+
             try
 
                 _appendZero = (str) -> if str.length is 1 then return "0#{str}" else return str
@@ -137,13 +147,7 @@ define [ 'ApiRequest'
 
             catch err
 
-                return {
-                    startHour: '00',
-                    startMin: '00',
-                    startTime: "00:00",
-                    duration: 0.5,
-                    startWeek: 'Mondey'
-                }
+                return defaultValue
 
         _getTimeStr: (startTimeStr, duration, startWeek) ->
 
@@ -311,7 +315,8 @@ define [ 'ApiRequest'
                 $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
                 $select.find('.selection').text($item.text())
 
-            @resModel.get 'name'
+            # set iops check status
+            @updateIOPSCheckStatus()
 
             @pgDropdown = new parameterGroup(@resModel).renderDropdown()
 
@@ -385,22 +390,26 @@ define [ 'ApiRequest'
 
                 iopsRange = that._getIOPSRange(storage)
 
+                defaultIOPS = that._getDefaultIOPS(storage)
+
                 iops = Number(val)
 
                 if iops < 1000
                     return "Require 1000 IOPS"
 
-                if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
-                    return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
+                # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
+                #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
+
+                if (iops % 1000) isnt 0
+                    return "Require a multiple of 1000"
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
 
-                if iopsRange.minIOPS is iopsRange.maxIOPS
-                    return "Require #{iopsRange.minIOPS} IOPS"
-
-                if iopsRange.minIOPS < iopsRange.maxIOPS
-                    return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
+                if defaultIOPS is iopsRange.maxIOPS
+                    return "Require #{defaultIOPS} IOPS"
+                else
+                    return "Require #{defaultIOPS}-#{iopsRange.maxIOPS} IOPS"
 
             @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
 
@@ -591,19 +600,53 @@ define [ 'ApiRequest'
 
             # @renderLVIA()
 
-        changeAllocatedStorage: (event) ->
+        updateIOPSCheckStatus: () ->
 
             that = this
-            target = $(event.target)
-            value = Number(target.val())
+            storge = that.resModel.get 'allocatedStorage'
+            iops = that.resModel.get 'iops'
+            if that._haveEnoughStorageForIOPS(storge)
+                that._disableIOPSCheck(false)
+            else
+                that._disableIOPSCheck(true)
 
-            if target.parsley('validate') and that.changeProvisionedIOPS()
-                that.resModel.set 'allocatedStorage', value
+        _disableIOPSCheck: (isDisable) ->
+
+            checkedDom = $('#property-dbinstance-iops-check')[0]
+
+            if isDisable
+
+                $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
+                $('.property-dbinstance-iops-value-section').hide()
+                $('#property-dbinstance-iops-value').val('')
+                @resModel.setIops ''
+                checkedDom.checked = false
+
+            else
+
+                $('#property-dbinstance-iops-check').removeAttr('disabled')
+                checked = checkedDom.checked
+                if checked
+                    $('.property-dbinstance-iops-value-section').show()
+                    checkedDom.checked = true
+                else
+                    $('.property-dbinstance-iops-value-section').hide()
+                    checkedDom.checked = false
+                # @resModel.setIops ''
+
+        _haveEnoughStorageForIOPS: (storge) ->
+
+            iopsRange = @_getIOPSRange(storge)
+            if iopsRange.minIOPS >= 1000
+                return true
+            else
+                return false
 
         _getIOPSRange: (storage) ->
 
             if @resModel.isSqlserver()
-                minIOPS = maxIOPS = storage * 10
+                minIOPS = storage * 10
+                maxIOPS = storage * 10
             else
                 minIOPS = storage * 3
                 maxIOPS = storage * 10
@@ -612,6 +655,30 @@ define [ 'ApiRequest'
                 minIOPS: minIOPS
                 maxIOPS: maxIOPS
             }
+
+        _getDefaultIOPS: (storage) ->
+
+            base = 1000
+            count = 0
+            iopsRange = @_getIOPSRange(storage)
+            
+            while ++count
+
+                value = base * count
+                if value >= iopsRange.minIOPS and value <= iopsRange.maxIOPS
+                    return value
+                if value > iopsRange.maxIOPS
+                    return null
+
+        changeAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            if target.parsley('validate') and that.changeProvisionedIOPS()
+                that.resModel.set 'allocatedStorage', value
+                that.updateIOPSCheckStatus()
 
         changeProvisionedIOPSCheck: (event) ->
 
@@ -623,8 +690,10 @@ define [ 'ApiRequest'
             if value
                 $('.property-dbinstance-iops-value-section').show()
                 if iopsRange.minIOPS >= 1000
-                    $('#property-dbinstance-iops-value').val(iopsRange.minIOPS)
-                    @resModel.setIops iopsRange.minIOPS
+                    defaultIOPS = @_getDefaultIOPS(storage)
+                    if defaultIOPS
+                        $('#property-dbinstance-iops-value').val(defaultIOPS)
+                        @resModel.setIops defaultIOPS
             else
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')

@@ -12,15 +12,25 @@ define [
     initialize : ()->
       OpsViewBase.prototype.initialize.apply this, arguments
 
-      @canvas.switchMode( "app" )
-
-      if @workspace.isAppEditMode()
-        @resourcePanel.render()
-
-      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !@workspace.isAppEditMode()
+      @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
 
       @toggleProcessing()
       @updateProgress()
+
+      @listenTo @workspace.design, "change:mode", @switchMode
+      return
+
+    switchMode : ( mode )->
+      @toolbar.updateTbBtns()
+      @statusbar.update()
+
+      if mode is "appedit"
+        @$el.find(".OEPanelLeft").removeClass("force-hidden")
+        @resourcePanel.render()
+      else
+        @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
+
+      @propertyPanel.openPanel()
       return
 
     confirmImport : ()->
@@ -105,20 +115,6 @@ define [
 
       $p.find(".process-info").text( pro )
       $p.find(".bar").css { width : pro }
-      return
-
-    switchMode : ( isAppEditMode )->
-      @toolbar.updateTbBtns()
-      @statusbar.update()
-
-      @$el.find(".OEPanelLeft").toggleClass "force-hidden", !isAppEditMode
-      if isAppEditMode
-        @resourcePanel.render()
-      else
-        @$el.find(".OEPanelLeft").empty()
-      @propertyPanel.openPanel()
-
-      @canvas.switchMode( if isAppEditMode then "appedit" else "app" )
       return
 
     showUpdateStatus : ( error, loading )->

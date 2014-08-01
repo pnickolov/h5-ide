@@ -11,9 +11,10 @@ define [
 
   class AppEditor extends StackEditor
 
-    viewClass  : AppView
-    title      : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
-    tabClass   : ()->
+    viewClass : AppView
+
+    title    : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
+    tabClass : ()->
       switch @opsModel.get("state")
         when OpsModel.State.Running
           return "icon-app-running"
@@ -22,7 +23,10 @@ define [
         else
           return "icon-app-pending"
 
-    isReady : ()-> !!@__hasAdditionalData
+    isReady       : ()-> !!@__hasAdditionalData
+    isAppEditMode : ()-> @design?.modeIsAppEdit()
+    isModified    : ()-> @design and @design.modeIsAppEdit() and @design.isModified()
+
 
     fetchAdditionalData : ()->
       self = @
@@ -32,164 +36,146 @@ define [
 
       Q.all([
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
-        CloudResources( constant.RESTYPE.AZ,   region ).fetch()
-        CloudResources( constant.RESTYPE.SNAP, region ).fetch()
-        CloudResources( constant.RESTYPE.DHCP, region ).fetch()
+        CloudResources( constant.RESTYPE.AZ,       region ).fetch()
+        CloudResources( constant.RESTYPE.SNAP,     region ).fetch()
+        CloudResources( constant.RESTYPE.DHCP,     region ).fetch()
         CloudResources( constant.RESTYPE.DBENGINE, region ).fetch()
-        CloudResources( constant.RESTYPE.DBOG, region ).fetch()
+        CloudResources( constant.RESTYPE.DBOG,     region ).fetch()
         CloudResources( constant.RESTYPE.DBSNAP,   region ).fetch()
-        CloudResources( "QuickStartAmi",       region ).fetch()
-        CloudResources( "MyAmi",               region ).fetch()
-        CloudResources( "FavoriteAmi",         region ).fetch()
+        CloudResources( "QuickStartAmi",           region ).fetch()
+        CloudResources( "MyAmi",                   region ).fetch()
+        CloudResources( "FavoriteAmi",             region ).fetch()
         @loadVpcResource()
         @fetchAmiData()
-      ]).then ()->
-        # Hack, immediately apply changes when we get data if the app is changed.
-        # Will move it to somewhere else if the process is upgraded.
+      ]).fail ( err )-> self.__handleDataError( err )
 
-        if self.isRemoved() then return
-
-        if self.opsModel.isImported() then return
-
-        if not self.opsModel.testState( OpsModel.State.Running ) then return
-
-        oldJson = self.opsModel.getJsonData()
-        newJson = self.opsModel.generateJsonFromRes()
-
-        self.differ = new ResDiff({
-          old : oldJson
-          new : newJson
-          callback : ( confirm )->
-            if confirm
-              self.opsModel.saveApp( self.design.serialize() )
-            else
-              self.opsModel.__setJsonData( oldJson )
-              self.remove()
-        })
-
-        if self.differ.getChangeInfo().hasResChange
-          self.opsModel.__setJsonData( newJson )
+    __handleDataError : ( err )->
+      if err.error is 286 # VPC not exist
+        @view.showVpcNotExist @opsModel.get("name"), ()=> @opsModel.terminate( true )
+        @remove()
         return
 
-      , ( err )->
-        if err.error is 286 # VPC not exist
-          self.view.showVpcNotExist self.opsModel.get("name"), ()-> self.opsModel.terminate( true )
-          self.remove()
-          return
-        throw err
-
-
-    delayUntilAwake : ( method )->
-      if @isAwake()
-        method.call this
-      else
-        console.info "AppEditor's action is delayed until wake up."
-        @__calledUponWakeup = method
-      return
-
-    awake : ()->
-      StackEditor.prototype.awake.call this
-      if @__calledUponWakeup
-        @__calledUponWakeup.call this
-        @__calledUponWakeup = null
-      return
-
-    isAppEditMode : ()-> !!@__appEdit
-    isModified    : ()-> @isAppEditMode() && @design && @design.isModified()
-
-    # initDesign : ()->
-    #   if @opsModel.isImported() or (@differ && @differ.getChangeInfo().needUpdateLayout)
-    #     MC.canvas.analysis()
-    #     # Clear the thumbnail of the opsmodel, then it will be re-generated.
-    #     @opsModel.saveThumbnail()
-    #   return
+      throw err
 
     initEditor : ()->
-      # Try show differ dialog
-      if @differ and @differ.getChangeInfo().hasResChange
-        @differ.render()
-        @differ = null
-
-      # Try show import dialog
+      # Special treatment for import app
       if @opsModel.isImported()
         @updateTab()
         @view.confirmImport()
+        return
+
+      @diff()
       return
 
-    refreshResource : ()->
+    diff : ()->
+      if not @opsModel.testState( OpsModel.State.Running ) then return
 
-    switchToEditMode : ()->
-      if @isAppEditMode() then return
-      @__appEdit = true
-      @design.setMode( Design.MODE.AppEdit )
-      @view.switchMode( true )
+      newJson = @opsModel.generateJsonFromRes()
+
+      self = @
+      differ = new ResDiff({
+        old : @opsModel.getJsonData()
+        new : newJson
+        callback : ( confirm )->
+          if confirm
+            self.opsModel.__setJsonData( newJson )
+            self.design.reload()
+            self.opsModel.saveApp( @design.serialize() )
+          else
+            self.remove()
+      })
+
+      if differ.getChangeInfo().hasResChange
+        self.diff.render()
+        return true
+
+      false
+
+    reloadAppData : ()->
+      @view.showUpdateStatus("", true)
+      self = @
+      @loadVpcResource().then ()->
+        self.__onReloadDone()
+      , ()->
+        self.view.toggleProcessing()
       return
 
-    cancelEditMode : ( force )->
-      modfied = force || @design.isModified()
+    __onReloadDone : ()->
+      if @isRemoved() then return
+      @view.toggleProcessing()
 
-      if modfied and not force then return false
 
-      @__appEdit = false
-      if modfied
-        @recreateDesign()
-      else
-        @design.setMode( Design.MODE.App )
 
-      @view.switchMode( false )
-      true
-
-    recreateDesign : ()-> @design.reload( @opsModel )
+      @view.canvas.update()
+      return
 
     loadVpcResource : ()->
       CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
 
+    ###
+     AppEdit
+    ###
+    switchToEditMode : ()-> @design.setMode( Design.MODE.AppEdit )
+    cancelEditMode : ( force )->
+      # If force, it means that the design is probably modified.
+      # So we can save the time for checking if it's modified.
+      modfied = force || @design.isModified()
+      if modfied and not force then return false
+
+      if modfied
+        @design.reload()
+      else
+        @design.setMode( Design.MODE.App )
+      true
+
     applyAppEdit : ( newJson, fastUpdate )->
       if not newJson
-        @__appEdit = false
         @design.setMode( Design.MODE.App )
-        @view.switchMode( false )
         return
 
-      self = @
       @__applyingUpdate = true
       fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
+      self = @
+      @view.listenTo @opsModel, "change:progress", @view.updateProgress
       @opsModel.update( newJson, fastUpdate ).then ()->
         if fastUpdate
-          self.onAppEditDone()
+          self.__onAppEditDidDone()
         else
-          self.view.showUpdateStatus( "", true )
-          self.loadVpcResource().then ()-> self.onAppEditDone()
-
+          self.__onAppEditDone()
       , ( err )->
-        self.__applyingUpdate = false
-        self.view.stopListening self.opsModel, "change:progress", self.view.updateProgress
-
-        msg = err.msg
-        if err.result then msg += "\n" + err.result
-        msg = msg.replace(/\n/g, "<br />")
-
-        self.view.showUpdateStatus( msg )
-        return
-
-      @view.listenTo @opsModel, "change:progress", @view.updateProgress
-
+        self.__onAppEditFail( err )
       true
 
-    onAppEditDone   : ()-> @delayUntilAwake @__onAppEditDone
+    __onAppEditFail : ( err )->
+      if @isRemoved() then return
+
+      @__applyingUpdate = false
+      @view.stopListening self.opsModel, "change:progress", self.view.updateProgress
+      msg = err.msg
+      if err.result then msg += "\n" + err.result
+      msg = msg.replace(/\n/g, "<br />")
+      @view.showUpdateStatus( msg )
+      return
+
     __onAppEditDone : ()->
       if @isRemoved() then return
 
-      @__appEdit = @__applyingUpdate = false
+      self = @
+      @view.showUpdateStatus( "", true )
+      @loadVpcResource().then ()-> self.__onAppEditDidDone()
+      return
+
+    __onAppEditDidDone : ()->
+      if @isRemoved() then return
+
+      @__applyingUpdate = false
 
       @view.stopListening @opsModel, "change:progress", @view.updateProgress
-      @recreateDesign()
-
-      @design.setMode( Design.MODE.App )
       @view.showUpdateStatus()
-      @view.switchMode( false )
 
+      @design.setMode Design.MODE.App
+      @design.reload()
       @saveThumbnail()
       return
 
@@ -202,18 +188,18 @@ define [
 
       if @opsModel.isProcessing()
         @view.toggleProcessing()
-      else if not @__applyingUpdate and not @opsModel.testState( OpsModel.State.Destroyed )
+      else if @opsModel.testState( OpsModel.State.Destroyed )
+        @remove()
+      else if not @__applyingUpdate
         self = @
         @view.showUpdateStatus( "", true )
-        @loadVpcResource().then ()-> self.delayUntilAwake self.onVpcResLoaded
+        @loadVpcResource().then ()-> self.__onVpcResLoaded()
+      return
 
-      StackEditor.prototype.onOpsModelStateChanged.call this
-
-    onVpcResLoaded : ()->
+    __onVpcResLoaded : ()->
       if @isRemoved() then return
       @view.canvas.update()
       @view.toggleProcessing()
       return
-
 
   AppEditor

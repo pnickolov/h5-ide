@@ -50,6 +50,7 @@ define [
       @listenTo @design, Design.EVENT.Deserialized,   @reload
       @listenTo @design, Design.EVENT.AddResource,    @addItem
       @listenTo @design, Design.EVENT.RemoveResource, @removeItem
+      @listenTo @design, "change:mode", @switchMode
 
       @setElement @parent.$el.find(".OEPanelCenter"), false
       @svg = SVG( @$el.find("svg")[0] )
@@ -62,13 +63,12 @@ define [
 
       @$el.nanoScroller()
 
-      @switchMode("stack")
-
       @__popupCache = {}
       @__itemMap    = {}
       @__scale      = 1
       @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
 
+      @switchMode( @design.mode() )
       @reload()
       return
 
@@ -78,7 +78,7 @@ define [
       for type, popup of @__popupCache
         if popup then popup.remove()
 
-      item.remove()  for id,   item  of @__itemMap
+      item.remove()  for id, item of @__itemMap
 
       Backbone.View.prototype.remove.apply this, arguments
 
@@ -91,8 +91,9 @@ define [
     __appendSvg : ( svgEl, layer )->
       if svgEl.parent then svgEl.parent.removeElement( svgEl )
 
-      svgEl.node.instance = svgEl
-      $( @svg.node ).children(layer).append( svgEl.node )
+      layer = $( @svg.node ).children(layer)
+      layer.append( svgEl.node )
+      svgEl.parent = layer[0].instance
       svgEl
 
     __getCanvasView : ()-> @$el.children().children(".canvas-view")
@@ -422,6 +423,8 @@ define [
 
     getItem : ( id )-> @__itemMap[ id ]
 
+    # Implemented in subclass
+    autoLayout : ()->
 
     # Hover effect
     __hoverEl    : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hover( evt )

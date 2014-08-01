@@ -1,6 +1,5 @@
 
 define [
-  "./template/TplCanvas"
   "./template/TplOpsEditor"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
@@ -11,7 +10,7 @@ define [
 
   "backbone"
   "UI.selectbox"
-], ( CanvasTpl, OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
+], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
 
   ### Monitor keypress ###
   $(document).on 'keydown', ( evt )->
@@ -91,7 +90,7 @@ define [
     constructor : ( options )->
       _.extend this, options
 
-      @setElement $( CanvasTpl() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
+      @setElement $( OpsEditorTpl.frame() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
       opt =
         workspace : @workspace

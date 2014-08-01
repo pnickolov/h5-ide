@@ -1,4 +1,25 @@
 
+<!-- {{frame}} -->
+<div id="OpsEditor" class="pos-r">
+  <aside class="OEPanelLeft"></aside>
+  <aside class="OEPanelRight" id="OEPanelRight"></aside>
+
+<div class="OEMiddleWrap">
+  <nav class="OEPanelTop"></nav>
+  <div class="OEPanelBottom"></div>
+
+  <section class="OEPanelCenter nano"> <div class="nano-content">
+    <div class="canvas-view">
+      <button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
+      <button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
+      <button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
+      <button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
+      <svg width="100%" height="100%"></svg>
+    </div>
+  </div> </section>
+</div>
+</div>
+
 <!-- {{loading}} -->
 <div class="ops-process">
   <header class="processing">Loading data...</header>

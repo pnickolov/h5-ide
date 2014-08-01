@@ -9,13 +9,19 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
         handleTypes : constant.RESTYPE.AZ
 
         initStack : ()->
-            if Design.instance().modeIsAppEdit() then return false
-
             @model = model
             @view  = view
-            null
+            @view.isAppEdit = false
+            return
 
         initApp : ()-> false
+
+        initAppEdit : ()->
+            @model = model
+            @view  = view
+            @view.isAppEdit = true
+            return
+
     }
 
     null

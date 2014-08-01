@@ -50,9 +50,15 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
     handleTypes : constant.RESTYPE.AZ
 
     deserialize : ( data, layout_data, resolve )->
+      # If we are in app/appedit mode. Assign a appId to the AZ.
+      # So that we can distinguish existing az from newly created one.
+      if not Design.instance().modeIsStack()
+        appId = data.name
+
       new Model({
         id    : data.uid
         name  : data.name
+        appId : appId
 
         parent : resolve( layout_data.groupUId )
 

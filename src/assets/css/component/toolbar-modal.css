@@ -84,7 +84,9 @@
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
-      overflow: auto; }
+      overflow: auto;
+      /* Fix Overflow When Loading Spinner show.  */
+      display: table;}
     .modal-toolbar .slidebox.show + .will-be-covered {
       opacity: .4;
       pointer-events: none;

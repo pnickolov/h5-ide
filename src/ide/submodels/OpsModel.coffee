@@ -230,6 +230,18 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       json.layout    = res.layout
       json.name      = @get("name") || res.theVpc.name
 
+      ## for debug, to compare with xu's app_json(temp) ##
+      app_json_xu = CloudResources( 'OpsResource', @getVpcId() )
+      if app_json_xu.models.length > 0
+        console.clear()
+        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        console.info "app_json_backend", JSON.stringify( app_json_xu.models[0].attributes )
+        console.info "--------------------------------------------------------------------------------------------------------------------------------------"
+        console.info "app_json_frontend", JSON.stringify json
+        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        console.info "plese use http://tlrobinson.net/projects/javascript-fun/jsondiff/ to diff app_json"
+      ## ##################################################
+
       json
 
     # Save the stack in server, returns a promise

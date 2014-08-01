@@ -234,11 +234,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       app_json_xu = CloudResources( 'OpsResource', @getVpcId() )
       if app_json_xu.models.length > 0
         console.clear()
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        console.info "app_json_backend", JSON.stringify( app_json_xu.models[0].attributes )
-        console.info "--------------------------------------------------------------------------------------------------------------------------------------"
-        console.info "app_json_frontend", JSON.stringify json
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
+        console.info "app_json_backend"
+        console.debug JSON.stringify app_json_xu.models[0].attributes
+        console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
+        console.info "app_json_frontend"
+        console.debug JSON.stringify json
+        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
         console.info "plese use http://tlrobinson.net/projects/javascript-fun/jsondiff/ to diff app_json"
       ## ##################################################
 

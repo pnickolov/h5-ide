@@ -274,7 +274,7 @@
     margin-top: 10px; }
 
 /* Responsive design for dashboard */
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1279px) {
   #global-region-map-content {
     max-width: 940px; }
 

@@ -339,7 +339,7 @@
 }
 
 /* Responsive design for dashboard */
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1279px) {
   #global-region-map-content {
     max-width  : 940px;
   }
@@ -420,7 +420,7 @@
     padding-left : 60px;
     font-size    : 40px;
     background   : image-url("ide/global-region-icon2.png") left top no-repeat;
-    
+
     @include retina() {
       & {
         background     : image-url("ide/global-region-icon2@2x.png") left top no-repeat;

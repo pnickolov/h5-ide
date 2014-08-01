@@ -264,9 +264,9 @@ define [
     @trigger Design.EVENT.Deserialized
     null
 
-  DesignImpl.prototype.reload = ( opsModel )->
-    DesignImpl.call this, opsModel
-    json = opsModel.getJsonData()
+  DesignImpl.prototype.reload = ()->
+    DesignImpl.call this, @__opsModel
+    json = @__opsModel.getJsonData()
     @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
 
   ### Private Interface ###

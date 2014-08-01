@@ -506,12 +506,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @__saveAppDefer.promise.then ()->
         self.__jsonData = newJson
         self.attributes.requestId = undefined
+        self.__saveAppDefer = null
+
         self.set {
           name  : newJson.name
           state : oldState
           usage : newJson.usage
         }
-        self.__saveAppDefer = null
         return
       , ( error )->
         self.__saveAppDefer = null

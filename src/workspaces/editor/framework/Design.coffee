@@ -141,7 +141,6 @@ define [
 
   Design.EVENT = {
     # Events that will trigger using Design.trigger
-    Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
     ChangeResource : "CHANGE_RESOURCE"
@@ -149,6 +148,7 @@ define [
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
     RemoveResource : "REMOVE_RESOURCE"
+    Deserialized   : "DESERIALIZED"
   }
 
   DesignImpl.prototype.refreshAppUpdate = () ->
@@ -172,7 +172,7 @@ define [
       devistor( json_data, layout_data, version )
 
     # Disable triggering event when Design is deserializing
-    Design.trigger = noop
+    @trigger = Design.trigger = noop
     @__initializing = true
 
 
@@ -259,8 +259,9 @@ define [
     # Broadcast event
     ####################
     @__initializing = false
-    Design.trigger = Backbone.Events.trigger
+    @trigger = Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
+    @trigger Design.EVENT.Deserialized
     null
 
   DesignImpl.prototype.reload = ( opsModel )->

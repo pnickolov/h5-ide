@@ -335,7 +335,7 @@ define [ 'ApiRequest'
             db = @model
             validateStartTime = (val) ->
                 if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
-                        'Format error, the right format is 00:00.'
+                        'Provide a valid time value from 00:00 to 23:59.'
 
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime

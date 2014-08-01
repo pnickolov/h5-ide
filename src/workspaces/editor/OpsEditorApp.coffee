@@ -186,7 +186,8 @@ define [
     onOpsModelStateChanged : ()->
       if not @isInited() then return
 
-      if @opsModel.testState( OpsModel.State.Saving ) then return
+      if @opsModel.testState( OpsModel.State.Saving ) or @opsModel.previous("state") is OpsModel.State.Saving
+        return
 
       @updateTab()
 

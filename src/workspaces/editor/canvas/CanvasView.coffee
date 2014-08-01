@@ -89,6 +89,8 @@ define [
       , 150
 
     __appendSvg : ( svgEl, layer )->
+      if svgEl.parent then svgEl.parent.removeElement( svgEl )
+
       svgEl.node.instance = svgEl
       $( @svg.node ).children(layer).append( svgEl.node )
       svgEl

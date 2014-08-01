@@ -56,10 +56,10 @@ define [ "./CanvasView" ], ( CanvasView )->
     else
       size = @size()
       parent =
-        x1 : 5
-        y1 : 3
-        x2 : size[0] - 5
-        y2 : size[1] - 3
+        x1 : 4
+        y1 : 2
+        x2 : size[0] - 4
+        y2 : size[1] - 2
 
     left = direction.indexOf("left") >= 0
     top  = direction.indexOf("top")  >= 0

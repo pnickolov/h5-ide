@@ -126,10 +126,8 @@ define [
       modfied = force || @design.isModified()
       if modfied and not force then return false
 
-      if modfied
-        @design.reload()
-      else
-        @design.setMode( Design.MODE.App )
+      @design.setMode( Design.MODE.App )
+      if modfied then @design.reload()
       true
 
     applyAppEdit : ( newJson, fastUpdate )->

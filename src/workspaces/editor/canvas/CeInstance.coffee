@@ -54,6 +54,7 @@ define [
       @listenTo @model, "change:count", @updateServerCount
 
       @listenTo @canvas, "switchMode", @render # For Eip Tooltip
+      @listenTo @canvas, "change:externalData", @render # For Instance State
       return
 
     updateServerCount : ()->

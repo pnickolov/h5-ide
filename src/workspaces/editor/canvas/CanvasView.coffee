@@ -318,6 +318,8 @@ define [
       @$el.nanoScroller()
       return
 
+    update : ()-> @trigger "change:externalData"
+
     reload : ()->
       console.log "Reloading svg canvas."
 
@@ -418,7 +420,6 @@ define [
 
     getItem : ( id )-> @__itemMap[ id ]
 
-    update : ()-> item.render() for id, item of @__itemNodeMap; return
 
     # Hover effect
     __hoverEl    : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hover( evt )

@@ -133,7 +133,16 @@ define [
 
       @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
 
-      @setElement @parent.$el.find(".OEPanelLeft").html LeftPanelTpl.panel({})
+      @setElement @parent.$el.find(".OEPanelLeft")
+
+      $(document)
+        .off('keydown', @bindKey.bind @)
+        .on('keydown', @bindKey.bind @)
+
+      @render()
+
+    render : ()->
+      @$el.html( LeftPanelTpl.panel({}) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
       @recalcAccordion()
@@ -143,10 +152,6 @@ define [
       @updateAmi()
       @updateRDSList()
       @updateRDSSnapshotList()
-
-      $(document)
-        .off('keydown', @bindKey.bind @)
-        .on('keydown', @bindKey.bind @)
 
       @updateDisableItems()
       @renderReuse()

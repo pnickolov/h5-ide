@@ -155,8 +155,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
         __checkAll: ( event ) ->
             @__processDelBtn()
             if event.currentTarget.checked
-                @$('input[type="checkbox"]').prop 'checked', true
-                @$('tr.item').addClass 'selected'
+                @$('input[type="checkbox"]:not(:disabled)').prop 'checked', true
+                .parents('tr.item').addClass 'selected'
             else
                 @$('input[type="checkbox"]').prop 'checked', false
                 @$('tr.item').removeClass 'selected'

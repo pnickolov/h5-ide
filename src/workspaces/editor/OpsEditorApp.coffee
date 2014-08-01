@@ -104,9 +104,8 @@ define [
       if @isRemoved() then return
       @view.toggleProcessing()
 
-
-
-      @view.canvas.update()
+      if not @diff()
+        @view.canvas.update()
       return
 
     loadVpcResource : ()->

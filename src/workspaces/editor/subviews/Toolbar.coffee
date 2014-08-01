@@ -65,7 +65,7 @@ define [
       if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 
       tpl = ""
       for btn in btns
@@ -97,13 +97,19 @@ define [
         isAppEdit = @workspace.isAppEditMode and @workspace.isAppEditMode()
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
+
         if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.find(".icon-refresh").hide()
         else
+          running = opsModel.testState(OpsModel.State.Running)
+          stopped = opsModel.testState(OpsModel.State.Stopped)
+
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
-          @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and opsModel.testState(OpsModel.State.Running) )
-          @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle(opsModel.testState(OpsModel.State.Stopped))
-          @$el.children('.icon-update-app').toggle( not opsModel.testState(OpsModel.State.Stopped) )
+          @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and running )
+          @$el.children(".icon-play").toggle( stopped ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle( stopped )
+          @$el.children('.icon-update-app').toggle( not stopped )
+          @$el.find(".icon-refresh").toggle( running )
 
 
       if @__saving
@@ -447,7 +453,7 @@ define [
     startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
     stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
-    refreshResource : ()-> @workspace.refreshResource(); false
+    refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
       that = @

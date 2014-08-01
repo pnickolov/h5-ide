@@ -85,7 +85,7 @@ define [
             if differ.getChangeInfo().needUpdateLayout
               self.view.canvas.autoLayout()
 
-            self.opsModel.saveApp( @design.serialize() )
+            self.opsModel.saveApp( self.design.serialize() )
           else
             self.remove()
       })

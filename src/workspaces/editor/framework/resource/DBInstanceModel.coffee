@@ -18,6 +18,7 @@ define [
     'sqlserver-ex'  : "sqlserver"
     'sqlserver-se'  : "sqlserver"
     'sqlserver-web' : "sqlserver"
+    'postgres'      : "postgresql"
   }
 
   versionCompare = (left, right) ->

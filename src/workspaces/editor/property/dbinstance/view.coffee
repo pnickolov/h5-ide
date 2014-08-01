@@ -332,10 +332,10 @@ define [ 'ApiRequest'
                 if not /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test val
                         'Format error, the right format is 00:00.'
 
-            $('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
-            $('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
+            @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
+            @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
 
-            $('#property-dbinstance-database-name').parsley 'custom', ( value ) ->
+            @$('#property-dbinstance-database-name').parsley 'custom', ( value ) ->
                 switch db.engineType()
                     when 'mysql'
                         if val.length > 64 then return 'Max length is 64.'
@@ -348,7 +348,7 @@ define [ 'ApiRequest'
                 null
 
 
-            $('#property-dbinstance-storage').parsley 'custom', (val) ->
+            @$('#property-dbinstance-storage').parsley 'custom', (val) ->
 
                 storage = Number(val)
 
@@ -379,7 +379,7 @@ define [ 'ApiRequest'
                 if source and storage < +source.get('AllocatedStorage')
                     return 'Snapshot storage need large than original value'
 
-            $('#property-dbinstance-iops-value').parsley 'custom', (val) ->
+            @$('#property-dbinstance-iops-value').parsley 'custom', (val) ->
 
                 storage = $('#property-dbinstance-storage').val()
 
@@ -401,6 +401,18 @@ define [ 'ApiRequest'
 
                 if iopsRange.minIOPS < iopsRange.maxIOPS
                     return "Require #{iopsRange.minIOPS}-#{iopsRange.maxIOPS} IOPS"
+
+            @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
+
+                if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
+                    return null
+                if that.resModel.isOracle() and val.length >= 8 and val.length <= 30
+                    return null
+                if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
+                    return null
+                if that.resModel.isPostgresql() and val.length >= 8 and val.length <= 128
+                    return null
+                return 'Invalid password'
 
         renderOptionGroup: ->
 
@@ -676,18 +688,6 @@ define [ 'ApiRequest'
             target = $(event.target)
             value = target.val()
 
-            target.parsley 'custom', (val) ->
-
-                if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
-                    return null
-                if that.resModel.isOracle() and val.length >= 8 and val.length <= 30
-                    return null
-                if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
-                    return null
-                if that.resModel.isPostgresql() and val.length >= 8 and val.length <= 128
-                    return null
-                return 'Invalid password'
-
             if target.parsley 'validate'
                 @resModel.set 'password', value
 
@@ -774,7 +774,7 @@ define [ 'ApiRequest'
         getInstanceStatus: () ->
 
             _setStatus = (showError) ->
-                
+
                 $('.property-dbinstance-status-icon-warning').remove()
                 that.setTitle(that.appModel.get('name'))
                 if showError is true

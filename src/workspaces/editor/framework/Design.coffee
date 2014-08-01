@@ -359,7 +359,12 @@ define [
   DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppView = ()->  false
   DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
-  DesignImpl.prototype.setMode = (m)-> @__mode = m; return
+  DesignImpl.prototype.setMode = (m)->
+    if @__mode is m then return
+    @__mode = m
+    @trigger "change:mode", m
+    return
+
   DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
 
 

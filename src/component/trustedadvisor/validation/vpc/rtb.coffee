@@ -31,7 +31,7 @@ define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Desi
 		routeDesAry = []
 		notices = []
 
-		_.each routeSet, (route) ->
+		_.each routeSet, (route, idx) ->
 
 			currentRouteDes = route.DestinationCidrBlock
 
@@ -39,7 +39,7 @@ define [ 'constant', 'MC', '../../helper', 'Design' ], ( CONST, MC, Helper, Desi
 
 				SubnetModel = Design.modelClassForType( CONST.RESTYPE.SUBNET )
 
-				if SubnetModel.isCidrConflict(currentRouteDes, routeDes)
+				if (currentRouteDes is routeDes) or (idx is 0 and SubnetModel.isCidrConflict(currentRouteDes, routeDes))
 
 					tipInfo = sprintf i18n.TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
 					notices.push({

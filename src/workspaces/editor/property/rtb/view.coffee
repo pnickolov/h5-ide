@@ -118,10 +118,14 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
                 descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else
-                for cidr in allCidrAry
-                    if inputValue is cidr or ( cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr ) )
+                for cidr, idx in allCidrAry
+                    if inputValue is cidr
                         mainContent = "#{inputValue} conflicts with other route."
                         descContent = 'Please choose a CIDR block not conflicting with existing route.'
+                        break
+                    if idx is 0 and cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr )
+                        mainContent = "#{inputValue} conflicts with local route."
+                        descContent = 'Please choose a CIDR block not conflicting with local route.'
                         break
 
             if not mainContent

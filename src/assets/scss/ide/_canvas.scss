@@ -111,21 +111,25 @@
   fill: #F2F8FF;
 }
 
-.canvasel.selected, .canvasel.connectable, .canvasel.droppable {
-  > .node-background {
-    fill-opacity : 1;
-    fill: #F2F8FF !important;
-    stroke-width: 2 !important;
-    stroke: #659FFF !important;
-  }
-}
-.canvasel.selected {
-  > .node-label-name-bg {
-    fill:#659FFF;
-    ~ .node-label {
-      fill:#fff;
+.canvas-view {
+
+  .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
+    > .node-background {
+      fill-opacity : 1;
+      fill: #F2F8FF !important;
+      stroke-width: 2 !important;
+      stroke: #659FFF !important;
     }
   }
+  .canvasel.selected {
+    > .node-label-name-bg {
+      fill:#659FFF;
+      ~ .node-label {
+        fill:#fff;
+      }
+    }
+  }
+
 }
 
 .server-number-bg {
@@ -197,7 +201,7 @@
     fill:#aaa;
   }
 
-  &.selected .group {
+  .canvas-view &.selected .group {
     stroke: #C6C4C4;
     fill: rgba(255, 255, 255, 0);
     stroke-width: 5;
@@ -289,12 +293,12 @@
     stroke-dasharray: 6, 4;
     stroke-width: 2;
   }
-  &.selected {
+  .canvas-view &.selected {
     .group { stroke:#049CDD; }
     .asg-frame { fill:#049CDD; }
   }
 
-  &.droppable {
+  .canvas-view &.droppable {
     .group {
       stroke-dasharray: 0,0;
       stroke-width: 4;
@@ -328,7 +332,7 @@
     .group { stroke: #498fe1; }
   }
 
-  &.selected .group {
+  .canvas-view &.selected .group {
     stroke       : #498fe1;
     fill-opacity : 0;
     stroke-width : 4;
@@ -346,7 +350,7 @@
     stroke-width: 4px;
   }
 
-  &.selected {
+  .canvas-view &.selected {
     display      : block !important;
     opacity      : 1 !important;
     stroke-width : 4px !important;

@@ -814,15 +814,14 @@
   fill-opacity: 0.5;
   fill: #F2F8FF; }
 
-.canvasel.selected > .node-background, .canvasel.connectable > .node-background, .canvasel.droppable > .node-background {
+.canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
   fill-opacity: 1;
   fill: #F2F8FF !important;
   stroke-width: 2 !important;
   stroke: #659FFF !important; }
-
-.canvasel.selected > .node-label-name-bg {
+.canvas-view .canvasel.selected > .node-label-name-bg {
   fill: #659FFF; }
-  .canvasel.selected > .node-label-name-bg ~ .node-label {
+  .canvas-view .canvasel.selected > .node-label-name-bg ~ .node-label {
     fill: #fff; }
 
 .server-number-bg {
@@ -880,7 +879,7 @@
   stroke: #C6C4C4; }
 .AWS-VPC-VPC .group-label {
   fill: #aaa; }
-.AWS-VPC-VPC.selected .group {
+.canvas-view .AWS-VPC-VPC.selected .group {
   stroke: #C6C4C4;
   fill: rgba(255, 255, 255, 0);
   stroke-width: 5; }
@@ -948,11 +947,11 @@
   stroke: #16B4F9;
   stroke-dasharray: 6, 4;
   stroke-width: 2; }
-.AWS-AutoScaling-Group.selected .group, .ExpandedAsg.selected .group {
+.canvas-view .AWS-AutoScaling-Group.selected .group, .canvas-view .ExpandedAsg.selected .group {
   stroke: #049CDD; }
-.AWS-AutoScaling-Group.selected .asg-frame, .ExpandedAsg.selected .asg-frame {
+.canvas-view .AWS-AutoScaling-Group.selected .asg-frame, .canvas-view .ExpandedAsg.selected .asg-frame {
   fill: #049CDD; }
-.AWS-AutoScaling-Group.droppable .group, .ExpandedAsg.droppable .group {
+.canvas-view .AWS-AutoScaling-Group.droppable .group, .canvas-view .ExpandedAsg.droppable .group {
   stroke-dasharray: 0,0;
   stroke-width: 4; }
 
@@ -974,7 +973,7 @@
   white-space: pre; }
 .AWS-RDS-DBSubnetGroup:hover .group {
   stroke: #498fe1; }
-.AWS-RDS-DBSubnetGroup.selected .group {
+.canvas-view .AWS-RDS-DBSubnetGroup.selected .group {
   stroke: #498fe1;
   fill-opacity: 0;
   stroke-width: 4; }
@@ -987,7 +986,7 @@
   .line:hover, .line.hover {
     opacity: .8;
     stroke-width: 4px; }
-  .line.selected {
+  .canvas-view .line.selected {
     display: block !important;
     opacity: 1 !important;
     stroke-width: 4px !important; }

@@ -76,8 +76,6 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       prepareDefTpl()
 
 
-    $wrap.attr "class", $svg_canvas_element.closest(".canvas-view").attr("class")
-
     clone = $svg_canvas_element[0].cloneNode(true)
     size  = $svg_canvas_element[0].getBBox()
 

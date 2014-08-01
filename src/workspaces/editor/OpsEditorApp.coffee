@@ -61,6 +61,7 @@ define [
       # Special treatment for import app
       if @opsModel.isImported()
         @updateTab()
+        @view.canvas.autoLayout()
         @view.confirmImport()
         return
 
@@ -80,6 +81,10 @@ define [
           if confirm
             self.opsModel.__setJsonData( newJson )
             self.design.reload()
+
+            if differ.getChangeInfo().needUpdateLayout
+              self.view.canvas.autoLayout()
+
             self.opsModel.saveApp( @design.serialize() )
           else
             self.remove()

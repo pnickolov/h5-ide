@@ -2,7 +2,6 @@
 
 // Modified version of svg.js :
 // 1. Every svg element won't have id when created.
-// 2. Every svg element won't have instance referencing the SVG Object
 // 3. Every SVG Object's trans object will only be generated when accessed.
 // 4. Does not set svg attributes when creating the SVG doc
 // 5. SvgElement.classes() can set classes.
@@ -1022,7 +1021,7 @@ define([], function() {
       /* create circular reference */
       if (this.node = node) {
         this.type = node.nodeName
-        // this.node.instance = this
+        this.node.instance = this
       }
     }
 

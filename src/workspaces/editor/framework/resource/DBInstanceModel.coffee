@@ -315,7 +315,55 @@ define [
       @defaultMap[@get('engine')].charset
 
     getDefaultAllocatedStorage: ->
-      @defaultMap[@get('engine')].allocatedStorage
+
+      classInfo = Model.instanceClassList[@get('instanceClass')]
+      defaultStorage = @defaultMap[@get('engine')].allocatedStorage
+      if classInfo and classInfo['ebs']
+        if defaultStorage < 100
+          return 100
+      return defaultStorage
+
+    getAllocatedRange: ->
+
+      engine = @get('engine')
+      if @isMysql()
+          obj = {
+            min: 5
+            max: 3072
+          }
+
+      if @isPostgresql()
+          obj = {
+            min: 5
+            max: 3072
+          }
+
+      if @isOracle()
+          obj = {
+            min: 10
+            max: 3072
+          }
+
+      if @isSqlserver()
+          engine = @get('engine')
+          if engine in ['sqlserver-ee', 'sqlserver-se']
+              obj = {
+                min: 200
+                max: 1024
+              }
+          if engine in ['sqlserver-ex', 'sqlserver-web']
+              obj = {
+                min: 30
+                max: 1024
+              }
+
+      classInfo = Model.instanceClassList[@get('instanceClass')]
+      defaultStorage = @defaultMap[@get('engine')].allocatedStorage
+      if classInfo and classInfo['ebs']
+        if defaultStorage < 100
+          obj.min = 100
+
+      return obj
 
     getLicenseObj: ( getDefault ) ->
 

@@ -83,6 +83,14 @@ define [ 'ApiRequest'
         changeClass: ( event, value, data ) ->
             @resModel.set 'instanceClass', value
             @renderLVIA()
+            @setDefaultAllocatedStorage()
+
+        setDefaultAllocatedStorage: () ->
+
+            defaultStorage = @resModel.getDefaultAllocatedStorage()
+            @resModel.set('allocatedStorage', defaultStorage)
+            $('#property-dbinstance-storage').val(defaultStorage)
+            @updateIOPSCheckStatus()
 
         _getTimeData: (timeStr) ->
 
@@ -339,7 +347,6 @@ define [ 'ApiRequest'
                 if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
                         'Provide a valid time value from 00:00 to 23:59.'
 
-
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
 
@@ -362,26 +369,18 @@ define [ 'ApiRequest'
 
                 originValue = that.getOriginAttr()
 
+                allocatedRange = that.resModel.getAllocatedRange()
+
+                min = allocatedRange.min
+                max = allocatedRange.max
+
                 if that.isAppEdit
 
                     if originValue and (storage < originValue.originAllocatedStorage)
                         return 'Allocated storage cannot be reduced.'
 
-                if that.resModel.isMysql() and not (storage >=5 and storage <= 3072)
-                    return 'Must be an integer from 5 to 3072'
-
-                if that.resModel.isPostgresql() and not (storage >=5 and storage <= 3072)
-                    return 'Must be an integer from 5 to 3072'
-
-                if that.resModel.isOracle() and not (storage >=10 and storage <= 3072)
-                    return 'Must be an integer from 10 to 3072'
-
-                if that.resModel.isSqlserver()
-                    engine = that.resModel.get('engine')
-                    if engine in ['sqlserver-ee', 'sqlserver-se'] and not (storage >=200 and storage <= 1024)
-                        return 'Must be an integer from 200 to 1024'
-                    if engine in ['sqlserver-ex', 'sqlserver-web'] and not (storage >=30 and storage <= 1024)
-                        return 'Must be an integer from 30 to 1024'
+                if not (storage >= min and storage <= max)
+                    return "Must be an integer from #{min} to #{max}"
 
                 source = that.resModel.source()
                 if source and storage < +source.get('AllocatedStorage')
@@ -608,12 +607,15 @@ define [ 'ApiRequest'
         updateIOPSCheckStatus: () ->
 
             that = this
-            storge = that.resModel.get 'allocatedStorage'
-            iops = that.resModel.get 'iops'
-            if that._haveEnoughStorageForIOPS(storge)
-                that._disableIOPSCheck(false)
-            else
-                that._disableIOPSCheck(true)
+
+            if not that.resModel.master()
+                
+                storge = that.resModel.get 'allocatedStorage'
+                iops = that.resModel.get 'iops'
+                if that._haveEnoughStorageForIOPS(storge)
+                    that._disableIOPSCheck(false)
+                else
+                    that._disableIOPSCheck(true)
 
         _disableIOPSCheck: (isDisable) ->
 

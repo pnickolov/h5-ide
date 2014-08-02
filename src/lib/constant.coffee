@@ -150,6 +150,135 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		AWS_SNS_Topic                             : 'sns_top'
 	}
 
+	DBINSTANCECLASSMAP = [
+      {
+        instance: "db.t1.micro"
+        cpu: "1 vCPU"
+        memory: '0.613 GB'
+        ebs: false
+        ecu: 1
+      }
+      {
+        instance: "db.m1.small"
+        cpu: "1 vCPU"
+        memory: '1.7 GB'
+        ebs: false
+        ecu: 1
+      }
+      {
+        instance: "db.m1.medium"
+        cpu: '1 vCPU'
+        memory: '3.75 GB'
+        ebs: false
+        ecu: 2
+      }
+      {
+        instance: "db.m1.large"
+        cpu: '2 vCPU'
+        memory: '7.5 GB'
+        ebs: true
+        ecu: 4
+      }
+      {
+        instance: "db.m1.xlarge"
+        cpu: '4 vCPU'
+        memory: '15 GB'
+        ebs: true
+        ecu: 8
+      }
+      {
+        instance: "db.m2.xlarge"
+        cpu: '2 vCPU'
+        memory: '17.1 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instance: "db.m2.2xlarge"
+        cpu: '4 vCPU'
+        memory: '34 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instance: "db.m2.4xlarge"
+        cpu: '8 vCPU'
+        memory: '68 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instance: "db.cr1.8xlarge"
+        cpu: '32 vCPU'
+        memory: '244 GB'
+        ebs: false
+        ecu: 88
+      }
+      {
+        instance: "db.m3.medium"
+        cpu: '1 vCPU'
+        memory: '3.75 GB'
+        ebs: false
+        ecu: 3
+      }
+      {
+        instance: "db.m3.large"
+        cpu: '2 vCPU'
+        memory: '7.5 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instance: "db.m3.xlarge"
+        cpu: '4 vCPU'
+        memory: '15 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instance: "db.m3.2xlarge"
+        cpu: '8 vCPU'
+        memory: '30 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instance: "db.r3.large"
+        cpu: '2 vCPU'
+        memory: '15 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instance: "db.r3.xlarge"
+        cpu: '4 vCPU'
+        memory: '30.5 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instance: "db.r3.2xlarge"
+        cpu: '8 vCPU'
+        memory: '61 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instance: "db.r3.4xlarge"
+        cpu: '16 vCPU'
+        memory: '122 GB'
+        ebs: true
+        ecu: 52
+      }
+      {
+        instance: "db.r3.8xlarge"
+        cpu: '32 vCPU'
+        memory: '244GB'
+        ebs: false
+        ecu: 104
+      }
+    ]
+
 	DBENGINE =
 		MYSQL     : "mysql"
 		ORA_SE1   : "oracle-se1"
@@ -345,4 +474,5 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 	STATE_REF_DICT          : STATE_REF_DICT
 	RESNAME                 : wrap RESNAME
 	WRAP                    : wrap
+	DBINSTANCECLASSMAP      : DBINSTANCECLASSMAP
 

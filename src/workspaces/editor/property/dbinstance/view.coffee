@@ -82,7 +82,6 @@ define [ 'ApiRequest'
 
         changeClass: ( event, value, data ) ->
             @resModel.set 'instanceClass', value
-            @renderLVIA()
             @setDefaultAllocatedStorage()
 
         setDefaultAllocatedStorage: () ->

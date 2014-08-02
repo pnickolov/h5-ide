@@ -437,7 +437,7 @@ define [
         _.findWhere(license.versions, {version: version.version})?.selected = true
 
       instanceClass = _.first _.filter version.instanceClasses, (i) ->
-        if i.instanceClass is currentClass
+        if i.instance is currentClass
           i.selected = true
           true
         else
@@ -478,11 +478,15 @@ define [
         lObj = license: license, versions: []
         for version, classes of versions
           vObj = version: version, instanceClasses: []
+          instanceClassDict = {}
           for cla, az of classes
-            vObj.instanceClasses.push instanceClass: cla, multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
+            instanceClassDict[ cla ] = multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
 
-          classAry = _.keys(Model.instanceClassList)
-          vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> classAry.indexOf cla.instanceClass
+          # Sorting and filling parameters.
+          for calDict in constant.DBINSTANCECLASSMAP
+            if _.has instanceClassDict, calDict.instance
+              vObj.instanceClasses.push _.extend instanceClassDict[calDict.instance], calDict
+
           lObj.versions.push vObj
 
         lObj.versions.sort (a, b) -> versionCompare b.version, a.version
@@ -636,10 +640,8 @@ define [
             ApplyImmediately                      : @get 'applyImmediately'
 
             PendingModifiedValues                 : @get 'pending'
-
             PreferredBackupWindow                 : @get 'backupWindow'
             PreferredMaintenanceWindow            : @get 'maintenanceWindow'
-
             PubliclyAccessible                    : @get 'accessible'
 
             DBSubnetGroup:
@@ -654,99 +656,6 @@ define [
   }, {
 
     handleTypes: constant.RESTYPE.DBINSTANCE
-
-    instanceClassList: {
-      "db.t1.micro": {
-        cpu: '1 vCPU',
-        memory: '0.613 GB',
-        ebs: false
-      },
-      "db.m1.small": {
-        cpu: '1 vCPU',
-        memory: '1.7 GB',
-        ebs: false
-      },
-      "db.m1.medium": {
-        cpu: '1 vCPU',
-        memory: '3.75 GB',
-        ebs: false
-      },
-      "db.m1.large": {
-        cpu: '2 vCPU',
-        memory: '7.5 GB',
-        ebs: true
-      },
-      "db.m1.xlarge": {
-        cpu: '4 vCPU',
-        memory: '15 GB',
-        ebs: true
-      },
-      "db.m2.xlarge": {
-        cpu: '2 vCPU',
-        memory: '17.1 GB',
-        ebs: false
-      },
-      "db.m2.2xlarge": {
-        cpu: '4 vCPU',
-        memory: '34 GB',
-        ebs: true
-      },
-      "db.m2.4xlarge": {
-        cpu: '8 vCPU',
-        memory: '68 GB',
-        ebs: true
-      },
-      "db.cr1.8xlarge": {
-        cpu: '32 vCPU',
-        memory: '244 GB',
-        ebs: false
-      },
-      "db.m3.medium": {
-        cpu: '1 vCPU',
-        memory: '3.75 GB',
-        ebs: false
-      },
-      "db.m3.large": {
-        cpu: '2 vCPU',
-        memory: '7.5 GB',
-        ebs: false
-      },
-      "db.m3.xlarge": {
-        cpu: '4 vCPU',
-        memory: '15 GB',
-        ebs: true
-      },
-      "db.m3.2xlarge": {
-        cpu: '8 vCPU',
-        memory: '30 GB',
-        ebs: true
-      },
-      "db.r3.large": {
-        cpu: '2 vCPU',
-        memory: '15 GB',
-        ebs: false
-      },
-      "db.r3.xlarge": {
-        cpu: '4 vCPU',
-        memory: '30.5 GB',
-        ebs: true
-      },
-      "db.r3.2xlarge": {
-        cpu: '8 vCPU',
-        memory: '61 GB',
-        ebs: true
-      },
-      "db.r3.4xlarge": {
-        cpu: '16 vCPU',
-        memory: '122 GB',
-        ebs: true
-      },
-      "db.r3.8xlarge": {
-        cpu: '32 vCPU',
-        memory: '244GB',
-        ebs: false
-      }
-    }
 
     oracleCharset: ["AL32UTF8", "JA16EUC", "JA16EUCTILDE", "JA16SJIS", "JA16SJISTILDE", "KO16MSWIN949", "TH8TISASCII", "VN8MSWIN1258", "ZHS16GBK", "ZHT16HKSCS", "ZHT16MSWIN950", "ZHT32EUC", "BLT8ISO8859P13", "BLT8MSWIN1257", "CL8ISO8859P5", "CL8MSWIN1251", "EE8ISO8859P2", "EL8ISO8859P7", "EL8MSWIN1253", "EE8MSWIN1250", "NE8ISO8859P10", "NEE8ISO8859P4", "WE8ISO8859P15", "WE8MSWIN1252", "AR8ISO8859P6", "AR8MSWIN1256", "IW8ISO8859P8", "IW8MSWIN1255", "TR8MSWIN1254", "WE8ISO8859P9", "US7ASCII", "UTF8", "WE8ISO8859P1"]
 

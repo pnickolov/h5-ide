@@ -11,6 +11,8 @@
   background-color: #ff6600;
   padding: 10px; }
 
+.property-dbinstance #property-dbinstance-class-select .dropdown {
+  top: 43px; }
 .property-dbinstance input.shorter-input {
   width: 37px;
   padding-right: 7px; }

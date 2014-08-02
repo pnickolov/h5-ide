@@ -153,7 +153,7 @@ define [
       if @isRemoved() then return
 
       @__applyingUpdate = false
-      @view.stopListening self.opsModel, "change:progress", self.view.updateProgress
+      @view.stopListening @opsModel, "change:progress", @view.updateProgress
       msg = err.msg
       if err.result then msg += "\n" + err.result
       msg = msg.replace(/\n/g, "<br />")

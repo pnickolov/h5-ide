@@ -315,8 +315,7 @@ define [
       @defaultMap[@get('engine')].charset
 
     getDefaultAllocatedStorage: ->
-
-      classInfo = Model.instanceClassList[@get('instanceClass')]
+      classInfo = _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instance is @get 'instanceClass'
       defaultStorage = @defaultMap[@get('engine')].allocatedStorage
       if classInfo and classInfo['ebs']
         if defaultStorage < 100

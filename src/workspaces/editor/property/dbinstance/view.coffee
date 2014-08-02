@@ -83,6 +83,7 @@ define [ 'ApiRequest'
         changeClass: ( event, value, data ) ->
             @resModel.set 'instanceClass', value
             @setDefaultAllocatedStorage()
+            true
 
         setDefaultAllocatedStorage: () ->
 
@@ -608,7 +609,7 @@ define [ 'ApiRequest'
             that = this
 
             if not that.resModel.master()
-                
+
                 storge = that.resModel.get 'allocatedStorage'
                 iops = that.resModel.get 'iops'
                 if that._haveEnoughStorageForIOPS(storge)

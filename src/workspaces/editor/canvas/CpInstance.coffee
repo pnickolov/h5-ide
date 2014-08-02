@@ -28,7 +28,7 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
       @$el.find(".selected").removeClass("selected")
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, @host.type, $( evt.currentTarget ).addClass("selected").attr("data-id")
+      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.INSTANCE, $( evt.currentTarget ).addClass("selected").attr("data-id")
       false
 
     remove : ()->

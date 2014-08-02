@@ -33,7 +33,7 @@ $dndDuration : .2s;
       font-size  : 32px;
       text-align : center;
       width      : 100%;
-      display    : inline-block;
+      display    : block;
     }
 
     &:hover {
@@ -173,7 +173,7 @@ $dndDuration : .2s;
     left          : 47px;
     height        : 1em;
     width         : 1em;
-    background    : #f22;
+    background    : #2CBE29;
     border-radius : 50%;
     color         : #fff;
     font-size     : 12px;

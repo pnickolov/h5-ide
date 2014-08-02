@@ -211,16 +211,17 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
           windowHeight - headerHeight - footerHeight - 75 # 75 for toolbarHeight + Table HeaderBar Height
         __resizeModal: ->
           that = @
-          @setContent(that.tempDom, true)
+          @__modalplus.tpl.find(".scrollbar-veritical-thumb").removeAttr("style")
+          @__modalplus.tpl.find(".table-head-fix.will-be-covered .scroll-wrap").height(that.__getHeightOfContent())
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading
             @
 
-        __renderContent: (force)->
+        __renderContent: ()->
             that = @
             $contentWrap = @$ '.content-wrap'
-            if not $contentWrap.find( '.toolbar' ).size() or force
+            if not $contentWrap.find( '.toolbar' ).size()
                 data = @options
 
                 data.buttons = _.reject data.buttons, ( btn ) ->
@@ -248,9 +249,9 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 @__open()
             @
 
-        setContent: ( dom, force ) ->
+        setContent: ( dom ) ->
             @tempDom = dom
-            @__renderContent(force)
+            @__renderContent()
             @$( '.t-m-content' ).html dom
             @__triggerChecked null
             @trigger "rendered", @

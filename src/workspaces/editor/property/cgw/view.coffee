@@ -47,7 +47,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "Customer Gateway" )
+            if PropertyView.checkResName( @model.get('uid'), target, "Customer Gateway" )
                 @model.setName name
                 @setTitle name
 

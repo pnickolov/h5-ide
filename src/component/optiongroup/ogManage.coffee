@@ -6,8 +6,9 @@ define [
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'
+    './workspaces/editor/property/base/view'
 
-], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
+], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus, PropertyView ) ->
 
     valueInRange = ( start, end ) ->
         ( val ) ->
@@ -439,6 +440,8 @@ define [
                 if not MC.validate('letters', val[0])
                     return errTip
 
+            ogNameCheck = PropertyView.checkResName( @ogModel.get('id'), $ogName, "OptionGroup" )
+
             $ogDesc.parsley 'custom', ( val ) ->
 
                 errTip = 'Option group description invalid'
@@ -473,7 +476,7 @@ define [
 
             return if not isRightDepend
 
-            if $ogName.parsley('validate') and $ogDesc.parsley('validate')
+            if $ogName.parsley('validate') and $ogDesc.parsley('validate') and ogNameCheck
 
                 # set name and desc
                 ogName = $ogName.val()

@@ -94,7 +94,7 @@ define [ '../base/view',
 
             oldName = @model.get("name")
 
-            if @checkResName( target, "Load Balancer" )
+            if PropertyView.checkResName( @model.get('uid'), target, "Load Balancer" )
                 @model.setName name
                 @setTitle name
 

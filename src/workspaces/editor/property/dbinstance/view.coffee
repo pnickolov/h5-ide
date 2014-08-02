@@ -555,7 +555,7 @@ define [ 'ApiRequest'
 
             target = $ event.currentTarget
 
-            if @checkResName(target, 'DBInstance')
+            if PropertyView.checkResName(@resModel.get('id'), target, 'DBInstance')
 
                 value = target.val()
 

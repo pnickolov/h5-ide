@@ -29,7 +29,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName(target, "Launch Configuration")
+            if PropertyView.checkResName( @model.get('uid'), target, "Launch Configuration")
                 @model.setName name
                 @setTitle name
     }

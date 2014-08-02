@@ -30,7 +30,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "ACL" )
+            if PropertyView.checkResName( @model.get('uid'), target, "ACL" )
                 @model.setName name
                 @setTitle name
 

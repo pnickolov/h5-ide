@@ -318,6 +318,7 @@ define [
       @defaultMap[@get('engine')].allocatedStorage
 
     getLicenseObj: ( getDefault ) ->
+
       currentLicense = @get 'license'
 
       if currentLicense then obj = _.findWhere @getSpecifications(), license: currentLicense
@@ -432,7 +433,8 @@ define [
           for cla, az of classes
             vObj.instanceClasses.push instanceClass: cla, multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
 
-          vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> Model.instanceClassList.indexOf cla.instanceClass
+          classAry = _.keys(Model.instanceClassList)
+          vObj.instanceClasses = _.sortBy vObj.instanceClasses, (cla) -> classAry.indexOf cla.instanceClass
           lObj.versions.push vObj
 
         lObj.versions.sort (a, b) -> versionCompare b.version, a.version
@@ -605,7 +607,98 @@ define [
 
     handleTypes: constant.RESTYPE.DBINSTANCE
 
-    instanceClassList: ["db.t1.micro", "db.m1.small", "db.m1.medium", "db.m1.large", "db.m1.xlarge", "db.m2.xlarge", "db.m2.2xlarge", "db.m2.4xlarge", "db.cr1.8xlarge", "db.m3.medium", "db.m3.large", "db.m3.xlarge", "db.m3.2xlarge", "db.r3.large", "db.r3.xlarge", "db.r3.2xlarge", "db.r3.4xlarge", "db.r3.8xlarge"]
+    instanceClassList: {
+      "db.t1.micro": {
+        cpu: '1 vCPU',
+        memory: '0.613 GB',
+        ebs: false
+      },
+      "db.m1.small": {
+        cpu: '1 vCPU',
+        memory: '1.7 GB',
+        ebs: false
+      },
+      "db.m1.medium": {
+        cpu: '1 vCPU',
+        memory: '3.75 GB',
+        ebs: false
+      },
+      "db.m1.large": {
+        cpu: '2 vCPU',
+        memory: '7.5 GB',
+        ebs: true
+      },
+      "db.m1.xlarge": {
+        cpu: '4 vCPU',
+        memory: '15 GB',
+        ebs: true
+      },
+      "db.m2.xlarge": {
+        cpu: '2 vCPU',
+        memory: '17.1 GB',
+        ebs: false
+      },
+      "db.m2.2xlarge": {
+        cpu: '4 vCPU',
+        memory: '34 GB',
+        ebs: true
+      },
+      "db.m2.4xlarge": {
+        cpu: '8 vCPU',
+        memory: '68 GB',
+        ebs: true
+      },
+      "db.cr1.8xlarge": {
+        cpu: '32 vCPU',
+        memory: '244 GB',
+        ebs: false
+      },
+      "db.m3.medium": {
+        cpu: '1 vCPU',
+        memory: '3.75 GB',
+        ebs: false
+      },
+      "db.m3.large": {
+        cpu: '2 vCPU',
+        memory: '7.5 GB',
+        ebs: false
+      },
+      "db.m3.xlarge": {
+        cpu: '4 vCPU',
+        memory: '15 GB',
+        ebs: true
+      },
+      "db.m3.2xlarge": {
+        cpu: '8 vCPU',
+        memory: '30 GB',
+        ebs: true
+      },
+      "db.r3.large": {
+        cpu: '2 vCPU',
+        memory: '15 GB',
+        ebs: false
+      },
+      "db.r3.xlarge": {
+        cpu: '4 vCPU',
+        memory: '30.5 GB',
+        ebs: true
+      },
+      "db.r3.2xlarge": {
+        cpu: '8 vCPU',
+        memory: '61 GB',
+        ebs: true
+      },
+      "db.r3.4xlarge": {
+        cpu: '16 vCPU',
+        memory: '122 GB',
+        ebs: true
+      },
+      "db.r3.8xlarge": {
+        cpu: '32 vCPU',
+        memory: '244GB',
+        ebs: false
+      }
+    }
 
     oracleCharset: ["AL32UTF8", "JA16EUC", "JA16EUCTILDE", "JA16SJIS", "JA16SJISTILDE", "KO16MSWIN949", "TH8TISASCII", "VN8MSWIN1258", "ZHS16GBK", "ZHT16HKSCS", "ZHT16MSWIN950", "ZHT32EUC", "BLT8ISO8859P13", "BLT8MSWIN1257", "CL8ISO8859P5", "CL8MSWIN1251", "EE8ISO8859P2", "EL8ISO8859P7", "EL8MSWIN1253", "EE8MSWIN1250", "NE8ISO8859P10", "NEE8ISO8859P4", "WE8ISO8859P15", "WE8MSWIN1252", "AR8ISO8859P6", "AR8MSWIN1256", "IW8ISO8859P8", "IW8MSWIN1255", "TR8MSWIN1254", "WE8ISO8859P9", "US7ASCII", "UTF8", "WE8ISO8859P1"]
 

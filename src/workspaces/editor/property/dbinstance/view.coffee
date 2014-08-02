@@ -398,7 +398,7 @@ define [ 'ApiRequest'
                 iops = Number(val)
 
                 if iops < 1000
-                    return "Require 1000 IOPS"
+                    return "Require at least 1000 IOPS"
 
                 # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
                 #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
@@ -409,10 +409,12 @@ define [ 'ApiRequest'
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
 
-                if defaultIOPS is iopsRange.maxIOPS
-                    return "Require #{defaultIOPS} IOPS"
-                else
-                    return "Require #{defaultIOPS}-#{iopsRange.maxIOPS} IOPS"
+                return "Require IOPS / GB ratios between 3 and 10"
+
+                # if defaultIOPS is iopsRange.maxIOPS
+                #     return "Require #{defaultIOPS} IOPS"
+                # else
+                #     return "Require #{defaultIOPS}-#{iopsRange.maxIOPS} IOPS"
 
             @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
 
@@ -640,7 +642,7 @@ define [ 'ApiRequest'
         _haveEnoughStorageForIOPS: (storge) ->
 
             iopsRange = @_getIOPSRange(storge)
-            if iopsRange.minIOPS >= 1000
+            if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
                 return true
             else
                 return false

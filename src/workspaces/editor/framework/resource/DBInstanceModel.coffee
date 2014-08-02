@@ -314,8 +314,11 @@ define [
     getDefaultCharSet: ->
       @defaultMap[@get('engine')].charset
 
+    getInstanceClassDict: ->
+      _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
+
     getDefaultAllocatedStorage: ->
-      classInfo = _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
+      classInfo = @getInstanceClassDict()
       defaultStorage = @defaultMap[@get('engine')].allocatedStorage
       if classInfo and classInfo['ebs']
         if defaultStorage < 100
@@ -356,7 +359,7 @@ define [
                 max: 1024
               }
 
-      classInfo = Model.instanceClassList[@get('instanceClass')]
+      classInfo = @getInstanceClassDict()
       defaultStorage = @defaultMap[@get('engine')].allocatedStorage
       if classInfo and classInfo['ebs']
         if defaultStorage < 100

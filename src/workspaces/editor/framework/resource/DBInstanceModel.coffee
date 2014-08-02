@@ -315,7 +315,7 @@ define [
       @defaultMap[@get('engine')].charset
 
     getDefaultAllocatedStorage: ->
-      classInfo = _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instance is @get 'instanceClass'
+      classInfo = _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
       defaultStorage = @defaultMap[@get('engine')].allocatedStorage
       if classInfo and classInfo['ebs']
         if defaultStorage < 100
@@ -436,7 +436,7 @@ define [
         _.findWhere(license.versions, {version: version.version})?.selected = true
 
       instanceClass = _.first _.filter version.instanceClasses, (i) ->
-        if i.instance is currentClass
+        if i.instanceClass is currentClass
           i.selected = true
           true
         else
@@ -482,9 +482,9 @@ define [
             instanceClassDict[ cla ] = multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
 
           # Sorting and filling parameters.
-          for calDict in constant.DBINSTANCECLASSMAP
-            if _.has instanceClassDict, calDict.instance
-              vObj.instanceClasses.push _.extend instanceClassDict[calDict.instance], calDict
+          for claDict in constant.DBINSTANCECLASSMAP
+            if _.has instanceClassDict, claDict.instanceClass
+              vObj.instanceClasses.push _.extend instanceClassDict[claDict.instanceClass], claDict
 
           lObj.versions.push vObj
 

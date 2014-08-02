@@ -50,8 +50,8 @@
                 <div class="scroll-content">
                     <ul>
                         {{#each classes}}
-                        <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instance}}">
-                            <div class="main truncate">{{instance}}</div>
+                        <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
+                            <div class="main truncate">{{instanceClass}}</div>
                             <div class="sub"><span>{{ecu}}</span> <span>{{cpu}}</span> <span>{{memory}}</span></div>
                         </li>
                         {{/each}}

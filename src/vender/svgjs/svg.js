@@ -1007,6 +1007,12 @@ define([], function() {
   }
   function setTrans(t) { this.__trans = t; }
 
+  function getParent() {
+    if ( this.__parent ) { return this.__parent; }
+    return this.node.parentNode.instance;
+  }
+  function setParent(p) { this.__parent = p; }
+
 
   SVG.Element = SVG.invent({
     // Initialize node
@@ -1016,6 +1022,7 @@ define([], function() {
 
       /* initialize transformation store with defaults */
       Object.defineProperty( this, "trans", {get:getTrans, set:setTrans});
+      Object.defineProperty( this, "parent", {get:getParent, set:setParent});
       // this.trans = SVG.defaults.trans()
 
       /* create circular reference */
@@ -1431,7 +1438,14 @@ define([], function() {
   , extend: {
       // Returns all child elements
       children: function() {
-        return this._children || (this._children = [])
+        var childrens = [];
+        var ch = this.node.children || this.node.childNodes;
+        for ( var i in ch ) {
+          if ( ch[i].tagName ) {
+            childrens.push( ch[i].instance );
+          }
+        }
+        return childrens;
       }
       // Add given element at a position
     , add: function(elements, i) {
@@ -1442,20 +1456,7 @@ define([], function() {
         for ( var j = 0; j < elements.length; ++j ) {
           element = elements[j];
           if (!this.has(element)) {
-            /* remove references from previous parent */
-            if (element.parent)
-              element.parent.children().splice(element.parent.index(element), 1)
-
-            if ( i !== undefined ) {
-              /* add element references */
-              this.children().splice(i, 0, element)
-              this.node.insertBefore(element.node, this.node.childNodes[i] || null)
-            } else {
-              this.children().push( element )
-              this.node.insertBefore(element.node, null)
-            }
-
-            element.parent = this
+            this.node.insertBefore(element.node, this.node.childNodes[i] || null)
           }
         }
 
@@ -1491,7 +1492,8 @@ define([], function() {
       }
       // Get the last child
     , last: function() {
-        return this.children()[this.children().length - 1]
+        var chs = this.children()
+        return chs[chs.length - 1]
       }
       // Iterates over all children and invokes a given block
     , each: function(block, deep) {
@@ -1510,17 +1512,25 @@ define([], function() {
       }
       // Remove a child element at a position
     , removeElement: function(element) {
-        this.children().splice(this.index(element), 1)
-        this.node.removeChild(element.node)
-        element.parent = null
-
+        element = element.node;
+        if ( element.remove ) {
+          element.remove();
+        } else {
+          element.parent.removeChild( element );
+        }
         return this
       }
       // Remove all elements in this container
     , clear: function() {
         /* remove children */
-        for (var i = this.children().length - 1; i >= 0; i--)
-          this.removeElement(this.children()[i])
+        var chs = this.node.children || this.node.childNodes;
+        for ( var i = chs.length - 1; i >=0; i-- ) {
+          if ( chs[i].remove ) {
+            chs[i].remove();
+          } else {
+            chs[i].parentNode.removeChild( chs[i] );
+          }
+        }
 
         /* remove defs node */
         if (this._defs)
@@ -2655,6 +2665,7 @@ define([], function() {
             var el = new SVG[ tag ];
             el.node = element.cloneNode(true);
             el.node.removeAttribute("id");
+            el.node.instance = el;
             el.type = element.nodeName;
             return el;
           }

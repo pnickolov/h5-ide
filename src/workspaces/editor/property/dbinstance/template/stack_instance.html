@@ -227,7 +227,7 @@
             <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
                 <section class="property-control-group">
                     <label>Start Time:</label>
-                    <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-required-rollback="true"/>
+                    <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-ignore="true" data-ignore-regexp="^[0-9:]+"/>
                     <label>UTC</label>
                 </section>
                 <section class="property-control-group">

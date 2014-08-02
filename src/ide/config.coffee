@@ -125,6 +125,7 @@ require.config {
 		'UI.nanoscroller'    : 'ui/UI.nanoscroller'
 		'jqpagination'       : 'ui/jqpagination'
 		"jquerysort"         : 'ui/jquery.sort'
+		'jqtimepicker'       : 'ui/jquery.timepicker'
 		'UI.modalplus'       : 'ui/UI.modalplus'
 
 		#############################################

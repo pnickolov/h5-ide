@@ -12,6 +12,7 @@ define [ 'ApiRequest'
          'constant'
          'CloudResources'
          'rds_pg'
+         'jqtimepicker'
 ], ( ApiRequest, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
 
     noop = ()-> null
@@ -319,11 +320,12 @@ define [ 'ApiRequest'
             @updateIOPSCheckStatus()
 
             @pgDropdown = new parameterGroup(@resModel).renderDropdown()
-
             $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
-
             @bindParsley()
-
+            $('#property-dbinstance-maintenance-window-start-time, #property-dbinstance-backup-window-start-time').timepicker({
+                'timeFormat': 'H:i'
+                'step': 1
+            })
             @getInstanceStatus() if @isAppEdit
 
             attr.name
@@ -336,6 +338,7 @@ define [ 'ApiRequest'
             validateStartTime = (val) ->
                 if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
                         'Provide a valid time value from 00:00 to 23:59.'
+
 
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
@@ -661,7 +664,7 @@ define [ 'ApiRequest'
             base = 1000
             count = 0
             iopsRange = @_getIOPSRange(storage)
-            
+
             while ++count
 
                 value = base * count

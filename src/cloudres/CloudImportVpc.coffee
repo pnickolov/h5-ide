@@ -1522,6 +1522,9 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
           if aws_dbins.PendingModifiedValues.MultiAZ
             #modify MultiAZ
             dbInsRes.MultiAZ = aws_dbins.PendingModifiedValues.MultiAZ
+          if aws_dbins.PendingModifiedValues.MasterUserPassword
+            #modify MasterUserPassword
+            dbInsRes.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
 
           ## disable modify following attribute currently
           # if aws_dbins.PendingModifiedValues.DBInstanceIdentifier
@@ -1531,10 +1534,6 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
           # if aws_dbins.PendingModifiedValues.EngineVersion
           #   #modify EngineVersion
           #   dbInsRes.EngineVersion = aws_dbins.PendingModifiedValues.EngineVersion
-
-          # if aws_dbins.PendingModifiedValues.MasterUserPassword
-          #   #modify MasterUserPassword
-          #   dbInsRes.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
 
           # if aws_dbins.PendingModifiedValues.Port
           #   #modify Port

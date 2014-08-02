@@ -467,6 +467,10 @@ module.exports =
       en: "Resources"
       zh: "资源"
 
+    RES_TIP_SHARED_RESOURCES:
+      en: "Manage other resources"
+      zh: "资源"
+
     RES_TIT_RESOURCES_MENU_KEYPAIR:
       en: "Manage Key Pairs..."
       zh: ""

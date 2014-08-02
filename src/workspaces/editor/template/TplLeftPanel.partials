@@ -2,15 +2,15 @@
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
 <header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
-  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res"></i>
+  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
   <ul class="dropdown-menu resources-dropdown-wrapper">
-    <li data-action="keypair">Manage Key Pairs...</li>
-    <li data-action="snapshot">Manage EBS Snapshots...</li>
-    <li data-action="sns">Manage SNS Topic & Subscriptions...</li>
-    <li data-action="sslcert">Manage Server Certificates...</li>
-    <li data-action="dhcp">Manage DHCP Option Sets...</li>
-    <li data-action="rdspg">Manage RDS Parameter Groups...</li>
-    <li data-action="rdssnapshot">Manage RDS Snapshot...</li>
+    <li data-action="keypair" class="icon-kp"><span>Key Pair</span></li>
+    <li data-action="snapshot"><span>EBS Snapshot</span></li>
+    <li data-action="sns"><span>SNS Topic & Subscription</span></li>
+    <li data-action="sslcert"><span>Server Certificate</span></li>
+    <li data-action="dhcp"><span>DHCP Option Sets</span></li>
+    <li data-action="rdspg"><span>DB Parameter Groups</span></li>
+    <li data-action="rdssnapshot"><span>DB Snapshot</span></li>
   </ul>
   <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
 </header>

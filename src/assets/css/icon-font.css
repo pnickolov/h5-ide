@@ -75,7 +75,8 @@
 .icon-support:before,
 .icon-reload:before,
 .icon-resources:before,
-.icon-hide-sg:before {
+.icon-hide-sg:before,
+.icon-kp:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -292,3 +293,6 @@
 
 .icon-hide-sg:before {
   content: "\F160"; }
+
+.icon-kp:before {
+  content: "\F162"; }

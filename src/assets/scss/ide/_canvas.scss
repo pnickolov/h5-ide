@@ -115,10 +115,10 @@
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
     > .node-background {
-      fill-opacity : 1;
-      fill: #F2F8FF !important;
-      stroke-width: 2 !important;
-      stroke: #659FFF !important;
+      fill-opacity : .5;
+      fill         : rgba(242, 248, 255, 1) !important;
+      stroke-width : 1 !important;
+      stroke       : #659FFF !important;
     }
   }
   .canvasel.selected {

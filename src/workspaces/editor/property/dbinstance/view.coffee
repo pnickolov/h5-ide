@@ -482,6 +482,7 @@ define [ 'ApiRequest'
                 azCapable: lvi[3]
             }
             attr = @getModelJSON()
+            attr.classInfo = @resModel.getInstanceClassDict()
             _.extend data, attr
 
             $('#lvia-container').html template_component.lvi(data)

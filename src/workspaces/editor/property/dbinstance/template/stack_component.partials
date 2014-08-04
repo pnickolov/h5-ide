@@ -43,7 +43,10 @@
 <section class="property-control-group">
     <label class="left">DB Instance Class</label>
     <div class="selectbox selectbox-mega combo-dd" id="property-dbinstance-class-select">
-        <div class="selection">{{instanceClass}}</div>
+        <div class="selection">
+            <div class="main truncate">{{classInfo.instanceClass}}</div>
+            <div class="sub"><span>{{classInfo.ecu}}</span> <span>{{classInfo.cpu}}</span> <span>{{classInfo.memory}}</span></div>
+        </div>
         <div class="dropdown">
             <div class="scroll-wrap scrollbar-auto-hide clearfix">
                 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>

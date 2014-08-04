@@ -63,7 +63,6 @@ define [
 
       dbInstance = _.filter comp, (e)->
         e.type is constant.RESTYPE.DBINSTANCE
-      console.log dbInstance
       snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
       snapshots.fetchForce().then ->
         lostDBSnapshot = _.filter dbInstance, (e)->
@@ -164,7 +163,6 @@ define [
 
     terminateApp : ( id )->
       app  = App.model.appList().get( id )
-      console.log(id)
       name = app.get("name")
       production = app.get("usage") is 'production'
       # renderLoading
@@ -186,8 +184,6 @@ define [
         # Render Varies
         app.fetchJsonData().then ->
           comp = app.getJsonData().component
-          console.log comp
-          console.log resourceList
           hasDBInstance = _.filter comp, (e)->
             e.type == constant.RESTYPE.DBINSTANCE
           dbInstanceName = _.map hasDBInstance, (e)->

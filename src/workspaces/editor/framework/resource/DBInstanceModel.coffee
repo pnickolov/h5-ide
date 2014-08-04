@@ -649,7 +649,7 @@ define [
             DBSubnetGroup:
               DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
             VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
-            ReadReplicaSourceDBInstanceIdentifier : ""
+            ReadReplicaSourceDBInstanceIdentifier : if master then master.createRef('DBInstanceIdentifier') else ''
 
 
       { component : component, layout : @generateLayout() }

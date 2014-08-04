@@ -155,8 +155,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
         __checkAll: ( event ) ->
             @__processDelBtn()
             if event.currentTarget.checked
-                @$('input[type="checkbox"]').prop 'checked', true
-                @$('tr.item').addClass 'selected'
+                @$('input[type="checkbox"]:not(:disabled)').prop 'checked', true
+                .parents('tr.item').addClass 'selected'
             else
                 @$('input[type="checkbox"]').prop 'checked', false
                 @$('tr.item').removeClass 'selected'
@@ -191,18 +191,35 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 width           : '855px'
                 height          : '473px'
                 compact         : true
+                hasScroll       : true
+                mode            : "panel"
 
 
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
             #$( '#modal-wrap' ).click @__stopPropagation
+            @__modalplus.on "resize", @__resizeModal.bind @
+#            @.on 'rendered', @__resizeModal.bind @
+            @
+
+        __getHeightOfContent: ->
+          windowHeight = $(window).height()
+          $modal= @__modalplus.tpl
+          headerHeight= $modal.find(".modal-header").outerHeight()
+          footerHeight = $modal.find('.modal-footer').height() || 0
+          windowHeight - headerHeight - footerHeight - 75 # 75 for toolbarHeight + Table HeaderBar Height
+        __resizeModal: ->
+          that = @
+          @__modalplus.tpl.find(".scrollbar-veritical-thumb").removeAttr("style")
+          @__modalplus.tpl.find(".table-head-fix.will-be-covered .scroll-wrap").height(that.__getHeightOfContent())
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading
             @
 
-        __renderContent: ->
+        __renderContent: ()->
+            that = @
             $contentWrap = @$ '.content-wrap'
             if not $contentWrap.find( '.toolbar' ).size()
                 data = @options
@@ -212,6 +229,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                         data.btnValueCreate = btn.name
                         true
 
+                data.height = that.__getHeightOfContent()
                 @$( '.content-wrap' ).html template.content data
                 @
 
@@ -232,10 +250,11 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @
 
         setContent: ( dom ) ->
+            @tempDom = dom
             @__renderContent()
             @$( '.t-m-content' ).html dom
             @__triggerChecked null
-
+            @trigger "rendered", @
             @
 
         setSlide: ( dom ) ->

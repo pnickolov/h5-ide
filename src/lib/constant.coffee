@@ -38,6 +38,9 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		"AWS.CloudWatch.CloudWatch"					: "AlarmArn"
 		"AWS.SNS.Subscription"						: ""
 		"AWS.SNS.Topic"								: "TopicArn"
+		"AWS.RDS.DBSubnetGroup"                     : "DBSubnetGroupName"
+		"AWS.RDS.DBInstance"                        : "DBInstanceIdentifier"
+		"AWS.RDS.OptionGroup"                       : "OptionGroupName"
 	}
 
 	# A short version
@@ -70,6 +73,18 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		CW           : 'AWS.CloudWatch.CloudWatch'
 		SUBSCRIPTION : 'AWS.SNS.Subscription'
 		TOPIC        : 'AWS.SNS.Topic'
+
+		DBSBG        : 'AWS.RDS.DBSubnetGroup'
+		DBINSTANCE   : 'AWS.RDS.DBInstance'
+		DBPARAM      : 'AWS.RDS.Parameter'
+		DBPG         : 'AWS.RDS.ParameterGroup'
+		DBSNAP       : 'AWS.RDS.Snapshot'
+		DBES         : 'AWS.RDS.EventSubscription'
+		DBOG         : 'AWS.RDS.OptionGroup'
+		DBENGINE     : 'AWS.RDS.DBEngineVersion'
+
+
+
 
 	RESNAME =
 		AZ           : "Availability Zone"
@@ -134,6 +149,146 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 		AWS_SNS_Subscription                      : 'sns_sub'
 		AWS_SNS_Topic                             : 'sns_top'
 	}
+
+	DBINSTANCECLASSMAP = [
+      {
+        instanceClass: "db.t1.micro"
+        cpu: "1 vCPU"
+        memory: '0.613 GB'
+        ebs: false
+        ecu: 1
+      }
+      {
+        instanceClass: "db.m1.small"
+        cpu: "1 vCPU"
+        memory: '1.7 GB'
+        ebs: false
+        ecu: 1
+      }
+      {
+        instanceClass: "db.m1.medium"
+        cpu: '1 vCPU'
+        memory: '3.75 GB'
+        ebs: false
+        ecu: 2
+      }
+      {
+        instanceClass: "db.m1.large"
+        cpu: '2 vCPU'
+        memory: '7.5 GB'
+        ebs: true
+        ecu: 4
+      }
+      {
+        instanceClass: "db.m1.xlarge"
+        cpu: '4 vCPU'
+        memory: '15 GB'
+        ebs: true
+        ecu: 8
+      }
+      {
+        instanceClass: "db.m2.xlarge"
+        cpu: '2 vCPU'
+        memory: '17.1 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instanceClass: "db.m2.2xlarge"
+        cpu: '4 vCPU'
+        memory: '34 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instanceClass: "db.m2.4xlarge"
+        cpu: '8 vCPU'
+        memory: '68 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instanceClass: "db.cr1.8xlarge"
+        cpu: '32 vCPU'
+        memory: '244 GB'
+        ebs: false
+        ecu: 88
+      }
+      {
+        instanceClass: "db.m3.medium"
+        cpu: '1 vCPU'
+        memory: '3.75 GB'
+        ebs: false
+        ecu: 3
+      }
+      {
+        instanceClass: "db.m3.large"
+        cpu: '2 vCPU'
+        memory: '7.5 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instanceClass: "db.m3.xlarge"
+        cpu: '4 vCPU'
+        memory: '15 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instanceClass: "db.m3.2xlarge"
+        cpu: '8 vCPU'
+        memory: '30 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instanceClass: "db.r3.large"
+        cpu: '2 vCPU'
+        memory: '15 GB'
+        ebs: false
+        ecu: 6.5
+      }
+      {
+        instanceClass: "db.r3.xlarge"
+        cpu: '4 vCPU'
+        memory: '30.5 GB'
+        ebs: true
+        ecu: 13
+      }
+      {
+        instanceClass: "db.r3.2xlarge"
+        cpu: '8 vCPU'
+        memory: '61 GB'
+        ebs: true
+        ecu: 26
+      }
+      {
+        instanceClass: "db.r3.4xlarge"
+        cpu: '16 vCPU'
+        memory: '122 GB'
+        ebs: true
+        ecu: 52
+      }
+      {
+        instanceClass: "db.r3.8xlarge"
+        cpu: '32 vCPU'
+        memory: '244GB'
+        ebs: false
+        ecu: 104
+      }
+    ]
+
+	DBENGINE =
+		MYSQL     : "mysql"
+		ORA_SE1   : "oracle-se1"
+		ORA_SE    : "oracle-se"
+		ORA_EE    : "oracle-ee"
+		SQLSRV_EE : "sqlserver-ee"
+		SQLSRV_SE : "sqlserver-se"
+		SQLSRV_EX : "sqlserver-ex"
+		SQLSRV_WEB: "sqlserver-web"
+		POSTGRES  : "postgres"
 
 	INSTANCE_STATES = {
 		'pending'      : 0
@@ -291,11 +446,13 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 			PublicIp         : true
 			MacAddress       : true
 			PrivateIpAddress : true
-
+		AWS_RDS_DBInstance :
+			Address          : true
+			Port             : true
 
 	#public
 	AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
-
+	DBENGINE              : DBENGINE
 	INSTANCE_STATES         : INSTANCE_STATES
 
 	AWS_RESOURCE_SHORT_TYPE : AWS_RESOURCE_SHORT_TYPE
@@ -317,4 +474,5 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 	STATE_REF_DICT          : STATE_REF_DICT
 	RESNAME                 : wrap RESNAME
 	WRAP                    : wrap
+	DBINSTANCECLASSMAP      : DBINSTANCECLASSMAP
 

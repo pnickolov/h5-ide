@@ -2,13 +2,15 @@
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
 <header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
-  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res"></i>
+  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
   <ul class="dropdown-menu resources-dropdown-wrapper">
-    <li data-action="keypair">Manage Key Pairs...</li>
-    <li data-action="snapshot">Manage EBS Snapshots...</li>
-    <li data-action="sns">Manage SNS Topic & Subscriptions...</li>
-    <li data-action="sslcert">Manage Server Certificates...</li>
-    <li data-action="dhcp">Manage DHCP Option Sets...</li>
+    <li data-action="keypair" class="icon-kp"><span>Key Pair</span></li>
+    <li data-action="snapshot"><span>EBS Snapshot</span></li>
+    <li data-action="sns"><span>SNS Topic & Subscription</span></li>
+    <li data-action="sslcert"><span>Server Certificate</span></li>
+    <li data-action="dhcp"><span>DHCP Option Sets</span></li>
+    <li data-action="rdspg"><span>DB Parameter Groups</span></li>
+    <li data-action="rdssnapshot"><span>DB Snapshot</span></li>
   </ul>
   <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
 </header>
@@ -16,7 +18,14 @@
 <div class="fixedaccordion accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
-    <ul class="resource-list-az clearfix accordion-body"></ul>
+    <ul class="resource-list-az clearfix accordion-body">
+      <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
+        <div class="resource-count">{{count}}</div>
+        <div class="res-name">AZ & subnet</div>
+      </li>
+      <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+      <li class="tooltip resource-item subnetgroup" data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
+    </ul>
   </section>
 
   <section class="accordion-group">
@@ -41,16 +50,56 @@
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
     <div class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <button class="btn btn-primary ManageSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
-      <ul class="resource-list-snapshot scroll-content"></ul>
+      <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <div class="scroll-content">
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+        <ul class="resource-list-snapshot">
+          <li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
+        </ul>
+        <div class="resource-list-head">
+          {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
+            <div class="selection">By Date</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">By Date</li>
+              <li class="item" data-id="storge">By Storage</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
+    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
+      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+      <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
+      <div class="scroll-content">
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
+        <ul class="resource-list-rds"></ul>
+        <div class="resource-list-head">
+          {{i18n "RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-rds-snapshot">
+            <div class="selection">By Date</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">By Date</li>
+              <li class="item" data-id="engine">By Engine</li>
+              <li class="item" data-id="storge">By Storage</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-rds-snapshot resource-list-rds-snapshot-exist"></ul>
+      </div>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
     <ul class="resource-list-asg clearfix accordion-body">
-      <li class="tooltip resource-item resource-icon-elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
-      <li class="tooltip resource-item resource-icon-asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
+      <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      <li class="tooltip resource-item asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
   </section>
 
@@ -59,31 +108,42 @@
     <article class="accordion-body scroll-wrap scrollbar-auto-hide">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <ul class="scroll-content">
-        <li class="tooltip resource-item resource-icon-subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+        <li class="tooltip resource-item rtb" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
 
-        <li class="tooltip resource-item resource-icon-rt" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
+        <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
+        <li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
+        <li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
 
-        <li class="tooltip resource-item resource-icon-cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
-
-        <li class="tooltip resource-item resource-icon-eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+        <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
       </ul>
     </article>
   </section>
 </div>
 
-<!-- {{az}} -->
-{{#each this}}{{#with attributes}}
-<li class="tooltip resource-item resource-icon-az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ" data-option='{"name":"{{id}}"}'><div class="az-name">{{lastChar id}}</div>{{id}}</li>{{/with}}{{/each}}
-
 <!-- {{snapshot}} -->
-<li class="tooltip resource-item resource-icon-volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
 {{#each this}}{{#with attributes}}
-<li class="resource-item bubble resource-icon-ebs-snapshot" data-bubble-template="bubbleSnapshotInfo" data-bubble-data='{"snapshotId":"{{id}}", "startTime":"{{startTime}}","status":"{{status}}","size":"{{volumeSize}}","encrypted":"{{#if encrypted}}true{{else}}false{{/if}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'><div class="ebs-size">{{volumeSize}} GB</div>{{id}}</li>{{/with}}{{/each}}
+<li class="resource-item bubble snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
+  <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
+</li>{{/with}}{{/each}}
 
+<!-- {{rds}} -->
+{{#each this}}{{#with this.[0].attributes}}
+<li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
+<div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
+{{@key}}
+</li>
+{{/with}}
+{{/each}}
+
+<!-- {{rds_snapshot}} -->
+{{#each this}}
+<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
+  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
+  <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div>{{DBInstanceIdentifier}}
+</li>
+{{/each}}
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}
@@ -95,6 +155,9 @@
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >
-    <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
-  </div>
-<div class="resource-label instance-label">Auto Scaling Group ({{name}})</div>
+  <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+</div>Auto Scaling Group ({{name}})
+
+<!-- {{resourcePanelBubble}} -->
+<div class="bubble-head">{{id}}</div>
+<dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

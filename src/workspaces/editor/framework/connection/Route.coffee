@@ -6,9 +6,7 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     type : "RTB_Route"
 
     defaults : ()->
-      lineType : "rtb-target"
-      dashLine : true
-      routes   : []
+      routes : []
 
     initialize : ( attr, option )->
       igw = @getTarget( constant.RESTYPE.IGW )
@@ -118,6 +116,17 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     ]
 
 
+  }, {
+    isConnectable : ( p1Comp, p2Comp )->
+      if p1Comp.type is constant.RESTYPE.INSTANCE
+        instance = p1Comp
+      else if p2Comp.type is constant.RESTYPE.INSTANCE
+        instance = p2Comp
+
+      if instance and instance.get("count") > 1
+        return false
+
+      true
   }
 
   C

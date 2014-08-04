@@ -2,7 +2,7 @@
 # This file is used to place handlebar helpers. All handlebar helpers should be placed here.
 # Any helper that is not in this file might lead to compile error.
 
-define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
+define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
@@ -89,11 +89,11 @@ define ["handlebars", "i18n!/nls/lang.js"], ( Handlebars, lang )->
 
   Handlebars.registerHelper "simpleTime", ( time ) -> MC.dateFormat(new Date(time), "yyyy-MM-dd hh:mm:ss")
 
+  Handlebars.registerHelper "firstOfSplit", ( content, splitter )-> content.split("-")[0]
+
   Handlebars.registerHelper "lastChar", ( string )->
     ch = string.charAt( string.length - 1 )
     if (ch >= "A" && ch <= "Z") or (ch >= "a" && ch <= "z" )
       ch
     else
       ""
-
-  null

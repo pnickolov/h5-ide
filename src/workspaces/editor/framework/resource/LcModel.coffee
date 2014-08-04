@@ -4,17 +4,8 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
   emptyArray = []
 
   Model = ComplexResModel.extend {
-    # offset of asg
-    offset:
-      x: 2
-      y: 3
 
     defaults : ()->
-      x        : 0
-      y        : 0
-      width    : 9
-      height   : 9
-
       imageId      : ""
       ebsOptimized : false
       instanceType : "m1.small"
@@ -31,131 +22,17 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    __brothers: []
-    __bigBrother: null
-    __isClone: false
-
-    constructor : ( attr, option )->
-      if option and option.createByUser and attr.parent.get("lc")
-          return
-
-      if option and option.clone
-        @__isClone = true
-
-      ComplexResModel.call( this, attr, option )
-
-    privacyAttrs: [ '__parent', '__connections', 'x', 'y' ]
-
-    clone: ->
-      isRun = !!@get 'appId'
-      dolly = new Model null, clone: true
-
-      @addBrother dolly
-
-      for conn in @connections()
-        if conn.type is 'ElbAmiAsso' then continue
-        connClass = Design.modelClassForType( conn.type )
-        target = conn.getOtherTarget @type
-        new connClass dolly, target
-
-      dolly
-
-    syncBorthersConn: ( conn, add ) ->
-      if conn.type is 'ElbAmiAsso' then return
-      if conn.type is 'SgRuleLine' then return
-
-      syncTarget = []
-
-      if @isClone()
-        syncTarget.push @getBigBrother()
-        syncTarget = syncTarget.concat _.without @getBigBrother().__brothers, @
-      else
-        syncTarget = syncTarget.concat @__brothers
-
-
-      connClass = Design.modelClassForType( conn.type )
-      otherTarget = conn.getOtherTarget @type
-
-      for target in syncTarget
-        if add
-          new connClass target, otherTarget
-        else
-          targetConn = target.connections conn.type
-          for c in targetConn
-            if c.getOtherTarget @type is otherTarget
-              c.remove()
-
-
-    getBigBrother: ->
-      @__bigBrother
-
-    isClone: -> @__isClone
-
-    addBrother: ( brother ) ->
-      @__brothers.push brother
-      brother.__bigBrother = @
-      brother.listenTo @, 'all', ->
-        if /^change/.test arguments[ 0 ]
-          brother.trigger.apply brother, arguments
-
-    removeBrother: ( brother ) ->
-      idx = @__brothers.indexOf brother
-      @__brothers.splice idx, 1 if idx > -1
-      brother.stopListening()
-
-    getContext: ( attr ) ->
-      if @__bigBrother and attr not in @privacyAttrs and not (_.intersection _.keys(@privacyAttrs), attr).length
-        return @__bigBrother
-
-      @
-
-    set: ( attr ) ->
-      context = @getContext attr
-      ComplexResModel.prototype.set.apply context, arguments
-
-    get: ( attr ) ->
-      context = @getContext attr
-
-      if attr is 'x'
-        @parent()?.x() + @offset.x
-      else if attr is 'y'
-        @parent()?.y() + @offset.y
-      else
-        ComplexResModel.prototype.get.apply context, arguments
-
-    toJSON: ->
-      ComplexResModel.prototype.toJSON.apply @__bigBrother or @
-
-    draw : ( isCreate ) ->
-      if isCreate
-        ComplexResModel.prototype.draw.apply @, arguments
-      else
-        context = @getBigBrother() or @
-        ComplexResModel.prototype.draw.apply context, arguments
-
-        for brother in context.__brothers
-          ComplexResModel.prototype.draw.apply brother, arguments
-
-
     initialize : ( attr, option )->
-      @__brothers = []
-
-      # Draw before create SgAsso
-      if not option or not option.clone
-        @draw(true)
-
       if option and option.createByUser
 
         @initInstanceType()
 
         # Default Kp
-        KpModel = Design.modelClassForType( constant.RESTYPE.KP )
-        KpModel.getDefaultKP().assignTo( this )
+        Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( this )
 
         # Default Sg
-        defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
         SgAsso = Design.modelClassForType( "SgAsso" )
-        new SgAsso( defaultSg, this )
+        new SgAsso( Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg(), this )
 
       if not @get("rdSize")
         #append root device
@@ -169,8 +46,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return newName or ""
 
       if base is undefined
-        myKinds = _.filter Design.modelClassForType( @type ).allObjects(), (m) -> m.getBigBrother() is null
-        base = myKinds.length
+        base = @getAllObjects().length
 
       # Collect all the resources name
       nameMap = {}
@@ -202,13 +78,10 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         return error : lang.ide.CVS_MSG_ERR_DEL_LC
 
       state = @get("state")
-      if (state and _.isArray(state) and state.length > 0) or
-        ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
-          return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
+      if state and state.length > 0
+        return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
 
-      return true if @__brothers.length > 0 or @isClone()
-      sprintf lang.ide.CVS_CFM_DEL_LC, @get( 'name' )
-
+      true
 
     isDefaultTenancy : ()-> true
 
@@ -217,7 +90,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
       if not resource_list then return []
 
-      resource = resource_list.get(@parent().get("appId"))?.toJSON()
+      resource = resource_list.get(@connectionTargets("LcUsage")[0].get("appId"))?.toJSON()
       if resource and resource.Instances and resource.Instances.length
         amis = []
         for i in resource.Instances
@@ -230,53 +103,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
       amis || []
 
     remove : ()->
-      if @__bigBrother
-        @__bigBrother.removeBrother @
-      else if @__brothers.length
-        # Young brother continue his big-brother's duty when the big-brother dying
-        for k, v of @attributes
-          if k not in [ '__parent', '__connections' ]
-            @__brothers[0].attributes[ k ] = v
-
-        @__brothers[0].__bigBrother = null
-        @__brothers[0].__brothers = []
-        @__brothers[0].__isClone = false
-
-        for brother, i in @__brothers
-          if i isnt 0
-            brother.__bigBrother = @__brothers[ 0 ]
-            @__brothers[0].__brothers.push brother
-
       # Remove attached volumes when this lc is last lc
-      else
-        for v in (@get("volumeList") or emptyArray).slice(0)
-          v.remove()
+      for v in (@get("volumeList") or emptyArray).slice(0)
+        v.remove()
 
       ComplexResModel.prototype.remove.call this
-      null
-
-    connect : ( cn )->
-      if @parent() and cn.type is "SgRuleLine"
-        # Create duplicate sgline for each expanded asg
-        @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@) )
-
-      @syncBorthersConn cn, true
-
-
-      null
-
-    disconnect : ( cn )->
-      if @parent()
-        if cn.type is "ElbAmiAsso"
-          # No need to reset Asg's healthCheckType to EC2, when disconnected from Elb
-          # Because user might just want to asso another Elb right after disconnected.
-          # @parent().updateExpandedAsgAsso( cn.getOtherTarget(@), true )
-
-        else if cn.type is "SgRuleLine"
-          @parent().updateExpandedAsgSgLine( cn.getOtherTarget(@), true )
-
-      @syncBorthersConn cn
-
       null
 
     getStateData                : InstanceModel.prototype.getStateData
@@ -300,18 +131,12 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
 
     serialize : ()->
-      if @isClone()
-        return
-
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
       if ami
         layout.osType         = ami.osType
         layout.architecture   = ami.architecture
         layout.rootDeviceType = ami.rootDeviceType
-
-
-      sgarray = _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
 
       # Generate an array containing the root device and then append all other volumes
       # to the array to form the LC's volume list
@@ -346,7 +171,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           KeyName                  : @get("keyName")
           EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
           BlockDeviceMapping       : blockDevice
-          SecurityGroups           : sgarray
+          SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
           LaunchConfigurationName  : @get("configName") or @get("name")
           InstanceType             : @get("instanceType")
           AssociatePublicIpAddress : @get("publicIp")
@@ -378,9 +203,6 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         userData     : data.resource.UserData
         publicIp     : data.resource.AssociatePublicIpAddress
         configName   : data.resource.LaunchConfigurationName
-
-        x : layout_data.coordinate[0]
-        y : layout_data.coordinate[1]
       }
 
       if layout_data.osType and layout_data.architecture and layout_data.rootDeviceType
@@ -406,26 +228,16 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
           model.set "rdIops", volume.Ebs.Iops
           model.set "rdType", volume.Ebs.VolumeType
         else
-          if volume.Ebs is null and volume.VirtualName
-            #instance-store,ignore
-            _attr =
-              name       : volume.DeviceName
-              snapshotId : ""
-              volumeSize : ""
-              volumeType : ""
-              iops       : ""
-              owner      : model
-              # encrypted  : volume.Ebs.Encrypted
-          else
-            _attr =
-              name       : volume.DeviceName
-              snapshotId : volume.Ebs.SnapshotId
-              volumeSize : volume.Ebs.VolumeSize
-              volumeType : volume.Ebs.VolumeType
-              iops       : volume.Ebs.Iops
-              owner      : model
-              # encrypted  : volume.Ebs.Encrypted
-            new VolumeModel(_attr, {noNeedGenName:true})
+          _attr =
+            name       : volume.DeviceName
+            snapshotId : volume.Ebs.SnapshotId
+            volumeSize : volume.Ebs.VolumeSize
+            volumeType : volume.Ebs.VolumeType
+            iops       : volume.Ebs.Iops
+            owner      : model
+            # encrypted  : volume.Ebs.Encrypted
+
+          new VolumeModel(_attr, {noNeedGenName:true})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

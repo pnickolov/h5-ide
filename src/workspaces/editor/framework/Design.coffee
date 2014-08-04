@@ -1,9 +1,8 @@
 define [
   "constant"
   "OpsModel"
-  "workspaces/editor/framework/canvasview/CanvasAdaptor"
   'CloudResources'
-], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
+], ( constant, OpsModel, CloudResources ) ->
 
   # The recursiveCheck is not fully working.
   ### env:prod ###
@@ -99,16 +98,12 @@ define [
 
   DesignImpl = ( opsModel )->
     @__componentMap = {}
-    @__canvasNodes  = {}
-    @__canvasLines  = {}
-    @__canvasGroups = {}
     @__classCache   = {}
     @__usedUidCache = {}
     @__opsModel     = opsModel
-    @__shoulddraw   = false # Disable drawing for deserializing, delay it until everything is deserialized
+    @__initializing = false # Disable drawing for deserializing, delay it until everything is deserialized
 
     canvas_data = opsModel.getJsonData()
-    @canvas = new CanvasAdaptor( canvas_data.layout.size )
 
     # Mode
     if opsModel.testState( OpsModel.State.UnRun )
@@ -122,7 +117,7 @@ define [
     delete canvas_data.component
     delete canvas_data.layout
 
-    @attributes = $.extend true, {}, canvas_data
+    @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
 
     # Restore these two attr
     canvas_data.component = component
@@ -146,7 +141,6 @@ define [
 
   Design.EVENT = {
     # Events that will trigger using Design.trigger
-    Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
     ChangeResource : "CHANGE_RESOURCE"
@@ -154,6 +148,7 @@ define [
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
     RemoveResource : "REMOVE_RESOURCE"
+    Deserialized   : "DESERIALIZED"
   }
 
   DesignImpl.prototype.refreshAppUpdate = () ->
@@ -177,7 +172,8 @@ define [
       devistor( json_data, layout_data, version )
 
     # Disable triggering event when Design is deserializing
-    Design.trigger = noop
+    @trigger = Design.trigger = noop
+    @__initializing = true
 
 
     # A helper function to let each resource to get its dependency
@@ -258,50 +254,20 @@ define [
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
         ModelClass.postDeserialize( comp, layout_data[uid] )
-    null
-
-  DesignImpl.prototype.reload = ( opsModel )->
-    DesignImpl.call this, opsModel
-    json = opsModel.getJsonData()
-    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-
-  DesignImpl.prototype.finishDeserialization = ()->
-    ####################
-    # Draw after deserialization
-    ####################
-    # Draw everything after deserialization is done.
-    # Because some resources might just deleted right after it's been created.
-    # And draw lines at the end
-    @__shoulddraw = true
-    lines = []
-    for uid, comp of @__componentMap
-      if not comp.draw then continue
-      if comp.node_line
-        lines.push comp
-      else
-        comp.draw( true )
-
-    for comp in lines
-      comp.draw( true )
 
     ####################
     # Broadcast event
     ####################
-    # Restore Design.trigger
-    Design.trigger = Backbone.Events.trigger
+    @__initializing = false
+    @trigger = Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
+    @trigger Design.EVENT.Deserialized
     null
 
-  DesignImpl.prototype.renderNode = ()->
-    ##########
-    # Hack
-    ##########
-    # This will be removed once the canvas has been refactored.
-    for uid, comp of @__componentMap
-      if comp.draw and not comp.node_line
-        comp.draw( false )
-    return
-
+  DesignImpl.prototype.reload = ()->
+    DesignImpl.call this, @__opsModel
+    json = @__opsModel.getJsonData()
+    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
@@ -321,23 +287,12 @@ define [
     if not comp
       comp = @__componentMap
       delete @__componentMap[ id ]
-      delete @__canvasGroups[ id ]
-      delete @__canvasNodes[ id ]
 
       # Only in stack mode, we reclaim the id once the component is removed from cache.
       if @modeIsAppEdit()
         @reclaimGuid( id )
     else
       @__componentMap[ id ] = comp
-
-      # Cache them into another cache if they are visual objects
-      if comp.isVisual and comp.isVisual()
-        if comp.node_group
-          @__canvasGroups[ id ] = comp
-        else if comp.node_line
-          @__canvasLines[ id ] = comp
-        else
-          @__canvasNodes[ id ] = comp
     null
 
 
@@ -405,11 +360,16 @@ define [
   DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppView = ()->  false
   DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
-  DesignImpl.prototype.setMode = (m)-> @__mode = m; return
-  DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
+  DesignImpl.prototype.mode    = ()-> @__mode
+  DesignImpl.prototype.setMode = (m)->
+    if @__mode is m then return
+    @__mode = m
+    @trigger "change:mode", m
+    return
 
 
-  DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
+
+  DesignImpl.prototype.initializing = ()-> @__initializing
   DesignImpl.prototype.use = ()-> Design.__instance = @; @
   DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
 
@@ -475,7 +435,7 @@ define [
         continue
 
       try
-        json = comp.serialize()
+        json = comp.serialize options
         ### env:prod ###
       catch error
         console.error "Error occur while serializing", error
@@ -531,8 +491,10 @@ define [
 
 
     # Quick Fix for some other property
-    # 1. save $canvas's size to layout
-    data.layout.size = @canvas.sizeAry
+    # 1. save canvas's size to layout
+    data.layout.size = data.canvasSize
+    delete data.canvasSize
+
     # 2. save stoppable to property
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
@@ -643,9 +605,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-
-  # Inject dependency, so that CanvasAdaptor won't require Design.js
-  CanvasAdaptor.setDesign( Design )
 
   # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
   ### env:dev ###

@@ -1,4 +1,25 @@
 
+<!-- {{frame}} -->
+<div id="OpsEditor" class="pos-r">
+  <aside class="OEPanelLeft"></aside>
+  <aside class="OEPanelRight" id="OEPanelRight"></aside>
+
+<div class="OEMiddleWrap">
+  <nav class="OEPanelTop"></nav>
+  <div class="OEPanelBottom"></div>
+
+  <section class="OEPanelCenter nano"> <div class="nano-content">
+    <div class="canvas-view">
+      <button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
+      <button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
+      <button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
+      <button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
+      <svg width="100%" height="100%"></svg>
+    </div>
+  </div> </section>
+</div>
+</div>
+
 <!-- {{loading}} -->
 <div class="ops-process">
   <header class="processing">Loading data...</header>
@@ -79,7 +100,7 @@
 
 <!-- {{toolbar.BtnAppOps}} -->
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
-<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"><span style="display: none">{{i18n "TOOL_START_APP"}}</span></button>
 <button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOL_TIP_TERMINATE_APP'}}}"></button>
 <button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOL_TIP_SAVE_APP_TO_STACK" }}'></button>
 
@@ -108,7 +129,10 @@
 
 <!-- {{export.CF}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major"></div>
+  {{#if hasCustomOG}}<div class="modal-text-highlight">
+      DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be
+      used instead.
+  </div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
 <div style="padding-top:20px;text-align:right;">

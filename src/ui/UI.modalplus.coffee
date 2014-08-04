@@ -28,6 +28,7 @@
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
+#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal"]
 #   Event:
 #       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:
@@ -73,8 +74,9 @@ define [], ()->
                     hide    : @option.confirm?.hide
                 cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
-                hasScroll   : !!@option.maxHeight
+                hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact
+                mode        : @option.mode || "normal"
             )
             body = @tpl.find(".modal-body")
             if typeof @option.template is "object"
@@ -83,7 +85,7 @@ define [], ()->
             if @option.width then body.parent().css( width : @option.width )
             @tpl.appendTo @wrap
             modalGroup.push(@)
-            if modalGroup.length == 1
+            if modalGroup.length == 1 or @option.mode is "panel"
                 @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.removeClass('bounce')
@@ -103,12 +105,12 @@ define [], ()->
             else if modalGroup.length <= 1
                 modalGroup = []
                 @trigger 'close',@
-                @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
-                @tpl.addClass('bounce')
                 @option.onClose?(@)
+                @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.remove()
                     @wrap.remove()
+                    @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 ,@option.delay||300
                 @wrap.fadeOut(@option.delay || 300)
 
@@ -144,7 +146,7 @@ define [], ()->
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()
-            if not @option.disableDrag
+            if not (@option.disableDrag or (@option.mode is 'panel'))
                 diffX = 0
                 diffY = 0
                 dragable = false
@@ -188,6 +190,9 @@ define [], ()->
                     diffY = 0
                     null
         resize: (slideIn)->
+            if @option.mode is 'panel'
+              @trigger 'resize', @
+              return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
             width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
@@ -199,6 +204,7 @@ define [], ()->
             @tpl.css
                 top:  if top > 0 then top else 10
                 left: left
+            @.trigger 'resize', {top: top, left: left}
         getFirst: ->
             return modalGroup?[0]
         getLast: ->
@@ -243,6 +249,8 @@ define [], ()->
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
+                if toRemove.option.mode is 'panel'
+                    toRemove.tpl.addClass('bounce')
                 toRemove.isClosed = true
                 @getLast().childModal = null
                 toRemove.option.onClose?()
@@ -254,19 +262,29 @@ define [], ()->
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
+        setContent: (content)->
+            if @option.hasScroll or @option.maxHeight
+              selector = ".scroll-content"
+            else
+              selector = ".modal-body"
+            @tpl.find(selector).html(content)
         _fadeOut: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 100
         _fadeIn: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 100
         _slideIn: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 300
         _slideOut: ->
+            if @option.mode is 'panel' then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300

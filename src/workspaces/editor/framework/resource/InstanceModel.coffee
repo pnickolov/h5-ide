@@ -9,11 +9,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
     newNameTmpl : "host-"
 
     defaults :
-      x      : 2
-      y      : 2
-      width  : 9
-      height : 9
-
       #servergroup
       count  : 1
 
@@ -35,14 +30,18 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
     initialize : ( attr, option )->
 
+      option = option || {}
+
+      if option.cloneSource
+        attr.imageId = option.cloneSource.get("imageId")
+
       console.assert( attr.imageId, "Invalid attributes when creating InstanceModel", attr )
 
-      option = option || {}
 
       @setAmi( attr.imageId )
 
       # Create Eni0 if necessary
-      if option.createByUser
+      if option.createByUser or option.cloneSource
         #create eni0
         EniModel = Design.modelClassForType( constant.RESTYPE.ENI )
         @setEmbedEni( new EniModel({
@@ -83,9 +82,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
           #   VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
           #   new VolumeModel( attribute, {noNeedGenName:true})
 
-
-      # Draw before creating SgAsso
-      @draw(true)
 
       # Create additonal association if the instance is created by user.
       if option.createByUser and not option.cloneSource
@@ -202,7 +198,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       return priceObj
 
     isReparentable : ( newParent )->
-      if newParent.type is constant.RESTYPE.ASG
+      if newParent.type is constant.RESTYPE.ASG or newParent.type is "ExpandedAsg"
         return false
 
       if newParent.type is constant.RESTYPE.SUBNET
@@ -235,8 +231,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
             @attributes.eipData = {}
           if not @attributes.eipData.id
             @attributes.eipData.id = MC.guid()
-
-      @draw()
+      return
 
     hasPrimaryEip : ()->
       eni = @getEmbedEni()
@@ -257,12 +252,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         if route then route.remove()
 
       # Update my self and connected Eni
-      @draw()
       for eni in @connectionTargets("EniAttachment")
         if count > 1
-          for c in eni.connections("RTB_Route")
-            c.remove()
-        eni.draw()
+          c.remove() for c in eni.connections("RTB_Route")
       null
 
     isDefaultTenancy : ()->
@@ -311,7 +303,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       #     support = true
       #     break
       # if not support then @initInstanceType()
-      @draw()
       null
 
     getAmi : ()->
@@ -790,7 +781,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         data = data.Instances
         for obj in (data.member or data)
           if obj is instance_id or obj.InstanceId is instance_id
-            return { uid : asg.get("lc").id, mid : instance_id }
+            return { uid : asg.getLc().id, mid : instance_id }
 
       {uid:null,mid:null}
 

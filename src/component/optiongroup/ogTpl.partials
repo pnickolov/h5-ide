@@ -1,0 +1,210 @@
+<!-- {{dropdown_selection}} -->
+{{Name}}
+
+<!-- {{dropdown_list}} -->
+{{#each this}}
+    <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" data-name="{{name}}" tabindex="-1">
+        {{name}}
+        <div class="option-preview">{{preview}}</div>
+        {{#if id}}<div class="icon-edit"></div>{{/if}}
+    </li>
+{{/each}}
+
+<!-- {{no_option_group}} -->
+<div class="combo-dd-no-data">
+    <p>No Option Group.</p>
+    <a class="create-one">Create Option Group</a>
+</div>
+
+<!-- {{og_slide}} -->
+<form class="content clearfix" data-bind="true">
+    {{#if DefaultPort}}
+    <div class="port-sg">
+        <div>
+            <label for="og-port">Port</label>
+            <input type="text" id="og-port" class="input" value="{{port}}" data-required="true" data-type="number" autocomplete="off"/>
+        </div>
+        <ul class="acl-sg-info-list property-list" id="og-sg">
+            {{#each sgs}}
+            <li class="clearfix">
+                <div class="checkbox-wrap col1">
+                    <div class="checkbox">
+                        <input type="checkbox" {{#if used}}checked="checked"{{/if}} data-uid="{{id}}" id="og-sg-{{@index}}" {{#if checked}}checked{{/if}} />
+                        <label for="og-sg-{{@index}}"></label>
+                    </div>
+                </div>
+
+                <div class="col2">
+                    <div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
+                    <div class="col2-2 truncate">{{description}}</div>
+                    <div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}</div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+
+    </div>
+    {{/if}}
+    {{#if OptionGroupOptionSettings}}
+    <table class="table">
+        <tr>
+            <th>Option Setting</th>
+            <th>Value</th>
+            <th>Allowed Values</th>
+        </tr>
+        {{#each OptionGroupOptionSettings}}
+        <tr>
+            <td>{{SettingName}}</td>
+            <td class="value">
+                {{#if items}}
+                <select name="{{SettingName}}" class="option-setting">
+                    {{#each items}}
+                    <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
+                    {{/each}}
+                </select>
+                {{else}}
+                <input name="{{SettingName}}" data-required="true" data-type="number" class="option-setting" type="text" class="input" value="{{value}}" data-start="{{start}}" data-end="{{end}}"/>
+                {{/if}}
+            </td>
+            <td>{{AllowedValues}}</td>
+        </tr>
+        {{/each}}
+    </table>
+    {{/if}}
+    <div class="action">
+        <a class="btn btn-blue do-action add-option" data-option-name="{{Name}}">Save Option</a>
+        <a class="btn btn-silver cancel">Cancel</a>
+    </div>
+</form>
+
+<!-- {{og_slide_remove}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">Confirm to delete this option group?</div>
+    <div class="init action">
+        <button class="btn btn-red remove-confirm">Delete</button>
+        <button class="btn btn-silver remove-cancel">Cancel</button>
+    </div>
+</div>
+
+<!-- {{og_modal}} -->
+<div id="modal-option-group">
+    <div class="slidebox">
+        <div class="form"></div>
+        <div class="error">
+        </div>
+    </div>
+    <div class="will-be-covered">
+        <div class="header">
+            This Option Group is used for {{engineName}} {{engineVersion}}
+            {{#ifCond engineType "mysql"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+            {{#ifCond engineType "oracle"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Oracle.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+            {{#ifCond engineType "sqlserver"}}
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            {{/ifCond}}
+        </div>
+        <div class="container">
+            <div class="input-item">
+                <label class="left">Name</label>
+                <input class="input og-name" value="{{name}}" type="text" data-ignore="true" data-required-rollback="true"/>
+            </div>
+            <div class="input-item">
+                <label class="left">Description</label>
+                <input class="input og-description" value="{{description}}" type="text" data-ignore="true" data-required-rollback="true"/>
+            </div>
+            <div class="left option-list-head">Option</div>
+            <ul class="option-list"></ul>
+            {{#if isAppEdit}}
+            {{#if appId}}
+            <div class="og-apply-immediately">
+                <div class="checkbox tooltip" {{#if isAppPortChanged}}data-tooltip={{i18n "RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY"}}{{/if}}>
+                    <input type="checkbox" id="option-apply-immediately" {{#if applyImmediately}}checked{{else}}{{#if isAppPortChanged}}checked{{/if}}{{/if}} {{#if isAppPortChanged}}disabled{{/if}}>
+                    <label for="option-apply-immediately"></label>
+                </div>
+                <label for="option-apply-immediately">Apply Immediately</label>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+        <div class="modal-footer">
+            {{#unless isCreate}}<button class="remove-btn btn btn-red">Delete</button>{{/unless}}
+            <span class="err-tip"></span>
+            <button class="save-btn btn btn-blue">Save</button>
+            <button class="btn btn-silver modal-close cancel-btn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- {{og_option_item}} -->
+{{#each ogOptions}}
+<li class="option-item" data-idx="{{@index}}" data-name="{{Name}}">
+    <div class="name">{{Name}}</div>
+    {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
+    {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+    {{#unless unmodify}}
+    <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
+    <label class="switcher{{#if checked}} on{{/if}}{{#if disabled}} disabled{{/if}}">
+        <span class="switch-label" data-on="ON" data-off="OFF"></span>
+        <span class="switch-handle"></span>
+    </label>
+    {{/unless}}
+</li>
+{{/each}}
+
+<!-- {{og_app_modal}} -->
+<div class="summary clearfix">
+    <dl>
+        <dt>Option Group Name</dt>
+        <dd>{{OptionGroupName}}</dd>
+    </dl>
+    <dl>
+        <dt>Engine</dt>
+        <dd>{{EngineName}}</dd>
+    </dl>
+    <dl>
+        <dt>Option Group Description</dt>
+        <dd>{{OptionGroupDescription}}</dd>
+    </dl>
+    <dl>
+        <dt>Engine Version</dt>
+        <dd>{{MajorEngineVersion}}</dd>
+    </dl>
+</div>
+<div class="left option-list-head">Option({{Options.length}})</div>
+<ul class="option-list">
+    {{#each Options}}
+    <li class="option-item" data-idx="{{@index}}" data-name="{{OptionName}}">
+        <div class="og-title clearfix">
+            <div class="name">{{OptionName}}</div>
+            {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
+            {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
+            <a class="toggle-og-detail show-og-detail">Show details</a>
+            <a class="toggle-og-detail hide-og-detail" style="display:none;">Hide details</a>
+        </div>
+        <div class="og-details">
+            {{#if Port}}
+            <div>
+                <span>Port:</span>
+                <span>{{Port}}</span>
+            </div>
+            {{/if}}
+            {{#each VpcSecurityGroupMemberships}}
+            <div>
+                <span>Security Group:</span>
+                <span>{{VpcSecurityGroupId}}</span>
+            </div>
+            {{/each}}
+            <table class="table">
+                <tr><th>Setting</th><th>Value</th></tr>
+                {{#each OptionSettings}}
+                <tr><td>{{Name}}</td><td>{{Value}}</td></tr>
+                {{/each}}
+            </table>
+        </div>
+    </li>
+    {{/each}}
+</ul>
+

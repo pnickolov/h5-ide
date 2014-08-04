@@ -511,6 +511,7 @@ textarea {
 	border        : 1px solid #222;
 	/*box-shadow    : inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);*/
 	background    : #fafafa;
+	padding: -1px;
 }
 
 .checkbox > input:checked + label:after {
@@ -570,7 +571,11 @@ textarea {
 .property-content .radio input:disabled + label,
 .property-content .radio input[disabled] + label,
 .property-content .checkbox input:disabled + label,
-.property-content .checkbox input[disabled] + label {
+.property-content .checkbox input[disabled] + label,
+.modal-toolbar .checkbox input:disabled + label,
+.modal-toolbar .radio input[disabled] + label,
+.modal-toolbar .checkbox input:disabled + label,
+.modal-toolbar .radio input[disabled] + label{
 	opacity : 0.3;
 }
 
@@ -1377,7 +1382,7 @@ textarea {
 .selectbox .dropdown {
 	display   : none;
 	position  : absolute;
-	left      : 0;
+	/*left      : 0;*/
 	width     : 100%;
 	min-width : 160px;
 	margin-top: 1px;
@@ -1387,9 +1392,16 @@ textarea {
 	background: #353535;
 	border    : 1px solid #0f0f0f;
 }
-
+.selectbox .scroll-wrap{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
 .selectbox.open .dropdown,
-.selectbox.open .editor {
+.selectbox.open .editor,
+.selectbox.open .scroll-wrap{
 	display: block;
 }
 
@@ -1875,10 +1887,6 @@ input.parsley-error {
 	min-width        : 106px !important;
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 1px 1px 5px rgba(0,0,0,.4);
 	border: 1px solid #9e2622;
-}
-
-#modal-box .parsley-error-list {
-	z-index: 71
 }
 
 /* Loading Spinner */
@@ -2767,6 +2775,9 @@ html[dir="rtl"] .select2-search-choice-close {
   bottom        : 0;
   left          : 0;
 }
+.nano.has-scrollbar-x > .nano-content {
+	overflow : scroll;
+}
 .nano > .nano-content:focus {
   outline: thin dotted;
 }
@@ -2801,3 +2812,93 @@ html[dir="rtl"] .select2-search-choice-close {
 .nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
   opacity    : 0.99;
 }
+.nano > .pane-x {
+	display : none;
+
+  height  : 10px;
+  width   : auto;
+  top     : auto;
+  left    : 0;
+}
+.nano > .pane-x > .nano-slider {
+	margin : 1px 0;
+	height : 8px;
+}
+.has-scrollbar-x > .pane-x {
+	display : block;
+}
+
+/* jQuery time-picker */
+.ui-timepicker-wrapper {
+	overflow-y: auto;
+	height: 150px;
+	width: 6.5em;
+	background: #fff;
+	border: 1px solid #ddd;
+	-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);
+	-moz-box-shadow:0 5px 10px rgba(0,0,0,0.2);
+	box-shadow:0 5px 10px rgba(0,0,0,0.2);
+	outline: none;
+	z-index: 10001;
+	margin: 0;
+}
+
+.ui-timepicker-wrapper.ui-timepicker-with-duration {
+	width: 13em;
+}
+
+.ui-timepicker-wrapper.ui-timepicker-with-duration.ui-timepicker-step-30,
+.ui-timepicker-wrapper.ui-timepicker-with-duration.ui-timepicker-step-60 {
+	width: 11em;
+}
+
+.ui-timepicker-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ui-timepicker-duration {
+	margin-left: 5px; color: #888;
+}
+
+.ui-timepicker-list:hover .ui-timepicker-duration {
+	color: #888;
+}
+
+.ui-timepicker-list li {
+	padding: 3px 0 3px 5px;
+	cursor: pointer;
+	white-space: nowrap;
+	color: #000;
+	list-style: none;
+	margin: 0;
+}
+
+.ui-timepicker-list:hover .ui-timepicker-selected {
+	background: #fff; color: #000;
+}
+
+li.ui-timepicker-selected,
+.ui-timepicker-list li:hover,
+.ui-timepicker-list .ui-timepicker-selected:hover {
+	background: #1980EC; color: #fff;
+}
+
+li.ui-timepicker-selected .ui-timepicker-duration,
+.ui-timepicker-list li:hover .ui-timepicker-duration {
+	color: #ccc;
+}
+
+.ui-timepicker-list li.ui-timepicker-disabled,
+.ui-timepicker-list li.ui-timepicker-disabled:hover,
+.ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {
+	color: #888;
+	cursor: default;
+}
+
+.ui-timepicker-list li.ui-timepicker-disabled:hover,
+.ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {
+	background: #f2f2f2;
+}
+

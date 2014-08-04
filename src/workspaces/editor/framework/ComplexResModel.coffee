@@ -1,5 +1,5 @@
 
-define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview/CanvasElement" ], ( Design, CanvasManager, ResourceModel, constant, CanvasElement )->
+define [ "Design", "./ResourceModel", "constant" ], ( Design, ResourceModel, constant )->
 
   emptyArr = []
 
@@ -16,10 +16,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     disconnect : ( ConnectionModel, reason )->
         description : disconnect is called when a connection is removed, subclass should override it to do its own logic. `reason` if not null, it will point to an model, which is the cause to remove the connection.
 
-
-    draw : ( isNewlyCreated : Boolean ) ->
-        description : if the user defines this method, it will be called after object is created. And the framework might call this method at an approprieate time.
-        If the method is defined, it means it's a visual resource
 
     isRemovable   : ()->
         description : When user press delete key in canvas, canvas will ask if the object can be removed. If isRemovable returns a string, it will treat it as a warning, if the string starts with '!', it is a infomation for not allowing the user to delete
@@ -64,19 +60,11 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
         attributes.__parent.addChild( this )
       null
 
-    initialize : ()->
-
-      if @draw and Design.instance().shouldDraw()
-        @draw true
-      null
-
     setName : ( name )->
       if @get("name") is name
         return
 
       @set "name", name
-
-      if @draw then @draw()
       null
 
     remove : ()->
@@ -96,10 +84,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
           --l
           cns[l].remove()
 
-      # Remove element in SVG
-      v = @getCanvasView()
-      if v then v.detach()
-
       @markAsRemoved( false )
       ResourceModel.prototype.remove.call this
       null
@@ -116,8 +100,9 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
       else
         if idx is -1
           connections.push cn
-          @set "__connections", connections
+          @attributes.__connections = connections
 
+      @trigger "change:connections", cn
       null
 
     connect_base : ( connection )->
@@ -141,32 +126,7 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
 
     isVisual : ()-> true
 
-    getCanvasView : ( containerId )->
-      if @__view is undefined and @isVisual()
-        @__view = CanvasElement.createView( @type, @, containerId )
-        ### env:dev ###
-        if not @__view
-          console.warn "isVisual() is true, but cannot find corresponding canvasView for ComplexResModel : #{@type}"
-        ### env:dev:end ###
-
-      @__view
-
-    draw : ( isCreate )->
-      if not @isVisual() or not Design.instance().shouldDraw() then return
-      v = @getCanvasView()
-      if v
-        args = arguments
-        args[ 0 ] = args[ 0 ] is true
-
-        # A quick fix to suppress draw() call if the element doesn't already
-        # create the svg node.
-        # This should probably be refactored in the future, along with the
-        # canvas rendering logics.
-        if isCreate then v.nodeCreated = true
-        if not isCreate and not v.nodeCreated then return
-
-        v.draw.apply v, args
-      null
+    draw : ()-> console.warn "ComplexResModel.draw() is deprecated", @
 
     ###
      ReadOnly Infomation
@@ -232,19 +192,6 @@ define [ "Design", "CanvasManager", "./ResourceModel", "constant", "./canvasview
     width  : ()-> @get( 'width' ) or 0
     height : ()-> @get( 'height' ) or 0
 
-  }, {
-    extend : ( protoProps, staticProps )->
-
-      # Force to check if the design should be draw before drawing is done.
-      if protoProps.draw
-        protoProps.draw = (()->
-          draw = protoProps.draw
-          ()->
-            if Design.instance().shouldDraw()
-              draw.apply @, arguments
-        )()
-
-      ResourceModel.extend.call this, protoProps, staticProps
   }
 
   ComplexResModel

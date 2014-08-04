@@ -1,0 +1,108 @@
+<!-- {{appView}} -->
+<article class="property-app app-dbinstance">
+    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group" style="display: block">
+        <dl class="dl-vertical">
+            <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
+            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.DbinstanceIdentifier}}]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_ENDPOINT" }}</dt>
+            <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_STATUS" }}</dt>
+            <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_ENGINE" }}</dt>
+            <dd>{{Engine}}({{EngineVersion}}){{#if PendingModifiedValues.EngineVersion}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.EngineVersion}}]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_AUTO_UPGRADE" }}</dt>
+            <dd>{{#if AutoMinorVersionUpgrade}}Yes{{else}}No{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_CLASS" }}</dt>
+            <dd>{{DBInstanceClass}}{{#if PendingModifiedValues.DBInstanceClass}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.DBInstanceClass}}]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_IOPS" }}</dt>
+            <dd>{{#if Iops}}{{Iops}}{{else}}Disabled{{/if}}{{#if PendingModifiedValues.Iops}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Iops}}]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_STORAGE" }}</dt>
+            <dd>{{AllocatedStorage}} GB{{#if PendingModifiedValues.AllocatedStorage}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.AllocatedStorage}} GB]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</dt>
+            <dd>{{MasterUsername}}</dd>
+            {{#if ReadReplicaDBInstanceIdentifiers.length}}
+                {{#each ReadReplicaDBInstanceIdentifiers}}
+                    <dt>{{ i18n "PROP_DBINSTANCE_READ_REPLICAS" }}</dt>
+                    <dd>{{this}}</dd>
+                {{/each}}
+            {{/if}}
+            {{#if ReadReplicaSourceDBInstanceIdentifier}}
+                <dt>{{ i18n "PROP_DBINSTANCE_REPLICAS_SOURCE" }}</dt>
+                <dd>{{ReadReplicaSourceDBInstanceIdentifier}}</dd>
+            {{/if}}
+        </dl>
+    </div>
+
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
+    <div class="option-group">
+        <dl class="dl-vertical">
+            {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{name}}</dd>{{/if}}
+            <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
+            <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}</dd>
+            {{#if optionGroups.length}}
+                <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
+                <dd>{{#each optionGroups}}
+                    {{#if isDefault}}
+                        {{OptionGroupName}}({{Status}})
+                    {{else}}
+                        <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
+                    {{/if}}
+                {{/each}}
+                </dd>
+            {{/if}}
+            {{#if DBParameterGroups.length}}
+                <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
+                <dd>
+                    {{#each DBParameterGroups}}
+                        {{DBParameterGroupName}}({{ParameterApplyStatus}})
+                    {{/each}}
+                </dd>
+            {{/if}}
+
+        </dl>
+    </div>
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_NETWORK_AVAILABILITY" }}</div>
+    <div class="option-group">
+        <dl class="dl-vertical">
+            <dt>{{ i18n "PROP_DBINSTANCE_SUBNETGROUP" }}</dt>
+            <dd>{{DBSubnetGroup.DBSubnetGroupName}}
+                {{#if DBSubnetGroup.Subnets.length}}({{#each DBSubnetGroup.Subnets}}{{SubnetIdentifier}}, {{/each}}){{/if}}</dd>
+            {{#if AvailabilityZone}}
+                <dt>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</dt>
+                <dd>{{AvailabilityZone}}</dd>
+            {{/if}}
+            {{#if SecondaryAvailabilityZone}}
+                <dt>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</dt>
+                <dd>{{SecondaryAvailabilityZone}}</dd>
+            {{/if}}
+            <dt>{{ i18n "PROP_DBINSTANCE_PUBLIC_ACCESS"}}</dt>
+            <dd>{{#if PubliclyAccessible}}true{{else}}false{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_LICENSE_MODEL"}}</dt>
+            <dd>{{LicenseModel}}</dd>
+        </dl>
+    </div>
+    <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_BACKUP_MAINTENANCE" }}</div>
+    <div class="option-group">
+        <dl class="dl-vertical">
+            <dt>{{ i18n "PROP_DBINSTANCE_AUTOBACKUP" }}</dt>
+            <dd>{{#if BackupRetentionPeriod}}Enabled ({{BackupRetentionPeriod}} day){{else}}Disabled{{/if}}</dd>
+            <dt>{{ i18n "PROP_DBINSTANCE_LAST_RESTORE" }}</dt>
+            <dd>{{timeStr LatestRestorableTime}}</dd>
+            {{#if PreferredBackupWindow}}
+                <dt>{{ i18n "PROP_DBINSTANCE_BACKUP_WINDOW" }}</dt>
+                <dd>{{PreferredBackupWindow}}</dd>
+            {{/if}}
+            {{#if PreferredMaintenanceWindow}}
+                <dt>{{ i18n "PROP_DBINSTANCE_MAINTENANCE_WINDOW" }}</dt>
+                <dd>{{PreferredMaintenanceWindow}}</dd>
+            {{/if}}
+        </dl>
+    </div>
+
+    <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
+
+
+</article>

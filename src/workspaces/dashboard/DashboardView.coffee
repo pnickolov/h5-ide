@@ -6,13 +6,14 @@ define [
   "UI.modalplus"
   "constant"
   "i18n!/nls/lang.js"
+  'appAction'
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
   "UI.nanoscroller"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction )->
 
   Backbone.View.extend {
 
@@ -303,11 +304,11 @@ define [
         $("#RefreshResource").removeClass("reloading").text("just now")
       return
 
-    deleteStack    : (event)-> App.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    duplicateStack : (event)-> App.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    startApp       : (event)-> App.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    stopApp        : (event)-> App.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    terminateApp   : (event)-> App.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    deleteStack    : (event)-> appAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    duplicateStack : (event)-> appAction.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    startApp       : (event)-> appAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    stopApp        : (event)-> appAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    terminateApp   : (event)-> appAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
 
     updateVisModel : ()->
       if not @visModal then return
@@ -422,7 +423,6 @@ define [
             Tenancy : data.instanceTenancy
           }
         when "ASG"
-          console.debug data
           return {
             "title" : data.Name
             "Name"  : data.Name
@@ -524,6 +524,26 @@ define [
                 'Alarm Actions'     : data.AlarmActions.member
                 'Alarm Arn'         : data.id
             }
+        when "DBINSTANCE"
+            json =  {
+              "Status"    : data.DBInstanceStatus
+              "Endpoint"  : data.Endpoint.Address + "" + data.Endpoint.Port
+              "Engine"    : data.Engine
+              "DB Name":    data.name || data.Name || data.DBName || "None"
+              "Option Group": data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
+              "Parameter Group": data.DBParameterGroups?.DBParameterGroupName || "None"
+              "Availability Zone": data.AvailabilityZone
+              "Subnet Group": data.sbgId || "None"
+              "Publicly Accessible": data.PubliclyAccessible.toString()
+              "IOPS": data.Iops || "OFF"
+              "Multi AZ": data.MultiAZ.toString()
+              "Automated Backup": data.AutoMinorVersionUpgrade
+              "Latest Restore Time": data.LatestRestorableTime
+              "Auto Minor Version Upgrade": data.AutoMinorVersionUpgrade
+              "Maintenance Window": data.PreferredMaintenanceWindow
+              "Backup Window": data.PreferredBackupWindow
+            }
+            return json
     # some format to the data so it can show in handlebars template
     formartDetail: (type, array, key, force)->
         #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.

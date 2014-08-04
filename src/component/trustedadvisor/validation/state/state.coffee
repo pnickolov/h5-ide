@@ -2,7 +2,7 @@
 This file use for validate component about state.
 ###
 
-define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, MC, resultVO, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper ) ->
 
     i18n = Helper.i18n.short()
     __wrap = ( method ) ->
@@ -92,7 +92,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
 
     __hasEipOrPublicIp = ( component ) ->
         if component.type is "ExpandedAsg"
-            lc = component.get( 'originalAsg' ).get 'lc'
+            lc = component.get( 'originalAsg' ).getLc()
             lc.get( 'publicIp' ) is true
         # LC
         else if component.type is CONST.RESTYPE.LC
@@ -157,7 +157,7 @@ define [ 'constant', 'MC', '../result_vo', 'Design', '../../helper' ], ( CONST, 
         if not __hasEipOrPublicIp( component )
             name = component.get( 'name' )
             if component.type is 'ExpandedAsg'
-                lc = component.get('originalAsg').get('lc')
+                lc = component.get('originalAsg').getLc()
                 subnetName = component.parent().get 'name'
                 name = lc and lc.get 'name'
 

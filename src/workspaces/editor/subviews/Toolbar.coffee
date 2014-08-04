@@ -11,10 +11,12 @@ define [
   "ResDiff"
   'constant'
   'event'
-  'component/trustedadvisor/main'
+  'component/trustedadvisor/gui/main'
+  "CloudResources"
+  "appAction"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
   # Set domain and set http
   API_HOST       = "api.visualops.io"
@@ -54,14 +56,16 @@ define [
       'click .reload-states'          : "reloadState"
       'click .icon-save-app'          : 'appToStack'
 
-    render : ()->
+    initialize : ( options )->
+      _.extend this, options
+
       opsModel = @workspace.opsModel
 
       # Toolbar
       if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 
       tpl = ""
       for btn in btns
@@ -76,7 +80,7 @@ define [
         if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
           tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
-      @setElement @workspace.view.$el.find(".OEPanelTop").html( tpl )
+      @setElement @parent.$el.find(".OEPanelTop").html( tpl )
 
       #delay
       that = @
@@ -98,12 +102,23 @@ define [
         isAppEdit = @workspace.isAppEditMode and @workspace.isAppEditMode()
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
+
         if isAppEdit
           @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.find(".icon-refresh").hide()
         else
+          running = opsModel.testState(OpsModel.State.Running)
+          stopped = opsModel.testState(OpsModel.State.Stopped)
+
           @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
-          @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
-          @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
+
+          # @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
+          # @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
+
+          @$el.children(".icon-stop").toggle( opsModel.get("stoppable") and running )
+          @$el.children(".icon-play").toggle( stopped ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle( stopped )
+          @$el.children('.icon-update-app').toggle( not stopped )
+          @$el.find(".icon-refresh").toggle( running )
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")
@@ -113,7 +128,11 @@ define [
       @updateZoomButtons()
       return
 
-    setTbLineStyle : ( ls, attr )-> $canvas.setLineStyle( attr[0] )
+    setTbLineStyle : ( ls, attr )->
+      localStorage.setItem("canvas/lineStyle", attr)
+      if @parent.canvas
+        @parent.canvas.updateLineStyle()
+      return
 
     saveStack : ( evt )->
       $( evt.currentTarget ).attr("disabled", "disabled")
@@ -123,7 +142,7 @@ define [
 
       newJson = @workspace.design.serialize()
 
-      Thumbnail.generate( $("#svg_canvas") ).catch( ()->
+      Thumbnail.generate( @parent.getSvgElement() ).catch( ()->
         return null
       ).then ( thumbnail )->
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
@@ -136,17 +155,17 @@ define [
           notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
         return
 
-    deleteStack    : ()-> App.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
+    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize() )
       App.openOps newOps
       return
 
-    zoomIn  : ()-> MC.canvas.zoomIn();  @updateZoomButtons()
-    zoomOut : ()-> MC.canvas.zoomOut(); @updateZoomButtons()
+    zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
+    zoomOut : ()-> @parent.canvas.zoomOut(); @updateZoomButtons()
     updateZoomButtons : ()->
-      scale = $canvas.scale()
+      scale = if @parent.canvas then @parent.canvas.scale() else 1
       if scale <= 1
         @$el.find(".icon-zoom-in").attr("disabled", "disabled")
       else
@@ -170,7 +189,7 @@ define [
 
       design = @workspace.design
       name   = design.get("name")
-      Thumbnail.exportPNG $("#svg_canvas"), {
+      Thumbnail.exportPNG @parent.getSvgElement(), {
           isExport   : true
           createBlob : true
           name       : name
@@ -211,14 +230,20 @@ define [
         }
 
     exportCF : ()->
+      design = @workspace.design
+      hasCustomOG = false
+      components = design.serialize(usage: 'runStack').component
+      _.each components, (e)->
+        if e.type is constant.RESTYPE.DBOG
+          hasCustomOG = true
+
       modal = new Modal {
         title         : lang.ide.TOOL_POP_EXPORT_CF
-        template      : OpsEditorTpl.export.CF()
+        template      : OpsEditorTpl.export.CF({hasCustomOG})
         width         : "470"
         disableFooter : true
       }
 
-      design = @workspace.design
       name   = design.get("name")
 
       ApiRequest("stack_export_cloudformation", {
@@ -309,7 +334,7 @@ define [
                 return false
 
             @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
-            @json = @workspace.design.serialize()
+            @json = @workspace.design.serialize usage: 'runStack'
             @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
             @json.name = appNameDom.val()
             @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
@@ -433,15 +458,15 @@ define [
 
         true
 
-    startApp        : ()-> App.startApp( @workspace.opsModel.id ); false
-    stopApp         : ()-> App.stopApp( @workspace.opsModel.id );  false
-    terminateApp    : ()-> App.terminateApp( @workspace.opsModel.id ); false
-    refreshResource : ()-> @workspace.refreshResource(); false
+    startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
+    stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
+    terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
+    refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     applyAppEdit    : ()->
-
+      that = @
       oldJson = @workspace.opsModel.getJsonData()
-      newJson = @workspace.design.serialize()
+      newJson = @workspace.design.serialize usage: 'updateApp'
 
       differ = new ResDiff({
         old : oldJson
@@ -452,35 +477,79 @@ define [
       if not result.compChange and not result.layoutChange and not result.stateChange
         return @workspace.applyAppEdit()
 
-      @updateModal = new Modal
-        title        : lang.ide.UPDATE_APP_MODAL_TITLE
-        template     : MC.template.updateApp { isRunning : @workspace.opsModel.testState(OpsModel.State.Running) }
-        disableClose : true
-        width        : '450px'
-        height       : "515px"
-        confirm :
-          disabled : true
-          text     : if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL
+      changes = differ.modifiedComps
+      removes = differ.removedComps
 
-      @updateModal.on 'confirm', =>
-        if not App.user.hasCredential()
-          App.showSettings App.showSettings.TAB.Credential
+      changeList = []
+      _.each changes, (e, key)->
+        changeList.push Design.instance().component(key).attributes.appId
+
+      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+      @updateModal = new Modal
+        title: lang.ide.HEAD_INFO_LOADING
+        template: MC.template.loadingSpiner
+        disableClose: true
+        hasScroll: true
+        maxHeight: "450px"
+
+      @updateModal.tpl.find(".modal-footer").hide()
+      DBInstances.fetchForce().then ->
+        notAvailableDB = DBInstances.filter (e)->
+          e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
+        if (notAvailableDB.length)
+          that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB
           return false
 
-        if not @defaultKpIsSet()
+        removeList = []
+        _.each removes, (e)->
+          removeList.push DBInstances.get(e.resource.DBInstanceIdentifier) if e.type is constant.RESTYPE.DBINSTANCE
+
+        removeListNotReady = _.filter removeList, (e)->
+          e.attributes.DBInstanceStatus isnt "available"
+
+        that.updateModal.tpl.children().css 'width', "450px"
+        .find(".modal-footer").show()
+        that.updateModal.setContent( MC.template.updateApp {
+          isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
+          notReadyDB: removeListNotReady
+          removeList: removeList
+        })
+        that.updateModal.tpl.find(".modal-header").find("h3").text(lang.ide.UPDATE_APP_MODAL_TITLE)
+        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+        that.updateModal.resize()
+        window.setTimeout ->
+          that.updateModal.resize()
+        ,100
+
+        if removeListNotReady?.length
+          that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).on "change", ->
+            that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
+
+        that.updateModal.on 'confirm', ->
+          if not App.user.hasCredential()
+            App.showSettings App.showSettings.TAB.Credential
             return false
 
-        @workspace.applyAppEdit( newJson, not result.compChange )
-        @updateModal?.close()
+          if not that.defaultKpIsSet()
+              return false
 
-      if result.compChange
-        $diffTree = differ.renderAppUpdateView()
-        $('#app-update-summary-table').html $diffTree
+          that.workspace.applyAppEdit( newJson, not result.compChange )
+          that.updateModal?.close()
 
-      @renderKpDropdown(@updateModal)
-      TA.loadModule('stack').then =>
-        @updateModal and @updateModal.toggleConfirm false
-      return
+        if result.compChange
+          $diffTree = differ.renderAppUpdateView()
+          $('#app-update-summary-table').html $diffTree
+
+        that.renderKpDropdown(that.updateModal)
+        TA.loadModule('stack').then ->
+          that.updateModal and that.updateModal.toggleConfirm false
+          that.updateModal?.resize()
+        , (err)->
+          console.log err
+          that.updateModal and that.updateModal.toggleConfirm true
+          that.updateModal and that.updateModal.tpl.find("#take-rds-snapshot").off 'change'
+          that.updateModal?.resize()
+        return
 
     opsOptionChanged: ->
         $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')

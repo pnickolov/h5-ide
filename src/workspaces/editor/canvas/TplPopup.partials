@@ -1,0 +1,38 @@
+<!-- {{volume}} -->
+{{#if this.length}}
+<header class="volume-pph">Attached Volume <span>({{this.length}})</span></header>
+<ul class="popup-content popup-volume">
+
+{{#each this}}<li data-id="{{id}}" class="{{#if snapshot}}vpp-snapshot{{else}}vpp-volume{{/if}}">
+    <div class="vpp-name">{{name}}</div><div class="vpp-size">{{size}}GB</div></li>{{/each}}
+
+</ul>
+{{else}}
+<div class="volume-pp-empty">No attached volumes</div>
+{{/if}}
+
+<!-- {{instance}} -->
+<header class="instance-pph">{{name}} <span class="instance-pph-close">×</span></header>
+{{#if this.items.length}}
+<ul class="popup-content popup-instance">
+  {{#each this.items}}<li data-id="{{id}}" class="vpp-instance">
+    <i class="vpp-ins-state tooltip status-{{state}}" data-tooltip="{{state}}"></i>
+    <img src="/assets/images/{{icon}}" width="39" height="27">
+    <div class="vpp-ins-vol">{{volume}}</div>
+    <div class="vpp-ins-name">{{id}}</div> </li>{{/each}}
+</ul>
+{{else}}
+<div class="instance-pp-empty">No instances</div>
+{{/if}}
+
+<!-- {{eni}} -->
+<header class="instance-pph">{{name}} <span class="instance-pph-close">×</span></header>
+{{#if this.items.length}}
+<ul class="popup-content popup-instance">
+  {{#each this.items}}<li data-id="{{id}}" class="vpp-instance vpp-eni">
+  {{#if eip}}<div class="vpp-eip tooltip" data-tooltip="{{eip}}"></div>{{/if}}
+  {{id}}</li>{{/each}}
+</ul>
+{{else}}
+<div class="instance-pp-empty">No network interfaces</div>
+{{/if}}

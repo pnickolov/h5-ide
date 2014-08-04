@@ -7,9 +7,16 @@
 # **********************************************************
 */
 
-define(["MC", "canvon"], function(MC){
+define(["MC"], function(MC){
 
 MC.canvas = {
+	GRID_WIDTH: 10,
+	GRID_HEIGHT: 10,
+	GROUP_MIN_PADDING: 120,
+
+	PORT_PADDING: 4, //port padding (to point of junction)
+	CORNER_RADIUS: 8, //cornerRadius of fold line
+
 	getState: function ()
 	{
 		// Quick hack to make this shit work.
@@ -2432,10 +2439,15 @@ MC.canvas.event.dragable = {
 					'keydown.DRAGABLE_EVENT': target_type === 'AWS.EC2.Instance' ? MC.canvas.event.dragable.keyClone : false,
 					'mousemove.DRAGABLE_EVENT': MC.canvas.event.dragable.mousemove,
 					'mouseup.DRAGABLE_EVENT': Canvon(event.target).hasClass('asg-resource-dragger') ?
-						// For asgExpand
-						MC.canvas.event.dragable.asgExpandup :
-						// Default
-						MC.canvas.event.dragable.mouseup
+												//For Expand ASG
+												MC.canvas.event.dragable.asgExpandup :
+												(
+													Canvon(event.target).hasClass('dbinstance-resource-dragger') ?
+														//For Create ReadReplica
+														MC.canvas.event.dragable.rdsCreateReadReplicaup :
+														//Default
+														MC.canvas.event.dragable.mouseup
+												)
 				}, {
 					'target': target,
 					'canvas_body': canvas_body,
@@ -2965,6 +2977,56 @@ MC.canvas.event.dragable = {
 			asg_item.asgExpand(match_place.target, coordinate.x, coordinate.y);
 
 			asg_item.select();
+		}
+
+		Canvon('.dropable-group').removeClass('dropable-group');
+
+		event.data.shadow.remove();
+
+		event.data.canvas_body.removeClass('node-dragging');
+
+		$('#overlayer').remove();
+
+		$(document).off('.DRAGABLE_EVENT');
+	},
+	rdsCreateReadReplicaup: function (event)
+	{
+		var event_data = event.data,
+			target = event.data.target,
+			target_id = target.attr('id'),
+			target_type = event.data.target_type,
+			node_type = event_data.nodeType,
+			db_instance_item = $canvas(target_id),
+			svg_canvas = $('#svg_canvas'),
+			canvas_offset = $canvas.offset(),
+			shadow_offset = Canvon(event.data.shadow).offset(),
+			scale_ratio = $canvas.scale(),
+			coordinate = MC.canvas.pixelToGrid(shadow_offset.left - canvas_offset.left, shadow_offset.top - canvas_offset.top),
+			size = event_data.size,
+			match_place = MC.canvas.isMatchPlace(
+				null,
+				target_type,
+				node_type,
+				coordinate.x,
+				coordinate.y,
+				size[0],
+				size[1]
+			),
+			parentGroup = MC.canvas.parentGroup(
+				target_id,
+				target_type,
+				coordinate.x,
+				coordinate.y,
+				coordinate.x + size[0],
+				coordinate.y + size[1]
+			);
+
+		if (
+			(db_instance_item.model.get("x") !== coordinate.x || db_instance_item.model.get("y") !== coordinate.y)
+			&& match_place.is_matched
+		)
+		{
+			db_instance_item.rdsCreateReadReplica(match_place.target, coordinate.x, coordinate.y);
 		}
 
 		Canvon('.dropable-group').removeClass('dropable-group');
@@ -4282,6 +4344,26 @@ MC.canvas.event.nodeHover = function (event)
 
 	Canvon( stack.join(',') )[ event.type === 'mouseenter' ? 'addClass' : 'removeClass' ]( 'view-hover' );
 
+
+	if ($("#"+this.id).data().class === "AWS.RDS.DBInstance" )
+	{
+		var is_highlight = event.handleObj.origType === "mouseenter" ? true : false;
+		$canvas( this.id ).hover( is_highlight );
+	}
+
+	return true;
+};
+
+MC.canvas.event.groupHover = function (event)
+{
+	if (this.parentElement && this.parentElement.id && $("#"+this.parentElement.id).length!=0 )
+	{
+		if ($("#"+this.parentElement.id).data().class === "AWS.RDS.DBSubnetGroup" )
+		{
+			var is_highlight = event.handleObj.origType === "mouseenter" ? true : false;
+			$canvas( this.parentElement.id ).hover( is_highlight );
+		}
+	}
 	return true;
 };
 
@@ -4670,13 +4752,14 @@ MC.canvas.analysis = function ()
 
 		// Initialize group construction
 		SUBGROUP = {
-			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone'],
+			'AWS.VPC.VPC': ['AWS.EC2.AvailabilityZone', 'AWS.RDS.DBSubnetGroup'],
 			'AWS.EC2.AvailabilityZone': ['AWS.VPC.Subnet'],
 			'AWS.VPC.Subnet': [
 				'AWS.EC2.Instance',
 				'AWS.AutoScaling.Group',
 				'AWS.VPC.NetworkInterface'
 			],
+			'AWS.RDS.DBSubnetGroup': ['AWS.RDS.DBInstance'],
 			'AWS.AutoScaling.Group': ['AWS.AutoScaling.LaunchConfiguration']
 		},
 
@@ -4690,6 +4773,7 @@ MC.canvas.analysis = function ()
 			'AWS.VPC.VPC': [60, 60],
 			'AWS.EC2.AvailabilityZone': [17, 17],
 			'AWS.VPC.Subnet': [15, 15],
+			'AWS.RDS.DBSubnetGroup': [15, 15],
 			'AWS.AutoScaling.Group' : [13, 13]
 		},
 
@@ -4697,6 +4781,7 @@ MC.canvas.analysis = function ()
 		POSITION_METHOD = {
 			'AWS.VPC.VPC': 'vertical',
 			'AWS.EC2.AvailabilityZone': 'horizontal',
+			'AWS.RDS.DBSubnetGroup': 'horizontal',
 			'AWS.VPC.Subnet': 'matrix',
 			'AWS.AutoScaling.Group': 'center'
 		},

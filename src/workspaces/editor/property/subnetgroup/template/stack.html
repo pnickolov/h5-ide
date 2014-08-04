@@ -1,0 +1,28 @@
+<article class="property-subnet-group">
+  <div class="option-group-head expand">Subnet Groups Details</div>
+  <div class="option-group">
+
+   <section class="property-control-group" data-bind="true">
+    <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
+    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
+  </section>
+
+
+  <section class="property-control-group" data-bind="true">
+    <label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
+    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
+  </section>
+</div>
+
+<div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span>
+<button class="icon-edit tooltip add-rule" data-tooltip="Edit subnet group"></button></div>
+<section class="property-control-group">
+  {{#each azSb}}
+  <div class='property-az-name'>{{@key}}</div>
+  {{#each this}} <div>{{name}}</div> <div class="dbsgppp-cidr">({{cidr}})</div> {{/each}}
+  {{/each}}
+</section>
+
+</article>

@@ -18,7 +18,7 @@ define(["jquery"], function(){
         "info"    : true
     };
     window.notification = function ( type, template, auto_close ) {
-        if ( !NOTIFICATION_TYPES[ type ] )
+        if ( !NOTIFICATION_TYPES[ type ] || !template )
             return;
 
         var notification_wrap = $('#notification_wrap');

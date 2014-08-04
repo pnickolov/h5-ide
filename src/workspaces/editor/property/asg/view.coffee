@@ -131,7 +131,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "ASG" )
+            if PropertyView.checkResName( @model.get('uid'), target, "ASG" )
                 @model.setName name
                 @setTitle name
 
@@ -356,8 +356,6 @@ define [ '../base/view',
                 data.unit = unitMap[ data.alarmData.metricName ]
             else
                 data.unit = '%'
-
-            data.detail_monitor = this.model.attributes.detail_monitor
 
             #modal policy_template(data), true
             @openPolicyModal data

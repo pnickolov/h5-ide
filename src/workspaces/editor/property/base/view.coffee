@@ -92,32 +92,6 @@ define [ 'constant',
             else
                 $('.disabled-event-layout').remove()
 
-        checkResName : ( $input, type )->
-            if not $input.length
-                $input = $( $input )
-
-            name = $input.val()
-
-            if not type then type = name
-
-            if name && !MC.validate( 'awsName',  name )
-                error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
-
-            if not error and @model.isNameDup( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if not error and @model.isOldName( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if not error and @model.isReservedName( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if name.indexOf("elbsg-") is 0
-                error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
-
-            $input.parsley 'custom', ()-> error
-            $input.parsley 'validate'
-
         _load : () ->
             @__clearTrash()
             @__addToTrash @
@@ -178,7 +152,7 @@ define [ 'constant',
                 resUID = @model.get 'uid'
                 if resUID
                     resComp = Design.instance().component(resUID)
-                    if resComp and resComp.type is constant.RESTYPE.SG
+                    if resComp and (resComp.type is constant.RESTYPE.SG or resComp.type is constant.RESTYPE.DBINSTANCE)
                         return null
 
                 # all other property
@@ -200,6 +174,68 @@ define [ 'constant',
                     that.disabledAllOperabilityArea(true)
                 , 0)
             null
+    }, {
+        checkResName : ( uid, $input, type )->
+
+            isNameDup = ( uid, newName )->
+
+                console.assert( uid, "This property model doesn't have an id" )
+
+                comp = Design.instance().component( uid )
+
+                if comp.get("name") is newName
+                    return false
+
+                dup = false
+                Design.instance().eachComponent ( comp )->
+                    if comp.get("name") is newName
+                        dup = true
+                        return false
+
+                dup
+
+            isOldName = (newName)->
+                originJson = Design.instance().__opsModel.getJsonData()
+                dup = false
+                if originJson.component
+                    _.each originJson.component, (comp, key)->
+                        if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW, constant.RESTYPE.DBINSTANCE] and comp.name is newName
+                            dup = true
+                            return false
+                dup
+
+            isReservedName = ( newName ) ->
+
+                result = false
+                if newName in ['self', 'this', 'global', 'meta', 'madeira']
+                    result = true
+
+                return result
+
+            if not $input.length
+                $input = $( $input )
+
+            name = $input.val()
+
+            if not type then type = name
+
+            if name && !MC.validate( 'awsName',  name )
+                error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
+
+            if not error and isNameDup( uid, name )
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+            if not error and isOldName( name )
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+            if not error and isReservedName( name )
+                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+            if name.indexOf("elbsg-") is 0
+                error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
+
+            $input.parsley 'custom', ()-> error
+            $input.parsley 'validate'
     }
 
     PropertyView.extend = ( protoProps, staticProps ) ->

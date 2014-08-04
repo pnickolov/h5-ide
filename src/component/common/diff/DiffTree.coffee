@@ -1,4 +1,4 @@
-define [], () ->
+define ['constant'], (constant) ->
 
     DiffTree = (option) ->
 
@@ -7,33 +7,37 @@ define [], () ->
         if not option.filterAttrMap
 
             option.filterAttrMap = {
-                'type': true
-                'uid': true
-                'name': true
-                'index': true
-                'number': true
-                'serverGroupUid': true
-                'serverGroupName': true
-                # 'state': true
-                'resource.UserData': true
-                'resource.PrivateIpAddressSet.n.AutoAssign': true,
-                'resource.AssociatePublicIpAddress': true,
-                'resource.KeyName': true,
-                'resource.AssociationSet.n.RouteTableAssociationId': true
-                'resource.AssociationSet.n.NetworkAclAssociationId': true
-                'resource.BlockDeviceMapping': true
-                'resource.VolumeSize': true
-                'resource.GroupDescription': true
-                'resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
-                'resource.Attachment.AttachmentId': true
-                'resource.Iops': true
+                '*.type': true
+                '*.uid': true
+                '*.name': true
+                '*.index': true
+                '*.number': true
+                '*.serverGroupUid': true
+                '*.serverGroupName': true
+                # '*.state': true
+                '*.resource.UserData': true
+                '*.resource.PrivateIpAddressSet.n.AutoAssign': true,
+                '*.resource.AssociatePublicIpAddress': true,
+                '*.resource.KeyName': true,
+                '*.resource.AssociationSet.n.RouteTableAssociationId': true
+                '*.resource.AssociationSet.n.NetworkAclAssociationId': true
+                '*.resource.BlockDeviceMapping': true
+                '*.resource.VolumeSize': true
+                '*.resource.GroupDescription': true
+                '*.resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
+                '*.resource.Attachment.AttachmentId': true
+                #DBINSTANCE
+                #'DBINSTANCE.resource.Iops': true
+                # 'DBINSTANCE.resource.MasterUserPassword': true
+                'DBINSTANCE.resource.AvailabilityZone': true
+                'DBINSTANCE.resource.Endpoint.Address': true
             }
 
         if not option.noDiffArrayAttrMap
             
             option.noDiffArrayAttrMap = {
-                'state': true
-                # 'resource.RouteSet': true
+                '*.state': true
+                # '*.resource.RouteSet': true
             }
 
         option.filterResMap = {}
@@ -81,15 +85,10 @@ define [], () ->
                 path = path.concat([key]) if key
 
                 # ignore resource of specified type
-                if path.length is 2
-
-                    resUID = path[1]
-                    if a and a.type
-                        resType = a.type
-                        return if option.filterResMap[resType]
+                path[1] = a.type if path.length is 2 and a and a.type
 
                 # ignore resource of specified in filterAttrMap
-                else if path.length > 2
+                if path.length > 2
 
                     attrPathAry = path.slice(2)
                     attrPathAry = _.map attrPathAry, (path) ->
@@ -97,9 +96,14 @@ define [], () ->
                         return 'n' if num >= 0
                         return path
 
-                    attrPath = attrPathAry.join('.')
-                    if option.filterAttrMap[attrPath]
-                        return
+                    resType = path[1]
+                    resShortType = this.resTypeShortMap[resType]
+
+                    attrPathStr = attrPathAry.join('.')
+                    attrPath1 = resShortType + '.' + attrPathStr
+                    attrPath2 = '*.' + attrPathStr
+
+                    return if (option.filterAttrMap[attrPath1] or option.filterAttrMap[attrPath2])
 
             if not a and not b
                 return
@@ -210,5 +214,7 @@ define [], () ->
             return resultJSON.result
 
         null
+
+    DiffTree.prototype.resTypeShortMap = _.invert(constant.RESTYPE)
 
     return DiffTree

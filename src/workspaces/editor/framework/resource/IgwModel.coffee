@@ -4,17 +4,9 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
   Model = ComplexResModel.extend {
 
     defaults :
-      x        : 0
-      y        : 0
-      width    : 8
-      height   : 8
-      name     : "Internet-gateway"
+      name : "Internet-gateway"
 
     type : constant.RESTYPE.IGW
-
-    initialize : ()->
-      @draw(true)
-      null
 
     isRemovable : ()->
       # Deleting IGW when ELB/EIP in VPC, should show error
@@ -35,7 +27,6 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
       true
 
     serialize : ()->
-
       component =
         name : @get("name")
         type : @type
@@ -54,16 +45,9 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
       notification 'info', lang.ide.CVS_CFM_ADD_IGW_MSG
 
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
-
-      igwW = Model.prototype.defaults.width
-      igwH = Model.prototype.defaults.height
-      vpcX = vpc.x()
-      vpcY = vpc.y()
-      vpcH = vpc.height()
-
       new Model({
-        x : vpcX - igwW / 2
-        y : vpcY + ( vpcH - igwH ) / 2
+        x      : -1
+        y      : -1
         parent : vpc
       })
       null

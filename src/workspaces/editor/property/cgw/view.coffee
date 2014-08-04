@@ -47,7 +47,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "Customer Gateway" )
+            if PropertyView.checkResName( @model.get('uid'), target, "Customer Gateway" )
                 @model.setName name
                 @setTitle name
 
@@ -93,7 +93,6 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 $('.modal-close').click () -> $('#property-cgw-ip').focus()
 
                 $('#cidr-remove').click () ->
-                    $canvas.clearSelected()
                     Design.instance().component( that.model.get("uid") ).remove()
 
                     that.disabledAllOperabilityArea(false)

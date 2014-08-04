@@ -6,15 +6,19 @@ define [
   "constant"
   'dhcp'
   'snapshotManager'
+  'rds_snapshot'
   'sslcert_manage'
   'sns_manage'
   'kp_manage'
+  'rds_pg'
+  'rds_snapshot'
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, snapshotManager, sslCertManager, snsManager, keypairManager, AmiBrowser, lang, ApiRequest )->
+  "UI.dnd"
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -46,43 +50,99 @@ define [
 
     return MC.template.bubbleAMIInfo( ami )
 
+  MC.template.resPanelDbSnapshot = ( data )->
+    if not data.region or not data.id then return
+
+    ss = CloudResources( constant.RESTYPE.DBSNAP, data.region ).get( data.id )
+    if not ss then return
+
+    LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
+
+  MC.template.resPanelSnapshot = ( data )->
+    if not data.region or not data.id then return
+
+    ss = CloudResources( constant.RESTYPE.SNAP, data.region ).get( data.id )
+    if not ss then return
+
+    LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
+
+
+
+  LcItemView = Backbone.View.extend {
+
+    tagName   : 'li'
+    className : 'resource-item asg'
+
+    initialize: ( options ) ->
+      @parent = options.parent
+      ( @parent or @ ).$el.find(".resource-list-asg").append @$el
+
+      @listenTo @model, 'change:name', @render
+      @listenTo @model, 'change:imageId', @render
+      @listenTo @model, 'destroy', @remove
+
+      @render()
+      @$el.attr({
+        "data-type"   : "ASG"
+        "data-option" : '{"lcId":"' + @model.id + '"}'
+      })
+      return
+
+    render : ()->
+      @$el.html LeftPanelTpl.reuse_lc({
+        name      : @model.get("name")
+        cachedAmi : @model.getAmi() || @model.get("cachedAmi")
+      })
+  }
+
+
 
   Backbone.View.extend {
 
     events :
       "click .btn-fav-ami"           : "toggleFav"
-      "click .HideOEPanelLeft"       : "toggleLeftPanel"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
-      "click .ManageSnapshot"        : "manageSnapshot"
+      "click .ManageEbsSnapshot"     : "manageEbsSnapshot"
+      "click .ManageRdsSnapshot"     : "manageRdsSnapshot"
       "click .fixedaccordion-head"   : "updateAccordion"
       "RECALC"                       : "recalcAccordion"
       "mousedown .resource-item"     : "startDrag"
       "click .refresh-resource-panel": "refreshPanelData"
       'click .resources-dropdown-wrapper li' : 'resourcesMenuClick'
 
+      'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
+      'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
+
     initialize : (options)->
-      @workspace = options.workspace
+      _.extend this, options
+
       @subViews = []
 
       region = @workspace.opsModel.get("region")
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+      @listenTo CloudResources( constant.RESTYPE.DBENGINE, region ), "update", @updateRDSList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
       @listenTo design, Design.EVENT.AddResource,    @updateDisableItems
       @listenTo design, Design.EVENT.RemoveResource, @updateDisableItems
-
-      @subEventForUpdateReuse()
+      @listenTo design, Design.EVENT.AddResource,    @updateLc
 
       @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
-      return
+
+      @setElement @parent.$el.find(".OEPanelLeft")
+
+      $(document)
+        .off('keydown', @bindKey.bind @)
+        .on('keydown', @bindKey.bind @)
+
+      @render()
 
     render : ()->
-      that = this
-      @setElement @workspace.view.$el.find(".OEPanelLeft").html LeftPanelTpl.panel({})
+      @$el.html( LeftPanelTpl.panel({}) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
       @recalcAccordion()
@@ -90,60 +150,65 @@ define [
       @updateAZ()
       @updateSnapshot()
       @updateAmi()
-      $(document)
-        .off('keydown', that.bindKey.bind @)
-        .on('keydown', that.bindKey.bind @)
+      @updateRDSList()
+      @updateRDSSnapshotList()
+
       @updateDisableItems()
       @renderReuse()
       return
 
-    reuseLc: Backbone.View.extend
-      tagName: 'li'
-      className: 'tooltip resource-item resource-icon-asg resource-reuse'
-      inDom: false
-      defaultAttr: ->
-        'data-type': 'ASG'
+    resourceListSortSelectRdsEvent : (event) ->
 
-      defaultData: ->
-        that = @
+        selectedId = 'date'
 
-        'option':
-          lcId: that.model.id
+        if event
 
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
 
-      initialize: ( options ) ->
-        options = {} if not options
-        @parent = options.parent
+        $sortedList = []
 
-        @settleElement options
-        @bindEvent @model
+        if selectedId is 'date'
 
-      bindEvent: ( model ) ->
-        @listenTo model, 'change', @render
-        @listenTo model, 'destroy', ( lc ) ->
-          if lc.__brothers.length
-            @model = lc.__brothers[ 0 ]
-            @stopListening()
-            @bindEvent @model
-            @settleElement {}
-          else
-            @remove()
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
 
-      settleElement: ( options ) ->
-        @$el.attr _.extend {}, options.attr, @defaultAttr()
-        @$el.data _.extend {}, options.data, @defaultData()
+        if selectedId is 'engine'
 
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return $(a).data('engine') - $(b).data('engine')
 
-      render: ->
-        data = @model.toJSON()
-        data.cachedAmi = @model.getAmi() if not data.cachedAmi
-        @$el.html LeftPanelTpl.reuse_lc data
+        if selectedId is 'storge'
 
-        if not @inDom
-          @inDom = true
-          ( @parent or @ ).$el.find(".resource-list-asg").append @el
+            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+                return Number($(b).data('storge')) - Number($(a).data('storge'))
 
-        @
+        if $sortedList.length
+            $('.resource-list-rds-snapshot-exist').html($sortedList)
+
+    resourceListSortSelectSnapshotEvent : (event) ->
+
+        selectedId = 'date'
+
+        if event
+
+            $currentTarget = $(event.currentTarget)
+            selectedId = $currentTarget.find('.selected').data('id')
+
+        $sortedList = []
+
+        if selectedId is 'date'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
+
+        if selectedId is 'storge'
+
+            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+                return Number($(a).data('storge')) - Number($(b).data('storge'))
+
+        if $sortedList.length
+            @$el.find('.resource-list-snapshot-exist').html($sortedList)
 
     bindKey: (event)->
       that = this
@@ -158,19 +223,13 @@ define [
         return false
 
     renderReuse: ->
-      allLc = @workspace.design.componentsOfType( constant.RESTYPE.LC )
-
-      for lc in allLc
-        if not lc.isClone() and not lc.get( 'appId' )
-          @subViews.push new @reuseLc({model:lc, parent : @}).render()
-
+      for lc in @workspace.design.componentsOfType( constant.RESTYPE.LC )
+        new LcItemView({model:lc, parent:@}) if not lc.get( 'appId' )
       @
 
-    subEventForUpdateReuse: ->
-      @listenTo @workspace.design, Design.EVENT.AddResource, ( resModel ) ->
-        if resModel.type is constant.RESTYPE.LC and not resModel.isClone() and not resModel.get( 'appId' )
-          @subViews.push new @reuseLc( model: resModel, parent: @ ).render()
-      , @
+    updateLc : ( resModel ) ->
+      if resModel.type is constant.RESTYPE.LC and not resModel.get( 'appId' )
+        new LcItemView({model:resModel, parent:@})
 
     onResChanged : ( resModel )->
       if not resModel then return
@@ -178,19 +237,37 @@ define [
       @updateAZ()
       return
 
-    updateAZ : ()->
+    updateAZ : ( resModel )->
       if not @workspace.isAwake() then return
-      region = @workspace.opsModel.get("region")
 
-      @$el.find(".resource-list-az").html LeftPanelTpl.az(CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || [])
-      @updateDisabledAz()
+      if resModel and resModel.type isnt constant.RESTYPE.AZ then return
+
+      region = @workspace.opsModel.get("region")
+      usedAZ = ( az.get("name") for az in @workspace.design.componentsOfType(constant.RESTYPE.AZ) || [] )
+
+      availableAZ = []
+      for az in CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+        if usedAZ.indexOf(az.id) is -1
+          availableAZ.push(az.id)
+
+      @$el.find(".az").toggleClass("disabled", availableAZ.length is 0).data("option", { name : availableAZ[0] }).children(".resource-count").text( availableAZ.length )
       return
 
     updateSnapshot : ()->
-      if not @workspace.isAwake() then return
-      region = @workspace.opsModel.get("region")
-      @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot(CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || [])
-      return
+      region     = @workspace.opsModel.get("region")
+      cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
+      cln.region = region
+      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
+
+    updateRDSList : () ->
+      cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
+      @$el.find(".resource-list-rds").html LeftPanelTpl.rds( cln )
+
+    updateRDSSnapshotList : () ->
+      region     = @workspace.opsModel.get("region")
+      cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
+      cln.region = region
+      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"
@@ -218,27 +295,28 @@ define [
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)
 
-    updateDisableItems : ()->
+    updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
-      @updateDisabledAz()
-      @updateDisabledVpcRes()
-      return
+      @updateAZ( resModel )
 
-    updateDisabledAz : ()->
-      $azs = @$el.find(".resource-list-az").children().removeClass("resource-disabled")
-      for az in @workspace.design.componentsOfType( constant.RESTYPE.AZ )
-        azName = az.get("name")
-        for i in $azs
-          if $(i).text().indexOf(azName) != -1
-            $(i).addClass("resource-disabled")
-            break
-      return
+      design  = @workspace.design
+      RESTYPE = constant.RESTYPE
 
-    updateDisabledVpcRes : ()->
-      $ul = @$el.find(".resource-icon-igw").parent()
-      design = @workspace.design
-      $ul.children(".resource-icon-igw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.IGW).length > 0)
-      $ul.children(".resource-icon-vgw").toggleClass("resource-disabled", design.componentsOfType(constant.RESTYPE.VGW).length > 0)
+      # VPC related
+      $ul = @$el.find(".resource-item.igw").parent()
+      $ul.children(".resource-item.igw").toggleClass("disabled", design.componentsOfType(RESTYPE.IGW).length > 0)
+      $ul.children(".resource-item.vgw").toggleClass("disabled", design.componentsOfType(RESTYPE.VGW).length > 0)
+
+      # Subnet group
+      az = {}
+      for subnet in design.componentsOfType(RESTYPE.SUBNET)
+        az[ subnet.parent().get("name") ] = true
+
+      @sbg = @$el.find(".resource-item.subnetgroup")
+      if _.keys( az ).length < 2
+        @sbg.toggleClass("disabled", true).data("tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
+      else
+        @sbg.toggleClass("disabled", false).data("tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
@@ -255,7 +333,7 @@ define [
 
     toggleLeftPanel : ()->
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
-      false
+      null
 
     toggleResourcePanel: ()->
       @toggleLeftPanel()
@@ -320,7 +398,8 @@ define [
         @stopListening CloudResources( "FavoriteAmi", region ), "update", @updateFavList
       return false
 
-    manageSnapshot : ()-> new snapshotManager().render()
+    manageEbsSnapshot : ()-> new EbsSnapshotManager().render()
+    manageRdsSnapshot: ()->new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
       $tgt = $( evt.currentTarget )
@@ -341,260 +420,44 @@ define [
               when 'keypair'
                   new keypairManager().render()
               when 'snapshot'
-                  new snapshotManager().render()
+                  new EbsSnapshotManager().render()
               when 'sns'
                   new snsManager().render()
               when 'sslcert'
                   new sslCertManager().render()
               when 'dhcp'
                   (new dhcpManager()).manageDhcp()
-    # Copied and enhanced from MC.canvas.js
+              when 'rdspg'
+                  new rdsPgManager().render()
+              when 'rdssnapshot'
+                  new rdsSnapshot().render()
+
     startDrag : ( evt )->
       if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
-      if $tgt.hasClass("resource-disabled") then return false
+      if $tgt.hasClass("disabled") then return false
       if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
 
       type = constant.RESTYPE[ $tgt.attr("data-type") ]
-      console.assert( type )
 
-      # Insert Shadow
-      $("<div id='ResourceDragItem'></div><div id='overlayer' class='grabbing'></div>").appendTo( document.body )
-      tgtOffset = $tgt.offset()
-      $item = $("#ResourceDragItem")
-        .html( $tgt.html() )
-        .attr("class", $tgt.attr("class").replace("bubble", "") )
-        .css({
-          'top'  : tgtOffset.top
-          'left' : tgtOffset.left
-        })
-      setTimeout ()->
-        $item.addClass("add-to-dom")
-      , 10
+      dropTargets = "#OpsEditor .OEPanelCenter"
+      if type is constant.RESTYPE.INSTANCE
+        dropTargets += ",#changeAmiDropZone"
 
-      # Update Svg
-      if type is constant.RESTYPE.VOL
-        Canvon('.AWS-EC2-Instance, .AWS-AutoScaling-LaunchConfiguration').addClass('attachable')
-        $(document).on({
-          'mousemove' : MC.canvas.volume.mousemove
-          'mouseup'   : MC.canvas.volume.mouseup
-        }, {
-          'target'        : $tgt
-          'canvas_offset' : $canvas.offset()
-          'canvas_body'   : $('#canvas_body')
-          'shadow'        : $item
-          'action'        : 'add'
-        })
-      else
-        target_group_type = MC.canvas.MATCH_PLACEMENT[ type ]
-        if target_group_type
-          Canvon('.' + target_group_type.join(',').replace(/\./ig, '-').replace(/,/ig, ',.')).addClass('dropable-group')
+      option = $.extend true, {}, $tgt.data("option") || {}
+      option.type = type
 
-        if type is constant.RESTYPE.INSTANCE
-          $changeAmiZone = $("#changeAmiDropZone")
-          if $changeAmiZone.is(":visible")
-            drop_zone_offset = $changeAmiZone.offset()
-            drop_zone_data = {
-              'x1' : drop_zone_offset.left
-              'x2' : drop_zone_offset.left + $changeAmiZone.width()
-              'y1' : drop_zone_offset.top
-              'y2' : drop_zone_offset.top + $changeAmiZone.height()
-            }
-
-
-        component_size = MC.canvas.GROUP_DEFAULT_SIZE[ type ]
-        node_type      = "group"
-        placeOffsetX   = 0
-        placeOffsetY   = 0
-        if not component_size
-          component_size = MC.canvas.COMPONENT_SIZE[ type ]
-          node_type = "node"
-          placeOffsetX   = 8
-          placeOffsetY   = 8
-
-        if type is constant.RESTYPE.INSTANCE then placeOffsetY = 0
-        if type is constant.RESTYPE.ASG      then placeOffsetX = -8
-
-        $(document).on({
-          'mousemove.SidebarDrag' : @onDragMove
-          'mouseup.SidebarDrag'   : @onDragStop
-        }, {
-          'target_type'    : type
-          'canvas_offset'  : $canvas.offset()
-          'drop_zone'      : $changeAmiZone
-          'drop_zone_data' : drop_zone_data
-          "comp_size"      : component_size
-          "node_type"      : node_type
-          'offsetX'        : evt.pageX - tgtOffset.left
-          'offsetY'        : evt.pageY - tgtOffset.top
-          "placeOffsetY"   : placeOffsetY
-          "placeOffsetX"   : placeOffsetX
-          'target'         : $tgt
-          "scale"          : $canvas.scale()
-        })
-
-        $('#canvas_body').addClass('node-dragging')
-
-
-      # Cleanup Canvas
-      MC.canvas.volume.close()
-      MC.canvas.event.clearSelected()
-
-      false
-
-    onDragMove : ( evt )->
-      Canvon('.match-dropable-group').removeClass('match-dropable-group')
-
-      event_data    = evt.data
-      canvas_offset = event_data.canvas_offset
-      match_place = MC.canvas.isMatchPlace(
-        null
-        event_data.target_type
-        event_data.node_type
-        (evt.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
-        (evt.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
-        event_data.comp_size[0]
-        event_data.comp_size[1]
-      )
-
-      if match_place.is_matched
-        Canvon('#' + match_place.target).addClass('match-dropable-group')
-
-      # For change AMI hover effect
-      if event_data.drop_zone_data
-        hover = event.pageX > event_data.drop_zone_data.x1 &&
-          event.pageX < event_data.drop_zone_data.x2 &&
-          event.pageY > event_data.drop_zone_data.y1 &&
-          event.pageY < event_data.drop_zone_data.y2
-
-        event_data.drop_zone.toggleClass("hover", hover)
-
-      $("#ResourceDragItem").css {
-        top  : evt.pageY - event_data.offsetY
-        left : evt.pageX - event_data.offsetX
-      }
-      false
-
-    onDragStop : ( event )->
-      $("#overlayer").remove()
-      $item = $("#ResourceDragItem")
-
-      # Cleanup
-      Canvon('.dropable-group').removeClass('dropable-group')
-      Canvon('.match-dropable-group').removeClass('match-dropable-group')
-      $('#canvas_body').removeClass('node-dragging')
-      $(document).off('mousemove.SidebarDrag').off('mouseup.SidebarDrag')
-
-      event_data = event.data
-
-      if event_data.drop_zone_data &&
-        event.pageX > event_data.drop_zone_data.x1 &&
-        event.pageX < event_data.drop_zone_data.x2 &&
-        event.pageY > event_data.drop_zone_data.y1 &&
-        event.pageY < event_data.drop_zone_data.y2
-          event_data.drop_zone.removeClass("hover").trigger("drop", $(event.data.target).data('option').imageId)
-          $item.remove()
-          return false
-
-
-      node_type      = event_data.node_type
-      target_type    = event_data.target_type
-      canvas_offset  = event_data.canvas_offset
-      node_option    = event_data.target.data('option') || {}
-      component_size = event_data.comp_size
-      coordinate     = {
-        x : (event.pageX - event_data.offsetX - event_data.placeOffsetX - canvas_offset.left) / 10 * event_data.scale
-        y : (event.pageY - event_data.offsetY - event_data.placeOffsetY - canvas_offset.top)  / 10 * event_data.scale
-      }
-
-      if coordinate.x < 0 or coordinate.y < 0
-        $item.remove()
-        return
-
-      if node_type is "node"
-        if target_type is constant.RESTYPE.IGW || target_type is constant.RESTYPE.VGW
-          vpc_id         = $('.AWS-VPC-VPC').attr('id')
-          vpc_item       = $canvas( vpc_id )
-          vpc_coordinate = vpc_item.position()
-          vpc_size       = vpc_item.size()
-          node_option.groupUId = vpc_id
-
-          if coordinate.y > vpc_coordinate[1] + vpc_size[1] - component_size[1]
-            coordinate.y = vpc_coordinate[1] + vpc_size[1] - component_size[1]
-          if coordinate.y < vpc_coordinate[1]
-            coordinate.y = vpc_coordinate[1]
-
-          if target_type is constant.RESTYPE.IGW
-            coordinate.x = vpc_coordinate[0] - (component_size[1] / 2)
-          else
-            coordinate.x = vpc_coordinate[0] + vpc_size[0] - (component_size[1] / 2)
-
-          $canvas.add(target_type, node_option, coordinate)
-        else
-          match_place = MC.canvas.isMatchPlace(
-            null
-            target_type
-            node_type
-            coordinate.x
-            coordinate.y
-            component_size[0]
-            component_size[1]
-          )
-
-          if match_place.is_matched
-            node_option.groupUId = match_place.target
-            new_node_id = $canvas.add(target_type, node_option, coordinate)
-            if new_node_id then MC.canvas.select(new_node_id)
-          else
-            $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {'type':target_type})
-      else
-        match_place = MC.canvas.isMatchPlace(
-          null
-          target_type
-          node_type
-          coordinate.x
-          coordinate.y
-          component_size[0]
-          component_size[1]
-        )
-        areaChild = MC.canvas.areaChild(
-          null
-          target_type
-          coordinate.x
-          coordinate.y
-          coordinate.x + component_size[0]
-          coordinate.y + component_size[1]
-        )
-        if match_place.is_matched
-          if areaChild.length is 0 and MC.canvas.isBlank(
-              ""
-              target_type
-              'group'
-              # Enlarge a little bit to make the drop place correctly.
-              coordinate.x - 1,
-              coordinate.y - 1,
-              component_size[0] + 2
-              component_size[1] + 2
-            )
-            node_option.groupUId = match_place.target
-            new_node_id = $canvas.add(target_type, node_option, coordinate)
-            if !($canvas.hasVPC() && target_type is constant.RESTYPE.AZ )
-              MC.canvas.select(new_node_id)
-          else
-            $canvas.trigger("CANVAS_PLACE_OVERLAP")
-        else
-          $canvas.trigger("CANVAS_PLACE_NOT_MATCH", {type:target_type})
-
-      if target_type is constant.RESTYPE.IGW or target_type is constant.RESTYPE.VGW
-        $item.animate({
-          'left'    : coordinate.x * 10 + canvas_offset.left
-          'top'     : coordinate.y * 10 + canvas_offset.top
-          'opacity' : 0
-        }, ()-> $item.remove() )
-      else
-        $item.remove()
-
-      false
+      $tgt.dnd( evt, {
+        dropTargets  : $( dropTargets )
+        dataTransfer : option
+        eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
+        onDragStart  : ( data )->
+          if type is constant.RESTYPE.AZ
+            data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
+          else if type is constant.RESTYPE.ASG
+            data.shadow.text( "ASG" )
+      })
+      return false
 
     remove: ->
       _.invoke @subViews, 'remove'

@@ -25,7 +25,7 @@
             something wrong
         </div>
     </div>
-    <div class="table-head-fix">
+    <div class="table-head-fix will-be-covered">
         <table class="table-head">
             <thead>
                 <tr>
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
         </table>
-        <div class="scroll-wrap">
+        <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content" style="display:block;">
                 <table class="table">

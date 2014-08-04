@@ -1,0 +1,672 @@
+
+.canvas-view {
+  position   : relative;
+  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  min-height : 100%;
+  background : #fff image-url('ide/grid_x1.png');
+
+  &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }
+  &[data-scale="1.4"] { background-image : image-url('ide/grid_x1.4.png'); }
+  &[data-scale="1.6"] { background-image : image-url('ide/grid_x1.6.png'); }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    & {
+      background-image : image-url('ide/grid_x1@2x.png');
+      background-size  : 80px 80px;
+    }
+    &[data-scale="1.2"] {
+      background-image : image-url('ide/grid_x1.2@2x.png');
+      background-size  : 64px 64px;
+    }
+    &[data-scale="1.4"] {
+      background-image : image-url('ide/grid_x1.4@2x.png');
+      background-size  : 48px 48px;
+    }
+    &[data-scale="1.6"] {
+      background-image : image-url('ide/grid_x1.6@2x.png');
+      background-size  : 32px 32px;
+    }
+  }
+
+  &[data-mode="app"] {
+    .group-resizer { display : none; }
+    .group-label, .port { pointer-events : none; }
+    ~ .canvas-pp {
+      .vpp-volume, .vpp-snapshot { cursor: default; }
+    }
+    .dbreplicate { display:none; }
+  }
+}
+
+.svg_resizer {
+  position : absolute;
+
+  font-size : 16px;
+  width     : 32px;
+  height    : 32px;
+  padding   : 0;
+
+  background    : #f5f5f5;
+  border        : 1px solid #ccc;
+  border-radius : 3px;
+
+  cursor      : pointer;
+  line-height : 32px;
+  text-align  : center;
+
+  &:hover { color: #3781C9; }
+  &.icon-resize-down  { left : 7px;  bottom : 7px; }
+  &.icon-resize-up    { left : 47px; bottom : 7px; }
+  &.icon-resize-right { top  : 5px;  right  : 10px; }
+  &.icon-resize-left  { top  : 45px; right  : 10px; }
+}
+
+.group-label {
+  font-size : 12px;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+  fill: #fff;
+}
+
+.node-label, .volume-number, .server-number {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: #333;
+  cursor: default;
+}
+
+.node-sg-color-border {
+  fill:   none;
+  stroke: none;
+}
+
+.node-label-name-bg {
+  fill: none;
+}
+
+.group, .node-background {
+  fill:transparent;
+}
+
+.group-resizer {
+  fill:transparent;
+  &:hover {
+    fill: rgba(200, 200, 200, 0.12);
+  }
+
+  &.top { cursor: ns-resize; }
+  &.left { cursor: ew-resize; }
+  &.right { cursor: ew-resize; }
+  &.bottom { cursor: ns-resize; }
+  &.top-left { cursor: nwse-resize; }
+  &.top-right { cursor: nesw-resize; }
+  &.bottom-left { cursor: nesw-resize; }
+  &.bottom-right { cursor: nwse-resize; }
+}
+
+.canvasel:hover > .node-background {
+  fill-opacity: 0.5;
+  fill: #F2F8FF;
+}
+
+.canvas-view {
+
+  .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
+    > .node-background {
+      fill-opacity : .5;
+      fill         : rgba(242, 248, 255, 1) !important;
+      stroke-width : 1 !important;
+      stroke       : #659FFF !important;
+    }
+  }
+  .canvasel.selected {
+    > .node-label-name-bg {
+      fill:#659FFF;
+      ~ .node-label {
+        fill:#fff;
+      }
+    }
+  }
+
+}
+
+.server-number-bg {
+  stroke-width: 0;
+  fill: #439beb;
+}
+.server-number {
+  fill: #fff;
+  font-size: 11px;
+}
+.volume-number {
+  fill: #74B1FD;
+  pointer-events:none;
+}
+.volume-image, .eip-status {
+  cursor: pointer;
+}
+
+.dbreplcate {
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+/* port style */
+.port {
+  stroke-width:0;
+}
+.port-blue {
+  fill: #6DAEFE;
+  stroke: #6DAEFE;
+}
+
+.port-green {
+  fill: #12CD4F;
+  stroke: #12CD4F;
+}
+
+.port-purple {
+  fill: #bf7aa5;
+  stroke: #b22f70;
+}
+
+.port-gray {
+  fill: #d8d7d6;
+  stroke: #bebebe;
+}
+
+.canvas-view[data-mode="stack"], .canvas-view[data-mode="appedit"] {
+  .port:hover, .port.connectable {
+    fill: #F2F8FF;
+    stroke-width: 2;
+    cursor  : pointer;
+  }
+}
+
+.AWS-VPC-VPC {
+  .group {
+    stroke: #dcdcdc;
+    stroke-linejoin: round;
+    stroke-dasharray: none;
+    stroke-width: 4;
+  }
+
+  &:hover .group { stroke: #C6C4C4; }
+
+  .group-label {
+    fill:#aaa;
+  }
+
+  .canvas-view &.selected .group {
+    stroke: #C6C4C4;
+    fill: rgba(255, 255, 255, 0);
+    stroke-width: 5;
+  }
+}
+
+.AWS-EC2-AvailabilityZone {
+  .group {
+    fill: rgba(252, 190, 23, 0.02);
+    stroke: #f9be76;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    .group { stroke: #F69722; }
+  }
+
+  .group-label {
+    fill: #F69722;
+  }
+}
+
+.AWS-VPC-Subnet {
+  .group {
+    stroke: #dbd7d7;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  &:hover, &.highlight {
+    .group { stroke: #C6C4C4; stroke-width : 4px; }
+  }
+
+  .group-label {
+    fill: #999;
+  }
+}
+
+.group-asg {
+  fill:none;
+}
+.asg-title {
+  stroke-width: 0;
+}
+.asg-frame {
+  fill: #16B4F9;
+  font-size: 12px;
+  cursor: default;
+  pointer-events:none;
+}
+
+.asg-dragger {
+  fill: #EEF7FC;
+  cursor: pointer;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.dbreplicate {
+  fill   : #6daefe;
+  cursor : pointer;
+  .replica-bg {
+    stroke : #b2bccc;
+    fill   : #fff;
+  }
+
+  &:hover {
+    .replica-bg { stroke:#6daefe; }
+    fill:#3887e8;
+  }
+}
+
+.replica-text, .master-text {
+  font-size:xx-small;
+  fill: #9ea7b5;
+  text-anchor: middle;
+  pointer-events:none;
+}
+
+
+.AWS-AutoScaling-Group, .ExpandedAsg {
+  .group {
+    fill:#f6faf9;
+    stroke:#16B4F9;
+    stroke-dasharray: 6, 4;
+    stroke-width: 2;
+  }
+  .canvas-view &.selected {
+    .group { stroke:#049CDD; }
+    .asg-frame { fill:#049CDD; }
+  }
+
+  .canvas-view &.droppable {
+    .group {
+      stroke-dasharray: 0,0;
+      stroke-width: 4;
+    }
+  }
+}
+.AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
+  font-size:0px;
+}
+
+#sbg_info {
+  fill: #498fe1;
+  pointer-events:none;
+}
+
+.AWS-RDS-DBSubnetGroup {
+  .group {
+    fill: rgba(224, 224, 224, 0.1);
+    stroke: #498fe1;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  .group-label {
+    fill: #498fe1;
+    white-space:pre;
+  }
+
+  &:hover {
+    .group { stroke: #498fe1; }
+  }
+
+  .canvas-view &.selected .group {
+    stroke       : #498fe1;
+    fill-opacity : 0;
+    stroke-width : 4;
+  }
+}
+
+.line {
+  cursor: pointer;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-width: 2px;
+
+  &:hover, &.hover {
+    opacity: .8;
+    stroke-width: 4px;
+  }
+
+  .canvas-view &.selected {
+    display      : block !important;
+    opacity      : 1 !important;
+    stroke-width : 4px !important;
+  }
+}
+
+.EniAttachment {
+  stroke: #12CD4F;
+}
+
+.RTB_Asso, .ElbSubnetAsso {
+  stroke: #d8d7d6;
+}
+
+.AWS-VPC-VPNConnection {
+  stroke: #bf7aa5;
+}
+
+.RTB_Route {
+  stroke: #6DAEFE;
+  .dash-line {
+    stroke: #9FC9FD;
+    stroke-dasharray: 10px 10px;
+  }
+}
+
+.ElbAmiAsso {
+  stroke: #0973f6;
+}
+
+.DbReplication {
+  stroke: #ccc;
+  stroke-width: 1px;
+  stroke-dasharray: 4px 4px;
+}
+
+.SgRuleLine {
+  stroke: #6DAEFE;
+  opacity: 0.2;
+  stroke-dasharray: 10,5;
+}
+
+.fill-line {
+  stroke: #fff;
+  stroke-opacity: 0;
+  stroke-width: 10px;
+  stroke-dasharray: none;
+}
+
+.droppable {
+  &.AWS-VPC-VPC {
+    > .group { stroke-width: 6px; }
+    @extend .AWS-VPC-VPC:hover;
+  }
+  &.AWS-EC2-AvailabilityZone {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-EC2-AvailabilityZone:hover;
+  }
+  &.AWS-VPC-Subnet {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-VPC-Subnet:hover;
+  }
+  &.AWS-AutoScaling-Group {
+    > .asg-frame {
+      stroke-width     : 4;
+      stroke-dasharray : 0;
+    }
+  }
+}
+
+.draw-line {
+  stroke-width: 5px;
+  &.subnet-assoc-in, &.subnet-assoc-out, &.rtb-src, &.elb-assoc { stroke: #d8d7d6; }
+  &.elb-sg-out { stroke: #0973f6; }
+  &.eni-attach, &.instance-attach { stroke: #12CD4F; }
+  &.vgw-vpn, &.cgw-vpn { stroke: #bf7aa5; }
+
+  &.db-sg, &.igw-tgt, &.eni-sg, &.instance-sg, &.launchconfig-sg, &.rtb-tgt, &.elb-sg-in, &.vgw-tgt, &.eni-rtb, &.instance-rtb {
+    stroke: #6DAEFE;
+    stroke-dasharray: 10,5;
+  }
+}
+marker {
+  &.subnet-assoc-in, &.subnet-assoc-out, &.rtb-src, &.elb-assoc { fill: #d8d7d6; }
+  &.elb-sg-out { fill: #0973f6; }
+  &.eni-attach, &.instance-attach { fill: #12CD4F; }
+  &.vgw-vpn, &.cgw-vpn { fill: #bf7aa5; }
+  &.db-sg, &.igw-tgt, &.eni-sg, &.instance-sg, &.launchconfig-sg, &.rtb-tgt, &.elb-sg-in, &.vgw-tgt, &.eni-rtb, &.instance-rtb { fill: #6DAEFE; }
+}
+
+.mask-line {
+  -webkit-transition: stroke-dashoffset .3s ease-in-out;
+     -moz-transition: stroke-dashoffset .3s ease-in-out;
+       -o-transition: stroke-dashoffset .3s ease-in-out;
+          transition: stroke-dashoffset .3s ease-in-out;
+
+  stroke-dashoffset: 0 !important;
+  stroke-width:8;
+  stroke:#fff;
+  fill:none;
+}
+
+g.shadow { opacity : 0.8; }
+
+
+// Popup
+.canvas-pp {
+  position      : absolute;
+  background    : #fff;
+  box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
+  color         : #999;
+  font-size     : 12px;
+  border-radius : 4px;
+  z-index       : 60;
+
+  &.pp-right, &.pp-left {
+    margin-left : 10px;
+    border      : 1px solid #d4d4d4;
+
+    &:before, &:after {
+      content    : " ";
+      position   : absolute;
+      top        : 50%;
+      left       : -20px;
+      width      : 0;
+      height     : 0;
+      margin-top : -10px;
+
+      border : transparent 10px solid;
+      border-right-color : #fff;
+    }
+    &:before {
+      border-right-color : #ccc;
+      left : -21px;
+    }
+  }
+
+  &.pp-left {
+    margin-left : -10px;
+    &:before, &:after {
+      left     : auto;
+      right    : -20px;
+      border-left-color : #fff;
+    }
+    &:before {
+      border-right-color : transparent;
+      border-left-color : #ccc;
+      left  : auto;
+      right : -21px;
+    }
+  }
+
+  .popup-content {
+    min-width  : 306px;
+    max-height : 180px;
+    overflow-x : hidden;
+    overflow-y : scroll;
+  }
+
+  .volume-pph {
+    padding       : 7px 10px;
+    font-size     : 14px;
+    border-bottom : 1px solid #EBEBEB;
+    color         : #666;
+
+    > span {
+      font-size: 12px;
+      color: #999;
+    }
+  }
+
+  .volume-pp-empty {
+    padding    : 30px;
+    text-align : center;
+    width      : 240px;
+  }
+}
+
+.vpp-volume, .vpp-snapshot {
+  cursor        : pointer;
+  float         : left;
+  width         : 60px;
+  height        : 60px;
+  margin-top    : 10px;
+  margin-right  : 10px;
+  border        : #fff 2px solid;
+  border-radius : 4px;
+
+  font-size  : 9px;
+  color      : #333;
+  text-align : center;
+
+  background : image-url('ide/icon/cvs-vol.png') center no-repeat;
+
+  &:nth-child(4n+1) { clear : left; margin-left : 10px; }
+
+  &.selected, &:hover { background-color : #F3F9FF; }
+  &.selected { border-color : #659FFF; }
+
+  &:last-child { margin-bottom : 10px; }
+
+  .vpp-name { line-height: 20px; }
+  .vpp-name, .vpp-size {
+    margin-top : 10px;
+  }
+}
+
+.vpp-snapshot {
+  background-image: image-url('ide/icon/cvs-snapshot.png');
+}
+
+#DndItem.vpp-volume, #DndItem.vpp-snapshot {
+  color  : #333;
+  width  : 60px;
+  height : 60px;
+  border : none;
+}
+
+// Popup - Instance
+.instance-pph {
+  background    : #83CBF9;
+  color         : #fff;
+  padding       : 5px 10px 7px;
+  font-size     : 14px;
+}
+.instance-pph-close {
+  float       : right;
+  color       : #fff;
+  font-size   : 18px;
+  height      : 1em;
+  line-height : 1em;
+  cursor      : pointer;
+}
+.popup-instance {
+  border-top    : none;
+  border-radius : 0 0 4px 4px;
+  min-width     : 402px;
+}
+.vpp-instance {
+  cursor        : pointer;
+  float         : left;
+  width         : 88px;
+  height        : 88px;
+  margin-top    : 5px;
+  margin-right  : 5px;
+  border        : #fff 2px solid;
+  border-radius : 4px;
+  position      : relative;
+
+  background: image-url('ide/icon/cvs-instance.png') 14px 10px no-repeat;
+
+  color      : #333;
+  text-align : center;
+
+
+  &:nth-child(4n+1) { clear : left; margin-left : 10px; }
+
+  &.selected, &:hover { background-color : #F3F9FF; }
+  &.selected { border-color : #659FFF; }
+
+  &:last-child { margin-bottom : 10px; }
+
+  .vpp-ins-state {
+    position      : absolute;
+    left          : 62px;
+    top           : 13px;
+    width         : 8px;
+    height        : 8px;
+    border-radius : 4px;
+  }
+  > img { margin-top : 14px; margin-left : 2px; }
+  .vpp-ins-vol {
+    margin     : 5px auto 1px;
+    width      : 26px;
+    color      : #74B1FD;
+    height     : image-height('ide/icon/icn-vol.png');
+    background : image-url('ide/icon/icn-vol.png') center no-repeat;
+  }
+}
+.instance-pp-empty {
+  text-align  : center;
+  line-height : 105px;
+}
+
+.canvas-pp.instance {
+  margin-left : -13px;
+  margin-top  : -37px;
+  border      : 2px solid #83CBF9;
+  min-width   : 398px;
+}
+
+.vpp-eni {
+  position    : relative;
+  line-height : 148px;
+  background  : image-url('ide/icon/cvs-eni-att.png') 15px 14px no-repeat;
+}
+
+.vpp-eip {
+  position   : absolute;
+  width      : image-width("ide/icon/icn-eipon.png");
+  height     : image-height("ide/icon/icn-eipon.png");
+  background : image-url("ide/icon/icn-eipon.png");
+  left       : 43px;
+  top        : 36px;
+}
+
+// Instance State Dot
+.instance-state {
+  opacity : 0.8;
+
+  &.unknown { fill: gray; }
+  &.running { fill: green; }
+  &.pending { fill: yellow; }
+  &.shuttingdown { fill: yellow; }
+  &.stopping { fill: yellow; }
+  &.stopped { fill: red; }
+  &.terminated { fill: red; }
+}
+

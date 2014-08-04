@@ -6,7 +6,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
     type : "EniAttachment"
 
     defaults :
-      lineType : "attachment"
       index : 1
 
     initialize : ( attributes )->
@@ -85,6 +84,8 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
       p1p = p1Comp.parent()
       p2p = p2Comp.parent()
 
+      if not p1p or not p2p then return false
+
       if p1p.type is constant.RESTYPE.SUBNET
         p1p = p1p.parent()
         p2p = p2p.parent()
@@ -113,11 +114,13 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
 
       if instance.getEmbedEni().get("assoPublicIp") is true
         return {
-          confirm : MC.template.modalAttachingEni({
+          confirm  : true
+          title    : "Attach Network Interface to Instance"
+          action   : "Attach and Remove Public IP"
+          template : MC.template.modalAttachingEni({
             host : instance.get("name")
             eni  : eni.get("name")
           })
-          action  : "Attach and Remove Public IP"
         }
 
       true

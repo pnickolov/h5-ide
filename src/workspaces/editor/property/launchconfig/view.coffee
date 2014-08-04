@@ -126,7 +126,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "LaunchConfiguration" )
+            if PropertyView.checkResName( @model.get('uid'), target, "LaunchConfiguration" )
                 @model.setName name
                 @setTitle name
             null

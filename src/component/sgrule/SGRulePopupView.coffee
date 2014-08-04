@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ './template', 'i18n!/nls/lang.js', "Design" ], ( template, lang, Design ) ->
+define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lang, Design, ide_event ) ->
 
     SGRulePopupView = Backbone.View.extend {
 
@@ -131,14 +131,12 @@ define [ './template', 'i18n!/nls/lang.js', "Design" ], ( template, lang, Design
               $modal.animate({left:'+=100px'}, 300)
 
         onModalClose : ()->
-          lineId = @model.get("lineId")
-          component = Design.instance().component( lineId )
-          if component
-            $canvas( lineId ).select()
-          else
-            $canvas.clearSelected()
-
           modal.close()
+
+          lineId = @model.get("lineId")
+          comp = Design.instance().component( lineId )
+          if comp
+            ide_event.trigger ide_event.OPEN_PROPERTY, comp.type, lineId
 
           return false
 

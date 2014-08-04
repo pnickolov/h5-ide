@@ -467,6 +467,10 @@ module.exports =
       en: "Resources"
       zh: "资源"
 
+    RES_TIP_SHARED_RESOURCES:
+      en: "Manage other resources"
+      zh: "资源"
+
     RES_TIT_RESOURCES_MENU_KEYPAIR:
       en: "Manage Key Pairs..."
       zh: ""
@@ -488,20 +492,44 @@ module.exports =
       zh: ""
 
     RES_TIT_AZ:
-      en: "Availability Zones"
-      zh: "可用区域"
+      en: "AZ & Subnet"
+      zh: ""
 
     RES_TIT_AMI:
       en: "Images"
       zh: "虚拟机映像"
 
     RES_TIT_VOL:
-      en: "Volume and Snapshots"
+      en: "Volume & Snapshot"
       zh: "虚拟磁盘和快照"
 
     RES_TIT_SNAPSHOT_MANAGE:
       en: "Manage EBS Snapshot"
       zh: "管理 EBS 快照"
+
+    RES_TIT_RDS:
+      en: "RDS & Snapshot"
+      zh: ""
+
+    RES_TIT_RDS_EMPTY:
+      en: "No RDS Snapshot in"
+      zh: ""
+
+    RES_LBL_NEW_RDS_INSTANCE:
+      en: "New DB Instance"
+      zh: ""
+
+    RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT:
+      en: "New DB from Snapshot"
+      zh: ""
+
+    RES_TIT_RDS_SNAPSHOT_MANAGE:
+      en: "Manage RDS Snapshot"
+      zh: "管理 RDS 快照"
+
+    RES_TIT_RDS_SNAPSHOT_EMPTY:
+      en: "No RDS Snapshot in"
+      zh: ""
 
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
@@ -520,8 +548,8 @@ module.exports =
       zh: ""
 
     RES_TIT_VPC:
-      en: "Virtual Private Cloud"
-      zh: "虚拟私有云"
+      en: "Network"
+      zh: ""
 
     RES_LBL_QUICK_START_AMI:
       en: "Quick Start Images"
@@ -539,6 +567,14 @@ module.exports =
       en: "New Volume"
       zh: "新的卷"
 
+    RES_LBL_NEW_BLANK_VOL:
+      en: "New Blank Volume"
+      zh: ""
+
+    RES_LBL_NEW_VOL_FROM_SNAPSHOT:
+      en: "New Volume from Snapshot"
+      zh: ""
+
     RES_LBL_NEW_ELB:
       en: "Load Balancer"
       zh: "负载均衡器"
@@ -554,6 +590,10 @@ module.exports =
     RES_LBL_NEW_SUBNET:
       en: "Subnet"
       zh: "子网"
+
+    RES_LBL_NEW_SUBNET_GROUP:
+      en: "Subnet Group"
+      zh: ""
 
     RES_LBL_NEW_RTB:
       en: "Route Table"
@@ -603,6 +643,10 @@ module.exports =
       en: "Drag to an availability zone to create a new subnet."
       zh: "拖放到一个可用区域来创建一个新子网。"
 
+    RES_TIP_DRAG_NEW_SUBNET_GROUP:
+      en: "Drag to an availability zone to create a new subnet group."
+      zh: ""
+
     RES_TIP_DRAG_NEW_RTB:
       en: "Drag to a VPC to create a new route table."
       zh: "拖放到一个VPC来创建一个路由表。"
@@ -651,6 +695,14 @@ module.exports =
       en: "Failed to remove AMI from Favorite"
       zh: "映像从收藏列表移除失败"
 
+    RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
+      en: "Cannot delete subnet because the subnet is used by a subnet group."
+      zh: ""
+
+    RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:
+      en: "Cannot delete availability zone because some subnet in it is used by a subnet group."
+      zh: ""
+
     CVS_MSG_WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
       zh: "卷和快照必须拖放到实例或映像。"
@@ -670,6 +722,14 @@ module.exports =
     CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET:
       en: "Instances must be dragged to a subnet or auto scaling group."
       zh: "实例必须拖放到子网或Auto Scaling组。"
+
+    CVS_MSG_WARN_NOTMATCH_SGP_VPC:
+      en: "Subnet Group must be dragged to a vpc."
+      zh: ""
+
+    CVS_MSG_WARN_NOTMATCH_DBINSTANCE_SGP:
+      en: "DB Instance must be dragged to a subnet group."
+      zh: ""
 
     CVS_MSG_WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
@@ -691,9 +751,21 @@ module.exports =
       en: "Customer gateways must be dragged outside the VPC."
       zh: "客户网关必须拖放到VPC以外。"
 
+    CVS_MSG_WARN_NOTMATCH_IGW:
+      en: "Internet gateways must be dragged inside a VPC."
+      zh: "互联网网关必须拖放到VPC里。"
+
+    CVS_MSG_WARN_NOTMATCH_VGW:
+      en: "Virtual private gateways must be dragged inside a VPC."
+      zh: "虚拟私有网关必须拖放到VPC里。"
+
     CVS_MSG_WARN_COMPONENT_OVERLAP:
       en: "Nodes cannot overlap each other."
       zh: "节点不能互相重叠。"
+
+    CVS_MSG_WARN_NO_ENOUGH_SPACE:
+      en: "No enough space."
+      zh: "没有多余的空间。"
 
     CVS_WARN_EXCEED_ENI_LIMIT:
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
@@ -770,6 +842,10 @@ module.exports =
     CVS_CFM_ADD_IGW_MSG:
       en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
+
+    CVS_CFM_DEL_DBINSTANCE:
+      en: "Deleting %s will also remove all read replica related it. Are you sure you want to delete it?"
+      zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -989,13 +1065,9 @@ module.exports =
       en: "Confirm to Start App"
       zh: "确认恢复"
 
-    TOOL_POP_BODY_START_APP_LEFT:
-      en: "Do you confirm to start app"
-      zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用"
-
-    TOOL_POP_BODY_START_APP_RIGHT:
-      en: "?"
-      zh: " 吗"
+    TOOL_POP_BODY_START_APP:
+      en: "Do you confirm that you would like to start the app?"
+      zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用吗?"
 
     TOOL_POP_BTN_START_APP:
       en: "Start"
@@ -1200,6 +1272,10 @@ module.exports =
 
     TOOL_APPLY_EDIT:
       en: "Apply"
+      zh: ""
+
+    TOOL_START_APP:
+      en: "Start App"
       zh: ""
 
     PROP_LBL_REQUIRED:
@@ -1761,6 +1837,14 @@ module.exports =
 
     PROP_VPC_MANAGE_DHCP:
       en: "Manage DHCP Options Set"
+      zh: ""
+
+    PROP_VPC_MANAGE_RDS_PG:
+      en: "Manage Parameter Group"
+      zh: ""
+
+    PROP_VPC_FILTER_RDS_PG:
+      en: "Filter by Parameter Group Name"
       zh: ""
 
     PROP_VPC_FILTER_DHCP:
@@ -3229,6 +3313,14 @@ module.exports =
       en: "Volume"
       zh: ""
 
+    PROP_SNAPSHOT_SET_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    PROP_INSTANCE_SNAPSHOT_SELECT:
+      en: "Select Instance from which to create snapshot"
+      zh: ""
+
     PROP_SNAPSHOT_SET_DESC:
       en: "Description"
       zh: ""
@@ -3239,6 +3331,154 @@ module.exports =
 
     PROP_SNAPSHOT_SET_DESC_TIP:
       en: "Fill in the Description"
+      zh: ""
+
+    PROP_DBPG_RESMANAGER_FILTER:
+      en: "Filter DB Engine by family name"
+      zh: ""
+
+    PROP_DBPG_SET_FAMILY:
+      en: "Family"
+      zh: ""
+
+    PROP_DBPG_SET_NAME:
+      en: "Parameter Group Name"
+      zh: ""
+
+    PROP_DBPG_SET_DESC:
+      en: "Description"
+      zh: ""
+
+    PROP_DBINSTANCE_TIT_DETAIL:
+      en: "DB Instance Detail"
+      zh: ""
+
+    PROP_DBINSTANCE_APP_DBINSTANCE_ID:
+      en: "DB Instance Identifier"
+      zh: ""
+
+    PROP_DBINSTANCE_ENDPOINT:
+      en: "Endpoint"
+      zh: ""
+
+    PROP_DBINSTANCE_STATUS:
+      en: "Status"
+      zh: ""
+
+    PROP_DBINSTANCE_ENGINE:
+      en: "Engine"
+      zh: ""
+
+    PROP_DBINSTANCE_AUTO_UPGRADE:
+      en: "Auto Minor Version Upgrade"
+      zh: ""
+
+    PROP_DBINSTANCE_CLASS:
+      en: "DB Instance Class"
+      zh: ""
+
+    PROP_DBINSTANCE_IOPS:
+      en: "IOPS"
+      zh: ""
+
+    PROP_DBINSTANCE_STORAGE:
+      en: 'Storage'
+      zh: ""
+
+    PROP_DBINSTANCE_USERNAME:
+      en: "Username"
+      zh: ""
+
+    PROP_DBINSTANCE_READ_REPLICAS:
+      en: "Read Replicas"
+      zh: ""
+
+    PROP_DBINSTANCE_REPLICAS_SOURCE:
+      en: "Read Replicas Source"
+      zh: ""
+
+    PROP_DBINSTANCE_DBCONFIG:
+      en: "Database Config"
+      zh: ""
+
+    PROP_DBINSTANCE_NAME:
+      en: "Database Name"
+      zh: ""
+
+    PROP_DBINSTANCE_PORT:
+      en: "Database Port"
+      zh: ""
+
+    PROP_DBINSTANCE_OG:
+      en: "Option Group"
+      zh: ""
+
+    PROP_DBINSTANCE_PG:
+      en: "Parameter Group"
+      zh: ""
+
+    PROP_DBINSTANCE_NETWORK_AVAILABILITY:
+      en: "Network & Availability"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNETGROUP:
+      en: "Subnet Group"
+      zh: ""
+
+    PROP_DBINSTANCE_PREFERRED_ZONE:
+      en: "Preferred Availability Zone"
+      zh: ""
+
+    PROP_DBINSTANCE_SECONDARY_ZONE:
+      en: "Secondary Availability Zone"
+      zh: ""
+
+    PROP_DBINSTANCE_PUBLIC_ACCESS:
+      en: "Publicly Accessible"
+      zh: ""
+
+    PROP_DBINSTANCE_LICENSE_MODEL:
+      en: "License Model"
+      zh: ""
+
+    PROP_DBINSTANCE_BACKUP_MAINTENANCE:
+      en: "Backup & Maintenance"
+      zh: ""
+
+    PROP_DBINSTANCE_AUTOBACKUP:
+      en: "Automated Backups"
+      zh: ""
+
+    PROP_DBINSTANCE_LAST_RESTORE:
+      en: "Lastest Restore Time"
+      zh: ""
+
+    PROP_DBINSTANCE_BACKUP_WINDOW:
+      en: "Backup Window"
+      zh: ""
+
+    PROP_DBINSTANCE_MAINTENANCE_WINDOW:
+      en: "Maintenance Window"
+      zh: ""
+
+    PROP_DBINSTANCE_SECURITY_GROUP:
+      en: "Security Group"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_NAME:
+      en: "DB Subnet Group Name"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_DESC:
+      en: "DB Subnet Group Description"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_STATUS:
+      en: "Status"
+      zh: ""
+
+    PROP_DBINSTANCE_SUBNET_GROUP_MEMBERS:
+      en: "Members"
       zh: ""
 
     PROC_STEP_REQUEST:
@@ -3774,6 +4014,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Running Instance"
       zh: "运行的实例"
 
+    DASH_LBL_RDS:
+      en: "DB Instance"
+      zh: ""
+
     DASH_LBL_ELASTIC_IP:
       en: "Elastic IP"
       zh: "弹性IP"
@@ -4070,6 +4314,22 @@ VisualOps API. You cannot UNDO this action.'
       en: "Topic ARN"
       zh: "主题 ARN"
 
+    DASH_LBL_DBINSTANCE_NAME:
+      en: "Name"
+      zh: ""
+
+    DASH_LBL_CLASS:
+      en: "Class"
+      zh: ""
+
+    DASH_LBL_FAMILY:
+      en: "Family"
+      zh: ""
+
+    DASH_LBL_STORAGE:
+      en: "Storage"
+      zh: ""
+
     DASH_BUB_NAME:
       en: "Name"
       zh: "名称"
@@ -4335,6 +4595,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Update App"
       zh: "更新 App"
 
+    CANT_UPDATE_APP:
+      en: "Cannot Update App Now"
+      zh: ""
+
     UPDATE_APP_CONFIRM_BTN:
       en: "Update App"
       zh: ""
@@ -4435,7 +4699,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
-      en: " Terminating it will make your service unavailable."
+      en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
       zh: ""
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
@@ -4759,6 +5023,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Scroll the canvas"
       zh: ""
 
+    KEY_NUDGE_ITEM_ACTION:
+      en: "Nudge the selected item"
+      zh: ""
+
     # State Panel Operation - General
 
     KEY_TIT_STATE_GEN:
@@ -4968,6 +5236,27 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     ##### State Editor
+
+    ##### RDS
+    RDS_VALUE_IS_NOT_ALLOWED:
+      en: "The value %s is not an allowed value."
+      zh: ""
+
+    RDS_EDIT_OPTION_GROUP:
+      en: "Edit Option Group"
+      zh: ""
+
+    RDS_SOME_ERROR_OCCURED:
+      en: "Some error occured"
+      zh: ""
+
+    RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY:
+      en: "Edits with port change requires changes to be applied immediately."
+      zh: ""
+
+
+
+    ##### RDS
 
     ##### Trust Advisor
 
@@ -5222,6 +5511,54 @@ VisualOps API. You cannot UNDO this action.'
       en: "vpc can not use default(none) dhcpoptions when use visualops"
       zh: ""
 
+    TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
+      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
+      en: "The CIDR blocks in each of your subnets must be large enough to accommodate spare IP addresses for Amazon RDS to use during maintenance activities, including failover and compute scaling. (For each DB instance that you run in a VPC, you should reserve at least one address in each subnet in the DB subnet group for use by Amazon RDS for recovery actions.)"
+      zh: ""
+
+    TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT:
+      en: "To launch DB instance, instance tenancy attribute of the VPC must be set to default. "
+      zh: ""
+
+    TA_MSG_ERROR_RDS_SNAPSHOT_NOT_LARGE_ENOUGH:
+      en: "Snapshot storage need large than original value."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT:
+      en: "DB Instance <span class='validation-tag'>%s</span> is assigned to a Preferred AZ <span class='validation-tag'>%s</span> inconsistent with its subnet group."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW:
+      en: "To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS:
+      en: "To allow DB instance to be publicly accessible, VPC must enable DNS hostnames and DNS resolution."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_OG_COMPATIBILITY:
+      en: "App Update: Option Group compatibility."
+      zh: ""
+
+    TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE:
+      en: "Unused Option Group %s will not be created in live app."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
+      en: "DB Instance %s is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      zh: ""
+
+    TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
+      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
+      zh: ""
+
+    TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
+      en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""
@@ -5237,6 +5574,7 @@ VisualOps API. You cannot UNDO this action.'
     RELOAD_STATE_NOT_READY:
       en: "App Agent is not ready yet, Please try again later."
       zh: ""
+
     ##### Trust Advisor
 
     TIP_KEYPAIR_USED_DEFAULT_KP:

@@ -60,7 +60,7 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "Route Table" )
+            if PropertyView.checkResName( @model.get('uid'), target, "Route Table" )
                 @model.setName name
                 @setTitle name
 
@@ -147,7 +147,6 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
                 $('.modal-close').click () -> inputElem.focus()
 
                 $('#cidr-remove').click () ->
-                    $canvas.clearSelected()
                     Design.instance().component( dataRef ).remove()
                     that.disabledAllOperabilityArea(false)
                     modal.close()

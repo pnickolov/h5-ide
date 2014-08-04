@@ -12,18 +12,11 @@ define [ "constant",
     newNameTmpl : "subnet"
 
     defaults :
-      x      : 2
-      y      : 2
-      width  : 17
-      height : 17
       cidr   : ""
 
     initialize : ( attributes, option )->
       if not @attributes.cidr
         @attributes.cidr = @generateCidr()
-
-      # Draw the node
-      @draw(true)
 
       # Connect to the MainRT automatically
       RtbModel = Design.modelClassForType( constant.RESTYPE.RT )
@@ -43,7 +36,6 @@ define [ "constant",
       # the time we serialize()
       validCIDR = MC.getValidCIDR(cidr)
       @set("cidr", validCIDR)
-      @draw()
       null
 
     setAcl : ( uid )->
@@ -69,6 +61,9 @@ define [ "constant",
     isRemovable : ()->
 
       az = @parent()
+
+      if @connections("SubnetgAsso").length > 0
+        return { error : lang.ide.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG }
 
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")
@@ -123,7 +118,7 @@ define [ "constant",
         }
 
       # 3. It must have enough space for its Eni's Ip.
-      if not @isCidrEnoughForIps( cidr )
+      if @getAvailableIPCountInSubnet( cidr ) <= 0
         return {
           error  : "#{cidr} has not enough IP for the ENIs in this subnet."
         }
@@ -140,7 +135,7 @@ define [ "constant",
 
       return false
 
-    isCidrEnoughForIps : ( cidr )->
+    getAvailableIPCountInSubnet : ( cidr )->
       cidr = cidr or @get("cidr")
 
       ipCount = 0
@@ -152,10 +147,10 @@ define [ "constant",
         else
           continue
 
-        ipCount += eni.get("ips").length
+        ipCount += eni.get("ips").length * eni.serverGroupCount()
 
       maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
-      maxIpCount >= ipCount
+      maxIpCount - ipCount
 
     generateCidr : () ->
       currentVPCCIDR = @parent().parent().get("cidr")

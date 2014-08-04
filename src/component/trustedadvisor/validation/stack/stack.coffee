@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', "CloudResources", '../result_vo' ], ( constant, $, MC, lang, ApiRequest, stackService, amiService, CloudResources ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_service', 'ami_service', "CloudResources" ], ( constant, $, MC, lang, ApiRequest, stackService, amiService, CloudResources ) ->
 
 	getAZAryForDefaultVPC = (elbUID) ->
 
@@ -122,8 +122,6 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 		try
 			if !callback
 				callback = () ->
-
-			currentState = MC.canvas.getState()
 
 			# get current all using ami
 			amiAry = []

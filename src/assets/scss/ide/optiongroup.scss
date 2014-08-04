@@ -1,0 +1,256 @@
+#modal-option-group {
+    .header .icon-info {
+        float: right;
+        margin-top: 4px;
+        color: #148BE6;
+    }
+    .invisible {
+        visibility: hidden;
+    }
+    .header {
+        padding: 20px 30px;
+        background-color: #333;
+    }
+    .container {
+        padding: 20px 30px;
+    }
+    .input-item {
+        margin-top: 10px;
+        .input {
+            width: 300px;
+        }
+        .left {
+            width: 105px;
+            margin-top: 6px;
+        }
+    }
+    .switcher {
+        float: right;
+        margin: 5px;
+        width: 70px;
+        height: 27px;
+        border: 1px solid #ccc;
+        background: #dadada;
+        font-size: 12px;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 3px;
+        cursor: pointer;
+        -webkit-transition: 0.15s ease-out;
+        -moz-transition: 0.15s ease-out;
+        -o-transition: 0.15s ease-out;
+        transition: 0.15s ease-out;
+        -webkit-transition-property: opacity background;
+        -moz-transition-property: opacity background;
+        -o-transition-property: opacity background;
+        transition-property: opacity background;
+        .switch-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .switch-label {
+            position: relative;
+            display: block;
+            height: 100%;
+        }
+        .switch-label:before, .switch-label:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -.5em;
+            line-height: 1;
+        }
+        .switch-label:before {
+            content     : attr(data-off);
+            right       : 6px;
+            color       : #aaa;
+            font-variant: small-caps;
+        }
+        .switch-label:after {
+            content     : attr(data-on);
+            left        : 6px;
+            color       : white;
+            opacity     : 0;
+            font-variant: small-caps;
+        }
+        .switch-handle {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 33px;
+            height: 21px;
+            background: white;
+            border-radius: 3px;
+            -webkit-transition: left 0.15s ease-out;
+            -moz-transition: left 0.15s ease-out;
+            -o-transition: left 0.15s ease-out;
+            transition: left 0.15s ease-out;
+        }
+    }
+    .switcher.disabled {
+        opacity: 0.2;
+    }
+    .remove-btn {
+        cursor: pointer;
+    }
+    .switcher.on {
+        border-color: #0E8F38;
+        background: #4fb845;
+        .switch-label:before { opacity: 0; }
+        .switch-label:after  { opacity: 1; }
+        .switch-handle {
+            left: 34px;
+        }
+    }
+    .option-list-head {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .og-apply-immediately {
+        margin-top: 10px;
+    }
+    .option-list {
+        margin-top: 30px;
+        .option-item {
+            display: inline-block;
+            width: 100%;
+            min-height: 39px;
+
+            .name, .persistent, .permenant {
+                float: left;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            .persistent, .permenant {
+                border: 1px #FF9100 solid;
+                color: #FF9100;
+                padding: 2px 4px;
+                border-radius: 3px;
+                font-size: 12px;
+            }
+            .permenant {
+                border: 1px #008CFF solid;
+                color: #008CFF;
+            }
+            .option-edit-btn {
+                float: right;
+                margin-right: 10px;
+                cursor: pointer;
+                margin-left: 10px;
+                margin-top: 12px;
+                color: #aaa;
+                &:hover {
+                    color: #bbb;
+                }
+            }
+        }
+        .option-item:nth-child(odd) {
+            background-color: #333;
+        }
+        .option-item:nth-child(even) {
+            background-color: #222;
+        }
+    }
+    .modal-footer {
+        background-color: #222;
+    }
+    .remove-btn {
+        // color: #f00;
+        // margin-top: 10px;
+        margin-left: 20px;
+        // margin-right: 10px;
+        float: left;
+    }
+    .err-tip {
+        margin-left: 20px;
+        float: left;
+        color: #f00;
+        margin-top: 10px;
+    }
+    .save-btn {
+        margin-right: 10px;
+    }
+    .slide-delete {
+        margin-top: 20px;
+    }
+    .slidebox {
+        .content { margin-top: 8px; }
+
+        .port-sg {
+            margin-bottom: 20px;
+            input {
+                width: 177px;
+            }
+            & > div {
+                padding-bottom: 8px;
+            }
+            #error-sg-required {
+                display: none;
+            }
+        }
+
+        table {
+            input {
+                padding: 1px 6px;
+                max-width: 140px;
+            }
+        }
+
+        .error { position: relative; display:block; }
+    }
+
+
+    &.modal-option-group-app {
+        .summary {
+            dl {
+                float: left;
+                width: 350px;
+                margin: 8px 35px;
+            }
+            dt {
+                font-weight: bold;
+            }
+            dd {
+                margin-left: 0;
+            }
+        }
+        .option-list-head {
+            margin-left: 30px;
+        }
+        .option-list {
+            margin: 30px 30px 0;
+
+            .og-title { height: 39px; }
+
+            .toggle-og-detail {
+                float: right;
+                margin: 9px 30px 0 0;
+                cursor: pointer;
+                color: #148BE6;
+                &:hover { color: #34A3F8; }
+            }
+
+            .og-details {
+                display: none;
+                div {
+                    margin: 5px 10px 15px;
+                }
+            }
+
+            .show-details .og-details {
+                display: block;
+            }
+
+            .option-item {
+                max-height: 300px;
+                overflow: auto;
+            }
+        }
+
+    }
+
+
+}
+
+

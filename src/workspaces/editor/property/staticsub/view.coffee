@@ -6,14 +6,17 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
   StaticSubView = PropertyView.extend {
     events :
-      "click #changeAmi"         : "showChangeAmiPanel"
-      "click #confirmChangeAmi"  : "changeAmi"
-      "click #cancelChangeAmi"   : "hideChangeAmiPanel"
-      "drop  #changeAmiDropZone" : "onDropAmi"
+      "click #changeAmi"        : "showChangeAmiPanel"
+      "click #confirmChangeAmi" : "changeAmi"
+      "click #cancelChangeAmi"  : "hideChangeAmiPanel"
 
     render : () ->
         @$el.html template @model.attributes
         @model.attributes.name
+
+        self = @
+        $("#changeAmiDropZone").on "addItem_drop", ( evt, data )-> self.onDropAmi( data )
+        return
 
     showChangeAmiPanel : ()->
       $("#changeAmiPanel").show().siblings(".property-ami-info").hide()
@@ -25,7 +28,10 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
       $("#changeAmiPanel").hide().siblings(".property-ami-info").show()
       null
 
-    onDropAmi : ( event, amiId )->
+    onDropAmi : ( data )->
+      amiId = data.dataTransfer.imageId
+      if not amiId then return
+
       $("#changeAmiPanel").data("amiId", amiId)
       $("#confirmChangeAmiWrap").show()
 

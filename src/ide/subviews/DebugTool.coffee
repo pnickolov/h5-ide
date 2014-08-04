@@ -112,7 +112,7 @@ define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2
           params[k] = v
 
       $("#ApiDebugSend").attr("disabled", "disabled")
-      $("#ApiResult").text("Loading...")
+      $("#ApiResult").text("Loading...").attr("finish","false")
 
       ApiRequest( api, params ).then ( result )->
         if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5 and (typeof result[1] is "string")
@@ -123,9 +123,11 @@ define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2
 
         $("#ApiResult").text JSON.stringify( result, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
+        $("#ApiResult").attr("finish","true")
       , ( error )->
         $("#ApiResult").text JSON.stringify( error, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
+        $("#ApiResult").attr("finish","true")
       null
 
 

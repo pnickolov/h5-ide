@@ -46,7 +46,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
       # Hide sglist between lc and expandedasg
       expandAsg = @getTarget "ExpandedAsg"
       lc        = @getTarget TYPE.LC
-      if expandAsg and lc and expandAsg.get("originalAsg").get("lc") is lc
+      if expandAsg and lc and expandAsg.get("originalAsg").getLc() is lc
         return false
 
       # Rules for checking sgline of elb.
@@ -125,9 +125,7 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
     type : "SgRuleLine"
 
     defaults :
-      lineType : "sg"
-      dashLine : true
-      name     : "Security Group Rule"
+      name : "Security Group Rule"
 
     portDefs : [
 
@@ -171,6 +169,14 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
         port2 :
           name : "elb-sg-in"
           type : constant.RESTYPE.ELB
+      }
+      {
+        port1 :
+          name : "instance-sg"
+          type : constant.RESTYPE.INSTANCE
+        port2 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
       }
 
       # Eni
@@ -249,6 +255,48 @@ define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule
         port2 :
           name : "elb-sg-in"
           type : constant.RESTYPE.ELB
+      }
+
+      # DBInstance
+      {
+        port1 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+      }
+      {
+        port1 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "eni-sg"
+          type : constant.RESTYPE.ENI
+      }
+      {
+        port1 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "launchconfig-sg"
+          type : constant.RESTYPE.LC
+      }
+      {
+        port1 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "launchconfig-sg"
+          type : "ExpandedAsg"
+      }
+      {
+        port1 :
+          name : "db-sg"
+          type : constant.RESTYPE.DBINSTANCE
+        port2 :
+          name : "instance-sg"
+          type : constant.RESTYPE.INSTANCE
       }
     ]
   }, {

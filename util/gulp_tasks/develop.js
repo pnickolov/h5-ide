@@ -169,7 +169,7 @@
           gitDebounceTimer = null;
           return compileDev();
         };
-        gulpWatch = globwatcher(["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*"], function(event) {
+        gulpWatch = globwatcher(["./.git/index"], function(event) {
           if (gitDebounceTimer === null) {
             gitDebounceTimer = setTimeout(compileAfterGitAction, GLOBAL.gulpConfig.gitPollingDebounce || 1000);
           }

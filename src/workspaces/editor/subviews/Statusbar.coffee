@@ -27,6 +27,8 @@ define [
       update: ( $, workspace ) ->
         save_time = jQuery.now() / 1000
 
+        if @timer then clearInterval @timer
+
         @timer = setInterval ()->
           $item    = $('.stack-save-time')
           new_interval_time = MC.intervalDate save_time
@@ -65,7 +67,7 @@ define [
         setTimeout () ->
             MC.ta.validAll()
             btnDom.text(currentText)
-            require [ 'component/trustedadvisor/main' ],
+            require [ 'component/trustedadvisor/gui/main' ],
               ( trustedadvisor_main ) -> trustedadvisor_main.loadModule 'statusbar', null
         , 50
 
@@ -180,16 +182,15 @@ define [
   Backbone.View.extend
 
     initialize : (options)->
-      workspace = @workspace = options.workspace
+      _.extend this, options
+
+      workspace = @workspace
       @itemViews = []
-      null
+
+      @setElement @parent.$el.find(".OEPanelBottom").html template.frame()
+      @renderItem()
 
     ready: false
-
-    render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelBottom").html template.frame()
-      @renderItem()
-      @
 
     bindItem: ->
       for item, index in jQuery.extend( true, [], items ).reverse()

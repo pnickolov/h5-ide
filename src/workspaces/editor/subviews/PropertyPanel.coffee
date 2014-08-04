@@ -32,6 +32,9 @@ define [
   '../property/launchconfig/main'
   '../property/asg/main'
 
+  '../property/dbinstance/main'
+  '../property/subnetgroup/main'
+
 ], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
@@ -58,7 +61,6 @@ define [
   Backbone.View.extend {
 
     events :
-      "click .HideOEPanelRight"  : "toggleRightPanel"
       "click .HideSecondPanel"   : "hideSecondPanel"
       "click .option-group-head" : "updateRightPanelOption"
 
@@ -75,8 +77,12 @@ define [
       "click #btn-switch-property" : "switchToProperty"
       "click #btn-switch-state"    : "showStateEditor"
 
+    initialize : ( options )->
+      _.extend this, options
+      @render()
+
     render : ()->
-      @setElement @workspace.view.$el.find(".OEPanelRight").html( RightPanelTpl() )
+      @setElement @parent.$el.find(".OEPanelRight").html( RightPanelTpl() )
       @$el.toggleClass("hidden", @__rightPanelHidden || false)
 
       if @__backup
@@ -101,7 +107,7 @@ define [
 
     toggleRightPanel : ()->
       @__rightPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
-      false
+      null
 
     showSecondPanel : ( type, id ) ->
       @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())
@@ -218,11 +224,8 @@ define [
       # Tell `PropertyBaseModule` to load corresponding property panel.
       try
         PropertyBaseModule.load type, uid, tab_type
-        ### env:prod ###
       catch error
         console.error error
-        ### env:prod:end ###
-      finally
 
       # Restore accordion
       @restoreAccordion( type , uid )

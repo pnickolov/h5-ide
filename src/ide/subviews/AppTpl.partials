@@ -26,57 +26,112 @@
 </div>
 
 <!-- {{startAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_START_APP"}}</h3><i class="modal-close">&times;</i></header>
-<div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_START_APP_RIGHT"}}</div>
+      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP"}}</div>
+      <ul class="modal-list-items">
+          {{#if hasEC2Instance}}
+          <li>
+              EC2 instances will be started.
+          </li>
+          {{/if}}
+          {{#if hasDBInstance}}
+          <li>
+              DB instances will be restored from final snapshot.
+          </li>
+          {{/if}}
+          {{#if hasASG}}
+          <li>
+              Auto Scaling Group will be recreated.
+          </li>
+          {{/if}}
+      </ul>
+      {{#if lostDBSnapshot.length}}
+      <div class="modal-shrink">
+          <div class="sub-gray">Warning</div>
+          <div class="error">
+              DB instance {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}}’s final snapshot is missing. This DB instance cannot be restored.
+          </div>
+      </div>
+      {{/if}}
   </div>
-</div>
-<div class="modal-footer">
-  <button class="btn modal-close btn-blue" id="confirmStartApp">{{i18n "TOOL_POP_BTN_START_APP"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
-</div>
 
 <!-- {{stopAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_STOP_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_STOP_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>
-
-{{#if production}}
-  <div class="modal-body" style="width:390px;">
-    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
-    <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
-    <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
-  </div>
+{{#if isProduction}}
+    <div style="padding: 20px">
+        <p><b style="color:#ec3c38;">{{appName}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }} {{ i18n 'POP_CONFIRM_STOP_ASG' }}</p>
+        <p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
+        <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
+    </div>
 {{else}}
-  <div class="modal-body modal-text-wraper" style="width:390px;"> <div class="modal-center-align-helper">
-    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
-  </div> </div>
-{{/if}}
-
-<div class="modal-footer">
-  <button class="btn modal-close btn-red" id="confirmStopApp" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_STOP_APP"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+<div class="modal-center-align-helper" style="padding: 20px">
+    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+    <ul class="modal-list-items">
+        {{#if hasEC2Instance}}
+            <li>
+                EC2 instances will be stopped.
+                {{#if hasInstanceStore}}<span class="error">Instance-stored instances will be deleted.</span>{{/if}}
+            </li>
+        {{/if}}
+        {{#if hasDBInstance}}
+            <li>
+                DB instances will be deleted final snapshot will be taken.
+                <span>Snapshots will be restored when the app is started.</span>
+            </li>
+        {{/if}}
+        {{#if hasAsg }}
+            <li>
+                Auto Scaling Group will be deleted.
+                <span>Auto Scaling Group will be recreated when the app is started.</span>
+            </li>
+        {{/if}}
+    </ul>
 </div>
+{{/if}}
+<div class="estimate-stop clearfix">
+    <div>
+        <span class="title">Estimated Cost When Stopping</span>
+        <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
+    </div>
+    <div class="hide">
+        <span class="title">Saving Compared to Running App</span>
+        <span class="price" id="label-total-saving"><b>${{savingFee}}</b>/ month</span>
+    </div>
+</div>
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+
+<!-- {{cantStop}} -->
+<p>DB Instance
+    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+    cannot take final snapshot.</p>
+<p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
 
 <!-- {{terminateAppConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{#if production}}{{i18n "TOOL_POP_TIT_TERMINATE_PRD_APP"}}{{else}}{{i18n "TOOL_POP_TIT_TERMINATE_APP"}}{{/if}}</h3><i class="modal-close">&times;</i></header>
-
+<div class="confirm-padding">
 {{#if production}}
-  <div class="modal-body" style="width:390px;">
     <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
     <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
-    <div><input class="input" style="width:351px;" id="appNameConfirmIpt"/></div>
-  </div>
+    <div><input class="input" style="width:430px;" id="appNameConfirmIpt"/></div>
 {{else}}
-  <div class="modal-body modal-text-wraper" style="width:390px;">
-    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}} {{name}} {{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div>
-  </div> </div>
+    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
 {{/if}}
-
-<div class="modal-footer">
-  <button id="appTerminateConfirm" class="btn btn-red modal-close" {{#if production}}disabled{{/if}}>{{i18n "TOOL_POP_BTN_TERMINATE_APP"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+{{#if hasDBInstance.length}}
+    <section class="check-final-snapshot checkbox-wrap">
+        <div class="checkbox">
+            <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
+            <label for="take-rds-snapshot"></label>
+        </div>
+        <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+    </section>
+    {{#if notReadyDB.length}}
+        <p class="cant-snapshot">DB Instance
+            {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+            cannot take final snapshot.</p>
+    {{/if}}
+{{/if}}
 </div>
-
 
 <!-- {{disconnectedMsg}} -->
 <section class="disconnected-msg">

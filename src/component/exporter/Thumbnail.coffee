@@ -1,9 +1,10 @@
 
 define ['UI.canvg', 'component/exporter/Download'], ()->
 
-  GridBackground = undefined
+  GridBackground      = undefined
   ThumbGridBackground = undefined
-  Href = undefined
+  DefsTpl             = undefined
+  Href                = undefined
 
   exportBeforeRender = (ctx) ->
     cWidth  = ctx.canvas.clientWidth  || ctx.canvas.width
@@ -33,6 +34,19 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
     ctx.scale ratio, ratio
     null
 
+  prepareDefTpl = ()->
+    clone = $("#svgDefs")[0].cloneNode( true )
+    clone.setAttribute "xmlns:xlink", "http://www.w3.org/1999/xlink"
+
+    $("#ExportPngWrap").append( clone )
+
+    for ch in clone.children or clone.childNodes
+      if not ch.tagName then continue
+      fixSVG ch, [], true
+
+    DefsTpl = (new XMLSerializer()).serializeToString(clone).replace(/^<svg[^>]+>/, "").replace(/<\/svg>$/,"").replace(/(fill:rgb\(0, 0, 0\)|stroke:none);?/g, "")
+    return
+
   exportPNG = ( $svg_canvas_element, data ) ->
     #
     # data = {
@@ -46,6 +60,12 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
     #
     if not data.onFinish then return
 
+    # Insert the document so that we can calculate the style.
+    $wrap = $("#ExportPngWrap")
+    if not $wrap.length
+      $wrap = $("<div id='ExportPngWrap'></div>").appendTo("body").hide()
+
+
     # Prepare grid background
     if not GridBackground
       GridBackground = document.createElement("img")
@@ -53,24 +73,16 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       ThumbGridBackground = document.createElement("img")
       ThumbGridBackground.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAMAAABh9kWNAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF9fX1////0eouzwAAABRJREFUeNpiYGBkZGBkYABhgAADAAApAAUR1P0IAAAAAElFTkSuQmCC"
 
+      prepareDefTpl()
 
-    # Insert the document so that we can calculate the style.
-    $wrap = $("#ExportPngWrap")
-    if not $wrap.length
-      $wrap = $("<div id='ExportPngWrap'></div>").appendTo("body").hide()
-
-    $wrap.attr "class", $svg_canvas_element.parents("#canvas_body").attr("class")
 
     clone = $svg_canvas_element[0].cloneNode(true)
     size  = $svg_canvas_element[0].getBBox()
 
     # cloneNode won't clone the xmlns:xlink attribute
     clone.setAttribute "xmlns:xlink", "http://www.w3.org/1999/xlink"
-    clone.removeAttribute "id"
 
     $wrap.append(clone)
-
-    firstDom = clone.getElementById("group_layer")
 
     # Inline styles
     removeArray = [ clone ] # Detach the clone from document.
@@ -82,10 +94,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
 
     # Remove unnecessary elements
     for ch in removeArray
-      if ch.remove
-        ch.remove()
-      else
-        ch.parentNode.removeChild ch
+      if ch.remove then ch.remove() else ch.parentNode.removeChild ch
 
     origin = { x : 0, y : 0 }
     # Prepare to insert header for Exporting Image
@@ -102,17 +111,15 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       origin.x -= 30
       origin.y -= 30
 
-      replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g")
-      replaceEl.textContent = "PLACEHOLDER"
 
-      # We use canvg's translate instead of calling context.translate()
-      # because context.translate seems a little bit slow.
-      replaceEl.setAttribute "transform", "translate(#{-origin.x} #{54-origin.y})"
-      clone.insertBefore replaceEl, firstDom
+    replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g")
+    replaceEl.textContent = "PLACEHOLDER"
+    clone.insertBefore replaceEl, children[0]
 
     # Generate svg text, and remove data attributes
-    svg = (new XMLSerializer()).serializeToString(clone).replace(/data-[^=<>]+="[^"]*?"/g, "")
+    svg = (new XMLSerializer()).serializeToString(clone)#.replace(/data-[^=<>]+="[^"]*?"/g, "")
 
+    insertTpl = DefsTpl
 
     # Insert header
     if data.isExport
@@ -123,8 +130,21 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       if data.drawInfo isnt false
         time = MC.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         name = data.name
-      head = "<g transform='translate(#{origin.x} #{origin.y-54})'><rect fill='#3b1252' width='100%' height='4'></rect><rect fill='#723197' width='100%' height='50' y='4'></rect><image #{Href}='/assets/images/ide/logo-t.png?v=2' x='10' y='11' width='116' height='35'></image><text x='100%' y='40' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{time}</text><text fill='#fff' x='100%' y='24' text-anchor='end' transform='translate(-10 0)'>#{name}</text></g>"
-      svg = svg.replace("PLACEHOLDER</g>", head).replace("</svg>", "</g></svg>")
+
+      # We use canvg's translate instead of calling context.translate()
+      # because context.translate seems a little bit slow.
+      svg = svg.replace("</svg>", "</g></svg>")
+      insertTpl += """<g transform='translate(#{-origin.x} #{54-origin.y})'>
+<g transform='translate(#{origin.x} #{origin.y-54})'>
+  <rect fill='#3b1252' width='100%' height='4'></rect>
+  <rect fill='#723197' width='100%' height='50' y='4'></rect>
+  <image #{Href}='/assets/images/ide/logo-t.png?v=2' x='10' y='11' width='116' height='35'></image>
+  <text x='100%' y='40' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{time}</text>
+  <text x='100%' y='24' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{name}</text>
+</g>
+"""
+
+    svg = svg.replace("<g>PLACEHOLDER</g>", insertTpl)
 
     # Calc the size for the canvas
     # In IE, getBBox returns SvgRect which is not allowed to modified.
@@ -168,34 +188,28 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
           data.image = canvas.toDataURL()
           onFinish data
 
+  svgHasClass = ( svg, test )->
+    if svg.classList
+      svg.classList.contains( test )
+    else
+      (svg.getAttribute("class") || "").indexOf( test ) isnt -1
 
-  fixSVG = (element, removeArray) ->
+  fixSVG = (element, removeArray, keepDefaultStyle ) ->
     tagName = element.tagName.toLowerCase()
 
-    # Remove <defs/>, empty <g/> and g.resizer-wrap
-    if tagName is "defs" then return removeArray.push(element)
-
+    # Remove <defs/>, empty <g/> and rect.group-resizer, .fill-line
     children = element.children or element.childNodes
-    remove = false
-    if tagName is "g"
-      if children.length is 0
-        remove = true
-      else
-        if element.classList
-          remove = element.classList.contains("resizer-wrap")
-        else
-          k = element.getAttribute("class")
-          remove = k and k.indexOf("resizer-wrap") isnt -1
 
-    if not remove
-      if element.classList
-        remove = element.classList.contains("fill-line")
-      else
-        k = element.getAttribute("class")
-        remove = k and k.indexOf("fill-line") isnt -1
+    switch tagName
+      when "g"
+        remove = children.length is 0
+      when "path"
+        remove = svgHasClass( element, "fill-line" )
+      when "rect"
+        remove = svgHasClass( element, "group-resizer" )
 
-    if remove
-      return removeArray.push(element)
+    if remove then return removeArray.push(element)
+
     ss = window.getComputedStyle(element)
 
     # Remove non-visual element
@@ -204,41 +218,43 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
 
     # Store the inline stylesheet in stylez
     s = []
-    s.push "opacity:#{ss.opacity}" if ss.opacity isnt 1
-    if tagName isnt "g" and tagName isnt "image"
+    s.push "opacity:#{ss.opacity}" if "" + ss.opacity isnt "1"
+    if tagName isnt "g" and tagName isnt "image" and tagName isnt "defs"
 
       # Fill
-      if ss.fillOpacity is 0
+      fo = "" + ss.fillOpacity
+      if not keepDefaultStyle and ( fo is "0" or ss.fill.match(/rgba\([^)]+0\)/) )
         s.push "fill:none"
       else
         s.push "fill:#{ss.fill}"                if ss.fill isnt "#000000"
-        s.push "fill-opacity:#{ss.fillOpacity}" if ss.fillOpacity isnt 1
+        s.push "fill-opacity:#{ss.fillOpacity}" if fo isnt "1"
 
       # Stroke
       t1 = (ss.strokeWidth + "").replace("px", "")
-      if ss.strokeWidth is 0 or ss.strokeOpacity is 0
+      fo = "" + ss.strokeOpacity
+
+      if not keepDefaultStyle and ( "" + ss.strokeWidth is "0" or fo is "0" )
         s.push "stroke:none"
       else
         s.push "stroke:#{ss.stroke}"
-        s.push "stroke-width:#{ss.strokeWidth}"     if t1 isnt 1
-        s.push "stroke-opacity:#{ss.strokeOpacity}" if ss.strokeOpacity isnt 1
+        s.push "stroke-width:#{ss.strokeWidth}"     if t1 isnt "1"
+        s.push "stroke-opacity:#{ss.strokeOpacity}" if fo isnt "1"
 
       s.push "stroke-linejoin:#{ss.strokeLinejoin}"   if ss.strokeLinejoin  isnt "miter"
       s.push "stroke-dasharray:#{ss.strokeDasharray}" if ss.strokeDasharray isnt "none"
 
       # Text ( Font-family is hard coded in UI.canvg )
       if tagName is "text"
-        s.push "font-size:#{ss.fontSize}"
+        s.push "font-size:#{ss.fontSize}" if ss.fontSize isnt "14px"
         s.push "text-anchor:#{ss.textAnchor}" if ss.textAnchor isnt "start"
 
     if s.length then element.setAttribute "stylez", s.join(";")
 
     for ch in children
       if not ch.tagName then continue
-      fixSVG ch, removeArray
-      ch.removeAttribute "id"
-      ch.removeAttribute "class"
-
+      fixSVG ch, removeArray, keepDefaultStyle
+      ch.removeAttribute "data-id"
+      ch.removeAttribute "data-tooltip"
     null
 
   saveThumbnailFinish = ( data )->

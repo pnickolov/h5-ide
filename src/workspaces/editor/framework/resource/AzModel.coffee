@@ -5,26 +5,10 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
 
     type : constant.RESTYPE.AZ
 
-    defaults :
-      x      : 2
-      y      : 2
-      width  : 21
-      height : 21
-
-    initialize : ( attribute, option )->
-      if option.createByUser
-        SubnetModel = Design.modelClassForType( constant.RESTYPE.SUBNET )
-        m = new SubnetModel( { x : @x() + 2, y : @y() + 2, parent : this } )
-        ####
-        # Quick hack to allow user to select another item,
-        # instead of the newly created one.
-        ####
-        option.selectId = m.id
-
-      @draw(true)
-      null
-
     isRemovable : ()->
+      if (_.some @children(), ( sb ) -> sb.connections("SubnetgAsso").length > 0)
+        return { error : lang.ide.RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG }
+
       if @children().length > 0
         # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
         return sprintf lang.ide.CVS_CFM_DEL_GROUP, @get("name")
@@ -32,7 +16,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
 
     createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )
 
-    isCidrEnoughForIps : ( cidr )->
+    getAvailableIPCountInSubnet : ( cidr )->
 
       if not cidr then return true
 
@@ -45,10 +29,10 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
         else
           continue
 
-        ipCount += eni.get("ips").length
+        ipCount += eni.get("ips").length * eni.serverGroupCount()
 
       maxIpCount = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPCountInCIDR( cidr )
-      maxIpCount >= ipCount
+      maxIpCount - ipCount
 
     serialize : ()->
       n = @get("name")
@@ -66,9 +50,15 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
     handleTypes : constant.RESTYPE.AZ
 
     deserialize : ( data, layout_data, resolve )->
+      # If we are in app/appedit mode. Assign a appId to the AZ.
+      # So that we can distinguish existing az from newly created one.
+      if not Design.instance().modeIsStack()
+        appId = data.name
+
       new Model({
         id    : data.uid
         name  : data.name
+        appId : appId
 
         parent : resolve( layout_data.groupUId )
 

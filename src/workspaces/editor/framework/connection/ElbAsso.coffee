@@ -7,7 +7,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
     type : "ElbSubnetAsso"
 
     defaults :
-      lineType     : "association"
       deserialized : false # Indicate that this line is created by deserialize.
 
 
@@ -95,9 +94,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
   ElbAmiAsso = ConnectionModel.extend {
 
     type : "ElbAmiAsso"
-
-    defaults : ()->
-      lineType : "elb-sg"
 
     portDefs : [
       {

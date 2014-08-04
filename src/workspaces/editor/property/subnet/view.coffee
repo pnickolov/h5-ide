@@ -33,7 +33,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "Subnet" )
+            if PropertyView.checkResName( @model.get('uid'), target, "Subnet" )
                 @model.setName name
                 @setTitle name
 
@@ -81,7 +81,6 @@ define [ '../base/view',
 
                 $('.modal-close').click () -> $('#property-cidr-block').focus()
                 $('#cidr-remove').click () ->
-                    $canvas.clearSelected()
                     Design.instance().component( that.model.get("uid") ).remove()
                     that.disabledAllOperabilityArea(false)
                     modal.close()

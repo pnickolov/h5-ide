@@ -62,7 +62,7 @@ define [
 
           @$el.children().hide()
           @$el.find(".fail").show()
-          @$el.find(".detail").text @model.get("opsActionError")
+          @$el.find(".detail").html @model.get("opsActionError").replace(/\n/g, "<br/>")
         else
           console.error "The model has changed to a state that OpsProgress doesn't recongnize", @model
 

@@ -10,8 +10,8 @@
 
 define [
   "./editor/ProgressViewer"
-  "./editor/StackEditor"
-  "./editor/AppEditor"
+  "./editor/OpsEditorStack"
+  "./editor/OpsEditorApp"
   './editor/framework/DesignBundle'
 ], ( ProgressViewer, StackEditor, AppEditor )->
 

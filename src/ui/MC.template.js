@@ -672,7 +672,7 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   
-  return "\n<li class=\"sg-create-rule-item\">\n";
+  return "\n<li class=\"sg-create-rule-item modal-list-body\">\n";
   }
 
 function program6(depth0,data) {
@@ -732,7 +732,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<h3 class=\"sg-create-group truncate\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "\n<h3 class=\"truncate sg-create-group\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -758,45 +758,24 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<h3 class=\"sg-create-group truncate\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "<ul>\n<h3 class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n<ul class=\"sg-rule-list\">";
+    + "</h3>\n";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</ul>\n";
+  buffer += "\n</ul>";
   return buffer;
   }
 
-  buffer += "Following rule(s) will be deleted from its(their) security group:</div>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
+  buffer += "<p>Following rule(s) will be deleted from its(their) security group:</p>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n</article>";
   return buffer;
   };
 TEMPLATE.groupedSgRuleListDelConfirm=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">";
-  stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"canvas-op-confirm\" class=\"btn modal-close btn-red\">"
-    + escapeExpression(helpers.i18n.call(depth0, "CFM_BTN_DELETE", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "CFM_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.canvasOpConfirm=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1096,182 +1075,6 @@ TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "<li>\n			<a href=\"#\" id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-instance=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.snapshotId), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "_item "
-    + escapeExpression(((stack1 = (depth0 && depth0.deleted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n				<span class=\"volume_name\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n				<span class=\"volume_size\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "GB</span>\n			</a>\n		</li>";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  
-  return "snapshot";
-  }
-
-function program4(depth0,data) {
-  
-  
-  return "volume";
-  }
-
-  buffer += "<div class=\"bubble-head\">Attached Volume <span id=\"instance_volume_number\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.length)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></div>\n<div id=\"instance_volume_wrap\" class=\"scroll-wrap\">\n	<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n	<ul id=\"instance_volume_list\" class=\"clearfix bubble-content scroll-content\">\n		";
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.instanceVolume=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data,depth1) {
-  
-  var buffer = "", stack1;
-  buffer += "\n		<li>\n			<a href=\"#\" class=\"asgList-item\" id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n				<i class=\"asgList-item-status tooltip status status-"
-    + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-tooltip=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" ></i>\n				<span class=\"asgList-item-icon\" style=\"background-image:url('/assets/images/"
-    + escapeExpression(((stack1 = (depth0 && depth0.background)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "')\"></span>\n				<div class=\"asgList-item-volume\" data-target-id="
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ">\n					<span class=\"asgList-item-number\">"
-    + escapeExpression(((stack1 = (depth1 && depth1.volume)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n				</div>\n				<span class=\"asgList-item-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n			</a>\n		</li>\n		";
-  return buffer;
-  }
-
-  buffer += "<div id=\"asgList-wrap\">\n	<div id=\"asgList-header\">\n		<span id=\"asgList-title\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		<a id=\"asgList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.asgList.close()\">&times;</a>\n	</div>\n	<ul id=\"asgList\" class=\"clearfix\">\n		";
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.asgList=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data,depth1) {
-  
-  var buffer = "", stack1;
-  buffer += "\n		<li>\n			<a href=\"#\" class='instanceList-item "
-    + escapeExpression(((stack1 = (depth0 && depth0.deleted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "' id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.appId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n				<i class=\"instanceList-item-status tooltip status status-"
-    + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-tooltip=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.state)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"></i>\n				<span class=\"instanceList-item-icon\" style=\"background-image:url('/assets/images/"
-    + escapeExpression(((stack1 = (depth1 && depth1.background)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "')\"></span>\n				<div class=\"instanceList-item-volume\" data-target-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n					<span class=\"instanceList-item-number\">"
-    + escapeExpression(((stack1 = (depth1 && depth1.volume)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n				</div>\n				<span class=\"instanceList-item-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "-"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n			</a>\n		</li>\n		";
-  return buffer;
-  }
-
-  buffer += "<div id=\"instanceList-wrap\" data-id=\""
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0[0])),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n	<div id=\"instanceList-header\">\n		<span id=\"instanceList-title\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		<a id=\"instanceList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.instanceList.close()\">&times;</a>\n	</div>\n	<ul id=\"instanceList\" class=\"clearfix\">\n		";
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.instanceList=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data,depth1) {
-  
-  var buffer = "", stack1;
-  buffer += "\n		<li>\n			<a href=\"#\" class=\"eniList-item "
-    + escapeExpression(((stack1 = (depth0 && depth0.deleted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "_"
-    + escapeExpression(((stack1 = (data == null || data === false ? data : data.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-id=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.appId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n				<i class=\"eniList-item-eip-status";
-  stack1 = helpers['if'].call(depth0, (depth1 && depth1.eip), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\"></i>\n				<span class=\"eniList-item-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.appId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n			</a>\n		</li>\n		";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  
-  return " on";
-  }
-
-  buffer += "<div id=\"eniList-wrap\">\n	<div id=\"eniList-header\">\n		<span id=\"eniList-title\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		<a id=\"eniList-close\" href=\"javascript:void(0)\" onclick=\"MC.canvas.eniList.close()\">&times;</a>\n	</div>\n	<ul id=\"eniList\" class=\"clearfix\">\n		";
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.eniList=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
@@ -1293,7 +1096,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"modal-header\"> <h3>Attach Network Interface to Instance</h3><i class=\"modal-close\">&times;</i> </div>\n<div class=\"modal-body\">\n	<div class=\"modal-center-align-helper\">\n		<p>"
+  buffer += "<div class=\"modal-body\">\n	<div class=\"modal-center-align-helper\">\n		<p>"
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " has been automatically assigned Public IP.</p>\n		<p>If you want to attach the external network interface to "
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1305,23 +1108,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:420px\">\n	";
-  stack1 = ((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-blue\" id=\"canvas-op-confirm\" style=\"width:200px;\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.action)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalCanvasConfirm=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1426,7 +1212,7 @@ TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
   
@@ -1448,10 +1234,48 @@ function program3(depth0,data) {
   return buffer;
   }
 
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <section class=\"check-final-snapshot checkbox-wrap\">\n            <div class=\"checkbox\">\n                <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                <label for=\"take-rds-snapshot\"></label>\n            </div>\n            <label for=\"take-rds-snapshot\">Take final snapshot for DB instances.</label>\n        </section>\n        ";
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  return buffer;
+  }
+function program6(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <p class=\"cant-snapshot\">DB Instance\n                ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                cannot take final snapshot.</p>\n        ";
+  return buffer;
+  }
+function program7(depth0,data) {
+  
+  var buffer = "", stack1;
+  stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "(<span class=\"db-stop-status\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>)";
+  return buffer;
+  }
+function program8(depth0,data) {
+  
+  
+  return ", ";
+  }
+
   buffer += "<div id=\"app-apply-update\">\n    <div class=\"modal-control-group default-kp-group clearfix\" style=\"display: none;\">\n        <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label><div id=\"kp-runtime-placeholder\"></div>\n        <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n    </div>\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
+  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n    ";
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
@@ -1459,6 +1283,48 @@ function program3(depth0,data) {
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "(<span class=\"db-stop-status\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>)";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  
+  return ", ";
+  }
+
+  buffer += "<p>DB Instance\n    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    cannot take final snapshot.</p>\n<p>Wait for the DB instance(s) to be available. Then try to update the app again.</p>";
+  return buffer;
+  };
+TEMPLATE.cantUpdateApp=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<div class=\"loading-spinner\"></div>";
+  };
+TEMPLATE.loadingSpiner=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1576,7 +1442,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_KEY_PC", {hash:{},data:data}))
     + "</div>\n						<div class=\"action\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">"
+    + "</div>\n					</li>\n          <li class=\"key-item\">\n            <div class=\"key\">← ↑ → ↓</div>\n            <div class=\"action\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_NUDGE_ITEM_ACTION", {hash:{},data:data}))
+    + "</div>\n          </li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_TIT_STATE_GEN", {hash:{},data:data}))
     + "</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_FOCUS_KEY", {hash:{},data:data}))
@@ -1949,39 +1817,57 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "<i class=\"modal-close\">×</i>";
+  return " panel";
   }
 
 function program3(depth0,data) {
   
-  
-  return " scroll-wrap scrollbar-auto-hide";
+  var buffer = "";
+  return buffer;
   }
 
 function program5(depth0,data) {
   
   
-  return "style=\"padding: 0;\"";
+  return " style=\"width: 520px\"";
   }
 
 function program7(depth0,data) {
   
+  
+  return "<i class=\"modal-close\">×</i>";
+  }
+
+function program9(depth0,data) {
+  
+  
+  return " scroll-wrap scrollbar-auto-hide";
+  }
+
+function program11(depth0,data) {
+  
+  
+  return "style=\"padding: 0;\"";
+  }
+
+function program13(depth0,data) {
+  
   var stack1;
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
   if(stack1 || stack1 === 0) { return stack1; }
   else { return ''; }
   }
-function program8(depth0,data) {
+function program14(depth0,data) {
   
   
   return " style=\"padding: 0;\"";
   }
 
-function program10(depth0,data) {
+function program16(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                <div class=\"scroll-content\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.program(11, program11, data),fn:self.program(8, program8, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.program(17, program17, data),fn:self.program(14, program14, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">\n                    ";
   stack1 = ((stack1 = (depth0 && depth0.template)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -1989,13 +1875,13 @@ function program10(depth0,data) {
   buffer += "\n                </div>\n            ";
   return buffer;
   }
-function program11(depth0,data) {
+function program17(depth0,data) {
   
   
   return "style=\"padding: 12px 15px\"";
   }
 
-function program13(depth0,data) {
+function program19(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            ";
@@ -2005,38 +1891,38 @@ function program13(depth0,data) {
   return buffer;
   }
 
-function program15(depth0,data) {
+function program21(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n        <div class=\"modal-footer\">\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(16, program16, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </div>\n        ";
   return buffer;
   }
-function program16(depth0,data) {
+function program22(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-confirm btn-"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" ";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;
   }
-function program17(depth0,data) {
+function program23(depth0,data) {
   
   
   return " disabled ";
   }
 
-function program19(depth0,data) {
+function program25(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-close btn-silver\">"
@@ -2045,22 +1931,28 @@ function program19(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class=\"modal-box\">\n    <div style=\"width: 520px\">\n        <div class=\"modal-header\">\n            <h3>"
+  buffer += "<div class=\"modal-box";
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.mode), "panel", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n    <div";
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.mode), "panel", {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ">\n        <div class=\"modal-header\">\n            <h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n            ";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.hideClose), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.hideClose), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </div>\n        <div class=\"modal-body  context-wrap";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  buffer += "\n        </div>\n        <div class=\"modal-body context-wrap";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(7, program7, data),fn:self.program(5, program5, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(13, program13, data),fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">\n            ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(13, program13, data),fn:self.program(10, program10, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(19, program19, data),fn:self.program(16, program16, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </div>\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</div>";
   return buffer;

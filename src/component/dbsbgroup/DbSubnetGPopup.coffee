@@ -42,7 +42,13 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
     updateSelected : ()->
       btn = @$el.closest(".modal-box").find(".modal-confirm")
 
-      if @$el.find(".dbsgppp-subnet:checked").length > 1
+      azs = {}
+
+      _.each @$el.find(".dbsgppp-subnet:checked"), ( el )->
+        id = $( el ).attr("data-id")
+        azs[ Design.instance().component(id).parent().get("name") ] = true
+
+      if _.keys(azs).length > 1
         btn.removeAttr("disabled")
       else
         btn.attr("disabled", "disabled")

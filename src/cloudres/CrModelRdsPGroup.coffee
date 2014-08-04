@@ -38,7 +38,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
     resetParams : ()->
       self = @
       ApiRequest("rds_pg_ResetDBParameterGroup", {
-        region      : @collection.region()
+        region_name      : @collection.region()
         param_group : @id
         reset_all   : true
       }).then ()-> self.getParameters().fetchForce()

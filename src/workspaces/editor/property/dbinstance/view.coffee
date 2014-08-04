@@ -609,7 +609,7 @@ define [ 'ApiRequest'
 
             that = this
 
-            if not that.resModel.master()
+            if not (that.resModel.master() and not that.isAppEdit)
 
                 storge = that.resModel.get 'allocatedStorage'
                 iops = that.resModel.get 'iops'

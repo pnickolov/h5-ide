@@ -175,6 +175,7 @@ define [
         reserve : "newInstanceId|instanceId"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
+      @set 'snapshotId', ''
       return
 
     isMysql      : -> @engineType() is 'mysql'
@@ -601,6 +602,7 @@ define [
           BackupRetentionPeriod                 : 0
           MultiAZ                               : false
           ReadReplicaSourceDBInstanceIdentifier : master.createRef('DBInstanceIdentifier')
+          DBSnapshotIdentifier                  : ''
           DBSubnetGroup                         :
             DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
         }

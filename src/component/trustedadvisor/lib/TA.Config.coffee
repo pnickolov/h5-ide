@@ -25,7 +25,7 @@ define({
         eip: [ 'isHasIGW' ]
         az: [ 'isAZAlone' ]
         sg: [ 'isStackUsingOnlyOneSG', 'isAssociatedSGNumExceedLimit' ]
-        vpc: [ 'isVPCAbleConnectToOutside', 'isHaveEnoughIPForDB' ]
+        vpc: [ 'isVPCAbleConnectToOutside' ]
         stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
         kp: [ 'longLiveNotice' ]
         dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]

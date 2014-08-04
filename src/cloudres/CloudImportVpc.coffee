@@ -1486,7 +1486,6 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
           "DBName"  : ""
           "Endpoint":
             "Port"     : 0
-            "Address"  : ""
           "Engine"            : ""
           "EngineVersion"     : ""
           "LicenseModel"      : ""
@@ -1556,7 +1555,6 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
 
         #endpoint
         if aws_dbins.Endpoint
-          dbInsRes.Endpoint.Address = aws_dbins.Endpoint.Address
           dbInsRes.Endpoint.Port = aws_dbins.Endpoint.Port
 
         #ref to OptionGroupMembership

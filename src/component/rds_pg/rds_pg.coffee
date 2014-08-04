@@ -180,7 +180,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           (e.ParameterName.toLowerCase().indexOf option.filter.toLowerCase()) > -1
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
-      that.manager.setSlide tpl data:data
+      console.log "Rendering...."
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53}
+      $(".slidebox").css('max-height', "none")
+      @manager.on "slideup", ->
+        $('.slidebox').removeAttr("style")
+      $(window).on 'resize', ->
+        $("#parameter-table").parent().height($('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53)
+        .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
       that = @

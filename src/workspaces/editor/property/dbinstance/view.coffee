@@ -342,7 +342,7 @@ define [ 'ApiRequest'
 
             that = this
 
-            db = @model
+            db = @resModel
             validateStartTime = (val) ->
                 if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
                         'Provide a valid time value from 00:00 to 23:59.'

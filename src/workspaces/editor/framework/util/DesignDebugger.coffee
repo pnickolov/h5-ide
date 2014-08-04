@@ -85,6 +85,9 @@ define ["Design"], ( Design )->
       null
     null
 
+  Design.debug.autoLayout = ()->
+    App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+
 
   window.d    = ()-> Design.instance()
   window.dd   = Design.debug

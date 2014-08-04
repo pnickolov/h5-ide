@@ -71,7 +71,6 @@ define [
       @switchMode( @design.mode() )
       @reload()
 
-      window.Canvas = @
       return
 
     isReadOnly : ()-> false

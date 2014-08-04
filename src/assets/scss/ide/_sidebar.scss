@@ -182,6 +182,10 @@ $dndDuration : .2s;
     padding       : 2px;
   }
 
+  &.disabled .resource-count {
+    background : #999;
+  }
+
   .resource-icon-dbsnapshot {
     margin-top : -50px;
   }

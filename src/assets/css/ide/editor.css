@@ -322,6 +322,8 @@
     text-align: center;
     line-height: 1em;
     padding: 2px; }
+  .resource-item.disabled .resource-count {
+    background: #999; }
   .resource-item .resource-icon-dbsnapshot {
     margin-top: -50px; }
 

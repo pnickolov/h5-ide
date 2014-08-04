@@ -400,7 +400,7 @@ define [
                 if optionData
                     that.ogDataStore[optionName] = optionData
 
-                @handleApplyImmediately()
+                that.handleApplyImmediately()
 
         setOption: ($item, value) ->
 

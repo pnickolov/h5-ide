@@ -697,7 +697,7 @@ define [ 'ApiRequest'
 
             if value
                 $('.property-dbinstance-iops-value-section').show()
-                if iopsRange.minIOPS >= 1000
+                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
                     defaultIOPS = @_getDefaultIOPS(storage)
                     if defaultIOPS
                         $('#property-dbinstance-iops-value').val(defaultIOPS)

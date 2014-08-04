@@ -198,9 +198,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
-            #$( '#modal-wrap' ).click @__stopPropagation
             @__modalplus.on "resize", @__resizeModal.bind @
-#            @.on 'rendered', @__resizeModal.bind @
             @
 
         __getHeightOfContent: ->

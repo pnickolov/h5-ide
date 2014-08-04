@@ -8,6 +8,7 @@ define [
   "./canvas/CanvasViewAws"
   "UI.modalplus"
 
+  "./canvas/CanvasBundle"
   "backbone"
   "UI.selectbox"
 ], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->

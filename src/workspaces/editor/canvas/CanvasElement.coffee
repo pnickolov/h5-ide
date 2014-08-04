@@ -465,6 +465,61 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
     updateConnections : ()-> cn.update() for cn in @connections(); return
 
+    applyGeometry : ( x, y, width, height )->
+      if x isnt undefined or y isnt undefined
+        @model.set { x : x, y : y }
+        @$el[0].instance.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
+
+      if @isGroup() and width isnt undefined and height isnt undefined
+        @model.set { width : width, height : height }
+
+        # ensure sticky
+        for ch in @children( true )
+          if ch.sticky then ch.ensureStickyPos()
+
+      width  = ( width  || @model.get("width")  ) * CanvasView.GRID_WIDTH
+      height = ( height || @model.get("height") ) * CanvasView.GRID_HEIGHT
+
+      pad  = 10
+      pad2 = 20
+
+      ports = []
+
+      for ch in @$el[0].instance.children()
+
+        classes = ch.classes()
+
+        if classes.indexOf("group") >= 0
+          ch.size( width, height )
+        else if classes.indexOf("top") >= 0
+          ch.size( width - pad2, pad  ).x(pad)
+        else if classes.indexOf("left") >= 0
+          ch.size( pad, height - pad2 ).y(pad)
+        else if classes.indexOf("right") >= 0
+          ch.size( pad, height - pad2 ).move(width - pad, pad)
+        else if classes.indexOf("bottom") >= 0
+          ch.size( width - pad2, pad  ).move(pad, height - pad)
+        else if classes.indexOf("top-right") >= 0
+          ch.x(width - pad)
+        else if classes.indexOf("bottom-left") >= 0
+          ch.y(height - pad)
+        else if classes.indexOf("bottom-right") >= 0
+          ch.move(width - pad, height - pad)
+        else if classes.indexOf("port") >= 0
+          ports.push ch
+
+      # Update groups port
+      for p in ports
+        name = p.attr("data-alias") or p.attr("data-name")
+        if name
+          pos = @portPosition( name )
+          if pos then p.move( pos[0], pos[1] )
+
+      cn.update() for cn in @connections()
+
+
+      return
+
   }, {
 
     isDirectParentType : ( type )-> true

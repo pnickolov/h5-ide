@@ -70,6 +70,8 @@ define [
 
       @switchMode( @design.mode() )
       @reload()
+
+      window.Canvas = @
       return
 
     isReadOnly : ()-> false
@@ -424,7 +426,8 @@ define [
     getItem : ( id )-> @__itemMap[ id ]
 
     # Implemented in subclass
-    autoLayout : ()->
+    autoLayoutFully : ()-> console.warn "Fully auto layouting is not implemented."
+    autoLayout      : ( full )-> @autoLayoutFully()
 
     # Hover effect
     __hoverEl    : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hover( evt )

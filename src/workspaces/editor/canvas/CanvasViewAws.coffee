@@ -1,5 +1,5 @@
 
-define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./CanvasManager", "Design" ], ( CanvasView, constant, lang, VolumePopup, CanvasManager, Design )->
+define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./CanvasManager", "Design" ], ( CanvasView, constant, lang, VolumePopup, CanvasManager, Design )->
 
   isPointInRect = ( point, rect )->
     rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y

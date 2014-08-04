@@ -292,7 +292,7 @@ define [ 'ApiRequest'
                 attr.masterIops = @resModel.master().get 'iops'
 
             # if snapshot
-            if attr.snapshotId
+            else if attr.snapshotId
                 template = template_instance
                 snapshotModel = @resModel.getSnapshotModel()
                 attr.snapshotSize = Number(snapshotModel.get('AllocatedStorage'))
@@ -869,8 +869,10 @@ define [ 'ApiRequest'
             dbId = @appModel.get('DBInstanceIdentifier')
             _setStatus()
 
+            region = Design.instance().region()
             ApiRequest('rds_ins_DescribeDBInstances', {
-                id: dbId
+                id: dbId,
+                region_name: region
             }).then (data) ->
 
                 data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []

@@ -350,7 +350,7 @@ define [ 'ApiRequest'
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
 
-            @$('#property-dbinstance-database-name').parsley 'custom', ( value ) ->
+            @$('#property-dbinstance-database-name').parsley 'custom', ( val ) ->
                 switch db.engineType()
                     when 'mysql'
                         if val.length > 64 then return 'Max length is 64.'

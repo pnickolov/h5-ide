@@ -69,22 +69,22 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         null
 
-    isHaveReplicaStorageSmallThanOrigin = (uid) ->
+    # isHaveReplicaStorageSmallThanOrigin = (uid) ->
 
-        dbModel = Design.instance().component(uid)
-        return null if not dbModel.master()
+    #     dbModel = Design.instance().component(uid)
+    #     return null if not dbModel.master()
 
-        storge = dbModel.get('allocatedStorage')
-        srcStorge = dbModel.master().get('allocatedStorage')
+    #     storge = dbModel.get('allocatedStorage')
+    #     srcStorge = dbModel.master().get('allocatedStorage')
 
-        if storge < srcStorge
-            return {
-                uid: uid
-                level: constant.TA.ERROR
-                info: sprintf(i18n.TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
-            }
+    #     if storge < srcStorge
+    #         return {
+    #             uid: uid
+    #             level: constant.TA.ERROR
+    #             info: sprintf(i18n.TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
+    #         }
 
-        return null
+    #     return null
 
     isSqlServerCross3Subnet = ( uid ) ->
         db = Design.instance().component uid
@@ -101,5 +101,5 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
     isOgValid               : isOgValid
     isAzConsistent          : isAzConsistent
     isHaveEnoughIPForDB     : isHaveEnoughIPForDB
-    isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
+    # isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
     isSqlServerCross3Subnet : isSqlServerCross3Subnet

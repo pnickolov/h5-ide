@@ -63,7 +63,8 @@ define [
             resModel = Design.instance().component uid
             @view = view
             @model = model
-            @view.isAppEdit = true
+            if resModel.get('appId')
+                @view.isAppEdit = true
             @view.resModel = resModel
             @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
             null

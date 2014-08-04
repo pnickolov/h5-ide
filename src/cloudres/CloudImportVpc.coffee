@@ -1599,6 +1599,7 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
             dbInsRes.PreferredMaintenanceWindow = originComp.resource.PreferredMaintenanceWindow
           #when password is setting, then assign "****"
           dbInsRes.MasterUserPassword = originComp.resource.MasterUserPassword
+          dbInsRes.DBSnapshotIdentifier = originComp.resource.DBSnapshotIdentifier
         else
           compName = aws_dbins.Name || aws_dbins.DBInstanceIdentifier
           dbInsRes.CreatedBy     = 'user' #created by user

@@ -127,14 +127,18 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     x = item.x + parentX
     y = item.y + parentY
 
-    if item.component
-      view = @getItem( item.component.id )
-      if view
-        view.applyGeometry( x, y, item.width, item.height )
-
+    # Need to first arrange children, because we need to ensure sticky item's position.
     for ch in item.children
       @applyGeometry( ch, x, y )
 
+    if item.component
+      view = @getItem( item.component.id )
+      if view
+        # Special treatment for sticky item.
+        if Defination[item.type]?.sticky
+          x = -1
+          y = -1
+        view.applyGeometry( x, y, item.width, item.height )
     return
 
   AwsCanvasView.prototype.autoLayoutFully = ()->
@@ -231,10 +235,10 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height        : 600
     }
     "AWS.VPC.VPNGateway" : {
-      ignore : true
+      sticky : true
     }
     "AWS.VPC.InternetGateway" : {
-      ignore : true
+      sticky : true
     }
 
     "AWS.ELB_group" : {

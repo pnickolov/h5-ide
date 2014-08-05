@@ -237,7 +237,9 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
       subnetChildren
     else
-      group
+      if instanceGroup then subnetChildren.push instanceGroup
+      if eniGroup      then subnetChildren.push eniGroup
+      subnetChildren
 
 
   GroupMForDbSubnet = ( children )->
@@ -421,8 +423,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       groupMethod : GroupMForSubnet
       margin : 2
       space  : 2
-      width  : 11
-      height : 11
+      width  : 13
+      height : 13
     }
     "AWS.VPC.CustomerGateway" : {
       width  : 17

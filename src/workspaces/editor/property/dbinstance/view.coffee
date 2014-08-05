@@ -695,17 +695,24 @@ define [ 'ApiRequest'
             storage = Number($('#property-dbinstance-storage').val())
             iopsRange = @_getIOPSRange(storage)
 
-            if value
-                $('.property-dbinstance-iops-value-section').show()
-                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
-                    defaultIOPS = @_getDefaultIOPS(storage)
-                    if defaultIOPS
-                        $('#property-dbinstance-iops-value').val(defaultIOPS)
-                        @resModel.setIops defaultIOPS
+            # for replica
+            if @resModel.master()
+                if value
+                    @resModel.setIops @resModel.master().get('iops')
+                else
+                    @resModel.setIops ''
             else
-                $('.property-dbinstance-iops-value-section').hide()
-                $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops ''
+                if value
+                    $('.property-dbinstance-iops-value-section').show()
+                    if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                        defaultIOPS = @_getDefaultIOPS(storage)
+                        if defaultIOPS
+                            $('#property-dbinstance-iops-value').val(defaultIOPS)
+                            @resModel.setIops defaultIOPS
+                else
+                    $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops ''
 
         changeProvisionedIOPS: (event) ->
 

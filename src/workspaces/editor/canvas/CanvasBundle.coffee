@@ -5,6 +5,7 @@ define [
   "./CanvasViewDnd"
   "./CanvasViewConnect"
   "./CanvasViewGResizer"
+  "./CanvasViewLayout"
 
   "./CanvasViewAwsLayout"
 

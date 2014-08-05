@@ -1,186 +1,12 @@
 
-define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
-
-  # Default Group helpers
-  DefaultGroupMethod = GroupMByType = ( children )->
-    groups = []
-    for type, childrens of _.groupBy( children, "type" )
-      groups.push {
-        type     : type + "_group"
-        children : childrens
-      }
-    groups
-
-  # Default Arrange Helpers
-  DefaultArrangeMethod = ArrangeHorizontal = ( children )->
-
-    def   = Defination[ @type ] || {}
-    space = def.space  || 0
-
-    x = 0
-    height = 0
-
-    for ch in children
-      chDef    = Defination[ ch.type ] || {}
-      chWidth  = ch.width  || chDef.width || 0
-      chHeight = ch.height || chDef.height || 0
-
-      ch.x = x
-      ch.y = 0
-      if chWidth > 0
-        x += chWidth + space
-
-      if chHeight and chHeight > height
-        height = chHeight
-
-    if children.length then x -= space
-
-    {
-      width  : x || def.width
-      height : height || def.height
-    }
-
-  ArrangeVertical = ( children )->
-    console.log( @type )
-    def   = Defination[ @type ] || {}
-    space = def.space  || 0
-
-    y     = 0
-    width = 0
-
-    for ch in children
-      chDef    = Defination[ ch.type ] || {}
-      chWidth  = ch.width  || chDef.width  || 0
-      chHeight = ch.height || chDef.height || 0
-
-      ch.x = 0
-      ch.y = y
-      if chHeight > 0
-        y += chHeight + space
-
-      if chWidth and chWidth > width
-        width = chWidth
-
-    if children.length then y -= space
-
-    {
-      width  : width || def.width
-      height : y || def.height
-    }
-
-  ArrangeBinPack = ArrangeVertical
-
-  # Layout Logics
-  buildHierachy = ( item )->
-    obj =
-      component : item
-      type : item.type
-      x : 0
-      y : 0
-
-    if item.children
-
-      obj.children = []
-      children = item.children()
-
-      sort = Defination[ item.type ]?.sortMethod
-      if sort
-        children = sort.call item, children
-
-      for ch in children
-        if Defination[ ch.type ]?.ignore then continue
-
-        obj.children.push buildHierachy( ch )
-
-    obj
-
-  groupChildren = ( item )->
-    if item.children
-      groupChildren( ch ) for ch in item.children
-
-    groupMethod = Defination[ item.type ]?.groupMethod || DefaultGroupMethod
-    item.children = groupMethod.call item, item.children
-    item
-
-  arrangeGroup = ( item )->
-    def = Defination[ item.type ] || {}
-
-    if item.children
-      for ch in item.children
-        arrangeGroup( ch )
-
-      arrangeMethod = def.arrangeMethod || DefaultArrangeMethod
-      size = arrangeMethod.call item, item.children
-
-      if def.margin
-        size.width  += def.margin * 2
-        size.height += def.margin * 2
-
-        for ch in item.children
-          ch.x += def.margin
-          ch.y += def.margin
-
-      item.width  = size.width
-      item.height = size.height
-    else
-      item.width  = def.width || 0
-      item.height = def.height || 0
-
-    item
-
-  AwsCanvasView.prototype.applyGeometry = ( item, parentX, parentY )->
-    x = item.x + parentX
-    y = item.y + parentY
-
-    # Need to first arrange children, because we need to ensure sticky item's position.
-    if item.children
-      @applyGeometry( ch, x, y ) for ch in item.children
-
-    if item.component
-      view = @getItem( item.component.id )
-      if view
-        # Special treatment for sticky item.
-        if Defination[item.type]?.sticky
-          x = -1
-          y = -1
-        view.applyGeometry( x, y, item.width, item.height )
-    return
-
-  AwsCanvasView.prototype.autoLayoutFully = ()->
-    ###
-    # 1. Build hierachy
-    ###
-    svgChildren = @__itemTopLevel.map ( item )-> item.model
-    hierachy =
-      type     : "SVG"
-      children : ()-> svgChildren
-
-    hierachy = buildHierachy( hierachy )
-
-    ###
-    # 2. Group children
-    ###
-    groupChildren( hierachy )
-
-    ###
-    # 3. Arrange Groups
-    ###
-    arrangeGroup( hierachy )
-
-    ###
-    # 4. Merge Position Info
-    ###
-    @applyGeometry( hierachy, 5, 3 )
-
-    console.log hierachy
-    return
+define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView, CanvasViewLayoutHelpers, constant )->
 
   # Group Helpers
   __sortInstance = ( instances )->
     instances.sort ( a, b )-> b.component.connections("ElbAmiAsso").length - a.component.connections("ElbAmiAsso")
 
   GroupMForSubnet = ( children )->
-    group = DefaultGroupMethod.call this, children
+    group = CanvasViewLayoutHelpers.DefaultGroupMethod.call this, children
     instanceGroup = null
     eniGroup = null
 
@@ -352,7 +178,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
 
   ArrangeForVpc = ( children )->
-    def = Defination[ constant.RESTYPE.VPC ]
+    def = AutoLayoutConfig[ constant.RESTYPE.VPC ]
     childMap = {}
     for ch in children
       childMap[ ch.type ] = ch
@@ -406,7 +232,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       else
         newChs.push( ch )
 
-    DefaultArrangeMethod.call this, newChs
+    CanvasViewLayoutHelpers.DefaultArrangeMethod.call this, newChs
 
   # Sort Helpers
   SortForVpc = ( children )->
@@ -440,13 +266,13 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
 
   # Definations
-  Defination =
+  AutoLayoutConfig = AwsCanvasView.prototype.autoLayoutConfig =
     "SVG" : {
       arrangeMethod : ArrangeForSvg
       space : 6
     }
     "AWS.VPC.CustomerGateway_group"  : {
-      arrangeMethod : ArrangeVertical
+      arrangeMethod : "ArrangeVertical"
       space : 2
     }
     "AWS.VPC.VPC" : {
@@ -465,7 +291,6 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     }
 
     "AWS.ELB_group" : {
-      arrangeMethod : ArrangeHorizontal
       space   : 11
     }
     "AWS.ELB" : {
@@ -473,7 +298,6 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height  : 9
     }
     "AWS.VPC.RouteTable_group" : {
-      arrangeMethod : ArrangeHorizontal
       space   : 4
     }
     "AWS.VPC.RouteTable":{
@@ -489,7 +313,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 15
     }
     "AWS.RDS.DBSubnetGroup_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space : 4
     }
     "AWS.RDS.DBSubnetGroup" : {
@@ -504,12 +328,12 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.RDS.DBInstance_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space : 2
     }
     "MasterSlave" : {
-      arrangeMethod : ArrangeVertical
-      space : 3
+      arrangeMethod : "ArrangeVertical"
+      space : 2
     }
     "MasterSlave_group" : {
       space : 1
@@ -519,7 +343,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     }
 
     "AWS.VPC.NetworkInterface_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space  : 4
     }
     "AWS.VPC.NetworkInterface" : {
@@ -527,7 +351,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.EC2.Instance_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space  : 2
     }
     "AWS.EC2.Instance" : {
@@ -535,7 +359,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.AutoScaling.Group_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space : 4
     }
     "AWS.AutoScaling.Group" : {
@@ -543,7 +367,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 13
     }
     "AWS.VPC.Subnet_group" : {
-      arrangeMethod : ArrangeBinPack
+      arrangeMethod : "ArrangeBinPack"
       space : 2
     }
     "AWS.VPC.Subnet" : {
@@ -561,7 +385,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       space : 1
     }
     "AmiEniPari_group" : {
-      arrangeMethod : ArrangeVertical
+      arrangeMethod : "ArrangeVertical"
       space : 1
     }
 

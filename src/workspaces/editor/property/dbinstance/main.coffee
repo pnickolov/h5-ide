@@ -55,6 +55,7 @@ define [
 
             @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
             @view = app_view
+            @view.model = @model
             @view.resModel = resModel
             null
 

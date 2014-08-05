@@ -88,7 +88,7 @@ define [
       @set needSync
 
       if needSync['iops'] is 0
-        replicaModel.setIops 0
+        @setIops 0
 
     needSyncMasterConn: ( cnn ) ->
       if @master() then return false

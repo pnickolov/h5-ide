@@ -627,7 +627,7 @@ define [ 'ApiRequest'
                 $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops ''
+                @resModel.setIops 0
                 checkedDom.checked = false
 
             else
@@ -700,7 +700,7 @@ define [ 'ApiRequest'
                 if value
                     @resModel.setIops @resModel.master().get('iops')
                 else
-                    @resModel.setIops ''
+                    @resModel.setIops 0
             else
                 if value
                     $('.property-dbinstance-iops-value-section').show()
@@ -712,7 +712,7 @@ define [ 'ApiRequest'
                 else
                     $('.property-dbinstance-iops-value-section').hide()
                     $('#property-dbinstance-iops-value').val('')
-                    @resModel.setIops ''
+                    @resModel.setIops 0
 
         changeProvisionedIOPS: (event) ->
 

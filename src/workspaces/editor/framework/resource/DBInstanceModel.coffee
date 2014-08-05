@@ -24,7 +24,7 @@ define [
       username: 'root'
       password: '12345678'
       multiAz: true
-      iops: ''
+      iops: 0
       autoMinorVersionUpgrade: true
       allowMajorVersionUpgrade: ''
       backupRetentionPeriod: 1

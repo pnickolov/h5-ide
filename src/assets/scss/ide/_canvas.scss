@@ -251,8 +251,12 @@
 }
 .asg-frame {
   fill: #16B4F9;
-  font-size: 12px;
   cursor: default;
+  pointer-events:none;
+}
+#asg_prompt {
+  fill: #16B4F9;
+  font-size: 12px;
   pointer-events:none;
 }
 
@@ -305,8 +309,8 @@
     }
   }
 }
-.AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
-  font-size:0px;
+.AWS-AutoScaling-LaunchConfiguration ~ .asg-prompt {
+  display : none;
 }
 
 #sbg_info {

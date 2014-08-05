@@ -68,7 +68,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : y || def.height
     }
 
-  ArrangeMatrix = ()->
+  ArrangeBinPack = ArrangeVertical
 
   # Layout Logics
   buildHierachy = ( item )->
@@ -109,19 +109,22 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       for ch in item.children
         arrangeGroup( ch )
 
-    arrangeMethod = def.arrangeMethod || DefaultArrangeMethod
-    size = arrangeMethod.call item, item.children
+      arrangeMethod = def.arrangeMethod || DefaultArrangeMethod
+      size = arrangeMethod.call item, item.children
 
-    if def.margin
-      size.width  += def.margin * 2
-      size.height += def.margin * 2
+      if def.margin
+        size.width  += def.margin * 2
+        size.height += def.margin * 2
 
-      for ch in item.children
-        ch.x += def.margin
-        ch.y += def.margin
+        for ch in item.children
+          ch.x += def.margin
+          ch.y += def.margin
 
-    item.width  = size.width
-    item.height = size.height
+      item.width  = size.width
+      item.height = size.height
+    else
+      item.width  = def.width || 0
+      item.height = def.height || 0
 
     item
 
@@ -130,8 +133,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     y = item.y + parentY
 
     # Need to first arrange children, because we need to ensure sticky item's position.
-    for ch in item.children
-      @applyGeometry( ch, x, y )
+    if item.children
+      @applyGeometry( ch, x, y ) for ch in item.children
 
     if item.component
       view = @getItem( item.component.id )
@@ -173,6 +176,9 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     return
 
   # Group Helpers
+  __sortInstance = ( instances )->
+    instances.sort ( a, b )-> b.component.connections("ElbAmiAsso").length - a.component.connections("ElbAmiAsso")
+
   GroupMForSubnet = ( children )->
     group = DefaultGroupMethod.call this, children
     instanceGroup = null
@@ -220,6 +226,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
         if not linkedEnis[ eni.component.id ]
           lonelyEnis.push eni
 
+      __sortInstance( lonelyInstances )
       subnetChildren.push {
         type     : "AWS.EC2.Instance_group"
         children : lonelyInstances
@@ -237,14 +244,113 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
       subnetChildren
     else
-      if instanceGroup then subnetChildren.push instanceGroup
+      if instanceGroup
+        __sortInstance( instanceGroup.children )
+        subnetChildren.push instanceGroup
+
       if eniGroup      then subnetChildren.push eniGroup
       subnetChildren
 
 
   GroupMForDbSubnet = ( children )->
+    msGroup     = []
+    normalGroup = []
+
+    for ch in children
+      if ch.component.master()
+        continue
+
+      slaves = ch.component.slaves()
+      if slaves.length
+        pair = [ ch ]
+        for s in slaves
+          pair.push {
+            type : s.type
+            component : s
+            x : 0
+            y : 0
+          }
+
+        msGroup.push {
+          type     : "MasterSlave"
+          children : pair
+        }
+      else
+        normalGroup.push ch
+
+    chs = []
+    if msGroup.length
+      chs.push {
+        type : "MasterSlave_group"
+        children : msGroup
+      }
+
+    if normalGroup
+      chs.push {
+        type     : "AWS.RDS.DBInstance_group"
+        children : normalGroup
+      }
+
+    chs
+
 
   # Arrange Helpers
+  ArrangeForAzs = ( children )->
+    if not children.length
+      return {
+        width  : 0
+        height : 0
+      }
+
+    if children.length is 1
+      return {
+        width  : children[0].width
+        height : children[0].height
+      }
+
+    children.sort ( a, b )-> b.height - a.height
+    i = 0
+    while i < children.length
+      ch1 = children[ i ]
+      ch2 = children[ i + 1 ]
+      if ch2 and ch2.width * ch2.height > ch1.width * ch1.height
+        children[ i ] = ch2
+        children[ i + 1 ] = ch1
+      i += 2
+
+    y2 = children[0].height + 15
+    x1 = 0
+    x2 = 0
+    i = 0
+    while i < children.length
+      ch1 = children[ i ]
+      ch2 = children[ i + 1 ]
+
+      ch1.y = 0
+      if ch2
+        ch1.x = x1
+        x1 += ch1.width + 4
+        ch2.x = x2
+        ch2.y = y2
+        x2 += ch2.width + 4
+      else
+        if x1 > x2
+          ch1.x = x2
+          ch1.y = y2
+          x2 += ch1.width + 4
+        else
+          ch1.x = x1
+          ch1.y = y1
+          x1 += ch1.width + 4
+
+      i += 2
+
+    {
+      width  : Math.max( x1, x2 ) - 4
+      height : children[1].height + y2
+    }
+
+
   ArrangeForVpc = ( children )->
     def = Defination[ constant.RESTYPE.VPC ]
     childMap = {}
@@ -266,7 +372,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     if ch
       ch.x  = baseX
       ch.y  = baseY
-      subnetGroupBaseX = baseX + ch.width + 3
+      subnetGroupBaseX = baseX + ch.width + 4
       elbBaseY += ch.children[0].y + ch.children[0].height + 3
 
     ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
@@ -375,27 +481,45 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height  : 9
     }
     "AWS.EC2.AvailabilityZone_group" : {
-      space : 4
+      arrangeMethod : ArrangeForAzs
     }
     "AWS.EC2.AvailabilityZone" : {
-      # arrangeMethod : ArrangeMatrix
       margin : 2
       width  : 15
       height : 15
     }
     "AWS.RDS.DBSubnetGroup_group" : {
+      arrangeMethod : ArrangeBinPack
       space : 4
     }
     "AWS.RDS.DBSubnetGroup" : {
+      groupMethod : GroupMForDbSubnet
       margin : 2
+      space  : 3
       width  : 11
       height : 11
+    }
+    "AWS.RDS.DBInstance" : {
+      width  : 9
+      height : 9
+    }
+    "AWS.RDS.DBInstance_group" : {
+      arrangeMethod : ArrangeBinPack
+      space : 2
+    }
+    "MasterSlave" : {
+      arrangeMethod : ArrangeVertical
+      space : 3
+    }
+    "MasterSlave_group" : {
+      space : 1
     }
     "AWS.AutoScaling.LaunchConfiguration" : {
       ignore : true
     }
 
     "AWS.VPC.NetworkInterface_group" : {
+      arrangeMethod : ArrangeBinPack
       space  : 4
     }
     "AWS.VPC.NetworkInterface" : {
@@ -403,6 +527,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.EC2.Instance_group" : {
+      arrangeMethod : ArrangeBinPack
       space  : 2
     }
     "AWS.EC2.Instance" : {
@@ -410,6 +535,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.AutoScaling.Group_group" : {
+      arrangeMethod : ArrangeBinPack
       space : 4
     }
     "AWS.AutoScaling.Group" : {
@@ -417,7 +543,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 13
     }
     "AWS.VPC.Subnet_group" : {
-      space : 4
+      arrangeMethod : ArrangeBinPack
+      space : 2
     }
     "AWS.VPC.Subnet" : {
       groupMethod : GroupMForSubnet
@@ -429,10 +556,6 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     "AWS.VPC.CustomerGateway" : {
       width  : 17
       height : 10
-    }
-    "AWS.RDS.DBInstance" : {
-      width  : 9
-      height : 9
     }
     "AmiEniPair" : {
       space : 1

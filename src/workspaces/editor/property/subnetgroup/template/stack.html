@@ -5,7 +5,7 @@
    <section class="property-control-group" data-bind="true">
     <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
     <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
+    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled{{/if}} />
   </section>
 
 

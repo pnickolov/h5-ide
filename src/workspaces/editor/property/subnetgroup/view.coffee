@@ -42,6 +42,7 @@ define [ '../base/view'
             data         = @model.toJSON()
             data.sbCount = subnets.length
             data.azSb    = _.groupBy subnets, "az"
+            data.isAppEdit = @isAppEdit
 
             @$el.html template data
             @model.get 'name'

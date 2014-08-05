@@ -496,7 +496,9 @@ define [
     isRemovable :()->
       if @slaves().length > 0
         # Return a warning, delete DBInstance will remove ReadReplica together
-        return sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
+        result = sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
+        result = "<div class='modal-text-major'>#{result}</div>"
+        return result
       true
 
     remove :()->

@@ -959,7 +959,7 @@
   text-anchor: middle;
   pointer-events: none; }
 
-.AWS-AutoScaling-Group .group, .ExpandedAsg .group {
+.AWS-AutoScaling-Group .asg-group, .ExpandedAsg .asg-group {
   fill: #f6faf9;
   stroke: #16B4F9;
   stroke-dasharray: 6, 4;

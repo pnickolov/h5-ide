@@ -76,41 +76,59 @@ define [
 
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
     master: ->
-      m = @connections("DbReplication")[0]
+      m =  @connections( 'DbReplication' )[0]
       if m and m.master() isnt @
         return m.master()
       null
 
     setMaster : ( master ) ->
+      @clone master
+
       @connections("DbReplication")[0]?.remove()
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
+
+      @listenTo master, 'change', () ->
+        console.log 'connection changed'
+
+
       return
 
     # Source of Snapshot Instance
     source: -> CloudResources(constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
 
+    connectNeedSync: ( cnn ) ->
+      if @master() then return false
+
+      if @get 'appId'
+        connTypesToCopy = [ 'SgAsso' ]
+      else
+        connTypesToCopy = [ 'SgAsso', 'OgUsage' ]
+
+      if cnn.type not in connTypesToCopy then return false
+
+      true
+
     connect : ( cnn )->
-      if @master() then return
-      if cnn.type isnt "SgAsso" then return
+      if not @connectNeedSync( cnn ) then return
 
       # Update slaves' SgAsso
-      SgAsso = Design.modelClassForType("SgAsso")
-      sg = cnn.getOtherTarget( @ )
+      otherTarget = cnn.getOtherTarget( @ )
+      connectionModel = Design.modelClassForType cnn.type
 
-      new SgAsso( slave, sg ) for slave in @slaves()
+      new connectionModel( slave, otherTarget ) for slave in @slaves()
       return
 
     disconnect : ( cnn )->
-      if @master() then return
-      if cnn.type isnt "SgAsso" then return
-      sg = cnn.getOtherTarget( @ )
+      if not @connectNeedSync( cnn ) then return
+      if cnn.oneToMany then return
 
-      for slave in @slaves()
-        for asso in slave.connections("SgAsso")
-          if asso.getOtherTarget( slave ) is sg
-            asso.remove()
-            break
+      otherTarget = cnn.getOtherTarget( @ )
+      connectionModel = Design.modelClassForType cnn.type
+
+      new connectionModel( slave, otherTarget ).remove() for slave in @slaves()
+
+
       return
 
     constructor : ( attr, option )->
@@ -142,11 +160,12 @@ define [
         @clone( option.cloneSource )
         return
 
+
       if option.master
-        @setMaster( option.master )
-        @clone( option.master )
+        @setMaster option.master
 
       else if option.createByUser
+
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"
         defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
@@ -169,6 +188,17 @@ define [
         @setDefaultOptionGroup()
         @setDefaultParameterGroup()
       return
+
+    getReplicaAttrbutes: ->
+      master = @master()
+
+
+      'instanceClass'           : master.attributes.instanceClass
+      'autoMinorVersionUpgrade' : master.attributes.autoMinorVersionUpgrade
+      'accessible'              : master.attributes.accessible
+      'backupRetentionPeriod'   : 0
+      'multiAz'                 : false
+
 
     clone : ( srcTarget )->
       @cloneAttributes srcTarget, {
@@ -652,7 +682,7 @@ define [
             DBSubnetGroup:
               DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
             VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
-            ReadReplicaSourceDBInstanceIdentifier : if master then master.createRef('DBInstanceIdentifier') else ''
+            ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
 
 
       { component : component, layout : @generateLayout() }

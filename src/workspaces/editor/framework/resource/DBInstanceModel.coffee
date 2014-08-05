@@ -88,16 +88,31 @@ define [
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
 
-      @listenTo master, 'change', () ->
-        console.log 'connection changed'
-
+      @set backupRetentionPeriod: 0, multiAz: false
+      @listenTo master, 'change', @syncMasterAttr
 
       return
 
     # Source of Snapshot Instance
     source: -> CloudResources(constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
 
-    connectNeedSync: ( cnn ) ->
+    slaveIndependentAttr: "id|appId|x|y|width|height|name|\
+        accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
+        accessible|backupRetentionPeriod|multiAZ|__connections|__parent"
+
+    syncMasterAttr: ( master ) ->
+      if @get 'appId'
+        return false
+
+      needSync = {}
+
+      for k, v of master.changedAttributes()
+        if @slaveIndependentAttr.indexOf( k ) < 0
+          needSync[ k ] = v
+
+      @set needSync
+
+    needSyncMasterConn: ( cnn ) ->
       if @master() then return false
 
       if @get 'appId'
@@ -110,7 +125,7 @@ define [
       true
 
     connect : ( cnn )->
-      if not @connectNeedSync( cnn ) then return
+      if not @needSyncMasterConn( cnn ) then return
 
       # Update slaves' SgAsso
       otherTarget = cnn.getOtherTarget( @ )
@@ -120,7 +135,7 @@ define [
       return
 
     disconnect : ( cnn )->
-      if not @connectNeedSync( cnn ) then return
+      if not @needSyncMasterConn( cnn ) then return
       if cnn.oneToMany then return
 
       otherTarget = cnn.getOtherTarget( @ )
@@ -188,17 +203,6 @@ define [
         @setDefaultOptionGroup()
         @setDefaultParameterGroup()
       return
-
-    getReplicaAttrbutes: ->
-      master = @master()
-
-
-      'instanceClass'           : master.attributes.instanceClass
-      'autoMinorVersionUpgrade' : master.attributes.autoMinorVersionUpgrade
-      'accessible'              : master.attributes.accessible
-      'backupRetentionPeriod'   : 0
-      'multiAz'                 : false
-
 
     clone : ( srcTarget )->
       @cloneAttributes srcTarget, {
@@ -615,75 +619,52 @@ define [
     getOptionGroupName: -> @getOptionGroup()?.get 'name'
 
     serialize : () ->
-
       master = @master()
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          CreatedBy                             : @get 'createdBy'
+          DBInstanceIdentifier                  : @get 'instanceId'
+          NewDBInstanceIdentifier               : @get 'newInstanceId'
+          DBSnapshotIdentifier                  : @get 'snapshotId'
 
-      if master and not @get("appId")
-        # If this is a newly created replica, we would get the component from its master
-        component = master.serialize().component
-        component.name = @get("name")
-        component.uid  = @id
-        $.extend component.resource, {
-          CreatedBy                             : ''
-          DBInstanceIdentifier                  : ''
-          DBInstanceClass                       : @get("instanceClass")
-          AutoMinorVersionUpgrade               : @get("autoMinorVersionUpgrade")
-          PubliclyAccessible                    : @get("accessible")
-          BackupRetentionPeriod                 : 0
-          MultiAZ                               : false
-          ReadReplicaSourceDBInstanceIdentifier : master.createRef('DBInstanceIdentifier')
-          DBSnapshotIdentifier                  : ''
-          DBSubnetGroup                         :
-            DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
-          Iops                                  : @get('iops')
-        }
-      else
-        component =
-          name : @get("name")
-          type : @type
-          uid  : @id
-          resource :
-            CreatedBy                             : @get 'createdBy'
-            DBInstanceIdentifier                  : @get 'instanceId'
-            NewDBInstanceIdentifier               : @get 'newInstanceId'
-            DBSnapshotIdentifier                  : @get 'snapshotId'
+          AllocatedStorage                      : @get 'allocatedStorage'
+          AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
+          AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
+          AvailabilityZone                      : @get 'az'
+          MultiAZ                               : @get 'multiAz'
+          Iops                                  : @getIops()
+          BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
+          CharacterSetName                      : @get 'characterSetName'
+          DBInstanceClass                       : @get 'instanceClass'
 
-            AllocatedStorage                      : @get 'allocatedStorage'
-            AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-            AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
-            AvailabilityZone                      : @get 'az'
-            MultiAZ                               : @get 'multiAz'
-            Iops                                  : @getIops()
-            BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
-            CharacterSetName                      : @get 'characterSetName'
-            DBInstanceClass                       : @get 'instanceClass'
+          DBName                                : @get 'dbName'
+          Endpoint:
+            Port   : @get 'port'
+          Engine                                : @get 'engine'
+          EngineVersion                         : @get 'engineVersion'
+          LicenseModel                          : @get 'license'
+          MasterUsername                        : @get 'username'
+          MasterUserPassword                    : @get 'password'
 
-            DBName                                : @get 'dbName'
-            Endpoint:
-              Port   : @get 'port'
-            Engine                                : @get 'engine'
-            EngineVersion                         : @get 'engineVersion'
-            LicenseModel                          : @get 'license'
-            MasterUsername                        : @get 'username'
-            MasterUserPassword                    : @get 'password'
+          OptionGroupMembership:
+            OptionGroupName: @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName' || ""
 
-            OptionGroupMembership:
-              OptionGroupName: @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName' || ""
+          DBParameterGroups:
+            DBParameterGroupName                : @get 'pgName'
+          ApplyImmediately                      : @get 'applyImmediately'
 
-            DBParameterGroups:
-              DBParameterGroupName                : @get 'pgName'
-            ApplyImmediately                      : @get 'applyImmediately'
+          PendingModifiedValues                 : @get 'pending'
+          PreferredBackupWindow                 : @get 'backupWindow'
+          PreferredMaintenanceWindow            : @get 'maintenanceWindow'
+          PubliclyAccessible                    : @get 'accessible'
 
-            PendingModifiedValues                 : @get 'pending'
-            PreferredBackupWindow                 : @get 'backupWindow'
-            PreferredMaintenanceWindow            : @get 'maintenanceWindow'
-            PubliclyAccessible                    : @get 'accessible'
-
-            DBSubnetGroup:
-              DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
-            VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
-            ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
-
+          DBSubnetGroup:
+            DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
+          VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
+          ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
 
       { component : component, layout : @generateLayout() }
 

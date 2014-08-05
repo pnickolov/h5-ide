@@ -249,23 +249,23 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     for ch in children
       childMap[ ch.type ] = ch
 
-    baseX  = if childMap[ "AWS.ELB_group" ] then 20 else 7
-    baseY  = 6
+    baseX  = if childMap[ "AWS.ELB_group" ] then 18 else 5
+    baseY  = 4
     subnetGroupBaseX = baseX
 
     ch = childMap[ "AWS.VPC.RouteTable_group" ]
     if ch
       ch.x  = baseX
       ch.y  = baseY
-      baseY += ch.height + 2
+      baseY += ch.height + 3
 
     elbBaseY = baseY
     ch = childMap[ "AWS.EC2.AvailabilityZone_group" ]
     if ch
       ch.x  = baseX
       ch.y  = baseY
-      subnetGroupBaseX = baseX + ch.width + 2
-      elbBaseY += ch.children[0].y + ch.children[0].height + 2
+      subnetGroupBaseX = baseX + ch.width + 3
+      elbBaseY += ch.children[0].y + ch.children[0].height + 3
 
     ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
     if ch
@@ -274,7 +274,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
     ch = childMap[ "AWS.ELB_group" ]
     if ch
-      ch.x = 7
+      ch.x = 5
       ch.y = elbBaseY
 
     width  = 0
@@ -286,8 +286,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       if h > height then height = h
 
     {
-      width  : width  + 6
-      height : height + 6
+      width  : width  + 5
+      height : height + 4
     }
 
   ArrangeForSvg = ( children )->
@@ -431,6 +431,13 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     "AWS.RDS.DBInstance" : {
       width  : 9
       height : 9
+    }
+    "AmiEniPair" : {
+      space : 1
+    }
+    "AmiEniPari_group" : {
+      arrangeMethod : ArrangeVertical
+      space : 1
     }
 
   null

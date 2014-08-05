@@ -393,7 +393,13 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     # If the item is subnet, we might get a wrong offset.
     # In order to avoid that, we need to use the `rect.group` as $tgt.
 
-    (if item.isGroup() then $tgt.children(".group") else $tgt).dnd( evt, options )
+    if item.isGroup()
+      $dom = $tgt.children(".group")
+
+    if not $dom or not $dom.length
+      $dom = $tgt
+
+    $dom.dnd( evt, options )
 
     # Make selectItem the last, since PropertyPanel is really easy to throw error
     @selectItem( $tgt[0] )

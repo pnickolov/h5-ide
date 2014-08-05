@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ], ( SettingsTpl, lang, ApiRequest ) ->
+define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus" ,"backbone" ], ( SettingsTpl, lang, ApiRequest, Modal ) ->
 
     SettingsDialog = Backbone.View.extend {
 
@@ -42,8 +42,13 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
           credNeeded : !!App.model.appList().length
 
-        modal SettingsTpl attributes
-        @setElement $("#modal-box")
+        @modal = new Modal {
+          template: SettingsTpl attributes
+          title: lang.ide.HEAD_LABEL_SETTING
+          disableFooter: true
+          compact: true
+        }
+        @setElement @modal.tpl
 
         tab = 0
         if options
@@ -51,12 +56,12 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
 
           if tab is SettingsDialog.TAB.CredentialInvalid
             @showCredSetup()
-            $(".modal-close").hide()
-            $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+            @modal.tpl.find(".modal-close").hide()
+            @modal.tpl.find("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
 
           if tab < 0 then tab = Math.abs( tab )
 
-        $("#SettingsNav").children().eq( tab ).click()
+        @modal.$("#SettingsNav").children().eq( tab ).click()
 
         @updateTokenTab()
         return
@@ -71,8 +76,8 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
 
-        $("#modal-box").html SettingsTpl attributes
-        $("#SettingsNav").children().eq( SettingsDialog.TAB.Credential ).click()
+        @modal.$("#modal-box").html SettingsTpl attributes
+        @modal.$("#SettingsNav").children().eq( SettingsDialog.TAB.Credential ).click()
 
 
 
@@ -80,115 +85,116 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
         $this = $(evt.currentTarget)
         if $this.hasClass "selected" then return
 
-        $("#SettingsBody").children().hide()
-        $("#SettingsNav").children().removeClass("selected")
-        $("#"+$this.addClass("selected").attr("data-target")).show()
+        @modal.$("#SettingsBody").children().hide()
+        @modal.$("#SettingsNav").children().removeClass("selected")
+        @modal.$("#"+$this.addClass("selected").attr("data-target")).show()
         return
 
       showPwd : ()->
-        $("#AccountPwd").hide()
-        $("#AccountPwdWrap").show()
-        $("#AccountCurrentPwd").focus()
+        @modal.$("#AccountPwd").hide()
+        @modal.$("#AccountPwdWrap").show()
+        @modal.$("#AccountCurrentPwd").focus()
         return
 
       hidePwd : ()->
-        $("#AccountPwd").show()
-        $("#AccountPwdWrap").hide()
-        $("#AccountCurrentPwd, #AccountNewPwd").val("")
-        $("#AccountInfo").empty()
+        @modal.$("#AccountPwd").show()
+        @modal.$("#AccountPwdWrap").hide()
+        @modal.$("#AccountCurrentPwd, #AccountNewPwd").val("")
+        @modal.$("#AccountInfo").empty()
         return
 
       updatePwdBtn : ()->
-        old_pwd = $("#AccountCurrentPwd").val() || ""
-        new_pwd = $("#AccountNewPwd").val() || ""
+        old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
+        new_pwd = @modal.$("#AccountNewPwd").val() || ""
 
         if old_pwd.length and new_pwd.length
-          $("#AccountUpdatePwd").removeAttr "disabled"
+          @modal.$("#AccountUpdatePwd").removeAttr "disabled"
         else
-          $("#AccountUpdatePwd").attr "disabled", "disabled"
+          @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
         return
 
       changePwd : ()->
-        old_pwd = $("#AccountCurrentPwd").val() || ""
-        new_pwd = $("#AccountNewPwd").val() || ""
+        that = @
+        old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
+        new_pwd = @modal.$("#AccountNewPwd").val() || ""
         if new_pwd.length < 6
-          $('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
+          @modal.$('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
           return
 
-        $("#AccountInfo").empty()
+        @modal.$("#AccountInfo").empty()
 
-        $("#AccountUpdatePwd").attr "disabled", "disabled"
+        @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
 
         App.user.changePassword( old_pwd, new_pwd ).then ()->
           notification 'info', lang.ide.SETTINGS_UPDATE_PWD_SUCCESS
-          $("#AccountCancelPwd").click()
-          $("#AccountUpdatePwd").removeAttr "disabled"
+          that.modal.$("#AccountCancelPwd").click()
+          that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
           return
         , ( err )->
           if err.error is 2
-            $('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
+            that.modal.$('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            $('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
+            that.modal.$('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
 
-          $("#AccountUpdatePwd").removeAttr "disabled"
+          that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
         return
 
       showCredSetup : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredSetupWrap").show()
-        $("#CredSetupAccount").focus()[0].select()
-        $("#CredSetupRemove").toggle App.user.hasCredential()
+        @modal.$("#CredentialTab").children().hide()
+        @modal.$("#CredSetupWrap").show()
+        @modal.$("#CredSetupAccount").focus()[0].select()
+        @modal.$("#CredSetupRemove").toggle App.user.hasCredential()
         @updateSubmitBtn()
         return
 
       cancelCredSetup : ()->
-        $("#CredentialTab").children().hide()
+        @modal.$("#CredentialTab").children().hide()
         if App.user.hasCredential()
-          $("#CredAwsWrap").show()
+          @modal.$("#CredAwsWrap").show()
         else
-          $("#CredDemoWrap").show()
+          @modal.$("#CredDemoWrap").show()
         return
 
       showRemoveCred : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredRemoveWrap").show()
+        @modal.$("#CredentialTab").children().hide()
+        @modal.$("#CredRemoveWrap").show()
         return
 
       removeCred : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredRemoving").show()
-        $("#modal-box .modal-close").hide()
+        @modal.$("#CredentialTab").children().hide()
+        @modal.$("#CredRemoving").show()
+        @modal.$("#modal-box .modal-close").hide()
 
         self = this
         App.user.changeCredential().then ()->
           self.updateCredSettings()
           return
         , ()->
-          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_REMOVE
-          $("#modal-box .modal-close").show()
+          self.modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_REMOVE
+          self.modal.$("#modal-box .modal-close").show()
           self.showCredSetup()
         return
 
       updateSubmitBtn : ()->
-        account    = $("#CredSetupAccount").val()
-        accesskey  = $("#CredSetupAccessKey").val()
-        privatekey = $("#CredSetupSecretKey").val()
+        account    = @modal.$("#CredSetupAccount").val()
+        accesskey  = @modal.$("#CredSetupAccessKey").val()
+        privatekey = @modal.$("#CredSetupSecretKey").val()
 
         if account.length and accesskey.length and privatekey.length
-          $("#CredSetupSubmit").removeAttr "disabled"
+          @modal.$("#CredSetupSubmit").removeAttr "disabled"
         else
-          $("#CredSetupSubmit").attr "disabled", "disabled"
+          @modal.$("#CredSetupSubmit").attr "disabled", "disabled"
         return
 
       submitCred : ()->
         # First validate credential
-        $("#CredentialTab").children().hide()
-        $("#CredUpdating").show()
-        $("#modal-box .modal-close").hide()
+        @modal.$("#CredentialTab").children().hide()
+        @modal.$("#CredUpdating").show()
+        @modal.$("#modal-box .modal-close").hide()
 
-        accesskey  = $("#CredSetupAccessKey").val()
-        privatekey = $("#CredSetupSecretKey").val()
+        accesskey  = @modal.$("#CredSetupAccessKey").val()
+        privatekey = @modal.$("#CredSetupSecretKey").val()
 
         self = this
 
@@ -196,21 +202,21 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
           self.setCred()
           return
         , ()->
-          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
-          $("#modal-box .modal-close").show()
+          self.modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+          self.modal.$("#modal-box .modal-close").show()
           self.showCredSetup()
           return
 
       setCred : ()->
-        account    = $("#CredSetupAccount").val()
-        accesskey  = $("#CredSetupAccessKey").val()
-        privatekey = $("#CredSetupSecretKey").val()
+        account    = @modal.$("#CredSetupAccount").val()
+        accesskey  = @modal.$("#CredSetupAccessKey").val()
+        privatekey = @modal.$("#CredSetupSecretKey").val()
 
         # A quickfix to avoid the limiation of the api.
         # Avoid user setting the account to demo_account
         if account is "demo_account"
           account = "user_demo_account"
-          $("#CredSetupAccount").val(account)
+          @modal.$("#CredSetupAccount").val(account)
 
         self = this
         App.user.changeCredential( account, accesskey, privatekey, false ).then ()->
@@ -223,19 +229,19 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
           return
 
       showCredUpdateFail : ()->
-        $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
-        $("#modal-box .modal-close").show()
+        @modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
+        @modal.$("#modal-box .modal-close").show()
         @showCredSetup()
 
       showCredConfirm : ()->
-        $("#CredentialTab").children().hide()
-        $("#CredConfirmWrap").show()
-        $("#modal-box .modal-close").show()
+        @modal.$("#CredentialTab").children().hide()
+        @modal.$("#CredConfirmWrap").show()
+        @modal.$("#modal-box .modal-close").show()
 
       confirmCred : ()->
-        account    = $("#CredSetupAccount").val()
-        accesskey  = $("#CredSetupAccessKey").val()
-        privatekey = $("#CredSetupSecretKey").val()
+        account    = @modal.$("#CredSetupAccount").val()
+        accesskey  = @modal.$("#CredSetupAccessKey").val()
+        privatekey = @modal.$("#CredSetupSecretKey").val()
 
         # When we confirm to update. The key should be validated already.
         self = this
@@ -255,21 +261,21 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
         $p = $(evt.currentTarget).closest("li")
         name = $p.children(".tokenName").val()
         @rmToken = $p.children(".tokenToken").text()
-        $("#TokenManager").hide()
-        $("#TokenRmConfirm").show()
-        $("#TokenRmTit").text( sprintf lang.ide.SETTINGS_CONFIRM_TOKEN_RM_TIT, name )
+        @modal.$("#TokenManager").hide()
+        @modal.$("#TokenRmConfirm").show()
+        @modal.$("#TokenRmTit").text( sprintf lang.ide.SETTINGS_CONFIRM_TOKEN_RM_TIT, name )
         return
 
       createToken : ()->
-        $("#TokenCreate").attr "disabled", "disabled"
+        @modal.$("#TokenCreate").attr "disabled", "disabled"
 
         self = this
         App.user.createToken().then ()->
           self.updateTokenTab()
-          $("#TokenCreate").removeAttr "disabled"
+          self.modal.$("#TokenCreate").removeAttr "disabled"
         , ()->
           notification "error", "Fail to create token, please retry."
-          $("#TokenCreate").removeAttr "disabled"
+          self.modal.$("#TokenCreate").removeAttr "disabled"
         return
 
       doneEditToken : ( evt )->
@@ -297,7 +303,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
         return
 
       confirmRmToken : ()->
-        $("#TokenRemove").attr "disabled", "disabled"
+        @modal.$("#TokenRemove").attr "disabled", "disabled"
 
         self = this
         App.user.removeToken( @rmToken ).then ()->
@@ -311,18 +317,18 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "backbone" ],
 
       cancelRmToken : ()->
         @rmToken = ""
-        $("#TokenRemove").removeAttr "disabled"
-        $("#TokenManager").show()
-        $("#TokenRmConfirm").hide()
+        @modal.$("#TokenRemove").removeAttr "disabled"
+        @modal.$("#TokenManager").show()
+        @modal.$("#TokenRmConfirm").hide()
         return
 
       updateTokenTab : ()->
         tokens = App.user.get("tokens")
-        $("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
+        @modal.$("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
         if tokens.length
-          $("#TokenList").html MC.template.accessTokenTable( tokens )
+          @modal.$("#TokenList").html MC.template.accessTokenTable( tokens )
         else
-          $("#TokenList").empty()
+          @modal.$("#TokenList").empty()
         return
     }
 

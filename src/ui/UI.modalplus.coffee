@@ -29,6 +29,7 @@
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
 #      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal"]
+#      compact: if modal-body has padding.                              [Default: false]
 #   Event:
 #       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:
@@ -51,7 +52,7 @@
 #           width: "600px"
 #
 modalGroup = []
-define [], ()->
+define ['backbone'], (Backbone)->
     class Modal
         constructor: (@option)->
             _.extend @, Backbone.Events
@@ -288,4 +289,8 @@ define [], ()->
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300
+        find: (selector)->
+          @tpl.find(selector)
+        $   :(selector)->
+          @tpl.find(selector)
     Modal

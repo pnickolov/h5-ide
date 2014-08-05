@@ -3,7 +3,7 @@
 
   modalGroup = [];
 
-  define([], function() {
+  define(['backbone'], function(Backbone) {
     var Modal;
     Modal = (function() {
       function Modal(option) {
@@ -397,6 +397,14 @@
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 300);
+      };
+
+      Modal.prototype.find = function(selector) {
+        return this.tpl.find(selector);
+      };
+
+      Modal.prototype.$ = function(selector) {
+        return this.tpl.find(selector);
       };
 
       return Modal;

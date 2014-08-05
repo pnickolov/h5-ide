@@ -51,7 +51,7 @@ define [
     # -------- Master and Slave -------- #
     slaveIndependentAttr: "id|appId|x|y|width|height|name|\
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
-        accessible|backupRetentionPeriod|multiAZ|__connections|__parent"
+        accessible|backupRetentionPeriod|multiAz|__connections|__parent"
 
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
 
@@ -137,7 +137,7 @@ define [
             "allocatedStorage": snapshotModel.get('AllocatedStorage'),
             "port": snapshotModel.get('Port'),
             "iops": snapshotModel.get('Iops') or '',
-            "multiAZ": snapshotModel.get('MultiAZ'),
+            "multiAz": snapshotModel.get('MultiAZ'),
             "ogName": snapshotModel.get('OptionGroupName'),
             "license": snapshotModel.get('LicenseModel'),
             "az": snapshotModel.get('AvailabilityZone'),
@@ -369,7 +369,7 @@ define [
 
       specArr
 
-    # Get and Process License, EngineVersion, InstanceClass and multiAZ
+    # Get and Process License, EngineVersion, InstanceClass and multiAz
     getLVIA: (spec) ->
       if not spec then return []
 

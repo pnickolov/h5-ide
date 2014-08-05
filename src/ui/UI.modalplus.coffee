@@ -293,4 +293,6 @@ define ['backbone'], (Backbone)->
           @tpl.find(selector)
         $   :(selector)->
           @tpl.find(selector)
+        setTitle: (title)->
+          @tpl.find(".modal-header h3").text(title)
     Modal

@@ -407,6 +407,10 @@
         return this.tpl.find(selector);
       };
 
+      Modal.prototype.setTitle = function(title) {
+        return this.tpl.find(".modal-header h3").text(title);
+      };
+
       return Modal;
 
     })();

@@ -498,6 +498,7 @@ define [
           e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)
           that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB
+          that.updateModal.setTitle lang.ide.UPDATE_APP_MODAL_TITLE
           return false
 
         removeList = []

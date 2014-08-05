@@ -963,10 +963,12 @@ Additional Notes and Questions
 
 
 <!-- {{cantUpdateApp}} -->
-<p>DB Instance
-    {{#each data}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-    cannot take final snapshot.</p>
-<p>Wait for the DB instance(s) to be available. Then try to update the app again.</p>
+
+<p class="modal-text-minor">DB Instance
+    {{#each data}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}} (<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>) {{/each}}
+    cannot be modified now.</p>
+<p>Wait for the DB instance(s) to be available. Then try to apply updates
+    again.</p>
 
 <!-- {{loadingSpiner}} -->
 <div class="loading-spinner"></div>

@@ -576,7 +576,7 @@ define [ 'ApiRequest'
 
                     @resModel.setName value
                     @setTitle value
-                    @resModel.set 'instanceId', value
+                    # @resModel.set 'instanceId', value
 
             null
 

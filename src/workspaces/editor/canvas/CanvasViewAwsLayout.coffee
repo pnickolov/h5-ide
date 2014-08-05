@@ -59,13 +59,13 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
       }
 
       subnetChildren.push {
-        type     : "AWS.VPC.NetworkInterface_group"
-        children : lonelyEnis
+        type     : "AmiEniPari_group"
+        children : pairGroup
       }
 
       subnetChildren.push {
-        type     : "AmiEniPari_group"
-        children : pairGroup
+        type     : "AWS.VPC.NetworkInterface_group"
+        children : lonelyEnis
       }
 
       subnetChildren
@@ -147,7 +147,8 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
     y2 = children[0].height + 15
     x1 = 0
     x2 = 0
-    i = 0
+    i  = 0
+
     while i < children.length
       ch1 = children[ i ]
       ch2 = children[ i + 1 ]
@@ -166,7 +167,7 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
           x2 += ch1.width + 4
         else
           ch1.x = x1
-          ch1.y = y1
+          ch1.y = 0
           x1 += ch1.width + 4
 
       i += 2

@@ -1,11 +1,6 @@
 
 define [ "Design", "event" ], ( Design, ide_event )->
 
-  selectedComponetUid = null
-  ide_event.on ide_event.OPEN_PROPERTY, ( type, id )->
-    selectedComponetUid = id
-    null
-
   Design.debug = ()->
     componentMap = Design.instance().__componentMap
     canvasNodes  = Design.instance().__canvasNodes
@@ -37,7 +32,7 @@ define [ "Design", "event" ], ( Design, ide_event )->
     checkedMap
 
   Design.debug.selectedComp = ()->
-    Design.instance().component( selectedComponetUid )
+    App.workspaces.getAwakeSpace().getSelectedComponent()
 
   Design.debug.selectedCompState = ()->
     comp = Design.debug.selectedComp()?.serialize()[1]

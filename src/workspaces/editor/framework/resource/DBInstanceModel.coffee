@@ -85,10 +85,9 @@ define [
         if @slaveIndependentAttr.indexOf( k ) < 0
           needSync[ k ] = v
 
-      @set needSync
+      delete needSync['iops'] if needSync['iops']
 
-      if needSync['iops'] is 0
-        @setIops 0
+      @set needSync
 
     needSyncMasterConn: ( cnn ) ->
       if @master() then return false

@@ -425,8 +425,7 @@ define [
     getItem : ( id )-> @__itemMap[ id ]
 
     # Implemented in subclass
-    autoLayoutFully : ()-> console.warn "Fully auto layouting is not implemented."
-    autoLayout      : ( full )-> @autoLayoutFully()
+    autoLayout : ( full )-> @autoLayoutFully()
 
     # Hover effect
     __hoverEl    : ( evt )-> @getItem( evt.currentTarget.getAttribute( "data-id" ) )?.hover( evt )

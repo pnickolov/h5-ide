@@ -1296,7 +1296,7 @@ function program1(depth0,data) {
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " (<span class=\"db-stop-status\">"
+    + "(<span class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>) ";
   return buffer;
@@ -1363,7 +1363,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "Are you sure you want to delete "
+  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1379,7 +1379,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "Are you sure you want to delete "
+  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">The security group "
     + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

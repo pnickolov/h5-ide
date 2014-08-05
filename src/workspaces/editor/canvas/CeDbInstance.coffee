@@ -114,7 +114,7 @@ define [
         })
       ])
 
-      if @model.get('engine') is constant.DBENGINE.MYSQL
+      if @model.get('engine') is constant.DB_ENGINE.MYSQL
         svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
@@ -140,7 +140,7 @@ define [
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
       # Update Image
-      if m.get('engine') is constant.DBENGINE.MYSQL and m.category() isnt 'replica'
+      if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
         # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
         $r = @$el.children(".dbreplicate")
         CanvasManager.toggle $r, m.autobackup() isnt 0

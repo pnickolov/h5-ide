@@ -176,6 +176,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         width  : width || def.width
         height : y || def.height
       }
+
     ArrangeBinPack : ( children )->
       if children.length is 0
         return {
@@ -185,8 +186,8 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
       else if children.length is 1
         children[0].x = children[0].y = 0
         return {
-          width  : children[0].height
-          height : children[0].width
+          width  : children[0].width
+          height : children[0].height
         }
 
       chs = children.map ( ch )->

@@ -4086,6 +4086,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "AMI"
       zh: "AMI"
 
+    DASH_LBL_INSTANCE_TYPE:
+      en: "Instance Type"
+      zh: "实例类型"
+
+    DASH_LBL_PUBLIC_IP:
+      en: "Public IP"
+      zh: "IP地址"
+
     DASH_LBL_AVAILABILITY_ZONE:
       en: "Availability Zone"
       zh: "可用区域"
@@ -4101,6 +4109,10 @@ VisualOps API. You cannot UNDO this action.'
     DASH_LBL_ASSOCIATED_INSTANCE:
       en: "Associated Instance"
       zh: "关联实例"
+
+    DASH_LBL_VOLUME_SIZE:
+      en: "Volume Size"
+      zh: "卷大小"
 
     DASH_LBL_CREATE_TIME:
       en: "Create Time"

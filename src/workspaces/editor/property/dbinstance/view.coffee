@@ -696,7 +696,7 @@ define [ 'ApiRequest'
             iopsRange = @_getIOPSRange(storage)
 
             # for replica
-            if @resModel.master()
+            if @resModel.master() and not @isAppEdit
                 if value
                     @resModel.setIops @resModel.master().get('iops')
                 else

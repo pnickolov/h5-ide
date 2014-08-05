@@ -605,6 +605,7 @@ define [
           DBSnapshotIdentifier                  : ''
           DBSubnetGroup                         :
             DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
+          Iops                                  : @get('iops')
         }
       else
         component =

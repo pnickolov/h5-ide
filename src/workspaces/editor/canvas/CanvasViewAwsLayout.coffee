@@ -27,7 +27,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
       ch.x = x
       ch.y = 0
-      x += chWidth + space
+      if chWidth > 0
+        x += chWidth + space
 
       if chHeight and chHeight > height
         height = chHeight
@@ -54,7 +55,8 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
 
       ch.x = 0
       ch.y = y
-      y += chHeight + space
+      if chHeight > 0
+        y += chHeight + space
 
       if chWidth and chWidth > width
         width = chWidth
@@ -171,11 +173,122 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
     return
 
   # Group Helpers
-  GroupMForSubnet   = ( children )->
+  GroupMForSubnet = ( children )->
+    group = DefaultGroupMethod.call this, children
+    instanceGroup = null
+    eniGroup = null
+
+    subnetChildren = []
+
+    for ch in group
+      if ch.type is "AWS.VPC.NetworkInterface_group"
+        eniGroup = ch
+      else if ch.type is "AWS.EC2.Instance_group"
+        instanceGroup = ch
+      else
+        subnetChildren.push ch
+
+    if instanceGroup and eniGroup
+      linkedInstances = {}
+      linkedEnis      = {}
+      pairGroup       = []
+
+      existingEnis = {}
+      existingEnis[ eni.component.id ] = eni for eni in eniGroup.children
+
+      lonelyInstances = []
+      lonelyEnis      = []
+
+      for instance in instanceGroup.children
+        enis = instance.component.connectionTargets( "EniAttachment" )
+        if not enis.length
+          lonelyInstances.push instance
+        else
+          eniInstanceG = [ instance ]
+          linkedInstances[ instance.component.id ] = true
+
+          for eni in enis
+            linkedEnis[ eni.id ] = true
+            eniInstanceG.push( existingEnis[ eni.id ] )
+
+          pairGroup.push {
+            type     : "AmiEniPair"
+            children : eniInstanceG
+          }
+
+      for eni in eniGroup.children
+        if not linkedEnis[ eni.component.id ]
+          lonelyEnis.push eni
+
+      subnetChildren.push {
+        type     : "AWS.EC2.Instance_group"
+        children : lonelyInstances
+      }
+
+      subnetChildren.push {
+        type     : "AWS.VPC.NetworkInterface_group"
+        children : lonelyEnis
+      }
+
+      subnetChildren.push {
+        type     : "AmiEniPari_group"
+        children : pairGroup
+      }
+
+      subnetChildren
+    else
+      group
+
+
   GroupMForDbSubnet = ( children )->
 
   # Arrange Helpers
-  ArrangeForVpc = ()->
+  ArrangeForVpc = ( children )->
+    def = Defination[ constant.RESTYPE.VPC ]
+    childMap = {}
+    for ch in children
+      childMap[ ch.type ] = ch
+
+    baseX  = if childMap[ "AWS.ELB_group" ] then 20 else 7
+    baseY  = 6
+    subnetGroupBaseX = baseX
+
+    ch = childMap[ "AWS.VPC.RouteTable_group" ]
+    if ch
+      ch.x  = baseX
+      ch.y  = baseY
+      baseY += ch.height + 2
+
+    elbBaseY = baseY
+    ch = childMap[ "AWS.EC2.AvailabilityZone_group" ]
+    if ch
+      ch.x  = baseX
+      ch.y  = baseY
+      subnetGroupBaseX = baseX + ch.width + 2
+      elbBaseY += ch.children[0].y + ch.children[0].height + 2
+
+    ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
+    if ch
+      ch.x = subnetGroupBaseX
+      ch.y = baseY
+
+    ch = childMap[ "AWS.ELB_group" ]
+    if ch
+      ch.x = 7
+      ch.y = elbBaseY
+
+    width  = 0
+    height = 0
+    for ch in children
+      w = ch.x + ch.width
+      if w > width then width = w
+      h = ch.y + ch.height
+      if h > height then height = h
+
+    {
+      width  : width  + 6
+      height : height + 6
+    }
 
   ArrangeForSvg = ( children )->
     newChs = []
@@ -222,17 +335,19 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
   Defination =
     "SVG" : {
       arrangeMethod : ArrangeForSvg
+      space : 6
     }
-    "AWS.VPC.CustomerGateway"  : {
+    "AWS.VPC.CustomerGateway_group"  : {
       arrangeMethod : ArrangeVertical
+      space : 2
     }
     "AWS.VPC.VPC" : {
-      arrangeMethod : ArrangeVertical
+      arrangeMethod : ArrangeForVpc
       space         : 4
       sortMethod    : SortForVpc
       margin        : 2
-      width         : 600
-      height        : 600
+      width         : 60
+      height        : 60
     }
     "AWS.VPC.VPNGateway" : {
       sticky : true
@@ -286,7 +401,7 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       height : 9
     }
     "AWS.EC2.Instance_group" : {
-      space  : 4
+      space  : 2
     }
     "AWS.EC2.Instance" : {
       width  : 9
@@ -303,7 +418,9 @@ define [ "./CanvasViewAws", "constant" ], ( AwsCanvasView, constant )->
       space : 4
     }
     "AWS.VPC.Subnet" : {
+      groupMethod : GroupMForSubnet
       margin : 2
+      space  : 2
       width  : 11
       height : 11
     }

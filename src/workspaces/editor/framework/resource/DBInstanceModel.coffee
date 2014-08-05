@@ -68,7 +68,9 @@ define [
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
 
-      @set backupRetentionPeriod: 0, multiAz: false
+      unless @get 'appId'
+        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: ''
+
       @listenTo master, 'change', @syncMasterAttr
 
       return

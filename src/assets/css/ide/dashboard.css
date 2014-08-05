@@ -531,6 +531,10 @@
   #RegionResourceData tr:nth-child(odd) > td {
     background: #e8ebed; }
 
+  #RegionResourceData .eip {
+    color: #5294CF; 
+  }  
+
 .region-resource-list > li {
   float: left;
   margin-left: 1.6%;

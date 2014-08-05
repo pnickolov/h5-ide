@@ -141,10 +141,10 @@
 <table class="table-head"> <thead><tr>
   <th class="sortable">{{i18n "DASH_LBL_INSTANCE_NAME"}}/{{i18n "DASH_LBL_ID"}}</th>
   <th class="sortable" style="width:10%">{{i18n "DASH_LBL_STATUS"}}</th>
-  <th class="sortable" style="width:15%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
-  <th class="sortable" style="width:10%">{{i18n "DASH_LBL_AMI"}}</th>
-  <th class="sortable" style="width:10%">{{i18n "DASH_LBL_INSTANCE_TYPE"}}</th>
-  <th class="sortable" style="width:10%">{{i18n "DASH_LBL_PUBLIC_IP"}}</th>
+  <th class="sortable" style="width:18%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
+  <th class="sortable" style="width:12%">{{i18n "DASH_LBL_AMI"}}</th>
+  <th class="sortable" style="width:12%">{{i18n "DASH_LBL_INSTANCE_TYPE"}}</th>
+  <th class="sortable" style="width:12%">{{i18n "DASH_LBL_PUBLIC_IP"}}</th>
   <th class="sortable" style="width:12%">{{i18n "DASH_LBL_AVAILABILITY_ZONE"}}</th>
   <th style="width:40px">{{i18n "DASH_LBL_DETAIL"}}</th>
 </tr></thead> </table>
@@ -154,10 +154,10 @@
     <thead> <tr>
       <th></th>
       <th style="width: 10%"></th>
-      <th style="width: 15%"></th>
-      <th style="width: 10%"></th>
-      <th style="width: 10%"></th>
-      <th style="width: 10%"></th>
+      <th style="width: 18%"></th>
+      <th style="width: 12%"></th>
+      <th style="width: 12%"></th>
+      <th style="width: 12%"></th>
       <th style="width: 12%"></th>
       <th style="width: 40px"></th>
     </tr> </thead>
@@ -174,7 +174,7 @@
         <td>{{simpleTime launchTime}}</td>
         <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
         <td>{{instanceType}}</td>
-        <td>{{ipAddress}}</td>
+        <td {{#if isEIP}}class="eip"{{/if}} >{{ipAddress}}</td>
         <td>{{placement.availabilityZone}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}

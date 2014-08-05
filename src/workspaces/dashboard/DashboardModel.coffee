@@ -192,6 +192,20 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           globalReady = false unless i.isReady()
         return globalReady
 
+      #add isEIP to instance
+      if CloudResources( constant.RESTYPE.INSTANCE, region ).isReady() and CloudResources( constant.RESTYPE.EIP ).isReady()
+        eipGrp = CloudResources( constant.RESTYPE.EIP, region ).groupBy("instanceId")
+        insGrp = CloudResources( constant.RESTYPE.INSTANCE, region ).groupBy("id")
+
+        #reset isEIP
+        _.each insGrp, (ins,key)->
+          if ins[0]
+            ins[0].set "isEIP", false
+
+        _.each eipGrp, (eip,key)->
+          if key isnt "undefined" and insGrp[key] and insGrp[key].length is 1
+            insGrp[key][0].set 'isEIP', true
+
       switch type
         when constant.RESTYPE.SUBSCRIPTION
           return CloudResources( type, region ).isReady()

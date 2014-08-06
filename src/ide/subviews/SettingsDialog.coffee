@@ -76,7 +76,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
 
           credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
 
-        @modal.$("#modal-box").html SettingsTpl attributes
+        @modal.setContent SettingsTpl attributes
         @modal.$("#SettingsNav").children().eq( SettingsDialog.TAB.Credential ).click()
 
 

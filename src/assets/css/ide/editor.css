@@ -84,7 +84,8 @@
   height: auto; }
   .OEPanelCenter .nano-pane {
     display: block;
-    opacity: 1; }
+    opacity: 1;
+    background: none; }
 
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap {
   right: 280px; }

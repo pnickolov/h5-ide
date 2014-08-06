@@ -230,7 +230,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
       el  = svg.group()
 
       el.add([
-        svg.rect(width, height).radius(5).classes("node-background")
+        svg.rect(width-1, height-1).move(0.5,0.5).radius(5).classes("node-background")
         svg.image( MC.IMG_URL + option.image, option.imageW, option.imageH ).move( option.imageX, option.imageY )
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\./g, "-") )
 

@@ -94,7 +94,7 @@ define [
                 width           : '855px'
                 height          : '473px'
                 compact         : true
-                # hideClose       : true
+                mode            : "panel"
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @
@@ -179,7 +179,7 @@ define [
             @renderSlide option, data
             @$('.slidebox').addClass 'show'
 
-        slideUp: -> @$('.slidebox').removeClass 'show'
+        slideUp: -> @$('.slidebox').removeClass('show').removeAttr("style")
 
         cancel: ->
 
@@ -285,7 +285,13 @@ define [
 
             @$('.form').html template.og_slide option or {}
             @$('.error').html ''
-
+            console.log "Initing..."
+            that = @
+            window.setTimeout(->
+              that.__modalplus.$(".slidebox.show").css 'max-height', that.__getHeightOfContent()
+            ,0)
+            $(window).on 'resize', ()->
+              that.__modalplus.$(".slidebox.show").css 'max-height', that.__getHeightOfContent()
             # Parsley
             $('form input').each ->
                 $this = $ @
@@ -296,6 +302,12 @@ define [
                     $this.parsley 'custom', valueInRange start, end
 
             null
+
+        __getHeightOfContent: ->
+          windowHeight = $(window).height()
+          $modal= @__modalplus.tpl
+          headerHeight= $modal.find(".modal-header").outerHeight()
+          windowHeight - headerHeight
 
         renderRemoveConfirm: () ->
 

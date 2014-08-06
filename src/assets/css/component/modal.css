@@ -37,6 +37,9 @@
 .modal-box.panel.bounce {
   right: -50%; }
 
+.modal-wrapper-fix {
+  width: 520px; }
+
 #modal-box .input:focus {
   border-color: #010101; }
 

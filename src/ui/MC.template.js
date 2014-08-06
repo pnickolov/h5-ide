@@ -1829,7 +1829,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   
-  return " style=\"width: 520px\"";
+  return " class=\"modal-wrapper-fix\"";
   }
 
 function program7(depth0,data) {

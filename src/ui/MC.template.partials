@@ -1301,7 +1301,7 @@ Additional Notes and Questions
 
 <!-- {{modalTemplate}} -->
 <div class="modal-box{{#ifCond mode "panel"}} panel{{/ifCond}}">
-    <div{{#ifCond mode "panel"}}{{else}} style="width: 520px"{{/ifCond}}>
+    <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}}>
         <div class="modal-header">
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}

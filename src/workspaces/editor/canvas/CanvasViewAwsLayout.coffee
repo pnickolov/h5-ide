@@ -202,15 +202,17 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
       subnetGroupBaseX = baseX + ch.width + 4
       elbBaseY += ch.children[0].y + ch.children[0].height + 3
 
-    ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
-    if ch
-      ch.x = subnetGroupBaseX
-      ch.y = baseY
-
     ch = childMap[ "AWS.ELB_group" ]
     if ch
       ch.x = 5
       ch.y = elbBaseY
+      if ch.x + ch.width > subnetGroupBaseX
+        subnetGroupBaseX = ch.x + ch.width + 4
+
+    ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
+    if ch
+      ch.x = subnetGroupBaseX
+      ch.y = baseY
 
     width  = 0
     height = 0

@@ -61,7 +61,36 @@
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
         </section>
 
+    {{#if isAppEdit}}
 
+        <div class="property-control-group clearfix">
+            {{#unless multiAz}}
+                {{#if AvailabilityZone}}
+                    <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+                    <div>{{AvailabilityZone}}</div>
+                {{/if}}
+            {{else}}
+                {{#if SecondaryAvailabilityZone}}
+                <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+                <div>{{SecondaryAvailabilityZone}}</div>
+                {{/if}}
+            {{/unless}}
+        </div>
+
+    {{else}}
+
+        {{#if azNotEnough}}
+        <section class="property-control-group">
+            <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+        </section>
+        {{else}}
+        <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
+            <label class="left">Preferred Availability Zone</label>
+            <div class="selectbox" id="property-dbinstance-preferred-az"></div>
+        </section>
+        {{/if}}
+
+    {{/if}}
 
     </div>
 

@@ -94,10 +94,12 @@ define [
                 width           : '855px'
                 height          : '473px'
                 compact         : true
-                hideClose       : true
+                # hideClose       : true
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @close, @
+
+            @dropdown.refresh()
 
             null
 
@@ -512,5 +514,5 @@ define [
         cancelClicked: () ->
 
             that = this
-            @ogModel.remove() if @isCreate
+            # @ogModel.remove() if @isCreate
             @__modalplus.close()

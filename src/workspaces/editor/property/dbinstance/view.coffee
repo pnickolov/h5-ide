@@ -424,7 +424,7 @@ define [ 'ApiRequest'
             @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
 
                 if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
-                    return 'Can\'t contain /,",@'
+                    return 'Cannot contain character /,",@'
 
                 if that.resModel.isMysql()
                     min = 8

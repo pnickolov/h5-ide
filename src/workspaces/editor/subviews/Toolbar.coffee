@@ -502,7 +502,9 @@ define [
 
         removeList = []
         _.each removes, (e)->
-          removeList.push DBInstances.get(e.resource.DBInstanceIdentifier) if e.type is constant.RESTYPE.DBINSTANCE
+          if e.type is constant.RESTYPE.DBINSTANCE
+            dbModel = DBInstances.get(e.resource.DBInstanceIdentifier)
+            removeList.push(DBInstances.get(e.resource.DBInstanceIdentifier)) if dbModel
 
         removeListNotReady = _.filter removeList, (e)->
           e.attributes.DBInstanceStatus isnt "available"

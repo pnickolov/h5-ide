@@ -410,22 +410,27 @@ define [ 'ApiRequest'
 
                 return "Require IOPS / GB ratios between 3 and 10"
 
-                # if defaultIOPS is iopsRange.maxIOPS
-                #     return "Require #{defaultIOPS} IOPS"
-                # else
-                #     return "Require #{defaultIOPS}-#{iopsRange.maxIOPS} IOPS"
-
             @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
 
-                if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
+                if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
+                    return 'Can\'t contain /,",@'
+
+                if that.resModel.isMysql()
+                    min = 8
+                    max = 41
+                if that.resModel.isOracle()
+                    min = 8
+                    max = 30
+                if that.resModel.isSqlserver()
+                    min = 8
+                    max = 128
+                if that.resModel.isPostgresql()
+                    min = 8
+                    max = 128
+                if val.length >= min and val.length <= max
                     return null
-                if that.resModel.isOracle() and val.length >= 8 and val.length <= 30
-                    return null
-                if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
-                    return null
-                if that.resModel.isPostgresql() and val.length >= 8 and val.length <= 128
-                    return null
-                return 'Invalid password'
+
+                return "Must contain from #{min} to #{max} characters"
 
         renderOptionGroup: ->
 
@@ -753,15 +758,21 @@ define [ 'ApiRequest'
             target.parsley 'custom', (val) ->
 
                 if MC.validate('alphanum', val) and MC.validate('letters', val[0])
-                    if that.resModel.isMysql() and val.length >= 1 and val.length <= 16
+                    if that.resModel.isMysql()
+                        min = 1
+                        max = 16
+                    if that.resModel.isOracle()
+                        min = 1
+                        max = 30
+                    if that.resModel.isSqlserver()
+                        min = 1
+                        max = 128
+                    if that.resModel.isPostgresql()
+                        min = 2
+                        max = 16
+                    if val.length >= min and val.length <= max
                         return null
-                    if that.resModel.isOracle() and val.length >= 1 and val.length <= 30
-                        return null
-                    if that.resModel.isSqlserver() and val.length >= 1 and val.length <= 128
-                        return null
-                    if that.resModel.isPostgresql() and val.length >= 2 and val.length <= 16
-                        return null
-                return "Invalid username"
+                return "Must be #{min} to #{max} alphanumeric characters and first character must be a letter"
 
             if target.parsley 'validate'
                 @resModel.set 'username', value

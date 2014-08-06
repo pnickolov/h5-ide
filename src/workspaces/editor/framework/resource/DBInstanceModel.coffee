@@ -61,19 +61,19 @@ define [
         return m.master()
       null
 
-    setMaster : ( master ) ->
+    copyMaster: ( master ) ->
       @clone master
-
-      @connections("DbReplication")[0]?.remove()
-      Replication = Design.modelClassForType("DbReplication")
-      new Replication( master, @ )
 
       unless @get 'appId'
         @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: ''
 
-      @listenTo master, 'change', @syncMasterAttr
+    setMaster : ( master ) ->
+      @connections("DbReplication")[0]?.remove()
+      Replication = Design.modelClassForType("DbReplication")
+      new Replication( master, @ )
 
-      return
+      @listenTo master, 'change', @syncMasterAttr
+      null
 
     syncMasterAttr: ( master ) ->
       if @get 'appId'
@@ -154,6 +154,7 @@ define [
         return
 
       if option.master
+        @copyMaster option.master
         @setMaster option.master
       else if option.createByUser
         # Default Sg

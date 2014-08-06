@@ -336,6 +336,17 @@ define [ 'ApiRequest'
             })
             @getInstanceStatus() if @isAppEdit
 
+            # listen change event
+            @resModel.on 'change:iops', (val) ->
+
+                if @isAppEdit
+                    originValue = that.getOriginAttr()
+                    $tipDom = @$el.find('.property-info-iops-adjust-tip')
+                    if originValue is val
+                        $tipDom.removeClass('hide')
+                    else
+                        $tipDom.addClass('hide')
+
             attr.name
 
         bindParsley: ->

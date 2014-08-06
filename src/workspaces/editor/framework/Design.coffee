@@ -503,7 +503,8 @@ define [
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 
-    currentDesignObj.use()
+    if currentDesignObj
+      currentDesignObj.use()
 
     data
 

@@ -18,7 +18,7 @@ define [ '../base/view', './template/app', 'og_manage_app', 'constant' ], ( Prop
 
         data = if @model then @model.toJSON() else @view.resModel.serialize().component.resource
         if not data.Endpoint
-          data = @resModel.serialize().component.resource
+          data = jQuery.extend( true, data, @resModel.serialize().component.resource )
           data.DBSubnetGroup.DBSubnetGroupName = Design.instance().component(data.DBSubnetGroup.DBSubnetGroupName.split(".")[0].split("{").pop()).serialize().component.resource.DBSubnetGroupName
         data.optionGroups = _.map data.OptionGroupMemberships, (ogm) ->
             ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere appId: ogm.OptionGroupName

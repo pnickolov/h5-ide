@@ -82,42 +82,59 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
     msGroup     = []
     normalGroup = []
 
+    masters      = {}
+    lonelySlaves = []
+
     for ch in children
-      if ch.component.master()
-        continue
+      if ch.component.slaves().length
+        masters[ ch.component.id ] = [ ch ]
 
-      slaves = ch.component.slaves()
-      if slaves.length
-        pair = [ ch ]
-        for s in slaves
-          pair.push {
-            type : s.type
-            component : s
-            x : 0
-            y : 0
-          }
-
-        msGroup.push {
-          type     : "MasterSlave"
-          children : pair
-        }
-      else
+    for ch in children
+      master = ch.component.master()
+      if master
+        if masters[ master.id ]
+          masters[ master.id ].push ch
+        else
+          lonelySlaves.push ch
+      else if not masters[ ch.component.id ]
         normalGroup.push ch
 
-    chs = []
+    lonelyMasters = []
+    for id, masterSlave of masters
+      if masterSlave.length is 1
+        lonelyMasters.push masterSlave[0]
+      else
+        msGroup.push {
+          type     : "MasterSlave"
+          children : masterSlave
+        }
+
+    if lonelyMasters.length
+      msGroup.push {
+        type     : "MasterSlave"
+        children : lonelyMasters
+      }
+
+    ch = []
     if msGroup.length
-      chs.push {
+      ch.push {
         type : "MasterSlave_group"
         children : msGroup
       }
 
-    if normalGroup
-      chs.push {
+    if lonelySlaves.length
+      ch.push {
+        type     : "AWS.RDS.DBInstance_group"
+        children : lonelySlaves
+      }
+
+    if normalGroup.length
+      ch.push {
         type     : "AWS.RDS.DBInstance_group"
         children : normalGroup
       }
 
-    chs
+    ch
 
 
   # Arrange Helpers

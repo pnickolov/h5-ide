@@ -163,12 +163,12 @@
     </tr> </thead>
     <tbody> {{#each this}}{{#with attributes}}<tr>
         <td>
-        {{#doubleIf tagSet tagSet.app }}
-          <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
+        {{#doubleIf visopsTag visopsTag.app }}
+          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
         {{else}}
           <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
-          <div>{{#if tagSet}}{{or tagSet.name tagSet.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
+          <div>{{#if visopsTag}}{{or visopsTag.name visopsTag.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
         </td>
         <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
         <td>{{simpleTime launchTime}}</td>
@@ -230,8 +230,8 @@
     </tr> </thead>
     <tbody>{{#each this}}{{#with attributes}} <tr>
         <td>
-        {{#doubleIf tagSet tagSet.app }}
-          <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
+        {{#doubleIf visopsTag visopsTag.app }}
+          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
         {{else}}
           <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
@@ -267,8 +267,8 @@
     </tr> </thead>
     <tbody>{{#each this}}{{#with attributes}} <tr>
         <td>
-        {{#doubleIf tagSet tagSet.app }}
-          <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
+        {{#doubleIf visopsTag visopsTag.app }}
+          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
         {{else}}
           <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
@@ -308,8 +308,8 @@
     <tbody>{{#each this}}{{#with attributes}}
       <tr>
         <td>
-          {{#doubleIf tagSet tagSet.app }}
-            <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
+          {{#doubleIf visopsTag visopsTag.app }}
+            <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
           {{else}}
             <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
           {{/doubleIf}}
@@ -379,8 +379,8 @@
     <tbody> {{#each this}}{{#with attributes}}
       <tr>
         <td>
-          {{#doubleIf tagSet tagSet.app }}
-            <div class="table-app-link-wrap"><span class="table-app-link truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey tagSet 'Created by'}}" data-id="{{tagSet.app-id}}">[{{tagSet.app}}]</span></div>
+          {{#doubleIf visopsTag visopsTag.app }}
+            <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
           {{else}}
             <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
           {{/doubleIf}}

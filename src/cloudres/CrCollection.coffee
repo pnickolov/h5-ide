@@ -82,7 +82,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         __replaceKey obj, k, needReplaceList[ k ]
 
 
-
   Backbone.Collection.extend {
 
     category : ""
@@ -157,6 +156,40 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       @__fetchPromise = null
       @fetch()
 
+    resolveTagSet: ( tagSet ) ->
+    #resolve tag for INSTANCE, VOL, VPC, VPN, ASG
+
+      if not tagSet
+        return {}
+
+      if tagSet['Created by'] and tagSet['app'] and tagSet['app-id'] and tagSet['name'] and tagSet['Name']
+        #old tag format
+        visopsTag = jQuery.extend(true, {}, tagSet)
+        visopsTag['isOwner'] = App.user.get('username') is tagSet['Created by']
+
+      else if tagSet['visualops'] and tagSet['Name']
+        #new tag format
+        visopsTag = {}
+        #1.
+        visualops = tagSet['visualops']
+        if visualops.indexOf('app-name=') is 0 and visualops.indexOf('app-id=') > 0 and visualops.indexOf('created-by=') > 0
+          for item in visualops.split(' ')
+            data = item.split('=')
+            switch data[0]
+              when 'app-name'   then visopsTag['app']        = data[1]
+              when 'app-id'     then visopsTag['app-id']     = data[1]
+              when 'created-by' then visopsTag['Created by'] = data[1]
+            null
+        #2.
+        visopsTag['name'] = tagSet['Name']
+        if visopsTag['Created by'] and visopsTag['app'] and visopsTag['app-id'] and visopsTag['name']
+          #3.
+          visopsTag['Name'] = visopsTag['app'] + '-' + visopsTag['name']
+          visopsTag['isOwner'] = App.user.get('username') is visopsTag['Created by']
+
+      visopsTag
+
+
     # This method is used by CloudResources to provide an external api to parse data coming from aws.
     # It parse data and the cached them in this collection and returns parsed models.
     __parseExternalData : ( awsData, extraAttr, category )->
@@ -189,6 +222,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
             else if i.Key
               ts[ i.Key ] = i.Value
           d.tagSet = ts
+
+        #append visopsTag
+        if d.tagSet
+          d.visopsTag = @resolveTagSet d.tagSet
 
         if @modelIdAttribute
           d.id = d[ @modelIdAttribute ]
@@ -289,6 +326,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
         @camelToPascal value
 
       obj
+
 
   }, {
 

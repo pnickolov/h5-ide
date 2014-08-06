@@ -34,5 +34,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
             return true
       false
 
+    isFunctionValue: (value)->
+      return false
+
     applyMethod : ()-> if @get("ApplyType") is "dynamic" then "immediate" else "pending-reboot"
   }

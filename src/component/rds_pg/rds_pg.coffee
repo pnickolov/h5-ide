@@ -181,12 +181,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
       console.log "Rendering...."
-      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53}
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height()}
       $(".slidebox").css('max-height', "none")
       @manager.on "slideup", ->
         $('.slidebox').removeAttr("style")
       $(window).on 'resize', ->
-        $("#parameter-table").parent().height($('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53)
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>.scroll-wrap').height())
         .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
@@ -221,7 +221,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $("[data-action='preview']").prop 'disabled', false
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
-          if e.isValidValue(this.value) or this.value is ""
+          if e.isValidValue(this.value) or this.value is "" or e.isFunctionValue(this.value)
             $(this).removeClass "parsley-error"
             if this.value isnt "" then e.set('newValue', this.value)
           else

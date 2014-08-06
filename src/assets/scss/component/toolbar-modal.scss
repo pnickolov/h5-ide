@@ -152,7 +152,6 @@ $dark-blue: #001324;
 		position:                   absolute;
 		width:                      100%;
 		z-index:                    71;
-        display:                    table; // hack for loading-spinner overflow. 
 
 		&.show {
 			box-shadow: 0 4px 10px rgba(0,0,0,.6);
@@ -171,6 +170,7 @@ $dark-blue: #001324;
 
 		width:  640px;
 		margin: 20px auto 0 auto;
+        display: table; // Hack for Loading spinner overflow
 
 		label {
 			width:   168px;

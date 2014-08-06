@@ -80,8 +80,7 @@
     overflow: hidden;
     position: absolute;
     width: 100%;
-    z-index: 71;
-    display: table; }
+    z-index: 71; }
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
@@ -96,7 +95,8 @@
       transition: opacity  .2s; }
   .modal-toolbar .slidebox .content {
     width: 640px;
-    margin: 20px auto 0 auto; }
+    margin: 20px auto 0 auto;
+    display: table; }
     .modal-toolbar .slidebox .content label {
       width: 168px;
       display: inline-block;

@@ -197,10 +197,12 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         eipGrp = CloudResources( constant.RESTYPE.EIP, region ).groupBy("instanceId")
         insGrp = CloudResources( constant.RESTYPE.INSTANCE, region ).groupBy("id")
 
-        #reset isEIP
+        #reset isEIP and set osType icon
         _.each insGrp, (ins,key)->
-          if ins[0]
             ins[0].set "isEIP", false
+            ami = CloudResources( constant.RESTYPE.AMI, region ).where( {id : ins[0].get('imageId')} )
+            if ami and ami.length>0
+              ins[0].set 'icon', ami[0].get 'icon'
 
         _.each eipGrp, (eip,key)->
           if key isnt "undefined" and insGrp[key] and insGrp[key].length is 1

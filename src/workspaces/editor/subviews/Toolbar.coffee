@@ -303,7 +303,6 @@ define [
             template: MC.template.modalRunStack
             disableClose: true
             width: '450px'
-            height: "620px"
             confirm:
                 text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true

@@ -7,14 +7,15 @@ define [
   "./subviews/Statusbar"
   "./canvas/CanvasViewAws"
   "UI.modalplus"
+  "event"
 
   "./canvas/CanvasBundle"
   "backbone"
   "UI.selectbox"
-], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal )->
+], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal, ide_event )->
 
   ### Monitor keypress ###
-  $(document).on 'keydown', ( evt )->
+  $(window).on 'keydown', ( evt )->
     if $(evt.target).is("input, textarea") or evt.target.contentEditable is "true"
       evt.stopPropagation()
       return
@@ -171,6 +172,14 @@ define [
           self.workspace.remove()
           return
       }
+      return
+
+    showProperty : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
+
+    showStateEditor : ()->
+      com = @workspace.getSelectedComponent()
+      if com
+        ide_event.trigger ide_event.SHOW_STATE_EDITOR, com.id
       return
 
     getSvgElement : ()->

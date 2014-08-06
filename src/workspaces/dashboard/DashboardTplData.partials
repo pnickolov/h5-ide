@@ -44,7 +44,7 @@
     <h4>{{regionName}}</h4><h5>{{regionArea}}</h5>
   </li>{{/each}}</ul>
 </li>
-<li class="rds" data-type="RDS">
+<li class="rds" data-type="DBINSTANCE">
   <hgroup><span class="resource-count">{{rds.totalCount}}</span><h5>{{i18n "DASH_LBL_RDS"}}</h5></hgroup>
   <ul>{{#each rds}}<li data-region="{{region}}" class="global-resource-li">
     <span class="count">{{data.length}}</span>

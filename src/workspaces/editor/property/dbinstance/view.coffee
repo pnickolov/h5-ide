@@ -865,7 +865,6 @@ define [ 'ApiRequest'
                 $backupGroup.hide()
                 @resModel.set('backupWindow', '')
 
-
         changeMaintenanceOption: (event) ->
 
             $maintenanceGroup = $('#property-dbinstance-maintenance-window-group')

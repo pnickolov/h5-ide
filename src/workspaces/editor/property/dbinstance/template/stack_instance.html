@@ -206,7 +206,6 @@
 
             <section id="property-dbinstance-backup-window-select" class="property-control-group">
                 <label>Backup Window</label>
-                {{#unless isAppEdit}}
                 <div>
                     <div class="radio">
                         <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backupWindow}}checked="checked"{{/unless}} value="no">
@@ -221,7 +220,6 @@
                     </div>
                     <label for="property-dbinstance-backup-radio-window">Select Window</label>
                 </div>
-                {{/unless}}
             </section>
 
             <section id="property-dbinstance-backup-window-group" class="{{#unless backupWindow}}hide{{/unless}} property-control-group">
@@ -252,7 +250,6 @@
 
         <section id="property-dbinstance-maintenance-window-select" class="property-control-group">
             <label>Maintenance Window</label>
-            {{#unless isAppEdit}}
             <div>
                 <div class="radio">
                     <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenanceWindow}}checked="checked"{{/unless}} value="no">
@@ -267,7 +264,6 @@
                 </div>
                 <label for="property-dbinstance-maintenance-radio-window">Select Window</label>
             </div>
-            {{/unless}}
         </section>
 
         <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenanceWindow}}hide{{/unless}}">

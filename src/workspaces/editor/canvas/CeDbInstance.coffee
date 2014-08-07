@@ -69,7 +69,7 @@ define [
         name += "-replica"
 
       DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
-      new DbInstance({
+      replica = new DbInstance({
         x        : dataTransfer.x
         y        : dataTransfer.y
         name     : name
@@ -78,6 +78,10 @@ define [
       }, {
         master : dataTransfer.item.model
       })
+
+      if replica.id
+        dataTransfer.item.canvas.selectItem( replica.id )
+
       return
 
     # Creates a svg element

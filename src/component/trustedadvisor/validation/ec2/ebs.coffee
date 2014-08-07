@@ -32,7 +32,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 							if snaphostId and instanceUID
 								if not snaphostMap[snaphostId]
 									snaphostMap[snaphostId] = []
-							snaphostMap[snaphostId] = _.union(snaphostMap[snaphostId], [instanceUID])
+								snaphostMap[snaphostId] = _.union(snaphostMap[snaphostId], [instanceUID])
 
 				null
 

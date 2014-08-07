@@ -564,6 +564,11 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
       for aws_ins in @getResourceByType("INSTANCE") || []
         aws_ins = aws_ins.attributes
 
+        if aws_ins.tagSet
+          if aws_ins.tagSet['aws:elasticmapreduce:instance-group-role'] and aws_ins.tagSet['aws:elasticmapreduce:job-flow-id']
+            console.warn "ignore EMR instances"
+            continue
+
         #skip invalid instance
         if aws_ins.instanceState.name in [ "shutting-down", "terminated" ]
           continue

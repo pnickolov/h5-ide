@@ -476,12 +476,13 @@ define [
       if not result.compChange and not result.layoutChange and not result.stateChange
         return @workspace.applyAppEdit()
 
-      changes = differ.modifiedComps
       removes = differ.removedComps
 
       changeList = []
-      _.each changes, (e, key)->
-        changeList.push Design.instance().component(key).attributes.appId
+      console.log newJson
+      components = newJson.component
+      _.each components, (e, key)->
+        changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
       DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal

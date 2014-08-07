@@ -35,7 +35,8 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
       false
 
     isFunctionValue: (value)->
-      return false
+      reg = /^((GREATEST|LEAST|SUM)\(\s*)*((({(DBInstanceClassMemory|AllocatedStorage|EndPointPort))+((\/|\*|\+|\-)*(\d+|(DBInstanceClassMemory|AllocatedStorage|EndPointPort)))*}|\d+)\s*,?\s*\)*)*$/
+      reg.test(value)
 
     applyMethod : ()-> if @get("ApplyType") is "dynamic" then "immediate" else "pending-reboot"
   }

@@ -244,7 +244,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         console.info "plese use http://tlrobinson.net/projects/javascript-fun/jsondiff/ to diff app_json"
       ## ##################################################
 
-      json
+      #app_json_backend
+      app_json_xu.models[0]
+
+      #app_json_frontend
+      #json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

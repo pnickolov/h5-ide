@@ -860,6 +860,7 @@ define [ 'ApiRequest'
             selectedValue = $(event.currentTarget).val()
             if selectedValue is 'window'
                 $backupGroup.show()
+                @changeBackupTime()
             else
                 $backupGroup.hide()
                 @resModel.set('backupWindow', '')
@@ -871,6 +872,7 @@ define [ 'ApiRequest'
             selectedValue = $(event.currentTarget).val()
             if selectedValue is 'window'
                 $maintenanceGroup.show()
+                @changeMaintenanceTime()
             else
                 $maintenanceGroup.hide()
                 @resModel.set('maintenanceWindow', '')

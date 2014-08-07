@@ -18,6 +18,8 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 					if snaphostId and instanceUID
 						if not snaphostMap[snaphostId]
 							snaphostMap[snaphostId] = []
+						instanceUID = MC.extractID(instanceUID)
+						snaphostMap[snaphostId] = _.union(snaphostMap[snaphostId], [instanceUID])
 
 				if compObj.type is constant.RESTYPE.LC
 
@@ -30,6 +32,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 							if snaphostId and instanceUID
 								if not snaphostMap[snaphostId]
 									snaphostMap[snaphostId] = []
+							snaphostMap[snaphostId] = _.union(snaphostMap[snaphostId], [instanceUID])
 
 				null
 

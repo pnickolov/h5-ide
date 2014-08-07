@@ -209,14 +209,14 @@
                 {{#unless isAppEdit}}
                 <div>
                     <div class="radio">
-                        <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backup}}checked="checked"{{/unless}} value="no">
+                        <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backupWindow}}checked="checked"{{/unless}} value="no">
                         <label for="property-dbinstance-backup-radio-no"></label>
                     </div>
                     <label for="property-dbinstance-backup-radio-no">No Preference</label>
                 </div>
                 <div>
                     <div class="radio">
-                        <input id="property-dbinstance-backup-radio-window" name="property-dbinstance-backup-radio" type="radio" {{#if backup}}checked="checked"{{/if}} value="window">
+                        <input id="property-dbinstance-backup-radio-window" name="property-dbinstance-backup-radio" type="radio" {{#if backupWindow}}checked="checked"{{/if}} value="window">
                         <label for="property-dbinstance-backup-radio-window"></label>
                     </div>
                     <label for="property-dbinstance-backup-radio-window">Select Window</label>
@@ -224,7 +224,7 @@
                 {{/unless}}
             </section>
 
-            <section id="property-dbinstance-backup-window-group" class="{{#unless backup}}hide{{/unless}} property-control-group">
+            <section id="property-dbinstance-backup-window-group" class="{{#unless backupWindow}}hide{{/unless}} property-control-group">
                 <section class="property-control-group">
                     <label>Start Time:</label>
                     <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-ignore="true" data-ignore-regexp="^[0-9:]*$"/>
@@ -255,14 +255,14 @@
             {{#unless isAppEdit}}
             <div>
                 <div class="radio">
-                    <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenance}}checked="checked"{{/unless}} value="no">
+                    <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenanceWindow}}checked="checked"{{/unless}} value="no">
                     <label for="property-dbinstance-maintenance-radio-no"></label>
                 </div>
                 <label for="property-dbinstance-maintenance-radio-no">No Preference</label>
             </div>
             <div>
                 <div class="radio">
-                    <input id="property-dbinstance-maintenance-radio-window" name="property-dbinstance-maintenance-radio" type="radio" {{#if maintenance}}checked="checked"{{/if}} value="window">
+                    <input id="property-dbinstance-maintenance-radio-window" name="property-dbinstance-maintenance-radio" type="radio" {{#if maintenanceWindow}}checked="checked"{{/if}} value="window">
                     <label for="property-dbinstance-maintenance-radio-window"></label>
                 </div>
                 <label for="property-dbinstance-maintenance-radio-window">Select Window</label>
@@ -270,7 +270,7 @@
             {{/unless}}
         </section>
 
-        <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenance}}hide{{/unless}}">
+        <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenanceWindow}}hide{{/unless}}">
             <section class="property-control-group" >
                 <label class="left">Start Day</label>
                 <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-start-day-select">

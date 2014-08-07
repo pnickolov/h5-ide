@@ -302,8 +302,10 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 							return
 						compName = compObj.serverGroupName
 
-					if compType is constant.RESTYPE.LC
-						compName = Design.instance().component(compUID).parent().get('name')
+					if compType is constant.RESTYPE.ASG
+						compName = compObj.name
+						lcUID = MC.extractID(compObj.resource.LaunchConfigurationName)
+						compObj = allCompData[lcUID] if lcUID
 
 					# find all state
 					stateAry = compObj.state

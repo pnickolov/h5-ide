@@ -56,8 +56,8 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         currentIsASG = false
         currentASGName = null
-        if currentCompType is constant.RESTYPE.LC
-            currentIsASG = true
+        # if currentCompType is constant.RESTYPE.LC
+        #     currentIsASG = true
 
         currentIsISG = false
         currentIsInstance = false
@@ -93,10 +93,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                 if lcUIDRef
                     lcUID = MC.extractID(lcUIDRef)
                     lcCompData = allCompData[lcUID]
-                    if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
-                        currentASGName = compName
-                        compName = 'self'
-                        asgHaveSelf = true
+                    # if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
+                    #     currentASGName = compName
+                    #     compName = 'self'
+                    #     asgHaveSelf = true
 
                     if lcCompData.resource.AssociatePublicIpAddress
                         asgHavePublicIP = true

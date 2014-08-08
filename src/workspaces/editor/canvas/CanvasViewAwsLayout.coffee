@@ -7,8 +7,11 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
 
   GroupMForSubnet = ( children )->
     group = CanvasViewLayoutHelpers.DefaultGroupMethod.call this, children
+
     instanceGroup = null
-    eniGroup = null
+    eniGroup      = null
+    asgGroup      = null
+    expandedGroup = null
 
     subnetChildren = []
 
@@ -17,8 +20,21 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
         eniGroup = ch
       else if ch.type is "AWS.EC2.Instance_group"
         instanceGroup = ch
+      else if ch.type is "ExpandedAsg_group"
+        expandedGroup = ch
+      else if ch.type is "AWS.AutoScaling.Group_group"
+        asgGroup = ch
       else
         subnetChildren.push ch
+
+    if expandedGroup
+      if asgGroup
+        asgGroup.children = asgGroup.children.concat expandedGroup.children
+      else
+        expandedGroup.type = "AWS.AutoScaling.Group_group"
+        asgGroup = expandedGroup
+    if asgGroup
+      subnetChildren.unshift asgGroup
 
     if instanceGroup and eniGroup
       linkedInstances = {}
@@ -74,7 +90,7 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
         __sortInstance( instanceGroup.children )
         subnetChildren.push instanceGroup
 
-      if eniGroup      then subnetChildren.push eniGroup
+      if eniGroup then subnetChildren.push eniGroup
       subnetChildren
 
 
@@ -380,9 +396,13 @@ define [ "./CanvasViewAws", "./CanvasViewLayout", "constant" ], ( AwsCanvasView,
     }
     "AWS.AutoScaling.Group_group" : {
       arrangeMethod : "ArrangeBinPack"
-      space : 4
+      space : 2
     }
     "AWS.AutoScaling.Group" : {
+      width  : 13
+      height : 13
+    }
+    "ExpandedAsg" : {
       width  : 13
       height : 13
     }

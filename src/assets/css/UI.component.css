@@ -58,6 +58,12 @@
 	border: 1px solid #222;
 }
 
+.table.gray th,
+.table.gray td,
+.table-head-fix .table-head thead th{
+    border-color: #7e7e7e;
+}
+
 .table tbody tr:hover th,
 .table tbody tr:hover td {
 	background: #393939;
@@ -103,7 +109,9 @@
 	padding: 0;
 	box-shadow: none;
 }
-
+.table tbody tr td.align-right{
+    text-align: right;
+}
 .sortable:after,
 .sortable .desc-sort:after {
 	position: absolute;
@@ -300,6 +308,11 @@ a.btn-primary {
 	padding: 10px 0;
 	width: 140px;
 	font-size: 18px;
+}
+
+.btn-xlarge{
+    padding: 10px 20px;
+    font-size: 17px;
 }
 
 .btn-small {

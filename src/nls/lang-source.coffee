@@ -4638,6 +4638,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "update"
       zh: "更新错误"
 
+    # Payment
+
+    PAYMENT_RUN_STACK_MODAL:
+      en: "Instance State is a Paid Feature"
+      zh: ""
+
+
+
     #  port tooltip
 
     PORT_TIP_A:

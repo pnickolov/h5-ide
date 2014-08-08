@@ -4213,3 +4213,21 @@ div.modal-text-highlight{
 	margin-left : 5px;
 }
 
+.payment-modal-wrap{
+    text-align: center;
+    padding-top: 30px;
+}
+
+.payment-modal-btn-wraper{
+    margin-bottom: 20px;
+}
+
+.link-blue{
+    color: #148BE6;
+}
+.payment-credit-card{
+    text-align: center;
+}
+.payment-credit-card i{
+    font-size: 100px;
+}

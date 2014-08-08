@@ -1325,3 +1325,28 @@ Additional Notes and Questions
     </div>
 </div>
 
+<!--{{paymentNeeded}}-->
+<p class="payment-credit-card">
+    <i class="icon-detail"></i>
+</p>
+<p class="modal-text-minor">You have enabled <a class="link-style" href="#">Instance State</a> in this stack. To enjoy this paid feature, your billing informaiton is required.</p>
+<p class="modal-text-major">How do we charge:</p>
+<table class="table gray">
+    <tbody>
+        <tr>
+            <td>10 or less running instances</td>
+            <td class="align-right">Free</td>
+        </tr>
+        <tr>
+            <td>Running instances exceeding 10</td>
+            <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
+        </tr>
+    </tbody>
+</table>
+<a href="#" class="link-blue">Learn more about pricing</a>
+<div class="payment-modal-wrap">
+    <div class="payment-modal-btn-wraper"><button class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></button></div>
+    <p>
+        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
+    </p>
+</div>

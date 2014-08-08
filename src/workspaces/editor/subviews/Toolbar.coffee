@@ -298,6 +298,16 @@ define [
     runStack: (event)->
         if $(event.currentTarget).attr('disabled')
             return false
+        userPayment = App.user.payment()
+        if not userPayment
+            paymentModal = new Modal
+              title: lang.ide.PAYMENT_RUN_STACK_MODAL
+              template: MC.template.paymentNeeded
+              disableClose: true
+              disableFooter: true
+            return false
+        else
+            return false
         @modal = new Modal
             title: lang.ide.RUN_STACK_MODAL_TITLE
             template: MC.template.modalRunStack

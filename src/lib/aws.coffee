@@ -58,6 +58,14 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
             return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
             return null
 
+        if currentCompData.type is constant.RESTYPE.ASG
+
+            lcUIDRef = currentCompData.resource.LaunchConfigurationName
+            if lcUIDRef
+                lcUID = MC.extractID(lcUIDRef)
+                currentCompData = allCompData[lcUID]
+                return null if not currentCompData
+
         currentCompUID = currentCompData.uid
         currentCompType = currentCompData.type
 
@@ -105,7 +113,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                         if asgModel and asgModel.get('id') is compUID
                             currentASGName = compName
                             compName = 'self'
-                            asgHaveSelf = true
 
                     if lcCompData.resource.AssociatePublicIpAddress
                         asgHavePublicIP = true

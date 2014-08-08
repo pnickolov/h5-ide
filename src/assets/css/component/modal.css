@@ -207,3 +207,6 @@
   padding: 5px 10px; }
   .modal-list-body ::selection {
     background: transparent; }
+
+#parameter-table {
+  overflow: auto; }

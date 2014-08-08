@@ -180,24 +180,23 @@
         {{/each}}
         </tbody>
     </table>
-    <div class="pg-edit-footer clearfix">
-        <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Value Reference</a>
-        <div class="init action" style="padding: 10px 0">
-            {{#if preview}}
-                <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
-                <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
-            {{else}}
-                <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
-            {{/if}}
-            <button class="btn btn-silver cancel">Cancel</button>
-        </div>
-        <div class="processing action" style="padding: 10px 0;display: none">
-            <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
-            <button class="btn btn-silver cancel" disabled>Cancel</button>
-        </div>
+</div>
+<div class="pg-edit-footer clearfix">
+    <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Value Reference</a>
+    <div class="init action" style="padding: 10px 0">
+        {{#if preview}}
+            <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
+            <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
+        {{else}}
+            <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
+        {{/if}}
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+    <div class="processing action" style="padding: 10px 0;display: none">
+        <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
+        <button class="btn btn-silver cancel" disabled>Cancel</button>
     </div>
 </div>
-
 
 
 <!-- {{filter}} -->

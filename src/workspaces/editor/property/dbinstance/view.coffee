@@ -111,7 +111,7 @@ define [ 'ApiRequest'
             range = @resModel.getAllocatedRange()
             currentValue = @resModel.get('allocatedStorage')
 
-            if range.min >= currentValue
+            if range.min > currentValue or range.max < currentValue
 
                 defaultStorage = @resModel.getDefaultAllocatedStorage()
                 @resModel.set('allocatedStorage', defaultStorage)

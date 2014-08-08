@@ -66,22 +66,25 @@ $navHeight : 38px;
     padding     : 3px 0;
     margin-left : 0;
   }
+
+  #AccountEmail {
+    color : #148BE6;
+  }
 }
 
-#AccountPwdWrap {
+.accountEditWrap {
   display    : none;
   margin-top : 2px;
   .input {
     width   : 250px;
     padding : 5px;
   }
+  .dl-horizontal {
+    line-height : 36px;
+  }
 }
 
-#AccountPwdWrap .dl-horizontal {
-  line-height : 36px;
-}
-
-#AccountInfo {
+#AccountInfo, #AccountEmailInfo {
   width         : 360px;
   font-size     : 12px;
   border-radius : 3px;
@@ -91,22 +94,17 @@ $navHeight : 38px;
   margin        : 10px 0;
 }
 
-#account-passowrd-info a {
-  color: #fff;
-}
-
-#AccountPwdBtns {
+.accountPwdBtns {
   padding-left : 130px;
-  margin       : 10px 0;
 }
 
-#AccountUpdatePwd {
-  padding   : 3px;
+#AccountUpdatePwd, #AccountUpdateEmail{
+  padding   : 5px;
   min-width : 80px;
   font-size : 12px;
 }
 
-#AccountCancelPwd {
+#AccountCancelPwd, #AccountCancelEmail {
   font-size      : 12px;
   color          : #999;
   padding        : 3px;
@@ -369,7 +367,7 @@ $welcome-dialog-width: 600px;
     width : 230px;
   }
 
-  .tokenControl { 
+  .tokenControl {
     width      : 60px;
     padding    : 0;
     margin-top : 3px;
@@ -456,7 +454,7 @@ $welcome-dialog-width: 600px;
   .tokenName.input {
     font-size: 12px;
   }
-  
+
 }
 
 #TokenRmConfirm {

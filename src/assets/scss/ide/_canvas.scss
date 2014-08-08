@@ -457,7 +457,7 @@ marker {
   fill:none;
 }
 
-g.shadow { opacity : 0.8; }
+g.shadow { opacity : 0.8; pointer-events: none; }
 
 
 // Popup

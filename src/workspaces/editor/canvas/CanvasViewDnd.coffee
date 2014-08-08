@@ -337,7 +337,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
   # Move item by dnd
   CanvasViewProto.__moveItemMouseDown = ( evt )->
-    if evt.metaKey
+    if evt.metaKey || evt.ctrlKey
       @__dragCanvasMouseDown( evt )
     else if not @isReadOnly()
       @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
@@ -539,7 +539,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
 
   CanvasViewProto.__dragCanvasMouseDown = ( evt )->
-    if not evt.metaKey or evt.which isnt 1 then return false
+    if not (evt.ctrlKey || evt.metaKey) or evt.which isnt 1 then return false
 
     scrollContent = @$el.children(":first-child")[0]
 

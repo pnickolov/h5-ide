@@ -23,6 +23,7 @@ define [ 'ApiRequest'
             'change #property-dbinstance-name': 'changeInstanceName'
             'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
             'change #property-dbinstance-storage': 'changeAllocatedStorage'
+            'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
             'change #property-dbinstance-iops-check': 'changeProvisionedIOPSCheck'
             'change #property-dbinstance-iops-value': 'changeProvisionedIOPS'
             'change #property-dbinstance-master-username': 'changeUserName'
@@ -87,10 +88,15 @@ define [ 'ApiRequest'
 
         setDefaultAllocatedStorage: () ->
 
-            defaultStorage = @resModel.getDefaultAllocatedStorage()
-            @resModel.set('allocatedStorage', defaultStorage)
-            $('#property-dbinstance-storage').val(defaultStorage)
-            @updateIOPSCheckStatus()
+            range = @resModel.getAllocatedRange()
+            currentValue = @resModel.get('allocatedStorage')
+
+            if range.min >= currentValue
+
+                defaultStorage = @resModel.getDefaultAllocatedStorage()
+                @resModel.set('allocatedStorage', defaultStorage)
+                $('#property-dbinstance-storage').val(defaultStorage)
+                @updateIOPSCheckStatus()
 
         _getTimeData: (timeStr) ->
 
@@ -236,7 +242,7 @@ define [ 'ApiRequest'
             originJson = Design.instance().__opsModel.getJsonData()
             originComp = originJson.component[@resModel.id]
 
-            if originComp
+            if originComp and @appModel
 
                 allocatedStorage = originComp.resource.AllocatedStorage
                 iops = originComp.resource.Iops
@@ -246,7 +252,6 @@ define [ 'ApiRequest'
                     originIOPS: iops
                     originBackupWindow: @appModel.get 'PreferredBackupWindow'
                     originMaintenanceWindow: @appModel.get 'PreferredMaintenanceWindow'
-
                 }
 
             else
@@ -630,13 +635,17 @@ define [ 'ApiRequest'
 
             # @renderLVIA()
 
-        updateIOPSCheckStatus: () ->
+        updateIOPSCheckStatus: (newStorage) ->
 
             that = this
 
+            if newStorage
+                storge = newStorage
+            else
+                storge = that.resModel.get 'allocatedStorage'
+
             if not (that.resModel.master() and not that.isAppEdit)
 
-                storge = that.resModel.get 'allocatedStorage'
                 iops = that.resModel.get 'iops'
                 if that._haveEnoughStorageForIOPS(storge)
                     that._disableIOPSCheck(false)
@@ -712,6 +721,15 @@ define [ 'ApiRequest'
             if target.parsley('validate') and that.changeProvisionedIOPS()
                 that.resModel.set 'allocatedStorage', value
                 that.updateIOPSCheckStatus()
+
+        inputAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            # if target.parsley('validate') and that.changeProvisionedIOPS()
+            that.updateIOPSCheckStatus(value)
 
         changeProvisionedIOPSCheck: (event) ->
 

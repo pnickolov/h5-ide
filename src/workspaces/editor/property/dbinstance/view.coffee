@@ -3,6 +3,7 @@
 #############################
 
 define [ 'ApiRequest'
+         'ResDiff'
          '../base/view'
          'og_dropdown'
          './template/stack_instance'
@@ -13,7 +14,7 @@ define [ 'ApiRequest'
          'CloudResources'
          'rds_pg'
          'jqtimepicker'
-], ( ApiRequest, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
 
     noop = ()-> null
 
@@ -52,6 +53,25 @@ define [ 'ApiRequest'
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+            'OPTION_CHANGE': 'checkChange'
+            'change *': 'checkChange'
+
+        checkChange: () ->
+            return unless @resModel.get 'appId'
+            that = @
+            _.defer () ->
+                comp = that.resModel.serialize()
+
+                differ = new ResDiff({
+                    old : component: that.originComp
+                    new : comp
+                })
+
+                if differ.getChangeInfo().hasResChange
+                    that.$( '.apply-immediately-section' ).show()
+                else
+                    that.$( '.apply-immediately-section' ).hide()
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -239,13 +259,11 @@ define [ 'ApiRequest'
 
         getOriginAttr: () ->
 
-            originJson = Design.instance().__opsModel.getJsonData()
-            originComp = originJson.component[@resModel.id]
 
             if originComp and @appModel
 
-                allocatedStorage = originComp.resource.AllocatedStorage
-                iops = originComp.resource.Iops
+                allocatedStorage = @originComp.resource.AllocatedStorage
+                iops = @originComp.resource.Iops
 
                 return {
                     originAllocatedStorage: allocatedStorage,

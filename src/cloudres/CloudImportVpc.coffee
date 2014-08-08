@@ -525,7 +525,6 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
         volRes =
           "VolumeId"     : aws_vol.id
           "Size"         : Number(aws_vol.size)
-          "VolumeSize"   : Number(aws_vol.size)
           "SnapshotId"   : if aws_vol.snapshotId then aws_vol.snapshotId else ""
           "Iops"         : if aws_vol.iops then aws_vol.iops else ""
           "VolumeType"      : aws_vol.volumeType
@@ -620,15 +619,15 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
 
         originComp = @getOriginalComp(aws_ins.id, 'INSTANCE')
 
-        #generate KeyName for instance
-        keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
-        if keyPairComp
-          insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
-        else
-          if aws_ins.keyName
-            insRes.KeyName = aws_ins.keyName
-          else
-            insRes.KeyName = CREATE_REF( @DEFAULT_KP, "resource.KeyName" )
+        #generate KeyName for instance (No need user KeyName Ref in app)
+        # keyPairComp = @getOriginalComp(aws_ins.keyName, 'KP')
+        # if keyPairComp
+        #   insRes.KeyName = CREATE_REF( keyPairComp, "resource.KeyName" )
+        # else
+        #   if aws_ins.keyName
+        #     insRes.KeyName = aws_ins.keyName
+        #   else
+        #     insRes.KeyName = CREATE_REF( @DEFAULT_KP, "resource.KeyName" )
 
         vol_in_instance = []
 
@@ -935,16 +934,10 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
             PoliciyNames: ""
           }]
           "SecurityGroups": []
-          "CreatedTime"   : ""
-          "CanonicalHostedZoneNameID": ""
           "ListenerDescriptions"     : []
           "DNSName": ""
           "Scheme" : ""
-          "CanonicalHostedZoneName": ""
           "Instances": []
-          "SourceSecurityGroup":
-            "OwnerAlias": ""
-            "GroupName" : ""
           "Subnets": []
           "VpcId"  : ""
           "LoadBalancerName" : ""
@@ -960,14 +953,11 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
 
         originComp = @getOriginalComp(aws_elb.Name, 'ELB')
         elbRes.ConnectionDraining.Enabled = aws_elb.ConnectionDraining.Enabled
-        elbRes.ConnectionSettings.IdleTimeout = aws_elb.ConnectionSettings.IdleTimeout
+        elbRes.ConnectionSettings.IdleTimeout = Number(aws_elb.ConnectionSettings.IdleTimeout)
         if originComp
           elbRes.ConnectionDraining.Timeout = originComp.resource.ConnectionDraining.Timeout
         else
           elbRes.ConnectionDraining.Timeout = Number(aws_elb.ConnectionDraining.Timeout) if aws_elb.ConnectionDraining.Enabled
-
-        delete elbRes.CanonicalHostedZoneName if elbRes.CanonicalHostedZoneName
-        delete elbRes.CanonicalHostedZoneNameID if elbRes.CanonicalHostedZoneNameID
 
         if aws_elb.SecurityGroups
           for sgId in aws_elb.SecurityGroups
@@ -995,6 +985,9 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
               iamComp = @addIAM( listener.Listener.SslcertificateId )
               if iamComp
                 sslCertRef = CREATE_REF(iamComp, 'resource.ServerCertificateMetadata.Arn')
+            else
+            #set to "" when value is null
+              listener.Listener.SslcertificateId = ""
 
             data =
               "PolicyNames": ''
@@ -1054,7 +1047,8 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
         lcRes.LaunchConfigurationARN  = aws_lc.id
         lcRes.LaunchConfigurationName = aws_lc.Name
         lcRes.InstanceMonitoring      = aws_lc.InstanceMonitoring.Enabled
-        lcRes.UserData                = ""
+        if aws_lc.UserData and atob
+          lcRes.UserData = atob(aws_lc.UserData)
 
         #convert SecurityGroups to REF
         sg = []
@@ -1085,7 +1079,7 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
               "DeviceName": e.DeviceName
               "Ebs":
                 "VolumeSize": if e.Ebs then Number(e.Ebs.VolumeSize) else 0
-                "VolumeType": if e.Elb then e.Ebs.VolumeType else ""
+                "VolumeType": if e.Ebs then e.Ebs.VolumeType else ""
             if e.Ebs
               if e.Ebs.SnapshotId
                 data.Ebs.SnapshotId = e.Ebs.SnapshotId
@@ -1231,13 +1225,15 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
         spRes =
           "AdjustmentType"      : "" #"ChangeInCapacity"
           "AutoScalingGroupName": "" #"@{uid.resource.AutoScalingGroupName}"
-          "Cooldown"  : 0
+          "Cooldown"  : "0"
           "MinAdjustmentStep": ""
           "PolicyARN" : "" #"arn:aws:autoscaling:us-east-1:994554139310:scalingPolicy:69df7c02-ed5f-42cf-870a-d649206cb169:autoScalingGroupName/asg0---app-aae6fe2f:policyName/asg0-policy-0"
           "PolicyName": "" #"asg0-policy-0"
           "ScalingAdjustment" : ""
 
         spRes = @_mapProperty aws_sp, spRes
+        if aws_sp.Cooldown is ""
+          spRes.Cooldown = "0"
 
         #convert AutoScalingGroupName to REF
         asgComp = @asgs[aws_sp.AutoScalingGroupName]

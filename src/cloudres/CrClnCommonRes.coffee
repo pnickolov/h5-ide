@@ -500,6 +500,7 @@ define [
         sp.id   = sp.PolicyARN
         sp.Name = sp.PolicyName
         #delete sp.PolicyName
+        sp.Cooldown = if sp.Cooldown then sp.Cooldown.toString() else ""
       data
   }
 

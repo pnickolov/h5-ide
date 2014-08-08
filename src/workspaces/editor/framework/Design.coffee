@@ -364,9 +364,11 @@ define [
   DesignImpl.prototype.setMode = (m)->
     if @__mode is m then return
     @__mode = m
+
+    @preserveName()
+
     @trigger "change:mode", m
     return
-
 
 
   DesignImpl.prototype.initializing = ()-> @__initializing
@@ -522,28 +524,24 @@ define [
     json
 
 
-  DesignImpl.prototype.getUidByProperty = ( property, value, res_type = null )->
-    # get uid by property in stack/app json
-    # example: getUidByProperty("resource.ImageId","ami-178e927e")
-    if not property then return
-    json_data = @serialize()
-    result = {}
-    if json_data and json_data.component
-      for uid, comp of json_data.component
-        if (res_type is null or comp.type is res_type )
-          context = comp
-          namespaces = property.split('.')
-          last = namespaces.pop()
-          for key in namespaces
-            context = context[ key ]
-          if context[ last ] is value
-            if not result[comp.type]
-              result[comp.type] = []
-            result[comp.type].push uid
-    result
-
-
   ########## General Business logics ############
+  DesignImpl.prototype.preserveName = ()->
+    if not @modeIsAppEdit() then return
+    @__preservedNames = {}
+    for uid, comp of @__componentMap
+      switch comp.type
+        when constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.DBINSTANCE
+          names = @__preservedNames[ comp.type ] || ( @__preservedNames[ comp.type ] = {} )
+          names[ comp.get("name") ] = true
+
+    return
+
+  DesignImpl.prototype.isPreservedName = ( type, name )->
+    if not @modeIsAppEdit() then return false
+    if not @__preservedNames then return false
+    names = @__preservedNames[type]
+    names and names[name]
+
   DesignImpl.prototype.getCost = ()->
     costList = []
     totalFee = 0
@@ -584,7 +582,7 @@ define [
     vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
     if vpc.length>0
       vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) =>  model.RES_TAG is vpcId
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) -> model.RES_TAG is vpcId
       for ins in instanceAry
         ins = ins.attributes
         for bdm in (ins.blockDeviceMapping || [])

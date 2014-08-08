@@ -241,6 +241,9 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
       return
 
     isNameAvailable : ( name )->
+      if @design().isPreservedName( @type, name )
+        return false
+
       for comp in @getAllObjects()
         if comp.get("name") is name
           return false
@@ -261,13 +264,9 @@ define [ "Design", "event", "backbone", 'CloudResources', "constant" ], ( Design
           nameMap[ comp.get("name") ] = true
         null
 
-      _.each (@design().__opsModel.getJsonData() || []).component, (comp)->
-        if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW]
-          nameMap[comp.name ] = true
-
       while true
         newName = tmpl + base
-        if nameMap[ newName ]
+        if nameMap[ newName ] or @design().isPreservedName( @type, newName )
           base += 1
         else
           break

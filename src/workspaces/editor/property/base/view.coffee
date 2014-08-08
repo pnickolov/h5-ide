@@ -194,15 +194,11 @@ define [ 'constant',
 
                 dup
 
-            isOldName = (newName)->
-                originJson = Design.instance().__opsModel.getJsonData()
-                dup = false
-                if originJson.component
-                    _.each originJson.component, (comp, key)->
-                        if comp.type in [constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.SP, constant.RESTYPE.SA, constant.RESTYPE.CW] and comp.name is newName
-                            dup = true
-                            return false
-                dup
+            isOldName = ( uid, newName )->
+                design = Design.instance()
+                comp = design.component( uid )
+                if not comp then return false
+                design.isPreservedName( comp.type, newName )
 
             isReservedName = ( newName ) ->
 
@@ -225,7 +221,7 @@ define [ 'constant',
             if not error and isNameDup( uid, name )
                 error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
-            if not error and isOldName( name )
+            if not error and isOldName( uid, name )
                 error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
 
             if not error and isReservedName( name )

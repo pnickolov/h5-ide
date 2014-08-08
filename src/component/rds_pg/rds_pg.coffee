@@ -261,7 +261,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     afterModify: (result)->
       @manager.cancel()
       if (result?.error)
-        notification 'error', "Parameter Group updated failed because of "+result?.msg
+        if result.awsErrorCode and result.awsErrorCode is 'InvalidParameterValue'
+          notification 'error', "Parameter Group updated failed because of InvalidParameterValue (#{result.awsResult})"
+        else
+          notification 'error', "Parameter Group updated failed because of "+ result.awsResult || result?.msg
         return false
       notification 'info', "Parameter Group is updated."
 

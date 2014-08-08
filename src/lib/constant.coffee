@@ -147,6 +147,9 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     DB_INSTANCECLASS = [
       { instanceClass: "db.t1.micro"    , cpu: "1 vCPU", memory: '0.613 GB', ebs: false, ecu: 1 }
+      { instanceClass: "db.t2.micro"    , cpu: "1 vCPU", memory: '1 GB', ebs: false, ecu: 1 }
+      { instanceClass: "db.t2.small"    , cpu: "1 vCPU", memory: '2 GB', ebs: false, ecu: 1 }
+      { instanceClass: "db.t2.medium"   , cpu: "2 vCPU", memory: '4 GB', ebs: false, ecu: 2 }
       { instanceClass: "db.m1.small"    , cpu: "1 vCPU", memory: '1.7 GB', ebs: false, ecu: 1 }
       { instanceClass: "db.m1.medium"   , cpu: '1 vCPU', memory: '3.75 GB', ebs: false, ecu: 2 }
       { instanceClass: "db.m1.large"    , cpu: '2 vCPU', memory: '7.5 GB', ebs: true, ecu: 4 }

@@ -230,15 +230,11 @@ define [
             disableFooter: true
 
           App.user.getPaymentUpdate().then (result)->
-            paymentModal.setContent(MC.template.paymentNeeded result)
+            paymentModal.setContent(MC.template.paymentUpdate result)
           , (err)->
             console.log err
             App.user.getPaymentInfo().then (result)->
-              paymentModal.setContent(MC.template.paymentNeeded result)
-              paymentModal.find("button.btn").click (e)->
-                e.preventDefault()
-                window.payment = window.open $(e.currentTarget).data("href"), "payment"
-
+              paymentModal.setContent(MC.template.paymentSubscribe result)
             ,(err)->
               notification 'error', "Error While get user payment info. please try again later."
               paymentModal.close()

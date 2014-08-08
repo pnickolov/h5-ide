@@ -1325,7 +1325,7 @@ Additional Notes and Questions
     </div>
 </div>
 
-<!--{{paymentNeeded}}-->
+<!--{{paymentSubscribe}}-->
 <p class="payment-credit-card">
     <i class="icon-detail"></i>
 </p>
@@ -1345,7 +1345,25 @@ Additional Notes and Questions
 </table>
 <a href="#" class="link-blue">Learn more about pricing</a>
 <div class="payment-modal-wrap">
-    <div class="payment-modal-btn-wraper"><button data-href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></button></div>
+    <div class="payment-modal-btn-wraper"><a href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
+    <p>
+        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
+    </p>
+</div>
+
+
+
+<!--{{paymentUpdate}}-->
+<p class="payment-credit-card">
+    <i class="icon-detail"></i>
+</p>
+<p class="modal-text-minor">We have failed to charge your credit card. Before you can continue to
+    start or update app with instance state feature, please update your
+    payment information.</p>
+
+<a href="#" class="link-blue">Learn more about pricing</a>
+<div class="payment-modal-wrap">
+    <div class="payment-modal-btn-wraper"><a href="{{url}}" class="btn btn-blue btn-xlarge">Update Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
         You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
     </p>

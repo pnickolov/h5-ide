@@ -696,7 +696,7 @@ module.exports =
       zh: "映像从收藏列表移除失败"
 
     RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
-      en: "%1 is a member of subnet group %2. To delete the subnet, remove the membership first."
+      en: "%s is a member of subnet group %s. To delete the subnet, remove the membership first."
       zh: ""
 
     RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:

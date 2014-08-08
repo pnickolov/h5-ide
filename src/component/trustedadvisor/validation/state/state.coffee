@@ -2,7 +2,7 @@
 This file use for validate component about state.
 ###
 
-define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helper ) ->
 
     i18n = Helper.i18n.short()
     __wrap = ( method ) ->
@@ -41,18 +41,18 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
 
     __getEniByInstance = ( instance ) ->
         _.filter MC.canvas_data.component, ( component ) ->
-            if component.type is CONST.RESTYPE.ENI
+            if component.type is constant.RESTYPE.ENI
                 if MC.extractID( component.resource.Attachment.InstanceId ) is instance.uid
                     true
 
     __getSg = ( component ) ->
         sgs = []
         # LC
-        if component.type is CONST.RESTYPE.LC
+        if component.type is constant.RESTYPE.LC
             for sgId in component.resource.SecurityGroups
                 sgs.push __getComp MC.extractID sgId
         # Instance
-        else if component.type is CONST.RESTYPE.INSTANCE
+        else if component.type is constant.RESTYPE.INSTANCE
             enis = __getEniByInstance component
 
             for eni in enis
@@ -91,14 +91,11 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
         __80 > 0 and __443 > 0
 
     __hasEipOrPublicIp = ( component ) ->
-        if component.type is "ExpandedAsg"
-            lc = component.get( 'originalAsg' ).getLc()
-            lc.get( 'publicIp' ) is true
         # LC
-        else if component.type is CONST.RESTYPE.LC
+        if component.type is constant.RESTYPE.LC
             component.get( 'publicIp' ) is true
         # Instance
-        else if component.type is CONST.RESTYPE.INSTANCE
+        else if component.type is constant.RESTYPE.INSTANCE
 
             enis = component.connectionTargets('EniAttachment')
             enis.push component.getEmbedEni()
@@ -106,11 +103,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
             component.hasAutoAssignPublicIp() or hasEip
 
     __getSubnetRtb = ( component ) ->
-        subnet = component.parent()
-        if subnet.type isnt CONST.RESTYPE.SUBNET
-            subnet = subnet.parent()
-
-        subnet.connectionTargets('RTB_Asso')[ 0 ]
+        component.parent().connectionTargets('RTB_Asso')[ 0 ]
 
     __isRouteIgw = ( component ) ->
         uid = component.uid or component.id
@@ -126,14 +119,14 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
 
         _.some rtbs, ( rtb ) ->
             rtbConn = rtb.connectionTargets('RTB_Route')
-            igw = _.where rtbConn, type: CONST.RESTYPE.IGW
+            igw = _.where rtbConn, type: constant.RESTYPE.IGW
             igw.length > 0
 
     __natOut = ( component ) ->
-        if component.type in [ CONST.RESTYPE.INSTANCE, CONST.RESTYPE.LC ]
+        if component.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.ASG, 'ExpandedAsg' ]
             rtb = __getSubnetRtb component
             if rtb
-                instances = _.where rtb.connectionTargets('RTB_Route'), type: CONST.RESTYPE.INSTANCE
+                instances = _.where rtb.connectionTargets('RTB_Route'), type: constant.RESTYPE.INSTANCE
                 return _.some instances, ( instance ) ->
                     __isInstanceNat instance
 
@@ -153,15 +146,15 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
 
 
     __selfOut = ( component, result, subnetName ) ->
-        # if there is no EIP or publicIP, push an error and stop continued validate.
-        if not __hasEipOrPublicIp( component )
-            name = component.get( 'name' )
-            if component.type is 'ExpandedAsg'
-                lc = component.get('originalAsg').getLc()
-                subnetName = component.parent().get 'name'
-                name = lc and lc.get 'name'
+        if component.type in [ constant.RESTYPE.ASG, 'ExpandedAsg' ]
+            lcOrInstance = component.getLc()
+        else
+            lcOrInstance = component
 
-            result.push Helper.message.error component.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
+        # if there is no EIP or publicIP, push an error and stop continued validate.
+        if not __hasEipOrPublicIp( lcOrInstance )
+            name = lcOrInstance.get( 'name' )
+            result.push Helper.message.error lcOrInstance.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
             true
         else if __isRouteIgw( component )
             true
@@ -174,24 +167,24 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
 
     __isLcConnectedOut = ( uid ) ->
         lc = __getComp uid, true
-        lcOld = __getComp uid
         result = []
 
-        asg = lc.parent()
-        expandedAsgs = asg.get 'expandedList'
+        expandedAsgs = []
+        subnetNames = []
+        asgs = Design.modelClassForType(constant.RESTYPE.ASG).filter (asg) ->
+            if asg.getLc() is lc
+                expandedAsgs = expandedAsgs.concat asg.get('expandedList')
+                subnetNames.push asg.parent().get('name')
+                true
+        asgs = asgs.concat expandedAsgs
+        subnetNameString = _.uniq(subnetNames).join ','
 
-        subnet = lc.parent().parent()
-        subnetName = subnet.get 'name'
-        subnetId = subnet.id
+        for asg in asgs
+            if not ( __natOut( asg ) or __selfOut( asg, result, subnetNameString ))
+                subnet = asg.parent()
+                subnetName = subnet.get 'name'
+                subnetId = subnet.id
 
-        isLcNatOut = __natOut( lc )
-
-        if not (isLcNatOut or __selfOut( lc, result, subnetName ))
-            result.push __genConnectedError subnetName, subnetId
-
-        for asg in expandedAsgs
-            if not ( isLcNatOut or __selfOut( asg, result, subnetName ))
-                subnetName = asg.parent().get 'name'
                 result.push __genConnectedError subnetName, subnetId
 
         result
@@ -222,7 +215,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
     ### Public ###
 
     isHasIgw = ( uid ) ->
-        if __hasType CONST.RESTYPE.IGW
+        if __hasType constant.RESTYPE.IGW
             return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_NO_CGW
@@ -248,7 +241,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( CONST, MC, Design, Helper )
     isConnectedOut = ( uid ) ->
         result = []
         component = __getComp uid
-        if component.type is CONST.RESTYPE.LC
+        if component.type is constant.RESTYPE.LC
             return __isLcConnectedOut( uid )
         else
             return __isInstanceConnectedOut( uid )

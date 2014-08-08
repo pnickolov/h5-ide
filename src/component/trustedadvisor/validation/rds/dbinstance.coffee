@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant, MC, Design, Helper, CloudResources ) ->
 
     i18n = Helper.i18n.short()
 
@@ -96,10 +96,38 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
 
+    isBackupMaintenanceOverlap = ( uid ) ->
+        db = Design.instance().component uid
+        appId = db.get('appId')
+
+        backupWindow = db.get 'backupWindow'
+        maintenanceWindow = db.get 'maintenanceWindow'
+
+        if appId
+            appData = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
+            backupWindow = backupWindow or appData.get 'PreferredBackupWindow'
+            maintenanceWindow = maintenanceWindow or appData.get 'PreferredMaintenanceWindow'
+
+        unless backupWindow and maintenanceWindow then return null
+
+        backupTimeArray      = backupWindow.replace(/:/g, '').split('-')
+        maintenanceTimeArray = maintenanceWindow.replace(/:/g, '').split('-')
+
+        backupStart          = +backupTimeArray[0]
+        backupEnd            = +backupTimeArray[1]
+        maintenanceStart     = +maintenanceTimeArray[0].slice(3)
+        maintenanceEnd       = +maintenanceTimeArray[1].slice(3)
+
+        if backupStart > maintenanceEnd or backupEnd < maintenanceStart
+            return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')
 
 
-    isOgValid               : isOgValid
-    isAzConsistent          : isAzConsistent
-    isHaveEnoughIPForDB     : isHaveEnoughIPForDB
-    # isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
-    isSqlServerCross3Subnet : isSqlServerCross3Subnet
+
+
+    isOgValid                   : isOgValid
+    isAzConsistent              : isAzConsistent
+    isHaveEnoughIPForDB         : isHaveEnoughIPForDB
+    isSqlServerCross3Subnet     : isSqlServerCross3Subnet
+    isBackupMaintenanceOverlap  : isBackupMaintenanceOverlap

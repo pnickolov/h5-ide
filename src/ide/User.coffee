@@ -37,6 +37,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         awsSecretKey : result.secret_key
         tokens       : result.tokens || []
         defaultToken : ""
+        paymentState : result.payment_state || "unpay"
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""

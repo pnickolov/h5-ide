@@ -215,4 +215,36 @@ define [
               notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
             return
           return
+
+    checkPayment: ()->
+      checkPaymentDefer = Q.defer()
+      stackAgentEnabled = Design.instance().serialize().agent.enabled
+
+      if stackAgentEnabled
+        userPaymentState = App.user.get("paymentState")
+        if not (userPaymentState is 'active' or userPaymentState is 'past_due')
+          paymentModal = new modalPlus
+            title: lang.ide.PAYMENT_RUN_STACK_MODAL
+            template: MC.template.loadingSpiner
+            disableClose: true
+            disableFooter: true
+
+          App.user.getPaymentUpdate().then (result)->
+            paymentModal.setContent(MC.template.paymentNeeded result)
+          , (err)->
+            console.log err
+            App.user.getPaymentInfo().then (result)->
+              paymentModal.setContent(MC.template.paymentNeeded result)
+              paymentModal.find("button.btn").click (e)->
+                e.preventDefault()
+                window.payment = window.open $(e.currentTarget).data("href"), "payment"
+
+            ,(err)->
+              notification 'error', "Error While get user payment info. please try again later."
+              paymentModal.close()
+      else
+        checkPaymentDefer.resolve()
+
+      checkPaymentDefer.promise
+
   new AppAction()

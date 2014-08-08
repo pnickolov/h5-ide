@@ -12,11 +12,27 @@
   <section id="AccountTab">
     <dl class="dl-horizontal">
       <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
-      <dt>{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt><dd>{{email}}</dd>
+      <dt class="accountEmailRO">{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt><dd class="accountEmailRO"><span>{{email}}</span><button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_NEW_EMAIL" }}' id="AccountEmail"></button></dd>
     </dl>
+    <div id="AccountEmailWrap" class="accountEditWrap">
+      <dl class="dl-horizontal">
+        <dt>{{ i18n "HEAD_LABEL_NEW_EMAIL" }}</dt>
+        <dd><input type="string" class="input" id="AccountNewEmail" /></dd>
+
+        <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+        <dd><input type="password" class="input" id="AccountEmailPwd" /></dd>
+      </dl>
+
+      <div id="AccountEmailInfo" class="empty-hide"></div>
+
+      <div class="accountPwdBtns">
+        <button class="btn btn-blue" id="AccountUpdateEmail" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+        <span id="AccountCancelEmail" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+      </div>
+    </div>
 
     <button id="AccountPwd" class="link-style">{{ i18n "HEAD_LABEL_CHANGE_PASSWORD" }}</button>
-    <div id="AccountPwdWrap">
+    <div id="AccountPwdWrap" class="accountEditWrap">
 
       <dl class="dl-horizontal">
         <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
@@ -28,7 +44,7 @@
 
       <div id="AccountInfo" class="empty-hide"></div>
 
-      <div id="AccountPwdBtns">
+      <div class="accountPwdBtns">
         <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
         <span id="AccountCancelPwd" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
       </div>

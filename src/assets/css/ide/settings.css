@@ -47,18 +47,19 @@
     color: #148BE6;
     padding: 3px 0;
     margin-left: 0; }
+  #SettingsBody #AccountEmail {
+    color: #148BE6; }
 
-#AccountPwdWrap {
+.accountEditWrap {
   display: none;
   margin-top: 2px; }
-  #AccountPwdWrap .input {
+  .accountEditWrap .input {
     width: 250px;
     padding: 5px; }
+  .accountEditWrap .dl-horizontal {
+    line-height: 36px; }
 
-#AccountPwdWrap .dl-horizontal {
-  line-height: 36px; }
-
-#AccountInfo {
+#AccountInfo, #AccountEmailInfo {
   width: 360px;
   font-size: 12px;
   border-radius: 3px;
@@ -67,19 +68,15 @@
   line-height: 30px;
   margin: 10px 0; }
 
-#account-passowrd-info a {
-  color: #fff; }
+.accountPwdBtns {
+  padding-left: 130px; }
 
-#AccountPwdBtns {
-  padding-left: 130px;
-  margin: 10px 0; }
-
-#AccountUpdatePwd {
-  padding: 3px;
+#AccountUpdatePwd, #AccountUpdateEmail {
+  padding: 5px;
   min-width: 80px;
   font-size: 12px; }
 
-#AccountCancelPwd {
+#AccountCancelPwd, #AccountCancelEmail {
   font-size: 12px;
   color: #999;
   padding: 3px;

@@ -27,20 +27,17 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
 
     getPaymentInfo: ()->
-      ApiRequestR("payment_purchase").then (result)->
-        console.log result, "payment_purchase"
-
-      ApiRequestR("payment_self").then (result)->
-        console.log result, "payment_self"
-
-      ApiRequestR("payment_statement").then (result)->
-        console.log result, "payment_statement"
-
-      ApiRequestR("payment_usage").then (result)->
-        console.log result, "payment_usage"
+      ApiRequestR("payment_purchase")
+    getPaymentUpdate: ()->
+      ApiRequestR("payment_self")
+    getPaymentStatement : ->
+      ApiRequestR("payment_statement")
+    getPaymentUsage: ->
+      ApiRequestR("payment_usage")
 
     payment: ->
       false
+
     userInfoAccuired : ( result )->
       res =
         email        : MC.base64Decode result.email

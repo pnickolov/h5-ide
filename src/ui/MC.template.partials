@@ -1345,7 +1345,7 @@ Additional Notes and Questions
 </table>
 <a href="#" class="link-blue">Learn more about pricing</a>
 <div class="payment-modal-wrap">
-    <div class="payment-modal-btn-wraper"><button class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></button></div>
+    <div class="payment-modal-btn-wraper"><a href="{{url}}" target="_blank" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
         You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
     </p>

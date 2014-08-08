@@ -269,6 +269,7 @@ define ['backbone'], (Backbone)->
             else
               selector = ".modal-body"
             @tpl.find(selector).html(content)
+            @resize()
         _fadeOut: ->
             if @option.mode is 'panel' then return false
             @tpl.animate

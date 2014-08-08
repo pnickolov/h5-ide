@@ -60,7 +60,7 @@
 
 .table.gray th,
 .table.gray td,
-.table-head-fix .table-head thead th{
+.table-head-fix.gray .table-head thead th{
     border-color: #7e7e7e;
 }
 

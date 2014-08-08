@@ -360,7 +360,8 @@
         } else {
           selector = ".modal-body";
         }
-        return this.tpl.find(selector).html(content);
+        this.tpl.find(selector).html(content);
+        return this.resize();
       };
 
       Modal.prototype._fadeOut = function() {

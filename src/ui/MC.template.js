@@ -1963,10 +1963,13 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  return "<p class=\"payment-credit-card\">\n    <i class=\"icon-detail\"></i>\n</p>\n<p class=\"modal-text-minor\">You have enabled <a class=\"link-style\" href=\"#\">Instance State</a> in this stack. To enjoy this paid feature, your billing informaiton is required.</p>\n<p class=\"modal-text-major\">How do we charge:</p>\n<table class=\"table gray\">\n    <tbody>\n        <tr>\n            <td>10 or less running instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Running instances exceeding 10</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n    </tbody>\n</table>\n<a href=\"#\" class=\"link-blue\">Learn more about pricing</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><button class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></button></div>\n    <p>\n        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.\n    </p>\n</div>";
+  buffer += "<p class=\"payment-credit-card\">\n    <i class=\"icon-detail\"></i>\n</p>\n<p class=\"modal-text-minor\">You have enabled <a class=\"link-style\" href=\"#\">Instance State</a> in this stack. To enjoy this paid feature, your billing informaiton is required.</p>\n<p class=\"modal-text-major\">How do we charge:</p>\n<table class=\"table gray\">\n    <tbody>\n        <tr>\n            <td>10 or less running instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Running instances exceeding 10</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n    </tbody>\n</table>\n<a href=\"#\" class=\"link-blue\">Learn more about pricing</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a href=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" target=\"_blank\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.\n    </p>\n</div>";
+  return buffer;
   };
 TEMPLATE.paymentNeeded=Handlebars.template(__TEMPLATE__);
 

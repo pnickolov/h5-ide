@@ -709,9 +709,6 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         instances.push( member )
 
 
-      layout.instanceList = _.map instances, ( ami )-> ami.uid
-
-
       # Generate Volume
       serverGroupOption = { number : instances.length, instanceId : "" }
       volumeModels = @get("volumeList") || emptyArray

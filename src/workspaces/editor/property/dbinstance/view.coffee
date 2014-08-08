@@ -244,6 +244,9 @@ define [ 'ApiRequest'
                 return {
                     originAllocatedStorage: allocatedStorage,
                     originIOPS: iops
+                    originBackupWindow: @appModel.get 'PreferredBackupWindow'
+                    originMaintenanceWindow: @appModel.get 'PreferredMaintenanceWindow'
+
                 }
 
             else
@@ -580,7 +583,7 @@ define [ 'ApiRequest'
 
                     if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                         return errTip
-                    
+
                     if that.resModel.isSqlserver()
                         min = 1
                         max = 10
@@ -590,7 +593,7 @@ define [ 'ApiRequest'
                     errTip = "Must contain from #{min} to #{max} alphanumeric characters or hyphens and first character must be a letter, cannot end with a hyphen or contain two consecutive hyphens"
                     if val.length < min or val.length > max
                         return errTip
-                    
+
                     if not MC.validate('letters', val[0])
                         return errTip
 

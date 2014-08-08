@@ -241,6 +241,14 @@
                 </section>
             </section>
 
+            {{#if originBackupWindow}}
+            <section class="property-control-group">
+                <label>Current Backup Window: {{originBackupWindow}}</label>
+            </section>
+            {{/if}}
+
+
+
         </div>
 
     </div>
@@ -299,7 +307,14 @@
                 </div>
                 <label for="property-dbinstance-maintenance-window-duration">hour(s)</label>
             </section>
+
         </div>
+
+        {{#if originMaintenanceWindow}}
+        <section class="property-control-group">
+            <label>Current Maintenance Window: <br/>{{originMaintenanceWindow}}</label>
+        </section>
+        {{/if}}
 
     </div>
 

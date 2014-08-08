@@ -7,7 +7,7 @@
 ----------------------------
 ###
 
-define [ "ApiRequest", "backbone" ], ( ApiRequest )->
+define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )->
 
   UserState =
     NotFirstTime : 2
@@ -25,6 +25,16 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     hasCredential : ()-> !!@get("account")
     isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
+
+    getPaymentInfo: ()->
+      ApiRequestR("payment_self").then (result)->
+        console.log result, "payment_self"
+
+      ApiRequestR("payment_statement").then (result)->
+        console.log result, "payment_statement"
+
+      ApiRequestR("payment_usage").then (result)->
+        console.log result, "payment_usage"
     userInfoAccuired : ( result )->
       res =
         email        : MC.base64Decode result.email

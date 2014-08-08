@@ -4640,10 +4640,21 @@ VisualOps API. You cannot UNDO this action.'
 
     # Payment
 
-    PAYMENT_RUN_STACK_MODAL:
+    PAYMENT_PAYMENT_NEEDED:
       en: "Instance State is a Paid Feature"
       zh: ""
 
+    PAYMENT_INVALID_BILLING:
+      en: "Your Billing Information is Invalid"
+      zh: ""
+
+    PAYMENT_LOADING:
+      en: "Loading..."
+      zh: "加载中..."
+
+    PAYMENT_LOADING_BILLING:
+      en: "Getting Billing Information ..."
+      zh: "正在获取账户信息..."
 
 
     #  port tooltip

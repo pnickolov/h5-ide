@@ -216,7 +216,16 @@ define [
             return
           return
 
+
+    _bindPaymentEvent: (modal)->
+      console.log modal
+      modal.find("a.btn.btn-xlarge").click ()->
+        modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
+        modal.setContent MC.template.loadingSpiner()
+        window.lang = lang
+
     checkPayment: ()->
+      that = @
       checkPaymentDefer = Q.defer()
       stackAgentEnabled = Design.instance().serialize().agent.enabled
 
@@ -224,20 +233,25 @@ define [
         userPaymentState = App.user.get("paymentState")
         if not (userPaymentState is 'active' or userPaymentState is 'past_due')
           paymentModal = new modalPlus
-            title: lang.ide.PAYMENT_RUN_STACK_MODAL
+            title: lang.ide.PAYMENT_LOADING
             template: MC.template.loadingSpiner
             disableClose: true
             disableFooter: true
 
           App.user.getPaymentUpdate().then (result)->
+            paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
             paymentModal.setContent(MC.template.paymentUpdate result)
+            that._bindPaymentEvent(paymentModal)
           , (err)->
-            console.log err
             App.user.getPaymentInfo().then (result)->
+              paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
               paymentModal.setContent(MC.template.paymentSubscribe result)
+              that._bindPaymentEvent(paymentModal)
             ,(err)->
               notification 'error', "Error While get user payment info. please try again later."
               paymentModal.close()
+        else
+          checkPaymentDefer.resolve()
       else
         checkPaymentDefer.resolve()
 

@@ -1093,7 +1093,8 @@ marker.db-sg, marker.igw-tgt, marker.eni-sg, marker.instance-sg, marker.launchco
   fill: none; }
 
 g.shadow {
-  opacity: 0.8; }
+  opacity: 0.8;
+  pointer-events: none; }
 
 .canvas-pp {
   position: absolute;

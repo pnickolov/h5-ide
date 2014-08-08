@@ -49,6 +49,8 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           compact: true
         }
         @setElement @modal.tpl
+        @modal.$("#SettingsNav span[data-target='AccountTab']").click()
+        @modal.resize()
 
         tab = 0
         if options

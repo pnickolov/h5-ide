@@ -181,12 +181,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
       console.log "Rendering...."
-      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height()}
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53}
       $(".slidebox").css('max-height', "none")
       @manager.on "slideup", ->
         $('.slidebox').removeAttr("style")
       $(window).on 'resize', ->
-        $("#parameter-table").height($('.table-head-fix.will-be-covered>.scroll-wrap').height())
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53)
         .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
@@ -259,14 +259,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       parameters.groupModel.modifyParams(changeMap).then afterModify, afterModify
 
     afterModify: (result)->
-      @manager.cancel()
       if (result?.error)
-        if result.awsErrorCode and result.awsErrorCode is 'InvalidParameterValue'
-          notification 'error', "Parameter Group updated failed because of InvalidParameterValue (#{result.awsResult})"
-        else
-          notification 'error', "Parameter Group updated failed because of "+ result.awsResult || result?.msg
+        notification 'error', "Parameter Group updated failed because of "+(result?.awsResult || result?.awsErrorCode || result?.msg)
+        @switchAction()
         return false
       notification 'info', "Parameter Group is updated."
+      @manager.cancel()
 
     doAction: (action, checked)->
       @["do_"+action] and @["do_"+action]('do_'+action,checked)

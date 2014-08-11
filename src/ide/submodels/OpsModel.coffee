@@ -248,9 +248,20 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       #patch for import vpc(temp)
       _.each app_json_xu.models[0].attributes.component, (comp,key)->
         if comp.name is 'unamed'
-          comp.name = ''
+          if comp.type is 'AWS.EC2.AvailabilityZone'
+            #patch for AZ
+            comp.name = comp.resource.ZoneName
+            comp.resource.RegionName = comp.name.substr( 0, comp.name.length-1 )
+          else if comp.type is 'AWS.EC2.SecurityGroup' and comp.resource.GroupDescription is 'default VPC security group' and comp.resource.GroupName.indexOf('-DefaultSG-')>0
+            #patch for Default SG
+            comp.name = 'DefaultSG'
+            comp.resource.Default = true
+          else
+            comp.name = ''
         if comp.type in [ 'AWS.VPC.VPC','AWS.EC2.AvailabilityZone','AWS.VPC.Subnet','AWS.RDS.DBSubnetGroup' ] and not app_json_xu.models[0].attributes.layout[key].size
+          #patch for size
           app_json_xu.models[0].attributes.layout[key].size = [0,0]
+
         null
       console.info "app_json_backend(patched)"
       console.debug JSON.stringify app_json_xu.models[0].attributes

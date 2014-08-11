@@ -1,0 +1,59 @@
+$navHeight : 38px;
+
+#PaymentNav {
+  background:    #0c0c0c;
+  height:        $navHeight;
+  border-bottom: 1px solid #000;
+
+  > span {
+    float       : left;
+    min-width   : 100px;
+    text-align  : center;
+    color       : #148BE6;
+    height      : $navHeight;
+    line-height : $navHeight;
+    cursor      : pointer;
+    position    : relative;
+    padding     : 0 10px;
+    font-size   : 12px;
+
+    &.selected:before {
+      position:      absolute;
+      left:          0;
+      bottom:        0px;
+      content:       '';
+      border-bottom: 2px solid #148BE6;
+      width:         100%;
+    }
+  }
+}
+
+#PaymentBody {
+  width: 430px;
+  padding: 20px 30px 30px;
+  min-height: 150px;
+
+  a {
+    color: #148BE6;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .dl-horizontal {
+    margin: 0;
+    line-height: 30px;
+
+    dt, dd {
+      margin-top: 0;
+    }
+  }
+
+  .link-style {
+    color: #999;
+    line-height: 30px;
+    margin-left: 10px;
+  }
+
+}

@@ -3577,6 +3577,10 @@ module.exports =
       en: "Settings"
       zh: "账号设置"
 
+    HEAD_LABEL_MENUITEM_BILLING:
+      en: "Billing"
+      zh: "账单设置"
+
     HEAD_LABEL_MENUITEM_LOGOUT:
       en: "Log Out"
       zh: "登出"
@@ -4656,6 +4660,17 @@ VisualOps API. You cannot UNDO this action.'
       en: "Getting Billing Information ..."
       zh: "正在获取账户信息..."
 
+    PAYMENT_SETTING_TITLE:
+      en: "Billing"
+      zh: "账单设置"
+
+    PAYMENT_BILLING_TAB:
+      en: "Payment & Billing"
+      zh: "支付信息与账单"
+
+    PAYMENT_USAGE_TAB:
+      en: "Usage"
+      zh: "用量"
 
     #  port tooltip
 

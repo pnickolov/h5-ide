@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -10,6 +10,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
             'click #HeaderLogout'                : 'logout'
             'click #HeaderSettings'              : 'settings'
             'click #HeaderShortcuts'             : 'shortcuts'
+            'click #HeaderBilling'               : 'billingSettings'
             'DROPDOWN_CLOSE #HeaderNotification' : 'dropdownClosed'
 
         initialize : ()->
@@ -54,6 +55,9 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
 
             App.model.markNotificationRead()
             null
+
+        billingSettings: ()-> new BillingDialog()
+
     }
 
     HeaderView

@@ -246,7 +246,7 @@ define [
               paymentModal.setContent(MC.template.paymentSubscribe result)
               that._bindPaymentEvent(paymentModal)
             ,(err)->
-              notification 'error', "Error While get user payment info. please try again later."
+              notification 'error', "Error while getting user payment info. please try again later."
               paymentModal.close()
         else
           checkPaymentDefer.resolve()

@@ -1,0 +1,30 @@
+<!--{{noPaymentCard}}-->
+<div id="no-payment-card" class="text-center" xmlns="http://www.w3.org/1999/html">
+    <div class="card"></div>
+    <div class="text-left">
+        <p>To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
+        <p><a class="link-blue" href="#">Learn more about pricing</a></p>
+    </div>
+    <div class="provide-payment-info">
+        <a href="{{url}}" target="_blank" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-right"></i></a>
+        <p>You will be brought back to Chargify in a new browser window.<br/>
+            Meanwhile, make sure this window is alive.
+        </p>
+    </div>
+</div>
+
+<!--{{billingTemplate}}-->
+<div id="billing-status">
+    <nav id="PaymentNav">
+        <span data-target="PaymentBillingTab">{{ i18n "PAYMENT_BILLING_TAB" }}</span>
+        <span data-target="UsageTab">{{ i18n "PAYMENT_USAGE_TAB" }}</span>
+    </nav>
+    <div class="tabContent" id="SettingsBody">
+        <section id="PaymentBillingTab">
+            <p>Payment and Billing</p>
+        </section>
+        <section id="UsageTab">
+            <p>Usage Tab Content</p>
+        </section>
+    </div>
+</div>

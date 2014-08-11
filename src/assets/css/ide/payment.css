@@ -1,0 +1,40 @@
+#PaymentNav {
+  background: #0c0c0c;
+  height: 38px;
+  border-bottom: 1px solid #000; }
+  #PaymentNav > span {
+    float: left;
+    min-width: 100px;
+    text-align: center;
+    color: #148BE6;
+    height: 38px;
+    line-height: 38px;
+    cursor: pointer;
+    position: relative;
+    padding: 0 10px;
+    font-size: 12px; }
+    #PaymentNav > span.selected:before {
+      position: absolute;
+      left: 0;
+      bottom: 0px;
+      content: '';
+      border-bottom: 2px solid #148BE6;
+      width: 100%; }
+
+#PaymentBody {
+  width: 430px;
+  padding: 20px 30px 30px;
+  min-height: 150px; }
+  #PaymentBody a {
+    color: #148BE6; }
+  #PaymentBody a:hover {
+    text-decoration: underline; }
+  #PaymentBody .dl-horizontal {
+    margin: 0;
+    line-height: 30px; }
+    #PaymentBody .dl-horizontal dt, #PaymentBody .dl-horizontal dd {
+      margin-top: 0; }
+  #PaymentBody .link-style {
+    color: #999;
+    line-height: 30px;
+    margin-left: 10px; }

@@ -115,11 +115,10 @@ define [
 
             _.each _.keys(newComps), (uid) ->
 
-                if comp and not ignoreDiffMap[comp.type]
-
-                    if not oldComps[uid]
+                if not oldComps[uid]
+                    if newComps[uid] and not ignoreDiffMap[newComps[uid].type]
                         that.addedComps[uid] = newComps[uid]
-                    null
+                null
 
             diffTree = new DiffTree()
 

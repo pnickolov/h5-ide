@@ -300,51 +300,54 @@ define [
             return false
 
         appAction.checkPayment().then =>
-          @modal = new Modal
-              title: lang.ide.RUN_STACK_MODAL_TITLE
-              template: MC.template.modalRunStack
-              disableClose: true
-              width: '450px'
-              confirm:
-                  text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
-                  disabled: true
-          @renderKpDropdown(@modal)
-          cost = Design.instance().getCost()
-          @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-          @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+          @__runStack()
 
-          # load TA
-          TA.loadModule('stack').then ()=>
-              @modal.resize()
-              @modal?.toggleConfirm false
+    __runStack: ()->
+      @modal = new Modal
+        title: lang.ide.RUN_STACK_MODAL_TITLE
+        template: MC.template.modalRunStack
+        disableClose: true
+        width: '450px'
+        confirm:
+          text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+          disabled: true
+      @renderKpDropdown(@modal)
+      cost = Design.instance().getCost()
+      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
+      @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
 
-          appNameDom = @modal.tpl.find('#app-name')
-          checkAppNameRepeat = @checkAppNameRepeat.bind @
-          appNameDom.keyup ->
-              checkAppNameRepeat(appNameDom.val())
+      # load TA
+      TA.loadModule('stack').then ()=>
+        @modal.resize()
+        @modal?.toggleConfirm false
 
-          self = @
-          @modal.on 'confirm', ()=>
-              @hideError()
-              if not App.user.hasCredential()
-                  App.showSettings App.showSettings.TAB.Credential
-                  return false
-              # setUsage
-              appNameRepeated = @checkAppNameRepeat(appNameDom.val())
-              if not @defaultKpIsSet() or appNameRepeated
-                  return false
+      appNameDom = @modal.tpl.find('#app-name')
+      checkAppNameRepeat = @checkAppNameRepeat.bind @
+      appNameDom.keyup ->
+        checkAppNameRepeat(appNameDom.val())
 
-              @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
-              @json = @workspace.design.serialize usage: 'runStack'
-              @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
-              @json.name = appNameDom.val()
-              @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
-                  self.modal.close()
-                  App.openOps( ops )
-              , (err)->
-                  self.modal.close()
-                  error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                  notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
+      self = @
+      @modal.on 'confirm', ()=>
+        @hideError()
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+        # setUsage
+        appNameRepeated = @checkAppNameRepeat(appNameDom.val())
+        if not @defaultKpIsSet() or appNameRepeated
+          return false
+
+        @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
+        @json = @workspace.design.serialize usage: 'runStack'
+        @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        @json.name = appNameDom.val()
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+          self.modal.close()
+          App.openOps( ops )
+        , (err)->
+          self.modal.close()
+          error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
+          notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
 
     appToStack: () ->
         name = @workspace.design.attributes.name

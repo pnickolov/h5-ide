@@ -218,11 +218,9 @@ define [
 
 
     _bindPaymentEvent: (modal)->
-      console.log modal
       modal.find("a.btn.btn-xlarge").click ()->
         modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         modal.setContent MC.template.loadingSpiner()
-        window.lang = lang
 
     checkPayment: ()->
       that = @

@@ -57,6 +57,7 @@ define ["ApiRequestRDefs", "api/ApiRequestErrors", "MC" ], ( ApiDefination, ApiE
       dataType : "json"
       type     : ApiDef.method || "GET"
       jsonp    : false
+      cache    : false
     }
 
     # Generic hanlder for the ajax request.

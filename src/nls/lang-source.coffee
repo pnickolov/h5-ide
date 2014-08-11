@@ -5524,7 +5524,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
+      en: " DB Instance <span class='validation-tag tag-rds'>%s</span> has db.t1.micro instance class, which can only be members of the default option group."
       zh: ""
 
     TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
@@ -5560,15 +5560,15 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
-      en: "DB Instance %s is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
       zh: ""
 
     TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP:
-      en: "DB Instance %s Backup Window and Maintenance Window are overlapping. Please update to avoid overlapping."
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> Backup Window and Maintenance Window are overlapping. Please update to avoid overlapping."
       zh: ""
 
     TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
-      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
+      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet <span class='validation-tag tag-subnet'>%s</span> should use a larger CIDR block."
       zh: ""
 
     TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
@@ -5576,7 +5576,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_MASTER_PASSWORD_INVALID:
-      en: "DB instance %s's Master Password must contain 8 to 41 characters."
+      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

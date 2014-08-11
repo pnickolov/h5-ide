@@ -356,8 +356,7 @@ define [
         ins.blockDeviceMapping  = ins.blockDeviceMapping?.item || []
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
-        #get AMI info
-        CloudResources( constant.RESTYPE.AMI, @region() ).fetchAmi( ins.imageId )
+
         #set icon
         if ins.architecture and ins.rootDeviceType
           if ins.platform and ins.platform is 'windows'
@@ -366,6 +365,7 @@ define [
             ins.icon = "linux-other.#{ins.architecture}.#{ins.rootDeviceType}.png"
         else
           ins.icon = "ami-unknown.png"
+
         ##sort blockDeviceMapping by deviceName
         if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
           ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))

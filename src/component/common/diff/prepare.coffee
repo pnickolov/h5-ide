@@ -116,6 +116,8 @@ define [ 'constant' ], ( constant ) ->
                 when 'RouteSet'
                     data.key = 'Route'
 
+                when 'SubnetIds'
+                    data.key = 'Subnet'
 
             # Convert need convert pluralKey
             if parentKey in pluralKeys

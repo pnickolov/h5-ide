@@ -529,8 +529,10 @@
     border: none;
     color: #666; }
   #RegionResourceData tr:nth-child(odd) > td {
-    background: #e8ebed; }
-  #RegionResourceData .eip {
+    background-color: #e8ebed; }
+  #RegionResourceData .dashboard-eip {
+    background: url('/assets/images/ide/icon/icn-eipon.png') left center no-repeat;
+    padding-left: 16px;
     color: #148BE6; }
 
 .region-resource-list > li {

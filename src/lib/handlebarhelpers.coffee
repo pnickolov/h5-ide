@@ -97,3 +97,11 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
       ch
     else
       ""
+
+  Handlebars.registerHelper "awsAmiIcon", ( amiId, region )->
+    # This is a placeholder.
+    # The actually implementation is in DashboardView
+
+  Handlebars.registerHelper "awsIsEip", ( ip, region )->
+    # This is a placeholder.
+    # The actually implementation is in DashboardView

@@ -348,7 +348,6 @@ define [
       instances
 
     parseFetchData : ( data, region )->
-      amiAry = {}
       for ins in data
         ins.id = ins.instanceId
         #delete ins.instanceId
@@ -358,38 +357,15 @@ define [
         ins.networkInterfaceSet = ins.networkInterfaceSet?.item || []
         ins.groupSet            = ins.groupSet?.item || []
 
-        #get ami list
-        if not amiAry[ins.imageId]
-          amiAry[ins.imageId] = 1
-        else
-          amiAry[ins.imageId]++
-
-        #set icon
-        if ins.architecture and ins.rootDeviceType
-          if ins.platform and ins.platform is 'windows'
-            ins.icon = "windows.#{ins.architecture}.#{ins.rootDeviceType}.png"
-          else
-            ins.icon = "linux-other.#{ins.architecture}.#{ins.rootDeviceType}.png"
-        else
-          ins.icon = "ami-unknown.png"
-
         ##sort blockDeviceMapping by deviceName
         if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
           ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))
-
-      _.each amiAry, (val,key)->
-        if region
-          CloudResources( constant.RESTYPE.AMI, region ).fetchAmi( key )
-        else
-          console.warn "[parseFetchData]region is empty when get ami info"
-
       data
 
     parseExternalData: ( data, region ) ->
       @convertNumTimeToString data
       @unifyApi data, @type
 
-      amiAry = {}
       for ins in data
         ins.id = ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
@@ -402,23 +378,9 @@ define [
             eni.groupSet = {item: eni.groups}
             delete eni.groups
 
-        #set icon
-        if ins.architecture and ins.rootDeviceType
-          if ins.platform and ins.platform is 'windows'
-            ins.icon = "windows.#{ins.architecture}.#{ins.rootDeviceType}.png"
-          else
-            ins.icon = "linux-other.#{ins.architecture}.#{ins.rootDeviceType}.png"
-        else
-          ins.icon = "ami-unknown.png"
         ##sort blockDeviceMapping by deviceName
         if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
           ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))
-
-      _.each amiAry, (val,key)->
-        if region
-          CloudResources( constant.RESTYPE.AMI, region ).fetchAmi( key )
-        else
-          console.warn "[parseExternalData]region is empty when get ami info"
 
       data
   }

@@ -651,11 +651,13 @@
   }
 
   tr:nth-child(odd) > td {
-    background : #e8ebed;
+    background-color : #e8ebed;
   }
 
-  .eip {
-    color : #148BE6;
+  .dashboard-eip {
+    background   : image-url("ide/icon/icn-eipon.png") left center no-repeat;
+    padding-left : image-width("ide/icon/icn-eipon.png") + 4;
+    color        : #148BE6;
   }
 }
 

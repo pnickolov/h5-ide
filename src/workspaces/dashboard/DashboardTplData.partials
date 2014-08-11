@@ -156,9 +156,9 @@
       <th style="width: 10%"></th>
       <th style="width: 18%"></th>
       <th style="width: 15%"></th>
-      <th style="width: 12%"></th>
-      <th style="width: 12%"></th>
-      <th style="width: 12%"></th>
+      <th style="width: 11%"></th>
+      <th style="width: 14%"></th>
+      <th style="width: 11%"></th>
       <th style="width: 40px"></th>
     </tr> </thead>
     <tbody> {{#each this}}{{#with attributes}}<tr>
@@ -173,10 +173,10 @@
         <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
         <td>{{simpleTime launchTime}}</td>
         <td>
-          <img src="/assets/images/ide/ami/{{icon}}">
+          <img src="/assets/images/ide/ami/{{#awsAmiIcon imageId category}}{{/awsAmiIcon}}">
           <span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
         <td>{{instanceType}}</td>
-        <td {{#if isEIP}}class="eip"{{/if}} >{{ipAddress}}</td>
+        <td {{#awsIsEip ipAddress category}}class="dashboard-eip tooltip" data-tooltip="Elastic IP"{{/awsIsEip}}>{{ipAddress}}</td>
         <td>{{placement.availabilityZone}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}

@@ -92,7 +92,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
         sbg = db.parent()
         azs = _.map sbg.connectionTargets('SubnetgAsso'), (sb) -> sb.parent()
-        return null if _.uniq(azs) > 2
+        return null if _.uniq(azs).length > 2
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
 

@@ -845,7 +845,7 @@ define [ 'ApiRequest'
 
             if target.parsley 'validate'
                 @resModel.set 'password', value
-                $('#property-dbinstance-master-password').attr('data-tooltip', "Current password: #{value}").removeClass('tooltip').addClass('tooltip')
+                # $('#property-dbinstance-master-password').attr('data-tooltip', "Current password: #{value}").removeClass('tooltip').addClass('tooltip')
 
         changeDatabaseName: (event) ->
             $target = $ event.currentTarget

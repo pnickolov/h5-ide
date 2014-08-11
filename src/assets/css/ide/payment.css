@@ -34,7 +34,8 @@
     line-height: 30px;
     margin-left: 10px; }
   #PaymentBody .table-head {
-    width: 100%; }
+    width: 100%;
+    background: #363636; }
     #PaymentBody .table-head tr th {
       position: relative;
       padding: 6px 12px;
@@ -44,3 +45,7 @@
     cursor: pointer; }
   #PaymentBody .t-m-content a.link-blue {
     margin: 0 10px; }
+  #PaymentBody .t-m-content tr.item {
+    font-size: 12px; }
+  #PaymentBody .table-head-fix {
+    background: #131313; }

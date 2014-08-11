@@ -40,17 +40,15 @@
                     <thead>
                     <tr>
                         <th class="sortable" data-row-type="string" style="width:20%;">Date</th>
-                        <th class="sortable" data-row-type="string" style="width:20%;">Name</th>
-                        <th class="sortable" data-row-type="string" style="width:20%;">Family</th>
-                        <th class="" data-row-type="string" style="width:40%;">Description</th>
+                        <th data-row-type="string" style="width:20%;">Name</th>
+                        <th data-row-type="string" style="width:20%;">Family</th>
+                        <th data-row-type="string" style="width:40%;">Description</th>
                     </tr>
                     </thead>
                 </table>
-                <div class="scroll-wrap" style="height: 200px">
-                    <div class="scrollbar-veritical-wrap">
-                        <div class="scrollbar-veritical-thumb"></div>
-                    </div>
-                    <div class="scroll-content" style="display:block;">
+                <div class="scroll-wrap" style="max-height:200px;">
+                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                    <div class="scroll-content">
                         <table class="table">
                             <thead>
                             <tr>
@@ -69,6 +67,69 @@
                             </tr>
                             </thead>
                             <tbody class="t-m-content">
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                                <tr class="item" data-id="">
+                                    <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
+                                    <td>$ 32.31</td>
+                                    <td>Paid</td>
+                                    <td><a class="link-blue" href="#">Usage Report</a>
+                                         <a class="link-blue" href="#">View Receipt</a></td>
+                                </tr>
                                 <tr class="item" data-id="">
                                     <td>{{formatTime "2014-03-01" "MMMM d, yyyy"}}</td>
                                     <td>$ 32.31</td>

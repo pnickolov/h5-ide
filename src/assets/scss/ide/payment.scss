@@ -48,6 +48,7 @@ $navHeight : 38px;
   }
   .table-head{
     width: 100%;
+    background: #363636;
     tr th{
       position: relative;
       padding: 6px 12px;
@@ -61,5 +62,11 @@ $navHeight : 38px;
   }
   .t-m-content a.link-blue{
     margin:0 10px;
+  }
+  .t-m-content tr.item{
+    font-size: 12px;
+  }
+  .table-head-fix{
+    background: #131313;
   }
 }

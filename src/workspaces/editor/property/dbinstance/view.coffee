@@ -533,6 +533,10 @@ define [ 'ApiRequest'
             lvi = @resModel.getLVIA spec
             multiAZCapable = lvi[3]
 
+            # hack for SQL Server
+            engine = @resModel.get('engine')
+            multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+
             if not multiAZCapable
                 @resModel.set('multiAz', false)
 

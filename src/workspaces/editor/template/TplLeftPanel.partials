@@ -131,7 +131,7 @@
 <!-- {{rds}} -->
 {{#each this}}{{#with this.[0].attributes}}
 <li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
-<div class="resource-icon-dbinstance"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
+<div class="resource-icon-dbinstance"><img src="/assets/images/ide/icon/rds-{{firstOfSplit Engine '-' }}.png" width="42" height="30"></div>
 {{@key}}
 </li>
 {{/with}}
@@ -140,7 +140,7 @@
 <!-- {{rds_snapshot}} -->
 {{#each this}}
 <li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
-  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/engine/{{firstOfSplit Engine '-' }}.png" width="39" height="27"></div>
+  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/icon/rds-{{firstOfSplit Engine '-' }}.png" width="32" height="23"></div>
   <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div>{{DBInstanceIdentifier}}
 </li>
 {{/each}}

@@ -844,7 +844,7 @@ module.exports =
       zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_CFM_DEL_DBINSTANCE:
-      en: "Deleting %s will also remove all read replica related it. Are you sure you want to delete it?"
+      en: "Deleting %s will also remove all read replica to related it. Are you sure to delete?"
       zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:

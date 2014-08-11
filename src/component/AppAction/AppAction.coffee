@@ -217,15 +217,19 @@ define [
           return
 
 
-    _bindPaymentEvent: (modal, checkPaymentDefer)->
+    _bindPaymentEvent: (modal, checkPaymentDefer, delay)->
       modal.find("a.btn.btn-xlarge").click ()->
         modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         modal.setContent MC.template.loadingSpiner()
       App.WS.on 'userStateChange', (idx, dag)->
-        paymentState = dag.payment_statement
+        paymentState = dag.payment_state
         App.user.set('paymentState', paymentState)
+        console.log paymentState
         if paymentState is 'active'
-          checkPaymentDefer.resolve(modal)
+          modal.close()
+          window.setTimeout ()->
+            checkPaymentDefer.resolve()
+          , delay+1
 
     checkPayment: ()->
       that = @
@@ -235,21 +239,23 @@ define [
       if stackAgentEnabled
         userPaymentState = App.user.get("paymentState")
         if not (userPaymentState is 'active' or userPaymentState is 'past_due')
+          delay = 1
           paymentModal = new modalPlus
             title: lang.ide.PAYMENT_LOADING
             template: MC.template.loadingSpiner
             disableClose: true
             disableFooter: true
+            delay: delay
 
           App.user.getPaymentUpdate().then (result)->
             paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
             paymentModal.setContent(MC.template.paymentUpdate result)
-            that._bindPaymentEvent(paymentModal, checkPaymentDefer)
+            that._bindPaymentEvent(paymentModal, checkPaymentDefer, delay)
           , (err)->
             App.user.getPaymentInfo().then (result)->
               paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
               paymentModal.setContent(MC.template.paymentSubscribe result)
-              that._bindPaymentEvent(paymentModal, checkPaymentDefer)
+              that._bindPaymentEvent(paymentModal, checkPaymentDefer, delay)
             ,(err)->
               notification 'error', "Error while getting user payment info. please try again later."
               paymentModal.close()

@@ -299,8 +299,8 @@ define [
         if $(event.currentTarget).attr('disabled')
             return false
 
-        appAction.checkPayment().then =>
-          @__runStack()
+        appAction.checkPayment().then (modal)=>
+          @__runStack(modal)
 
     __runStack: ()->
       @modal = new Modal

@@ -2848,6 +2848,8 @@ summary:focus {
 
 .stack-validation {
 	position: relative;
+    padding: 15px 0;
+    border-top: 1px solid #0f0f0f;
 }
 
 .validation-content .content ::selection {
@@ -2901,22 +2903,12 @@ summary:focus {
 }
 
 #modal-run-stack div.estimate {
-	background-color : #0f0f0f;
 	position         : relative;
 	padding          : 5px 15px;
 	height           : 58px;
-	margin           : 0 -15px;
-}
-
-#modal-run-stack .estimate .title {
-	top: 25px;
-	position: absolute;
 }
 
 #modal-run-stack .estimate .price {
-	right: 10px;
-	top: 18px;
-	position: absolute;
 	font-size: 12px;
 }
 
@@ -2925,6 +2917,14 @@ summary:focus {
 	font-size: 28px;
 }
 
+#modal-run-stack .estimate-visualops{
+    padding: 5px 15px;
+    border-top: 1px solid #000000;
+}
+#modal-run-stack .estimate-visualops .price b {
+    color: #aeb3f2;
+    font-size: 28px;
+}
 .validation-tag {
 	font-size     : 12px;
 	padding       : 1px 3px;
@@ -4230,4 +4230,22 @@ div.modal-text-highlight{
 }
 .payment-credit-card i{
     font-size: 100px;
+}
+#modal-run-stack {
+    position: relative;
+    border-bottom: 1px solid #000000;
+    background-color: #2c2c2c;
+}
+.payment-wrapper{
+    padding: 12px 15px;
+    width: 420px;
+    float: left;
+}
+.payment-wrapper-right{
+    width: 200px;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    border-left: 1px solid #000000;
+    background-color: #212121;
 }

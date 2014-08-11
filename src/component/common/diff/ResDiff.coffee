@@ -97,18 +97,29 @@ define [
             unionOldComps = {}
             unionNewComps = {}
 
+            ignoreDiffMap = {
+                'AWS.EC2.Tag': true
+                'AWS.AutoScaling.Tag': true
+            }
+
             _.each oldComps, (comp, uid) ->
-                if newComps[uid]
-                    unionOldComps[uid] = oldComps[uid]
-                    unionNewComps[uid] = newComps[uid]
-                else
-                    that.removedComps[uid] = oldComps[uid]
-                null
+
+                if comp and not ignoreDiffMap[comp.type]
+
+                    if newComps[uid]
+                        unionOldComps[uid] = oldComps[uid]
+                        unionNewComps[uid] = newComps[uid]
+                    else
+                        that.removedComps[uid] = oldComps[uid]
+                    null
 
             _.each _.keys(newComps), (uid) ->
-                if not oldComps[uid]
-                    that.addedComps[uid] = newComps[uid]
-                null
+
+                if comp and not ignoreDiffMap[comp.type]
+
+                    if not oldComps[uid]
+                        that.addedComps[uid] = newComps[uid]
+                    null
 
             diffTree = new DiffTree()
 

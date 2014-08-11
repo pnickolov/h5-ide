@@ -70,6 +70,8 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         CW           : 'AWS.CloudWatch.CloudWatch'
         SUBSCRIPTION : 'AWS.SNS.Subscription'
         TOPIC        : 'AWS.SNS.Topic'
+        TAG          : 'AWS.EC2.Tag'
+        ASGTAG       : 'AWS.AutoScaling.Tag'
 
         DBSBG        : 'AWS.RDS.DBSubnetGroup'
         DBINSTANCE   : 'AWS.RDS.DBInstance'

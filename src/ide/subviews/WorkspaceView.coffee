@@ -14,6 +14,7 @@ define [ "backbone", "jquerysort" ], () ->
 
       initialize : ( options )->
         self = this
+        @tabsWidth = 0
 
         @$el.find("#ws-tabs").dragsort {
           horizontal : true
@@ -53,22 +54,48 @@ define [ "backbone", "jquerysort" ], () ->
         #   klass    : ""
         # }
         $parent = if fixed then $("#ws-fixed-tabs") else $("#ws-tabs")
-        tpl = "<li class='#{data.klass}' id='#{data.id}'><span class='truncate'>#{data.title}</span>"
+        tpl = "<li class='#{data.klass}' id='#{data.id}' title='#{data.title}'><span class='truncate'>#{data.title}</span>"
         if data.closable
           tpl += '<i class="icon-close" title="Close Tab"></i>'
 
         $tgt = $parent.children().eq( index )
         if $tgt.length
-          $( tpl + "</li>" ).insertAfter $tgt
+          $tgt = $( tpl + "</li>" ).insertAfter $tgt
         else
-          $( tpl + "</li>" ).appendTo $parent
+          $tgt = $( tpl + "</li>" ).appendTo $parent
 
-      removeTab : ( id )-> @$el.find("##{id}").remove()
+        @tabsWidth += $tgt.outerWidth()
+        @ensureTabSize()
+        $tgt
+
+      removeTab : ( id )->
+        $tgt = @$el.find("##{id}")
+        @tabsWidth -= $tgt.outerWidth()
+        $tgt.remove()
+        @ensureTabSize()
+        $tgt
+
+      ensureTabSize : ()->
+        windowWidth = $(window).width()
+        availableSpace = windowWidth - $("#header").outerWidth() - $("#ws-tabs").offset().left
+
+        children = $("#ws-tabs").children()
+        if @tabsWidth < availableSpace
+          children.css("max-width", "auto")
+        else
+          availableSpace = Math.floor( availableSpace / children.length )
+          children.css("max-width", availableSpace)
+        return
 
       updateTab : ( id, title, klass )->
         $tgt = @$el.find("##{id}")
         if title isnt undefined or title isnt null
+          @tabsWidth -= $tgt.outerWidth()
+          $tgt.attr("title", title)
           $tgt.children("span").text( title )
+          $tgt.attr("title", title)
+          @tabsWidth += $tgt.outerWidth()
+          @ensureTabSize()
 
         if klass isnt undefined or klass isnt null
           if $tgt.hasClass("active")

@@ -165,7 +165,7 @@ define [
         if statusIcon.length
           instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
           state    = instance?.get("instanceState").name || "unknown"
-          statusIcon.data("tooltip", state).attr("class", "instance-state tooltip #{state}")
+          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "instance-state tooltip #{state}")
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m

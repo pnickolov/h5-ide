@@ -36,9 +36,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     osType
 
-  getIcon = ( ami ) ->
-    return ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
-
   getOSFamily = ( ami ) ->
     if not ami.osType then return "linux"
 
@@ -68,7 +65,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
       ami.osType   = getOSType( ami )
       ami.osFamily = getOSFamily( ami )
-      ami.icon     = getIcon( ami )
       ami.blockDeviceMapping = bdm
 
       ms.push ami.id

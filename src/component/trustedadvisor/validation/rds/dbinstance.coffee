@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helper ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant, MC, Design, Helper, CloudResources ) ->
 
     i18n = Helper.i18n.short()
 
@@ -69,22 +69,22 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         null
 
-    # isHaveReplicaStorageSmallThanOrigin = (uid) ->
+    isHaveReplicaStorageSmallThanOrigin = (uid) ->
 
-    #     dbModel = Design.instance().component(uid)
-    #     return null if not dbModel.master()
+        dbModel = Design.instance().component(uid)
+        return null if not dbModel.master()
 
-    #     storge = dbModel.get('allocatedStorage')
-    #     srcStorge = dbModel.master().get('allocatedStorage')
+        storge = dbModel.get('allocatedStorage')
+        srcStorge = dbModel.master().get('allocatedStorage')
 
-    #     if storge < srcStorge
-    #         return {
-    #             uid: uid
-    #             level: constant.TA.ERROR
-    #             info: sprintf(i18n.TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
-    #         }
+        if storge < srcStorge
+            return {
+                uid: uid
+                level: constant.TA.ERROR
+                info: sprintf(i18n.TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
+            }
 
-    #     return null
+        return null
 
     isSqlServerCross3Subnet = ( uid ) ->
         db = Design.instance().component uid
@@ -92,14 +92,52 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         sbg = db.parent()
         azs = _.map sbg.connectionTargets('SubnetgAsso'), (sb) -> sb.parent()
-        return null if _.uniq(azs) > 2
+        return null if _.uniq(azs).length > 2
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
 
+    isBackupMaintenanceOverlap = ( uid ) ->
+        db = Design.instance().component uid
+        appId = db.get('appId')
+
+        backupWindow = db.get 'backupWindow'
+        maintenanceWindow = db.get 'maintenanceWindow'
+
+        if appId
+            appData = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
+            backupWindow = backupWindow or appData.get 'PreferredBackupWindow'
+            maintenanceWindow = maintenanceWindow or appData.get 'PreferredMaintenanceWindow'
+
+        unless backupWindow and maintenanceWindow then return null
+
+        backupTimeArray      = backupWindow.replace(/:/g, '').split('-')
+        maintenanceTimeArray = maintenanceWindow.replace(/:/g, '').split('-')
+
+        backupStart          = +backupTimeArray[0]
+        backupEnd            = +backupTimeArray[1]
+        maintenanceStart     = +maintenanceTimeArray[0].slice(3)
+        maintenanceEnd       = +maintenanceTimeArray[1].slice(3)
+
+        if backupStart > maintenanceEnd or backupEnd < maintenanceStart
+            return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')
 
 
-    isOgValid               : isOgValid
-    isAzConsistent          : isAzConsistent
-    isHaveEnoughIPForDB     : isHaveEnoughIPForDB
-    # isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
-    isSqlServerCross3Subnet : isSqlServerCross3Subnet
+    isMasterPasswordValid = ( uid ) ->
+        db = Design.instance().component uid
+        password = db.get('password')
+
+        if password and  ( password is '****' or 8 <= password.length <= 41) then return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_MASTER_PASSWORD_INVALID, db.get('name')
+
+
+
+    isOgValid                   : isOgValid
+    isAzConsistent              : isAzConsistent
+    isHaveEnoughIPForDB         : isHaveEnoughIPForDB
+    isSqlServerCross3Subnet     : isSqlServerCross3Subnet
+    isBackupMaintenanceOverlap  : isBackupMaintenanceOverlap
+    isMasterPasswordValid       : isMasterPasswordValid
+    isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin

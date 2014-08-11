@@ -844,7 +844,7 @@ module.exports =
       zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_CFM_DEL_DBINSTANCE:
-      en: "Deleting %s will also remove all read replica related it. Are you sure you want to delete it?"
+      en: "Deleting %s will also remove all read replica to related it. Are you sure to delete?"
       zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
@@ -5558,7 +5558,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
+      en: " DB Instance <span class='validation-tag tag-rds'>%s</span> has db.t1.micro instance class, which can only be members of the default option group."
       zh: ""
 
     TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
@@ -5594,15 +5594,23 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
-      en: "DB Instance %s is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP:
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> Backup Window and Maintenance Window are overlapping. Please update to avoid overlapping."
       zh: ""
 
     TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
-      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
+      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet <span class='validation-tag tag-subnet'>%s</span> should use a larger CIDR block."
       zh: ""
 
     TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
       en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
+      zh: ""
+
+    TA_MSG_ERROR_MASTER_PASSWORD_INVALID:
+      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

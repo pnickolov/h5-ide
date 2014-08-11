@@ -14,8 +14,8 @@ define(["jquery"], function(){
 
 	var tooltip = function (event)
 	{
-		var target = $(this),
-			content = $.trim(target.data('tooltip')),
+		var target = $(event.target),
+			content = $.trim(target.attr('data-tooltip')),
 			tooltip_box = $('#tooltip_box'),
 			docElem = document.documentElement,
 			target_offset,

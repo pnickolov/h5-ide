@@ -412,10 +412,14 @@ define [
         @set 'instanceClass', instanceClass.instanceClass
         _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
 
-      if not instanceClass.multiAZCapable
+      multiAZCapable = instanceClass.multiAZCapable
+      engine = @get('engine')
+      multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+
+      if not multiAZCapable
         @set 'multiAz', false
 
-      [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable, instanceClass.availabilityZones]
+      [spec, license.versions, version.instanceClasses, multiAZCapable, instanceClass.availabilityZones]
 
     getCost : ( priceMap, currency )->
       if not priceMap.database then return null

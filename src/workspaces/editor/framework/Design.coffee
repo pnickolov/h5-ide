@@ -164,6 +164,8 @@ define [
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
+    console.assert( Design.instance() is this )
+
     console.debug "Deserializing data :", [json_data, layout_data]
 
     # Let visitor to fix JSON before it get deserialized.
@@ -265,9 +267,19 @@ define [
     null
 
   DesignImpl.prototype.reload = ()->
+    oldDesign = Design.instance()
+
+    @use()
+
     DesignImpl.call this, @__opsModel
     json = @__opsModel.getJsonData()
     @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
+    if oldDesign
+      oldDesign.use()
+
+    return
+
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->

@@ -32,7 +32,7 @@ define [
             null
 
         initStack : ( uid )->
-            
+
             @view = view
             @model = model
             @view.resModel = Design.instance().component uid
@@ -65,6 +65,10 @@ define [
             @view = view
             @model = model
             @view.resModel = resModel
+
+            originJson = Design.instance().__opsModel.getJsonData()
+            view.originComp = originJson.component[resModel.id]
+
             if resModel.get('appId')
                 @view.isAppEdit = true
                 @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')

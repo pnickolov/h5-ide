@@ -3,6 +3,7 @@
 #############################
 
 define [ 'ApiRequest'
+         'ResDiff'
          '../base/view'
          'og_dropdown'
          './template/stack_instance'
@@ -13,7 +14,7 @@ define [ 'ApiRequest'
          'CloudResources'
          'rds_pg'
          'jqtimepicker'
-], ( ApiRequest, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
 
     noop = ()-> null
 
@@ -23,6 +24,7 @@ define [ 'ApiRequest'
             'change #property-dbinstance-name': 'changeInstanceName'
             'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
             'change #property-dbinstance-storage': 'changeAllocatedStorage'
+            'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
             'change #property-dbinstance-iops-check': 'changeProvisionedIOPSCheck'
             'change #property-dbinstance-iops-value': 'changeProvisionedIOPS'
             'change #property-dbinstance-master-username': 'changeUserName'
@@ -51,6 +53,25 @@ define [ 'ApiRequest'
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+            'OPTION_CHANGE': 'checkChange'
+            'change *': 'checkChange'
+
+        checkChange: () ->
+            return unless @resModel.get 'appId'
+            that = @
+            _.defer () ->
+                comp = that.resModel.serialize()
+
+                differ = new ResDiff({
+                    old : component: that.originComp
+                    new : comp
+                })
+
+                if differ.getChangeInfo().hasResChange
+                    that.$( '.apply-immediately-section' ).show()
+                else
+                    that.$( '.apply-immediately-section' ).hide()
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -87,10 +108,15 @@ define [ 'ApiRequest'
 
         setDefaultAllocatedStorage: () ->
 
-            defaultStorage = @resModel.getDefaultAllocatedStorage()
-            @resModel.set('allocatedStorage', defaultStorage)
-            $('#property-dbinstance-storage').val(defaultStorage)
-            @updateIOPSCheckStatus()
+            range = @resModel.getAllocatedRange()
+            currentValue = @resModel.get('allocatedStorage')
+
+            if range.min > currentValue or range.max < currentValue
+
+                defaultStorage = @resModel.getDefaultAllocatedStorage()
+                @resModel.set('allocatedStorage', defaultStorage)
+                $('#property-dbinstance-storage').val(defaultStorage)
+                @updateIOPSCheckStatus()
 
         _getTimeData: (timeStr) ->
 
@@ -233,17 +259,17 @@ define [ 'ApiRequest'
 
         getOriginAttr: () ->
 
-            originJson = Design.instance().__opsModel.getJsonData()
-            originComp = originJson.component[@resModel.id]
 
-            if originComp
+            if @originComp and @appModel
 
-                allocatedStorage = originComp.resource.AllocatedStorage
-                iops = originComp.resource.Iops
+                allocatedStorage = @originComp.resource.AllocatedStorage
+                iops = @originComp.resource.Iops
 
                 return {
                     originAllocatedStorage: allocatedStorage,
                     originIOPS: iops
+                    originBackupWindow: @appModel.get 'PreferredBackupWindow'
+                    originMaintenanceWindow: @appModel.get 'PreferredMaintenanceWindow'
                 }
 
             else
@@ -507,6 +533,10 @@ define [ 'ApiRequest'
             lvi = @resModel.getLVIA spec
             multiAZCapable = lvi[3]
 
+            # hack for SQL Server
+            engine = @resModel.get('engine')
+            multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+
             if not multiAZCapable
                 @resModel.set('multiAz', false)
 
@@ -580,7 +610,7 @@ define [ 'ApiRequest'
 
                     if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                         return errTip
-                    
+
                     if that.resModel.isSqlserver()
                         min = 1
                         max = 10
@@ -590,7 +620,7 @@ define [ 'ApiRequest'
                     errTip = "Must contain from #{min} to #{max} alphanumeric characters or hyphens and first character must be a letter, cannot end with a hyphen or contain two consecutive hyphens"
                     if val.length < min or val.length > max
                         return errTip
-                    
+
                     if not MC.validate('letters', val[0])
                         return errTip
 
@@ -627,13 +657,17 @@ define [ 'ApiRequest'
 
             # @renderLVIA()
 
-        updateIOPSCheckStatus: () ->
+        updateIOPSCheckStatus: (newStorage) ->
 
             that = this
 
+            if newStorage
+                storge = newStorage
+            else
+                storge = that.resModel.get 'allocatedStorage'
+
             if not (that.resModel.master() and not that.isAppEdit)
 
-                storge = that.resModel.get 'allocatedStorage'
                 iops = that.resModel.get 'iops'
                 if that._haveEnoughStorageForIOPS(storge)
                     that._disableIOPSCheck(false)
@@ -709,6 +743,15 @@ define [ 'ApiRequest'
             if target.parsley('validate') and that.changeProvisionedIOPS()
                 that.resModel.set 'allocatedStorage', value
                 that.updateIOPSCheckStatus()
+
+        inputAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            # if target.parsley('validate') and that.changeProvisionedIOPS()
+            that.updateIOPSCheckStatus(value)
 
         changeProvisionedIOPSCheck: (event) ->
 
@@ -802,6 +845,7 @@ define [ 'ApiRequest'
 
             if target.parsley 'validate'
                 @resModel.set 'password', value
+                # $('#property-dbinstance-master-password').attr('data-tooltip', "Current password: #{value}").removeClass('tooltip').addClass('tooltip')
 
         changeDatabaseName: (event) ->
             $target = $ event.currentTarget

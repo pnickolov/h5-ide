@@ -78,9 +78,15 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
         self.__polling = null
         self.__parsePolling( res )
         return
-      , ()->
-        self.__polling = null
-        self.startPollingStatus()
+      , ( err )->
+        if err and err.awsError
+          # If we encounter aws error, just ignore it.
+          if err.awsError is 404
+            self.remove()
+          return
+        if err and err.error < 0
+          self.__polling = null
+          self.startPollingStatus()
 
     __parsePolling : ( res )->
       res = res.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots.DBSnapshot

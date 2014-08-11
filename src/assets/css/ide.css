@@ -4242,10 +4242,26 @@ div.modal-text-highlight{
     float: left;
 }
 .payment-wrapper-right{
-    width: 200px;
+    width: 210px;
     position: absolute;
     height: 100%;
     right: 0;
     border-left: 1px solid #000000;
     background-color: #212121;
+}
+.payment-warning{
+    display: block;
+    border: 1px solid #f9b42d;
+    color: #f9b42d;
+    font-size: 12px;
+    padding: 3px;
+    margin: 0 10px;
+    background-color: #393939;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.payment-warning a{
+    color: #f9b42d;
+    text-decoration: underline;
 }

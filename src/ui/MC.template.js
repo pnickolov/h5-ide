@@ -600,8 +600,16 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <div class=\"payment-warning\">\n                There was an issue to process payment in your account. Please update your <a href=\""
+    + escapeExpression(((stack1 = (depth0 && depth0['payment-link'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">payment information</a>.\n            </div>\n        ";
+  return buffer;
+  }
 
   buffer += "<section id=\"modal-run-stack\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n            <label class=\"label\" for=\"app-name\">App Name</label>\n            <input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -609,7 +617,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n    </div>\n</section>";
+    + "</b> / month</div>\n        </div>\n        ";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.payment_active), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </div>\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);

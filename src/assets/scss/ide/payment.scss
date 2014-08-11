@@ -29,17 +29,8 @@ $navHeight : 38px;
 }
 
 #PaymentBody {
-  width: 430px;
-  padding: 20px 30px 30px;
+  padding: 20px 15px 30px;
   min-height: 150px;
-
-  a {
-    color: #148BE6;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
 
   .dl-horizontal {
     margin: 0;
@@ -55,5 +46,20 @@ $navHeight : 38px;
     line-height: 30px;
     margin-left: 10px;
   }
+  .table-head{
+    width: 100%;
+    tr th{
+      position: relative;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
 
+    }
+  }
+  .sortable{
+    cursor: pointer;
+  }
+  .t-m-content a.link-blue{
+    margin:0 10px;
+  }
 }

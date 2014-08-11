@@ -22,13 +22,8 @@
       width: 100%; }
 
 #PaymentBody {
-  width: 430px;
-  padding: 20px 30px 30px;
+  padding: 20px 15px 30px;
   min-height: 150px; }
-  #PaymentBody a {
-    color: #148BE6; }
-  #PaymentBody a:hover {
-    text-decoration: underline; }
   #PaymentBody .dl-horizontal {
     margin: 0;
     line-height: 30px; }
@@ -38,3 +33,14 @@
     color: #999;
     line-height: 30px;
     margin-left: 10px; }
+  #PaymentBody .table-head {
+    width: 100%; }
+    #PaymentBody .table-head tr th {
+      position: relative;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500; }
+  #PaymentBody .sortable {
+    cursor: pointer; }
+  #PaymentBody .t-m-content a.link-blue {
+    margin: 0 10px; }

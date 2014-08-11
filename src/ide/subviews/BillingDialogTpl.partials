@@ -1,7 +1,7 @@
 <!--{{noPaymentCard}}-->
 <div id="no-payment-card" class="text-center" xmlns="http://www.w3.org/1999/html">
-    <div class="card"></div>
-    <div class="text-left">
+    <div class="payment-card"></div>
+    <div class="text-left no-payment-card-info">
         <p>To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
         <p><a class="link-blue" href="#">Learn more about pricing</a></p>
     </div>
@@ -9,7 +9,7 @@
         <a href="{{url}}" target="_blank" class="btn btn-blue btn-xlarge">Provide Billing Information <i
                 class="icon-right"></i></a>
 
-        <p>You will be brought back to Chargify in a new browser window.<br/>
+        <p class="payment-hint">You will be brought back to Chargify in a new browser window.<br/>
             Meanwhile, make sure this window is alive.
         </p>
     </div>
@@ -25,12 +25,16 @@
         <section id="PaymentBillingTab">
             <div>Credit Card Infomation</div>
             <div class="clearfix">
-                <div class="pull-left">
-                    <i class="icon-credit-card"></i>
-                    <p class="payment-number">**** **** **** **** 4322</p>
-                    <p class="payment-username">JOHN DOE</p>
+                <div class="left clearfix">
+                    <div class="payment-credit-middle left">
+
+                    </div>
+                    <div class="left">
+                        <p class="payment-number">**** **** **** **** 4322</p>
+                        <p class="payment-username">JOHN DOE</p>
+                    </div>
                 </div>
-                <div class="pull-right">
+                <div class="right">
                     <a class="btn btn-blue" href="{{url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>

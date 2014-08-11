@@ -402,12 +402,6 @@ define [
             eni.groupSet = {item: eni.groups}
             delete eni.groups
 
-        #get ami list
-        if not amiAry[ins.imageId]
-          amiAry[ins.imageId] = 1
-        else
-          amiAry[ins.imageId]++
-
         #set icon
         if ins.architecture and ins.rootDeviceType
           if ins.platform and ins.platform is 'windows'

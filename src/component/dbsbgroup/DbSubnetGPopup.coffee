@@ -78,6 +78,8 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
       for sb, value of subnets
         if not existSb[ sb ]
           new SubnetgAsso( @model, design.component( sb ) )
+
+      @trigger 'update'
       return
 
   }

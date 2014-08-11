@@ -28,7 +28,13 @@ define [ '../base/view'
                 @model.set 'description', $target.val()
 
         editSgb : ()->
-            new DbSubnetGPopup({model:@model})
+            that = @
+            subnetGPopup = new DbSubnetGPopup({model:@model})
+            @listenTo subnetGPopup, 'update', () ->
+                that.render()
+                @stopListening subnetGPopup
+                subnetGPopup.remove()
+
             return false
 
         render: ->

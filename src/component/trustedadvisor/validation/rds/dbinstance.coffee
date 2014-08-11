@@ -124,6 +124,13 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')
 
 
+    isMasterPasswordValid = ( uid ) ->
+        db = Design.instance().component uid
+
+        if db.get('password') and  8 <= db.get('password').length <= 41 then return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_MASTER_PASSWORD_INVALID, db.get('name')
+
 
 
     isOgValid                   : isOgValid
@@ -131,3 +138,4 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
     isHaveEnoughIPForDB         : isHaveEnoughIPForDB
     isSqlServerCross3Subnet     : isSqlServerCross3Subnet
     isBackupMaintenanceOverlap  : isBackupMaintenanceOverlap
+    isMasterPasswordValid       : isMasterPasswordValid

@@ -5575,6 +5575,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
       zh: ""
 
+    TA_MSG_ERROR_MASTER_PASSWORD_INVALID:
+      en: "DB instance %s's Master Password must contain 8 to 41 characters."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""

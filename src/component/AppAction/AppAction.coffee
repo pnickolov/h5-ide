@@ -217,10 +217,15 @@ define [
           return
 
 
-    _bindPaymentEvent: (modal)->
+    _bindPaymentEvent: (modal, checkPaymentDefer)->
       modal.find("a.btn.btn-xlarge").click ()->
         modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         modal.setContent MC.template.loadingSpiner()
+      App.WS.on 'userStateChange', (idx, dag)->
+        paymentState = dag.payment_statement
+        App.user.set('paymentState', paymentState)
+        if paymentState is 'active'
+          checkPaymentDefer.resolve(modal)
 
     checkPayment: ()->
       that = @
@@ -239,12 +244,12 @@ define [
           App.user.getPaymentUpdate().then (result)->
             paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
             paymentModal.setContent(MC.template.paymentUpdate result)
-            that._bindPaymentEvent(paymentModal)
+            that._bindPaymentEvent(paymentModal, checkPaymentDefer)
           , (err)->
             App.user.getPaymentInfo().then (result)->
               paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
               paymentModal.setContent(MC.template.paymentSubscribe result)
-              that._bindPaymentEvent(paymentModal)
+              that._bindPaymentEvent(paymentModal, checkPaymentDefer)
             ,(err)->
               notification 'error', "Error while getting user payment info. please try again later."
               paymentModal.close()

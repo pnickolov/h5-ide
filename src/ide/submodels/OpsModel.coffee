@@ -246,38 +246,38 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       #app_json_backend
       #patch(temp)
-      _.each app_json_xu.models[0].attributes.component, (comp,key)->
-        if comp.type is 'AWS.RDS.DBInstance'
-          if json.component[key]
-            comp.resource.ReadReplicaSourceDBInstanceIdentifier = json.component[key].resource.ReadReplicaSourceDBInstanceIdentifier
-          else if comp.name is 'unamed'
-            #DBInstance name is unamed
-            comp.name = comp.resource.DBName
-        else if comp.type is 'AWS.VPC.RouteTable'
-          for asso_b in comp.resource.AssociationSet
-            if json.component[key]
-              for asso_f in json.component[key].resource.AssociationSet
-                if asso_b.Main and asso_f.Main
-                  asso_b.RouteTableAssociationId = asso_f.RouteTableAssociationId
-                  asso_b.SubnetId                = asso_f.SubnetId
-              null
-          for rt_b in comp.resource.RouteSet
-            if json.component[key]
-              for rt_f in json.component[key].resource.RouteSet
-                if rt_b.GatewayId is rt_f.GatewayId and rt_b.DestinationCidrBlock is rt_f.DestinationCidrBlock
-                  rt_b.NetworkInterfaceId = rt_f.NetworkInterfaceId
-              null
-        else if comp.type is 'AWS.VPC.NetworkAcl'
-          for asso_b in comp.resource.AssociationSet
-            if json.component[key]
-              for asso_f in json.component[key].resource.AssociationSet
-                if asso_b.SubnetId is asso_f.SubnetId
-                  asso_b.NetworkAclAssociationId = asso_f.NetworkAclAssociationId
-              null
+      # _.each app_json_xu.models[0].attributes.component, (comp,key)->
+      #   if comp.type is 'AWS.RDS.DBInstance'
+      #     if json.component[key]
+      #       comp.resource.ReadReplicaSourceDBInstanceIdentifier = json.component[key].resource.ReadReplicaSourceDBInstanceIdentifier
+      #     else if comp.name is 'unamed'
+      #       #DBInstance name is unamed
+      #       comp.name = comp.resource.DBName
+      #   else if comp.type is 'AWS.VPC.RouteTable'
+      #     for asso_b in comp.resource.AssociationSet
+      #       if json.component[key]
+      #         for asso_f in json.component[key].resource.AssociationSet
+      #           if asso_b.Main and asso_f.Main
+      #             asso_b.RouteTableAssociationId = asso_f.RouteTableAssociationId
+      #             asso_b.SubnetId                = asso_f.SubnetId
+      #         null
+      #     for rt_b in comp.resource.RouteSet
+      #       if json.component[key]
+      #         for rt_f in json.component[key].resource.RouteSet
+      #           if rt_b.GatewayId is rt_f.GatewayId and rt_b.DestinationCidrBlock is rt_f.DestinationCidrBlock
+      #             rt_b.NetworkInterfaceId = rt_f.NetworkInterfaceId
+      #         null
+      #   else if comp.type is 'AWS.VPC.NetworkAcl'
+      #     for asso_b in comp.resource.AssociationSet
+      #       if json.component[key]
+      #         for asso_f in json.component[key].resource.AssociationSet
+      #           if asso_b.SubnetId is asso_f.SubnetId
+      #             asso_b.NetworkAclAssociationId = asso_f.NetworkAclAssociationId
+      #         null
       
-      console.info "app_json_backend(patched)"
-      console.debug JSON.stringify app_json_xu.models[0].attributes
-      console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
+      # console.info "app_json_backend(patched)"
+      # console.debug JSON.stringify app_json_xu.models[0].attributes
+      # console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
       return app_json_xu.models[0].attributes
 
       #app_json_frontend

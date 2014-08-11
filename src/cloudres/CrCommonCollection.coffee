@@ -80,7 +80,7 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
             xml = $.xml2json( $.parseXML(dataXml[0]) )
 
             if self.trAwsXml then xml = self.trAwsXml( xml )
-            if self.parseFetchData and xml then xml = self.parseFetchData( xml )
+            if self.parseFetchData and xml then xml = self.parseFetchData( xml, regionId )
 
             for d in xml || EmptyArr
               #append visopsTag

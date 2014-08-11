@@ -245,7 +245,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ## ##################################################
 
       #app_json_backend
-      app_json_xu.models[0]
+      app_json_xu.models[0].attributes
 
       #app_json_frontend
       #json

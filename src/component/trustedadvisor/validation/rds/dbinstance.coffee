@@ -126,8 +126,9 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
     isMasterPasswordValid = ( uid ) ->
         db = Design.instance().component uid
+        password = db.get('password')
 
-        if db.get('password') and  8 <= db.get('password').length <= 41 then return null
+        if password and  ( password is '****' or 8 <= password.length <= 41) then return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_MASTER_PASSWORD_INVALID, db.get('name')
 

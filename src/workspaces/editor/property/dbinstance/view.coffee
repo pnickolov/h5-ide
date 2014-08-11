@@ -260,7 +260,7 @@ define [ 'ApiRequest'
         getOriginAttr: () ->
 
 
-            if originComp and @appModel
+            if @originComp and @appModel
 
                 allocatedStorage = @originComp.resource.AllocatedStorage
                 iops = @originComp.resource.Iops

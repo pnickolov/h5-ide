@@ -714,7 +714,7 @@ MC.canvas = {
 		);
 	},
 
-	route2: function (start, end)
+	route2: function (start, end, line_style)
 	{
 		//add by xjimmy, connection algorithm (xjimmy's algorithm)
 		var controlPoints = [],
@@ -806,18 +806,21 @@ MC.canvas = {
 		{
 			//C
 			mid_y = Math.round((start.y + end.y) / 2);
-			if ((end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
-			{
-				if (Math.abs(mid_y - end.y) > 5)
+			if ( line_style === 1 )
+			{//_round_corner
+				if ((end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
 				{
-					mid_y = MC.canvas._adjustMidY(end.name, mid_y, end, 1);
+					if (Math.abs(mid_y - end.y) > 5)
+					{
+						mid_y = MC.canvas._adjustMidY(end.name, mid_y, end, 1);
+					}
 				}
-			}
-			else if ((start.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
-			{
-				if (Math.abs(start.y - mid_y) > 5)
+				else if ((start.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
 				{
-					mid_y = MC.canvas._adjustMidY(start.name, mid_y, start, -1);
+					if (Math.abs(start.y - mid_y) > 5)
+					{
+						mid_y = MC.canvas._adjustMidY(start.name, mid_y, start, -1);
+					}
 				}
 			}
 			controlPoints.push(
@@ -837,7 +840,7 @@ MC.canvas = {
 		{
 			//D
 			mid_x = Math.round((start.x + end.x) / 2);
-			if ((end.type === 'AWS.VPC.RouteTable' || end.type === 'AWS.ELB') && end.type !== start.type)
+			if ((end.type === 'AWS.VPC.RouteTable' || (end.type === 'AWS.ELB' && line_style === 1) ) && end.type !== start.type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{
@@ -858,7 +861,7 @@ MC.canvas = {
 					}
 				}
 			}
-			else if (start.type === 'AWS.ELB' && end.type !== start.type)
+			else if (start.type === 'AWS.ELB' && line_style === 1 && end.type !== start.type)
 			{
 				if (Math.abs(mid_x - end.x) > 5)
 				{

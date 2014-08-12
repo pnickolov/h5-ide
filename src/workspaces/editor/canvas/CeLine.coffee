@@ -182,9 +182,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       if start0.x is end0.x or start0.y is end0.y
         path = "M#{start0.x} #{start0.y} L#{end0.x} #{end0.y}"
       else
-        controlPoints = MC.canvas.route2( start0, end0 )
+        line_style = @lineStyle( connection.type )
+        controlPoints = MC.canvas.route2( start0, end0, line_style )
         if controlPoints
-          switch @lineStyle()
+          switch line_style
             when 0
               path = "M#{controlPoints[0].x} #{controlPoints[0].y} L#{controlPoints[1].x} #{controlPoints[1].y} L#{controlPoints[controlPoints.length-2].x} #{controlPoints[controlPoints.length-2].y} L#{controlPoints[controlPoints.length-1].x} #{controlPoints[controlPoints.length-1].y}"
             when 1 then path = MC.canvas._round_corner(controlPoints)
@@ -194,7 +195,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
       path
 
-    lineStyle : ()-> @canvas.lineStyle()
+    lineStyle : ( conn_type )->
+      switch conn_type
+        when 'RTB_Route' then 1
+        else @canvas.lineStyle()
 
   }, {
     cleanLineMask : ( line )->

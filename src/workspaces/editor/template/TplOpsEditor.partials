@@ -70,9 +70,9 @@
     <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
     <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
     <li class='item' data-id="3"><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
-    <li class='item' data-id="4"><span class="icon-hide-sg">{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}</span></li>
   </ul>
 </div>
+<button class="btn-toolbar icon-hide-sg tooltip" data-tooltip='{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}'></button>
 
 <!-- {{toolbar.BtnRunStack}} -->
 <button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>

@@ -44,6 +44,7 @@ define [
       "click .icon-toolbar-cloudformation" : "exportCF"
       "click .runApp"                      : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
+      "click .icon-hide-sg"                : "toggleSgLine"
 
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
@@ -132,6 +133,15 @@ define [
       localStorage.setItem("canvas/lineStyle", attr)
       if @parent.canvas
         @parent.canvas.updateLineStyle()
+      return
+
+    toggleSgLine : ()->
+      sgBtn = $(".icon-hide-sg")
+      hide = sgBtn.hasClass("selected")
+      if hide
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).removeClass("selected")
+      else
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).addClass("selected")
       return
 
     saveStack : ( evt )->

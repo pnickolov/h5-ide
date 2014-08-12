@@ -1227,8 +1227,8 @@ module.exports =
       zh: ""
 
     TOOL_TIP_LINESTYLE:
-      en: "Security Group Rule Line Style..."
-      zh: "安全组规则连线类型..."
+      en: "Line Style"
+      zh: "连线类型"
 
     TOOL_LBL_LINESTYLE_STRAIGHT:
       en: "Straight"
@@ -1249,6 +1249,10 @@ module.exports =
     TOOL_LBL_LINESTYLE_HIDE_SG:
       en: "Hide SecurityGroup line"
       zh: "隐藏SecurityGroup线"
+
+    TOOL_LBL_LINESTYLE_SHOW_SG:
+      en: "Show SecurityGroup line"
+      zh: "显示SecurityGroup线"
 
     TOOL_EXPERIMENT:
       en: "Experimental Feature!"

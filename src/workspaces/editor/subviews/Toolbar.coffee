@@ -303,9 +303,10 @@ define [
           @__runStack(modal)
 
     __runStack: ()->
+      paymentState = App.user.get("paymentState")
       @modal = new Modal
         title: lang.ide.RUN_STACK_MODAL_TITLE
-        template: MC.template.modalRunStack
+        template: MC.template.modalRunStack {paymentState}
         disableClose: true
         width: '665px'
         compact: true
@@ -314,8 +315,9 @@ define [
           disabled: true
       @renderKpDropdown(@modal)
       cost = Design.instance().getCost()
-      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-      @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+      @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
+      @modal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+      @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
       # load TA
       TA.loadModule('stack').then ()=>

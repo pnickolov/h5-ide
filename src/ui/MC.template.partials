@@ -486,11 +486,11 @@ Additional Notes and Questions
             <div class="title">Estimated VisualOps Cost</div>
             <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
         </div>
-        {{#unless payment_active}}
+        {{#ifCond paymentState "past_due"}}
             <div class="payment-warning">
                 There was an issue to process payment in your account. Please update your <a href="{{payment-link}}">payment information</a>.
             </div>
-        {{/unless}}
+        {{/ifCond}}
     </div>
 </section>
 

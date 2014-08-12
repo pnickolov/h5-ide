@@ -618,7 +618,7 @@ function program1(depth0,data) {
     + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</b> / month</div>\n        </div>\n        ";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.payment_active), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</section>";
   return buffer;

@@ -30,8 +30,8 @@
 
                     </div>
                     <div class="left">
-                        <p class="payment-number">**** **** **** **** 4322</p>
-                        <p class="payment-username">JOHN DOE</p>
+                        <p class="payment-number">{{or paymentUpdate.card "No Card"}}</p>
+                        <p class="payment-username">{{paymentUpdate.first_name}} {{paymentUpdate.last_name}}</p>
                     </div>
                 </div>
                 <div class="right">

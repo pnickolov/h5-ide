@@ -71,7 +71,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if PropertyView.checkResName( @model.get('uid'), target, "Route Table" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Route Table" )
                 @model.setName name
                 @setTitle name
             null

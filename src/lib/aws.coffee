@@ -1,4 +1,4 @@
-define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _, $, Design ) ->
+define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js' ], ( MC, constant, _, $, Design, lang ) ->
 
     getCompByResIdForState = ( resId ) ->
 
@@ -354,6 +354,64 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         return isInAryRange
 
+    checkResName = ( uid, $input, type ) ->
+
+        isNameDup = ( uid, newName )->
+
+            console.assert( uid, "This property model doesn't have an id" )
+
+            comp = Design.instance().component( uid )
+
+            if comp.get("name") is newName
+                return false
+
+            dup = false
+            Design.instance().eachComponent ( comp )->
+                if comp.get("name") is newName
+                    dup = true
+                    return false
+
+            dup
+
+        isOldName = ( uid, newName )->
+            design = Design.instance()
+            comp = design.component( uid )
+            if not comp then return false
+            design.isPreservedName( comp.type, newName )
+
+        isReservedName = ( newName ) ->
+
+            result = false
+            if newName in ['self', 'this', 'global', 'meta', 'madeira']
+                result = true
+
+            return result
+
+        if not $input.length
+            $input = $( $input )
+
+        name = $input.val()
+
+        if not type then type = name
+
+        if name && !MC.validate( 'awsName',  name )
+            error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
+
+        if not error and isNameDup( uid, name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if not error and isOldName( uid, name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if not error and isReservedName( name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if name.indexOf("elbsg-") is 0
+            error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
+
+        $input.parsley 'custom', ()-> error
+        $input.parsley 'validate'
+
     #public
     MC.aws = {}
     MC.aws.aws =
@@ -361,5 +419,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         genAttrRefList              : genAttrRefList
         isValidInIPRange            : isValidInIPRange
         checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
+        checkResName                : checkResName
 
     return

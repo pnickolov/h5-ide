@@ -6,9 +6,8 @@ define [
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'
-    './workspaces/editor/property/base/view'
 
-], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus, PropertyView ) ->
+], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     valueInRange = ( start, end ) ->
         ( val ) ->
@@ -298,7 +297,7 @@ define [
                 start = +$this.data 'start'
                 end = +$this.data 'end'
 
-                if start and end
+                if isFinite(start) and isFinite(end)
                     $this.parsley 'custom', valueInRange start, end
 
             null
@@ -454,7 +453,7 @@ define [
                 if not MC.validate('letters', val[0])
                     return errTip
 
-            ogNameCheck = PropertyView.checkResName( @ogModel.get('id'), $ogName, "OptionGroup" )
+            ogNameCheck = MC.aws.aws.checkResName( @ogModel.get('id'), $ogName, "OptionGroup" )
 
             $ogDesc.parsley 'custom', ( val ) ->
 

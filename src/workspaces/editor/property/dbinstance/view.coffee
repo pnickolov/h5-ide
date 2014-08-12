@@ -602,7 +602,7 @@ define [ 'ApiRequest'
 
             target = $ event.currentTarget
 
-            if PropertyView.checkResName(@resModel.get('id'), target, 'DBInstance')
+            if MC.aws.aws.checkResName(@resModel.get('id'), target, 'DBInstance')
 
                 value = target.val()
 

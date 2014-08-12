@@ -238,6 +238,7 @@
                             {{/each}}
                         </ul>
                     </div>
+                    <label for="property-dbinstance-maintenance-window-duration">hour(s)</label>
                 </section>
             </section>
 
@@ -274,7 +275,7 @@
             </div>
         </section>
 
-        <div id="property-dbinstance-maintenance-window-group" class="{{#unless maintenanceWindow}}hide{{/unless}}">
+        <section id="property-dbinstance-maintenance-window-group" class="property-control-group {{#unless maintenanceWindow}}hide{{/unless}}">
             <section class="property-control-group" >
                 <label class="left">Start Day</label>
                 <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-start-day-select">
@@ -308,7 +309,7 @@
                 <label for="property-dbinstance-maintenance-window-duration">hour(s)</label>
             </section>
 
-        </div>
+        </section>
 
         {{#if originMaintenanceWindow}}
         <section class="property-control-group">

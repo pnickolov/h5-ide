@@ -611,9 +611,9 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section id=\"modal-run-stack\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n            <label class=\"label\" for=\"app-name\">App Name</label>\n            <input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+  buffer += "<section id=\"modal-run-stack\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\" style=\"max-height: 450px\">\n                <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n                    <label class=\"label\" for=\"app-name\">App Name</label>\n                    <input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n            <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n        </div>\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n        <div class=\"modal-control-group app-usage-group clearfix\">\n            <label for=\"\">App Usage</label>\n            <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                    <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                    <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                    <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                </ul>\n            </div>\n        </div>\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>Stack Validation</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>Validating your stack...</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + "\" data-ignore=\"true\">\n                    <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n                </div>\n                <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n                    <label for=\"\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                <div class=\"modal-control-group app-usage-group clearfix\">\n                    <label for=\"\">App Usage</label>\n                    <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                        <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                        <ul class=\"dropdown\" tabindex=\"-1\">\n                            <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                            <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                            <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                            <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                        </ul>\n                    </div>\n                </div>\n                <div class=\"stack-validation\">\n                    <details open style=\"display:none;\">\n                        <summary>Stack Validation</summary>\n                        <div id=\"stack-run-validation-container\"></div>\n                    </details>\n                    <div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n                    <div class=\"validating\">\n                        <div class=\"loading-spinner loading-spinner-small\"></div>\n                        <p>Validating your stack...</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1230,39 +1230,39 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "";
-  buffer += "\n	<h3 class=\"modal-text-major\">"
+  buffer += "\n                    <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING", {hash:{},data:data}))
-    + "</h3>\n	";
+    + "</h3>\n                ";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = "";
-  buffer += "\n	<h3 class=\"modal-text-major\">"
+  buffer += "\n                    <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</h3>\n	<p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
+    + "</h3>\n\n                    <p class=\"modal-text-minor\"\n                       style=\"margin-top:10px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</p>\n	";
+    + "</p>\n                ";
   return buffer;
   }
 
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n        <section class=\"check-final-snapshot checkbox-wrap\">\n            <div class=\"checkbox\">\n                <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                <label for=\"take-rds-snapshot\"></label>\n            </div>\n            <label for=\"take-rds-snapshot\">Take final snapshot for DB instances.</label>\n        </section>\n        ";
+  buffer += "\n                    <section class=\"check-final-snapshot checkbox-wrap\">\n                        <div class=\"checkbox\">\n                            <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                            <label for=\"take-rds-snapshot\"></label>\n                        </div>\n                        <label for=\"take-rds-snapshot\">Take final snapshot for DB instances.</label>\n                    </section>\n                    ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    ";
+  buffer += "\n                ";
   return buffer;
   }
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <p class=\"cant-snapshot\">DB Instance\n                ";
+  buffer += "\n                        <p class=\"cant-snapshot\">DB Instance\n                            ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                cannot take final snapshot.</p>\n        ";
+  buffer += "\n                            cannot take final snapshot.</p>\n                    ";
   return buffer;
   }
 function program7(depth0,data) {
@@ -1271,7 +1271,7 @@ function program7(depth0,data) {
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "(<span class=\"db-stop-status\">"
+    + "(<span\n                                    class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>)";
   return buffer;
@@ -1282,17 +1282,33 @@ function program8(depth0,data) {
   return ", ";
   }
 
-  buffer += "<div id=\"app-apply-update\">\n    <div class=\"modal-control-group default-kp-group clearfix\" style=\"display: none;\">\n        <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label><div id=\"kp-runtime-placeholder\"></div>\n        <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n    </div>\n	";
+function program10(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <div class=\"payment-warning\">\n                There was an issue to process payment in your account. Please update your <a href=\""
+    + escapeExpression(((stack1 = (depth0 && depth0['payment-link'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">payment\n                information</a>.\n            </div>\n        ";
+  return buffer;
+  }
+
+  buffer += "<div id=\"app-apply-update\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\" style=\"height: 450px\">\n                <div class=\"default-kp-group clearfix\" style=\"display: none;\">\n                    <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"scroll-wrap\" style=\"max-height:256px;\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n		</div>\n	</div>\n    ";
+  buffer += "\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\">\n                        <div class=\"scrollbar-veritical-thumb\"></div>\n                    </div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
+  buffer += "\n                <div class=\"stack-validation\">\n                    <details open style=\"display:none;\">\n                        <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
-    + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
+    + "</summary>\n                        <div id=\"stack-run-validation-container\"></div>\n                    </details>\n                    <div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n                    <div class=\"validating\">\n                        <div class=\"loading-spinner loading-spinner-small\"></div>\n                        <p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n		</div>\n	</div>\n\n</div>";
+    + "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
+    + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</b> / month</div>\n        </div>\n        ";
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </div>\n\n</div>";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);

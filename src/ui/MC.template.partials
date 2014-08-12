@@ -443,37 +443,42 @@ Additional Notes and Questions
 <!-- {{modalRunStack}} -->
 <section id="modal-run-stack" class="clearfix">
     <div class="payment-wrapper">
-        <div class="modal-control-group clearfix" data-bind="true">
-            <label class="label" for="app-name">App Name</label>
-            <input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
-            <div class="runtime-error" id="runtime-error-appname"></div>
-        </div>
-        <div class="modal-control-group default-kp-group clearfix" style="display:none;">
-            <label for="">$DefaultKeyPair</label>
-            <div id="kp-runtime-placeholder"></div>
-            <div class="runtime-error" id="runtime-error-kp"></div>
-        </div>
-        <div class="modal-control-group app-usage-group clearfix">
-            <label for="">App Usage</label>
-            <div id="app-usage-selectbox" class="selectbox">
-                <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
-                <ul class="dropdown" tabindex="-1">
-                    <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
-                    <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
-                    <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
-                    <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-                </ul>
-            </div>
-        </div>
-        <div class="stack-validation">
-            <details open style="display:none;">
-                <summary>Stack Validation</summary>
-                <div id="stack-run-validation-container"></div>
-            </details>
-            <div class="nutshell" style="display: none;">:<label></label></div>
-            <div class="validating">
-                <div class="loading-spinner loading-spinner-small"></div>
-                <p>Validating your stack...</p>
+        <div class="scroll-wrap">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content" style="max-height: 450px">
+                <div class="modal-control-group clearfix" data-bind="true">
+                    <label class="label" for="app-name">App Name</label>
+                    <input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+                    <div class="runtime-error" id="runtime-error-appname"></div>
+                </div>
+                <div class="modal-control-group default-kp-group clearfix" style="display:none;">
+                    <label for="">$DefaultKeyPair</label>
+                    <div id="kp-runtime-placeholder"></div>
+                    <div class="runtime-error" id="runtime-error-kp"></div>
+                </div>
+                <div class="modal-control-group app-usage-group clearfix">
+                    <label for="">App Usage</label>
+                    <div id="app-usage-selectbox" class="selectbox">
+                        <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+                        <ul class="dropdown" tabindex="-1">
+                            <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+                            <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+                            <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+                            <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stack-validation">
+                    <details open style="display:none;">
+                        <summary>Stack Validation</summary>
+                        <div id="stack-run-validation-container"></div>
+                    </details>
+                    <div class="nutshell" style="display: none;">:<label></label></div>
+                    <div class="validating">
+                        <div class="loading-spinner loading-spinner-small"></div>
+                        <p>Validating your stack...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -930,47 +935,76 @@ Additional Notes and Questions
 </div>
 
 <!-- {{updateApp}} -->
-<div id="app-apply-update">
-    <div class="modal-control-group default-kp-group clearfix" style="display: none;">
-        <label for="kp-runtime-placeholder">$DefaultKeyPair</label><div id="kp-runtime-placeholder"></div>
-        <div class="runtime-error" id="runtime-error-kp"></div>
-    </div>
-	{{#if isRunning}}
-	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
-	{{else}}
-	<h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
-	<p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
-	{{/if}}
-	<div class="scroll-wrap" style="max-height:256px;">
-		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-		<div class="scroll-content res_diff_tree" id="app-update-summary-table">
-		</div>
-	</div>
-    {{#if removeList.length}}
-        <section class="check-final-snapshot checkbox-wrap">
-            <div class="checkbox">
-                <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
-                <label for="take-rds-snapshot"></label>
+<div id="app-apply-update" class="clearfix">
+    <div class="payment-wrapper">
+        <div class="scroll-wrap">
+            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+            <div class="scroll-content" style="height: 450px">
+                <div class="default-kp-group clearfix" style="display: none;">
+                    <label for="kp-runtime-placeholder">$DefaultKeyPair</label>
+                    <div id="kp-runtime-placeholder"></div>
+                    <div class="runtime-error" id="runtime-error-kp"></div>
+                </div>
+                {{#if isRunning}}
+                    <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
+                {{else}}
+                    <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+
+                    <p class="modal-text-minor"
+                       style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
+                {{/if}}
+                <div class="scroll-wrap" style="max-height:256px;">
+                    <div class="scrollbar-veritical-wrap">
+                        <div class="scrollbar-veritical-thumb"></div>
+                    </div>
+                    <div class="scroll-content res_diff_tree" id="app-update-summary-table">
+                    </div>
+                </div>
+                {{#if removeList.length}}
+                    <section class="check-final-snapshot checkbox-wrap">
+                        <div class="checkbox">
+                            <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
+                            <label for="take-rds-snapshot"></label>
+                        </div>
+                        <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+                    </section>
+                    {{#if notReadyDB.length}}
+                        <p class="cant-snapshot">DB Instance
+                            {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span
+                                    class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                            cannot take final snapshot.</p>
+                    {{/if}}
+                {{/if}}
+                <div class="stack-validation">
+                    <details open style="display:none;">
+                        <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+                        <div id="stack-run-validation-container"></div>
+                    </details>
+                    <div class="nutshell" style="display: none;">:<label></label></div>
+                    <div class="validating">
+                        <div class="loading-spinner loading-spinner-small"></div>
+                        <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
+                    </div>
+                </div>
             </div>
-            <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
-        </section>
-        {{#if notReadyDB.length}}
-            <p class="cant-snapshot">DB Instance
-                {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                cannot take final snapshot.</p>
-        {{/if}}
-    {{/if}}
-	<div class="stack-validation">
-		<details open style="display:none;">
-			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
-			<div id="stack-run-validation-container"></div>
-		</details>
-		<div class="nutshell" style="display: none;">:<label></label></div>
-		<div class="validating">
-			<div class="loading-spinner loading-spinner-small"></div>
-			<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
-		</div>
-	</div>
+        </div>
+    </div>
+    <div class="payment-wrapper-right">
+        <div class="estimate clearfix">
+            <div class="title">Estimated Cost</div>
+            <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
+        </div>
+        <div class="estimate-visualops clearfix">
+            <div class="title">Estimated VisualOps Cost</div>
+            <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
+        </div>
+        {{#ifCond paymentState "past_due"}}
+            <div class="payment-warning">
+                There was an issue to process payment in your account. Please update your <a href="{{payment-link}}">payment
+                information</a>.
+            </div>
+        {{/ifCond}}
+    </div>
 
 </div>
 

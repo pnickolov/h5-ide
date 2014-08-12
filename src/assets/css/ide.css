@@ -2903,26 +2903,26 @@ summary:focus {
 	min-height: 80px;
 }
 
-#modal-run-stack div.estimate {
+#modal-run-stack div.estimate, #app-apply-update div.estimate {
 	position         : relative;
 	padding          : 5px 15px;
 	height           : 58px;
 }
 
-#modal-run-stack .estimate .price {
+#modal-run-stack .estimate .price, #app-apply-update .estimate .price{
 	font-size: 12px;
 }
 
-#modal-run-stack .estimate .price b {
+#modal-run-stack .estimate .price b, #app-apply-update .estimate .price b {
 	color: #ffa740;
 	font-size: 28px;
 }
 
-#modal-run-stack .estimate-visualops{
+#modal-run-stack .estimate-visualops, #app-apply-update .estimate-visualops{
     padding: 5px 15px;
     border-top: 1px solid #000000;
 }
-#modal-run-stack .estimate-visualops .price b {
+#modal-run-stack .estimate-visualops .price b, #app-apply-update .estimate-visualops .price b{
     color: #aeb3f2;
     font-size: 28px;
 }
@@ -4232,15 +4232,17 @@ div.modal-text-highlight{
 .payment-credit-card i{
     font-size: 100px;
 }
-#modal-run-stack {
+#modal-run-stack, #app-apply-update {
     position: relative;
     border-bottom: 1px solid #000000;
     background-color: #2c2c2c;
 }
 .payment-wrapper{
-    padding: 12px 15px;
-    width: 420px;
+    width: 454px;
     float: left;
+}
+.payment-wrapper > .scroll-wrap > .scroll-content{
+    padding: 12px 15px;
 }
 .payment-wrapper-right{
     width: 210px;

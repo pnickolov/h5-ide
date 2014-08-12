@@ -497,8 +497,6 @@ define [
         title: lang.ide.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
-        hasScroll: true
-        maxHeight: "450px"
 
       @updateModal.tpl.find(".modal-footer").hide()
       DBInstances.fetchForce().then ->
@@ -520,6 +518,7 @@ define [
 
         that.updateModal.tpl.children().css 'width', "450px"
         .find(".modal-footer").show()
+        that.updateModal.find(".modal-wrapper-fix").width(665).find('.modal-body').css('padding', 0)
         that.updateModal.setContent( MC.template.updateApp {
           isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
           notReadyDB: removeListNotReady

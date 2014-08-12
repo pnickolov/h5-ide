@@ -260,6 +260,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           sg = CloudResources( 'AWS.EC2.SecurityGroup', self.get("region") ).where({id:comp.resource.GroupId})
           if sg.length>0
             comp.resource.GroupName = sg[0].attributes.groupName
+        else if comp.type is 'AWS.RDS.DBInstance'
+          comp.resource.MasterUserPassword = "****"
         null
       console.info "app_json_backend(patched)"
       console.debug JSON.stringify app_json_xu.models[0].attributes

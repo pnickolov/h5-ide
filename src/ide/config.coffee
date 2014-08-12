@@ -274,7 +274,7 @@ require.config {
 		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
 		"component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
 		"component/StateStatus"             : [ "state_status" ]
-		"component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup", "component/AppAction/AppAction", 'og_manage', 'og_manage_app', 'og_dropdown' ]
+		"component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup", "appAction", 'og_manage', 'og_manage_app', 'og_dropdown' ]
 		"component/stateeditor/stateeditor" : []
 
 		"component/sharedrescomp" : [

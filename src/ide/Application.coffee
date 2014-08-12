@@ -58,8 +58,11 @@ define [
       console.info "Websocket Status changed, isConnected:", isConnected
       if @__view then @__view.toggleWSStatus( isConnected )
 
-    return
+    @WS.on "userStateChange", ( idx, dag )->
+      if dag and dag.hasOwnProperty( "payment_state" )
+        App.user.set("paymentState", dag.payment_state )
 
+    return
 
   VisualOps.prototype.__createUser = ()->
     @user = new User()

@@ -1,128 +1,143 @@
+<nav id="SettingsNav">
+  <span data-target="AccountTab">{{ i18n "HEAD_LABEL_ACCOUNT" }}</span>
+  <span data-target="CredentialTab">{{ i18n "HEAD_LABEL_CREDENTIAL" }}</span>
+  <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span>
+</nav>
 
-  <nav id="SettingsNav">
-      <span data-target="AccountTab">{{ i18n "HEAD_LABEL_ACCOUNT" }}</span>
-      <span data-target="CredentialTab">{{ i18n "HEAD_LABEL_CREDENTIAL" }}</span>
-      <span data-target="TokenTab">{{ i18n "SETTINGS_LABEL_ACCESSTOKEN" }}</span>
-  </nav>
-  <div class="tabContent" id="SettingsBody">
-      <section id="AccountTab">
-          <dl class="dl-horizontal">
-              <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
-              <dt>{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt><dd>{{email}}</dd>
-          </dl>
+<div class="tabContent" id="SettingsBody">
+  <section id="AccountTab">
+    <dl class="dl-horizontal">
+      <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
+      <dt class="accountEmailRO">{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt><dd class="accountEmailRO"><span>{{email}}</span><button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_NEW_EMAIL" }}' id="AccountEmail"></button></dd>
+    </dl>
+    <div id="AccountEmailWrap" class="accountEditWrap">
+      <dl class="dl-horizontal">
+        <dt>{{ i18n "HEAD_LABEL_NEW_EMAIL" }}</dt>
+        <dd><input type="string" class="input" id="AccountNewEmail" /></dd>
 
-          <button id="AccountPwd" class="link-style">{{ i18n "HEAD_LABEL_CHANGE_PASSWORD" }}</button>
-          <div id="AccountPwdWrap">
+        <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+        <dd><input type="password" class="input" id="AccountEmailPwd" /></dd>
+      </dl>
 
-              <dl class="dl-horizontal">
-                  <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
-                  <dd><input type="password" class="input" id="AccountCurrentPwd" /></dd>
+      <div id="AccountEmailInfo" class="empty-hide"></div>
 
-                  <dt>{{ i18n "HAED_LABEL_NEW_PASSWORD" }}</dt>
-                  <dd><input type="password" class="input" id="AccountNewPwd" /></dd>
-              </dl>
+      <div class="accountPwdBtns">
+        <button class="btn btn-blue" id="AccountUpdateEmail" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+        <span id="AccountCancelEmail" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+      </div>
+    </div>
 
-              <div id="AccountInfo" class="empty-hide"></div>
+    <button id="AccountPwd" class="link-style">{{ i18n "HEAD_LABEL_CHANGE_PASSWORD" }}</button>
+    <div id="AccountPwdWrap" class="accountEditWrap">
 
-              <div id="AccountPwdBtns">
-                  <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
-                  <span id="AccountCancelPwd" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
-              </div>
-          </div>
-      </section>
+      <dl class="dl-horizontal">
+        <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+        <dd><input type="password" class="input" id="AccountCurrentPwd" /></dd>
 
-      <section id="CredentialTab">
-          <div id="CredDemoWrap" {{#unless account}}style="display:block;"{{/unless}}>
-          <h3>{{ i18n "SETTINGS_CRED_DEMO_TIT" }}</h3>
-          <p>{{ i18n "SETTINGS_CRED_DEMO_TEXT" }}</p>
-          <p class="tac"><button class="btn btn-blue cred-setup">{{ i18n "SETTINGS_CRED_DEMO_SETUP" }}</button></p>
-          </div>
+        <dt>{{ i18n "HAED_LABEL_NEW_PASSWORD" }}</dt>
+        <dd><input type="password" class="input" id="AccountNewPwd" /></dd>
+      </dl>
 
-          <div id="CredAwsWrap" class="pos-r" {{#if account}}style="display:block;"{{/if}}>
-          <h3>{{ i18n "SETTINGS_CRED_CONNECTED_TIT" }}</h3>
-          <button class="cred-setup link-style">{{ i18n "SETTINGS_LABEL_ACCOUNT_UPDATE" }}</button>
-          <dl class="dl-horizontal cred-setup-msg" style="margin-top:15px;">
-              <dt>{{ i18n "SETTINGS_LABEL_ACCOUNTID" }}</dt><dd>{{account}}</dd>
-              <dt>{{ i18n "SETTINGS_LABEL_ACCESSKEY" }}</dt><dd>{{awsAccessKey}}</dd>
-              <dt>{{ i18n "SETTINGS_LABEL_SECRETKEY" }}</dt><dd>{{awsSecretKey}}</dd>
-          </dl>
-          </div>
+      <div id="AccountInfo" class="empty-hide"></div>
 
-          <div id="CredSetupWrap">
-              <div id="CredSetupMsg" class="cred-setup-msg empty-hide"></div>
-              <ul>
-                  <li>
-                      <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_ACCOUNTID' }}"></i>
-                      <label>{{ i18n 'SETTINGS_LABEL_ACCOUNTID' }}</label>
-                      <input autocomplete="off" class="input" id="CredSetupAccount" type="text" value="{{account}}">
-                  </li>
-                  <li>
-                      <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_ACCESSKEY' }}"></i>
-                      <label>{{ i18n 'SETTINGS_LABEL_ACCESSKEY' }}</label>
-                      <input autocomplete="off" class="input" id="CredSetupAccessKey" type="text" placeholder="{{awsAccessKey}}">
-                  </li>
-                  <li>
-                      <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_SECRETKEY' }}"></i>
-                      <label>{{ i18n 'SETTINGS_LABEL_SECRETKEY' }}</label>
-                      <input autocomplete="off" class="input" id="CredSetupSecretKey" type="password" placeholder="{{awsSecretKey}}">
-                  </li>
-              </ul>
+      <div class="accountPwdBtns">
+        <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+        <span id="AccountCancelPwd" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+      </div>
+    </div>
+  </section>
 
-              <div class="cred-btn-wrap clearfix">
-                  {{#unless credNeeded}}
-                  <button id="CredSetupRemove" class="link-style">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
-                  {{/unless}}
-                  <button class="right link-style cred-setup-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
-                  <button id="CredSetupSubmit" class="btn btn-blue right">{{ i18n 'HEAD_BTN_SUBMIT' }}</button>
-              </div>
+  <section id="CredentialTab">
+    <div id="CredDemoWrap" {{#unless account}}style="display:block;"{{/unless}}>
+      <h3>{{ i18n "SETTINGS_CRED_DEMO_TIT" }}</h3>
+      <p>{{ i18n "SETTINGS_CRED_DEMO_TEXT" }}</p>
+      <p class="tac"><button class="btn btn-blue cred-setup">{{ i18n "SETTINGS_CRED_DEMO_SETUP" }}</button></p>
+    </div>
 
-          </div>
+    <div id="CredAwsWrap" class="pos-r" {{#if account}}style="display:block;"{{/if}}>
+      <h3>{{ i18n "SETTINGS_CRED_CONNECTED_TIT" }}</h3>
+      <button class="cred-setup link-style">{{ i18n "SETTINGS_LABEL_ACCOUNT_UPDATE" }}</button>
+      <dl class="dl-horizontal cred-setup-msg" style="margin-top:15px;">
+        <dt>{{ i18n "SETTINGS_LABEL_ACCOUNTID" }}</dt><dd>{{account}}</dd>
+        <dt>{{ i18n "SETTINGS_LABEL_ACCESSKEY" }}</dt><dd>{{awsAccessKey}}</dd>
+        <dt>{{ i18n "SETTINGS_LABEL_SECRETKEY" }}</dt><dd>{{awsSecretKey}}</dd>
+      </dl>
+    </div>
 
-          <div id="CredRemoveWrap">
-              <h3>{{credRemoveTitle}}</h3>
-              <div>{{ i18n "SETTINGS_CRED_REMOVE_TEXT" }}</div>
-              <div class="cred-btn-wrap clearfix">
-                  <button class="right link-style cred-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
-                  <button id="CredRemoveConfirm" class="btn btn-red right">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
-              </div>
-          </div>
+    <div id="CredSetupWrap">
+      <div id="CredSetupMsg" class="cred-setup-msg empty-hide"></div>
+      <ul>
+        <li>
+          <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_ACCOUNTID' }}"></i>
+          <label>{{ i18n 'SETTINGS_LABEL_ACCOUNTID' }}</label>
+          <input autocomplete="off" class="input" id="CredSetupAccount" type="text" value="{{account}}">
+        </li>
+        <li>
+          <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_ACCESSKEY' }}"></i>
+          <label>{{ i18n 'SETTINGS_LABEL_ACCESSKEY' }}</label>
+          <input autocomplete="off" class="input" id="CredSetupAccessKey" type="text" placeholder="{{awsAccessKey}}">
+        </li>
+        <li>
+          <i class="icon-info icon-label tooltip" data-tooltip="{{ i18n 'SETTINGS_TIP_CRED_SECRETKEY' }}"></i>
+          <label>{{ i18n 'SETTINGS_LABEL_SECRETKEY' }}</label>
+          <input autocomplete="off" class="input" id="CredSetupSecretKey" type="password" placeholder="{{awsSecretKey}}">
+        </li>
+      </ul>
 
-          <div id="CredConfirmWrap">
-              <h3>{{ i18n "SETTINGS_CRED_UPDATE_CONFIRM_TIT" }}</h3>
-              <div>{{ i18n "SETTINGS_CRED_UPDATE_CONFIRM_TEXT" }}</div>
-              <div class="cred-btn-wrap clearfix">
-                  <button class="right link-style cred-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
-                  <button id="CredSetupConfirm" class="btn btn-red right">{{ i18n 'SETTINGS_LABEL_UPDATE_CONFIRM' }}</button>
-              </div>
-          </div>
+      <div class="cred-btn-wrap clearfix">
+        {{#unless credNeeded}}
+        <button id="CredSetupRemove" class="link-style">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
+        {{/unless}}
+        <button class="right link-style cred-setup-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
+        <button id="CredSetupSubmit" class="btn btn-blue right">{{ i18n 'HEAD_BTN_SUBMIT' }}</button>
+      </div>
 
-          <div id="CredRemoving"><p>{{ i18n "SETTINGS_CRED_REMOVING" }}</p><div class="loading-spinner"></div></div>
-          <div id="CredUpdating"><p>{{ i18n "SETTINGS_CRED_UPDATING" }}</p><div class="loading-spinner"></div></div>
+    </div>
+
+    <div id="CredRemoveWrap">
+      <h3>{{credRemoveTitle}}</h3>
+      <div>{{ i18n "SETTINGS_CRED_REMOVE_TEXT" }}</div>
+      <div class="cred-btn-wrap clearfix">
+        <button class="right link-style cred-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
+        <button id="CredRemoveConfirm" class="btn btn-red right">{{ i18n 'SETTINGS_LABEL_REMOVE_CREDENTIAL' }}</button>
+      </div>
+    </div>
+
+    <div id="CredConfirmWrap">
+      <h3>{{ i18n "SETTINGS_CRED_UPDATE_CONFIRM_TIT" }}</h3>
+      <div>{{ i18n "SETTINGS_CRED_UPDATE_CONFIRM_TEXT" }}</div>
+      <div class="cred-btn-wrap clearfix">
+        <button class="right link-style cred-cancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
+        <button id="CredSetupConfirm" class="btn btn-red right">{{ i18n 'SETTINGS_LABEL_UPDATE_CONFIRM' }}</button>
+      </div>
+    </div>
+
+    <div id="CredRemoving"><p>{{ i18n "SETTINGS_CRED_REMOVING" }}</p><div class="loading-spinner"></div></div>
+    <div id="CredUpdating"><p>{{ i18n "SETTINGS_CRED_UPDATING" }}</p><div class="loading-spinner"></div></div>
 
   </section>
 
   <section id="TokenTab">
-      <div id="TokenManager">
-          <p class="clearfix"> <button class="btn btn-blue right" id="TokenCreate">{{ i18n "SETTINGS_BTN_TOKEN_CREATE" }}</button>{{ i18n "SETTINGS_INFO_TOKEN" }}<a href="http://docs.visualops.io/source/reference/ide.html#3-4-5-github-service" target="_blank">{{ i18n 'SETTINGS_INFO_TOKEN_LINK' }}</a> </p>
-          <section class="token-table">
-              <header class="clearfix">
-                  <span class="tokenName">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_NAME' }}</span>
-                  <span class="tokenToken">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_TOKEN' }}</span>
-              </header>
-              <div class="scroll-wrap">
-                  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                  <ul id="TokenList" class="scroll-content" data-empty="{{ i18n 'SETTINGS_INFO_TOKEN_EMPTY' }}"></ul>
-              </div>
-          </section>
+    <div id="TokenManager">
+      <p class="clearfix"> <button class="btn btn-blue right" id="TokenCreate">{{ i18n "SETTINGS_BTN_TOKEN_CREATE" }}</button>{{ i18n "SETTINGS_INFO_TOKEN" }}<a href="http://docs.visualops.io/source/reference/ide.html#3-4-5-github-service" target="_blank">{{ i18n 'SETTINGS_INFO_TOKEN_LINK' }}</a> </p>
+      <section class="token-table">
+        <header class="clearfix">
+          <span class="tokenName">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_NAME' }}</span>
+          <span class="tokenToken">{{ i18n 'SETTINGS_LABEL_TOKENTABLE_TOKEN' }}</span>
+        </header>
+        <div class="scroll-wrap">
+          <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+          <ul id="TokenList" class="scroll-content" data-empty="{{ i18n 'SETTINGS_INFO_TOKEN_EMPTY' }}"></ul>
+        </div>
+      </section>
+    </div>
+    <div id="TokenRmConfirm" class="hide">
+      <h3 id="TokenRmTit"></h3>
+      <p>{{ i18n 'SETTINGS_CONFIRM_TOKEN_RM' }}</p>
+      <div class="cred-btn-wrap clearfix">
+        <button class="right link-style" id="TokenRmCancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
+        <button id="TokenRemove" class="btn btn-red right">{{ i18n 'SETTINGS_BTN_TOKEN_REMOVE' }}</button>
       </div>
-      <div id="TokenRmConfirm" class="hide">
-          <h3 id="TokenRmTit"></h3>
-          <p>{{ i18n 'SETTINGS_CONFIRM_TOKEN_RM' }}</p>
-          <div class="cred-btn-wrap clearfix">
-              <button class="right link-style" id="TokenRmCancel">{{ i18n 'SETTINGS_LABEL_ACCOUNT_CANCEL' }}</button>
-              <button id="TokenRemove" class="btn btn-red right">{{ i18n 'SETTINGS_BTN_TOKEN_REMOVE' }}</button>
-          </div>
-      </div>
+    </div>
   </section>
-
-  </div>
+</div>

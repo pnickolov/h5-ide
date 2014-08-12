@@ -30,6 +30,13 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         "change #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
         "keyup  #AccountCurrentPwd, #AccountNewPwd"                          : "updatePwdBtn"
 
+        "click #AccountEmail"                       : "showEmail"
+        "click #AccountCancelEmail"                 : "hideEmail"
+        "click #AccountUpdateEmail"                 : "changeEmail"
+        "change #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+        "keyup  #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+
+
       initialize : ( options )->
 
         attributes =
@@ -129,8 +136,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
 
         App.user.changePassword( old_pwd, new_pwd ).then ()->
           notification 'info', lang.ide.SETTINGS_UPDATE_PWD_SUCCESS
-          that.modal.$("#AccountCancelPwd").click()
-          that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
+          $("#AccountCancelPwd").click()
           return
         , ( err )->
           if err.error is 2
@@ -140,6 +146,54 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
 
           that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
+        return
+
+      showEmail : ()->
+        $(".accountEmailRO").hide()
+        $("#AccountEmailWrap").show()
+        $("#AccountNewEmail").focus()
+        return
+
+      hideEmail : ()->
+        $(".accountEmailRO").show()
+        $("#AccountEmailWrap").hide()
+        $("#AccountNewEmail, #AccountEmailPwd").val("")
+        $("#AccountEmailInfo").empty()
+        return
+
+      updateEmailBtn : ()->
+        old_pwd = $("#AccountNewEmail").val() || ""
+        new_pwd = $("#AccountEmailPwd").val() || ""
+
+        if old_pwd.length and new_pwd.length >= 6
+          $("#AccountUpdateEmail").removeAttr "disabled"
+        else
+          $("#AccountUpdateEmail").attr "disabled", "disabled"
+        return
+
+      changeEmail : ()->
+        email = $("#AccountNewEmail").val() || ""
+        pwd   = $("#AccountEmailPwd").val() || ""
+
+        $("#AccountEmailInfo").empty()
+        $("#AccountUpdateEmail").attr "disabled", "disabled"
+
+        App.user.changeEmail( email, pwd ).then ()->
+          notification 'info', lang.ide.SETTINGS_UPDATE_EMAIL_SUCCESS
+          $("#AccountCancelEmail").click()
+          $(".accountEmailRO").children("span").text( App.user.get("email") )
+          return
+        , ( err )->
+          switch err.error
+            when 116
+              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL3
+            when 117
+              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL2
+            else
+              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL1
+
+          $('#AccountEmailInfo').text text
+          $("#AccountUpdateEmail").removeAttr "disabled"
         return
 
       showCredSetup : ()->

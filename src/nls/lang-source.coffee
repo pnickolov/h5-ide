@@ -1094,7 +1094,7 @@ module.exports =
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:
-      en: "Do you confirm to terminate app"
+      en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
       zh: "本操作将销毁应用中的相关资源，您确认销毁当前应用"
 
     TOOL_POP_BODY_TERMINATE_APP_RIGHT:
@@ -3609,6 +3609,14 @@ module.exports =
       en: "Change Password"
       zh: "修改密码"
 
+    HEAD_LABEL_CHANGE_EMAIL:
+      en: "Change Email"
+      zh: "修改电子邮箱"
+
+    HEAD_LABEL_NEW_EMAIL:
+      en: "Email Address"
+      zh: "电子邮箱"
+
     HEAD_LABEL_CURRENT_PASSWORD:
       en: "Current Password"
       zh: "当前密码"
@@ -3823,6 +3831,22 @@ VisualOps API. You cannot UNDO this action.'
     SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
       zh: "密码修改成功。"
+
+    SETTINGS_UPDATE_EMAIL_SUCCESS:
+      en: "Email has been updated."
+      zh: "电子邮箱修改成功。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL1:
+      en: "To change email, please provide correct password."
+      zh: "修改电子邮箱失败。请确认当前密码输入正确。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL2:
+      en: "This email is already taken. Please use another."
+      zh: "电子邮箱已被使用。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL3:
+      en: "This email is invalid. Please enter a valid email."
+      zh: "无效的电子邮箱，请重试。"
 
     SETTINGS_UPDATE_PWD_FAILURE:
       en: "Update password failed. Make sure current password is correct."

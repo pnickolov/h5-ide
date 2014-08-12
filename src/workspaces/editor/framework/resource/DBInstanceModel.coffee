@@ -93,7 +93,7 @@ define [
       if @master() then return false
 
       if @get 'appId'
-        connTypesToCopy = [ 'SgAsso' ]
+        connTypesToCopy = []
       else
         connTypesToCopy = [ 'SgAsso', 'OgUsage' ]
 

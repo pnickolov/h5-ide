@@ -221,7 +221,7 @@ define [
       modal.find("a.btn.btn-xlarge").click ()->
         modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         modal.setContent MC.template.loadingSpiner()
-      App.WS.on 'userStateChange', (idx, dag)->
+      App.WS.once 'userStateChange', (idx, dag)->
         paymentState = dag.payment_state
         App.user.set('paymentState', paymentState)
         console.log paymentState

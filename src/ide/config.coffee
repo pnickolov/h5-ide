@@ -221,6 +221,7 @@ require.config {
 			"Meteor"
 			"crypto"
 			"q"
+			"svg"
 		]
 		"lib/lib" : [
 			"MC"
@@ -250,6 +251,7 @@ require.config {
 			'UI.dnd'
 			"jqpagination"
 			'jquerysort'
+			"jqtimepicker"
 			"UI.modalplus"
 			"UI.nanoscroller"
 		]
@@ -272,7 +274,7 @@ require.config {
 		"component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
 		"component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
 		"component/StateStatus"             : [ "state_status" ]
-		"component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup" ]
+		"component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup", "component/AppAction/AppAction", 'og_manage', 'og_manage_app', 'og_dropdown' ]
 		"component/stateeditor/stateeditor" : []
 
 		"component/sharedrescomp" : [
@@ -289,6 +291,8 @@ require.config {
 			'sslcert_dropdown'
 			'ResDiff'
 			'DiffTree'
+			"rds_pg"
+			"rds_snapshot"
 		]
 
 		"cloudres/CrBundle"  : [ "CloudResources" ]
@@ -301,7 +305,7 @@ require.config {
 		"workspaces/OpsEditor" : []
 
 	bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-		"component/sgrule/SGRulePopup" : [ "Design" ]
+		"component/AwsDialog" : [ "Design" ]
 		"component/stateeditor/stateeditor" : ["Design"]
 		"component/sharedrescomp"  : [ "Design" ]
 		"component/Validation" : ["Design"]

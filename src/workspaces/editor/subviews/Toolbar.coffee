@@ -527,6 +527,9 @@ define [
         that.updateModal.tpl.find(".modal-header").find("h3").text(lang.ide.UPDATE_APP_MODAL_TITLE)
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
+        cost = Design.instance().getCost()
+        that.updateModal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+        that.updateModal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
         window.setTimeout ->
           that.updateModal.resize()
         ,100

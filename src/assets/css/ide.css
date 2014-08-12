@@ -760,42 +760,21 @@ td.table-action a.btn {
 	overflow   : hidden;
 }
 
-.property-engine-icon {
-	margin  : 0px 0px -5px -5px;
-	padding : 11px 2px;
-
-	height: 7px;
-	width:  35px;
-
-	background    : white;
-	border-radius : 4px 0 0 4px;
-	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
-
-	-webkit-transition : background .2s;
-	-moz-transition    : background .2s;
-	-ms-transition     : background .2s;
-	-o-transition      : background .2s;
-	transition         : background .2s;
-}
-
 .property-engine-label {
-	margin  : 0px 0px -5px -5px;
-	padding : 11px 2px;
-
-	text-align: left;
-	line-height: 5px;
-	height: 7px;
-	width:  90px;
-
-	color         : #d0d0d0;
-	background    : #7A7A7A;
-	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
-
+	text-align         : center;
+	line-height        : 27px;
+	height             : 27px;
+	width              : 80px;
+	color              : #8B8787;
+	background         : #444343;
 	-webkit-transition : background .2s;
 	-moz-transition    : background .2s;
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
+	border             : 1px solid #1a1a1a;
+	border-right       : none;
+	border-radius      : 4px 0 0 4px;
 }
 
 .property-engineversion-label {
@@ -805,11 +784,12 @@ td.table-action a.btn {
 }
 
 .property-engineversion-dropdown {
-	left : 123px;
+	left : 81px;
+	width: 180px !important;
 }
 
-.property-block-wrap:hover .property-ami-icon .property-engine-icon {
-	background : #7f7f7f;
+.property-engineversion-dropdown li {
+	width: 162px !important;
 }
 
 

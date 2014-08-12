@@ -42,8 +42,9 @@
   margin: 18px 15px;
 }
 #sort-parameter-name {
-  display: inline-block;
-  width: 200px;
+  display     : inline-block;
+  width       : 200px;
+  margin-left : 5px;
 }
 .modal-toolbar .slidebox .pull-left {
   float: left;
@@ -52,11 +53,12 @@
   float: right;
 }
 #pg-sort-filter {
-  padding: 0 10px;
+  padding: 10px;
   border-bottom: 1px solid #070707;
 }
 #pg-sort-filter input.input {
   width: 300px;
+  margin-left: 5px;
 }
 .detail-info.horizontal .detail-info-row {
   margin-left: 0 !important;

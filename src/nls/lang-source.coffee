@@ -5564,7 +5564,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT:
-      en: "Cannot create more than 20 option groups."
+      en: "Region %s has reached the limit of 20 option groups."
       zh: ""
 
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:

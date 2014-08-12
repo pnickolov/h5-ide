@@ -5410,7 +5410,12 @@ button#property-app-keypair {
 #modal-option-group .save-btn {
   margin-right: 10px; }
 #modal-option-group .slide-delete {
-  margin-top: 20px; }
+  padding: 30px; }
+  #modal-option-group .slide-delete .action {
+    float: right;
+    margin-bottom: 20px; }
+    #modal-option-group .slide-delete .action .remove-cancel {
+      margin-left: 10px; }
 #modal-option-group .slidebox .content {
   margin-top: 8px; }
 #modal-option-group .slidebox .port-sg {
@@ -6986,8 +6991,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

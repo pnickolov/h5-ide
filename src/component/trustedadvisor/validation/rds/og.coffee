@@ -36,11 +36,14 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
             if customOGModels.length
 
-                ogModels = CloudResources(constant.RESTYPE.DBOG, Design.instance().get("region"))
+                region = Design.instance().get('region')
+                regionName = constant.REGION_SHORT_LABEL[region]
+
+                ogModels = CloudResources constant.RESTYPE.DBOG, region
                 ogModels.fetchForce().then (ogCol) ->
                     customOgAry = ogCol.filter (model) -> model.get('id').indexOf('default:') isnt 0
                     if customOgAry.length >= 20
-                        callback Helper.message.error '', i18n.TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT
+                        callback Helper.message.error '', i18n.TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT, regionName
                     else
                         callback(null)
                 , (err) ->

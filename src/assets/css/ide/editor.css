@@ -482,6 +482,8 @@
 .OEPanelRight #btn-switch-property {
   background: rgba(0, 0, 0, 0.4);
   color: #FEFEFE; }
+.OEPanelRight #btn-switch-state {
+  color: #4fb845; }
 .OEPanelRight.no-state #btn-switch-state {
   display: none; }
 .OEPanelRight.no-state #btn-switch-property {

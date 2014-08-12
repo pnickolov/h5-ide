@@ -51,7 +51,7 @@ define [
     # -------- Master and Slave -------- #
     slaveIndependentAttr: "id|appId|x|y|width|height|name|\
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
-        accessible|backupRetentionPeriod|multiAz|__connections|__parent"
+        accessible|backupRetentionPeriod|multiAz|password|__connections|__parent"
 
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
 
@@ -65,7 +65,7 @@ define [
       @clone master
 
       unless @get 'appId'
-        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: ''
+        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
       @connections("DbReplication")[0]?.remove()

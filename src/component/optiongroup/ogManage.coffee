@@ -297,7 +297,7 @@ define [
                 start = +$this.data 'start'
                 end = +$this.data 'end'
 
-                if start and end
+                if isFinite(start) and isFinite(end)
                     $this.parsley 'custom', valueInRange start, end
 
             null

@@ -194,7 +194,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
       path
 
-    lineStyle : ()-> 777
+    lineStyle : ()-> @canvas.lineStyle()
 
   }, {
     cleanLineMask : ( line )->
@@ -281,8 +281,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       svgEl = CeLine.prototype.createLine.call this, pd
       svgEl.add( svg.path(pd).classes("dash-line") )
       svgEl
-
-    lineStyle : ()-> @canvas.lineStyle()
   }
 
   CeLine

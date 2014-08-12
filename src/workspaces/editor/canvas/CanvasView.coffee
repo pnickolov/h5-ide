@@ -248,13 +248,10 @@ define [
     lineStyle : ()-> @__linestyle
     updateLineStyle : ()->
       @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
-
-      CanvasManager.toggle $( @svg.node ).children( ".layer_sgline" ), @__linestyle isnt 4
-
-      if @__linestyle isnt 4
-        for cn in Design.modelClassForType("SgRuleLine").allObjects()
-          @getItem( cn.id )?.update()
+      cn.update() for uid, cn of @__itemLineMap
       return
+
+    toggleSgLine : ( show )-> CanvasManager.toggle $( @svg.node ).children( ".layer_sgline" ), show
 
     zoomOut : ()-> @zoom(  0.2 )
     zoomIn  : ()-> @zoom( -0.2 )

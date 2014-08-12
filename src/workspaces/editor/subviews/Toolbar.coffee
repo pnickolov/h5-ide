@@ -19,7 +19,7 @@ define [
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
   # Set domain and set http
-  API_HOST       = "api.visualops.io"
+  API_HOST = "api.visualops.io"
 
   ### env:debug ###
   API_HOST = "api.mc3.io"
@@ -137,11 +137,12 @@ define [
 
     toggleSgLine : ()->
       sgBtn = $(".icon-hide-sg")
-      hide = sgBtn.hasClass("selected")
-      if hide
-        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).removeClass("selected")
+      show  = sgBtn.hasClass("selected")
+      if show
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).removeClass("selected")
       else
-        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).addClass("selected")
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).addClass("selected")
+      @parent.canvas.toggleSgLine( show )
       return
 
     saveStack : ( evt )->

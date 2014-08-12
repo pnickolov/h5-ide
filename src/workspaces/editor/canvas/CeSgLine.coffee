@@ -19,6 +19,4 @@ define [ "./CeLine", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CeL
 
     renderConnection : ( item_from, item_to, element1, element2 )->
       CeLine.prototype.renderConnection.call this, item_from, item_to, element1, element2
-
-    lineStyle : ()-> @canvas.lineStyle()
   }

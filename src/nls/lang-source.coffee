@@ -3881,10 +3881,10 @@ VisualOps API. You cannot UNDO this action.'
       zh: "You are using a demo AWS account."
 
     WELCOME_DONE_MSG:
-      en: "<li>Play with the 10 sample stacks prebuilt in Virginia region.</li>
+      en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
 <li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
-      zh: "<li>Play with the 10 sample stacks prebuilt in Virginia region.</li>
+      zh: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
 <li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
 

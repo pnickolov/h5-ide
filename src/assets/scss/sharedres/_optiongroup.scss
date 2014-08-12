@@ -172,7 +172,14 @@
         margin-right: 10px;
     }
     .slide-delete {
-        margin-top: 20px;
+        padding: 30px;
+        .action {
+            float: right;
+            margin-bottom: 20px;
+            .remove-cancel {
+                margin-left: 10px;
+            }
+        }
     }
     .slidebox {
         .content { margin-top: 8px; }

@@ -5563,6 +5563,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
+    TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT:
+      en: "Cannot create more than 20 option groups."
+      zh: ""
+
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
       en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ). Its subnet group must have 3 subnets in distinct Availability Zones."
       zh: ""

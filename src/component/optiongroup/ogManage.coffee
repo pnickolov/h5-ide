@@ -312,7 +312,7 @@ define [
         renderRemoveConfirm: () ->
 
             @$('.slidebox').addClass 'show'
-            @$('form').html template.og_slide_remove {}
+            @$('.slidebox .form').html template.og_slide_remove {}
 
         processCol: () ->
 

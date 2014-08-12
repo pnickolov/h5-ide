@@ -10,6 +10,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         "click #SettingsNav span"         : "switchTab"
 
       initialize : ()->
+        that = @
         paymentState = App.user.get("paymentState")
         @modal = new Modal
           title: lang.ide.PAYMENT_SETTING_TITLE
@@ -22,9 +23,10 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           , ()->
             notification 'error', "Error while getting user payment info, please try again later."
         else
-          App.user.getPaymentUpdate().then (result)=>
-            @modal.find(".modal-body").css 'padding', "0"
-            @modal.setContent BillingDialogTpl.billingTemplate result
+          Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
+            that.modal.find(".modal-body").css 'padding', "0"
+            hasPaymentHistory = (_.keys paymentHistory).length
+            that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
           , ()->
             notification 'error', "Error while getting user payment info, please try again later."
     }

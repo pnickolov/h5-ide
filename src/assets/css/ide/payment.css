@@ -48,7 +48,14 @@
   #PaymentBody .t-m-content tr.item {
     font-size: 12px; }
   #PaymentBody .table-head-fix {
+    height: 234px;
     background: #131313; }
+    #PaymentBody .table-head-fix .full-space {
+      height: 234px;
+      display: inline-block;
+      line-height: 234px;
+      text-align: center;
+      width: 100%; }
 
 .no-payment-card-info {
   width: 400px;

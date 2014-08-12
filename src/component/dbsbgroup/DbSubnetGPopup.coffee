@@ -30,6 +30,7 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
         confirm      : { text : "Done" }
         disableClose : true
         onCancel     : ()-> self.cancel()
+        onClose      : ()-> self.cancel()
         onConfirm : ()->
           self.apply()
           modal.close()

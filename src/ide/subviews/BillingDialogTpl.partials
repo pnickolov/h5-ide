@@ -94,6 +94,17 @@
         </section>
         <section id="UsageTab" class="hide">
             {{paymentUsage.charge_credit}} / {{paymentUsage.free_credit}}
+            <div class="usage-wrapper">
+                <svg class="rotate" viewbox="0 0 250 250">
+                    <path id="loader" transform="translate(125, 125)"/>
+                </svg>
+                <div class="dots">
+                    <span class="time deg0"></span>
+                    <span class="time deg45"></span>
+                    <span class="time deg90"></span>
+                    <span class="time deg135"></span>
+                </div>
+            </div>
         </section>
     </div>
 </div>

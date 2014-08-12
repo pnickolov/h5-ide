@@ -43,6 +43,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find("#PaymentNav").find("span").removeClass("selected")
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
+        @animateUsage()
 
       viewPaymentReceipt: (event)->
         $target = $(event.currentTarget)
@@ -74,6 +75,37 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
 
       _renderBillingDialog: ->
         new BillingDialog()
+
+      animateUsage: ()->
+        `var seconds = 10;
+        var doPlay = true;
+        var loader = document.getElementById('loader')
+          , α = 0
+          , π = Math.PI
+          , t = (seconds/360 * 1000);
+
+        (function draw() {
+          α++;
+          α %= 360;
+          var r = ( α * π / 180 )
+            , x = Math.sin( r ) * 125
+            , y = Math.cos( r ) * - 125
+            , mid = ( α > 180 ) ? 1 : 0
+            , anim = 'M 0 0 v -125 A 125 125 1 '
+                   + mid + ' 1 '
+                   +  x  + ' '
+                   +  y  + ' z';
+          //[x,y].forEach(function( d ){
+          //  d = Math.round( d * 1e3 ) / 1e3;
+          //});
+
+          loader.setAttribute( 'd', anim );
+
+          if(doPlay){
+            setTimeout(draw, t); // Redraw
+          }
+        })();`
+        return
   }
 
 

@@ -28,6 +28,7 @@ $dndDuration : .2s;
     float            : left;
     border-right     : 1px solid #000;
     border-bottom    : 1px solid #000;
+    color            : #7375DB;
 
     &:before {
       font-size  : 32px;
@@ -40,7 +41,7 @@ $dndDuration : .2s;
       background-color : #222;
       color            : #fff;
       span {
-        color: #148BE6;
+        color: #ccc;
       }
     }
 
@@ -54,6 +55,7 @@ $dndDuration : .2s;
       top        : 53px;
       text-align : center;
       width      : 80px;
+      color      : #999;
     }
   }
 }

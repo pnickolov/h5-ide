@@ -6393,7 +6393,8 @@ g.shadow {
     background-color: #333;
     float: left;
     border-right: 1px solid #000;
-    border-bottom: 1px solid #000; }
+    border-bottom: 1px solid #000;
+    color: #7375DB; }
     .resources-dropdown-wrapper li:before {
       font-size: 32px;
       text-align: center;
@@ -6403,7 +6404,7 @@ g.shadow {
       background-color: #222;
       color: #fff; }
       .resources-dropdown-wrapper li:hover span {
-        color: #148BE6; }
+        color: #ccc; }
     .resources-dropdown-wrapper li:last-child {
       border-right: none; }
     .resources-dropdown-wrapper li span {
@@ -6411,7 +6412,8 @@ g.shadow {
       position: absolute;
       top: 53px;
       text-align: center;
-      width: 80px; }
+      width: 80px;
+      color: #999; }
 
 .AmiTypeSelect {
   position: absolute;

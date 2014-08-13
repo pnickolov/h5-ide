@@ -5,12 +5,12 @@
   <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
   <ul class="dropdown-menu resources-dropdown-wrapper">
     <li data-action="keypair" class="icon-kp"><span>Key Pair</span></li>
-    <li data-action="snapshot"><span>EBS Snapshot</span></li>
-    <li data-action="sns"><span>SNS Topic & Subscription</span></li>
-    <li data-action="sslcert"><span>Server Certificate</span></li>
-    <li data-action="dhcp"><span>DHCP Option Sets</span></li>
-    <li data-action="rdspg"><span>DB Parameter Groups</span></li>
-    <li data-action="rdssnapshot"><span>DB Snapshot</span></li>
+    <li data-action="snapshot" class="icon-ebs-snap"><span>EBS Snapshot</span></li>
+    <li data-action="sns" class="icon-sns"><span>SNS Topic & Subscription</span></li>
+    <li data-action="sslcert" class="icon-cert"><span>Server Certificate</span></li>
+    <li data-action="dhcp" class="icon-dhcp"><span>DHCP Option Sets</span></li>
+    <li data-action="rdspg" class="icon-pg"><span>DB Parameter Groups</span></li>
+    <li data-action="rdssnapshot" class="icon-rds-snap"><span>DB Snapshot</span></li>
   </ul>
   <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
 </header>

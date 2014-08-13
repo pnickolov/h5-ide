@@ -76,7 +76,13 @@
 .icon-reload:before,
 .icon-resources:before,
 .icon-hide-sg:before,
-.icon-kp:before {
+.icon-kp:before,
+.icon-ebs-snap:before,
+.icon-sns:before,
+.icon-cert:before,
+.icon-dhcp:before,
+.icon-pg:before,
+.icon-rds-snap:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -295,4 +301,22 @@
   content: "\F160"; }
 
 .icon-kp:before {
+  content: "\F161"; }
+
+.icon-ebs-snap:before {
   content: "\F162"; }
+
+.icon-sns:before {
+  content: "\F163"; }
+
+.icon-cert:before {
+  content: "\F164"; }
+
+.icon-dhcp:before {
+  content: "\F165"; }
+
+.icon-pg:before {
+  content: "\F166"; }
+
+.icon-rds-snap:before {
+  content: "\F167"; }

@@ -211,6 +211,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
           that = @
           @__modalplus.tpl.find(".scrollbar-veritical-thumb").removeAttr("style")
           scroll = @__modalplus.tpl.find(".table-head-fix.will-be-covered .scroll-wrap")
+          scroll = if scroll.size() > 0 then scroll else @__modalplus.find('.will-be-covered>div')
           if scroll.size() then scroll.height(that.__getHeightOfContent())
 
         __renderLoading: () ->

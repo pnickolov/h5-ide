@@ -181,12 +181,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
       console.log "Rendering...."
-      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53}
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>div').height() - 76}
       $(".slidebox").css('max-height', "none")
       @manager.on "slideup", ->
         $('.slidebox').removeAttr("style")
       $(window).on 'resize', ->
-        $("#parameter-table").height($('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53)
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>div').height() - 67)
         .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
@@ -423,6 +423,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
       title: "Manage DB Parameter Group in #{regionName}"
       slideable: true
+      disableScroll: true
       context: that
       buttons: [
         {

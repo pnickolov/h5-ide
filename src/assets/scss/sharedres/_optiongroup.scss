@@ -265,17 +265,19 @@
 
 
 .prop_main {
-  display: block;
-  color: #fff;
-  font-size: 15px;
+  display       : block;
+  color         : #fff;
+  font-size     : 15px;
+  margin-bottom : 4px;
 }
 .prop_main .prop_sub {
   margin-left: 5px;
 }
 .prop_sub {
-  display: inline-block;
-  color: #999;
-  font-size: 13px;
+  display     : inline-block;
+  color       : #999;
+  font-size   : 12px;
+  line-height : 14px;
 }
 .modal-toolbar .slidebox .content input.input.prop-half-width {
   width: 45%;

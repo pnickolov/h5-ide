@@ -146,11 +146,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
-        json = self.generateJsonFromRes()
-        self.__setJsonData json
-        self.attributes.name = json.name
-        self
+      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+
+    __onFjdImported : ()->
+      json = CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+      @__setJsonData json
+      @attributes.name = json.name
+      @
 
     __fjdStack : ( self )->
       if not @isStack() then return
@@ -212,91 +214,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if @attributes.name isnt json.name
         @set "name", json.name
       @
-
-    generateJsonFromRes : ()->
-      res = CloudResources.getAllResourcesForVpc( @get("region"), @getVpcId(), @__jsonData )
-      if @__jsonData
-        c = @__jsonData.component
-        l = @__jsonData.layout
-        delete @__jsonData.component
-        delete @__jsonData.layout
-        json = $.extend true, {}, @__jsonData
-        @__jsonData.component = c
-        @__jsonData.layout = l
-      else
-        json = @__createRawJson()
-
-      json.component = res.component
-      json.layout    = res.layout
-      json.name      = @get("name") || res.theVpc.name
-
-      ## for debug, to compare with xu's app_json(temp) ##
-      app_json_xu = CloudResources( 'OpsResource', @getVpcId() )
-      if app_json_xu.models.length > 0
-        console.clear()
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
-        console.info "app_json_backend"
-        console.debug JSON.stringify app_json_xu.models[0].attributes
-        console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
-        console.info "app_json_frontend"
-        console.debug JSON.stringify json
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
-        console.info "plese use http://tlrobinson.net/projects/javascript-fun/jsondiff/ to diff app_json\n\n"
-      ## ##################################################
-
-      #app_json_backend
-      #patch for import vpc(temp)
-      self = @
-      _.each app_json_xu.models[0].attributes.component, (comp,key)->
-        if comp.type is 'AWS.EC2.AvailabilityZone'
-          comp.name = comp.resource.ZoneName
-        else if comp.type is 'AWS.VPC.NetworkAcl'
-          acl = CloudResources( 'AWS.VPC.NetworkAcl', self.get("region") ).where({id:comp.resource.NetworkAclId})
-          if acl.length>0
-            comp.resource.Default = acl[0].attributes.default
-          if comp.name is "DefaultAcl"
-            comp.name = 'DefaultACL'
-        else if comp.type is 'AWS.EC2.SecurityGroup'
-          sg = CloudResources( 'AWS.EC2.SecurityGroup', self.get("region") ).where({id:comp.resource.GroupId})
-          if sg.length>0
-            comp.resource.GroupName = sg[0].attributes.groupName
-        else if comp.type is 'AWS.RDS.DBInstance'
-          comp.resource.MasterUserPassword = "****"
-          dbins = CloudResources( 'AWS.RDS.DBInstance', self.get("region") ).where({id:comp.resource.DBInstanceIdentifier})
-          if dbins.length>0
-            aws_dbins = dbins[0].attributes
-            if not aws_dbins.ReadReplicaSourceDBInstanceIdentifier
-              comp.resource.ReadReplicaSourceDBInstanceIdentifier = ""
-            #changing DBInstance attribute( avoid json diff )
-            if aws_dbins.PendingModifiedValues
-              if aws_dbins.PendingModifiedValues.AllocatedStorage
-                #modify AllocatedStorage
-                comp.resource.AllocatedStorage = Number(aws_dbins.PendingModifiedValues.AllocatedStorage)
-              if aws_dbins.PendingModifiedValues.BackupRetentionPeriod
-                #modify BackupRetentionPeriod
-                comp.resource.BackupRetentionPeriod = Number(aws_dbins.PendingModifiedValues.BackupRetentionPeriod)
-              if aws_dbins.PendingModifiedValues.DBInstanceClass
-                #modify DBInstanceClass
-                comp.resource.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
-              if aws_dbins.PendingModifiedValues.Iops
-                #modify Iops
-                comp.resource.Iops = Number(aws_dbins.PendingModifiedValues.Iops)
-              if aws_dbins.PendingModifiedValues.MultiAZ
-                #modify MultiAZ
-                comp.resource.MultiAZ = aws_dbins.PendingModifiedValues.MultiAZ
-              if aws_dbins.PendingModifiedValues.MasterUserPassword
-                #modify MasterUserPassword
-                comp.resource.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
-        else if comp.type is 'AWS.RDS.OptionGroup'
-          comp.name = comp.resource.OptionGroupName
-        null
-      console.info "app_json_backend(patched)"
-      console.debug JSON.stringify app_json_xu.models[0].attributes
-      console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
-      return app_json_xu.models[0].attributes
-
-      #app_json_frontend
-      #return json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

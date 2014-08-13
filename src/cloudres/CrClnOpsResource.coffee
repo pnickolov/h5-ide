@@ -25,6 +25,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         d.resolve()
         d.promise
 
+      @generatedJson = null
       CrCollection.prototype.fetchForce.call this
 
     doFetch : ()->
@@ -41,11 +42,12 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     parseFetchData : ( data )->
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
       delete data.vpc
-      app_json = data.app_json
+
+      @generatedJson = data.app_json
       delete data.app_json
 
+      # Parse aws resource data with other collection
       extraAttr = { RES_TAG : @category }
-
       for type, d of data
         cln = CloudResources( type, @__region )
         if not cln
@@ -53,7 +55,44 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           continue
         cln.__parseExternalData d, extraAttr, @__region
 
-      # Nasty, but it should work.
-      # Describe instances belongs to ASG.
-      return [app_json]
+      # Fix invalid json
+      region = @__region
+      for uid, comp of @generatedJson.component
+        switch comp.type
+          when constant.RESTYPE.AZ
+            comp.name = comp.resource.ZoneName
+          when constant.RESTYPE.ACL
+            acl = CloudResources( comp.type, region ).get( comp.resource.NetworkAclId )
+            if acl then comp.resource.Default = acl.get("default")
+          when constant.RESTYPE.SG
+            sg = CloudResources( comp.type, region ).get( comp.resource.GroupId )
+            if sg then comp.resource.GroupName = sg.get("groupName")
+          when constant.RESTYPE.DBOG
+            comp.name = comp.resource.OptionGroupName
+          when constant.RESTYPE.DBINSTANCE
+            comp.resource.MasterUserPassword = "****"
+            dbins = CloudResources( comp.type, region ).get( comp.resource.DBInstanceIdentifier )
+            if dbins
+              dbins = dbins.attributes
+              if not dbins.ReadReplicaSourceDBInstanceIdentifier
+                comp.resource.ReadReplicaSourceDBInstanceIdentifier = ""
+
+              #changing DBInstance attribute( avoid json diff )
+              pending = dbins.PendingModifiedValues
+              if pending
+                if pending.AllocatedStorage
+                  comp.resource.AllocatedStorage = Number(pending.AllocatedStorage)
+                if pending.BackupRetentionPeriod
+                  comp.resource.BackupRetentionPeriod = Number(pending.BackupRetentionPeriod)
+                if pending.DBInstanceClass
+                  comp.resource.DBInstanceClass = pending.DBInstanceClass
+                if pending.Iops
+                  comp.resource.Iops = Number(pending.Iops)
+                if pending.MultiAZ
+                  comp.resource.MultiAZ = pending.MultiAZ
+                if pending.MasterUserPassword
+                  comp.resource.MasterUserPassword = pending.MasterUserPassword
+
+      console.log "Generated Json from backend:", @generatedJson
+      return
   }

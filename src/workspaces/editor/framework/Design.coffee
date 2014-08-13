@@ -177,6 +177,10 @@ define [
     @trigger = Design.trigger = noop
     @__initializing = true
 
+    defaultLayout = {
+      coordinate : [0, 0]
+      size       : [0, 0]
+    }
 
     # A helper function to let each resource to get its dependency
     that = this
@@ -201,7 +205,7 @@ define [
         console.warn "We do not support deserializing resource of type : #{component_data.type}"
         return
 
-      ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
+      ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
 
       Design.__instance.__componentMap[ uid ]
 
@@ -232,7 +236,7 @@ define [
           console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
           continue
 
-        ModelClass.preDeserialize( comp, layout_data[uid] )
+        ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
 
 
     # Deserialize normal resources
@@ -244,7 +248,7 @@ define [
       # we directly call the deserialize() of the resource here.
       if Design.__resolveFirstMap[ comp.type ] is true
         recursiveCheck = createRecursiveCheck( uid )
-        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
+        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
       else
         recursiveCheck = createRecursiveCheck()
         resolveDeserialize uid
@@ -255,7 +259,7 @@ define [
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
-        ModelClass.postDeserialize( comp, layout_data[uid] )
+        ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
 
     ####################
     # Broadcast event

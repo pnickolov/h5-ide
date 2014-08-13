@@ -50,7 +50,7 @@ var MC = {
 	// Global Variable
 
 	DOMAIN   : window.MC_DOMAIN,
-	API_HOST : window.MC_PROTO + "://api." + window.MC_DOMAIN,
+	API_HOST : window.MC_API_HOST,
 
 	IMG_URL: '/assets/images/',
 

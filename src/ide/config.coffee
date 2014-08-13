@@ -4,39 +4,25 @@
   # In such case, window is undefined.
   if not window then return
 
-  # Release : https://ide && https://api
-  # Debug   : http://ide  && https://ide
-  # Dev     : http://ide  && https://ide
-  # Public  : http://ide  && http://ide
+  location = window.location
 
-  # Set domain and set http
-  window.MC_DOMAIN = "visualops.io"
-  window.MC_PROTO  = "http"
-  shouldIdeHttps   = false
-  ideHttps         = true
+  if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
+  	# This is a ip address
+  	window.MC_DOMAIN = location.hostname + ":3232"
+  else
+  	hosts = location.hostname.split(".")
+  	if hosts.length >= 3
+  		window.MC_DOMAIN = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+  	else
+  		window.MC_DOMAIN = location.hostname
 
-  ### env:debug ###
-  window.MC_DOMAIN = "mc3.io"
-  ideHttps = false
-  ### env:debug:end ###
+  	window.MC_API_HOST = location.protocol + "//api." + window.MC_DOMAIN
 
-  ### env:dev ###
-  window.MC_DOMAIN = "mc3.io"
-  ideHttps = false
-  ### env:dev:end ###
-
-  ### AHACKFORRELEASINGPUBLICVERSION ###
-  # AHACKFORRELEASINGPUBLICVERSION is a hack. The block will be removed in Public Version.
-  # Only js/ide/config and user/main supports it.
-  shouldIdeHttps  = ideHttps
-  window.MC_PROTO = "https"
-  ### AHACKFORRELEASINGPUBLICVERSION ###
 
   # Redirect
-  l = window.location
   window.language = window.version = ""
-  if shouldIdeHttps and l.protocol is "http:"
-    window.location = l.href.replace("http:","https:")
+  if location.hostname.toLowerCase().indexOf( "visualops.io" ) >= 0 and location.protocol is "http:"
+    window.location = location.href.replace("http:","https:")
     return
 
   # Check if there're missing cookie

@@ -220,13 +220,6 @@ define [
       regionName = Design.instance().region()
       engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
-      if origEngineVersion
-        origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
-
-      if origDefaultInfo and origDefaultInfo.family and defaultInfo and defaultInfo.family
-        if origDefaultInfo.family is defaultInfo.family
-          #family no changed, then no need change parametergroup
-          return null
 
       if defaultInfo and defaultInfo.defaultPGName
         defaultPG = defaultInfo.defaultPGName
@@ -234,7 +227,7 @@ define [
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"
       @set 'pgName', defaultPG || ""
-      null
+      defaultPG
 
 
     getAllocatedRange: ->

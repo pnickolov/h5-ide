@@ -10,11 +10,20 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @collection = CloudResources constant.RESTYPE.DBPG, Design.instance().region()
       @listenTo @collection, 'update', (@onUpdate.bind @)
       @listenTo @collection, 'change', (@onUpdate.bind @)
+      @listenTo @collection, 'remove', (@onRemove.bind @)
+      @listenTo @collection, 'add',    (@onAdd.bind @)
       @
 
     onUpdate: ->
       @initManager()
       @trigger 'datachange', @
+    onAdd: ->
+      @initDropdown()
+    onRemove: ->
+      that = @
+      if that.resModel and  not (that.collection.get that.resModel.get('pgName'))
+        that.resModel.setDefaultParameterGroup( that.resModel.get 'engineVersion' )
+      that.dropdown?.setSelection that.resModel.get('pgName')
 
     remove: ()->
       Backbone.View::remove.call @

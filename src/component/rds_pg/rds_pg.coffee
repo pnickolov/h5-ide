@@ -154,8 +154,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     renderEditTpl: (parameters, tpl, option)->
       that = @
       data = if parameters.toJSON then parameters.toJSON() else parameters
+      isNumberString = (e)->
+        !isNaN(parseFloat(e)) && isFinite(e)
+      isMixedValue = (e)->
+        isMixed = false
+        tempArray = e.split(",")
+        _.each tempArray, (value)->
+          range = value.split('-')
+          if range.length = 2 and isNumberString(range[0]) and isNumberString(range[1])
+            isMixed = true
+        isMixed
       _.each data, (e)->
-        if e.AllowedValues?.split(',').length > 1
+        if e.AllowedValues?.split(',').length > 1 and not isMixedValue(e.AllowedValues)
           e.inputType = "select"
           e.selections = e.AllowedValues.split(",")
           return

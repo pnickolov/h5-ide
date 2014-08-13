@@ -23,7 +23,9 @@
 	#property-dbinstance-class-select .dropdown {
 		top: 49px;
 	}
-
+	#property-dbinstance-engine-version-select.combo-dd.selectbox .scroll-wrap {
+		width: 178px;
+	}
 	input.shorter-input {
 		width: 37px;
 		padding-right: 7px;

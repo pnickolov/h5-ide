@@ -477,8 +477,8 @@ var MC = {
 		if (typeof left + typeof right !== "stringstring") {
 			return false;
 		}
-		a = left.split(".");
-		b = right.split(".");
+		a = left.replace(/[a-zA-Z]/g, '').split(".");
+		b = right.replace(/[a-zA-Z]/g, '').split(".");
 		i = 0;
 		len = Math.max(a.length, b.length);
 		while (i < len) {

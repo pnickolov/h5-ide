@@ -145,7 +145,7 @@
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
     {{#unless unmodify}}
-    <div class="option-edit-btn icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
+    <div class="option-edit-btn {{#unless visible}}invisible{{/unless}} icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
     <label class="switcher{{#if checked}} on{{/if}}{{#if disabled}} disabled{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>

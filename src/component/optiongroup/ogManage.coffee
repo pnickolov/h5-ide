@@ -140,6 +140,9 @@ define [
                 else
                     option.unmodify = false
 
+                if not (!option.DefaultPort && !option.OptionGroupOptionSettings)
+                    option.visible = true
+
                 # if option.OptionsDependedOn and option.OptionsDependedOn.OptionName
                 #     option.disabled = true
 
@@ -385,9 +388,11 @@ define [
 
             if $switcher.hasClass('on')
 
-                $optionEdit.removeClass('invisible')
+                option = @ogOptions[optionIdx]
+                if not (!option.DefaultPort && !option.OptionGroupOptionSettings)
+                    $optionEdit.removeClass('invisible')
 
-                @slide @ogOptions[optionIdx], (optionData) ->
+                @slide option, (optionData) ->
                     if optionData
                         that.ogDataStore[optionName] = optionData
                     else

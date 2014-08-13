@@ -5390,6 +5390,8 @@ button#property-app-keypair {
       color: #aaa; }
       #modal-option-group .option-list .option-item .option-edit-btn:hover {
         color: #bbb; }
+    #modal-option-group .option-list .option-item .option-edit-btn.invisible {
+      visibility: hidden; }
   #modal-option-group .option-list .option-item:nth-child(odd) {
     background-color: #333; }
   #modal-option-group .option-list .option-item:nth-child(even) {
@@ -6944,8 +6946,7 @@ g.shadow {
   width: 37px;
   padding-right: 7px; }
 .property-dbinstance .selectbox.shorter-dropdown {
-  width: 70px;
-  margin-right: 5px; }
+  width: 90px; }
 .property-dbinstance input.property-input-left {
   width: 184px; }
 .property-dbinstance .property-label-right {
@@ -6989,8 +6990,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

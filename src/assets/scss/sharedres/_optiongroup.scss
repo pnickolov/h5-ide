@@ -144,6 +144,9 @@
                     color: #bbb;
                 }
             }
+            .option-edit-btn.invisible {
+                visibility: hidden;
+            }
         }
         .option-item:nth-child(odd) {
             background-color: #333;

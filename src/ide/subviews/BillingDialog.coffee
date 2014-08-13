@@ -60,8 +60,10 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           newWindow.document.close()
         makeNewWindow()
 
-      _bindPaymentEvent: (modal)->
+      _bindPaymentEvent: (event)->
         that = @
+        event.preventDefault()
+        window.open $(event.currentTarget).attr("href"), ""
         @modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         @modal.setContent MC.template.loadingSpiner()
         App.WS.once 'userStateChange', (idx, dag)->

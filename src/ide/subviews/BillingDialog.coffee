@@ -33,6 +33,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
               e.ending_balance = e.ending_balance_in_cents/100
               e
             that.paymentHistory = _.clone paymentHistory
+            that.paymentUsage = _.clone paymentUsage
             that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
           , ()->
             notification 'error', "Error while getting user payment info, please try again later."
@@ -77,34 +78,51 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         new BillingDialog()
 
       animateUsage: ()->
-        `var seconds = 10;
-        var doPlay = true;
-        var loader = document.getElementById('loader')
-          , α = 0
-          , π = Math.PI
-          , t = (seconds/360 * 1000);
-
-        (function draw() {
-          α++;
-          α %= 360;
-          var r = ( α * π / 180 )
-            , x = Math.sin( r ) * 125
-            , y = Math.cos( r ) * - 125
-            , mid = ( α > 180 ) ? 1 : 0
-            , anim = 'M 0 0 v -125 A 125 125 1 '
-                   + mid + ' 1 '
-                   +  x  + ' '
-                   +  y  + ' z';
-          //[x,y].forEach(function( d ){
-          //  d = Math.round( d * 1e3 ) / 1e3;
-          //});
-
-          loader.setAttribute( 'd', anim );
-
-          if(doPlay){
-            setTimeout(draw, t); // Redraw
-          }
-        })();`
+        that = @
+        seconds = 3
+        loaderBg = document.getElementById('usage_all')
+        loader = document.getElementById('usage_free')
+        numElem = document.getElementById('usage_num')
+        a = 0
+        pi = Math.PI
+        t = (seconds / 360 * 1000)
+        num = 0
+        freeNum = that.paymentUsage.free_credit
+        numMax = that.paymentUsage.charge_credit
+        totalNum = (freeNum + that.paymentUsage.charge_credit)
+        @modal.find(".usage-num-free span.num").text(freeNum)
+        @modal.find(".usage-num-total span.num").text(totalNum)
+        tempElement = null
+        tempAngle = 270
+        if that.chartTimeOut then window.clearTimeout(that.chartTimeOut)
+        that.chartTimeOut = null
+        draw = (element,angle,direct)->
+          if element then a = 0
+          a = if direct then angle else a
+          a++
+          num += ((numMax) / tempAngle)
+          r = a * pi / 180
+          x = Math.sin(r) * 125
+          y = Math.cos(r) * - 125
+          mid = if (a > 180) then 1 else 0
+          anim = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z" #Magic, don't touch.
+          tempElement = element || tempElement
+          tempAngle = angle || tempAngle
+          tempElement.setAttribute( 'd' , anim)
+          console.log num, a
+          if not direct then numElem.innerText = Math.round(if num > numMax then numMax else num)
+          if(a < tempAngle and not direct)
+            that.chartTimeOut = window.setTimeout draw, t
+        if freeNum
+          console.log freeNum, totalNum
+          loaderBg.setAttribute( 'fill' , "#4b4f8c")
+          loader.setAttribute( 'fill' , "#30bc00")
+          draw(loaderBg, 270, true)
+          draw(loader, (freeNum/totalNum) * 270)
+          return false
+        loaderBg.setAttribute( 'fill' , "#5f5f5f")
+        draw(loaderBg, 270, true)
+        console.log @paymentUsage
         return
   }
 

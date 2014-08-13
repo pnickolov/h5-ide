@@ -38,7 +38,7 @@
                     <a class="btn btn-blue" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>
-            <p>Billing History <span class="payment-next-billing">Next Billing on May 1, 2014, PST</span></p>
+            <p>Billing History <span class="payment-next-billing">Next Billing on {{formatTime "2014-8-13" "MMMM d, yyyy"}}</span></p>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">
@@ -93,16 +93,25 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-            {{paymentUsage.charge_credit}} / {{paymentUsage.free_credit}}
+            <p>Current Usage</p>
             <div class="usage-wrapper">
                 <svg class="rotate" viewbox="0 0 250 250">
-                    <path id="loader" transform="translate(125, 125)"/>
+                    <path id="usage_all" class="loader" fill="#0099ff" transform="translate(125, 125)"/>
+                    <path id="usage_free" class="loader" fill="#0099ff" transform="translate(125, 125)"/>
                 </svg>
                 <div class="dots">
-                    <span class="time deg0"></span>
-                    <span class="time deg45"></span>
-                    <span class="time deg90"></span>
-                    <span class="time deg135"></span>
+                    <div class="usage-num-label">
+                        Billable Instance * hour
+                    </div>
+                    <div id="usage_num">0</div>
+                    <div class="usage-num-free">
+                        <span>FREE</span> Managed Instance * hour
+                        <span class="num">0</span>
+                    </div>
+                    <div class="usage-num-total">
+                        <span>TOTAL</span> Managed Instance * hour
+                        <span class="num">0</span>
+                    </div>
                 </div>
             </div>
         </section>

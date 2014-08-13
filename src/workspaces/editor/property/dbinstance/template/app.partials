@@ -37,8 +37,8 @@
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
-            {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
-            <dd>{{name}}</dd>{{/if}}
+            {{#if DBName}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{DBName}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}</dd>
             {{#if optionGroups.length}}

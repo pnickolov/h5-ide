@@ -158,6 +158,9 @@ $dndDuration : .2s;
     padding-top : 5px;
     height      : 132px;
   }
+  &.dbsnapshot {
+    padding-top : 5px;
+  }
 
   &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
   &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
@@ -171,8 +174,6 @@ $dndDuration : .2s;
   &.elb      { background-image: image-url('ide/icon/res-elb.png'); }
   &.snapshot { background-image: image-url('ide/icon/res-snapshot.png'); }
   &.subnetgroup { background-image: image-url('ide/icon/res-subnetg.png'); }
-
-  &.dbsnapshot { height: 30px; background-image : image-url('ide/icon/res-rdssnap.png'); }
 
   .resource-count {
     position      : absolute;
@@ -192,13 +193,9 @@ $dndDuration : .2s;
   &.disabled .resource-count {
     background : #999;
   }
-
-  .resource-icon-dbsnapshot {
-    margin-top : -50px;
-  }
 }
 
-.resource-icon-instance, .resource-icon-dbinstance {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top : 12px;
   height : 60px - 12px;
   background : image-url('ide/icon/res-instance.png') center no-repeat;
@@ -207,18 +204,6 @@ $dndDuration : .2s;
     padding-top : 28px;
     height      : 62px;
     position    : relative;
-  }
-
-  .resource-item.asg > & {
-    background    : #fff;
-    border-radius : 4px;
-    position      : absolute;
-
-    left        : 17px;
-    top         : 17px;
-    width       : 36px;
-    height      : 30px;
-    padding-top : 6px;
   }
 
   #DndItem.asg & {
@@ -241,9 +226,20 @@ $dndDuration : .2s;
   }
 }
 
-.resource-icon-dbinstance {
-  background-image : image-url('ide/icon/res-rds.png');
+.resource-item.asg > .resource-icon-instance {
+  background    : #fff;
+  border-radius : 4px;
+  position      : absolute;
+
+  left        : 17px;
+  top         : 17px;
+  width       : 36px;
+  height      : 30px;
+  padding-top : 6px;
 }
+
+.resource-icon-dbinstance { background-image : image-url('ide/icon/res-rds.png'); }
+.resource-icon-dbsnapshot { background-image : image-url('ide/icon/res-rdssnap.png'); }
 
 .ebs-size {
   margin-top  : -1.5em;
@@ -254,6 +250,7 @@ $dndDuration : .2s;
 .rds-snapshot-size {
   color       : #676767;
   line-height : 2em;
+  margin-top  : 2px;
 }
 
 .az-name {
@@ -291,7 +288,7 @@ $dndDuration : .2s;
           transition-property : line-height, padding-left, width, height, color;
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
-  &.elb, &.instance, &.eni, &.dbinstance { width:90px; height:90px; }
+  &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
 
   &.cgw {
     background-position: 10px center;

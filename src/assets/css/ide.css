@@ -6486,6 +6486,8 @@ g.shadow {
   .resource-item.instance, .resource-item.dbinstance {
     padding-top: 5px;
     height: 132px; }
+  .resource-item.dbsnapshot {
+    padding-top: 5px; }
   .resource-item.az {
     background-image: url('/assets/images/ide/icon/res-az.png');
     position: relative; }
@@ -6512,9 +6514,6 @@ g.shadow {
     background-image: url('/assets/images/ide/icon/res-snapshot.png'); }
   .resource-item.subnetgroup {
     background-image: url('/assets/images/ide/icon/res-subnetg.png'); }
-  .resource-item.dbsnapshot {
-    height: 30px;
-    background-image: url('/assets/images/ide/icon/res-rdssnap.png'); }
   .resource-item .resource-count {
     position: absolute;
     top: 7px;
@@ -6530,27 +6529,16 @@ g.shadow {
     padding: 2px; }
   .resource-item.disabled .resource-count {
     background: #999; }
-  .resource-item .resource-icon-dbsnapshot {
-    margin-top: -50px; }
 
-.resource-icon-instance, .resource-icon-dbinstance {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top: 12px;
   height: 48px;
   background: url('/assets/images/ide/icon/res-instance.png') center no-repeat; }
-  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance {
+  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance, #DndItem .resource-icon-dbsnapshot {
     padding-top: 28px;
     height: 62px;
     position: relative; }
-  .resource-item.asg > .resource-icon-instance, .resource-item.asg > .resource-icon-dbinstance {
-    background: #fff;
-    border-radius: 4px;
-    position: absolute;
-    left: 17px;
-    top: 17px;
-    width: 36px;
-    height: 30px;
-    padding-top: 6px; }
-  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance {
+  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance, #DndItem.asg .resource-icon-dbsnapshot {
     left: 16px;
     top: 16px;
     height: 31px;
@@ -6560,14 +6548,27 @@ g.shadow {
     -webkit-transition: all ease-in 0.2s;
     -moz-transition: all ease-in 0.2s;
     transition: all ease-in 0.2s; }
-  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance {
+  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance, #DndItem.asg.dragOver .resource-icon-dbsnapshot {
     left: 47px;
     top: 51px;
     width: 53px;
     height: 46px; }
 
+.resource-item.asg > .resource-icon-instance {
+  background: #fff;
+  border-radius: 4px;
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  width: 36px;
+  height: 30px;
+  padding-top: 6px; }
+
 .resource-icon-dbinstance {
   background-image: url('/assets/images/ide/icon/res-rds.png'); }
+
+.resource-icon-dbsnapshot {
+  background-image: url('/assets/images/ide/icon/res-rdssnap.png'); }
 
 .ebs-size {
   margin-top: -1.5em;
@@ -6576,7 +6577,8 @@ g.shadow {
 
 .rds-snapshot-size {
   color: #676767;
-  line-height: 2em; }
+  line-height: 2em;
+  margin-top: 2px; }
 
 .az-name {
   font-size: 16px;
@@ -6608,7 +6610,7 @@ g.shadow {
   #DndItem.rtb, #DndItem.igw, #DndItem.vgw {
     width: 80px;
     height: 80px; }
-  #DndItem.elb, #DndItem.instance, #DndItem.eni, #DndItem.dbinstance {
+  #DndItem.elb, #DndItem.instance, #DndItem.eni, #DndItem.dbinstance, #DndItem.dbsnapshot {
     width: 90px;
     height: 90px; }
   #DndItem.cgw {
@@ -6990,7 +6992,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

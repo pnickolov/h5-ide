@@ -221,7 +221,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $("[data-action='preview']").prop 'disabled', false
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
-          if e.isValidValue(this.value) or this.value is "" or e.isFunctionValue(this.value)
+          if e.isValidValue(this.value) or this.value is "" or (e.isFunctionValue(this.value) and not e.isNumber(this.value))
             $(this).removeClass "parsley-error"
             if this.value isnt "" then e.set('newValue', this.value)
           else

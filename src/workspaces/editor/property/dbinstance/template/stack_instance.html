@@ -112,8 +112,8 @@
 
         {{#if isAppEdit}}
         <div class="property-control-group clearfix">
-            <label>{{ i18n "PROP_DBINSTANCE_NAME" }}</label>
-            <div>{{name}}</div>
+            {{#if dbName}}<label>{{ i18n "PROP_DBINSTANCE_NAME" }}</label>
+            <div>{{dbName}}</div>{{/if}}
             <label>{{ i18n "PROP_DBINSTANCE_PORT" }}</label>
             <div>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</div>
         </div>

@@ -79,7 +79,8 @@ define [
             that = @
 
             _.each appData.Options, (option) -> appOptions[option.OptionName] = option
-            _.some appOptions, ( option, name ) -> +that.ogDataStore[ name ].Port isnt +option.Port
+            _.some appOptions, ( option, name ) ->
+                that.ogDataStore[ name ] and +that.ogDataStore[ name ].Port isnt +option.Port
 
 
         initModal: (tpl) ->

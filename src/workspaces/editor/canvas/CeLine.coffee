@@ -91,101 +91,85 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         CeLine.cleanLineMask svgEl.maskWith( maskPath )
       return
 
-    generatePath : ( item_from, item_to, element1, element2 )->
+    # Find out which port we should use to draw the line.
+    # The port we need is the closest port.
+    getConnectPorts : ( item_from, item_to, element1, element2 )->
       connection = @model
 
-      pos_from = item_from.pos( element1 )
-      pos_to   = item_to.pos( element2 )
+      pos_to   = item_to.pos   element2
+      pos_from = item_from.pos element1
 
-      pos_to.x   *= 10
-      pos_to.y   *= 10
-      pos_from.x *= 10
-      pos_from.y *= 10
+      pos_to.x *= 10; pos_from.x *= 10
+      pos_to.y *= 10; pos_from.y *= 10
 
       from_port = connection.port1("name")
       to_port   = connection.port2("name")
       dirn_from = item_from.portDirection(from_port)
       dirn_to   = item_to.portDirection(to_port)
 
-      if dirn_from and dirn_to
-        if pos_from.x > pos_to.x
-          from_port += "-left"
-          to_port   += "-right"
-        else
-          from_port += "-right"
-          to_port   += "-left"
+      possiblePortFrom = [ from_port ]
+      possiblePortTo   = [ to_port ]
 
-        pos_port_from = item_from.portPosition( from_port, true )
-        pos_port_to   = item_to.portPosition( to_port, true )
+      if dirn_from
+        possiblePortFrom = if dirn_from is "horizontal" then [ from_port + "-left", from_port + "-right" ] else [ from_port + "-top", from_port + "-bottom" ]
+      if dirn_to
+        possiblePortTo = if dirn_to is "horizontal" then [ to_port + "-left", to_port + "-right" ] else [ to_port + "-top", to_port + "-bottom" ]
 
-        pos_from.x += pos_port_from[0]
-        pos_from.y += pos_port_from[1]
-        pos_to.x   += pos_port_to[0]
-        pos_to.y   += pos_port_to[1]
+      for i, idx in possiblePortFrom
+        possiblePortFrom[ idx ] =
+          name : i
+          pos  : item_from.portPosition( i, true ).slice(0)
+        possiblePortFrom[ idx ].pos[0] += pos_from.x
+        possiblePortFrom[ idx ].pos[1] += pos_from.y
 
-      else if dirn_from
+      for i, idx in possiblePortTo
+        possiblePortTo[ idx ] =
+          name : i
+          pos  : item_to.portPosition( i, true ).slice(0)
+        possiblePortTo[ idx ].pos[0] += pos_to.x
+        possiblePortTo[ idx ].pos[1] += pos_to.y
 
-        pos_port_to = item_to.portPosition( to_port, true )
-        pos_to.x += pos_port_to[0]
-        pos_to.y += pos_port_to[1]
+      distance = -1
 
-        if dirn_from is "vertical"
-          from_port += if pos_to.y > pos_from.y then "-bottom" else "-top"
-        else if dirn_from is "horizontal"
-          from_port += if pos_to.x > pos_from.x then "-right" else "-left"
+      for i in possiblePortFrom
+        for j in possiblePortTo
+          d = Math.pow( i.pos[0] - j.pos[0], 2 ) + Math.pow( i.pos[1] - j.pos[1], 2 )
+          if distance is -1 or distance > d
+            distance = d
+            pos_from = i
+            pos_to   = j
+      {
+        start : {
+          x     : pos_from.pos[0]
+          y     : pos_from.pos[1]
+          angle : pos_from.pos[2]
+          type  : connection.port1Comp().type
+          name  : pos_from.name
+        }
+        end : {
+          x     : pos_to.pos[0]
+          y     : pos_to.pos[1]
+          angle : pos_to.pos[2]
+          type  : connection.port2Comp().type
+          name  : pos_to.name
+        }
+      }
 
-        pos_port_from = item_from.portPosition( from_port, true )
-        pos_from.x += pos_port_from[0]
-        pos_from.y += pos_port_from[1]
+    generatePath : ( item_from, item_to, element1, element2 )->
 
-      else if dirn_to
-        pos_port_from = item_from.portPosition( from_port, true )
-        pos_from.x += pos_port_from[0]
-        pos_from.y += pos_port_from[1]
+      ports = @getConnectPorts( item_from, item_to, element1, element2 )
+      start = ports.start
+      end   = ports.end
 
-        if dirn_to is "vertical"
-          to_port += if pos_from.y > pos_to.y then "-bottom" else "-top"
-        else if dirn_to is "horizontal"
-          to_port += if pos_from.x > pos_to.x then "-right" else "-left"
-
-        pos_port_to = item_to.portPosition( to_port, true )
-        pos_to.x += pos_port_to[0]
-        pos_to.y += pos_port_to[1]
-
-      else
-        pos_port_from = item_from.portPosition( from_port, true )
-        pos_port_to   = item_to.portPosition( to_port, true )
-
-        pos_from.x += pos_port_from[0]
-        pos_from.y += pos_port_from[1]
-        pos_to.x   += pos_port_to[0]
-        pos_to.y   += pos_port_to[1]
-
-      start0 =
-        x     : pos_from.x
-        y     : pos_from.y
-        angle : pos_port_from[2]
-        type  : connection.port1Comp().type
-        name  : from_port
-
-      end0 =
-        x     : pos_to.x
-        y     : pos_to.y
-        angle : pos_port_to[2]
-        type  : connection.port2Comp().type
-        name  : to_port
-
-
-      @__lastDir = if start0.y >= end0.y then 1 else -1
+      @__lastDir = if start.y >= end.y then 1 else -1
 
       # Calculate line path
-      if start0.x is end0.x or start0.y is end0.y
-        path = "M#{start0.x} #{start0.y} L#{end0.x} #{end0.y}"
+      if start.x is end.x or start.y is end.y
+        path = "M#{start.x} #{start.y} L#{end.x} #{end.y}"
       else
-        line_style = @lineStyle( connection.type )
-        controlPoints = MC.canvas.route2( start0, end0, line_style )
+        controlPoints = MC.canvas.route2( start, end, @lineStyle() )
         if controlPoints
-          switch line_style
+          switch @lineStyle()
             when 0
               path = "M#{controlPoints[0].x} #{controlPoints[0].y} L#{controlPoints[1].x} #{controlPoints[1].y} L#{controlPoints[controlPoints.length-2].x} #{controlPoints[controlPoints.length-2].y} L#{controlPoints[controlPoints.length-1].x} #{controlPoints[controlPoints.length-1].y}"
             when 1 then path = MC.canvas._round_corner(controlPoints)
@@ -195,10 +179,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
       path
 
-    lineStyle : ( conn_type )->
-      switch conn_type
-        when 'RTB_Route' then 1
-        else @canvas.lineStyle()
+    lineStyle : ()-> @canvas.lineStyle()
 
   }, {
     cleanLineMask : ( line )->
@@ -245,6 +226,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeRtbRoute"
     ### env:dev:end ###
     type : "RTB_Route"
+
+    lineStyle : ()-> 1
 
     createLine : ( pd )->
       svg   = @canvas.svg

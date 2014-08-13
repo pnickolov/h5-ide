@@ -4851,7 +4851,7 @@ div.modal-text-highlight {
     background: #55626e; }
   #RegionResourceData td {
     padding: 15px;
-    background: #edf1f3;
+    background-color: #edf1f3 !important;
     border: none;
     color: #666; }
   #RegionResourceData tr:nth-child(odd) > td {

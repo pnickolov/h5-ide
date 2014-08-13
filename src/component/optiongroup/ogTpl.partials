@@ -57,13 +57,13 @@
             <td>{{SettingName}}</td>
             <td class="value">
                 {{#if items}}
-                <select name="{{SettingName}}" class="option-setting">
+                <select name="{{SettingName}}" class="option-setting select3">
                     {{#each items}}
                     <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
                     {{/each}}
                 </select>
                 {{else}}
-                <input name="{{SettingName}}" data-required="true" data-type="number" class="option-setting" type="text" class="input" value="{{value}}" data-start="{{start}}" data-end="{{end}}"/>
+                <input name="{{SettingName}}" data-required="true" data-type="number" class="input option-setting" type="text" class="input" value="{{value}}" data-start="{{start}}" data-end="{{end}}"/>
                 {{/if}}
             </td>
             <td>{{AllowedValues}}</td>

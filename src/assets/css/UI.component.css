@@ -658,6 +658,30 @@ textarea {
 	background: #fcfcfc;
 }
 
+/* Select3 */
+  /* Base on original select */
+select.select3 {
+  background-image: none;
+  background-color: #1c1c1c;
+  color: #d0d0d0;
+  border: 1px solid #000;
+  display: inline-block;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+select.select3:active,
+select.select3:focus {
+  outline: none;
+}
+select.select3:disabled,
+select.select3.disabled {
+  background: #3f3f3f;
+  color: #666;
+  border-color: #3f3f3f;
+}
+
 /* Scrollbar */
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {

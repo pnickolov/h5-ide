@@ -558,7 +558,7 @@ define [
     names = @__preservedNames[type]
     names and names[name]
 
-  DesignImpl.prototype.getCost = ()->
+  DesignImpl.prototype.getCost = (stopped)->
     costList = []
     totalFee = 0
 
@@ -568,6 +568,9 @@ define [
       currency = priceMap.currency || 'USD'
 
       for uid, comp of @__componentMap
+        console.log comp.type
+        if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
+          continue
         if comp.getCost
           cost = comp.getCost( priceMap, currency )
           if not cost then continue

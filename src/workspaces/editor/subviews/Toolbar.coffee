@@ -502,7 +502,7 @@ define [
       changeList = []
       console.log newJson
       components = oldJson.component
-      _.each components, (e, key)->
+      _.each components, (e)->
         changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
       @updateModal = new Modal
@@ -514,7 +514,7 @@ define [
 
       @updateModal.tpl.find(".modal-footer").hide()
       @checkDBinstance(changeList).then (DBInstances)->
-        
+
         notAvailableDB = DBInstances.filter (e)->
           e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)

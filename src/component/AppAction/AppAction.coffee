@@ -132,7 +132,8 @@ define [
           hasAsg = (_.filter comp, (e)->
             e.type == constant.RESTYPE.ASG)?.length
 
-          fee = Design.instance()?.getCost() || {}
+          fee = Design.instance()?.getCost(true) || {}
+          console.log fee
           totalFee = fee.totalFee
           savingFee = fee.totalFee
 

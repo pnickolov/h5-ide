@@ -488,7 +488,7 @@ define [
                             needAry.push(depend) if not isOn
                         if needAry.length
                             isRightDepend = false
-                            errTip = "#{ogName} depend on #{needAry.join(',')} option."
+                            errTip = "#{ogName} has a dependency on #{needAry.join(',')} option."
                             that.$('.err-tip').text(errTip)
                 null
 

@@ -217,8 +217,17 @@ define [ 'ApiRequest'
 
                 if startWeek
 
+                    endWeek = startWeek
+
+                    # cross day
+                    weekAry = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+                    if start.getDay() isnt end.getDay()
+                        startWeekIdx = weekAry.indexOf(startWeek) + 1
+                        endWeekIdx = (startWeekIdx + 1) % 7
+                        endWeek = weekAry[endWeekIdx - 1]
+
                     startTimeStr = "#{startWeek}:#{startTimeStr}"
-                    endTimeStr = "#{startWeek}:#{endTimeStr}"
+                    endTimeStr = "#{endWeek}:#{endTimeStr}"
 
                 return "#{startTimeStr}-#{endTimeStr}"
 
@@ -669,10 +678,16 @@ define [ 'ApiRequest'
             if not (that.resModel.master() and not that.isAppEdit)
 
                 iops = that.resModel.get 'iops'
-                if that._haveEnoughStorageForIOPS(storge)
-                    that._disableIOPSCheck(false)
+
+                # check have enough storage for IOPS
+                iopsRange = @_getIOPSRange(storge)
+                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                    that._disableIOPSCheck(false) # enable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', '')
                 else
-                    that._disableIOPSCheck(true)
+                    iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS
+                    that._disableIOPSCheck(true) # disable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', 'Allocated Storage must be at least 100 GB to use Provisioned IOPS.')
 
         _disableIOPSCheck: (isDisable) ->
 
@@ -697,14 +712,6 @@ define [ 'ApiRequest'
                     $('.property-dbinstance-iops-value-section').hide()
                     checkedDom.checked = false
                 # @resModel.setIops ''
-
-        _haveEnoughStorageForIOPS: (storge) ->
-
-            iopsRange = @_getIOPSRange(storge)
-            if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
-                return true
-            else
-                return false
 
         _getIOPSRange: (storage) ->
 

@@ -67,10 +67,10 @@
 
         <section class="property-control-group">
             <div class="checkbox">
-                <input id="property-dbinstance-iops-check" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
+                <input id="property-dbinstance-iops-check" class="tooltip" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
                 <label for="property-dbinstance-iops-check"></label>
             </div>
-            <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
+            <label for="property-dbinstance-iops-check" class="property-dbinstance-iops-check-tooltip tooltip" data-tooltip="dsaasd">Use Provisioned IOPS</label>
         </section>
 
         <section class="property-control-group property-dbinstance-iops-value-section {{#unless iops}}hide{{/unless}}">

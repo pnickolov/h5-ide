@@ -473,6 +473,16 @@ define [
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
+    checkDBinstance : (changeList)->
+      checkDB = new Q.defer()
+      if changeList.length
+        DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+        DBInstances.fetchForce().then ->
+          checkDB.resolve(DBInstances)
+      else
+        checkDB.resolve([])
+      checkDB.promise
+
     applyAppEdit    : ()->
       that = @
       oldJson = @workspace.opsModel.getJsonData()
@@ -491,11 +501,10 @@ define [
 
       changeList = []
       console.log newJson
-      components = newJson.component
+      components = oldJson.component
       _.each components, (e, key)->
         changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
-      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.ide.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
@@ -504,7 +513,8 @@ define [
         maxHeight: "450px"
 
       @updateModal.tpl.find(".modal-footer").hide()
-      DBInstances.fetchForce().then ->
+      @checkDBinstance(changeList).then (DBInstances)->
+        
         notAvailableDB = DBInstances.filter (e)->
           e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)

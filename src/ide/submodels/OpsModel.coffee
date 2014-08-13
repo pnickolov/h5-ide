@@ -264,8 +264,31 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           comp.resource.MasterUserPassword = "****"
           dbins = CloudResources( 'AWS.RDS.DBInstance', self.get("region") ).where({id:comp.resource.DBInstanceIdentifier})
           if dbins.length>0
-            if not dbins[0].attributes.ReadReplicaSourceDBInstanceIdentifier
+            aws_dbins = dbins[0].attributes
+            if not aws_dbins.ReadReplicaSourceDBInstanceIdentifier
               comp.resource.ReadReplicaSourceDBInstanceIdentifier = ""
+            #changing DBInstance attribute( avoid json diff )
+            if aws_dbins.PendingModifiedValues
+              if aws_dbins.PendingModifiedValues.AllocatedStorage
+                #modify AllocatedStorage
+                comp.resource.AllocatedStorage = Number(aws_dbins.PendingModifiedValues.AllocatedStorage)
+              if aws_dbins.PendingModifiedValues.BackupRetentionPeriod
+                #modify BackupRetentionPeriod
+                comp.resource.BackupRetentionPeriod = Number(aws_dbins.PendingModifiedValues.BackupRetentionPeriod)
+              if aws_dbins.PendingModifiedValues.DBInstanceClass
+                #modify DBInstanceClass
+                comp.resource.DBInstanceClass = aws_dbins.PendingModifiedValues.DBInstanceClass
+              if aws_dbins.PendingModifiedValues.Iops
+                #modify Iops
+                comp.resource.Iops = Number(aws_dbins.PendingModifiedValues.Iops)
+              if aws_dbins.PendingModifiedValues.MultiAZ
+                #modify MultiAZ
+                comp.resource.MultiAZ = aws_dbins.PendingModifiedValues.MultiAZ
+              if aws_dbins.PendingModifiedValues.MasterUserPassword
+                #modify MasterUserPassword
+                comp.resource.MasterUserPassword = aws_dbins.PendingModifiedValues.MasterUserPassword
+        else if comp.type is 'AWS.RDS.OptionGroup'
+          comp.name = comp.resource.OptionGroupName
         null
       console.info "app_json_backend(patched)"
       console.debug JSON.stringify app_json_xu.models[0].attributes

@@ -148,8 +148,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+
     __onFjdImported : ()->
-      json = CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+      json = @generateJsonFromRes()
       @__setJsonData json
       @attributes.name = json.name
       @

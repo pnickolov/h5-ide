@@ -485,6 +485,7 @@ define [ 'ApiRequest'
             regionName       = Design.instance().region()
             attr             = @getModelJSON()
             attr.canCustomOG = false
+            attr.ogName = @resModel.getOptionGroupName()
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
             ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
@@ -511,9 +512,9 @@ define [ 'ApiRequest'
                         majorVersion: @resModel.getMajorVersion()
                     }).el
 
-            else
+            # else
 
-                @$el.find('.property-dbinstance-optiongroup').hide()
+            #     @$el.find('.property-dbinstance-optiongroup').hide()
 
         renderParameterGroup: ->
             #update selection
@@ -682,7 +683,10 @@ define [ 'ApiRequest'
                 # check have enough storage for IOPS
                 iopsRange = @_getIOPSRange(storge)
                 if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
-                    that._disableIOPSCheck(false) # enable
+                    if @resModel.isSqlserver() and @isAppEdit
+                        that._disableIOPSCheck(true) # disable
+                    else
+                        that._disableIOPSCheck(false) # enable
                     $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', '')
                 else
                     iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS

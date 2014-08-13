@@ -119,6 +119,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'SubnetIds'
                     data.key = 'Subnet'
 
+                when 'Options'
+                    data.key = 'Option'
+
             # Convert need convert pluralKey
             if parentKey in pluralKeys
                 data.key = @pluralToSingular parentKey

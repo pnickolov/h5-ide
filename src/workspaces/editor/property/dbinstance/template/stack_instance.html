@@ -67,7 +67,7 @@
 
         <section class="property-control-group">
             <div class="checkbox">
-                <input id="property-dbinstance-iops-check" class="tooltip" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
+                <input id="property-dbinstance-iops-check" class="tooltip" {{#if isAppEdit}}{{#if isSqlserver}}disabled="disabled"{{/if}}{{/if}} type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
                 <label for="property-dbinstance-iops-check"></label>
             </div>
             <label for="property-dbinstance-iops-check" class="property-dbinstance-iops-check-tooltip tooltip" data-tooltip="dsaasd">Use Provisioned IOPS</label>
@@ -76,7 +76,7 @@
         <section class="property-control-group property-dbinstance-iops-value-section {{#unless iops}}hide{{/unless}}">
             <label class="left">Provisioned IOPS</label>
             <div class="ranged-number-input">
-                <input class="input" id="property-dbinstance-iops-value" type="text" value="{{iops}}" name="iops-ranged" data-ignore="true" data-required="true" data-type="number">
+                <input class="input" id="property-dbinstance-iops-value" {{#if isAppEdit}}{{#if isSqlserver}}disabled{{/if}}{{/if}} type="text" value="{{iops}}" name="iops-ranged" data-ignore="true" data-required="true" data-type="number">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
             <label class="property-dbinstance-iops-info">{{iopsInfo}}</label>

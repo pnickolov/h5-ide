@@ -35,7 +35,13 @@
             </div>
         </div>
     </div>
+
 </section>
+{{else}}
+<dl class="dl-vertical">
+    <dt>DB Engine Version</dt>
+    <dd>{{engine}}({{engineVersion}})</dd>
+</dl>
 {{/unless}}
 {{/unless}}
 

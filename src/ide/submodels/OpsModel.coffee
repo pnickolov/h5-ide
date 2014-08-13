@@ -262,6 +262,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             comp.resource.GroupName = sg[0].attributes.groupName
         else if comp.type is 'AWS.RDS.DBInstance'
           comp.resource.MasterUserPassword = "****"
+          dbins = CloudResources( 'AWS.RDS.DBInstance', self.get("region") ).where({id:comp.resource.DBInstanceIdentifier})
+          if dbins.length>0
+            if not dbins[0].attributes.ReadReplicaSourceDBInstanceIdentifier
+              comp.resource.ReadReplicaSourceDBInstanceIdentifier = ""
         null
       console.info "app_json_backend(patched)"
       console.debug JSON.stringify app_json_xu.models[0].attributes

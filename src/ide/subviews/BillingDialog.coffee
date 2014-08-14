@@ -49,14 +49,105 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       viewPaymentReceipt: (event)->
         $target = $(event.currentTarget)
         id = $target.parent().parent().data("id")
-        console.log id
         paymentHistory = @paymentHistory[id]
-        console.log paymentHistory
+        cssToInsert = """
+          .billing_statement_section {
+              display: block;
+              position: relative;
+          }
+          .billing_statement_section h2 {
+              display: block;
+              background: #E6E6E6;
+              font-size: 16px;
+              padding: 10px;
+              font-weight: bold;
+              margin-bottom: 0;
+              border-bottom: 1px solid #727272;
+          }
+          .billing_statement_section_content {
+              display: block;
+              position: relative;
+              padding-top: 10px;
+          }
+          table {
+              border-collapse: collapse;
+              width: 100%;
+          }
+          table, td, th {
+              border: 1px solid #333;
+              padding: 7px;
+              text-align: left;
+              font-size: 14px;
+          }
+          table thead {
+              background: #dedede;
+          }
+          table tr.billing_statement_listing_tfoot {
+              font-weight: bold;
+              text-align: right;
+          }
+          #billing_statement {
+              width: 800px;
+              margin: 20px auto;
+              padding-bottom: 50px;
+          }
+          .billing_statement_section .billing_statement_section_content h3 {
+              font-size: 14px;
+              position: relative;
+              margin: 10px 0;
+              font-weight: bold;
+              margin-bottom: 14px;
+              background: #F3F3F3;
+              padding: 5px;
+          }
+          div#billing_statement_account_information_section {
+              width: 49%;
+              float: left;
+          }
+          div#billing_statement_summary_section {
+              width: 49%;
+              float: right;
+          }
+          div#billing_statement_detail_section {
+              clear: both;
+              padding-top: 10px;
+          }
+          .billing_statement_section_content .billing_statement_summary_label {
+              font-weight: bold;
+              font-size: 16px;
+              width: 44%;
+              display: inline-block;
+              text-align: right;
+          }
+          .billing_statement_section_content> div {
+              margin-bottom: 10px;
+          }
+          .billing_statement_section_content .billing_statement_summary_value {
+              text-align: right;
+              float: right;
+              color: #666;
+          }
+          div#billing_statement_summary_balance_paid_stamp.billing_statement_balance_paid_stamp_paid {
+              float: right;
+              font-size: 30px;
+              color: #50B816;
+              margin-top: 10px;
+          }
+          body {font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;}
+        """
         makeNewWindow = ()->
           newWindow = window.open("", "")
           newWindow.focus()
           content = paymentHistory.html
           newWindow.document.write(content)
+          headTag = newWindow.document.head || newWindow.document.getElementsByTagName('head')[0]
+          styleTag = document.createElement('style')
+          styleTag.type = 'text/css'
+          if (styleTag.styleSheet)
+            styleTag.styleSheet.cssText = cssToInsert
+          else
+            styleTag.appendChild(document.createTextNode(cssToInsert))
+          headTag.appendChild(styleTag)
           newWindow.document.close()
         makeNewWindow()
 

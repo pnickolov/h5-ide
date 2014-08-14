@@ -38,7 +38,7 @@
                     <a class="btn btn-blue" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>
-            <p>Billing History <span class="payment-next-billing">Next Billing on {{formatTime "2014-8-13" "MMMM d, yyyy"}}</span></p>
+            <p>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.period_end_at "MMMM d, yyyy"}}</span></p>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">

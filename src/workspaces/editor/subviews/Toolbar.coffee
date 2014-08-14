@@ -501,7 +501,7 @@ define [
 
       changeList = []
       console.log newJson
-      components = oldJson.component
+      components = newJson.component
       _.each components, (e)->
         changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 

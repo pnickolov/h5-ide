@@ -128,7 +128,7 @@
         </section>
         {{#if notReadyDB.length}}
             <p class="cant-snapshot">DB Instance
-                {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                {{#each notReadyDB}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
                 cannot take final snapshot.</p>
         {{/if}}
     {{/if}}

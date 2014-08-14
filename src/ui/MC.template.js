@@ -1295,8 +1295,9 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "(<span class=\"db-stop-status\">"
+  buffer += "<span class=\"resource-tag\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>(<span class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>) ";
   return buffer;
@@ -1307,7 +1308,7 @@ function program2(depth0,data) {
   return ", ";
   }
 
-  buffer += "<p class=\"modal-text-minor\">DB Instance\n    ";
+  buffer += "<p class=\"modal-text-major\">DB Instance\n    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    cannot be modified now.</p>\n<p>Wait for the DB instance(s) to be available. Then try to apply updates\n    again.</p>";

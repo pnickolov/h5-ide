@@ -28,7 +28,7 @@ $dndDuration : .2s;
     float            : left;
     border-right     : 1px solid #000;
     border-bottom    : 1px solid #000;
-    color            : #7375DB;
+    color            : lighten($base-p, 20%);
 
     &:before {
       font-size  : 32px;
@@ -80,16 +80,6 @@ $dndDuration : .2s;
   background-color: transparent;
 }
 
-.elb-asg {
-  .resource-item {
-    height: 5em;
-  }
-}
-
-.resource-list-asg .resource-item {
-  height: 3em;
-}
-
 .resource-list-sort-select {
   margin-top: -21px;
   float: right;
@@ -102,7 +92,7 @@ $dndDuration : .2s;
     box-shadow    : none;
     border        : none;
     background    : transparent;
-    color         : #ccc;
+    color         : #ddd;
 
     &:hover {
       background: transparent;
@@ -465,7 +455,7 @@ $dndDuration : .2s;
 }
 
 .resource-select.selectbox .selection {
-  background        : #143553;
+  background        : $dark-p;
   color             : #F3F3F3;
   height            : 17px;
   border            : none;
@@ -610,7 +600,7 @@ $dndDuration : .2s;
   left       : 0;
   bottom     : 0;
   position   : absolute;
-  background : #313131; /* for zoomed out */
+  background : desaturate(lighten($bg-p, 2%),10%); /* for zoomed out */
 
   .scroll-wrap {
     position : absolute;

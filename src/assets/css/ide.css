@@ -1,4 +1,7 @@
 @charset "UTF-8";
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -664,7 +667,6 @@ td.table-action a.btn {
 
 .property-content {
   height: 100%;
-  background-color: #383838;
   color: #ccc;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2467,13 +2469,14 @@ summary:focus {
   border-bottom: none; }
 
 .validation-content .tab li {
+  background: #1b1b21;
   color: #999;
   width: 119px;
   line-height: 30px;
   display: block;
   float: left;
   padding: 0 10px;
-  border-right: 1px solid #131313;
+  border-right: 1px solid #000;
   box-shadow: inset 0 -1px 0 #000;
   text-align: left;
   -webkit-transition: background .2s;
@@ -2491,7 +2494,7 @@ summary:focus {
 
 .validation-content .tab li.active,
 .validation-content .tab li.active:hover {
-  background: #36373A;
+  background: #303041;
   color: #eee;
   box-shadow: inset 0 1px 0 #36373A; }
 
@@ -2501,14 +2504,14 @@ summary:focus {
 .validation-content .scroll-wrap-validation {
   width: 420px;
   height: 250px;
-  border: 1px solid #131313;
+  border: 1px solid #151519;
   border-top: none;
   border-radius: 0 0 2px 2px;
   overflow: hidden;
-  background: #36373A; }
+  background: #303041; }
 
 #modal-validation-statusbar .validation-content .scroll-wrap-validation {
-  border: 1px solid #222;
+  border: 1px solid #151519;
   border-top: none; }
 
 #modal-run-stack .validation-content .scroll-wrap-validation,
@@ -2590,7 +2593,8 @@ summary:focus {
   color: #ffa740;
   font-size: 28px; }
 
-.validation-tag {
+.validation-tag,
+.resource-tag {
   font-size: 12px;
   padding: 1px 3px;
   margin: 0 3px;
@@ -3036,9 +3040,9 @@ div.modal-text-highlight {
   bottom: 23px;
   right: 0;
   z-index: 4;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 -2px 5px rgba(0, 0, 0, 0.2);
-  border: solid 1px #242424;
-  background-color: #464646;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  border: solid 1px #151519;
+  background-color: #25252d;
   border-radius: 4px 4px 0 0; }
 
 .status-bar-modal .modal-header {
@@ -3631,7 +3635,8 @@ div.modal-text-highlight {
 
 .check-final-snapshot {
   padding: 10px 0;
-  font-size: 16px; }
+  font-size: 16px;
+  color: #ddd; }
 
 .cant-snapshot {
   display: block;
@@ -3934,8 +3939,8 @@ div.modal-text-highlight {
     background: rgba(255, 255, 255, 0.02);
     color: #fff; }
   .off-canvas-tab.selected {
-    border-bottom: 3px solid #66398b;
-    color: #9F62D1; }
+    border-bottom: 3px solid #727ad3;
+    color: #727ad3; }
 
 .nav-empty {
   margin: 5px 15px 15px;
@@ -3999,19 +4004,23 @@ div.modal-text-highlight {
     float: left;
     min-width: 100px;
     text-align: center;
-    color: #148BE6;
+    color: #4d4e8c;
     height: 38px;
     line-height: 38px;
     cursor: pointer;
     position: relative;
     padding: 0 10px;
     font-size: 12px; }
+    #SettingsNav > span.selected {
+      color: #727ad3; }
+    #SettingsNav > span:hover, #SettingsNav > span.selected:hover {
+      color: #868cd9; }
     #SettingsNav > span.selected:before {
       position: absolute;
       left: 0;
       bottom: 0px;
       content: '';
-      border-bottom: 2px solid #148BE6;
+      border-bottom: 2px solid #727ad3;
       width: 100%; }
 
 #SettingsBody {
@@ -5627,15 +5636,17 @@ button#property-app-keypair {
 .sslcert-placeholder section.empty .selection {
   color: #f00; }
 
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
   height: 100%;
   z-index: 3;
-  background: #313131; }
+  background: #202027; }
 
 .OEPanelLeft {
   width: 246px;
-  background: #242424;
   left: 0;
   -webkit-transition: left 0.1s ease-out;
   -moz-transition: left 0.1s ease-out;
@@ -5648,6 +5659,8 @@ button#property-app-keypair {
     left: -246px; }
     .OEPanelLeft.hidden > .HideOEPanelLeft:before {
       content: "\F124"; }
+  .OEPanelLeft ::selection {
+    background: transparent; }
 
 .OEPanelRight {
   right: 0;
@@ -5693,14 +5706,14 @@ button#property-app-keypair {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: #505050;
+  background: #2b2b35;
   height: 24px;
   line-height: 24px;
   color: #999;
   font-size: 12px;
   z-index: 3;
   box-sizing: border-box;
-  border-top: 1px solid #212121; }
+  border-top: 1px solid #151519; }
   .OEPanelBottom ~ .OEPanelCenter {
     bottom: 24px; }
 
@@ -5738,11 +5751,11 @@ button#property-app-keypair {
   line-height: 39px;
   color: #b0b0b0;
   text-shadow: 0 1px #333;
-  background-color: #313131;
-  border-bottom: 1px solid #202020;
+  background-color: #2b2b35;
+  border-bottom: 1px solid #151519;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
   .sidebar-title.open .menu-manage-shard-res {
-    color: #9F62D1;
+    color: #5d64b5;
     background-color: rgba(0, 0, 0, 0.3); }
   .sidebar-title i {
     width: 40px;
@@ -5751,7 +5764,7 @@ button#property-app-keypair {
     cursor: pointer;
     text-align: center; }
     .sidebar-title i:hover {
-      color: #9F62D1;
+      color: #5d64b5;
       background-color: rgba(0, 0, 0, 0.3); }
     .sidebar-title i.disabled {
       color: #666;
@@ -6379,7 +6392,7 @@ g.shadow {
     float: left;
     border-right: 1px solid #000;
     border-bottom: 1px solid #000;
-    color: #7375DB; }
+    color: #5d64b5; }
     .resources-dropdown-wrapper li:before {
       font-size: 32px;
       text-align: center;
@@ -6417,12 +6430,6 @@ g.shadow {
   background-repeat: no-repeat;
   background-color: transparent; }
 
-.elb-asg .resource-item {
-  height: 5em; }
-
-.resource-list-asg .resource-item {
-  height: 3em; }
-
 .resource-list-sort-select {
   margin-top: -7px;
   float: right;
@@ -6434,7 +6441,7 @@ g.shadow {
     box-shadow: none;
     border: none;
     background: transparent;
-    color: #ccc; }
+    color: #ddd; }
     .resource-list-sort-select .selection:hover {
       background: transparent;
       color: #eee; }
@@ -6736,7 +6743,7 @@ g.shadow {
     color: #aaa; }
 
 .resource-select.selectbox .selection {
-  background: #143553;
+  background: #25254c;
   color: #F3F3F3;
   height: 17px;
   border: none;
@@ -6846,7 +6853,7 @@ g.shadow {
   left: 0;
   bottom: 0;
   position: absolute;
-  background: #313131;
+  background: #292929;
   /* for zoomed out */ }
   .property-panel-wrapper .scroll-wrap {
     position: absolute;

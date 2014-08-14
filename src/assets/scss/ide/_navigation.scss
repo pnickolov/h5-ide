@@ -69,8 +69,8 @@
   }
 
   &.selected {
-    border-bottom: 3px solid #66398b;
-    color: #9F62D1;
+    border-bottom: 3px solid $base-p-l;
+    color: $base-p-l;
   }
 }
 

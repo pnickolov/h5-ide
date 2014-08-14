@@ -67,6 +67,7 @@
           </div>
         </div>
         <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
+        <div class="resource-list-empty resource-list-snapshot-empty"></div>
       </div>
     </div>
   </section>
@@ -91,6 +92,7 @@
           </div>
         </div>
         <ul class="resource-list-rds-snapshot resource-list-rds-snapshot-exist"></ul>
+        <div class="resource-list-empty resource-list-rds-snapshot-empty"></div>
       </div>
     </div>
   </section>
@@ -128,6 +130,9 @@
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
 </li>{{/with}}{{/each}}
 
+<!-- {{snapshot_empty}} -->
+<span>No EBS Snapshot in {{regionName}}.</span>
+
 <!-- {{rds}} -->
 {{#each this}}{{#with this.[0].attributes}}
 <li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
@@ -144,6 +149,9 @@
   <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div></div>{{DBInstanceIdentifier}}
 </li>
 {{/each}}
+
+<!-- {{rds_snapshot_empty}} -->
+<span>No DB Snapshot in {{regionName}}.</span>
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}

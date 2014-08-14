@@ -144,13 +144,13 @@
     <div class="name">{{Name}}</div>
     {{#if Persistent}}<div class="persistent">PERSISTENT</div>{{/if}}
     {{#if Permenant}}<div class="permenant">PERMENANT</div>{{/if}}
-    {{#unless unmodify}}
-    <div class="option-edit-btn {{#unless visible}}invisible{{/unless}} icon-btn-details{{#unless checked}} invisible{{/unless}}"></div>
-    <label class="switcher{{#if checked}} on{{/if}}{{#if disabled}} disabled{{/if}}">
+    
+    <div class="option-edit-btn {{#if unmodify}}invisible{{else}}{{#unless visible}}invisible{{/unless}}{{#unless checked}} invisible{{/unless}}{{/if}} icon-btn-details"></div>
+    <label class="switcher{{#if checked}} on{{/if}}{{#if disabled}} disabled{{/if}} {{#if unmodify}}invisible{{/if}}">
         <span class="switch-label" data-on="ON" data-off="OFF"></span>
         <span class="switch-handle"></span>
     </label>
-    {{/unless}}
+
 </li>
 {{/each}}
 

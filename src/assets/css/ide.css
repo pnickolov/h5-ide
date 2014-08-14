@@ -6424,7 +6424,7 @@ g.shadow {
   height: 3em; }
 
 .resource-list-sort-select {
-  margin-top: -21px;
+  margin-top: -7px;
   float: right;
   width: 84px;
   margin-right: -7px; }
@@ -6446,6 +6446,14 @@ g.shadow {
   border-bottom: 1px #666 solid;
   height: 18px;
   float: left; }
+
+.resource-list-empty {
+  float: left;
+  text-align: center;
+  width: 100%;
+  margin-top: 25px;
+  font-size: 12px;
+}
 
 .resource-item {
   width: 70px;

@@ -257,7 +257,10 @@ define [
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
       cln.region = region
-      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
+      if cln and cln.length
+        @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot( cln )
+      else
+        @$el.find(".resource-list-snapshot-empty").html LeftPanelTpl.snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
 
     updateRDSList : () ->
       cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
@@ -267,7 +270,10 @@ define [
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
       cln.region = region
-      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
+      if cln and cln.length
+        @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
+      else
+        @$el.find(".resource-list-rds-snapshot-empty").html LeftPanelTpl.rds_snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"

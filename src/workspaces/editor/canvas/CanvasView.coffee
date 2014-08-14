@@ -247,7 +247,10 @@ define [
 
     lineStyle : ()-> @__linestyle
     updateLineStyle : ()->
-      @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+      ls = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+      if @__linestyle is ls then return
+
+      @__linestyle = ls
       cn.update() for uid, cn of @__itemLineMap
       return
 

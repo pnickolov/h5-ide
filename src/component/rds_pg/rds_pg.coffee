@@ -20,10 +20,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     onAdd: ->
       @initDropdown()
     onRemove: ->
-      that = @
-      if that.resModel and  not (that.collection.get that.resModel.get('pgName'))
-        that.resModel.setDefaultParameterGroup( that.resModel.get 'engineVersion' )
-      that.dropdown?.setSelection that.resModel.get('pgName')
+      @initDropdown()
+      if @resModel and  not (@collection.get @resModel.get('pgName'))
+        @resModel.setDefaultParameterGroup( @resModel.get 'engineVersion' )
+      @dropdown?.setSelection @resModel.get('pgName')
 
     remove: ()->
       Backbone.View::remove.call @

@@ -118,7 +118,21 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
         maintenanceStart     = +maintenanceTimeArray[0].slice(3)
         maintenanceEnd       = +maintenanceTimeArray[1].slice(3)
 
-        if backupStart > maintenanceEnd or backupEnd < maintenanceStart
+        # Only maintenceTime cross a day
+        if maintenanceEnd < maintenanceStart and backupStart < backupEnd
+            if maintenanceEnd < backupStart and backupStart < maintenanceStart and backupEnd < maintenanceStart
+                return null
+
+        # Only backupTime cross a day
+        else if backupEnd < backupStart and maintenanceStart < maintenanceEnd
+            if backupEnd < maintenanceStart and maintenanceStart < backupStart and maintenanceEnd < backupStart
+                return null
+
+        # Both cross a day must be overlap
+        else if backupEnd < backupStart and maintenanceEnd < maintenanceStart
+
+        # Both maintenceTime and backupTime not cross a day
+        else if backupStart > maintenanceEnd or backupEnd < maintenanceStart
             return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')

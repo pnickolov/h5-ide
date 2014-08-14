@@ -57,6 +57,7 @@ define [
             @view = app_view
             @view.model = @model
             @view.resModel = resModel
+            @view.isAppEdit = false
             null
 
         initAppEdit : ( uid ) ->
@@ -72,6 +73,8 @@ define [
             if resModel.get('appId')
                 @view.isAppEdit = true
                 @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
+            else
+                @view.isAppEdit = false
             null
 
         afterLoadAppEdit : ()->

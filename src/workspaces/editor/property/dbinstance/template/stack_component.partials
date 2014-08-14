@@ -152,10 +152,10 @@
 <!-- {{propertyDbinstanceMutilAZ}} -->
 <section class="property-control-group">
     <div class="checkbox">
-        <input id="property-dbinstance-mutil-az-check" {{#unless multiAZCapable}}disabled="disabled"{{/unless}} type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
+        <input id="property-dbinstance-mutil-az-check" {{#unless multiAZCapable}}disabled="disabled"{{else}}{{#if disableMutilAZForMirror}}disabled="disabled"{{/if}}{{/unless}} type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
         <label for="property-dbinstance-mutil-az-check"></label>
     </div>
-    <label for="property-dbinstance-mutil-az-check" >Multi-AZ Deployment</label>
+    <label for="property-dbinstance-mutil-az-check" class="tooltip" {{#if disableMutilAZForMirror}}data-tooltip="SQL Server Mirroring(Multi-AZ) is controlled by Option Group. To make sure this DB instance has mirroring, please edit its Option Group."{{/if}}>Multi-AZ Deployment</label>
 </section>
 
 {{#if isAppEdit}}

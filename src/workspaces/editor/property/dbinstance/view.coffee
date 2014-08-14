@@ -425,6 +425,11 @@ define [ 'ApiRequest'
                     if originValue and (storage < originValue.originAllocatedStorage)
                         return 'Allocated storage cannot be reduced.'
 
+                    increaseSize = storage - originValue.originAllocatedStorage
+                    minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1 + 1)
+                    if increaseSize <= minIncreaseSize
+                        return "Allocated storage must increase by at least 10%, for a new storage size of at least #{originValue.originAllocatedStorage + minIncreaseSize}."
+
                 if not (storage >= min and storage <= max)
                     return "Must be an integer from #{min} to #{max}"
 
@@ -545,7 +550,8 @@ define [ 'ApiRequest'
 
             # hack for SQL Server
             engine = @resModel.get('engine')
-            multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+            disableMutilAZForMirror = false
+            disableMutilAZForMirror = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
             if not multiAZCapable
                 @resModel.set('multiAz', false)
@@ -553,6 +559,7 @@ define [ 'ApiRequest'
             # set az list
 
             sgData = {
+                disableMutilAZForMirror: disableMutilAZForMirror
                 multiAZCapable: multiAZCapable
             }
             sgData = _.extend sgData, attr

@@ -31,6 +31,7 @@ define ['constant'], (constant) ->
                 # 'DBINSTANCE.resource.MasterUserPassword': true
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true
+                'DBINSTANCE.resource.ApplyImmediately': true
             }
 
         if not option.noDiffArrayAttrMap

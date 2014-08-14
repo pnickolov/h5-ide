@@ -75,7 +75,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             window.setTimeout ()->
               that._renderBillingDialog()
             , 2
-
+        @modal.on 'close', ->
+          App.WS.off 'userStateChange'
       _renderBillingDialog: ->
         new BillingDialog()
 

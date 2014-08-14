@@ -230,6 +230,8 @@ define [
         console.log paymentState
         if paymentState is 'active'
           checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
+      modal.on 'close', ->
+        App.WS.off 'userStateChange'
 
     checkPayment: ()->
       that = @
@@ -250,6 +252,7 @@ define [
 
           paymentModal.find('.modal-footer').hide()
           App.user.getPaymentUpdate().then (result)->
+            if paymentModal.isClosed then return false
             if App.user.get('paymentState') is 'past_due'
               checkPaymentDefer.resolve {paymentUpdate: result,paymentModal: paymentModal}
               return false
@@ -257,11 +260,14 @@ define [
             paymentModal.setContent(MC.template.paymentUpdate result)
             that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
           , (err)->
+            if paymentModal.isClosed then return false
             App.user.getPaymentInfo().then (result)->
+              if paymentModal.isClosed then return false
               paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
               paymentModal.setContent(MC.template.paymentSubscribe result)
               that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
             ,(err)->
+              if paymentModal.isClosed then return false
               notification 'error', "Error while getting user payment info. please try again later."
               paymentModal.close()
         else

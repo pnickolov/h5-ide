@@ -498,7 +498,6 @@ define [
       removes = differ.removedComps
 
       changeList = []
-      console.log newJson
       components = newJson.component
       _.each components, (e, key)->
         changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE

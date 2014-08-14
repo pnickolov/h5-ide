@@ -70,13 +70,12 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           paymentState = dag.payment_state
           App.user.set('paymentState', paymentState)
           console.log paymentState
+          if @modal.isClosed then return false
           if paymentState is 'active'
             that.modal.close()
             window.setTimeout ()->
               that._renderBillingDialog()
             , 2
-        @modal.on 'close', ->
-          App.WS.off 'userStateChange'
       _renderBillingDialog: ->
         new BillingDialog()
 

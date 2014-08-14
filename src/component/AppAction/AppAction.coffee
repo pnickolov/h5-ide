@@ -228,10 +228,9 @@ define [
         paymentState = dag.payment_state
         App.user.set('paymentState', paymentState)
         console.log paymentState
+        if modal.isClosed then return false
         if paymentState is 'active'
           checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
-      modal.on 'close', ->
-        App.WS.off 'userStateChange'
 
     checkPayment: ()->
       that = @

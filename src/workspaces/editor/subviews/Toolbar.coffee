@@ -473,9 +473,9 @@ define [
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
-    checkDBinstance : (changeList)->
+    checkDBinstance : (oldDBInstanceList)->
       checkDB = new Q.defer()
-      if changeList.length
+      if oldDBInstanceList.length
         DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
         DBInstances.fetchForce().then ->
           checkDB.resolve(DBInstances)
@@ -498,12 +498,12 @@ define [
         return @workspace.applyAppEdit()
 
       removes = differ.removedComps
-
-      changeList = []
+      console.log differ
+      dbInstanceList = []
       console.log newJson
       components = newJson.component
       _.each components, (e)->
-        changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
+        dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
       @updateModal = new Modal
         title: lang.ide.HEAD_INFO_LOADING
@@ -513,10 +513,15 @@ define [
         maxHeight: "450px"
 
       @updateModal.tpl.find(".modal-footer").hide()
-      @checkDBinstance(changeList).then (DBInstances)->
+
+      oldDBInstanceList = []
+      _.each oldJson.component, (e)->
+        oldDBInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
+
+      @checkDBinstance(oldDBInstanceList).then (DBInstances)->
 
         notAvailableDB = DBInstances.filter (e)->
-          e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
+          e.attributes.DBInstanceIdentifier in dbInstanceList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)
           that.updateModal.find(".modal-footer").show().find(".modal-confirm").hide()
           that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB

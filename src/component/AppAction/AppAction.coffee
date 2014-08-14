@@ -217,7 +217,7 @@ define [
           return
 
 
-    _bindPaymentEvent: (modal, checkPaymentDefer, delay)->
+    _bindPaymentEvent: (modal, checkPaymentDefer, paymentUpdate)->
       modal.find("a.btn.btn-xlarge").click (event)->
         event.preventDefault()
         window.open $(event.currentTarget).attr("href"), ""
@@ -229,10 +229,7 @@ define [
         App.user.set('paymentState', paymentState)
         console.log paymentState
         if paymentState is 'active'
-          modal.close()
-          window.setTimeout ()->
-            checkPaymentDefer.resolve()
-          , delay+1
+          checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
 
     checkPayment: ()->
       that = @
@@ -241,24 +238,29 @@ define [
 
       if stackAgentEnabled
         userPaymentState = App.user.get("paymentState")
-        if not (userPaymentState is 'active' or userPaymentState is 'past_due')
-          delay = 1
+        if userPaymentState isnt 'active'
           paymentModal = new modalPlus
             title: lang.ide.PAYMENT_LOADING
             template: MC.template.loadingSpiner
             disableClose: true
-            disableFooter: true
-            delay: delay
+            confirm:
+              text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+              disabled: true
+            #disableFooter: true
 
+          paymentModal.find('.modal-footer').hide()
           App.user.getPaymentUpdate().then (result)->
+            if App.user.get('paymentState') is 'past_due'
+              checkPaymentDefer.resolve {paymentUpdate: result,paymentModal: paymentModal}
+              return false
             paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
             paymentModal.setContent(MC.template.paymentUpdate result)
-            that._bindPaymentEvent(paymentModal, checkPaymentDefer, delay)
+            that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
           , (err)->
             App.user.getPaymentInfo().then (result)->
               paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
               paymentModal.setContent(MC.template.paymentSubscribe result)
-              that._bindPaymentEvent(paymentModal, checkPaymentDefer, delay)
+              that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
             ,(err)->
               notification 'error', "Error while getting user payment info. please try again later."
               paymentModal.close()

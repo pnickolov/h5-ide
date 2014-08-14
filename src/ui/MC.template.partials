@@ -484,16 +484,16 @@ Additional Notes and Questions
     </div>
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
-            <div class="title">Estimated Cost</div>
+            <div class="title">Estimated AWS Cost</div>
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
         </div>
-        <div class="estimate-visualops clearfix">
+        <div class="estimate-visualops clearfix hide">
             <div class="title">Estimated VisualOps Cost</div>
             <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
         </div>
         {{#ifCond paymentState "past_due"}}
             <div class="payment-warning">
-                There was an issue to process payment in your account. Please update your <a href="{{payment-link}}">payment information</a>.
+                There was an issue to process payment in your account. Please update your <a target="_blank" href="{{paymentUpdate.url}}">payment information</a>.
             </div>
         {{/ifCond}}
     </div>

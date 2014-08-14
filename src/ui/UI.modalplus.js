@@ -69,7 +69,7 @@
         }
         this.show();
         this.bindEvent();
-        return this;
+        this;
       }
 
       Modal.prototype.close = function() {
@@ -111,7 +111,10 @@
         } else {
           this.resize();
         }
-        return typeof (_base = this.option).onShow === "function" ? _base.onShow(this) : void 0;
+        if (typeof (_base = this.option).onShow === "function") {
+          _base.onShow(this);
+        }
+        return this;
       };
 
       Modal.prototype.bindEvent = function() {
@@ -350,7 +353,8 @@
       };
 
       Modal.prototype.toggleConfirm = function(disabled) {
-        return this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
+        this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
+        return this;
       };
 
       Modal.prototype.setContent = function(content) {
@@ -361,7 +365,24 @@
           selector = ".modal-body";
         }
         this.tpl.find(selector).html(content);
-        return this.resize();
+        this.resize();
+        return this;
+      };
+
+      Modal.prototype.setWidth = function(width) {
+        var body;
+        body = this.tpl.find('.modal-body');
+        body.parent().css({
+          width: width
+        });
+        return this;
+      };
+
+      Modal.prototype.compact = function() {
+        this.tpl.find('.modal-body').css({
+          padding: 0
+        });
+        return this;
       };
 
       Modal.prototype._fadeOut = function() {
@@ -409,7 +430,8 @@
       };
 
       Modal.prototype.setTitle = function(title) {
-        return this.tpl.find(".modal-header h3").text(title);
+        this.tpl.find(".modal-header h3").text(title);
+        return this;
       };
 
       return Modal;

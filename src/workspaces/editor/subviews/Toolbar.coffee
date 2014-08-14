@@ -299,20 +299,31 @@ define [
         if $(event.currentTarget).attr('disabled')
             return false
 
-        appAction.checkPayment().then (modal)=>
-          @__runStack(modal)
+        appAction.checkPayment().then (result)=>
+          @__runStack(result)
 
-    __runStack: ()->
+    __runStack: (result)->
       paymentState = App.user.get("paymentState")
-      @modal = new Modal
-        title: lang.ide.RUN_STACK_MODAL_TITLE
-        template: MC.template.modalRunStack {paymentState}
-        disableClose: true
-        width: '665px'
-        compact: true
-        confirm:
-          text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
-          disabled: true
+      if result
+        {paymentModal , paymentUpdate} = result
+      if paymentModal
+        @modal = paymentModal
+        @modal.setTitle lang.ide.RUN_STACK_MODAL_TITLE
+        .setWidth('665px')
+        .setContent MC.template.modalRunStack {paymentState, paymentUpdate}
+        .compact()
+        .find('.modal-footer').show()
+      else
+        @modal = new Modal
+          title: lang.ide.RUN_STACK_MODAL_TITLE
+          template: MC.template.modalRunStack {paymentState}
+          disableClose: true
+          width: '665px'
+          compact: true
+          confirm:
+            text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+            disabled: true
+
       @renderKpDropdown(@modal)
       cost = Design.instance().getCost()
       @modal.find('.modal-input-value').val @workspace.opsModel.get("name")

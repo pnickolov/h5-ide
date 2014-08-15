@@ -273,6 +273,9 @@
   .replica-bg {
     stroke : #b2bccc;
     fill   : #fff;
+    -webkit-transform : translate(0.5px,0.5px);
+       -moz-transform : translate(0.5px,0.5px);
+            transform : translate(0.5px,0.5px);
   }
 
   &:hover {
@@ -344,7 +347,7 @@
 
 .line {
   cursor: pointer;
-  stroke-linejoin: round;
+  stroke-linecap: round;
   fill: none;
   stroke-width: 2px;
 

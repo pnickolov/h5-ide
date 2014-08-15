@@ -5815,7 +5815,10 @@ button#property-app-keypair {
   cursor: pointer; }
   .dbreplicate .replica-bg {
     stroke: #b2bccc;
-    fill: #fff; }
+    fill: #fff;
+    -webkit-transform: translate(0.5px, 0.5px);
+    -moz-transform: translate(0.5px, 0.5px);
+    transform: translate(0.5px, 0.5px); }
   .dbreplicate:hover {
     fill: #3887e8; }
     .dbreplicate:hover .replica-bg {
@@ -5865,7 +5868,7 @@ button#property-app-keypair {
 
 .line {
   cursor: pointer;
-  stroke-linejoin: round;
+  stroke-linecap: round;
   fill: none;
   stroke-width: 2px; }
   .line:hover, .line.hover {
@@ -6208,7 +6211,11 @@ g.shadow {
   background-color: transparent; }
 
 .resource-list-sort-select {
+<<<<<<< HEAD
   margin-top: -5px;
+=======
+  margin-top: -21px;
+>>>>>>> [release/v20140815] canvas style :bear:
   float: right;
   width: 84px;
   margin-right: -7px; }
@@ -6963,7 +6970,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

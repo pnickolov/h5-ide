@@ -3,10 +3,11 @@ define [
   "./CrCommonCollection"
   "./CrCollection"
   "./CrModel"
+  "./CrModelElb"
   "ApiRequest"
   "constant"
   "CloudResources"
-], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant, CloudResources )->
+], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, ApiRequest, constant, CloudResources )->
 
 
 
@@ -21,6 +22,7 @@ define [
 
     type  : constant.RESTYPE.ELB
     # modelIdAttribute : "LoadBalancerName"
+    model : CrElbModel
 
     trAwsXml : ( data )-> data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
     parseFetchData : ( elbs )->

@@ -7,10 +7,10 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     ClassName : "CrElbModel"
     ### env:dev:end ###
 
-    initailize : ()->
+    initialize : ()->
       self = @
       ApiRequest("elb_DescribeInstanceHealth", {
-        region_name : @getCollection().region()
+        region_name : @get("category")
         elb_name    : @get("Name")
       }).then ( data )-> self.onInsHealthData( data )
       return

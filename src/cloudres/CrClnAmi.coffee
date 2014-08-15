@@ -98,7 +98,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @trigger "update"
       return d.promise
 
-    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid
+    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
     isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
 
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )

@@ -133,6 +133,12 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
               color: #50B816;
               margin-top: 10px;
           }
+          div#billing_statement_summary_balance_paid_stamp.billing_statement_balance_paid_stamp_unpaid {
+              float: right;
+              font-size: 30px;
+              color: #C70000;
+              margin-top: 10px;
+          }
           body {font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;}
         """
         makeNewWindow = ()->

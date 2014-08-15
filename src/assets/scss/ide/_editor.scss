@@ -74,6 +74,10 @@ $BottomPanelHeight    : 24px;
   &.no-transition {
     @include transition( none );
   }
+
+  & ::selection {
+    background: transparent;
+  }
 }
 
 .OEMiddleWrap {

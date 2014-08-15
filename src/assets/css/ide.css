@@ -671,12 +671,10 @@ td.table-action a.btn {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
-
-.property-content a {
-  color: #148BE6; }
-
-.property-content a:hover {
-  color: #34A3F8; }
+  .property-content a {
+    color: #4a90e2; }
+    .property-content a:hover {
+      color: #3970af; }
 
 .property-content .icon-add {
   font-size: 16px; }
@@ -3421,20 +3419,6 @@ div.modal-text-highlight {
 .highlight-status {
   color: #f8b42d; }
 
-/* Select Subnet for Subnet Group Modal */
-.dbsgppp-az {
-  color: #F69722; }
-
-.dbsgppp-sbname {
-  color: #ccc;
-  cursor: pointer; }
-
-.dbsgppp-cidr {
-  font-size: 12px;
-  color: #777;
-  display: inline-block;
-  margin-left: 5px; }
-
 #tabbar-wrapper {
   padding: 10px 0 0 45px;
   width: 10000px;
@@ -5043,7 +5027,7 @@ button#property-app-keypair {
   display: inline-block; }
 
 .default-kp-info {
-  color: #34A3F8;
+  color: #4a90e2;
   margin-left: 3px; }
 
 .safari-download-textarea {
@@ -5308,12 +5292,6 @@ button#property-app-keypair {
 .modal-toolbar .table-head-fix .table tr .detail-info.horizontal .detail-info-row {
   width: 40% !important; }
 
-.option-group-category {
-  display: block;
-  padding: 6px 12px;
-  background: #515151;
-  border: 1px solid #414141; }
-
 #asg-policy-notify-label {
   -webkit-user-select: none;
   -o-user-select: none;
@@ -5458,6 +5436,8 @@ button#property-app-keypair {
     -moz-transition: none;
     -o-transition: none;
     transition: none; }
+  .OEPanelRight ::selection {
+    background: transparent; }
 
 .OEMiddleWrap {
   position: absolute;
@@ -6974,21 +6954,20 @@ g.shadow {
 label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
-.property-subnet-group .property-az-name {
-  clear: both;
-  padding: 5px 0 5px 12px;
-  background: #515151;
-  margin: 5px -10px 5px; }
-.property-subnet-group .property-az-name:first-child {
-  margin-top: -8px; }
-.property-subnet-group .sb-cidr {
-  padding-left: 23px; }
-.property-subnet-group .property-control-group .checkbox {
-  position: relative;
-  top: 10px; }
+.property-subnet-group .dl-vertical.sbg-list > dd {
+  margin: 1px 0 1px 0; }
 
 .app-dbinstance .db-og-in-app {
   cursor: pointer; }
+
+.apply-immediately-section {
+  line-height: 18px; }
+
+.option-group-category {
+  display: block;
+  padding: 6px 12px;
+  background: #424251;
+  border-bottom: 1px solid #09090b; }
 
 /* General Style for Property Panel List */
 .property-list li {
@@ -8836,3 +8815,15 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
+
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
+/* Edit Subnet Group Modal */
+.dbsgppp-subnet-list {
+  cursor: pointer; }
+
+.dbsgppp-cidr {
+  font-size: 12px;
+  color: #666;
+  margin-left: 24px; }

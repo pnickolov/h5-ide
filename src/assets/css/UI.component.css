@@ -249,6 +249,9 @@
   animation-fill-mode: both;
   animation-iteration-count: 2; }
 
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;
   color: #eee; }
@@ -277,7 +280,7 @@
 .combo-dd a {
   color: #34A3F8; }
 .combo-dd i {
-  color: #148BE6;
+  color: #4a90e2;
   position: absolute;
   margin-left: 5px;
   display: inline-block; }
@@ -366,6 +369,9 @@
   background: #101010;
   padding: 10px 0; }
 
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 /* Modal */
 #modal-box {
   position: absolute;
@@ -571,8 +577,12 @@
     background: transparent; }
 
 .modal-list-body {
-  background: #36373A;
+  background: #202027;
   padding: 5px 10px; }
+  .modal-list-body:nth-child(odd) {
+    background: #1e1e24; }
+  .modal-list-body:hover {
+    background: #25252d; }
   .modal-list-body ::selection {
     background: transparent; }
 

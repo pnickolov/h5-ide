@@ -16,9 +16,9 @@
             {{az}}
         </div>
             {{#each subnets}}
-            <dl class="dl-vertical">
-                <dt>{{name}}</dt>
-                <dd>({{cidr}})</dd>
+            <dl class="dl-vertical sbg-list">
+                <dd>{{name}}</dd>
+                <dt>({{cidr}})</dt>
             </dl>
             {{/each}}
         {{/each}}

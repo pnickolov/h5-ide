@@ -775,20 +775,19 @@ td.table-action a.btn {
 .property-content {
 	height      : 100%;
 
-	// background-color : #383838;
 	color            : #ccc;
 
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
-}
 
-.property-content a {
-	color: #148BE6;
-}
+    a {
+    	color: $base-b;
 
-.property-content a:hover {
-	color: #34A3F8;
+	    &:hover {
+			color: $dark-b;	    	
+	    }
+    }
 }
 
 .property-content .icon-add {
@@ -4152,23 +4151,6 @@ div.modal-text-highlight{
     color : #f8b42d;
 }
 
-/* Select Subnet for Subnet Group Modal */
-
-.dbsgppp-az {
-	color: #F69722;
-}
-
-.dbsgppp-sbname {
-	color: #ccc;
-	cursor: pointer;;
-}
-
-.dbsgppp-cidr {
-	font-size   : 12px;
-	color       : #777;
-	display     : inline-block;
-	margin-left : 5px;
-}
 
 @import "ide/header";
 @import "ide/navigation";
@@ -4187,3 +4169,4 @@ div.modal-text-highlight{
 @import "ide/process";
 @import "ide/resdiff";
 @import "ide/stateeditor";
+@import "ide/individual_modals";

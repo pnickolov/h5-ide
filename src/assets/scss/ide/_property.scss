@@ -349,23 +349,8 @@
 }
 
 .property-subnet-group {
-	.property-az-name {
-		clear: both;
-		padding: 5px 0 5px 12px;
-		background: #515151;
-		margin: 5px -10px 5px;
-	}
-	.property-az-name:first-child {
-		margin-top: -8px;
-	}
-
-	.sb-cidr {
-		padding-left: 23px;
-	}
-
-	.property-control-group .checkbox {
-		position: relative;
-		top: 10px;
+	.dl-vertical.sbg-list > dd {
+		margin: 1px 0 1px 0;
 	}
 }
 
@@ -375,6 +360,16 @@
 	}
 }
 
+.apply-immediately-section {
+	line-height: 18px;
+}
+
+.option-group-category {
+  display       : block;
+  padding       : 6px 12px;
+  background    : lighten($bg-p, 15%);
+  border-bottom : 1px solid darken($bg-p, 10%);
+}
 
 /* General Style for Property Panel List */
 

@@ -1,3 +1,5 @@
+@import "color";
+
 .combo-dd .combo-dd-manage i {
   margin-right : 13px;
   color        : #eee;
@@ -36,7 +38,7 @@
   }
 
   i {
-    color       : #148BE6;
+    color       : $base-b;
     position    : absolute;
     margin-left : 5px;
     display     : inline-block;

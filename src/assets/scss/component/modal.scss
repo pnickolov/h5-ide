@@ -1,3 +1,5 @@
+@import "color";
+
 /* Modal */
 #modal-box {
 	position     : absolute;
@@ -242,8 +244,16 @@
 }
 
 .modal-list-body {
-	background: #36373A;
+	background: $bg-p;
 	padding   : 5px 10px;
+
+	&:nth-child(odd) {
+		background: darken($bg-p, 1%);
+	}
+
+	&:hover {
+		background: lighten($bg-p, 2%);
+	}
 
 	::selection {
 		background: transparent;

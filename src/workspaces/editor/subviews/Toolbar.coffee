@@ -520,6 +520,7 @@ define [
         disableClose: true
         hasScroll: true
         maxHeight: "450px"
+        cancel: "Close"
 
       @updateModal.tpl.find(".modal-footer").hide()
 

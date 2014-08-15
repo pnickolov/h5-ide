@@ -1,38 +1,27 @@
 
-# Release : https://ide && https://api
-# Debug   : http://ide  && https://ide
-# Dev     : http://ide  && https://ide
-# Public  : http://ide  && http://ide
+(()->
+    location = window.location
 
-# Set domain and set http
-API_HOST       = "api.visualops.io"
-API_PROTO      = "http://"
-shouldIdeHttps = false
-ideHttps       = true
-
-### env:debug ###
-API_HOST = "api.mc3.io"
-ideHttps = false
-### env:debug:end ###
-
-### env:dev ###
-API_HOST = "api.mc3.io"
-ideHttps = false
-### env:dev:end ###
-
-### AHACKFORRELEASINGPUBLICVERSION ###
-# AHACKFORRELEASINGPUBLICVERSION is a hack. The block will be removed in Public Version.
-# Only js/ide/config and user/main supports it.
-shouldIdeHttps = ideHttps
-API_PROTO      = "https://"
-### AHACKFORRELEASINGPUBLICVERSION ###
-
-# Redirect
-l = window.location
-window.language = window.version = ""
-if shouldIdeHttps and l.protocol is "http:"
-    window.location = l.href.replace("http:","https:")
+    if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
+        # This is a ip address
+        console.error "VisualOps IDE can not be browsed with IP address."
     return
+
+    hosts = location.hostname.split(".")
+    if hosts.length >= 3
+        MC_DOMAIN = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+    else
+        MC_DOMAIN = location.hostname
+
+    window.API_HOST  = "api." + MC_DOMAIN
+    window.API_PROTO = location.protocol + "//"
+    window.language  = window.version = ""
+
+    # Redirect
+    if location.hostname.toLowerCase().indexOf( "visualops.io" ) >= 0 and location.protocol is "http:"
+        window.location = location.href.replace("http:","https:")
+        return
+)()
 
 
 goto500 = ()->

@@ -553,6 +553,10 @@ $dndDuration : .2s;
     color         : $base-b;
   }
 
+  #btn-switch-state:hover {
+    color: #eee;
+  }
+
   &.no-state {
     #btn-switch-state {
       display: none;
@@ -575,8 +579,7 @@ $dndDuration : .2s;
       color: #b0b0b0;
       border-bottom: 3px solid transparent;
       &:hover {
-        color      : #9F62D1;
-        background : rgba(0,0,0,.05);
+        color      : #eee;
       }
     }
 
@@ -588,8 +591,10 @@ $dndDuration : .2s;
 }
 
 .property-sidebar-title {
-  font-size   : 16px;
-  text-shadow : none;
+  font-size    : 13px;
+  text-shadow  : none;
+  padding-left : 10px;
+  color        : #999;
 
   height     : 32px;
   line-height: 32px;
@@ -597,7 +602,9 @@ $dndDuration : .2s;
   z-index    : 2;
   display    : block !important;
 
-  cursor : default;
+  cursor        : default;
+  box-shadow    : 0 1px 5px rgba(0,0,0,.3);
+  border-bottom : 1px solid #000;
 }
 
 .property-panel-wrapper {

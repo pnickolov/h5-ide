@@ -1,6 +1,67 @@
 
 // SG ACL Property
 
+#security-group-select {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#security-group-select .dropdown-toggle {
+	width: 36px;
+	height: 36px;
+	background-color: #EEE;
+	display: inline-block;
+}
+
+#security-group-select .dropdown-menu {
+	top: 38px;
+	left: -120px;
+}
+
+#security-group-select .dropdown-menu li a div.truncate {
+	width: 120px;
+}
+
+.sg-info-list-tab {
+	color         : #999;
+	background    : rgba(0,0,0,.3);
+	padding       : 5px;
+	height        : 30px;
+	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.1);
+	border-bottom : 1px solid #2a2a2a;
+
+	li {
+		width : 130px;
+		float : left;
+
+		height      : 30px;
+		line-height : 30px;
+		text-align  : center;
+
+		cursor : pointer;
+
+		border-radius: 4px;
+
+		-webkit-transition: background .2s;
+		-moz-transition: background .2s;
+		-ms-transition: background .2s;
+		-o-transition: background .2s;
+		transition: background .2s;
+
+		&:last-child {
+			margin-left: 10px;
+		}
+	}
+}
+
+
+.sg-info-list-tab .active,
+.sg-info-list-tab li:hover {
+	color: #eee;
+	background: rgba(0,0,0,.4);
+}
+
 .acl-sg-info-list.property-list > li {
 	height  : 52px;
 	padding : 8px 0 16px 10px;
@@ -79,7 +140,7 @@
 }
 
 .acl-sg-info-list .col3:hover {
-	background-color: #404040;
+	background-color: rgba(0,0,0,.2);
 }
 
 .acl-sg-info-list .sg-list-association-check {

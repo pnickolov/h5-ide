@@ -1061,13 +1061,16 @@ select.select3.disabled {
 	}
 
 	&:hover {
-		background-color: lighten($bg-p, 5%);
+		background-color: lighten($bg-p, 2%);
 	}
 
-	&.expand,
-	&.expanded:hover {
-		background-color : lighten($bg-p, 2%);
+	&.expand {
+		background-color : saturate($bg-p, 5%);
 		color            : #fff;
+
+		&:hover {
+			background-color : lighten(saturate($bg-p, 5%),2%);
+		}
 	}
 
 	.property-control-group + &,
@@ -1077,7 +1080,7 @@ select.select3.disabled {
 }
 
 .option-group {
-	background-color : #313131;
+	background-color : desaturate(lighten($bg-p, 3%),5%);
 	display          : none;
 
 	.expand + & {
@@ -1196,7 +1199,7 @@ select.select3.disabled {
 }
 
 .dl-vertical:nth-child(2n) {
-	background : #454545;
+	background : rgba(0,0,0,.1);
 }
 
 .property-app .dl-vertical .truncate {

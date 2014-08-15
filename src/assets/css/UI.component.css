@@ -1485,15 +1485,17 @@ select.select3.disabled {
     top: 50%;
     margin-top: -1px; }
   .option-group-head:hover {
-    background-color: #2b2b35; }
-  .option-group-head.expand, .option-group-head.expanded:hover {
-    background-color: #25252d;
+    background-color: #25252d; }
+  .option-group-head.expand {
+    background-color: #1e1e29;
     color: #fff; }
+    .option-group-head.expand:hover {
+      background-color: #23232f; }
   .property-control-group + .option-group-head, .dl-vertical + .option-group-head {
     border-top: 1px solid #1B1B1B; }
 
 .option-group {
-  background-color: #313131;
+  background-color: #29292d;
   display: none; }
   .expand + .option-group {
     display: block;
@@ -1586,7 +1588,7 @@ select.select3.disabled {
   margin-right: 5px; }
 
 .dl-vertical:nth-child(2n) {
-  background: #454545; }
+  background: rgba(0, 0, 0, 0.1); }
 
 .property-app .dl-vertical .truncate {
   width: 210px; }

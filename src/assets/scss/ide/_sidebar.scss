@@ -535,26 +535,22 @@ $dndDuration : .2s;
 // Property Panel
 .OEPanelRight{
 
-  .property-switcher {
-    height        : 30px;
-    background    : #313131;
-    box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-bottom : 1px solid #111;
-    border-left   : 1px solid #111;
-    padding       : 4px 0 5px;
-    overflow      : hidden;
+  .sidebar-title {
+    border-left : 1px solid darken($bg-p, 5%);
+    padding     : 0;
   }
-
-  .property-switcher .btn-toolbar {
-    width         : 124px;
-    padding       : 0 4px;
-    border-radius : 4px;
-    margin-right  : 5px;
+  
+  .property-tab {
+    width  : 49%;
+    height : 39px;
+    cursor : pointer;
+    color  : #b0b0b0;
   }
+  
 
   #btn-switch-property {
-    background : rgba(0,0,0,.4);
-    color      : #FEFEFE;
+    border-bottom : 3px solid $base-b;
+    color         : $base-b;
   }
 
   &.no-state {
@@ -563,19 +559,21 @@ $dndDuration : .2s;
     }
 
     #btn-switch-property {
-      float        : left;
-      width        : auto;
-      background   : none;
-      text-align   : left;
-      padding-left : 10px;
-      cursor       : default;
+      color         : #b0b0b0;
+      border-bottom : 3px solid transparent;
+      float         : left;
+      width         : auto;
+      background    : none;
+      text-align    : left;
+      padding-left  : 10px;
+      cursor        : default;
     }
   }
 
   &.state {
     #btn-switch-property {
-      background: #313131;
-      color: #606060;
+      color: #b0b0b0;
+      border-bottom: 3px solid transparent;
       &:hover {
         color      : #9F62D1;
         background : rgba(0,0,0,.05);
@@ -583,8 +581,8 @@ $dndDuration : .2s;
     }
 
     #btn-switch-state {
-      background : rgba(0,0,0,.4);
-      color      : #FEFEFE;
+      border-bottom: 3px solid $base-b;
+      color: $base-b;
     }
   }
 }

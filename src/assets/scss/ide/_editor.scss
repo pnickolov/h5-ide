@@ -95,7 +95,7 @@ $BottomPanelHeight    : 24px;
   height     : $TopPanelHeight;
   width      : 100%;
   min-width  : 610px;
-  background : #313131;
+  background : lighten($bg-p, 5%);
 }
 
 .OEPanelBottom {

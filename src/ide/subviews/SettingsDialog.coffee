@@ -54,6 +54,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           title: lang.ide.HEAD_LABEL_SETTING
           disableFooter: true
           compact: true
+          width: "490px"
         }
         @setElement @modal.tpl
         @modal.$("#SettingsNav span[data-target='AccountTab']").click()

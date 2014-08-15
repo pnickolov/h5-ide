@@ -9,7 +9,7 @@ $navHeight : 38px;
     float       : left;
     min-width   : 100px;
     text-align  : center;
-    color       : $light-p;
+    color       : #999;
     height      : $navHeight;
     line-height : $navHeight;
     cursor      : pointer;
@@ -18,12 +18,12 @@ $navHeight : 38px;
     font-size   : 12px;
 
     &.selected {
-      color: $base-p-l;
+      color: $base-b;
     }
 
     &:hover,
     &.selected:hover {
-      color: lighten($base-p-l, 5%);
+      color: lighten($base-b, 5%);
     }
 
     &.selected:before {
@@ -31,7 +31,7 @@ $navHeight : 38px;
       left:          0;
       bottom:        0px;
       content:       '';
-      border-bottom: 2px solid $base-p-l;
+      border-bottom: 2px solid $base-b;
       width:         100%;
     }
   }

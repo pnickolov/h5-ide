@@ -10,12 +10,7 @@ define [
     i18n = Helper.i18n.short()
 
     diff = ( oldcomp, newcomp ) ->
-        differ = new ResDiff({
-            old : component: oldcomp
-            new : component: newcomp
-        })
-
-        differ.getChangeInfo().hasResChange
+        not _.isEqual oldcomp, newcomp
 
     isOgValid = ->
         dbs = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).filter (db) ->

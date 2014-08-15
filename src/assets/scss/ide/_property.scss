@@ -145,7 +145,6 @@
 
 .acl-sg-info-list .sg-list-association-check {
 	float: left;
-	/*margin-top: 20px;*/
 	margin-right: 10px;
 }
 
@@ -161,11 +160,11 @@
 .icon-btn-details {
 	width  : 16px;
 	height : 16px;
-	color  : #303030;
-}
+	color  : #606060;
 
-.icon-btn-details:hover {
-	color : #959595;
+	&:hover {
+		color: $base-b;
+	}
 }
 
 /* property-newtwork-acl */

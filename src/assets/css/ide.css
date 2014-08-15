@@ -6825,7 +6825,6 @@ g.shadow {
 
 .acl-sg-info-list .sg-list-association-check {
   float: left;
-  /*margin-top: 20px;*/
   margin-right: 10px; }
 
 .acl-sg-info-list .sg-list-association-check.hide {
@@ -6837,10 +6836,9 @@ g.shadow {
 .icon-btn-details {
   width: 16px;
   height: 16px;
-  color: #303030; }
-
-.icon-btn-details:hover {
-  color: #959595; }
+  color: #606060; }
+  .icon-btn-details:hover {
+    color: #4a90e2; }
 
 /* property-newtwork-acl */
 .acl-rule-list.property-list li {

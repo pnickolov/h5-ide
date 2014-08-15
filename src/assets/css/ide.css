@@ -6550,6 +6550,13 @@ g.shadow {
   line-height: 2em;
   margin-top: 2px; }
 
+.resource-list-empty {
+  float: left;
+  text-align: center;
+  width: 100%;
+  margin-top: 25px;
+  font-size: 12px; }
+
 .az-name {
   font-size: 16px;
   color: #999;

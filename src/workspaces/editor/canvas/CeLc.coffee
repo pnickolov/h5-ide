@@ -29,8 +29,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @listenTo @model, "change:connections", @render
       @listenTo @model, "change:volumeList", @render
       @listenTo @model, "change:imageId", @render
+      @listenTo @canvas, "switchMode", @render # For Eip Tooltip
 
-      # This event is trigger
+      # This event is triggered by expanded asg
       @listenTo @model, "change:expandedList", ()->
         self = @
         setTimeout ()->

@@ -5556,7 +5556,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: " DB Instance <span class='validation-tag tag-rds'>%s</span> has db.t1.micro instance class, which can only be members of the default option group."
+      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
       zh: ""
 
     TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:

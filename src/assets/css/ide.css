@@ -6264,6 +6264,8 @@ g.shadow {
     cursor: default;
     opacity: .6;
     background-color: transparent; }
+  .resource-item.instance {
+    position: relative; }
   .resource-item.instance, .resource-item.dbinstance {
     padding-top: 5px;
     height: 132px; }
@@ -6989,7 +6991,7 @@ g.shadow {
 
 /* General Style for Property Panel List */
 .property-list li {
-  width: 250px;
+  width: 260px;
   padding: 10px;
   border-bottom: 1px solid #202027;
   background: #2b2b35;

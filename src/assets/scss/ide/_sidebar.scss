@@ -146,6 +146,10 @@ $dndDuration : .2s;
     background-color : transparent;
   }
 
+  &.instance {
+    position: relative;
+  }
+
   &.instance, &.dbinstance {
     padding-top : 5px;
     height      : 132px;
@@ -484,7 +488,7 @@ $dndDuration : .2s;
       border-top-color: #fff;
     }
   }
-  
+
   .dropdown {
     background: #4f4f4f;
     border: 1px solid #333;
@@ -546,14 +550,14 @@ $dndDuration : .2s;
     border-left : 1px solid darken($bg-p, 5%);
     padding     : 0;
   }
-  
+
   .property-tab {
     width  : 49%;
     height : 39px;
     cursor : pointer;
     color  : #b0b0b0;
   }
-  
+
 
   #btn-switch-property {
     border-bottom : 3px solid $base-b;

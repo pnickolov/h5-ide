@@ -6990,7 +6990,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 /* General Style for Property Panel List */
 .property-list li {
-  width: 260px;
+  width: 250px;
   padding: 10px;
   border-bottom: 1px solid #202027;
   background: #2b2b35;

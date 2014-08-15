@@ -77,7 +77,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             elb.distribution = []
             elbDistrMap = {}
 
-            instanceStateObj = elb.InstanceState
+            instanceStateObj = elb.InstanceStates
 
             _.each instanceStateObj, (stateObj) ->
 

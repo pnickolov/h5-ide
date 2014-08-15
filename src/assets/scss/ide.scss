@@ -1108,40 +1108,6 @@ td.table-action a.btn {
 	background: rgba(0,0,0,.4);
 }
 
-/* General Style for Property Panel List */
-
-.property-list {
-	/*border-top : 1px solid #252525;*/
-}
-
-.property-list li {
-	width         : 260px;
-	padding       : 10px;
-	border-bottom : 1px solid #393939;
-	background    : #3f3f3f;
-
-	-webkit-transition : background .2s;
-	-moz-transition    : background .2s;
-	-ms-transition     : background .2s;
-	-o-transition      : background .2s;
-	transition         : background .2s;
-}
-
-
-.property-list li:hover {
-	background : #494949;
-}
-
-.property-list-no-padding {
-	border: none;
-}
-
-.property-list.property-list-no-padding li {
-	width   : 280px;
-	padding : 0;
-	/*border  : none;*/
-}
-
 /* End of General Style for Property Panel List */
 
 .acl-sg-info-list > li {

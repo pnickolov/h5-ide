@@ -937,32 +937,6 @@ td.table-action a.btn {
   color: #eee;
   background: rgba(0, 0, 0, 0.4); }
 
-/* General Style for Property Panel List */
-.property-list {
-  /*border-top : 1px solid #252525;*/ }
-
-.property-list li {
-  width: 260px;
-  padding: 10px;
-  border-bottom: 1px solid #393939;
-  background: #3f3f3f;
-  -webkit-transition: background .2s;
-  -moz-transition: background .2s;
-  -ms-transition: background .2s;
-  -o-transition: background .2s;
-  transition: background .2s; }
-
-.property-list li:hover {
-  background: #494949; }
-
-.property-list-no-padding {
-  border: none; }
-
-.property-list.property-list-no-padding li {
-  width: 280px;
-  padding: 0;
-  /*border  : none;*/ }
-
 /* End of General Style for Property Panel List */
 .acl-sg-info-list > li {
   height: 52px;
@@ -6431,7 +6405,7 @@ g.shadow {
   background-color: transparent; }
 
 .resource-list-sort-select {
-  margin-top: -7px;
+  margin-top: -21px;
   float: right;
   width: 84px;
   margin-right: -7px; }
@@ -6453,14 +6427,6 @@ g.shadow {
   border-bottom: 1px #666 solid;
   height: 18px;
   float: left; }
-
-.resource-list-empty {
-  float: left;
-  text-align: center;
-  width: 100%;
-  margin-top: 25px;
-  font-size: 12px;
-}
 
 .resource-item {
   width: 70px;
@@ -6853,7 +6819,7 @@ g.shadow {
   left: 0;
   bottom: 0;
   position: absolute;
-  background: #292929;
+  background: #26262b;
   /* for zoomed out */ }
   .property-panel-wrapper .scroll-wrap {
     position: absolute;
@@ -6932,6 +6898,28 @@ g.shadow {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #9e2622; }
+
+/* General Style for Property Panel List */
+.property-list li {
+  width: 260px;
+  padding: 10px;
+  border-bottom: 1px solid #202027;
+  background: #2b2b35;
+  -webkit-transition: background .2s;
+  -moz-transition: background .2s;
+  -ms-transition: background .2s;
+  -o-transition: background .2s;
+  transition: background .2s; }
+
+.property-list li:hover {
+  background: #373743; }
+
+.property-list-no-padding {
+  border: none; }
+
+.property-list.property-list-no-padding li {
+  width: 280px;
+  padding: 0; }
 
 .property-panel-wrapper .property-dbinstance-status-icon-warning {
   color: #f00; }

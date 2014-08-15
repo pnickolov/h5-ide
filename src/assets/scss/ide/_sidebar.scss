@@ -600,7 +600,7 @@ $dndDuration : .2s;
   left       : 0;
   bottom     : 0;
   position   : absolute;
-  background : desaturate(lighten($bg-p, 2%),10%); /* for zoomed out */
+  background : desaturate(lighten($bg-p, 2%),3%); /* for zoomed out */
 
   .scroll-wrap {
     position : absolute;

@@ -55,12 +55,13 @@ define [ 'ApiRequest'
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
 
             'OPTION_CHANGE': 'checkChange'
-            'keyup *': 'checkChange'
+            'change *': 'checkChange'
 
-        checkChange: () ->
+        checkChange: ( e ) ->
             return unless @resModel.get 'appId'
             that = @
-            _.defer () ->
+
+            diff = ( oldComp, newComp ) ->
                 comp = that.resModel.serialize()
 
                 differ = new ResDiff({
@@ -68,10 +69,18 @@ define [ 'ApiRequest'
                     new : comp
                 })
 
-                if differ.getChangeInfo().hasResChange
-                    that.$( '.apply-immediately-section' ).show()
-                else
-                    that.$( '.apply-immediately-section' ).hide()
+                differ.getChangeInfo().hasResChange
+
+            if e
+                _.defer () ->
+                    if diff()
+                        that.$( '.apply-immediately-section' ).show()
+                    else
+                        that.$( '.apply-immediately-section' ).hide()
+            else
+                diff()
+
+
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -299,6 +308,7 @@ define [ 'ApiRequest'
 
             attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
+            attr.isChanged = @checkChange()
 
             _.extend attr, {
                 isOracle: @resModel.isOracle()

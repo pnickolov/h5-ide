@@ -5,7 +5,7 @@
     </div>
 
     {{#if isAppEdit}}
-    <section class="property-control-group apply-immediately-section hide">
+    <section class="property-control-group apply-immediately-section {{#unless isChanged}}hide{{/unless}}">
         <div class="checkbox">
             <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
             <label for="property-dbinstance-apply-immediately"></label>

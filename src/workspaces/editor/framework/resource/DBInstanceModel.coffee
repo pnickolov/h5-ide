@@ -498,15 +498,23 @@ define [
 
     isRemovable :()->
       if @slaves().length > 0
-        # Return a warning, delete DBInstance will remove ReadReplica together
-        result = sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
-        result = "<div class='modal-text-major'>#{result}</div>"
+        if not @get("appId")
+          # Return a warning, delete DBInstance will remove all ReadReplica together when DBInstance hasn't existed
+          result = sprintf lang.ide.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
+        else
+          # Return a warning, delete DBInstance will remove nonexistent ReadReplica together when DBInstance has existed
+          result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
         return result
       true
 
     remove :()->
       #remove readReplica related to current DBInstance
-      slave.remove() for slave in @slaves()
+      for slave in @slaves()
+        if not slave.get("appId")
+          #remove nonexistent replica
+          slave.remove()
 
       #remove current node
       ComplexResModel.prototype.remove.call(this)

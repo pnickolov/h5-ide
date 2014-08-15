@@ -170,21 +170,21 @@ define [
 
         if selectedId is 'date'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
 
         if selectedId is 'engine'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return $(a).data('engine') - $(b).data('engine')
 
         if selectedId is 'storge'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return Number($(b).data('storge')) - Number($(a).data('storge'))
 
         if $sortedList.length
-            $('.resource-list-rds-snapshot-exist').html($sortedList)
+            @$el.find('.resource-list-rds-snapshot-exist').html($sortedList)
 
     resourceListSortSelectSnapshotEvent : (event) ->
 

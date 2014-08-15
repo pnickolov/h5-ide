@@ -4,8 +4,8 @@ define [
     'Design'
     'TaHelper'
     'CloudResources'
-    'ResDiff'
-], ( constant, MC, Design, Helper, CloudResources, ResDiff ) ->
+
+], ( constant, MC, Design, Helper, CloudResources ) ->
 
     i18n = Helper.i18n.short()
 

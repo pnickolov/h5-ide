@@ -562,7 +562,7 @@ define [
 
           if not that.defaultKpIsSet()
               return false
-          newJson = @workspace.design.serialize usage: 'updateApp'
+          newJson = that.workspace.design.serialize usage: 'updateApp'
           that.workspace.applyAppEdit( newJson, not result.compChange )
           that.updateModal?.close()
 

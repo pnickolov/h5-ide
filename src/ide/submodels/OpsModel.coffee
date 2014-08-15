@@ -148,7 +148,62 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+    generateJsonFromRes : ()->
+      component_data = CloudResources( 'OpsResource', @getVpcId() ).generatedJson.component
+      layout_data    = CloudResources( 'OpsResource', @getVpcId() ).generatedJson.layout
+      topicMap      = {} # id=>comp
+      topicCompAry  = []
+      asgCompAry     = []
+      #patch component
+      for key,comp of component_data
+        if comp.type is constant.RESTYPE["ASG"]
+        # get ASG
+          asgCompAry.push comp
+        else if comp.type is constant.RESTYPE["NC"] and comp.resource.TopicARN.indexOf("arn:aws:sns:") is 0
+        #Create TopicArn when NC's TopicARN is not reference
+          if not topicMap[comp.resource.TopicARN]
+            tmpAry = comp.resource.TopicARN.split(":")
+            uid = MC.guid()
+            topicComp =
+              "name"    : tmpAry[tmpAry.length - 1],
+              "type"    : "AWS.SNS.Topic",
+              "uid"     : uid
+              "resource":
+                  "TopicArn": comp.resource.TopicARN
+            topicMap[comp.resource.TopicARN] = topicComp
+            topicCompAry.push topicComp
+          else
+            uid = topicMap[comp.resource.TopicARN].uid
+          comp.resource.TopicARN = "@{#{uid}}.resource.TopicArn"
+
+      #append topic component to component_data
+      for topic in topicCompAry
+        component_data[topic.uid] = topic
+
+      #patch for groutUId
+      for key,layout of layout_data
+        if layout.groutUId
+          layout.groupUId = layout.groutUId
+          delete layout.groutUId
+
+      #patch layout
+      for asg in asgCompAry
+        console.info asg
+        subnetMap = {}
+        subnetMap[ layout_data[asg.uid].groupUId ] = true
+        subnetRefAry = asg.resource.VPCZoneIdentifier.split(" , ")
+        subnetUidAry = []
+        for subnet in subnetRefAry
+          subnetUidAry.push MC.extractID( subnet )
+        for key,layout of layout_data
+          if layout.originalId is asg.uid and not layout.groupUId
+            #expandAsg
+            for subnet in subnetUidAry
+              if not subnetMap[subnet]
+                layout.groupUId = subnet
+                subnetMap[subnet] = true
+
+      CloudResources( 'OpsResource', @getVpcId() ).generatedJson
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()

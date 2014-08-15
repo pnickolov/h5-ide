@@ -16,6 +16,13 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       "elb-sg-out" : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
 
+    portPosition : ( portName, isAtomic )->
+      map = @portPosMap[ portName ]
+      if isAtomic
+        [ map[0] + 2, map[1], map[2] ]
+      else
+        map
+
     iconUrl : ()->
       if @model.get("internal")
         "ide/icon/cvs-elb-int.png"

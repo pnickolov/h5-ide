@@ -6232,6 +6232,7 @@ g.shadow {
   overflow: hidden;
   line-height: 1.2em;
   color: #eee;
+  position: relative;
   background: transparent center 5px no-repeat;
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -6950,8 +6951,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {

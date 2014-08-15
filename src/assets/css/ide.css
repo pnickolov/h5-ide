@@ -711,10 +711,10 @@ td.table-action a.btn {
   position: relative; }
 
 .resdiff-switch i {
-  color: #148BE6;
+  color: #4a90e2;
   position: absolute;
   bottom: 5px;
-  right: 18px; }
+  right: 11px; }
 
 .property-control-group {
   padding: 8px 10px; }
@@ -5269,8 +5269,8 @@ button#property-app-keypair {
   height: 30px;
   width: 205px; }
 
-.pg-edit-footer .blue-link {
-  color: #175d99;
+.pg-edit-footer a {
+  color: #4a90e2;
   display: inline-block;
   margin: 18px 15px; }
 
@@ -6902,9 +6902,9 @@ g.shadow {
   text-decoration: underline; }
 
 .property-panel-wrapper .property-dbinstance-status-icon-warning {
-  color: #f00; }
-  .property-panel-wrapper .property-dbinstance-status-icon-warning:hover {
-    background-color: transparent; }
+  float: right;
+  color: #f00;
+  margin-right: 10px; }
 .property-panel-wrapper .db-status-loading {
   position: absolute;
   right: 5px;
@@ -6968,8 +6968,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

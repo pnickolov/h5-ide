@@ -242,10 +242,9 @@
 
 .property-panel-wrapper {
 	.property-dbinstance-status-icon-warning {
-		&:hover {
-			background-color: transparent;
-		}
-		color: #f00;
+		float        : right;
+		color        : #f00;
+		margin-right : 10px;
 	}
 	.db-status-loading {
 		position: absolute;

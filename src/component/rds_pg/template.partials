@@ -182,7 +182,7 @@
     </table>
 </div>
 <div class="pg-edit-footer clearfix">
-    <a class="blue-link" target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> <i class="icon-info"></i> Parameter Value Reference</a>
+    <a target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> Parameter Value Reference</a>
     <div class="init action" style="padding: 10px 0">
         {{#if preview}}
             <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>

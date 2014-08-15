@@ -259,25 +259,25 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         point.x += origin.x
         point.y += origin.y
 
-      offset = ( dir, match )->
-        for point in result
-          if point[dir] is match
-            point[dir] += 0.5
-        return
+      # offset = ( dir, match )->
+      #   for point in result
+      #     if point[dir] is match
+      #       point[dir] += 0.5
+      #   return
 
-      endX = result[result.length - 1].x
-      endY = result[result.length - 1].y
-      if start.angle % 180 is 0
-        offset( "y", origin.y )
-        origin.y += 0.5
-      else
-        offset( "x", origin.x )
-        origin.x += 0.5
+      # endX = result[result.length - 1].x
+      # endY = result[result.length - 1].y
+      # if start.angle % 180 is 0
+      #   offset( "y", origin.y )
+      #   origin.y += 0.5
+      # else
+      #   offset( "x", origin.x )
+      #   origin.x += 0.5
 
-      if originalEndAngle % 180 is 0
-        offset( "y", endY )
-      else
-        offset( "x", endX )
+      # if originalEndAngle % 180 is 0
+      #   offset( "y", endY )
+      # else
+      #   offset( "x", endX )
 
       # 7. Generate SVG Path
       if result.length is 3

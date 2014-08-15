@@ -5870,10 +5870,10 @@ button#property-app-keypair {
   cursor: pointer;
   stroke-linecap: round;
   fill: none;
-  stroke-width: 3px; }
+  stroke-width: 2px; }
   .line:hover, .line.hover {
     opacity: .8;
-    stroke-width: 5px; }
+    stroke-width: 4px; }
   .canvas-view .line.selected {
     display: block !important;
     opacity: 1 !important;
@@ -6970,7 +6970,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .property-az-name {

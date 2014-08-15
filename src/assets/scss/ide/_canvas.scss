@@ -349,11 +349,11 @@
   cursor: pointer;
   stroke-linecap: round;
   fill: none;
-  stroke-width: 3px;
+  stroke-width: 2px;
 
   &:hover, &.hover {
     opacity: .8;
-    stroke-width: 5px;
+    stroke-width: 4px;
   }
 
   .canvas-view &.selected {

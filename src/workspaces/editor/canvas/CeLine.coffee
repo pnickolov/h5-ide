@@ -3,6 +3,39 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
   LineMaskToClear = null
 
+  rotate = ( point, angle )->
+    a = Math.PI / 180 * angle
+    c = Math.cos a
+    s = Math.sin a
+
+    point.y = -point.y
+
+    x = Math.round( point.x * c - point.y * s )
+    y = Math.round( point.x * s + point.y * c )
+    point.x = x
+    point.y = -y
+    return
+
+  __determineAngle = ( target, endpoint )->
+    a = target[2]
+    if a is CanvasElement.constant.PORT_4D_ANGLE
+      if Math.abs(endpoint[0] - target[0]) - Math.abs(endpoint[1] - target[1]) > 0
+        a = CanvasElement.constant.PORT_2D_H_ANGLE
+      else
+        a = CanvasElement.constant.PORT_2D_V_ANGLE
+
+    if a is CanvasElement.constant.PORT_2D_H_ANGLE
+      target[2] = if endpoint[0] >= target[0] then CanvasElement.constant.PORT_RIGHT_ANGLE else CanvasElement.constant.PORT_LEFT_ANGLE
+
+    else if a is CanvasElement.constant.PORT_2D_V_ANGLE
+      target[2] = if endpoint[1] >= target[1] then CanvasElement.constant.PORT_DOWN_ANGLE else CanvasElement.constant.PORT_UP_ANGLE
+    return
+
+  determineAngle = ( p1, p2 )->
+    if p1[2] < 0 then __determineAngle( p1, p2 )
+    if p2[2] < 0 then __determineAngle( p2, p1 )
+    return
+
   CeLine = CanvasElement.extend {
     ### env:dev ###
     ClassName : "CeLine"
@@ -111,9 +144,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       possiblePortTo   = [ to_port ]
 
       if dirn_from
-        possiblePortFrom = if dirn_from is "horizontal" then [ from_port + "-left", from_port + "-right" ] else [ from_port + "-top", from_port + "-bottom" ]
+        possiblePortFrom = if dirn_from is "horizontal" then [ from_port + "-right", from_port + "-left" ] else [ from_port + "-top", from_port + "-bottom" ]
       if dirn_to
-        possiblePortTo = if dirn_to is "horizontal" then [ to_port + "-left", to_port + "-right" ] else [ to_port + "-top", to_port + "-bottom" ]
+        possiblePortTo = if dirn_to is "horizontal" then [ to_port + "-right", to_port + "-left" ] else [ to_port + "-top", to_port + "-bottom" ]
 
       for i, idx in possiblePortFrom
         possiblePortFrom[ idx ] =
@@ -135,23 +168,33 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         for j in possiblePortTo
           d = Math.pow( i.pos[0] - j.pos[0], 2 ) + Math.pow( i.pos[1] - j.pos[1], 2 )
           if distance is -1 or distance > d
-            distance = d
-            pos_from = i
-            pos_to   = j
+            distance  = d
+            port_from = i
+            port_to   = j
+
+      size_to   = item_to.size()
+      size_from = item_from.size()
+
+      determineAngle( port_from.pos, port_to.pos )
+
       {
         start : {
-          x     : pos_from.pos[0]
-          y     : pos_from.pos[1]
-          angle : pos_from.pos[2]
+          x     : port_from.pos[0]
+          y     : port_from.pos[1]
+          angle : port_from.pos[2]
           type  : connection.port1Comp().type
-          name  : pos_from.name
+          name  : port_from.name
+          itemCX : pos_from.x + size_from.width  / 2 * 10
+          itemCY : pos_from.y + size_from.height / 2 * 10
         }
         end : {
-          x     : pos_to.pos[0]
-          y     : pos_to.pos[1]
-          angle : pos_to.pos[2]
+          x     : port_to.pos[0]
+          y     : port_to.pos[1]
+          angle : port_to.pos[2]
           type  : connection.port2Comp().type
-          name  : pos_to.name
+          name  : port_to.name
+          itemCX : pos_to.x + size_to.width  / 2 * 10
+          itemCY : pos_to.y + size_to.height / 2 * 10
         }
       }
 
@@ -164,22 +207,146 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       @__lastDir = if start.y >= end.y then 1 else -1
 
       # Calculate line path
-      if start.x is end.x or start.y is end.y
-        path = "M#{start.x} #{start.y} L#{end.x} #{end.y}"
-      else
-        controlPoints = MC.canvas.route2( start, end, @lineStyle() )
-        if controlPoints
-          switch @lineStyle()
-            when 0
-              path = "M#{controlPoints[0].x} #{controlPoints[0].y} L#{controlPoints[1].x} #{controlPoints[1].y} L#{controlPoints[controlPoints.length-2].x} #{controlPoints[controlPoints.length-2].y} L#{controlPoints[controlPoints.length-1].x} #{controlPoints[controlPoints.length-1].y}"
-            when 1 then path = MC.canvas._round_corner(controlPoints)
-            when 2 then path = MC.canvas._bezier_q_corner(controlPoints)
-            when 3 then path = MC.canvas._bezier_qt_corner(controlPoints)
-            when 777 then path = MC.canvas._round_corner(controlPoints)
+      if @lineStyle() is 0 # Straight
+        return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
+      if @lineStyle() is 2 # Curve
+        return @generateCurvePath( ports.start, ports.end )
 
-      path
+      if start.x is end.x or start.y is end.y
+        return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
+
+      MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
 
     lineStyle : ()-> @canvas.lineStyle()
+
+    generateCurvePath : ( start, end )->
+      # 1. Origin
+      origin =
+        x : start.x
+        y : start.y
+
+      originalEndAngle = end.angle
+
+      # 2. Use the origin to calc the offset of each point
+      start.x = start.y = 0
+      end.x -= origin.x
+      end.y -= origin.y
+
+      # 3. Rotate to make start.angle to be 0
+      if start.angle isnt 0
+        rotate(end, -start.angle)
+        end.angle -= start.angle
+        if end.angle < 0 then end.angle += 360
+
+      # 4. Flip end, if end is in Quadrant 3 or Quadrant 4
+      fliped = false
+      if end.y > 0
+        fliped = true
+        end.y = -end.y
+        if end.angle is 90 then end.angle = 270
+        else if end.angle is 270 then end.angle = 90
+
+      # 5. Pick the curve algorithm we want
+      result = @["generateCurvePath" + end.angle ]( start, end )
+
+      # 6. Flip and rotate back.
+      result.push end
+      if fliped
+        point.y = -point.y for point in result
+
+      for point in result
+        rotate( point, start.angle )
+        point.x += origin.x
+        point.y += origin.y
+
+      offset = ( dir, match )->
+        for point in result
+          if point[dir] is match
+            point[dir] += 0.5
+        return
+
+      endX = result[result.length - 1].x
+      endY = result[result.length - 1].y
+      if start.angle % 180 is 0
+        offset( "y", origin.y )
+        origin.y += 0.5
+      else
+        offset( "x", origin.x )
+        origin.x += 0.5
+
+      if originalEndAngle % 180 is 0
+        offset( "y", endX )
+      else
+        offset( "x", endY )
+
+      # 7. Generate SVG Path
+      if result.length is 3
+        "M#{origin.x} #{origin.y}C#{result[0].x} #{result[0].y} #{result[1].x} #{result[1].y} #{result[2].x} #{result[2].y}"
+      else
+        "M#{origin.x} #{origin.y}L#{result[0].x} #{result[0].y}C#{result[1].x} #{result[1].y} #{result[2].x} #{result[2].y} #{result[3].x} #{result[3].y}L#{result[4].x} #{result[4].y}"
+
+    generateCurvePath0  : ( start, end )->
+      x   = end.x
+      y   = Math.abs(end.y)
+      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
+      rad = Math.PI / 180 * 30
+      cos = dis * Math.cos( rad )
+      sin = dis * Math.sin( rad )
+      if x > 0
+        [{x:cos,y:-sin},{x:end.x+sin,y:end.y+cos}]
+      else if x is 0
+        [{x:cos,y:-sin},{x:end.x+cos,y:end.y+sin}]
+      else
+        [{x:sin,y:-cos},{x:end.x+cos,y:end.y+sin}]
+
+    generateCurvePath90 : ( start, end )->
+      x   = end.x
+      y   = Math.abs(end.y)
+      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) )
+      rad = Math.PI / 180 * 30
+      dis /= if x > 0 then 4 else 2
+      c2x = dis * Math.cos( rad )
+      c2y = dis * Math.sin( rad )
+      if x > 0
+        [{x:end.x/2,y:0},{x:end.x-c2x,y:end.y-c2y}]
+      else
+        [{x:sin,y:-cos},{x:end.x+cos,y:end.y-sin}]
+
+    generateCurvePath180 : ( start, end )->
+      if end.x > 0
+        return [{x:end.x/2,y:0},{x:end.x/2,y:end.y}]
+
+      x   = end.x
+      y   = Math.abs(end.y)
+      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 3
+      rad = Math.PI / 180 * 40
+      sin = dis * Math.sin( rad )
+      cos = dis * Math.cos( rad )
+      [{x:sin,y:-cos},{x:end.x-sin,y:end.y+cos}]
+
+    generateCurvePath270 : ( start, end )->
+      x = end.x
+      y = Math.abs(end.y)
+
+      if x > 0
+        if Math.abs(x - y) < 10
+          return [{x:x,y:0},{x:x,y:end.y}]
+
+        if x < 20
+          return [{x:0,y:0},{x:0,y:0},{x:x,y:0},{x:x,y:-x}]
+        else if y < 20
+          return [{x:x-y,y:0},{x:x-y,y:0},{x:x,y:0},{x:x,y:end.y}]
+
+        if x < y
+          return [{x:x,y:0},{x:x,y:end.y/2}]
+        else
+          return [{x:x/2,y:0},{x:x,y:0}]
+
+      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
+      rad = Math.PI / 180 * 30
+      c1x = dis * Math.cos( rad )
+      c1y = dis * Math.sin( rad )
+      [{x:c1x,y:-c1y},{x:end.x,y:end.y/2}]
 
   }, {
     cleanLineMask : ( line )->

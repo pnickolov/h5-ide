@@ -22,7 +22,7 @@ define [
     portPosMap : {
       "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 50 ]
       "instance-rtb"      : [ 45, 2,  CanvasElement.constant.PORT_UP_ANGLE  ]
     }
     portDirMap : {

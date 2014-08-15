@@ -81,8 +81,12 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
     portDirection : ( portName )->
       if this.portDirMap then this.portDirMap[ portName ] else null
 
-    portPosition : ( portName )->
-      if this.portPosMap then this.portPosMap[ portName ] else null
+    portPosition : ( portName, isAtomic )->
+      if not this.portPosMap then return null
+      p = this.portPosMap[ portName ]
+      if isAtomic and p.length >= 5
+        return [ p[3], p[4], p[2] ]
+      p
 
     hover    : ( evt )-> CanvasManager.addClass(cn.$el, "hover") for cn in @connections(); return
     hoverOut : ( evt )-> CanvasManager.removeClass(cn.$el, "hover") for cn in @connections(); return
@@ -544,10 +548,13 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
   }
 
   CanvasElement.constant =
-    PORT_RIGHT_ANGLE  : 0
-    PORT_UP_ANGLE     : 90
-    PORT_LEFT_ANGLE   : 180
-    PORT_DOWN_ANGLE   : 270
+    PORT_4D_ANGLE    : -1
+    PORT_2D_H_ANGLE  : -2
+    PORT_2D_V_ANGLE  : -3
+    PORT_RIGHT_ANGLE : 0
+    PORT_UP_ANGLE    : 90
+    PORT_LEFT_ANGLE  : 180
+    PORT_DOWN_ANGLE  : 270
 
   CanvasElement.setCanvasViewClass = ( c )-> CanvasView = c; return
 

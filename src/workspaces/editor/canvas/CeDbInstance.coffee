@@ -22,21 +22,23 @@ define [
     portPosMap : {
       "db-sg-left"  : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "db-sg-right" : [ 79, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "replica"     : [ 45, 45, CanvasElement.constant.PORT_DOWN_ANGLE ]
     }
     portDirMap : {
       "db-sg" : "horizontal"
     }
 
-    # portPosition : ( portName, isAtomic )->
-    #   p = @portPosMap[ portName ]
-    #   if portName is "replica"
-    #     p = p.slice(0)
-    #     if @model.master()
-    #       p[1] = 45
-    #     else
-    #       p[1] = 65
-    #   p
+    portPosition : ( portName, isAtomic )->
+      p = @portPosMap[ portName ]
+      if portName is "replica"
+        p = p.slice(0)
+        if @model.master()
+          p[1] = 45
+          p[2] = CanvasElement.constant.PORT_2D_V_ANGLE
+        else
+          p[1] = 65
+          p[2] = CanvasElement.constant.PORT_DOWN_ANGLE
+      p
 
     typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
     engineIcon : ()-> "ide/icon/rds-" + (@model.get("engine")||"").split("-")[0] + ".png"

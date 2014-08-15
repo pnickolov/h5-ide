@@ -349,11 +349,11 @@
   cursor: pointer;
   stroke-linecap: round;
   fill: none;
-  stroke-width: 2px;
+  stroke-width: 3px;
 
   &:hover, &.hover {
     opacity: .8;
-    stroke-width: 4px;
+    stroke-width: 5px;
   }
 
   .canvas-view &.selected {
@@ -377,6 +377,12 @@
 
 .RTB_Route {
   stroke: #6DAEFE;
+  stroke-width: 2px;
+  stroke-linecap: square;
+
+  &:hover {
+    stroke-width:4px;
+  }
   .dash-line {
     stroke: #9FC9FD;
     stroke-dasharray: 10px 10px;

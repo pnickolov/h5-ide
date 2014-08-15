@@ -1240,11 +1240,11 @@ module.exports =
 
     TOOL_LBL_LINESTYLE_ELBOW:
       en: "Elbow"
-      zh: "肘型线"
+      zh: "折线"
 
-    TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER:
-      en: "Quadratic Belzier curve"
-      zh: "二次贝赛尔曲线"
+    TOOL_LBL_LINESTYLE_CURVE:
+      en: "Curve"
+      zh: "曲线"
 
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
       en: "Smooth quadratic Belzier curve"

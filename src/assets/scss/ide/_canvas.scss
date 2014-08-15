@@ -402,7 +402,8 @@
 .SgRuleLine {
   stroke: #6DAEFE;
   opacity: 0.2;
-  stroke-dasharray: 10,5;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square;
 }
 
 .fill-line {

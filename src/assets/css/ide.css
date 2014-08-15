@@ -5909,7 +5909,8 @@ button#property-app-keypair {
 .SgRuleLine {
   stroke: #6DAEFE;
   opacity: 0.2;
-  stroke-dasharray: 10,5; }
+  stroke-dasharray: 10,10;
+  stroke-linecap: square; }
 
 .fill-line {
   stroke: #fff;
@@ -6215,11 +6216,7 @@ g.shadow {
   background-color: transparent; }
 
 .resource-list-sort-select {
-<<<<<<< HEAD
   margin-top: -5px;
-=======
-  margin-top: -21px;
->>>>>>> [release/v20140815] canvas style :bear:
   float: right;
   width: 84px;
   margin-right: -7px; }

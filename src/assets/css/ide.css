@@ -5995,13 +5995,13 @@ g.shadow {
     margin-left: -10px; }
     .canvas-pp.pp-left:before, .canvas-pp.pp-left:after {
       left: auto;
-      right: -20px;
-      border-left-color: #fff; }
+      right: -10px;
+      border-left-color: #fff;
+      border-right: none; }
     .canvas-pp.pp-left:before {
-      border-right-color: transparent;
       border-left-color: #ccc;
       left: auto;
-      right: -21px; }
+      right: -11px; }
   .canvas-pp .popup-content {
     min-width: 306px;
     max-height: 180px;

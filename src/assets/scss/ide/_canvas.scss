@@ -503,16 +503,17 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 
   &.pp-left {
     margin-left : -10px;
+
     &:before, &:after {
       left     : auto;
-      right    : -20px;
+      right    : -10px;
       border-left-color : #fff;
+      border-right : none;
     }
     &:before {
-      border-right-color : transparent;
       border-left-color : #ccc;
       left  : auto;
-      right : -21px;
+      right : -11px;
     }
   }
 

@@ -380,6 +380,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         @renderNoCredential()
 
     renderDefault: ->
+      if not @dropdown then return false
       if not fetched
         @renderLoading()
         @collection.fetch().then =>

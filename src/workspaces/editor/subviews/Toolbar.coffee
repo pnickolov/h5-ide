@@ -18,17 +18,19 @@ define [
   "backbone"
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
-  # Set domain and set http
-  API_HOST = "api.visualops.io"
+  location = window.location
 
-  ### env:debug ###
-  API_HOST = "api.mc3.io"
-  ### env:debug:end ###
+  if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
+    # This is a ip address
+    console.error "VisualOps IDE can not be browsed with IP address."
+    return
+  hosts = location.hostname.split(".")
+  if hosts.length >= 3
+    API_HOST= hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+  else
+    API_HOST = location.hostname
 
-  ### env:dev ###
-  API_HOST = "api.mc3.io"
-  ### env:dev:end ###
-  API_URL = "https://" + API_HOST + "/v1/apps/"
+    API_URL = "https://api." + API_HOST + "/v1/apps/"
 
   Backbone.View.extend {
 

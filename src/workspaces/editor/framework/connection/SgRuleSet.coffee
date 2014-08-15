@@ -352,6 +352,10 @@ define [ "constant", "../ConnectionModel", "Design" ], ( constant, ConnectionMod
 
       for portion in portions
         for rule in portion.ary
+          if rule.protocol is '1'
+            rule.protocol = 'icmp'
+            rule.fromPort = '0'
+            rule.toPort = '0'
           portion.owner.push {
             FromPort   : rule.fromPort
             ToPort     : if rule.toPort then rule.toPort else rule.fromPort

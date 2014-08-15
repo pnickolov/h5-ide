@@ -76,6 +76,13 @@ define [
       ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
 
+    select : ( selectedDomElement )->
+      type = @type
+      if @model.get("appId") and @canvas.design.modeIsAppEdit()
+        type = "component_server_group"
+      ide_event.trigger ide_event.OPEN_PROPERTY, type, @model.id
+      return
+
     # Creates a svg element
     create : ()->
 

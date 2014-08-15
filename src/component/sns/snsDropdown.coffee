@@ -80,13 +80,13 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                         d.selected = true
                         null
 
-                @renderDropdownList data
+                @renderDropdownList data, filter
 
             false
 
 
-        renderDropdownList: ( data ) ->
-            if _.isEmpty data
+        renderDropdownList: ( data, filter ) ->
+            if _.isEmpty( data ) and not filter
                 region = Design.instance().region()
                 regionName = constant.REGION_SHORT_LABEL[ region ]
                 @dropdown

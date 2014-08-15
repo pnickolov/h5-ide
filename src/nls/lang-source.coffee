@@ -844,11 +844,11 @@ module.exports =
       zh: "为设置EIP，自动添加了一个互联网网关"
 
     CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
-      en: "%s hasn't existed, delete it will also remove all read replica to related it. Are you sure to delete?"
+      en: "Deleting <span class='resource-tag'>%s</span> will also remove all read replica related to it. Are you sure to continue?"
       zh: "%s 未创建,删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_CFM_DEL_EXISTENT_DBINSTANCE:
-      en: "%s has existed, delete it will remove read replica to related it, but keep existed replica. Are you sure to delete?"
+      en: "%s has existed, delete it will remove read replica to related it, but keep existed replica. Are you sure to continue?"
       zh: "%s已存在，删除它会同时删除与之相关的只读副本，但会保留，确定要删除它吗？"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:

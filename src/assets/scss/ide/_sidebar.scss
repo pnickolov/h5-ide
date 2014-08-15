@@ -462,29 +462,36 @@ $dndDuration : .2s;
   }
 }
 
-.resource-select.selectbox .selection {
-  background        : $dark-p;
-  color             : #F3F3F3;
-  height            : 17px;
-  border            : none;
-  border-left       : 1px solid #161616;
-  border-radius     : 0;
-  padding           : 10px 20px 10px 10px;
-  -webkit-transition: background .2s ease-in-out;
-  -moz-transition   : background .2s ease-in-out;
-  -ms-transition    : background .2s ease-in-out;
-  -o-transition     : background .2s ease-in-out;
-  transition        : background .2s ease-in-out;
+.resource-select.selectbox {
+
+  .selection {
+    background    : $dark-p;
+    color         : #F3F3F3;
+    height        : 17px;
+    border        : none;
+    border-left   : 1px solid #161616;
+    border-radius : 0;
+    box-shadow    : none;
+
+    padding           : 10px 20px 10px 10px;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition   : background .2s ease-in-out;
+    -ms-transition    : background .2s ease-in-out;
+    -o-transition     : background .2s ease-in-out;
+    transition        : background .2s ease-in-out;
+
+    &:after {
+      border-top-color: #fff;
+    }
+  }
+  
+  .dropdown {
+    background: #4f4f4f;
+    border: 1px solid #333;
+  }
+
 }
 
-.resource-select.selectbox .selection:after {
-  border-top-color: #fff;
-}
-
-.resource-select.selectbox .dropdown {
-  background: #4f4f4f;
-  border: 1px solid #333;
-}
 
 .resource-list > li:hover .btn-fav-ami {
   display: block;

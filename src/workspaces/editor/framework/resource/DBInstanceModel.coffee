@@ -419,7 +419,8 @@ define [
 
       engine = @engineType()
 
-      if engine is 'sqlserver' then sufix = engine.split('-')[1]
+      if engine is 'sqlserver'
+        sufix = @get('engine').split('-')[1]
 
       dbInstanceType = @attributes.instanceClass.split('.')
       deploy = if @attributes.multiAz then 'multiAZ' else 'standard'
@@ -437,7 +438,7 @@ define [
           license = 'byol'
 
         if license == 'li' and engine == 'sqlserver'
-          license = license + sufix
+          license = license + '-' + sufix
 
         for p in fee
           if p.deploy != deploy

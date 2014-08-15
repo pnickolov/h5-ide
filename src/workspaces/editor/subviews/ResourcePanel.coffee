@@ -142,6 +142,7 @@ define [
       @render()
 
     render : ()->
+      
       @$el.html( LeftPanelTpl.panel({}) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)

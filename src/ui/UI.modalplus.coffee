@@ -83,7 +83,7 @@ define ['backbone'], (Backbone)->
             if typeof @option.template is "object"
                 body.html(@option.template)
             if @option.maxHeight then body.css("max-height":@option.maxHeight)
-            if @option.width then body.parent().css( width : @option.width )
+            if @option.width then body.parent().width( @option.width )
             @tpl.appendTo @wrap
             modalGroup.push(@)
             if modalGroup.length == 1 or @option.mode is "panel"
@@ -196,8 +196,8 @@ define ['backbone'], (Backbone)->
               return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
-            height= @option.height?.toLowerCase().replace('px','') || @tpl.height()
+            width = @option.width?.toString()?.toLowerCase().replace('px','') || @tpl.width()
+            height= @option.height?.toString()?.toLowerCase().replace('px','') || @tpl.height()
             top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
             if slideIn

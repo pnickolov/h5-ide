@@ -5615,6 +5615,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
       zh: ""
 
+    TA_MSG_ERROR_OG_DB_BOTH_MODIFIED:
+      en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
+      zh: ""
+
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: ""

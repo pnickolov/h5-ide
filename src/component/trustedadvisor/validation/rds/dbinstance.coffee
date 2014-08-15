@@ -1,6 +1,21 @@
-define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant, MC, Design, Helper, CloudResources ) ->
+define [
+    'constant'
+    'MC'
+    'Design'
+    'TaHelper'
+    'CloudResources'
+    'ResDiff'
+], ( constant, MC, Design, Helper, CloudResources, ResDiff ) ->
 
     i18n = Helper.i18n.short()
+
+    diff = ( oldcomp, newcomp ) ->
+        differ = new ResDiff({
+            old : component: oldcomp
+            new : component: newcomp
+        })
+
+        differ.getChangeInfo().hasResChange
 
     isOgValid = ->
         dbs = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).filter (db) ->
@@ -146,6 +161,26 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_MASTER_PASSWORD_INVALID, db.get('name')
 
+    isDBandOgBothModified = ( uid ) ->
+        db = Design.instance().component uid
+        og = db.getOptionGroup()
+
+        if not db.get('appId') or not og.get('appId') or og.isDefault()
+            return null
+
+        originJson = Design.instance().__opsModel.getJsonData()
+
+        dbOrigincomp = originJson.component[ uid ]
+        ogOrigincomp = originJson.component[ og.id ]
+
+        dbcomp = MC.canvas_data.component[ uid ]
+        ogcomp = MC.canvas_data.component[ og.id ]
+
+        unless diff(dbOrigincomp, dbcomp) and diff(ogOrigincomp, ogcomp)
+            return null
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_OG_DB_BOTH_MODIFIED, db.get('name'), og.get('name')
+
 
 
     isOgValid                   : isOgValid
@@ -155,3 +190,5 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
     isBackupMaintenanceOverlap  : isBackupMaintenanceOverlap
     isMasterPasswordValid       : isMasterPasswordValid
     isHaveReplicaStorageSmallThanOrigin : isHaveReplicaStorageSmallThanOrigin
+    isDBandOgBothModified       : isDBandOgBothModified
+

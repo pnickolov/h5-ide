@@ -6913,6 +6913,8 @@ g.shadow {
 
 .property-dbinstance #property-dbinstance-class-select .dropdown {
   top: 49px; }
+.property-dbinstance #property-dbinstance-name {
+  text-transform: lowercase; }
 .property-dbinstance #property-dbinstance-engine-version-select.combo-dd.selectbox .scroll-wrap {
   width: 178px; }
 .property-dbinstance input.shorter-input {

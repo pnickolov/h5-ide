@@ -265,6 +265,9 @@
 	#property-dbinstance-class-select .dropdown {
 		top: 49px;
 	}
+	#property-dbinstance-name {
+		text-transform: lowercase;
+	}
 	#property-dbinstance-engine-version-select.combo-dd.selectbox .scroll-wrap {
 		width: 178px;
 	}

@@ -55,7 +55,7 @@ define [ 'ApiRequest'
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
 
             'OPTION_CHANGE': 'checkChange'
-            'change *': 'checkChange'
+            'keyup *': 'checkChange'
 
         checkChange: () ->
             return unless @resModel.get 'appId'
@@ -614,16 +614,13 @@ define [ 'ApiRequest'
             $preferredAZSelect.find('.selection').text($item.text())
 
         changeInstanceName: (event) ->
+            that = @
+            $target = $ event.currentTarget
 
-            that = this
-
-            target = $ event.currentTarget
-
-            if MC.aws.aws.checkResName(@resModel.get('id'), target, 'DBInstance')
-
-                value = target.val()
-
-                target.parsley 'custom', ( val ) ->
+            if MC.aws.aws.checkResName(@resModel.get('id'), $target, 'DBInstance')
+                value = $target.val().toLowerCase()
+                $target.parsley 'custom', ( val ) ->
+                    val = val.toLowerCase()
 
                     if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                         return errTip
@@ -641,7 +638,7 @@ define [ 'ApiRequest'
                     if not MC.validate('letters', val[0])
                         return errTip
 
-                if target.parsley 'validate'
+                if $target.parsley 'validate'
 
                     @resModel.setName value
                     @setTitle value

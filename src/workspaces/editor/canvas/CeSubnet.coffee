@@ -18,7 +18,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
         [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
       else
         x = m.width() * CanvasView.GRID_WIDTH + 4
-        if isAtomic then x += 6
+        if isAtomic then x += 8
         [ x, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
 

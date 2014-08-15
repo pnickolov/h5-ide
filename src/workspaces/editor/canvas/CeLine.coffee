@@ -204,17 +204,17 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       start = ports.start
       end   = ports.end
 
-      @__lastDir = if start.y >= end.y then 1 else -1
-
+      @__lastDir = 1
       # Calculate line path
       if @lineStyle() is 0 # Straight
         return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
-      if @lineStyle() is 2 # Curve
+      if @lineStyle() is 2 or @lineStyle() is 3 # Curve
         return @generateCurvePath( ports.start, ports.end )
 
       if start.x is end.x or start.y is end.y
         return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
 
+      @__lastDir = if start.y >= end.y then 1 else -1
       MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
 
     lineStyle : ()-> @canvas.lineStyle()
@@ -275,9 +275,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         origin.x += 0.5
 
       if originalEndAngle % 180 is 0
-        offset( "y", endX )
+        offset( "y", endY )
       else
-        offset( "x", endY )
+        offset( "x", endX )
 
       # 7. Generate SVG Path
       if result.length is 3

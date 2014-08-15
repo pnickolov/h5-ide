@@ -69,7 +69,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', './compone
                     tData.subCount = tData.sub.length
                     tData
 
-                if filter
+                if filter is true
                     len = keyword.length
                     data = _.filter data, ( d ) ->
                         d.Name.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1

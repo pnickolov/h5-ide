@@ -96,6 +96,8 @@ define [ 'event',
 
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
+            'SAVE_STATE': 'onStateSaveClick'
+
         editorShow: false
 
         initialize: () ->

@@ -270,6 +270,15 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
                 uid: "#{autoCompObj.uid}"
             }
 
+        # add self refrence for temp
+        # _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
+        #     resAttrDataAry.push {
+        #         name: "#{attr}",
+        #         value: "#{attr}",
+        #         ref: "#{attr}",
+        #         uid: "#{attr}"
+        #     }
+
         # filter all self's AZ ref
         resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
 

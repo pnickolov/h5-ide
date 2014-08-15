@@ -116,6 +116,11 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
                 if not __legalExist( legalRef, r )
                     refName = Message.illegal r
 
+            # for self ref valid
+            if r.ref.indexOf('self.') is 0
+                if r.ref in ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp']
+                    refName = null
+
             if refName
                 tip = __getCompTip data.type, data.name, data.stateId, refName
                 error.push __genError tip, data.stateId

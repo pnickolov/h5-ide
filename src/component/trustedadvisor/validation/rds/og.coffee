@@ -42,7 +42,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
                 ogModels = CloudResources constant.RESTYPE.DBOG, region
                 ogModels.fetchForce().then (ogCol) ->
                     customOgAry = ogCol.filter (model) -> model.get('id').indexOf('default:') isnt 0
-                    if customOgAry.length >= 20
+                    if customOgAry.length + customOGModels.length > 20
                         callback Helper.message.error '', i18n.TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT, regionName
                     else
                         callback(null)

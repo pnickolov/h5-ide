@@ -349,6 +349,10 @@ define [
 
     parseFetchData : ( data, region )->
       for ins in data
+        if ins.tagSet
+          if ins.tagSet['aws:elasticmapreduce:instance-group-role'] or ins.tagSet['aws:elasticmapreduce:job-flow-id']
+            console.warn "ignore EMR instances"
+            continue
         ins.id = ins.instanceId
         #delete ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
@@ -367,6 +371,12 @@ define [
       @unifyApi data, @type
 
       for ins in data
+        #skip
+        if ins.tags
+          for tag in ins.tags
+            if tag.key is 'aws:elasticmapreduce:instance-group-role' or tag.key is 'aws:elasticmapreduce:job-flow-id'
+              console.warn "ignore EMR instances"
+              continue
         ins.id = ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue

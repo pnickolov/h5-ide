@@ -67,6 +67,10 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       region = @__region
       for uid, comp of @generatedJson.component
         switch comp.type
+          when RESTYPE.ENI
+            for sg in comp.resource.GroupSet
+              if sg.GroupName.indexOf("@{") isnt 0
+                sg.GroupName = "@{#{MC.extractID(sg.GroupId)}.resource.GroupName}"
           when RESTYPE.AZ
             comp.name = comp.resource.ZoneName
           when RESTYPE.ACL
@@ -97,7 +101,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
                 console.log "create component for Topic"
 
               uid = topicMap[ comp.resource.TopicARN ].uid
-              comp.resource.TopicARN = "@{#{uid}}.resource.TopicArn"
+              comp.resource.TopicARN = "@{#{uid}.resource.TopicArn}"
 
               console.log "convert TopicARN of NC"
 

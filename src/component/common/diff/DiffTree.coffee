@@ -32,6 +32,8 @@ define ['constant'], (constant) ->
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true
                 'DBINSTANCE.resource.ApplyImmediately': true
+                'ASG.resource.AutoScalingGroupARN': true
+                'ASG.resource.PolicyARN': true
             }
 
         if not option.noDiffArrayAttrMap

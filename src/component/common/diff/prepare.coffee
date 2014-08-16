@@ -85,7 +85,7 @@ define [ 'constant' ], ( constant ) ->
                 'SecurityGroups'
                 'Subnets'
                 'Routes'
-                ]
+            ]
 
             # Replace keyword
             switch parentKey

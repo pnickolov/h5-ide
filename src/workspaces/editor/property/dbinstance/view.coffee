@@ -464,7 +464,7 @@ define [ 'ApiRequest'
                 # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
                 #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
 
-                if (iops % 1000) isnt 0 or (storage * 10) isnt iops
+                if that.resModel.isSqlserver() and ((iops % 1000) isnt 0 or (storage * 10) isnt iops)
                     return "SQL Server IOPS requires a multiple of 1000 and a multiple of 10 for Allocated Storage"
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS

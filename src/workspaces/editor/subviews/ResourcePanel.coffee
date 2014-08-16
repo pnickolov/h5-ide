@@ -282,6 +282,9 @@ define [
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"
       @updateAmi()
+      if not $(evt.currentTarget).parent().hasClass(".open")
+        $(evt.currentTarget).parent().click()
+      return
 
     updateAmi : ()->
       ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels().sort ( a, b )->

@@ -430,6 +430,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ### env:dev:end ###
     type : "DbReplication"
 
+    select : ()-> # Disable selection
+
     createLine : ( pd )->
       svg   = @canvas.svg
       svgEl = CeLine.prototype.createLine.call this, pd

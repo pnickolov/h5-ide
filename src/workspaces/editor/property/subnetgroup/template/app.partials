@@ -1,5 +1,5 @@
 <!-- {{app}} -->
-<article class="property-app">
+<article class="property-app property-subnet-group">
     <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">

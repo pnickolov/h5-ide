@@ -32,7 +32,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
             existOGModels = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
             customOGModels = _.filter existOGModels, (model) ->
-                return true if (not model.get('default') and not model.get('createdBy')) and model.__connections and model.__connections.length
+                return true if (not model.get('default') and not model.get('createdBy')) and model.get('__connections') and model.get('__connections').length
 
             if customOGModels.length
 

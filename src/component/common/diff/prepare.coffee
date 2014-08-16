@@ -119,6 +119,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'SubnetIds'
                     data.key = 'Subnet'
 
+                when 'OptionSettings'
+                    data.key = 'Option'
+
                 when 'Options'
                     data.key = 'Option'
 

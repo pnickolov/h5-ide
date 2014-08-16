@@ -464,8 +464,8 @@ define [ 'ApiRequest'
                 # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
                 #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
 
-                if (iops % 1000) isnt 0
-                    return "Require a multiple of 1000"
+                if (iops % 1000) isnt 0 or (storage * 10) isnt iops
+                    return "SQL Server IOPS requires a multiple of 1000 and a multiple of 10 for Allocated Storage"
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
@@ -781,6 +781,8 @@ define [ 'ApiRequest'
 
         changeProvisionedIOPSCheck: (event) ->
 
+            that = this
+
             value = event.target.checked
 
             storage = Number($('#property-dbinstance-storage').val())
@@ -799,7 +801,8 @@ define [ 'ApiRequest'
                         defaultIOPS = @_getDefaultIOPS(storage)
                         if defaultIOPS
                             $('#property-dbinstance-iops-value').val(defaultIOPS)
-                            @resModel.setIops defaultIOPS
+                            that.changeProvisionedIOPS()
+                            # @resModel.setIops defaultIOPS
                 else
                     $('.property-dbinstance-iops-value-section').hide()
                     $('#property-dbinstance-iops-value').val('')

@@ -2805,7 +2805,7 @@ html[dir="rtl"] .select2-search-choice-close {
 	overflow : scroll;
 }
 .nano > .nano-content:focus {
-  outline: thin dotted;
+	outline : none;
 }
 .nano > .nano-content::-webkit-scrollbar {
   visibility: hidden;

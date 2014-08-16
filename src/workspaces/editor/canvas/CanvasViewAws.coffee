@@ -82,7 +82,7 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
 
         s = @__selectedVolume
         @__selectedVolume = null
-        volumeremove()
+        volume.remove()
         nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
         if nextVol.length
           nextVol.trigger("mousedown")

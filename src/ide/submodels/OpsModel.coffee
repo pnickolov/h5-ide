@@ -172,23 +172,32 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
                   "TopicArn": comp.resource.TopicARN
             topicMap[comp.resource.TopicARN] = topicComp
             topicCompAry.push topicComp
+            console.warn "create component for Topic"
           else
             uid = topicMap[comp.resource.TopicARN].uid
           comp.resource.TopicARN = "@{#{uid}}.resource.TopicArn"
+          console.warn "convert TopicARN of NC"
 
       #append topic component to component_data
       for topic in topicCompAry
         component_data[topic.uid] = topic
 
       #patch for groutUId
+      invalidExpandedAsgAry = []
       for key,layout of layout_data
         if layout.groutUId
           layout.groupUId = layout.groutUId
           delete layout.groutUId
+        if layout.type and layout.type is 'ExpandedAsg' and layout.originalId
+          if not component_data[layout.originalId]
+            invalidExpandedAsgAry.push key
+      #remove invalid ExpandedAsg
+      for invalidUid in invalidExpandedAsgAry
+        console.warn "remove invalid ExpandedAsg"
+        delete layout_data[invalidUid]
 
       #patch layout
       for asg in asgCompAry
-        console.info asg
         subnetMap = {}
         subnetMap[ layout_data[asg.uid].groupUId ] = true
         subnetRefAry = asg.resource.VPCZoneIdentifier.split(" , ")
@@ -200,6 +209,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             #expandAsg
             for subnet in subnetUidAry
               if not subnetMap[subnet]
+                console.warn "fill missing groupUID for ExpandedAsg"
                 layout.groupUId = subnet
                 subnetMap[subnet] = true
 

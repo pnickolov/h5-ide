@@ -3326,7 +3326,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_SNAPSHOT_SELECT:
-      en: "Select Instance from which to create snapshot"
+      en: "Select DB instance from which to create snapshot"
       zh: ""
 
     PROP_SNAPSHOT_SET_DESC:

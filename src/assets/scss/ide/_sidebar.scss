@@ -110,8 +110,16 @@ $dndDuration : .2s;
   float: left;
 }
 
-.resource-list-snapshot {
-  // display: inline-block;
+.resource-list-ami {
+  position : relative;
+
+  .blank-slate {
+    position: absolute;
+    font-size  : 12px;
+    color      : #999;
+    text-align : center;
+    top : 40%;
+  }
 }
 
 .resource-item {

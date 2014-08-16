@@ -152,7 +152,7 @@
   <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}
 </li>{{/with}}
-{{else}}{{#if fav}}<p>Use "Browse Community AMI" to add Favourite AMI.</p>{{/if}}{{/each}}
+{{else}}{{#if fav}}<p class="blank-slate">Use "Browse Community AMI" to add Favourite AMI.</p>{{/if}}{{/each}}
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >

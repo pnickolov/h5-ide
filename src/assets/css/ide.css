@@ -785,7 +785,7 @@ td.table-action a.btn {
 
 .property-instance-name-wrap {
   height: 31px;
-  margin-top: 25px;
+  margin-top: 20px;
   -webkit-box-shadow: 0 1px 0 0 #5d5c5d;
   -moz-box-shadow: 0 1px 0 0 #5d5c5d;
   box-shadow: 0 1px 0 0 #5d5c5d; }
@@ -5391,8 +5391,14 @@ button#property-app-keypair {
 .sslcert-placeholder section.empty .selection {
   color: #f00; }
 
-#property-db-instance-choose .selectbox {
+#property-db-instance-choose .selectbox.combo-dd {
   width: 320px; }
+#property-db-instance-choose .dropdown {
+  width: 320px; }
+  #property-db-instance-choose .dropdown .input {
+    width: 292px; }
+  #property-db-instance-choose .dropdown .scroll-wrap {
+    width: 318px; }
 
 /* Rectangle 5: */
 /* Rectangle 6: */
@@ -6222,6 +6228,15 @@ g.shadow {
   border-bottom: 1px #666 solid;
   height: 18px;
   float: left; }
+
+.resource-list-ami {
+  position: relative; }
+  .resource-list-ami .blank-slate {
+    position: absolute;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    top: 40%; }
 
 .resource-item {
   width: 70px;

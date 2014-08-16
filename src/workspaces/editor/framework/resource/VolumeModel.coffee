@@ -82,6 +82,13 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       if not @__groupMembers then @__groupMembers = []
       return @__groupMembers
 
+    isRemovable : ()->
+      if @design().modeIsAppEdit()
+        if (@get("owner") || {}).type is constant.RESTYPE.LC
+          return lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+
+      true
+
     remove : ()->
       # Remove reference in owner
       vl = @attributes.owner.get("volumeList")

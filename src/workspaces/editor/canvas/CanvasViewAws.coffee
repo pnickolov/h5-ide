@@ -74,9 +74,15 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
       if @isReadOnly() then return false
 
       if @__selectedVolume
+        volume = @design.component( @__selectedVolume )
+        res = volume.isRemovable()
+        if _.isString( res )
+          notification "error", res
+          return
+
         s = @__selectedVolume
         @__selectedVolume = null
-        @design.component( s ).remove()
+        volumeremove()
         nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
         if nextVol.length
           nextVol.trigger("mousedown")

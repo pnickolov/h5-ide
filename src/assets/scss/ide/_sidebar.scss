@@ -569,6 +569,10 @@ $dndDuration : .2s;
     color: #eee;
   }
 
+  #btn-switch-state {
+    color: #4fb845;
+  }
+
   &.no-state {
     #btn-switch-state {
       display: none;

@@ -2154,7 +2154,7 @@ a.action-link:hover {
 }
 
 .delete-sgrule-dialog .sg-color {
-	margin-top   : 7px;
+	margin-top   : 5px;
 	width        : 10px;
 	height       : 10px;
 	float        : left;
@@ -4149,6 +4149,10 @@ div.modal-text-highlight{
 }
 .highlight-status{
     color : #f8b42d;
+
+   &.in-sync {
+   	color: $base-g;
+   }
 }
 
 

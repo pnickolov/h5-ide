@@ -1785,7 +1785,7 @@ a.action-link:hover {
   padding: 2px 10px; }
 
 .delete-sgrule-dialog .sg-color {
-  margin-top: 7px;
+  margin-top: 5px;
   width: 10px;
   height: 10px;
   float: left;
@@ -3418,6 +3418,8 @@ div.modal-text-highlight {
 
 .highlight-status {
   color: #f8b42d; }
+  .highlight-status.in-sync {
+    color: #00d38f; }
 
 #tabbar-wrapper {
   padding: 10px 0 0 45px;

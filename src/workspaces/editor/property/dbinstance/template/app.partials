@@ -45,9 +45,9 @@
                 <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
                 <dd>{{#each optionGroups}}
                     {{#if isDefault}}
-                        {{OptionGroupName}}({{Status}})
+                        {{OptionGroupName}}<span class="highlight-status {{Status}}">({{Status}})</span>
                     {{else}}
-                        <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
+                        <a class="db-og-in-app">{{OptionGroupName}}</a><span class="highlight-status {{Status}}">({{Status}})</span>
                     {{/if}}
                 {{/each}}
                 </dd>
@@ -56,7 +56,7 @@
                 <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
                 <dd>
                     {{#each DBParameterGroups}}
-                        {{DBParameterGroupName}}({{ParameterApplyStatus}})
+                        {{DBParameterGroupName}}<span class="highlight-status {{ParameterApplyStatus}}">({{ParameterApplyStatus}})</span>
                     {{/each}}
                 </dd>
             {{/if}}

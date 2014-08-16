@@ -96,6 +96,8 @@ define [ "Design" ], (Design)->
                 when "AWS.RDS.DBSubnetGroup"
                     compo.resource.CreatedBy = ''
                     compo.resource.DBSubnetGroupName = ""
+                when 'AWS.RDS.OptionGroup'
+                    compo.resource.OptionGroupName = ""
                 else
 
     null

@@ -3,11 +3,19 @@
 /* Edit Subnet Group Modal */
 
 .dbsgppp-subnet-list {
-  cursor: pointer;
+  cursor       : pointer;
+  position     : relative;
+  padding-left : 32px;
+
+  .checkbox {
+    position   : absolute;
+    top        : 50%;
+    left       : 8px;
+    margin-top : -8px;
+  }
 }
 
 .dbsgppp-cidr {
   font-size   : 12px;
   color       : #666;
-  margin-left : 24px;
 }

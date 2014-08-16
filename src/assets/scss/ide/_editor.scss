@@ -75,7 +75,7 @@ $BottomPanelHeight    : 24px;
     @include transition( none );
   }
 
-  & ::selection {
+  &::selection {
     background: transparent;
   }
 }

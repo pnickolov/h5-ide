@@ -5436,7 +5436,7 @@ button#property-app-keypair {
     -moz-transition: none;
     -o-transition: none;
     transition: none; }
-  .OEPanelRight ::selection {
+  .OEPanelRight::selection {
     background: transparent; }
 
 .OEMiddleWrap {
@@ -8821,9 +8821,15 @@ g.shadow {
 /* Rectangle 9: */
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
-  cursor: pointer; }
+  cursor: pointer;
+  position: relative;
+  padding-left: 32px; }
+  .dbsgppp-subnet-list .checkbox {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    margin-top: -8px; }
 
 .dbsgppp-cidr {
   font-size: 12px;
-  color: #666;
-  margin-left: 24px; }
+  color: #666; }

@@ -230,13 +230,9 @@
 /* List Structure in Modal */
 
 .modal-list-header {
-	background  : #161616;
-	border      : none;
-	color       : #666;
-	padding     : 2px 10px;
-	font-size   : 12px;
-	line-height : 24px;
-	height      : 24px;
+    padding       : 6px 12px;
+    background    : lighten($bg-p, 15%);
+    border-bottom : 1px solid darken($bg-p, 10%);
 
 	&::selection {
 		background: transparent;

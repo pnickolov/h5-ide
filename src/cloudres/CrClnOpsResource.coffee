@@ -59,7 +59,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
       topicMap       = {} # id=>comp
       topicCompAry   = []
-      asgCompAry     = []
 
       RESTYPE = constant.RESTYPE
 
@@ -81,8 +80,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
             if sg then comp.resource.GroupName = sg.get("groupName")
           when RESTYPE.DBOG
             comp.name = comp.resource.OptionGroupName
-          when RESTYPE.ASG
-            asgCompAry.push comp
           when RESTYPE.NC
             if comp.resource.TopicARN.indexOf("arn:aws:sns:") is 0
               #Create TopicArn when NC's TopicARN is not reference

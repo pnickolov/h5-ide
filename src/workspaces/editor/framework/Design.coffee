@@ -1,9 +1,8 @@
 define [
   "constant"
   "OpsModel"
-  "workspaces/editor/framework/canvasview/CanvasAdaptor"
   'CloudResources'
-], ( constant, OpsModel, CanvasAdaptor, CloudResources ) ->
+], ( constant, OpsModel, CloudResources ) ->
 
   # The recursiveCheck is not fully working.
   ### env:prod ###
@@ -99,16 +98,12 @@ define [
 
   DesignImpl = ( opsModel )->
     @__componentMap = {}
-    @__canvasNodes  = {}
-    @__canvasLines  = {}
-    @__canvasGroups = {}
     @__classCache   = {}
     @__usedUidCache = {}
     @__opsModel     = opsModel
-    @__shoulddraw   = false # Disable drawing for deserializing, delay it until everything is deserialized
+    @__initializing = false # Disable drawing for deserializing, delay it until everything is deserialized
 
     canvas_data = opsModel.getJsonData()
-    @canvas = new CanvasAdaptor( canvas_data.layout.size )
 
     # Mode
     if opsModel.testState( OpsModel.State.UnRun )
@@ -122,7 +117,7 @@ define [
     delete canvas_data.component
     delete canvas_data.layout
 
-    @attributes = $.extend true, {}, canvas_data
+    @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
 
     # Restore these two attr
     canvas_data.component = component
@@ -146,7 +141,6 @@ define [
 
   Design.EVENT = {
     # Events that will trigger using Design.trigger
-    Deserialized   : "DESERIALIZED"
 
     # Events that will trigger using Design.instance().trigger
     ChangeResource : "CHANGE_RESOURCE"
@@ -154,6 +148,7 @@ define [
     # Events that will trigger both using Design.trigger and Design.instance().trigger
     AddResource    : "ADD_RESOURCE"
     RemoveResource : "REMOVE_RESOURCE"
+    Deserialized   : "DESERIALIZED"
   }
 
   DesignImpl.prototype.refreshAppUpdate = () ->
@@ -169,6 +164,8 @@ define [
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
+    console.assert( Design.instance() is this )
+
     console.debug "Deserializing data :", [json_data, layout_data]
 
     # Let visitor to fix JSON before it get deserialized.
@@ -177,8 +174,13 @@ define [
       devistor( json_data, layout_data, version )
 
     # Disable triggering event when Design is deserializing
-    Design.trigger = noop
+    @trigger = Design.trigger = noop
+    @__initializing = true
 
+    defaultLayout = {
+      coordinate : [0, 0]
+      size       : [0, 0]
+    }
 
     # A helper function to let each resource to get its dependency
     that = this
@@ -203,7 +205,7 @@ define [
         console.warn "We do not support deserializing resource of type : #{component_data.type}"
         return
 
-      ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
+      ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
 
       Design.__instance.__componentMap[ uid ]
 
@@ -234,7 +236,7 @@ define [
           console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
           continue
 
-        ModelClass.preDeserialize( comp, layout_data[uid] )
+        ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
 
 
     # Deserialize normal resources
@@ -246,7 +248,7 @@ define [
       # we directly call the deserialize() of the resource here.
       if Design.__resolveFirstMap[ comp.type ] is true
         recursiveCheck = createRecursiveCheck( uid )
-        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
+        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
       else
         recursiveCheck = createRecursiveCheck()
         resolveDeserialize uid
@@ -257,49 +259,29 @@ define [
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
-        ModelClass.postDeserialize( comp, layout_data[uid] )
-    null
-
-  DesignImpl.prototype.reload = ( opsModel )->
-    DesignImpl.call this, opsModel
-    json = opsModel.getJsonData()
-    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-
-  DesignImpl.prototype.finishDeserialization = ()->
-    ####################
-    # Draw after deserialization
-    ####################
-    # Draw everything after deserialization is done.
-    # Because some resources might just deleted right after it's been created.
-    # And draw lines at the end
-    @__shoulddraw = true
-    lines = []
-    for uid, comp of @__componentMap
-      if not comp.draw then continue
-      if comp.node_line
-        lines.push comp
-      else
-        comp.draw( true )
-
-    for comp in lines
-      comp.draw( true )
+        ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
 
     ####################
     # Broadcast event
     ####################
-    # Restore Design.trigger
-    Design.trigger = Backbone.Events.trigger
+    @__initializing = false
+    @trigger = Design.trigger = Backbone.Events.trigger
     Design.trigger Design.EVENT.Deserialized
+    @trigger Design.EVENT.Deserialized
     null
 
-  DesignImpl.prototype.renderNode = ()->
-    ##########
-    # Hack
-    ##########
-    # This will be removed once the canvas has been refactored.
-    for uid, comp of @__componentMap
-      if comp.draw and not comp.node_line
-        comp.draw( false )
+  DesignImpl.prototype.reload = ()->
+    oldDesign = Design.instance()
+
+    @use()
+
+    DesignImpl.call this, @__opsModel
+    json = @__opsModel.getJsonData()
+    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
+    if oldDesign
+      oldDesign.use()
+
     return
 
 
@@ -321,23 +303,12 @@ define [
     if not comp
       comp = @__componentMap
       delete @__componentMap[ id ]
-      delete @__canvasGroups[ id ]
-      delete @__canvasNodes[ id ]
 
       # Only in stack mode, we reclaim the id once the component is removed from cache.
       if @modeIsAppEdit()
         @reclaimGuid( id )
     else
       @__componentMap[ id ] = comp
-
-      # Cache them into another cache if they are visual objects
-      if comp.isVisual and comp.isVisual()
-        if comp.node_group
-          @__canvasGroups[ id ] = comp
-        else if comp.node_line
-          @__canvasLines[ id ] = comp
-        else
-          @__canvasNodes[ id ] = comp
     null
 
 
@@ -405,11 +376,18 @@ define [
   DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
   DesignImpl.prototype.modeIsAppView = ()->  false
   DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
-  DesignImpl.prototype.setMode = (m)-> @__mode = m; return
-  DesignImpl.prototype.mode    = ()->  console.warn("Better not to use Design.instance().mode() directly."); @__mode
+  DesignImpl.prototype.mode    = ()-> @__mode
+  DesignImpl.prototype.setMode = (m)->
+    if @__mode is m then return
+    @__mode = m
+
+    @preserveName()
+
+    @trigger "change:mode", m
+    return
 
 
-  DesignImpl.prototype.shouldDraw = ()-> @__shoulddraw
+  DesignImpl.prototype.initializing = ()-> @__initializing
   DesignImpl.prototype.use = ()-> Design.__instance = @; @
   DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
 
@@ -475,7 +453,7 @@ define [
         continue
 
       try
-        json = comp.serialize()
+        json = comp.serialize options
         ### env:prod ###
       catch error
         console.error "Error occur while serializing", error
@@ -531,8 +509,10 @@ define [
 
 
     # Quick Fix for some other property
-    # 1. save $canvas's size to layout
-    data.layout.size = @canvas.sizeAry
+    # 1. save canvas's size to layout
+    data.layout.size = data.canvasSize
+    delete data.canvasSize
+
     # 2. save stoppable to property
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
@@ -541,7 +521,8 @@ define [
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 
-    currentDesignObj.use()
+    if currentDesignObj
+      currentDesignObj.use()
 
     data
 
@@ -559,29 +540,25 @@ define [
     json
 
 
-  DesignImpl.prototype.getUidByProperty = ( property, value, res_type = null )->
-    # get uid by property in stack/app json
-    # example: getUidByProperty("resource.ImageId","ami-178e927e")
-    if not property then return
-    json_data = @serialize()
-    result = {}
-    if json_data and json_data.component
-      for uid, comp of json_data.component
-        if (res_type is null or comp.type is res_type )
-          context = comp
-          namespaces = property.split('.')
-          last = namespaces.pop()
-          for key in namespaces
-            context = context[ key ]
-          if context[ last ] is value
-            if not result[comp.type]
-              result[comp.type] = []
-            result[comp.type].push uid
-    result
-
-
   ########## General Business logics ############
-  DesignImpl.prototype.getCost = ()->
+  DesignImpl.prototype.preserveName = ()->
+    if not @modeIsAppEdit() then return
+    @__preservedNames = {}
+    for uid, comp of @__componentMap
+      switch comp.type
+        when constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.DBINSTANCE
+          names = @__preservedNames[ comp.type ] || ( @__preservedNames[ comp.type ] = {} )
+          names[ comp.get("name") ] = true
+
+    return
+
+  DesignImpl.prototype.isPreservedName = ( type, name )->
+    if not @modeIsAppEdit() then return false
+    if not @__preservedNames then return false
+    names = @__preservedNames[type]
+    names and names[name]
+
+  DesignImpl.prototype.getCost = (stopped)->
     costList = []
     totalFee = 0
 
@@ -591,6 +568,8 @@ define [
       currency = priceMap.currency || 'USD'
 
       for uid, comp of @__componentMap
+        if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
+          continue
         if comp.getCost
           cost = comp.getCost( priceMap, currency )
           if not cost then continue
@@ -621,7 +600,7 @@ define [
     vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
     if vpc.length>0
       vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) =>  model.RES_TAG is vpcId
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) -> model.RES_TAG is vpcId
       for ins in instanceAry
         ins = ins.attributes
         for bdm in (ins.blockDeviceMapping || [])
@@ -643,9 +622,6 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-
-  # Inject dependency, so that CanvasAdaptor won't require Design.js
-  CanvasAdaptor.setDesign( Design )
 
   # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
   ### env:dev ###

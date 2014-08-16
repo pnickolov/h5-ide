@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', '../../helper', '../result_vo' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
+define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'TaHelper' ], ( constant, MC, lang, Design, CloudResources, Helper ) ->
 
 	i18n = Helper.i18n.short()
 
@@ -62,9 +62,6 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', '..
 
 		Helper.message.warning vpc.id, i18n.TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS
 
-
-
-
 	isVPCUsingNonexistentDhcp = ( callback ) ->
 		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
 		dhcpId = vpc.get( 'dhcp' ).get 'appId'
@@ -82,9 +79,40 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', '..
 
 		null
 
+	isVPCWithRdsTenancyDefault = ( uid ) ->
+		vpc = Design.instance().component uid
+		hasRdsInstance = !!Design.modelClassForType(constant.RESTYPE.DBINSTANCE).size()
+
+		if hasRdsInstance and ( vpc.get('tenancy') isnt 'default' )
+			return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT
+
+		null
 
 
+	isVPCWithRdsAccessibleHasNoIgw = ( uid ) ->
+        vpc = Design.instance().component uid
+        hasRdsAccessible = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).some (db) ->
+        	db.get 'accessible'
+
+        return null unless hasRdsAccessible
+        return null if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
+
+    isVPCWithRdsAccessibleEnableDNS = ( uid ) ->
+        vpc = Design.instance().component uid
+        hasRdsAccessible = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).some (db) ->
+        	db.get 'accessible'
+
+        return null unless hasRdsAccessible
+        return null if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
+
+        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
 
 	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
 	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp
 	isVPCUsingNoneDHCPAndVisualops 	: isVPCUsingNoneDHCPAndVisualops
+	isVPCWithRdsTenancyDefault      : isVPCWithRdsTenancyDefault
+	isVPCWithRdsAccessibleHasNoIgw  : isVPCWithRdsAccessibleHasNoIgw
+	isVPCWithRdsAccessibleEnableDNS : isVPCWithRdsAccessibleEnableDNS
+

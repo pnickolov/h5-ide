@@ -6,7 +6,6 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     type : constant.RESTYPE.VPN
 
     defaults : ()->
-      lineType : "vpn"
       routes   : []
 
     portDefs :

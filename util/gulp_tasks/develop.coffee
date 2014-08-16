@@ -141,7 +141,7 @@ Helper =
         gitDebounceTimer = null
         compileDev()
 
-      gulpWatch = globwatcher ["./.git/HEAD", "./.git/refs/heads/develop", "./.git/refs/heads/**/*" ], ( event )->
+      gulpWatch = globwatcher ["./.git/index"], ( event )->
         if gitDebounceTimer is null
           gitDebounceTimer = setTimeout compileAfterGitAction, (GLOBAL.gulpConfig.gitPollingDebounce || 1000)
         null

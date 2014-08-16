@@ -4,20 +4,11 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant" ], ( ComplexRe
   Model = ComplexResModel.extend {
 
     defaults :
-      x        : 0
-      y        : 0
-      width    : 8
-      height   : 8
-      name     : "VPN-gateway"
+      name : "VPN-gateway"
 
     type : constant.RESTYPE.VGW
 
-    initialize : ()->
-      @draw(true)
-      null
-
     serialize : ()->
-
       component =
         name : @get("name")
         type : @type

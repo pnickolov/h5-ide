@@ -14,11 +14,6 @@ define [ "Design",
 
     defaults : ()->
       {
-        x        : 0
-        y        : 0
-        width    : 9
-        height   : 9
-
         internal  : true
         crossZone : true
 
@@ -58,8 +53,6 @@ define [ "Design",
     newNameTmpl : "load-balancer-"
 
     initialize : ( attr, option )->
-      @draw(true)
-
       if option.createByUser
         sg = new SgModel({
           name        : @getElbSgName()
@@ -111,8 +104,6 @@ define [ "Design",
       if @getElbSg()
         # Update Elb's Sg's Name
         @getElbSg().set( "name", @getElbSgName() )
-
-      if @draw then @draw()
       null
 
     setListener : ( idx, value )->
@@ -140,7 +131,7 @@ define [ "Design",
     setSSLCert : ( idx, sslCertId ) ->
 
       if idx >= 0
-        
+
         listeners = @get("listeners")
         sslCertData = sslCertCol.get(sslCertId)
         listeners[idx].sslCert = SslCertModel.createNew(sslCertData)
@@ -185,7 +176,6 @@ define [ "Design",
 
     setInternal : ( isInternal )->
       @set "internal", !!isInternal
-      @draw()
 
       if isInternal
         # Redraw SG Line

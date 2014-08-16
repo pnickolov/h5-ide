@@ -10,7 +10,12 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
             'OPTION_CHANGE #az-quick-select' : "azSelect"
 
         render   : () ->
-            @$el.html template @model.attributes
+            if @isAppEdit
+              data = { appEdit : true }
+            else
+              data = @model.attributes
+
+            @$el.html template data
             "Availability Zone"
 
         azSelect : ( event, newAZName ) -> @model.setName(newAZName); return

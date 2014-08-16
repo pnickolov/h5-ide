@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!/nls/lang.js' , '../result_vo' ], ( constant, MC, lang, resultVO ) ->
+define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
 
     isVPNHaveIPForStaticCGW = (uid) ->
 

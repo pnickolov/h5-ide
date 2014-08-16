@@ -1,4 +1,4 @@
-define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _, $, Design ) ->
+define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js' ], ( MC, constant, _, $, Design, lang ) ->
 
     getCompByResIdForState = ( resId ) ->
 
@@ -51,6 +51,21 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
     genAttrRefList = (currentCompData, allCompData) ->
 
+        _getSelectedASGModelByLC = () ->
+
+            $asgDom = $('g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
+            asgViewId = $asgDom.data('id')
+            return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
+            return null
+
+        if currentCompData.type is constant.RESTYPE.ASG
+
+            lcUIDRef = currentCompData.resource.LaunchConfigurationName
+            if lcUIDRef
+                lcUID = MC.extractID(lcUIDRef)
+                currentCompData = allCompData[lcUID]
+                return null if not currentCompData
+
         currentCompUID = currentCompData.uid
         currentCompType = currentCompData.type
 
@@ -94,9 +109,10 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                     lcUID = MC.extractID(lcUIDRef)
                     lcCompData = allCompData[lcUID]
                     if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
-                        currentASGName = compName
-                        compName = 'self'
-                        asgHaveSelf = true
+                        asgModel = _getSelectedASGModelByLC()
+                        if asgModel and asgModel.get('id') is compUID
+                            currentASGName = compName
+                            compName = 'self'
 
                     if lcCompData.resource.AssociatePublicIpAddress
                         asgHavePublicIP = true
@@ -254,6 +270,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
                 uid: "#{autoCompObj.uid}"
             }
 
+        # add self refrence for temp
+        allAttrStrAry = _.map resAttrDataAry, (refObj) ->
+            return refObj.name
+        _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
+            if attr not in allAttrStrAry
+                resAttrDataAry.push {
+                    name: "#{attr}",
+                    value: "#{attr}",
+                    ref: "#{attr}",
+                    uid: "self"
+                }
+
         # filter all self's AZ ref
         resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
 
@@ -338,6 +366,64 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
 
         return isInAryRange
 
+    checkResName = ( uid, $input, type ) ->
+
+        isNameDup = ( uid, newName )->
+
+            console.assert( uid, "This property model doesn't have an id" )
+
+            comp = Design.instance().component( uid )
+
+            if comp.get("name") is newName
+                return false
+
+            dup = false
+            Design.instance().eachComponent ( comp )->
+                if comp.get("name") is newName
+                    dup = true
+                    return false
+
+            dup
+
+        isOldName = ( uid, newName )->
+            design = Design.instance()
+            comp = design.component( uid )
+            if not comp then return false
+            design.isPreservedName( comp.type, newName )
+
+        isReservedName = ( newName ) ->
+
+            result = false
+            if newName in ['self', 'this', 'global', 'meta', 'madeira']
+                result = true
+
+            return result
+
+        if not $input.length
+            $input = $( $input )
+
+        name = $input.val()
+
+        if not type then type = name
+
+        if name && !MC.validate( 'awsName',  name )
+            error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
+
+        if not error and isNameDup( uid, name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if not error and isOldName( uid, name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if not error and isReservedName( name )
+            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+
+        if name.indexOf("elbsg-") is 0
+            error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
+
+        $input.parsley 'custom', ()-> error
+        $input.parsley 'validate'
+
     #public
     MC.aws = {}
     MC.aws.aws =
@@ -345,5 +431,6 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design' ], ( MC, constant, _
         genAttrRefList              : genAttrRefList
         isValidInIPRange            : isValidInIPRange
         checkPrivateIPIfHaveEIP     : checkPrivateIPIfHaveEIP
+        checkResName                : checkResName
 
     return

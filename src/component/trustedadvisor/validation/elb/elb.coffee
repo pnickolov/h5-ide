@@ -1,4 +1,4 @@
-define [ 'constant', 'MC','i18n!/nls/lang.js', '../../helper', 'CloudResources'], ( constant, MC, lang, taHelper, CloudResources ) ->
+define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( constant, MC, lang, taHelper, CloudResources ) ->
 
 	isHaveIGWForInternetELB = (elbUID) ->
 

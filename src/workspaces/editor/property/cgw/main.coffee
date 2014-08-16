@@ -14,14 +14,6 @@ define [ '../base/main',
 
         handleTypes : constant.RESTYPE.CGW
 
-        setupStack : () ->
-            me = this
-            @view.on "CHANGE_NAME", ( value ) ->
-                me.model.setName value
-                # Sync the name to canvas
-                MC.canvas.update uid, "text", "name", value
-                null
-
         initStack : ()->
             @model = model
             @view  = view

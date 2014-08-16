@@ -19,6 +19,7 @@ define [ '../base/main',
 
     loadModule = ( parent_model ) ->
         model.parent_model = parent_model
+        model.resId = parent_model.get('uid') or parent_model.id
         view.render()
         null
 

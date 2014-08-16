@@ -4,6 +4,7 @@ module.exports = {
 
   // The port that will be used by the static file server
   staticFileServerPort : 3000
+  , staticFileServer   : "ide.xxx.io"
 
   // The port that will be used by the livereload server
   , livereloadServerPort : 35729

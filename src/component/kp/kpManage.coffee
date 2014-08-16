@@ -96,9 +96,9 @@ define [
             @resModel = options.resModel
             @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
             @initModal()
+            @modal.render()
             if App.user.hasCredential()
                 that = @
-                @modal.render()
                 @collection.fetch().then ->
                   that.renderKeys()
             else

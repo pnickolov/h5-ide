@@ -8,7 +8,6 @@ define [ "constant", "../ConnectionModel" ], ( constant, ConnectionModel )->
     oneToMany : constant.RESTYPE.RT
 
     defaults :
-      lineType : "association"
       implicit : false
 
     portDefs :

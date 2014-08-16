@@ -142,7 +142,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if @checkResName( target, "Instance" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Instance" )
                 @model.setName name
                 @setTitle name
             null

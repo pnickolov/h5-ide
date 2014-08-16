@@ -1,5 +1,5 @@
 
-define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasElement" ], ( ResourceModel, Design, CanvasManager, CanvasElement )->
+define [ "./ResourceModel", "Design" ], ( ResourceModel, Design )->
 
   ###
     -------------------------------
@@ -116,10 +116,6 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
           if cn isnt this
             cn.remove( this )
 
-
-      # Draw in the end
-      if @draw then @draw()
-
       this
 
     setDestroyAfterInit : ()->
@@ -209,11 +205,6 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       if p1Exist then @__port1Comp.disconnect_base( @, option )
       if p2Exist then @__port2Comp.disconnect_base( @, option )
 
-
-      # Try removing line element in SVG, if the line is visual
-      v = @__view
-      if v then v.detach()
-
       ResourceModel.prototype.remove.call this
       null
 
@@ -221,23 +212,9 @@ define [ "./ResourceModel", "Design", "CanvasManager", "./canvasview/CanvasEleme
       # Most of the connection don't have to implement serialize()
       null
 
-    getCanvasView : ()->
-      if not @isVisual() then return null
+    isVisual : ()-> !!@portDefs
 
-      if @__view is undefined
-        @__view = CanvasElement.createView( @ceType or "Line", @ )
-      @__view
-
-    isVisual : ()->
-      # If we have portDefs, then it's considered to be visual line
-      !!@portDefs
-
-    draw : ( isCreate )->
-      if not Design.instance().shouldDraw() then return
-      v = @getCanvasView()
-      if v
-        v.draw( isCreate is true )
-      null
+    draw : ()-> console.warn "ConnectionModel.draw() is deprecated", @
 
   }, {
 

@@ -300,10 +300,12 @@ define [ 'event' ], ( ide_event )->
             activeModuleType    = componentType
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
-        property.model.clear( { silent : true } )
-        # If the model cannot init. Default to use Missing Property.
-        if property.model.init( componentUid ) is false
-            return false
+
+        if property.model.init # Distinguish Property Model and Resource Model by init method
+            property.model.clear( { silent : true } )
+            # If the model cannot init. Default to use Missing Property.
+            if property.model.init( componentUid ) is false
+                return false
 
         __resetSelectedinGroup restore, property.model
         # Injects the model to the view. So that the view doesn't have hard dependency
@@ -325,14 +327,14 @@ define [ 'event' ], ( ide_event )->
         true
 
     __resetSelectedinGroup = ( restore, model ) ->
-        mid = model.get 'mid'
-        uid = model.get 'uid'
+        # mid = model.get 'mid'
+        # uid = model.get 'uid'
 
-        if restore and mid
-            if mid.length is 38
-                MC.canvas.instanceList.selectById uid, mid
-            else
-                MC.canvas.asgList.selectById uid, mid
+        # if restore and mid
+        #     if mid.length is 38
+        #         MC.canvas.instanceList.selectById uid, mid
+        #     else
+        #         MC.canvas.asgList.selectById uid, mid
 
     PropertyModule.onUnloadSubPanel = () ->
         # Calls `onUnloadSubPanel` callback for current main property module

@@ -24,9 +24,6 @@ define [ 'underscore', 'backbone' ], () ->
         # property
         PROPERTY_REFRESH_ENI_IP_LIST : 'PROPERTY_REFRESH_ENI_IP_LIST'
 
-        #app/stack state
-        UPDATE_APP_STATE       : 'UPDATE_APP_STATE'
-
         UPDATE_STATE_STATUS_DATA  :  'STATE_STATUS_DATA_UPDATE'
         UPDATE_STATE_STATUS_DATA_TO_EDITOR  :  'UPDATE_STATE_STATUS_DATA_TO_EDITOR'
         STATE_EDITOR_SAVE_DATA : 'STATE_EDITOR_SAVE_DATA'

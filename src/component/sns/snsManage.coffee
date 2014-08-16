@@ -93,6 +93,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
 
         processDetail: ( $trDetail, $tr ) ->
             that = @
+
+            updateCount = ->
+                subCount = $trDetail.find( '.sns-detail tbody tr' ).length
+                # Update subscription count
+                $tr.find( '.show-detail b' ).text( subCount )
+                # fold the detail if there is no subscription
+                if subCount is 0
+                   $tr.find( '.show-detail' ).click()
+
             $trDetail
                 .on( 'click', '.remove', () ->
                     $(@).hide()
@@ -106,14 +115,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     $removeBtn = $(@)
                     that.removeSub( $removeBtn.data('id') ).then () ->
                         $removeBtn.closest( 'tr' ).remove()
-                        subCount = $trDetail.find( '.sns-detail tbody tr' ).length
-                        # Update subscription count
-                        $tr.find( '.show-detail b' ).text( subCount )
-                        # fold the detail if there is no subscription
-                        if subCount is 0
-                           $tr.find( '.show-detail' ).click()
+                        updateCount()
 
                 )
+
+            updateCount()
 
         removeSub: ( subId ) ->
             m = @subCol.findWhere SubscriptionArn: subId
@@ -135,6 +141,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             @initCol()
             @initModal()
             @fetch()
+            window.M$ = @M$
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)
@@ -351,6 +358,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     pass = true
 
                     $allTextBox.each ->
+                        if $(@).is(':hidden') then return
                         if @id is 'create-display-name'
                             selectedProto = that.M$('.dd-protocol .selected').data 'id'
                             if selectedProto is 'sms'

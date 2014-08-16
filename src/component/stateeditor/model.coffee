@@ -133,13 +133,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			that.set('groupResSelectData', groupResSelectData)
 
 			# Diffrent view
-			currentState = MC.canvas.getState()
-			if currentState is 'stack'
-				that.set('currentState', 'stack')
-			else if currentState is 'app'
-				that.set('currentState', 'app')
-			else if currentState is 'appedit'
-				that.set('currentState', 'appedit')
+			that.set('currentState', Design.instance().mode())
 
 		sortParaList: (cmdAllParaAry, paraName) ->
 
@@ -254,7 +248,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
-			# MC.canvas.nodeAction.show(compData.uid)
 
 		getStateData: () ->
 
@@ -309,8 +302,10 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 							return
 						compName = compObj.serverGroupName
 
-					if compType is constant.RESTYPE.LC
-						compName = Design.instance().component(compUID).parent().get('name')
+					if compType is constant.RESTYPE.ASG
+						compName = compObj.name
+						lcUID = MC.extractID(compObj.resource.LaunchConfigurationName)
+						compObj = allCompData[lcUID] if lcUID
 
 					# find all state
 					stateAry = compObj.state

@@ -8,7 +8,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
 
         render : () ->
             @$el.html template @model?.toJSON()
-            @model.get 'name'
+            @model.get 'id'
     }
 
     new CGWAppView()

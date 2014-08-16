@@ -90,10 +90,7 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
 
     selectOptions = "<option value='.'>All</option><option value='selected' selected='selected'>Selected Component</option><option value='.'>----------</option>"
 
-    if $canvas.selected_node().length
-      selectedComponetUid = $canvas.selected_node()[0]
-    else
-      selectedComponetUid = "."
+    selectedComponetUid = App.workspaces.getAwakeSpace().getSelectedComponent()?.id or "."
 
     for type in typeArr.sort()
       selectOptions += "<option value='#{type}'>#{type}</option>"

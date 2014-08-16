@@ -5,18 +5,10 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
 
     defaults :
       main     : false
-      x        : 50
-      y        : 5
-      width    : 8
-      height   : 8
       implicit : false
 
     type : constant.RESTYPE.RT
     newNameTmpl : "RT-"
-
-    initialize : ()->
-      @draw(true)
-      null
 
     isRemovable : ()->
       if @get("main")
@@ -27,13 +19,8 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
     setMain : ()->
       if @get("main") then return
 
-      old_main_rtb = Model.getMainRouteTable()
-
-      old_main_rtb.set("main", false)
-      old_main_rtb.draw()
-
+      Model.getMainRouteTable().set("main", false)
       @set("main", true)
-      @draw()
 
       # Update all implicitly association to subnets
       subnets = Design.modelClassForType( constant.RESTYPE.SUBNET ).allObjects()

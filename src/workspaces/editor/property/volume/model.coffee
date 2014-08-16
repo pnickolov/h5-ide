@@ -89,8 +89,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
                             v.set 'name', newDeviceName
 
-                            MC.canvas.update uid, 'text', "volume_name", newDeviceName
-                            MC.canvas.update realuid, 'id', "volume_#{device_name}", newId
                             @attributes.volume_detail.name     = newDeviceName
                             @attributes.volume_detail.editName = name
 
@@ -103,8 +101,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 newDeviceName = volume.genFullName name
 
                 volume.set 'name', newDeviceName
-
-                MC.canvas.update uid, 'text', "volume_name", newDeviceName
 
                 @attributes.volume_detail.name = newDeviceName
 

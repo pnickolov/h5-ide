@@ -902,11 +902,11 @@ function RGBColor(color_string)
         }
 
         // add id
-        // if (this.attribute('id').hasValue()) {
-        //   if (svg.Definitions[this.attribute('id').value] == null) {
-        //     svg.Definitions[this.attribute('id').value] = this;
-        //   }
-        // }
+        if (this.attribute('id').hasValue()) {
+          if (svg.Definitions[this.attribute('id').value] == null) {
+            svg.Definitions[this.attribute('id').value] = this;
+          }
+        }
       }
     }
 

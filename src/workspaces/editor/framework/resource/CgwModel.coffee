@@ -4,11 +4,7 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
   Model = ComplexResModel.extend {
 
     defaults :
-      x        : 0
-      y        : 0
-      width    : 17
-      height   : 10
-      bgpAsn   : ""
+      bgpAsn : ""
 
     newNameTmpl : "customer-gateway-"
 

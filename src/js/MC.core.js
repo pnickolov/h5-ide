@@ -50,7 +50,7 @@ var MC = {
 	// Global Variable
 
 	DOMAIN   : window.MC_DOMAIN,
-	API_HOST : window.MC_PROTO + "://api." + window.MC_DOMAIN,
+	API_HOST : window.MC_API_HOST,
 
 	IMG_URL: '/assets/images/',
 
@@ -471,6 +471,26 @@ var MC = {
 	*/
 	storage : storage( localStorage ),
 	session : storage( sessionStorage ),
+
+	versionCompare: function(left, right) {
+		var a, b, i, len;
+		if (typeof left + typeof right !== "stringstring") {
+			return false;
+		}
+		a = left.replace(/[a-zA-Z]/g, '').split(".");
+		b = right.replace(/[a-zA-Z]/g, '').split(".");
+		i = 0;
+		len = Math.max(a.length, b.length);
+		while (i < len) {
+			if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
+				return 1;
+			} else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
+				return -1;
+			}
+			i++;
+		}
+		return 0;
+	},
 
 	cacheForDev : function( key, data, callback ) {
 		/* env:dev */

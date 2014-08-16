@@ -38,15 +38,16 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
 
     init  : ( uid ) ->
       @lc = Design.instance().component( uid )
+      if not @lc then return false
 
-      data = @lc?.toJSON()
+      data = @lc.toJSON()
       data.uid = uid
       data.isEditable = @isAppEdit
       data.app_view = Design.instance().modeIsAppView()
       @set data
 
       @set "displayAssociatePublicIp", true
-      @set "monitorEnabled", @isMonitoringEnabled()
+      @set "monitorEnabled", true
       @set "can_set_ebs", @lc.isEbsOptimizedEnabled()
       @getInstanceType()
       @getAmi()
@@ -89,13 +90,6 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
 
       @set "instance_type", view_instance_type
       null
-
-    isMonitoringEnabled : ()->
-      for p in @lc.parent().get("policies")
-        if p.get("alarmData").metricName is "StatusCheckFailed"
-          return false
-
-      return true
 
     setEbsOptimized : ( value )->
       @lc.set 'ebsOptimized', value

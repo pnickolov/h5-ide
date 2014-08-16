@@ -96,6 +96,8 @@ define [ 'event',
 
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
+            'SAVE_STATE': 'onStateSaveClick'
+
         editorShow: false
 
         initialize: () ->
@@ -107,14 +109,14 @@ define [ 'event',
             this.initUndoManager()
 
             $(document)
-                .off('keydown', this.keyEvent)
-                .on('keydown', {target: this}, this.keyEvent)
+                .off('keydown.stateEditor', this.keyEvent)
+                .on('keydown.stateEditor', {target: this}, this.keyEvent)
 
 
         closedPopup: () ->
 
             @trigger 'CLOSE_POPUP'
-            $(document).off 'keydown', this.keyEvent
+            $(document).off 'keydown.stateEditor', this.keyEvent
 
         render: () ->
 
@@ -2861,12 +2863,12 @@ define [ 'event',
 
             # Switch to property panel [P]
             if metaKey is false and shiftKey is false and keyCode is 80 and is_input is false
-                $canvas.trigger 'SHOW_PROPERTY_PANEL'
+                ide_event.trigger ide_event.FORCE_OPEN_PROPERTY, 'property'
                 return false
 
             # Switch to state editor [S]
             if metaKey is false and shiftKey is false and keyCode is 83 and is_input is false
-                $canvas.trigger 'SHOW_STATE_EDITOR'
+                ide_event.trigger ide_event.SHOW_STATE_EDITOR
                 return false
 
             # Disable default delete event [delete/backspace]

@@ -1,0 +1,137 @@
+
+#off-canvas-menu {
+  width      : 45px;
+  height     : 49px;
+  line-height: 60px;
+  position   : absolute;
+  text-align : center;
+  color      : #eee;
+  top        : 0;
+  left       : 0;
+  cursor     : pointer;
+
+  &:before { font-size : 24px; }
+  &:hover { color: #9C6DC0; }
+}
+
+#off-canvas-overlay {
+  position          : absolute;
+  left              : 0;
+  right             : 0;
+  top               : 0;
+  bottom            : 0;
+  display           : none;
+  background-color  : rgba(41, 56, 71, 0.3);
+  z-index           : 100;
+}
+
+#wrapper.off-canvas {
+  -webkit-transform : translate(260px, 0);
+     -moz-transform : translate(260px, 0);
+       -o-transform : translate(260px, 0);
+          transform : translate(260px, 0);
+
+  > #off-canvas-overlay { display: block; }
+}
+
+#navigation {
+  position        : absolute;
+  top             : 0;
+  bottom          : 0;
+  left            : -260px;
+  z-index         : 60;
+  width           : 260px;
+  background-color: #232224;
+
+  > nav {
+    background : #111;
+    height     : 50px;
+  }
+
+  > .scroll-wrap {
+    position : absolute;
+    top      : 60px;
+    bottom   : 0;
+    width    : 100%;
+  }
+}
+
+.off-canvas-tab {
+  float : left;
+  height: 100%;
+  width : 50%;
+  color : #ccc;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255,255,255,.02);
+    color     : #fff;
+  }
+
+  &.selected {
+    border-bottom: 3px solid $base-b;
+    color: $base-b;
+  }
+}
+
+.nav-empty {
+  margin           : 5px 15px 15px;
+  padding          : 15px;
+  color            : #AAA;
+  background-color : rgba(0,0,0,.5);
+  border-radius    : 5px;
+  font-size        : 12px;
+}
+
+.nav-group-title {
+  height          : 35px;
+  line-height     : 35px;
+  color           : #999;
+  padding         : 0 17px;
+  font-size       : 14px;
+
+  > button {
+    float     : right;
+    color     : #ccc;
+    margin-top: 9px;
+    cursor    : pointer;
+
+    &:hover { color: #9F62D1; }
+  }
+}
+
+.nav-item-list > li {
+  height      : 44px;
+  line-height : 44px;
+  display     : block;
+  padding     : 0 22px 0 48px;
+  color       : #ccc;
+  font-size   : 13px;
+  cursor      : pointer;
+  background-position : 18px 11px;
+
+  &:hover { background-color : rgba(0,0,0,.5); }
+
+  > i {
+    float      : right;
+    margin-top : 15px;
+  }
+
+  &.icon-stack-nav { background-position : 20px 11px; }
+}
+
+#nav-stack-region:empty {
+  + #nav-show-empty { display : none; }
+  ~ #nav-region-empty-list { display : block; }
+}
+
+#nav-show-empty {
+  color      : #999;
+  text-align : center;
+  cursor     : pointer;
+  padding    : 8px 0;
+  height     : 20px;
+  line-height: 20px;
+
+  &:hover { color : #9C6DC0; }
+}

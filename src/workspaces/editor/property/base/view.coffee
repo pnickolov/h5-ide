@@ -92,32 +92,6 @@ define [ 'constant',
             else
                 $('.disabled-event-layout').remove()
 
-        checkResName : ( $input, type )->
-            if not $input.length
-                $input = $( $input )
-
-            name = $input.val()
-
-            if not type then type = name
-
-            if name && !MC.validate( 'awsName',  name )
-                error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
-
-            if not error and @model.isNameDup( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if not error and @model.isOldName( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if not error and @model.isReservedName( name )
-                error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
-
-            if name.indexOf("elbsg-") is 0
-                error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
-
-            $input.parsley 'custom', ()-> error
-            $input.parsley 'validate'
-
         _load : () ->
             @__clearTrash()
             @__addToTrash @
@@ -178,7 +152,7 @@ define [ 'constant',
                 resUID = @model.get 'uid'
                 if resUID
                     resComp = Design.instance().component(resUID)
-                    if resComp and resComp.type is constant.RESTYPE.SG
+                    if resComp and (resComp.type is constant.RESTYPE.SG or resComp.type is constant.RESTYPE.DBINSTANCE)
                         return null
 
                 # all other property

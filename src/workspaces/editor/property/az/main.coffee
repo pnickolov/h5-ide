@@ -6,18 +6,22 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
 
     AZModule = PropertyModule.extend {
 
-        handleTypes : "Stack:" + constant.RESTYPE.AZ
+        handleTypes : constant.RESTYPE.AZ
 
         initStack : ()->
-            # Quick hack.
-            # In AppEdit, AZ's property will be opened.
-            # Throw an error to do nothing.
-            if Design.instance().modeIsAppEdit()
-                throw new Error("Cannot open az property panel in AppEdit mode.")
-
             @model = model
             @view  = view
-            null
+            @view.isAppEdit = false
+            return
+
+        initApp : ()-> false
+
+        initAppEdit : ()->
+            @model = model
+            @view  = view
+            @view.isAppEdit = true
+            return
+
     }
 
     null

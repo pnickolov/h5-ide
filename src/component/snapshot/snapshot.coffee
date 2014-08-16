@@ -16,7 +16,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @trigger 'datachange', @
 
         remove: ()->
-            @.isRemoved = ture
+            @.isRemoved = true
             Backbone.View::remove.call @
 
         render: ()->
@@ -229,7 +229,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             if result.error
                 notification 'error', "Create failed because of: "+result.msg
                 return false
-            notification 'info', "New DHCP Option is created successfully!"
+            notification 'info', "New Snapshot is created successfully!"
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->

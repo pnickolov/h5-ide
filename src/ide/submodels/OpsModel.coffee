@@ -119,49 +119,56 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         d.resolve @
         return d.promise
 
-      self = @
-      if @get("sampleId")
-        sampleId = @get("sampleId")
-        return ApiRequest('stackstore_fetch_stackstore', {
-          sub_path: "master/stack/#{sampleId}/#{sampleId}.json"
-        }).then (result) ->
-          try
-            j = JSON.parse( result )
-            delete j.id
-            delete j.signature
-            if not self.collection.isNameAvailable( j.name )
-              j.name = self.collection.getNewName( j.name )
-            self.attributes.region = j.region
-            self.__setJsonData j
-          catch e
-            j = null
-            self.attributes.region = "us-east-1"
-            self.__initJsonData()
+      @__fjdTemplate( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 
-          if j
-            try
-              self.set "name", j.name
-            catch e
+    __fjdTemplate : ( self )->
+      sampleId = @get("sampleId")
+      if not sampleId then return
 
-          self
+      ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{sampleId}/#{sampleId}.json" })
+      .then (result) ->
+        try
+          j = JSON.parse( result )
+          delete j.id
+          delete j.signature
+          if not self.collection.isNameAvailable( j.name )
+            j.name = self.collection.getNewName( j.name )
+          self.attributes.region = j.region
+          self.__setJsonData j
+        catch e
+          j = null
+          self.attributes.region = "us-east-1"
+          self.__initJsonData()
 
-      else if @isImported()
-        return CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
-          json = self.generateJsonFromRes()
-          self.__setJsonData json
-          self.attributes.name = json.name
-          self
+        if j then self.set "name", j.name
+        self
 
-      else if @isStack()
-        return ApiRequest("stack_info", {
-          region_name : @get("region")
-          stack_ids   : [@get("id")]
-        }).then (ds)-> self.__setJsonData( ds[0] )
-      else
-        return ApiRequest("app_info", {
-          region_name : @get("region")
-          app_ids     : [@get("id")]
-        }).then (ds)-> self.__setJsonData( ds[0] )
+    __fjdImport : ( self )->
+      if not @isImported() then return
+
+      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+
+    __onFjdImported : ()->
+      json = @generateJsonFromRes()
+      @__setJsonData json
+      @attributes.name = json.name
+      @
+
+    __fjdStack : ( self )->
+      if not @isStack() then return
+      ApiRequest("stack_info", {
+        region_name : @get("region")
+        stack_ids   : [@get("id")]
+      }).then (ds)-> self.__setJsonData( ds[0] )
+
+    __fjdApp : ( self )->
+      if not @isApp() then return
+      ApiRequest("app_info", {
+        region_name : @get("region")
+        app_ids     : [@get("id")]
+      }).then (ds)-> self.__setJsonData( ds[0] )
 
     __setJsonData : ( json )->
 
@@ -209,25 +216,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if @attributes.name isnt json.name
         @set "name", json.name
       @
-
-    generateJsonFromRes : ()->
-      res = CloudResources.getAllResourcesForVpc( @get("region"), @getVpcId(), @__jsonData )
-      if @__jsonData
-        c = @__jsonData.component
-        l = @__jsonData.layout
-        delete @__jsonData.component
-        delete @__jsonData.layout
-        json = $.extend true, {}, @__jsonData
-        @__jsonData.component = c
-        @__jsonData.layout = l
-      else
-        json = @__createRawJson()
-
-      json.component = res.component
-      json.layout    = res.layout
-      json.name      = @get("name") || res.theVpc.name
-
-      json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->
@@ -378,7 +366,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw err
 
     # Terminate the app, returns a promise
-    terminate : ( force = false )->
+    terminate : ( force = false , create_db_snapshot = false)->
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
@@ -390,6 +378,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id      : @get("id")
         app_name    : @get("name")
         flag        : force
+        create_snapshot: create_db_snapshot
       }).then ()->
         if force then self.__destroy()
         return
@@ -488,12 +477,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @__saveAppDefer.promise.then ()->
         self.__jsonData = newJson
         self.attributes.requestId = undefined
+        self.__saveAppDefer = null
+
         self.set {
           name  : newJson.name
           state : oldState
           usage : newJson.usage
         }
-        self.__saveAppDefer = null
         return
       , ( error )->
         self.__saveAppDefer = null

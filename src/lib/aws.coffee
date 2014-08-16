@@ -271,13 +271,16 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
             }
 
         # add self refrence for temp
-        # _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
-        #     resAttrDataAry.push {
-        #         name: "#{attr}",
-        #         value: "#{attr}",
-        #         ref: "#{attr}",
-        #         uid: "#{attr}"
-        #     }
+        allAttrStrAry = _.map resAttrDataAry, (refObj) ->
+            return refObj.name
+        _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
+            if attr not in allAttrStrAry
+                resAttrDataAry.push {
+                    name: "#{attr}",
+                    value: "#{attr}",
+                    ref: "#{attr}",
+                    uid: "self"
+                }
 
         # filter all self's AZ ref
         resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->

@@ -34,6 +34,7 @@ define ['constant'], (constant) ->
                 'DBINSTANCE.resource.ApplyImmediately': true
                 'ASG.resource.AutoScalingGroupARN': true
                 'ASG.resource.PolicyARN': true
+                'DBINSTANCE.resource.Endpoint': true
                 # 'VOL.resource.AttachmentSet.Device': true
             }
 

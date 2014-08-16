@@ -426,6 +426,10 @@
     > .group { stroke-width: 4px; }
     @extend .AWS-VPC-Subnet:hover;
   }
+  &.AWS-RDS-DBSubnetGroup {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-RDS-DBSubnetGroup:hover;
+  }
   &.AWS-AutoScaling-Group {
     > .asg-frame {
       stroke-width     : 4;

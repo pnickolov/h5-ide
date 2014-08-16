@@ -5849,7 +5849,7 @@ button#property-app-keypair {
 .AWS-RDS-DBSubnetGroup .group-label {
   fill: #498fe1;
   white-space: pre; }
-.AWS-RDS-DBSubnetGroup:hover .group {
+.AWS-RDS-DBSubnetGroup:hover .group, .droppable.AWS-RDS-DBSubnetGroup .group {
   stroke: #498fe1; }
 .canvas-view .AWS-RDS-DBSubnetGroup.selected .group {
   stroke: #498fe1;
@@ -5913,6 +5913,8 @@ button#property-app-keypair {
 .droppable.AWS-EC2-AvailabilityZone > .group {
   stroke-width: 4px; }
 .droppable.AWS-VPC-Subnet > .group {
+  stroke-width: 4px; }
+.droppable.AWS-RDS-DBSubnetGroup > .group {
   stroke-width: 4px; }
 .droppable.AWS-AutoScaling-Group > .asg-frame {
   stroke-width: 4;
@@ -6972,7 +6974,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {

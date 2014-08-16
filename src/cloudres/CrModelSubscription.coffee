@@ -50,7 +50,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         if arn is "pending confirmation" then arn = "PendingConfirmation"
 
         self.set {
-          id : CrSubscriptionModel.getIdFromData( res )
+          id : CrSubscriptionModel.getIdFromData( self.attributes )
           SubscriptionArn : arn
         }
         console.log "Created subscription resource", self

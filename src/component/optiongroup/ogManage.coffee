@@ -449,8 +449,9 @@ define [
             $ogName = @$('.og-name')
             $ogDesc = @$('.og-description')
 
-            $ogName.parsley 'custom', ( val ) ->
+            $ogName.val $ogName.val().toLowerCase()
 
+            $ogName.parsley 'custom', ( val ) ->
                 errTip = 'Option group name invalid'
                 if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                     return errTip

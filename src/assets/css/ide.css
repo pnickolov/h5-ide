@@ -5035,6 +5035,8 @@ button#property-app-keypair {
   height: 468px;
   font-size: 12px; }
 
+#modal-option-group .og-name {
+  text-transform: lowercase; }
 #modal-option-group .header .icon-info {
   float: right;
   margin-top: 4px;

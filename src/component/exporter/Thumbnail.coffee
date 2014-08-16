@@ -136,8 +136,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       svg = svg.replace("</svg>", "</g></svg>")
       insertTpl += """<g transform='translate(#{-origin.x} #{54-origin.y})'>
 <g transform='translate(#{origin.x} #{origin.y-54})'>
-  <rect fill='#3b1252' width='100%' height='4'></rect>
-  <rect fill='#723197' width='100%' height='50' y='4'></rect>
+  <rect fill='#383975' width='100%' height='54' y='0'></rect>
   <image #{Href}='/assets/images/ide/logo-t.png?v=2' x='10' y='11' width='116' height='35'></image>
   <text x='100%' y='40' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{time}</text>
   <text x='100%' y='24' fill='#fff' text-anchor='end' transform='translate(-10 0)'>#{name}</text>

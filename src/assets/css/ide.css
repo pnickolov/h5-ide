@@ -5187,6 +5187,8 @@ button#property-app-keypair {
   margin-bottom: 20px; }
   #modal-option-group .slidebox .port-sg input {
     width: 177px; }
+  #modal-option-group .slidebox .port-sg label {
+    margin-bottom: 20px; }
   #modal-option-group .slidebox .port-sg > div {
     padding-bottom: 8px; }
   #modal-option-group .slidebox .port-sg #error-sg-required {

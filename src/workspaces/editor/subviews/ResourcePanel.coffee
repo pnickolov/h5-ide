@@ -327,9 +327,9 @@ define [
 
       @sbg = @$el.find(".resource-item.subnetgroup")
       if _.keys( az ).length < 2
-        @sbg.toggleClass("disabled", true).data("tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
+        @sbg.toggleClass("disabled", true).attr("data-tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
       else
-        @sbg.toggleClass("disabled", false).data("tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
+        @sbg.toggleClass("disabled", false).attr("data-tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()

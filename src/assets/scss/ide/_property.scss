@@ -361,7 +361,16 @@
 }
 
 .apply-immediately-section {
-	line-height: 18px;
+	line-height : 18px;
+	background  : $base-p;
+	position    : relative;
+	i {
+		display  : inline-block;
+		position : absolute;
+	}
+	label {
+		color: #fff;
+	}
 }
 
 .option-group-category {

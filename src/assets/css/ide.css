@@ -6974,8 +6974,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {
@@ -6985,7 +6984,14 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   cursor: pointer; }
 
 .apply-immediately-section {
-  line-height: 18px; }
+  line-height: 18px;
+  background: #363b76;
+  position: relative; }
+  .apply-immediately-section i {
+    display: inline-block;
+    position: absolute; }
+  .apply-immediately-section label {
+    color: #fff; }
 
 .option-group-category {
   display: block;

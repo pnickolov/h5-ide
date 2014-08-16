@@ -17,6 +17,7 @@ define [
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
+  "UI.nanoscroller"
   "UI.dnd"
 ], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
@@ -142,7 +143,7 @@ define [
       @render()
 
     render : ()->
-      
+
       @$el.html( LeftPanelTpl.panel({}) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
@@ -156,6 +157,8 @@ define [
 
       @updateDisableItems()
       @renderReuse()
+
+      @$el.find(".nano").nanoScroller()
       return
 
     resourceListSortSelectRdsEvent : (event) ->
@@ -371,15 +374,15 @@ define [
       $body.outerHeight height
 
       if noAnimate
-        $accordion.addClass "expanded"
-        $expanded.removeClass "expanded"
+        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        $expanded.removeClass("expanded")
         return false
 
       $body.slideDown 200, ()->
-        $accordion.addClass "expanded"
+        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
 
       $expanded.children(".accordion-body").slideUp 200, ()->
-        $expanded.closest(".accordion-group").removeClass "expanded"
+        $expanded.closest(".accordion-group").removeClass("expanded")
       false
 
     recalcAccordion : () ->

@@ -39,19 +39,17 @@
         </ul>
       </nav>
     </header>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="accordion-body nano">
       <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
-      <ul class="scroll-content resource-list-ami"></ul>
+      <ul class="nano-content resource-list-ami"></ul>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="accordion-body nano">
       <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
-      <div class="scroll-content">
+      <div class="nano-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
         <ul class="resource-list-snapshot">
           <li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
@@ -67,17 +65,15 @@
           </div>
         </div>
         <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
-        <div class="resource-list-empty resource-list-snapshot-empty"></div>
       </div>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
-    <div class="accordion-body scroll-wrap scrollbar-auto-hide">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="accordion-body nano">
       <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
-      <div class="scroll-content">
+      <div class="nano-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
         <ul class="resource-list-rds"></ul>
         <div class="resource-list-head">
@@ -92,7 +88,6 @@
           </div>
         </div>
         <ul class="resource-list-rds-snapshot resource-list-rds-snapshot-exist"></ul>
-        <div class="resource-list-empty resource-list-rds-snapshot-empty"></div>
       </div>
     </div>
   </section>
@@ -107,20 +102,17 @@
 
   <section class='accordion-group'>
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
-    <article class="accordion-body scroll-wrap scrollbar-auto-hide">
-      <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-      <ul class="scroll-content">
-        <li class="tooltip resource-item rtb" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
+    <ul class="accordion-body">
+      <li class="tooltip resource-item rtb" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
 
-        <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
+      <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
 
-        <li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
+      <li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
 
-        <li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
+      <li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
 
-        <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
-      </ul>
-    </article>
+      <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+    </ul>
   </section>
 </div>
 

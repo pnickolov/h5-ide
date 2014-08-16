@@ -49,8 +49,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       svg = @canvas.svg
 
       svgEl = svg.group().add([
-        svg.rect( 129, 129 ).move(1,1).radius(5).classes("group")
+        svg.rect( 129, 129 ).move(1,1).radius(5).classes("asg-group")
         svg.use("asg_frame", true).classes("asg-frame")
+        svg.use("asg_prompt", true).classes("asg-prompt")
         # dragger
         svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
         svg.plain("").move(4,14).classes('group-label')

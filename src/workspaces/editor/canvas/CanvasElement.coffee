@@ -81,8 +81,12 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
     portDirection : ( portName )->
       if this.portDirMap then this.portDirMap[ portName ] else null
 
-    portPosition : ( portName )->
-      if this.portPosMap then this.portPosMap[ portName ] else null
+    portPosition : ( portName, isAtomic )->
+      if not this.portPosMap then return null
+      p = this.portPosMap[ portName ]
+      if isAtomic and p.length >= 5
+        return [ p[3], p[4], p[2] ]
+      p
 
     hover    : ( evt )-> CanvasManager.addClass(cn.$el, "hover") for cn in @connections(); return
     hoverOut : ( evt )-> CanvasManager.removeClass(cn.$el, "hover") for cn in @connections(); return
@@ -230,7 +234,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
       el  = svg.group()
 
       el.add([
-        svg.rect(width, height).radius(5).classes("node-background")
+        svg.rect(width-1, height-1).move(0.5,0.5).radius(5).classes("node-background")
         svg.image( MC.IMG_URL + option.image, option.imageW, option.imageH ).move( option.imageX, option.imageY )
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\./g, "-") )
 
@@ -465,6 +469,61 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
     updateConnections : ()-> cn.update() for cn in @connections(); return
 
+    applyGeometry : ( x, y, width, height )->
+      if x isnt undefined or y isnt undefined
+        @model.set { x : x, y : y }
+        @$el[0].instance.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
+
+      if @isGroup() and width isnt undefined and height isnt undefined
+        @model.set { width : width, height : height }
+
+        # ensure sticky
+        for ch in @children( true )
+          if ch.sticky then ch.ensureStickyPos()
+
+      width  = ( width  || @model.get("width")  ) * CanvasView.GRID_WIDTH
+      height = ( height || @model.get("height") ) * CanvasView.GRID_HEIGHT
+
+      pad  = 10
+      pad2 = 20
+
+      ports = []
+
+      for ch in @$el[0].instance.children()
+
+        classes = ch.classes()
+
+        if classes.indexOf("group") >= 0
+          ch.size( width, height )
+        else if classes.indexOf("top") >= 0
+          ch.size( width - pad2, pad  ).x(pad)
+        else if classes.indexOf("left") >= 0
+          ch.size( pad, height - pad2 ).y(pad)
+        else if classes.indexOf("right") >= 0
+          ch.size( pad, height - pad2 ).move(width - pad, pad)
+        else if classes.indexOf("bottom") >= 0
+          ch.size( width - pad2, pad  ).move(pad, height - pad)
+        else if classes.indexOf("top-right") >= 0
+          ch.x(width - pad)
+        else if classes.indexOf("bottom-left") >= 0
+          ch.y(height - pad)
+        else if classes.indexOf("bottom-right") >= 0
+          ch.move(width - pad, height - pad)
+        else if classes.indexOf("port") >= 0
+          ports.push ch
+
+      # Update groups port
+      for p in ports
+        name = p.attr("data-alias") or p.attr("data-name")
+        if name
+          pos = @portPosition( name )
+          if pos then p.move( pos[0], pos[1] )
+
+      cn.update() for cn in @connections()
+
+
+      return
+
   }, {
 
     isDirectParentType : ( type )-> true
@@ -489,10 +548,13 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
   }
 
   CanvasElement.constant =
-    PORT_RIGHT_ANGLE  : 0
-    PORT_UP_ANGLE     : 90
-    PORT_LEFT_ANGLE   : 180
-    PORT_DOWN_ANGLE   : 270
+    PORT_4D_ANGLE    : -1
+    PORT_2D_H_ANGLE  : -2
+    PORT_2D_V_ANGLE  : -3
+    PORT_RIGHT_ANGLE : 0
+    PORT_UP_ANGLE    : 90
+    PORT_LEFT_ANGLE  : 180
+    PORT_DOWN_ANGLE  : 270
 
   CanvasElement.setCanvasViewClass = ( c )-> CanvasView = c; return
 

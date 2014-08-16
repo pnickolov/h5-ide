@@ -87,7 +87,7 @@
     });
     server.listen(port);
     if (autoOpen) {
-      open("http://127.0.0.1:" + port);
+      open("http://" + GLOBAL.gulpConfig.staticFileServer + ":" + port);
     }
     return server;
   };

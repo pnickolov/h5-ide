@@ -28,6 +28,7 @@ $dndDuration : .2s;
     float            : left;
     border-right     : 1px solid #000;
     border-bottom    : 1px solid #000;
+    color            : lighten($base-p, 20%);
 
     &:before {
       font-size  : 32px;
@@ -40,7 +41,7 @@ $dndDuration : .2s;
       background-color : #222;
       color            : #fff;
       span {
-        color: #148BE6;
+        color: #ccc;
       }
     }
 
@@ -54,6 +55,7 @@ $dndDuration : .2s;
       top        : 53px;
       text-align : center;
       width      : 80px;
+      color      : #999;
     }
   }
 }
@@ -78,27 +80,24 @@ $dndDuration : .2s;
   background-color: transparent;
 }
 
-.elb-asg {
-  .resource-item {
-    height: 5em;
-  }
-}
-
-.resource-list-asg .resource-item {
-  height: 3em;
-}
-
 .resource-list-sort-select {
-  margin-top: -6px;
+  margin-top: -5px;
   float: right;
   width: 84px;
   margin-right: -7px;
+
   .selection {
-    padding-right: 18px;
-    text-align: right;
-    box-shadow: none;
-    border: none;
-    background: transparent;
+    padding-right : 18px;
+    text-align    : right;
+    box-shadow    : none;
+    border        : none;
+    background    : transparent;
+    color         : #ddd;
+
+    &:hover {
+      background: transparent;
+      color: #eee;
+    }
   }
 }
 
@@ -111,8 +110,16 @@ $dndDuration : .2s;
   float: left;
 }
 
-.resource-list-snapshot {
-  // display: inline-block;
+.resource-list-ami {
+  position : relative;
+
+  .blank-slate {
+    position: absolute;
+    font-size  : 12px;
+    color      : #999;
+    text-align : center;
+    top : 40%;
+  }
 }
 
 .resource-item {
@@ -129,7 +136,7 @@ $dndDuration : .2s;
   overflow      : hidden;
   line-height   : 1.2em;
   color         : #eee;
-
+  position      : relative;
   background : transparent center 5px no-repeat;
 
   cursor: -moz-grab;
@@ -147,9 +154,17 @@ $dndDuration : .2s;
     background-color : transparent;
   }
 
+  &.instance {
+    position: relative;
+  }
+
   &.instance, &.dbinstance {
     padding-top : 5px;
     height      : 132px;
+  }
+  &.dbsnapshot {
+    padding-top : 5px;
+    height : 90px;
   }
 
   &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
@@ -164,8 +179,6 @@ $dndDuration : .2s;
   &.elb      { background-image: image-url('ide/icon/res-elb.png'); }
   &.snapshot { background-image: image-url('ide/icon/res-snapshot.png'); }
   &.subnetgroup { background-image: image-url('ide/icon/res-subnetg.png'); }
-
-  &.dbsnapshot { height: 30px; background-image : image-url('ide/icon/res-rdssnap.png'); }
 
   .resource-count {
     position      : absolute;
@@ -185,13 +198,9 @@ $dndDuration : .2s;
   &.disabled .resource-count {
     background : #999;
   }
-
-  .resource-icon-dbsnapshot {
-    margin-top : -50px;
-  }
 }
 
-.resource-icon-instance, .resource-icon-dbinstance {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top : 12px;
   height : 60px - 12px;
   background : image-url('ide/icon/res-instance.png') center no-repeat;
@@ -200,18 +209,6 @@ $dndDuration : .2s;
     padding-top : 28px;
     height      : 62px;
     position    : relative;
-  }
-
-  .resource-item.asg > & {
-    background    : #fff;
-    border-radius : 4px;
-    position      : absolute;
-
-    left        : 17px;
-    top         : 17px;
-    width       : 36px;
-    height      : 30px;
-    padding-top : 6px;
   }
 
   #DndItem.asg & {
@@ -234,9 +231,20 @@ $dndDuration : .2s;
   }
 }
 
-.resource-icon-dbinstance {
-  background-image : image-url('ide/icon/res-rds.png');
+.resource-item.asg > .resource-icon-instance {
+  background    : #fff;
+  border-radius : 4px;
+  position      : absolute;
+
+  left        : 17px;
+  top         : 17px;
+  width       : 36px;
+  height      : 30px;
+  padding-top : 6px;
 }
+
+.resource-icon-dbinstance { background-image : image-url('ide/icon/res-rds.png'); }
+.resource-icon-dbsnapshot { background-image : image-url('ide/icon/res-rdssnap.png'); }
 
 .ebs-size {
   margin-top  : -1.5em;
@@ -247,6 +255,7 @@ $dndDuration : .2s;
 .rds-snapshot-size {
   color       : #676767;
   line-height : 2em;
+  margin-top  : 2px;
 }
 
 .az-name {
@@ -284,7 +293,7 @@ $dndDuration : .2s;
           transition-property : line-height, padding-left, width, height, color;
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
-  &.elb, &.instance, &.eni, &.dbinstance { width:90px; height:90px; }
+  &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
 
   &.cgw {
     background-position: 10px center;
@@ -458,29 +467,36 @@ $dndDuration : .2s;
   }
 }
 
-.resource-select.selectbox .selection {
-  background        : #143553;
-  color             : #F3F3F3;
-  height            : 17px;
-  border            : none;
-  border-left       : 1px solid #161616;
-  border-radius     : 0;
-  padding           : 10px 20px 10px 10px;
-  -webkit-transition: background .2s ease-in-out;
-  -moz-transition   : background .2s ease-in-out;
-  -ms-transition    : background .2s ease-in-out;
-  -o-transition     : background .2s ease-in-out;
-  transition        : background .2s ease-in-out;
+.resource-select.selectbox {
+
+  .selection {
+    background    : $dark-p;
+    color         : #F3F3F3;
+    height        : 17px;
+    border        : none;
+    border-left   : 1px solid #161616;
+    border-radius : 0;
+    box-shadow    : none;
+
+    padding           : 10px 20px 10px 10px;
+    -webkit-transition: background .2s ease-in-out;
+    -moz-transition   : background .2s ease-in-out;
+    -ms-transition    : background .2s ease-in-out;
+    -o-transition     : background .2s ease-in-out;
+    transition        : background .2s ease-in-out;
+
+    &:after {
+      border-top-color: #fff;
+    }
+  }
+
+  .dropdown {
+    background: #4f4f4f;
+    border: 1px solid #333;
+  }
+
 }
 
-.resource-select.selectbox .selection:after {
-  border-top-color: #fff;
-}
-
-.resource-select.selectbox .dropdown {
-  background: #4f4f4f;
-  border: 1px solid #333;
-}
 
 .resource-list > li:hover .btn-fav-ami {
   display: block;
@@ -518,7 +534,7 @@ $dndDuration : .2s;
   border-radius: 0;
   z-index : 3;
 
-  & + .scroll-content {
+  & + .nano-content {
     padding-bottom : 30px;
     &:after {
       display : block;
@@ -531,26 +547,26 @@ $dndDuration : .2s;
 // Property Panel
 .OEPanelRight{
 
-  .property-switcher {
-    height        : 30px;
-    background    : #313131;
-    box-shadow    : 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-bottom : 1px solid #111;
-    border-left   : 1px solid #111;
-    padding       : 4px 0 5px;
-    overflow      : hidden;
+  .sidebar-title {
+    border-left : 1px solid darken($bg-p, 5%);
+    padding     : 0;
   }
 
-  .property-switcher .btn-toolbar {
-    width         : 124px;
-    padding       : 0 4px;
-    border-radius : 4px;
-    margin-right  : 5px;
+  .property-tab {
+    width  : 49%;
+    height : 39px;
+    cursor : pointer;
+    color  : #b0b0b0;
   }
+
 
   #btn-switch-property {
-    background : rgba(0,0,0,.4);
-    color      : #FEFEFE;
+    border-bottom : 3px solid $base-b;
+    color         : $base-b;
+  }
+
+  #btn-switch-state:hover {
+    color: #eee;
   }
 
   #btn-switch-state {
@@ -563,35 +579,38 @@ $dndDuration : .2s;
     }
 
     #btn-switch-property {
-      float        : left;
-      width        : auto;
-      background   : none;
-      text-align   : left;
-      padding-left : 10px;
-      cursor       : default;
+      color         : #b0b0b0;
+      border-bottom : 3px solid transparent;
+      float         : left;
+      width         : auto;
+      background    : none;
+      text-align    : left;
+      padding-left  : 10px;
+      cursor        : default;
     }
   }
 
   &.state {
     #btn-switch-property {
-      background: #313131;
-      color: #606060;
+      color: #b0b0b0;
+      border-bottom: 3px solid transparent;
       &:hover {
-        color      : #9F62D1;
-        background : rgba(0,0,0,.05);
+        color      : #eee;
       }
     }
 
     #btn-switch-state {
-      background : rgba(0,0,0,.4);
-      color      : #FEFEFE;
+      border-bottom: 3px solid $base-b;
+      color: $base-b;
     }
   }
 }
 
 .property-sidebar-title {
-  font-size   : 16px;
-  text-shadow : none;
+  font-size    : 13px;
+  text-shadow  : none;
+  padding-left : 10px;
+  color        : #999;
 
   height     : 32px;
   line-height: 32px;
@@ -599,7 +618,9 @@ $dndDuration : .2s;
   z-index    : 2;
   display    : block !important;
 
-  cursor : default;
+  cursor        : default;
+  box-shadow    : 0 1px 5px rgba(0,0,0,.3);
+  border-bottom : 1px solid #000;
 }
 
 .property-panel-wrapper {
@@ -608,13 +629,23 @@ $dndDuration : .2s;
   left       : 0;
   bottom     : 0;
   position   : absolute;
-  background : #313131; /* for zoomed out */
+  background : desaturate(lighten($bg-p, 2%),3%); /* for zoomed out */
 
   .scroll-wrap {
     position : absolute;
     top      : 33px;
     bottom   : 0;
     width    : 100%;
+  }
+}
+
+.accordion-body.nano {
+  padding : 0;
+  .nano-content {
+    overflow-x : hidden;
+    top        : 10px;
+    left       : 10px;
+    right      : 10px;
   }
 }
 

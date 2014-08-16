@@ -32,7 +32,7 @@ define [
             null
 
         initStack : ( uid )->
-            
+
             @view = view
             @model = model
             @view.resModel = Design.instance().component uid
@@ -55,7 +55,9 @@ define [
 
             @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
             @view = app_view
+            @view.model = @model
             @view.resModel = resModel
+            @view.isAppEdit = false
             null
 
         initAppEdit : ( uid ) ->
@@ -63,9 +65,16 @@ define [
             resModel = Design.instance().component uid
             @view = view
             @model = model
-            @view.isAppEdit = true
             @view.resModel = resModel
-            @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
+
+            originJson = Design.instance().__opsModel.getJsonData()
+            view.originComp = originJson.component[resModel.id]
+
+            if resModel.get('appId')
+                @view.isAppEdit = true
+                @view.appModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')
+            else
+                @view.isAppEdit = false
             null
 
         afterLoadAppEdit : ()->

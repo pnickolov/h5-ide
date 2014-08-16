@@ -43,7 +43,7 @@ define [
       ### env:debug:end ###
 
       $(window).on "beforeunload", @checkUnload
-      $(document).on 'keydown', @globalKeyEvent
+      $(window).on 'keydown', @globalKeyEvent
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE
@@ -54,7 +54,9 @@ define [
         return
 
       switch event.which
-        when 8 then return false
+        when 8
+          event.preventDefault()
+          return
         when 191
           modal MC.template.shortkey(), true
           return false

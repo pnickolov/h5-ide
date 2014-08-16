@@ -80,9 +80,12 @@ define ["ApiRequest", "./CrCollection", "./CrModel", "constant"], ( ApiRequest, 
             xml = $.xml2json( $.parseXML(dataXml[0]) )
 
             if self.trAwsXml then xml = self.trAwsXml( xml )
-            if self.parseFetchData and xml then xml = self.parseFetchData( xml )
+            if self.parseFetchData and xml then xml = self.parseFetchData( xml, regionId )
 
             for d in xml || EmptyArr
+              #append visopsTag
+              d.visopsTag = self.resolveTagSet d.tagSet
+
               if self.modelIdAttribute
                 d.id = d[ self.modelIdAttribute ]
                 delete d[ self.modelIdAttribute ]

@@ -3,10 +3,11 @@ define [
   "./CrCommonCollection"
   "./CrCollection"
   "./CrModel"
+  "./CrModelElb"
   "ApiRequest"
   "constant"
   "CloudResources"
-], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant, CloudResources )->
+], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, ApiRequest, constant, CloudResources )->
 
 
 
@@ -21,6 +22,7 @@ define [
 
     type  : constant.RESTYPE.ELB
     # modelIdAttribute : "LoadBalancerName"
+    model : CrElbModel
 
     trAwsXml : ( data )-> data.DescribeLoadBalancersResponse.DescribeLoadBalancersResult.LoadBalancerDescriptions?.member
     parseFetchData : ( elbs )->
@@ -347,8 +349,12 @@ define [
 
       instances
 
-    parseFetchData : ( data )->
+    parseFetchData : ( data, region )->
       for ins in data
+        if ins.tagSet
+          if ins.tagSet['aws:elasticmapreduce:instance-group-role'] or ins.tagSet['aws:elasticmapreduce:job-flow-id']
+            console.warn "ignore EMR instances"
+            continue
         ins.id = ins.instanceId
         #delete ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
@@ -360,14 +366,19 @@ define [
         ##sort blockDeviceMapping by deviceName
         if ins.blockDeviceMapping and ins.blockDeviceMapping.length > 1
           ins.blockDeviceMapping = ins.blockDeviceMapping.sort(MC.createCompareFn("deviceName"))
-
       data
 
-    parseExternalData: ( data ) ->
+    parseExternalData: ( data, region ) ->
       @convertNumTimeToString data
       @unifyApi data, @type
 
       for ins in data
+        #skip
+        if ins.tags
+          for tag in ins.tags
+            if tag.key is 'aws:elasticmapreduce:instance-group-role' or tag.key is 'aws:elasticmapreduce:job-flow-id'
+              console.warn "ignore EMR instances"
+              continue
         ins.id = ins.instanceId
         if ins.instanceState and ins.instanceState.name in [ "terminated", "shutting-down" ]
           continue
@@ -482,6 +493,7 @@ define [
         sp.id   = sp.PolicyARN
         sp.Name = sp.PolicyName
         #delete sp.PolicyName
+        sp.Cooldown = if sp.Cooldown then sp.Cooldown.toString() else ""
       data
   }
 

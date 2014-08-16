@@ -13,19 +13,23 @@
 
   > ul > li {
     float       : left;
-    height      : 38px;
-    line-height : 38px;
+    height      : 39px;
+    line-height : 39px;
+
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 
     color : #8b8b8b;
     background-color : #404040;
-    background-position : 8px 8px;
+    background-position : 4px 9px;
 
-    padding    : 0 12px 0 38px;
+    padding    : 0 0 0 32px;
 
     border        : 1px solid #010101;
     border-bottom : none;
+    border-left   : none;
     cursor        : default;
-    margin-left   : -1px;
 
     -webkit-transition: background-color .2s, box-shadow .2s;
     -moz-transition:    background-color .2s, box-shadow .2s;
@@ -50,10 +54,12 @@
     }
 
     .icon-close {
-      margin-left : 7px;
-      margin-top  : 11px;
-      height      : 17px;
-      line-height : 17px;
+      position    : absolute;
+      right       : 3px;
+      top         : 12px;
+      width       : 16px;
+      height      : 16px;
+      line-height : 16px;
       float       : right;
       visibility  : hidden;
       color       : #999;
@@ -70,11 +76,23 @@
     }
   }
 
-  .truncate { max-width : 160px; }
+  .truncate {
+    margin-right : 12px;
+  }
+}
+
+#ws-fixed-tabs {
+  border-left : 1px solid #010101;
 }
 
 #ws-tabs > li {
-  cursor : pointer !important;
+  position : relative;
+  cursor   : pointer !important;
+
+  .truncate {
+    display : block;
+    margin-right : 22px;
+  }
 }
 
 #header {

@@ -9,10 +9,12 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
 
     __componentTipMap =
         'AWS.EC2.Instance': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_INSTANCE
-        'AWS.AutoScaling.LaunchConfiguration': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG
+        'AWS.AutoScaling.Group': lang.ide.TA_MSG_ERROR_STATE_EDITOR_INEXISTENT_ASG
 
     __getCompTip = ( compType, str1, str2, str100 ) ->
-        tip = __componentTipMap[ arguments[ 0 ] ]
+        type = arguments[ 0 ]
+        type = 'AWS.AutoScaling.Group' if type is 'AWS.AutoScaling.LaunchConfiguration'
+        tip = __componentTipMap[ type ]
 
         sprintf.apply @, [].concat tip, Array.prototype.slice.call arguments, 1
 

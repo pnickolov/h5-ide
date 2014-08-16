@@ -26,11 +26,16 @@ define ['constant'], (constant) ->
                 '*.resource.GroupDescription': true
                 '*.resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
                 '*.resource.Attachment.AttachmentId': true
-                #DBINSTANCE
-                #'DBINSTANCE.resource.Iops': true
+                # DBINSTANCE
+                # 'DBINSTANCE.resource.Iops': true
                 # 'DBINSTANCE.resource.MasterUserPassword': true
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true
+                'DBINSTANCE.resource.ApplyImmediately': true
+                'ASG.resource.AutoScalingGroupARN': true
+                'ASG.resource.PolicyARN': true
+                'DBINSTANCE.resource.Endpoint': true
+                # 'VOL.resource.AttachmentSet.Device': true
             }
 
         if not option.noDiffArrayAttrMap

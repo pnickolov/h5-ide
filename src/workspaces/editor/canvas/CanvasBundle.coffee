@@ -1,10 +1,13 @@
 
 define [
+  "./CanvasManager"
   "./CanvasView"
   "./CanvasViewDnd"
   "./CanvasViewConnect"
   "./CanvasViewGResizer"
-  "./CanvasManager"
+  "./CanvasViewLayout"
+
+  "./CanvasViewAwsLayout"
 
   "./CeVpc"
   "./CeAz"
@@ -24,4 +27,4 @@ define [
   "./CeDbInstance"
   "./CeDbSubnetGroup"
 
-], ( CanvasView )-> CanvasView
+], ( CanvasManager, CanvasView )-> CanvasView

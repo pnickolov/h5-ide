@@ -1,5 +1,5 @@
 
-define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./CanvasManager", "Design" ], ( CanvasView, constant, lang, VolumePopup, CanvasManager, Design )->
+define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./CanvasManager", "Design" ], ( CanvasView, constant, lang, VolumePopup, CanvasManager, Design )->
 
   isPointInRect = ( point, rect )->
     rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y
@@ -19,8 +19,8 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
         @svg.group().classes("layer_vpc")
         @svg.group().classes("layer_az")
         @svg.group().classes("layer_subnet")
-        @svg.group().classes("layer_line")
         @svg.group().classes("layer_asg")
+        @svg.group().classes("layer_line")
         @svg.group().classes("layer_sgline")
         @svg.group().classes("layer_node")
       ])
@@ -74,9 +74,15 @@ define [ "./CanvasBundle", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Can
       if @isReadOnly() then return false
 
       if @__selectedVolume
+        volume = @design.component( @__selectedVolume )
+        res = volume.isRemovable()
+        if _.isString( res )
+          notification "error", res
+          return
+
         s = @__selectedVolume
         @__selectedVolume = null
-        @design.component( s ).remove()
+        volume.remove()
         nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
         if nextVol.length
           nextVol.trigger("mousedown")

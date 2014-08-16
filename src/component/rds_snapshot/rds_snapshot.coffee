@@ -287,7 +287,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage RDS Snapshots in #{regionName}"
+            title: "Manage DB Snapshots in #{regionName}"
             slideable: true
             context: that
             buttons: [

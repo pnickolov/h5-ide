@@ -2,7 +2,6 @@
 .canvas-view {
   position   : relative;
   font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
-  min-height : 100%;
   background : #fff image-url('ide/grid_x1.png');
 
   &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }
@@ -251,8 +250,12 @@
 }
 .asg-frame {
   fill: #16B4F9;
-  font-size: 12px;
   cursor: default;
+  pointer-events:none;
+}
+#asg_prompt {
+  fill: #16B4F9;
+  font-size: 12px;
   pointer-events:none;
 }
 
@@ -270,6 +273,9 @@
   .replica-bg {
     stroke : #b2bccc;
     fill   : #fff;
+    -webkit-transform : translate(0.5px,0.5px);
+       -moz-transform : translate(0.5px,0.5px);
+            transform : translate(0.5px,0.5px);
   }
 
   &:hover {
@@ -287,7 +293,7 @@
 
 
 .AWS-AutoScaling-Group, .ExpandedAsg {
-  .group {
+  .asg-group {
     fill:#f6faf9;
     stroke:#16B4F9;
     stroke-dasharray: 6, 4;
@@ -305,8 +311,8 @@
     }
   }
 }
-.AWS-AutoScaling-LaunchConfiguration ~ .asg-frame {
-  font-size:0px;
+.AWS-AutoScaling-LaunchConfiguration ~ .asg-prompt {
+  display : none;
 }
 
 #sbg_info {
@@ -341,7 +347,7 @@
 
 .line {
   cursor: pointer;
-  stroke-linejoin: round;
+  stroke-linecap: round;
   fill: none;
   stroke-width: 2px;
 
@@ -371,6 +377,12 @@
 
 .RTB_Route {
   stroke: #6DAEFE;
+  stroke-width: 2px;
+  stroke-linecap: square;
+
+  &:hover {
+    stroke-width:4px;
+  }
   .dash-line {
     stroke: #9FC9FD;
     stroke-dasharray: 10px 10px;
@@ -390,7 +402,8 @@
 .SgRuleLine {
   stroke: #6DAEFE;
   opacity: 0.2;
-  stroke-dasharray: 10,5;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square;
 }
 
 .fill-line {
@@ -412,6 +425,10 @@
   &.AWS-VPC-Subnet {
     > .group { stroke-width: 4px; }
     @extend .AWS-VPC-Subnet:hover;
+  }
+  &.AWS-RDS-DBSubnetGroup {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-RDS-DBSubnetGroup:hover;
   }
   &.AWS-AutoScaling-Group {
     > .asg-frame {
@@ -453,7 +470,7 @@ marker {
   fill:none;
 }
 
-g.shadow { opacity : 0.8; }
+g.shadow { opacity : 0.8; pointer-events: none; }
 
 
 // Popup
@@ -490,16 +507,17 @@ g.shadow { opacity : 0.8; }
 
   &.pp-left {
     margin-left : -10px;
+
     &:before, &:after {
       left     : auto;
-      right    : -20px;
+      right    : -10px;
       border-left-color : #fff;
+      border-right : none;
     }
     &:before {
-      border-right-color : transparent;
       border-left-color : #ccc;
       left  : auto;
-      right : -21px;
+      right : -11px;
     }
   }
 

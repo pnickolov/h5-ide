@@ -29,6 +29,7 @@
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
 #      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal"]
+#      compact: if modal-body has padding.                              [Default: false]
 #   Event:
 #       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
 #   Method:
@@ -51,7 +52,7 @@
 #           width: "600px"
 #
 modalGroup = []
-define [], ()->
+define ['backbone'], (Backbone)->
     class Modal
         constructor: (@option)->
             _.extend @, Backbone.Events
@@ -82,7 +83,7 @@ define [], ()->
             if typeof @option.template is "object"
                 body.html(@option.template)
             if @option.maxHeight then body.css("max-height":@option.maxHeight)
-            if @option.width then body.parent().css( width : @option.width )
+            if @option.width then body.parent().width( @option.width )
             @tpl.appendTo @wrap
             modalGroup.push(@)
             if modalGroup.length == 1 or @option.mode is "panel"
@@ -195,8 +196,8 @@ define [], ()->
               return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @option.width?.toLowerCase().replace('px','') || @tpl.width()
-            height= @option.height?.toLowerCase().replace('px','') || @tpl.height()
+            width = @option.width?.toString()?.toLowerCase().replace('px','') || @tpl.width()
+            height= @option.height?.toString()?.toLowerCase().replace('px','') || @tpl.height()
             top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
             if slideIn
@@ -288,4 +289,10 @@ define [], ()->
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300
+        find: (selector)->
+          @tpl.find(selector)
+        $   :(selector)->
+          @tpl.find(selector)
+        setTitle: (title)->
+          @tpl.find(".modal-header h3").text(title)
     Modal

@@ -1,4 +1,5 @@
 @import "compass";
+@import "color";
 
 $LeftPanelWidth       : 246px;
 $RightPanelWidth      : 280px;
@@ -27,12 +28,11 @@ $BottomPanelHeight    : 24px;
   position   : absolute;
   height     : 100%;
   z-index    : 3;
-  background : #313131;
+  background : $bg-p;
 }
 
 .OEPanelLeft {
   width      : $LeftPanelWidth;
-  background : #242424;
   left       : 0;
 
   @include slide(left);
@@ -46,6 +46,10 @@ $BottomPanelHeight    : 24px;
     > .HideOEPanelLeft:before {
       content : "\F124";
     }
+  }
+
+  & ::selection {
+    background : transparent;
   }
 }
 
@@ -70,6 +74,10 @@ $BottomPanelHeight    : 24px;
   &.no-transition {
     @include transition( none );
   }
+
+  &::selection {
+    background: transparent;
+  }
 }
 
 .OEMiddleWrap {
@@ -91,7 +99,7 @@ $BottomPanelHeight    : 24px;
   height     : $TopPanelHeight;
   width      : 100%;
   min-width  : 610px;
-  background : #313131;
+  background : lighten($bg-p, 5%);
 }
 
 .OEPanelBottom {
@@ -99,7 +107,7 @@ $BottomPanelHeight    : 24px;
   bottom   : 0;
   width    : 100%;
 
-  background  : #505050;
+  background  : lighten($bg-p, 5%);
   height      : $BottomPanelHeight;
   line-height : $BottomPanelHeight;
 
@@ -107,9 +115,9 @@ $BottomPanelHeight    : 24px;
   font-size : 12px;
   z-index   : 3;
 
-  box-sizing : border-box;
-  // box-shadow : inset 0 1px 0 rgba(255,255,255,.1),inset -1px 0 0 rgba(255,255,255,.1),inset 1px 0 0 rgba(255,255,255,.1);
-  border-top : 1px solid #212121;
+  box-sizing    : border-box;
+  border-top    : 1px solid darken($bg-p, 5%);
+  border-right  : 1px solid darken($bg-p, 5%);
 
   ~ .OEPanelCenter {
     bottom : $BottomPanelHeight;
@@ -124,8 +132,9 @@ $BottomPanelHeight    : 24px;
   height   : auto;
 
   .nano-pane {
-    display : block;
-    opacity : 1;
+    display    : block;
+    opacity    : 1;
+    background : none;
   }
 }
 
@@ -149,12 +158,12 @@ $BottomPanelHeight    : 24px;
   color       : #b0b0b0;
   text-shadow : 0 1px #333;
 
-  background-color : #313131;
-  border-bottom    : 1px solid #202020;
+  background-color : lighten($bg-p, 5%);
+  border-bottom    : 1px solid darken($bg-p, 5%);
   box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
 
   &.open .menu-manage-shard-res {
-      color            : #9F62D1;
+      color            : lighten($base-p,20%);
       background-color : rgba(0, 0, 0, 0.3);
   }
 
@@ -166,7 +175,7 @@ $BottomPanelHeight    : 24px;
     text-align : center;
 
     &:hover {
-      color            : #9F62D1;
+      color            : lighten($base-p,20%);
       background-color : rgba(0, 0, 0, 0.3);
     }
 
@@ -227,5 +236,3 @@ $BottomPanelHeight    : 24px;
     z-index : 6;
   }
 }
-@import "sidebar";
-@import "canvas";

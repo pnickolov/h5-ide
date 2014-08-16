@@ -1,5 +1,5 @@
 
-define ["Design"], ( Design )->
+define [ "Design", "event" ], ( Design, ide_event )->
 
   Design.debug = ()->
     componentMap = Design.instance().__componentMap
@@ -32,10 +32,10 @@ define ["Design"], ( Design )->
     checkedMap
 
   Design.debug.selectedComp = ()->
-    Design.instance().component( $("#svg_canvas").find(".selected").attr("id") )
+    App.workspaces.getAwakeSpace().getSelectedComponent()
 
   Design.debug.selectedCompState = ()->
-    comp = Design.instance().component( $("#svg_canvas").find(".selected").attr("id") ).serialize()[1]
+    comp = Design.debug.selectedComp()?.serialize()[1]
     if comp and comp.component and comp.component.state
       '{\n\t"component": {\n\t\t"init" : {\n\t\t\t"state": ' + JSON.stringify(comp.component.state) + '\n\t\t}\n\t}\n}\n'
     else
@@ -84,6 +84,9 @@ define ["Design"], ( Design )->
         console.log "Invalid design"
       null
     null
+
+  Design.debug.autoLayout = ()->
+    App.workspaces.getAwakeSpace().view.canvas.autoLayout()
 
 
   window.d    = ()-> Design.instance()

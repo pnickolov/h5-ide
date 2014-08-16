@@ -223,60 +223,14 @@ define [ "./CanvasView" ], ( CanvasView )->
     false
 
   __updateGroupEl = ( data )->
-    model = data.item.model
     if data.move
-      model.attributes.x =  data.target.x1
-      model.attributes.y =  data.target.y1
-      data.$svgel[0].instance.move( data.target.x1 * CanvasView.GRID_WIDTH, data.target.y1 * CanvasView.GRID_HEIGHT )
+      x = data.target.x1
+      y = data.target.y1
 
-    width  = model.attributes.width  = data.target.x2 - data.target.x1
-    height = model.attributes.height = data.target.y2 - data.target.y1
-    width  *= CanvasView.GRID_WIDTH
-    height *= CanvasView.GRID_HEIGHT
+    width  = data.target.x2 - data.target.x1
+    height = data.target.y2 - data.target.y1
 
-    pad  = 10
-    pad2 = 20
-
-    ports = []
-
-    for ch in data.$svgel[0].instance.children()
-
-      classes = ch.classes()
-
-      if classes.indexOf("group") >= 0
-        ch.size( width, height )
-      else if classes.indexOf("top") >= 0
-        ch.size( width - pad2, pad  ).x(pad)
-      else if classes.indexOf("left") >= 0
-        ch.size( pad, height - pad2 ).y(pad)
-      else if classes.indexOf("right") >= 0
-        ch.size( pad, height - pad2 ).move(width - pad, pad)
-      else if classes.indexOf("bottom") >= 0
-        ch.size( width - pad2, pad  ).move(pad, height - pad)
-      else if classes.indexOf("top-right") >= 0
-        ch.x(width - pad)
-      else if classes.indexOf("bottom-left") >= 0
-        ch.y(height - pad)
-      else if classes.indexOf("bottom-right") >= 0
-        ch.move(width - pad, height - pad)
-      else if classes.indexOf("port") >= 0
-        ports.push ch
-
-    # Update groups port
-    if ports.length
-      for p in ports
-        name = p.attr("data-alias") or p.attr("data-name")
-        if name
-          pos = data.item.portPosition( name )
-          if pos
-            p.move( pos[0], pos[1] )
-
-      cn.update() for cn in data.item.connections()
-
-    # Todo : Update sticky item.
-    for ch in data.item.children( true )
-      if ch.sticky
-        ch.ensureStickyPos()
+    data.item.applyGeometry( x, y, width, height )
     return
 
   __resizeUp = ( evt )->

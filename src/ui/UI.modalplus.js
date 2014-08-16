@@ -3,7 +3,7 @@
 
   modalGroup = [];
 
-  define([], function() {
+  define(['backbone'], function(Backbone) {
     var Modal;
     Modal = (function() {
       function Modal(option) {
@@ -51,9 +51,7 @@
           });
         }
         if (this.option.width) {
-          body.parent().css({
-            width: this.option.width
-          });
+          body.parent().width(this.option.width);
         }
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
@@ -237,15 +235,15 @@
       };
 
       Modal.prototype.resize = function(slideIn) {
-        var height, left, top, width, windowHeight, windowWidth, _ref, _ref1;
+        var height, left, top, width, windowHeight, windowWidth, _ref, _ref1, _ref2, _ref3;
         if (this.option.mode === 'panel') {
           this.trigger('resize', this);
           return false;
         }
         windowWidth = $(window).width();
         windowHeight = $(window).height();
-        width = ((_ref = this.option.width) != null ? _ref.toLowerCase().replace('px', '') : void 0) || this.tpl.width();
-        height = ((_ref1 = this.option.height) != null ? _ref1.toLowerCase().replace('px', '') : void 0) || this.tpl.height();
+        width = ((_ref = this.option.width) != null ? (_ref1 = _ref.toString()) != null ? _ref1.toLowerCase().replace('px', '') : void 0 : void 0) || this.tpl.width();
+        height = ((_ref2 = this.option.height) != null ? (_ref3 = _ref2.toString()) != null ? _ref3.toLowerCase().replace('px', '') : void 0 : void 0) || this.tpl.height();
         top = (windowHeight - height) * 0.4;
         left = (windowWidth - width) / 2;
         if (slideIn) {
@@ -397,6 +395,18 @@
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 300);
+      };
+
+      Modal.prototype.find = function(selector) {
+        return this.tpl.find(selector);
+      };
+
+      Modal.prototype.$ = function(selector) {
+        return this.tpl.find(selector);
+      };
+
+      Modal.prototype.setTitle = function(title) {
+        return this.tpl.find(".modal-header h3").text(title);
       };
 
       return Modal;

@@ -10,11 +10,20 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @collection = CloudResources constant.RESTYPE.DBPG, Design.instance().region()
       @listenTo @collection, 'update', (@onUpdate.bind @)
       @listenTo @collection, 'change', (@onUpdate.bind @)
+      @listenTo @collection, 'remove', (@onRemove.bind @)
+      @listenTo @collection, 'add',    (@onAdd.bind @)
       @
 
     onUpdate: ->
       @initManager()
       @trigger 'datachange', @
+    onAdd: ->
+      @initDropdown()
+    onRemove: ->
+      @initDropdown()
+      if @resModel and  not (@collection.get @resModel.get('pgName'))
+        @resModel.setDefaultParameterGroup( @resModel.get 'engineVersion' )
+      @dropdown?.setSelection @resModel.get('pgName')
 
     remove: ()->
       Backbone.View::remove.call @
@@ -154,8 +163,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     renderEditTpl: (parameters, tpl, option)->
       that = @
       data = if parameters.toJSON then parameters.toJSON() else parameters
+      isNumberString = (e)->
+        !isNaN(parseFloat(e)) && isFinite(e)
+      isMixedValue = (e)->
+        isMixed = false
+        tempArray = e.split(",")
+        _.each tempArray, (value)->
+          range = value.split('-')
+          if range.length = 2 and isNumberString(range[0]) and isNumberString(range[1])
+            isMixed = true
+        isMixed
       _.each data, (e)->
-        if e.AllowedValues?.split(',').length > 1
+        if e.AllowedValues?.split(',').length > 1 and not isMixedValue(e.AllowedValues)
           e.inputType = "select"
           e.selections = e.AllowedValues.split(",")
           return
@@ -180,7 +199,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           (e.ParameterName.toLowerCase().indexOf option.filter.toLowerCase()) > -1
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
-      that.manager.setSlide tpl data:data
+      console.log "Rendering...."
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>div').height() - 76}
+      $(".slidebox").css('max-height', "none")
+      @manager.on "slideup", ->
+        $('.slidebox').removeAttr("style")
+      $(window).on 'resize', ->
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>div').height() - 67)
+        .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
       that = @
@@ -214,7 +240,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $("[data-action='preview']").prop 'disabled', false
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
-          if e.isValidValue(this.value) or this.value is ""
+          if e.isValidValue(this.value) or this.value is "" or (e.isFunctionValue(this.value) and not e.isNumber(this.value))
             $(this).removeClass "parsley-error"
             if this.value isnt "" then e.set('newValue', this.value)
           else
@@ -252,11 +278,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       parameters.groupModel.modifyParams(changeMap).then afterModify, afterModify
 
     afterModify: (result)->
-      @manager.cancel()
       if (result?.error)
-        notification 'error', "Parameter Group updated failed because of "+result?.msg
+        notification 'error', "Parameter Group updated failed because of "+(result?.awsResult || result?.awsErrorCode || result?.msg)
+        @switchAction()
         return false
       notification 'info', "Parameter Group is updated."
+      @manager.cancel()
 
     doAction: (action, checked)->
       @["do_"+action] and @["do_"+action]('do_'+action,checked)
@@ -353,6 +380,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         @renderNoCredential()
 
     renderDefault: ->
+      if not @dropdown then return false
       if not fetched
         @renderLoading()
         @collection.fetch().then =>
@@ -415,6 +443,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
       title: "Manage DB Parameter Group in #{regionName}"
       slideable: true
+      disableScroll: true
       context: that
       buttons: [
         {

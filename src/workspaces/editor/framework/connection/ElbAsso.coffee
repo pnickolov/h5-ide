@@ -38,7 +38,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
     hasAppUpdateRestriction : ()->
       elb = @getTarget( constant.RESTYPE.ELB )
 
-      if @design().modeIsAppEdit()
+      if @design().modeIsAppEdit() and @get("deserialized")
         # In AppEdit, prevent the last existing asso to be deleted
         for asso in elb.connections( "ElbSubnetAsso" )
           if asso isnt @ and asso.get("deserialized")
@@ -196,11 +196,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
         # Remove all the shadow ElbAsso from Elb to ExpandedAsg
         elb    = @getTarget( constant.RESTYPE.ELB )
         reason = { reason : this }
-
-        asg = lc.parent()
-
-        for eAsg in asg.get("expandedList")
-          (new ElbAmiAsso( elb, eAsg )).remove( reason )
 
       ConnectionModel.prototype.remove.apply this, arguments
       null

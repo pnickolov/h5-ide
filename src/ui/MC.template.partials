@@ -512,7 +512,7 @@ Additional Notes and Questions
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
 {{#each this}}<ul>
-<h3 class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<header class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
 {{{content}}}
 </ul>{{/each}}
 </div>
@@ -963,10 +963,12 @@ Additional Notes and Questions
 
 
 <!-- {{cantUpdateApp}} -->
-<p>DB Instance
-    {{#each data}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-    cannot take final snapshot.</p>
-<p>Wait for the DB instance(s) to be available. Then try to update the app again.</p>
+
+<p class="modal-text-major">DB Instance
+    {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>) {{/each}}
+    cannot be modified now.</p>
+<p>Wait for the DB instance(s) to be available. Then try to apply updates
+    again.</p>
 
 <!-- {{loadingSpiner}} -->
 <div class="loading-spinner"></div>
@@ -996,11 +998,11 @@ Additional Notes and Questions
 </div>
 
 <!-- {{NodeStateRemoveConfirmation}} -->
-Are you sure you want to delete {{name}}?</div>
+<div class="modal-text-major">Are you sure you want to delete {{name}}?</div>
 <div class="modal-text-minor">Once deleted, the states of {{name}}'s configuration will be lost.</div>
 
 <!-- {{ElbRemoveConfirmation}} -->
-Are you sure you want to delete {{name}}?</div>
+<div class="modal-text-major">Are you sure you want to delete {{name}}?</div>
 <div class="modal-text-minor">The security group {{sg}} will also be deleted. Other load balancer using this security group will be affected.</div>
 
 <!-- {{modalStackAgentEnable}} -->
@@ -1299,7 +1301,7 @@ Are you sure you want to delete {{name}}?</div>
 
 <!-- {{modalTemplate}} -->
 <div class="modal-box{{#ifCond mode "panel"}} panel{{/ifCond}}">
-    <div{{#ifCond mode "panel"}}{{else}} style="width: 520px"{{/ifCond}}>
+    <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}}>
         <div class="modal-header">
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}

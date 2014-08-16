@@ -22,17 +22,32 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
     isValidValue : ( value )->
       if not @attributes.AllowedValues then return true
 
-      valueNum = parseInt( value )
+      valueNum = Number( value )
       if value in @attributes.AllowedValues.split(",")
         return true
       for allowed in @attributes.AllowedValues.split(",")
         if allowed.indexOf("-")>=0
-          if not /^[0-9]*$/.test(value)
+          if not (!isNaN(parseFloat(value)) && isFinite(value))
             return false
-          range = allowed.split("-")
-          if valueNum >= parseInt(range[0]) and valueNum <= parseInt(range[1])
-            return true
+          #validate range
+          if allowed.split("-").length>=2
+            if allowed.indexOf("-") is 0
+              second_minus = allowed.indexOf("-",1)
+            else
+              second_minus = allowed.indexOf("-",0)
+            allowed = allowed.substr( 0,second_minus ) + "#" + allowed.substr( second_minus+1 )
+            range = allowed.split("#")
+            if valueNum >= Number(range[0]) and valueNum <= Number(range[1])
+              return true
       false
+
+    isFunctionValue: (value)->
+      reg = /^((GREATEST|LEAST|SUM)\s*\(\s*)*((({(DBInstanceClassMemory|AllocatedStorage|EndPointPort))+((\/|\*|\+|\-)*(\d+|(DBInstanceClassMemory|AllocatedStorage|EndPointPort)))*}|\d+)\s*,?\s*\)*)*$/
+      reg.test(value)
+
+    isNumber: (value)->
+      reg = /^\d+$/
+      reg.test(value)
 
     applyMethod : ()-> if @get("ApplyType") is "dynamic" then "immediate" else "pending-reboot"
   }

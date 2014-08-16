@@ -89,7 +89,7 @@
 {{/if}}
 <div class="estimate-stop clearfix">
     <div>
-        <span class="title">Estimated Cost When Stopping</span>
+        <span class="title">Estimated Cost When Stopped</span>
         <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
     </div>
     <div class="hide">

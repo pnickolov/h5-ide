@@ -22,21 +22,23 @@ define [
     portPosMap : {
       "db-sg-left"  : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "db-sg-right" : [ 79, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "replica"     : [ 45, 45, CanvasElement.constant.PORT_DOWN_ANGLE ]
     }
     portDirMap : {
       "db-sg" : "horizontal"
     }
 
-    # portPosition : ( portName, isAtomic )->
-    #   p = @portPosMap[ portName ]
-    #   if portName is "replica"
-    #     p = p.slice(0)
-    #     if @model.master()
-    #       p[1] = 45
-    #     else
-    #       p[1] = 65
-    #   p
+    portPosition : ( portName, isAtomic )->
+      p = @portPosMap[ portName ]
+      if portName is "replica"
+        p = p.slice(0)
+        if @model.master()
+          p[1] = 45
+          p[2] = CanvasElement.constant.PORT_2D_V_ANGLE
+        else
+          p[1] = 65
+          p[2] = CanvasElement.constant.PORT_DOWN_ANGLE
+      p
 
     typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
     engineIcon : ()-> "ide/icon/rds-" + (@model.get("engine")||"").split("-")[0] + ".png"
@@ -60,6 +62,12 @@ define [
       false
 
     onDropReplicate : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+      if targetSubnetGroup isnt dataTransfer.item.model.parent()
+        notification "error", "Read replica must be dropped in the same subnet group with source DB instance."
+        return
+
       # If the model supports clone() interface, then clone the target.
       name = dataTransfer.item.model.get("name")
       nameMatch = name.match /(.+-replica)(\d*)$/
@@ -69,15 +77,19 @@ define [
         name += "-replica"
 
       DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
-      new DbInstance({
+      replica = new DbInstance({
         x        : dataTransfer.x
         y        : dataTransfer.y
         name     : name
-        parent   : dataTransfer.parent.model
+        parent   : targetSubnetGroup
         sourceId : dataTransfer.item.model.id
       }, {
         master : dataTransfer.item.model
       })
+
+      if replica.id
+        dataTransfer.item.canvas.selectItem( replica.id )
+
       return
 
     # Creates a svg element
@@ -114,7 +126,7 @@ define [
         })
       ])
 
-      if @model.get('engine') is constant.DBENGINE.MYSQL
+      if @model.get('engine') is constant.DB_ENGINE.MYSQL
         svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
@@ -140,7 +152,7 @@ define [
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
       # Update Image
-      if m.get('engine') is constant.DBENGINE.MYSQL and m.category() isnt 'replica'
+      if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
         # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
         $r = @$el.children(".dbreplicate")
         CanvasManager.toggle $r, m.autobackup() isnt 0

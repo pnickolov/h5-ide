@@ -82,11 +82,20 @@ define(["jquery"], function($) {
 					//on mousedown wait for movement of mouse before triggering dragsort script (dragStart) to allow clicking of hyperlinks to work
 					var list = lists[$(this).attr("data-listidx")];
 					var item = this;
-					var trigger = function() {
-						list.dragStart.call(item, e);
-						$(list.container).unbind("mousemove", trigger);
+
+					var startX = e.pageX;
+					var startY = e.pageY;
+					var detect = function( e ) {
+						if ( Math.pow( e.pageX - startX, 2 ) + Math.pow( e.pageY - startY, 2 ) >= 4 ) {
+							$(list.container).unbind("mousemove", detect);
+							list.dragStart.call(item, e);
+						}
 					};
-					$(list.container).mousemove(trigger).mouseup(function() { $(list.container).unbind("mousemove", trigger); $(dragHandle).css("cursor", $(dragHandle).attr("data-cursor")); });
+
+					$(list.container).mousemove(detect).mouseup(function() {
+						$(list.container).unbind("mousemove", detect);
+						$(dragHandle).css("cursor", $(dragHandle).attr("data-cursor"));
+					});
 				},
 
 				dragStart: function(e) {

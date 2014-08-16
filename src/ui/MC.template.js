@@ -758,11 +758,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<ul>\n<h3 class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "<ul>\n<header class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n";
+    + "</header>\n";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</ul>";
@@ -1295,10 +1295,11 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "(<span class=\"db-stop-status\">"
+  buffer += "<span class=\"resource-tag\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>(<span class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>)";
+    + "</span>) ";
   return buffer;
   }
 function program2(depth0,data) {
@@ -1307,10 +1308,10 @@ function program2(depth0,data) {
   return ", ";
   }
 
-  buffer += "<p>DB Instance\n    ";
+  buffer += "<p class=\"modal-text-major\">DB Instance\n    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    cannot take final snapshot.</p>\n<p>Wait for the DB instance(s) to be available. Then try to update the app again.</p>";
+  buffer += "\n    cannot be modified now.</p>\n<p>Wait for the DB instance(s) to be available. Then try to apply updates\n    again.</p>";
   return buffer;
   };
 TEMPLATE.cantUpdateApp=Handlebars.template(__TEMPLATE__);
@@ -1363,7 +1364,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "Are you sure you want to delete "
+  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1379,7 +1380,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "Are you sure you want to delete "
+  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n<div class=\"modal-text-minor\">The security group "
     + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1829,7 +1830,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   
-  return " style=\"width: 520px\"";
+  return " class=\"modal-wrapper-fix\"";
   }
 
 function program7(depth0,data) {

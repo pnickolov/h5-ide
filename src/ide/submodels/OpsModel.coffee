@@ -146,11 +146,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
-        json = self.generateJsonFromRes()
-        self.__setJsonData json
-        self.attributes.name = json.name
-        self
+      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+
+    __onFjdImported : ()->
+      json = @generateJsonFromRes()
+      @__setJsonData json
+      @attributes.name = json.name
+      @
 
     __fjdStack : ( self )->
       if not @isStack() then return
@@ -212,39 +216,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if @attributes.name isnt json.name
         @set "name", json.name
       @
-
-    generateJsonFromRes : ()->
-      res = CloudResources.getAllResourcesForVpc( @get("region"), @getVpcId(), @__jsonData )
-      if @__jsonData
-        c = @__jsonData.component
-        l = @__jsonData.layout
-        delete @__jsonData.component
-        delete @__jsonData.layout
-        json = $.extend true, {}, @__jsonData
-        @__jsonData.component = c
-        @__jsonData.layout = l
-      else
-        json = @__createRawJson()
-
-      json.component = res.component
-      json.layout    = res.layout
-      json.name      = @get("name") || res.theVpc.name
-
-      ## for debug, to compare with xu's app_json(temp) ##
-      app_json_xu = CloudResources( 'OpsResource', @getVpcId() )
-      if app_json_xu.models.length > 0
-        console.clear()
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
-        console.info "app_json_backend"
-        console.debug JSON.stringify app_json_xu.models[0].attributes
-        console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
-        console.info "app_json_frontend"
-        console.debug JSON.stringify json
-        console.info "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n\n"
-        console.info "plese use http://tlrobinson.net/projects/javascript-fun/jsondiff/ to diff app_json"
-      ## ##################################################
-
-      json
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

@@ -30,6 +30,7 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
         confirm      : { text : "Done" }
         disableClose : true
         onCancel     : ()-> self.cancel()
+        onClose      : ()-> self.cancel()
         onConfirm : ()->
           self.apply()
           modal.close()
@@ -42,7 +43,13 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
     updateSelected : ()->
       btn = @$el.closest(".modal-box").find(".modal-confirm")
 
-      if @$el.find(".dbsgppp-subnet:checked").length > 1
+      azs = {}
+
+      _.each @$el.find(".dbsgppp-subnet:checked"), ( el )->
+        id = $( el ).attr("data-id")
+        azs[ Design.instance().component(id).parent().get("name") ] = true
+
+      if _.keys(azs).length > 1
         btn.removeAttr("disabled")
       else
         btn.attr("disabled", "disabled")
@@ -72,6 +79,8 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
       for sb, value of subnets
         if not existSb[ sb ]
           new SubnetgAsso( @model, design.component( sb ) )
+
+      @trigger 'update'
       return
 
   }

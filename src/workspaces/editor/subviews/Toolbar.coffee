@@ -18,17 +18,19 @@ define [
   "backbone"
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
-  # Set domain and set http
-  API_HOST       = "api.visualops.io"
+  location = window.location
 
-  ### env:debug ###
-  API_HOST = "api.mc3.io"
-  ### env:debug:end ###
+  if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
+    # This is a ip address
+    console.error "VisualOps IDE can not be browsed with IP address."
+    return
+  hosts = location.hostname.split(".")
+  if hosts.length >= 3
+    API_HOST = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+  else
+    API_HOST = location.hostname
 
-  ### env:dev ###
-  API_HOST = "api.mc3.io"
-  ### env:dev:end ###
-  API_URL = "https://" + API_HOST + "/v1/apps/"
+  API_URL = "http://api." + API_HOST + "/v1/apps/"
 
   Backbone.View.extend {
 
@@ -44,6 +46,7 @@ define [
       "click .icon-toolbar-cloudformation" : "exportCF"
       "click .runApp"                      : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
+      "click .icon-hide-sg"                : "toggleSgLine"
 
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
@@ -132,6 +135,16 @@ define [
       localStorage.setItem("canvas/lineStyle", attr)
       if @parent.canvas
         @parent.canvas.updateLineStyle()
+      return
+
+    toggleSgLine : ()->
+      sgBtn = $(".icon-hide-sg")
+      show  = sgBtn.hasClass("selected")
+      if show
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).removeClass("selected")
+      else
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).addClass("selected")
+      @parent.canvas.toggleSgLine( show )
       return
 
     saveStack : ( evt )->
@@ -296,6 +309,7 @@ define [
 
 
     runStack: (event)->
+        that = @
         if $(event.currentTarget).attr('disabled')
             return false
         @modal = new Modal
@@ -303,7 +317,6 @@ define [
             template: MC.template.modalRunStack
             disableClose: true
             width: '450px'
-            height: "620px"
             confirm:
                 text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
@@ -344,7 +357,13 @@ define [
                 self.modal.close()
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
                 notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
-
+        App.user.on 'change:credential', ->
+          console.log 'We got it.'
+          if App.user.hasCredential() and that.modal.isOpen()
+            that.modal.find(".modal-confirm").text lang.ide.RUN_STACK_MODAL_CONFIRM_BTN
+        @modal.on 'close', ->
+          console.log 'We gave up.'
+          App.user.off 'change:credential'
     appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
@@ -463,6 +482,16 @@ define [
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
+    checkDBinstance : (oldDBInstanceList)->
+      checkDB = new Q.defer()
+      if oldDBInstanceList.length
+        DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+        DBInstances.fetchForce().then ->
+          checkDB.resolve(DBInstances)
+      else
+        checkDB.resolve([])
+      checkDB.promise
+
     applyAppEdit    : ()->
       that = @
       oldJson = @workspace.opsModel.getJsonData()
@@ -477,32 +506,43 @@ define [
       if not result.compChange and not result.layoutChange and not result.stateChange
         return @workspace.applyAppEdit()
 
-      changes = differ.modifiedComps
       removes = differ.removedComps
+      console.log differ
+      dbInstanceList = []
+      console.log newJson
+      components = newJson.component
+      _.each components, (e)->
+        dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
-      changeList = []
-      _.each changes, (e, key)->
-        changeList.push Design.instance().component(key).attributes.appId
-
-      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.ide.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
         hasScroll: true
         maxHeight: "450px"
+        cancel: "Close"
 
       @updateModal.tpl.find(".modal-footer").hide()
-      DBInstances.fetchForce().then ->
+
+      oldDBInstanceList = []
+      _.each oldJson.component, (e)->
+        oldDBInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
+
+      @checkDBinstance(oldDBInstanceList).then (DBInstances)->
+
         notAvailableDB = DBInstances.filter (e)->
-          e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
+          e.attributes.DBInstanceIdentifier in dbInstanceList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)
+          that.updateModal.find(".modal-footer").show().find(".modal-confirm").hide()
           that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB
+          that.updateModal.setTitle lang.ide.UPDATE_APP_MODAL_TITLE
           return false
 
         removeList = []
         _.each removes, (e)->
-          removeList.push DBInstances.get(e.resource.DBInstanceIdentifier) if e.type is constant.RESTYPE.DBINSTANCE
+          if e.type is constant.RESTYPE.DBINSTANCE
+            dbModel = DBInstances.get(e.resource.DBInstanceIdentifier)
+            removeList.push(DBInstances.get(e.resource.DBInstanceIdentifier)) if dbModel
 
         removeListNotReady = _.filter removeList, (e)->
           e.attributes.DBInstanceStatus isnt "available"
@@ -532,7 +572,7 @@ define [
 
           if not that.defaultKpIsSet()
               return false
-
+          newJson = that.workspace.design.serialize usage: 'updateApp'
           that.workspace.applyAppEdit( newJson, not result.compChange )
           that.updateModal?.close()
 

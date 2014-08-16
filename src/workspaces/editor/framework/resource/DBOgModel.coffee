@@ -7,7 +7,7 @@ define [
 
   Model = ComplexResModel.extend {
 
-    newNameTmpl : "-og"
+    newNameTmpl : "-og-"
 
     type : constant.RESTYPE.DBOG
 
@@ -63,10 +63,10 @@ define [
     serialize : ( options )->
       if @isDefault() then return # Default OG don't have component.
 
-      isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
-      if isRunOrUpdate and not @connections().length
-        console.debug( "Option Group is not serialized, because nothing use it." )
-        return
+      # isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
+      # if isRunOrUpdate and not @connections().length
+      #   console.debug( "Option Group is not serialized, because nothing use it." )
+      #   return
 
       if not @connections().length
         return

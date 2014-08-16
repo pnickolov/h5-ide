@@ -1,3 +1,6 @@
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 /* Modal */
 #modal-box {
   position: absolute;
@@ -22,20 +25,24 @@
   -ms-transition: opacity .1s, margin-top .1s;
   -o-transition: opacity .1s, margin-top .1s;
   transition: opacity .1s, margin-top .1s; }
-.modal-box.panel{
-    position: fixed;
-    height: 100%;
-    width: 855px;
-    right: 0;
-    -webkit-transition: right 0.3s;
-    -moz-transition: right 0.3s;
-    -ms-transition: right 0.3s;
-    -o-transition: right 0.3s;
-    transition: right 0.3s;
-}
-.modal-box.panel.bounce{
-    right: -50%;
-}
+
+.modal-box.panel {
+  position: fixed;
+  height: 100%;
+  width: 855px;
+  right: 0;
+  -webkit-transition: right 0.3s;
+  -moz-transition: right 0.3s;
+  -ms-transition: right 0.3s;
+  -o-transition: right 0.3s;
+  transition: right 0.3s; }
+
+.modal-box.panel.bounce {
+  right: -50%; }
+
+.modal-wrapper-fix {
+  width: 480px; }
+
 #modal-box .input:focus {
   border-color: #010101; }
 
@@ -71,9 +78,8 @@
   color: #666;
   box-shadow: none; }
 
-.modal-box.panel .modal-header .modal-close{
-    left: 15px;
-}
+.modal-box.panel .modal-header .modal-close {
+  left: 15px; }
 
 .btn-silver.modal-close:hover,
 #close-awscredential:hover,
@@ -93,9 +99,10 @@
   cursor: move;
   display: block;
   color: #999; }
-.modal-box.panel .modal-header h3{
-    cursor: default;
-}
+
+.modal-box.panel .modal-header h3 {
+  cursor: default; }
+
 .modal-body {
   padding: 12px 15px;
   min-height: 100px; }
@@ -112,8 +119,7 @@
   font-size: 16px;
   color: #eee;
   margin-bottom: 10px;
-  margin-top: 10px;
-}
+  margin-top: 10px; }
 
 .modal-text-minor {
   font-size: 14px;
@@ -137,12 +143,14 @@
   padding: 15px 10px;
   text-align: right; }
 
-.modal-box.panel .modal-footer{
-    position: absolute;
-    width: 100%;
-    right: 0;
-    bottom: 0;
-}
+.modal-box.panel .modal-footer {
+  position: absolute;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 #modal-wrap {
   position: fixed;
@@ -187,18 +195,21 @@
 
 /* List Structure in Modal */
 .modal-list-header {
-  background: #161616;
-  border: none;
-  color: #666;
-  padding: 2px 10px;
-  font-size: 12px;
-  line-height: 24px;
-  height: 24px; }
+  padding: 6px 12px;
+  background: #424251;
+  border-bottom: 1px solid #09090b; }
   .modal-list-header::selection {
     background: transparent; }
 
 .modal-list-body {
-  background: #36373A;
+  background: #202027;
   padding: 5px 10px; }
+  .modal-list-body:nth-child(odd) {
+    background: #1e1e24; }
+  .modal-list-body:hover {
+    background: #25252d; }
   .modal-list-body ::selection {
     background: transparent; }
+
+#parameter-table {
+  overflow: auto; }

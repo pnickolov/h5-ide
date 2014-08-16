@@ -174,7 +174,7 @@ define [
 
     doFetch : ()-> ApiRequest("rds_og_DescribeOptionGroups", {region_name : @region()})
     parseFetchData : ( data )->
-      data = data.DescribeOptionGroupsResponse.DescribeOptionGroupsResult.OptionGroupsList.OptionGroup || []
+      data = data.DescribeOptionGroupsResponse.DescribeOptionGroupsResult.OptionGroupsList?.OptionGroup || []
       if not _.isArray( data ) then data = [data]
       for i in data
         i.id = i.OptionGroupName

@@ -17,6 +17,7 @@ define [
   'ApiRequest'
   "backbone"
   'UI.radiobuttons'
+  "UI.nanoscroller"
   "UI.dnd"
 ], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
 
@@ -142,6 +143,7 @@ define [
       @render()
 
     render : ()->
+
       @$el.html( LeftPanelTpl.panel({}) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
@@ -155,6 +157,8 @@ define [
 
       @updateDisableItems()
       @renderReuse()
+
+      @$el.find(".nano").nanoScroller()
       return
 
     resourceListSortSelectRdsEvent : (event) ->
@@ -170,21 +174,21 @@ define [
 
         if selectedId is 'date'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
 
         if selectedId is 'engine'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return $(a).data('engine') - $(b).data('engine')
 
         if selectedId is 'storge'
 
-            $sortedList = $('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
                 return Number($(b).data('storge')) - Number($(a).data('storge'))
 
         if $sortedList.length
-            $('.resource-list-rds-snapshot-exist').html($sortedList)
+            @$el.find('.resource-list-rds-snapshot-exist').html($sortedList)
 
     resourceListSortSelectSnapshotEvent : (event) ->
 
@@ -257,7 +261,10 @@ define [
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
       cln.region = region
-      @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot cln
+      if cln and cln.length
+        @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot( cln )
+      else
+        @$el.find(".resource-list-snapshot-empty").html LeftPanelTpl.snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
 
     updateRDSList : () ->
       cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
@@ -267,11 +274,17 @@ define [
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
       cln.region = region
-      @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
+      if cln and cln.length
+        @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
+      else
+        @$el.find(".resource-list-rds-snapshot-empty").html LeftPanelTpl.rds_snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"
       @updateAmi()
+      if not $(evt.currentTarget).parent().hasClass(".open")
+        $(evt.currentTarget).parent().click()
+      return
 
     updateAmi : ()->
       ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels().sort ( a, b )->
@@ -293,7 +306,7 @@ define [
       ms.region = @workspace.opsModel.get("region")
 
       html = LeftPanelTpl.ami ms
-      @$el.find(".resource-list-ami").html(html)
+      @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
@@ -314,9 +327,9 @@ define [
 
       @sbg = @$el.find(".resource-item.subnetgroup")
       if _.keys( az ).length < 2
-        @sbg.toggleClass("disabled", true).data("tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
+        @sbg.toggleClass("disabled", true).attr("data-tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
       else
-        @sbg.toggleClass("disabled", false).data("tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
+        @sbg.toggleClass("disabled", false).attr("data-tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
@@ -364,15 +377,15 @@ define [
       $body.outerHeight height
 
       if noAnimate
-        $accordion.addClass "expanded"
-        $expanded.removeClass "expanded"
+        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        $expanded.removeClass("expanded")
         return false
 
       $body.slideDown 200, ()->
-        $accordion.addClass "expanded"
+        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
 
       $expanded.children(".accordion-body").slideUp 200, ()->
-        $expanded.closest(".accordion-group").removeClass "expanded"
+        $expanded.closest(".accordion-group").removeClass("expanded")
       false
 
     recalcAccordion : () ->

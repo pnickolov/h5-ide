@@ -164,6 +164,8 @@ define [
 
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
+    console.assert( Design.instance() is this )
+
     console.debug "Deserializing data :", [json_data, layout_data]
 
     # Let visitor to fix JSON before it get deserialized.
@@ -175,6 +177,10 @@ define [
     @trigger = Design.trigger = noop
     @__initializing = true
 
+    defaultLayout = {
+      coordinate : [0, 0]
+      size       : [0, 0]
+    }
 
     # A helper function to let each resource to get its dependency
     that = this
@@ -199,7 +205,7 @@ define [
         console.warn "We do not support deserializing resource of type : #{component_data.type}"
         return
 
-      ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
+      ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
 
       Design.__instance.__componentMap[ uid ]
 
@@ -230,7 +236,7 @@ define [
           console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
           continue
 
-        ModelClass.preDeserialize( comp, layout_data[uid] )
+        ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
 
 
     # Deserialize normal resources
@@ -242,7 +248,7 @@ define [
       # we directly call the deserialize() of the resource here.
       if Design.__resolveFirstMap[ comp.type ] is true
         recursiveCheck = createRecursiveCheck( uid )
-        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
+        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
       else
         recursiveCheck = createRecursiveCheck()
         resolveDeserialize uid
@@ -253,7 +259,7 @@ define [
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
-        ModelClass.postDeserialize( comp, layout_data[uid] )
+        ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
 
     ####################
     # Broadcast event
@@ -265,9 +271,19 @@ define [
     null
 
   DesignImpl.prototype.reload = ()->
+    oldDesign = Design.instance()
+
+    @use()
+
     DesignImpl.call this, @__opsModel
     json = @__opsModel.getJsonData()
     @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
+    if oldDesign
+      oldDesign.use()
+
+    return
+
 
   ### Private Interface ###
   Design.registerModelClass = ( type, modelClass, resolveFirst )->
@@ -364,9 +380,11 @@ define [
   DesignImpl.prototype.setMode = (m)->
     if @__mode is m then return
     @__mode = m
+
+    @preserveName()
+
     @trigger "change:mode", m
     return
-
 
 
   DesignImpl.prototype.initializing = ()-> @__initializing
@@ -503,7 +521,8 @@ define [
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 
-    currentDesignObj.use()
+    if currentDesignObj
+      currentDesignObj.use()
 
     data
 
@@ -521,29 +540,25 @@ define [
     json
 
 
-  DesignImpl.prototype.getUidByProperty = ( property, value, res_type = null )->
-    # get uid by property in stack/app json
-    # example: getUidByProperty("resource.ImageId","ami-178e927e")
-    if not property then return
-    json_data = @serialize()
-    result = {}
-    if json_data and json_data.component
-      for uid, comp of json_data.component
-        if (res_type is null or comp.type is res_type )
-          context = comp
-          namespaces = property.split('.')
-          last = namespaces.pop()
-          for key in namespaces
-            context = context[ key ]
-          if context[ last ] is value
-            if not result[comp.type]
-              result[comp.type] = []
-            result[comp.type].push uid
-    result
-
-
   ########## General Business logics ############
-  DesignImpl.prototype.getCost = ()->
+  DesignImpl.prototype.preserveName = ()->
+    if not @modeIsAppEdit() then return
+    @__preservedNames = {}
+    for uid, comp of @__componentMap
+      switch comp.type
+        when constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.DBINSTANCE
+          names = @__preservedNames[ comp.type ] || ( @__preservedNames[ comp.type ] = {} )
+          names[ comp.get("name") ] = true
+
+    return
+
+  DesignImpl.prototype.isPreservedName = ( type, name )->
+    if not @modeIsAppEdit() then return false
+    if not @__preservedNames then return false
+    names = @__preservedNames[type]
+    names and names[name]
+
+  DesignImpl.prototype.getCost = (stopped)->
     costList = []
     totalFee = 0
 
@@ -553,6 +568,8 @@ define [
       currency = priceMap.currency || 'USD'
 
       for uid, comp of @__componentMap
+        if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
+          continue
         if comp.getCost
           cost = comp.getCost( priceMap, currency )
           if not cost then continue
@@ -583,7 +600,7 @@ define [
     vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
     if vpc.length>0
       vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) =>  model.RES_TAG is vpcId
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) -> model.RES_TAG is vpcId
       for ins in instanceAry
         ins = ins.attributes
         for bdm in (ins.blockDeviceMapping || [])

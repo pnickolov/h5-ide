@@ -82,7 +82,13 @@
 .icon-reload,
 .icon-resources,
 .icon-hide-sg,
-.icon-kp {
+.icon-kp,
+.icon-ebs-snap,
+.icon-sns,
+.icon-cert,
+.icon-dhcp,
+.icon-pg,
+.icon-rds-snap {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -162,7 +168,13 @@
 .icon-reload:before {content:"\F156";}
 .icon-resources:before {content:"\F157";}
 .icon-hide-sg:before {content:"\F160";}
-.icon-kp:before {content:"\F162";}
+.icon-kp:before {content:"\F161";}
+.icon-ebs-snap:before {content:"\F162";}
+.icon-sns:before {content:"\F163";}
+.icon-cert:before {content:"\F164";}
+.icon-dhcp:before {content:"\F165";}
+.icon-pg:before {content:"\F166";}
+.icon-rds-snap:before {content:"\F167";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

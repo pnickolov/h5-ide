@@ -36,6 +36,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       app            : new Meteor.Collection "app",            opts
       status         : new Meteor.Collection "status",         opts
       imports        : new Meteor.Collection "imports",        opts
+      user_state     : new Meteor.Collection "user",           opts
 
     # Trigger an event when connection state changed.
     Deps.autorun ()=> @statusChanged()
@@ -86,6 +87,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @connection.subscribe "app",     usercode, session
     @connection.subscribe "status",  usercode, session
     @connection.subscribe "imports", usercode, session
+    @connection.subscribe "user",    usercode, session
     return
 
   # Return a promise that will be resolve when the websocket is ready.
@@ -108,6 +110,17 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # and we can also place the watching code in the other place.
   Websocket.prototype.pipeChanges = ()->
     self = this
+    # User State
+    @collection.user_state.find().fetch()
+    @collection.user_state.find().observeChanges {
+      added : ( idx, dag )->
+        console.log "user_state changes", idx, dag
+        self.trigger "userStateChange", idx, dag
+
+      changed : ( idx, dag )->
+        console.log "user_state changes", idx, dag
+        self.trigger "userStateChange", idx, dag
+    }
 
     # request list
     @collection.request.find().fetch()

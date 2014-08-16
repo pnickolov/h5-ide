@@ -63,6 +63,6 @@ module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileSer
 
   server.listen( port )
 
-  if autoOpen then open "http://127.0.0.1:#{port}"
+  if autoOpen then open "http://#{GLOBAL.gulpConfig.staticFileServer}:#{port}"
 
   server

@@ -337,7 +337,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
   # Move item by dnd
   CanvasViewProto.__moveItemMouseDown = ( evt )->
-    if evt.metaKey
+    if evt.metaKey || evt.ctrlKey
       @__dragCanvasMouseDown( evt )
     else if not @isReadOnly()
       @dragItem( evt, { onDrop : __moveItemDidDrop, altState  : true } )
@@ -393,7 +393,13 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     # If the item is subnet, we might get a wrong offset.
     # In order to avoid that, we need to use the `rect.group` as $tgt.
 
-    (if item.isGroup() then $tgt.children(".group") else $tgt).dnd( evt, options )
+    if item.isGroup()
+      $dom = $tgt.children(".group")
+
+    if not $dom or not $dom.length
+      $dom = $tgt
+
+    $dom.dnd( evt, options )
 
     # Make selectItem the last, since PropertyPanel is really easy to throw error
     @selectItem( $tgt[0] )
@@ -533,7 +539,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
 
   CanvasViewProto.__dragCanvasMouseDown = ( evt )->
-    if not evt.metaKey or evt.which isnt 1 then return false
+    if not (evt.ctrlKey || evt.metaKey) or evt.which isnt 1 then return false
 
     scrollContent = @$el.children(":first-child")[0]
 

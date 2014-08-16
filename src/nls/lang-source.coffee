@@ -696,7 +696,7 @@ module.exports =
       zh: "映像从收藏列表移除失败"
 
     RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
-      en: "Cannot delete subnet because the subnet is used by a subnet group."
+      en: "%s is a member of subnet group %s. To delete the subnet, remove the membership first."
       zh: ""
 
     RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:
@@ -843,9 +843,13 @@ module.exports =
       en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
 
-    CVS_CFM_DEL_DBINSTANCE:
-      en: "Deleting %s will also remove all read replica related it. Are you sure you want to delete it?"
-      zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
+    CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
+      en: "Deleting <span class='resource-tag'>%s</span> will remove all read replica related to it. Are you sure to continue?"
+      zh: "%s 未创建,删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
+
+    CVS_CFM_DEL_EXISTENT_DBINSTANCE:
+      en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"
+      zh: "%s已存在，删除它会同时删除与之相关的只读副本，但会保留，确定要删除它吗？"
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -1227,8 +1231,8 @@ module.exports =
       zh: ""
 
     TOOL_TIP_LINESTYLE:
-      en: "Security Group Rule Line Style..."
-      zh: "安全组规则连线类型..."
+      en: "Line Style"
+      zh: "连线类型"
 
     TOOL_LBL_LINESTYLE_STRAIGHT:
       en: "Straight"
@@ -1236,11 +1240,11 @@ module.exports =
 
     TOOL_LBL_LINESTYLE_ELBOW:
       en: "Elbow"
-      zh: "肘型线"
+      zh: "折线"
 
-    TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER:
-      en: "Quadratic Belzier curve"
-      zh: "二次贝赛尔曲线"
+    TOOL_LBL_LINESTYLE_CURVE:
+      en: "Curve"
+      zh: "曲线"
 
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
       en: "Smooth quadratic Belzier curve"
@@ -1249,6 +1253,10 @@ module.exports =
     TOOL_LBL_LINESTYLE_HIDE_SG:
       en: "Hide SecurityGroup line"
       zh: "隐藏SecurityGroup线"
+
+    TOOL_LBL_LINESTYLE_SHOW_SG:
+      en: "Show SecurityGroup line"
+      zh: "显示SecurityGroup线"
 
     TOOL_EXPERIMENT:
       en: "Experimental Feature!"
@@ -3318,7 +3326,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_SNAPSHOT_SELECT:
-      en: "Select Instance from which to create snapshot"
+      en: "Select DB instance from which to create snapshot"
       zh: ""
 
     PROP_SNAPSHOT_SET_DESC:
@@ -3907,10 +3915,10 @@ VisualOps API. You cannot UNDO this action.'
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
       zh: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."
@@ -4110,6 +4118,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "AMI"
       zh: "AMI"
 
+    DASH_LBL_INSTANCE_TYPE:
+      en: "Instance Type"
+      zh: "实例类型"
+
+    DASH_LBL_PUBLIC_IP:
+      en: "Public IP"
+      zh: "IP地址"
+
     DASH_LBL_AVAILABILITY_ZONE:
       en: "Availability Zone"
       zh: "可用区域"
@@ -4125,6 +4141,10 @@ VisualOps API. You cannot UNDO this action.'
     DASH_LBL_ASSOCIATED_INSTANCE:
       en: "Associated Instance"
       zh: "关联实例"
+
+    DASH_LBL_VOLUME_SIZE:
+      en: "Volume Size"
+      zh: "卷大小"
 
     DASH_LBL_CREATE_TIME:
       en: "Create Time"
@@ -4923,7 +4943,7 @@ VisualOps API. You cannot UNDO this action.'
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/source/reference/mod.html' target='_blank'>documentation</a>.</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/state_modules/README.html' target='_blank'>documentation</a>.</p>"
       zh: ""
 
     ##### Request Invite to Experimental Feature
@@ -5571,16 +5591,32 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
+    TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT:
+      en: "Region %s has reached the limit of 20 option groups."
+      zh: ""
+
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
-      en: "DB Instance %s is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ). Its subnet group must have 3 subnets in distinct Availability Zones."
+      zh: ""
+
+    TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP:
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> Backup Window and Maintenance Window are overlapping. Please update to avoid overlapping."
       zh: ""
 
     TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
-      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet %s should use a larger CIDR block."
+      en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet <span class='validation-tag tag-subnet'>%s</span> should use a larger CIDR block."
       zh: ""
 
     TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
       en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
+      zh: ""
+
+    TA_MSG_ERROR_MASTER_PASSWORD_INVALID:
+      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
+      zh: ""
+
+    TA_MSG_ERROR_OG_DB_BOTH_MODIFIED:
+      en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

@@ -198,9 +198,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
-            #$( '#modal-wrap' ).click @__stopPropagation
             @__modalplus.on "resize", @__resizeModal.bind @
-#            @.on 'rendered', @__resizeModal.bind @
             @
 
         __getHeightOfContent: ->
@@ -212,7 +210,9 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
         __resizeModal: ->
           that = @
           @__modalplus.tpl.find(".scrollbar-veritical-thumb").removeAttr("style")
-          @__modalplus.tpl.find(".table-head-fix.will-be-covered .scroll-wrap").height(that.__getHeightOfContent())
+          scroll = @__modalplus.tpl.find(".table-head-fix.will-be-covered .scroll-wrap")
+          scroll = if scroll.size() > 0 then scroll else @__modalplus.find('.will-be-covered>div')
+          if scroll.size() then scroll.height(that.__getHeightOfContent())
 
         __renderLoading: () ->
             @$( '.content-wrap' ).html template.loading

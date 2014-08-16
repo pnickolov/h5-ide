@@ -259,6 +259,7 @@ define [
       if type is "component_server_group" or type is CONST.RESTYPE.LC or type is CONST.RESTYPE.INSTANCE
         if Design.instance().attributes.agent.enabled
           supports = true
+          $('#state-editor-body').trigger('SAVE_STATE')
         else
           supports = false
         if design.modeIsApp()
@@ -301,7 +302,7 @@ define [
         return false
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
-      comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.attributes
+      comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.toJSON()
       if not comp then return
       if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
 

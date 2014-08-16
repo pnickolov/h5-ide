@@ -28,7 +28,13 @@ define [ '../base/view'
                 @model.set 'description', $target.val()
 
         editSgb : ()->
-            new DbSubnetGPopup({model:@model})
+            that = @
+            subnetGPopup = new DbSubnetGPopup({model:@model})
+            @listenTo subnetGPopup, 'update', () ->
+                that.render()
+                @stopListening subnetGPopup
+                subnetGPopup.remove()
+
             return false
 
         render: ->
@@ -42,6 +48,7 @@ define [ '../base/view'
             data         = @model.toJSON()
             data.sbCount = subnets.length
             data.azSb    = _.groupBy subnets, "az"
+            data.isAppEdit = @isAppEdit
 
             @$el.html template data
             @model.get 'name'

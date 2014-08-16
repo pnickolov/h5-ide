@@ -213,3 +213,7 @@
   width: 21px;
   height: 21px;
 }
+
+.icon-hide-sg.selected {
+  @extend .btn-toolbar:hover;
+}

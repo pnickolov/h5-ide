@@ -1,3 +1,5 @@
+@import "color";
+
 /* Modal */
 #modal-box {
 	position     : absolute;
@@ -31,6 +33,25 @@
     // }
 }
 
+
+.modal-box.panel {
+  position: fixed;
+  height: 100%;
+  width: 855px;
+  right: 0;
+  -webkit-transition: right 0.3s;
+  -moz-transition: right 0.3s;
+  -ms-transition: right 0.3s;
+  -o-transition: right 0.3s;
+  transition: right 0.3s;
+}
+.modal-box.panel.bounce{
+  right: -50%;
+}
+
+.modal-wrapper-fix{
+  width: 480px;
+}
 #modal-box .input:focus {
   border-color : #010101;
 }
@@ -70,7 +91,9 @@
 	color: #666;
 	box-shadow: none;
 }
-
+.modal-box.panel .modal-header .modal-close{
+  left: 15px;
+}
 .btn-silver.modal-close:hover,
 #close-awscredential:hover,
 .btn-silver.btn-modal-close:hover {
@@ -92,7 +115,9 @@
 	display    : block;
 	color      : #999;
 }
-
+.modal-box.panel .modal-header h3{
+  cursor: default;
+}
 .modal-body {
 	padding: 12px 15px;
 	min-height: 100px;
@@ -112,6 +137,7 @@
 	font-size     : 16px;
 	color         : #eee;
 	margin-bottom : 10px;
+    margin-top: 10px;
 }
 
 .modal-text-minor {
@@ -140,6 +166,15 @@
 .modal-footer {
 	padding: 15px 10px;
 	text-align: right;
+}
+.modal-box.panel .modal-footer{
+  position: absolute;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #modal-wrap {
@@ -195,13 +230,9 @@
 /* List Structure in Modal */
 
 .modal-list-header {
-	background  : #161616;
-	border      : none;
-	color       : #666;
-	padding     : 2px 10px;
-	font-size   : 12px;
-	line-height : 24px;
-	height      : 24px;
+    padding       : 6px 12px;
+    background    : lighten($bg-p, 15%);
+    border-bottom : 1px solid darken($bg-p, 10%);
 
 	&::selection {
 		background: transparent;
@@ -209,11 +240,22 @@
 }
 
 .modal-list-body {
-	background: #36373A;
+	background: $bg-p;
 	padding   : 5px 10px;
+
+	&:nth-child(odd) {
+		background: darken($bg-p, 1%);
+	}
+
+	&:hover {
+		background: lighten($bg-p, 2%);
+	}
 
 	::selection {
 		background: transparent;
 	}
 }
 
+#parameter-table{
+    overflow: auto;
+}

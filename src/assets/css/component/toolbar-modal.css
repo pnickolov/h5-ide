@@ -84,9 +84,7 @@
     .modal-toolbar .slidebox.show {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
       max-height: 400px;
-      overflow: auto;
-      /* Fix Overflow When Loading Spinner show.  */
-      display: table;}
+      overflow: auto; }
     .modal-toolbar .slidebox.show + .will-be-covered {
       opacity: .4;
       pointer-events: none;
@@ -97,7 +95,8 @@
       transition: opacity  .2s; }
   .modal-toolbar .slidebox .content {
     width: 640px;
-    margin: 20px auto 0 auto; }
+    margin: 20px auto 0 auto;
+    display: table; }
     .modal-toolbar .slidebox .content label {
       width: 168px;
       display: inline-block;

@@ -55,6 +55,8 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
 
     isVisual : ()-> false
 
+    isNameAvailable : ()-> true # Volume doesn't have name conflict issue.
+
     isReparentable : ( newParent )->
       if @design().modeIsAppEdit()
         parent = @get("owner")
@@ -81,6 +83,13 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
     groupMembers : ()->
       if not @__groupMembers then @__groupMembers = []
       return @__groupMembers
+
+    isRemovable : ()->
+      if @design().modeIsAppEdit()
+        if (@get("owner") || {}).type is constant.RESTYPE.LC
+          return lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+
+      true
 
     remove : ()->
       # Remove reference in owner

@@ -37,17 +37,17 @@
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
-            {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
-            <dd>{{name}}</dd>{{/if}}
+            {{#if DBName}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{DBName}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}</dd>
             {{#if optionGroups.length}}
                 <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
                 <dd>{{#each optionGroups}}
                     {{#if isDefault}}
-                        {{OptionGroupName}}({{Status}})
+                        {{OptionGroupName}}<span class="highlight-status {{Status}}">({{Status}})</span>
                     {{else}}
-                        <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
+                        <a class="db-og-in-app">{{OptionGroupName}}</a><span class="highlight-status {{Status}}">({{Status}})</span>
                     {{/if}}
                 {{/each}}
                 </dd>
@@ -56,7 +56,7 @@
                 <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
                 <dd>
                     {{#each DBParameterGroups}}
-                        {{DBParameterGroupName}}({{ParameterApplyStatus}})
+                        {{DBParameterGroupName}}<span class="highlight-status {{ParameterApplyStatus}}">({{ParameterApplyStatus}})</span>
                     {{/each}}
                 </dd>
             {{/if}}

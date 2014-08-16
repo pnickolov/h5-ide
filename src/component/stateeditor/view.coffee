@@ -96,6 +96,8 @@ define [ 'event',
 
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
 
+            'SAVE_STATE': 'onStateSaveClick'
+
         editorShow: false
 
         initialize: () ->
@@ -107,14 +109,14 @@ define [ 'event',
             this.initUndoManager()
 
             $(document)
-                .off('keydown', this.keyEvent)
-                .on('keydown', {target: this}, this.keyEvent)
+                .off('keydown.stateEditor', this.keyEvent)
+                .on('keydown.stateEditor', {target: this}, this.keyEvent)
 
 
         closedPopup: () ->
 
             @trigger 'CLOSE_POPUP'
-            $(document).off 'keydown', this.keyEvent
+            $(document).off 'keydown.stateEditor', this.keyEvent
 
         render: () ->
 

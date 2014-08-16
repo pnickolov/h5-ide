@@ -36,7 +36,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
     osType
 
-
   getOSFamily = ( ami ) ->
     if not ami.osType then return "linux"
 
@@ -99,7 +98,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @trigger "update"
       return d.promise
 
-    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid
+    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
     isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
 
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
@@ -332,13 +331,11 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       savedAmis = []
       favAmiId  = []
       for ami in data
-        try
-          item = JSON.parse(ami.amiVO)
-          item.id = ami.id
-          item.blockDeviceMapping = if $.isEmptyObject(item.blockDeviceMapping) then null else item.blockDeviceMapping
-          savedAmis.push item
-          favAmiId.push ami.id
-        catch e
+        if $.isEmptyObject( ami.blockDeviceMapping )
+          ami.blockDeviceMapping = null
+
+        savedAmis.push ami
+        favAmiId.push ami.id
 
       CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = favAmiId

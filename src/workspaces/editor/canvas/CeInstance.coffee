@@ -22,7 +22,7 @@ define [
     portPosMap : {
       "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 50 ]
       "instance-rtb"      : [ 45, 2,  CanvasElement.constant.PORT_UP_ANGLE  ]
     }
     portDirMap : {
@@ -75,6 +75,13 @@ define [
 
       ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
+
+    select : ( selectedDomElement )->
+      type = @type
+      if @model.get("appId") and @canvas.design.modeIsAppEdit()
+        type = "component_server_group"
+      ide_event.trigger ide_event.OPEN_PROPERTY, type, @model.id
+      return
 
     # Creates a svg element
     create : ()->
@@ -165,7 +172,7 @@ define [
         if statusIcon.length
           instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
           state    = instance?.get("instanceState").name || "unknown"
-          statusIcon.data("tooltip", state).attr("class", "instance-state tooltip #{state}")
+          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "instance-state tooltip #{state}")
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m

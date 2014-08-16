@@ -10,49 +10,21 @@ define [
 
 ], ( ComplexResModel, ConnectionModel, DBOgModel, Design, constant, lang, CloudResources )->
 
-  EnginTypeMap = {
-    'oracle-ee'     : "oracle"
-    'oracle-se'     : "oracle"
-    'oracle-se1'    : "oracle"
-    'sqlserver-ee'  : "sqlserver"
-    'sqlserver-ex'  : "sqlserver"
-    'sqlserver-se'  : "sqlserver"
-    'sqlserver-web' : "sqlserver"
-    'postgres'      : "postgresql"
-  }
-
-  versionCompare = (left, right) ->
-    return false  unless typeof left + typeof right is "stringstring"
-    a = left.split(".")
-    b = right.split(".")
-    i = 0
-    len = Math.max(a.length, b.length)
-    while i < len
-      if (a[i] and not b[i] and parseInt(a[i]) > 0) or (parseInt(a[i]) > parseInt(b[i]))
-        return 1
-      else if (b[i] and not a[i] and parseInt(b[i]) > 0) or (parseInt(a[i]) < parseInt(b[i]))
-        return -1
-      i++
-    0
-
-  OgUsage = ConnectionModel.extend {
+  OgUsage = ConnectionModel.extend
     type : "OgUsage"
     oneToMany: constant.RESTYPE.DBOG
-  }
 
   Model = ComplexResModel.extend {
-
     defaults :
       newInstanceId : ''
       instanceId    : ''
       snapshotId    : ''
-
       createdBy : ""
       accessible: false
       username: 'root'
       password: '12345678'
       multiAz: true
-      iops: ''
+      iops: 0
       autoMinorVersionUpgrade: true
       allowMajorVersionUpgrade: ''
       backupRetentionPeriod: 1
@@ -68,50 +40,89 @@ define [
       pgName: ''
       applyImmediately: false
 
-
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
 
     __cachedSpecifications: null
 
+    # Source of Snapshot Instance
+    source: -> CloudResources(constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
+
+    # -------- Master and Slave -------- #
+    slaveIndependentAttr: "id|appId|x|y|width|height|name|\
+        accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
+        accessible|backupRetentionPeriod|multiAz|password|__connections|__parent"
+
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
+
     master: ->
-      m = @connections("DbReplication")[0]
+      m =  @connections( 'DbReplication' )[0]
       if m and m.master() isnt @
         return m.master()
       null
+
+    copyMaster: ( master ) ->
+      @clone master
+
+      unless @get 'appId'
+        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
       @connections("DbReplication")[0]?.remove()
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
-      return
 
-    # Source of Snapshot Instance
-    source: -> CloudResources(constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
+      @listenTo master, 'change', @syncMasterAttr
+      null
+
+    syncMasterAttr: ( master ) ->
+      if @get 'appId'
+        return false
+
+      needSync = {}
+
+      for k, v of master.changedAttributes()
+        if @slaveIndependentAttr.indexOf( k ) < 0
+          needSync[ k ] = v
+
+      delete needSync['iops'] if needSync['iops']
+
+      @set needSync
+
+    needSyncMasterConn: ( cnn ) ->
+      if @master() then return false
+
+      if @get 'appId'
+        connTypesToCopy = []
+      else
+        connTypesToCopy = [ 'SgAsso', 'OgUsage' ]
+
+      if cnn.type not in connTypesToCopy then return false
+
+      true
 
     connect : ( cnn )->
-      if @master() then return
-      if cnn.type isnt "SgAsso" then return
+      if not @needSyncMasterConn( cnn ) then return
 
       # Update slaves' SgAsso
-      SgAsso = Design.modelClassForType("SgAsso")
-      sg = cnn.getOtherTarget( @ )
+      otherTarget = cnn.getOtherTarget( @ )
+      connectionModel = Design.modelClassForType cnn.type
 
-      new SgAsso( slave, sg ) for slave in @slaves()
+      new connectionModel( slave, otherTarget ) for slave in @slaves()
       return
 
     disconnect : ( cnn )->
-      if @master() then return
-      if cnn.type isnt "SgAsso" then return
-      sg = cnn.getOtherTarget( @ )
+      if not @needSyncMasterConn( cnn ) then return
+      if cnn.oneToMany then return
 
-      for slave in @slaves()
-        for asso in slave.connections("SgAsso")
-          if asso.getOtherTarget( slave ) is sg
-            asso.remove()
-            break
+      otherTarget = cnn.getOtherTarget( @ )
+      connectionModel = Design.modelClassForType cnn.type
+
+      new connectionModel( slave, otherTarget ).remove() for slave in @slaves()
+
       return
+
+    # -------- Master and Slave -------- #
 
     constructor : ( attr, option )->
       if option and not option.master and option.createByUser
@@ -126,7 +137,7 @@ define [
             "allocatedStorage": snapshotModel.get('AllocatedStorage'),
             "port": snapshotModel.get('Port'),
             "iops": snapshotModel.get('Iops') or '',
-            "multiAZ": snapshotModel.get('MultiAZ'),
+            "multiAz": snapshotModel.get('MultiAZ'),
             "ogName": snapshotModel.get('OptionGroupName'),
             "license": snapshotModel.get('LicenseModel'),
             "az": snapshotModel.get('AvailabilityZone'),
@@ -143,9 +154,8 @@ define [
         return
 
       if option.master
-        @setMaster( option.master )
-        @clone( option.master )
-
+        @copyMaster option.master
+        @setMaster option.master
       else if option.createByUser
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"
@@ -175,15 +185,10 @@ define [
         reserve : "newInstanceId|instanceId"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
+      @set 'snapshotId', ''
       return
 
-    isMysql      : -> @engineType() is 'mysql'
-    isOracle     : -> @engineType() is 'oracle'
-    isSqlserver  : -> @engineType() is 'sqlserver'
-    isPostgresql : -> @engineType() is 'postgresql'
-    engineType: ->
-      engine = @get('engine')
-      EnginTypeMap[ engine ] || engine
+
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
@@ -215,13 +220,6 @@ define [
       regionName = Design.instance().region()
       engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
-      if origEngineVersion
-        origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
-
-      if origDefaultInfo and origDefaultInfo.family and defaultInfo and defaultInfo.family
-        if origDefaultInfo.family is defaultInfo.family
-          #family no changed, then no need change parametergroup
-          return null
 
       if defaultInfo and defaultInfo.defaultPGName
         defaultPG = defaultInfo.defaultPGName
@@ -229,138 +227,29 @@ define [
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"
       @set 'pgName', defaultPG || ""
-      null
+      defaultPG
 
-    setIops: ( iops ) -> @set('iops', iops)
-    getIops: () -> @get('iops')
-
-    defaultMap:
-      'mysql'         :
-        port            : 3306
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 5
-      'postgres'      :
-        port            : 5432
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 5
-      'oracle-ee'     :
-        port            : 1521
-        dbname          : 'ORCL'
-        charset         : 'AL32UTF8'
-        allocatedStorage: 10
-      'oracle-se'     :
-        port            : 1521
-        dbname          : 'ORCL'
-        charset         : 'AL32UTF8'
-        allocatedStorage: 10
-      'oracle-se1'    :
-        port            : 1521
-        dbname          : 'ORCL'
-        charset         : 'AL32UTF8'
-        allocatedStorage: 10
-      'sqlserver-ee'  :
-        port            : 1433
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 200
-      'sqlserver-ex'  :
-        port            : 1433
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 30
-      'sqlserver-se'  :
-        port            : 1433
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 200
-      'sqlserver-web' :
-        port            : 1433
-        dbname          : ''
-        charset         : ''
-        allocatedStorage: 30
-
-    #override ResourceModel.getNewName()
-    getNewName : ()->
-      args = [].slice.call arguments, 0
-      args[0] = Model.getInstances().length
-      ComplexResModel.prototype.getNewName.apply this, args
-
-    #override ResourceModel.isRemovable()
-    isRemovable :()->
-      if @slaves().length > 0
-        # Return a warning, delete DBInstance will remove ReadReplica together
-        return sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
-      true
-
-    #override ResourceModel.remove()
-    remove :()->
-      #remove readReplica related to current DBInstance
-      slave.remove() for slave in @slaves()
-
-      #remove current node
-      ComplexResModel.prototype.remove.call(this)
-      null
-
-    getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
-
-    getDefaultPort: ->
-      @defaultMap[@get('engine')].port
-
-    getDefaultDBName: ->
-      @defaultMap[@get('engine')].dbname
-
-    getDefaultCharSet: ->
-      @defaultMap[@get('engine')].charset
-
-    getInstanceClassDict: ->
-      _.find constant.DBINSTANCECLASSMAP, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
-
-    getDefaultAllocatedStorage: ->
-      classInfo = @getInstanceClassDict()
-      defaultStorage = @defaultMap[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          return 100
-      return defaultStorage
 
     getAllocatedRange: ->
-
       engine = @get('engine')
       if @isMysql()
-          obj = {
-            min: 5
-            max: 3072
-          }
+          obj = { min: 5, max: 3072 }
 
       if @isPostgresql()
-          obj = {
-            min: 5
-            max: 3072
-          }
+          obj = { min: 5, max: 3072 }
 
       if @isOracle()
-          obj = {
-            min: 10
-            max: 3072
-          }
+          obj = { min: 10, max: 3072 }
 
       if @isSqlserver()
           engine = @get('engine')
           if engine in ['sqlserver-ee', 'sqlserver-se']
-              obj = {
-                min: 200
-                max: 1024
-              }
+              obj = { min: 200, max: 1024 }
           if engine in ['sqlserver-ex', 'sqlserver-web']
-              obj = {
-                min: 30
-                max: 1024
-              }
+              obj = { min: 30, max: 1024 }
 
       classInfo = @getInstanceClassDict()
-      defaultStorage = @defaultMap[@get('engine')].allocatedStorage
+      defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
       if classInfo and classInfo['ebs']
         if defaultStorage < 100
           obj.min = 100
@@ -368,7 +257,6 @@ define [
       return obj
 
     getLicenseObj: ( getDefault ) ->
-
       currentLicense = @get 'license'
 
       if currentLicense then obj = _.findWhere @getSpecifications(), license: currentLicense
@@ -397,25 +285,91 @@ define [
 
       obj
 
+    setIops: ( iops ) -> @set('iops', iops)
+    getIops: () -> @get('iops')
+
     getDefaultLicense: -> @getLicenseObj(true).license
-
     getDefaultVersion: -> @getVersionObj(true).version
-
     getDefaultInstanceClass: -> @getInstanceClassObj(true).instanceClass
-
     getMajorVersion: -> @get('engineVersion')?.split('.').slice(0,2).join('.')
-
     getMinorVersion: -> @get('engineVersion')?.split('.').slice(2).join('.')
 
-    # Get and Process License, EngineVersion, InstanceClass and multiAZ
+    getRdsInstances: -> App.model.getRdsData(@design().region())?.instance[@get 'engine']
+    getDefaultPort: -> constant.DB_DEFAULTSETTING[@get('engine')].port
+    getDefaultDBName: -> constant.DB_DEFAULTSETTING[@get('engine')].dbname
+    getDefaultCharSet: -> constant.DB_DEFAULTSETTING[@get('engine')].charset
+    getInstanceClassDict: -> _.find constant.DB_INSTANCECLASS, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
+    getDefaultAllocatedStorage: ->
+      classInfo = @getInstanceClassDict()
+      defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
+      if classInfo and classInfo['ebs']
+        if defaultStorage < 100
+          return 100
+      return defaultStorage
+
+    getOptionGroup: -> @connectionTargets('OgUsage')[0]
+    getOptionGroupName: -> @getOptionGroup()?.get 'name'
+    setOptionGroup: ( name ) ->
+      ogComp = DBOgModel.findWhere(name: name) or new DBOgModel(name: name, default: true)
+
+      new OgUsage @, ogComp
+
+    isMysql      : -> @engineType() is 'mysql'
+    isOracle     : -> @engineType() is 'oracle'
+    isSqlserver  : -> @engineType() is 'sqlserver'
+    isPostgresql : -> @engineType() is 'postgresql'
+    engineType: ->
+      engine = @get('engine')
+      constant.DB_ENGINTYPE[ engine ] || engine
+
+    getSpecifications: ->
+      if @__cachedSpecifications then return @__cachedSpecifications
+
+      that = @
+      instances = @getRdsInstances()
+
+      if not instances then return null
+
+      spec = {}
+      specArr = []
+
+      for i in instances
+        spec[i.LicenseModel] = {} if not spec[i.LicenseModel]
+        spec[i.LicenseModel][i.EngineVersion] = {} if not spec[i.LicenseModel][i.EngineVersion]
+        spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = {
+          multiAZCapable: i.MultiAZCapable,
+          availabilityZones: i.AvailabilityZones
+        }
+
+      for license, versions of spec
+        lObj = license: license, versions: []
+        for version, classes of versions
+          vObj = version: version, instanceClasses: []
+          instanceClassDict = {}
+          for cla, az of classes
+            instanceClassDict[ cla ] = multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
+
+          # Sorting and filling parameters.
+          for claDict in constant.DB_INSTANCECLASS
+            if _.has instanceClassDict, claDict.instanceClass
+              vObj.instanceClasses.push _.extend instanceClassDict[claDict.instanceClass], claDict
+
+          lObj.versions.push vObj
+
+        lObj.versions.sort (a, b) -> MC.versionCompare b.version, a.version
+        specArr.push lObj
+
+      @__cachedSpecifications = specArr
+
+      specArr
+
+    # Get and Process License, EngineVersion, InstanceClass and multiAz
     getLVIA: (spec) ->
       if not spec then return []
 
       currentLicense = @get 'license'
       currentVersion = @get 'engineVersion'
       currentClass   = @get 'instanceClass'
-
-      # spec[1] = license: 'test', versions: [ { version: '0.0.1', instanceClasses: [{instanceClass:'test', multiAZCapable: false}]} ]
 
       license = _.first _.filter spec, (s) ->
         if s.license is currentLicense
@@ -451,59 +405,24 @@ define [
         @set 'instanceClass', instanceClass.instanceClass
         _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
 
-      if not instanceClass.multiAZCapable
-        @set 'multiAz', false
+      multiAZCapable = instanceClass.multiAZCapable
+      # Unset multiAz must before sqlserver engine judge.
+      if not multiAZCapable
+        @set 'multiAz', ''
 
-      [spec, license.versions, version.instanceClasses, instanceClass.multiAZCapable, instanceClass.availabilityZones]
+      engine = @get('engine')
+      multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
 
-    getSpecifications: ->
-      if @__cachedSpecifications then return @__cachedSpecifications
-
-      that = @
-      instances = @getRdsInstances()
-
-      if not instances then return null
-
-      spec = {}
-      specArr = []
-
-      for i in instances
-        spec[i.LicenseModel] = {} if not spec[i.LicenseModel]
-        spec[i.LicenseModel][i.EngineVersion] = {} if not spec[i.LicenseModel][i.EngineVersion]
-        spec[i.LicenseModel][i.EngineVersion][i.DBInstanceClass] = {
-          multiAZCapable: i.MultiAZCapable,
-          availabilityZones: i.AvailabilityZones
-        }
-
-      for license, versions of spec
-        lObj = license: license, versions: []
-        for version, classes of versions
-          vObj = version: version, instanceClasses: []
-          instanceClassDict = {}
-          for cla, az of classes
-            instanceClassDict[ cla ] = multiAZCapable: az.multiAZCapable, availabilityZones: az.availabilityZones
-
-          # Sorting and filling parameters.
-          for claDict in constant.DBINSTANCECLASSMAP
-            if _.has instanceClassDict, claDict.instanceClass
-              vObj.instanceClasses.push _.extend instanceClassDict[claDict.instanceClass], claDict
-
-          lObj.versions.push vObj
-
-        lObj.versions.sort (a, b) -> versionCompare b.version, a.version
-        specArr.push lObj
-
-      @__cachedSpecifications = specArr
-
-      specArr
+      [spec, license.versions, version.instanceClasses, multiAZCapable, instanceClass.availabilityZones]
 
     getCost : ( priceMap, currency )->
       if not priceMap.database then return null
 
       engine = @engineType()
 
-      if engine is 'sqlserver' then sufix = engine.split('-')[1]
+      if engine is 'sqlserver'
+        sufix = @get('engine').split('-')[1]
 
       dbInstanceType = @attributes.instanceClass.split('.')
       deploy = if @attributes.multiAz then 'multiAZ' else 'standard'
@@ -521,7 +440,7 @@ define [
           license = 'byol'
 
         if license == 'li' and engine == 'sqlserver'
-          license = license + sufix
+          license = license + '-' + sufix
 
         for p in fee
           if p.deploy != deploy
@@ -574,86 +493,78 @@ define [
 
       return @get('backupRetentionPeriod') || 0
 
-    setOptionGroup: ( name ) ->
-      ogComp = DBOgModel.findWhere(name: name) or new DBOgModel(name: name, default: true)
+    getNewName : ()->
+      args = [].slice.call arguments, 0
+      args[0] = Model.getInstances().length
+      ComplexResModel.prototype.getNewName.apply this, args
 
-      new OgUsage @, ogComp
+    isRemovable :()->
+      if @slaves().length > 0
+        if not @get("appId")
+          # Return a warning, delete DBInstance will remove all ReadReplica together when DBInstance hasn't existed
+          result = sprintf lang.ide.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
+        else
+          # Return a warning, delete DBInstance will remove nonexistent ReadReplica together when DBInstance has existed
+          result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
+        return result
+      true
 
-    getOptionGroup: -> @connectionTargets('OgUsage')[0]
+    remove :()->
+      #remove readReplica related to current DBInstance
+      for slave in @slaves()
+        if not slave.get("appId")
+          #remove nonexistent replica
+          slave.remove()
 
-    getOptionGroupName: -> @getOptionGroup()?.get 'name'
+      #remove current node
+      ComplexResModel.prototype.remove.call(this)
+      null
 
     serialize : () ->
-
       master = @master()
-
-      if master and not @get("appId")
-        # If this is a newly created replica, we would get the component from its master
-        component = master.serialize().component
-        component.name = @get("name")
-        component.uid  = @id
-        $.extend component.resource, {
-          CreatedBy                             : ''
-          DBInstanceIdentifier                  : ''
-          DBInstanceClass                       : @get("instanceClass")
-          AutoMinorVersionUpgrade               : @get("autoMinorVersionUpgrade")
-          PubliclyAccessible                    : @get("accessible")
-          BackupRetentionPeriod                 : 0
-          MultiAZ                               : false
-          ReadReplicaSourceDBInstanceIdentifier : master.createRef('DBInstanceIdentifier')
-          DBSubnetGroup                         :
-            DBSubnetGroupName                     : @parent().createRef 'DBSubnetGroupName'
-        }
-      else
-        component =
-          name : @get("name")
-          type : @type
-          uid  : @id
-          resource :
-            CreatedBy                             : @get 'createdBy'
-            DBInstanceIdentifier                  : @get 'instanceId'
-            NewDBInstanceIdentifier               : @get 'newInstanceId'
-            DBSnapshotIdentifier                  : @get 'snapshotId'
-
-            AllocatedStorage                      : @get 'allocatedStorage'
-            AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
-            AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
-            AvailabilityZone                      : @get 'az'
-            MultiAZ                               : @get 'multiAz'
-            Iops                                  : @getIops()
-            BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
-            CharacterSetName                      : @get 'characterSetName'
-            DBInstanceClass                       : @get 'instanceClass'
-
-            DBName                                : @get 'dbName'
-            Endpoint:
-              Port   : @get 'port'
-            Engine                                : @get 'engine'
-            EngineVersion                         : @get 'engineVersion'
-            LicenseModel                          : @get 'license'
-            MasterUsername                        : @get 'username'
-            MasterUserPassword                    : @get 'password'
-
-            OptionGroupMembership:
-              OptionGroupName: @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName' || ""
-
-            DBParameterGroups:
-              DBParameterGroupName                : @get 'pgName'
-            ApplyImmediately                      : @get 'applyImmediately'
-
-            PendingModifiedValues                 : @get 'pending'
-            PreferredBackupWindow                 : @get 'backupWindow'
-            PreferredMaintenanceWindow            : @get 'maintenanceWindow'
-            PubliclyAccessible                    : @get 'accessible'
-
-            DBSubnetGroup:
-              DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
-            VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
-            ReadReplicaSourceDBInstanceIdentifier : ""
-
+      component =
+        name : @get("name")
+        type : @type
+        uid  : @id
+        resource :
+          CreatedBy                             : @get 'createdBy'
+          DBInstanceIdentifier                  : @get 'instanceId'
+          NewDBInstanceIdentifier               : @get 'newInstanceId'
+          DBSnapshotIdentifier                  : @get 'snapshotId'
+          AllocatedStorage                      : @get 'allocatedStorage'
+          AutoMinorVersionUpgrade               : @get 'autoMinorVersionUpgrade'
+          AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
+          AvailabilityZone                      : @get 'az'
+          MultiAZ                               : @get 'multiAz'
+          Iops                                  : @getIops()
+          BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
+          CharacterSetName                      : @get 'characterSetName'
+          DBInstanceClass                       : @get 'instanceClass'
+          DBName                                : @get 'dbName'
+          Endpoint:
+            Port   : @get 'port'
+          Engine                                : @get 'engine'
+          EngineVersion                         : @get 'engineVersion'
+          LicenseModel                          : @get 'license'
+          MasterUsername                        : @get 'username'
+          MasterUserPassword                    : @get 'password'
+          OptionGroupMembership:
+            OptionGroupName: @connectionTargets( 'OgUsage' )[ 0 ]?.createRef 'OptionGroupName' || ""
+          DBParameterGroups:
+            DBParameterGroupName                : @get 'pgName'
+          ApplyImmediately                      : @get 'applyImmediately'
+          PendingModifiedValues                 : @get 'pending'
+          PreferredBackupWindow                 : @get 'backupWindow'
+          PreferredMaintenanceWindow            : @get 'maintenanceWindow'
+          PubliclyAccessible                    : @get 'accessible'
+          DBSubnetGroup:
+            DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
+          VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
+          ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
 
       { component : component, layout : @generateLayout() }
-
 
   }, {
 
@@ -662,55 +573,45 @@ define [
     oracleCharset: ["AL32UTF8", "JA16EUC", "JA16EUCTILDE", "JA16SJIS", "JA16SJISTILDE", "KO16MSWIN949", "TH8TISASCII", "VN8MSWIN1258", "ZHS16GBK", "ZHT16HKSCS", "ZHT16MSWIN950", "ZHT32EUC", "BLT8ISO8859P13", "BLT8MSWIN1257", "CL8ISO8859P5", "CL8MSWIN1251", "EE8ISO8859P2", "EL8ISO8859P7", "EL8MSWIN1253", "EE8MSWIN1250", "NE8ISO8859P10", "NEE8ISO8859P4", "WE8ISO8859P15", "WE8MSWIN1252", "AR8ISO8859P6", "AR8MSWIN1256", "IW8ISO8859P8", "IW8MSWIN1255", "TR8MSWIN1254", "WE8ISO8859P9", "US7ASCII", "UTF8", "WE8ISO8859P1"]
 
     getInstances: -> @reject (obj) -> obj.master() or obj.get('snapshotId')
-
     getReplicas: -> @filter (obj) -> !!obj.master()
-
     getSnapShots: -> @filter (obj) -> !!obj.get('snapshotId')
-
-    getDefaultOgInstance: ( name ) ->
-      DBOgModel.findWhere( name: name, default: true ) or new DBOgModel name: name, default: true
+    getDefaultOgInstance: ( name ) -> DBOgModel.findWhere( name: name, default: true ) or new DBOgModel name: name, default: true
 
     deserialize : ( data, layout_data, resolve ) ->
       that = @
-      model = new Model({
+      resource = data.resource
 
+      model = new Model({
         id     : data.uid
         name   : data.name
-        createdBy  : data.resource.CreatedBy
 
-        appId                     : data.resource.DBInstanceIdentifier
-        instanceId                : data.resource.DBInstanceIdentifier
-        newInstanceId             : data.resource.NewDBInstanceIdentifier
-        snapshotId                : data.resource.DBSnapshotIdentifier
-
-        allocatedStorage          : data.resource.AllocatedStorage
-        autoMinorVersionUpgrade   : data.resource.AutoMinorVersionUpgrade
-        allowMajorVersionUpgrade  : data.resource.AllowMajorVersionUpgrade
-        az                        : data.resource.AvailabilityZone
-        multiAz                   : data.resource.MultiAZ
-        iops                      : data.resource.Iops
-        backupRetentionPeriod     : data.resource.BackupRetentionPeriod
-        characterSetName          : data.resource.CharacterSetName
-
-        dbName                    : data.resource.DBName
-        port                      : data.resource.Endpoint?.Port
-        engine                    : data.resource.Engine
-        license                   : data.resource.LicenseModel
-        engineVersion             : data.resource.EngineVersion
-        instanceClass             : data.resource.DBInstanceClass
-        username                  : data.resource.MasterUsername
-        password                  : data.resource.MasterUserPassword
-
-        pending                   : data.resource.PendingModifiedValues
-
-        backupWindow              : data.resource.PreferredBackupWindow
-        maintenanceWindow         : data.resource.PreferredMaintenanceWindow
-
-        accessible                : data.resource.PubliclyAccessible
-
-        pgName                    : data.resource.DBParameterGroups?.DBParameterGroupName
-        applyImmediately          : data.resource.ApplyImmediately
-
+        createdBy                 : resource.CreatedBy
+        appId                     : resource.DBInstanceIdentifier
+        instanceId                : resource.DBInstanceIdentifier
+        newInstanceId             : resource.NewDBInstanceIdentifier
+        snapshotId                : resource.DBSnapshotIdentifier
+        allocatedStorage          : resource.AllocatedStorage
+        autoMinorVersionUpgrade   : resource.AutoMinorVersionUpgrade
+        allowMajorVersionUpgrade  : resource.AllowMajorVersionUpgrade
+        az                        : resource.AvailabilityZone
+        multiAz                   : resource.MultiAZ
+        iops                      : resource.Iops
+        backupRetentionPeriod     : resource.BackupRetentionPeriod
+        characterSetName          : resource.CharacterSetName
+        dbName                    : resource.DBName
+        port                      : resource.Endpoint?.Port
+        engine                    : resource.Engine
+        license                   : resource.LicenseModel
+        engineVersion             : resource.EngineVersion
+        instanceClass             : resource.DBInstanceClass
+        username                  : resource.MasterUsername
+        password                  : resource.MasterUserPassword
+        pending                   : resource.PendingModifiedValues
+        backupWindow              : resource.PreferredBackupWindow
+        maintenanceWindow         : resource.PreferredMaintenanceWindow
+        accessible                : resource.PubliclyAccessible
+        pgName                    : resource.DBParameterGroups?.DBParameterGroupName
+        applyImmediately          : resource.ApplyImmediately
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

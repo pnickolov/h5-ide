@@ -7,13 +7,30 @@ define [
   "constant"
   "i18n!/nls/lang.js"
   'appAction'
+  "CloudResources"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
   "UI.nanoscroller"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources )->
+
+  Handlebars.registerHelper "awsAmiIcon", ( amiId, region )->
+    ami = CloudResources( constant.RESTYPE.AMI, region ).get( amiId )
+    if ami
+      ami = ami.attributes
+      return ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+    else
+      return "empty.png"
+
+  Handlebars.registerHelper "awsIsEip", ( ip, region, options )->
+    if not ip then return ""
+    for eip in CloudResources( constant.RESTYPE.EIP, region ).models
+      if eip.get("publicIp") is ip
+        return options.fn this
+
+    ""
 
   Backbone.View.extend {
 

@@ -3,6 +3,7 @@
 #############################
 
 define [ 'ApiRequest'
+         'ResDiff'
          '../base/view'
          'og_dropdown'
          './template/stack_instance'
@@ -13,7 +14,7 @@ define [ 'ApiRequest'
          'CloudResources'
          'rds_pg'
          'jqtimepicker'
-], ( ApiRequest, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup ) ->
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
 
     noop = ()-> null
 
@@ -23,6 +24,7 @@ define [ 'ApiRequest'
             'change #property-dbinstance-name': 'changeInstanceName'
             'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
             'change #property-dbinstance-storage': 'changeAllocatedStorage'
+            'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
             'change #property-dbinstance-iops-check': 'changeProvisionedIOPSCheck'
             'change #property-dbinstance-iops-value': 'changeProvisionedIOPS'
             'change #property-dbinstance-master-username': 'changeUserName'
@@ -51,6 +53,34 @@ define [ 'ApiRequest'
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
             'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+            'OPTION_CHANGE': 'checkChange'
+            'change *': 'checkChange'
+
+        checkChange: ( e ) ->
+            return unless @resModel.get 'appId'
+            that = @
+
+            diff = ( oldComp, newComp ) ->
+                comp = that.resModel.serialize()
+
+                differ = new ResDiff({
+                    old : component: that.originComp
+                    new : comp
+                })
+
+                differ.getChangeInfo().hasResChange
+
+            if e
+                _.defer () ->
+                    if diff()
+                        that.$( '.apply-immediately-section' ).show()
+                    else
+                        that.$( '.apply-immediately-section' ).hide()
+            else
+                diff()
+
+
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -87,10 +117,15 @@ define [ 'ApiRequest'
 
         setDefaultAllocatedStorage: () ->
 
-            defaultStorage = @resModel.getDefaultAllocatedStorage()
-            @resModel.set('allocatedStorage', defaultStorage)
-            $('#property-dbinstance-storage').val(defaultStorage)
-            @updateIOPSCheckStatus()
+            range = @resModel.getAllocatedRange()
+            currentValue = @resModel.get('allocatedStorage')
+
+            if range.min > currentValue or range.max < currentValue
+
+                defaultStorage = @resModel.getDefaultAllocatedStorage()
+                @resModel.set('allocatedStorage', defaultStorage)
+                $('#property-dbinstance-storage').val(defaultStorage)
+                @updateIOPSCheckStatus()
 
         _getTimeData: (timeStr) ->
 
@@ -191,8 +226,17 @@ define [ 'ApiRequest'
 
                 if startWeek
 
+                    endWeek = startWeek
+
+                    # cross day
+                    weekAry = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+                    if start.getDay() isnt end.getDay()
+                        startWeekIdx = weekAry.indexOf(startWeek) + 1
+                        endWeekIdx = (startWeekIdx + 1) % 7
+                        endWeek = weekAry[endWeekIdx - 1]
+
                     startTimeStr = "#{startWeek}:#{startTimeStr}"
-                    endTimeStr = "#{startWeek}:#{endTimeStr}"
+                    endTimeStr = "#{endWeek}:#{endTimeStr}"
 
                 return "#{startTimeStr}-#{endTimeStr}"
 
@@ -233,17 +277,17 @@ define [ 'ApiRequest'
 
         getOriginAttr: () ->
 
-            originJson = Design.instance().__opsModel.getJsonData()
-            originComp = originJson.component[@resModel.id]
 
-            if originComp
+            if @originComp and @appModel
 
-                allocatedStorage = originComp.resource.AllocatedStorage
-                iops = originComp.resource.Iops
+                allocatedStorage = @originComp.resource.AllocatedStorage
+                iops = @originComp.resource.Iops
 
                 return {
                     originAllocatedStorage: allocatedStorage,
                     originIOPS: iops
+                    originBackupWindow: @appModel.get 'PreferredBackupWindow'
+                    originMaintenanceWindow: @appModel.get 'PreferredMaintenanceWindow'
                 }
 
             else
@@ -264,6 +308,7 @@ define [ 'ApiRequest'
 
             attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
+            attr.isChanged = @checkChange()
 
             _.extend attr, {
                 isOracle: @resModel.isOracle()
@@ -283,6 +328,10 @@ define [ 'ApiRequest'
 
             template = template_instance
 
+            # hide az config section if it has no item.
+            if @isAppEdit and @resModel.get('engine') not in [ 'sqlserver-ee', 'sqlserver-se' ]
+                attr.hideAZConfig = true
+
             # if replica
             if @resModel.master()
                 if @isAppEdit
@@ -292,7 +341,7 @@ define [ 'ApiRequest'
                 attr.masterIops = @resModel.master().get 'iops'
 
             # if snapshot
-            if attr.snapshotId
+            else if attr.snapshotId
                 template = template_instance
                 snapshotModel = @resModel.getSnapshotModel()
                 attr.snapshotSize = Number(snapshotModel.get('AllocatedStorage'))
@@ -336,13 +385,24 @@ define [ 'ApiRequest'
             })
             @getInstanceStatus() if @isAppEdit
 
+            # listen change event
+            @resModel.on 'change:iops', (val) ->
+
+                if @isAppEdit
+                    originValue = that.getOriginAttr()
+                    $tipDom = @$el.find('.property-info-iops-adjust-tip')
+                    if originValue is val
+                        $tipDom.removeClass('hide')
+                    else
+                        $tipDom.addClass('hide')
+
             attr.name
 
         bindParsley: ->
 
             that = this
 
-            db = @model
+            db = @resModel
             validateStartTime = (val) ->
                 if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
                         'Provide a valid time value from 00:00 to 23:59.'
@@ -350,7 +410,7 @@ define [ 'ApiRequest'
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
 
-            @$('#property-dbinstance-database-name').parsley 'custom', ( value ) ->
+            @$('#property-dbinstance-database-name').parsley 'custom', ( val ) ->
                 switch db.engineType()
                     when 'mysql'
                         if val.length > 64 then return 'Max length is 64.'
@@ -379,6 +439,12 @@ define [ 'ApiRequest'
                     if originValue and (storage < originValue.originAllocatedStorage)
                         return 'Allocated storage cannot be reduced.'
 
+                    increaseSize = storage - originValue.originAllocatedStorage
+                    if increaseSize > 0
+                        minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1 + 1)
+                        if increaseSize <= minIncreaseSize
+                            return "Allocated storage must increase by at least 10%, for a new storage size of at least #{originValue.originAllocatedStorage + minIncreaseSize}."
+
                 if not (storage >= min and storage <= max)
                     return "Must be an integer from #{min} to #{max}"
 
@@ -402,30 +468,40 @@ define [ 'ApiRequest'
                 # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
                 #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
 
-                if (iops % 1000) isnt 0
-                    return "Require a multiple of 1000"
+                if that.resModel.isSqlserver() and ((iops % 1000) isnt 0 or (storage * 10) isnt iops)
+                    return "SQL Server IOPS requires a multiple of 1000 and a multiple of 10 for Allocated Storage"
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
 
                 return "Require IOPS / GB ratios between 3 and 10"
 
-                # if defaultIOPS is iopsRange.maxIOPS
-                #     return "Require #{defaultIOPS} IOPS"
-                # else
-                #     return "Require #{defaultIOPS}-#{iopsRange.maxIOPS} IOPS"
+            @$('#property-dbinstance-master-password').parsley 'custom', ( val ) ->
 
-            @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
+                if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
+                    return 'Cannot contain character /,",@'
 
-                if that.resModel.isMysql() and val.length >= 8 and val.length <= 41
+                if that.resModel.isMysql()
+                    min = 8
+                    max = 41
+                if that.resModel.isOracle()
+                    min = 8
+                    max = 30
+                if that.resModel.isSqlserver()
+                    min = 8
+                    max = 128
+                if that.resModel.isPostgresql()
+                    min = 8
+                    max = 128
+                if val.length >= min and val.length <= max
                     return null
-                if that.resModel.isOracle() and val.length >= 8 and val.length <= 30
-                    return null
-                if that.resModel.isSqlserver() and val.length >= 8 and val.length <= 128
-                    return null
-                if that.resModel.isPostgresql() and val.length >= 8 and val.length <= 128
-                    return null
-                return 'Invalid password'
+
+                return "Must contain from #{min} to #{max} characters"
+
+            @$('#property-dbinstance-database-port').parsley 'custom', ( val ) ->
+                if db.isSqlserver() and +val in [ 1434, 3389, 47001, 49152, 49153, 49154, 49155, 49156 ]
+                    return "This value can't be 1434, 3389, 47001, 49152-49156"
+                null
 
         renderOptionGroup: ->
 
@@ -434,6 +510,7 @@ define [ 'ApiRequest'
             regionName       = Design.instance().region()
             attr             = @getModelJSON()
             attr.canCustomOG = false
+            attr.ogName = @resModel.getOptionGroupName()
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
             ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
@@ -460,9 +537,9 @@ define [ 'ApiRequest'
                         majorVersion: @resModel.getMajorVersion()
                     }).el
 
-            else
+            # else
 
-                @$el.find('.property-dbinstance-optiongroup').hide()
+            #     @$el.find('.property-dbinstance-optiongroup').hide()
 
         renderParameterGroup: ->
             #update selection
@@ -482,6 +559,7 @@ define [ 'ApiRequest'
                 azCapable: lvi[3]
             }
             attr = @getModelJSON()
+            attr.classInfo = @resModel.getInstanceClassDict()
             _.extend data, attr
 
             $('#lvia-container').html template_component.lvi(data)
@@ -490,12 +568,17 @@ define [ 'ApiRequest'
             lvi = @resModel.getLVIA spec
             multiAZCapable = lvi[3]
 
-            if not multiAZCapable
-                @resModel.set('multiAz', false)
+            # hack for SQL Server
+            engine = @resModel.get('engine')
+            disableMutilAZForMirror = false
+            disableMutilAZForMirror = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+
+            @resModel.set 'multiAz', '' unless multiAZCapable
 
             # set az list
 
             sgData = {
+                disableMutilAZForMirror: disableMutilAZForMirror
                 multiAZCapable: multiAZCapable
             }
             sgData = _.extend sgData, attr
@@ -511,7 +594,8 @@ define [ 'ApiRequest'
             if usedAZCount < 2
                 sgData.azNotEnough = true
 
-            $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
+            if multiAZCapable
+                $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
 
             @renderAZList()
 
@@ -550,32 +634,35 @@ define [ 'ApiRequest'
             $preferredAZSelect.find('.selection').text($item.text())
 
         changeInstanceName: (event) ->
+            that = @
+            $target = $ event.currentTarget
 
-            that = this
+            if MC.aws.aws.checkResName(@resModel.get('id'), $target, 'DBInstance')
+                value = $target.val().toLowerCase()
+                $target.parsley 'custom', ( val ) ->
+                    val = val.toLowerCase()
 
-            target = $ event.currentTarget
-
-            if PropertyView.checkResName(@resModel.get('id'), target, 'DBInstance')
-
-                value = target.val()
-
-                target.parsley 'custom', ( val ) ->
-
-                    errTip = 'DB Instance name invalid'
                     if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                         return errTip
-                    if val.length > 10 and that.resModel.isSqlserver()
+
+                    if that.resModel.isSqlserver()
+                        min = 1
+                        max = 10
+                    else
+                        min = 1
+                        max = 58
+                    errTip = "Must contain from #{min} to #{max} alphanumeric characters or hyphens and first character must be a letter, cannot end with a hyphen or contain two consecutive hyphens"
+                    if val.length < min or val.length > max
                         return errTip
-                    if val.length > 58
-                        return errTip
+
                     if not MC.validate('letters', val[0])
                         return errTip
 
-                if target.parsley 'validate'
+                if $target.parsley 'validate'
 
                     @resModel.setName value
                     @setTitle value
-                    @resModel.set 'instanceId', value
+                    # @resModel.set 'instanceId', value
 
             null
 
@@ -604,18 +691,31 @@ define [ 'ApiRequest'
 
             # @renderLVIA()
 
-        updateIOPSCheckStatus: () ->
+        updateIOPSCheckStatus: (newStorage) ->
 
             that = this
 
-            if not that.resModel.master()
-
+            if newStorage
+                storge = newStorage
+            else
                 storge = that.resModel.get 'allocatedStorage'
+
+            if not (that.resModel.master() and not that.isAppEdit)
+
                 iops = that.resModel.get 'iops'
-                if that._haveEnoughStorageForIOPS(storge)
-                    that._disableIOPSCheck(false)
+
+                # check have enough storage for IOPS
+                iopsRange = @_getIOPSRange(storge)
+                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                    if @resModel.isSqlserver() and @isAppEdit
+                        that._disableIOPSCheck(true) # disable
+                    else
+                        that._disableIOPSCheck(false) # enable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', '')
                 else
-                    that._disableIOPSCheck(true)
+                    iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS
+                    that._disableIOPSCheck(true) # disable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', 'Allocated Storage must be at least 100 GB to use Provisioned IOPS.')
 
         _disableIOPSCheck: (isDisable) ->
 
@@ -626,7 +726,7 @@ define [ 'ApiRequest'
                 $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
                 $('.property-dbinstance-iops-value-section').hide()
                 $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops ''
+                @resModel.setIops 0
                 checkedDom.checked = false
 
             else
@@ -640,14 +740,6 @@ define [ 'ApiRequest'
                     $('.property-dbinstance-iops-value-section').hide()
                     checkedDom.checked = false
                 # @resModel.setIops ''
-
-        _haveEnoughStorageForIOPS: (storge) ->
-
-            iopsRange = @_getIOPSRange(storge)
-            if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
-                return true
-            else
-                return false
 
         _getIOPSRange: (storage) ->
 
@@ -687,24 +779,43 @@ define [ 'ApiRequest'
                 that.resModel.set 'allocatedStorage', value
                 that.updateIOPSCheckStatus()
 
+        inputAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            # if target.parsley('validate') and that.changeProvisionedIOPS()
+            that.updateIOPSCheckStatus(value)
+
         changeProvisionedIOPSCheck: (event) ->
+
+            that = this
 
             value = event.target.checked
 
             storage = Number($('#property-dbinstance-storage').val())
             iopsRange = @_getIOPSRange(storage)
 
-            if value
-                $('.property-dbinstance-iops-value-section').show()
-                if iopsRange.minIOPS >= 1000
-                    defaultIOPS = @_getDefaultIOPS(storage)
-                    if defaultIOPS
-                        $('#property-dbinstance-iops-value').val(defaultIOPS)
-                        @resModel.setIops defaultIOPS
+            # for replica
+            if @resModel.master() and not @isAppEdit
+                if value
+                    @resModel.setIops @resModel.master().get('iops')
+                else
+                    @resModel.setIops 0
             else
-                $('.property-dbinstance-iops-value-section').hide()
-                $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops ''
+                if value
+                    $('.property-dbinstance-iops-value-section').show()
+                    if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                        defaultIOPS = @_getDefaultIOPS(storage)
+                        if defaultIOPS
+                            $('#property-dbinstance-iops-value').val(defaultIOPS)
+                            that.changeProvisionedIOPS()
+                            # @resModel.setIops defaultIOPS
+                else
+                    $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops 0
 
         changeProvisionedIOPS: (event) ->
 
@@ -745,15 +856,21 @@ define [ 'ApiRequest'
             target.parsley 'custom', (val) ->
 
                 if MC.validate('alphanum', val) and MC.validate('letters', val[0])
-                    if that.resModel.isMysql() and val.length >= 1 and val.length <= 16
+                    if that.resModel.isMysql()
+                        min = 1
+                        max = 16
+                    if that.resModel.isOracle()
+                        min = 1
+                        max = 30
+                    if that.resModel.isSqlserver()
+                        min = 1
+                        max = 128
+                    if that.resModel.isPostgresql()
+                        min = 2
+                        max = 16
+                    if val.length >= min and val.length <= max
                         return null
-                    if that.resModel.isOracle() and val.length >= 1 and val.length <= 30
-                        return null
-                    if that.resModel.isSqlserver() and val.length >= 1 and val.length <= 128
-                        return null
-                    if that.resModel.isPostgresql() and val.length >= 2 and val.length <= 16
-                        return null
-                return "Invalid username"
+                return "Must be #{min} to #{max} alphanumeric characters and first character must be a letter"
 
             if target.parsley 'validate'
                 @resModel.set 'username', value
@@ -766,6 +883,7 @@ define [ 'ApiRequest'
 
             if target.parsley 'validate'
                 @resModel.set 'password', value
+                # $('#property-dbinstance-master-password').attr('data-tooltip', "Current password: #{value}").removeClass('tooltip').addClass('tooltip')
 
         changeDatabaseName: (event) ->
             $target = $ event.currentTarget
@@ -824,10 +942,10 @@ define [ 'ApiRequest'
             selectedValue = $(event.currentTarget).val()
             if selectedValue is 'window'
                 $backupGroup.show()
+                @changeBackupTime()
             else
                 $backupGroup.hide()
                 @resModel.set('backupWindow', '')
-
 
         changeMaintenanceOption: (event) ->
 
@@ -835,6 +953,7 @@ define [ 'ApiRequest'
             selectedValue = $(event.currentTarget).val()
             if selectedValue is 'window'
                 $maintenanceGroup.show()
+                @changeMaintenanceTime()
             else
                 $maintenanceGroup.hide()
                 @resModel.set('maintenanceWindow', '')
@@ -868,8 +987,10 @@ define [ 'ApiRequest'
             dbId = @appModel.get('DBInstanceIdentifier')
             _setStatus()
 
+            region = Design.instance().region()
             ApiRequest('rds_ins_DescribeDBInstances', {
-                id: dbId
+                id: dbId,
+                region_name: region
             }).then (data) ->
 
                 data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []

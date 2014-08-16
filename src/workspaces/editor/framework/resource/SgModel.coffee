@@ -211,7 +211,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
         resource :
           Default          : @isDefault()
           GroupId          : @get("appId")
-          GroupName        : @get("groupName") or @get("name")
+          GroupName        : if @isDefault() then "default" else (@get("groupName") or @get("name"))
           GroupDescription : @get("description")
           VpcId            : @getVpcRef()
           IpPermissions       : []
@@ -289,10 +289,10 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     deserialize : ( data, layout_data, resolve )->
 
       group = new Model({
-        name      : data.name
+        name      : if data.resource.Default then "DefaultSG" else data.name
         id        : data.uid
         appId     : data.resource.GroupId
-        groupName : data.resource.GroupName
+        groupName : if data.resource.Default then "default" else data.resource.GroupName
 
         description : data.resource.GroupDescription
       }, { isDeserialize : true} )

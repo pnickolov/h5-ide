@@ -1,4 +1,7 @@
 #modal-option-group {
+    .og-name {
+        text-transform: lowercase;
+    }
     .header .icon-info {
         float: right;
         margin-top: 4px;
@@ -144,6 +147,9 @@
                     color: #bbb;
                 }
             }
+            .option-edit-btn.invisible {
+                visibility: hidden;
+            }
         }
         .option-item:nth-child(odd) {
             background-color: #333;
@@ -172,7 +178,14 @@
         margin-right: 10px;
     }
     .slide-delete {
-        margin-top: 20px;
+        padding: 30px;
+        .action {
+            float: right;
+            margin-bottom: 20px;
+            .remove-cancel {
+                margin-left: 10px;
+            }
+        }
     }
     .slidebox {
         .content { margin-top: 8px; }
@@ -182,6 +195,11 @@
             input {
                 width: 177px;
             }
+
+            label {
+                margin-bottom : 20px;
+            }
+
             & > div {
                 padding-bottom: 8px;
             }
@@ -194,6 +212,10 @@
             input {
                 padding: 1px 6px;
                 max-width: 140px;
+            }
+            select {
+                height: auto;
+                width: 154px;
             }
         }
 
@@ -251,6 +273,69 @@
     }
 
 
+}
+
+
+.prop_main {
+  display       : block;
+  color         : #fff;
+  font-size     : 15px;
+  margin-bottom : 4px;
+}
+.prop_main .prop_sub {
+  margin-left: 5px;
+}
+.prop_sub {
+  display     : inline-block;
+  color       : #999;
+  font-size   : 12px;
+  line-height : 14px;
+}
+.modal-toolbar .slidebox .content input.input.prop-half-width {
+  width: 45%;
+}
+.modal-toolbar .slidebox .content .select3 {
+  height: 30px;
+  width: 205px;
+}
+.pg-edit-footer a {
+  color   : $base-b;
+  display : inline-block;
+  margin  : 18px 15px;
+}
+#sort-parameter-name {
+  display     : inline-block;
+  width       : 200px;
+  margin-left : 5px;
+}
+.modal-toolbar .slidebox .pull-left {
+  float: left;
+}
+.modal-toolbar .slidebox .pull-right {
+  float: right;
+}
+#pg-sort-filter {
+  padding: 10px;
+  border-bottom: 1px solid #070707;
+}
+#pg-sort-filter input.input {
+  width: 300px;
+  margin-left: 5px;
+}
+.detail-info.horizontal .detail-info-row {
+  margin-left: 0 !important;
+  padding: 0 5%;
+}
+.detail-info.horizontal .property-control-group > label {
+  width: 145px;
+  text-align: right;
+  padding-right: 10px;
+}
+.detail-info.horizontal .property-control-group > div {
+  display: inline-block;
+}
+.modal-toolbar .table-head-fix .table tr .detail-info.horizontal .detail-info-row {
+  width: 40% !important;
 }
 
 

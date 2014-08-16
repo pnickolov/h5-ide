@@ -62,6 +62,12 @@ define [
       false
 
     onDropReplicate : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+      if targetSubnetGroup isnt dataTransfer.item.model.parent()
+        notification "error", "Read replica must be dropped in the same subnet group with source DB instance."
+        return
+
       # If the model supports clone() interface, then clone the target.
       name = dataTransfer.item.model.get("name")
       nameMatch = name.match /(.+-replica)(\d*)$/
@@ -75,7 +81,7 @@ define [
         x        : dataTransfer.x
         y        : dataTransfer.y
         name     : name
-        parent   : dataTransfer.parent.model
+        parent   : targetSubnetGroup
         sourceId : dataTransfer.item.model.id
       }, {
         master : dataTransfer.item.model

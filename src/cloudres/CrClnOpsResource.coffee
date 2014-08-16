@@ -129,15 +129,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       #append topic component to component_data
       @generatedJson.component[topic.uid] = topic for topic in topicCompAry
 
-      invalidExpandedAsgAry = []
-      for key,layout of @generatedJson.layout
-        if layout.type is 'ExpandedAsg'
-          if not @generatedJson.component[ layout.originalId ]
-            invalidExpandedAsgAry.push key
-
-      #remove invalid ExpandedAsg
-      delete @generatedJson.layout[exAsgId] for exAsgId in invalidExpandedAsgAry
-
       console.log "Patched Generated Json:", @generatedJson
       return
   }

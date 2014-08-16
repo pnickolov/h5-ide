@@ -46,6 +46,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       @generatedJson = data.app_json
       delete data.app_json
 
+      console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
+
       # Parse aws resource data with other collection
       extraAttr = { RES_TAG : @category }
       for type, d of data
@@ -55,21 +57,51 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           continue
         cln.__parseExternalData d, extraAttr, @__region
 
+      topicMap       = {} # id=>comp
+      topicCompAry   = []
+      asgCompAry     = []
+
+      RESTYPE = constant.RESTYPE
+
       # Fix invalid json
       region = @__region
       for uid, comp of @generatedJson.component
         switch comp.type
-          when constant.RESTYPE.AZ
+          when RESTYPE.AZ
             comp.name = comp.resource.ZoneName
-          when constant.RESTYPE.ACL
+          when RESTYPE.ACL
             acl = CloudResources( comp.type, region ).get( comp.resource.NetworkAclId )
             if acl then comp.resource.Default = acl.get("default")
-          when constant.RESTYPE.SG
+          when RESTYPE.SG
             sg = CloudResources( comp.type, region ).get( comp.resource.GroupId )
             if sg then comp.resource.GroupName = sg.get("groupName")
-          when constant.RESTYPE.DBOG
+          when RESTYPE.DBOG
             comp.name = comp.resource.OptionGroupName
-          when constant.RESTYPE.DBINSTANCE
+          when RESTYPE.ASG
+            asgCompAry.push comp
+          when RESTYPE.NC
+            if comp.resource.TopicARN.indexOf("arn:aws:sns:") is 0
+              #Create TopicArn when NC's TopicARN is not reference
+              if not topicMap[ comp.resource.TopicARN ]
+                topicComp = {
+                  name     : comp.resource.TopicARN.split(":").pop()
+                  type     : "AWS.SNS.Topic"
+                  uid      : MC.guid()
+                  resource : {
+                    TopicArn : comp.resource.TopicARN
+                  }
+                }
+                topicMap[comp.resource.TopicARN] = topicComp
+                topicCompAry.push topicComp
+
+                console.log "create component for Topic"
+
+              uid = topicMap[ comp.resource.TopicARN ].uid
+              comp.resource.TopicARN = "@{#{uid}}.resource.TopicArn"
+
+              console.log "convert TopicARN of NC"
+
+          when RESTYPE.DBINSTANCE
             comp.resource.MasterUserPassword = "****"
             dbins = CloudResources( comp.type, region ).get( comp.resource.DBInstanceIdentifier )
             if dbins
@@ -93,6 +125,18 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
                 if pending.MasterUserPassword
                   comp.resource.MasterUserPassword = pending.MasterUserPassword
 
-      console.log "Generated Json from backend:", @generatedJson
+      #append topic component to component_data
+      @generatedJson.component[topic.uid] = topic for topic in topicCompAry
+
+      invalidExpandedAsgAry = []
+      for key,layout of @generatedJson.layout
+        if layout.type is 'ExpandedAsg'
+          if not @generatedJson.component[ layout.originalId ]
+            invalidExpandedAsgAry.push key
+
+      #remove invalid ExpandedAsg
+      delete layout_data[exAsgId] for exAsgId in invalidExpandedAsgAry
+
+      console.log "Patched Generated Json:", @generatedJson
       return
   }

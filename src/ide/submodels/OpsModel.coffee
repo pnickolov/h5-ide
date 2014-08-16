@@ -148,72 +148,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()->
-      component_data = CloudResources( 'OpsResource', @getVpcId() ).generatedJson.component
-      layout_data    = CloudResources( 'OpsResource', @getVpcId() ).generatedJson.layout
-      topicMap      = {} # id=>comp
-      topicCompAry  = []
-      asgCompAry     = []
-      #patch component
-      for key,comp of component_data
-        if comp.type is constant.RESTYPE["ASG"]
-        # get ASG
-          asgCompAry.push comp
-        else if comp.type is constant.RESTYPE["NC"] and comp.resource.TopicARN.indexOf("arn:aws:sns:") is 0
-        #Create TopicArn when NC's TopicARN is not reference
-          if not topicMap[comp.resource.TopicARN]
-            tmpAry = comp.resource.TopicARN.split(":")
-            uid = MC.guid()
-            topicComp =
-              "name"    : tmpAry[tmpAry.length - 1],
-              "type"    : "AWS.SNS.Topic",
-              "uid"     : uid
-              "resource":
-                  "TopicArn": comp.resource.TopicARN
-            topicMap[comp.resource.TopicARN] = topicComp
-            topicCompAry.push topicComp
-            console.warn "create component for Topic"
-          else
-            uid = topicMap[comp.resource.TopicARN].uid
-          comp.resource.TopicARN = "@{#{uid}}.resource.TopicArn"
-          console.warn "convert TopicARN of NC"
-
-      #append topic component to component_data
-      for topic in topicCompAry
-        component_data[topic.uid] = topic
-
-      #patch for groutUId
-      invalidExpandedAsgAry = []
-      for key,layout of layout_data
-        if layout.groutUId
-          layout.groupUId = layout.groutUId
-          delete layout.groutUId
-        if layout.type and layout.type is 'ExpandedAsg' and layout.originalId
-          if not component_data[layout.originalId]
-            invalidExpandedAsgAry.push key
-      #remove invalid ExpandedAsg
-      for invalidUid in invalidExpandedAsgAry
-        console.warn "remove invalid ExpandedAsg"
-        delete layout_data[invalidUid]
-
-      #patch layout
-      for asg in asgCompAry
-        subnetMap = {}
-        subnetMap[ layout_data[asg.uid].groupUId ] = true
-        subnetRefAry = asg.resource.VPCZoneIdentifier.split(" , ")
-        subnetUidAry = []
-        for subnet in subnetRefAry
-          subnetUidAry.push MC.extractID( subnet )
-        for key,layout of layout_data
-          if layout.originalId is asg.uid and not layout.groupUId
-            #expandAsg
-            for subnet in subnetUidAry
-              if not subnetMap[subnet]
-                console.warn "fill missing groupUID for ExpandedAsg"
-                layout.groupUId = subnet
-                subnetMap[subnet] = true
-
-      CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()

@@ -135,7 +135,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
             invalidExpandedAsgAry.push key
 
       #remove invalid ExpandedAsg
-      delete layout_data[exAsgId] for exAsgId in invalidExpandedAsgAry
+      delete @generatedJson.layout[exAsgId] for exAsgId in invalidExpandedAsgAry
 
       console.log "Patched Generated Json:", @generatedJson
       return

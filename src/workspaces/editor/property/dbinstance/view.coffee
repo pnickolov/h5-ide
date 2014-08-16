@@ -472,7 +472,7 @@ define [ 'ApiRequest'
 
                 return "Require IOPS / GB ratios between 3 and 10"
 
-            @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
+            @$('#property-dbinstance-master-password').parsley 'custom', ( val ) ->
 
                 if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
                     return 'Cannot contain character /,",@'
@@ -493,6 +493,11 @@ define [ 'ApiRequest'
                     return null
 
                 return "Must contain from #{min} to #{max} characters"
+
+            @$('#property-dbinstance-database-port').parsley 'custom', ( val ) ->
+                if db.isSqlserver() and +val in [ 1434, 3389, 47001, 49152, 49153, 49154, 49155, 49156 ]
+                    return "This value can't be 1434, 3389, 47001, 49152-49156"
+                null
 
         renderOptionGroup: ->
 

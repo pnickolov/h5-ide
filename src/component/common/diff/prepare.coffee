@@ -89,6 +89,7 @@ define [ 'constant' ], ( constant ) ->
 
             # Replace keyword
             switch parentKey
+
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
                     data.key = 'Device'
@@ -132,6 +133,13 @@ define [ 'constant' ], ( constant ) ->
             # Replace first level node
             if path.length is 1
                 data.key = constant.RESNAME[ data.key ] or data.key
+
+            try
+                if data.key is 'MasterUserPassword' and data.value
+                    if data.value.type is 'changed'
+                        data.value.__new__ = data.value.__new__.replace /./g, '*'
+            catch err
+                null
 
             data
 

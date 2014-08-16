@@ -98,7 +98,12 @@ define [
 
     isSqlServerCross3Subnet = ( uid ) ->
         db = Design.instance().component uid
-        return null if not (db.isSqlserver() and db.get('multiAz'))
+        og = db.getOptionGroup()
+
+        return null if not db.isSqlserver()
+        return null if og.isDefault()
+        return null if _.every og.get( 'options' ), ( option ) ->
+            option.OptionName isnt 'Mirroring'
 
         sbg = db.parent()
         azs = _.map sbg.connectionTargets('SubnetgAsso'), (sb) -> sb.parent()

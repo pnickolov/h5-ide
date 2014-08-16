@@ -55,6 +55,8 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
 
     isVisual : ()-> false
 
+    isNameAvailable : ()-> true # Volume doesn't have name conflict issue.
+
     isReparentable : ( newParent )->
       if @design().modeIsAppEdit()
         parent = @get("owner")

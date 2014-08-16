@@ -23,7 +23,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         @__forceDedup = false
         d = Q.defer()
         d.resolve()
-        d.promise
+        return d.promise
 
       @generatedJson = null
       CrCollection.prototype.fetchForce.call this

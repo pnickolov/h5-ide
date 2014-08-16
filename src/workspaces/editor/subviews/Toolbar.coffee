@@ -26,11 +26,11 @@ define [
     return
   hosts = location.hostname.split(".")
   if hosts.length >= 3
-    API_HOST= hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+    API_HOST = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
   else
     API_HOST = location.hostname
 
-    API_URL = "https://api." + API_HOST + "/v1/apps/"
+  API_URL = "http://api." + API_HOST + "/v1/apps/"
 
   Backbone.View.extend {
 

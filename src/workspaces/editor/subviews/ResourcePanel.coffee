@@ -303,7 +303,7 @@ define [
       ms.region = @workspace.opsModel.get("region")
 
       html = LeftPanelTpl.ami ms
-      @$el.find(".resource-list-ami").html(html)
+      @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return

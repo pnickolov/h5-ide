@@ -131,7 +131,7 @@
             {{/if}}
         </div>
         <div class="modal-footer">
-            {{#unless isCreate}}<button class="remove-btn btn btn-red">Delete</button>{{/unless}}
+            {{#unless isCreate}}<button class="remove-btn btn btn-red {{#if appId}}disabled tooltip{{/if}}" {{#if appId}}data-tooltip="This option group canot be deleted since it is currently in use."{{/if}}>Delete</button>{{/unless}}
             <span class="err-tip"></span>
             <button class="save-btn btn btn-blue">Save</button>
             <button class="btn btn-silver modal-close cancel-btn">Cancel</button>

@@ -159,6 +159,9 @@ define [
             ogData.isAppPortChanged = @isAppPortChanged()
 
             @$el.html template.og_modal(ogData)
+
+            ogData.appId = @ogModel.get('appId')
+
             @initModal @el
             @renderOptionList()
             @__modalplus.resize()
@@ -524,10 +527,11 @@ define [
 
                 null
 
-        removeClicked: () ->
+        removeClicked: (event) ->
 
             that = this
-            @renderRemoveConfirm()
+            if not $(event.target).hasClass('disabled')
+                @renderRemoveConfirm()
 
         cancelClicked: () ->
 

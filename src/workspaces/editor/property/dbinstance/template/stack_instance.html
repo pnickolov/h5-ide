@@ -165,10 +165,7 @@
 
     <div class="option-group-head expand">Network & AZ Deployment</div>
     <div class="option-group">
-
-        {{#if isAppEdit}}
-
-        {{else}}
+        {{#unless isAppEdit}}
         <section class="property-control-group">
             <div class="checkbox">
                 <input id="property-dbinstance-public-access-check" type="checkbox" {{#if accessible}}checked="true"{{/if}} value="None" name="property-dbinstance-public-access-check">
@@ -176,7 +173,7 @@
             </div>
             <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
         </section>
-        {{/if}}
+        {{/unless}}
 
         <div id="property-dbinstance-mutil-az"></div>
 

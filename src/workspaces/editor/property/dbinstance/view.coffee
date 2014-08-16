@@ -328,6 +328,10 @@ define [ 'ApiRequest'
 
             template = template_instance
 
+            # hide az config section if it has no item.
+            if @isAppEdit and @resModel.get('engine') not in [ 'sqlserver-ee', 'sqlserver-se' ]
+                attr.hideAZConfig = true
+
             # if replica
             if @resModel.master()
                 if @isAppEdit
@@ -569,8 +573,7 @@ define [ 'ApiRequest'
             disableMutilAZForMirror = false
             disableMutilAZForMirror = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
-            if not multiAZCapable
-                @resModel.set('multiAz', false)
+            @resModel.set 'multiAz', '' unless multiAZCapable
 
             # set az list
 
@@ -591,7 +594,8 @@ define [ 'ApiRequest'
             if usedAZCount < 2
                 sgData.azNotEnough = true
 
-            $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
+            if multiAZCapable
+                $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
 
             @renderAZList()
 

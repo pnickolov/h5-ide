@@ -406,11 +406,13 @@ define [
         _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
 
       multiAZCapable = instanceClass.multiAZCapable
+      # Unset multiAz must before sqlserver engine judge.
+      if not multiAZCapable
+        @set 'multiAz', ''
+
       engine = @get('engine')
       multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
-      if not multiAZCapable
-        @set 'multiAz', false
 
       [spec, license.versions, version.instanceClasses, multiAZCapable, instanceClass.availabilityZones]
 

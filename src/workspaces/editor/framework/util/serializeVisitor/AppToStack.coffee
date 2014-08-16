@@ -93,6 +93,7 @@ define [ "Design" ], (Design)->
                     compo.resource.Endpoint.Address = ""
                     compo.resource.PreferredBackupWindow = ""
                     compo.resource.PreferredMaintenanceWindow = ""
+                    compo.resource.MasterUserPassword = ""
                 when "AWS.RDS.DBSubnetGroup"
                     compo.resource.CreatedBy = ''
                     compo.resource.DBSubnetGroupName = ""

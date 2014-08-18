@@ -75,12 +75,7 @@ define [
         attr = { stateOn: @workspace.design.get("agent").enabled }
         tpl += OpsEditorTpl.toolbar[ btn ]( attr )
 
-      if @workspace.opsModel.isApp()
-        ami = [].concat(
-          @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
-          @workspace.design.componentsOfType( constant.RESTYPE.LC )
-        )
-        if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+      if @workspace.design.attributes.agent.enabled
           tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
       @setElement @parent.$el.find(".OEPanelTop").html( tpl )

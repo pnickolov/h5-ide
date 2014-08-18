@@ -265,9 +265,11 @@ define [
     # Broadcast event
     ####################
     @__initializing = false
+    Backbone.Events.trigger.call Design, Design.EVENT.Deserialized
+    Backbone.Events.trigger.call @, Design.EVENT.Deserialized
+
+    # Only at this point, we are finally deserialized.
     @trigger = Design.trigger = Backbone.Events.trigger
-    Design.trigger Design.EVENT.Deserialized
-    @trigger Design.EVENT.Deserialized
     null
 
   DesignImpl.prototype.reload = ()->
@@ -281,7 +283,6 @@ define [
 
     if oldDesign
       oldDesign.use()
-
     return
 
 
@@ -600,7 +601,7 @@ define [
     vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
     if vpc.length>0
       vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) -> model.RES_TAG is vpcId
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( m ) -> m.get("vpcId") is vpcId
       for ins in instanceAry
         ins = ins.attributes
         for bdm in (ins.blockDeviceMapping || [])

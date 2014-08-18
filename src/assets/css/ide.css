@@ -4607,6 +4607,8 @@ div.modal-text-highlight {
     cursor: default; }
   #RegionResourceData .scroll-wrap {
     height: 420px; }
+  #RegionResourceData .table {
+    background: #edf1f3; }
   #RegionResourceData .table td {
     vertical-align: middle; }
   #RegionResourceData .table-head th {
@@ -4621,9 +4623,9 @@ div.modal-text-highlight {
     padding: 15px;
     background-color: #edf1f3 !important;
     border: none;
-    color: #666; }
+    color: #676767; }
   #RegionResourceData tr:nth-child(odd) > td {
-    background-color: #e8ebed; }
+    background-color: #e8ebed !important; }
   #RegionResourceData .dashboard-eip {
     background: url('/assets/images/ide/icon/icn-eipon.png') left center no-repeat;
     padding-left: 16px;
@@ -5815,6 +5817,11 @@ button#property-app-keypair {
     fill: #3887e8; }
     .dbreplicate:hover .replica-bg {
       stroke: #6daefe; }
+  .dbreplicate.disabled, .dbreplicate.disabled:hover {
+    fill: #ccc; }
+    .dbreplicate.disabled .replica-bg, .dbreplicate.disabled:hover .replica-bg {
+      stroke: #ccc;
+      fill: #eee; }
 
 .replica-text, .master-text {
   font-size: xx-small;
@@ -6598,6 +6605,8 @@ g.shadow {
   color: #4a90e2; }
 .OEPanelRight #btn-switch-state:hover {
   color: #eee; }
+.OEPanelRight #btn-switch-state {
+  color: #4fb845; }
 .OEPanelRight.no-state #btn-switch-state {
   display: none; }
 .OEPanelRight.no-state #btn-switch-property {
@@ -8853,9 +8862,10 @@ g.shadow {
 /* Rectangle 9: */
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
-  cursor: pointer;
   position: relative;
   padding-left: 32px; }
+  .dbsgppp-subnet-list label {
+    cursor: pointer; }
   .dbsgppp-subnet-list .checkbox {
     position: absolute;
     top: 50%;

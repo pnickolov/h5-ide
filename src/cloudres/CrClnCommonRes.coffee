@@ -57,6 +57,8 @@ define [
             member: obj.PolicyNames
           }
           return obj
+        dataItem.vpcId = dataItem.Vpcid
+        delete dataItem.Vpcid
         dataItem.id  = dataItem.Dnsname
         dataItem.Name= dataItem.LoadBalancerName
       return data

@@ -36,7 +36,7 @@ define [
           p[1] = 45
           p[2] = CanvasElement.constant.PORT_2D_V_ANGLE
         else
-          p[1] = 65
+          p[1] = 61
           p[2] = CanvasElement.constant.PORT_DOWN_ANGLE
       p
 
@@ -153,13 +153,15 @@ define [
 
       # Update Image
       if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
-        # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
+        # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
         CanvasManager.toggle $r, m.autobackup() isnt 0
         if @model.slaves().length < 5
           tip = "Drag to create a read replica."
+          CanvasManager.removeClass $r, "disabled"
         else
           tip = "Cannot create more read replica."
+          CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
 

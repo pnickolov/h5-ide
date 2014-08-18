@@ -218,7 +218,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           data:
             id: parameters.groupModel.id
         ]
-        (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+        if that.filterDelay
+          window.clearTimeout(that.filterDelay)
+        that.filterDelay = window.setTimeout ->
+          (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+        , 200
       $("#sort-parameter-name").on 'OPTION_CHANGE', (event, value, data)->
         sortType = data?.id || value
         filter.trigger 'change'
@@ -261,6 +265,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
             e.inputType = 'input'
             return
         that.manager.setSlide tpl {data:data, preview: true}
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>div').height() - 67)
+        .find(".scrollbar-veritical-thumb").removeAttr("style")
         $("#rds-pg-save").click ->
           that.modifyParams(parameters, getChange())
         $("#pg-back-to-edit").click ->

@@ -441,8 +441,8 @@ define [ 'ApiRequest'
 
                     increaseSize = storage - originValue.originAllocatedStorage
                     if increaseSize > 0
-                        minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1 + 1)
-                        if increaseSize <= minIncreaseSize
+                        minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1)
+                        if increaseSize < minIncreaseSize
                             return "Allocated storage must increase by at least 10%, for a new storage size of at least #{originValue.originAllocatedStorage + minIncreaseSize}."
 
                 if not (storage >= min and storage <= max)

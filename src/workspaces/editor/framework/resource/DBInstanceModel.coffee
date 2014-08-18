@@ -65,7 +65,7 @@ define [
       @clone master
 
       unless @get 'appId'
-        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: '', password: '****'
+        @set backupRetentionPeriod: 0, multiAz: false, instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
       @connections("DbReplication")[0]?.remove()
@@ -182,10 +182,14 @@ define [
 
     clone : ( srcTarget )->
       @cloneAttributes srcTarget, {
-        reserve : "newInstanceId|instanceId"
+        reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
+
       @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
+
       return
 
 
@@ -248,11 +252,11 @@ define [
           if engine in ['sqlserver-ex', 'sqlserver-web']
               obj = { min: 30, max: 1024 }
 
-      classInfo = @getInstanceClassDict()
-      defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          obj.min = 100
+      # classInfo = @getInstanceClassDict()
+      # defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     obj.min = 100
 
       return obj
 
@@ -300,11 +304,11 @@ define [
     getDefaultCharSet: -> constant.DB_DEFAULTSETTING[@get('engine')].charset
     getInstanceClassDict: -> _.find constant.DB_INSTANCECLASS, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
     getDefaultAllocatedStorage: ->
-      classInfo = @getInstanceClassDict()
+      # classInfo = @getInstanceClassDict()
       defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          return 100
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     return 100
       return defaultStorage
 
     getOptionGroup: -> @connectionTargets('OgUsage')[0]

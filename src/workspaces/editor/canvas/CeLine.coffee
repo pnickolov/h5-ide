@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "component/sgrule/SGRulePopup" ], ( CanvasElement, constant, CanvasManager, lang, SGRulePopup )->
 
   LineMaskToClear = null
 
@@ -364,6 +364,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
           line.masker.remove()
       LineMaskToClear = null
       return
+
+    connect : ( LineClass, comp1, comp2 )-> new LineClass( comp1, comp2, undefined, { createByUser : true } )
   }
 
 
@@ -372,13 +374,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeEniAttachment"
     ### env:dev:end ###
     type : "EniAttachment"
-  }
-
-  CeLine.extend {
-    ### env:dev ###
-    ClassName : "CeElbAsso"
-    ### env:dev:end ###
-    type : "ElbAsso"
   }
 
   CeLine.extend {
@@ -422,6 +417,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeElbAmiAsso"
     ### env:dev:end ###
     type : "ElbAmiAsso"
+  }, {
+    connect : ( LineClass, p1Comp, p2Comp )->
+      new SGRulePopup( p1Comp, p2Comp )
+      new LineClass( p1Comp, p2Comp, undefined, { createByUser : true } )
   }
 
   CeLine.extend {

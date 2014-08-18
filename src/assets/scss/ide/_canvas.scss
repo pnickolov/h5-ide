@@ -282,6 +282,15 @@
     .replica-bg { stroke:#6daefe; }
     fill:#3887e8;
   }
+
+  &.disabled,
+  &.disabled:hover {
+    fill: #ccc;
+    .replica-bg { 
+      stroke : #ccc;
+      fill   : #eee;
+     }
+  }
 }
 
 .replica-text, .master-text {

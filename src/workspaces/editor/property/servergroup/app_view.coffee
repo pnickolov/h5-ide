@@ -78,6 +78,7 @@ define [ '../base/view',
         updateIPAddBtnState : instance_view.updateIPAddBtnState
         setEditableIP       : instance_view.setEditableIP
         validateIpItem      : instance_view.validateIpItem
+        bindIpItemValidate  : instance_view.bindIpItemValidate
 
 
     }

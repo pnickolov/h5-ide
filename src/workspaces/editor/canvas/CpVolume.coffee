@@ -1,5 +1,5 @@
 
-define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, TplPopup, ide_event, constant )->
+define [ "./CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ], ( CanvasPopup, TplPopup, ide_event, constant, CloudResources )->
 
   CanvasPopup.extend {
 
@@ -43,12 +43,20 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant" ], ( CanvasPopup, Tp
       if data[0] and data[0].get
         data = []
         for volume in @models
+          appId = volume.get("appId")
+
           data.push {
             id       : volume.get("id")
+            appId    : appId
             name     : volume.get("name")
             size     : volume.get("volumeSize")
             snapshot : volume.get("snapshotId")
           }
+
+          if appId
+            appData = CloudResources( volume.type, volume.design().region() ).get appId
+            _.last( data ).state = appData.get('state') or 'unknown'
+
 
       TplPopup.volume data
 

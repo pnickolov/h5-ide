@@ -83,7 +83,7 @@ define ['constant'], (constant) ->
                 a = aAry
                 b = bAry
 
-            attrPath = ''
+            attrPathStr = ''
 
             if path
 
@@ -150,7 +150,7 @@ define ['constant'], (constant) ->
                 if typeA is 'array' and typeB is 'array'
 
                     # ignore array diff of specified in noDiffArrayAttrMap
-                    if (not attrPath or (attrPath and not option.noDiffArrayAttrMap[attrPath]))
+                    if (not attrPathStr or (attrPathStr and not option.noDiffArrayAttrMap[attrPathStr]))
 
                         diffAryResult = {}
 

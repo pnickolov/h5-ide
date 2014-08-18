@@ -31,7 +31,15 @@
     .group-resizer { display : none; }
     .group-label, .port { pointer-events : none; }
     ~ .canvas-pp {
-      .vpp-volume, .vpp-snapshot { cursor: default; }
+      .vpp-volume, .vpp-snapshot {
+        cursor: default;
+        position: relative;
+        .res-state {
+          position: absolute;
+          top: 3px;
+          right: 7px;
+        }
+      }
     }
     .dbreplicate { display:none; }
   }
@@ -675,16 +683,23 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   top        : 36px;
 }
 
-// Instance State Dot
-.instance-state {
+// Resource State Dot
+.res-state {
   opacity : 0.8;
 
-  &.unknown { fill: gray; }
-  &.running { fill: green; }
-  &.pending { fill: yellow; }
-  &.shuttingdown { fill: yellow; }
-  &.stopping { fill: yellow; }
-  &.stopped { fill: red; }
-  &.terminated { fill: red; }
+  &.unknown
+  { fill: gray; background: gray; }
+
+  &.running, &.ok, &.attached, &.available
+  { fill: green; background: green; }
+
+  &.shuttingdown, &.stopping, &.pending, &.insufficient-data, &.attaching, &.detaching,
+  &.backing-up, &.creating, &.deleting, &.incompatible-restore, &.incompatible-parameters,
+  &.modifying, &.rebooting &.resetting-master-credentials
+  { fill: yellow; background: yellow; }
+
+  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full
+  { fill: red; background: red; }
+
 }
 

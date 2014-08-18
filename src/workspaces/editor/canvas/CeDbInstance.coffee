@@ -158,8 +158,10 @@ define [
         CanvasManager.toggle $r, m.autobackup() isnt 0
         if @model.slaves().length < 5
           tip = "Drag to create a read replica."
+          CanvasManager.removeClass $r, "disabled"
         else
           tip = "Cannot create more read replica."
+          CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
 

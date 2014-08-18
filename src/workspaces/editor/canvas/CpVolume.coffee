@@ -55,7 +55,7 @@ define [ "./CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ],
 
           if appId
             appData = CloudResources( volume.type, volume.design().region() ).get appId
-            _.last( data ).state = appData.get('state') or 'unknown'
+            _.last( data ).state = appData?.get('state') or 'unknown'
 
 
       TplPopup.volume data

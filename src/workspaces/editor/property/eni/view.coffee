@@ -89,6 +89,7 @@ define [ '../base/view',
         refreshIpList : ( event ) ->
             $( '#property-eni-list' ).html( MC.template.propertyIpList( @model.attributes.ips ) )
             @updateIPAddBtnState()
+            @bindIpItemValidate()
             null
 
         bindIpItemValidate: ->

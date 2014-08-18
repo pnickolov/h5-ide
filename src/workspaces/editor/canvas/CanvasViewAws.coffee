@@ -34,7 +34,7 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
 
     fixConnection : ( coord, initiator, target )->
       if target.type is constant.RESTYPE.ELB and ( initiator.type is constant.RESTYPE.INSTANCE or initiator.type is constant.RESTYPE.LC )
-        if coord.x < target.pos().x + target.size().width / 2
+        if coord.x > target.pos().x + target.size().width / 2
           toPort = "elb-sg-out"
         else
           toPort = "elb-sg-in"

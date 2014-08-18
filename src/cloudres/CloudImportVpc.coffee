@@ -23,7 +23,7 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
   class ConverterData
     CrPartials : ( type )-> CloudResources( constant.RESTYPE[type], @region )
 
-    getResourceByType: ( type ) -> CloudResources( constant.RESTYPE[type], @region ).filter ( model ) =>  model.RES_TAG is @vpcId
+    getResourceByType: ( type ) -> CloudResources( constant.RESTYPE[type], @region ).filter ( model ) => model.RES_TAG is @vpcId || model.get("vpcId") is @vpcId
 
     constructor : ( region, vpcId, originalJson )->
       # @theVpc  = null

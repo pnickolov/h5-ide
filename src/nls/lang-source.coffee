@@ -2854,7 +2854,7 @@ module.exports =
       zh: ""
 
     PROP_ELB_HEALTH_INTERVAL_VALID:
-      en: "Response timeout must be less than or equal to the health check interval value"
+      en: "Response timeout must be less than the health check interval value"
       zh: ""
 
     PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:

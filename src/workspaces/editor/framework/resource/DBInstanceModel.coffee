@@ -65,7 +65,7 @@ define [
       @clone master
 
       unless @get 'appId'
-        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: '', password: '****'
+        @set backupRetentionPeriod: 0, multiAz: false, instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
       @connections("DbReplication")[0]?.remove()
@@ -182,7 +182,7 @@ define [
 
     clone : ( srcTarget )->
       @cloneAttributes srcTarget, {
-        reserve : "newInstanceId|instanceId"
+        reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
       @set 'snapshotId', ''

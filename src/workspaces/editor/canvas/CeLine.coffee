@@ -364,6 +364,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
           line.masker.remove()
       LineMaskToClear = null
       return
+
+    connect : ( LineClass, comp1, comp2 )-> new LineClass( comp1, comp2, undefined, { createByUser : true } )
   }
 
 

@@ -185,7 +185,10 @@ define [
         reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
-      @set { 'snapshotId': '', 'password': '12345678' }
+
+      @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
 
       return
 

@@ -5817,6 +5817,11 @@ button#property-app-keypair {
     fill: #3887e8; }
     .dbreplicate:hover .replica-bg {
       stroke: #6daefe; }
+  .dbreplicate.disabled, .dbreplicate.disabled:hover {
+    fill: #ccc; }
+    .dbreplicate.disabled .replica-bg, .dbreplicate.disabled:hover .replica-bg {
+      stroke: #ccc;
+      fill: #eee; }
 
 .replica-text, .master-text {
   font-size: xx-small;
@@ -6980,8 +6985,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {
@@ -8858,9 +8862,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 /* Rectangle 9: */
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
-  cursor: pointer;
   position: relative;
   padding-left: 32px; }
+  .dbsgppp-subnet-list label {
+    cursor: pointer; }
   .dbsgppp-subnet-list .checkbox {
     position: absolute;
     top: 50%;

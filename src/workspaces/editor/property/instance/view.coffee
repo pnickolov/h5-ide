@@ -125,8 +125,6 @@ define [ '../base/view',
                 else if( val > 10 * volume_size)
                     return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
-            @bindIpItemValidate()
-
             #
 
             # currentStateData = @model.getStateData()
@@ -328,12 +326,12 @@ define [ '../base/view',
 
         # This function is used to display IP List
         refreshIPList : () ->
+            
             if not @model.attributes.eni
                 return
-
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
-
             @updateIPAddBtnState()
+            @bindIpItemValidate()
             null
 
         updateIPAddBtnState : ( enabled ) ->

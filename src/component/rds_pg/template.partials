@@ -161,10 +161,10 @@
                     <div class="prop_main">
                         {{#ifCond inputType 'select'}}
                             <select name="{{ParameterName}}" class="select3" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
-                                <option value="<engine-default>">&lt;engine-default&gt;</option>
-                                {{#each selections}}
-                                    <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
-                                {{/each}}
+                            {{#unless ParameterValue}}<option value="<engine-default>">&lt;engine-default&gt;</option>{{/unless}}
+                            {{#each selections}}
+                                <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
+                            {{/each}}
                             </select>
                         {{/ifCond}}
                         {{#ifCond inputType 'input'}}
@@ -238,7 +238,7 @@
                 <div class="prop_main">
                     {{#ifCond inputType 'select'}}
                         <select name="{{ParameterName}}" class="select3" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
-                            <option value="<engine-default>">&lt;engine-default&gt;</option>
+                            {{#unless ParameterValue}}<option value="<engine-default>">&lt;engine-default&gt;</option>{{/unless}}
                             {{#each selections}}
                                 <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
                             {{/each}}

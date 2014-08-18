@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "Design", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, lang )->
+define [ "./CanvasView", "Design", "./CanvasManager",  "./CanvasElement", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, CanvasElement, lang )->
 
   CanvasViewProto = CanvasView.prototype
 
@@ -96,8 +96,9 @@ define [ "./CanvasView", "Design", "./CanvasManager", "i18n!/nls/lang.js" ], ( C
 
   CanvasViewProto.__connect = ( LineClass, comp1, comp2, startItem )->
     self = @
-    c    = new LineClass( comp1, comp2, undefined, { createByUser : true } )
-    if c.id then _.defer ()-> self.selectItem( c.id )
+    LineItemClass = CanvasElement.getClassByType( LineClass.prototype.type )
+    c = LineItemClass.connect( LineClass, comp1, comp2 )
+    if c and c.id then _.defer ()-> self.selectItem( c.id )
     @__connectInitItem = startItem
     return
 

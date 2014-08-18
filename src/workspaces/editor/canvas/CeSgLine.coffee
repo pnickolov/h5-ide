@@ -1,5 +1,5 @@
 
-define [ "./CeLine", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CeLine, constant, CanvasManager, lang )->
+define [ "./CeLine", "constant", "./CanvasManager", "i18n!/nls/lang.js", "component/sgrule/SGRulePopup" ], ( CeLine, constant, CanvasManager, lang, SGRulePopup )->
 
   CeLine.extend {
     ### env:dev ###
@@ -19,4 +19,6 @@ define [ "./CeLine", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CeL
 
     renderConnection : ( item_from, item_to, element1, element2 )->
       CeLine.prototype.renderConnection.call this, item_from, item_to, element1, element2
+  }, {
+    connect : ( LineClass, p1Comp, p2Comp )-> new SGRulePopup( p1Comp, p2Comp ); return
   }

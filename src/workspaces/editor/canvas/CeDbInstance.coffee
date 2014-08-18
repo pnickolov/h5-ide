@@ -36,7 +36,7 @@ define [
           p[1] = 45
           p[2] = CanvasElement.constant.PORT_2D_V_ANGLE
         else
-          p[1] = 65
+          p[1] = 61
           p[2] = CanvasElement.constant.PORT_DOWN_ANGLE
       p
 

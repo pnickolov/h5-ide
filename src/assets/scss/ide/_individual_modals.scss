@@ -3,9 +3,12 @@
 /* Edit Subnet Group Modal */
 
 .dbsgppp-subnet-list {
-  cursor       : pointer;
   position     : relative;
   padding-left : 32px;
+
+  label {
+    cursor: pointer;
+  }
 
   .checkbox {
     position   : absolute;

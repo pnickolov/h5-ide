@@ -12,7 +12,8 @@ define [
   'CloudResources'
   'constant'
   'UI.modalplus'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus )->
+  'ApiRequest'
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest )->
   AppAction = Backbone.View.extend
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
@@ -41,15 +42,7 @@ define [
       return
 
     startApp : ( id )->
-      name = App.model.appList().get( id ).get("name")
-      comp = Design.instance().serialize().component
-      hasEC2Instance =( _.filter comp, (e)->
-        e.type is constant.RESTYPE.INSTANCE).length
-      hasDBInstance = (_.filter comp, (e)->
-        e.type is constant.RESTYPE.DBINSTANCE).length
-      hasASG = (_.filter comp, (e)->
-        e.type is constant.RESTYPE.ASG).length
-
+      opsModel = App.model.appList().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.ide.TOOL_TIP_START_APP
@@ -60,25 +53,35 @@ define [
         disableClose: true
       }
       startAppModal.tpl.find('.modal-footer').hide()
-
-      dbInstance = _.filter comp, (e)->
-        e.type is constant.RESTYPE.DBINSTANCE
-      snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
-      snapshots.fetchForce().then ->
-        lostDBSnapshot = _.filter dbInstance, (e)->
-          e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
-
-        startAppModal.tpl.find('.modal-footer').show()
-        startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
-
-        startAppModal.on 'confirm', ->
-          startAppModal.close()
-          App.model.appList().get( id ).start().fail ( err )->
-            error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+      comp = null
+      ApiRequest("app_info", {
+        region_name : opsModel.get("region")
+        app_ids     : [opsModel.get("id")]
+      }).then (ds)->  comp = ds[0].component
+      .then ->
+        name = App.model.appList().get( id ).get("name")
+        hasEC2Instance =( _.filter comp, (e)->
+          e.type is constant.RESTYPE.INSTANCE).length
+        hasDBInstance = (_.filter comp, (e)->
+          e.type is constant.RESTYPE.DBINSTANCE).length
+        hasASG = (_.filter comp, (e)->
+          e.type is constant.RESTYPE.ASG).length
+        dbInstance = _.filter comp, (e)->
+          e.type is constant.RESTYPE.DBINSTANCE
+        snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
+        snapshots.fetchForce().then ->
+          lostDBSnapshot = _.filter dbInstance, (e)->
+            e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
+          startAppModal.tpl.find('.modal-footer').show()
+          startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
+          startAppModal.on 'confirm', ->
+            startAppModal.close()
+            App.model.appList().get( id ).start().fail ( err )->
+              error = if err.awsError then err.error + "." + err.awsError else err.error
+              notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+              return
             return
           return
-        return
 
     stopApp : ( id )->
       app  = App.model.appList().get( id )

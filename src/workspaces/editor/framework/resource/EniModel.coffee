@@ -231,7 +231,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
           # The ip is not necessary correct in Eni.get("ips")
           realIp = eni.getRealIp( ipObj.ip )
-          if realIp is realNewIp and eni isnt @
+          if realIp is realNewIp
             if eni is this
               return 'This IP address conflicts with other IP'
             else

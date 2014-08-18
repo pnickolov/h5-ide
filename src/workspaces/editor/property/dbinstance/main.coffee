@@ -53,7 +53,7 @@ define [
             if resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier
               uid = resModel.serialize().component.resource.ReadReplicaSourceDBInstanceIdentifier.split(".")[0].split('{').pop()
 
-            @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId'))
+            @model = (CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get resModel.get('appId')) || (CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).get resModel.get('snapshotId')) || resModel
             @view = app_view
             @view.model = @model
             @view.resModel = resModel

@@ -265,9 +265,11 @@ define [
     # Broadcast event
     ####################
     @__initializing = false
+    Backbone.Events.trigger.call Design, Design.EVENT.Deserialized
+    Backbone.Events.trigger.call @, Design.EVENT.Deserialized
+
+    # Only at this point, we are finally deserialized.
     @trigger = Design.trigger = Backbone.Events.trigger
-    Design.trigger Design.EVENT.Deserialized
-    @trigger Design.EVENT.Deserialized
     null
 
   DesignImpl.prototype.reload = ()->
@@ -281,7 +283,6 @@ define [
 
     if oldDesign
       oldDesign.use()
-
     return
 
 

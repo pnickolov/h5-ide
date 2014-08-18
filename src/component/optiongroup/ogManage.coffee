@@ -160,8 +160,6 @@ define [
 
             @$el.html template.og_modal(ogData)
 
-            ogData.appId = @ogModel.get('appId')
-
             @initModal @el
             @renderOptionList()
             @__modalplus.resize()

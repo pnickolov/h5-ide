@@ -117,6 +117,12 @@ define [
           @$el.children(".icon-play").toggle( stopped ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle( stopped )
           @$el.children('.icon-update-app').toggle( not stopped )
           @$el.find(".icon-refresh").toggle( running )
+          ami = [].concat(
+            @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
+            @workspace.design.componentsOfType( constant.RESTYPE.LC )
+          )
+          hasState = _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+          @$el.find('.reload-states').toggle(!!hasState)
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")

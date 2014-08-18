@@ -112,20 +112,20 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
                   comp.resource.ReadReplicaSourceDBInstanceIdentifier = ""
 
                 #changing DBInstance attribute( avoid json diff )
-                pending = dbins.PendingModifiedValues
-                if pending
-                  if pending.AllocatedStorage
-                    comp.resource.AllocatedStorage = Number(pending.AllocatedStorage)
-                  if pending.BackupRetentionPeriod
-                    comp.resource.BackupRetentionPeriod = Number(pending.BackupRetentionPeriod)
-                  if pending.DBInstanceClass
-                    comp.resource.DBInstanceClass = pending.DBInstanceClass
-                  if pending.Iops
-                    comp.resource.Iops = Number(pending.Iops)
-                  if pending.MultiAZ
-                    comp.resource.MultiAZ = pending.MultiAZ
-                  if pending.MasterUserPassword
-                    comp.resource.MasterUserPassword = pending.MasterUserPassword
+                # pending = dbins.PendingModifiedValues
+                # if pending
+                #   if pending.AllocatedStorage
+                #     comp.resource.AllocatedStorage = Number(pending.AllocatedStorage)
+                #   if pending.BackupRetentionPeriod
+                #     comp.resource.BackupRetentionPeriod = Number(pending.BackupRetentionPeriod)
+                #   if pending.DBInstanceClass
+                #     comp.resource.DBInstanceClass = pending.DBInstanceClass
+                #   if pending.Iops
+                #     comp.resource.Iops = Number(pending.Iops)
+                #   if pending.MultiAZ
+                #     comp.resource.MultiAZ = pending.MultiAZ
+                #   if pending.MasterUserPassword
+                #     comp.resource.MasterUserPassword = pending.MasterUserPassword
 
         #append topic component to component_data
         @generatedJson.component[topic.uid] = topic for topic in topicCompAry

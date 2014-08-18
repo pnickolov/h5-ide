@@ -158,7 +158,7 @@ define [ '../base/view',
             $target.parsley 'custom', (val) ->
                 intervalValue = Number($intervalDom.val())
                 timeoutValue = Number(val)
-                if intervalValue < timeoutValue
+                if intervalValue <= timeoutValue
                     return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
                 null
 

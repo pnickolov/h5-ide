@@ -21,10 +21,10 @@ define [
 
       if not @get 'description'
 
-        # set new name
-        typeName = @engineType()
-        mainVersion = @get('engineVersion').replace(/\./g, '-')
-        @set('name', typeName + mainVersion + @get('name'))
+        # set new name 
+        prefix = @engineType() + @get('engineVersion').replace(/\./g, '-')
+        @set('name', prefix + @get('name'))
+        @set('name', prefix + @getNewName(undefined, @newNameTmpl))
 
         # set new description
         @set 'description', "custom option group for #{@get('engineName')} #{@get('engineVersion')}"

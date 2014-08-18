@@ -8860,9 +8860,10 @@ g.shadow {
 /* Rectangle 9: */
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
-  cursor: pointer;
   position: relative;
   padding-left: 32px; }
+  .dbsgppp-subnet-list label {
+    cursor: pointer; }
   .dbsgppp-subnet-list .checkbox {
     position: absolute;
     top: 50%;

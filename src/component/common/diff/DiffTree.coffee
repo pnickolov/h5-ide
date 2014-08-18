@@ -150,7 +150,7 @@ define ['constant'], (constant) ->
                 if typeA is 'array' and typeB is 'array'
 
                     # ignore array diff of specified in noDiffArrayAttrMap
-                    if (not attrPathStr or (attrPathStr and not option.noDiffArrayAttrMap[attrPathStr]))
+                    if (not attrPath2 or (attrPath2 and not option.noDiffArrayAttrMap[attrPath2]))
 
                         diffAryResult = {}
 

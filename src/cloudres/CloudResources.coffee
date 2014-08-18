@@ -4,12 +4,13 @@ define ["cloudres/CrCollection"], ( CrCollection )->
   ###
     resourceType : a string used to identified a class of resource
     category     : a string used to group a set of resources. It might be a region id, or app id.
-    platform     : optional string used to identified the platform, currently only support aws.
   ###
 
   CachedCollections = {}
 
-  onCollectionDestroy = (id)-> delete CachedCollections[ id ]
+  onCollectionDestroy = (id)->
+    console.info "CloudResource collection is destroyed:", CachedCollections[id]
+    delete CachedCollections[ id ]
 
   CloudResources = ( resourceType, category )->
 

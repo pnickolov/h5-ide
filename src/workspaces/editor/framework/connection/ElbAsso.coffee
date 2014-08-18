@@ -123,10 +123,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
     ]
 
     initialize : ( attibutes, option )->
-      # If the line is created by user, show a popup to let user to add sg
-      if option and option.createByUser
-        new SGRulePopup( this.id )
-
       # When an Elb is connected to an Instance. Make sure the Instance's AZ has at least one subnet connects to Elb
       ami = @getOtherTarget( constant.RESTYPE.ELB )
       elb = @getTarget( constant.RESTYPE.ELB )
@@ -195,8 +191,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       null
   }, {
     isConnectable : ( comp1, comp2 )->
-      design = comp1.design()
-      if design and design.modeIsAppEdit()
+      if comp1.design().modeIsAppEdit()
         if comp1.type is constant.RESTYPE.LC
           lc = comp1
         else if comp2.type is constant.RESTYPE.LC
@@ -205,7 +200,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
         if lc and lc.get("appId")
           return lang.ide.NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
 
-      return
+      true
   }
 
   null

@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "component/sgrule/SGRulePopup" ], ( CanvasElement, constant, CanvasManager, lang, SGRulePopup )->
 
   LineMaskToClear = null
 
@@ -378,13 +378,6 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
   CeLine.extend {
     ### env:dev ###
-    ClassName : "CeElbAsso"
-    ### env:dev:end ###
-    type : "ElbAsso"
-  }
-
-  CeLine.extend {
-    ### env:dev ###
     ClassName : "CeRtbAsso"
     ### env:dev:end ###
     type : "RTB_Asso"
@@ -424,6 +417,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     ClassName : "CeElbAmiAsso"
     ### env:dev:end ###
     type : "ElbAmiAsso"
+  }, {
+    connect : ( LineClass, p1Comp, p2Comp )->
+      new SGRulePopup( p1Comp, p2Comp )
+      new LineClass( p1Comp, p2Comp, undefined, { createByUser : true } )
   }
 
   CeLine.extend {

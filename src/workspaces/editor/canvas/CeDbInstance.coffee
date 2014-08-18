@@ -134,7 +134,8 @@ define [
           svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
 
-      if not @model.design().modeIsStack() and m.get("appId")
+      # Create State Icon
+      if not m.design().modeIsStack() and m.get("appId")
         svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
 
       @canvas.appendNode svgEl

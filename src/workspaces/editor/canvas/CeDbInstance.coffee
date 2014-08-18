@@ -134,6 +134,9 @@ define [
           svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
 
+      if not @model.design().modeIsStack() and m.get("appId")
+        svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
+
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       svgEl
@@ -162,6 +165,13 @@ define [
           tip = "Cannot create more read replica."
 
         CanvasManager.update $r, tip, "tooltip"
+
+      # Update State Icon
+      statusIcon  = @$el.children(".res-state")
+      if statusIcon
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        state    = appData?.get("DBInstanceStatus") || "unknown"
+        statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
       return
 

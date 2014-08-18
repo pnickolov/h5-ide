@@ -53,14 +53,13 @@ define [
         disableClose: true
       }
       startAppModal.tpl.find('.modal-footer').hide()
-
+      comp = null
       ApiRequest("app_info", {
         region_name : opsModel.get("region")
         app_ids     : [opsModel.get("id")]
-      }).then (ds)-> opsModel.__setJsonData( ds[0] )
+      }).then (ds)->  comp = ds[0].component
       .then ->
         name = App.model.appList().get( id ).get("name")
-        comp = Design.instance().serialize().component
         hasEC2Instance =( _.filter comp, (e)->
           e.type is constant.RESTYPE.INSTANCE).length
         hasDBInstance = (_.filter comp, (e)->

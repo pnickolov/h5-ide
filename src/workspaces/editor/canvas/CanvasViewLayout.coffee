@@ -299,7 +299,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         if Defination[item.type]?.sticky
           x = -1
           y = -1
-        view.applyGeometry( x, y, item.width, item.height )
+        view.applyGeometry( x, y, item.width, item.height, false )
     return
 
   CanvasView.prototype.autoLayoutFully = ()->
@@ -331,7 +331,10 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     ###
     @applyGeometry( hierachy, 5, 3 )
 
-    console.log hierachy
+    ###
+    # 5. Update Line
+    ###
+    line.update() for uid, line of @__itemLineMap
     return
 
   {

@@ -153,7 +153,7 @@ define [
 
       # Update Image
       if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
-        # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
+        # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
         CanvasManager.toggle $r, m.autobackup() isnt 0
         if @model.slaves().length < 5

@@ -469,7 +469,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
     updateConnections : ()-> cn.update() for cn in @connections(); return
 
-    applyGeometry : ( x, y, width, height )->
+    applyGeometry : ( x, y, width, height, updateConnections = true )->
       if x isnt undefined or y isnt undefined
         @model.set { x : x, y : y }
         @$el[0].instance.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
@@ -519,9 +519,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
           pos = @portPosition( name )
           if pos then p.move( pos[0], pos[1] )
 
-      cn.update() for cn in @connections()
-
-
+      if updateConnections
+        cn.update() for cn in @connections()
       return
 
   }, {

@@ -5815,6 +5815,11 @@ button#property-app-keypair {
     fill: #3887e8; }
     .dbreplicate:hover .replica-bg {
       stroke: #6daefe; }
+  .dbreplicate.disabled, .dbreplicate.disabled:hover {
+    fill: #ccc; }
+    .dbreplicate.disabled .replica-bg, .dbreplicate.disabled:hover .replica-bg {
+      stroke: #ccc;
+      fill: #eee; }
 
 .replica-text, .master-text {
   font-size: xx-small;
@@ -6598,6 +6603,8 @@ g.shadow {
   color: #4a90e2; }
 .OEPanelRight #btn-switch-state:hover {
   color: #eee; }
+.OEPanelRight #btn-switch-state {
+  color: #4fb845; }
 .OEPanelRight.no-state #btn-switch-state {
   display: none; }
 .OEPanelRight.no-state #btn-switch-property {

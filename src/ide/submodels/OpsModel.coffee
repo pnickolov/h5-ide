@@ -380,6 +380,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         flag        : force
         create_snapshot: create_db_snapshot
       }).then ()->
+        # Force Termination will immediately returns sucess / failure.
+        # Normal Termination will returns its status by Websockt.
         if force then self.__destroy()
         return
       , ( err )->
@@ -595,6 +597,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Remove thumbnail
       ThumbUtil.remove( @get("id") )
+
+      # Cleanup CloudResources if we are an app
+      if @getVpcId()
+        CloudResources( "OpsResource", @getVpcId() )?.destroy()
 
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed

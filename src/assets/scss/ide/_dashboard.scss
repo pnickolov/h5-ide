@@ -630,6 +630,7 @@
 
   .scroll-wrap { height: 420px; }
 
+  .table { background : #edf1f3; }
   .table td { vertical-align: middle; }
   .table-head th {
     padding     : 10px 15px;
@@ -647,11 +648,11 @@
     padding: 15px;
     background-color : #edf1f3 !important;
     border: none;
-    color: #666;
+    color: #676767;
   }
 
   tr:nth-child(odd) > td {
-    background-color : #e8ebed;
+    background-color : #e8ebed !important;
   }
 
   .dashboard-eip {

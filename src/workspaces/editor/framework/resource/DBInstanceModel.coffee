@@ -248,11 +248,11 @@ define [
           if engine in ['sqlserver-ex', 'sqlserver-web']
               obj = { min: 30, max: 1024 }
 
-      classInfo = @getInstanceClassDict()
-      defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          obj.min = 100
+      # classInfo = @getInstanceClassDict()
+      # defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     obj.min = 100
 
       return obj
 
@@ -300,11 +300,11 @@ define [
     getDefaultCharSet: -> constant.DB_DEFAULTSETTING[@get('engine')].charset
     getInstanceClassDict: -> _.find constant.DB_INSTANCECLASS, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
     getDefaultAllocatedStorage: ->
-      classInfo = @getInstanceClassDict()
+      # classInfo = @getInstanceClassDict()
       defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          return 100
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     return 100
       return defaultStorage
 
     getOptionGroup: -> @connectionTargets('OgUsage')[0]

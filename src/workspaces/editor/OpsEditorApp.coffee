@@ -79,13 +79,7 @@ define [
         new : newJson
         callback : ( confirm )->
           if confirm
-            self.opsModel.__setJsonData( newJson )
-            self.design.reload()
-
-            if differ.getChangeInfo().needUpdateLayout
-              self.view.canvas.autoLayout()
-
-            self.opsModel.saveApp( self.design.serialize() )
+            self.applyDiff( newJson, differ.getChangeInfo().needUpdateLayout )
           else
             self.remove()
       })
@@ -95,6 +89,20 @@ define [
         return true
 
       false
+
+    applyDiff : ( newJson, autoLayout )->
+      try
+        # It seems like these process will throw some unkown error
+        @opsModel.__setJsonData( newJson )
+        @design.reload()
+
+        if autoLayout
+          @view.canvas.autoLayout()
+
+      catch e
+        console.error e
+
+      @opsModel.saveApp( @design.serialize() )
 
     reloadAppData : ()->
       @view.showUpdateStatus("", true)

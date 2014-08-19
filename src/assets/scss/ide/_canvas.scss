@@ -294,7 +294,7 @@
   &.disabled,
   &.disabled:hover {
     fill: #ccc;
-    .replica-bg { 
+    .replica-bg {
       stroke : #ccc;
       fill   : #eee;
      }
@@ -578,6 +578,13 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   color      : #333;
   text-align : center;
 
+  position: relative;
+  .res-state {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+  }
+
   background : image-url('ide/icon/cvs-vol.png') center no-repeat;
 
   &:nth-child(4n+1) { clear : left; margin-left : 10px; }
@@ -697,18 +704,18 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   opacity : 0.8;
 
   &.unknown
-  { fill: gray; background: gray; }
-
+  { fill: #a0a0a0; background: #a0a0a0; }
+  // green
   &.running, &.ok, &.attached, &.available
-  { fill: green; background: green; }
-
+  { fill: #17c249; background: #17c249; }
+  // yellow
   &.shuttingdown, &.stopping, &.pending, &.insufficient-data, &.attaching, &.detaching,
   &.backing-up, &.creating, &.deleting, &.incompatible-restore, &.incompatible-parameters,
   &.modifying, &.rebooting &.resetting-master-credentials
-  { fill: yellow; background: yellow; }
-
+  { fill: #ffa740; background: #ffa740; }
+  // red
   &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full
-  { fill: red; background: red; }
+  { fill: #ec3c38; background: #ec3c38; }
 
 }
 

@@ -79,9 +79,10 @@ define [
         new : newJson
         callback : ( confirm )->
           if confirm
-            self.applyDiff( newJson, differ.getChangeInfo().needUpdateLayout )
-          else
-            self.remove()
+            return self.applyDiff( newJson, differ.getChangeInfo().needUpdateLayout )
+
+          self.remove()
+          return
       })
 
       if differ.getChangeInfo().hasResChange

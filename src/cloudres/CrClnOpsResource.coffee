@@ -52,12 +52,15 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           continue
         cln.__parseExternalData d, extraAttr, @__region
 
+      #temp patch
+      data.app_json = null
+
       if data.app_json
         @generatedJson = data.app_json
         delete data.app_json
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
       else
-        ### env:dev ###
+
         app_id = App.workspaces.getAwakeSpace().opsModel.get("id")
         if app_id and app_id.substr(0,4) is 'app-'
           originalJson = App.model.attributes.appList.where({id:app_id})
@@ -65,11 +68,11 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
             originalJson = originalJson[0].__jsonData
         @generatedJson = @__generateJsonFromRes(originalJson)
         console.log "Generated Json from frontend:", $.extend true, {}, @generatedJson
-        ### env:dev:end ###
+
 
       return
 
-    ### env:dev ###
+
     __generateJsonFromRes : ( originalJson )->
       res = CloudResources.getAllResourcesForVpc( @__region, @category, originalJson )
       json = {
@@ -94,6 +97,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       json.layout    = res.layout
       json.name      = "imported-" + @category
       return json
-    ### env:dev:end ###
+
 
   }

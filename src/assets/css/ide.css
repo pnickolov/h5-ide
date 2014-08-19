@@ -1425,7 +1425,7 @@ a.action-link:hover {
 
 .elb-property-instance-list li {
   height: 30px;
-  width: 220px;
+  width: 244px !important;
   margin-left: 10px;
   margin-top: 10px;
   padding-top: 5px;
@@ -5609,7 +5609,12 @@ button#property-app-keypair {
   .canvas-view[data-mode="app"] .group-label, .canvas-view[data-mode="app"] .port {
     pointer-events: none; }
   .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot {
-    cursor: default; }
+    cursor: default;
+    position: relative; }
+    .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume .res-state, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot .res-state {
+      position: absolute;
+      top: 3px;
+      right: 7px; }
   .canvas-view[data-mode="app"] .dbreplicate {
     display: none; }
 
@@ -6033,7 +6038,12 @@ g.shadow {
   font-size: 9px;
   color: #333;
   text-align: center;
+  position: relative;
   background: url('/assets/images/ide/icon/cvs-vol.png') center no-repeat; }
+  .vpp-volume .res-state, .vpp-snapshot .res-state {
+    position: absolute;
+    top: 3px;
+    right: 7px; }
   .vpp-volume:nth-child(4n+1), .vpp-snapshot:nth-child(4n+1) {
     clear: left;
     margin-left: 10px; }
@@ -6138,22 +6148,20 @@ g.shadow {
   left: 43px;
   top: 36px; }
 
-.instance-state {
+.res-state {
   opacity: 0.8; }
-  .instance-state.unknown {
-    fill: gray; }
-  .instance-state.running {
-    fill: green; }
-  .instance-state.pending {
-    fill: yellow; }
-  .instance-state.shuttingdown {
-    fill: yellow; }
-  .instance-state.stopping {
-    fill: yellow; }
-  .instance-state.stopped {
-    fill: red; }
-  .instance-state.terminated {
-    fill: red; }
+  .res-state.unknown {
+    fill: #a0a0a0;
+    background: #a0a0a0; }
+  .res-state.running, .res-state.ok, .res-state.attached, .res-state.available {
+    fill: #17c249;
+    background: #17c249; }
+  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting .res-state.resetting-master-credentials {
+    fill: #ffa740;
+    background: #ffa740; }
+  .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full {
+    fill: #ec3c38;
+    background: #ec3c38; }
 
 .resources-dropdown-wrapper {
   position: absolute;

@@ -118,12 +118,12 @@ define [
         backupWindow = db.get 'backupWindow'
         maintenanceWindow = db.get 'maintenanceWindow'
 
+        unless backupWindow and maintenanceWindow then return null
+
         if appId
             appData = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
             backupWindow = backupWindow or appData.get 'PreferredBackupWindow'
             maintenanceWindow = maintenanceWindow or appData.get 'PreferredMaintenanceWindow'
-
-        unless backupWindow and maintenanceWindow then return null
 
         backupTimeArray      = backupWindow.replace(/:/g, '').split('-')
         maintenanceTimeArray = maintenanceWindow.replace(/:/g, '').split('-')
@@ -134,20 +134,20 @@ define [
         maintenanceEnd       = +maintenanceTimeArray[1].slice(3)
 
         # Only maintenceTime cross a day
-        if maintenanceEnd < maintenanceStart and backupStart < backupEnd
-            if maintenanceEnd < backupStart and backupStart < maintenanceStart and backupEnd < maintenanceStart
+        if maintenanceEnd <= maintenanceStart and backupStart <= backupEnd
+            if maintenanceEnd <= backupStart and backupStart <= maintenanceStart and backupEnd <= maintenanceStart
                 return null
 
         # Only backupTime cross a day
-        else if backupEnd < backupStart and maintenanceStart < maintenanceEnd
-            if backupEnd < maintenanceStart and maintenanceStart < backupStart and maintenanceEnd < backupStart
+        else if backupEnd <= backupStart and maintenanceStart <= maintenanceEnd
+            if backupEnd <= maintenanceStart and maintenanceStart <= backupStart and maintenanceEnd < backupStart
                 return null
 
         # Both cross a day must be overlap
-        else if backupEnd < backupStart and maintenanceEnd < maintenanceStart
+        else if backupEnd <= backupStart and maintenanceEnd <= maintenanceStart
 
         # Both maintenceTime and backupTime not cross a day
-        else if backupStart > maintenanceEnd or backupEnd < maintenanceStart
+        else if backupStart >= maintenanceEnd or backupEnd <= maintenanceStart
             return null
 
         Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')

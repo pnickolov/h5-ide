@@ -58,15 +58,20 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
       else
         ### env:dev ###
-        @generatedJson = @__generateJsonFromRes()
+        app_id = App.workspaces.getAwakeSpace().opsModel.get("id")
+        if app_id and app_id.substr(0,4) is 'app-'
+          originalJson = App.model.attributes.appList.where({id:app_id})
+          if originalJson and originalJson.length>0
+            originalJson = originalJson[0].__jsonData
+        @generatedJson = @__generateJsonFromRes(originalJson)
         console.log "Generated Json from frontend:", $.extend true, {}, @generatedJson
         ### env:dev:end ###
 
       return
 
     ### env:dev ###
-    __generateJsonFromRes : ()->
-      res = CloudResources.getAllResourcesForVpc( @__region, @category )
+    __generateJsonFromRes : ( originalJson )->
+      res = CloudResources.getAllResourcesForVpc( @__region, @category, originalJson )
       json = {
         id          : ""
         name        : @category

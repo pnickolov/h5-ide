@@ -115,6 +115,11 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                         if regionComp
                             regionName = regionComp.get('name')
 
+                    if not regionName
+                        instanceModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(instanceId)
+                        if instanceModel
+                            regionName = instanceModel.get('placement').availabilityZone if instanceModel.get('placement')
+
                     elbDistrMap[regionName] = elbDistrMap[regionName] || []
                     elbDistrMap[regionName].push showStateObj
 

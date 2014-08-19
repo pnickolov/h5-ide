@@ -49,7 +49,17 @@ define [
     listenModelEvents : ()->
       @listenTo @model, "change:backupRetentionPeriod", @render
       @listenTo @model, "change:connections", @updateReplicaTip
+      @listenTo @canvas, "change:externalData", @updateState
       return
+
+    updateState: ->
+      m = @model
+      stateIcon  = @$el.children(".res-state")
+
+      if stateIcon
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        state    = appData?.get("DBInstanceStatus") || "unknown"
+        stateIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
     updateReplicaTip : ( cnn )->
       if cnn.type is "DbReplication"
@@ -134,6 +144,10 @@ define [
           svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
 
+      # Create State Icon
+      if not m.design().modeIsStack() and m.get("appId")
+        svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
+
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       svgEl
@@ -164,6 +178,8 @@ define [
           CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
+
+      @updateState()
 
       return
 

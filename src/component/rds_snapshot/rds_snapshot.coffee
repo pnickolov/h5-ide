@@ -273,7 +273,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 if deleteErrorCount > 0
                     notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
                 else
-                    notification 'info', "Delete Successfully"
+                    notification 'info', "RDS Snapshot(s) Delete Successfully"
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()

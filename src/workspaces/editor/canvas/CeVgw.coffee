@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "CloudResources" ], ( CanvasElement, constant, CanvasManager, lang, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -43,6 +43,15 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
           'data-tooltip' : lang.ide.PORT_TIP_H
         })
       ])
+
+      # Create State Icon
+      if not m.design().modeIsStack() and m.get("appId")
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        state = appData?.get('state') or 'unknown'
+        svgEl.add svg.circle(8).move(63, 15).attr({
+          'class': "res-state tooltip #{state}"
+          'data-tooltip': state
+        })
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()

@@ -5609,7 +5609,12 @@ button#property-app-keypair {
   .canvas-view[data-mode="app"] .group-label, .canvas-view[data-mode="app"] .port {
     pointer-events: none; }
   .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot {
-    cursor: default; }
+    cursor: default;
+    position: relative; }
+    .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-volume .res-state, .canvas-view[data-mode="app"] ~ .canvas-pp .vpp-snapshot .res-state {
+      position: absolute;
+      top: 3px;
+      right: 7px; }
   .canvas-view[data-mode="app"] .dbreplicate {
     display: none; }
 
@@ -6138,22 +6143,20 @@ g.shadow {
   left: 43px;
   top: 36px; }
 
-.instance-state {
+.res-state {
   opacity: 0.8; }
-  .instance-state.unknown {
-    fill: gray; }
-  .instance-state.running {
-    fill: green; }
-  .instance-state.pending {
-    fill: yellow; }
-  .instance-state.shuttingdown {
-    fill: yellow; }
-  .instance-state.stopping {
-    fill: yellow; }
-  .instance-state.stopped {
-    fill: red; }
-  .instance-state.terminated {
-    fill: red; }
+  .res-state.unknown {
+    fill: gray;
+    background: gray; }
+  .res-state.running, .res-state.ok, .res-state.attached, .res-state.available {
+    fill: green;
+    background: green; }
+  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting .res-state.resetting-master-credentials {
+    fill: yellow;
+    background: yellow; }
+  .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full {
+    fill: red;
+    background: red; }
 
 .resources-dropdown-wrapper {
   position: absolute;

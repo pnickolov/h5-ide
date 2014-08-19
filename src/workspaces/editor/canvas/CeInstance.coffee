@@ -141,7 +141,7 @@ define [
       ])
 
       if not @model.design().modeIsStack() and m.get("appId")
-        svgEl.add( svg.circle(8).move(63, 14).classes('instance-state unknown') )
+        svgEl.add( svg.circle(8).move(63, 14).classes('res-state unknown') )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -159,7 +159,7 @@ define [
 
       # Update Server number
       numberGroup = @$el.children(".server-number-group")
-      statusIcon  = @$el.children(".instance-state")
+      statusIcon  = @$el.children(".res-state")
       if m.get("count") > 1
         CanvasManager.toggle statusIcon, false
         CanvasManager.toggle numberGroup, true
@@ -172,7 +172,7 @@ define [
         if statusIcon.length
           instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
           state    = instance?.get("instanceState").name || "unknown"
-          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "instance-state tooltip #{state}")
+          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m

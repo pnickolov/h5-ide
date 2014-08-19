@@ -43,9 +43,19 @@ define [
       ami = @model.getAmi() || @model.get("cachedAmi")
 
       if not ami
-        "ide/ami/ami-not-available.png"
+        m = @model
+        instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        if instance
+          instance = instance.attributes
+          if instance.platform and instance.platform is "windows"
+            url = "ide/ami/windows.#{instance.architecture}.#{instance.rootDeviceType}.png"
+          else
+            url = "ide/ami/linux-other.#{instance.architecture}.#{instance.rootDeviceType}.png"
+        else
+          url = "ide/ami/ami-not-available.png"
       else
-        "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+        url = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+      url
 
     listenModelEvents : ()->
       @listenTo @model, "change:primaryEip", @render

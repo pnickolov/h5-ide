@@ -92,7 +92,7 @@
             <div class="control-group clearfix">
                 <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
                 <div>
-                    <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{originSnapshot.id}}-copy" data-ignore="true">
+                    <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{newCopyName}}" data-ignore="true">
                 </div>
             </div>
 

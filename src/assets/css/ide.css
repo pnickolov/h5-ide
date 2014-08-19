@@ -6995,6 +6995,9 @@ g.shadow {
   color: #aaa; }
 .property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
+.property-dbinstance #property-dbinstance-promote-replica {
+  width: 200px;
+  margin-left: 30px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {
   margin: 1px 0 1px 0; }

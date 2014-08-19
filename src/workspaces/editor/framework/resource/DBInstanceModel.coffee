@@ -75,6 +75,10 @@ define [
       @listenTo master, 'change', @syncMasterAttr
       null
 
+    unsetMaster : () ->
+
+      @connections("DbReplication")[0]?.remove()
+
     syncMasterAttr: ( master ) ->
       if @get 'appId'
         return false

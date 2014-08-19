@@ -57,7 +57,16 @@ define [ 'ApiRequest'
             'OPTION_CHANGE': 'checkChange'
             'change *': 'checkChange'
 
+            'click #property-dbinstance-promote-replica': 'promoteReplica'
+
+        promoteReplica: () ->
+
+            @setPromote()
+            @unsetPromote()
+            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
         checkChange: ( e ) ->
+
             return unless @resModel.get 'appId'
             that = @
 
@@ -79,8 +88,6 @@ define [ 'ApiRequest'
                         that.$( '.apply-immediately-section' ).hide()
             else
                 diff()
-
-
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -273,7 +280,23 @@ define [ 'ApiRequest'
                 _.extend attr, @appModel.toJSON()
                 _.extend attr, @getOriginAttr()
 
-            attr
+        isPromote: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+            return (@isAppEdit and originReplicaId and not @resModel.master())
+
+        setPromote: () ->
+
+            @resModel.unsetMaster()
+            @resModel.autobackup 1
+
+        unsetPromote: () ->
+
+            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('DBInstanceIdentifier')
+            if srcDBId
+                srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
+                @resModel.setMaster(srcDBModel) if srcDBModel
 
         getOriginAttr: () ->
 
@@ -309,6 +332,8 @@ define [ 'ApiRequest'
             attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
             attr.isChanged = @checkChange()
+
+            attr.isPromote = @isPromote()
 
             _.extend attr, {
                 isOracle: @resModel.isOracle()
@@ -721,25 +746,27 @@ define [ 'ApiRequest'
 
             checkedDom = $('#property-dbinstance-iops-check')[0]
 
-            if isDisable
+            if checkedDom
 
-                $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
-                $('.property-dbinstance-iops-value-section').hide()
-                $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops 0
-                checkedDom.checked = false
+                if isDisable
 
-            else
-
-                $('#property-dbinstance-iops-check').removeAttr('disabled')
-                checked = checkedDom.checked
-                if checked
-                    $('.property-dbinstance-iops-value-section').show()
-                    checkedDom.checked = true
-                else
+                    $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
                     $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops 0
                     checkedDom.checked = false
-                # @resModel.setIops ''
+
+                else
+
+                    $('#property-dbinstance-iops-check').removeAttr('disabled')
+                    checked = checkedDom.checked
+                    if checked
+                        $('.property-dbinstance-iops-value-section').show()
+                        checkedDom.checked = true
+                    else
+                        $('.property-dbinstance-iops-value-section').hide()
+                        checkedDom.checked = false
+                    # @resModel.setIops ''
 
         _getIOPSRange: (storage) ->
 

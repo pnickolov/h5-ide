@@ -235,13 +235,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 return false
             @switchAction 'processing'
             newName = @manager.$el.find('#property-snapshot-name').val()
-            description =  @manager.$el.find('#property-snapshot-desc').val()
             afterDuplicate = @afterDuplicate.bind @
             accountNumber = App.user.attributes.account
             if not /^\d+$/.test accountNumber.split('-').join('')
               notification('error', 'Please fill update your accountNumber to Numbered')
               return false
-            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName, description).then afterDuplicate, afterDuplicate
+            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
 
 
         afterCreated: (result,newSnapshot)->

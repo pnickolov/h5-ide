@@ -89,12 +89,6 @@
                     <p id="property-snapshot-source">{{originSnapshot.id}}</p>
                 </div>
             </div>
-            <div class="control-group clearfix">
-                <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
-                <div>
-                    <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{newCopyName}}" data-ignore="true">
-                </div>
-            </div>
 
             <div class="control-group clearfix property-content" style="background: none">
                 <label for="property-region-choose">{{ i18n "PROP_SNAPSHOT_DESTINATION_REGION"}}</label>
@@ -103,12 +97,13 @@
                 </div>
             </div>
 
-            <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-snapshot-desc">{{ i18n "PROP_SNAPSHOT_SET_DESC"}}</label>
+            <div class="control-group clearfix">
+                <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
                 <div>
-                    <input id='property-snapshot-desc' class="input" value="[Copied {{originSnapshot.id}} from {{region}}]" type="text"/>
+                    <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{newCopyName}}" data-ignore="true">
                 </div>
             </div>
+
 
         </section>
         <div class="init action">

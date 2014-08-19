@@ -118,12 +118,12 @@ define [
         backupWindow = db.get 'backupWindow'
         maintenanceWindow = db.get 'maintenanceWindow'
 
+        unless backupWindow and maintenanceWindow then return null
+
         if appId
             appData = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
             backupWindow = backupWindow or appData.get 'PreferredBackupWindow'
             maintenanceWindow = maintenanceWindow or appData.get 'PreferredMaintenanceWindow'
-
-        unless backupWindow and maintenanceWindow then return null
 
         backupTimeArray      = backupWindow.replace(/:/g, '').split('-')
         maintenanceTimeArray = maintenanceWindow.replace(/:/g, '').split('-')

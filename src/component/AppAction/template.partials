@@ -114,7 +114,7 @@
     {{#if production}}
         <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
         <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
-        <div><input class="input" style="width:430px;" id="appNameConfirmIpt"/></div>
+        <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
     {{else}}
         <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
     {{/if}}

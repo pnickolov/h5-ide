@@ -5345,6 +5345,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
       zh: ""
 
+    TA_MSG_ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB:
+      en: "Internet-facing Load Balancer <span class='validation-tag tag-elb'>%s</span> should attach to a public subnet."
+      zh: ""
+
     TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
       zh: ""

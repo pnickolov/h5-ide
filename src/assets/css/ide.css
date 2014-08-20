@@ -7340,17 +7340,18 @@ g.shadow {
   text-align: center; }
 
 .res_diff_tree {
-  overflow: auto; }
+  overflow: auto;
+  padding: 20px; }
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {
     max-height: 581px;
-    padding: 15px 15px 0 15px; }
+    margin-top: 20px; }
     .res_diff_tree .scroll-wrap-res-diff .scroll-content > p {
       font-size: 16px;
       color: #ccc; }
-  .res_diff_tree h5 {
-    margin-bottom: 10px; }
+  .res_diff_tree p {
+    font-weight: bold; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {

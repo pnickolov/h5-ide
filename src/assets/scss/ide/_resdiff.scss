@@ -14,13 +14,16 @@ $dark_blue: #2C2F46;
 .res_diff_tree {
 	overflow: auto;
 
+	padding: 20px;
+
 	::selection {
 		background: transparent;
 	}
 
 	.scroll-wrap-res-diff {
 		max-height : 581px;
-		padding    : 15px 15px 0 15px;
+		// padding    : 15px 15px 0 15px;
+		margin-top: 20px;
 
 		.scroll-content > p {
 			font-size : 16px;
@@ -28,8 +31,8 @@ $dark_blue: #2C2F46;
 		}
 	}
 
-	h5 {
-		margin-bottom: 10px;
+	p {
+		font-weight: bold;
 	}
 
 	ul {

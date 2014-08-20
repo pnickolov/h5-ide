@@ -23,6 +23,7 @@
 <div class="list">
     <div class="slidebox" style="{{slideStyle}}">
         <div class="content clearfix">
+            <div class="loading-spinner"></div>
         </div>
         <div class="error">
             something wrong
@@ -65,7 +66,6 @@
                         </tr>
                     </thead>
                     <tbody class='t-m-content'>
-
                     </tbody>
                 </table>
         {{#if disableScroll}}

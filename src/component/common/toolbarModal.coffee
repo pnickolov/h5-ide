@@ -66,21 +66,19 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
             checkedInfo
 
-        __slideRejct: ->
+        __slideReject: ->
             _.isFunction( @options.slideable ) and not @options.slideable()
-
 
         __handleSlide: ( event ) ->
 
             $button = $ event.currentTarget
-            $slidebox = @$( '.slidebox' )
             button = $button.data 'btn'
 
             # refresh has no slide
             if button is 'refresh'
                 return @
 
-            if @__slideRejct()
+            if @__slideReject()
                 return @
 
             $activeButton = @$( '.toolbar .active' )
@@ -93,20 +91,20 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 if $activeButton.get( 0 ) is $button.get( 0 )
                     @trigger 'slideup', button
                     $button.removeClass 'active'
-                    $slidebox.removeClass 'show'
+                    @toggleSlide false
                     @__slide = null
                 #slide down
                 else
                     @trigger 'slidedown', button, @getChecked()
                     $activeButton.removeClass 'active'
                     $button.addClass 'active'
-                    $slidebox.addClass 'show'
+                    @toggleSlide true
                     @__slide = button
 
             else
                 @trigger 'slidedown', button, @getChecked()
                 $button.addClass 'active'
-                $slidebox.addClass 'show'
+                @toggleSlide true
                 @__slide = button
 
             null
@@ -126,7 +124,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
 
         __refresh: ->
-            if @__slideRejct()
+            if @__slideReject()
                 return @
             @__renderLoading()
             @trigger 'refresh'
@@ -194,8 +192,6 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 hasScroll       : true
                 mode            : "panel"
 
-
-
             @__modalplus = new modalplus options
             @__modalplus.on 'closed', @__close, @
             @__modalplus.on "resize", @__resizeModal.bind @
@@ -207,6 +203,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
           headerHeight= $modal.find(".modal-header").outerHeight()
           footerHeight = $modal.find('.modal-footer').height() || 0
           windowHeight - headerHeight - footerHeight - 75 # 75 for toolbarHeight + Table HeaderBar Height
+
         __resizeModal: ->
           that = @
           @__modalplus.tpl.find(".scrollbar-veritical-thumb").removeAttr("style")
@@ -272,7 +269,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @$( "[data-btn=#{which}]" ).click()
 
         cancel: () ->
-            if @__slideRejct()
+            if @__slideReject()
                 return @
 
             $slidebox = @$( '.slidebox' )
@@ -291,14 +288,16 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
         delegate: ( events, context ) ->
             if not events or not _.isObject(events) then return @
+            context = context or @
 
-            for key, method in events
+            for key, method of events
+                if (!_.isFunction(method)) then method = context[events[key]];
                 if not method then continue
 
                 match = key.match /^(\S+)\s*(.*)$/
                 eventName = match[1]
                 selector = match[2]
-                method = _.bind method, context or this
+                method = _.bind method, context
                 eventName += '.delegateEvents' + @cid
                 if selector is ''
                   @$el.on eventName, method
@@ -317,6 +316,11 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
         getSlide: ->
             @__slide
+
+        toggleSlide: ( display ) ->
+            @setSlide template.loading unless display
+            @$( '.slidebox' ).toggleClass 'show', display or false
+
 
 
 

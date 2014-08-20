@@ -43,6 +43,9 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
       delete data.vpc
 
+      app_json = data.app_json
+      delete data.app_json
+
       # Parse aws resource data with other collection
       extraAttr = { RES_TAG : @category }
       for type, d of data
@@ -52,9 +55,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           continue
         cln.__parseExternalData d, extraAttr, @__region
 
-      if data.app_json
-        @generatedJson = data.app_json
-        delete data.app_json
+      if app_json
+        @generatedJson = app_json
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
       else
         ### env:dev ###

@@ -5,9 +5,16 @@
     </div>
 
     {{#if isAppEdit}}
+    {{#if isCanPromote}}
     <section class="property-control-group">
         <button class="btn btn-primary" id="property-dbinstance-promote-replica" style="width: 200px;">Promote Read Replica</button>
     </section>
+    {{/if}}
+    {{#if isPromoted}}
+    <section class="property-control-group">
+        <button class="btn btn-primary" id="property-dbinstance-promote-replica" style="width: 200px;">Cancel Promote Read Replica</button>
+    </section>
+    {{else}}
     <section class="property-control-group apply-immediately-section {{#unless isChanged}}hide{{/unless}}">
         <div class="checkbox">
             <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
@@ -17,8 +24,9 @@
         <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.html#Overview.DBInstance.Modifying" data-tooltip="Click to read AWS documentation on modifying DB instance using Apply Immediately." target="_blank"></a>
     </section>
     {{/if}}
+    {{/if}}
 
-    {{#unless isPromote}}
+    {{#unless isPromoted}}
     <div class="option-group-head expand">DB Instance Details</div>
     <div class="option-group">
 
@@ -187,7 +195,7 @@
 
     {{/unless}}
 
-    <div class="option-group-head {{#if isPromote}}expand{{/if}}">Backup Options</div>
+    <div class="option-group-head {{#if isPromoted}}expand{{/if}}">Backup Options</div>
     <div class="option-group">
 
         <section class="property-control-group tooltip" {{#if hasSlave}}data-tooltip="DB instance serving as replication source must enable automatic backups"{{/if}}>
@@ -255,7 +263,7 @@
         </div>
     </div>
 
-    {{#unless isPromote}}
+    {{#unless isPromoted}}
     <div class="option-group-head">Maintenance Options</div>
     <div class="option-group">
 

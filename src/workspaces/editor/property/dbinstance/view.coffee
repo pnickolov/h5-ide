@@ -61,8 +61,10 @@ define [ 'ApiRequest'
 
         promoteReplica: () ->
 
-            @setPromote()
-            @unsetPromote()
+            if @isPromoted()
+                @unsetPromote()
+            else
+                @setPromote()
             App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
 
         checkChange: ( e ) ->
@@ -280,11 +282,27 @@ define [ 'ApiRequest'
                 _.extend attr, @appModel.toJSON()
                 _.extend attr, @getOriginAttr()
 
-        isPromote: () ->
+            attr.isCanPromote = @isCanPromote()
+            attr.isPromoted = @isPromoted()
+            attr.isPromote = @isCanPromote() or @isPromoted()
+
+            attr
+
+        isPromoted: () ->
 
             dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
-            originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
-            return (@isAppEdit and originReplicaId and not @resModel.master())
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and not @resModel.master())
+            return false
+
+        isCanPromote: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and @resModel.master())
+            return false
 
         setPromote: () ->
 
@@ -293,7 +311,7 @@ define [ 'ApiRequest'
 
         unsetPromote: () ->
 
-            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('DBInstanceIdentifier')
+            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
             if srcDBId
                 srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
                 @resModel.setMaster(srcDBModel) if srcDBModel
@@ -332,8 +350,6 @@ define [ 'ApiRequest'
             attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
             attr.isChanged = @checkChange()
-
-            attr.isPromote = @isPromote()
 
             _.extend attr, {
                 isOracle: @resModel.isOracle()

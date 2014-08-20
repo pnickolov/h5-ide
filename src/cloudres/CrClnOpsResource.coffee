@@ -92,7 +92,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       }
       json.component = res.component
       json.layout    = res.layout
-      json.name      = "imported-" + @category
+      json.name      = if originalJson then originalJson.name else "imported-" + @category
       return json
 
 

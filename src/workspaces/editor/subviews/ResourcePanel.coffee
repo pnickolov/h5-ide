@@ -275,6 +275,7 @@ define [
         @updateRDSSnapshotList()
 
       @updateDisableItems()
+      @$el.children(".sidebar-title").find(".icon-rds-snap,.icon-pg").toggleClass("disabled", @workspace.isRdsDisabled())
       return
 
     updateRDSList : () ->

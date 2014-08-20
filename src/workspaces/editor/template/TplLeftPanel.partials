@@ -9,8 +9,8 @@
     <li data-action="sns" class="icon-sns"><span>SNS Topic & Subscription</span></li>
     <li data-action="sslcert" class="icon-cert"><span>Server Certificate</span></li>
     <li data-action="dhcp" class="icon-dhcp"><span>DHCP Option Sets</span></li>
-    <li data-action="rdspg" class="icon-pg"><span>DB Parameter Groups</span></li>
-    <li data-action="rdssnapshot" class="icon-rds-snap"><span>DB Snapshot</span></li>
+    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>DB Parameter Groups</span></li>
+    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>DB Snapshot</span></li>
   </ul>
   <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
 </header>

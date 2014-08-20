@@ -507,6 +507,10 @@ module.exports =
       en: "Manage EBS Snapshot"
       zh: "管理 EBS 快照"
 
+    RES_MSG_RDS_DISABLED:
+      en: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
+      zh: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
+
     RES_TIT_RDS:
       en: "RDS & Snapshot"
       zh: ""

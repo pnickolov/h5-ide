@@ -16,7 +16,7 @@ $dndDuration : .2s;
   color         : #d0d0d0;
   background    : #000;
 
-  li {
+  > li {
     border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
     padding          : 15px 5px;
     width            : 80px;
@@ -57,6 +57,10 @@ $dndDuration : .2s;
       width      : 80px;
       color      : #999;
     }
+  }
+
+  .icon-rds-snap, .icon-pg {
+    &.disabled { display : none; }
   }
 }
 
@@ -542,6 +546,15 @@ $dndDuration : .2s;
       clear : both;
     }
   }
+}
+
+.disableRds-content {
+  display : none;
+  padding : 10px;
+}
+.disableRds {
+  .disableRds-content { display : block; color: #ff9c00;}
+  .ManageRdsSnapshot, .nano-content { display : none; }
 }
 
 // Property Panel

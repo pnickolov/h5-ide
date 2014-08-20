@@ -9,8 +9,8 @@
     <li data-action="sns" class="icon-sns"><span>SNS Topic & Subscription</span></li>
     <li data-action="sslcert" class="icon-cert"><span>Server Certificate</span></li>
     <li data-action="dhcp" class="icon-dhcp"><span>DHCP Option Sets</span></li>
-    <li data-action="rdspg" class="icon-pg"><span>DB Parameter Groups</span></li>
-    <li data-action="rdssnapshot" class="icon-rds-snap"><span>DB Snapshot</span></li>
+    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>DB Parameter Groups</span></li>
+    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>DB Snapshot</span></li>
   </ul>
   <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
 </header>
@@ -51,9 +51,7 @@
       <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
       <div class="nano-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
-        <ul class="resource-list-snapshot">
-          <li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li>
-        </ul>
+        <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
         <div class="resource-list-head">
           {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
           <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
@@ -64,14 +62,15 @@
             </ul>
           </div>
         </div>
-        <ul class="resource-list-snapshot resource-list-snapshot-exist"></ul>
+        <ul class="resource-list-snapshot"></ul>
       </div>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
-    <div class="accordion-body nano">
+    <div class="accordion-body nano {{#if rdsDisabled}}disableRds{{/if}}">
+      <div class="disableRds-content">{{ i18n "RES_MSG_RDS_DISABLED"}}</div>
       <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
       <div class="nano-content">
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
@@ -87,7 +86,7 @@
             </ul>
           </div>
         </div>
-        <ul class="resource-list-rds-snapshot resource-list-rds-snapshot-exist"></ul>
+        <ul class="resource-list-rds-snapshot"></ul>
       </div>
     </div>
   </section>
@@ -120,10 +119,9 @@
 {{#each this}}{{#with attributes}}
 <li class="resource-item bubble snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
-</li>{{/with}}{{/each}}
-
-<!-- {{snapshot_empty}} -->
-<span>No EBS Snapshot in {{regionName}}.</span>
+</li>{{/with}}{{else}}
+<div style="padding-bottom:15px;">No EBS Snapshot in {{region}}.</div>
+{{/each}}
 
 <!-- {{rds}} -->
 {{#each this}}{{#with this.[0].attributes}}
@@ -140,10 +138,9 @@
   <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/icon/rds-{{firstOfSplit Engine '-' }}.png" width="32" height="23">
   <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div></div>{{DBInstanceIdentifier}}
 </li>
+{{else}}
+<div style="padding-bottom:15px;">No DB Snapshot in {{region}}.</div>
 {{/each}}
-
-<!-- {{rds_snapshot_empty}} -->
-<span>No DB Snapshot in {{regionName}}.</span>
 
 <!-- {{ami}} -->
 {{#each this}}{{#with attributes}}

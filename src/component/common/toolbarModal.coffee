@@ -224,6 +224,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             if not $contentWrap.find( '.toolbar' ).size()
                 data = @options
 
+                data.hasButton = !!data.buttons?.length
                 data.buttons = _.reject data.buttons, ( btn ) ->
                     if btn.type is 'create'
                         data.btnValueCreate = btn.name

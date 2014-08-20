@@ -7,16 +7,19 @@
 
 
 <!-- {{content}} -->
+{{#if hasButton}}
 <div class="toolbar">
-    {{#if btnValueCreate}}
-    <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
-    {{/if}}
-    <div class="btn-group">
-        {{#each buttons}}
-        <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
-        {{/each}}
-    </div>
+        {{#if btnValueCreate}}
+        <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
+        {{/if}}
+        <div class="btn-group">
+            {{#each buttons}}
+            <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
+            {{/each}}
+        </div>
 </div>
+{{/if}}
+
 <div class="list">
     <div class="slidebox" style="{{slideStyle}}">
         <div class="content clearfix">
@@ -25,16 +28,19 @@
             something wrong
         </div>
     </div>
+    {{beforeTable}}
     <div class="table-head-fix will-be-covered">
         <table class="table-head">
             <thead>
                 <tr>
+                    {{#unless noCheckbox}}
                     <th>
                         <div class="checkbox">
                             <input id="t-m-select-all" type="checkbox" value="None">
                             <label for="t-m-select-all"></label>
                         </div>
                     </th>
+                    {{/unless}}
                     {{#each columns}}
                     <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
                     {{/each}}
@@ -52,7 +58,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th><div class="th-inner"></div></th>
+                            {{#unless noCheckbox}}<th><div class="th-inner"></div></th>{{/unless}}
                             {{#each columns}}
                             <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                             {{/each}}

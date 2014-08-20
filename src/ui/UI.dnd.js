@@ -49,6 +49,9 @@
       if (data.hoverZone) {
         data.hoverZone.removeClass("dragOver").triggerHandler("" + data.eventPrefix + "dragleave", data);
       }
+      if (data.onDragCancel && evt.type === "urlroute") {
+        data.onDragCancel(evt);
+      }
     };
     detectDrag = function(evt) {
       var data;

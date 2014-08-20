@@ -6174,7 +6174,7 @@ g.shadow {
   border: 1px solid #0f0f0f;
   color: #d0d0d0;
   background: #000; }
-  .resources-dropdown-wrapper li {
+  .resources-dropdown-wrapper > li {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding: 15px 5px;
     width: 80px;
@@ -6187,25 +6187,27 @@ g.shadow {
     border-right: 1px solid #000;
     border-bottom: 1px solid #000;
     color: #5d64b5; }
-    .resources-dropdown-wrapper li:before {
+    .resources-dropdown-wrapper > li:before {
       font-size: 32px;
       text-align: center;
       width: 100%;
       display: block; }
-    .resources-dropdown-wrapper li:hover {
+    .resources-dropdown-wrapper > li:hover {
       background-color: #222;
       color: #fff; }
-      .resources-dropdown-wrapper li:hover span {
+      .resources-dropdown-wrapper > li:hover span {
         color: #ccc; }
-    .resources-dropdown-wrapper li:last-child {
+    .resources-dropdown-wrapper > li:last-child {
       border-right: none; }
-    .resources-dropdown-wrapper li span {
+    .resources-dropdown-wrapper > li span {
       font-size: 12px;
       position: absolute;
       top: 53px;
       text-align: center;
       width: 80px;
       color: #999; }
+  .resources-dropdown-wrapper .icon-rds-snap.disabled, .resources-dropdown-wrapper .icon-pg.disabled {
+    display: none; }
 
 .AmiTypeSelect {
   position: absolute;
@@ -6599,6 +6601,16 @@ g.shadow {
       display: block;
       content: " ";
       clear: both; }
+
+.disableRds-content {
+  display: none;
+  padding: 10px; }
+
+.disableRds .disableRds-content {
+  display: block;
+  color: #ff9c00; }
+.disableRds .ManageRdsSnapshot, .disableRds .nano-content {
+  display: none; }
 
 .OEPanelRight .sidebar-title {
   border-left: 1px solid #151519;
@@ -7345,12 +7357,12 @@ g.shadow {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {
     max-height: 581px;
-    padding: 15px 15px 0 15px; }
+    margin-top: 20px; }
     .res_diff_tree .scroll-wrap-res-diff .scroll-content > p {
       font-size: 16px;
       color: #ccc; }
-  .res_diff_tree h5 {
-    margin-bottom: 10px; }
+  .res_diff_tree p {
+    font-weight: bold; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {

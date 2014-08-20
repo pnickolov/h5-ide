@@ -57,6 +57,9 @@ define ["jquery"], ( $ )->
 
     if data.hoverZone
       data.hoverZone.removeClass("dragOver").triggerHandler "#{data.eventPrefix}dragleave", data
+
+    if data.onDragCancel and evt.type is "urlroute"
+      data.onDragCancel( evt )
     return
 
   detectDrag = ( evt )->

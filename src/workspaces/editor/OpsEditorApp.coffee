@@ -39,14 +39,12 @@ define [
         CloudResources( constant.RESTYPE.AZ,       region ).fetch()
         CloudResources( constant.RESTYPE.SNAP,     region ).fetch()
         CloudResources( constant.RESTYPE.DHCP,     region ).fetch()
-        CloudResources( constant.RESTYPE.DBENGINE, region ).fetch()
-        CloudResources( constant.RESTYPE.DBOG,     region ).fetch()
-        CloudResources( constant.RESTYPE.DBSNAP,   region ).fetch()
         CloudResources( "QuickStartAmi",           region ).fetch()
         CloudResources( "MyAmi",                   region ).fetch()
         CloudResources( "FavoriteAmi",             region ).fetch()
         @loadVpcResource()
         @fetchAmiData()
+        @fetchRdsData()
       ]).fail ( err )-> self.__handleDataError( err )
 
     __handleDataError : ( err )->

@@ -635,7 +635,9 @@ define [
       # Asso OptionGroup
       ogName = data.resource.OptionGroupMembership?.OptionGroupName
       if ogName
-        ogComp = resolve MC.extractID ogName
+        ogUid = MC.extractID(ogName)
+        if ogUid and ogUid isnt ogName
+          ogComp = resolve(ogUid)
 
         new OgUsage( model, ogComp or model.getDefaultOgInstance(ogName) )
   }

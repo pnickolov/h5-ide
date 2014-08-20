@@ -124,7 +124,7 @@ define [
       @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
       @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
       @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
-      @listenTo CloudResources( constant.RESTYPE.DBENGINE, region ), "update", @updateRDSList
+      @listenTo CloudResources( constant.RESTYPE.DBSNAP, region ), "update", @updateRDSSnapshotList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
@@ -174,21 +174,21 @@ define [
 
         if selectedId is 'date'
 
-            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot li').sort (a, b) ->
                 return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
 
         if selectedId is 'engine'
 
-            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot li').sort (a, b) ->
                 return $(a).data('engine') - $(b).data('engine')
 
         if selectedId is 'storge'
 
-            $sortedList = @$el.find('.resource-list-rds-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-rds-snapshot li').sort (a, b) ->
                 return Number($(b).data('storge')) - Number($(a).data('storge'))
 
         if $sortedList.length
-            @$el.find('.resource-list-rds-snapshot-exist').html($sortedList)
+            @$el.find('.resource-list-rds-snapshot').html($sortedList)
 
     resourceListSortSelectSnapshotEvent : (event) ->
 
@@ -203,16 +203,16 @@ define [
 
         if selectedId is 'date'
 
-            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-snapshot li').sort (a, b) ->
                 return (new Date($(b).data('date'))) - (new Date($(a).data('date')))
 
         if selectedId is 'storge'
 
-            $sortedList = @$el.find('.resource-list-snapshot-exist li').sort (a, b) ->
+            $sortedList = @$el.find('.resource-list-snapshot li').sort (a, b) ->
                 return Number($(a).data('storge')) - Number($(b).data('storge'))
 
         if $sortedList.length
-            @$el.find('.resource-list-snapshot-exist').html($sortedList)
+            @$el.find('.resource-list-snapshot').html($sortedList)
 
     bindKey: (event)->
       that = this
@@ -260,11 +260,16 @@ define [
     updateSnapshot : ()->
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
-      cln.region = region
-      if cln and cln.length
-        @$el.find(".resource-list-snapshot-exist").html LeftPanelTpl.snapshot( cln )
-      else
-        @$el.find(".resource-list-snapshot-empty").html LeftPanelTpl.snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
+      cln.region = if cln.length then region else constant.REGION_SHORT_LABEL[region]
+
+      @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot( cln )
+
+    toggleRdsFeature : ()->
+      @$el.find(".ManageRdsSnapshot").parent().toggleClass( "disableRds", @workspace.isRdsDisabled() )
+      if not @workspace.isRdsDisabled()
+        @updateRDSList()
+        @updateRDSSnapshotList()
+      return
 
     updateRDSList : () ->
       cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
@@ -273,11 +278,9 @@ define [
     updateRDSSnapshotList : () ->
       region     = @workspace.opsModel.get("region")
       cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
-      cln.region = region
-      if cln and cln.length
-        @$el.find(".resource-list-rds-snapshot-exist").html LeftPanelTpl.rds_snapshot( cln )
-      else
-        @$el.find(".resource-list-rds-snapshot-empty").html LeftPanelTpl.rds_snapshot_empty({regionName: constant.REGION_SHORT_LABEL[region]})
+      cln.region = if cln.length then region else constant.REGION_SHORT_LABEL[region]
+
+      @$el.find(".resource-list-rds-snapshot").html LeftPanelTpl.rds_snapshot( cln )
 
     changeAmiType : ( evt, attr )->
       @__amiType = attr || "QuickStartAmi"
@@ -423,6 +426,7 @@ define [
       Q.all([
         CloudResources( "MyAmi", region ).fetchForce()
         CloudResources( constant.RESTYPE.SNAP, region ).fetchForce()
+        CloudResources( constant.RESTYPE.DBSNAP, region ).fetchForce()
       ]).done ()-> $tgt.removeClass("reloading")
       return
 

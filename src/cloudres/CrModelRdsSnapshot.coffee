@@ -97,31 +97,28 @@ define [ "./CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResource
       }
       return
 
-    # copyTo : ( destRegion, newName, description )->
-    #   self = @
+    copyTo : ( destRegion, newName, description )->
+       self = @
+       source_id = "arn:aws:rds:#{@collection.region()}:#{App.user.attributes.account.split('-').join("")}:snapshot:#{@get('id')}"
+       ApiRequest("rds_snap_CopyDBSnapshot",{
+         region_name     : destRegion
+         source_id       : source_id
+         target_id       : newName
+       }).then ( data )->
+         console.log data
+         newSnapshot = data.CopyDBSnapshotResponse?.CopyDBSnapshotResult?.DBSnapshot
+         if not newSnapshot.DBSnapshotIdentifier
+           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot copied but aws returns invalid data." )
 
-    #   ApiRequest("ebs_CopySnapshot",{
-    #     region_name     : @getCollection().region()
-    #     snapshot_id     : @get("id")
-    #     dst_region_name : destRegion
-    #     description     : description
-    #   }).then ( data )->
-
-    #     id = data.CopySnapshotResponse?.snapshotId
-    #     if not id
-    #       throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot copied but aws returns invalid data." )
-
-    #     thatCln = CloudResources( self.collection.type, destRegion )
-    #     # The model is not saved, because we would w
-    #     clones = self.toJSON()
-    #     clones.name = newName
-    #     clones.description = description
-    #     clones.region = destRegion
-    #     clones.id = id
-    #     model = thatCln.create(clones)
-    #     thatCln.add(model)
-    #     model.tagResource()
-    #     return model
+         thatCln = CloudResources( self.collection.type, destRegion )
+         clones = newSnapshot
+         clones.id = newSnapshot.DBSnapshotIdentifier
+         clones.name = newName
+         clones.region = destRegion
+         model = thatCln.create(clones)
+         thatCln.add(model)
+         model.tagResource()
+         return model
 
     doDestroy : ()->
       ApiRequest("rds_snap_DeleteDBSnapshot", {

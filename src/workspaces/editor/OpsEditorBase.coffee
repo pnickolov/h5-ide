@@ -95,7 +95,7 @@ define [
 
       # Load Datas
       s = @
-      @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed())
+      @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
 
       Workspace.apply @, arguments
 

@@ -385,7 +385,7 @@ define [ 'ApiRequest'
             else if attr.snapshotId
                 template = template_instance
                 snapshotModel = @resModel.getSnapshotModel()
-                attr.snapshotSize = Number(snapshotModel.get('AllocatedStorage'))
+                attr.snapshotSize = Number(snapshotModel?.get('AllocatedStorage') || @resModel.get("allocatedStorage"))
 
             # if oracle
             if @resModel.isOracle()

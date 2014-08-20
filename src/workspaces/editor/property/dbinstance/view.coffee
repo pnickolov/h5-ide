@@ -279,7 +279,7 @@ define [ 'ApiRequest'
             # for app edit
             if @isAppEdit
                 attr.isAppEdit = @isAppEdit
-                _.extend attr, @appModel.toJSON()
+                _.extend attr, @appModel.toJSON() if @appModel
                 _.extend attr, @getOriginAttr()
 
             attr.isCanPromote = @isCanPromote()
@@ -1011,10 +1011,12 @@ define [ 'ApiRequest'
 
         getInstanceStatus: () ->
 
+            that = this
+
             _setStatus = (showError) ->
 
                 $('.property-dbinstance-status-icon-warning').remove()
-                that.setTitle(that.appModel.get('name'))
+                that.setTitle(that.appModel.get('name')) if that.appModel
                 if showError is true
                     $('.db-status-loading').remove()
                     $('.property-dbinstance-not-available-info').show()
@@ -1026,31 +1028,35 @@ define [ 'ApiRequest'
                     tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
                 that.prependTitle tip
 
-            that = this
-            dbId = @appModel.get('DBInstanceIdentifier')
             _setStatus()
 
             region = Design.instance().region()
-            ApiRequest('rds_ins_DescribeDBInstances', {
-                id: dbId,
-                region_name: region
-            }).then (data) ->
 
-                data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
-                dbData = if not _.isArray(data) then data else data[0]
+            currentDBModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(that.resModel.get('appId'))
 
-                if dbData
+            if currentDBModel
 
-                    dbStatus = dbData.DBInstanceStatus
-                    if dbStatus isnt 'available'
-                        _setStatus(true)
-                        return
+                region = Design.instance().region()
+                ApiRequest('rds_ins_DescribeDBInstances', {
+                    id: currentDBModel.get('appId'),
+                    region_name: region
+                }).then (data) ->
 
-                _setStatus(false)
+                    data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
+                    dbData = if not _.isArray(data) then data else data[0]
 
-            , () ->
+                    if dbData
 
-                _setStatus(false)
+                        dbStatus = dbData.DBInstanceStatus
+                        if dbStatus isnt 'available'
+                            _setStatus(true)
+                            return
+
+                    _setStatus(false)
+
+                , () ->
+
+                    _setStatus(false)
 
     }
 

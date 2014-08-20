@@ -140,7 +140,7 @@ define [
             "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
             "allocatedStorage": snapshotModel.get('AllocatedStorage'),
             "port": snapshotModel.get('Port'),
-            "iops": snapshotModel.get('Iops') or '',
+            "iops": snapshotModel.get('Iops') or 0,
             "multiAz": snapshotModel.get('MultiAZ'),
             "ogName": snapshotModel.get('OptionGroupName'),
             "license": snapshotModel.get('LicenseModel'),
@@ -546,7 +546,7 @@ define [
           AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
           AvailabilityZone                      : @get 'az'
           MultiAZ                               : @get 'multiAz'
-          Iops                                  : @getIops()
+          Iops                                  : @getIops() or 0
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'

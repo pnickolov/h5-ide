@@ -1,6 +1,7 @@
 define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	var Apis = {
 		'aws_quickstart'     : { url:'/aws/',	method:'quickstart',	params:['username', 'session_id', 'region_name']   },
+		'aws_def'            : { url:'/aws/',	method:'def',	params:['self', 'username', 'session_id', 'region_name', 'filters']   },
 		'aws_public'         : { url:'/aws/',	method:'public',	params:['username', 'session_id', 'region_name', 'filters']   },
 		'aws_property'       : { url:'/aws/',	method:'property',	params:['username', 'session_id']   },
 		'aws_aws'            : { url:'/aws/',	method:'aws',	params:['username', 'session_id', 'region_names', 'fields', 'filters']   },

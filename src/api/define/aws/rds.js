@@ -25,6 +25,8 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'rds_snap_DescribeDBSnapshots'           : { url:'/aws/rds/snapshot/',	method:'DescribeDBSnapshots',	params:['username', 'session_id', 'region_name', 'instance_id', 'snapshot_id', 'snapshot_type', 'filters', 'marker', 'max_records']   },
 		'rds_subgrp_DescribeDBSubnetGroups'      : { url:'/aws/rds/subnetgroup/',	method:'DescribeDBSubnetGroups',	params:['username', 'session_id', 'region_name', 'subnet_group', 'filters', 'marker', 'max_records']   },
 		'rds_ListTagsForResource'                : { url:'/aws/rds/',	method:'ListTagsForResource',	params:['username', 'session_id', 'region_name', 'resource_name', 'filters']   },
+		'rds_DescribeDBLogFiles'                 : { url:'/aws/rds/',	method:'DescribeDBLogFiles',	params:['username', 'session_id', 'region_name', 'db_identifier', 'file_last_written', 'file_size', 'filename_contains', 'filters', 'marker', 'max_records']   },
+		'rds_DownloadDBLogFilePortion'           : { url:'/aws/rds/',	method:'DownloadDBLogFilePortion',	params:['username', 'session_id', 'region_name', 'db_identifier', 'log_filename', 'num_of_lines', 'marker']   },
 	}
 
 	for ( var i in Apis ) {

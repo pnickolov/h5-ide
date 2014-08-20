@@ -6607,7 +6607,8 @@ g.shadow {
   padding: 10px; }
 
 .disableRds .disableRds-content {
-  display: block; }
+  display: block;
+  color: #ff9c00; }
 .disableRds .ManageRdsSnapshot, .disableRds .nano-content {
   display: none; }
 
@@ -7004,8 +7005,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {
@@ -7352,8 +7352,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   text-align: center; }
 
 .res_diff_tree {
-  overflow: auto;
-  padding: 20px; }
+  overflow: auto; }
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {

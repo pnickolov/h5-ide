@@ -1846,7 +1846,9 @@ define [ 'event',
                     highlightSelectedWord: false,
                     enableSnippets: false,
                     singleLine: editorSingleLine,
-                    enableTab: enableTab
+                    enableTab: enableTab,
+                    useSoftTabs: false,
+                    tabSize: 4
                 })
 
                 # move cursor to last

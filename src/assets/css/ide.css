@@ -6600,6 +6600,15 @@ g.shadow {
       content: " ";
       clear: both; }
 
+.disableRds-content {
+  display: none;
+  padding: 10px; }
+
+.disableRds .disableRds-content {
+  display: block; }
+.disableRds .ManageRdsSnapshot, .disableRds .nano-content {
+  display: none; }
+
 .OEPanelRight .sidebar-title {
   border-left: 1px solid #151519;
   padding: 0; }
@@ -6993,7 +7002,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {

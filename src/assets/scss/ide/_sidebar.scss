@@ -544,6 +544,15 @@ $dndDuration : .2s;
   }
 }
 
+.disableRds-content {
+  display : none;
+  padding : 10px;
+}
+.disableRds {
+  .disableRds-content { display : block; }
+  .ManageRdsSnapshot, .nano-content { display : none; }
+}
+
 // Property Panel
 .OEPanelRight{
 

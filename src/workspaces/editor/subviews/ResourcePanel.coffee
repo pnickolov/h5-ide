@@ -132,6 +132,8 @@ define [
       @listenTo design, Design.EVENT.RemoveResource, @updateDisableItems
       @listenTo design, Design.EVENT.AddResource,    @updateLc
 
+      @listenTo @workspace, "toggleRdsFeature", @toggleRdsFeature
+
       @__amiType = "QuickStartAmi" # QuickStartAmi | MyAmi | FavoriteAmi
 
       @setElement @parent.$el.find(".OEPanelLeft")
@@ -144,7 +146,9 @@ define [
 
     render : ()->
 
-      @$el.html( LeftPanelTpl.panel({}) )
+      @$el.html( LeftPanelTpl.panel({
+        rdsDisabled : @workspace.isRdsDisabled()
+      }) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
       @recalcAccordion()
@@ -269,6 +273,8 @@ define [
       if not @workspace.isRdsDisabled()
         @updateRDSList()
         @updateRDSSnapshotList()
+
+      @updateDisableItems()
       return
 
     updateRDSList : () ->
@@ -330,9 +336,18 @@ define [
 
       @sbg = @$el.find(".resource-item.subnetgroup")
       if _.keys( az ).length < 2
-        @sbg.toggleClass("disabled", true).attr("data-tooltip", "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas.")
+        disabled = true
+        tooltip  = "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas."
+        @sbg.toggleClass("disabled", true).attr("data-tooltip", )
       else
-        @sbg.toggleClass("disabled", false).attr("data-tooltip", lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP)
+        disabled = false
+        tooltip = lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP
+
+      if @workspace.isRdsDisabled()
+        disabled = true
+        tooltip = lang.ide.RES_MSG_RDS_DISABLED
+
+      @sbg.toggleClass("disabled", disabled).attr("data-tooltip", tooltip)
       return
 
     updateFavList   : ()-> if @__amiType is "FavoriteAmi" then @updateAmi()
@@ -423,11 +438,18 @@ define [
 
       $tgt.addClass("reloading")
       region = @workspace.opsModel.get("region")
-      Q.all([
+
+      jobs = [
         CloudResources( "MyAmi", region ).fetchForce()
         CloudResources( constant.RESTYPE.SNAP, region ).fetchForce()
-        CloudResources( constant.RESTYPE.DBSNAP, region ).fetchForce()
-      ]).done ()-> $tgt.removeClass("reloading")
+      ]
+
+      if @workspace.isRdsDisabled()
+        jobs.push @workspace.fetchRdsData()
+      else
+        jobs.push CloudResources( constant.RESTYPE.DBSNAP, region ).fetchForce()
+
+      Q.all(jobs).done ()-> $tgt.removeClass("reloading")
       return
 
     resourcesMenuClick : (event) ->

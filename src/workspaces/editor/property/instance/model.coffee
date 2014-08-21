@@ -150,7 +150,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
 			eni_number = instance.connectionTargets("EniAttachment").length + 1
 			config     = instance.getInstanceTypeConfig( value )
 
-			max_eni_num = if config then config.eni else 2
+			max_eni_num = if config then config.max_eni else 2
 
 			if eni_number <= 2 or eni_number <= max_eni_num
 				return true

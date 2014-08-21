@@ -181,7 +181,7 @@ define [ "../ResourceModel", "../ComplexResModel", "constant" ], ( ResourceModel
           refArray.push data.resource.OKAction[0]
           refArray.push data.resource.OKAction[1]
 
-        if data.resource.InsufficientDataActions.length
+        if data.resource.InsufficientDataActions and data.resource.InsufficientDataActions.length
           state = "INSUFFICIANT_DATA"
           refArray.push data.resource.InsufficientDataActions[0]
           refArray.push data.resource.InsufficientDataActions[1]

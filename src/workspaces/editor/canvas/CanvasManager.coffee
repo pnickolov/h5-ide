@@ -119,6 +119,30 @@ define ['CloudResources'], (CloudResources)->
         element.attr("style", "fill:#{value}")
       else
         element.attr( attr, value )
+
+    setLabel : ( canvasItem, labelElement )->
+
+      text     = canvasItem.label()
+      maxWidth = canvasItem.labelWidth()
+
+      if _.isString labelElement
+        labelElement = document.getElementById( labelElement )
+
+      if not labelElement.length and labelElement.length isnt 0 then labelElement = [ labelElement ]
+
+      $(labelElement[0]).text( text )
+      if labelElement[0].getSubStringLength(0, text.length) > maxWidth
+        length = text.length - 1
+        while true and length > 0
+          if labelElement[0].getSubStringLength(0, length) + 8 <= maxWidth
+            text = text.substr( 0, length ) + "..."
+            break
+          --length
+
+      for el in labelElement
+        $(el).text( text )
+
+      return
   }
 
   CanvasManager

@@ -157,7 +157,7 @@ define [
       m = @model
 
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
 
       # Update Type and Engine Image
       CanvasManager.update @$el.children(".type-image"), @typeIcon(), "href"

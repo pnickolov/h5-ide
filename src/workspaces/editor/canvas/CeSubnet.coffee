@@ -47,11 +47,13 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @initNode svgEl, m.x(), m.y()
       svgEl
 
+    label : ()-> "#{@model.get('name')} (#{@model.get('cidr')})"
+
     # Update the svg element
     render : ()->
       # Move the group to right place
       m = @model
-      @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
+      CanvasManager.setLabel @, @$el.children("text")
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
     # Override to make the connect-line functionality more tolerant

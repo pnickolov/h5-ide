@@ -287,6 +287,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
         svg.text("").move(5,15).classes("group-label")
       ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
 
+    label      : ()-> @model.get("name")
+    labelWidth : ( width )-> (width || @size().width * CanvasView.GRID_WIDTH) - 8
 
     isGroup : ()-> !!@model.node_group
 
@@ -511,6 +513,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
           ch.move(width - pad, height - pad)
         else if classes.indexOf("port") >= 0
           ports.push ch
+        else if classes.indexOf("group-label") >= 0
+          CanvasManager.setLabel( @, ch.node )
 
       # Update groups port
       for p in ports

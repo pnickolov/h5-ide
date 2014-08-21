@@ -32,6 +32,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @listenTo @model, "change:connections", @render
       return
 
+    labelWidth : ( width )-> (width || @model.width() * CanvasView.GRID_WIDTH) - 20
+
     # Creates a svg element
     create : ()->
       svg = @canvas.svg
@@ -55,7 +57,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
     render : ()->
       # Move the group to right place
       m = @model
-      @$el.children("text").text( m.get('name') )
+      CanvasManager.setLabel @, @$el.children("text")
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
       # Tooltip

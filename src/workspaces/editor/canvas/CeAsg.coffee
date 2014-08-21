@@ -65,8 +65,9 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
 
     getLc : ()-> @model.getLc()
 
+    labelWidth : ( width )-> (width || @size().width * CanvasView.GRID_WIDTH) - 22
     render : ()->
-      CanvasManager.update @$el.children("text"), @model.get("name")
+      CanvasManager.setLabel @, @$el.children("text")
 
     updateConnections : ()->
       lc = @model.getLc()

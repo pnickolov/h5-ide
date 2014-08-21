@@ -383,8 +383,20 @@
   border-bottom : 1px solid darken($bg-p, 10%);
 }
 
-/* General Style for Property Panel List */
+.modal-db-replica-promote-confirm {
+	h5 {
+		font-weight: bold;
+		margin-bottom: 10px;
+		font-size: 16px;
+		// color: #fff;
+	}
+	span {
+		font-weight: bold;
+		color: #fff;
+	}
+}
 
+/* General Style for Property Panel List */
 
 .property-list li {
 	width         : 260px;

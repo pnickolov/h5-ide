@@ -13,8 +13,9 @@ define [ 'ApiRequest'
          'constant'
          'CloudResources'
          'rds_pg'
+         'UI.modalplus'
          'jqtimepicker'
-], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup, Modal ) ->
 
     noop = ()-> null
 
@@ -61,11 +62,23 @@ define [ 'ApiRequest'
 
         promoteReplica: () ->
 
+            that = @
+
             if @isPromoted()
                 @unsetPromote()
+                App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
             else
-                @setPromote()
-            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
+                modal = new Modal({
+                    title        : "Confirm to promote Read Replica"
+                    template     : template_component.modalPromoteConfirm({})
+                    confirm      : {text : "Confirm"}
+                    disableClose : true
+                    onConfirm : ()->
+                        that.setPromote()
+                        App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                        modal.close()
+                })
 
         checkChange: ( e ) ->
 

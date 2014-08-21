@@ -6,12 +6,12 @@
 
     {{#if isAppEdit}}
     {{#if isCanPromote}}
-    <section class="property-control-group">
+    <section class="property-control-group property-dbinstance-promote-replica hide">
         <button class="btn btn-primary" id="property-dbinstance-promote-replica" style="width: 200px;">Promote Read Replica</button>
     </section>
     {{/if}}
     {{#if isPromoted}}
-    <section class="property-control-group">
+    <section class="property-control-group property-dbinstance-promote-replica hide">
         <button class="btn btn-primary" id="property-dbinstance-promote-replica" style="width: 200px;">Cancel Promote Read Replica</button>
     </section>
     {{else}}

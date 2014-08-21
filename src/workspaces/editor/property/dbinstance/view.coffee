@@ -1032,14 +1032,15 @@ define [ 'ApiRequest'
 
             region = Design.instance().region()
 
-            currentDBModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(that.resModel.get('appId'))
+            dbId = that.resModel.get('appId')
 
-            if currentDBModel
+            currentResModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(dbId)
 
-                region = Design.instance().region()
-                ApiRequest('rds_ins_DescribeDBInstances', {
-                    id: currentDBModel.get('appId'),
+            if currentResModel
+
+                ApiRequest("rds_ins_DescribeDBInstances",{
                     region_name: region
+                    id: dbId
                 }).then (data) ->
 
                     data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
@@ -1047,15 +1048,26 @@ define [ 'ApiRequest'
 
                     if dbData
 
-                        dbStatus = dbData.DBInstanceStatus
-                        if dbStatus isnt 'available'
-                            _setStatus(true)
-                            return
+                        oldSrcId = currentResModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                        newSrcId = dbData.ReadReplicaSourceDBInstanceIdentifier
+                        
+                        if oldSrcId isnt newSrcId
+
+                            currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)
+                            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
+                        else
+
+                            dbStatus = dbData.DBInstanceStatus
+                            if dbStatus isnt 'available'
+                                _setStatus(true)
+                                return
+                            else
+                                that.$el.find('.property-dbinstance-promote-replica').show()
 
                     _setStatus(false)
 
                 , () ->
-
                     _setStatus(false)
 
     }

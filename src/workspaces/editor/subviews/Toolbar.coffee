@@ -30,7 +30,7 @@ define [
   else
     API_HOST = location.hostname
 
-  API_URL = "http://api." + API_HOST + "/v1/apps/"
+  API_URL = "https://api." + API_HOST + "/v1/apps/"
 
   Backbone.View.extend {
 

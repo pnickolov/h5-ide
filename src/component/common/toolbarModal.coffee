@@ -215,7 +215,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @$( '.content-wrap' ).html template.loading
             @
 
-        __renderContent: ()->
+        __renderToolbar: ()->
             that = @
             $contentWrap = @$ '.content-wrap'
             if not $contentWrap.find( '.toolbar' ).size()
@@ -247,11 +247,11 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 @__open()
             @
 
-        setContent: ( dom ) ->
+        setContent: ( dom, noToolbar ) ->
             @tempDom = dom
-            @__renderContent()
+            @__renderToolbar() unless noToolbar
             @$( '.t-m-content' ).html dom
-            @__triggerChecked null
+            @__triggerChecked null unless noToolbar
             @trigger "rendered", @
             @
 

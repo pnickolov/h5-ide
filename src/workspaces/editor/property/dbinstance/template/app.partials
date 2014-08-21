@@ -1,6 +1,10 @@
 <!-- {{appView}} -->
 <article class="property-app app-dbinstance">
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group-head expand">
+        {{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}
+        <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
+    </div>
+
     <div class="option-group" style="display: block">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
@@ -103,6 +107,16 @@
 
     <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
-
-
 </article>
+
+
+<!-- {{log_list}} -->
+{{#each this}}
+<tr class="item" data-file-name="{{LogFileName}}">
+    <td>{{LogFileName}}</td>
+    <td>{{UTC LastWritten}}</td>
+    <td>{{Size}}</td>
+    <td><a class="view">View</a></td>
+    {{#unless isSafari}}<td><a class="download">Download</a></td>{{/unless}}
+</tr>
+{{/each}}

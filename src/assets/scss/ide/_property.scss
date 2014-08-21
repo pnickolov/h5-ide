@@ -412,3 +412,12 @@
 	width   : 280px;
 	padding : 0;
 }
+
+.syslog-dbinstance table a {
+	color: #4a90e2;
+}
+
+.syslog-dbinstance table a:hover {
+	color: #3970af;
+	cursor: pointer;
+}

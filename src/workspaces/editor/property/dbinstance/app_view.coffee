@@ -37,11 +37,15 @@ define [
 
     renderLogList: ( logList ) ->
         that = @
-        logList = _.map logList, ( log ) ->
-            log.isSafari = that.isSafari
-            log
+        if logList
+            logList = _.map logList, ( log ) ->
+                log.isSafari = that.isSafari
+                log
+            @modal.setContent template.log_list logList
+        else
+            @modal.render template.log_list_empty( {} )
 
-        @modal.setContent template.log_list logList
+        null
 
     openOgModal: ->
         ogModel = @resModel.connectionTargets('OgUsage')[0]
@@ -54,6 +58,7 @@ define [
             'click a.view': 'viewLog'
             'click a.download': 'downloadLog'
             'click .refresh-log': 'viewLog'
+            'click .close': 'closeSlide'
         }, @
 
         @modal.render()
@@ -61,7 +66,8 @@ define [
 
         false
 
-
+    closeSlide: ->
+        @modal.cancel()
 
     getLogList: ->
         that = @
@@ -69,9 +75,19 @@ define [
         ApiRequest( 'rds_DescribeDBLogFiles', {
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
-        } ).then ( result ) ->
+        }).then ( ( result ) ->
             logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or {}
+
+            if _.size logList
+                if not _.isArray logList then logList = [ logList ]
+            else
+                logList = null
+
             that.renderLogList logList
+            ), ( () ->
+            that.renderLogList null
+            null
+            )
 
         null
 
@@ -80,14 +96,15 @@ define [
         filename = $( e.currentTarget ).data 'fileName'
 
         modal.toggleSlide true
-        @getLogContent( filename ).then( ( log ) ->
+        @getLogContent( filename ).then ( ( log ) ->
             console.log log
             log.filename = filename
             modal.setSlide( template.log_content log )
 
-        ).fail () ->
-
-
+            ), ( () ->
+            log = LogFileData: '', filename: filename
+            modal.setSlide( template.log_content log )
+           )
 
 
     downloadLog: ( e ) ->

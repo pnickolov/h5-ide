@@ -402,7 +402,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
     getMaxEniCount : ()->
       config = @getInstanceTypeConfig()
-      if config then config = config.eni
+      if config then config = config.max_eni
 
       config or 16
 

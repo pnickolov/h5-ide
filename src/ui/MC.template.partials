@@ -1306,7 +1306,7 @@ Additional Notes and Questions
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
         </div>
-        <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" >
+        <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}"{{#if compact}} style="padding: 0;"{{/if}} >
             {{#if hasScroll}}
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                 <div class="scroll-content" {{#if compact}} style="padding: 0;"{{/if}}>

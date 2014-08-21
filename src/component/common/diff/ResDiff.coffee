@@ -52,7 +52,7 @@ define [
                 confirm:
                     text: okText
                 width: '608px'
-                compact: true
+                compact: false
                 preventClose: true
 
             @modal = new modalplus options

@@ -112,11 +112,25 @@
 
 <!-- {{log_list}} -->
 {{#each this}}
-<tr class="item" data-file-name="{{LogFileName}}">
+<tr class="item">
     <td>{{LogFileName}}</td>
-    <td>{{UTC LastWritten}}</td>
+    <td>{{timeStr LastWritten}}</td>
     <td>{{Size}}</td>
-    <td><a class="view">View</a></td>
-    {{#unless isSafari}}<td><a class="download">Download</a></td>{{/unless}}
+    <td><a class="view" data-file-name="{{LogFileName}}">View</a></td>
+    {{#unless isSafari}}<td><a class="download" data-file-name="{{LogFileName}}">Download</a></td>{{/unless}}
 </tr>
 {{/each}}
+
+<!-- {{log_content}} -->
+<section class="db-sys-log-content font-mono">
+    {{breaklines LogFileData}}
+    <br/>
+    ----------------------- END OF LOG ----------------------
+</section>
+<footer>
+    <div class="action">
+        <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
+        <button class="btn btn-silver cancel">Cancel</button>
+    </div>
+</footer>
+

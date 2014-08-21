@@ -413,11 +413,24 @@
 	padding : 0;
 }
 
-.syslog-dbinstance table a {
-	color: #4a90e2;
+.syslog-dbinstance {
+	table a {
+		color: #4a90e2;
+	}
+	table a:hover {
+		color: #3970af;
+		cursor: pointer;
+	}
+	&.modal-toolbar .slidebox.show {
+		max-height: none;
+	}
+	.db-sys-log-content {
+		color: #0E750C;
+		height: 777px;
+		overflow: auto;
+		margin: 0 -83px;
+	}
+
 }
 
-.syslog-dbinstance table a:hover {
-	color: #3970af;
-	cursor: pointer;
-}
+

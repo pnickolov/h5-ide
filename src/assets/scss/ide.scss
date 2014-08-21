@@ -23,6 +23,7 @@
 	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
 }
 
+
 /* CSS reset */
 article,
 footer,
@@ -785,7 +786,7 @@ td.table-action a.btn {
     	color: $base-b;
 
 	    &:hover {
-			color: $dark-b;	    	
+			color: $dark-b;
 	    }
     }
 }

@@ -29,7 +29,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     lang.ide[ "PROP_VOLUME_TYPE_#{text.toUpperCase()}" ]
 
   Handlebars.registerHelper 'UTC', ( text ) ->
-    new Handlebars.SafeString new Date( text ).toUTCString()
+    new Handlebars.SafeString new Date( +text ).toUTCString()
 
   Handlebars.registerHelper 'breaklines', (text) ->
     text = Handlebars.Utils.escapeExpression(text)
@@ -48,7 +48,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
 
   Handlebars.registerHelper 'timeStr', ( v1 ) ->
-      d = new Date( v1 )
+      d = new Date( +v1 )
 
       if not isNaN(parseFloat(v1)) and isFinite(v1) and v1 > 0
         return d.toLocaleDateString() + " "+ d.toTimeString()

@@ -89,23 +89,23 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             if $activeButton.length
                 # slide up
                 if $activeButton.get( 0 ) is $button.get( 0 )
-                    @trigger 'slideup', button
                     $button.removeClass 'active'
                     @toggleSlide false
                     @__slide = null
+                    @trigger 'slideup', button
                 #slide down
                 else
-                    @trigger 'slidedown', button, @getChecked()
                     $activeButton.removeClass 'active'
                     $button.addClass 'active'
                     @toggleSlide true
                     @__slide = button
+                    @trigger 'slidedown', button, @getChecked()
 
             else
-                @trigger 'slidedown', button, @getChecked()
                 $button.addClass 'active'
                 @toggleSlide true
                 @__slide = button
+                @trigger 'slidedown', button, @getChecked()
 
             null
 
@@ -272,12 +272,11 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             if @__slideReject()
                 return @
 
-            $slidebox = @$( '.slidebox' )
             $activeButton = @$( '.toolbar .active' )
 
             @trigger 'slideup', $activeButton.data 'btn'
             $activeButton.removeClass 'active'
-            $slidebox.removeClass 'show'
+            @toggleSlide false
             @
 
         unCheckSelectAll: ->
@@ -318,8 +317,11 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @__slide
 
         toggleSlide: ( display ) ->
-            @setSlide template.loading unless display
-            @$( '.slidebox' ).toggleClass 'show', display or false
+            $slidebox = @$( '.slidebox' )
+            @setSlide template.loading if display
+            $slidebox.toggleClass 'show', display or false
+
+            @
 
 
 

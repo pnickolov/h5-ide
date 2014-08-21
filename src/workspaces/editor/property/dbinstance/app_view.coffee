@@ -10,7 +10,8 @@ define [
     'constant'
     'toolbar_modal'
     'ApiRequest'
-], ( PropertyView, template, ogManageApp, constant, toolbar_modal, ApiRequest ) ->
+    'JsonExporter'
+], ( PropertyView, template, ogManageApp, constant, toolbar_modal, ApiRequest, JsonExporter ) ->
 
   CGWAppView = PropertyView.extend
 
@@ -19,7 +20,7 @@ define [
         'click .property-btn-get-system-log': 'openSysLogModal'
 
     initialize: ->
-        @isSafari = $("body").hasClass("safari") or true
+        @isSafari = $("body").hasClass("safari")
 
     render : () ->
 
@@ -47,25 +48,19 @@ define [
         new ogManageApp model: ogModel
 
     openSysLogModal: ->
-        new toolbar_modal @getModalOptions()
-        @modal.render()
+        @modal or new toolbar_modal @getModalOptions()
+
         @modal.delegate {
             'click a.view': 'viewLog'
             'click a.download': 'downloadLog'
+            'click .refresh-log': 'viewLog'
         }, @
 
+        @modal.render()
         @getLogList()
 
         false
 
-    viewLog: ( e ) ->
-        filename = $( e.currentTarget ).closest( 'tr' ).data 'fileName'
-        @getLogContent( filename ).then ( res ) ->
-            alert res
-
-
-    downloadLog: ( e ) ->
-        @getLogContent()
 
 
     getLogList: ->
@@ -74,11 +69,40 @@ define [
         ApiRequest( 'rds_DescribeDBLogFiles', {
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
-        } ).then ( result )->
+        } ).then ( result ) ->
             logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or {}
             that.renderLogList logList
 
         null
+
+    viewLog: ( e ) ->
+        modal = @modal
+        filename = $( e.currentTarget ).data 'fileName'
+
+        modal.toggleSlide true
+        @getLogContent( filename ).then( ( log ) ->
+            console.log log
+            log.filename = filename
+            modal.setSlide( template.log_content log )
+
+        ).fail () ->
+
+
+
+
+    downloadLog: ( e ) ->
+        modal = @modal
+        filename = $( e.currentTarget ).data 'fileName'
+
+        modal.toggleSlide true
+
+        @getLogContent( filename ).then( ( log ) ->
+            console.log log
+            download = JsonExporter.download
+            blob = new Blob [ log.LogFileData or '' ]
+            download( blob, filename )
+            modal.toggleSlide false
+        )
 
     getLogContent: ( filename ) ->
         ApiRequest( 'rds_DownloadDBLogFilePortion', {
@@ -86,7 +110,7 @@ define [
             log_filename: filename
         } ).then ( result )->
             console.log result
-            return result
+            return result?.DownloadDBLogFilePortionResponse?.DownloadDBLogFilePortionResult or {}
 
     getModalOptions: ->
         that = @
@@ -107,7 +131,7 @@ define [
                     sortable: true
                     rowType: 'datetime'
                     name: 'Last Written'
-                    width: "20%"
+                    width: "28%"
                 }
                 {
                     sortable: true

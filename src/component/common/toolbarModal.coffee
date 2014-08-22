@@ -251,7 +251,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             @tempDom = dom
             @__renderFrame()
             @$( '.t-m-content' ).html dom
-            @__triggerChecked null unless noToolbar
+            @__triggerChecked null
             @trigger "rendered", @
             @
 

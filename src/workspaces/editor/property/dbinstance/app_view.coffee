@@ -84,10 +84,10 @@ define [
                 logList = null
 
             that.renderLogList logList
-            ), ( () ->
+        ), ( () ->
             that.renderLogList null
             null
-            )
+        )
 
         null
 
@@ -101,10 +101,10 @@ define [
             log.filename = filename
             modal.setSlide( template.log_content log )
 
-            ), ( () ->
+        ), ( () ->
             log = LogFileData: '', filename: filename
             modal.setSlide( template.log_content log )
-           )
+        )
 
 
     downloadLog: ( e ) ->
@@ -125,9 +125,12 @@ define [
         ApiRequest( 'rds_DownloadDBLogFilePortion', {
             db_identifier: @resModel.get( 'appId' )
             log_filename: filename
-        } ).then ( result )->
+        } ).then ( ( result )->
             console.log result
             return result?.DownloadDBLogFilePortionResponse?.DownloadDBLogFilePortionResult or {}
+        ), ( () ->
+            return {}
+        )
 
     getModalOptions: ->
         that = @
@@ -138,6 +141,18 @@ define [
             classList: 'syslog-dbinstance'
             context: that
             noCheckbox: true
+            buttons: [
+                {
+                    icon: ''
+                    type: 'log'
+                    name: 'Log'
+                }
+                {
+                    icon: ''
+                    type: 'event'
+                    name: 'Event'
+                }
+            ]
 
             columns: [
                 {

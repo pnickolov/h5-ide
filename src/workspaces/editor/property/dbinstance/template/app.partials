@@ -125,18 +125,25 @@
 </tr>
 {{/each}}
 
+<!-- {{event_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{Date}}</td>
+    <td>{{SourceIdentifier}}</td>
+    <td>{{Message}}</td>
+</tr>
+{{/each}}
+
 <!-- {{log_content}} -->
 <section class="db-sys-log-content font-mono">
     {{breaklines LogFileData}}
     <br/>
     ----------------------- END OF LOG ----------------------
 </section>
-<footer>
-    <div class="action">
-        <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
-        <button class="btn btn-silver close cancel">Close</button>
-    </div>
-</footer>
+<div class="action">
+    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
+    <button class="btn btn-silver close cancel">Close</button>
+</div>
 
-<!-- {{log_list_empty}} -->
-<div class="text-center">No records found.</div>
+<!-- {{list_empty}} -->
+<div class="text-center no-data">No records found.</div>

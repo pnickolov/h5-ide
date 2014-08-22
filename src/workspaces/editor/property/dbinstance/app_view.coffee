@@ -17,7 +17,7 @@ define [
 
     events:
         'click .db-og-in-app': 'openOgModal'
-        'click .property-btn-get-system-log': 'openSysLogModal'
+        'click .property-btn-get-system-log': 'openModal'
 
     initialize: ->
         @isSafari = $("body").hasClass("safari")
@@ -37,37 +37,79 @@ define [
 
     renderLogList: ( logList ) ->
         that = @
+
         if logList
             logList = _.map logList, ( log ) ->
                 log.isSafari = that.isSafari
                 log
+            @modal.options.columns = @getLogColumns()
             @modal.setContent template.log_list logList
         else
-            @modal.render template.log_list_empty( {} )
+            @modal.setContent template.list_empty( {} ), true
 
         null
+
+    renderEventList: ( eventList ) ->
+        that = @
+
+        if eventList
+            @modal.options.columns = @getEventColumns()
+            @modal.setContent template.event_list eventList
+        else
+            @modal.setContent template.list_empty( {} ), true
+
+        null
+
 
     openOgModal: ->
         ogModel = @resModel.connectionTargets('OgUsage')[0]
         new ogManageApp model: ogModel
 
-    openSysLogModal: ->
-        @modal or new toolbar_modal @getModalOptions()
+    openModal: ->
+        new toolbar_modal @getModalOptions()
 
+        @modal.on 'slidedown', @switchLogEvent, @
         @modal.delegate {
             'click a.view': 'viewLog'
             'click a.download': 'downloadLog'
             'click .refresh-log': 'viewLog'
-            'click .close': 'closeSlide'
         }, @
 
         @modal.render()
-        @getLogList()
+        @switchLog()
 
         false
 
-    closeSlide: ->
-        @modal.cancel()
+    switchLog: -> @getLogList()
+
+    switchEvent: -> @getEventList()
+
+    switchLogEvent: ( button ) ->
+        @modal.toggleSlide( false ).renderListLoading()
+
+        if button is 'event'
+            @switchEvent()
+        else
+            @switchLog()
+
+    getEventList: ->
+        that = @
+
+        ApiRequest( 'rds_DescribeEvents', {
+            region_name: @resModel.design().region()
+            source_id: @resModel.get( 'appId' )
+            source_type: 'db-instance'
+            event_categories: null
+            duration: 20160
+        }).then ( ( result ) ->
+            eventList = result?.DescribeEventsResponse?.DescribeEventsResult?.Events?.Event or null
+            eventList = [ eventList ] if eventList and not _.isArray( eventList )
+            that.renderEventList eventList
+        ), ( () ->
+
+        )
+
+        null
 
     getLogList: ->
         that = @
@@ -76,13 +118,8 @@ define [
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
         }).then ( ( result ) ->
-            logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or {}
-
-            if _.size logList
-                if not _.isArray logList then logList = [ logList ]
-            else
-                logList = null
-
+            logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or null
+            logList = [ logList ] if logList and not _.isArray( logList )
             that.renderLogList logList
         ), ( () ->
             that.renderLogList null
@@ -97,7 +134,6 @@ define [
 
         modal.toggleSlide true
         @getLogContent( filename ).then ( ( log ) ->
-            console.log log
             log.filename = filename
             modal.setSlide( template.log_content log )
 
@@ -114,11 +150,10 @@ define [
         modal.toggleSlide true
 
         @getLogContent( filename ).then( ( log ) ->
-            console.log log
+            modal.toggleSlide false
             download = JsonExporter.download
             blob = new Blob [ log.LogFileData or '' ]
             download( blob, filename )
-            modal.toggleSlide false
         )
 
     getLogContent: ( filename ) ->
@@ -126,7 +161,6 @@ define [
             db_identifier: @resModel.get( 'appId' )
             log_filename: filename
         } ).then ( ( result )->
-            console.log result
             return result?.DownloadDBLogFilePortionResponse?.DownloadDBLogFilePortionResult or {}
         ), ( () ->
             return {}
@@ -137,56 +171,82 @@ define [
         appId = @resModel.get 'appId'
 
         options = {
-            title: "System Log: #{appId}"
+            title: "Log & Event: #{appId}"
             classList: 'syslog-dbinstance'
             context: that
             noCheckbox: true
+            longtermActive: true
+
             buttons: [
                 {
-                    icon: ''
+                    icon: 'unknown'
                     type: 'log'
                     name: 'Log'
+                    active: true
                 }
                 {
-                    icon: ''
+                    icon: 'unknown'
                     type: 'event'
                     name: 'Event'
                 }
             ]
 
-            columns: [
-                {
-                    sortable: true
-                    name: 'Name'
-                }
-                {
-                    sortable: true
-                    rowType: 'datetime'
-                    name: 'Last Written'
-                    width: "28%"
-                }
-                {
-                    sortable: true
-                    rowType: 'number'
-                    width: "20%"
-                    name: 'Size'
-                }
-                {
-                    sortable: false
-                    width: "10%"
-                    name: 'View'
-                }
-                {
-                    sortable: false
-                    width: "10%"
-                    name: 'Download'
-                }
-            ]
         }
+
+        options.columns = @getLogColumns()
 
         if @isSafari then options.columns.pop()
 
         options
+
+    getLogColumns: ->
+        [
+            {
+                sortable: true
+                name: 'Name'
+            }
+            {
+                sortable: true
+                rowType: 'datetime'
+                name: 'Last Written'
+                width: "28%"
+            }
+            {
+                sortable: true
+                rowType: 'number'
+                width: "10%"
+                name: 'Size(B)'
+            }
+            {
+                sortable: false
+                width: "10%"
+                name: 'View'
+            }
+            {
+                sortable: false
+                width: "10%"
+                name: 'Download'
+            }
+        ]
+
+    getEventColumns: ->
+        [
+            {
+                sortable: true
+                rowType: 'datetime'
+                name: 'Time'
+                width: "28%"
+            }
+            {
+                sortable: true
+                width: "20%"
+                name: 'Source'
+            }
+            {
+                sortable: false
+                name: 'System Notes'
+            }
+        ]
 
 
 

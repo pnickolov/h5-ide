@@ -89,6 +89,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             if $activeButton.length
                 # slide up
                 if $activeButton.get( 0 ) is $button.get( 0 )
+                    if @options.longtermActive then return
                     $button.removeClass 'active'
                     @toggleSlide false
                     @__slide = null
@@ -126,7 +127,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
         __refresh: ->
             if @__slideReject()
                 return @
-            @__renderLoading()
+            @renderLoading()
             @trigger 'refresh'
 
         __close: ( event ) ->
@@ -211,11 +212,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
           scroll = if scroll.size() > 0 then scroll else @__modalplus.find('.will-be-covered>div')
           if scroll.size() then scroll.height(that.__getHeightOfContent())
 
-        __renderLoading: () ->
-            @$( '.content-wrap' ).html template.loading
-            @
 
-        __renderFrame: ()->
+        __renderToolbarSlide: ()->
             that = @
             $contentWrap = @$ '.content-wrap'
             if not $contentWrap.find( '.toolbar' ).size()
@@ -228,7 +226,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                         true
 
                 data.height = that.__getHeightOfContent()
-                @$( '.content-wrap' ).html template.content data
+                @$( '.content-wrap' ).html template.toolbar_slide data
                 @
 
 
@@ -241,16 +239,31 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                 tpl = refresh
                 @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ]() or tpl
             else
-                @__renderLoading()
+                @renderLoading()
 
             if not refresh
                 @__open()
             @
 
-        setContent: ( dom ) ->
+        renderLoading: ->
+            @$( '.content-wrap' ).html template.loading
+            @
+
+        renderListLoading: ->
+            @$( '.list-content' ).html template.loading
+            @
+
+        setContent: ( dom, noTable ) ->
             @tempDom = dom
-            @__renderFrame()
-            @$( '.t-m-content' ).html dom
+            @__renderToolbarSlide()
+
+            if noTable
+                @$( '.list-content' ).html dom
+            else
+                @$( '.list-content' ).html template.table @options
+                @$( '.t-m-content' ).html dom
+
+
             @__triggerChecked null
             @trigger "rendered", @
             @
@@ -275,7 +288,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             $activeButton = @$( '.toolbar .active' )
 
             @trigger 'slideup', $activeButton.data 'btn'
-            $activeButton.removeClass 'active'
+            $activeButton.removeClass 'active' unless @options.longtermActive
             @toggleSlide false
             @
 

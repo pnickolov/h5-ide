@@ -434,13 +434,42 @@
 		cursor: pointer;
 	}
 	&.modal-toolbar .slidebox.show {
-		max-height: none;
+
 	}
-	.db-sys-log-content {
-		color: #0E750C;
-		height: 777px;
-		overflow: auto;
-		margin: 0 -83px;
+
+	&.modal-toolbar .slidebox {
+		&.show {
+			max-height: 100%;
+			overflow: scroll;
+		}
+		.content {
+			margin: 0;
+			width: 100%;
+			.db-sys-log-content {
+				color: #1BA718;
+				font-size: 12px;
+				margin: 20px 25px;
+				margin-bottom: 90px;
+				position: relative;
+				min-height: 400px;
+			}
+		}
+
+		.action {
+			text-align: right;
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			background: rgba(32, 32, 32, 0.9);
+		}
+	}
+
+	button[data-btn=event],
+	button[data-btn=log] {
+		width: 100px;
+	}
+	.no-data {
+		margin-top: 40px;
 	}
 
 }

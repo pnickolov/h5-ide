@@ -6156,7 +6156,7 @@ g.shadow {
   .res-state.running, .res-state.ok, .res-state.attached, .res-state.available {
     fill: #17c249;
     background: #17c249; }
-  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting .res-state.resetting-master-credentials {
+  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting, .res-state.resetting-master-credentials {
     fill: #ffa740;
     background: #ffa740; }
   .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full {
@@ -7069,12 +7069,29 @@ g.shadow {
   color: #3970af;
   cursor: pointer; }
 .syslog-dbinstance.modal-toolbar .slidebox.show {
-  max-height: none; }
-.syslog-dbinstance .db-sys-log-content {
-  color: #0E750C;
-  height: 777px;
-  overflow: auto;
-  margin: 0 -83px; }
+  max-height: 100%;
+  overflow: scroll; }
+.syslog-dbinstance.modal-toolbar .slidebox .content {
+  margin: 0;
+  width: 100%; }
+  .syslog-dbinstance.modal-toolbar .slidebox .content .db-sys-log-content {
+    color: #1BA718;
+    font-size: 12px;
+    margin: 20px 25px;
+    margin-bottom: 90px;
+    position: relative;
+    min-height: 400px; }
+.syslog-dbinstance.modal-toolbar .slidebox .action {
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(32, 32, 32, 0.9); }
+.syslog-dbinstance button[data-btn=event],
+.syslog-dbinstance button[data-btn=log] {
+  width: 100px; }
+.syslog-dbinstance .no-data {
+  margin-top: 40px; }
 
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */
@@ -8919,3 +8936,21 @@ g.shadow {
 .dbsgppp-cidr {
   font-size: 12px;
   color: #666; }
+
+.modal-db-replica-promote-confirm ul {
+  padding: 10px 20px;
+  color: #ddd;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px; }
+.modal-db-replica-promote-confirm li {
+  list-style-type: decimal;
+  list-style-position: inside; }
+.modal-db-replica-promote-confirm p {
+  padding: 0 20px;
+  color: #ff9c00; }
+.modal-db-replica-promote-confirm a {
+  color: #4a90e2;
+  font-size: 12px;
+  margin: 0 20px; }
+  .modal-db-replica-promote-confirm a:hover {
+    text-decoration: underline; }

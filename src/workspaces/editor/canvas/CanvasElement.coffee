@@ -287,7 +287,11 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
         svg.text("").move(5,15).classes("group-label")
       ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
 
-    label      : ()-> @model.get("name")
+    label      : ()->
+      if @model.type is "ExpandedAsg" and @model.get("originalAsg")
+        @model.get("originalAsg").get("groupName")
+      else
+        @model.get("name")
     labelWidth : ( width )-> (width || @size().width * CanvasView.GRID_WIDTH) - 8
 
     isGroup : ()-> !!@model.node_group

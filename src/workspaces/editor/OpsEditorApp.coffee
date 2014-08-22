@@ -96,12 +96,17 @@ define [
         @design.reload()
 
         if autoLayout
-          @view.canvas.autoLayout()
+          @view.canvas.autoLayoutPartial()
 
       catch e
         console.error e
 
-      @opsModel.saveApp( @design.serialize() )
+      if window.savediff
+        @opsModel.saveApp( @design.serialize() )
+      else
+        d = Q.defer()
+        d.resolve()
+        d.promise
 
     reloadAppData : ()->
       @view.showUpdateStatus("", true)

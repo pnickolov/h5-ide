@@ -227,12 +227,17 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     DefaultMethods[ m ]
 
   # Layout Logics
-  buildHierachy = ( item )->
+  buildHierachy = ( item, forceReset = true, parentX = 0, parentY = 0 )->
     obj =
       component : item
-      type : item.type
-      x : 0
-      y : 0
+      type      : item.type
+      x         : Math.max( item.x() - parentX, 0 )
+      y         : Math.max( item.y() - parentY, 0 )
+      width     : item.width()
+      height    : item.height()
+
+    if forceReset
+      obj.x = obj.y = obj.width = obj.height = 0
 
     if item.children
 
@@ -246,7 +251,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
       for ch in children
         if Defination[ ch.type ]?.ignore then continue
 
-        obj.children.push buildHierachy( ch )
+        obj.children.push buildHierachy( ch, forceReset, item.x(), item.y() )
 
     obj
 
@@ -313,6 +318,10 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     hierachy =
       type     : "SVG"
       children : ()-> svgChildren
+      x : ()-> 0
+      y : ()-> 0
+      width : ()-> 0
+      height : ()-> 0
 
     hierachy = buildHierachy( hierachy )
 
@@ -336,6 +345,124 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     ###
     line.update() for uid, line of @__itemLineMap
     return
+
+  groupChildrenPartial = ( item )->
+    if item.children
+      groupChildrenPartial( ch ) for ch in item.children
+
+    # Find out children that already has coordinate
+    existings = []
+    newitems  = []
+
+    if not item.children
+      return
+
+    for ch in item.children
+      if ch.x || ch.y
+        existings.push ch
+      else
+        newitems.push ch
+
+    groupMethod   = __GetMethod( Defination[ item.type ]?.groupMethod) || DefaultGroupMethod
+    item.children = groupMethod.call( item, newitems )
+    item.children.unshift {
+      type     : "ExsitingItem"
+      children : existings
+      width    : item.width - 2
+      height   : item.height - 2
+    }
+    item
+
+  arrangeGroupExisting = ( item )->
+    for ch in item.children
+      oldWidth  = ch.width || 0
+      oldHeight = ch.height || 0
+      arrangeGroupPartial( ch )
+      ch.width  = Math.max( ch.width,  oldWidth )
+      ch.height = Math.max( ch.height, oldHeight )
+      if ch.children
+        ch.deltaW = ch.width  - oldWidth
+        ch.deltaH = ch.height - oldHeight
+      else
+        ch.deltaH = ch.deltaW = 0
+
+    offset = 0
+    for ch in _.sortBy( item.children, "x" )
+      ch.x += offset
+      offset += ch.deltaW
+
+    item.width += offset
+
+    offset = 0
+    for ch in _.sortBy( item.children, "y" )
+      ch.y += offset
+      offset += ch.deltaH
+
+    item.height += offset
+
+    return
+
+  arrangeGroupPartial = ( item )->
+    def = Defination[ item.type ] || {}
+
+    if item.children
+      for ch in item.children
+        if ch.type is "ExsitingItem"
+          arrangeGroupExisting( ch )
+        else
+          arrangeGroupPartial( ch )
+
+      if item.children[0].type is "ExsitingItem"
+        size = DefaultMethods.ArrangeBinPack.call item, item.children
+        for ch, idx in item.children
+          if idx isnt 0
+            ch.x += 1
+            ch.y += 1
+        size.width  += 2
+        size.height += 2
+      else
+        arrangeMethod = __GetMethod( def.arrangeMethod ) || DefaultArrangeMethod
+        size = arrangeMethod.call item, item.children
+
+        if def.margin
+          size.width  += def.margin * 2
+          size.height += def.margin * 2
+
+          for ch in item.children
+            ch.x += def.margin
+            ch.y += def.margin
+
+      item.width  = size.width
+      item.height = size.height
+    else
+      item.width  = def.width || 0
+      item.height = def.height || 0
+
+    item
+
+  CanvasView.prototype.autoLayoutPartial = ()->
+    Defination = @autoLayoutConfig
+
+    ###
+    # 1. Build hierachy
+    ###
+    svgChildren = @__itemTopLevel.map ( item )-> item.model
+    hierachy =
+      type     : "SVG"
+      children : ()-> svgChildren
+      x : ()-> 0
+      y : ()-> 0
+      width : ()-> 0
+      height : ()-> 0
+
+    hierachy = buildHierachy( hierachy, false )
+
+    groupChildrenPartial( hierachy )
+    arrangeGroupPartial( hierachy )
+    @applyGeometry( hierachy, 0, 0 )
+    line.update() for uid, line of @__itemLineMap
+    return
+
 
   {
     DefaultGroupMethod   : DefaultGroupMethod

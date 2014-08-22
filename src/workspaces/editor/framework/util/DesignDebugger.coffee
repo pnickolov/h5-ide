@@ -87,6 +87,8 @@ define [ "Design", "event" ], ( Design, ide_event )->
 
   Design.debug.autoLayout = ()->
     App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+  Design.debug.autoLayoutP = ()->
+    App.workspaces.getAwakeSpace().view.canvas.autoLayoutPartial()
 
 
   window.d    = ()-> Design.instance()

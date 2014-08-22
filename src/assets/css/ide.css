@@ -7007,6 +7007,9 @@ g.shadow {
   color: #aaa; }
 .property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
+.property-dbinstance #property-dbinstance-promote-replica {
+  width: 200px;
+  margin-left: 30px; }
 
 .property-subnet-group .dl-vertical.sbg-list > dd {
   margin: 1px 0 1px 0; }
@@ -7030,6 +7033,14 @@ g.shadow {
   background: #424251;
   border-bottom: 1px solid #09090b; }
 
+.modal-db-replica-promote-confirm h5 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 16px; }
+.modal-db-replica-promote-confirm span {
+  font-weight: bold;
+  color: #fff; }
+
 /* General Style for Property Panel List */
 .property-list li {
   width: 260px;
@@ -7051,6 +7062,19 @@ g.shadow {
 .property-list.property-list-no-padding li {
   width: 280px;
   padding: 0; }
+
+.syslog-dbinstance table a {
+  color: #4a90e2; }
+.syslog-dbinstance table a:hover {
+  color: #3970af;
+  cursor: pointer; }
+.syslog-dbinstance.modal-toolbar .slidebox.show {
+  max-height: none; }
+.syslog-dbinstance .db-sys-log-content {
+  color: #0E750C;
+  height: 777px;
+  overflow: auto;
+  margin: 0 -83px; }
 
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */

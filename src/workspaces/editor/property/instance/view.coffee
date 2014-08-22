@@ -101,6 +101,7 @@ define [ '../base/view',
             null
 
         render : () ->
+
             @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
 

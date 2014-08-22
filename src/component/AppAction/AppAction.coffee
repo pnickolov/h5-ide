@@ -102,74 +102,81 @@ define [
       }
       canStop.tpl.find(".modal-footer").hide()
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+      awsError = null
 
-      Q.all(
-        resourceList.fetchForce()
-        app.fetchJsonData()
-      ).then ()->
-        comp = app.getJsonData().component
-        toFetch = {}
-        for uid, com of comp
-          if com.type is constant.RESTYPE.INSTANCE or com.type is constant.RESTYPE.LC
-            imageId = com.resource.ImageId
-            if imageId then toFetch[ imageId ] = true
-        toFetchArray  = _.keys toFetch
-        amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
-        amiRes.fetchAmis( _.keys toFetch ).then ->
-          hasInstanceStore = false
-          amiRes.each (e)->
-            if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-              return hasInstanceStore = true
+      resourceList.fetchForce()
+      .fail (error)->
+        console.log error
+        if error.awsError then awsError = error.awsError
+      .finally ()->
+        if awsError isnt 403
+          canStop.close()
+          notification 'error', "Error when loading AWS data, please try again later."
+          return false
+        app.fetchJsonData().then ()->
+          comp = app.getJsonData().component
+          toFetch = {}
+          for uid, com of comp
+            if com.type is constant.RESTYPE.INSTANCE or com.type is constant.RESTYPE.LC
+              imageId = com.resource.ImageId
+              if imageId then toFetch[ imageId ] = true
+          toFetchArray  = _.keys toFetch
+          amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
+          amiRes.fetchAmis( _.keys toFetch ).then ->
+            hasInstanceStore = false
+            amiRes.each (e)->
+              if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
+                return hasInstanceStore = true
 
-          hasEC2Instance = (_.filter comp, (e)->
-            e.type == constant.RESTYPE.INSTANCE)?.length
+            hasEC2Instance = (_.filter comp, (e)->
+              e.type == constant.RESTYPE.INSTANCE)?.length
 
-          hasDBInstance = _.filter comp, (e)->
-            e.type == constant.RESTYPE.DBINSTANCE
+            hasDBInstance = _.filter comp, (e)->
+              e.type == constant.RESTYPE.DBINSTANCE
 
-          dbInstanceName = _.map hasDBInstance, (e)->
-            return e.resource.DBInstanceIdentifier
-          hasNotReadyDB = resourceList.filter (e)->
-            (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+            dbInstanceName = _.map hasDBInstance, (e)->
+              return e.resource.DBInstanceIdentifier
+            hasNotReadyDB = resourceList.filter (e)->
+              (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
-          hasAsg = (_.filter comp, (e)->
-            e.type == constant.RESTYPE.ASG)?.length
+            hasAsg = (_.filter comp, (e)->
+              e.type == constant.RESTYPE.ASG)?.length
 
-          fee = Design.instance()?.getCost(true) || {}
-          console.log fee
-          totalFee = fee.totalFee
-          savingFee = fee.totalFee
+            fee = Design.instance()?.getCost(true) || {}
+            totalFee = fee.totalFee || 0
+            savingFee = fee.totalFee || 0
 
-          canStop.tpl.find(".modal-footer").show()
-          if hasNotReadyDB and hasNotReadyDB.length
-            canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
-            canStop.tpl.find('.modal-confirm').remove()
-          else
-            hasDBInstance = hasDBInstance?.length
-            canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee, hasInstanceStore}
-          canStop.resize()
+            canStop.tpl.find(".modal-footer").show()
+            if hasNotReadyDB and hasNotReadyDB.length
+              canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
+              canStop.tpl.find('.modal-confirm').remove()
+            else
+              hasDBInstance = hasDBInstance?.length
+              canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee, hasInstanceStore}
+            canStop.resize()
 
-          canStop.on "confirm", ()->
-            canStop.close()
-            app.stop().fail ( err )->
-              error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"
+            canStop.on "confirm", ()->
+              canStop.close()
+              app.stop().fail ( err )->
+                console.log err
+                error = if err.awsError then err.error + "." + err.awsError else err.error
+                notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"
+                return
+              return
+
+            $("#appNameConfirmIpt").on "keyup change", ()->
+              if $("#appNameConfirmIpt").val() is name
+                canStop.tpl.find('.modal-confirm').removeAttr "disabled"
+              else
+                canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
               return
             return
 
-          $("#appNameConfirmIpt").on "keyup change", ()->
-            if $("#appNameConfirmIpt").val() is name
-              canStop.tpl.find('.modal-confirm').removeAttr "disabled"
-            else
-              canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
-            return
-          return
-
     terminateApp : ( id )->
+      self = @
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
-      # renderLoading
       terminateConfirm = new modalPlus(
         title: if production then lang.ide.TOOL_POP_TIT_TERMINATE_PRD_APP else lang.ide.TOOL_POP_TIT_TERMINATE_APP
         template: AppTpl.loading()
@@ -181,42 +188,53 @@ define [
         disableClose: true
       )
       terminateConfirm.tpl.find('.modal-footer').hide()
-
       # get Resource list
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
-      resourceList.fetchForce().then ()->
-        # Render Varies
-        app.fetchJsonData().then ->
-          comp = app.getJsonData().component
-          hasDBInstance = _.filter comp, (e)->
-            e.type == constant.RESTYPE.DBINSTANCE
-          dbInstanceName = _.map hasDBInstance, (e)->
-            return e.resource.DBInstanceIdentifier
-          notReadyDB = resourceList.filter (e)->
-            (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+      resourceList.fetchForce().then (result)->
+        self.__terminateApp(id, resourceList, terminateConfirm)
+      .fail (error)->
+        if error.awsError is 403 then self.__terminateApp(id, resourceList, terminateConfirm)
+        else
+          terminateConfirm.close()
+          notification 'error', "Error while loading AWS data, please try again later."
+          return false
+    __terminateApp: (id, resourceList, terminateConfirm)->
+      app  = App.model.appList().get( id )
+      name = app.get("name")
+      production = app.get("usage") is 'production'
+      # renderLoading
 
-          # Render Terminate Confirm
-          terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
-          terminateConfirm.tpl.find('.modal-footer').show()
-          terminateConfirm.resize()
+      app.fetchJsonData().then ->
+        comp = app.getJsonData().component
+        hasDBInstance = _.filter comp, (e)->
+          e.type == constant.RESTYPE.DBINSTANCE
+        dbInstanceName = _.map hasDBInstance, (e)->
+          return e.resource.DBInstanceIdentifier
+        notReadyDB = resourceList.filter (e)->
+          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
-          if notReadyDB?.length
-            terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
-              terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
+        # Render Terminate Confirm
+        terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
+        terminateConfirm.tpl.find('.modal-footer').show()
+        terminateConfirm.resize()
 
-          $("#appNameConfirmIpt").on "keyup change", ()->
-            if $("#appNameConfirmIpt").val() is name
-              terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
-            else
-              terminateConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
-            return
+        if notReadyDB?.length
+          terminateConfirm.tpl.find("#take-rds-snapshot").attr("checked", false).change  ->
+            terminateConfirm.tpl.find(".modal-confirm").attr 'disabled', $(this).is(":checked")
 
-          terminateConfirm.on "confirm", ()->
-            terminateConfirm.close()
-            takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
-            app.terminate(null, takeSnapshot).fail ( err )->
-              error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
-            return
+        $("#appNameConfirmIpt").on "keyup change", ()->
+          if $("#appNameConfirmIpt").val() is name
+            terminateConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
+          else
+            terminateConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
           return
+
+        terminateConfirm.on "confirm", ()->
+          terminateConfirm.close()
+          takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
+          app.terminate(null, takeSnapshot).fail ( err )->
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+          return
+        return
   new AppAction()

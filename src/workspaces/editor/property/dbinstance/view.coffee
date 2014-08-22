@@ -294,6 +294,8 @@ define [ 'ApiRequest'
                 attr.isAppEdit = @isAppEdit
                 _.extend attr, @appModel.toJSON() if @appModel
                 _.extend attr, @getOriginAttr()
+            attr.snapshotId = if attr.instanceId then '' else attr.snapshotId
+
 
             attr.isCanPromote = @isCanPromote()
             attr.isPromoted = @isPromoted()
@@ -368,6 +370,7 @@ define [ 'ApiRequest'
                 isOracle: @resModel.isOracle()
                 isSqlserver: @resModel.isSqlserver()
                 isPostgresql: @resModel.isPostgresql()
+                isMysql: @resModel.isMysql()
             }
 
             if @resModel.master()

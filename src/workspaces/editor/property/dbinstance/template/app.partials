@@ -125,6 +125,15 @@
 </tr>
 {{/each}}
 
+<!-- {{event_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{Date}}</td>
+    <td>{{SourceIdentifier}}</td>
+    <td>{{Message}}</td>
+</tr>
+{{/each}}
+
 <!-- {{log_content}} -->
 <section class="db-sys-log-content font-mono">
     {{breaklines LogFileData}}
@@ -138,5 +147,5 @@
     </div>
 </footer>
 
-<!-- {{log_list_empty}} -->
-<div class="text-center">No records found.</div>
+<!-- {{list_empty}} -->
+<div class="text-center no-data">No records found.</div>

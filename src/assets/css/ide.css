@@ -7075,6 +7075,8 @@ g.shadow {
   height: 777px;
   overflow: auto;
   margin: 0 -83px; }
+.syslog-dbinstance .no-data {
+  margin-top: 40px; }
 
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */

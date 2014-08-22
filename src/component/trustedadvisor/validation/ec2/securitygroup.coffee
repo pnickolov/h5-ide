@@ -282,7 +282,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js'], ( constant, MC, lang ) ->
 
 				tipInfo = sprintf lang.ide.TA_MSG_ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT, resTypeName, tagName, compName, maxSGNumLimit
 				taObj =
-					level: constant.TA.ERROR
+					level: constant.TA.WARNING
 					info: tipInfo
 					uid: compUID
 

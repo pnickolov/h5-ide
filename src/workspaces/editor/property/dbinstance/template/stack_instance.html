@@ -119,10 +119,12 @@
         </div>
         {{else}}
         {{#unless isSqlserver}}
+        {{#unless snapshotId}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-database-name" >Database Name</label>
             <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required="true" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$"/>
         </section>
+        {{/unless}}
         {{/unless}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-database-port" >Database Port</label>
@@ -132,11 +134,13 @@
 
         <div class="property-control-group clearfix property-dbinstance-optiongroup"></div>
 
+        {{#unless snapshotId}}
         <section class="property-control-group">
             <label class="left">Parameter Group</label>
             <div id="property-dbinstance-parameter-group-select">
             </div>
         </section>
+        {{/unless}}
 
         {{#if isOracle}}
         <section class="property-control-group">

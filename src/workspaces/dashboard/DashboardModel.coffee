@@ -93,7 +93,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         _.map data, (e)->
           _.map e.vpcs, (f)->
             f.tagSet = (_.findWhere vpcs, {vpcId: f.id})?.tagSet
-            f.username = if f.tagSet then f.tagSet['Created by'] || f.tagSet.visualops?.match(/^.*created-by=(\w+)\s*/)[1] || undefined
+            f.username = if f.tagSet then (if f.tagSet.visualops then f.tagSet.visualops.match(/^.*created-by=(\w+)\s*/)[1] else f.tagSet['Created by'] ) else undefined
         console.log data
         self.set "visualizeData", data
 

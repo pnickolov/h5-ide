@@ -214,7 +214,7 @@ define [
             {
                 sortable: true
                 rowType: 'number'
-                width: "20%"
+                width: "10%"
                 name: 'Size(B)'
             }
             {

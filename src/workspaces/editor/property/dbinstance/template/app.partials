@@ -140,12 +140,10 @@
     <br/>
     ----------------------- END OF LOG ----------------------
 </section>
-<footer>
-    <div class="action">
-        <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
-        <button class="btn btn-silver close cancel">Close</button>
-    </div>
-</footer>
+<div class="action">
+    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
+    <button class="btn btn-silver close cancel">Close</button>
+</div>
 
 <!-- {{list_empty}} -->
 <div class="text-center no-data">No records found.</div>

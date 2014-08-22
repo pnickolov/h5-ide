@@ -81,9 +81,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @__isVisFail  = false
       @attributes.visualizeData = null
       self = @
-      console.log result
       data = self.parseVisData(result)
-      console.log data
       self.set "visualizeData", data
 
       return
@@ -128,7 +126,6 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
             try
               # Ingore app that is created by us.
               tags = {}
-              console.log resources.Tag
               if resources.Tag and resources.Tag.item
                 if resources.Tag.item.length
                   for t in resources.Tag.item

@@ -96,8 +96,10 @@ define [
         that = @
 
         ApiRequest( 'rds_DescribeEvents', {
+            region_name: @resModel.design().region()
             source_id: @resModel.get( 'appId' )
             source_type: 'db-instance'
+            event_categories: null
             duration: 20160
         }).then ( ( result ) ->
             console.log result

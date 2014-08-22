@@ -124,6 +124,13 @@
             <label class="left" for="property-dbinstance-database-name" >Database Name</label>
             <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required="true" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$"/>
         </section>
+        {{else}}
+        {{#unless isMysql}}
+        <section class="property-control-group" >
+            <label class="left" for="property-dbinstance-database-name" >Database Name</label>
+            <input class="input"  type="text" id="property-dbinstance-database-name" value="{{dbName}}" data-ignore="true" data-required="true" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$"/>
+        </section>
+        {{/unless}}
         {{/unless}}
         {{/unless}}
         <section class="property-control-group" >

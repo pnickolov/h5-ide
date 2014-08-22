@@ -314,6 +314,7 @@ define [ 'ApiRequest'
                 isOracle: @resModel.isOracle()
                 isSqlserver: @resModel.isSqlserver()
                 isPostgresql: @resModel.isPostgresql()
+                isMysql: @resModel.isMysql()
             }
 
             if @resModel.master()

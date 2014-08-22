@@ -8921,3 +8921,21 @@ g.shadow {
 .dbsgppp-cidr {
   font-size: 12px;
   color: #666; }
+
+.modal-db-replica-promote-confirm ul {
+  padding: 10px 20px;
+  color: #ddd;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px; }
+.modal-db-replica-promote-confirm li {
+  list-style-type: decimal;
+  list-style-position: inside; }
+.modal-db-replica-promote-confirm p {
+  padding: 0 20px;
+  color: #ff9c00; }
+.modal-db-replica-promote-confirm a {
+  color: #4a90e2;
+  font-size: 12px;
+  margin: 0 20px; }
+  .modal-db-replica-promote-confirm a:hover {
+    text-decoration: underline; }

@@ -192,10 +192,13 @@
 <!-- {{modalPromoteConfirm}} -->
 <section class="modal-db-replica-promote-confirm">
     <h5 class="modal-text-major">The following steps show the general process for promoting a read replica to a Single-AZ DB instance.</h5>
-    <p>1. Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica. Database updates occur on the read replica after they have occurred on the source DB instance, and this replication "lag" can vary significantly. Use the Replica Lag metric to determine when all updates have been made to the read replica.</p>
-    <p>2. To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica.</p>
-    <p>3. Perform all needed DDL operations, such as creating indexes, on the read replica. Actions taken on the read replica do not affect the performance of the source DB instance.</p>
-    <p>4. Promote the read replica by using the Promote Read Replica option on the Amazon RDS console, the CLI command rds-promote-read-replica, or the PromoteReadReplica API operation.</p>
+    <ul>
+        <li>Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica.</p>
+        <li>To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica.</p>
+        <li>Perform all needed DDL operations, such as creating indexes, on the read replica.</p>
+        <li>Promote the read replica.</p>
+    </ul>
     <h5 class="modal-text-major">Note</h5>
     <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>
+    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">Read AWS Document</a>
 </section>

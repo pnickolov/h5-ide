@@ -39,10 +39,10 @@
     </section>
     {{/unless}}
 {{else}}
-    <dl class="dl-vertical">
-        <dt>DB Engine Version</dt>
-        <dd>{{engine}}({{engineVersion}})</dd>
-    </dl>
+    <section class="property-control-group clearfix">
+        <label>DB Engine Version</label>
+        <div>{{engine}}({{engineVersion}})</div>
+    </section>
 {{/unless}}
 
 <section class="property-control-group">

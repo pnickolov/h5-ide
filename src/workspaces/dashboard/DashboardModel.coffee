@@ -80,7 +80,23 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @__isVisReady = true
       @__isVisFail  = false
       @attributes.visualizeData = null
-      @set "visualizeData", @parseVisData( result )
+      self = @
+      data = self.parseVisData(result)
+      console.log data
+      vpcsDefer = []
+      _.each data,(e)->
+        vpcsDefer.push ApiRequest "vpc_DescribeVpcs", {region_name: e.id}
+      Q.all(vpcsDefer).spread (result)->
+        console.log arguments
+        vpcs = _.flatten(_.map (_.toArray arguments), (e)-> e.DescribeVpcsResponse.vpcSet.item)
+        console.log vpcs
+        _.map data, (e)->
+          _.map e.vpcs, (f)->
+            f.tagSet = (_.findWhere vpcs, {vpcId: f.id})?.tagSet
+            f.username = if f.tagSet then f.tagSet['Created by'] || f.tagSet.visualops?.match(/^.*created-by=(\w+)\s*/)[1] || undefined
+        console.log data
+        self.set "visualizeData", data
+
       return
 
     isVisualizeReady   : ()-> !!@__isVisReady

@@ -102,7 +102,6 @@ define [
             event_categories: null
             duration: 20160
         }).then ( ( result ) ->
-            console.log result
             eventList = result?.DescribeEventsResponse?.DescribeEventsResult?.Events?.Event or null
             eventList = [ eventList ] if eventList and not _.isArray( eventList )
             that.renderEventList eventList
@@ -119,7 +118,6 @@ define [
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
         }).then ( ( result ) ->
-            console.log result
             logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or null
             logList = [ logList ] if logList and not _.isArray( logList )
             that.renderLogList logList
@@ -136,7 +134,6 @@ define [
 
         modal.toggleSlide true
         @getLogContent( filename ).then ( ( log ) ->
-            console.log log
             log.filename = filename
             modal.setSlide( template.log_content log )
 
@@ -153,11 +150,10 @@ define [
         modal.toggleSlide true
 
         @getLogContent( filename ).then( ( log ) ->
-            console.log log
+            modal.toggleSlide false
             download = JsonExporter.download
             blob = new Blob [ log.LogFileData or '' ]
             download( blob, filename )
-            modal.toggleSlide false
         )
 
     getLogContent: ( filename ) ->
@@ -165,7 +161,6 @@ define [
             db_identifier: @resModel.get( 'appId' )
             log_filename: filename
         } ).then ( ( result )->
-            console.log result
             return result?.DownloadDBLogFilePortionResponse?.DownloadDBLogFilePortionResult or {}
         ), ( () ->
             return {}

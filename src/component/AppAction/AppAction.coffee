@@ -69,7 +69,14 @@ define [
         dbInstance = _.filter comp, (e)->
           e.type is constant.RESTYPE.DBINSTANCE
         snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
-        snapshots.fetchForce().then ->
+        awsError = null
+        snapshots.fetchForce().fail (error)->
+          awsError = error.awsError
+        .finally ->
+          if awsError and awsError isnt 403
+            startAppModal.close()
+            notification 'error', "Error while loading AWS data, please try again later."
+            return false
           lostDBSnapshot = _.filter dbInstance, (e)->
             e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
           startAppModal.tpl.find('.modal-footer').show()
@@ -109,7 +116,7 @@ define [
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
-        if awsError isnt 403
+        if awsError and awsError isnt 403
           canStop.close()
           notification 'error', "Error when loading AWS data, please try again later."
           return false

@@ -81,18 +81,10 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @__isVisFail  = false
       @attributes.visualizeData = null
       self = @
+      console.log result
       data = self.parseVisData(result)
-      vpcsDefer = []
-      _.each data,(e)->
-        vpcsDefer.push ApiRequest "vpc_DescribeVpcs", {region_name: e.id}
-      Q.all(vpcsDefer).spread (result)->
-        console.log arguments
-        vpcs = _.flatten(_.map (_.toArray arguments), (e)-> e.DescribeVpcsResponse.vpcSet.item)
-        _.map data, (e)->
-          _.map e.vpcs, (f)->
-            f.tagSet = (_.findWhere vpcs, {vpcId: f.id})?.tagSet
-            f.username = if f.tagSet then (if f.tagSet.visualops then f.tagSet.visualops.match(/^.*created-by=(\w+)\s*/)[1] else f.tagSet['Created by'] ) else undefined
-        self.set "visualizeData", data
+      console.log data
+      self.set "visualizeData", data
 
       return
 
@@ -136,6 +128,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
             try
               # Ingore app that is created by us.
               tags = {}
+              console.log resources.Tag
               if resources.Tag and resources.Tag.item
                 if resources.Tag.item.length
                   for t in resources.Tag.item
@@ -152,6 +145,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
                 eni     : resourceMap resources["AWS|VPC|NetworkInterface"]
                 eip     : resourceMap resources["AWS|EC2|EIP"]
                 elb     : resourceMap resources["AWS|ELB"]
+                username: if resources['username'] then MC.base64Decode resources['username'] else undefined
 
               obj.disabled = obj.eni.length > 300
               vpcs.push obj

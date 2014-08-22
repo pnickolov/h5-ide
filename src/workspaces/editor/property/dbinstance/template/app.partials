@@ -1,6 +1,10 @@
 <!-- {{appView}} -->
 <article class="property-app app-dbinstance">
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group-head expand">
+        {{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}
+        <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
+    </div>
+
     <div class="option-group" style="display: block">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
@@ -103,6 +107,43 @@
 
     <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
-
-
 </article>
+
+
+<!-- {{log_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{LogFileName}}</td>
+    <td>{{timeStr LastWritten}}</td>
+    <td>{{Size}}</td>
+    <td>{{#if LogFileName}}<a class="view" data-file-name="{{LogFileName}}">View</a>{{/if}}</td>
+    {{#unless isSafari}}
+    <td>
+        {{#if LogFileName}}<a class="download" data-file-name="{{LogFileName}}">Download</a>{{/if}}
+    </td>
+    {{/unless}}
+</tr>
+{{/each}}
+
+<!-- {{event_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{Date}}</td>
+    <td>{{SourceIdentifier}}</td>
+    <td>{{Message}}</td>
+</tr>
+{{/each}}
+
+<!-- {{log_content}} -->
+<section class="db-sys-log-content font-mono">
+    {{breaklines LogFileData}}
+    <br/>
+    ----------------------- END OF LOG ----------------------
+</section>
+<div class="action">
+    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
+    <button class="btn btn-silver close cancel">Close</button>
+</div>
+
+<!-- {{list_empty}} -->
+<div class="text-center no-data">No records found.</div>

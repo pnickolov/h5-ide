@@ -21,7 +21,7 @@ define [
 
       if not @get 'description'
 
-        # set new name 
+        # set new name
         prefix = @engineType() + @get('engineVersion').replace(/\./g, '-')
         @set('name', prefix + @get('name'))
         @set('name', prefix + @getNewName(undefined, @newNameTmpl))

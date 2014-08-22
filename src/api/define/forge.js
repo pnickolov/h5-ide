@@ -32,6 +32,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'resource_change_detail'  : { url:'/resource/',	method:'change_detail',	params:['username', 'session_id', 'region_name', 'app_id']   },
 		'resource_vpc_resource'   : { url:'/resource/',	method:'vpc_resource',	params:['username', 'session_id', 'region_name', 'vpc_id']   },
 		'resource_check_change'   : { url:'/resource/',	method:'check_change',	params:['username', 'session_id', 'region_name', 'app_id']   },
+		'resource_generate_json'  : { url:'/resource/',	method:'generate_json',	params:['username', 'session_id', 'app_id']   },
 		'stack_create'            : { url:'/stack/',	method:'create',	params:['username', 'session_id', 'region_name', 'spec']   },
 		'stack_remove'            : { url:'/stack/',	method:'remove',	params:['username', 'session_id', 'region_name', 'stack_id', 'stack_name']   },
 		'stack_save'              : { url:'/stack/',	method:'save',	params:['username', 'session_id', 'region_name', 'spec']   },

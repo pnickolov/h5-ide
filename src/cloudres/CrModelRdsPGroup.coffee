@@ -73,7 +73,7 @@ define [ "./CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, C
       self = @
       parameters = self.getParameters()
       Q.all( requests ).then ()->
-        for name, value of paramNewValueMap
-          parameters.get(name).set("ParameterValue", value)
+        for n, v of paramNewValueMap
+          parameters.get(n).set("ParameterValue", v)
         return
   }

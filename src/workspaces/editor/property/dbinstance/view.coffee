@@ -13,8 +13,9 @@ define [ 'ApiRequest'
          'constant'
          'CloudResources'
          'rds_pg'
+         'UI.modalplus'
          'jqtimepicker'
-], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup, Modal ) ->
 
     noop = ()-> null
 
@@ -57,7 +58,30 @@ define [ 'ApiRequest'
             'OPTION_CHANGE': 'checkChange'
             'change *': 'checkChange'
 
+            'click #property-dbinstance-promote-replica': 'promoteReplica'
+
+        promoteReplica: () ->
+
+            that = @
+
+            if @isPromoted()
+                @unsetPromote()
+                App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+            else
+
+                modal = new Modal({
+                    title        : "Confirm to promote Read Replica"
+                    template     : template_component.modalPromoteConfirm({})
+                    confirm      : {text : "Confirm"}
+                    disableClose : true
+                    onConfirm : ()->
+                        that.setPromote()
+                        App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                        modal.close()
+                })
+
         checkChange: ( e ) ->
+
             return unless @resModel.get 'appId'
             that = @
 
@@ -79,8 +103,6 @@ define [ 'ApiRequest'
                         that.$( '.apply-immediately-section' ).hide()
             else
                 diff()
-
-
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -270,12 +292,44 @@ define [ 'ApiRequest'
             # for app edit
             if @isAppEdit
                 attr.isAppEdit = @isAppEdit
-                _.extend attr, @appModel.toJSON()
+                _.extend attr, @appModel.toJSON() if @appModel
                 _.extend attr, @getOriginAttr()
             attr.snapshotId = if attr.instanceId then '' else attr.snapshotId
 
 
+            attr.isCanPromote = @isCanPromote()
+            attr.isPromoted = @isPromoted()
+            attr.isPromote = @isCanPromote() or @isPromoted()
+
             attr
+
+        isPromoted: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and not @resModel.master())
+            return false
+
+        isCanPromote: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and @resModel.master())
+            return false
+
+        setPromote: () ->
+
+            @resModel.unsetMaster()
+            @resModel.autobackup 1
+
+        unsetPromote: () ->
+
+            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
+            if srcDBId
+                srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
+                @resModel.setMaster(srcDBModel) if srcDBModel
 
         getOriginAttr: () ->
 
@@ -724,25 +778,27 @@ define [ 'ApiRequest'
 
             checkedDom = $('#property-dbinstance-iops-check')[0]
 
-            if isDisable
+            if checkedDom
 
-                $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
-                $('.property-dbinstance-iops-value-section').hide()
-                $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops 0
-                checkedDom.checked = false
+                if isDisable
 
-            else
-
-                $('#property-dbinstance-iops-check').removeAttr('disabled')
-                checked = checkedDom.checked
-                if checked
-                    $('.property-dbinstance-iops-value-section').show()
-                    checkedDom.checked = true
-                else
+                    $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
                     $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops 0
                     checkedDom.checked = false
-                # @resModel.setIops ''
+
+                else
+
+                    $('#property-dbinstance-iops-check').removeAttr('disabled')
+                    checked = checkedDom.checked
+                    if checked
+                        $('.property-dbinstance-iops-value-section').show()
+                        checkedDom.checked = true
+                    else
+                        $('.property-dbinstance-iops-value-section').hide()
+                        checkedDom.checked = false
+                    # @resModel.setIops ''
 
         _getIOPSRange: (storage) ->
 
@@ -971,10 +1027,12 @@ define [ 'ApiRequest'
 
         getInstanceStatus: () ->
 
+            that = this
+
             _setStatus = (showError) ->
 
                 $('.property-dbinstance-status-icon-warning').remove()
-                that.setTitle(that.appModel.get('name'))
+                that.setTitle(that.appModel.get('name')) if that.appModel
                 if showError is true
                     $('.db-status-loading').remove()
                     $('.property-dbinstance-not-available-info').show()
@@ -986,31 +1044,47 @@ define [ 'ApiRequest'
                     tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
                 that.prependTitle tip
 
-            that = this
-            dbId = @appModel.get('DBInstanceIdentifier')
             _setStatus()
 
             region = Design.instance().region()
-            ApiRequest('rds_ins_DescribeDBInstances', {
-                id: dbId,
-                region_name: region
-            }).then (data) ->
 
-                data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
-                dbData = if not _.isArray(data) then data else data[0]
+            dbId = that.resModel.get('appId')
 
-                if dbData
+            currentResModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(dbId)
 
-                    dbStatus = dbData.DBInstanceStatus
-                    if dbStatus isnt 'available'
-                        _setStatus(true)
-                        return
+            if currentResModel
 
-                _setStatus(false)
+                ApiRequest("rds_ins_DescribeDBInstances",{
+                    region_name: region
+                    id: dbId
+                }).then (data) ->
 
-            , () ->
+                    data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
+                    dbData = if not _.isArray(data) then data else data[0]
 
-                _setStatus(false)
+                    if dbData
+
+                        oldSrcId = currentResModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                        newSrcId = dbData.ReadReplicaSourceDBInstanceIdentifier
+                        
+                        if oldSrcId isnt newSrcId
+
+                            currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)
+                            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
+                        else
+
+                            dbStatus = dbData.DBInstanceStatus
+                            if dbStatus isnt 'available'
+                                _setStatus(true)
+                                return
+                            else
+                                that.$el.find('.property-dbinstance-promote-replica').show()
+
+                    _setStatus(false)
+
+                , () ->
+                    _setStatus(false)
 
     }
 

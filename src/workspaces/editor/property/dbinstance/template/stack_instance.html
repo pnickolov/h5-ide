@@ -5,6 +5,16 @@
     </div>
 
     {{#if isAppEdit}}
+    {{#if isCanPromote}}
+    <section class="property-control-group property-dbinstance-promote-replica hide">
+        <button class="btn btn-primary" id="property-dbinstance-promote-replica" style="width: 200px;">Promote Read Replica</button>
+    </section>
+    {{/if}}
+    {{#if isPromoted}}
+    <section class="property-control-group property-dbinstance-promote-replica hide">
+        <button class="btn" id="property-dbinstance-promote-replica" style="width: 200px;">Cancel Promote</button>
+    </section>
+    {{else}}
     <section class="property-control-group apply-immediately-section {{#unless isChanged}}hide{{/unless}}">
         <div class="checkbox">
             <input id="property-dbinstance-apply-immediately" type="checkbox" {{#if applyImmediately}}checked="true"{{/if}} value="None" name="property-dbinstance-apply-immediately">
@@ -14,24 +24,28 @@
         <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.DBInstance.html#Overview.DBInstance.Modifying" data-tooltip="Click to read AWS documentation on modifying DB instance using Apply Immediately." target="_blank"></a>
     </section>
     {{/if}}
+    {{/if}}
 
+    {{#unless isPromoted}}
     <div class="option-group-head expand">DB Instance Details</div>
     <div class="option-group">
 
         {{#if snapshotId}}
-        <dl class="dl-vertical">
-            <dt>DB Snapshot ID</dt>
-            <dd>{{snapshotId}}</dd>
-            <dt>DB Snapshot Size</dt>
-            <dd>{{snapshotSize}}GiB</dd>
-        </dl>
+        <section class="property-control-group clearfix">
+            <label>DB Snapshot ID</label>
+            <div>{{snapshotId}}</div>
+        </section>
+        <section class="property-control-group clearfix">
+            <label>DB Snapshot Size</label>
+            <div>{{snapshotSize}}GiB</div>
+        </section>
         {{/if}}
 
         {{#if isAppEdit}}
-        <dl class="dl-vertical">
-            <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
-            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
-        </dl>
+        <section class="property-control-group clearfix">
+            <label>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
+            <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</div>
+        </section>
         {{else}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
@@ -87,10 +101,10 @@
         {{/if}}
 
         {{#if isAppEdit}}
-        <div class="property-control-group clearfix">
+        <section class="property-control-group clearfix">
             <label>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</label>
             <div>{{MasterUsername}}</div>
-        </div>
+        </section>
         {{else}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
@@ -111,12 +125,12 @@
     <div class="option-group">
 
         {{#if isAppEdit}}
-        <div class="property-control-group clearfix">
+        <section class="property-control-group clearfix">
             {{#if dbName}}<label>{{ i18n "PROP_DBINSTANCE_NAME" }}</label>
             <div>{{dbName}}</div>{{/if}}
             <label>{{ i18n "PROP_DBINSTANCE_PORT" }}</label>
             <div>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</div>
-        </div>
+        </section>
         {{else}}
         {{#unless isSqlserver}}
         {{#unless snapshotId}}
@@ -192,8 +206,9 @@
 
     {{/unless}}
 
+    {{/unless}}
 
-    <div class="option-group-head">Backup Options</div>
+    <div class="option-group-head {{#if isPromoted}}expand{{/if}}">Backup Options</div>
     <div class="option-group">
 
         <section class="property-control-group tooltip" {{#if hasSlave}}data-tooltip="DB instance serving as replication source must enable automatic backups"{{/if}}>
@@ -259,9 +274,9 @@
 
 
         </div>
-
     </div>
 
+    {{#unless isPromoted}}
     <div class="option-group-head">Maintenance Options</div>
     <div class="option-group">
 
@@ -341,5 +356,7 @@
     <div class="option-group sg-group"></div>
     {{/if}}
     
+
+    {{/unless}}
 
 </article>

@@ -39,10 +39,10 @@
     </section>
     {{/unless}}
 {{else}}
-    <dl class="dl-vertical">
-        <dt>DB Engine Version</dt>
-        <dd>{{engine}}({{engineVersion}})</dd>
-    </dl>
+    <section class="property-control-group clearfix">
+        <label>DB Engine Version</label>
+        <div>{{engine}}({{engineVersion}})</div>
+    </section>
 {{/unless}}
 
 <section class="property-control-group">
@@ -188,3 +188,17 @@
     {{/if}}
 
 {{/if}}
+
+<!-- {{modalPromoteConfirm}} -->
+<section class="modal-db-replica-promote-confirm">
+    <h5 class="modal-text-major">The following steps show the general process for promoting a read replica to a Single-AZ DB instance.</h5>
+    <ul>
+        <li>Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica.</p>
+        <li>To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica.</p>
+        <li>Perform all needed DDL operations, such as creating indexes, on the read replica.</p>
+        <li>Promote the read replica.</p>
+    </ul>
+    <h5 class="modal-text-major">Note</h5>
+    <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>
+    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">Read AWS Document</a>
+</section>

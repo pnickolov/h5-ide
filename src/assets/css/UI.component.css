@@ -97,7 +97,8 @@
   .modal-toolbar .slidebox .content {
     width: 640px;
     margin: 20px auto 0 auto;
-    display: table; }
+    display: table;
+    position: relative; }
     .modal-toolbar .slidebox .content label {
       width: 168px;
       display: inline-block;

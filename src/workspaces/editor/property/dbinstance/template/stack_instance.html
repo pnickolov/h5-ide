@@ -28,10 +28,10 @@
         {{/if}}
 
         {{#if isAppEdit}}
-        <div class="property-control-group clearfix">
-            <label>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
-            <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</div>
-        </div>
+        <dl class="dl-vertical">
+            <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
+            <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</dd>
+        </dl>
         {{else}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
@@ -327,7 +327,19 @@
 
     </div>
 
+    
+    {{#if snapshotId}}
+
+    {{#if isAppEdit}}
     <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
+    {{else}}
+    {{/if}}
+    
+    {{else}}
+    <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
+    {{/if}}
+    
 
 </article>

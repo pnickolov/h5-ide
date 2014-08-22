@@ -272,6 +272,8 @@ define [ 'ApiRequest'
                 attr.isAppEdit = @isAppEdit
                 _.extend attr, @appModel.toJSON()
                 _.extend attr, @getOriginAttr()
+            attr.snapshotId = if attr.instanceId then '' else attr.snapshotId
+
 
             attr
 

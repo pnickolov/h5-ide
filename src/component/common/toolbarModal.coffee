@@ -89,7 +89,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             if $activeButton.length
                 # slide up
                 if $activeButton.get( 0 ) is $button.get( 0 )
-                    if @options.disableClickSlideup then return
+                    if @options.longtermActive then return
                     $button.removeClass 'active'
                     @toggleSlide false
                     @__slide = null
@@ -288,7 +288,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             $activeButton = @$( '.toolbar .active' )
 
             @trigger 'slideup', $activeButton.data 'btn'
-            $activeButton.removeClass 'active'
+            $activeButton.removeClass 'active' unless @options.longtermActive
             @toggleSlide false
             @
 

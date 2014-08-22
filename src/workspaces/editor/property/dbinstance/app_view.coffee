@@ -119,6 +119,7 @@ define [
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
         }).then ( ( result ) ->
+            console.log result
             logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or null
             logList = [ logList ] if logList and not _.isArray( logList )
             that.renderLogList logList
@@ -179,7 +180,7 @@ define [
             classList: 'syslog-dbinstance'
             context: that
             noCheckbox: true
-            disableClickSlideup: true
+            longtermActive: true
 
             buttons: [
                 {
@@ -219,7 +220,7 @@ define [
                 sortable: true
                 rowType: 'number'
                 width: "20%"
-                name: 'Size'
+                name: 'Size(B)'
             }
             {
                 sortable: false

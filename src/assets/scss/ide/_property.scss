@@ -443,6 +443,10 @@
 		overflow: auto;
 		margin: 0 -83px;
 	}
+	button[data-btn=event],
+	button[data-btn=log] {
+		width: 100px;
+	}
 	.no-data {
 		margin-top: 40px;
 	}

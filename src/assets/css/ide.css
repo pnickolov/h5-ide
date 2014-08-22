@@ -7076,6 +7076,9 @@ g.shadow {
   font-size: 12px;
   overflow: auto;
   margin: 0 -83px; }
+.syslog-dbinstance button[data-btn=event],
+.syslog-dbinstance button[data-btn=log] {
+  width: 100px; }
 .syslog-dbinstance .no-data {
   margin-top: 40px; }
 

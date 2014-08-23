@@ -57,6 +57,10 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
 
       if app_json
         @generatedJson = app_json
+        #fill repo and tag of module when they are empty
+        if not (app_json.agent.module.repo and app_json.agent.module.tag)
+          @generatedJson.agent.module.repo = App.user.get("repo")
+          @generatedJson.agent.module.tag  = App.user.get("tag")
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
       else
         ### env:dev ###

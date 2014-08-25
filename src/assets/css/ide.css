@@ -6675,6 +6675,9 @@ g.shadow {
     bottom: 0;
     width: 100%; }
 
+.property-panel-wrapper.immediately .scroll-wrap {
+  top: 69px; }
+
 .accordion-body.nano {
   padding: 0; }
   .accordion-body.nano .nano-content {
@@ -7027,7 +7030,11 @@ g.shadow {
     display: inline-block;
     position: absolute; }
   .apply-immediately-section label {
-    color: #fff; }
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0); }
+  .apply-immediately-section a.icon-info {
+    color: #4a90e2;
+    vertical-align: middle; }
 
 .option-group-category {
   display: block;

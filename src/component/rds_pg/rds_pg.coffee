@@ -348,12 +348,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         deleteErrorCount++
       if deleteCount is 0
         if deleteErrorCount > 0
-          notification 'error', deleteErrorCount+" RDS Parameter Group failed to delete, Please try again later."
+          @manager.error (result.awsResult || deleteErrorCount + " DB Parameter Group(s) failed to delete, please try again later.")
+          @switchAction()
+          deleteErrorCount = 0
         else
           notification 'info', "Delete Successfully"
-        @manager.unCheckSelectAll()
-        deleteErrorCount = 0
-        @manager.cancel()
+          @manager.unCheckSelectAll()
+          deleteErrorCount = 0
+          @manager.cancel()
 
     switchAction: ( state ) ->
       if not state

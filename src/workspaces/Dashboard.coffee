@@ -24,6 +24,7 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
 
       @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateRegionList", arguments
       @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateRegionList", arguments
+      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateOpsList"
 
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 

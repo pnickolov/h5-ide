@@ -6674,7 +6674,9 @@ g.shadow {
     top: 33px;
     bottom: 0;
     width: 100%; }
-
+  .property-panel-wrapper.immediately .scroll-wrap{
+      top: 69px;
+  }
 .accordion-body.nano {
   padding: 0; }
   .accordion-body.nano .nano-content {

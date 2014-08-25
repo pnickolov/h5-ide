@@ -134,6 +134,17 @@
   </div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
+<div class="stack-validation">
+  <details open style="display:none;">
+    <summary>Stack Validation</summary>
+    <div id="stack-run-validation-container"></div>
+  </details>
+  <div class="nutshell">:<label></label></div>
+  <div class="validating">
+    <div class="loading-spinner loading-spinner-small"></div>
+    <p>Validating your stack...</p>
+  </div>
+</div>
 <div style="padding-top:20px;text-align:right;">
   <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
   <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>

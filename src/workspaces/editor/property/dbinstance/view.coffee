@@ -95,14 +95,7 @@ define [ 'ApiRequest'
 
                 differ.getChangeInfo().hasResChange
 
-            if e
-                _.defer () ->
-                    if diff()
-                        that.$( '.apply-immediately-section' ).show()
-                    else
-                        that.$( '.apply-immediately-section' ).hide()
-            else
-                diff()
+            diff()
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 

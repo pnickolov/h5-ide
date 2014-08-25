@@ -53,7 +53,7 @@ define [ 'ApiRequest'
 
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
-            'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+            #'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
 
             'OPTION_CHANGE': 'checkChange'
             'change *': 'checkChange'
@@ -98,9 +98,11 @@ define [ 'ApiRequest'
             if e
                 _.defer () ->
                     if diff()
-                        that.$( '.apply-immediately-section' ).show()
+                        $( '.apply-immediately-section' ).show()
+                        $('.property-panel-wrapper').addClass('immediately')
                     else
-                        that.$( '.apply-immediately-section' ).hide()
+                        $( '.apply-immediately-section' ).hide()
+                        $('.property-panel-wrapper').removeClass('immediately')
             else
                 diff()
 
@@ -417,7 +419,8 @@ define [ 'ApiRequest'
 
             # render
             @$el.html template attr
-
+            changeApplyImmediately = @changeApplyImmediately.bind @
+            @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
             @setTitle(attr.name)
 
             @renderLVIA()

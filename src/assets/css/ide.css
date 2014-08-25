@@ -2426,14 +2426,13 @@ details[open] + .nutshell {
   position: relative; }
 
 #app-apply-update .stack-validation {
-  border-top: none;
-  padding: 15px 0; }
+  border-top: none; }
 
 #app-apply-update .modal-text-major {
   margin: 0; }
 
 #app-apply-update .nutshell {
-  left: 85px; }
+  left: 109px; }
 
 .runtime-error {
   color: #ec3c38;
@@ -6675,9 +6674,7 @@ g.shadow {
     top: 33px;
     bottom: 0;
     width: 100%; }
-  .property-panel-wrapper.immediately .scroll-wrap{
-      top: 69px;
-  }
+
 .accordion-body.nano {
   padding: 0; }
   .accordion-body.nano .nano-content {
@@ -7030,13 +7027,7 @@ g.shadow {
     display: inline-block;
     position: absolute; }
   .apply-immediately-section label {
-    color: #fff;
-    border: 1px solid rgba(0,0,0,0);
-  }
-  .apply-immediately-section a.icon-info{
-      color: #4A90E2;
-      vertical-align: middle;
-  }
+    color: #fff; }
 
 .option-group-category {
   display: block;

@@ -258,7 +258,33 @@ define [
         disableFooter : true
       }
 
-      name   = design.get("name")
+      name = design.get("name")
+
+      # load TA
+      TAPromise = TA.loadModule('stack')
+      ApiPromise = ApiRequest("stack_export_cloudformation", {
+        region : design.get("region")
+        stack  : design.serialize()
+      })
+
+      Q.spread [ TAPromise, ApiPromise ], ( taError, apiReturn  ) ->
+        modal?.resize()
+        btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
+        JsonExporter.genericExport btn, apiReturn, "#{name}.json"
+        btn.click ()-> modal.close()
+        return
+
+      , ( taError, apiReturn ) ->
+        modal?.resize()
+        modal.tpl.find("a.btn-blue").text("Fail to export...")
+        if apiReturn
+          notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
+        return
+
+      ###
+      .then () ->
+          modal?.resize()
+          modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
 
       ApiRequest("stack_export_cloudformation", {
         region : design.get("region")
@@ -272,6 +298,7 @@ define [
         modal.tpl.find("a.btn-blue").text("Fail to export...")
         notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
         return
+      ###
 
     reloadState: (event)->
         $target = $ event.currentTarget

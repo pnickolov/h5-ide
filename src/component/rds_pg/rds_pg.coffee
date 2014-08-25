@@ -451,7 +451,6 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
       title: "Manage DB Parameter Group in #{regionName}"
       slideable: true
-      disableScroll: true
       context: that
       buttons: [
         {

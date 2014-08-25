@@ -55,13 +55,13 @@
             </tr>
         </thead>
     </table>
-    {{#if disableScroll}}
+    {{#unless useCustomScroll}}
     <div style="overflow-y:auto;overflow-x:hidden;height: {{height}}px;">
         {{else}}
         <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content" style="display:block;">
-                {{/if}}
+                {{/unless}}
 
                 <table class="table">
                     <thead>
@@ -75,12 +75,12 @@
                     <tbody class='t-m-content'>
                     </tbody>
                 </table>
-                {{#if disableScroll}}
+                {{#unless useCustomScroll}}
             </div>
             {{else}}
         </div>
     </div>
-    {{/if}}
+    {{/unless}}
 </div>
 
 <!-- {{loading}} -->

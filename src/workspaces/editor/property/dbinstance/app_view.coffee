@@ -176,7 +176,6 @@ define [
             context: that
             noCheckbox: true
             longtermActive: true
-            disableScroll: true
 
             buttons: [
                 {

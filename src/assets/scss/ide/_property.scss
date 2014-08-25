@@ -375,8 +375,14 @@
 		position : absolute;
 	}
 	label {
-		color: #fff;
-	}
+    color: #fff;
+    border: 1px solid rgba(0,0,0,0);
+    }
+    a.icon-info{
+        color: $base-b;
+        vertical-align: middle;
+    }
+
 }
 
 .option-group-category {

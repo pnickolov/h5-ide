@@ -652,6 +652,10 @@ $dndDuration : .2s;
   }
 }
 
+.property-panel-wrapper.immediately .scroll-wrap{
+  top: 69px;
+}
+
 .accordion-body.nano {
   padding : 0;
   .nano-content {

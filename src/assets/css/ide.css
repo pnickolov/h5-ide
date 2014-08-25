@@ -7027,7 +7027,13 @@ g.shadow {
     display: inline-block;
     position: absolute; }
   .apply-immediately-section label {
-    color: #fff; }
+    color: #fff;
+    border: 1px solid rgba(0,0,0,0);
+  }
+  .apply-immediately-section a.icon-info{
+      color: #4A90E2;
+      vertical-align: middle;
+  }
 
 .option-group-category {
   display: block;

@@ -419,8 +419,10 @@ define [ 'ApiRequest'
 
             # render
             @$el.html template attr
+            checkChange = @checkChange.bind @
             changeApplyImmediately = @changeApplyImmediately.bind @
             @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
+            $('.property-panel-wrapper').toggleClass('immediately', checkChange())
             @setTitle(attr.name)
 
             @renderLVIA()

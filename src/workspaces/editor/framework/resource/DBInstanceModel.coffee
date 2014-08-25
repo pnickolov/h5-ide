@@ -39,6 +39,7 @@ define [
       ogName: ''
       pgName: ''
       applyImmediately: false
+      restoreSourceInstanceId: ''
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -571,6 +572,7 @@ define [
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
+          SourceDBInstanceIdentifier            : @get 'restoreSourceInstanceId'
 
       { component : component, layout : @generateLayout() }
 
@@ -620,6 +622,7 @@ define [
         accessible                : resource.PubliclyAccessible
         pgName                    : resource.DBParameterGroups?.DBParameterGroupName
         applyImmediately          : resource.ApplyImmediately
+        restoreSourceInstanceId   : resource.SourceDBInstanceIdentifier
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

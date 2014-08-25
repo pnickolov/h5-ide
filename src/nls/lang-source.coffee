@@ -1559,6 +1559,10 @@ module.exports =
       en: "Get System Log"
       zh: ""
 
+    PROP_DB_INSTANCE_TIP_GET_LOG:
+      en: "Get Logs & Events"
+      zh: ""
+
     PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
       en: "If the quantity is more than 1, host name will be the string you provide plus number index."
       zh: ""

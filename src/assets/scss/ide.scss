@@ -2650,7 +2650,7 @@ a.action-link:hover {
 	padding: 0 0 15px;
 }
 
-#modal-run-stack > div.stack-validation {
+div.stack-validation {
 	padding   : 15px;
 	margin    : 0 -15px;
 	border-top: 1px solid #1d1d1d;
@@ -2681,6 +2681,10 @@ summary:focus {
 	position: absolute;
 	top: 15px;
 	left: 138px;
+}
+
+details[open] + .nutshell {
+	display: none;
 }
 
 .stack-validation .nutshell label {
@@ -2784,8 +2788,7 @@ summary:focus {
 	border-top : none;
 }
 
-#modal-run-stack .validation-content .scroll-wrap-validation,
-#app-apply-update .validation-content .scroll-wrap-validation {
+.stack-validation .validation-content .scroll-wrap-validation {
 	max-height    : 150px;
 }
 
@@ -2824,8 +2827,7 @@ summary:focus {
 	left: 20px;
 }
 
-#modal-run-stack .item-error-tip,
-#app-apply-update .item-error-tip {
+.stack-validation .item-error-tip {
 	display: none;
 }
 

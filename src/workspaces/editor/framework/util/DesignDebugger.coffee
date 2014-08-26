@@ -1,5 +1,39 @@
 
-define [ "Design", "event" ], ( Design, ide_event )->
+define [ "Design", "../../canvas/CanvasManager" ], ( Design, CanvasManager )->
+
+  Design.on Design.EVENT.Deserialized, ()->
+    _.defer ()->
+      toolbar = $("#OpsEditor .OEPanelTop")
+      if not toolbar.children(".autolayout").length
+        toolbar.append('<button class="btn-toolbar autolayout icon-expand"></button>')
+
+      button = toolbar.children(".autolayout")
+      button.click ()->
+        button.toggleClass("selected")
+        canvas = App.workspaces.getAwakeSpace().view.canvas
+        if button.hasClass("selected")
+          $("#OpsEditor svg").off("click.autolayout", ".canvasel")
+          $("#OpsEditor svg").on "click.autolayout", ".canvasel", ( evt )->
+            el = evt.currentTarget
+            if CanvasManager.hasClass( el, "discard" )
+              CanvasManager.removeClass( el, "discard" )
+            else
+              CanvasManager.addClass( el, "discard" )
+        else
+          for el in $("#OpsEditor svg").find(".discard")
+            item = canvas.getItem( el.getAttribute("data-id") )
+            if item
+              model  = item.model
+              attr   = model.attributes
+              attr.x = attr.y = attr.width = attr.height = 0
+              if model.children
+                for ch in model.children()
+                  attr = ch.attributes
+                  attr.x = attr.y = attr.width = attr.height = 0
+
+          App.workspaces.getAwakeSpace().view.canvas.autoLayoutPartial()
+
+        return
 
   Design.debug = ()->
     componentMap = Design.instance().__componentMap
@@ -87,9 +121,6 @@ define [ "Design", "event" ], ( Design, ide_event )->
 
   Design.debug.autoLayout = ()->
     App.workspaces.getAwakeSpace().view.canvas.autoLayout()
-  Design.debug.autoLayoutP = ()->
-    App.workspaces.getAwakeSpace().view.canvas.autoLayoutPartial()
-
 
   window.d    = ()-> Design.instance()
   window.dd   = Design.debug

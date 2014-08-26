@@ -5669,6 +5669,10 @@ button#property-app-keypair {
 .group, .node-background {
   fill: transparent; }
 
+.discard .group, .discard .node-background {
+  fill: yellow !important;
+  fill-opacity: 0.3 !important; }
+
 .group-resizer {
   fill: transparent; }
   .group-resizer:hover {
@@ -7005,7 +7009,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7123,7 +7128,7 @@ g.shadow {
   box-sizing: content-box; }
   .btn-toolbar.seperator {
     border-right: 1px solid #222; }
-  .btn-toolbar:hover, .icon-hide-sg.selected {
+  .btn-toolbar:hover, .icon-hide-sg.selected, .autolayout.icon-expand.selected {
     color: #9F62D1;
     background: rgba(0, 0, 0, 0.3); }
   .btn-toolbar[disabled] {
@@ -7137,7 +7142,7 @@ g.shadow {
     padding: 0;
     height: 40px; }
 
-.btn-toolbar:hover .selection, .icon-hide-sg.selected .selection, .btn-toolbar.open .selection {
+.btn-toolbar:hover .selection, .icon-hide-sg.selected .selection, .autolayout.icon-expand.selected .selection, .btn-toolbar.open .selection {
   color: #9F62D1 !important; }
 
 .btn-toolbar.selectbox .selection {
@@ -7173,7 +7178,7 @@ g.shadow {
 
 .btn-toolbar.icon-cancel-update-app {
   color: #ec3c38; }
-  .btn-toolbar.icon-cancel-update-app:hover, .icon-cancel-update-app.icon-hide-sg.selected {
+  .btn-toolbar.icon-cancel-update-app:hover, .icon-cancel-update-app.icon-hide-sg.selected, .icon-cancel-update-app.autolayout.icon-expand.selected {
     color: #fff;
     background-color: #ec3c38;
     border-bottom: 1px solid #ec3c38; }

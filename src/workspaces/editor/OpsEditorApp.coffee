@@ -101,12 +101,7 @@ define [
       catch e
         console.error e
 
-      if window.savediff
-        @opsModel.saveApp( @design.serialize() )
-      else
-        d = Q.defer()
-        d.resolve()
-        d.promise
+      @opsModel.saveApp( @design.serialize() )
 
     reloadAppData : ()->
       @view.showUpdateStatus("", true)

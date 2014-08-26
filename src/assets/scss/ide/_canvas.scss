@@ -97,6 +97,13 @@
   fill:transparent;
 }
 
+.discard {
+  .group, .node-background {
+    fill:yellow !important;
+    fill-opacity:0.3 !important;
+  }
+}
+
 .group-resizer {
   fill:transparent;
   &:hover {

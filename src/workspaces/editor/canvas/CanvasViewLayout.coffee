@@ -365,12 +365,21 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
 
     groupMethod   = __GetMethod( Defination[ item.type ]?.groupMethod) || DefaultGroupMethod
     item.children = groupMethod.call( item, newitems )
-    item.children.unshift {
-      type     : "ExsitingItem"
-      children : existings
-      width    : item.width - 2
-      height   : item.height - 2
-    }
+
+
+    if existings.length
+      x2 = 0
+      y2 = 0
+      for ch in existings
+        x2 = Math.max( x2, ch.x + ch.width )
+        y2 = Math.max( y2, ch.y + ch.height )
+
+      item.children.unshift {
+        type     : "ExsitingItem"
+        children : existings
+        width    : x2
+        height   : y2
+      }
     item
 
   arrangeGroupExisting = ( item )->
@@ -405,7 +414,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
   arrangeGroupPartial = ( item )->
     def = Defination[ item.type ] || {}
 
-    if item.children
+    if item.children and item.children.length
       for ch in item.children
         if ch.type is "ExsitingItem"
           arrangeGroupExisting( ch )
@@ -416,10 +425,10 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         size = DefaultMethods.ArrangeBinPack.call item, item.children
         for ch, idx in item.children
           if idx isnt 0
-            ch.x += 1
-            ch.y += 1
-        size.width  += 2
-        size.height += 2
+            ch.x += 2
+            ch.y += 2
+        size.width  += 4
+        size.height += 4
       else
         arrangeMethod = __GetMethod( def.arrangeMethod ) || DefaultArrangeMethod
         size = arrangeMethod.call item, item.children

@@ -11,8 +11,8 @@ define [ "Design", "../../canvas/CanvasManager" ], ( Design, CanvasManager )->
       button.click ()->
         button.toggleClass("selected")
         canvas = App.workspaces.getAwakeSpace().view.canvas
+        $("#OpsEditor svg").off("click.autolayout", ".canvasel")
         if button.hasClass("selected")
-          $("#OpsEditor svg").off("click.autolayout", ".canvasel")
           $("#OpsEditor svg").on "click.autolayout", ".canvasel", ( evt )->
             el = evt.currentTarget
             if CanvasManager.hasClass( el, "discard" )
@@ -27,9 +27,13 @@ define [ "Design", "../../canvas/CanvasManager" ], ( Design, CanvasManager )->
               attr   = model.attributes
               attr.x = attr.y = attr.width = attr.height = 0
               if model.children
-                for ch in model.children()
-                  attr = ch.attributes
-                  attr.x = attr.y = attr.width = attr.height = 0
+                reset = ( children )->
+                  for ch in children
+                    if ch.children
+                      reset( ch.children() )
+                    attr = ch.attributes
+                    attr.x = attr.y = attr.width = attr.height = 0
+                reset( model.children() )
 
           App.workspaces.getAwakeSpace().view.canvas.autoLayoutPartial()
 

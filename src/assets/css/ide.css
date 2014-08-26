@@ -5617,6 +5617,8 @@ button#property-app-keypair {
       right: 7px; }
   .canvas-view[data-mode="app"] .dbreplicate {
     display: none; }
+  .canvas-view[data-mode="app"] .dbrestore {
+    display: none; }
 
 .svg_resizer {
   position: absolute;

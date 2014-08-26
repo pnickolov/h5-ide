@@ -197,7 +197,7 @@ define [
 
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
-      # Update Image
+      # Update replica Image
       if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
         # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
@@ -210,6 +210,10 @@ define [
           CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
+
+      # Update restore Image
+      $r = @$el.children(".dbrestore")
+      CanvasManager.toggle $r, m.autobackup() isnt 0 and !!m.get("appId")
 
       @updateState()
 

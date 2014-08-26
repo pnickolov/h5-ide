@@ -45,6 +45,7 @@ define [
 
     events :
       "mousedown .dbreplicate" : "replicate"
+      "mousedown .dbrestore"   : "restore"
 
     listenModelEvents : ()->
       @listenTo @model, "change:backupRetentionPeriod", @render
@@ -69,6 +70,11 @@ define [
     replicate : ( evt )->
       if not @canvas.design.modeIsApp() and @model.slaves().length < 5
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
+      false
+
+    restore : ( evt )->
+      if not @canvas.design.modeIsApp()
+        @canvas.dragItem( evt, { onDrop : @onDropRestore } )
       false
 
     onDropReplicate : ( evt, dataTransfer )->
@@ -101,6 +107,30 @@ define [
         dataTransfer.item.canvas.selectItem( replica.id )
 
       return
+
+    onDropRestore : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+
+      # If the model supports clone() interface, then clone the target.
+      name = dataTransfer.item.model.get("name")
+
+      DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
+      newDbIns = new DbInstance({
+        x        : dataTransfer.x
+        y        : dataTransfer.y
+        name     : "from-" + name
+        parent   : targetSubnetGroup
+      }, {
+        master : dataTransfer.item.model
+        isRestore: true
+      })
+
+      if newDbIns.id
+        dataTransfer.item.canvas.selectItem( newDbIns.id )
+
+      return
+
 
     # Creates a svg element
     create : ()->
@@ -147,6 +177,8 @@ define [
       # Create State Icon
       if not m.design().modeIsStack() and m.get("appId")
         svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
+
+      svgEl.add( svg.use("restore_dragger").attr({"class" : "dbrestore tooltip"}) )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()

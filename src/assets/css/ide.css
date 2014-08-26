@@ -5828,6 +5828,25 @@ button#property-app-keypair {
       stroke: #ccc;
       fill: #eee; }
 
+.dbrestore {
+  fill: #6daefe;
+  cursor: pointer; }
+  .dbrestore .restore-bg {
+    stroke: #b2bccc;
+    fill: #fff;
+    -webkit-transform: translate(0.5px, 0.5px);
+    -moz-transform: translate(0.5px, 0.5px);
+    transform: translate(0.5px, 0.5px); }
+  .dbrestore:hover {
+    fill: #3887e8; }
+    .dbrestore:hover .restore-bg {
+      stroke: #6daefe; }
+  .dbrestore.disabled, .dbrestore.disabled:hover {
+    fill: #ccc; }
+    .dbrestore.disabled .restore-bg, .dbrestore.disabled:hover .restore-bg {
+      stroke: #ccc;
+      fill: #eee; }
+
 .replica-text, .master-text {
   font-size: xx-small;
   fill: #9ea7b5;

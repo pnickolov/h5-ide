@@ -127,12 +127,9 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       ami = @getOtherTarget( constant.RESTYPE.ELB )
       elb = @getTarget( constant.RESTYPE.ELB )
 
-      subnet = ami
-      while true
-        subnet = subnet.parent()
-        if not subnet then return
-        if subnet.type is constant.RESTYPE.SUBNET
-          break
+      lcUsage = ami.connectionTargets("LcUsage")
+      if lcUsage.length>0
+        subnet = lcUsage[0].parent()
 
       connectedSbs = elb.connectionTargets("ElbSubnetAsso")
 

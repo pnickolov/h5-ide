@@ -301,6 +301,32 @@
   }
 }
 
+.dbrestore {
+  fill   : #6daefe;
+  cursor : pointer;
+  .restore-bg {
+    stroke : #b2bccc;
+    fill   : #fff;
+    -webkit-transform : translate(0.5px,0.5px);
+       -moz-transform : translate(0.5px,0.5px);
+            transform : translate(0.5px,0.5px);
+  }
+
+  &:hover {
+    .restore-bg { stroke:#6daefe; }
+    fill:#3887e8;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    fill: #ccc;
+    .restore-bg {
+      stroke : #ccc;
+      fill   : #eee;
+     }
+  }
+}
+
 .replica-text, .master-text {
   font-size:xx-small;
   fill: #9ea7b5;

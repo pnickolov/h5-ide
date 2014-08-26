@@ -129,6 +129,14 @@ define [
 
     # -------- Master and Slave -------- #
 
+    # -------- Restore to Point In Time -------- #
+    restoreMaster: ( master ) ->
+      @clone master
+      @set "snapshotId", master.get("snapshotId")
+      null
+
+    # -------- Restore to Point In Time -------- #
+
     constructor : ( attr, option )->
       if option and not option.master and option.createByUser
 
@@ -159,8 +167,11 @@ define [
         return
 
       if option.master
-        @copyMaster option.master
-        @setMaster option.master
+        if not option.isRestore
+          @copyMaster option.master
+          @setMaster option.master
+        else
+          @restoreMaster option.master
       else if option.createByUser
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"

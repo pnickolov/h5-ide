@@ -79,8 +79,11 @@ define ['CloudResources'], (CloudResources)->
 
       if targetModel.design().modeIsApp()
         if targetModel.getEmbedEni then targetModel = targetModel.getEmbedEni()
-        ip = (targetModel.get("ips") || [])[0]
-        tootipStr = ip?.eipData?.publicIp || ""
+        if targetModel
+          ip = (targetModel.get("ips") || [])[0]
+          tootipStr = ip?.eipData?.publicIp || ""
+        else
+          console.warn "updateEip(): can not found EmbedEni"
 
       node.setAttribute "data-tooltip", tootipStr
 

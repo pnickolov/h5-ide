@@ -127,12 +127,13 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       ami = @getOtherTarget( constant.RESTYPE.ELB )
       elb = @getTarget( constant.RESTYPE.ELB )
 
-      subnet = ami
-      while true
-        subnet = subnet.parent()
-        if not subnet then return
-        if subnet.type is constant.RESTYPE.SUBNET
-          break
+      if ami.type is constant.RESTYPE.LC
+        lcUsage = ami.connectionTargets("LcUsage")
+        if lcUsage.length>0
+          asg    = lcUsage[0]
+          subnet = asg.parent()
+      else
+        subnet = ami.parent()
 
       connectedSbs = elb.connectionTargets("ElbSubnetAsso")
 
@@ -147,8 +148,8 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg
-      if ami.type is constant.RESTYPE.LC
-        for asg in ami.parent().get("expandedList")
+      if ami.type is constant.RESTYPE.LC and asg
+        for asg in asg.get("expandedList")
           new ElbAmiAsso( asg, elb )
       null
 

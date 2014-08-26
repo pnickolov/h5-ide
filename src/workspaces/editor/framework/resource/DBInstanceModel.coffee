@@ -39,7 +39,6 @@ define [
       ogName: ''
       pgName: ''
       applyImmediately: false
-      restoreSourceInstanceId: ''
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -79,6 +78,14 @@ define [
     unsetMaster : () ->
 
       @connections("DbReplication")[0]?.remove()
+
+    setSourceDBForRestore : ( sourceDb ) ->
+
+      @sourceDBForRestore = sourceDb
+
+    getSourceDBForRestore: ->
+      
+      @sourceDBForRestore
 
     syncMasterAttr: ( master ) ->
       if @get 'appId'
@@ -167,11 +174,17 @@ define [
         return
 
       if option.master
+
         if not option.isRestore
           @copyMaster option.master
           @setMaster option.master
         else
           @restoreMaster option.master
+
+        # @copyMaster option.master
+        # # @setMaster option.master
+        # @setSourceDBForRestore option.master
+
       else if option.createByUser
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"
@@ -583,7 +596,7 @@ define [
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
-          SourceDBInstanceIdentifier            : @get 'restoreSourceInstanceId'
+          SourceDBInstanceIdentifier            : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
 
       { component : component, layout : @generateLayout() }
 
@@ -633,7 +646,6 @@ define [
         accessible                : resource.PubliclyAccessible
         pgName                    : resource.DBParameterGroups?.DBParameterGroupName
         applyImmediately          : resource.ApplyImmediately
-        restoreSourceInstanceId   : resource.SourceDBInstanceIdentifier
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

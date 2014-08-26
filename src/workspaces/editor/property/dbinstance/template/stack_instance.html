@@ -27,7 +27,10 @@
     {{/if}}
 
     {{#unless isPromoted}}
-    <div class="option-group-head expand">DB Instance Details</div>
+    <div class="option-group-head expand">
+        DB Instance Details
+        {{#if isAppEdit}}<a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="Restore DB Instance Config" ></a>{{/if}}
+    </div>
     <div class="option-group">
 
         {{#if snapshotId}}

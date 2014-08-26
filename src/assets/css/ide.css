@@ -6992,6 +6992,8 @@ g.shadow {
   width: 220px;
   margin-bottom: 7px;
   margin-top: 10px; }
+.property-dbinstance .property-dbinstance-radio-group {
+  margin-bottom: 5px; }
 .property-dbinstance .property-input-row {
   float: left;
   width: 120px;
@@ -7026,7 +7028,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

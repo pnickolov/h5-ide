@@ -202,3 +202,8 @@
     <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>
     <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">Read AWS Document</a>
 </section>
+
+<!-- {{modalRestoreConfirm}} -->
+<section class="modal-db-replica-promote-confirm">
+    <h5 class="modal-text-major">You are creating a new DB Instance from a source DB Instance at a specified time. This new DB Instance will have the default DB Security Group and DB Parameter Groups.</h5>
+</section>

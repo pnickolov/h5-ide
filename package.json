@@ -21,6 +21,7 @@
     "gulp-strip-debug": "^0.3.0",
     "globule": "^0.2.0",
     "should": "^3.2.0-beta1",
-    "gulp-mocha": "^0.4.1"
+    "gulp-mocha": "^0.4.1",
+    "deep-extend": "^0.2.11"
   }
 }

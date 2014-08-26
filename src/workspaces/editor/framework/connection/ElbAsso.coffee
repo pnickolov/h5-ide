@@ -127,12 +127,13 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       ami = @getOtherTarget( constant.RESTYPE.ELB )
       elb = @getTarget( constant.RESTYPE.ELB )
 
-      subnet = ami
-      while true
-        subnet = subnet.parent()
-        if not subnet then return
-        if subnet.type is constant.RESTYPE.SUBNET
-          break
+      if ami.type is constant.RESTYPE.LC
+        lcUsage = ami.connectionTargets("LcUsage")
+        if lcUsage.length>0
+          asg    = lcUsage[0]
+          subnet = asg.parent()
+      else
+        subnet = ami.parent()
 
       connectedSbs = elb.connectionTargets("ElbSubnetAsso")
 
@@ -147,8 +148,8 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
 
       # If there's a ElbAsso created for Lc and Elb
       # We also try to connect the Elb to any expanded Asg
-      if ami.type is constant.RESTYPE.LC
-        for asg in ami.parent().get("expandedList")
+      if ami.type is constant.RESTYPE.LC and asg
+        for asg in asg.get("expandedList")
           new ElbAmiAsso( asg, elb )
       null
 
@@ -159,22 +160,27 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
         ConnectionModel.prototype.remove.apply this, arguments
         return
 
-      # The ElbAsso is removed by the user.
-      expAsg = @getTarget "ExpandedAsg"
-      if expAsg and not expAsg.isRemoved()
-        # If the user is removing an ElbAsso from Elb to ExpandedAsg.
-        # Then we just delete the ElbAsso from Elb to Lc
-        elb = @getTarget( constant.RESTYPE.ELB )
-        lc  = expAsg.getLc()
-        (new ElbAmiAsso( elb, lc )).remove()
-        return
+      if @getOtherTarget(constant.RESTYPE.ELB).type is constant.RESTYPE.LC
+        lcUsage = @getTarget(constant.RESTYPE.LC).connectionTargets("LcUsage")
+        if lcUsage
+          expAsg = lcUsage[0].get("expandedList")
+          if expAsg and expAsg.length>0
+            # The ElbAsso is removed by the user.
+            expAsg = expAsg[0]
+            if expAsg and not expAsg.isRemoved()
+              # If the user is removing an ElbAsso from Elb to ExpandedAsg.
+              # Then we just delete the ElbAsso from Elb to Lc
+              elb = @getTarget( constant.RESTYPE.ELB )
+              lc  = expAsg.getLc()
+              (new ElbAmiAsso( elb, lc )).remove( reason = { reason : this } )
+              return
 
-      lc = @getTarget constant.RESTYPE.LC
-      if lc
-        # The user is removing an ElbAsso from Elb to Lc
-        # Remove all the shadow ElbAsso from Elb to ExpandedAsg
-        elb    = @getTarget( constant.RESTYPE.ELB )
-        reason = { reason : this }
+        lc = @getTarget constant.RESTYPE.LC
+        if lc
+          # The user is removing an ElbAsso from Elb to Lc
+          # Remove all the shadow ElbAsso from Elb to ExpandedAsg
+          elb    = @getTarget( constant.RESTYPE.ELB )
+          reason = { reason : this }
 
       ConnectionModel.prototype.remove.apply this, arguments
       null

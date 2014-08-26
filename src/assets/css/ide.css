@@ -888,7 +888,8 @@ td.table-action a.btn {
 /* End of General Style for Property Panel List */
 /* Secondary Panel */
 .add-rule,
-.property-btn-get-system-log {
+.property-btn-get-system-log
+.property-btn-db-restore-config {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -7064,6 +7065,33 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .modal-db-replica-promote-confirm span {
   font-weight: bold;
   color: #fff; }
+
+.modal-db-instance-restore-config .datepicker {
+  float: left;
+  margin-right: 5px;
+  text-align: center;
+  padding: 6px;
+  width: 80px; }
+.modal-db-instance-restore-config .timepicker {
+  float: left;
+  width: 20px;
+  text-align: center;
+  padding: 6px;
+  margin-right: 5px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-option {
+  margin-top: 20px;
+  display: inline-block; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option * {
+    float: left;
+    margin-right: 10px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .title {
+    width: 170px;
+    line-height: 20px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-latest, .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-custom {
+    margin-top: 4px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
+    margin-top: -5px;
+    margin-bottom: 20px; }
 
 /* General Style for Property Panel List */
 .property-list li {

@@ -113,6 +113,7 @@ require.config {
     'jqpagination'       : 'ui/jqpagination'
     "jquerysort"         : 'ui/jquery.sort'
     'jqtimepicker'       : 'ui/jquery.timepicker'
+    'jqdatetimepicker'   : 'ui/jquery.datetimepicker'
     'UI.modalplus'       : 'ui/UI.modalplus'
 
     #############################################

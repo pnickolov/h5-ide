@@ -39,6 +39,7 @@ define [
       ogName: ''
       pgName: ''
       applyImmediately: false
+      dbRestoreTime: ''
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -556,7 +557,16 @@ define [
       null
 
     serialize : () ->
+      
       master = @master()
+
+      useLatestRestorableTime = ''
+      if @getSourceDBForRestore()
+        useLatestRestorableTime = if @get('dbRestoreTime') then false else true
+
+      restoreTime = ''
+      restoreTime = @get('dbRestoreTime') if @get('dbRestoreTime')
+
       component =
         name : @get("name")
         type : @type
@@ -597,6 +607,8 @@ define [
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
           SourceDBInstanceIdentifier            : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
+          UseLatestRestorableTime               : useLatestRestorableTime
+          RestoreTime                           : restoreTime
 
       { component : component, layout : @generateLayout() }
 

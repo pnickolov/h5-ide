@@ -15,6 +15,7 @@ define [ 'ApiRequest'
          'rds_pg'
          'UI.modalplus'
          'jqtimepicker'
+         'jqdatetimepicker'
 ], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup, Modal ) ->
 
     noop = ()-> null
@@ -59,6 +60,7 @@ define [ 'ApiRequest'
             'change *': 'checkChange'
 
             'click #property-dbinstance-promote-replica': 'promoteReplica'
+            'click .property-btn-db-restore-config': 'openRestoreConfigModal'
 
         promoteReplica: () ->
 
@@ -79,6 +81,81 @@ define [ 'ApiRequest'
                         App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
                         modal.close()
                 })
+
+        openRestoreConfigModal: () ->
+
+            that = @
+
+            lastestRestoreTime = new Date(+@appModel.get('LatestRestorableTime'))
+
+            dbRestoreTime = @resModel.get('dbRestoreTime')
+
+            if dbRestoreTime
+                currentTime = new Date(dbRestoreTime)
+            else
+                currentTime = lastestRestoreTime
+
+            lastestYear = currentTime.getFullYear()
+            lastestMonth = currentTime.getMonth() + 1
+            lastestDay = currentTime.getDate()
+
+            modal = new Modal({
+                title        : "Restore DB Instance Config"
+                template     : template_component.modalRestoreConfirm({
+                    lastest: if dbRestoreTime then "" else lastestRestoreTime.toString()
+                    hour: currentTime.getHours()
+                    minute: currentTime.getHours()
+                    second: currentTime.getSeconds()
+                })
+                confirm      : {text : "Confirm"}
+                disableClose : true
+                width        : "550"
+                onConfirm : ()->
+                    isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
+                    if isCustomTime
+                        dateStr = $('.modal-db-instance-restore-config .datepicker').val()
+                        selectedDate = new Date(dateStr)
+                        hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
+                        minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
+                        second = $('.modal-db-instance-restore-config .timepicker.second').val()
+                        selectedDate.setHours(Number(hour))
+                        selectedDate.setMinutes(Number(minute))
+                        selectedDate.setSeconds(Number(second))
+                        that.resModel.set('dbRestoreTime', selectedDate.toISOString())
+                    else
+                        that.resModel.set('dbRestoreTime', '')
+                    modal.close()
+            })
+            # bind datetime picker event
+            $('.modal-db-instance-restore-config .datepicker').datetimepicker({
+                timepicker: false,
+                defaultDate: "#{lastestYear}/#{lastestMonth}/#{lastestDay}",
+                # maxDate: lastestRestoreTime,
+                closeOnDateSelect: true,
+                format: 'm/d/Y',
+                value : "#{lastestDay}/#{lastestMonth}/#{lastestYear}"
+            })
+            $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
+                $('#modal-db-instance-restore-radio-custom').prop('checked', true)
+
+            $('.modal-db-instance-restore-config .timepicker').on 'blur', (event) ->
+
+                valStr = $(event.target).val()
+                currentValue = Number(valStr)
+                maxValue = 59
+                if $(event.target).hasClass('hour')
+                    maxValue = 23
+                if currentValue > maxValue
+                    $(event.target).val(maxValue)
+                else if not currentValue or currentValue < 0
+                    $(event.target).val('00')
+
+                newValStr = $(event.target).val()
+                if newValStr.length < 2
+                    newValStr = "0#{newValStr}"
+                    $(event.target).val(newValStr)
+
+            return false
 
         checkChange: ( e ) ->
 

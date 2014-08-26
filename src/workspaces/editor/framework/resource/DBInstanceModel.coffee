@@ -550,7 +550,7 @@ define [
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'
-          DBName                                : @get 'dbName'
+          DBName                                : if (@isMysql() and @get('snapshotId')) then '' else @get('dbName')
           Endpoint:
             Port   : @get 'port'
           Engine                                : @get 'engine'

@@ -2173,11 +2173,6 @@ module.exports =
       en: "after rebooting"
       zh: ""
 
-
-
-
-
-
     PROP_DBPG_SET_DESC:
       en: "Description"
       zh: ""

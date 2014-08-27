@@ -31,25 +31,25 @@
     <ul class="modal-list-items">
         {{#if hasEC2Instance}}
             <li>
-                EC2 instances will be started.
+                {{i18n "TOOL_POP_START_CONFIRM_LIST_1"}}
             </li>
         {{/if}}
         {{#if hasDBInstance}}
             <li>
-                DB instances will be restored from final snapshot.
+                {{i18n "TOOL_POP_START_CONFIRM_LIST_2"}}
             </li>
         {{/if}}
         {{#if hasASG}}
             <li>
-                Auto Scaling Group will be recreated.
+                {{i18n "TOOL_POP_START_CONFIRM_LIST_3"}}
             </li>
         {{/if}}
     </ul>
     {{#if lostDBSnapshot.length}}
         <div class="modal-shrink">
-            <div class="sub-gray">Warning</div>
+            <div class="sub-gray">{{i18n "TOOL_POP_START_WARNNING"}}</div>
             <div class="error">
-                DB instance {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}}’s final snapshot is missing. This DB instance cannot be restored.
+                {{i18n "TOOL_POP_START_MISSING_SNAPSHOT_1"}} {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}} {{i18n "TOOL_POP_START_MISSING_SNAPSHOT_2"}}
             </div>
         </div>
     {{/if}}
@@ -68,20 +68,20 @@
         <ul class="modal-list-items">
             {{#if hasEC2Instance}}
                 <li>
-                    EC2 instances will be stopped.
-                    {{#if hasInstanceStore}}<span class="error">Instance-stored instances will be deleted.</span>{{/if}}
+                    {{i18n "TOOL_POP_STOP_CONFIRM_LIST_1"}}
+                    {{#if hasInstanceStore}}<span class="error">{{i18n "TOOL_POP_STOP_CONFIRM_LIST_1_SPAN"}}</span>{{/if}}
                 </li>
             {{/if}}
             {{#if hasDBInstance}}
                 <li>
-                    DB instances will be deleted final snapshot will be taken.
-                    <span>Snapshots will be restored when the app is started.</span>
+                    {{i18n "TOOL_POP_STOP_CONFIRM_LIST_2"}}
+                    <span>{{i18n "TOOL_POP_STOP_CONFIRM_LIST_2_SPAN"}}</span>
                 </li>
             {{/if}}
             {{#if hasAsg }}
                 <li>
-                    Auto Scaling Group will be deleted.
-                    <span>Auto Scaling Group will be recreated when the app is started.</span>
+                    {{i18n "TOOL_POP_STOP_CONFIRM_LIST_3"}}
+                    <span>{{i18n "TOOL_POP_STOP_CONFIRM_LIST_3_SPAN"}}</span>
                 </li>
             {{/if}}
         </ul>
@@ -89,12 +89,12 @@
 {{/if}}
 <div class="estimate-stop clearfix">
     <div>
-        <span class="title">Estimated Cost When Stopped</span>
-        <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
+        <span class="title">{{i18n "TOOL_POP_ESTIMATED_COST_WHEN_STOP"}}</span>
+        <span class="price" id="label-total-fee"><b>${{totalFee}}</b>{{i18n "TOOL_POP_PER_MONTH"}}</span>
     </div>
     <div class="hide">
-        <span class="title">Saving Compared to Running App</span>
-        <span class="price" id="label-total-saving"><b>${{savingFee}}</b>/ month</span>
+        <span class="title">{{i18n "TOOL_POP_SAVING_COMPARED_TO_RUNNING"}}</span>
+        <span class="price" id="label-total-saving"><b>${{savingFee}}</b>{{i18n "TOOL_POP_PER_MONTH"}}</span>
     </div>
 </div>
 
@@ -106,8 +106,8 @@
 <!-- {{cantStop}} -->
 <p>DB Instance
     {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-    cannot take final snapshot.</p>
-<p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
+    {{i18n "TOOL_POP_CANT_STOP_1"}}</p>
+<p>{{i18n "TOOL_POP_CANT_STOP_2"}}</p>
 
 <!-- {{terminateAppConfirm}} -->
 <div class="confirm-padding">
@@ -124,27 +124,22 @@
                 <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                 <label for="take-rds-snapshot"></label>
             </div>
-            <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+            <label for="take-rds-snapshot">{{i18n "TOOL_POP_TAKE_DB_SNAPSHOT"}}</label>
         </section>
         {{#if notReadyDB.length}}
-            <p class="cant-snapshot">DB Instance
+            <p class="cant-snapshot">{{i18n "TOOL_POP_CANT_TAKE_SNAPSHOT_1"}}
                 {{#each notReadyDB}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                cannot take final snapshot.</p>
+                {{i18n "TOOL_POP_CANT_TAKE_SNAPSHOT_2"}}</p>
         {{/if}}
     {{/if}}
 </div>
 
-<!-- {{disconnectedMsg}} -->
-<section class="disconnected-msg">
-    <div>Connection lost. Attempting to reconnect…</div>
-    <div>Changes made now may not be saved.</div>
-</section>
 
 <!-- {{forceTerminateApp}} -->
-<header class="modal-header" style="width:390px;"><h3>Force to delete app</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_FORCE_TERMINATE"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper">
-        <div class="modal-text-major">The app {{name}} failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console.</div>
+        <div class="modal-text-major">{{i18n "TOOL_POP_FORCE_TERMINATE_CONTENT_1"}}{{name}}{{i18n "TOOL_POP_FORCE_TERMINATE_CONTENT_2"}}</div>
     </div>
 </div>
 <div class="modal-footer">

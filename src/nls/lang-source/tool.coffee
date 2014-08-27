@@ -204,6 +204,100 @@ module.exports =
       en: "Do you confirm that you would like to start the app?"
       zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用吗?"
 
+
+    TOOL_POP_START_CONFIRM_LIST_1:
+      en: "EC2 instances will be started."
+      zh: ""
+
+    TOOL_POP_START_CONFIRM_LIST_2:
+      en: "DB instances will be restored from final snapshot."
+      zh: ""
+
+    TOOL_POP_START_CONFIRM_LIST_3:
+      en: "Auto Scaling Group will be recreated."
+      zh: ""
+
+    TOOL_POP_STOP_CONFIRM_LIST_1:
+      en: "EC2 instances will be stopped."
+      zh: ""
+
+    TOOL_POP_STOP_CONFIRM_LIST_1_SPAN:
+      en: "Instance-stored instances will be deleted."
+      zh: ""
+
+    TOOL_POP_STOP_CONFIRM_LIST_2:
+      en: "DB instances will be deleted final snapshot will be taken."
+      zh: ""
+
+    TOOL_POP_STOP_CONFIRM_LIST_2_SPAN:
+      en: "Snapshots will be restored when the app is started."
+      zh: ""
+
+    TOOL_POP_STOP_CONFIRM_LIST_3:
+      en: "Auto Scaling Group will be deleted."
+      zh: ""
+    TOOL_POP_STOP_CONFIRM_LIST_3_SPAN:
+      en: "Auto Scaling Group will be recreated when the app is started."
+      zh: ""
+
+    TOOL_POP_START_WARNNING:
+      en: "Warning"
+      zh: ""
+
+    TOOL_POP_START_MISSING_SNAPSHOT_1:
+      en: "DB Instance"
+      zh: "DB Instance"
+
+    TOOL_POP_START_MISSING_SNAPSHOT_2:
+      en: "’s final snapshot is missing. This DB instance cannot be restored."
+      zh: "的最终 snapshot 不存在， 此 DBInstace 将无法恢复。"
+
+
+    TOOL_POP_ESTIMATED_COST_WHEN_STOP:
+      en: "Estimated Cost When Stopped"
+      zh: ""
+
+    TOOL_POP_SAVING_COMPARED_TO_RUNNING:
+      en: "Saving Compared to Running App"
+      zh: ""
+
+    TOOL_POP_PER_MONTH:
+      en: "/ month"
+      zh: "/ 月"
+
+    TOOL_POP_CANT_STOP_1:
+      en: "cannot take final snapshot."
+      zh: ""
+
+    TOOL_POP_CANT_STOP_2:
+      en: "Wait for the DB instance(s) to be available. Then try to stop the app again."
+      zh: ""
+
+    TOOL_POP_TAKE_DB_SNAPSHOT:
+      en: "Take final snapshot for DB Instances."
+      zh: ""
+
+    TOOL_POP_CANT_TAKE_SNAPSHOT_1:
+      en: "DB Instance"
+      zh: ""
+
+    TOOL_POP_CANT_TAKE_SNAPSHOT_2:
+      en: "cannot take final snapshot."
+      zh: ""
+
+    TOOL_POP_FORCE_TERMINATE:
+      en: "Force to delete app"
+      zh: ""
+
+    TOOL_POP_FORCE_TERMINATE_CONTENT_1:
+      en: "The app"
+      zh: ""
+
+    TOOL_POP_FORCE_TERMINATE_CONTENT_2:
+      en: " failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
+      zh: ""
+
+
     TOOL_POP_BTN_START_APP:
       en: "Start"
       zh: "恢复"

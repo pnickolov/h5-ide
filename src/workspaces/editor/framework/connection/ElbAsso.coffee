@@ -179,38 +179,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
 
       return
 
-    remove : ( option )->
-      # If the line is not deleted by the user or because of the Lc is removed.
-      # Then we do nothing.
-      if option and option.reason.type isnt constant.RESTYPE.LC
-        ConnectionModel.prototype.remove.apply this, arguments
-        return
-
-      if @getOtherTarget(constant.RESTYPE.ELB).type is constant.RESTYPE.LC
-        lcUsage = @getTarget(constant.RESTYPE.LC).connectionTargets("LcUsage")
-        if lcUsage
-          expAsg = lcUsage[0].get("expandedList")
-          if expAsg and expAsg.length>0
-            # The ElbAsso is removed by the user.
-            expAsg = expAsg[0]
-            if expAsg and not expAsg.isRemoved()
-              # If the user is removing an ElbAsso from Elb to ExpandedAsg.
-              # Then we just delete the ElbAsso from Elb to Lc
-              elb = @getTarget( constant.RESTYPE.ELB )
-              lc  = expAsg.getLc()
-              (new ElbAmiAsso( elb, lc )).remove( reason = { reason : this } )
-              return
-
-        lc = @getTarget constant.RESTYPE.LC
-        if lc
-          # The user is removing an ElbAsso from Elb to Lc
-          # Remove all the shadow ElbAsso from Elb to ExpandedAsg
-          elb    = @getTarget( constant.RESTYPE.ELB )
-          reason = { reason : this }
-
-      ConnectionModel.prototype.remove.apply this, arguments
-      null
-
     serialize : ( components )->
       instance = @getTarget( constant.RESTYPE.INSTANCE )
       if not instance then return

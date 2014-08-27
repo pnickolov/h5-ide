@@ -145,7 +145,14 @@ define [ 'ApiRequest'
                         that.resModel.set('dbRestoreTime', selectedDate.toISOString())
                     else
                         that.resModel.set('dbRestoreTime', '')
+                    that.resModel.isRestored = true
                     modal.close()
+                onCancel: () ->
+                    if not that.resModel.isRestored
+                        that.resModel.remove()
+                onClose: () ->
+                    if not that.resModel.isRestored
+                        that.resModel.remove()
             })
             # bind datetime picker event
             $('.modal-db-instance-restore-config .datepicker').datetimepicker({
@@ -554,6 +561,9 @@ define [ 'ApiRequest'
                         $tipDom.addClass('hide')
 
             attr.name
+
+            if @resModel.getSourceDBForRestore() and not @resModel.isRestored
+                @openRestoreConfigModal()
 
         bindParsley: ->
 

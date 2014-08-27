@@ -211,6 +211,9 @@ define [
 
         CanvasManager.update $r, tip, "tooltip"
 
+        if m.getSourceDBForRestore()
+          CanvasManager.toggle $r, false
+
       # Update restore Image
       $r = @$el.children(".dbrestore")
       CanvasManager.toggle $r, m.autobackup() isnt 0 and !!m.get("appId")

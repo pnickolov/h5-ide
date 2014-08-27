@@ -40,6 +40,7 @@ define [
       pgName: ''
       applyImmediately: false
       dbRestoreTime: ''
+      isRestored: false
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -83,6 +84,11 @@ define [
     setSourceDBForRestore : ( sourceDb ) ->
 
       @sourceDBForRestore = sourceDb
+      @setDefaultParameterGroup()
+      # DefaultSg
+      defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      new SgAsso( defaultSg, this )
 
     getSourceDBForRestore: ->
       
@@ -176,15 +182,12 @@ define [
 
       if option.master
 
-        # if not option.isRestore
-        #   @copyMaster option.master
-        #   @setMaster option.master
-        # else
-        #   @restoreMaster option.master
-
-        @copyMaster option.master
-        # @setMaster option.master
-        @setSourceDBForRestore option.master
+        if not option.isRestore
+          @copyMaster option.master
+          @setMaster option.master
+        else
+          @cloneForRestore option.master
+          @setSourceDBForRestore option.master
 
       else if option.createByUser
         # Default Sg
@@ -211,6 +214,7 @@ define [
       return
 
     clone : ( srcTarget )->
+
       @cloneAttributes srcTarget, {
         reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
@@ -222,7 +226,18 @@ define [
 
       return
 
+    cloneForRestore : ( srcTarget ) ->
 
+      @cloneAttributes srcTarget, {
+        reserve : "newInstanceId|instanceId|createdBy|pgName"
+        copyConnection : [ "OgUsage" ]
+      }
+
+      @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
+
+      return
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
@@ -606,7 +621,7 @@ define [
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
-          SourceDBInstanceIdentifier            : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
+          SourceDBInstanceIdentifierForPoint    : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
           UseLatestRestorableTime               : useLatestRestorableTime
           RestoreTime                           : restoreTime
 

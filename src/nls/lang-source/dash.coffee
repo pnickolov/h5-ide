@@ -79,6 +79,10 @@ module.exports =
       en: "Running Instance"
       zh: "运行的实例"
 
+    DASH_LBL_STOPPED_INSTANCE:
+      en: "Stopped instance"
+      zh: "停止的实例"
+
     DASH_LBL_RDS:
       en: "DB Instance"
       zh: ""
@@ -207,10 +211,6 @@ module.exports =
       en: "Customer Gateway"
       zh: "客户网关"
 
-    DASH_LBL_INSTANCE:
-      en: "Instance"
-      zh: "实例"
-
     DASH_LBL_DNS_NAME:
       en: "DNS Name"
       zh: "域名"
@@ -267,6 +267,10 @@ module.exports =
       en: "Network Interface ID"
       zh: "网络接口 ID"
 
+    DASH_LBL_NETWORK_INTERFACE:
+      en: "Network Interface"
+      zh: "网络接口"
+
     DASH_LBL_PRIVATE_IP_ADDRESS:
       en: "Private Ip Address"
       zh: "内网IP地址"
@@ -290,6 +294,159 @@ module.exports =
     DASH_LBL_LOADBALANCER_NAMES:
       en: "LoadBalancer Names"
       zh: "负载均衡器名称"
+
+    DASH_LBL_TITLE:
+      en: "Title"
+      zh: ""
+
+    DASH_LBL_DEFAULT_COOLDOWN:
+      en: "Default Cooldown"
+      zh: ""
+
+    DASH_LBL_DESIRED_CAPACITY:
+      en: "Desired Capacity"
+      zh: ""
+
+    DASH_LBL_HEALTH_CHECK_GRACE_PERIOD:
+      en: "HealthCheck Grace Period"
+      zh: ""
+
+    DASH_LBL_HEALTH_CHECK_TYPE:
+      en: "Health Check Type"
+      zh: ""
+
+    DASH_LBL_HEALTH_CHECK:
+      en: "Health Check"
+      zh: ""
+
+    DASH_LBL_LISTENER_DESC:
+      en: "Listener Descriptions"
+      zh: ""
+
+    DASH_LBL_SECURITY_GROUPS:
+      en: "Security Groups"
+      zh: ""
+
+    DASH_LBL_TENANCY:
+      en: "Tenancy"
+      zh: ""
+
+    DASH_LBL_VGW_ID:
+      en: "VGW Id"
+      zh: ""
+
+    DASH_LBL_CGW_ID:
+      en: "CGW Id"
+      zh: ""
+
+    DASH_LBL_TYPE:
+      en: "Type"
+      zh: ""
+
+    DASH_LBL_VOLUME_ID:
+      en: "Volume ID"
+      zh: ""
+
+    DASH_LBL_SNAPSHOT_ID:
+      en: "Snapshot ID"
+      zh: ""
+
+    DASH_LBL_DELETE_ON_TERM:
+      en: "Delete on Termination"
+      zh: ""
+
+    DASH_LBL_VOLUME_TYPE:
+      en: "Volume Type"
+      zh: ""
+
+    DASH_LBL_ATTACH_TIME:
+      en: "Attach Time"
+      zh: ""
+
+    DASH_LBL_MONITORING:
+      en: "Monitoring"
+      zh: ""
+
+    DASH_LBL_PRIMARY_PRIVATE_IP:
+      en: "Primary Private IP"
+      zh: ""
+
+    DASH_LBL_PRIVATE_DNS:
+      en: "Private DNS"
+      zh: ""
+
+    DASH_LBL_AMI_LAUNCH_INDEX:
+      en: "AMI Launch Index"
+      zh: ""
+
+    DASH_LBL_BLOCK_DEVICE_TYPE:
+      en: "Block Device Type"
+      zh: ""
+
+    DASH_LBL_BLOCK_DEVICES:
+      en: "Block Devices"
+      zh: ""
+
+    DASH_LBL_CATEGORY:
+      en: "Category"
+      zh: ""
+
+    DASH_LBL_STATE_REGION:
+      en: "State Reason"
+      zh: ""
+
+    DASH_LBL_STATE_UPDATED_TIMESTAMP:
+      en: "State Updated Timestamp"
+      zh: ""
+
+    DASH_LBL_ENGINE:
+      en: "Engine"
+      zh: ""
+
+    DASH_LBL_DB_NAME:
+      en: "DB Name"
+      zh: ""
+
+    DASH_LBL_OPTION_GROUP:
+      en: "Option Group"
+      zh: ""
+
+    DASH_LBL_PARAMETER_GROUP:
+      en: "Parameter Group"
+      zh: ""
+
+    DASH_LBL_SUBNET_GROUP:
+      en: "Subnet Group"
+      zh: ""
+
+    DASH_LBL_PUBLICLY_ACCESSIBLE:
+      en: "Publicly Accessible"
+      zh: ""
+
+    DASH_LBL_IOPS:
+      en: "IOPS"
+      zh: ""
+
+    DASH_LBL_AUTOMATED_BACKUP:
+      en: "Automated Backup"
+      zh: ""
+
+    DASH_LBL_LATEST_RESTORE_TIME:
+      en: "Latest Restore Time"
+      zh: ""
+
+    DASH_LBL_AUTO_MINOR_VERSION_UPGRADE:
+      en: "Auto Minor Version Upgrade"
+      zh: ""
+
+    DASH_LBL_MAINTENANCE_WINDOW:
+      en: "Maintenance Window"
+      zh: ""
+
+    DASH_LBL_BACKUP_WINDOW:
+      en: "Backup Window"
+      zh: ""
+
 
     DASH_LBL_MIN_SIZE:
       en: "MinSize"
@@ -490,3 +647,47 @@ module.exports =
     DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO:
       en: "Resources will be created into the default VPC"
       zh: "资源将被创建在新默认的VPC中"
+
+    DASH_TPL_JUST_NOW:
+      en: 'just now'
+      zh: "刚刚"
+
+    DASH_TPL_SAMPLE_INSTRUCTION:
+      en: "This is only sample data of global resource sumary."
+      zh: ""
+
+    DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1:
+      en: "Provide your AWS Credential"
+      zh: ""
+
+    DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
+      en: " to see real data"
+      zh: ""
+
+    DASH_TPL_NO_RECENT_APP:
+      en: "No recently launched app in 30 days"
+      zh: "没有 30 天内运行过的 App"
+
+    DASH_TPL_NO_RECENT_STACK:
+      en: "No recently edited stack in 30 days"
+      zh: ""
+
+    DASH_TPL_PENDING_CONFIRMATION:
+      en: "Pending Confirmation"
+      zh: ""
+
+    DASH_TPL_LOADING_VPC_FAILED:
+      en: "Oops, loading VPC failed."
+      zh: ""
+
+    DASH_TPL_ALREADY_IMPORTED:
+      en: "Already Imported"
+      zh: ""
+
+    DASH_TPL_TO_IMPORT:
+      en: "Import"
+      zh: ""
+
+    DASH_TPL_NO_VPC_TO_IMPORT:
+      en: "There is no VPC to import."
+      zh: ""

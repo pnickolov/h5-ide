@@ -17,7 +17,7 @@
     <span class="recent-time">{{formatedTime}}</span>
   </li>{{/each}}</ul>
 {{else}}
-  <span class="empty-text">No recently launched app in 30 days</span>
+  <span class="empty-text">{{i18n "DASH_TPL_NO_RECENT_APP"}}</span>
 {{/if}}
 </section>
 <section {{#unless isStack}}class="hide"{{/unless}}>
@@ -29,7 +29,7 @@
     <span class="recent-time">{{formatedTime}}</span>
   </li>{{/each}}</ul>
 {{else}}
-  <span class="empty-text">No recently edited stack in 30 days</span>
+  <span class="empty-text">{{i18n "DASH_TPL_NO_RECENT_STACK"}}</span>
 {{/if}}
 </section>
 
@@ -455,7 +455,7 @@
         <td>{{TopicName}}</td>
         <td>{{Protocol}}: {{Endpoint}}</td>
         {{#ifCond SubscriptionArn "PendingConfirmation"}}
-        <td><i class="status status-red icon-label"></i>Pending Confirmation</td>
+        <td><i class="status status-red icon-label"></i>{{i18n "DASH_TPL_PENDING_CONFIRMATION"}}</td>
         {{else}}
         <td><i class="status status-green icon-label"></i>Success</td>
         {{/ifCond}}
@@ -513,7 +513,7 @@
 <!-- {{resourceDetail}} -->
 <dl class="dl-horizontal" style="margin-top:0;">
     {{#each this}}
-    <dt>{{@key}}:</dt>
+    <dt>{{i18n @key}}:</dt>
         <dd>{{#if this.bubble}}{{#each this}}{{#if @index}}, {{/if}}<a href="javascript:void(0)" class="bubble table-link" data-bubble-template="{{#if bubble.template}}{{bubble.template}}{{else}}dashboardBubble{{/if}}" data-bubble-data="{{bubble.data}}">{{bubble.value}}</a>{{/each}}{{else}}{{this}}{{/if}}</dd>
     {{/each}}
 </dl>

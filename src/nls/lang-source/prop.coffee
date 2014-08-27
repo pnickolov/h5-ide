@@ -928,6 +928,35 @@ module.exports =
       en: " Snapshot(s) "
       zh: ""
 
+
+    PROP_MSG_ERROR_CREATE_SNAPSHOT_FAILED:
+      en: "Create failed because of: "
+      zh: ""
+
+    PROP_MSG_INFO_CREATE_SNAPSHOT_SUCCESS:
+      en: "New Snapshot is created successfully!"
+      zh: ""
+
+    PROP_MSG_ERROR_DUPLICATE_SNAPSHOT_FAILED:
+      en: "Duplicate failed because of: "
+      zh: ""
+
+    PROP_MSG_INFO_DUPLICATE_SNAPSHOT_SUCCESS:
+      en: "New Snapshot is duplicated successfully"
+      zh: ""
+
+    PROP_MSG_INFO_ANOTHER_REGION_DUPLICATE_SNAPSHOT_SUCCESS:
+      en: "New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
+      zh: ""
+
+    PROP_MSG_ERROR_DELETE_SNAPSHOT_FAILED:
+      en: " Snapshot failed to delete, Please try again later."
+      zh: ""
+
+    PROP_MSG_INFO_DELETE_SNAPSHOT_SUCCESSFULLY:
+      en: "Delete Successfully"
+      zh: ""
+
     POP_SGRULE_TITLE_ADD:
       en: "Add Security Group Rule"
       zh: "添加安全组规则"

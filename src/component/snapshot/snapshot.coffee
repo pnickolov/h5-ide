@@ -227,24 +227,24 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         afterCreated: (result,newSnapshot)->
             @manager.cancel()
             if result.error
-                notification 'error', "Create failed because of: "+result.msg
+                notification 'error', lang.ide.PROP_MSG_ERROR_CREATE_SNAPSHOT_FAILED + result.msg
                 return false
-            notification 'info', "New Snapshot is created successfully!"
+            notification 'info', lang.ide.PROP_MSG_INFO_CREATE_SNAPSHOT_SUCCESS
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->
             currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
-                notification 'error', "Duplicate failed because of: "+ result.msg
+                notification 'error', lang.ide.PROP_MSG_ERROR_DUPLICATE_SNAPSHOT_FAILED+ result.msg
                 return false
             #cancelselect && fetch
             if result.attributes.region is currentRegion
                 @collection.add result
-                notification 'info', "New Snapshot is duplicated successfully!"
+                notification 'info', lang.ide.PROP_MSG_INFO_DUPLICATE_SNAPSHOT_SUCCESS
             else
                 @initManager()
-                notification 'info', 'New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created.'
+                notification 'info', lang.ide.PROP_MSG_INFO_ANOTHER_REGION_DUPLICATE_SNAPSHOT_SUCCESS
 
         afterDeleted: (result)->
             deleteCount--
@@ -252,9 +252,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
+                    notification 'error', deleteErrorCount+lang.ide.PROP_MSG_ERROR_DELETE_SNAPSHOT_FAILED
                 else
-                    notification 'info', "Delete Successfully"
+                    notification 'info', lang.ide.PROP_MSG_INFO_DELETE_SNAPSHOT_SUCCESSFULLY
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()

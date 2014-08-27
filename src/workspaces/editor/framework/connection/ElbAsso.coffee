@@ -146,11 +146,6 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       if not foundSubnet
         new ElbSubnetAsso( subnet, elb )
 
-      # If there's a ElbAsso created for Lc and Elb
-      # We also try to connect the Elb to any expanded Asg
-      if ami.type is constant.RESTYPE.LC and asg
-        for asg in asg.get("expandedList")
-          new ElbAmiAsso( asg, elb )
       null
 
     remove : ( option )->

@@ -30,7 +30,7 @@
         <button class="btn btn-silver cancel">Cancel</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "PROP_LBL_DELETING"}}</button>
     </div>
 </div>
 
@@ -81,10 +81,10 @@
         </section>
         <div class="init action">
             <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CREATE"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Creating...</button>
+            <button class="btn" disabled>{{i18n "PROP_LBL_CREATING"}}</button>
         </div>
     </div>
 </div>
@@ -95,10 +95,10 @@
         <div class="modal-text-major">Do you confirm to reset all parameters for {{name}} to their defaults?</div>
         <div class="init action">
             <button class="btn btn-red do-action" data-action="reset">Reset</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Resetting...</button>
+            <button class="btn" disabled>{{i18n "PROP_LBL_RESETTING"}}</button>
         </div>
     </div>
 </div>
@@ -107,17 +107,17 @@
 <!-- {{slide_edit}} -->
 <div class="clearfix" id="pg-sort-filter">
     <div class="pull-left">
-        Filter: <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+        {{i18n "PROP_LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
     </div>
     <div class="pull-right">
-        Sort by:
+        {{i18n "PROP_LBL_SORT_BY"}}
         <div class="selectbox" id="sort-parameter-name">
-            <div class="selection">Parameter Name</div>
+            <div class="selection">{{i18n "PROP_LBL_PARAMETER_NAME"}}</div>
             <ul class="dropdown" tabindex="-1">
-                <li class="item selected" data-id="ParameterName">Parameter Name</li>
-                <li class="item" data-id="IsModifiable">Is Modifiable</li>
-                <li class="item" data-id="ApplyType">Apply Method</li>
-                <li class="item" data-id="Source">Source</li>
+                <li class="item selected" data-id="ParameterName">{{i18n "PROP_LBL_PARAMETER_NAME"}}</li>
+                <li class="item" data-id="IsModifiable">{{i18n "PROP_LBL_ISMODIFIABLE"}}</li>
+                <li class="item" data-id="ApplyType">{{i18n "PROP_LBL_APPLY_METHOD"}}</li>
+                <li class="item" data-id="Source">{{i18n "PROP_LBL_SOURCE"}}</li>
             </ul>
         </div>
     </div>
@@ -127,12 +127,12 @@
         <thead>
         <tr>
             {{#if preview}}
-                <th width="40%">Parameter Name</th>
-                <th width="20%">Origin Value</th>
-                <th width="40%">Edit Value</th>
+                <th width="40%">{{i18n "PROP_LBL_PARAMETER_NAME"}}</th>
+                <th width="20%">{{i18n "PROP_LBL_ORIGINAL_VALUE"}}</th>
+                <th width="40%">{{i18n "PROP_LBL_EDIT_VALUE"}}</th>
             {{else}}
-                <th width="50%">Parameter Name</th>
-                <th width="50%">Edit Value</th>
+                <th width="50%">{{i18n "PROP_LBL_PARAMETER_NAME"}}</th>
+                <th width="50%">{{i18n "PROP_LBL_EDIT_VALUE"}}</th>
             {{/if}}
 
         </tr>
@@ -182,19 +182,19 @@
     </table>
 </div>
 <div class="pg-edit-footer clearfix">
-    <a target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> Parameter Value Reference</a>
+    <a target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html">{{i18n "PROP_LBL_PARAMETER_VALUE_REFERENCE"}}</a>
     <div class="init action" style="padding: 10px 0">
         {{#if preview}}
-            <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
-            <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
+            <button class="btn do-action" id="pg-back-to-edit">{{i18n "PROP_LBL_BACK_TO_EDITING"}}</button>
+            <button class="btn btn-blue" id="rds-pg-save">{{i18n "PROP_LBL_APPLY_CHANGES"}}</button>
         {{else}}
-            <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
+            <button class="btn btn-blue do-action" data-action="preview" disabled>{{i18n "PROP_LBL_REVIEW_CHANGES_SAVE"}}</button>
         {{/if}}
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="padding: 10px 0;display: none">
-        <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
-        <button class="btn btn-silver cancel" disabled>Cancel</button>
+        <button class="btn btn-blue" id="rds-pg-save" disabled>{{i18n "PROP_LBL_APPLYING"}}</button>
+        <button class="btn btn-silver cancel" disabled>{{i18n "PROP_LBL_CANCEL"}}</button>
     </div>
 </div>
 
@@ -204,12 +204,12 @@
     <thead>
     <tr>
         {{#if preview}}
-            <th width="40%">Parameter Name</th>
-            <th width="20%">Origin Value</th>
-            <th width="40%">Edit Value</th>
+            <th width="40%">{{i18n "PROP_LBL_PARAMETER_NAME"}}</th>
+            <th width="20%">{{i18n "PROP_LBL_ORIGINAL_VALUE"}}</th>
+            <th width="40%">{{i18n "PROP_LBL_EDIT_VALUE"}}</th>
         {{else}}
-            <th width="50%">Parameter Name</th>
-            <th width="50%">Edit Value</th>
+            <th width="50%">{{i18n "PROP_LBL_PARAMETER_NAME"}}</th>
+            <th width="50%">{{i18n "PROP_LBL_EDIT_VALUE"}}</th>
         {{/if}}
 
     </tr>

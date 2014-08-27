@@ -816,6 +816,86 @@ module.exports =
       en: "Edit Related Rule"
       zh: "编辑相关规则"
 
+    PROP_LBL_DELETING:
+      en: "Deleting..."
+      zh: ""
+
+    PROP_LBL_DELETE:
+      en: "Delete"
+      zh: ""
+
+    PROP_LBL_FILTER:
+      en: "Filter: "
+      zh: ""
+
+    PROP_LBL_SORT_BY:
+      en: "Sort by: "
+      zh: ""
+
+    PROP_LBL_CANCEL:
+      en: "Cancel"
+      zh: ""
+
+    PROP_LBL_CREATING:
+      en: "Creating..."
+      zh: ""
+
+    PROP_LBL_RESET:
+      en: "Reset"
+      zh: ""
+
+    PROP_LBL_RESETTING:
+      en: "Resetting..."
+      zh: ""
+
+    PROP_LBL_CREATE:
+      en: "Create"
+      zh: ""
+
+    PROP_LBL_PARAMETER_NAME:
+      en: "Parameter Name"
+      zh: ""
+
+    PROP_LBL_ISMODIFIABLE:
+      en: "Is Modifiable"
+      zh: ""
+
+    PROP_LBL_APPLY_METHOD:
+      en: "Apply Method"
+      zh: ""
+
+    PROP_LBL_SOURCE:
+      en: "Source"
+      zh: ""
+
+    PROP_LBL_ORIGINAL_VALUE:
+      en: "Original Value"
+      zh: ""
+
+    PROP_LBL_EDIT_VALUE:
+      en: "Edit Value"
+      zh: ""
+
+    PROP_LBL_PARAMETER_VALUE_REFERENCE:
+      en: "Parameter Value Reference"
+      zh: ""
+
+    PROP_LBL_BACK_TO_EDITING:
+      en: "Back to Editing"
+      zh: ""
+
+    PROP_LBL_APPLY_CHANGES:
+      en: "Apply Changes"
+      zh: ""
+
+    PROP_LBL_REVIEW_CHANGES_SAVE:
+      en: "Review Changes & Save"
+      zh: ""
+
+    PROP_LBL_APPLYING:
+      en: "Applying..."
+      zh: ""
+
     POP_SGRULE_TITLE_ADD:
       en: "Add Security Group Rule"
       zh: "添加安全组规则"

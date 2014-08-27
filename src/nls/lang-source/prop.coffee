@@ -896,6 +896,19 @@ module.exports =
       en: "Applying..."
       zh: ""
 
+    PROP_MSG_FAILED_TO_DELETE:
+      en: " DhcpOptions failed to delete because of: "
+      zh: ""
+
+    PROP_MSG_DELETE_SUCCESSFULLY:
+      en: "Delete Successfully"
+      zh: ""
+
+    PROP_MSG_DHCP_CREATED_SUCCESSFULLY:
+      en: "New DHCP Option is created successfully"
+      zh: ""
+
+
     POP_SGRULE_TITLE_ADD:
       en: "Add Security Group Rule"
       zh: "添加安全组规则"

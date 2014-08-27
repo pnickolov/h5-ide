@@ -239,9 +239,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete because of: \"#{result.awsResult}\""
+                    notification 'error', deleteErrorCount+ lang.ide.PROP_FAILED_TO_DELETE +result.awsResult
                 else
-                    notification 'info', "Delete Successfully"
+                    notification 'info', lang.ide.PROP_MSG_DELETE_SUCCESSFULLY
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
@@ -250,7 +250,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.error "Create failed because of: "+ (result.awsResult || result.msg)
                 @switchAction()
                 return false
-            notification 'info', "New DHCP Option is created successfully"
+            notification 'info', lang.ide.PROP_MSG_DHCP_CREATED_SUCCESSFULLY
             @manager.cancel()
         validate: (action)->
             switch action

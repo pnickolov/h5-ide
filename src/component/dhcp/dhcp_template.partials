@@ -145,11 +145,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create">Create</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="create">{{i18n "PROP_LBL_CREATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Creating...</button>
+            <button class="btn" disabled>{{i18n "PROP_LBL_CREATING"}}</button>
         </div>
     </div>
 </div>

@@ -151,7 +151,7 @@ init = ->
         if safari then browser[2] = safari[1]
 
     if (parseInt(browser[2], 10) || 0) < support[browser[1]]
-      $("header").after '<div id="unsupported-browser"><p>MadeiraCloud IDE does not support the browser you are using.</p> <p>For a better experience, we suggest you use the latest version of <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/all/" target="_blank">Firefox</a> or <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">IE</a>.</p></div>'
+      $("header").after "<div id='unsupported-browser'><p>#{langsrc.login.browser_not_support_1}</p> <p>#{langsrc.login.browser_not_support_2}<a href='https://www.google.com/intl/en/chrome/browser/' target='_blank'>Chrome</a>, <a href='http://www.mozilla.org/en-US/firefox/all/' target='_blank'>Firefox</a> or <a href='http://windows.microsoft.com/en-us/internet-explorer/download-ie' target='_blank'>IE</a>#{langsrc.login.browser_not_support_3}</p></div>"
 
     userRoute(
         "reset": (pathArray, hashArray)->

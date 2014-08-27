@@ -49,6 +49,18 @@ module.exports =
         en: "&copy; VisualOps offered in"
         zh: "&copy; VisualOps 还提供"
 
+      "browser_not_support_1":
+        en: "VisualOps IDE does not support the browser you are using."
+        zh: "VisualOps IDE 不支持您正使用的浏览器。"
+
+      "browser_not_support_2":
+        en: "For a better experience, we suggest you use the latest version of "
+        zh: "为了您有更好的体验， 我们建议您使用最新版本的 "
+
+      "browser_not_support_3":
+        en: "."
+        zh: "等浏览器。"
+
     register:
       register:
         en: "Register"

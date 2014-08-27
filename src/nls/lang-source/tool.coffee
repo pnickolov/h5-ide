@@ -289,12 +289,8 @@ module.exports =
       en: "Force to delete app"
       zh: ""
 
-    TOOL_POP_FORCE_TERMINATE_CONTENT_1:
-      en: "The app"
-      zh: ""
-
-    TOOL_POP_FORCE_TERMINATE_CONTENT_2:
-      en: " failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
+    TOOL_POP_FORCE_TERMINATE_CONTENT:
+      en: "The app %s failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
       zh: ""
 
 

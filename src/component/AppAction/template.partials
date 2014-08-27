@@ -139,7 +139,7 @@
 <header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_POP_FORCE_TERMINATE"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper">
-        <div class="modal-text-major">{{i18n "TOOL_POP_FORCE_TERMINATE_CONTENT_1"}}{{name}}{{i18n "TOOL_POP_FORCE_TERMINATE_CONTENT_2"}}</div>
+        <div class="modal-text-major">{{i18n "TOOL_POP_FORCE_TERMINATE_CONTENT" name}}</div>
     </div>
 </div>
 <div class="modal-footer">

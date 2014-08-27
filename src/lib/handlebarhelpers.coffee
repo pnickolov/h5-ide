@@ -11,6 +11,12 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     t = t || "undefined"
     ### env:prod:end ###
 
+    # Support sprint
+    if arguments.length > 2
+      args = [].slice.call arguments, 1, -1
+      args.unsshift t
+      t = sprintf.apply null, args
+
     new Handlebars.SafeString t
 
   Handlebars.registerHelper 'tolower', ( result ) ->

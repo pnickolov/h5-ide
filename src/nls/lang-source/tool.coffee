@@ -298,6 +298,26 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
+    TOOL_MSG_ERROR_CANT_DUPLICATE:
+      en: "Cannot duplicate the stack, please retry."
+      zh: ""
+
+    TOOL_MSG_ERROR_FAILED_LOAD_AWS_DATA:
+      en: "Error while loading AWS data, please try again later."
+      zh: ""
+
+    TOOL_MSG_ERROR_FAILED_START:
+      en: "Fail to start your app %s. (ErrorCode: %s)"
+      zh: ""
+
+    TOOL_MSG_ERROR_FAILED_STOP:
+      en: "Fail to stop your app %s. (ErrorCode: %s)"
+      zh: ""
+
+    TOOL_MSG_ERROR_FAILED_TERMINATE:
+      en: "Fail to terminate your app %s. (ErrorCode: %s)"
+      zh: ""
+
     TOOL_TIP_UPDATE_APP:
       en: "Edit App"
       zh: "更新应用"

@@ -38,7 +38,7 @@ define [
       opsModel.fetchJsonData().then ()->
         App.openOps( App.model.createStackByJson opsModel.getJsonData() )
       , ()->
-        notification "error", "Cannot duplicate the stack, please retry."
+        notification "error", lang.ide.TOOL_MSG_ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
@@ -75,7 +75,7 @@ define [
         .finally ->
           if awsError and awsError isnt 403
             startAppModal.close()
-            notification 'error', "Error while loading AWS data, please try again later."
+            notification 'error', lang.ide.TOOL_MSG_ERROR_FAILED_LOAD_AWS_DATA
             return false
           lostDBSnapshot = _.filter dbInstance, (e)->
             e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
@@ -85,7 +85,7 @@ define [
             startAppModal.close()
             App.model.appList().get( id ).start().fail ( err )->
               error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+              notification 'error', sprintf(lang.ide.TOOL_MSG_ERROR_FAILED_START , name, error)
               return
             return
           return
@@ -118,7 +118,7 @@ define [
       .finally ()->
         if awsError and awsError isnt 403
           canStop.close()
-          notification 'error', "Error when loading AWS data, please try again later."
+          notification 'error', lang.ide.TOOL_MSG_ERROR_FAILED_LOAD_AWS_DATA
           return false
         app.fetchJsonData().then ()->
           comp = app.getJsonData().component
@@ -167,7 +167,7 @@ define [
               app.stop().fail ( err )->
                 console.log err
                 error = if err.awsError then err.error + "." + err.awsError else err.error
-                notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"
+                notification sprintf(lang.ide.TOOL_MSG_ERROR_FAILED_STOP , name, error)
                 return
               return
 
@@ -203,7 +203,7 @@ define [
         if error.awsError is 403 then self.__terminateApp(id, resourceList, terminateConfirm)
         else
           terminateConfirm.close()
-          notification 'error', "Error while loading AWS data, please try again later."
+          notification 'error', lang.ide.TOOL_MSG_ERROR_FAILED_LOAD_AWS_DATA
           return false
     __terminateApp: (id, resourceList, terminateConfirm)->
       app  = App.model.appList().get( id )
@@ -241,7 +241,7 @@ define [
           takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
           app.terminate(null, takeSnapshot).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+            notification sprintf(lang.ide.TOOL_MSG_ERROR_FAILED_TERMINATE , name, error)
           return
         return
   new AppAction()

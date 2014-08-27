@@ -128,25 +128,56 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       elb = @getTarget( constant.RESTYPE.ELB )
 
       if ami.type is constant.RESTYPE.LC
-        lcUsage = ami.connectionTargets("LcUsage")
-        if lcUsage.length>0
-          asg    = lcUsage[0]
-          subnet = asg.parent()
+        @listenTo ami, "change:expandedList", @updateLcSubnetAsso
+        @listenTo ami, "change:connections",  @updateLcSubnetAssoIfNeeded
+
+        # Only update subnet when the asso is created by user
+        if option.createByUser
+          @updateLcSubnetAsso()
+        return
+
       else
-        subnet = ami.parent()
+        connectedSbs = elb.connectionTargets("ElbSubnetAsso")
 
-      connectedSbs = elb.connectionTargets("ElbSubnetAsso")
+        for sb in ami.parent().parent().children()
+          if connectedSbs.indexOf( sb ) isnt -1
+            # Found a subnet in this AZ that is connected to the Elb, do nothing
+            foundSubnet = true
+            break
 
-      for sb in subnet.parent().children()
-        if connectedSbs.indexOf( sb ) isnt -1
-          # Found a subnet in this AZ that is connected to the Elb, do nothing
-          foundSubnet = true
-          break
+        if not foundSubnet
+          new ElbSubnetAsso( ami.parent(), elb )
 
-      if not foundSubnet
-        new ElbSubnetAsso( subnet, elb )
+        return
 
-      null
+    updateLcSubnetAssoIfNeeded : ( cn )-> if cn.type is "LcUsage" then @updateLcSubnetAsso()
+    updateLcSubnetAsso : ()->
+      # Do nothing if the design is deserializing.
+      if @design().initializing() then return
+
+      elb = @getTarget( constant.RESTYPE.ELB )
+      lc  = @getTarget( constant.RESTYPE.LC )
+      azs = lc.design().componentsOfType( constant.RESTYPE.AZ )
+      azMap = {}
+      for az in azs
+        azName = az.get("name")
+        for subnet in az.children()
+          for e in subnet.connectionTargets( "ElbSubnetAsso" )
+            if e is elb
+              azMap[ azName ] = true
+              break
+          if azMap[ azName ] then break
+
+      for asg in lc.connectionTargets("LcUsage")
+        asgs = asg.get("expandedList").slice(0)
+        asgs.push( asg )
+        for asg in asgs
+          azName = asg.parent().parent().get("name")
+          if not azMap[ azName ]
+            new ElbSubnetAsso( asg.parent(), elb )
+            azMap[ azName ] = true
+
+      return
 
     remove : ( option )->
       # If the line is not deleted by the user or because of the Lc is removed.

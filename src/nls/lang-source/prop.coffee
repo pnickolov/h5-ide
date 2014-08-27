@@ -840,6 +840,14 @@ module.exports =
       en: "Creating..."
       zh: ""
 
+    PROP_LBL_DUPLICATE:
+      en: "Duplicate"
+      zh: ""
+
+    PROP_LBL_DUPLICATING:
+      en: "Duplicating..."
+      zh: ""
+
     PROP_LBL_RESET:
       en: "Reset"
       zh: ""
@@ -908,6 +916,17 @@ module.exports =
       en: "New DHCP Option is created successfully"
       zh: ""
 
+    PROP_DELETE_SNAPSHOT_1:
+      en: "Confirm to delete "
+      zh: ""
+
+    PROP_DELETE_SNAPSHOT_2:
+      en: "selected "
+      zh: ""
+
+    PROP_DELETE_SNAPSHOT_3:
+      en: " Snapshot(s) "
+      zh: ""
 
     POP_SGRULE_TITLE_ADD:
       en: "Add Security Group Rule"

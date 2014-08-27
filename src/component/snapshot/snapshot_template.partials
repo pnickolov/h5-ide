@@ -33,13 +33,13 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} Snapshot {{/if}}?</div>
+    <div class="modal-text-major">{{i18n "PROP_DELETE_SNAPSHOT_1"}}{{#if selectedId}}{{selectedId}}{{else}}{{i18n "PROP_DELETE_SNAPSHOT_2"}}{{selectedCount}}{{i18n "PROP_DELETE_SNAPSHOT_3"}}{{/if}}?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP_LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "PROP_LBL_DELETING"}}</button>
     </div>
 </div>
 
@@ -71,11 +71,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP_LBL_CREATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Creating...</button>
+            <button class="btn" disabled>{{i18n "PROP_LBL_CREATING"}}</button>
         </div>
     </div>
 </div>
@@ -113,11 +113,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="duplicate" disabled>Duplicate</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="duplicate" disabled>{{i18n "PROP_LBL_DUPLICATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Duplicating...</button>
+            <button class="btn" disabled>{{i18n "PROP_LBL_DUPLICATING"}}</button>
         </div>
     </div>
 </div>

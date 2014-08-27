@@ -101,6 +101,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
     isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
 
+    isInvalidAmiId : ( amiId )-> @__markedIds[ amiId ]
+
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
 
     saveInvalidAmiId : ()->

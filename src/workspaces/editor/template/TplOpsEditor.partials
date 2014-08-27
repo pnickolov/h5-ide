@@ -197,6 +197,13 @@
     </ul>
   </div>
 </div>
+
+<section style="margin:5px 5px 20px 8px;">
+  <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
+  <label for="MonitorImportApp">Monitor and report external resource change of this app</label>
+  <i class="icon-info tooltip" data-tooltip="If resource has been changed outside VisualOps, an email notification will be sent to you." style="color:#148BE6;vertical-align:-3px;"></i>
+</section>
+
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->

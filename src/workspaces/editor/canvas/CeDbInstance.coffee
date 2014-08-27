@@ -216,7 +216,16 @@ define [
 
       # Update restore Image
       $r = @$el.children(".dbrestore")
-      CanvasManager.toggle $r, m.autobackup() isnt 0 and !!m.get("appId")
+      enableRestore = m.autobackup() isnt 0 and !!m.get("appId")
+      CanvasManager.toggle $r, enableRestore
+      if enableRestore
+        CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+
+      appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+      if appData
+        penddingObj = appData.get('PendingModifiedValues')
+        if (appData.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+          CanvasManager.toggle @$el.children(".dbrestore"), false
 
       @updateState()
 

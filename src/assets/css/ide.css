@@ -7094,6 +7094,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin-bottom: 20px; }
     .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
       line-height: 30px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .modal-db-instance-restore-no-restore {
+    width: 100%;
+    text-align: center;
+    margin-top: 55px; }
 
 /* General Style for Property Panel List */
 .property-list li {

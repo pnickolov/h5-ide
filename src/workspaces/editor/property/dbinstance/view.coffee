@@ -86,103 +86,126 @@ define [ 'ApiRequest'
 
             that = @
 
-            lastestRestoreTime = new Date(+@appModel.get('LatestRestorableTime'))
+            penddingObj = @appModel.get('PendingModifiedValues')
+            noRestore = (not @appModel.get('LatestRestorableTime')) or (@appModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
 
-            dbRestoreTime = @resModel.get('dbRestoreTime')
+            if noRestore
 
-            if dbRestoreTime
-                currentTime = new Date(dbRestoreTime)
-
-            else
-                currentTime = lastestRestoreTime
-
-            lastestYear = lastestRestoreTime.getFullYear()
-            lastestMonth = lastestRestoreTime.getMonth() + 1
-            lastestDay = lastestRestoreTime.getDate()
-
-            customYear = currentTime.getFullYear()
-            customMonth = currentTime.getMonth() + 1
-            customDay = currentTime.getDate()
-
-            customYearStr = if String(customYear).length is 1 then "0#{customYear}" else customYear
-            customMonthStr = if String(customMonth).length is 1 then "0#{customMonth}" else customMonth
-            customDayStr = if String(customDay).length is 1 then "0#{customDay}" else customDay
-
-            timezone = -((new Date()).getTimezoneOffset() / 60)
-            if timezone > 0
-                timezone = "+#{timezone}"
-            else
-                timezone = "#{timezone}"
-
-            hourStr = String(currentTime.getHours())
-            minuteStr = String(currentTime.getMinutes())
-            secondStr = String(currentTime.getSeconds())
-
-            modal = new Modal({
-                title        : "Restore DB Instance Config"
-                template     : template_component.modalRestoreConfirm({
-                    lastest: lastestRestoreTime.toString()
-                    custom: not dbRestoreTime
-                    hour: if hourStr.length is 1 then "0#{hourStr}" else hourStr
-                    minute: if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
-                    second: if secondStr.length is 1 then "0#{secondStr}" else secondStr
-                    timezone: timezone
+                modal = new Modal({
+                    title        : "Restore DB Instance Config"
+                    template     : template_component.modalRestoreConfirm({
+                        noRestore: noRestore
+                    })
+                    confirm      : {text : "Confirm"}
+                    disableClose : true
+                    disableConfirm: true
+                    width        : "570"
+                    onCancel: () ->
+                        that.resModel.remove()
+                    onClose: () ->
+                        that.resModel.remove()
                 })
-                confirm      : {text : "Confirm"}
-                disableClose : true
-                width        : "570"
-                onConfirm : ()->
-                    isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
-                    if isCustomTime
-                        dateStr = $('.modal-db-instance-restore-config .datepicker').val()
-                        selectedDate = new Date(dateStr)
-                        hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
-                        minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
-                        second = $('.modal-db-instance-restore-config .timepicker.second').val()
-                        selectedDate.setHours(Number(hour))
-                        selectedDate.setMinutes(Number(minute))
-                        selectedDate.setSeconds(Number(second))
-                        that.resModel.set('dbRestoreTime', selectedDate.toISOString())
-                    else
-                        that.resModel.set('dbRestoreTime', '')
-                    that.resModel.isRestored = true
-                    modal.close()
-                onCancel: () ->
-                    if not that.resModel.isRestored
-                        that.resModel.remove()
-                onClose: () ->
-                    if not that.resModel.isRestored
-                        that.resModel.remove()
-            })
-            # bind datetime picker event
-            $('.modal-db-instance-restore-config .datepicker').datetimepicker({
-                timepicker: false,
-                defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
-                maxDate: "#{lastestMonth}/#{lastestDay}/#{lastestYear}",
-                closeOnDateSelect: true,
-                format: 'm/d/Y',
-                formatDate:'m/d/Y',
-                value : "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
-            })
-            $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
-                $('#modal-db-instance-restore-radio-custom').prop('checked', true)
 
-            $('.modal-db-instance-restore-config .timepicker').on 'blur', (event) ->
+            else
 
-                valStr = $(event.target).val()
-                currentValue = Number(valStr)
-                maxValue = 59
-                if $(event.target).hasClass('hour')
-                    maxValue = 23
-                if currentValue > maxValue
-                    $(event.target).val(maxValue)
-                else if not currentValue or currentValue < 0
-                    $(event.target).val('00')
+                lastestRestoreTime = new Date(+@appModel.get('LatestRestorableTime'))
 
-                newValStr = $(event.target).val()
-                if newValStr.length < 2
-                    newValStr = "0#{newValStr}"
-                    $(event.target).val(newValStr)
+                dbRestoreTime = @resModel.get('dbRestoreTime')
+
+                if dbRestoreTime
+                    currentTime = new Date(dbRestoreTime)
+
+                else
+                    currentTime = lastestRestoreTime
+
+                lastestYear = lastestRestoreTime.getFullYear()
+                lastestMonth = lastestRestoreTime.getMonth() + 1
+                lastestDay = lastestRestoreTime.getDate()
+
+                customYear = currentTime.getFullYear()
+                customMonth = currentTime.getMonth() + 1
+                customDay = currentTime.getDate()
+
+                customYearStr = if String(customYear).length is 1 then "0#{customYear}" else customYear
+                customMonthStr = if String(customMonth).length is 1 then "0#{customMonth}" else customMonth
+                customDayStr = if String(customDay).length is 1 then "0#{customDay}" else customDay
+
+                timezone = -((new Date()).getTimezoneOffset() / 60)
+                if timezone > 0
+                    timezone = "+#{timezone}"
+                else
+                    timezone = "#{timezone}"
+
+                hourStr = String(currentTime.getHours())
+                minuteStr = String(currentTime.getMinutes())
+                secondStr = String(currentTime.getSeconds())
+
+                modal = new Modal({
+                    title        : "Restore DB Instance Config"
+                    template     : template_component.modalRestoreConfirm({
+                        lastest: lastestRestoreTime.toString()
+                        custom: not dbRestoreTime
+                        hour: if hourStr.length is 1 then "0#{hourStr}" else hourStr
+                        minute: if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
+                        second: if secondStr.length is 1 then "0#{secondStr}" else secondStr
+                        timezone: timezone
+                        noRestore: noRestore
+                    })
+                    confirm      : {text : "Confirm"}
+                    disableClose : true
+                    width        : "570"
+                    onConfirm : ()->
+                        isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
+                        if isCustomTime
+                            dateStr = $('.modal-db-instance-restore-config .datepicker').val()
+                            selectedDate = new Date(dateStr)
+                            hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
+                            minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
+                            second = $('.modal-db-instance-restore-config .timepicker.second').val()
+                            selectedDate.setHours(Number(hour))
+                            selectedDate.setMinutes(Number(minute))
+                            selectedDate.setSeconds(Number(second))
+                            that.resModel.set('dbRestoreTime', selectedDate.toISOString())
+                        else
+                            that.resModel.set('dbRestoreTime', '')
+                        that.resModel.isRestored = true
+                        modal.close()
+                    onCancel: () ->
+                        if not that.resModel.isRestored
+                            that.resModel.remove()
+                    onClose: () ->
+                        if not that.resModel.isRestored
+                            that.resModel.remove()
+                })
+                # bind datetime picker event
+                $('.modal-db-instance-restore-config .datepicker').datetimepicker({
+                    timepicker: false,
+                    defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
+                    maxDate: "#{lastestMonth}/#{lastestDay}/#{lastestYear}",
+                    closeOnDateSelect: true,
+                    format: 'm/d/Y',
+                    formatDate:'m/d/Y',
+                    value : "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
+                })
+                $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
+                    $('#modal-db-instance-restore-radio-custom').prop('checked', true)
+
+                $('.modal-db-instance-restore-config .timepicker').on 'blur', (event) ->
+
+                    valStr = $(event.target).val()
+                    currentValue = Number(valStr)
+                    maxValue = 59
+                    if $(event.target).hasClass('hour')
+                        maxValue = 23
+                    if currentValue > maxValue
+                        $(event.target).val(maxValue)
+                    else if not currentValue or currentValue < 0
+                        $(event.target).val('00')
+
+                    newValStr = $(event.target).val()
+                    if newValStr.length < 2
+                        newValStr = "0#{newValStr}"
+                        $(event.target).val(newValStr)
 
             return false
 

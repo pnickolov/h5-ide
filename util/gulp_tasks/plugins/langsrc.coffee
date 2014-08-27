@@ -11,45 +11,60 @@ coffee      = require("gulp-coffee")
 
 
 buildLangSrc = require("./lang")
+cacheForLang = {}
+cwd = base = ""
+pipeline = null
+compiled = false
+langDest = null
 
-module.exports = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
+langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
   if useCache
     startPipeline = cached( coffee() )
   else
     startPipeline = coffee()
 
-  langCache = {}
+  cacheForLang = {}
+  langDest = dest
 
   pipeline = startPipeline.pipe es.through ( file )->
-
 
     ctx = vm.createContext({module:{}})
     try
       vm.runInContext( file.contents.toString("utf8"), ctx )
-      deepExtend langCache, ctx.module.exports
+      deepExtend cacheForLang, ctx.module.exports
     catch e
       console.log e
       console.log gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid"
 
     if shouldLog
-      console.log util.compileTitle(), "lang-souce/*.coffee"
+      console.log util.compileTitle(), file.relative
 
-    writeFile = ( p1, p2 ) ->
-      cwd = process.cwd()
-      pipeline.emit "data", new gutil.File({
-        cwd      : file.cwd
-        base     : file.base
-        path     : p1
-        contents : new Buffer( p2 )
-      })
-      null
+    cwd = file.cwd
+    base = file.base
+    if compiled then langWrite()
 
-    if buildLangSrc(writeFile, langCache) is false and emitError
-      pipeline.emit "error", "LangSrc build failure"
     null
 
 
-  pipeline.pipe( gulp.dest(dest) )
-
-
   startPipeline
+
+langWrite = () ->
+  writeFile = ( p1, p2 ) ->
+    pipeline.emit "data", new gutil.File({
+      cwd      : cwd
+      base     : base
+      path     : p1
+      contents : new Buffer( p2 )
+    })
+    compiled = true
+    null
+
+  if buildLangSrc(writeFile, cacheForLang) is false and emitError
+    pipeline.emit "error", "LangSrc build failure"
+
+  pipeline.pipe( gulp.dest(langDest) )
+
+module.exports = {
+  langCache: langCache
+  langWrite: langWrite
+}

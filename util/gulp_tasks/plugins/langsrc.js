@@ -1,5 +1,5 @@
 (function() {
-  var buildLangSrc, cached, coffee, es, gulp, gutil, util, vm;
+  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langWrite, pipeline, util, vm;
 
   util = require("./util");
 
@@ -9,6 +9,8 @@
 
   vm = require("vm");
 
+  deepExtend = require('deep-extend');
+
   gulp = require("gulp");
 
   gutil = require("gulp-util");
@@ -17,8 +19,18 @@
 
   buildLangSrc = require("./lang");
 
-  module.exports = function(dest, useCache, shouldLog, emitError) {
-    var pipeline, startPipeline;
+  cacheForLang = {};
+
+  cwd = base = "";
+
+  pipeline = null;
+
+  compiled = false;
+
+  langDest = null;
+
+  langCache = function(dest, useCache, shouldLog, emitError) {
+    var startPipeline;
     if (dest == null) {
       dest = ".";
     }
@@ -36,38 +48,55 @@
     } else {
       startPipeline = coffee();
     }
+    cacheForLang = {};
+    langDest = dest;
     pipeline = startPipeline.pipe(es.through(function(file) {
-      var ctx, e, writeFile;
-      if (shouldLog) {
-        console.log(util.compileTitle(), "lang-souce.coffee");
-      }
+      var ctx, e;
       ctx = vm.createContext({
         module: {}
       });
       try {
         vm.runInContext(file.contents.toString("utf8"), ctx);
+        deepExtend(cacheForLang, ctx.module.exports);
       } catch (_error) {
         e = _error;
+        console.log(e);
         console.log(gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid");
       }
-      writeFile = function(p1, p2) {
-        var cwd;
-        cwd = process.cwd();
-        pipeline.emit("data", new gutil.File({
-          cwd: file.cwd,
-          base: file.base,
-          path: p1,
-          contents: new Buffer(p2)
-        }));
-        return null;
-      };
-      if (buildLangSrc(writeFile, ctx.module.exports) === false && emitError) {
-        pipeline.emit("error", "LangSrc build failure");
+      if (shouldLog) {
+        console.log(util.compileTitle(), file.relative);
+      }
+      cwd = file.cwd;
+      base = file.base;
+      if (compiled) {
+        langWrite();
       }
       return null;
     }));
-    pipeline.pipe(gulp.dest(dest));
     return startPipeline;
+  };
+
+  langWrite = function() {
+    var writeFile;
+    writeFile = function(p1, p2) {
+      pipeline.emit("data", new gutil.File({
+        cwd: cwd,
+        base: base,
+        path: p1,
+        contents: new Buffer(p2)
+      }));
+      compiled = true;
+      return null;
+    };
+    if (buildLangSrc(writeFile, cacheForLang) === false && emitError) {
+      pipeline.emit("error", "LangSrc build failure");
+    }
+    return pipeline.pipe(gulp.dest(langDest));
+  };
+
+  module.exports = {
+    langCache: langCache,
+    langWrite: langWrite
   };
 
 }).call(this);

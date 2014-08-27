@@ -92,24 +92,45 @@ define [ 'ApiRequest'
 
             if dbRestoreTime
                 currentTime = new Date(dbRestoreTime)
+
             else
                 currentTime = lastestRestoreTime
 
-            lastestYear = currentTime.getFullYear()
-            lastestMonth = currentTime.getMonth() + 1
-            lastestDay = currentTime.getDate()
+            lastestYear = lastestRestoreTime.getFullYear()
+            lastestMonth = lastestRestoreTime.getMonth() + 1
+            lastestDay = lastestRestoreTime.getDate()
+
+            customYear = currentTime.getFullYear()
+            customMonth = currentTime.getMonth() + 1
+            customDay = currentTime.getDate()
+
+            customYearStr = if String(customYear).length is 1 then "0#{customYear}" else customYear
+            customMonthStr = if String(customMonth).length is 1 then "0#{customMonth}" else customMonth
+            customDayStr = if String(customDay).length is 1 then "0#{customDay}" else customDay
+
+            timezone = -((new Date()).getTimezoneOffset() / 60)
+            if timezone > 0
+                timezone = "+#{timezone}"
+            else
+                timezone = "#{timezone}"
+
+            hourStr = String(currentTime.getHours())
+            minuteStr = String(currentTime.getMinutes())
+            secondStr = String(currentTime.getSeconds())
 
             modal = new Modal({
                 title        : "Restore DB Instance Config"
                 template     : template_component.modalRestoreConfirm({
-                    lastest: if dbRestoreTime then "" else lastestRestoreTime.toString()
-                    hour: currentTime.getHours()
-                    minute: currentTime.getHours()
-                    second: currentTime.getSeconds()
+                    lastest: lastestRestoreTime.toString()
+                    custom: not dbRestoreTime
+                    hour: if hourStr.length is 1 then "0#{hourStr}" else hourStr
+                    minute: if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
+                    second: if secondStr.length is 1 then "0#{secondStr}" else secondStr
+                    timezone: timezone
                 })
                 confirm      : {text : "Confirm"}
                 disableClose : true
-                width        : "550"
+                width        : "570"
                 onConfirm : ()->
                     isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
                     if isCustomTime
@@ -129,11 +150,12 @@ define [ 'ApiRequest'
             # bind datetime picker event
             $('.modal-db-instance-restore-config .datepicker').datetimepicker({
                 timepicker: false,
-                defaultDate: "#{lastestYear}/#{lastestMonth}/#{lastestDay}",
-                # maxDate: lastestRestoreTime,
+                defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
+                maxDate: "#{lastestMonth}/#{lastestDay}/#{lastestYear}",
                 closeOnDateSelect: true,
                 format: 'm/d/Y',
-                value : "#{lastestDay}/#{lastestMonth}/#{lastestYear}"
+                formatDate:'m/d/Y',
+                value : "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
             })
             $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
                 $('#modal-db-instance-restore-radio-custom').prop('checked', true)
@@ -377,6 +399,7 @@ define [ 'ApiRequest'
             attr.isCanPromote = @isCanPromote()
             attr.isPromoted = @isPromoted()
             attr.isPromote = @isCanPromote() or @isPromoted()
+            attr.isRestoreDB = if @resModel.getSourceDBForRestore() then true else false
 
             attr
 

@@ -888,7 +888,7 @@ td.table-action a.btn {
 /* End of General Style for Property Panel List */
 /* Secondary Panel */
 .add-rule,
-.property-btn-get-system-log
+.property-btn-get-system-log,
 .property-btn-db-restore-config {
   display: inline-block;
   width: 30px;
@@ -7092,6 +7092,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
     margin-top: -5px;
     margin-bottom: 20px; }
+    .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
+      line-height: 30px; }
 
 /* General Style for Property Panel List */
 .property-list li {

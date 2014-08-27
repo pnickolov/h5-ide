@@ -176,15 +176,15 @@ define [
 
       if option.master
 
-        if not option.isRestore
-          @copyMaster option.master
-          @setMaster option.master
-        else
-          @restoreMaster option.master
+        # if not option.isRestore
+        #   @copyMaster option.master
+        #   @setMaster option.master
+        # else
+        #   @restoreMaster option.master
 
-        # @copyMaster option.master
-        # # @setMaster option.master
-        # @setSourceDBForRestore option.master
+        @copyMaster option.master
+        # @setMaster option.master
+        @setSourceDBForRestore option.master
 
       else if option.createByUser
         # Default Sg

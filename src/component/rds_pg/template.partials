@@ -92,7 +92,7 @@
 <!-- {{slide_reset}} -->
 <div class="slide-reset" data-bind="true">
     <div class="formart_toolbar_modal" data-type="true">
-        <div class="modal-text-major">Do you confirm to reset all parameters for {{name}} to their defaults?</div>
+        <div class="modal-text-major">{{i18n "PROP_DBPG_CONFIRM_RESET_1"}}{{name}}{{i18n "PROP_DBPG_CONFIRM_RESET_2"}}</div>
         <div class="init action">
             <button class="btn btn-red do-action" data-action="reset">Reset</button>
             <button class="btn btn-silver cancel">{{i18n "PROP_LBL_CANCEL"}}</button>
@@ -173,7 +173,7 @@
                         {{/ifCond}}
                     </div>
                     <div class="prop_main">
-                        <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                        <div class="prop_sub">{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_1"}}{{#ifCond ApplyType "dynamic"}}{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_2"}}{{else}}{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_3"}}{{/ifCond}}</div>
                     </div>
                 </td>
             </tr>
@@ -250,7 +250,7 @@
                     {{/ifCond}}
                 </div>
                 <div class="prop_main">
-                    <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                    <div class="prop_sub">{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_1"}}{{#ifCond ApplyType "dynamic"}}{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_2"}}{{else}}{{i18n "PROP_DBPG_APPLY_IMMEDIATELY_3"}}{{/ifCond}}</div>
                 </div>
             </td>
         </tr>

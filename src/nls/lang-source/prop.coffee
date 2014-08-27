@@ -2153,6 +2153,31 @@ module.exports =
       en: "Parameter Group Name"
       zh: ""
 
+    PROP_DBPG_CONFIRM_RESET_1:
+      en: "Do you confirm to reset all parameters for "
+      zh: ""
+
+    PROP_DBPG_CONFIRM_RESET_2:
+      en: " to their defaults?"
+      zh: ""
+
+    PROP_DBPG_APPLY_IMMEDIATELY_1:
+      en: "Changes will apply "
+      zh: ""
+
+    PROP_DBPG_APPLY_IMMEDIATELY_2:
+      en: "immediately"
+      zh: ""
+
+    PROP_DBPG_APPLY_IMMEDIATELY_3:
+      en: "after rebooting"
+      zh: ""
+
+
+
+
+
+
     PROP_DBPG_SET_DESC:
       en: "Description"
       zh: ""

@@ -128,62 +128,56 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
       elb = @getTarget( constant.RESTYPE.ELB )
 
       if ami.type is constant.RESTYPE.LC
-        lcUsage = ami.connectionTargets("LcUsage")
-        if lcUsage.length>0
-          asg    = lcUsage[0]
-          subnet = asg.parent()
-      else
-        subnet = ami.parent()
+        @listenTo ami, "change:expandedList", @updateLcSubnetAsso
+        @listenTo ami, "change:connections",  @updateLcSubnetAssoIfNeeded
 
-      connectedSbs = elb.connectionTargets("ElbSubnetAsso")
-
-      for sb in subnet.parent().children()
-        if connectedSbs.indexOf( sb ) isnt -1
-          # Found a subnet in this AZ that is connected to the Elb, do nothing
-          foundSubnet = true
-          break
-
-      if not foundSubnet
-        new ElbSubnetAsso( subnet, elb )
-
-      # If there's a ElbAsso created for Lc and Elb
-      # We also try to connect the Elb to any expanded Asg
-      if ami.type is constant.RESTYPE.LC and asg
-        for asg in asg.get("expandedList")
-          new ElbAmiAsso( asg, elb )
-      null
-
-    remove : ( option )->
-      # If the line is not deleted by the user or because of the Lc is removed.
-      # Then we do nothing.
-      if option and option.reason.type isnt constant.RESTYPE.LC
-        ConnectionModel.prototype.remove.apply this, arguments
+        # Only update subnet when the asso is created by user
+        if option.createByUser
+          @updateLcSubnetAsso()
         return
 
-      if @getOtherTarget(constant.RESTYPE.ELB).type is constant.RESTYPE.LC
-        lcUsage = @getTarget(constant.RESTYPE.LC).connectionTargets("LcUsage")
-        if lcUsage
-          expAsg = lcUsage[0].get("expandedList")
-          if expAsg and expAsg.length>0
-            # The ElbAsso is removed by the user.
-            expAsg = expAsg[0]
-            if expAsg and not expAsg.isRemoved()
-              # If the user is removing an ElbAsso from Elb to ExpandedAsg.
-              # Then we just delete the ElbAsso from Elb to Lc
-              elb = @getTarget( constant.RESTYPE.ELB )
-              lc  = expAsg.getLc()
-              (new ElbAmiAsso( elb, lc )).remove( reason = { reason : this } )
-              return
+      else
+        connectedSbs = elb.connectionTargets("ElbSubnetAsso")
 
-        lc = @getTarget constant.RESTYPE.LC
-        if lc
-          # The user is removing an ElbAsso from Elb to Lc
-          # Remove all the shadow ElbAsso from Elb to ExpandedAsg
-          elb    = @getTarget( constant.RESTYPE.ELB )
-          reason = { reason : this }
+        for sb in ami.parent().parent().children()
+          if connectedSbs.indexOf( sb ) isnt -1
+            # Found a subnet in this AZ that is connected to the Elb, do nothing
+            foundSubnet = true
+            break
 
-      ConnectionModel.prototype.remove.apply this, arguments
-      null
+        if not foundSubnet
+          new ElbSubnetAsso( ami.parent(), elb )
+
+        return
+
+    updateLcSubnetAssoIfNeeded : ( cn )-> if cn.type is "LcUsage" then @updateLcSubnetAsso()
+    updateLcSubnetAsso : ()->
+      # Do nothing if the design is deserializing.
+      if @design().initializing() then return
+
+      elb = @getTarget( constant.RESTYPE.ELB )
+      lc  = @getTarget( constant.RESTYPE.LC )
+      azs = lc.design().componentsOfType( constant.RESTYPE.AZ )
+      azMap = {}
+      for az in azs
+        azName = az.get("name")
+        for subnet in az.children()
+          for e in subnet.connectionTargets( "ElbSubnetAsso" )
+            if e is elb
+              azMap[ azName ] = true
+              break
+          if azMap[ azName ] then break
+
+      for asg in lc.connectionTargets("LcUsage")
+        asgs = asg.get("expandedList").slice(0)
+        asgs.push( asg )
+        for asg in asgs
+          azName = asg.parent().parent().get("name")
+          if not azMap[ azName ]
+            new ElbSubnetAsso( asg.parent(), elb )
+            azMap[ azName ] = true
+
+      return
 
     serialize : ( components )->
       instance = @getTarget( constant.RESTYPE.INSTANCE )

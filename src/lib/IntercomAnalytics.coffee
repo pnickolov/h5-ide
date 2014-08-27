@@ -16,6 +16,7 @@ define [ "jquery" ], ()->
     use_visualops  : true
     app_to_stack   : true
     version        : true
+    timezone       : true
 
 
   IntercomAnalytics = {

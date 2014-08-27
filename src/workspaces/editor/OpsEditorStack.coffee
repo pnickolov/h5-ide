@@ -14,6 +14,7 @@ define [
     title : ()-> (@design || @opsModel).get("name") + " - stack"
 
     isReady : ()->
+      if @__hasAdditionalData then return true
       if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false
 
       region      = @opsModel.get("region")
@@ -56,7 +57,7 @@ define [
       for uid, comp of json.component
         if comp.type is constant.RESTYPE.INSTANCE or comp.type is constant.RESTYPE.LC
           imageId = comp.resource.ImageId
-          if imageId and not cln.get( imageId )
+          if imageId and not cln.get( imageId ) and not cln.isInvalidAmiId( imageId )
             return false
 
       true

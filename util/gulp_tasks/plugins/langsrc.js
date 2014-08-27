@@ -1,5 +1,5 @@
 (function() {
-  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langWrite, pipeline, util, vm;
+  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langWrite, langemitError, pipeline, util, vm;
 
   util = require("./util");
 
@@ -23,11 +23,9 @@
 
   cwd = base = "";
 
-  pipeline = null;
+  langemitError = pipeline = langDest = null;
 
   compiled = false;
-
-  langDest = null;
 
   langCache = function(dest, useCache, shouldLog, emitError) {
     var startPipeline;
@@ -50,6 +48,7 @@
     }
     cacheForLang = {};
     langDest = dest;
+    langemitError = emitError;
     pipeline = startPipeline.pipe(es.through(function(file) {
       var ctx, e;
       ctx = vm.createContext({
@@ -88,7 +87,7 @@
       compiled = true;
       return null;
     };
-    if (buildLangSrc(writeFile, cacheForLang) === false && emitError) {
+    if (buildLangSrc(writeFile, cacheForLang) === false && langemitError) {
       pipeline.emit("error", "LangSrc build failure");
     }
     return pipeline.pipe(gulp.dest(langDest));

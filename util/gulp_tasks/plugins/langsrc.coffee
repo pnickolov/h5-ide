@@ -13,9 +13,8 @@ coffee      = require("gulp-coffee")
 buildLangSrc = require("./lang")
 cacheForLang = {}
 cwd = base = ""
-pipeline = null
+langemitError = pipeline = langDest = null
 compiled = false
-langDest = null
 
 langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
   if useCache
@@ -25,6 +24,7 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
 
   cacheForLang = {}
   langDest = dest
+  langemitError = emitError
 
   pipeline = startPipeline.pipe es.through ( file )->
 
@@ -59,7 +59,7 @@ langWrite = () ->
     compiled = true
     null
 
-  if buildLangSrc(writeFile, cacheForLang) is false and emitError
+  if buildLangSrc(writeFile, cacheForLang) is false and langemitError
     pipeline.emit "error", "LangSrc build failure"
 
   pipeline.pipe( gulp.dest(langDest) )

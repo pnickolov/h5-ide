@@ -228,13 +228,17 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
 
   # Layout Logics
   buildHierachy = ( item, forceReset = true, parentX = 0, parentY = 0 )->
+    def = Defination[ item.type ] || {}
+
     obj =
       component : item
       type      : item.type
       x         : Math.max( item.x() - parentX, 0 )
       y         : Math.max( item.y() - parentY, 0 )
-      width     : item.width()
-      height    : item.height()
+      width     : item.width()  || def.width  || 0
+      height    : item.height() || def.height || 0
+
+    obj.existing = !!obj.x
 
     if forceReset
       obj.x = obj.y = obj.width = obj.height = 0
@@ -249,7 +253,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         children = sort.call item, children
 
       for ch in children
-        if Defination[ ch.type ]?.ignore then continue
+        if def.ignore then continue
 
         obj.children.push buildHierachy( ch, forceReset, item.x(), item.y() )
 
@@ -421,14 +425,32 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         else
           arrangeGroupPartial( ch )
 
-      if item.children[0].type is "ExsitingItem"
+      firstChild = item.children[0]
+      if firstChild.type is "ExsitingItem"
+        def    = Defination[ item.type ] || {}
+        spaceX = def.spaceX || def.space  || 0
+        spaceY = def.spaceY || def.space  || 0
+        firstChild.width  -= spaceX
+        firstChild.height -= spaceY
+
         size = DefaultMethods.ArrangeBinPack.call item, item.children
         for ch, idx in item.children
           if idx isnt 0
             ch.x += 2
             ch.y += 2
-        size.width  += 4
-        size.height += 4
+
+        firstChild.width  += spaceX
+        firstChild.height += spaceY
+
+        size.width  = Math.max( firstChild.width,  size.width )
+        size.height = Math.max( firstChild.height, size.height )
+
+        if item.children.length > 1
+          size.width  += 4
+          size.height += 4
+        else
+          size.width  += 2
+          size.height += 2
       else
         arrangeMethod = __GetMethod( def.arrangeMethod ) || DefaultArrangeMethod
         size = arrangeMethod.call item, item.children
@@ -469,6 +491,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     groupChildrenPartial( hierachy )
     arrangeGroupPartial( hierachy )
     @applyGeometry( hierachy, 0, 0 )
+    console.info "Partially autolayout data:", hierachy
     line.update() for uid, line of @__itemLineMap
     return
 

@@ -249,7 +249,7 @@ module.exports =
       zh: "DB Instance"
 
     TOOL_POP_START_MISSING_SNAPSHOT_2:
-      en: "’s final snapshot is missing. This DB instance cannot be restored."
+      en: "'s final snapshot is missing. This DB instance cannot be restored."
       zh: "的最终 snapshot 不存在， 此 DBInstace 将无法恢复。"
 
 

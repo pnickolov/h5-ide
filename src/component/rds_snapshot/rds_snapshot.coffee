@@ -238,7 +238,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             afterDuplicate = @afterDuplicate.bind @
             accountNumber = App.user.attributes.account
             if not /^\d+$/.test accountNumber.split('-').join('')
-              notification('error', 'Please fill update your accountNumber to Numbered')
+              notification('error', lang.ide.PROP_DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
               return false
             @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
 
@@ -246,24 +246,24 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         afterCreated: (result,newSnapshot)->
             @manager.cancel()
             if result.error
-                notification 'error', "Create failed because of: "+result.msg
+                notification 'error', lang.ide.PROP_DB_SNAPSHOT_CREATE_FAILED +result.msg
                 return false
-            notification 'info', "New Snapshot is created successfully!"
+            notification 'info', lang.ide.PROP_DB_SNAPSHOT_CREATE_SUCCESS
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->
             currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
-                notification 'error', "Duplicate failed because of: "+ (result.awsResult || result.msg)
+                notification 'error', lang.ide.PROP_DB_SNAPSHOT_DUPLICATE_FAILED+ (result.awsResult || result.msg)
                 return false
             #cancelselect && fetch
             if result.attributes.region is currentRegion
                 @collection.add result
-                notification 'info', "New RDS Snapshot is duplicated successfully!"
+                notification 'info', lang.ide.PROP_DB_SNAPSHOT_DUPLICATE_SUCCESS
             else
                 @initManager()
-                notification 'info', 'New RDS Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created.'
+                notification 'info', lang.ide.PROP_DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION
 
         afterDeleted: (result)->
             deleteCount--
@@ -271,9 +271,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
+                    notification 'error', deleteErrorCount+ lang.ide.PROP_DB_SNAPSHOT_DELETE_FAILED
                 else
-                    notification 'info', "RDS Snapshot(s) Delete Successfully"
+                    notification 'info',  lang.ide.PROP_DB_SNAPSHOT_DELETE_SUCCESS
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()

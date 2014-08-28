@@ -2278,6 +2278,37 @@ module.exports =
       en: "Instance Creation Name"
       zh: ""
 
+    PROP_DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID:
+      en: "Please update your Account Number with number"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_CREATE_FAILED:
+      en: "Create failed because of :"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_CREATE_SUCCESS:
+      en: "New Snapshot is created successfully!"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DUPLICATE_FAILED:
+      en: "Duplicate failed because of :"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DUPLICATE_SUCCESS:
+      en: "New RDS snapshot is duplicated successfully!"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION:
+      en: "New RDS Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DELETE_FAILED:
+      en: " Snapshot failed to delete, Please try again later."
+      zh: " "
+
+    PROP_DB_SNAPSHOT_DELETE_SUCCESS:
+      en: "RDS Snapshot(s) Delete Successfully!"
+      zh: ""
 
     PROP_DBPG_RESMANAGER_FILTER:
       en: "Filter DB Engine by family name"

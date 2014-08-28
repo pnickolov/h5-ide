@@ -53,7 +53,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
         _getSelectedASGModelByLC = () ->
 
-            $asgDom = $('g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
+            $asgDom = $('#OpsEditor g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
             asgViewId = $asgDom.data('id')
             return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
             return null

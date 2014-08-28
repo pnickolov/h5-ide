@@ -91,7 +91,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
             null
           #use original KP to avoid diff
           if originalKpComp
-            if kpComp
+            if kpComp and originalKpComp.uid isnt kpComp.uid
               delete @generatedJson.component[kpComp.uid]
               @generatedJson.component[originalKpComp.uid] = originalKpComp
           else

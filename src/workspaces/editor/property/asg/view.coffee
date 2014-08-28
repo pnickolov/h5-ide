@@ -367,7 +367,7 @@ define [ '../base/view',
                 uid  = $("#property-asg-policy").data("uid")
 
                 if self.model.isDupPolicyName uid, name
-                    return "Duplicated policy name in this autoscaling group"
+                    return lang.parsley.DUPLICATED_POLICY_NAME
 
 
             $("#asg-policy-periods").on "change", () ->

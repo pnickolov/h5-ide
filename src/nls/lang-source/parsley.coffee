@@ -166,12 +166,86 @@ module.exports =
       en: "Volume name '%s' is already in using. Please use another one."
       zh: ""
 
+    RDS_VALUE_IS_NOT_ALLOWED:
+      en: "The value %s is not an allowed value."
+      zh: ""
+
+    OPTION_GROUP_NAME_INVALID:
+      en: "Option group name invalid"
+      zh: ""
+
+    OPTION_GROUP_DESCRIPTION_INVALID:
+      en: "Option group description invalid"
+      zh: ""
+
+    PROVIDE_VALID_TIME_VALUE:
+      en: "Provide a valid time value from 00:00 to 23:59."
+      zh: ""
+
+    MAX_LENGTH_IS_8:
+      en: "Max length is 8."
+      zh: ""
+
+    MAX_LENGTH_IS_64:
+      en: "Max length is 64."
+      zh: ""
+
+    MAX_LENGTH_IS_63:
+      en: "Max length is 63."
+      zh: ""
+
+    MUST_BEGIN_WITH_LETTER_OR_UNDERSCORE:
+      en: "Must begin with a letter or an underscore"
+      zh: ""
 
 
+    ALLOCATED_STORAGE_CANNOT_BE_REDUCED:
+      en: "Allocated storage cannot be reduced."
+      zh: ""
 
+    ALLOCATED_STORAGE_MUST_INCREASE_BY_AT_LEAST_10:
+      en: "Allocated storage must increase by at least 10%, for a new storage size of at least %s."
+      zh: ""
 
+    MUST_BE_AN_INTEGER_FROM_MIN_TO_MAX:
+      en: "Must be an integer from %s to %s"
+      zh: ""
 
+    SNAPSHOT_STORAGE_NEED_LARGE_THAN_ORIGINAL_VALUE:
+      en: "Snapshot storage need large than original value"
+      zh: ""
 
+    REQUIRE_AT_LEAST_1000_IOPS:
+      en: "Require at least 1000 IOPS"
+      zh: ""
+
+    SQLSERVER_IOPS_REQUIRES_A_MULTIPLE_OF_1000:
+      en: "SQL Server IOPS requires a multiple of 1000 and a multiple of 10 for Allocated Storage"
+      zh: ""
+
+    REQUIRE_IOPS_GB_RATIOS_BETWEEN_3_AND_10:
+      en: "Require IOPS / GB ratios between 3 and 10"
+      zh: ""
+
+    CANNOT_CONTAIN_CHARACTER_SPLASH:
+      en: "Cannot contain character /,\",@"
+      zh: ""
+
+    MUST_CONTAIN_FROM_MIN_TO_MAX_CHARACTERS:
+      en: "Must contain from %s to %s characters"
+      zh: ""
+
+    THIS_VALUE_CANNOT_BE_1434_3389_47001_49152_49156:
+      en: "This value can't be 1434, 3389, 47001, 49152-49156"
+      zh: ""
+
+    MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS_HYPHEN:
+      en: "Must contain from %s to %s alphanumeric characters or hyphens and first character must be a letter, cannot end with a hyphen or contain two consecutive hyphens"
+      zh: ""
+
+    MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS:
+      en: "Must be %s to %s alphanumeric characters and first character must be a letter"
+      zh: ""
 
 
 

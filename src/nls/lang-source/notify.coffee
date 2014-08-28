@@ -211,4 +211,24 @@ module.exports =
       en: "Delete Successfully"
       zh: ""
 
+    REMOVE_SUBSCRIPTION_SUCCEED:
+      en: "Remove Subscription Succeed."
+      zh: ""
+
+    SELECTED_XXX_SNS_TOPIC_ARE_DELETED:
+      en: "Selected %s SNS topic are deleted."
+      zh: ""
+
+    CREATE_SUBSCRIPTION_SUCCEED:
+      en: "Create Subscription Succeed"
+      zh: ""
+
+    CERTIFICATE_NAME_XXX_IS_INVALID:
+      en: "Certificate name %s is invalid"
+      zh: ""
+
+    CERTIFICATE_XXX_IS_UPLOADED:
+      en: "Certificate %s is uploaded"
+      zh: ""
+
 

@@ -67,6 +67,7 @@
       }
       cwd = file.cwd;
       base = file.base;
+      pipeline.pipe(gulp.dest(langDest));
       if (compiled) {
         langWrite();
       }
@@ -88,9 +89,8 @@
       return null;
     };
     if (buildLangSrc(writeFile, cacheForLang) === false && langemitError) {
-      pipeline.emit("error", "LangSrc build failure");
+      return pipeline.emit("error", "LangSrc build failure");
     }
-    return pipeline.pipe(gulp.dest(langDest));
   };
 
   module.exports = {

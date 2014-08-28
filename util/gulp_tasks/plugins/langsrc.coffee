@@ -41,6 +41,9 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
 
     cwd = file.cwd
     base = file.base
+
+    pipeline.pipe( gulp.dest(langDest) )
+
     if compiled then langWrite()
 
     null
@@ -61,8 +64,6 @@ langWrite = () ->
 
   if buildLangSrc(writeFile, cacheForLang) is false and langemitError
     pipeline.emit "error", "LangSrc build failure"
-
-  pipeline.pipe( gulp.dest(langDest) )
 
 module.exports = {
   langCache: langCache

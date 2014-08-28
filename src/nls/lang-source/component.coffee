@@ -293,3 +293,23 @@ module.exports =
     PROP_MSG_INFO_DELETE_SNAPSHOT_SUCCESSFULLY:
       en: "Delete Successfully"
       zh: ""
+
+    COMPONENT_CREATE_KEYPAIR:
+      en: "Create Key Pair"
+      zh: ""
+
+    COMPONENT_IMPORT_KEY_PAIR:
+      en: "Import Key Pair"
+      zh: ""
+
+    COMPONENT_DELETE_KEY_PAIR:
+      en: "Delete"
+      zh: ""
+
+    COMPONENT_KEY_PAIR_COL_NAME:
+      en: "Name"
+      zh: ""
+
+    COMPONENT_KEY_PAIR_COL_FINGERPRINT:
+      en: "FingerPrint"
+      zh: "指纹"

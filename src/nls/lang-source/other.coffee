@@ -82,6 +82,10 @@ module.exports =
       en: "Manage other resources"
       zh: "资源"
 
+    RES_TIP_REFRESH_RESOURCE_LIST:
+      en: "Refresh resource list"
+      zh: ""
+
     RES_TIT_RESOURCES_MENU_KEYPAIR:
       en: "Manage Key Pairs..."
       zh: ""
@@ -1125,6 +1129,21 @@ VisualOps API. You cannot UNDO this action.'
       en: "Cancel"
       zh: ""
 
+    POP_SELECT_SUBNET_FOR_SUBNET_GROUP_TITLE:
+      en: "Select Subnet for Subnet Group"
+      zh: ""
+
+    POP_SELECT_SUBNET_FOR_SUBNET_GROUP_CONTENT:
+      en: "Add subnets from at least 2 different availability zones to this subnet group. "
+      zh: ""
+
+    POP_LBL_DONE:
+      en: "Done"
+      zh: "完成"
+
+    POP_LBL_CANCEL:
+      en: "Cancel"
+      zh: "取消"
 
     ##### RDS
 

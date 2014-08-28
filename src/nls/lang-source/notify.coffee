@@ -123,7 +123,7 @@ module.exports =
       en: "%s DhcpOptions failed to delete because of: %s"
       zh: ""
 
-    SUCCESSFULLY_DELETE_DHCP:
+    DELETE_SUCCESSFULLY:
       en: "Delete Successfully"
       zh: ""
 
@@ -146,4 +146,69 @@ module.exports =
     XXX_IS_IMPORTED:
       en: "%s is imported."
       zh: ""
+
+    PARAMETER_GROUP_UPDATED_FAILED:
+      en: "Parameter Group updated failed because of %s"
+      zh: ""
+
+    PARAMETER_GROUP_IS_UPDATED:
+      en: "Parameter Group is updated."
+      zh: ""
+
+    CREATE_FAILED_BECAUSE_OF_XXX:
+      en: "Create failed because of: %s"
+      zh: ""
+
+    NEW_RDS_PARAMETER_GROUP_IS_CREATED_SUCCESSFULLY:
+      en: "New RDS Parameter Group is created successfully!"
+      zh: ""
+
+    RDS_PARAMETER_GROUP_IS_RESET_SUCCESSFULLY:
+      en: "RDS Parameter Group is reset successfully!"
+      zh: ""
+
+
+
+
+
+    DB_SNAPSHOT_CREATE_FAILED:
+      en: "Create failed because of : %s"
+      zh: ""
+
+    DUPLICATE_FAILED_BECAUSE_OF_XXX:
+      en: "Duplicate failed because of : %s"
+      zh: ""
+
+    DB_SNAPSHOT_DUPLICATE_SUCCESS:
+      en: "New RDS snapshot is duplicated successfully!"
+      zh: ""
+
+    DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION:
+      en: "New RDS Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
+      zh: ""
+
+    XXX_SNAPSHOT_FAILED_TO_DELETE:
+      en: "%s Snapshot failed to delete, Please try again later."
+      zh: " "
+
+    DB_SNAPSHOT_DELETE_SUCCESS:
+      en: "RDS Snapshot(s) Delete Successfully!"
+      zh: ""
+
+    NEW_SNAPSHOT_IS_CREATED_SUCCESSFULLY:
+      en: "New Snapshot is created successfully!"
+      zh: ""
+
+    INFO_DUPLICATE_SNAPSHOT_SUCCESS:
+      en: "New Snapshot is duplicated successfully"
+      zh: ""
+
+    INFO_ANOTHER_REGION_DUPLICATE_SNAPSHOT_SUCCESS:
+      en: "New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
+      zh: ""
+
+    INFO_DELETE_SNAPSHOT_SUCCESSFULLY:
+      en: "Delete Successfully"
+      zh: ""
+
 

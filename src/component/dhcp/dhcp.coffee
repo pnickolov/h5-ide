@@ -241,7 +241,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 if deleteErrorCount > 0
                     notification 'error', sprintf lang.notify.FAILED_TO_DELETE_DHCP, deleteErrorCount, result.awsResult
                 else
-                    notification 'info', lang.notify.SUCCESSFULLY_DELETE_DHCP
+                    notification 'info', lang.notify.DELETE_SUCCESSFULLY
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()

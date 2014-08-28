@@ -285,10 +285,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
     afterModify: (result)->
       if (result?.error)
-        notification 'error', "Parameter Group updated failed because of "+(result?.awsResult || result?.awsErrorCode || result?.msg)
+        notification 'error', sprintf lang.notify.PARAMETER_GROUP_UPDATED_FAILED, ( result?.awsResult || result?.awsErrorCode || result?.msg )
         @switchAction()
         return false
-      notification 'info', "Parameter Group is updated."
+      notification 'info', lang.notify.PARAMETER_GROUP_IS_UPDATED
       @manager.cancel()
 
     doAction: (action, checked)->
@@ -328,9 +328,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     afterCreated: (result)->
       @manager.cancel()
       if result.error
-        notification 'error', "Create failed because of: "+result.msg
+        notification 'error', sprintf lang.notify.CREATE_FAILED_BECAUSE_OF_XXX, result.msg
         return false
-      notification 'info', "New RDS Parameter Group is created successfully!"
+      notification 'info', lang.notify.NEW_RDS_PARAMETER_GROUP_IS_CREATED_SUCCESSFULLY
       #@collection.add newDbpg
 
     afterReset: (result)->
@@ -340,7 +340,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         notification 'error', result.awsResult
         return false
       #cancelselect && fetch
-      notification 'info', "RDS Parameter Group is reset successfully!"
+      notification 'info', lang.notify.RDS_PARAMETER_GROUP_IS_RESET_SUCCESSFULLY
 
     afterDeleted: (result)->
       deleteCount--
@@ -352,7 +352,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           @switchAction()
           deleteErrorCount = 0
         else
-          notification 'info', "Delete Successfully"
+          notification 'info', lang.notify.DELETE_SUCCESSFULLY
           @manager.unCheckSelectAll()
           deleteErrorCount = 0
           @manager.cancel()

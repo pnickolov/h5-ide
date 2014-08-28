@@ -25,7 +25,7 @@ define [
             taId += db.id
 
         nameStr = nameStr.slice 0, -2
-        Helper.message.error taId, i18n.TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION, nameStr
+        Helper.message.error taId, i18n.ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION, nameStr
 
 
     isAzConsistent = ( uid ) ->
@@ -38,7 +38,7 @@ define [
         if _.some(sbg.connectionTargets("SubnetgAsso"), ( sb )-> sb.parent().get( 'name' ) is azName)
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_AZ_NOT_CONSISTENT, db.get('name'), azName
+        Helper.message.error uid, i18n.ERROR_RDS_AZ_NOT_CONSISTENT, db.get('name'), azName
 
     isHaveEnoughIPForDB = (uid) ->
 
@@ -74,7 +74,7 @@ define [
         if resultSubnetAry.length
             return {
                 level: constant.TA.ERROR
-                info: sprintf(i18n.TA_MSG_ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB, resultSubnetAry.join(', '))
+                info: sprintf(i18n.ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB, resultSubnetAry.join(', '))
             }
 
         null
@@ -91,7 +91,7 @@ define [
             return {
                 uid: uid
                 level: constant.TA.ERROR
-                info: sprintf(i18n.TA_MSG_ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
+                info: sprintf(i18n.ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN, dbModel.get('name'), dbModel.master().get('name'))
             }
 
         return null
@@ -109,7 +109,7 @@ define [
         azs = _.map sbg.connectionTargets('SubnetgAsso'), (sb) -> sb.parent()
         return null if _.uniq(azs).length > 2
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
+        Helper.message.error uid, i18n.ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET, db.get('name')
 
     isBackupMaintenanceOverlap = ( uid ) ->
         db = Design.instance().component uid
@@ -150,7 +150,7 @@ define [
         else if backupStart >= maintenanceEnd or backupEnd <= maintenanceStart
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')
+        Helper.message.error uid, i18n.ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP, db.get('name')
 
 
     isMasterPasswordValid = ( uid ) ->
@@ -159,7 +159,7 @@ define [
 
         if password and  ( password is '****' or 8 <= password.length <= 41 ) then return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_MASTER_PASSWORD_INVALID, db.get('name')
+        Helper.message.error uid, i18n.ERROR_MASTER_PASSWORD_INVALID, db.get('name')
 
     isDBandOgBothModified = ( uid ) ->
         db = Design.instance().component uid
@@ -179,7 +179,7 @@ define [
         unless diff(dbOrigincomp, dbcomp) and diff(ogOrigincomp, ogcomp)
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_OG_DB_BOTH_MODIFIED, db.get('name'), og.get('name')
+        Helper.message.error uid, i18n.ERROR_OG_DB_BOTH_MODIFIED, db.get('name'), og.get('name')
 
 
 

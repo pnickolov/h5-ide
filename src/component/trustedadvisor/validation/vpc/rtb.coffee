@@ -16,7 +16,7 @@ define [ 'constant', 'MC', 'TaHelper', 'Design' ], ( CONST, MC, Helper, Design )
 		if subnets.length
 			for instance in connectedInstances
 				instanceName = instance.get 'name'
-				notices.push Helper.message.notice uid + instance.id, i18n.TA_MSG_NOTICE_RT_ROUTE_NAT, instanceName, rtbName, instanceName, rtbName
+				notices.push Helper.message.notice uid + instance.id, i18n.NOTICE_RT_ROUTE_NAT, instanceName, rtbName, instanceName, rtbName
 
 			return notices
 
@@ -41,7 +41,7 @@ define [ 'constant', 'MC', 'TaHelper', 'Design' ], ( CONST, MC, Helper, Design )
 
 				if (currentRouteDes is routeDes) or (idx is 0 and SubnetModel.isCidrConflict(currentRouteDes, routeDes))
 
-					tipInfo = sprintf i18n.TA_MSG_ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
+					tipInfo = sprintf i18n.ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
 					notices.push({
 						level: CONST.TA.ERROR
 						info: tipInfo

@@ -158,6 +158,7 @@ define [
 
     getLogContent: ( filename ) ->
         ApiRequest( 'rds_DownloadDBLogFilePortion', {
+            region_name: @resModel.design().region()
             db_identifier: @resModel.get( 'appId' )
             log_filename: filename
         } ).then ( ( result )->

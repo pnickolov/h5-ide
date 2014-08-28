@@ -62,16 +62,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           @generatedJson.agent.module.repo = App.user.get("repo")
           @generatedJson.agent.module.tag  = App.user.get("tag")
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
-
-        #patch for app_json
-        for id,comp of @generatedJson.component
-          if comp.type is constant.RESTYPE.ENI
-            eni = CloudResources(constant.RESTYPE.ENI,@__region ).where({id:comp.resource.NetworkInterfaceId})
-            if eni and eni.length>0 and not comp.resource.Attachment.AttachmentId
-              eni = eni[0].attributes
-              comp.resource.Attachment.AttachmentId = eni.attachment.attachmentId
-              console.warn "[patch app_json] fill AttachmentId of eni"
-          null
       else
         ### env:dev ###
         app_id = App.workspaces.getAwakeSpace().opsModel.get("id")
@@ -83,9 +73,9 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         console.log "Generated Json from frontend:", $.extend true, {}, @generatedJson
         ### env:dev:end ###
 
-
       return
 
+    ### env:dev ###
     __generateJsonFromRes : ( originalJson )->
       res = CloudResources.getAllResourcesForVpc( @__region, @category, originalJson )
       json = {
@@ -110,6 +100,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       json.layout    = res.layout
       json.name      = if originalJson then originalJson.name else "imported-" + @category
       return json
-
+    ### env:dev:end ###
 
   }

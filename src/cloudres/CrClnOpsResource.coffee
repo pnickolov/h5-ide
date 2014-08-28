@@ -103,9 +103,9 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         console.log "Generated Json from frontend:", $.extend true, {}, @generatedJson
         ### env:dev:end ###
 
-
       return
 
+    ### env:dev ###
     __generateJsonFromRes : ( originalJson )->
       res = CloudResources.getAllResourcesForVpc( @__region, @category, originalJson )
       json = {
@@ -130,6 +130,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       json.layout    = res.layout
       json.name      = if originalJson then originalJson.name else "imported-" + @category
       return json
-
+    ### env:dev:end ###
 
   }

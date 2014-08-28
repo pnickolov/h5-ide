@@ -113,7 +113,7 @@ define [ 'ApiRequest'
 
             else
 
-                lastestRestoreTime = new Date(+sourceDbAppModel.get('LatestRestorableTime'))
+                lastestRestoreTime = new Date(sourceDbAppModel.get('LatestRestorableTime'))
 
                 dbRestoreTime = @resModel.get('dbRestoreTime')
 

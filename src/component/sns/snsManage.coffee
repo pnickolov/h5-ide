@@ -294,12 +294,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         when "sqs"
                             placeholder = lang.ide.PROP_STACK_AMAZON_ARN
                             type        = lang.ide.PROP_STACK_SQS
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
+                            errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
 
                         when "arn"
                             placeholder = lang.ide.PROP_STACK_AMAZON_ARN
                             type        = lang.ide.PROP_STACK_ARN
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
+                            errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
 
                         when "email"
                             placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
@@ -314,19 +314,19 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                         when "sms"
                             placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
                             type        = lang.ide.PROP_STACK_USPHONE
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
+                            errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
 
                         when "http"
                             #$input.addClass "http"
                             placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
                             type        = lang.ide.PROP_STACK_HTTP
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+                            errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_URL
 
                         when "https"
                             #$input.addClass "https"
                             placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
                             type        = lang.ide.PROP_STACK_HTTPS
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+                            errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_URL
 
                     endPoint = that.M$ '#create-endpoint'
                     endPoint.attr "placeholder", placeholder

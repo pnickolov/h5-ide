@@ -68,10 +68,10 @@ define [ '../base/view',
 
             stackNameInput.parsley 'custom', ( val ) ->
                 if not MC.validate 'awsName',  val
-                    return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+                    return lang.parsley.SHOULD_BE_A_VALID_STACK_NAME
 
                 if not App.model.stackList().isNameAvailable( val )
-                    return sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'Stack', name
+                    return sprintf lang.parsley.TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'
                 @trigger 'STACK_NAME_CHANGED', name

@@ -67,7 +67,7 @@ define [ '../base/view',
 
             $target.parsley 'custom', ( val ) ->
                 if _.isNumber( +val ) and +val > 86400
-                    return lang.ide.PARSLEY_MAX_VALUE_86400
+                    return lang.parsley.MAX_VALUE_86400
                 null
 
             if $target.parsley 'validate'
@@ -264,7 +264,7 @@ define [ '../base/view',
                 uid  = $("#property-asg-policy").data("uid")
 
                 if self.model.isDupPolicyName uid, name
-                    return lang.ide.PARSLEY_DUPLICATED_POLICY_NAME
+                    return lang.parsley.DUPLICATED_POLICY_NAME
 
 
             $("#asg-policy-periods").on "change", () ->
@@ -488,21 +488,21 @@ define [ '../base/view',
 
             $min.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
+                    return lang.parsley.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val > + $max.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.parsley.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
 
             $max.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
+                    return lang.parsley.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val < + $min.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.parsley.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
 
             $capacity.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1
+                    return lang.parsley.DESIRED_CAPACITY_EQUAL_OR_GREATER_1
                 if + val < + $min.val() or + val > + $max.val()
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                    return lang.parsley.DESIRED_CAPACITY_IN_ALLOW_SCOPE
 
             if $( event.currentTarget ).parsley 'validateForm'
                 @model.setASGMin $min.val()

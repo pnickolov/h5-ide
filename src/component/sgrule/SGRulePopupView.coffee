@@ -154,27 +154,27 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
               dom: custom_protocal_dom
               method: ( val ) ->
                 if not MC.validate.portRange(val)
-                  return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_NUMBER
+                  return lang.parsley.MUST_BE_A_VALID_FORMAT_OF_NUMBER
                 if Number(val) < 0 or Number(val) > 255
-                  return lang.ide.PARSLEY_THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255
+                  return lang.parsley.THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255
                 null
             'tcp':
                 dom: tcp_port_dom
                 method: ( val ) ->
                   portAry = MC.validate.portRange(val)
                   if not portAry
-                      return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
+                      return lang.parsley.MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                   if not MC.validate.portValidRange(portAry)
-                      return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
+                      return lang.parsley.PORT_RANGE_BETWEEN_0_65535
                   null
             'udp':
                 dom: udp_port_dom
                 method: ( val ) ->
                   portAry = MC.validate.portRange(val)
                   if not portAry
-                      return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
+                      return lang.parsley.MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                   if not MC.validate.portValidRange(portAry)
-                      return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
+                      return lang.parsley.PORT_RANGE_BETWEEN_0_65535
                   null
 
           if protocol_type of validateMap

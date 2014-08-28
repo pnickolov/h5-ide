@@ -280,12 +280,12 @@ define [ '../base/view',
                 validate = ( val )->
                     val = parseInt( val, 10 )
                     if not ( val is 25 or val is 80 or val is 443 or ( 1023 < val < 65536 ) )
-                        return lang.ide.PARSLEY_LOAD_BALANCER_PORT_MUST_BE_SOME_PROT
+                        return lang.parsley.LOAD_BALANCER_PORT_MUST_BE_SOME_PROT
             else
                 validate = ( val )->
                     val = parseInt( val, 10 )
                     if not ( 0 < val < 65536 )
-                        return lang.ide.PARSLEY_INSTANCE_PORT_MUST_BE_BETWEEN_1_AND_65535
+                        return lang.parsley.INSTANCE_PORT_MUST_BE_BETWEEN_1_AND_65535
 
             $input.parsley "custom", validate
 
@@ -574,7 +574,7 @@ define [ '../base/view',
 
                 $certName.parsley 'custom', (val) ->
                     if val in otherCertNameAry
-                        return lang.ide.PARSLEY_THIS_NAME_IS_ALREADY_IN_USING
+                        return lang.parsley.THIS_NAME_IS_ALREADY_IN_USING
                     null
 
                 valid1 = $certName.parsley('validate')

@@ -33,11 +33,11 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             $target.parsley 'custom', ( val ) ->
                 val = + val
                 if val < 1 or val > 65534
-                    return lang.ide.PARSLEY_MUST_BE_BETWEEN_1_AND_65534
+                    return lang.parsley.MUST_BE_BETWEEN_1_AND_65534
                 if val is 7224 and region is 'us-east-1'
-                    return lang.ide.PARSLEY_ASN_NUMBER_7224_RESERVED
+                    return lang.parsley.ASN_NUMBER_7224_RESERVED
                 if val is 9059 and region is 'eu-west-1'
-                    return lang.ide.PARSLEY_ASN_NUMBER_9059_RESERVED_IN_IRELAND
+                    return lang.parsley.ASN_NUMBER_9059_RESERVED_IN_IRELAND
 
             if $target.parsley 'validate'
                 @model.setBGP $target.val()

@@ -239,7 +239,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+ lang.ide.PROP_FAILED_TO_DELETE +result.awsResult
+                    notification 'error', deleteErrorCount+ lang.ide.PROP_MSG_FAILED_TO_DELETE +result.awsResult
                 else
                     notification 'info', lang.ide.PROP_MSG_DELETE_SUCCESSFULLY
                 @manager.unCheckSelectAll()

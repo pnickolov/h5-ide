@@ -1,6 +1,28 @@
 <!-- {{lvi}} -->
-{{#if isAppEdit}}
 
+{{#if isRestoreDB}}
+<section class="property-control-group">
+    <label class="left">DB Engine</label>
+    <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
+        <div class="property-engine-label left" >{{engine}}</div>
+        <div class="property-engineversion-label selection">{{engineVersion}}</div>
+        <div class="property-engineversion-dropdown dropdown">
+            <div class="scroll-wrap scrollbar-auto-hide clearfix">
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content">
+                    <ul>
+                        {{#each versions}}
+                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{version}}">{{version}}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}
+
+{{#if isAppEdit}}
 {{else}}
 <section class="property-control-group">
     <label class="left">License Model</label>
@@ -15,7 +37,7 @@
 </section>
 {{/if}}
 
-{{#unless isisRestoreDB}}
+{{#unless isRestoreDB}}
 {{#unless isAppEdit}}
     {{#unless snapshotId}}
     <section class="property-control-group">
@@ -36,7 +58,6 @@
                 </div>
             </div>
         </div>
-
     </section>
     {{/unless}}
 {{else}}

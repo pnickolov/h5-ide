@@ -7136,7 +7136,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .syslog-dbinstance.modal-toolbar .slidebox {
   top: 0;
   bottom: 0;
-  overflow: scroll; }
+  overflow: auto; }
   .syslog-dbinstance.modal-toolbar .slidebox.show {
     max-height: 100%; }
   .syslog-dbinstance.modal-toolbar .slidebox .content {

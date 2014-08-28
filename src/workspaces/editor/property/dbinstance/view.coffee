@@ -256,6 +256,9 @@ define [ 'ApiRequest'
 
         changeEngine: ( event, value, data ) ->
             @resModel.set 'engine', value
+            @resModel.setDefaultParameterGroup()
+            @resModel.setDefaultOptionGroup()
+            @renderOptionGroup()
             @renderLVIA()
 
         changeLicense: ( event, value, data ) ->

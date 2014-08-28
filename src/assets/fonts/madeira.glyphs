@@ -1,11 +1,6 @@
 {
 DisplayStrings = (
-"\012\012\012\012\012\012",
-/uniF164,
-/uniF165,
-/uniF166,
-/uniF167,
-/uniF162
+/uniF168
 );
 copyright = MedeiraCloud;
 customParameters = (
@@ -7410,6 +7405,65 @@ width = 960;
 }
 );
 unicode = F167;
+},
+{
+glyphname = uniF168;
+lastChange = "2014-08-28 10:37:27 +0800";
+layers = (
+{
+layerId = "8F1B665C-F854-4941-BE6D-BEE4265743FC";
+name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"332 722 OFFCURVE",
+"186 578 OFFCURVE",
+"182 400 CURVE",
+"83 400 LINE",
+"231 235 LINE",
+"379 400 LINE",
+"264 400 LINE",
+"268 533 OFFCURVE",
+"377 639 OFFCURVE",
+"511 639 CURVE SMOOTH",
+"647 639 OFFCURVE",
+"757 528 OFFCURVE",
+"757 392 CURVE SMOOTH",
+"757 255 OFFCURVE",
+"647 144 OFFCURVE",
+"511 144 CURVE SMOOTH",
+"456 144 OFFCURVE",
+"406 162 OFFCURVE",
+"365 192 CURVE",
+"308 132 LINE",
+"364 88 OFFCURVE",
+"434 62 OFFCURVE",
+"511 62 CURVE SMOOTH",
+"692 62 OFFCURVE",
+"840 209 OFFCURVE",
+"840 392 CURVE SMOOTH",
+"840 574 OFFCURVE",
+"692 722 OFFCURVE",
+"511 722 CURVE SMOOTH"
+);
+},
+{
+closed = 1;
+nodes = (
+"481 380 LINE",
+"602 259 LINE",
+"642 299 LINE",
+"538 403 LINE",
+"538 569 LINE",
+"481 569 LINE"
+);
+}
+);
+width = 960;
+}
+);
+unicode = F168;
 }
 );
 gridLength = 60;

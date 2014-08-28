@@ -88,7 +88,8 @@
 .icon-cert,
 .icon-dhcp,
 .icon-pg,
-.icon-rds-snap {
+.icon-rds-snap,
+.icon-rds-restore {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -175,6 +176,7 @@
 .icon-dhcp:before {content:"\F165";}
 .icon-pg:before {content:"\F166";}
 .icon-rds-snap:before {content:"\F167";}
+.icon-rds-restore:before {content:"\F168";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

@@ -87,7 +87,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
     isRemovable : ()->
       if @design().modeIsAppEdit()
         if (@get("owner") || {}).type is constant.RESTYPE.LC
-          return lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+          return lang.notify.WARN_OPERATE_NOT_SUPPORT_YET
 
       true
 
@@ -193,7 +193,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
       ami_info = owner.getAmi()
 
       if !ami_info
-        notification "warning", sprintf(lang.ide.NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
+        notification "warning", sprintf(lang.notify.WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
         return null
 
       else
@@ -220,7 +220,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
 
         #no valid deviceName
         if deviceName.length is 0
-          notification "warning", lang.ide.NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
+          notification "warning", lang.notify.WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
           return null
 
         if ami_info.osType isnt "windows"

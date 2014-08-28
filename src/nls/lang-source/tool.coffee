@@ -298,25 +298,7 @@ module.exports =
       en: "Start"
       zh: "恢复"
 
-    TOOL_MSG_ERROR_CANT_DUPLICATE:
-      en: "Cannot duplicate the stack, please retry."
-      zh: ""
 
-    TOOL_MSG_ERROR_FAILED_LOAD_AWS_DATA:
-      en: "Error while loading AWS data, please try again later."
-      zh: ""
-
-    TOOL_MSG_ERROR_FAILED_START:
-      en: "Fail to start your app %s. (ErrorCode: %s)"
-      zh: ""
-
-    TOOL_MSG_ERROR_FAILED_STOP:
-      en: "Fail to stop your app %s. (ErrorCode: %s)"
-      zh: ""
-
-    TOOL_MSG_ERROR_FAILED_TERMINATE:
-      en: "Fail to terminate your app %s. (ErrorCode: %s)"
-      zh: ""
 
     TOOL_TIP_UPDATE_APP:
       en: "Edit App"
@@ -354,38 +336,6 @@ module.exports =
       en: "Confirm to Terminate App for Production"
       zh: "确认销毁产品应用"
 
-    TOOL_MSG_INFO_REQ_SUCCESS:
-      en: "Sending request to %s %s..."
-      zh: "正在发送 %s %s 请求..."
-
-    TOOL_MSG_ERR_REQ_FAILED:
-      en: "Sending request to %s %s failed."
-      zh: "发送 %s %s 请求失败。"
-
-    TOOL_MSG_INFO_HDL_SUCCESS:
-      en: "%s %s successfully."
-      zh: "%s %s 成功。"
-
-    TOOL_MSG_ERR_HDL_FAILED:
-      en: "%s %s failed."
-      zh: "%s %s 失败。"
-
-    TOOL_MSG_ERR_SAVE_FAILED:
-      en: "Save stack %s failed, please check and save it again."
-      zh: "保存模块 %s 失败，请您检查并重新保存。"
-
-    TOOL_MSG_ERR_SAVE_SUCCESS:
-      en: "Save stack %s successfully."
-      zh: "保存 %s 成功。"
-
-    TOOL_MSG_ERR_DEL_STACK_SUCCESS:
-      en: "Delete stack %s successfully."
-      zh: "删除 %s 成功。"
-
-    TOOL_MSG_ERR_DEL_STACK_FAILED:
-      en: "Delete stack %s failed."
-      zh: "删除 %s 失败。"
-
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
       zh: "保存模块"
@@ -422,18 +372,6 @@ module.exports =
       en: "Convert to CloudFormation template"
       zh: "导出云编排模板"
 
-    TOOL_MSG_INFO_APP_REFRESH_FINISH:
-      en: "Refresh resources for app( %s ) complete."
-      zh: "完成应用( %s )的资源刷新。"
-
-    TOOL_MSG_INFO_APP_REFRESH_FAILED:
-      en: "Refresh resources for app( %s ) falied, please click refresh tool button to retry."
-      zh: "刷新应用( %s )的资源失败, 请点击刷新按钮来重试。"
-
-    TOOL_MSG_INFO_APP_REFRESH_START:
-      en: "Refresh resources for app( %s ) start ..."
-      zh: "开始刷新应用( %s )的资源 ..."
-
     TOOL_POP_BODY_APP_UPDATE_EC2:
       en: "The public and private addresses will be reassigned after the restart.",
       zh: "重启后，公有/私有的IP地址将会被重新分配。"
@@ -443,9 +381,7 @@ module.exports =
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
 
-    TOOL_MSG_ERR_CONVERT_CLOUDFORMATION:
-      en: "Convert to stack json to CloudFormation format error"
-      zh: "转换成CloudFormation出错"
+
 
     TOOL_TIP_REFRESH_REOURCES:
       en: "Refresh Reources"

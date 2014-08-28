@@ -162,11 +162,11 @@ define [
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "info", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_SUCCESS, newJson.name)
+          notification "info", sprintf(lang.notify.ERR_SAVE_SUCCESS, newJson.name)
         , ( )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
+          notification "error", sprintf(lang.notify.ERR_SAVE_FAILED, newJson.name)
         return
 
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
@@ -390,11 +390,11 @@ define [
                 appToStackModal.close()
                 newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
-                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
+                    notification "info", sprintf lang.notify.INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
                 ,()->
-                    notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
+                    notification 'error', sprintf lang.notify.ERR_SAVE_FAILED, newJson.name
 
         originStackExist = !!stack
         appToStackModal = new Modal

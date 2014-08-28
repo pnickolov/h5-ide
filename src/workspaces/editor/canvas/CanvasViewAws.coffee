@@ -171,7 +171,7 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
 
       # Avoid adding volume for existing LC.
       if owner.type is constant.RESTYPE.LC and owner.get("appId")
-        notification "error", lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+        notification "error", lang.notify.WARN_OPERATE_NOT_SUPPORT_YET
         return
 
       attr.owner = owner

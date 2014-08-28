@@ -156,7 +156,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
         addKP : ( event, id ) ->
             result = @model.addKP id
             if not result
-                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
+                notification "error", lang.notify.WARN_KEYPAIR_NAME_ALREADY_EXISTS
                 return result
 
         updateKPSelect : () ->

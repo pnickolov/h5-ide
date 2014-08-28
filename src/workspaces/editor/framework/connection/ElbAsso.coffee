@@ -198,7 +198,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
           lc = comp2
 
         if lc and lc.get("appId")
-          return lang.ide.NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
+          return lang.notify.WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
 
       true
   }

@@ -303,7 +303,7 @@
 }
 
 .dbrestore {
-  fill   : #6daefe;
+  fill   : #ff9955;
   cursor : pointer;
   .restore-bg {
     stroke : #b2bccc;
@@ -315,7 +315,7 @@
 
   &:hover {
     .restore-bg { stroke:#6daefe; }
-    fill:#3887e8;
+    fill:#ff6600;
   }
 
   &.disabled,

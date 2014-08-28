@@ -92,7 +92,7 @@ define [ 'ApiRequest'
             if noRestore
 
                 modal = new Modal({
-                    title        : "Restore DB Instance Config"
+                    title        : "Restore to point in time config"
                     template     : template_component.modalRestoreConfirm({
                         noRestore: noRestore
                     })
@@ -141,7 +141,7 @@ define [ 'ApiRequest'
                 secondStr = String(currentTime.getSeconds())
 
                 modal = new Modal({
-                    title        : "Restore DB Instance Config"
+                    title        : "Restore to point in time config"
                     template     : template_component.modalRestoreConfirm({
                         lastest: lastestRestoreTime.toString()
                         custom: not dbRestoreTime
@@ -429,7 +429,10 @@ define [ 'ApiRequest'
             attr.isCanPromote = @isCanPromote()
             attr.isPromoted = @isPromoted()
             attr.isPromote = @isCanPromote() or @isPromoted()
-            attr.isRestoreDB = if @resModel.getSourceDBForRestore() then true else false
+            sourceDBForRestore = @resModel.getSourceDBForRestore()
+            if sourceDBForRestore
+                attr.isRestoreDB = true
+                attr.sourceDbIdForRestore = sourceDBForRestore.get('appId')
 
             attr
 

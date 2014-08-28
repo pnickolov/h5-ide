@@ -5832,7 +5832,7 @@ button#property-app-keypair {
       fill: #eee; }
 
 .dbrestore {
-  fill: #6daefe;
+  fill: #ff9955;
   cursor: pointer; }
   .dbrestore .restore-bg {
     stroke: #b2bccc;
@@ -5841,7 +5841,7 @@ button#property-app-keypair {
     -moz-transform: translate(0.5px, 0.5px);
     transform: translate(0.5px, 0.5px); }
   .dbrestore:hover {
-    fill: #3887e8; }
+    fill: #ff6600; }
     .dbrestore:hover .restore-bg {
       stroke: #6daefe; }
   .dbrestore.disabled, .dbrestore.disabled:hover {

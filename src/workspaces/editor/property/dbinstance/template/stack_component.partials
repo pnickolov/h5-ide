@@ -15,6 +15,7 @@
 </section>
 {{/if}}
 
+{{#unless isisRestoreDB}}
 {{#unless isAppEdit}}
     {{#unless snapshotId}}
     <section class="property-control-group">
@@ -43,6 +44,7 @@
         <label>DB Engine Version</label>
         <div>{{engine}}({{engineVersion}})</div>
     </section>
+{{/unless}}
 {{/unless}}
 
 <section class="property-control-group">

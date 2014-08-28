@@ -2202,6 +2202,95 @@ module.exports =
       en: "Fill in the Description"
       zh: ""
 
+    PROP_DB_SNAPSHOT_DELETE_1:
+      en: "Confirm to delete "
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DELETE_2:
+      en: " selected "
+      zh: ""
+
+    PROP_DB_SNAPSHOT_DELETE_3:
+      en: " Snapshots"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_EMPTY:
+      en: "There are no available instance here."
+      zh: ""
+
+    PROP_DB_SNAPSHOT_ID:
+      en: "DB Snapshot ID"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_VPC_ID:
+      en: "Vpc ID"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_ENGINE:
+      en: "DB Engine"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_LICENSE_MODEL:
+      en: "License Model"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_STATUS:
+      en: "Status"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_STORAGE:
+      en: "DB Storage"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_CREATE_TIME:
+      en: "Snapshot Creation Time"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_SOURCE_REGION:
+      en: "Source Region"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_INSTANCE_NAME:
+      en: "DB Instance Name"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_TYPE:
+      en: "Snapshot Type"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_ENGINE_VERSION:
+      en: "DB Engine Version"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_MASTER_USERNAME:
+      en: "Master Username"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_OPTION_GROUP_NAME:
+      en: "Option Group Name"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_PORT:
+      en: "Port"
+      zh: ""
+
+    PROP_DB_SNAPSHOT_INSTANCE_CREATE_TIME:
+      en: "Instance Creation Name"
+      zh: ""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     PROP_DBPG_RESMANAGER_FILTER:
       en: "Filter DB Engine by family name"
       zh: ""

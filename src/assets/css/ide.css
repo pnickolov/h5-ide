@@ -888,7 +888,8 @@ td.table-action a.btn {
 /* End of General Style for Property Panel List */
 /* Secondary Panel */
 .add-rule,
-.property-btn-get-system-log {
+.property-btn-get-system-log,
+.property-btn-db-restore-config {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -2173,7 +2174,7 @@ a.action-link:hover {
 #modal-run-stack .modal-control-group {
   padding: 0 0 15px; }
 
-div.stack-validation {
+#modal-run-stack > div.stack-validation {
   padding: 15px;
   margin: 0 -15px;
   border-top: 1px solid #1d1d1d; }
@@ -2198,9 +2199,6 @@ summary:focus {
   position: absolute;
   top: 15px;
   left: 138px; }
-
-details[open] + .nutshell {
-  display: none; }
 
 .stack-validation .nutshell label {
   padding-left: 12px;
@@ -2288,7 +2286,8 @@ details[open] + .nutshell {
   border: 1px solid #151519;
   border-top: none; }
 
-.stack-validation .validation-content .scroll-wrap-validation {
+#modal-run-stack .validation-content .scroll-wrap-validation,
+#app-apply-update .validation-content .scroll-wrap-validation {
   max-height: 150px; }
 
 .validation-content .content_wrap .content {
@@ -2320,7 +2319,8 @@ details[open] + .nutshell {
   position: absolute;
   left: 20px; }
 
-.stack-validation .item-error-tip {
+#modal-run-stack .item-error-tip,
+#app-apply-update .item-error-tip {
   display: none; }
 
 .validation-content .content_wrap .title {
@@ -2426,13 +2426,14 @@ details[open] + .nutshell {
   position: relative; }
 
 #app-apply-update .stack-validation {
-  border-top: none; }
+  border-top: none;
+  padding: 15px 0; }
 
 #app-apply-update .modal-text-major {
   margin: 0; }
 
 #app-apply-update .nutshell {
-  left: 109px; }
+  left: 85px; }
 
 .runtime-error {
   color: #ec3c38;
@@ -5617,6 +5618,8 @@ button#property-app-keypair {
       right: 7px; }
   .canvas-view[data-mode="app"] .dbreplicate {
     display: none; }
+  .canvas-view[data-mode="app"] .dbrestore {
+    display: none; }
 
 .svg_resizer {
   position: absolute;
@@ -5825,6 +5828,25 @@ button#property-app-keypair {
   .dbreplicate.disabled, .dbreplicate.disabled:hover {
     fill: #ccc; }
     .dbreplicate.disabled .replica-bg, .dbreplicate.disabled:hover .replica-bg {
+      stroke: #ccc;
+      fill: #eee; }
+
+.dbrestore {
+  fill: #ff9955;
+  cursor: pointer; }
+  .dbrestore .restore-bg {
+    stroke: #b2bccc;
+    fill: #fff;
+    -webkit-transform: translate(0.5px, 0.5px);
+    -moz-transform: translate(0.5px, 0.5px);
+    transform: translate(0.5px, 0.5px); }
+  .dbrestore:hover {
+    fill: #ff6600; }
+    .dbrestore:hover .restore-bg {
+      stroke: #6daefe; }
+  .dbrestore.disabled, .dbrestore.disabled:hover {
+    fill: #ccc; }
+    .dbrestore.disabled .restore-bg, .dbrestore.disabled:hover .restore-bg {
       stroke: #ccc;
       fill: #eee; }
 
@@ -7010,7 +7032,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7049,6 +7072,39 @@ g.shadow {
 .modal-db-replica-promote-confirm span {
   font-weight: bold;
   color: #fff; }
+
+.modal-db-instance-restore-config .datepicker {
+  float: left;
+  margin-right: 5px;
+  text-align: center;
+  padding: 6px;
+  width: 80px; }
+.modal-db-instance-restore-config .timepicker {
+  float: left;
+  width: 20px;
+  text-align: center;
+  padding: 6px;
+  margin-right: 5px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-option {
+  margin-top: 20px;
+  display: inline-block; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option * {
+    float: left;
+    margin-right: 10px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .title {
+    width: 170px;
+    line-height: 20px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-latest, .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-custom {
+    margin-top: 4px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
+    margin-top: -5px;
+    margin-bottom: 20px; }
+    .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
+      line-height: 30px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .modal-db-instance-restore-no-restore {
+    width: 100%;
+    text-align: center;
+    margin-top: 55px; }
 
 /* General Style for Property Panel List */
 .property-list li {

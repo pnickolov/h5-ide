@@ -45,6 +45,7 @@ define [
 
     events :
       "mousedown .dbreplicate" : "replicate"
+      "mousedown .dbrestore"   : "restore"
 
     listenModelEvents : ()->
       @listenTo @model, "change:backupRetentionPeriod", @render
@@ -69,6 +70,11 @@ define [
     replicate : ( evt )->
       if not @canvas.design.modeIsApp() and @model.slaves().length < 5
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
+      false
+
+    restore : ( evt )->
+      if not @canvas.design.modeIsApp()
+        @canvas.dragItem( evt, { onDrop : @onDropRestore } )
       false
 
     onDropReplicate : ( evt, dataTransfer )->
@@ -101,6 +107,30 @@ define [
         dataTransfer.item.canvas.selectItem( replica.id )
 
       return
+
+    onDropRestore : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+
+      # If the model supports clone() interface, then clone the target.
+      name = dataTransfer.item.model.get("name")
+
+      DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
+      newDbIns = new DbInstance({
+        x        : dataTransfer.x
+        y        : dataTransfer.y
+        name     : "from-" + name
+        parent   : targetSubnetGroup
+      }, {
+        master : dataTransfer.item.model
+        isRestore: true
+      })
+
+      if newDbIns.id
+        dataTransfer.item.canvas.selectItem( newDbIns.id )
+
+      return
+
 
     # Creates a svg element
     create : ()->
@@ -148,6 +178,8 @@ define [
       if not m.design().modeIsStack() and m.get("appId")
         svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
 
+      svgEl.add( svg.use("restore_dragger").attr({"class" : "dbrestore tooltip"}) )
+
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       svgEl
@@ -165,7 +197,7 @@ define [
 
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
-      # Update Image
+      # Update replica Image
       if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
         # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
@@ -178,6 +210,22 @@ define [
           CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
+
+        if m.getSourceDBForRestore()
+          CanvasManager.toggle $r, false
+
+      # Update restore Image
+      $r = @$el.children(".dbrestore")
+      enableRestore = m.autobackup() isnt 0 and !!m.get("appId")
+      CanvasManager.toggle $r, enableRestore
+      if enableRestore
+        CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+
+      appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+      if appData
+        penddingObj = appData.get('PendingModifiedValues')
+        if (appData.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+          CanvasManager.toggle @$el.children(".dbrestore"), false
 
       @updateState()
 

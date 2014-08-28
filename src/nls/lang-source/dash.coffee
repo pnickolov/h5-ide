@@ -85,7 +85,7 @@ module.exports =
 
     DASH_LBL_RDS:
       en: "DB Instance"
-      zh: ""
+      zh: "数据库实例"
 
     DASH_LBL_ELASTIC_IP:
       en: "Elastic IP"
@@ -682,12 +682,17 @@ module.exports =
 
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
-      zh: ""
+      zh: "已导入"
 
     DASH_TPL_TO_IMPORT:
       en: "Import"
-      zh: ""
+      zh: "导入"
 
     DASH_TPL_NO_VPC_TO_IMPORT:
       en: "There is no VPC to import."
       zh: ""
+
+    DASH_IMPORT_VPC_AS_APP:
+      en: "Import Existing VPC as App"
+      zh: "将已存在 VPC 导入为 App"
+

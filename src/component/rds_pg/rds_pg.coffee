@@ -449,7 +449,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       region = Design.instance().get('region')
       regionName = constant.REGION_SHORT_LABEL[ region ]
 
-      title: "Manage DB Parameter Group in #{regionName}"
+      title: sprintf(lang.ide.COMPONENT_RDS_PG_MANAGER_TITLE, regionName)#"Manage DB Parameter Group in #{regionName}"
       slideable: true
       context: that
       buttons: [

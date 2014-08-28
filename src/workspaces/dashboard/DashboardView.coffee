@@ -350,7 +350,7 @@ define [
       , 60*8*1000 + 1000
 
       @visModal = new Modal {
-        title         : "Import Existing VPC as App"
+        title         : lang.ide.DASH_IMPORT_VPC_AS_APP
         width         : "770"
         template      : VisualizeVpcTpl( attributes )
         disableFooter : true

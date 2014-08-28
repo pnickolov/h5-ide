@@ -171,7 +171,7 @@ module.exports =
 
     PROP_LBL_CANCEL:
       en: "Cancel"
-      zh: ""
+      zh: "取消"
 
     PROP_LBL_CREATING:
       en: "Creating..."
@@ -231,7 +231,7 @@ module.exports =
 
     PROP_LBL_APPLY_CHANGES:
       en: "Apply Changes"
-      zh: ""
+      zh: "应用"
 
     PROP_LBL_REVIEW_CHANGES_SAVE:
       en: "Review Changes & Save"
@@ -239,7 +239,7 @@ module.exports =
 
     PROP_LBL_APPLYING:
       en: "Applying..."
-      zh: ""
+      zh: "应用中..."
 
     PROP_DELETE_SNAPSHOT_1:
       en: "Confirm to delete "
@@ -301,3 +301,7 @@ module.exports =
     COMPONENT_KEY_PAIR_COL_FINGERPRINT:
       en: "FingerPrint"
       zh: "指纹"
+
+    COMPONENT_RDS_PG_MANAGER_TITLE:
+      en: "Manage DB Parameter Group in %s"
+      zh: "管理在 %s 的 DB Parameter Group"

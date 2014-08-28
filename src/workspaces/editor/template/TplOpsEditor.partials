@@ -22,14 +22,14 @@
 
 <!-- {{loading}} -->
 <div class="ops-process">
-  <header class="processing">Loading data...</header>
+  <header class="processing">{{i18n "toolbar.LOADING_DATA"}}</header>
   <section class="loading-spinner"></section>
 </div>
 
 <!-- {{appProcessing}} -->
 <div class="ops-process">
   <header class="processing">{{this}}<span class="process-info">0%</span></header>
-  <header class="processing rolling-back-content">Rolling back...</header>
+  <header class="processing rolling-back-content">{{i18n "toolbar.ROLLING_BACK"}}</header>
   <section class="loading-spinner"></section>
   <section class="progress"> <div class="bar" style="width:0%;"></div> </section>
 </div>
@@ -37,10 +37,10 @@
 <!-- {{appUpdateStatus}} -->
 <div class="ops-process">
 {{#if loading}}
-  <header class="processing">Reloading data...</header>
+  <header class="processing">{{i18n "toolbar.RELOADING_DATA"}}</header>
   <section class="loading-spinner"></section>
 {{else}}
-  <header class="processing">{{#unless error}}App has updated successfully.{{else}}The app failed to update.{{/unless}}</header>
+  <header class="processing">{{#unless error}}{{i18n "toolbar.APP_UPDATE_SUCCESSFULLY_TITLE"}}{{else}}{{i18n "toolbar.APP_UPDATE_FAILED_TITLE"}}{{/unless}}</header>
   {{#if error}}
   <div class="error-info-block">
     <div class="result-sub-title">{{i18n 'PROC_RLT_FAILED_SUB_TITLE'}}</div>
@@ -48,10 +48,10 @@
       <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
       <p class="detail">{{{error}}}</p>
     </div>
-    <div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+    <div class="result-error-notice">{{i18n "toolbar.APP_ROllBACK_DESC"}}</div>
   </div>
   {{/if}}
-  <button class="btn btn-silver" id="processDoneBtn">Done</button>
+  <button class="btn btn-silver" id="processDoneBtn">{{i18n "toolbar.LBL_DONE"}}</button>
 {{/if}}
 </div>
 
@@ -122,27 +122,24 @@
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">
     <div class="modal-center-align-helper">
-        <div class="modal-text-major">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>
+        <div class="modal-text-major">{{i18n "toolbar.CONFIRM_ENABLE_STATE"}}</div>
     </div>
 </div>
 
 <!-- {{export.CF}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  {{#if hasCustomOG}}<div class="modal-text-highlight">
-      DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be
-      used instead.
-  </div>{{/if}}
+  {{#if hasCustomOG}}<div class="modal-text-highlight">{{i18n "toolbar.EXPORT_CLOUDFORMATION_WARNNING"}}</div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
 <div class="stack-validation">
   <details open style="display:none;">
-    <summary>Stack Validation</summary>
+    <summary>{{i18n "toolbar.STACK_VALIDATION"}}</summary>
     <div id="stack-run-validation-container"></div>
   </details>
   <div class="nutshell">:<label></label></div>
   <div class="validating">
     <div class="loading-spinner loading-spinner-small"></div>
-    <p>Validating your stack...</p>
+    <p>{{i18n "toolbar.VALIDATING_STACK"}}</p>
   </div>
 </div>
 <div style="padding-top:20px;text-align:right;">
@@ -164,29 +161,29 @@
 <div class="loading-spinner"></div>
 <section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
 <div class="modal-footer">
-  <a class="btn btn-blue" style="display: inline-block;">Download</a>
-  <button class="btn modal-close btn-silver">Cancel</button>
+  <a class="btn btn-blue" style="display: inline-block;">{{i18n "toolbar.LBL_DOWNLOAD"}}</a>
+  <button class="btn modal-close btn-silver">{{i18n "toolbar.LBL_CANCEL"}}</button>
 </div>
 
 <!-- {{modal.onClose}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major">{{this}} has unsaved changes.</div>
-  <div class="modal-text-major">Do you confirm to close it?</div>
+  <div class="modal-text-major">{{this}} {{i18n "toolbar.HAS_UNSAVED_CHANGES"}}</div>
+  <div class="modal-text-major">{{i18n "toolbar.CLOSE_CONFIRM"}}</div>
 </div> </div>
 
 <!-- {{modal.cancelUpdate}} -->
 <div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major">This app has been changed.</div>
-  <div class="modal-text-major">Do you confirm to discard the changes?</div>
+  <div class="modal-text-major">{{i18n "toolbar.CANCEL_UPDATE_CONFIRM"}}</div>
+  <div class="modal-text-major">{{i18n "toolbar.DISCARD_UPDATE_CHANGE"}}</div>
 </div> </div>
 
 <!-- {{modal.confirmImport}} -->
-<p class="modal-text-major">Well done! Your VPC {{name}} has been successfully imported as VisualOps app.</p>
-<p class="modal-text-major">Give this app an appropriate name.</p>
+<p class="modal-text-major">{{i18n "IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
+<p class="modal-text-major">{{i18n "toolbar.NAME_IMPORTED_APP"}}</p>
 <div class="modal-control-group">
-<label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
+<label for="ImportSaveAppName">{{i18n "toolbar.APP_NAME"}}</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
 <div class="modal-control-group app-usage-group clearfix">
-  <label for="">App Usage</label>
+  <label for="">{{i18n "toolbar.APP_USAGE"}}</label>
   <div id="app-usage-selectbox" class="selectbox">
     <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
     <ul class="dropdown" tabindex="-1">
@@ -197,11 +194,11 @@
     </ul>
   </div>
 </div>
-<p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
+<p>{{i18n "toolbar.IMPORT_SUCCESSFULLY_MANAGE_EASILY"}}</p>
 
 <!-- {{modal.confirmRemoveApp}} -->
-<p class="modal-text-major">VPC of this app has been deleted outside VisualOps.</p>
-<p class="modal-text-major">Do you want to remove the app?</p>
+<p class="modal-text-major">{{i18n "toolbar.VPC_REMOVED_OUTSIDE_VISUALOPS"}}</p>
+<p class="modal-text-major">{{i18n "toolbar.CONFIRM_REMOVE_APP"}}</p>
 
 <!-- {{saveAppToStack}} -->
 <p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>

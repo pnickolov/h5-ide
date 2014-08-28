@@ -277,7 +277,7 @@ define [
         modal?.resize()
         modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF)
         if err.error
-          notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
+          notification "error", lang.toolbar.FAIL_TO_EXPORT_TO_CLOUDFORMATION + err.error
         return
 
     reloadState: (event)->

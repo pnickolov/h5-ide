@@ -12,7 +12,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
 
     isRemovable : ()->
       if @get("main")
-        return { error : sprintf( lang.ide.CVS_MSG_ERR_DEL_MAIN_RT, @get("name") ) }
+        return { error : sprintf( lang.canvas.ERR_DEL_MAIN_RT, @get("name") ) }
 
       true
 

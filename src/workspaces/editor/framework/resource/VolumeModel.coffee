@@ -66,10 +66,10 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
 
         # Disable transfering exsiting volume between servergroups and others.
         if parent.get("count") > 1
-          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME
+          return lang.canvas.ERR_SERVERGROUP_VOLUME
 
         if newParent.get("count") > 1
-          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME2
+          return lang.canvas.ERR_SERVERGROUP_VOLUME2
 
         while parent and parent.type isnt constant.RESTYPE.AZ
           parent    = parent.parent()

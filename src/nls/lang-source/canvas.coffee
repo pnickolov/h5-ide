@@ -1,68 +1,68 @@
 module.exports =
 
-  ide:
+  canvas:
 
-    CVS_MSG_WARN_NOTMATCH_VOLUME:
+    WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
       zh: "卷和快照必须拖放到实例或映像。"
 
-    CVS_MSG_ERR_SERVERGROUP_VOLUME:
+    ERR_SERVERGROUP_VOLUME:
       en: "Detach existing volume or snapshot of instance server group is not supported yet."
       zh: "Detach existing volume or snapshot of instance server group is not supported yet."
 
-    CVS_MSG_ERR_SERVERGROUP_VOLUME2:
+    ERR_SERVERGROUP_VOLUME2:
       en: "Attach existing volume from single instance to instance server group is not supported yet."
       zh: "Attach existing volume from single instance to instance server group is not supported yet."
 
-    CVS_MSG_WARN_NOTMATCH_SUBNET:
+    WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."
       zh: "子网必须拖放到可用区域。"
 
-    CVS_MSG_WARN_NOTMATCH_INSTANCE_SUBNET:
+    WARN_NOTMATCH_INSTANCE_SUBNET:
       en: "Instances must be dragged to a subnet or auto scaling group."
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
-    CVS_MSG_WARN_NOTMATCH_SGP_VPC:
+    WARN_NOTMATCH_SGP_VPC:
       en: "Subnet Group must be dragged to a vpc."
       zh: ""
 
-    CVS_MSG_WARN_NOTMATCH_DBINSTANCE_SGP:
+    WARN_NOTMATCH_DBINSTANCE_SGP:
       en: "DB Instance must be dragged to a subnet group."
       zh: ""
 
-    CVS_MSG_WARN_NOTMATCH_ASG:
+    WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
       zh: "Auto Scaling组必须拖放到子网。"
 
-    CVS_MSG_WARN_NOTMATCH_ENI:
+    WARN_NOTMATCH_ENI:
       en: "Network interfaces must be dragged to a subnet."
       zh: "网络接口必须拖放到子网。"
 
-    CVS_MSG_WARN_NOTMATCH_RTB:
+    WARN_NOTMATCH_RTB:
       en: "Route tables must be dragged inside a VPC but outside an availability zone."
       zh: "路由表必须拖放到可用区域外的VPC部分。"
 
-    CVS_MSG_WARN_NOTMATCH_ELB:
+    WARN_NOTMATCH_ELB:
       en: "Load balancer must be dropped outside availability zone."
       zh: "负载均衡器必须拖放到可用区域以外。"
 
-    CVS_MSG_WARN_NOTMATCH_CGW:
+    WARN_NOTMATCH_CGW:
       en: "Customer gateways must be dragged outside the VPC."
       zh: "客户网关必须拖放到VPC以外。"
 
-    CVS_MSG_WARN_NOTMATCH_IGW:
+    WARN_NOTMATCH_IGW:
       en: "Internet gateways must be dragged inside a VPC."
       zh: "互联网网关必须拖放到VPC里。"
 
-    CVS_MSG_WARN_NOTMATCH_VGW:
+    WARN_NOTMATCH_VGW:
       en: "Virtual private gateways must be dragged inside a VPC."
       zh: "虚拟私有网关必须拖放到VPC里。"
 
-    CVS_MSG_WARN_COMPONENT_OVERLAP:
+    WARN_COMPONENT_OVERLAP:
       en: "Nodes cannot overlap each other."
       zh: "节点不能互相重叠。"
 
-    CVS_MSG_WARN_NO_ENOUGH_SPACE:
+    WARN_NO_ENOUGH_SPACE:
       en: "No enough space."
       zh: "没有多余的空间。"
 
@@ -70,47 +70,47 @@ module.exports =
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
       zh: "%s 的 %s 最多支持%s个网络接口 (包括主要的)。"
 
-    CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
+    WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
       en: "This subnet cannot be attached with a Load Balancer. Its CIDR mask must be smaller than /27"
       zh: ""
 
-    CVS_MSG_ERR_CONNECT_ENI_AMI:
+    ERR_CONNECT_ENI_AMI:
       en: "Network interfaces can only be attached to an instance in the same availability zone."
       zh: "网络接口只能连接到同一个可用区域的实例。"
 
-    CVS_MSG_ERR_MOVE_ATTACHED_ENI:
+    ERR_MOVE_ATTACHED_ENI:
       en: "Network interfaces must be in the same availability zone as the instance they are attached to."
       zh: "网络接口必须跟它附加的实例在同一个可用区域。"
 
-    CVS_MSG_ERR_DROP_ASG:
+    ERR_DROP_ASG:
       en: "%s is already in %s."
       zh: "%s已经存在于%s中。"
 
-    CVS_MSG_ERR_DEL_LC:
+    ERR_DEL_LC:
       en: "Currently modifying the launch configuration is not supported."
       zh: "目前还不支持修改启动配置。"
 
-    CVS_MSG_ERR_DEL_MAIN_RT:
+    ERR_DEL_MAIN_RT:
       en: "The main route table %s cannot be deleted. Please set another route table as the main and try again."
       zh: "主路由表：%s 不能被删除。 请将其他路由表设为主路由表后再重试。"
 
-    CVS_MSG_ERR_DEL_LINKED_RT:
+    ERR_DEL_LINKED_RT:
       en: "Subnets must be associated to a route table. Please associate the subnets with another route table first."
       zh: "子网必须与路由表关联，请先将这个子网与一个路由表关联起来。"
 
-    CVS_MSG_ERR_DEL_SBRT_LINE:
+    ERR_DEL_SBRT_LINE:
       en: "Subnets must be associated with a route table."
       zh: "子网必须与路由表关联。"
 
-    CVS_MSG_ERR_DEL_ELB_LINE_1:
+    ERR_DEL_ELB_LINE_1:
       en: "Load Balancer must associate with at least 1 subnet for each Availability Zone where it has registered load balanced instances."
       zh: "负载均衡器至少需要连接一个子网。"
 
-    CVS_MSG_ERR_DEL_ELB_LINE_2:
+    ERR_DEL_ELB_LINE_2:
       en: "Cannot delete or change the current attachment."
       zh: "最少要保留一条已有的负载均衡器和子网的连线。"
 
-    CVS_MSG_ERR_DEL_LINKED_ELB:
+    ERR_DEL_LINKED_ELB:
       en: "This subnet cannot be deleted because it is associated to a load balancer."
       zh: "由于这个子网关联着负载均衡器，所以它不能被删除。"
 
@@ -150,7 +150,7 @@ module.exports =
       en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"
       zh: "%s已存在，删除它会同时删除与之相关的只读副本，但会保留，确定要删除它吗？"
 
-    CVS_MSG_ERR_ZOOMED_DROP_ERROR:
+    ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
       zh: "在添加新资源前，请重设缩放至100%。"
 

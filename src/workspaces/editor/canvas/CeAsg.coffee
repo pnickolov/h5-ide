@@ -40,7 +40,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       })
       if res and res.id then return
 
-      notification 'error', sprintf(lang.ide.CVS_MSG_ERR_DROP_ASG, originalAsg.get("name"), target.parent().get("name"))
+      notification 'error', sprintf(lang.canvas.ERR_DROP_ASG, originalAsg.get("name"), target.parent().get("name"))
       return
 
     # Creates a svg element

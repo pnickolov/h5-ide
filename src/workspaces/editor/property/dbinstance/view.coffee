@@ -100,7 +100,8 @@ define [ 'ApiRequest'
                     template     : template_component.modalRestoreConfirm({
                         noRestore: noRestore
                     })
-                    confirm      : {text : "Confirm"}
+                    confirm      : {hide: true}
+                    cancel       : {text: 'Close'}
                     disableClose : true
                     disableConfirm: true
                     width        : "580"
@@ -155,7 +156,7 @@ define [ 'ApiRequest'
                         timezone: timezone
                         noRestore: noRestore
                     })
-                    # confirm      : {text : "Confirm"}
+                    confirm      : {text : "Restore"}
                     disableClose : true
                     width        : "580"
                     onConfirm : ()->

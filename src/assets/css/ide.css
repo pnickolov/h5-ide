@@ -2174,7 +2174,7 @@ a.action-link:hover {
 #modal-run-stack .modal-control-group {
   padding: 0 0 15px; }
 
-#modal-run-stack > div.stack-validation {
+div.stack-validation {
   padding: 15px;
   margin: 0 -15px;
   border-top: 1px solid #1d1d1d; }
@@ -2199,6 +2199,9 @@ summary:focus {
   position: absolute;
   top: 15px;
   left: 138px; }
+
+details[open] + .nutshell {
+  display: none; }
 
 .stack-validation .nutshell label {
   padding-left: 12px;
@@ -2286,8 +2289,7 @@ summary:focus {
   border: 1px solid #151519;
   border-top: none; }
 
-#modal-run-stack .validation-content .scroll-wrap-validation,
-#app-apply-update .validation-content .scroll-wrap-validation {
+.stack-validation .validation-content .scroll-wrap-validation {
   max-height: 150px; }
 
 .validation-content .content_wrap .content {
@@ -2319,8 +2321,7 @@ summary:focus {
   position: absolute;
   left: 20px; }
 
-#modal-run-stack .item-error-tip,
-#app-apply-update .item-error-tip {
+.stack-validation .item-error-tip {
   display: none; }
 
 .validation-content .content_wrap .title {
@@ -2426,14 +2427,13 @@ summary:focus {
   position: relative; }
 
 #app-apply-update .stack-validation {
-  border-top: none;
-  padding: 15px 0; }
+  border-top: none; }
 
 #app-apply-update .modal-text-major {
   margin: 0; }
 
 #app-apply-update .nutshell {
-  left: 85px; }
+  left: 109px; }
 
 .runtime-error {
   color: #ec3c38;
@@ -7101,10 +7101,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin-bottom: 20px; }
     .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
       line-height: 30px; }
-  .modal-db-instance-restore-config .modal-db-instance-restore-option .modal-db-instance-restore-no-restore {
-    width: 100%;
-    text-align: center;
-    margin-top: 55px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-no-restore {
+  width: 100%;
+  text-align: center;
+  margin-top: 55px; }
 
 /* General Style for Property Panel List */
 .property-list li {

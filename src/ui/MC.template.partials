@@ -469,7 +469,7 @@ Additional Notes and Questions
 			<summary>Stack Validation</summary>
 			<div id="stack-run-validation-container"></div>
 		</details>
-		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="nutshell">:<label></label></div>
 		<div class="validating">
 			<div class="loading-spinner loading-spinner-small"></div>
 			<p>Validating your stack...</p>
@@ -952,7 +952,7 @@ Additional Notes and Questions
 			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
 			<div id="stack-run-validation-container"></div>
 		</details>
-		<div class="nutshell" style="display: none;">:<label></label></div>
+		<div class="nutshell">:<label></label></div>
 		<div class="validating">
 			<div class="loading-spinner loading-spinner-small"></div>
 			<p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>

@@ -134,6 +134,17 @@
   </div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
+<div class="stack-validation">
+  <details open style="display:none;">
+    <summary>Stack Validation</summary>
+    <div id="stack-run-validation-container"></div>
+  </details>
+  <div class="nutshell">:<label></label></div>
+  <div class="validating">
+    <div class="loading-spinner loading-spinner-small"></div>
+    <p>Validating your stack...</p>
+  </div>
+</div>
 <div style="padding-top:20px;text-align:right;">
   <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
   <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
@@ -186,6 +197,13 @@
     </ul>
   </div>
 </div>
+
+<section style="margin:5px 5px 20px 8px;">
+  <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
+  <label for="MonitorImportApp">Monitor and report external resource change of this app</label>
+  <i class="icon-info tooltip" data-tooltip="If resource has been changed outside VisualOps, an email notification will be sent to you." style="color:#148BE6;vertical-align:-3px;"></i>
+</section>
+
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->

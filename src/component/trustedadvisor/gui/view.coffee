@@ -57,13 +57,6 @@ define [ 'event',
             $details = $nutshell.prev 'details'
             $summary = $details.find 'summary'
 
-            bindSummary = () ->
-                $summary.click ()->
-                    if $details.attr( 'open' ) is 'open'
-                        $nutshell.show()
-                    else
-                        $nutshell.hide()
-
             processNutshell = ( notShow ) ->
                 content = ''
                 if error.length
@@ -85,29 +78,22 @@ define [ 'event',
                 $nutshell.click () ->
                     $summary.click()
 
-                if not notShow
-                    $nutshell.show()
-
 
             if error.length
-                bindSummary()
                 processNutshell true
 
             else if warning.length
                 $tabs.eq( 1 ).click()
                 $details.removeAttr 'open'
                 processNutshell()
-                bindSummary()
 
             else if notice.length
                 $tabs.eq( 2 ).click()
                 $details.removeAttr 'open'
                 processNutshell()
-                bindSummary()
             else
                 $details.removeAttr 'open'
                 processNutshell()
-                bindSummary()
                 $( '.validation-content' ).text 'Great job! No error, warning or notice here.'
 
 

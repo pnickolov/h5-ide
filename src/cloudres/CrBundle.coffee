@@ -5,7 +5,14 @@ define [
   "./CrClnCommonRes"
   "./CrClnOpsResource"
   "./CrClnAmi"
-  "./CloudImportVpc"
   "./CrClnRds"
   "./CrClnRdsParam"
-], ( CloudResources )-> CloudResources
+], ( CloudResources )->
+  ### env:dev ###
+  require ["./cloudres/CloudImportVpc"], ()->
+  ### env:dev:end ###
+  ### env:debug ###
+  require ["./cloudres/CloudImportVpc"], ()->
+  ### env:debug:end ###
+
+  CloudResources

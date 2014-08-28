@@ -104,11 +104,17 @@ define [ 'constant',
             # Remove children and detach it from DOM
             $panel.empty().remove()
 
+            @_resetImmediatelySection()
+
             @setElement $new_panel
             @render()
 
             @focusImportantInput()
             null
+
+        _resetImmediatelySection: ->
+          $( '.apply-immediately-section' ).remove()
+          $('.property-panel-wrapper').removeClass('immediately')
 
         _loadAsSub : ( subPanelID ) ->
 

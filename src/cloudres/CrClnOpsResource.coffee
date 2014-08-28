@@ -55,6 +55,13 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           continue
         cln.__parseExternalData d, extraAttr, @__region
 
+      #get originalJson
+      app_id = App.workspaces.getAwakeSpace().opsModel.get("id")
+      if app_id and app_id.substr(0,4) is 'app-'
+        originalJson = App.model.attributes.appList.where({id:app_id})
+        if originalJson and originalJson.length>0
+          originalJson = originalJson[0].__jsonData
+
       if app_json
         @generatedJson = app_json
         #fill repo and tag of module when they are empty
@@ -62,13 +69,36 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           @generatedJson.agent.module.repo = App.user.get("repo")
           @generatedJson.agent.module.tag  = App.user.get("tag")
         console.log "Generated Json from backend:", $.extend true, {}, @generatedJson
+
+        ###### patch for app_json ######
+        for id,comp of @generatedJson.component
+          #fill attachmentId of ENI
+          if comp.type is constant.RESTYPE.ENI
+            eni = CloudResources(constant.RESTYPE.ENI,@__region ).where({id:comp.resource.NetworkInterfaceId})
+            if eni and eni.length>0 and not comp.resource.Attachment.AttachmentId
+              eni = eni[0].attributes
+              comp.resource.Attachment.AttachmentId = eni.attachment.attachmentId
+              console.warn "[patch app_json] fill AttachmentId of eni"
+          else if comp.type is constant.RESTYPE.KP
+            kpComp = $.extend true, {}, comp
+          null
+        #patch for old app without DefaultKP
+        if originalJson
+          for id,comp of originalJson.component
+            if comp.type is constant.RESTYPE.KP
+              originalKpComp = $.extend true, {}, comp
+              break
+            null
+          #use original KP to avoid diff
+          if originalKpComp
+            if kpComp and originalKpComp.uid isnt kpComp.uid
+              delete @generatedJson.component[kpComp.uid]
+              @generatedJson.component[originalKpComp.uid] = originalKpComp
+          else
+            originalJson.component[kpComp.uid] = kpComp
+        ###### patch for app_json ######
       else
         ### env:dev ###
-        app_id = App.workspaces.getAwakeSpace().opsModel.get("id")
-        if app_id and app_id.substr(0,4) is 'app-'
-          originalJson = App.model.attributes.appList.where({id:app_id})
-          if originalJson and originalJson.length>0
-            originalJson = originalJson[0].__jsonData
         @generatedJson = @__generateJsonFromRes(originalJson)
         console.log "Generated Json from frontend:", $.extend true, {}, @generatedJson
         ### env:dev:end ###

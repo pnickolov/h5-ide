@@ -149,17 +149,13 @@ define [
             hasAsg = (_.filter comp, (e)->
               e.type == constant.RESTYPE.ASG)?.length
 
-            fee = Design.instance()?.getCost(true) || {}
-            totalFee = fee.totalFee || 0
-            savingFee = fee.totalFee || 0
-
             canStop.tpl.find(".modal-footer").show()
             if hasNotReadyDB and hasNotReadyDB.length
               canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
               canStop.tpl.find('.modal-confirm').remove()
             else
               hasDBInstance = hasDBInstance?.length
-              canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, totalFee, savingFee, hasInstanceStore}
+              canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, hasInstanceStore}
             canStop.resize()
 
             canStop.on "confirm", ()->

@@ -50,6 +50,14 @@ module.exports =
       en: "Validating your stack..."
       zh: ""
 
+    ESTIMATED_COST:
+      en: "Estimated Cost"
+      zh: ""
+
+    PER_MONTH:
+      en: " / month"
+      zh: " / 月"
+
     LBL_DOWNLOAD:
       en: "Download"
       zh: ""
@@ -101,6 +109,7 @@ module.exports =
     CONFIRM_REMOVE_APP:
       en: "Do you want to remove the app?"
       zh: ""
+
 
 
 

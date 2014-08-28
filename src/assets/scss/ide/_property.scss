@@ -449,7 +449,7 @@
 	&.modal-toolbar .slidebox {
 		top: 0;
 		bottom: 0;
-		overflow: scroll;
+		overflow: auto;
 		&.show {
 			max-height: 100%;
 		}

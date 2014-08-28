@@ -241,18 +241,6 @@ module.exports =
       en: "Applying..."
       zh: ""
 
-    PROP_MSG_FAILED_TO_DELETE:
-      en: " DhcpOptions failed to delete because of: "
-      zh: ""
-
-    PROP_MSG_DELETE_SUCCESSFULLY:
-      en: "Delete Successfully"
-      zh: ""
-
-    PROP_MSG_DHCP_CREATED_SUCCESSFULLY:
-      en: "New DHCP Option is created successfully"
-      zh: ""
-
     PROP_DELETE_SNAPSHOT_1:
       en: "Confirm to delete "
       zh: ""

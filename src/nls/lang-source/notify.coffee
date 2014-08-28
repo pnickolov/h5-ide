@@ -118,3 +118,32 @@ module.exports =
       en: "Delete stack %s failed."
       zh: "删除 %s 失败。"
 
+
+    FAILED_TO_DELETE_DHCP:
+      en: "%s DhcpOptions failed to delete because of: %s"
+      zh: ""
+
+    SUCCESSFULLY_DELETE_DHCP:
+      en: "Delete Successfully"
+      zh: ""
+
+    DHCP_CREATED_SUCCESSFULLY:
+      en: "New DHCP Option is created successfully"
+      zh: ""
+
+    YOU_MUST_DOWNLOAD_THE_KEYPAIR:
+      en: "You must download the keypair."
+      zh: ""
+
+    XXX_IS_DELETED:
+      en: "%s is deleted."
+      zh: ""
+
+    SELECTED_KEYPAIRS_ARE_DELETED:
+      en: "Selected %s key pairs are deleted."
+      zh: ""
+
+    XXX_IS_IMPORTED:
+      en: "%s is imported."
+      zh: ""
+

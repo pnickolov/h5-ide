@@ -239,9 +239,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+ lang.ide.PROP_MSG_FAILED_TO_DELETE +result.awsResult
+                    notification 'error', sprintf lang.notify.FAILED_TO_DELETE_DHCP, deleteErrorCount, result.awsResult
                 else
-                    notification 'info', lang.ide.PROP_MSG_DELETE_SUCCESSFULLY
+                    notification 'info', lang.notify.SUCCESSFULLY_DELETE_DHCP
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
@@ -250,7 +250,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.error "Create failed because of: "+ (result.awsResult || result.msg)
                 @switchAction()
                 return false
-            notification 'info', lang.ide.PROP_MSG_DHCP_CREATED_SUCCESSFULLY
+            notification 'info', lang.notify.DHCP_CREATED_SUCCESSFULLY
             @manager.cancel()
         validate: (action)->
             switch action

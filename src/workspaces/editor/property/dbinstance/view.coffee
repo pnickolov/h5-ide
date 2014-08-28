@@ -47,6 +47,7 @@ define [ 'ApiRequest'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-time': 'changeMaintenanceTime'
 
+            'OPTION_CHANGE #property-dbinstance-engine-select': 'changeEngine'
             'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
             'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
             'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
@@ -86,8 +87,11 @@ define [ 'ApiRequest'
 
             that = @
 
-            penddingObj = @appModel.get('PendingModifiedValues')
-            noRestore = (not @appModel.get('LatestRestorableTime')) or (@appModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+            sourceDbModel = @resModel.getSourceDBForRestore()
+            sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
+
+            penddingObj = sourceDbAppModel.get('PendingModifiedValues')
+            noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
 
             if noRestore
 
@@ -99,7 +103,7 @@ define [ 'ApiRequest'
                     confirm      : {text : "Confirm"}
                     disableClose : true
                     disableConfirm: true
-                    width        : "570"
+                    width        : "580"
                     onCancel: () ->
                         that.resModel.remove()
                     onClose: () ->
@@ -108,7 +112,7 @@ define [ 'ApiRequest'
 
             else
 
-                lastestRestoreTime = new Date(+@appModel.get('LatestRestorableTime'))
+                lastestRestoreTime = new Date(+sourceDbAppModel.get('LatestRestorableTime'))
 
                 dbRestoreTime = @resModel.get('dbRestoreTime')
 
@@ -151,9 +155,9 @@ define [ 'ApiRequest'
                         timezone: timezone
                         noRestore: noRestore
                     })
-                    confirm      : {text : "Confirm"}
+                    # confirm      : {text : "Confirm"}
                     disableClose : true
-                    width        : "570"
+                    width        : "580"
                     onConfirm : ()->
                         isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
                         if isCustomTime
@@ -249,6 +253,10 @@ define [ 'ApiRequest'
 
             value = event.target.checked
             @resModel.set('applyImmediately', value)
+
+        changeEngine: ( event, value, data ) ->
+            @resModel.set 'engine', value
+            @renderLVIA()
 
         changeLicense: ( event, value, data ) ->
             @resModel.set 'license', value
@@ -756,6 +764,7 @@ define [ 'ApiRequest'
                 versions : lvi[1]
                 classes  : lvi[2]
                 azCapable: lvi[3]
+                engines: constant.DB_ENGINE_ARY[@resModel.engineType()]
             }
             attr = @getModelJSON()
             attr.classInfo = @resModel.getInstanceClassDict()

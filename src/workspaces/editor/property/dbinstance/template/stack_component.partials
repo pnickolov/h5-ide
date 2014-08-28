@@ -1,25 +1,19 @@
 <!-- {{lvi}} -->
 
 {{#if isRestoreDB}}
+{{#ifLogic engines.length '>' 1}}
 <section class="property-control-group">
     <label class="left">DB Engine</label>
-    <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
-        <div class="property-engine-label left" >{{engine}}</div>
-        <div class="property-engineversion-label selection">{{engineVersion}}</div>
-        <div class="property-engineversion-dropdown dropdown">
-            <div class="scroll-wrap scrollbar-auto-hide clearfix">
-                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                <div class="scroll-content">
-                    <ul>
-                        {{#each versions}}
-                        <li class="item {{#if selected}}selected{{/if}}" data-id="{{version}}">{{version}}</li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="selectbox" id="property-dbinstance-engine-select">
+        <div class="selection">{{engine}}</div>
+        <ul class="dropdown" tabindex="-1">
+            {{#each engines}}
+            <li class="item {{#ifCond ../engine this}}selected{{/ifCond}}" data-id="{{this}}">{{this}}</li>
+            {{/each}}
+        </ul>
     </div>
 </section>
+{{/ifLogic}}
 {{/if}}
 
 {{#if isAppEdit}}

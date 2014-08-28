@@ -337,7 +337,7 @@ define [
       return
 
     visualizeVPC : ()->
-      @model.visualizeVpc()
+      @model.visualizeVpc(true)
       attributes = {
         ready : @model.isVisualizeReady()
         fail  : @model.isVisualizeTimeout() || @model.isVisualizeFailed()

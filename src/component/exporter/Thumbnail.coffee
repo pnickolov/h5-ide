@@ -108,9 +108,8 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
           continue
         if bbox.x < origin.x then origin.x = bbox.x
         if bbox.y < origin.y then origin.y = bbox.y
-      origin.x -= 30
-      origin.y -= 30
-
+      origin.x = Math.floor( origin.x / 10 ) * 10 - 30
+      origin.y = Math.floor( origin.y / 10 ) * 10 - 30
 
     replaceEl = document.createElementNS("http://www.w3.org/2000/svg", "g")
     replaceEl.textContent = "PLACEHOLDER"

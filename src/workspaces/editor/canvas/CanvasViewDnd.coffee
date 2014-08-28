@@ -403,7 +403,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     $dom.dnd( evt, options )
 
     # Make selectItem the last, since PropertyPanel is really easy to throw error
-    @selectItem( $tgt[0] )
+    # We will have a select after mouseup, so this seems like a duplicated select.
+    # @selectItem( $tgt[0] )
     false
 
   __moveItemStart = ( data )->

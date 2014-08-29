@@ -55,6 +55,10 @@ define [
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
         accessible|backupRetentionPeriod|multiAz|password|__connections|__parent"
 
+    sourceDbIndependentAttrForRestore: "id|appId|x|y|width|height|name|\
+        accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
+        multiAz|__connections|__parent|license|iops|port|ogName|pgName|az"
+
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
 
     getAllRestoreDB: ->
@@ -101,12 +105,14 @@ define [
       defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
       SgAsso = Design.modelClassForType( "SgAsso" )
       new SgAsso( defaultSg, this )
+      @listenTo sourceDb, 'change', @syncAttrSourceDBForRestore
 
     getSourceDBForRestore: ->
       
       @sourceDBForRestore
 
     syncMasterAttr: ( master ) ->
+
       if @get 'appId'
         return false
 
@@ -117,6 +123,16 @@ define [
           needSync[ k ] = v
 
       delete needSync['iops'] if needSync['iops']
+
+      @set needSync
+
+    syncAttrSourceDBForRestore: ( sourceDb ) ->
+
+      needSync = {}
+
+      for k, v of sourceDb.changedAttributes()
+        if @sourceDbIndependentAttrForRestore.indexOf( k ) < 0
+          needSync[ k ] = v
 
       @set needSync
 

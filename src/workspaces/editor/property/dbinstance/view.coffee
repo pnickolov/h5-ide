@@ -706,7 +706,9 @@ define [ 'ApiRequest'
 
             @$('#property-dbinstance-iops-value').parsley 'custom', (val) ->
 
-                storage = $('#property-dbinstance-storage').val()
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = that.resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
 
                 iopsRange = that._getIOPSRange(storage)
 
@@ -1049,7 +1051,9 @@ define [ 'ApiRequest'
 
             value = event.target.checked
 
-            storage = Number($('#property-dbinstance-storage').val())
+            fillValue = $('#property-dbinstance-storage').val()
+            originValue = @resModel.get('allocatedStorage')
+            storage = Number(fillValue or originValue)
             iopsRange = @_getIOPSRange(storage)
 
             # for replica
@@ -1082,7 +1086,9 @@ define [ 'ApiRequest'
                 value = target.val()
                 iops = Number(value)
 
-                storage = Number($('#property-dbinstance-storage').val())
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = @resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
 
                 if target.parsley 'validate'
 

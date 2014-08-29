@@ -240,6 +240,7 @@ require.config {
       "jqpagination"
       'jquerysort'
       "jqtimepicker"
+      "jqdatetimepicker"
       "UI.modalplus"
       "UI.nanoscroller"
     ]

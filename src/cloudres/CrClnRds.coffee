@@ -206,6 +206,10 @@ define [
         i.sbgId = i.DBSubnetGroup?.DBSubnetGroupName
         i.DBParameterGroups = i.DBParameterGroups?.DBParameterGroup || []
         i.DBSecurityGroups  = i.DBSecurityGroups?.DBSecurityGroup || []
+        if i.LatestRestorableTime
+          i.LatestRestorableTime = (new Date(i.LatestRestorableTime)).getTime()
+        if i.InstanceCreateTime
+          i.InstanceCreateTime = (new Date(i.InstanceCreateTime)).getTime()
       data
     parseExternalData: ( data ) ->
       @unifyApi data, @type

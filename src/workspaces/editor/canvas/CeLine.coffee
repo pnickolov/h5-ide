@@ -217,7 +217,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       @__lastDir = if start.y >= end.y then 1 else -1
       MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
 
-    lineStyle : ()-> @canvas.lineStyle()
+    lineStyle : ()-> 4
 
     generateCurvePath : ( start, end )->
       # 1. Origin

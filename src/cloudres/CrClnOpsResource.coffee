@@ -82,12 +82,16 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
           else if comp.type is constant.RESTYPE.KP
             kpComp = $.extend true, {}, comp
           null
-        #patch for old app without DefaultKP
+        #patch for old app without DefaultKP and default SG
         if originalJson
           for id,comp of originalJson.component
             if comp.type is constant.RESTYPE.KP
               originalKpComp = $.extend true, {}, comp
-              break
+            else if comp.type is constant.RESTYPE.SG and comp.name in ["DefaultSG","default"]
+              sg = CloudResources(constant.RESTYPE.SG,@__region ).where({id:comp.resource.GroupId})
+              if sg and sg.length>0 and comp.resource.GroupName isnt sg[0].get("groupName")
+                comp.resource.GroupName = sg[0].get("groupName")
+                console.warn "[patch app_json] change groupName from 'default' to real value @{comp.resource.GroupName}"
             null
           #use original KP to avoid diff
           if originalKpComp

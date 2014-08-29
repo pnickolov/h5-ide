@@ -169,3 +169,56 @@ module.exports =
     CVS_TIP_SHRINK_H:
       en: "Decrease Canvas Height"
       zh: "减少画板宽度"
+
+    CVS_TIP_ASG_DRAGGER:
+      en: "Expand the group by drag-and-drop in other availability zone."
+      zh: ""
+
+    CVS_NO_SUBNET_ASSIGNED_TO_SG:
+      en: "No subnet is assigned to this subnet group yet"
+      zh: ""
+
+    CVS_POP_ATTACHED_VOLUMES:
+      en: "Attached Volumes"
+      zh: ""
+
+    CVS_POP_NO_ATTACHED_VOLUME:
+      en: "No Attached Volumes"
+      zh: ""
+
+    CVS_POP_NO_INSTANCES:
+      en: "No instances"
+      zh: ""
+
+    CVS_POP_NO_NETWORK_INTERFACE:
+      en: "No network interface"
+      zh: ""
+
+    CVS_ASG_DROP_LC_1:
+      en: "Drop AMI from"
+      zh: ""
+
+    CVS_ASG_DROP_LC_2:
+      en: "resource panel to"
+      zh: ""
+
+    CVS_ASG_DROP_LC_3:
+      en: "create launch"
+      zh: ""
+
+    CVS_ASG_DROP_LC_4:
+      en: "configuration"
+      zh: ""
+
+    ATTACH_NETWORK_INTERFACE_TO_INTERFACE:
+      en: "Attach Network Interface to Instance"
+      zh: ""
+
+    ATTACH_AND_REMOVE_PUBLIC_IP:
+      en: "Attach and Remove Public IP"
+      zh: ""
+
+    NETWORK_INTERFACE_ATTACHED_INTERFACE_NO_NEED_FOR_SG_RULE:
+      en: "The Network Interface is attached to the instance. No need to connect them by security group rule."
+      zh: ""
+

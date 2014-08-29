@@ -147,7 +147,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     if not ItemClassProto.sticky
       # Caculate best drop rect for non-sticky item
       dropRect = @__bestFitRect( dropRect, group, excludeChild )
-      if not dropRect then return lang.canvas.WARN_NO_ENOUGH_SPACE
+      if not dropRect then return lang.CANVAS.WARN_NO_ENOUGH_SPACE
 
     {
       group    : group
@@ -486,7 +486,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
 
     result = data.context.__handleDropData( data, ignore, true )
     if _.isString( result )
-      if result is lang.canvas.WARN_NO_ENOUGH_SPACE
+      if result is lang.CANVAS.WARN_NO_ENOUGH_SPACE
         notification "warning", result
       return
 

@@ -51,7 +51,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
     isRemovable : ()->
       if @design().modeIsAppEdit()
         if @hasAppUpdateRestriction()
-          return { error : lang.canvas.ERR_DEL_ELB_LINE_2 }
+          return { error : lang.CANVAS.ERR_DEL_ELB_LINE_2 }
 
       elb    = @getTarget( constant.RESTYPE.ELB )
       subnet = @getTarget( constant.RESTYPE.SUBNET )
@@ -77,7 +77,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
           connected = false
           break
 
-      if connected then return { error : lang.canvas.ERR_DEL_ELB_LINE_2 }
+      if connected then return { error : lang.CANVAS.ERR_DEL_ELB_LINE_2 }
       true
 
   }, {
@@ -87,7 +87,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js", "Design", "compo
     #   if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
     #     return true
 
-    #   lang.canvas.WARN_CANNOT_CONNECT_SUBNET_TO_ELB
+    #   lang.CANVAS.WARN_CANNOT_CONNECT_SUBNET_TO_ELB
   }
 
   # Elb <==> Ami

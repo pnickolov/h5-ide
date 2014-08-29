@@ -50,18 +50,18 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
 
     errorMessageForDrop : ( type )->
       switch type
-        when constant.RESTYPE.VOL       then return lang.canvas.WARN_NOTMATCH_VOLUME
-        when constant.RESTYPE.SUBNET    then return lang.canvas.WARN_NOTMATCH_SUBNET
-        when constant.RESTYPE.INSTANCE  then return lang.canvas.WARN_NOTMATCH_INSTANCE_SUBNET
-        when constant.RESTYPE.ENI       then return lang.canvas.WARN_NOTMATCH_ENI
-        when constant.RESTYPE.RT        then return lang.canvas.WARN_NOTMATCH_RTB
-        when constant.RESTYPE.ELB       then return lang.canvas.WARN_NOTMATCH_ELB
-        when constant.RESTYPE.CGW       then return lang.canvas.WARN_NOTMATCH_CGW
-        when constant.RESTYPE.ASG       then return lang.canvas.WARN_NOTMATCH_ASG
-        when constant.RESTYPE.IGW       then return lang.canvas.WARN_NOTMATCH_IGW
-        when constant.RESTYPE.VGW       then return lang.canvas.WARN_NOTMATCH_VGW
-        when constant.RESTYPE.DBSBG      then return lang.canvas.WARN_NOTMATCH_SGP_VPC
-        when constant.RESTYPE.DBINSTANCE then return lang.canvas.WARN_NOTMATCH_DBINSTANCE_SGP
+        when constant.RESTYPE.VOL       then return lang.CANVAS.WARN_NOTMATCH_VOLUME
+        when constant.RESTYPE.SUBNET    then return lang.CANVAS.WARN_NOTMATCH_SUBNET
+        when constant.RESTYPE.INSTANCE  then return lang.CANVAS.WARN_NOTMATCH_INSTANCE_SUBNET
+        when constant.RESTYPE.ENI       then return lang.CANVAS.WARN_NOTMATCH_ENI
+        when constant.RESTYPE.RT        then return lang.CANVAS.WARN_NOTMATCH_RTB
+        when constant.RESTYPE.ELB       then return lang.CANVAS.WARN_NOTMATCH_ELB
+        when constant.RESTYPE.CGW       then return lang.CANVAS.WARN_NOTMATCH_CGW
+        when constant.RESTYPE.ASG       then return lang.CANVAS.WARN_NOTMATCH_ASG
+        when constant.RESTYPE.IGW       then return lang.CANVAS.WARN_NOTMATCH_IGW
+        when constant.RESTYPE.VGW       then return lang.CANVAS.WARN_NOTMATCH_VGW
+        when constant.RESTYPE.DBSBG      then return lang.CANVAS.WARN_NOTMATCH_SGP_VPC
+        when constant.RESTYPE.DBINSTANCE then return lang.CANVAS.WARN_NOTMATCH_DBINSTANCE_SGP
 
     selectVolume : ( volumeId )->
       @deselectItem( true )

@@ -75,7 +75,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
     isRemovable : () ->
 
       if @design().modeIsAppEdit() and @get("appId")
-        return error : lang.canvas.ERR_DEL_LC
+        return error : lang.CANVAS.ERR_DEL_LC
 
       state = @get("state")
       if state and state.length > 0

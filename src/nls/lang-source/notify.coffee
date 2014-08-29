@@ -2,7 +2,7 @@
 
 module.exports =
 
-  notify:
+  NOTIFY:
 
     WARN_AUTH_FAILED:
       en : "Authentication failed."

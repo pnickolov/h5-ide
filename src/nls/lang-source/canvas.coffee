@@ -2,7 +2,7 @@
 
 module.exports =
 
-  canvas:
+  CANVAS:
 
     WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."

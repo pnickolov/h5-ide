@@ -455,12 +455,11 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			# if have cert, fetch aws cert res and check if exist
 			if haveCert
 
-				if not window.sslCertCol
-					window.sslCertCol = CloudResources constant.RESTYPE.IAM
+				sslCertCol = CloudResources constant.RESTYPE.IAM
 
-				window.sslCertCol.fetchForce().then (result) ->
+				sslCertCol.fetchForce().then (result) ->
 
-					sslCertAry = window.sslCertCol.toJSON()
+					sslCertAry = sslCertCol.toJSON()
 					_.each sslCertAry, (sslCertData) ->
 						allExistCertAry.push sslCertData.Name
 

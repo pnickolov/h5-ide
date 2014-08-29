@@ -75,7 +75,7 @@ define [
 
       targetSubnetGroup = dataTransfer.parent.model
       if targetSubnetGroup isnt dataTransfer.item.model.parent()
-        notification "error", "Read replica must be dropped in the same subnet group with source DB instance."
+        notification "error", lang.canvas.CVS_READ_REPLICA_SAVE_SUBNET
         return
 
       # If the model supports clone() interface, then clone the target.
@@ -214,7 +214,7 @@ define [
           } , option )
 
           if not attr.parent.id
-            notification "error", "Cannot create subnet group due to insufficient subnets."
+            notification "error", lang.canvas.CVS_CREATE_SUBNET_GROUP_DUE_TO_INSUFFICIENT_SUBNETS
             return
 
           attr.x += 2

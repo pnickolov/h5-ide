@@ -215,8 +215,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       validObj = Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
       if not validObj.isValid
         if validObj.isReserved
-          return "This IP address is in subnet’s reserved address range"
-        return 'This IP address conflicts with subnet’s IP range'
+          return lang.ide.VALIDATION_IP_IN_SUBNET_REVERSED_RANGE
+        return lang.ide.VALIDATION_IP_CONFLICTS_WITH_SUBNET_IP_RANGE
 
       realNewIp = @getRealIp( ip, cidr )
 
@@ -233,9 +233,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           realIp = eni.getRealIp( ipObj.ip )
           if realIp is realNewIp
             if eni is this
-              return 'This IP address conflicts with other IP'
+              return lang.ide.VALIDATION_IP_CONFLICTS_WITH_OTHER_IP
             else
-              return 'This IP address conflicts with other network interface’s IP'
+              return lang.ide.VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP
 
       true
 

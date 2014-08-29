@@ -115,8 +115,8 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
       if instance.getEmbedEni().get("assoPublicIp") is true
         return {
           confirm  : true
-          title    : "Attach Network Interface to Instance"
-          action   : "Attach and Remove Public IP"
+          title    : lang.canvas.ATTACH_NETWORK_INTERFACE_TO_INTERFACE
+          action   : lang.canvas.ATTACH_AND_REMOVE_PUBLIC_IP
           template : MC.template.modalAttachingEni({
             host : instance.get("name")
             eni  : eni.get("name")

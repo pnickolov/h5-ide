@@ -1,3 +1,4 @@
+# Reference: https://trello.com/c/KaOjDSm7/303-orginize-lang-source-coffee
 
 module.exports =
   ide:
@@ -827,74 +828,6 @@ module.exports =
     PROP_SGRULE_BTN_EDIT_RULE:
       en: "Edit Related Rule"
       zh: "编辑相关规则"
-
-    POP_SGRULE_TITLE_ADD:
-      en: "Add Security Group Rule"
-      zh: "添加安全组规则"
-
-    POP_SGRULE_TITLE_EDIT:
-      en: "Edit Security Group Rule"
-      zh: "修改安全组规则"
-
-    POP_SGRULE_LBL_DIRECTION:
-      en: "Direction"
-      zh: "方向"
-
-    POP_SGRULE_LBL_INBOUND:
-      en: "Inbound"
-      zh: "入方向"
-
-    POP_SGRULE_LBL_OUTBOUND:
-      en: "Outbound"
-      zh: "出方向"
-
-    POP_SGRULE_LBL_SOURCE:
-      en: "Source"
-      zh: "源"
-
-    POP_SGRULE_LBL_DEST:
-      en: "Destination"
-      zh: "目的"
-
-    POP_SGRULE_LBL_PROTOCOL:
-      en: "Protocol"
-      zh: "协议"
-
-    POP_SGRULE_PROTOCOL_TCP:
-      en: "TCP"
-      zh: "TCP"
-
-    POP_SGRULE_PROTOCOL_UDP:
-      en: "UDP"
-      zh: "UDP"
-
-    POP_SGRULE_PROTOCOL_ICMP:
-      en: "ICMP"
-      zh: "ICMP"
-
-    POP_SGRULE_PROTOCOL_CUSTOM:
-      en: "Custom"
-      zh: "自定义"
-
-    POP_SGRULE_PROTOCOL_ALL:
-      en: "All"
-      zh: "全部"
-
-    POP_SGRULE_BTN_SAVE:
-      en: "Save"
-      zh: "保存"
-
-    POP_SGRULE_BTN_CANCEL:
-      en: "Cancel"
-      zh: "取消"
-
-    POP_SGRULE_PLACEHOLD_SOURCE:
-      en: "e.g., 192.168.2.0/24"
-      zh: "如192.168.2.0/24"
-
-    POP_SGRULE_PLACEHOLD_PORT_RANGE:
-      en: "Port Range.eg.80 or 49152-65535"
-      zh: "端口范围，如80或49152-65535"
 
     PROP_ACL_LBL_NAME:
       en: "Name"

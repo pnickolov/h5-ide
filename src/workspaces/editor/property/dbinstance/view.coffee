@@ -93,6 +93,9 @@ define [ 'ApiRequest'
             penddingObj = sourceDbAppModel.get('PendingModifiedValues')
             noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
 
+            if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
+                noRestore = true
+
             if noRestore
 
                 modal = new Modal({
@@ -145,14 +148,32 @@ define [ 'ApiRequest'
                 minuteStr = String(currentTime.getMinutes())
                 secondStr = String(currentTime.getSeconds())
 
+                _getCurrentSelectedTime = () ->
+
+                    dateStr = $('.modal-db-instance-restore-config .datepicker').val()
+                    selectedDate = new Date(dateStr)
+                    hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
+                    minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
+                    second = $('.modal-db-instance-restore-config .timepicker.second').val()
+                    selectedDate.setHours(Number(hour))
+                    selectedDate.setMinutes(Number(minute))
+                    selectedDate.setSeconds(Number(second))
+                    return selectedDate
+
+                _setDefaultSelectedTime = () ->
+
+                    hour = if hourStr.length is 1 then "0#{hourStr}" else hourStr
+                    minute = if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
+                    second = if secondStr.length is 1 then "0#{secondStr}" else secondStr
+                    $('.modal-db-instance-restore-config .timepicker.hour').val(hour)
+                    $('.modal-db-instance-restore-config .timepicker.minute').val(minute)
+                    $('.modal-db-instance-restore-config .timepicker.second').val(second)
+
                 modal = new Modal({
                     title        : "Restore to point in time config"
                     template     : template_component.modalRestoreConfirm({
                         lastest: lastestRestoreTime.toString()
                         custom: not dbRestoreTime
-                        hour: if hourStr.length is 1 then "0#{hourStr}" else hourStr
-                        minute: if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
-                        second: if secondStr.length is 1 then "0#{secondStr}" else secondStr
                         timezone: timezone
                         noRestore: noRestore
                     })
@@ -162,14 +183,7 @@ define [ 'ApiRequest'
                     onConfirm : ()->
                         isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
                         if isCustomTime
-                            dateStr = $('.modal-db-instance-restore-config .datepicker').val()
-                            selectedDate = new Date(dateStr)
-                            hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
-                            minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
-                            second = $('.modal-db-instance-restore-config .timepicker.second').val()
-                            selectedDate.setHours(Number(hour))
-                            selectedDate.setMinutes(Number(minute))
-                            selectedDate.setSeconds(Number(second))
+                            selectedDate = _getCurrentSelectedTime()
                             that.resModel.set('dbRestoreTime', selectedDate.toISOString())
                         else
                             that.resModel.set('dbRestoreTime', '')
@@ -182,6 +196,9 @@ define [ 'ApiRequest'
                         if not that.resModel.isRestored
                             that.resModel.remove()
                 })
+
+                _setDefaultSelectedTime()
+
                 # bind datetime picker event
                 $('.modal-db-instance-restore-config .datepicker').datetimepicker({
                     timepicker: false,
@@ -190,22 +207,41 @@ define [ 'ApiRequest'
                     closeOnDateSelect: true,
                     format: 'm/d/Y',
                     formatDate:'m/d/Y',
-                    value : "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
+                    value: "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
+                    onSelectDate: () ->
+                        selectedDate = _getCurrentSelectedTime()
+                        if selectedDate > lastestRestoreTime
+                            _setDefaultSelectedTime()
                 })
                 $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
                     $('#modal-db-instance-restore-radio-custom').prop('checked', true)
 
-                $('.modal-db-instance-restore-config .timepicker').on 'blur', (event) ->
+                $('.modal-db-instance-restore-config .timepicker').on 'change', (event) ->
 
                     valStr = $(event.target).val()
                     currentValue = Number(valStr)
-                    maxValue = 59
+
                     if $(event.target).hasClass('hour')
                         maxValue = 23
+                        maxLatestValue = currentTime.getHours()
+
+                    else if $(event.target).hasClass('minute')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getMinutes()
+
+                    else if $(event.target).hasClass('second')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getSeconds()
+
                     if currentValue > maxValue
                         $(event.target).val(maxValue)
                     else if not currentValue or currentValue < 0
                         $(event.target).val('00')
+
+                    # check max time
+                    selectedDate = _getCurrentSelectedTime()
+                    if selectedDate > lastestRestoreTime
+                        _setDefaultSelectedTime()
 
                     newValStr = $(event.target).val()
                     if newValStr.length < 2

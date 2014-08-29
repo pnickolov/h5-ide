@@ -57,6 +57,18 @@ define [
 
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
 
+    getAllRestoreDB: ->
+
+      srcDb = @getSourceDBForRestore()
+      return [] if srcDb
+
+      that = @
+      dbModels = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).allObjects()
+      return _.filter dbModels, (dbModel) ->
+        if dbModel.getSourceDBForRestore() is that
+          return true
+        return false
+
     master: ->
       m =  @connections( 'DbReplication' )[0]
       if m and m.master() isnt @
@@ -558,6 +570,14 @@ define [
           result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         return result
+      allRestoreDB = @getAllRestoreDB()
+      if allRestoreDB.length > 0
+        dbNameAry = []
+        _.each allRestoreDB, (dbModel) ->
+          dbNameAry.push("<span class='resource-tag'>#{dbModel.get('name')}</span>")
+        result = sprintf lang.ide.CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE, @get("name"), dbNameAry.join(', ')
+        result = "<div class='modal-text-major'>#{result}</div>"
+        return result
       true
 
     remove :()->
@@ -566,6 +586,9 @@ define [
         if not slave.get("appId")
           #remove nonexistent replica
           slave.remove()
+
+      for restore in @getAllRestoreDB()
+        restore.remove()
 
       #remove current node
       ComplexResModel.prototype.remove.call(this)

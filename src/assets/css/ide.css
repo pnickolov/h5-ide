@@ -6697,7 +6697,7 @@ g.shadow {
     bottom: 0;
     width: 100%; }
 
-.property-panel-wrapper.immediately .scroll-wrap {
+.property-panel-wrapper.immediately > .scroll-wrap {
   top: 69px; }
 
 .accordion-body.nano {
@@ -7032,8 +7032,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

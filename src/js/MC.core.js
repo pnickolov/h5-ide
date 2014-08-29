@@ -12,10 +12,13 @@
 /* Define as MC module */
 define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
 
-Analytics.update("version", window.version);
 var tz = (new Date().getTimezoneOffset())/-60;
 if (tz >= 0) { tz = "+" + tz; }
-Analytics.update("timezone", "UTC" + tz);
+Analytics.update({
+	  "version"   : window.version
+	, "lastlogin" : (new Date()).toString()
+	, "timezone"  : "UTC" + tz
+});
 
 window.Q = Q;
 

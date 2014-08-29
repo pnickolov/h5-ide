@@ -144,10 +144,6 @@ define [ 'ApiRequest'
                 else
                     timezone = "#{timezone}"
 
-                hourStr = String(currentTime.getHours())
-                minuteStr = String(currentTime.getMinutes())
-                secondStr = String(currentTime.getSeconds())
-
                 _getCurrentSelectedTime = () ->
 
                     dateStr = $('.modal-db-instance-restore-config .datepicker').val()
@@ -160,7 +156,16 @@ define [ 'ApiRequest'
                     selectedDate.setSeconds(Number(second))
                     return selectedDate
 
-                _setDefaultSelectedTime = () ->
+                _setDefaultSelectedTime = (needMax) ->
+
+                    if needMax
+                        hourStr = String(lastestRestoreTime.getHours())
+                        minuteStr = String(lastestRestoreTime.getMinutes())
+                        secondStr = String(lastestRestoreTime.getSeconds())
+                    else
+                        hourStr = String(currentTime.getHours())
+                        minuteStr = String(currentTime.getMinutes())
+                        secondStr = String(currentTime.getSeconds())
 
                     hour = if hourStr.length is 1 then "0#{hourStr}" else hourStr
                     minute = if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
@@ -211,7 +216,7 @@ define [ 'ApiRequest'
                     onSelectDate: () ->
                         selectedDate = _getCurrentSelectedTime()
                         if selectedDate > lastestRestoreTime
-                            _setDefaultSelectedTime()
+                            _setDefaultSelectedTime(true)
                 })
                 $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
                     $('#modal-db-instance-restore-radio-custom').prop('checked', true)

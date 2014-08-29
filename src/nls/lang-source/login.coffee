@@ -1,7 +1,7 @@
 # Reference: https://trello.com/c/KaOjDSm7/303-orginize-lang-source-coffee
 
 module.exports =
-  login:
+  LOGIN:
 
       login:
         en: "Log In"
@@ -63,7 +63,7 @@ module.exports =
         en: "."
         zh: "等浏览器。"
 
-    register:
+    REGISTER:
       register:
         en: "Register"
         zh: "注册"
@@ -164,7 +164,7 @@ module.exports =
         en: "Please wait..."
         zh: "稍等..."
 
-    reset:
+    RESET:
       "pre-reset":
         en: "Forgot Password"
         zh: "忘记密码"

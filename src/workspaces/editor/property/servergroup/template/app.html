@@ -42,13 +42,13 @@
         <input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
         <label for="property-instance-ebs-optimized"></label>
       </div>
-      <label for="property-instance-ebs-optimized">EBS Optimized</label>
+      <label for="property-instance-ebs-optimized">{{i18n "PROP_INSTANCE_EBS_OPTIMIZED"}}</label>
     </section>
     {{/if}}
     {{else}}
     <section class="property-control-group">
       <label>{{ i18n "PROP_INSTANCE_TYPE" }}</label>
-      <p class="property-info">Updating instance type is disabled for instances using instance store for root device.</p>
+      <p class="property-info">{{i18n "PROP_SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE"}}</p>
     </section>
     {{/if}}
   </div>
@@ -66,7 +66,7 @@
       </div>
       <label for="property-instance-enable-cloudwatch" >{{ i18n "PROP_INSTANCE_CW_ENABLED" }}</label>
 
-      <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+      <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">{{i18n "PROP_SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE"}}</a></p>
     </section>
   </div>
 

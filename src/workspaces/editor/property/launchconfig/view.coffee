@@ -190,7 +190,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : "<p class='modal-text-major'>Are you sure to delete #{$li.text()}?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
+                    body    : sprintf(lang.IDE.PROP_LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->

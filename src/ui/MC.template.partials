@@ -443,7 +443,7 @@ Additional Notes and Questions
 <!-- {{modalRunStack}} -->
 <section id="modal-run-stack">
 	<div class="modal-control-group clearfix" data-bind="true">
-		<label class="label" for="app-name">{{i18n "toolbar.APP_NAME"}}</label>
+		<label class="label" for="app-name">{{i18n "TOOLBAR.APP_NAME"}}</label>
 		<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		<div class="runtime-error" id="runtime-error-appname"></div>
 	</div>
@@ -453,7 +453,7 @@ Additional Notes and Questions
 		<div class="runtime-error" id="runtime-error-kp"></div>
 	</div>
 	<div class="modal-control-group app-usage-group clearfix">
-		<label for="">{{i18n "toolbar.toolbar.APP_USAGE"}}</label>
+		<label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
 		<div id="app-usage-selectbox" class="selectbox">
 			<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
 			<ul class="dropdown" tabindex="-1">
@@ -466,18 +466,18 @@ Additional Notes and Questions
 	</div>
 	<div class="stack-validation">
 		<details open style="display:none;">
-			<summary>{{i18n "toolbar.STACK_VALIDATION"}}</summary>
+			<summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
 			<div id="stack-run-validation-container"></div>
 		</details>
 		<div class="nutshell">:<label></label></div>
 		<div class="validating">
 			<div class="loading-spinner loading-spinner-small"></div>
-			<p>{{i18n "toolbar.VALIDATING_STACK"}}</p>
+			<p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
 		</div>
 	</div>
 	<div class="estimate clearfix">
-		<span class="title">{{i18n "toolbar.ESTIMATED_COST"}}</span>
-		<span class="price" id="label-total-fee"><b>${{total_fee}}</b>{{i18n "toolbar.PER_MONTH"}}</span>
+		<span class="title">{{i18n "TOOLBAR.ESTIMATED_COST"}}</span>
+		<span class="price" id="label-total-fee"><b>${{total_fee}}</b>{{i18n "TOOLBAR.PER_MONTH"}}</span>
 	</div>
 </section>
 

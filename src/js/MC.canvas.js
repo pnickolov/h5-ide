@@ -806,7 +806,7 @@ MC.canvas = {
 		{
 			//C
 			mid_y = Math.round((start.y + end.y) / 2);
-			if ( line_style === 1 )
+			//if ( line_style === 1 )
 			{//_round_corner
 				if ((end.type === "AWS.VPC.RouteTable" || end.type === "AWS.ELB") && end.type !== start.type)
 				{
@@ -840,7 +840,7 @@ MC.canvas = {
 		{
 			//D
 			mid_x = Math.round((start.x + end.x) / 2);
-			if ((end.type === 'AWS.VPC.RouteTable' || (end.type === 'AWS.ELB' && line_style === 1) ) && end.type !== start.type)
+			if ((end.type === 'AWS.VPC.RouteTable' || (end.type === 'AWS.ELB' /*&& line_style === 1*/) ) && end.type !== start.type)
 			{
 				if (Math.abs(start.x - mid_x) > 5)
 				{

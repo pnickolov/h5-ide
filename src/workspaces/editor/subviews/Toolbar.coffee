@@ -142,9 +142,9 @@ define [
       sgBtn = $(".icon-hide-sg")
       show  = sgBtn.hasClass("selected")
       if show
-        sgBtn.data("tooltip", lang.IDE.TOOL_LBL_LINESTYLE_HIDE_SG).removeClass("selected")
+        sgBtn.data("tooltip", lang.TOOLBAR.LBL_LINESTYLE_HIDE_SG).removeClass("selected")
       else
-        sgBtn.data("tooltip", lang.IDE.TOOL_LBL_LINESTYLE_SHOW_SG).addClass("selected")
+        sgBtn.data("tooltip", lang.TOOLBAR.LBL_LINESTYLE_SHOW_SG).addClass("selected")
       @parent.canvas.toggleSgLine( show )
       return
 
@@ -236,7 +236,7 @@ define [
         # The browser doesn't support Blob. Fallback to show a dialog to
         # allow user to download the file.
         new Modal {
-          title         : lang.IDE.TOOL_EXPORT_AS_JSON
+          title         : lang.TOOLBAR.EXPORT_AS_JSON
           template      : OpsEditorTpl.export.JSON( data )
           width         : "470"
           disableFooter : true
@@ -252,7 +252,7 @@ define [
           hasCustomOG = true
 
       modal = new Modal {
-        title         : lang.IDE.TOOL_POP_EXPORT_CF
+        title         : lang.TOOLBAR.POP_EXPORT_CF
         template      : OpsEditorTpl.export.CF({hasCustomOG})
         width         : "470"
         disableFooter : true
@@ -268,14 +268,14 @@ define [
 
       Q.spread [ TAPromise, ApiPromise ], ( taError, apiReturn  ) ->
         modal?.resize()
-        btn = modal.tpl.find("a.btn-blue").text(lang.IDE.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
+        btn = modal.tpl.find("a.btn-blue").text(lang.TOOLBAR.POP_BTN_EXPORT_CF).removeClass("disabled")
         JsonExporter.genericExport btn, apiReturn, "#{name}.json"
         btn.click ()-> modal.close()
         return
 
       , ( err ) ->
         modal?.resize()
-        modal.tpl.find("a.btn-blue").text(lang.IDE.TOOL_POP_BTN_EXPORT_CF)
+        modal.tpl.find("a.btn-blue").text(lang.TOOLBAR.POP_BTN_EXPORT_CF)
         if err.error
           notification "error", sprintf lang.NOTIFY.FAIL_TO_EXPORT_TO_CLOUDFORMATION, err.error
         return
@@ -398,10 +398,10 @@ define [
 
         originStackExist = !!stack
         appToStackModal = new Modal
-            title:  lang.IDE.TOOL_POP_TIT_APP_TO_STACK
+            title:  lang.TOOLBAR.POP_TIT_APP_TO_STACK
             template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
             confirm:
-                text: lang.IDE.TOOL_POP_BTN_SAVE_TO_STACK
+                text: lang.TOOLBAR.POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
         appToStackModal.tpl.find("input[name='save-stack-type']").change ->
             appToStackModal.tpl.find(".radio-instruction").toggleClass('hide')

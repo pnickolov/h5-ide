@@ -19,7 +19,7 @@ define [
       name = name || App.model.stackList().get( id ).get( "name" )
 
       modal AppTpl.removeStackConfirm {
-        msg : sprintf lang.IDE.TOOL_POP_BODY_DELETE_STACK, name
+        msg : sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name
       }
 
       $("#confirmRmStack").on "click", ()->
@@ -45,9 +45,9 @@ define [
       opsModel = App.model.appList().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
-        title: lang.IDE.TOOL_TIP_START_APP
+        title: lang.TOOLBAR.TIP_START_APP
         confirm:
-          text: lang.IDE.TOOL_POP_BTN_START_APP
+          text: lang.TOOLBAR.POP_BTN_START_APP
           color: 'blue'
           disabled: false
         disableClose: true
@@ -100,9 +100,9 @@ define [
       appName = app.get('name')
       canStop = new modalPlus {
         template: AppTpl.loading()
-        title:  if isProduction then lang.IDE.TOOL_POP_TIT_STOP_PRD_APP else lang.IDE.TOOL_POP_TIT_STOP_APP
+        title:  if isProduction then lang.TOOLBAR.POP_TIT_STOP_PRD_APP else lang.TOOLBAR.POP_TIT_STOP_APP
         confirm:
-          text: lang.IDE.TOOL_POP_BTN_STOP_APP
+          text: lang.TOOLBAR.POP_BTN_STOP_APP
           color: 'red'
           disabled: isProduction
         disableClose: true
@@ -185,10 +185,10 @@ define [
       name = app.get("name")
       production = app.get("usage") is 'production'
       terminateConfirm = new modalPlus(
-        title: if production then lang.IDE.TOOL_POP_TIT_TERMINATE_PRD_APP else lang.IDE.TOOL_POP_TIT_TERMINATE_APP
+        title: if production then lang.TOOLBAR.POP_TIT_TERMINATE_PRD_APP else lang.TOOLBAR.POP_TIT_TERMINATE_APP
         template: AppTpl.loading()
         confirm: {
-          text: lang.IDE.TOOL_POP_BTN_TERMINATE_APP
+          text: lang.TOOLBAR.POP_BTN_TERMINATE_APP
           color: "red"
           disabled: production
         }

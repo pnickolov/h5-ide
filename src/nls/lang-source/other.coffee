@@ -1141,6 +1141,13 @@ VisualOps API. You cannot UNDO this action.'
       en: "Cancel"
       zh: "取消"
 
+    ##### Pop
+
+
+    POP_CONFIRM_TO_REMOVE:
+      en: "Confirm to Remove"
+      zh: ""
+
     ##### RDS
 
     RDS_EDIT_OPTION_GROUP:

@@ -12,7 +12,8 @@ define [
   "Design"
   "ApiRequest"
   "UI.modalplus"
-], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal )->
+  "i18n!/nls/lang.js"
+], ( Workspace, OpsEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal, lang )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
@@ -24,7 +25,7 @@ define [
       modal = new Modal {
         title    : "Confirm to remove the app #{name}?"
         template : OpsEditorTpl.modal.confirmRemoveApp()
-        confirm  : { text : "Confirm to Remove", color : "red" }
+        confirm  : { text : lang.ide.POP_CONFIRM_TO_REMOVE, color : "red" }
         disableClose : true
         onConfirm    : ()->
           onConfirm()

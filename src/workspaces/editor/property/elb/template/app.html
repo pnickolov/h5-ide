@@ -4,7 +4,7 @@
   <div class="option-group">
       <dl class="dl-vertical">
         <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
-        <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
+        <dd>{{#if isInternet}}{{i18n "PROP_ELB_INTERNET_FACING"}}{{else}}{{i18n "PROP_ELB_INTERNAL"}}{{/if}}</dd>
         <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
         <dd>
           <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A){{Dnsname}}</div>
@@ -112,7 +112,7 @@
 
   {{#unless isclassic}}
   <div class="option-group-head">{{i18n "PROP_ELB_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span> </div>
-  <div class="option-group sg-group">Loading...</div>
+  <div class="option-group sg-group">{{i18n "PROP_LBL_LOADING"}}</div>
   {{/unless}}
 
 </article>

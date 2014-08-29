@@ -19,6 +19,10 @@ module.exports =
       en: "Cancel"
       zh: ""
 
+    PROP_LBL_LOADING:
+      en: "Loading..."
+      zh: ""
+
     PROP_INSTANCE_DETAIL:
       en: "Instance Details"
       zh: "实例设置"
@@ -2101,4 +2105,60 @@ module.exports =
 
     PROP_ELB_SUBNET_ASSO_NAME:
       en: "Load Balencer-Subnet Association"
+      zh: ""
+
+    PROP_ELB_INTERNET_FACING:
+      en: "Internet Facing"
+      zh: ""
+
+    PROP_ELB_INTERNAL:
+      en: "Internal"
+      zh: ""
+
+    PROP_ELB_ENABLE_CROSS_ZONE_BALANCING:
+      en: "Enable cross-zone load balancing"
+      zh: ""
+
+    PROP_ELB_CONNECTION_DRAINING:
+      en: "Enable Connection Draining"
+      zh: ""
+
+    PROP_ELB_CONNECTION_TIMEOUT:
+      en: "Timeout"
+      zh: ""
+
+    PROP_ELB_CONNECTION_SECONDS:
+      en: "Seconds"
+      zh: ""
+
+    PROP_ELB_LOAD_BALENCER_PROTOCOL:
+      en: "Load Balancer Protocal"
+      zh: ""
+
+    PROP_ELB_LBL_PORT:
+      en: "Port"
+      zh: ""
+
+    PROP_ELB_INSTANCE_PROTOCOL:
+      en: "Instance Protocol"
+      zh: ""
+
+    PROP_ENI_NETWORK_INTERFACE_DETAIL:
+      en: "Network Interface Details"
+      zh: ""
+
+    PROP_ENI_NETWORK_INTERFACE_SUMMARY:
+      en: "Network Interface Summary"
+      zh: ""
+
+    PROP_ENI_NETWORK_INTERFACE_GROUP_MEMBERS:
+      en: "Network Interface Group Members"
+      zh: ""
+
+    PROP_ENI_CREATE_AFTER_APPLYING_UPDATES:
+      en: "Create after applying updates"
+      zh: ""
+
+    PROP_ENI_DELETE_AFTER_APPLYING_UPDATES:
+      en: "Delete after applying updates"
       zh: ""

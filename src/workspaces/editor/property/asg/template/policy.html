@@ -12,18 +12,18 @@
 				<span>{{i18n "PROP_ASG_ADD_POLICY_WHEN"}}</span>
 
 				<div class="selectbox" id="asg-policy-metric">
-					<div class="selection">CPU Utillization</div>
+					<div class="selection">{{i18n "PROP_ASG_POLICY_CPU"}}</div>
 					<ul class="dropdown" tabindex="-1">
-						<li data-id="CPUUtilization" class="item selected">CPU Utilization</li>
-						<li data-id="DiskReadBytes" class="item">Disk Reads</li>
-						<li data-id="DiskReadOps" class="item">Disk Read Operations</li>
-						<li data-id="DiskWriteBytes" class="item">Disk Writes</li>
-						<li data-id="DiskWriteOps" class="item">Disk Write Operations</li>
-						<li data-id="NetworkIn" class="item">Network In</li>
-						<li data-id="NetworkOut" class="item">Network Out</li>
-						<li data-id="StatusCheckFailed" class="item">Status Check Failed (Any)</li>
-						<li data-id="StatusCheckFailed_Instance" class="item">Status Check Failed (Instance)</li>
-						<li data-id="StatusCheckFailed_System" class="item">Status Check Failed (System)</li>
+						<li data-id="CPUUtilization" class="item selected">{{i18n "PROP_ASG_POLICY_CPU"}}</li>
+						<li data-id="DiskReadBytes" class="item">{{i18n "PROP_ASG_POLICY_DISC_READS"}}</li>
+						<li data-id="DiskReadOps" class="item">{{i18n "PROP_ASG_POLICY_DISK_READ_OPERATIONS"}}</li>
+						<li data-id="DiskWriteBytes" class="item">{{i18n "PROP_ASG_POLICY_DISK_WRITES"}}</li>
+						<li data-id="DiskWriteOps" class="item">{{i18n "PROP_ASG_POLICY_DISK_WRITE_OPERATIONS"}}</li>
+						<li data-id="NetworkIn" class="item">{{i18n "PROP_ASG_POLICY_NETWORK_IN"}}</li>
+						<li data-id="NetworkOut" class="item">{{i18n "PROP_ASG_POLICY_NETWORK_OUT"}}</li>
+						<li data-id="StatusCheckFailed" class="item">{{i18n "PROP_ASG_POLICY_STATUS_CHECK_FAILED_ANY"}}</li>
+						<li data-id="StatusCheckFailed_Instance" class="item">{{i18n "PROP_ASG_POLICY_STATUS_CHECK_FAILED_INSTANCE"}}</li>
+						<li data-id="StatusCheckFailed_System" class="item">{{i18n "PROP_ASG_POLICY_STATUS_CHECK_FAILED_SYSTEM"}}</li>
 					</ul>
 				</div>
 
@@ -77,11 +77,11 @@
 			<div class="control-sentence">
 				<span>{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT"}}</span>
 				<div class="selectbox" id="asg-policy-adjust-type">
-					<div class="selection">Change in Capacity</div>
+					<div class="selection">{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT_CHANGE"}}</div>
 					<ul class="dropdown" tabindex="-1">
-						<li data-id="ChangeInCapacity" class="item selected">Change in Capacity</li>
-						<li data-id="ExactCapacity" class="item">Exact Capacity</li>
-						<li data-id="PercentChangeInCapacity" class="item">Percent Change in Capacity</li>
+						<li data-id="ChangeInCapacity" class="item selected">{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT_CHANGE"}}</li>
+						<li data-id="ExactCapacity" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT_EXACT"}}</li>
+						<li data-id="PercentChangeInCapacity" class="item">{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT_PERCENT"}}</li>
 					</ul>
 				</div>
 				<span>{{i18n "PROP_ASG_ADD_POLICY_ADJUSTMENT_OF"}}</span>
@@ -133,7 +133,7 @@
 				<label id="asg-policy-notify-label" for="asg-policy-notify">{{i18n "PROP_ASG_LBL_SEND_NOTIFICATION_D"}}</label>
 
 				<div class="sns-policy-field">
-					<label>Select SNS Topic</label>
+					<label>{{i18n "PROP_SELECT_SNS_TOPIC"}}</label>
 					<div class="policy-sns-placeholder"></div>
 				</div>
 

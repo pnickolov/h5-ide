@@ -1836,6 +1836,18 @@ module.exports =
       en: "of"
       zh: "数量"
 
+    PROP_ASG_ADD_POLICY_ADJUSTMENT_CHANGE:
+      en: "Change in Capacity"
+      zh: ""
+
+    PROP_ASG_ADD_POLICY_ADJUSTMENT_EXACT:
+      en: "Exact Capacity"
+      zh: ""
+
+    PROP_ASG_ADD_POLICY_ADJUSTMENT_PERCENT:
+      en: "Percent Change in Capacity"
+      zh: ""
+
     PROP_ASG_ADD_POLICY_ADVANCED:
       en: "Advanced"
       zh: "高级"
@@ -2168,3 +2180,49 @@ module.exports =
     PROP_DBINSTANCE_SUBNET_GROUP_MEMBERS:
       en: "Members"
       zh: ""
+
+    PROP_SELECT_SNS_TOPIC:
+      en: "Select SNS Topic"
+      zh: ""
+
+    PROP_ASG_POLICY_CPU:
+      en: "CPU Utillization"
+      zh: ""
+
+    PROP_ASG_POLICY_DISC_READS:
+      en: "Disk Reads"
+      zh: ""
+
+    PROP_ASG_POLICY_DISK_READ_OPERATIONS:
+      en: "Disk Read Operations"
+      zh: ""
+
+    PROP_ASG_POLICY_DISK_WRITES:
+      en: "Disk Writes"
+      zh: ""
+
+    PROP_ASG_POLICY_DISK_WRITE_OPERATIONS:
+      en: "Disk Write Operations"
+      zh: ""
+
+    PROP_ASG_POLICY_NETWORK_IN:
+      en: "Network In"
+      zh: ""
+
+    PROP_ASG_POLICY_NETWORK_OUT:
+      en: "Network Out"
+      zh: ""
+
+    PROP_ASG_POLICY_STATUS_CHECK_FAILED_ANY:
+      en: "Status Check Failed (Any)"
+      zh: ""
+
+    PROP_ASG_POLICY_STATUS_CHECK_FAILED_INSTANCE:
+      en: "Status Check Failed (Instance)"
+      zh: ""
+
+    PROP_ASG_POLICY_STATUS_CHECK_FAILED_SYSTEM:
+      en: "Status Check Failed (System)"
+      zh: ""
+
+

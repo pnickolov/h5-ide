@@ -97,9 +97,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             finHandler = _.after times, ->
                 that.modal.cancel()
                 if success.length is 1
-                    notification 'info', sprintf lang.notify.XXX_IS_DELETED, success[0].get('Name')
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].get('Name')
                 else if success.length > 1
-                    notification 'info', sprintf lang.notify.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
+                    notification 'info', sprintf lang.NOTIFY.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
 
                 if not that.model.get( 'keys' ).length
                     that.M$( '#kp-select-all' )
@@ -131,7 +131,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             certName = $certName.val()
 
             if certName is 'None'
-                notification 'error', sprintf lang.notify.CERTIFICATE_NAME_XXX_IS_INVALID, certName
+                notification 'error', sprintf lang.NOTIFY.CERTIFICATE_NAME_XXX_IS_INVALID, certName
                 return
 
             @sslCertCol.create(
@@ -141,7 +141,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 CertificateChain: $certChain.val(),
                 Path: ''
             ).save().then (result) ->
-                notification 'info', sprintf lang.notify.CERTIFICATE_XXX_IS_UPLOADED, certName
+                notification 'info', sprintf lang.NOTIFY.CERTIFICATE_XXX_IS_UPLOADED, certName
                 that.modal.cancel()
             , (result) ->
                 that.switchAction()
@@ -179,7 +179,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                         Name: newCertName
                     ).then (result) ->
                         certName = newCertName
-                        notification 'info', sprintf lang.notify.CERTIFICATE_XXX_IS_UPLOADED, certName
+                        notification 'info', sprintf lang.NOTIFY.CERTIFICATE_XXX_IS_UPLOADED, certName
 
                         # refresh ssl cert related
                         sslCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()

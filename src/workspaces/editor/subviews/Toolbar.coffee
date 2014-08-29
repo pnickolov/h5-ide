@@ -162,11 +162,11 @@ define [
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "info", sprintf(lang.notify.ERR_SAVE_SUCCESS, newJson.name)
+          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
         , ( )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "error", sprintf(lang.notify.ERR_SAVE_FAILED, newJson.name)
+          notification "error", sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
         return
 
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
@@ -277,7 +277,7 @@ define [
         modal?.resize()
         modal.tpl.find("a.btn-blue").text(lang.IDE.TOOL_POP_BTN_EXPORT_CF)
         if err.error
-          notification "error", sprintf lang.notify.FAIL_TO_EXPORT_TO_CLOUDFORMATION, err.error
+          notification "error", sprintf lang.NOTIFY.FAIL_TO_EXPORT_TO_CLOUDFORMATION, err.error
         return
 
     reloadState: (event)->
@@ -296,16 +296,16 @@ define [
             dataType: 'json'
             statusCode:
                 200: ->
-                    notification 'info', lang.notify.RELOAD_STATE_SUCCESS
+                    notification 'info', lang.NOTIFY.RELOAD_STATE_SUCCESS
                     ide_event.trigger ide_event.REFRESH_PROPERTY
                 401: ->
-                    notification 'error', lang.notify.RELOAD_STATE_INVALID_REQUEST
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_INVALID_REQUEST
                 404: ->
-                    notification 'error', lang.notify.RELOAD_STATE_NETWORKERROR
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_NETWORKERROR
                 429: ->
-                    notification 'error', lang.notify.RELOAD_STATE_NOT_READY
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_NOT_READY
                 500: ->
-                    notification 'error', lang.notify.RELOAD_STATE_INTERNAL_SERVER_ERROR
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_INTERNAL_SERVER_ERROR
             error: ->
                 console.log 'Error while Reload State'
             success: ->
@@ -364,7 +364,7 @@ define [
             , (err)->
                 self.modal.close()
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                notification 'error', sprintf(lang.notify.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
+                notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
         App.user.on 'change:credential', ->
           console.log 'We got it.'
           if App.user.hasCredential() and that.modal.isOpen()
@@ -390,11 +390,11 @@ define [
                 appToStackModal.close()
                 newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
-                    notification "info", sprintf lang.notify.INFO_HDL_SUCCESS, lang.IDE.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
+                    notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.IDE.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
                 ,()->
-                    notification 'error', sprintf lang.notify.ERR_SAVE_FAILED, newJson.name
+                    notification 'error', sprintf lang.NOTIFY.ERR_SAVE_FAILED, newJson.name
 
         originStackExist = !!stack
         appToStackModal = new Modal

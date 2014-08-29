@@ -124,7 +124,7 @@ define [
       $("#forceTerminateApp").on "click", ()->
         model.terminate( true ).fail (err)->
           error = if err.awsError then err.error + "." + err.awsError else err.error
-          notification sprintf lang.notify.ERROR_FAILED_TERMINATE, name, error
+          notification sprintf lang.NOTIFY.ERROR_FAILED_TERMINATE, name, error
         return
       return
   }

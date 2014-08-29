@@ -183,7 +183,7 @@ define [ '../base/model',
                     return
 
                 if result.is_error
-                    notification 'error', lang.notify.ERR_GET_PASSWD_FAILED
+                    notification 'error', lang.NOTIFY.ERR_GET_PASSWD_FAILED
                     key_data = null
                     return null
                 else

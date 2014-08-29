@@ -442,7 +442,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
       # Do not support changing existing resource's parent.
       if @model.get("appId")
-        notification "error", lang.notify.WARN_OPERATE_NOT_SUPPORT_YET
+        notification "error", lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
         return
 
       if not @parent() and newParent then return

@@ -75,7 +75,7 @@ define [
 
       targetSubnetGroup = dataTransfer.parent.model
       if targetSubnetGroup isnt dataTransfer.item.model.parent()
-        notification "error", lang.notify.READ_REPLICA_MUST_BE_DROPPED_IN_THE_SAME_SBG
+        notification "error", lang.NOTIFY.READ_REPLICA_MUST_BE_DROPPED_IN_THE_SAME_SBG
         return
 
       # If the model supports clone() interface, then clone the target.
@@ -193,7 +193,7 @@ define [
         # If we are cloning a replica, we should check if we can
         # If the model supports clone() interface, then clone the target.
         if option.cloneSource.master().slaves().length >= 5
-          notification "error", lang.notify.CANNOT_CREATE_MORE_READ_REPLICA
+          notification "error", lang.NOTIFY.CANNOT_CREATE_MORE_READ_REPLICA
           return
         else
           option.master = option.cloneSource.master()
@@ -214,7 +214,7 @@ define [
           } , option )
 
           if not attr.parent.id
-            notification "error", lang.notify.CANNOT_CREATE_SBG_DUE_TO_INSUFFICIENT_SUBNETS
+            notification "error", lang.NOTIFY.CANNOT_CREATE_SBG_DUE_TO_INSUFFICIENT_SUBNETS
             return
 
           attr.x += 2

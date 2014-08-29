@@ -24,10 +24,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderDropdown: ()->
             option =
-                filterPlaceHolder: lang.notify.SNAPSHOT_FILTER_VOLUME
+                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
             @instances = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
-            selection = lang.notify.INSTANCE_SNAPSHOT_SELECT
+            selection = lang.NOTIFY.INSTANCE_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
             @dropdown.on 'open', @openDropdown, @
@@ -37,12 +37,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderRegionDropdown: (exceptRegion)->
             option =
-                filterPlaceHolder: lang.notify.SNAPSHOT_FILTER_REGION
+                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
             if exceptRegion
               @regions = _.without @regions, exceptRegion
-            selection = lang.notify.VOLUME_SNAPSHOT_SELECT_REGION
+            selection = lang.NOTIFY.VOLUME_SNAPSHOT_SELECT_REGION
             @regionsDropdown.setSelection selection
             @regionsDropdown.on 'open', @openRegionDropdown, @
             @regionsDropdown.on 'filter', @filterRegionDropdown, @
@@ -238,7 +238,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             afterDuplicate = @afterDuplicate.bind @
             accountNumber = App.user.attributes.account
             if not /^\d+$/.test accountNumber.split('-').join('')
-              notification('error', lang.notify.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
+              notification('error', lang.NOTIFY.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
               return false
             @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
 
@@ -246,24 +246,24 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         afterCreated: (result,newSnapshot)->
             @manager.cancel()
             if result.error
-                notification 'error', sprintf lang.notify.DB_SNAPSHOT_CREATE_FAILED, result.msg
+                notification 'error', sprintf lang.NOTIFY.DB_SNAPSHOT_CREATE_FAILED, result.msg
                 return false
-            notification 'info', lang.notify.NEW_SNAPSHOT_IS_CREATED_SUCCESSFULLY
+            notification 'info', lang.NOTIFY.NEW_SNAPSHOT_IS_CREATED_SUCCESSFULLY
             #@collection.add newSnapshot
 
         afterDuplicate: (result)->
             currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
-                notification 'error', sprintf lang.notify.DUPLICATE_FAILED_BECAUSE_OF_XXX, ( result.awsResult or result.msg )
+                notification 'error', sprintf lang.NOTIFY.DUPLICATE_FAILED_BECAUSE_OF_XXX, ( result.awsResult or result.msg )
                 return false
             #cancelselect && fetch
             if result.attributes.region is currentRegion
                 @collection.add result
-                notification 'info', lang.notify.DB_SNAPSHOT_DUPLICATE_SUCCESS
+                notification 'info', lang.NOTIFY.DB_SNAPSHOT_DUPLICATE_SUCCESS
             else
                 @initManager()
-                notification 'info', lang.notify.DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION
+                notification 'info', lang.NOTIFY.DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION
 
         afterDeleted: (result)->
             deleteCount--
@@ -271,9 +271,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', sprintf lang.notify.XXX_SNAPSHOT_FAILED_TO_DELETE, deleteErrorCount
+                    notification 'error', sprintf lang.NOTIFY.XXX_SNAPSHOT_FAILED_TO_DELETE, deleteErrorCount
                 else
-                    notification 'info',  lang.notify.DB_SNAPSHOT_DELETE_SUCCESS
+                    notification 'info',  lang.NOTIFY.DB_SNAPSHOT_DELETE_SUCCESS
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()

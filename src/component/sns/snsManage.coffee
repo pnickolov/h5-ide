@@ -125,7 +125,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             m = @subCol.findWhere SubscriptionArn: subId
             m?.destroy()
                 .then( ( deletedModel )->
-                    notification 'info', lang.notify.REMOVE_SUBSCRIPTION_SUCCEED
+                    notification 'info', lang.NOTIFY.REMOVE_SUBSCRIPTION_SUCCEED
                     return deletedModel
                 )
                 .fail ( err ) ->
@@ -159,9 +159,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             finHandler = _.after times, ->
                 that.modal.cancel()
                 if success.length is 1
-                    notification 'info', sprintf lang.notify.XXX_IS_DELETED, success[0].get('Name')
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].get('Name')
                 else if success.length > 1
-                    notification 'info', sprintf lang.notify.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
+                    notification 'info', sprintf lang.NOTIFY.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
 
                 if not error.length
                     that.modal.unCheckSelectAll()
@@ -197,7 +197,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     .save()
                     .then ( newSub ) ->
                         that.processSubCreate newSub
-                        notification 'info', lang.notify.CREATE_SUBSCRIPTION_SUCCEED
+                        notification 'info', lang.NOTIFY.CREATE_SUBSCRIPTION_SUCCEED
                         that.modal.cancel()
                     .fail ( awsError ) ->
                         that.errorHandler awsError

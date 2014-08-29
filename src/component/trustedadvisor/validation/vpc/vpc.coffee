@@ -45,7 +45,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 		if isHaveVPN or isHaveEIP or isHavePubIP
 			return null
 
-		tipInfo = sprintf lang.ta.WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
+		tipInfo = sprintf lang.TA.WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
 
 		# return
 		level: constant.TA.WARNING

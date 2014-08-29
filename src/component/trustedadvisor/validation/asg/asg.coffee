@@ -7,7 +7,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         if asg.resource.LaunchConfigurationName
             return null
 
-        tipInfo = sprintf lang.ta.ERROR_ASG_HAS_NO_LAUNCH_CONFIG, asg.name
+        tipInfo = sprintf lang.TA.ERROR_ASG_HAS_NO_LAUNCH_CONFIG, asg.name
 
         # return
         level   : constant.TA.ERROR
@@ -22,7 +22,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
             return null
 
-        tipInfo = sprintf lang.ta.WARNING_ELB_HEALTH_NOT_CHECK, asg.name
+        tipInfo = sprintf lang.TA.WARNING_ELB_HEALTH_NOT_CHECK, asg.name
 
         # return
         level   : constant.TA.WARNING

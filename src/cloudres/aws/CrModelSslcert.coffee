@@ -1,5 +1,5 @@
 
-define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
   CrModel.extend {
 
@@ -52,7 +52,7 @@ define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           res.id   = res.ServerCertificateId
           res.Name = res.ServerCertificateName
           res.UploadDate = res.UploadDate
-          
+
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Ssl cert created but aws returns invalid data." )
 

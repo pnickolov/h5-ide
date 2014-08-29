@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
+define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
 
   ### This Connection is used to fetch all the resource of an vpc ###
   CrCollection.extend {

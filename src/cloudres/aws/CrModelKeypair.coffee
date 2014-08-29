@@ -1,5 +1,5 @@
 
-define [ "./CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
   CrModel.extend {
 

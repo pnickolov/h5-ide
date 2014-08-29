@@ -1,8 +1,8 @@
 
 define [
-  "./CrCommonCollection"
-  "./CrCollection"
-  "./CrModel"
+  "../CrCommonCollection"
+  "../CrCollection"
+  "../CrModel"
   "./CrModelElb"
   "ApiRequest"
   "constant"

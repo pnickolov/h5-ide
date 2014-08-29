@@ -1,6 +1,6 @@
 
 define [
-  "./CrCollection"
+  "../CrCollection"
   "CloudResources"
   "ApiRequest"
   "constant"

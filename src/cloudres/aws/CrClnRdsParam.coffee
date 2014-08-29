@@ -1,6 +1,6 @@
 define [
   "ApiRequest"
-  "./CrCollection"
+  "../CrCollection"
   "constant"
   "CloudResources"
   "./CrModelRdsParameter"

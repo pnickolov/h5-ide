@@ -40,7 +40,7 @@ define [ '../base/view',
         checkAppName: ( val )->
             repeatApp = App.model.appList().findWhere(name: val)
             if repeatApp and repeatApp.id isnt Design.instance().get('id')
-                return lang.IDE.PROP_MSG_WARN_REPEATED_APP_NAME
+                return lang.PROP.MSG_WARN_REPEATED_APP_NAME
 
             null
 

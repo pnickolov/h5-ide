@@ -24,10 +24,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderDropdown: ()->
             option =
-                filterPlaceHolder: lang.IDE.PROP_SNAPSHOT_FILTER_VOLUME
+                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
             @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
-            selection = lang.IDE.PROP_VOLUME_SNAPSHOT_SELECT
+            selection = lang.PROP.VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
             @dropdown.on 'open', @openDropdown, @
@@ -37,10 +37,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderRegionDropdown: ()->
             option =
-                filterPlaceHolder: lang.IDE.PROP_SNAPSHOT_FILTER_REGION
+                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
-            selection = lang.IDE.PROP_VOLUME_SNAPSHOT_SELECT_REGION
+            selection = lang.PROP.VOLUME_SNAPSHOT_SELECT_REGION
             @regionsDropdown.setSelection selection
             @regionsDropdown.on 'open', @openRegionDropdown, @
             @regionsDropdown.on 'filter', @filterRegionDropdown, @

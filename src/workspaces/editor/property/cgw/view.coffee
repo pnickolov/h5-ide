@@ -65,14 +65,14 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
 
             haveError = true
             if !ipAddr
-                mainContent = lang.ide.PROP_CGW_IP_VALIDATE_REQUIRED
-                descContent = lang.ide.PROP_CGW_IP_VALIDATE_REQUIRED_DESC
+                mainContent = lang.PROP.CGW_IP_VALIDATE_REQUIRED
+                descContent = lang.PROP.CGW_IP_VALIDATE_REQUIRED_DESC
             else if !MC.validate 'ipv4', ipAddr
-                mainContent = sprintf(lang.ide.PROP_CGW_IP_VALIDATE_INVALID, ipAddr)
-                descContent = lang.ide.PROP_CGW_IP_VALIDATE_INVALID_DESC
+                mainContent = sprintf(lang.PROP.CGW_IP_VALIDATE_INVALID, ipAddr)
+                descContent = lang.PROP.CGW_IP_VALIDATE_INVALID_DESC
             else if MC.aws.aws.isValidInIPRange(ipAddr, 'private')
-                mainContent = sprintf(lang.ide.PROP_CGW_IP_VALIDATE_INVALID_CUSTOM, ipAddr)
-                descContent = lang.ide.PROP_CGW_IP_VALIDATE_INVALID_CUSTOM_DESC
+                mainContent = sprintf(lang.PROP.CGW_IP_VALIDATE_INVALID_CUSTOM, ipAddr)
+                descContent = lang.PROP.CGW_IP_VALIDATE_INVALID_CUSTOM_DESC
             else
                 haveError = false
 
@@ -82,7 +82,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 return
 
             dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : lang.ide.PROP_CGW_REMOVE_CUSTOM_GATEWAY
+                remove_content : lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY
                 main_content : mainContent
                 desc_content : descContent
             }

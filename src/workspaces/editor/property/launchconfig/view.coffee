@@ -207,7 +207,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
 
             if flag is true
                 $userDataInput.attr('disabled', 'disabled')
-                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.IDE.PROP_INSTANCE_USER_DATA_DISABLE)
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.PROP.INSTANCE_USER_DATA_DISABLE)
                 # $userDataInput.val('')
                 # @userdataChange({
                 #     target: {

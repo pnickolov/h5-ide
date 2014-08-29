@@ -9,7 +9,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     members = text.split '.'
     if members.length is 1 then members.unshift 'IDE'
 
-    t = lang[ members[0] ][ members[1] ]
+    t = lang[ members[0] ][ members[1] ] or lang.PROP[ members[1] ]
     ### env:prod ###
     t = t || "undefined"
     ### env:prod:end ###

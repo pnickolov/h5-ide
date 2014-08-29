@@ -441,10 +441,10 @@ define [
         copy_name + "-" + idx
     checkAppNameRepeat: (nameVal)->
         if App.model.appList().findWhere(name: nameVal)
-            @showError('appname', lang.IDE.PROP_MSG_WARN_REPEATED_APP_NAME)
+            @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
             return true
         else if not nameVal
-            @showError('appname', lang.IDE.PROP_MSG_WARN_NO_APP_NAME)
+            @showError('appname', lang.PROP.MSG_WARN_NO_APP_NAME)
             return true
         else
             @hideError('appname')

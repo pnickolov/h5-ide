@@ -291,7 +291,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       ips   = @get("ips")
 
       if ips.length >= maxIp
-        return sprintf( lang.IDE.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
+        return sprintf( lang.PROP.MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
       subnet = if @__embedInstance then @__embedInstance.parent() else @parent()
 

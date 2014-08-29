@@ -46,14 +46,14 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           $("#sg-rule-self-ref").hide()
 
           if ruleCount is 1
-            info = sprintf lang.IDE.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+            info = sprintf lang.PROP.MSG_SG_CREATE, out_target, out_target, action, in_target
 
           else if data.target is data.relation
-            info = sprintf lang.IDE.PROP_MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
+            info = sprintf lang.PROP.MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
             $("#sg-rule-self-ref").show()
 
           else
-            info = sprintf lang.IDE.PROP_MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
+            info = sprintf lang.PROP.MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
 
           $("#sg-rule-create-msg").text info
 

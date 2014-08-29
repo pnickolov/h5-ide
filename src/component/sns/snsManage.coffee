@@ -292,40 +292,40 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
                     switch selectedProto
                         when "sqs"
-                            placeholder = lang.IDE.PROP_STACK_AMAZON_ARN
-                            type        = lang.IDE.PROP_STACK_SQS
+                            placeholder = lang.PROP.STACK_AMAZON_ARN
+                            type        = lang.PROP.STACK_SQS
                             errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
 
                         when "arn"
-                            placeholder = lang.IDE.PROP_STACK_AMAZON_ARN
-                            type        = lang.IDE.PROP_STACK_ARN
+                            placeholder = lang.PROP.STACK_AMAZON_ARN
+                            type        = lang.PROP.STACK_ARN
                             errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
 
                         when "email"
-                            placeholder = lang.IDE.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.IDE.PROP_STACK_EMAIL
+                            placeholder = lang.PROP.STACK_EXAMPLE_EMAIL
+                            type        = lang.PROP.STACK_EMAIL
                             errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "email-json"
-                            placeholder = lang.IDE.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.IDE.PROP_STACK_EMAIL
+                            placeholder = lang.PROP.STACK_EXAMPLE_EMAIL
+                            type        = lang.PROP.STACK_EMAIL
                             errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "sms"
-                            placeholder = lang.IDE.PROP_STACK_E_G_1_206_555_6423
-                            type        = lang.IDE.PROP_STACK_USPHONE
+                            placeholder = lang.PROP.STACK_E_G_1_206_555_6423
+                            type        = lang.PROP.STACK_USPHONE
                             errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
 
                         when "http"
                             #$input.addClass "http"
-                            placeholder = lang.IDE.PROP_STACK_HTTP_WWW_EXAMPLE_COM
-                            type        = lang.IDE.PROP_STACK_HTTP
+                            placeholder = lang.PROP.STACK_HTTP_WWW_EXAMPLE_COM
+                            type        = lang.PROP.STACK_HTTP
                             errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_URL
 
                         when "https"
                             #$input.addClass "https"
-                            placeholder = lang.IDE.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
-                            type        = lang.IDE.PROP_STACK_HTTPS
+                            placeholder = lang.PROP.STACK_HTTPS_WWW_EXAMPLE_COM
+                            type        = lang.PROP.STACK_HTTPS
                             errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_URL
 
                     endPoint = that.M$ '#create-endpoint'

@@ -140,7 +140,7 @@ define [ '../base/view',
                 intervalValue = Number(val)
                 timeoutValue = Number($timeoutDom.val())
                 if intervalValue <= timeoutValue
-                    return lang.IDE.PROP_ELB_HEALTH_INTERVAL_VALID
+                    return lang.PROP.ELB_HEALTH_INTERVAL_VALID
                 null
 
             if not $target.parsley 'validate'
@@ -159,7 +159,7 @@ define [ '../base/view',
                 intervalValue = Number($intervalDom.val())
                 timeoutValue = Number(val)
                 if intervalValue <= timeoutValue
-                    return lang.IDE.PROP_ELB_HEALTH_INTERVAL_VALID
+                    return lang.PROP.ELB_HEALTH_INTERVAL_VALID
                 null
 
             if not $target.parsley 'validate'
@@ -634,7 +634,7 @@ define [ '../base/view',
             $timeoutInput.parsley 'custom', (val) ->
                 inputValue = Number($timeoutInput.val())
                 if not (inputValue >= 1 and inputValue < 3600)
-                    return lang.IDE.PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID
+                    return lang.PROP.ELB_CONNECTION_DRAIN_TIMEOUT_INVALID
                 null
 
             if not $timeoutInput.parsley 'validate'

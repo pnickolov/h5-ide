@@ -170,12 +170,12 @@ define [ '../base/view',
 
             if enable
                 $parent.find(".input-ip-wrap").removeClass("disabled")
-                       .find(".name").data("tooltip", lang.IDE.PROP_INSTANCE_IP_MSG_1)
+                       .find(".name").data("tooltip", lang.PROP.INSTANCE_IP_MSG_1)
                        .find(".input-ip").prop("disabled", "")
 
             else
                 $parent.find(".input-ip-wrap").addClass("disabled")
-                       .find(".name").data("tooltip", lang.IDE.PROP_INSTANCE_IP_MSG_2)
+                       .find(".name").data("tooltip", lang.PROP.INSTANCE_IP_MSG_2)
                        .find(".input-ip").attr("disabled", "disabled")
             null
 
@@ -302,9 +302,9 @@ define [ '../base/view',
             attach  = not $target.hasClass("associated")
 
             if attach
-                tooltip = lang.IDE.PROP_INSTANCE_IP_MSG_4
+                tooltip = lang.PROP.INSTANCE_IP_MSG_4
             else
-                tooltip = lang.IDE.PROP_INSTANCE_IP_MSG_3
+                tooltip = lang.PROP.INSTANCE_IP_MSG_3
             $target.toggleClass("associated", attach).data("tooltip", tooltip)
 
             @model.attachEip index, attach
@@ -357,7 +357,7 @@ define [ '../base/view',
 
             if flag is true
                 $userDataInput.attr('disabled', 'disabled')
-                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.IDE.PROP_INSTANCE_USER_DATA_DISABLE)
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.PROP.INSTANCE_USER_DATA_DISABLE)
                 # $userDataInput.val('')
                 # @userdataChange({
                 #     target: {

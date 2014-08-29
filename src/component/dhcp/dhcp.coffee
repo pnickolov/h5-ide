@@ -28,8 +28,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @listenTo @collection, 'change', -> @renderManager()
             @listenTo @collection, 'update', -> @renderManager()
             option =
-                manageBtnValue: lang.IDE.PROP_VPC_MANAGE_DHCP
-                filterPlaceHolder: lang.IDE.PROP_VPC_FILTER_DHCP
+                manageBtnValue: lang.PROP.VPC_MANAGE_DHCP
+                filterPlaceHolder: lang.PROP.VPC_FILTER_DHCP
             @dropdown = new comboDropdown option
             selection = template.selection
                 isDefault: false
@@ -175,7 +175,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
 
                 selectedType = 0
                 data.dhcp.netbiosTypes = [
-                    { id : "default" , value : lang.IDE.PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
+                    { id : "default" , value : lang.PROP.VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
                 , { id : 1 , value : 1, selected : selectedType == 1 }
                 , { id : 2 , value : 2, selected : selectedType == 2 }
                 , { id : 4 , value : 4, selected : selectedType == 4 }

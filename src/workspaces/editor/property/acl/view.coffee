@@ -101,7 +101,7 @@ define [ '../base/view',
                 $custom_source_dom = $('#modal-acl-source-input')
                 $custom_source_dom.parsley 'custom', ( val ) ->
                     if !MC.validate 'cidr', val
-                        return lang.parsley.MUST_BE_CIDR_BLOCK
+                        return lang.PARSLEY.MUST_BE_CIDR_BLOCK
                     null
 
                 if not $custom_source_dom.parsley 'validate'

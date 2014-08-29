@@ -326,7 +326,7 @@ init = ->
                             cb?(1)
                         else if(statusCode == 'error')
                             #console.log 'NetWork Error while checking username'
-                            $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
+                            $('.error-msg').eq(0).text(langsrc.SERVICE.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else if checkUsername()
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.username_taken
@@ -349,7 +349,7 @@ init = ->
                             cb?(1)
                         else if(statusCode == 'error')
                             #console.log 'NetWork Error while checking username'
-                            $('.error-msg').eq(0).text(langsrc.service.NETWORK_ERROR).show()
+                            $('.error-msg').eq(0).text(langsrc.SERVICE.NETWORK_ERROR).show()
                             $('#register-btn').attr('disabled',false).val(langsrc.register["register-btn"])
                         else
                             status.removeClass('verification-status').addClass('error-status').text langsrc.register.email_used

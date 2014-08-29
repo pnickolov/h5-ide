@@ -467,7 +467,7 @@ define [ 'ApiRequest'
             db = @resModel
             validateStartTime = (val) ->
                 if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
-                        lang.parsley.PROVIDE_VALID_TIME_VALUE
+                        lang.PARSLEY.PROVIDE_VALID_TIME_VALUE
 
             @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
             @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
@@ -475,12 +475,12 @@ define [ 'ApiRequest'
             @$('#property-dbinstance-database-name').parsley 'custom', ( val ) ->
                 switch db.engineType()
                     when 'mysql'
-                        if val.length > 64 then return lang.parsley.MAX_LENGTH_IS_64
+                        if val.length > 64 then return lang.PARSLEY.MAX_LENGTH_IS_64
                     when 'postgresql'
-                        if val.length > 63 then return lang.parsley.MAX_LENGTH_IS_63
-                        if not /[a-z_]/.test val[0] then return lang.parsley.MUST_BEGIN_WITH_LETTER_OR_UNDERSCORE
+                        if val.length > 63 then return lang.PARSLEY.MAX_LENGTH_IS_63
+                        if not /[a-z_]/.test val[0] then return lang.PARSLEY.MUST_BEGIN_WITH_LETTER_OR_UNDERSCORE
                     when 'oracle'
-                        if val.length > 8 then return lang.parsley.MAX_LENGTH_IS_8
+                        if val.length > 8 then return lang.PARSLEY.MAX_LENGTH_IS_8
 
                 null
 
@@ -499,20 +499,20 @@ define [ 'ApiRequest'
                 if that.isAppEdit
 
                     if originValue and (storage < originValue.originAllocatedStorage)
-                        return lang.parsley.ALLOCATED_STORAGE_CANNOT_BE_REDUCED
+                        return lang.PARSLEY.ALLOCATED_STORAGE_CANNOT_BE_REDUCED
 
                     increaseSize = storage - originValue.originAllocatedStorage
                     if increaseSize > 0
                         minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1)
                         if increaseSize < minIncreaseSize
-                            return sprintf lang.parsley.ALLOCATED_STORAGE_MUST_INCREASE_BY_AT_LEAST_10, originValue.originAllocatedStorage + minIncreaseSize
+                            return sprintf lang.PARSLEY.ALLOCATED_STORAGE_MUST_INCREASE_BY_AT_LEAST_10, originValue.originAllocatedStorage + minIncreaseSize
 
                 if not (storage >= min and storage <= max)
-                    return sprintf lang.parsley.MUST_BE_AN_INTEGER_FROM_MIN_TO_MAX, min, max
+                    return sprintf lang.PARSLEY.MUST_BE_AN_INTEGER_FROM_MIN_TO_MAX, min, max
 
                 source = that.resModel.source()
                 if source and storage < +source.get('AllocatedStorage')
-                    return lang.parsley.SNAPSHOT_STORAGE_NEED_LARGE_THAN_ORIGINAL_VALUE
+                    return lang.PARSLEY.SNAPSHOT_STORAGE_NEED_LARGE_THAN_ORIGINAL_VALUE
 
             @$('#property-dbinstance-iops-value').parsley 'custom', (val) ->
 
@@ -525,20 +525,20 @@ define [ 'ApiRequest'
                 iops = Number(val)
 
                 if iops < 1000
-                    return lang.parsley.REQUIRE_AT_LEAST_1000_IOPS
+                    return lang.PARSLEY.REQUIRE_AT_LEAST_1000_IOPS
 
                 if that.resModel.isSqlserver() and ((iops % 1000) isnt 0 or (storage * 10) isnt iops)
-                    return lang.parsley.SQLSERVER_IOPS_REQUIRES_A_MULTIPLE_OF_1000
+                    return lang.PARSLEY.SQLSERVER_IOPS_REQUIRES_A_MULTIPLE_OF_1000
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
 
-                return lang.parsley.REQUIRE_IOPS_GB_RATIOS_BETWEEN_3_AND_10
+                return lang.PARSLEY.REQUIRE_IOPS_GB_RATIOS_BETWEEN_3_AND_10
 
             @$('#property-dbinstance-master-password').parsley 'custom', ( val ) ->
 
                 if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
-                    return lang.parsley.CANNOT_CONTAIN_CHARACTER_SPLASH
+                    return lang.PARSLEY.CANNOT_CONTAIN_CHARACTER_SPLASH
 
                 if that.resModel.isMysql()
                     min = 8
@@ -555,11 +555,11 @@ define [ 'ApiRequest'
                 if val.length >= min and val.length <= max
                     return null
 
-                return sprintf lang.parsley.MUST_CONTAIN_FROM_MIN_TO_MAX_CHARACTERS, min, max
+                return sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_CHARACTERS, min, max
 
             @$('#property-dbinstance-database-port').parsley 'custom', ( val ) ->
                 if db.isSqlserver() and +val in [ 1434, 3389, 47001, 49152, 49153, 49154, 49155, 49156 ]
-                    return lang.parsley.THIS_VALUE_CANNOT_BE_1434_3389_47001_49152_49156
+                    return lang.PARSLEY.THIS_VALUE_CANNOT_BE_1434_3389_47001_49152_49156
                 null
 
         renderOptionGroup: ->
@@ -710,7 +710,7 @@ define [ 'ApiRequest'
                     else
                         min = 1
                         max = 58
-                    errTip = sprintf lang.parsley.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS_HYPHEN, min, max
+                    errTip = sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS_HYPHEN, min, max
                     if val.length < min or val.length > max
                         return errTip
 
@@ -931,7 +931,7 @@ define [ 'ApiRequest'
                         max = 16
                     if val.length >= min and val.length <= max
                         return null
-                return sprintf lang.parsley.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS, min, max
+                return sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS, min, max
 
             if target.parsley 'validate'
                 @resModel.set 'username', value

@@ -2,7 +2,7 @@
 
 module.exports =
 
-  service:
+  SERVICE:
 
       NETWORK_ERROR:
         en: "Service is temporarily unavailable. Please try again later."

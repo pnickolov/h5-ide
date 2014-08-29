@@ -13,7 +13,7 @@ define [
         ( val ) ->
             val = +val
             if val > end or val < start
-                return sprintf lang.parsley.RDS_VALUE_IS_NOT_ALLOWED, val
+                return sprintf lang.PARSLEY.RDS_VALUE_IS_NOT_ALLOWED, val
             null
 
     capitalizeKey = ( arr ) ->
@@ -453,7 +453,7 @@ define [
             $ogName.val $ogName.val().toLowerCase()
 
             $ogName.parsley 'custom', ( val ) ->
-                errTip = lang.parsley.OPTION_GROUP_NAME_INVALID
+                errTip = lang.PARSLEY.OPTION_GROUP_NAME_INVALID
                 if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                     return errTip
                 if val.length < 1 or val.length > 255
@@ -465,7 +465,7 @@ define [
 
             $ogDesc.parsley 'custom', ( val ) ->
 
-                errTip = lang.parsley.OPTION_GROUP_DESCRIPTION_INVALID
+                errTip = lang.PARSLEY.OPTION_GROUP_DESCRIPTION_INVALID
                 if val.length < 1
                     return errTip
 

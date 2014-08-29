@@ -25,15 +25,15 @@ define [ '../base/view',
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < 1
-                    return lang.parsley.VOLUME_SIZE_MUST_IN_1_1024
+                    return lang.PARSLEY.VOLUME_SIZE_MUST_IN_1_1024
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return lang.parsley.IOPS_MUST_BETWEEN_100_4000
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return lang.parsley.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             @model.attributes.volume_detail.name
 
@@ -64,12 +64,12 @@ define [ '../base/view',
             target.parsley 'custom', ( val ) ->
                 if not MC.validate.deviceName val, type, true
                     if type is 'linux'
-                        return lang.parsley.DEVICENAME_LINUX
+                        return lang.PARSLEY.DEVICENAME_LINUX
                     else
-                        return lang.parsley.DEVICENAME_WINDOWS
+                        return lang.PARSLEY.DEVICENAME_WINDOWS
 
                 if self.model.isDuplicate val
-                    sprintf lang.parsley.VOLUME_NAME_INUSE, val
+                    sprintf lang.PARSLEY.VOLUME_NAME_INUSE, val
 
             if target.parsley 'validate'
                 @model.setDeviceName name

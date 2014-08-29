@@ -121,7 +121,7 @@ define [ '../base/view',
 
             $target.parsley 'custom', ( val ) ->
                 if _.isNumber( +val ) and +val > 86400
-                    return lang.parsley.MAX_VALUE_86400
+                    return lang.PARSLEY.MAX_VALUE_86400
                 null
 
             if $target.parsley 'validate'
@@ -143,17 +143,17 @@ define [ '../base/view',
 
             $min.parsley 'custom', ( val ) ->
                 if + val > + $max.val()
-                    return lang.parsley.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.PARSLEY.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
                 that.constantCheck val
 
             $max.parsley 'custom', ( val ) ->
                 if + val < + $min.val()
-                    return lang.parsley.MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE
+                    return lang.PARSLEY.MAXIMUM_SIZE_MUST_BE_MORETHAN_MINIMUM_SIZE
                 that.constantCheck val
 
             $capacity.parsley 'custom', ( val ) ->
                 if + val < + $min.val() or + val > + $max.val()
-                    return lang.parsley.DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                    return lang.PARSLEY.DESIRED_CAPACITY_IN_ALLOW_SCOPE
                 that.constantCheck val
 
             if $( event.currentTarget ).parsley 'validateForm'
@@ -165,10 +165,10 @@ define [ '../base/view',
             val = +val
 
             if val < 1
-                return sprintf lang.parsley.VALUE_MUST_BE_GREATERTHAN_VAR, 1
+                return sprintf lang.PARSLEY.VALUE_MUST_BE_GREATERTHAN_VAR, 1
 
             if val > 65534
-                return sprintf lang.parsley.VALUE_MUST_BE_LESSTHAN_VAR, 65534
+                return sprintf lang.PARSLEY.VALUE_MUST_BE_LESSTHAN_VAR, 65534
 
             null
 
@@ -180,7 +180,7 @@ define [ '../base/view',
             $target.parsley 'custom', ( val ) ->
                 val = + val
                 if val < 0 or val > 86400
-                    return sprintf lang.parsley.VALUE_MUST_IN_ALLOW_SCOPE, 0, 86400
+                    return sprintf lang.PARSLEY.VALUE_MUST_IN_ALLOW_SCOPE, 0, 86400
 
             if $target.parsley 'validate'
                 @model.setHealthCheckGrace $target.val()
@@ -367,7 +367,7 @@ define [ '../base/view',
                 uid  = $("#property-asg-policy").data("uid")
 
                 if self.model.isDupPolicyName uid, name
-                    return lang.parsley.DUPLICATED_POLICY_NAME
+                    return lang.PARSLEY.DUPLICATED_POLICY_NAME
 
 
             $("#asg-policy-periods").on "change", () ->

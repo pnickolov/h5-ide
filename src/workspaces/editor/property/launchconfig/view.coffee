@@ -99,15 +99,15 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return sprintf lang.parsley.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return lang.parsley.IOPS_MUST_BETWEEN_100_4000
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return lang.parsley.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             # currentStateData = @model.getStateData()
 

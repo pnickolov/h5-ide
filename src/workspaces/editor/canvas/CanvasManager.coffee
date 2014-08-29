@@ -133,8 +133,21 @@ define ['CloudResources'], (CloudResources)->
 
       if not labelElement.length and labelElement.length isnt 0 then labelElement = [ labelElement ]
 
+      if not text.length
+        $( labelElement ).text( text )
+        # If the text is empty, return now. Since the getSubStringLength will throw error.
+        return
+
       $(labelElement[0]).text( text )
-      if labelElement[0].getSubStringLength(0, text.length) > maxWidth
+      try
+        # There's a bug in webkit browser.
+        # If the text element is not displayed, then its internal textLength would be 0
+        # Resulting getSubStringLength will throw error.
+        currentLength = labelElement[0].getSubStringLength(0, text.length)
+      catch e
+        currentLength = 0
+
+      if currentLength > maxWidth
         length = text.length - 1
         while true and length > 0
           if labelElement[0].getSubStringLength(0, length) + 8 <= maxWidth

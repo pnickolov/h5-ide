@@ -44,7 +44,7 @@ define [
         CloudResources( "FavoriteAmi",             region ).fetch()
         @loadVpcResource()
         @fetchAmiData()
-        @fetchRdsData()
+        @fetchRdsData( false )
       ]).fail ( err )-> self.__handleDataError( err )
 
     __handleDataError : ( err )->

@@ -405,6 +405,52 @@
 	}
 }
 
+.modal-db-instance-restore-config {
+	.datepicker {
+		float: left;
+		margin-right: 5px;
+		text-align: center;
+		padding: 6px;
+		width: 80px;
+	}
+	.timepicker {
+		float: left;
+		width: 20px;
+		text-align: center;
+		padding: 6px;
+		margin-right: 5px;
+	}
+	.modal-db-instance-restore-option {
+		margin-top: 20px;
+		display: inline-block;
+		// margin-bottom: 50px;
+		* {
+			float: left;
+			margin-right: 10px;
+		}
+		.title {
+			width: 170px;
+			// margin-top: 20px;
+			line-height: 20px;
+		}
+		#modal-db-instance-restore-radio-latest, #modal-db-instance-restore-radio-custom {
+			margin-top: 4px;
+		}
+		.datetimepicker {
+			margin-top: -5px;
+			margin-bottom: 20px;
+			label {
+				line-height: 30px;
+			}
+		}
+	}
+	.modal-db-instance-restore-no-restore {
+		width: 100%;
+		text-align: center;
+		margin-top: 55px;
+	}
+}
+
 /* General Style for Property Panel List */
 
 .property-list li {

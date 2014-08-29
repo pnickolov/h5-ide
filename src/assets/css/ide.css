@@ -888,7 +888,8 @@ td.table-action a.btn {
 /* End of General Style for Property Panel List */
 /* Secondary Panel */
 .add-rule,
-.property-btn-get-system-log {
+.property-btn-get-system-log,
+.property-btn-db-restore-config {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -5617,6 +5618,8 @@ button#property-app-keypair {
       right: 7px; }
   .canvas-view[data-mode="app"] .dbreplicate {
     display: none; }
+  .canvas-view[data-mode="app"] .dbrestore {
+    display: none; }
 
 .svg_resizer {
   position: absolute;
@@ -5825,6 +5828,25 @@ button#property-app-keypair {
   .dbreplicate.disabled, .dbreplicate.disabled:hover {
     fill: #ccc; }
     .dbreplicate.disabled .replica-bg, .dbreplicate.disabled:hover .replica-bg {
+      stroke: #ccc;
+      fill: #eee; }
+
+.dbrestore {
+  fill: #ff9955;
+  cursor: pointer; }
+  .dbrestore .restore-bg {
+    stroke: #b2bccc;
+    fill: #fff;
+    -webkit-transform: translate(0.5px, 0.5px);
+    -moz-transform: translate(0.5px, 0.5px);
+    transform: translate(0.5px, 0.5px); }
+  .dbrestore:hover {
+    fill: #ff6600; }
+    .dbrestore:hover .restore-bg {
+      stroke: #6daefe; }
+  .dbrestore.disabled, .dbrestore.disabled:hover {
+    fill: #ccc; }
+    .dbrestore.disabled .restore-bg, .dbrestore.disabled:hover .restore-bg {
       stroke: #ccc;
       fill: #eee; }
 
@@ -6675,7 +6697,7 @@ g.shadow {
     bottom: 0;
     width: 100%; }
 
-.property-panel-wrapper.immediately .scroll-wrap {
+.property-panel-wrapper.immediately > .scroll-wrap {
   top: 69px; }
 
 .accordion-body.nano {
@@ -7049,6 +7071,39 @@ g.shadow {
 .modal-db-replica-promote-confirm span {
   font-weight: bold;
   color: #fff; }
+
+.modal-db-instance-restore-config .datepicker {
+  float: left;
+  margin-right: 5px;
+  text-align: center;
+  padding: 6px;
+  width: 80px; }
+.modal-db-instance-restore-config .timepicker {
+  float: left;
+  width: 20px;
+  text-align: center;
+  padding: 6px;
+  margin-right: 5px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-option {
+  margin-top: 20px;
+  display: inline-block; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option * {
+    float: left;
+    margin-right: 10px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .title {
+    width: 170px;
+    line-height: 20px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-latest, .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-custom {
+    margin-top: 4px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
+    margin-top: -5px;
+    margin-bottom: 20px; }
+    .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
+      line-height: 30px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-no-restore {
+  width: 100%;
+  text-align: center;
+  margin-top: 55px; }
 
 /* General Style for Property Panel List */
 .property-list li {

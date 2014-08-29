@@ -39,6 +39,8 @@ define [
       ogName: ''
       pgName: ''
       applyImmediately: false
+      dbRestoreTime: ''
+      isRestored: false
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -53,7 +55,23 @@ define [
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
         accessible|backupRetentionPeriod|multiAz|password|__connections|__parent"
 
+    sourceDbIndependentAttrForRestore: "id|appId|x|y|width|height|name|\
+        accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
+        multiAz|__connections|__parent|license|iops|port|ogName|pgName|az"
+
     slaves: -> if @master() then [] else @connectionTargets("DbReplication")
+
+    getAllRestoreDB: ->
+
+      srcDb = @getSourceDBForRestore()
+      return [] if srcDb
+
+      that = @
+      dbModels = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).allObjects()
+      return _.filter dbModels, (dbModel) ->
+        if dbModel.getSourceDBForRestore() is that
+          return true
+        return false
 
     master: ->
       m =  @connections( 'DbReplication' )[0]
@@ -79,7 +97,22 @@ define [
 
       @connections("DbReplication")[0]?.remove()
 
+    setSourceDBForRestore : ( sourceDb ) ->
+
+      @sourceDBForRestore = sourceDb
+      @setDefaultParameterGroup()
+      # DefaultSg
+      defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      new SgAsso( defaultSg, this )
+      @listenTo sourceDb, 'change', @syncAttrSourceDBForRestore
+
+    getSourceDBForRestore: ->
+      
+      @sourceDBForRestore
+
     syncMasterAttr: ( master ) ->
+
       if @get 'appId'
         return false
 
@@ -90,6 +123,16 @@ define [
           needSync[ k ] = v
 
       delete needSync['iops'] if needSync['iops']
+
+      @set needSync
+
+    syncAttrSourceDBForRestore: ( sourceDb ) ->
+
+      needSync = {}
+
+      for k, v of sourceDb.changedAttributes()
+        if @sourceDbIndependentAttrForRestore.indexOf( k ) < 0
+          needSync[ k ] = v
 
       @set needSync
 
@@ -128,6 +171,14 @@ define [
 
     # -------- Master and Slave -------- #
 
+    # -------- Restore to Point In Time -------- #
+    restoreMaster: ( master ) ->
+      @clone master
+      @set "snapshotId", master.get("snapshotId")
+      null
+
+    # -------- Restore to Point In Time -------- #
+
     constructor : ( attr, option )->
       if option and not option.master and option.createByUser
 
@@ -158,8 +209,14 @@ define [
         return
 
       if option.master
-        @copyMaster option.master
-        @setMaster option.master
+
+        if not option.isRestore
+          @copyMaster option.master
+          @setMaster option.master
+        else
+          @cloneForRestore option.master
+          @setSourceDBForRestore option.master
+
       else if option.createByUser
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"
@@ -185,6 +242,7 @@ define [
       return
 
     clone : ( srcTarget )->
+
       @cloneAttributes srcTarget, {
         reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
@@ -196,7 +254,18 @@ define [
 
       return
 
+    cloneForRestore : ( srcTarget ) ->
 
+      @cloneAttributes srcTarget, {
+        reserve : "newInstanceId|instanceId|createdBy|pgName"
+        copyConnection : [ "OgUsage" ]
+      }
+
+      @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
+
+      return
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
@@ -517,6 +586,14 @@ define [
           result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         return result
+      allRestoreDB = @getAllRestoreDB()
+      if allRestoreDB.length > 0
+        dbNameAry = []
+        _.each allRestoreDB, (dbModel) ->
+          dbNameAry.push("<span class='resource-tag'>#{dbModel.get('name')}</span>")
+        result = sprintf lang.ide.CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE, @get("name"), dbNameAry.join(', ')
+        result = "<div class='modal-text-major'>#{result}</div>"
+        return result
       true
 
     remove :()->
@@ -526,12 +603,24 @@ define [
           #remove nonexistent replica
           slave.remove()
 
+      for restore in @getAllRestoreDB()
+        restore.remove()
+
       #remove current node
       ComplexResModel.prototype.remove.call(this)
       null
 
     serialize : () ->
+      
       master = @master()
+
+      useLatestRestorableTime = ''
+      if @getSourceDBForRestore()
+        useLatestRestorableTime = if @get('dbRestoreTime') then false else true
+
+      restoreTime = ''
+      restoreTime = @get('dbRestoreTime') if @get('dbRestoreTime')
+
       component =
         name : @get("name")
         type : @type
@@ -571,6 +660,9 @@ define [
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
+          SourceDBInstanceIdentifierForPoint    : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
+          UseLatestRestorableTime               : useLatestRestorableTime
+          RestoreTime                           : restoreTime
 
       { component : component, layout : @generateLayout() }
 

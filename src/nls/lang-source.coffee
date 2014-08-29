@@ -855,6 +855,10 @@ module.exports =
       en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"
       zh: "%s已存在，删除它会同时删除与之相关的只读副本，但会保留，确定要删除它吗？"
 
+    CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE:
+      en: "You are going to restore DB instance <span class='resource-tag'>%s</span> to a point in time. By deleting it, restored DB instance %s will be deleted too. Are you sure to continue?"
+      zh: ""
+
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
       zh: "在添加新资源前，请重设缩放至100%。"

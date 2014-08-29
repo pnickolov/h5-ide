@@ -43,7 +43,7 @@ define [
         CloudResources( "MyAmi",               region ).fetch()
         CloudResources( "FavoriteAmi",         region ).fetch()
         @fetchAmiData()
-        @fetchRdsData()
+        @fetchRdsData( false )
       ]
 
       if not @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )
@@ -73,14 +73,19 @@ define [
       CloudResources( constant.RESTYPE.AMI, @opsModel.get("region") ).fetchAmis( _.keys toFetch )
 
     isRdsDisabled : ()-> !!@__disableRds
-    fetchRdsData : ()->
+    fetchRdsData : ( isForce = true )->
       self   = @
       region = @opsModel.get("region")
 
+      if isForce
+        method = "fetchForce"
+      else
+        method = "fetch"
+
       Q.all([
-        CloudResources( constant.RESTYPE.DBENGINE, region ).fetchForce()
-        CloudResources( constant.RESTYPE.DBOG,     region ).fetchForce()
-        CloudResources( constant.RESTYPE.DBSNAP,   region ).fetchForce()
+        CloudResources( constant.RESTYPE.DBENGINE, region )[method]()
+        CloudResources( constant.RESTYPE.DBOG,     region )[method]()
+        CloudResources( constant.RESTYPE.DBSNAP,   region )[method]()
       ]).then ()->
         if self.__disableRds isnt false
           self.__disableRds = false

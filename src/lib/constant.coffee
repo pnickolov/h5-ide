@@ -183,6 +183,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         POSTGRES  : "postgres"
 
     DB_ENGINTYPE =
+        'mysql'         : "mysql"
         'oracle-ee'     : "oracle"
         'oracle-se'     : "oracle"
         'oracle-se1'    : "oracle"
@@ -191,6 +192,12 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'sqlserver-se'  : "sqlserver"
         'sqlserver-web' : "sqlserver"
         'postgres'      : "postgresql"
+
+    DB_ENGINE_ARY =
+        'mysql'         : ["mysql"]
+        'oracle'        : ['oracle-ee', 'oracle-se', 'oracle-se1']
+        'sqlserver'     : ['sqlserver-ee', 'sqlserver-ex', 'sqlserver-se', 'sqlserver-web']
+        'postgres'      : ['postgres']
 
     DB_DEFAULTSETTING =
       'mysql'           : { port: 3306, dbname: '', charset: '', allocatedStorage: 5 }
@@ -382,5 +389,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_INSTANCECLASS        : DB_INSTANCECLASS
     DB_ENGINE               : DB_ENGINE
     DB_ENGINTYPE            : DB_ENGINTYPE
+    DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
 

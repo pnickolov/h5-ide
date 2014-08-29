@@ -143,8 +143,8 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     if children.length then x -= space
 
     {
-      width  : x || def.width
-      height : height || def.height
+      width  : x      || def.width  || 0
+      height : height || def.height || 0
     }
 
   DefaultMethods = {
@@ -173,8 +173,8 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
       if children.length then y -= space
 
       {
-        width  : width || def.width
-        height : y || def.height
+        width  : width || def.width  || 0
+        height : y     || def.height || 0
       }
 
     ArrangeBinPack : ( children )->
@@ -191,11 +191,14 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         }
 
       chs = children.map ( ch )->
+        sign = ch.sign
+        if not sign
+          sign = if ch.width > ch.height then ch.width else ch.height
         {
           w    : ch.width
           h    : ch.height
           item : ch
-          sign : if ch.width > ch.height then ch.width else ch.height
+          sign : sign
         }
 
       chs.sort ( a, b )-> b.sign - a.sign
@@ -227,21 +230,13 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     DefaultMethods[ m ]
 
   # Layout Logics
-  buildHierachy = ( item, forceReset = true, parentX = 0, parentY = 0 )->
+  buildHierachy = ( item )->
     def = Defination[ item.type ] || {}
-
     obj =
       component : item
       type      : item.type
-      x         : Math.max( item.x() - parentX, 0 )
-      y         : Math.max( item.y() - parentY, 0 )
-      width     : item.width()  || def.width  || 0
-      height    : item.height() || def.height || 0
-
-    obj.existing = !!obj.x
-
-    if forceReset
-      obj.x = obj.y = obj.width = obj.height = 0
+      x         : 0
+      y         : 0
 
     if item.children
 
@@ -253,9 +248,9 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         children = sort.call item, children
 
       for ch in children
-        if def.ignore then continue
+        if Defination[ch.type].ignore then continue
 
-        obj.children.push buildHierachy( ch, forceReset, item.x(), item.y() )
+        obj.children.push buildHierachy( ch )
 
     obj
 
@@ -270,7 +265,7 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
   arrangeGroup = ( item )->
     def = Defination[ item.type ] || {}
 
-    if item.children
+    if item.children and item.children.length
       for ch in item.children
         arrangeGroup( ch )
 
@@ -284,13 +279,11 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         for ch in item.children
           ch.x += def.margin
           ch.y += def.margin
-
-      item.width  = size.width
-      item.height = size.height
     else
-      item.width  = def.width || 0
-      item.height = def.height || 0
+      size = def
 
+    item.width  = size.width  || 0
+    item.height = size.height || 0
     item
 
   CanvasView.prototype.applyGeometry = ( item, parentX, parentY )->
@@ -322,10 +315,6 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     hierachy =
       type     : "SVG"
       children : ()-> svgChildren
-      x : ()-> 0
-      y : ()-> 0
-      width : ()-> 0
-      height : ()-> 0
 
     hierachy = buildHierachy( hierachy )
 
@@ -350,6 +339,37 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     line.update() for uid, line of @__itemLineMap
     return
 
+  buildHierachyPartial = ( item, parentX, parentY )->
+    def = Defination[ item.type ] || {}
+
+    obj =
+      component : item
+      type      : item.type
+      x         : Math.max( item.x() - parentX, 0 )
+      y         : Math.max( item.y() - parentY, 0 )
+      width     : item.width()  || def.width  || 0
+      height    : item.height() || def.height || 0
+
+    obj.existing = !!obj.x
+
+    if item.children
+      obj.isGroup = true
+
+      obj.children = []
+      children = item.children()
+
+      sort = __GetMethod( Defination[ item.type ]?.sortMethod )
+      if sort
+        children = sort.call item, children
+
+      for ch in children
+        d = Defination[ch.type]
+        if d.ignore or d.sticky then continue
+
+        obj.children.push buildHierachyPartial( ch, item.x(), item.y() )
+
+    obj
+
   groupChildrenPartial = ( item )->
     if item.children
       groupChildrenPartial( ch ) for ch in item.children
@@ -370,10 +390,8 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     groupMethod   = __GetMethod( Defination[ item.type ]?.groupMethod) || DefaultGroupMethod
     item.children = groupMethod.call( item, newitems )
 
-
     if existings.length
-      x2 = 0
-      y2 = 0
+      x2 = y2 = 0
       for ch in existings
         x2 = Math.max( x2, ch.x + ch.width )
         y2 = Math.max( y2, ch.y + ch.height )
@@ -381,94 +399,138 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
       item.children.unshift {
         type     : "ExsitingItem"
         children : existings
+        x        : 0
+        y        : 0
         width    : x2
         height   : y2
       }
     item
 
+  __isOverlap = ( ch1, ch2 )->
+    not ( ch1.x >= ch2.x2 or ch1.x2 <= ch2.x or ch1.y >= ch2.y2 or ch1.y2 <= ch2.y )
+
   arrangeGroupExisting = ( item )->
+
+    needToArrange = false
+
     for ch in item.children
       oldWidth  = ch.width || 0
       oldHeight = ch.height || 0
       arrangeGroupPartial( ch )
       ch.width  = Math.max( ch.width,  oldWidth )
       ch.height = Math.max( ch.height, oldHeight )
-      if ch.children
-        ch.deltaW = ch.width  - oldWidth
-        ch.deltaH = ch.height - oldHeight
-      else
-        ch.deltaH = ch.deltaW = 0
 
-    offset = 0
-    for ch in _.sortBy( item.children, "x" )
-      ch.x += offset
-      offset += ch.deltaW
+      if ch.isGroup
+        needToArrange = true
 
-    item.width += offset
+    if needToArrange
+      # 1. Sort array by distance to the origin first.
+      for ch in item.children
+        ch.manhattan = Math.pow( ch.x, 2 ) + Math.pow( ch.y, 2 )
+        if ch.isGroup
+          ch.x      -= 1
+          ch.y      -= 1
+          ch.width  += 2
+          ch.height += 2
 
-    offset = 0
-    for ch in _.sortBy( item.children, "y" )
-      ch.y += offset
-      offset += ch.deltaH
+        ch.x2 = ch.x + ch.width
+        ch.y2 = ch.y + ch.height
 
-    item.height += offset
+      item.children.sort ( a, b )-> a.manhattan - b.manhattan
 
+      # 2. Loop through all the item, see if it overlaps with each other
+      for ch, i in item.children
+        j = i + 1
+        while j < item.children.length
+          sibling = item.children[ j ]
+          if __isOverlap( ch, sibling )
+            # Move sibling
+            if ch.x2 - sibling.x > ch.y2 - sibling.y
+              sibling.y  = ch.y2
+              sibling.y2 = ch.y2 + sibling.height
+            else
+              sibling.x  = ch.x2
+              sibling.x2 = ch.x2 + sibling.height
+          ++j
+
+      # 3. Restore group's geometry
+      for ch in item.children
+        if ch.isGroup
+          ch.x      += 1
+          ch.y      += 1
+          ch.width  -= 2
+          ch.height -= 2
+
+    oldWidth  = item.width
+    oldHeight = item.height
+    for ch in item.children
+      item.width  = Math.max( ch.x + ch.width,  item.width )
+      item.height = Math.max( ch.y + ch.height, item.height )
+
+    item.sizeChanged = oldWidth != item.width || oldHeight != item.height
     return
 
   arrangeGroupPartial = ( item )->
     def = Defination[ item.type ] || {}
 
-    if item.children and item.children.length
-      for ch in item.children
-        if ch.type is "ExsitingItem"
-          arrangeGroupExisting( ch )
-        else
-          arrangeGroupPartial( ch )
+    if not item.children or item.children.length is 0
+      item.width  = item.width  || def.width || 0
+      item.height = item.height || def.height || 0
+      return item
 
-      firstChild = item.children[0]
-      if firstChild.type is "ExsitingItem"
-        def    = Defination[ item.type ] || {}
-        spaceX = def.spaceX || def.space  || 0
-        spaceY = def.spaceY || def.space  || 0
-        firstChild.width  -= spaceX
-        firstChild.height -= spaceY
-
-        size = DefaultMethods.ArrangeBinPack.call item, item.children
-        for ch, idx in item.children
-          if idx isnt 0
-            ch.x += 2
-            ch.y += 2
-
-        firstChild.width  += spaceX
-        firstChild.height += spaceY
-
-        size.width  = Math.max( firstChild.width,  size.width )
-        size.height = Math.max( firstChild.height, size.height )
-
-        if item.children.length > 1
-          size.width  += 4
-          size.height += 4
-        else
-          size.width  += 2
-          size.height += 2
+    # First arrange children
+    for ch in item.children
+      if ch.type is "ExsitingItem"
+        arrangeGroupExisting( ch )
       else
-        arrangeMethod = __GetMethod( def.arrangeMethod ) || DefaultArrangeMethod
-        size = arrangeMethod.call item, item.children
+        arrangeGroupPartial( ch )
 
-        if def.margin
-          size.width  += def.margin * 2
-          size.height += def.margin * 2
+    # Arrange ourself
+    if item.children[0].type isnt "ExsitingItem"
+      # If the group doesn't have existing items.
+      # Then we arrange it like we do in the full-autolayout
+      arrangeMethod = __GetMethod( def.arrangeMethod ) || DefaultArrangeMethod
+      size = arrangeMethod.call item, item.children
 
-          for ch in item.children
-            ch.x += def.margin
-            ch.y += def.margin
+      if def.margin
+        size.width  += def.margin * 2
+        size.height += def.margin * 2
+
+        for ch in item.children
+          ch.x += def.margin
+          ch.y += def.margin
 
       item.width  = size.width
       item.height = size.height
-    else
-      item.width  = def.width || 0
-      item.height = def.height || 0
+      return item
 
+    # We have existing children, do it with different approach.
+    def    = Defination[ item.type ] || {}
+    margin = def.margin || 0
+
+    firstChild = item.children[0]
+
+    if item.children.length is 1
+      if firstChild.sizeChanged
+        # We don't have newly added children in this group
+        item.width  = Math.max( margin + firstChild.width,  item.width )
+        item.height = Math.max( margin + firstChild.height, item.height )
+      return item
+
+    firstChild.width  -= margin
+    firstChild.height -= margin
+    firstChild.sign    = 99999999999999
+    size = DefaultMethods.ArrangeBinPack.call item, item.children
+    for ch, idx in item.children
+      if idx isnt 0
+        ch.x += margin
+        ch.y += margin
+      else
+        ch.width  += margin
+        ch.height += margin
+
+    item.width  = size.width  + margin * 2
+    item.height = size.height + margin * 2
     item
 
   CanvasView.prototype.autoLayoutPartial = ()->
@@ -481,12 +543,12 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
     hierachy =
       type     : "SVG"
       children : ()-> svgChildren
-      x : ()-> 0
-      y : ()-> 0
-      width : ()-> 0
-      height : ()-> 0
+      x        : ()-> 0
+      y        : ()-> 0
+      width    : ()-> 0
+      height   : ()-> 0
 
-    hierachy = buildHierachy( hierachy, false )
+    hierachy = buildHierachyPartial( hierachy, 0, 0 )
 
     groupChildrenPartial( hierachy )
     arrangeGroupPartial( hierachy )

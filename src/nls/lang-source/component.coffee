@@ -272,3 +272,12 @@ module.exports =
     VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP:
       en: "This IP address conflicts with other network interface’s IP"
       zh: ""
+
+    VALIDATION_CANNOT_MOVE_VOLUME_ACROSS_AZ:
+      en: "Cannot move volume across availability zone."
+      zh: ""
+
+    DESERIALIZE_VISITOR_GROUP_DESCRIPTION:
+      en: "default VPC security group"
+      zh: ""
+

@@ -106,8 +106,58 @@ module.exports =
       en: "Do you want to remove the app?"
       zh: ""
 
+    CLOUD_RESOURCE_KEY_PAIR:
+      en: "Key Pair"
+      zh: ""
 
+    CLOUD_RESOURCE_EBS_SNAPSHOT:
+      en: "EBS Snapshot"
+      zh: ""
 
+    CLOUD_RESOURCE_SNS_SUBSCRIPTION:
+      en: "SNS Topic & Subscription"
+      zh: ""
 
+    CLOUD_RESOURCE_SERVER_CERTIFICATE:
+      en: "Server Certificate"
+      zh: ""
 
+    CLOUD_RESOURCE_DHCP_OPTION_SETS:
+      en: "DHCP Option Sets"
+      zh: ""
 
+    CLOUD_RESOURCE_DB_PARAMETER_GROUPS:
+      en: "DB Parameter Groups"
+      zh: ""
+
+    CLOUD_RESOURCE_DB_SNAPSHOT:
+      en: "DB Snapshot"
+      zh: ""
+
+    CLOUD_RESOURCE_SORT_BY_DATE:
+      en: "By Date"
+      zh: ""
+
+    CLOUD_RESOURCE_SORT_BY_STORAGE:
+      en: "By Storage"
+      zh: ""
+
+    CLOUD_RESOURCE_SORT_BY_ENGINE:
+      en: "By Engine"
+      zh: ""
+
+    CLOUD_RESOURCE_NO_EBS_SNAPSHOT:
+      en: "No EBS Snapshot in %s."
+      zh: ""
+
+    CLOUD_RESOURCE_NO_DB_SNAPSHOT:
+      en: "No DB Snapshot in %s."
+      zh: ""
+
+    CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI:
+      en: "Use \"Browse Community AMI\" to add Favourite AMI."
+      zh: ""
+
+    CLOUD_RESOURCE_AUTO_SCALING_GROUP:
+      en: "Auto Scaling Group "
+      zh: ""

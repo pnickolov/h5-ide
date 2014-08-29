@@ -76,7 +76,7 @@ define [ "i18n!/nls/lang.js", "../ComplexResModel", "constant" ], ( lang, Comple
           newParent = newParent.parent()
 
         if parent and newParent and parent isnt newParent
-          return "Cannot move volume across availability zone."
+          return lang.ide.VALIDATION_CANNOT_MOVE_VOLUME_ACROSS_AZ
 
       true
 

@@ -825,6 +825,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Showing %s-%s items of %s results"
       zh: "当前显示 %s-%s 条，共有 %s 条"
 
+    AMI_TYPE_PUBLIC:
+      en: "public"
+      zh: ""
+
+    AMI_TYPE_PRIVATE:
+      en: "private"
+      zh: ""
+
     IDE_COM_CREATE_NEW_STACK:
       en: "Create new stack"
       zh: "创建模板"

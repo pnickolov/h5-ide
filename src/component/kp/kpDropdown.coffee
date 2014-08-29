@@ -45,8 +45,8 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/kp/kpTpl', 'backbon
 
         initDropdown: ->
             options =
-                manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_KP
-                filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_KP
+                manageBtnValue      : lang.IDE.PROP_INSTANCE_MANAGE_KP
+                filterPlaceHolder   : lang.IDE.PROP_INSTANCE_FILTER_KP
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @

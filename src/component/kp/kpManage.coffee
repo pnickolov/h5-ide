@@ -49,18 +49,18 @@ define [
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: lang.ide.COMPONENT_CREATE_KEYPAIR
+                    name: lang.IDE.COMPONENT_CREATE_KEYPAIR
                 }
                 {
                     icon: 'import'
                     type: 'import'
-                    name: lang.ide.COMPONENT_IMPORT_KEY_PAIR
+                    name: lang.IDE.COMPONENT_IMPORT_KEY_PAIR
                 }
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: lang.ide.COMPONENT_DELETE_KEY_PAIR
+                    name: lang.IDE.COMPONENT_DELETE_KEY_PAIR
                 }
                 {
                     icon: 'refresh'
@@ -72,11 +72,11 @@ define [
                 {
                     sortable: true
                     width: "40%" # or 40%
-                    name: lang.ide.COMPONENT_KEY_PAIR_COL_NAME
+                    name: lang.IDE.COMPONENT_KEY_PAIR_COL_NAME
                 }
                 {
                     sortable: false
-                    name: lang.ide.COMPONENT_KEY_PAIR_COL_FINGERPRINT
+                    name: lang.IDE.COMPONENT_KEY_PAIR_COL_FINGERPRINT
                 }
             ]
 

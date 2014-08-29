@@ -292,40 +292,40 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
                     switch selectedProto
                         when "sqs"
-                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
-                            type        = lang.ide.PROP_STACK_SQS
+                            placeholder = lang.IDE.PROP_STACK_AMAZON_ARN
+                            type        = lang.IDE.PROP_STACK_SQS
                             errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
 
                         when "arn"
-                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
-                            type        = lang.ide.PROP_STACK_ARN
+                            placeholder = lang.IDE.PROP_STACK_AMAZON_ARN
+                            type        = lang.IDE.PROP_STACK_ARN
                             errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
 
                         when "email"
-                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.ide.PROP_STACK_EMAIL
-                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+                            placeholder = lang.IDE.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.IDE.PROP_STACK_EMAIL
+                            errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "email-json"
-                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.ide.PROP_STACK_EMAIL
-                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+                            placeholder = lang.IDE.PROP_STACK_EXAMPLE_EMAIL
+                            type        = lang.IDE.PROP_STACK_EMAIL
+                            errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "sms"
-                            placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
-                            type        = lang.ide.PROP_STACK_USPHONE
+                            placeholder = lang.IDE.PROP_STACK_E_G_1_206_555_6423
+                            type        = lang.IDE.PROP_STACK_USPHONE
                             errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
 
                         when "http"
                             #$input.addClass "http"
-                            placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
-                            type        = lang.ide.PROP_STACK_HTTP
+                            placeholder = lang.IDE.PROP_STACK_HTTP_WWW_EXAMPLE_COM
+                            type        = lang.IDE.PROP_STACK_HTTP
                             errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_URL
 
                         when "https"
                             #$input.addClass "https"
-                            placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
-                            type        = lang.ide.PROP_STACK_HTTPS
+                            placeholder = lang.IDE.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
+                            type        = lang.IDE.PROP_STACK_HTTPS
                             errorMsg    = lang.parsley.PLEASE_PROVIDE_A_VALID_URL
 
                     endPoint = that.M$ '#create-endpoint'

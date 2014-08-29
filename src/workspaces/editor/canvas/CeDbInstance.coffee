@@ -126,13 +126,13 @@ define [
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'db-sg'
           'data-alias'   : 'db-sg-left'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'db-sg'
           'data-alias'   : 'db-sg-right'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
       ])
 

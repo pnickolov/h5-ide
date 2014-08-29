@@ -196,7 +196,7 @@ define [ '../base/view',
                     data.push { name : policy, checked : true }
                     checked[ policy ] = true
 
-            for p in [lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST, lang.ide.PROP_ASG_TERMINATION_POLICY_NEWEST, lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.ide.PROP_ASG_TERMINATION_POLICY_CLOSEST]
+            for p in [lang.IDE.PROP_ASG_TERMINATION_POLICY_OLDEST, lang.IDE.PROP_ASG_TERMINATION_POLICY_NEWEST, lang.IDE.PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.IDE.PROP_ASG_TERMINATION_POLICY_CLOSEST]
                 if not checked[ p ]
                     data.push { name : p, checked : false }
 
@@ -284,7 +284,7 @@ define [ '../base/view',
             data = @model.getPolicy(uid)
 
             data.uid   = uid
-            data.title = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
+            data.title = lang.IDE.PROP_ASG_ADD_POLICY_TITLE_EDIT
 
             @showScalingPolicy( data )
 
@@ -321,7 +321,7 @@ define [ '../base/view',
         openPolicyModal: ( data ) ->
             options =
                 template        : policy_template data
-                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD + ' ' + lang.ide.PROP_ASG_ADD_POLICY_TITLE_CONTENT
+                title           : lang.IDE.PROP_ASG_ADD_POLICY_TITLE_ADD + ' ' + lang.IDE.PROP_ASG_ADD_POLICY_TITLE_CONTENT
                 width           : '480px'
                 compact         : true
                 confirm         :
@@ -342,7 +342,7 @@ define [ '../base/view',
         showScalingPolicy : ( data ) ->
             if !data
                 data =
-                    title   : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                    title   : lang.IDE.PROP_ASG_ADD_POLICY_TITLE_ADD
                     name    : @model.defaultScalingPolicyName()
                     minAdjustStep : 1
                     alarmData : {

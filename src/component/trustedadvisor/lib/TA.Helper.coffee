@@ -30,7 +30,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'Design', 'underscore' ], ( CONS
 
         i18n:
             short: () ->
-                LANG.ta
+                LANG.TA
 
         component:
             get: ( uid, rework ) ->

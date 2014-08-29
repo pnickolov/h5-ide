@@ -1,7 +1,7 @@
 # Reference: https://trello.com/c/KaOjDSm7/303-orginize-lang-source-coffee
 
 module.exports =
-  ide:
+  IDE:
 
     PROP_LBL_REQUIRED:
       en: "Required"
@@ -87,10 +87,6 @@ module.exports =
       en: "CloudWatch Detailed Monitoring"
       zh: ""
 
-    POP_INSTANCE_KEYPAIR_INFO_TIP:
-      en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
-      zh: ""
-
     PROP_INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimization"
       zh: "EBS 优化"
@@ -158,7 +154,6 @@ module.exports =
     PROP_INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
       zh: ""
-
 
     PROP_INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -612,7 +607,6 @@ module.exports =
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
       zh: ""
 
-
     PROP_SUBNET_TIT_DETAIL:
       en: "Subnet Details"
       zh: "子网详细"
@@ -912,90 +906,6 @@ module.exports =
     PROP_ACL_APP_VPC_ID:
       en: "VPC ID"
       zh: "VPC标识"
-
-    POP_ACLRULE_TITLE_ADD:
-      en: "Add Network ACL Rule"
-      zh: "添加访问控制表规则"
-
-    POP_ACLRULE_LBL_RULE_NUMBER:
-      en: "Rule Number"
-      zh: "规则编号"
-
-    POP_ACLRULE_LBL_ACTION:
-      en: "Action"
-      zh: "动作"
-
-    POP_ACLRULE_LBL_ACTION_ALLOW:
-      en: "Allow"
-      zh: "允许"
-
-    POP_ACLRULE_LBL_ACTION_DENY:
-      en: "Deny"
-      zh: "拒绝"
-
-    POP_ACLRULE_LBL_DIRECTION:
-      en: "Direction"
-      zh: "方向"
-
-    POP_ACLRULE_LBL_INBOUND:
-      en: "Inbound"
-      zh: "入方向"
-
-    POP_ACLRULE_LBL_OUTBOUND:
-      en: "Outbound"
-      zh: "出方向"
-
-    POP_ACLRULE_LBL_SOURCE:
-      en: "Source"
-      zh: "源"
-
-    POP_ACLRULE_LBL_DEST:
-      en: "Destination"
-      zh: "目的"
-
-    POP_ACLRULE_LBL_PROTOCOL:
-      en: "Protocol"
-      zh: "协议"
-
-    POP_ACLRULE_PROTOCOL_TCP:
-      en: "TCP"
-      zh: "TCP"
-
-    POP_ACLRULE_PROTOCOL_UDP:
-      en: "UDP"
-      zh: "UDP"
-
-    POP_ACLRULE_PROTOCOL_ICMP:
-      en: "ICMP"
-      zh: "ICMP"
-
-    POP_ACLRULE_PROTOCOL_CUSTOM:
-      en: "Custom"
-      zh: "自定义"
-
-    POP_ACLRULE_PROTOCOL_ALL:
-      en: "All"
-      zh: "全部"
-
-    POP_ACLRULE_BTN_SAVE:
-      en: "Save"
-      zh: "保存"
-
-    POP_ACLRULE_BTN_CANCEL:
-      en: "Cancel"
-      zh: "取消"
-
-    POP_ACLRULE_PLACEHOLD_SOURCE:
-      en: "e.g., 192.168.2.0/24"
-      zh: "如192.168.2.0/24"
-
-    POP_ACLRULE_PLACEHOLD_PORT_RANGE:
-      en: "Port Range.eg.80 or 49152-65535"
-      zh: "端口范围,如80或49152-65535"
-
-    POP_ACLRULE_LBL_PORT_RANGE_ALL:
-      en: "Port Range:0-65535"
-      zh: "端口范围:0-65535"
 
     PROP_VGW_TXT_DESCRIPTION:
       en: "The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel."
@@ -1609,7 +1519,7 @@ module.exports =
       en: "You need to connect this auto scaling group to a load balancer to enable this option."
       zh: "你需要连接AutoScaling组和一个负载均衡器来启动此选项"
 
-    PROPERTY_ASG_ELB_WARN:
+    PROP_ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
       zh: ""
 
@@ -1920,43 +1830,6 @@ module.exports =
     PROP_RT_TIP_PROPAGATED:
       en: "Propagated"
       zh: ""
-
-    NAV_DESMOD_NOT_FINISH_LOAD:
-      en: "Sorry, the designer module is loading now. Please try again after several seconds."
-      zh: "抱歉，设计模块正在加载，请稍后重试。"
-
-    PROC_TITLE:
-      en: "Launching your app..."
-      zh: "启动您的应用..."
-
-    PROC_RLT_DONE_TITLE:
-      en: "Everything went smoothly!"
-      zh: "一切顺利!"
-
-    PROC_RLT_DONE_SUB_TITLE:
-      en: "Your app will automatically open soon."
-      zh: "您的应用将被自动打开。"
-
-    PROC_STEP_PREPARE:
-      en: "Preparing to start app..."
-      zh: "准备启动应用..."
-
-    PROC_RLT_FAILED_TITLE:
-      en: "Error Starting App."
-      zh: "启动应用错误。"
-
-    PROC_RLT_FAILED_SUB_TITLE:
-      en: "Please fix the following issues and try again:"
-      zh: "请先解决以下下问题，然后重试。"
-
-    PROC_ERR_INFO:
-      en: "Error Details"
-      zh: "错误详情"
-
-    PROC_CLOSE_TAB:
-      en: "Close"
-      zh: "关闭标签"
-
 
     PROP_DBPG_RESMANAGER_FILTER:
       en: "Filter DB Engine by family name"

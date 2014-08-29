@@ -215,8 +215,8 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       validObj = Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
       if not validObj.isValid
         if validObj.isReserved
-          return lang.ide.VALIDATION_IP_IN_SUBNET_REVERSED_RANGE
-        return lang.ide.VALIDATION_IP_CONFLICTS_WITH_SUBNET_IP_RANGE
+          return lang.IDE.VALIDATION_IP_IN_SUBNET_REVERSED_RANGE
+        return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_SUBNET_IP_RANGE
 
       realNewIp = @getRealIp( ip, cidr )
 
@@ -233,9 +233,9 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
           realIp = eni.getRealIp( ipObj.ip )
           if realIp is realNewIp
             if eni is this
-              return lang.ide.VALIDATION_IP_CONFLICTS_WITH_OTHER_IP
+              return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_OTHER_IP
             else
-              return lang.ide.VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP
+              return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP
 
       true
 
@@ -291,7 +291,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
       ips   = @get("ips")
 
       if ips.length >= maxIp
-        return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
+        return sprintf( lang.IDE.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
       subnet = if @__embedInstance then @__embedInstance.parent() else @parent()
 

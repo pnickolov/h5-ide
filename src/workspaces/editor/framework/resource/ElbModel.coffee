@@ -58,7 +58,7 @@ define [ "Design",
         sg = new SgModel({
           name        : @getElbSgName()
           isElbSg     : true
-          description : lang.ide.AUTOMATICALLY_CREATED_SG_FOR_LOAD_BALANCER
+          description : lang.IDE.AUTOMATICALLY_CREATED_SG_FOR_LOAD_BALANCER
         })
         @__elbSg = sg
         SgAssoModel = Design.modelClassForType( "SgAsso" )

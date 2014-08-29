@@ -29,7 +29,7 @@ define [
 
         # set new description
         self = @
-        @set 'description', sprintf(lang.ide.CUSTOM_OPTION_GROUP_FOR_ENGINE, self.get('engineName'), self.get('engineVersion'))
+        @set 'description', sprintf(lang.IDE.CUSTOM_OPTION_GROUP_FOR_ENGINE, self.get('engineName'), self.get('engineVersion'))
 
       null
 

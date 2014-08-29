@@ -37,7 +37,7 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
       j = JSON.parse( json )
       delete j._id
     catch e
-      return lang.ide.POP_IMPORT_FORMAT_ERROR
+      return lang.IDE.POP_IMPORT_FORMAT_ERROR
 
     signature = j.signature
     delete j.signature

@@ -64,7 +64,7 @@ define [
         doNothing: -> false
 
         getModalOptions: ->
-            title: lang.ide.RDS_EDIT_OPTION_GROUP
+            title: lang.IDE.RDS_EDIT_OPTION_GROUP
             classList: 'option-group-manage'
             context: that
 
@@ -88,7 +88,7 @@ define [
 
             options =
                 template        : tpl
-                title           : lang.ide.RDS_EDIT_OPTION_GROUP
+                title           : lang.IDE.RDS_EDIT_OPTION_GROUP
                 disableFooter   : true
                 disableClose    : true
                 width           : '855px'
@@ -209,7 +209,7 @@ define [
 
             form = $ 'form'
             if not form.parsley 'validate'
-                @$('.error').html lang.ide.RDS_SOME_ERROR_OCCURED
+                @$('.error').html lang.IDE.RDS_SOME_ERROR_OCCURED
                 return
 
             data = {
@@ -348,7 +348,7 @@ define [
                     .prop('disabled', true)
                     .prop('checked', true)
                     .parent()
-                    .data('tooltip', lang.ide.RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY)
+                    .data('tooltip', lang.IDE.RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY)
 
             else
                 @$('#option-apply-immediately')

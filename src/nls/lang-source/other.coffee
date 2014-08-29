@@ -2,7 +2,7 @@
 
 module.exports =
 
-  ide:
+  IDE:
 
     NAV_TIT_DASHBOARD:
       en: "Dashboard"
@@ -1202,5 +1202,129 @@ VisualOps API. You cannot UNDO this action.'
     POP_SGRULE_PLACEHOLD_PORT_RANGE:
       en: "Port Range.eg.80 or 49152-65535"
       zh: "端口范围，如80或49152-65535"
+
+    POP_INSTANCE_KEYPAIR_INFO_TIP:
+      en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
+      zh: ""
+
+    POP_ACLRULE_TITLE_ADD:
+      en: "Add Network ACL Rule"
+      zh: "添加访问控制表规则"
+
+    POP_ACLRULE_LBL_RULE_NUMBER:
+      en: "Rule Number"
+      zh: "规则编号"
+
+    POP_ACLRULE_LBL_ACTION:
+      en: "Action"
+      zh: "动作"
+
+    POP_ACLRULE_LBL_ACTION_ALLOW:
+      en: "Allow"
+      zh: "允许"
+
+    POP_ACLRULE_LBL_ACTION_DENY:
+      en: "Deny"
+      zh: "拒绝"
+
+    POP_ACLRULE_LBL_DIRECTION:
+      en: "Direction"
+      zh: "方向"
+
+    POP_ACLRULE_LBL_INBOUND:
+      en: "Inbound"
+      zh: "入方向"
+
+    POP_ACLRULE_LBL_OUTBOUND:
+      en: "Outbound"
+      zh: "出方向"
+
+    POP_ACLRULE_LBL_SOURCE:
+      en: "Source"
+      zh: "源"
+
+    POP_ACLRULE_LBL_DEST:
+      en: "Destination"
+      zh: "目的"
+
+    POP_ACLRULE_LBL_PROTOCOL:
+      en: "Protocol"
+      zh: "协议"
+
+    POP_ACLRULE_PROTOCOL_TCP:
+      en: "TCP"
+      zh: "TCP"
+
+    POP_ACLRULE_PROTOCOL_UDP:
+      en: "UDP"
+      zh: "UDP"
+
+    POP_ACLRULE_PROTOCOL_ICMP:
+      en: "ICMP"
+      zh: "ICMP"
+
+    POP_ACLRULE_PROTOCOL_CUSTOM:
+      en: "Custom"
+      zh: "自定义"
+
+    POP_ACLRULE_PROTOCOL_ALL:
+      en: "All"
+      zh: "全部"
+
+    POP_ACLRULE_BTN_SAVE:
+      en: "Save"
+      zh: "保存"
+
+    POP_ACLRULE_BTN_CANCEL:
+      en: "Cancel"
+      zh: "取消"
+
+    POP_ACLRULE_PLACEHOLD_SOURCE:
+      en: "e.g., 192.168.2.0/24"
+      zh: "如192.168.2.0/24"
+
+    POP_ACLRULE_PLACEHOLD_PORT_RANGE:
+      en: "Port Range.eg.80 or 49152-65535"
+      zh: "端口范围,如80或49152-65535"
+
+    POP_ACLRULE_LBL_PORT_RANGE_ALL:
+      en: "Port Range:0-65535"
+      zh: "端口范围:0-65535"
+
+    NAV_DESMOD_NOT_FINISH_LOAD:
+      en: "Sorry, the designer module is loading now. Please try again after several seconds."
+      zh: "抱歉，设计模块正在加载，请稍后重试。"
+
+    PROC_TITLE:
+      en: "Launching your app..."
+      zh: "启动您的应用..."
+
+    PROC_RLT_DONE_TITLE:
+      en: "Everything went smoothly!"
+      zh: "一切顺利!"
+
+    PROC_RLT_DONE_SUB_TITLE:
+      en: "Your app will automatically open soon."
+      zh: "您的应用将被自动打开。"
+
+    PROC_STEP_PREPARE:
+      en: "Preparing to start app..."
+      zh: "准备启动应用..."
+
+    PROC_RLT_FAILED_TITLE:
+      en: "Error Starting App."
+      zh: "启动应用错误。"
+
+    PROC_RLT_FAILED_SUB_TITLE:
+      en: "Please fix the following issues and try again:"
+      zh: "请先解决以下下问题，然后重试。"
+
+    PROC_ERR_INFO:
+      en: "Error Details"
+      zh: "错误详情"
+
+    PROC_CLOSE_TAB:
+      en: "Close"
+      zh: "关闭标签"
 
 

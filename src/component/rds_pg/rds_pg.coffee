@@ -369,8 +369,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     renderDropdown: ->
       that = this
       option =
-        manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
-        filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
+        manageBtnValue: lang.IDE.PROP_VPC_MANAGE_RDS_PG
+        filterPlaceHolder: lang.IDE.PROP_VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
       if @resModel and  not @resModel.attributes.pgName
         that.dropdown.setSelection "Please Select Parameter Group"
@@ -449,7 +449,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       region = Design.instance().get('region')
       regionName = constant.REGION_SHORT_LABEL[ region ]
 
-      title: sprintf(lang.ide.COMPONENT_RDS_PG_MANAGER_TITLE, regionName)#"Manage DB Parameter Group in #{regionName}"
+      title: sprintf(lang.IDE.COMPONENT_RDS_PG_MANAGER_TITLE, regionName)#"Manage DB Parameter Group in #{regionName}"
       slideable: true
       context: that
       buttons: [

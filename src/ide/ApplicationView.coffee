@@ -46,7 +46,7 @@ define [
       $(window).on 'keydown', @globalKeyEvent
       return
 
-    checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE
+    checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE
 
     globalKeyEvent: (event) ->
       nodeName = event.target.nodeName.toLowerCase()

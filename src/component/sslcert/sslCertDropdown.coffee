@@ -15,8 +15,8 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', './com
 
         initDropdown: ->
             options =
-                manageBtnValue      : lang.ide.PROP_INSTANCE_MANAGE_SSL_CERT
-                filterPlaceHolder   : lang.ide.PROP_INSTANCE_FILTER_SSL_CERT
+                manageBtnValue      : lang.IDE.PROP_INSTANCE_MANAGE_SSL_CERT
+                filterPlaceHolder   : lang.IDE.PROP_INSTANCE_FILTER_SSL_CERT
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @

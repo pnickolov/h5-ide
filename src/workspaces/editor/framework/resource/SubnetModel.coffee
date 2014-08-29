@@ -64,7 +64,7 @@ define [ "constant",
 
       SBGAsso = @connectionTargets("SubnetgAsso")
       if SBGAsso.length > 0
-        return { error : sprintf( lang.ide.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG, @get("name"), SBGAsso[0].get("name") ) }
+        return { error : sprintf( lang.IDE.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG, @get("name"), SBGAsso[0].get("name") ) }
 
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")

@@ -225,9 +225,9 @@ define [ '../base/view',
 
             inbound = $('#acl-add-model-direction-inbound').prop('checked')
             if inbound
-                $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_SOURCE)
+                $('#acl-add-model-bound-label').text(lang.IDE.POP_ACLRULE_LBL_SOURCE)
             else
-                $('#acl-add-model-bound-label').text(lang.ide.POP_ACLRULE_LBL_DEST)
+                $('#acl-add-model-bound-label').text(lang.IDE.POP_ACLRULE_LBL_DEST)
 
         clickSimpleProtocolSelect : (event) ->
             protocolName = $(event.currentTarget).text()

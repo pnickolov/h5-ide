@@ -7,7 +7,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
     members = text.split '.'
-    if members.length is 1 then members.unshift 'ide'
+    if members.length is 1 then members.unshift 'IDE'
 
     t = lang[ members[0] ][ members[1] ]
     ### env:prod ###

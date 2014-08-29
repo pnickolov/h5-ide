@@ -298,7 +298,7 @@ define [ 'event',
 
             that.markdownConvert = new Markdown.Converter()
 
-            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
+            that.generalTip = lang.IDE.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length

@@ -261,7 +261,7 @@ define [
 
     importJson : ()->
       modal = new Modal {
-        title         : lang.ide.POP_IMPORT_JSON_TIT
+        title         : lang.IDE.POP_IMPORT_JSON_TIT
         template      : tplPartials.importJSON()
         width         : "470"
         disableFooter : true
@@ -278,7 +278,7 @@ define [
         null
 
       reader.onerror = ()->
-        $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
+        $("#import-json-error").html lang.IDE.POP_IMPORT_ERROR
         null
 
       hanldeFile = ( evt )->
@@ -350,7 +350,7 @@ define [
       , 60*8*1000 + 1000
 
       @visModal = new Modal {
-        title         : lang.ide.DASH_IMPORT_VPC_AS_APP
+        title         : lang.IDE.DASH_IMPORT_VPC_AS_APP
         width         : "770"
         template      : VisualizeVpcTpl( attributes )
         disableFooter : true

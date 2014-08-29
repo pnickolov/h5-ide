@@ -1,7 +1,7 @@
 # Reference: https://trello.com/c/KaOjDSm7/303-orginize-lang-source-coffee
 
 module.exports =
-  ta:
+  TA:
 
    ##### Trust Advisor
 

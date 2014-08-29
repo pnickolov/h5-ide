@@ -46,14 +46,14 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           $("#sg-rule-self-ref").hide()
 
           if ruleCount is 1
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+            info = sprintf lang.IDE.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
 
           else if data.target is data.relation
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
+            info = sprintf lang.IDE.PROP_MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
             $("#sg-rule-self-ref").show()
 
           else
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
+            info = sprintf lang.IDE.PROP_MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
 
           $("#sg-rule-create-msg").text info
 
@@ -91,7 +91,7 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           false
 
         onDirChange : () ->
-          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then lang.ide.POP_SGRULE_LBL_SOURCE else lang.ide.POP_SGRULE_LBL_DEST )
+          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then lang.IDE.POP_SGRULE_LBL_SOURCE else lang.IDE.POP_SGRULE_LBL_DEST )
 
         onProtocolChange : ( event, id ) ->
           $(".sg-proto-input").hide()

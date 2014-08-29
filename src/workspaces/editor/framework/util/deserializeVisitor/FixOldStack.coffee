@@ -46,7 +46,7 @@ define [ "Design", "constant","i18n!/nls/lang.js" ], ( Design, constant, lang )-
           IpPermissionsEgress : [],
           Default             : "true",
           GroupName           : "DefaultSG",
-          GroupDescription    : lang.ide.DESERIALIZE_VISITOR_GROUP_DESCRIPTION
+          GroupDescription    : lang.IDE.DESERIALIZE_VISITOR_GROUP_DESCRIPTION
         }
       }
 

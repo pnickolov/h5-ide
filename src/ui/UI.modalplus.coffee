@@ -73,7 +73,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
                     hide    : @option.confirm?.hide
-                cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.ide.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
+                cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.IDE.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact

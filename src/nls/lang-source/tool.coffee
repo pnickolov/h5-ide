@@ -2,7 +2,7 @@
 
 module.exports =
 
-  ide:
+  IDE:
 
     TOOL_BTN_RUN_STACK:
       en: "Run Stack"

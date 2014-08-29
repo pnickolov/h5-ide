@@ -2,7 +2,7 @@
 
 module.exports =
 
-  parsley:
+  PARSLEY:
 
     MUST_BE_A_VALID_FORMAT_OF_NUMBER:
       en: "Must be a valid format of number."

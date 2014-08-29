@@ -6,6 +6,18 @@ module.exports =
       en: "Required"
       zh: "必填"
 
+    PROP_LBL_DEFAULT:
+      en: "Default"
+      zh: ""
+
+    PROP_LBL_DONE:
+      en: "Done"
+      zh: ""
+
+    PROP_LBL_CANCEL:
+      en: "Cancel"
+      zh: ""
+
     PROP_INSTANCE_DETAIL:
       en: "Instance Details"
       zh: "实例设置"
@@ -2225,4 +2237,62 @@ module.exports =
       en: "Status Check Failed (System)"
       zh: ""
 
+    PROP_ASG_ADJUST_TOOLTIP_CHANGE:
+      en: "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
+      zh: ""
 
+    PROP_ASG_ADJUST_TOOLTIP_EXACT:
+      en: "Change the current capacity of your Auto Scaling group to the exact value specified."
+      zh: ""
+
+    PROP_ASG_ADJUST_TOOLTIP_PERCENT:
+      en: "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
+      zh: ""
+
+    PROP_AZ_CANNOT_EDIT_EXISTING_AZ:
+      en: "Cannot edit existing availability zone. However, newly created availability zone is editable."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_REQUIRED:
+      en: "IP Address is required."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_REQUIRED_DESC:
+      en: "Please provide a IP Address of this Customer Gateway."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_INVALID:
+      en: "%s  is not a valid IP Address."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_INVALID_DESC:
+      en: "Please provide a valid IP Address. For example, 192.168.1.1."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_INVALID_CUSTOM:
+      en: "IP Address %s is invalid for customer gateway."
+      zh: ""
+
+    PROP_CGW_IP_VALIDATE_INVALID_CUSTOM_DESC:
+      en: "The address must be static and can't be behind a device performing network address translation (NAT)."
+      zh: ""
+
+    PROP_CGW_REMOVE_CUSTOM_GATEWAY:
+      en: "Remove Customer Gateway"
+      zh: ""
+
+    PROP_CONNECTION_ATTACHMENT_OF:
+      en: "This is an attachment of %s to %s"
+      zh: ""
+
+    PROP_CONNECTION_SUBNET_ASSO_PLACEMENT:
+      en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."
+      zh: ""
+
+    PROP_ENI_ATTACHMENT_NAME:
+      en: "Instance-ENI Attachment"
+      zh: ""
+
+    PROP_ELB_SUBNET_ASSO_NAME:
+      en: "Load Balencer-Subnet Association"
+      zh: ""

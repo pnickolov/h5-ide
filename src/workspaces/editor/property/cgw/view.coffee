@@ -65,14 +65,14 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
 
             haveError = true
             if !ipAddr
-                mainContent = 'IP Address is required.'
-                descContent = 'Please provide a IP Address of this Customer Gateway.'
+                mainContent = lang.ide.PROP_CGW_IP_VALIDATE_REQUIRED
+                descContent = lang.ide.PROP_CGW_IP_VALIDATE_REQUIRED_DESC
             else if !MC.validate 'ipv4', ipAddr
-                mainContent = "#{ipAddr} is not a valid IP Address."
-                descContent = 'Please provide a valid IP Address. For example, 192.168.1.1.'
+                mainContent = sprintf(lang.ide.PROP_CGW_IP_VALIDATE_INVALID, ipAddr)
+                descContent = lang.ide.PROP_CGW_IP_VALIDATE_INVALID_DESC
             else if MC.aws.aws.isValidInIPRange(ipAddr, 'private')
-                mainContent = "IP Address #{ipAddr} is invalid for customer gateway."
-                descContent = "The address must be static and can't be behind a device performing network address translation (NAT)."
+                mainContent = sprintf(lang.ide.PROP_CGW_IP_VALIDATE_INVALID_CUSTOM, ipAddr)
+                descContent = lang.ide.PROP_CGW_IP_VALIDATE_INVALID_CUSTOM_DESC
             else
                 haveError = false
 
@@ -82,7 +82,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 return
 
             dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : 'Remove Customer Gateway'
+                remove_content : lang.ide.PROP_CGW_REMOVE_CUSTOM_GATEWAY
                 main_content : mainContent
                 desc_content : descContent
             }

@@ -12,21 +12,21 @@ define [ '../base/view',
 ], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus )->
 
     metricMap =
-        "CPUUtilization"             : "CPU Utilization"
-        "DiskReadBytes"              : "Disk Reads"
-        "DiskReadOps"                : "Disk Read Operations"
-        "DiskWriteBytes"             : "Disk Writes"
-        "DiskWriteOps"               : "Disk Write Operations"
-        "NetworkIn"                  : "Network In"
-        "NetworkOut"                 : "Network Out"
-        "StatusCheckFailed"          : "Status Check Failed (Any)"
-        "StatusCheckFailed_Instance" : "Status Check Failed (Instance)"
-        "StatusCheckFailed_System"   : "Status Check Failed (System)"
+        "CPUUtilization"             : lang.ide.PROP_ASG_POLICY_CPU
+        "DiskReadBytes"              : lang.ide.PROP_ASG_POLICY_DISC_READS
+        "DiskReadOps"                : lang.ide.PROP_ASG_POLICY_DISK_READ_OPERATIONS
+        "DiskWriteBytes"             : lang.ide.PROP_ASG_POLICY_DISK_WRITES
+        "DiskWriteOps"               : lang.ide.PROP_ASG_POLICY_DISK_WRITE_OPERATIONS
+        "NetworkIn"                  : lang.ide.PROP_ASG_POLICY_NETWORK_IN
+        "NetworkOut"                 : lang.ide.PROP_ASG_POLICY_NETWORK_OUT
+        "StatusCheckFailed"          : lang.ide.PROP_ASG_POLICY_STATUS_CHECK_FAILED_ANY
+        "StatusCheckFailed_Instance" : lang.ide.PROP_ASG_POLICY_STATUS_CHECK_FAILED_INSTANCE
+        "StatusCheckFailed_System"   : lang.ide.PROP_ASG_POLICY_STATUS_CHECK_FAILED_SYSTEM
 
     adjustMap =
-        "ChangeInCapacity"        : "Change in Capacity"
-        "ExactCapacity"           : "Exact Capacity"
-        "PercentChangeInCapacity" : "Percent Change in Capacity"
+        "ChangeInCapacity"        : lang.ide.PROP_ASG_ADD_POLICY_ADJUSTMENT_CHANGE
+        "ExactCapacity"           : lang.ide.PROP_ASG_ADD_POLICY_ADJUSTMENT_EXACT
+        "PercentChangeInCapacity" : lang.ide.PROP_ASG_ADD_POLICY_ADJUSTMENT_PERCENT
 
     adjustdefault =
         "ChangeInCapacity"        : "eg. -1"
@@ -34,9 +34,9 @@ define [ '../base/view',
         "PercentChangeInCapacity" : "eg. -30"
 
     adjustTooltip =
-        "ChangeInCapacity"        : "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-        "ExactCapacity"           : "Change the current capacity of your Auto Scaling group to the exact value specified."
-        "PercentChangeInCapacity" : "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
+        "ChangeInCapacity"        : lang.ide.PROP_ASG_ADJUST_TOOLTIP_CHANGE
+        "ExactCapacity"           : lang.ide.PROP_ASG_ADJUST_TOOLTIP_EXACT
+        "PercentChangeInCapacity" : lang.ide.PROP_ASG_ADJUST_TOOLTIP_PERCENT
 
     unitMap =
         CPUUtilization : "%"

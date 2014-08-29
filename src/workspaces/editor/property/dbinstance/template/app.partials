@@ -128,7 +128,7 @@
 <!-- {{event_list}} -->
 {{#each this}}
 <tr class="item">
-    <td>{{Date}}</td>
+    <td>{{timeStr Date}}</td>
     <td>{{SourceIdentifier}}</td>
     <td>{{Message}}</td>
 </tr>

@@ -294,10 +294,6 @@ module.exports =
       en: "This VPC already has a virtual gateway."
       zh: "这个VPC已经有了一个虚拟网关。"
 
-    RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED:
-      en: "Unable to load community AMIs"
-      zh: "不能加载社区映像"
-
     RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS:
       en: "AMI is added to Favorite AMI"
       zh: "收藏映像成功"
@@ -621,14 +617,6 @@ VisualOps API. You cannot UNDO this action.'
     SETTINGS_ERR_INVALID_PWD:
       en: "New password must contain at least 6 characters."
       zh: "新密码最少6位且不能和您的用户名相同"
-
-    SETTINGS_UPDATE_PWD_SUCCESS:
-      en: "Password has been updated."
-      zh: "密码修改成功。"
-
-    SETTINGS_UPDATE_EMAIL_SUCCESS:
-      en: "Email has been updated."
-      zh: "电子邮箱修改成功。"
 
     SETTINGS_UPDATE_EMAIL_FAIL1:
       en: "To change email, please provide correct password."

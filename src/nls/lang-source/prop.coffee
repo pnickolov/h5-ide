@@ -1212,10 +1212,6 @@ module.exports =
       en: "This app name is already in use."
       zh: "这个应用名称已被占用This app name is already in use."
 
-    PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE:
-      en: "Failed to run your stack %s because of %s"
-      zh: ""
-
     PROP_MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
       zh: "无效的应用名称。"
@@ -1223,10 +1219,6 @@ module.exports =
     PROP_WARN_EXCEED_ENI_LIMIT:
       en: "Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type."
       zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。"
-
-    PROP_WARN_SG_RULE_EXIST:
-      en: "The adding rule already exist."
-      zh: ""
 
     PROP_TEXT_DEFAULT_SG_DESC:
       en: "Default Security Group"
@@ -1239,15 +1231,6 @@ module.exports =
     PROP_MSG_WARN_WHITE_SPACE:
       en: "Stack name contains white space"
       zh: "模板名称不能包含空格"
-
-    PROP_MSG_ERR_GET_PASSWD_FAILED:
-      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
-      zh: "解密出错，请确认您是否上传了正确的私钥。"
-
-
-    PROP_MSG_ERR_AMI_NOT_FOUND:
-      en: "Can not find information for selected AMI( %s ), try to drag another AMI."
-      zh: "无法获取选中的( %s )AMI的信息，请拖拽其他的AMI。"
 
     PROP_MSG_SG_CREATE:
       en: "1 rule has been created in %s to allow %s %s %s."

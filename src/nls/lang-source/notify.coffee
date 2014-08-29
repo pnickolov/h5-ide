@@ -231,4 +231,91 @@ module.exports =
       en: "Certificate %s is uploaded"
       zh: ""
 
+    CANNOT_LOAD_APPLICATION_DATA:
+      en: "Cannot load application data. Please reload your browser."
+      zh: ""
+
+    SETTINGS_UPDATE_PWD_SUCCESS:
+      en: "Password has been updated."
+      zh: "密码修改成功。"
+
+    SETTINGS_UPDATE_EMAIL_SUCCESS:
+      en: "Email has been updated."
+      zh: "电子邮箱修改成功。"
+
+    FAIL_TO_CREATE_TOKEN:
+      en: "Fail to create token, please retry."
+      zh: ""
+
+    FAIL_TO_UPDATE_TOKEN:
+      en: "Fail to update token, please retry."
+      zh: ""
+
+    FAIL_TO_DELETE_TOKEN:
+      en: "Fail to delete token, please retry."
+      zh: ""
+
+    FAILED_TO_LOAD_DATA:
+      en: "Failed to load data, please retry."
+      zh: ""
+
+    FAILED_TO_LOAD_AWS_DATA:
+      en: "Failed to load aws data, please retry."
+      zh: ""
+
+    READ_REPLICA_MUST_BE_DROPPED_IN_THE_SAME_SBG:
+      en: "Read replica must be dropped in the same subnet group with source DB instance."
+      zh: ""
+
+    CANNOT_CREATE_MORE_READ_REPLICA:
+      en: "Cannot create more read replica."
+      zh: ""
+
+    CANNOT_CREATE_SBG_DUE_TO_INSUFFICIENT_SUBNETS:
+      en: "Cannot create subnet group due to insufficient subnets."
+      zh: ""
+
+    ERR_GET_PASSWD_FAILED:
+      en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
+      zh: "解密出错，请确认您是否上传了正确的私钥。"
+
+    ERR_AMI_NOT_FOUND:
+      en: "Can not find information for selected AMI( %s ), try to drag another AMI."
+      zh: "无法获取选中的( %s )AMI的信息，请拖拽其他的AMI。"
+
+    THE_ADDING_RULE_ALREADY_EXIST:
+      en: "The adding rule already exist."
+      zh: ""
+
+    UNABLE_TO_LOAD_COMMUNITY_AMIS:
+      en: "Unable to load community AMIs"
+      zh: "不能加载社区映像"
+
+    FAIL_TO_EXPORT_TO_CLOUDFORMATION:
+      en: "Fail to export to AWS CloudFormation Template, Error code: %s"
+      zh: ""
+
+    RELOAD_STATE_INVALID_REQUEST:
+        en: "Sorry, but the request is not valid."
+        zh: ""
+
+    RELOAD_STATE_NETWORKERROR:
+      en: "Network error, please try again later."
+      zh: ""
+
+    RELOAD_STATE_INTERNAL_SERVER_ERROR:
+      en: "Sorry, Internal server error, please try again later."
+      zh: ""
+
+    RELOAD_STATE_SUCCESS:
+      en: "States reloaded successfully!"
+      zh: ""
+
+    RELOAD_STATE_NOT_READY:
+      en: "App Agent is not ready yet, Please try again later."
+      zh: ""
+
+    FAILA_TO_RUN_STACK_BECAUSE_OF_XXX:
+      en: "Failed to run your stack %s because of %s"
+      zh: ""
 

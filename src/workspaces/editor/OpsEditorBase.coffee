@@ -105,7 +105,7 @@ define [
         # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
         return
 
-      notification "error", "Failed to load data, please retry."
+      notification "error", lang.notify.FAILED_TO_LOAD_DATA
       @remove()
 
     jsonLoaded : ()->
@@ -118,7 +118,7 @@ define [
     additionalDataLoadFailed : ()->
       if @isRemoved() then return
 
-      notification "error", "Failed to load aws data, please retry."
+      notification "error", lang.notify.FAILED_TO_LOAD_AWS_DATA
       @remove()
 
     additionalDataLoaded : ()->

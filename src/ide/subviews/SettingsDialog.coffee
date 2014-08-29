@@ -136,14 +136,14 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
 
         App.user.changePassword( old_pwd, new_pwd ).then ()->
-          notification 'info', lang.ide.SETTINGS_UPDATE_PWD_SUCCESS
+          notification 'info', lang.notify.SETTINGS_UPDATE_PWD_SUCCESS
           $("#AccountCancelPwd").click()
           return
         , ( err )->
           if err.error is 2
             that.modal.$('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            that.modal.$('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
+            that.modal.$('#AccountInfo').text lang.notify.SETTINGS_UPDATE_PWD_FAILURE
 
           that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
@@ -180,7 +180,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         $("#AccountUpdateEmail").attr "disabled", "disabled"
 
         App.user.changeEmail( email, pwd ).then ()->
-          notification 'info', lang.ide.SETTINGS_UPDATE_EMAIL_SUCCESS
+          notification 'info', lang.notify.SETTINGS_UPDATE_EMAIL_SUCCESS
           $("#AccountCancelEmail").click()
           $(".accountEmailRO").children("span").text( App.user.get("email") )
           return
@@ -331,7 +331,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.updateTokenTab()
           self.modal.$("#TokenCreate").removeAttr "disabled"
         , ()->
-          notification "error", "Fail to create token, please retry."
+          notification "error", lang.notify.FAIL_TO_CREATE_TOKEN
           self.modal.$("#TokenCreate").removeAttr "disabled"
         return
 
@@ -356,7 +356,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           # If anything goes wrong, revert the name
           oldName = ""
           $p.children(".tokenName").val( oldName )
-          notification "error", "Fail to update token, please retry."
+          notification "error", lang.notify.FAIL_TO_UPDATE_TOKEN
         return
 
       confirmRmToken : ()->
@@ -367,7 +367,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.updateTokenTab()
           self.cancelRmToken()
         , ()->
-          notification "Fail to delete token, please retry."
+          notification lang.notify.FAIL_TO_DELETE_TOKEN
           self.cancelRmToken()
 
         return

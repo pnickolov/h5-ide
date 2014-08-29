@@ -277,7 +277,7 @@ define [
         modal?.resize()
         modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF)
         if err.error
-          notification "error", lang.toolbar.FAIL_TO_EXPORT_TO_CLOUDFORMATION + err.error
+          notification "error", sprintf lang.notify.FAIL_TO_EXPORT_TO_CLOUDFORMATION, err.error
         return
 
     reloadState: (event)->
@@ -296,16 +296,16 @@ define [
             dataType: 'json'
             statusCode:
                 200: ->
-                    notification 'info', lang.ide.RELOAD_STATE_SUCCESS
+                    notification 'info', lang.notify.RELOAD_STATE_SUCCESS
                     ide_event.trigger ide_event.REFRESH_PROPERTY
                 401: ->
-                    notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
+                    notification 'error', lang.notify.RELOAD_STATE_INVALID_REQUEST
                 404: ->
-                    notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
+                    notification 'error', lang.notify.RELOAD_STATE_NETWORKERROR
                 429: ->
-                    notification 'error', lang.ide.RELOAD_STATE_NOT_READY
+                    notification 'error', lang.notify.RELOAD_STATE_NOT_READY
                 500: ->
-                    notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
+                    notification 'error', lang.notify.RELOAD_STATE_INTERNAL_SERVER_ERROR
             error: ->
                 console.log 'Error while Reload State'
             success: ->
@@ -364,7 +364,7 @@ define [
             , (err)->
                 self.modal.close()
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
+                notification 'error', sprintf(lang.notify.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
         App.user.on 'change:credential', ->
           console.log 'We got it.'
           if App.user.hasCredential() and that.modal.isOpen()

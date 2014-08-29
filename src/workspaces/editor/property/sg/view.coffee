@@ -221,7 +221,7 @@ define [ '../base/view',
             # Insert new rule
             if not result
                 # the rule exist
-                notification 'warning', lang.ide.PROP_WARN_SG_RULE_EXIST
+                notification 'warning', lang.notify.THE_ADDING_RULE_ALREADY_EXIST
             else
                 @refreshSgruleList()
                 modal.close()

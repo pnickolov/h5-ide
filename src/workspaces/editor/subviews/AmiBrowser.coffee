@@ -92,7 +92,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
             self.communityAmiData = result.ami?.result || {}
             self.communityAmiRender(result)
           , (result)->
-            notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
+            notification 'error', lang.notify.UNABLE_TO_LOAD_COMMUNITY_AMIS
             self.communityAmiRender({ami:[]})
 
         searchPrev: ->

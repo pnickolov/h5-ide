@@ -2,10 +2,6 @@
 module.exports =
   toolbar:
 
-    FAIL_TO_EXPORT_TO_CLOUDFORMATION:
-      en: "Fail to export to AWS CloudFormation Template, Error code:"
-      zh: ""
-
     LOADING_DATA:
       en: "Loading data..."
       zh: ""

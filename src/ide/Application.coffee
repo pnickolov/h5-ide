@@ -45,7 +45,7 @@ define [
 
     # This function returns a promise
     fetchModel = @model.fetch().fail ( err )->
-      notification "Cannot load application data. Please reload your browser."
+      notification lang.notify.CANNOT_LOAD_APPLICATION_DATA
       throw err
     Q.all [ @user.fetch(), fetchModel ]
 

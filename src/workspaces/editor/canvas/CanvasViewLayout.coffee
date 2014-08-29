@@ -191,14 +191,11 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
         }
 
       chs = children.map ( ch )->
-        sign = ch.sign
-        if not sign
-          sign = if ch.width > ch.height then ch.width else ch.height
         {
           w    : ch.width
           h    : ch.height
           item : ch
-          sign : sign
+          sign : if ch.width > ch.height then ch.width else ch.height
         }
 
       chs.sort ( a, b )-> b.sign - a.sign
@@ -519,7 +516,6 @@ define [ "./CanvasView", "constant" ], ( CanvasView, constant )->
 
     firstChild.width  -= margin
     firstChild.height -= margin
-    firstChild.sign    = 99999999999999
     size = DefaultMethods.ArrangeBinPack.call item, item.children
     for ch, idx in item.children
       if idx isnt 0

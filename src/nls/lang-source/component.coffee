@@ -259,10 +259,10 @@ module.exports =
       zh: ""
 
     VALIDATION_IP_IN_SUBNET_REVERSED_RANGE:
-      en: "This IP address is in subnet’s reserved address range"
+      en: "This IP address is in subnet's reserved address range"
       zh: ""
     VALIDATION_IP_CONFLICTS_WITH_SUBNET_IP_RANGE:
-      en: "This IP address conflicts with subnet’s IP range"
+      en: "This IP address conflicts with subnet's IP range"
       zh: ""
 
     VALIDATION_IP_CONFLICTS_WITH_OTHER_IP:
@@ -270,7 +270,7 @@ module.exports =
       zh: ""
 
     VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP:
-      en: "This IP address conflicts with other network interface’s IP"
+      en: "This IP address conflicts with other network interface's IP"
       zh: ""
 
     VALIDATION_CANNOT_MOVE_VOLUME_ACROSS_AZ:

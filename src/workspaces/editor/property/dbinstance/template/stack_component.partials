@@ -3,7 +3,7 @@
 
 {{else}}
 <section class="property-control-group">
-    <label class="left">License Model</label>
+    <label class="left">{{i18n "PROP.DBINSTANCE_LICENSE_MODEL"}}</label>
     <div class="selectbox" id="property-dbinstance-license-select">
         <div class="selection">{{license}}</div>
         <ul class="dropdown" tabindex="-1">
@@ -18,7 +18,7 @@
 {{#unless isAppEdit}}
     {{#unless snapshotId}}
     <section class="property-control-group">
-        <label class="left">DB Engine Version</label>
+        <label class="left">{{i18n "PROP.DBINSTANCE_DB_ENGINE_VERSION"}}</label>
         <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
             <div class="property-engine-label left" >{{engine}}</div>
             <div class="property-engineversion-label selection">{{engineVersion}}</div>
@@ -40,13 +40,13 @@
     {{/unless}}
 {{else}}
     <section class="property-control-group clearfix">
-        <label>DB Engine Version</label>
+        <label>{{i18n "PROP.DBINSTANCE_DB_ENGINE_VERSION"}}</label>
         <div>{{engine}}({{engineVersion}})</div>
     </section>
 {{/unless}}
 
 <section class="property-control-group">
-    <label class="left">DB Instance Class</label>
+    <label class="left">{{i18n "PROP.DBINSTANCE_DB_INSTANCE_CLASS"}}</label>
     <div class="selectbox selectbox-mega combo-dd" id="property-dbinstance-class-select">
         <div class="selection">
             <div class="main truncate">{{classInfo.instanceClass}}</div>
@@ -71,9 +71,9 @@
 </section>
 
 <!-- {{preferred_az}} -->
-<div class="selection">Select Window</div>
+<div class="selection">{{i18n "PROP.DBINSTANCE_SELECT_WINDOW"}}</div>
 <ul class="dropdown" tabindex="-1">
-    <li class="item" data-id="no">No Preference</li>
+    <li class="item" data-id="no">{{i18n "PROP.DBINSTANCE_NO_PREFERENCE"}}</li>
     {{#each this}}
     <li class="item" data-id="{{name}}">{{name}}</li>
     {{/each}}
@@ -98,7 +98,7 @@
                 <div class="content clearfix">
                 </div>
                 <div class="error">
-                    something wrong
+                    {{i18n "PROP.DBINSTANCE_SOMETHING_ERROR"}}
                 </div>
             </div>
             <div class="table-head-fix">
@@ -142,10 +142,10 @@
 
 <!-- {{optionGroupDropDown}} -->
 {{#if canCustomOG}}
-<label for="property-dbinstance-optiongroup-placeholder">Option Group</label>
+<label for="property-dbinstance-optiongroup-placeholder">{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
 <div class="property-dbinstance-optiongroup-placeholder"></div>
 {{else}}
-<label>Option Group</label>
+<label>{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
 <div>{{ogName}}</div>
 {{/if}}
 
@@ -178,11 +178,11 @@
 
     {{#if azNotEnough}}
     <section class="property-control-group">
-        <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+        <div class="property-info">{{i18n "PROP.DBINSTANCE_SUBNETGROUP_NOT_SETUP"}}</div>
     </section>
     {{else}}
     <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
-        <label class="left">Preferred Availability Zone</label>
+        <label class="left">{{i18n "PROP.DBINSTANCE_PREFERRED_ZONE"}}</label>
         <div class="selectbox" id="property-dbinstance-preferred-az"></div>
     </section>
     {{/if}}

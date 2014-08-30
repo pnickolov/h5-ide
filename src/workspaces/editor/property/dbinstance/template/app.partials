@@ -141,9 +141,9 @@
     ----------------------- END OF LOG ----------------------
 </section>
 <div class="action">
-    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
-    <button class="btn btn-silver close cancel">Close</button>
+    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">{{i18n "PROP.RDS_LBL_REFRESH"}}</button>
+    <button class="btn btn-silver close cancel">{{i18n "PROP.RDS_LBL_CLOSE"}}</button>
 </div>
 
 <!-- {{list_empty}} -->
-<div class="text-center no-data">No records found.</div>
+<div class="text-center no-data">{{i18n "PROP.RDS_NO_RECORDS_FOUND"}}</div>

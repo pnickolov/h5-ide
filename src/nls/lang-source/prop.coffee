@@ -1963,6 +1963,34 @@ module.exports =
       en: "License Model"
       zh: ""
 
+    DBINSTANCE_DB_ENGINE_VERSION:
+      en:"DB Engine Version"
+      zh: ""
+
+    DBINSTANCE_DB_INSTANCE_CLASS:
+      en: "DB Instance Class"
+      zh: ""
+
+    DBINSTANCE_SELECT_WINDOW:
+      en: "Select Window"
+      zh: ""
+
+    DBINSTANCE_NO_PREFERENCE:
+      en: "No Preference"
+      zh: ""
+
+    DBINSTANCE_SOMETHING_ERROR:
+      en: "Something Error."
+      zh: ""
+
+    DBINSTANCE_OPTION_GROUP:
+      en: "Option Group"
+      zh: ""
+
+    DBINSTANCE_SUBNETGROUP_NOT_SETUP:
+      en: "Subnet Group %s is not correctly set up yet. Assign %s to at lease 2 availability zones."
+      zh: ""
+
     DBINSTANCE_BACKUP_MAINTENANCE:
       en: "Backup & Maintenance"
       zh: ""
@@ -2419,6 +2447,17 @@ module.exports =
       en: "Remove Connection"
       zh: ""
 
+    RDS_LBL_REFRESH:
+      en: "Refresh"
+      zh: ""
+
+    RDS_LBL_CLOSE:
+      en: "Close"
+      zh: ""
+
+    RDS_NO_RECORDS_FOUND:
+      en: "No records found."
+      zh: ""
 
 
 

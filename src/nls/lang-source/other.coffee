@@ -1327,4 +1327,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Close"
       zh: "关闭标签"
 
+    COMBO_DROPDOWN_DEMO_AWS_ACCOUNT:
+      en: "You are using a demo AWS account"
+      zh: ""
 
+    COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
+      en: "Provide AWS Credential <br/> to manage key pairs"
+      zh: ""

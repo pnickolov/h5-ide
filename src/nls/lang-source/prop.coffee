@@ -2087,6 +2087,12 @@ module.exports =
       en: "Click to read AWS documentation on modifying DB instance using Apply Immediately."
       zh: ""
 
+    DBINSTANCE_MASTER_DB_INSTANCE:
+      en: "Master DB Instance"
+      zh: ""
+
+
+
     DBINSTANCE_DBSNAPSHOT_ID:
       en: "DB Snapshot ID"
       zh: ""

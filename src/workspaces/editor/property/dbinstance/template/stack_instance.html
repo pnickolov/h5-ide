@@ -107,21 +107,21 @@
         </section>
         {{else}}
         <section class="property-control-group" >
-            <label class="left" for="property-dbinstance-master-username" >{{i18n "DBINSTANCE_MASTER_USERNAME"}}</label>
+            <label class="left" for="property-dbinstance-master-username" >{{i18n "PROP.DBINSTANCE_MASTER_USERNAME"}}</label>
             <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$" data-required-rollback="true"/>
         </section>
         {{/if}}
 
         <section class="property-control-group" >
-            <label class="left" for="property-dbinstance-master-password" >{{i18n "DBINSTANCE_MASTER_PASSWORD"}}</label>
+            <label class="left" for="property-dbinstance-master-password" >{{i18n "PROP.DBINSTANCE_MASTER_PASSWORD"}}</label>
             <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input tooltip" data-tooltip="{{#ifCond password "****"}}{{else}}{{#if password}}Default Password: 12345678{{/if}}{{/ifCond}}" type="password" placeholder="****" id="property-dbinstance-master-password" value="{{#ifCond password "****"}}{{else}}{{password}}{{/ifCond}}" data-type="ascii" data-ignore="true" data-required="true"/>
         </section>
 
     </div>
 
-    <div class="option-group-head expand">{{i18n "DBINSTANCE_DATABASE_CONFIG"}}</div>
+    <div class="option-group-head expand">{{i18n "PROP.DBINSTANCE_DATABASE_CONFIG"}}</div>
     <div class="option-group">
 
         {{#if isAppEdit}}
@@ -261,7 +261,7 @@
                             {{/each}}
                         </ul>
                     </div>
-                    <label for="property-dbinstance-maintenance-window-duration">{{i18n "DBINSTANCE_BACKUP_DURATION_HOUR"}}</label>
+                    <label for="property-dbinstance-maintenance-window-duration">{{i18n "PROP.DBINSTANCE_BACKUP_DURATION_HOUR"}}</label>
                 </section>
             </section>
 

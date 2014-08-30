@@ -178,7 +178,7 @@
 
     {{#if azNotEnough}}
     <section class="property-control-group">
-        <div class="property-info">{{i18n "PROP.DBINSTANCE_SUBNETGROUP_NOT_SETUP"}}</div>
+        <div class="property-info">{{i18n "PROP.DBINSTANCE_SUBNETGROUP_NOT_SETUP" subnetGroupName subnetGroupName}}</div>
     </section>
     {{else}}
     <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">

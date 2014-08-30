@@ -774,7 +774,7 @@ define [ 'ApiRequest'
                 else
                     iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS
                     that._disableIOPSCheck(true) # disable
-                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', 'Allocated Storage must be at least 100 GB to use Provisioned IOPS.')
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', lang.PROP.VOLUME_DISABLE_IOPS_TOOLTIP)
 
         _disableIOPSCheck: (isDisable) ->
 

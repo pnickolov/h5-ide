@@ -115,3 +115,23 @@ module.exports =
       RESET_PASSWORD_ERROR_18:
         en: "Sorry, but your params is invalid. Please check your url and try again."
         zh: "对不起, 您的参数不正确, 请检查后重试"
+
+      CONSTANT_MSG_E_SESSION:
+        en: "This session has expired, please log in again"
+        zh: ""
+
+      CONSTANT_MSG_E_EXTERNAL:
+        en: "Sorry, there seems to be a problem with AWS"
+        zh: ""
+
+      CONSTANT_MSG_E_ERROR:
+        en: "Sorry, we're experiencing techincal difficulty"
+        zh: ""
+
+      CONSTANT_MSG_E_UNKNOW:
+        en: "Something is wrong, Please contact support@visualops.io"
+        zh: ""
+
+      CONSTANT_MSG_E_PARAM:
+        en: "Parameter Error!"
+        zh: ""

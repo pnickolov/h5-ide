@@ -111,21 +111,21 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
 
             if !inputValue
                 if inputElem.closest('.multi-ipt-row').siblings().length == 0
-                    mainContent = lang.IDE.PROP_RTB_CIDR_BLOCK_REQUIRED
-                    descContent = lang.IDE.PROP_RTB_CIDR_BLOCK_REQUIRED_DESC
+                    mainContent = lang.PROP.RTB_CIDR_BLOCK_REQUIRED
+                    descContent = lang.PROP.RTB_CIDR_BLOCK_REQUIRED_DESC
             else if !MC.validate 'cidr', inputValue
-                mainContent = sprintf lang.IDE.PROP_RTB_CIDR_BLOCK_INVALID, inputValue
-                descContent = lang.IDE.PROP_RTB_CIDR_BLOCK_INVALID_DESC
+                mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_INVALID, inputValue
+                descContent = lang.PROP.RTB_CIDR_BLOCK_INVALID_DESC
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else
                 for cidr, idx in allCidrAry
                     if inputValue is cidr
-                        mainContent = sprintf lang.IDE.PROP_RTB_CIDR_BLOCK_CONFLICTS, inputValue
-                        descContent = lang.IDE.PROP_RTB_CIDR_BLOCK_CONFLICTS_DESC
+                        mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS, inputValue
+                        descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_DESC
                         break
                     if idx is 0 and cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr )
-                        mainContent = sprintf lang.IDE.PROP_RTB_CIDR_BLOCK_CONFLICTS_LOCAL, inputValue
-                        descContent = lang.IDE.PROP_RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC
+                        mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL, inputValue
+                        descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC
                         break
 
             if not mainContent

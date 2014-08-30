@@ -190,7 +190,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : sprintf(lang.IDE.PROP_LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())
+                    body    : sprintf(lang.PROP.LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->

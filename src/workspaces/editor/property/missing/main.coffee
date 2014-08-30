@@ -13,7 +13,7 @@ define [ '../base/main', '../base/model', '../base/view', 'constant' ], ( Proper
 
             else
                 @$el.html MC.template.missingPropertyPanel()
-                return lang.IDE.PROP_MISSING_RESOURCE_UNAVAILABLE
+                return lang.PROP.MISSING_RESOURCE_UNAVAILABLE
     }
 
     view  = new MissingView()

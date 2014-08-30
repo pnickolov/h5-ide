@@ -96,7 +96,7 @@ define [ '../base/view',
         disableIops: ->
             $( '#volume-type-radios > div' )
                 .last()
-                .data( 'tooltip', 'Volume size must be at least 10 GB to use Provisioned IOPS volume type.' )
+                .data( 'tooltip', lang.PROP.VOLUME_DISABLE_IOPS_TOOLTIP )
                 .find( 'input' )
                 .attr( 'disabled', '' )
 

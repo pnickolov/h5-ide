@@ -2267,6 +2267,164 @@ module.exports =
       en: "Delete Security Group"
       zh: ""
 
+    SGRULE_SELECTED_CONNECTION_REFLECTS_FOLLOWING_SGR:
+      en: "The selected connection reflects following security group rule(s);"
+      zh: ""
+
+    STACK_SNS_SUBSCRIPTION:
+      en: " SNS Subscription"
+      zh: ""
+
+    STACK_SNS_PROTOCOL:
+      en: "Protocol"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_HTTPS:
+      en: "HTTPS"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_HTTP:
+      en: "HTTP"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_EMAIL:
+      en: "Email"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_EMAIL_JSON:
+      en: "Email - JSON"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_SMS:
+      en: "SMS"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_APPLICATION:
+      en: "Application"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_AMAZON_SQS:
+      en: "Amazon SQS"
+      zh: ""
+
+    STACK_SNS_PROTOCOL_ENDPOINT:
+      en: "Endpoint"
+      zh: ""
+
+    STACK_DELETE_NETWORK_ACL_TITLE:
+      en: "Delete Network ACL"
+      zh: ""
+
+    STACK_DELETE_NETWORK_ACL_CONTENT:
+      en: "Are you sure you want to delete %s"
+      zh: ""
+
+    STACK_DELETE_NETWORK_ACL_DESC:
+      en: "Subnets associated with %s will use DefaultACL."
+      zh: ""
+
+    STATICSUB_VALIDATION_AMI_INFO_MISSING:
+      en: "Ami info is missing, please reopen stack and try again."
+      zh: ""
+
+    STATICSUB_VALIDATION_AMI_TYPE_NOT_SUPPORT:
+      en: "Changing AMI platform is not supported. To use a %s AMI, please create a new instance instead."
+      zh: ""
+
+    STATICSUB_VALIDATION_AMI_INSTANCETYPE_NOT_VALID:
+      en: "%s does not support previousely used instance type %s. Please change another AMI."
+      zh: ""
+
+    SUBNET_CIDR_VALIDATION_REQUIRED:
+      en: "CIDR block is required."
+      zh: ""
+
+    SUBNET_CIDR_VALIDATION_REQUIRED_DESC:
+      en: "Please provide a subset of IP ranges of this VPC."
+      zh: ""
+
+    SUBNET_CIDR_VALIDATION_INVALID:
+      en: "%s is not a valid form of CIDR block."
+      zh: ""
+
+    SUBNET_CIDR_VALIDATION_INVALID_DESC:
+      en: "Please provide a valid IP range. For example, 10.0.0.1/24."
+      zh: ""
+
+    SUBNET_GROUP_DETAILS:
+      en: "Subnet Groups Details"
+      zh: ""
+
+    SUBNET_GROUP_NAME:
+      en: "Subnet Group Name"
+      zh: ""
+
+    SUBNET_GROUP_DESCRIPTION:
+      en: "Subnet Group Description"
+      zh: ""
+
+    SUBNET_GROUP_MEMBER:
+      en: "Member"
+      zh: ""
+
+    VOLUME_DISABLE_IOPS_TOOLTIP:
+      en: "Volume size must be at least 10 GB to use Provisioned IOPS volume type."
+      zh: ""
+
+    VPC_SELECTING_DEDICATED_DESC:
+      en: "Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware."
+      zh: ""
+
+    VPC_SELECTING_DEDICATED_LINK_TEXT:
+      en: "Additional changes will apply."
+      zh: ""
+
+    VPN_STACK_STATIC:
+      en: "Static"
+      zh: ""
+
+    VPN_STACK_DYNAMIC:
+      en: "Dynamic"
+      zh: ""
+
+    VPN_GATEWAY_VPN_DYNAMIC:
+      en: " Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary."
+      zh: ""
+
+    VPN_BLUR_CIDR_REQUIRED:
+      en: "CIDR block is required."
+      zh: ""
+
+    VPN_BLUR_CIDR_REQUIRED_DESC:
+      en: "Please provide a IP ranges for this IP Prefix. "
+      zh: ""
+
+    VPN_BLUR_CIDR_NOT_VALID_IP:
+      en: "%s is not a valid form of CIDR block."
+      zh: ""
+
+    VPN_BLUR_CIDR_NOT_VALID_IP_DESC:
+      en: "Please provide a valid IP range. For example, 10.0.0.1/24."
+      zh: ""
+
+    VPN_BLUR_CIDR_CONFLICTS_IP:
+      en: "%s conflicts with other IP Prefix."
+      zh: ""
+
+    VPN_BLUR_CIDR_CONFLICTS_IP_DESC:
+      en: "Please choose a CIDR block not conflicting with existing IP Prefix."
+      zh: ""
+
+    VPN_REMOVE_CONNECTION:
+      en: "Remove Connection"
+      zh: ""
+
+
+
+
+
+
+
     ###
     COMPONENT:
     ###

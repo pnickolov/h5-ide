@@ -101,9 +101,9 @@ define [ '../base/view',
                 aclName = $target.attr('data-name')
 
                 dialog_template = MC.template.modalDeleteSGOrACL {
-                    title : 'Delete Network ACL'
-                    main_content : "Are you sure you want to delete #{aclName}?"
-                    desc_content : "Subnets associated with #{aclName} will use DefaultACL."
+                    title : lang.PROP.STACK_DELETE_NETWORK_ACL_TITLE
+                    main_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_CONTENT, aclName
+                    desc_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_DESC, aclName
                 }
                 modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->

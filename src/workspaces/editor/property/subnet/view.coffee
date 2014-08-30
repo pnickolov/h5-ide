@@ -7,7 +7,8 @@ define [ '../base/view',
          './template/acl',
          'event',
          "Design"
-], ( PropertyView, template, acl_template, ide_event, Design ) ->
+         'i18n!/nls/lang.js'
+], ( PropertyView, template, acl_template, ide_event, Design, lang ) ->
 
     SubnetView = PropertyView.extend {
 
@@ -55,11 +56,11 @@ define [ '../base/view',
             removeInfo = 'Remove Subnet'
 
             if !cidrSuffix
-                mainContent = "CIDR block is required."
-                descContent = "Please provide a subset of IP ranges of this VPC."
+                mainContent = lang.PROP.SUBNET_CIDR_VALIDATION_REQUIRED
+                descContent = lang.PROP.SUBNET_CIDR_VALIDATION_REQUIRED_DESC
             else if !MC.validate 'cidr', subnetCIDR
-                mainContent = "#{subnetCIDR} is not a valid form of CIDR block."
-                descContent = "Please provide a valid IP range. For example, 10.0.0.1/24."
+                mainContent = sprintf lang.PROP.SUBNET_CIDR_VALIDATION_INVALID, subnetCIDR
+                descContent = sprintf lang.PROP.SUBNET_CIDR_VALIDATION_INVALID_DESC
             else
                 error = @model.isValidCidr( subnetCIDR )
                 if error isnt true

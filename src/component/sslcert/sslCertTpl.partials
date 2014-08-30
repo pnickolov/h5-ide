@@ -27,19 +27,19 @@
 <div class="slide-create" data-bind="true">
     <div class="modal-ssl-cert-create">
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_CERT_NAME"}}</label>
+            <label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_CERT_NAME"}}</label>
             <input placeholder="Required. Up to 128 characters" class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+            <label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
             <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-privatekey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+            <label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
             <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-publickey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+            <label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
             <textarea placeholder="Optional. PEM Encoded" class="input ssl-cert-input" id="ssl-cert-chain-input"></textarea>
         </div>
     </div>

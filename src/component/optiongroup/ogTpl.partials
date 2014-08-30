@@ -38,7 +38,7 @@
                 <div class="col2">
                     <div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
                     <div class="col2-2 truncate">{{description}}</div>
-                    <div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}</div>
+                    <div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP.SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP.SGLIST_LBL_MEMBER" }}</div>
                 </div>
             </li>
             {{/each}}

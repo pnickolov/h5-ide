@@ -2266,3 +2266,230 @@ module.exports =
     SGLIST_DELETE_SG_TITLE:
       en: "Delete Security Group"
       zh: ""
+
+    ###
+    COMPONENT:
+    ###
+    SNAPSHOT_SET_NAME:
+        en: "Snapshot Name"
+        zh: ""
+
+    SNAPSHOT_SET_NAME_TIP:
+      en: "Enter the name of the snapshot that you will create."
+      zh: ""
+
+    SNAPSHOT_SOURCE_SNAPSHOT:
+      en: "Source Snapshot"
+      zh: ""
+
+    SNAPSHOT_SET_NEW_NAME:
+      en: "New Snapshot Name"
+      zh: ""
+
+    SNAPSHOT_DESTINATION_REGION:
+      en: "Destination Region"
+      zh: ""
+
+    SNAPSHOT_SET_VOLUME:
+      en: "Volume"
+      zh: ""
+
+    SNAPSHOT_SET_INSTANCE:
+      en: "Instance"
+      zh: ""
+
+    INSTANCE_SNAPSHOT_SELECT:
+      en: "Select DB instance from which to create snapshot"
+      zh: ""
+
+    SNAPSHOT_SET_DESC:
+      en: "Description"
+      zh: ""
+
+    VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME:
+      en: "Please fill with the name of the new snapshot you will create."
+      zh: ""
+
+    SNAPSHOT_SET_DESC_TIP:
+      en: "Fill in the Description"
+      zh: ""
+
+    DB_SNAPSHOT_DELETE_1:
+      en: "Confirm to delete "
+      zh: ""
+
+    DB_SNAPSHOT_DELETE_2:
+      en: " selected "
+      zh: ""
+
+    DB_SNAPSHOT_DELETE_3:
+      en: " Snapshots"
+      zh: ""
+
+    DB_SNAPSHOT_EMPTY:
+      en: "There are no available instance here."
+      zh: ""
+
+    DB_SNAPSHOT_ID:
+      en: "DB Snapshot ID"
+      zh: ""
+
+    DB_SNAPSHOT_VPC_ID:
+      en: "Vpc ID"
+      zh: ""
+
+    DB_SNAPSHOT_ENGINE:
+      en: "DB Engine"
+      zh: ""
+
+    DB_SNAPSHOT_LICENSE_MODEL:
+      en: "License Model"
+      zh: ""
+
+    DB_SNAPSHOT_STATUS:
+      en: "Status"
+      zh: ""
+
+    DB_SNAPSHOT_STORAGE:
+      en: "DB Storage"
+      zh: ""
+
+    DB_SNAPSHOT_CREATE_TIME:
+      en: "Snapshot Creation Time"
+      zh: ""
+
+    DB_SNAPSHOT_SOURCE_REGION:
+      en: "Source Region"
+      zh: ""
+
+    DB_SNAPSHOT_INSTANCE_NAME:
+      en: "DB Instance Name"
+      zh: ""
+
+    DB_SNAPSHOT_TYPE:
+      en: "Snapshot Type"
+      zh: ""
+
+    DB_SNAPSHOT_ENGINE_VERSION:
+      en: "DB Engine Version"
+      zh: ""
+
+    DB_SNAPSHOT_MASTER_USERNAME:
+      en: "Master Username"
+      zh: ""
+
+    DB_SNAPSHOT_OPTION_GROUP_NAME:
+      en: "Option Group Name"
+      zh: ""
+
+    DB_SNAPSHOT_PORT:
+      en: "Port"
+      zh: ""
+
+    DB_SNAPSHOT_INSTANCE_CREATE_TIME:
+      en: "Instance Creation Name"
+      zh: ""
+
+    DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID:
+      en: "Please update your Account Number with number"
+      zh: ""
+
+    LBL_DELETING:
+      en: "Deleting..."
+      zh: ""
+
+    LBL_DELETE:
+      en: "Delete"
+      zh: ""
+
+    LBL_FILTER:
+      en: "Filter: "
+      zh: ""
+
+    LBL_SORT_BY:
+      en: "Sort by: "
+      zh: ""
+
+    LBL_CANCEL:
+      en: "Cancel"
+      zh: "取消"
+
+    LBL_CREATING:
+      en: "Creating..."
+      zh: ""
+
+    LBL_DUPLICATE:
+      en: "Duplicate"
+      zh: ""
+
+    LBL_DUPLICATING:
+      en: "Duplicating..."
+      zh: ""
+
+    LBL_RESET:
+      en: "Reset"
+      zh: ""
+
+    LBL_RESETTING:
+      en: "Resetting..."
+      zh: ""
+
+    LBL_CREATE:
+      en: "Create"
+      zh: ""
+
+    LBL_PARAMETER_NAME:
+      en: "Parameter Name"
+      zh: ""
+
+    LBL_ISMODIFIABLE:
+      en: "Is Modifiable"
+      zh: ""
+
+    LBL_APPLY_METHOD:
+      en: "Apply Method"
+      zh: ""
+
+    LBL_SOURCE:
+      en: "Source"
+      zh: ""
+
+    LBL_ORIGINAL_VALUE:
+      en: "Original Value"
+      zh: ""
+
+    LBL_EDIT_VALUE:
+      en: "Edit Value"
+      zh: ""
+
+    LBL_PARAMETER_VALUE_REFERENCE:
+      en: "Parameter Value Reference"
+      zh: ""
+
+    LBL_BACK_TO_EDITING:
+      en: "Back to Editing"
+      zh: ""
+
+    LBL_APPLY_CHANGES:
+      en: "Apply Changes"
+      zh: "应用"
+
+    LBL_REVIEW_CHANGES_SAVE:
+      en: "Review Changes & Save"
+      zh: ""
+
+    LBL_APPLYING:
+      en: "Applying..."
+      zh: "应用中..."
+
+    DELETE_SNAPSHOT_1:
+      en: "Confirm to delete "
+      zh: ""
+
+    DELETE_SNAPSHOT_2:
+      en: "selected "
+      zh: ""
+
+    DELETE_SNAPSHOT_3:
+      en: " Snapshot(s) "
+      zh: ""

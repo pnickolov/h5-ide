@@ -610,6 +610,12 @@ define [
       ComplexResModel.prototype.remove.call(this)
       null
 
+    isReparentable : ( newParent )->
+      if @master() and newParent.get("id") isnt @get("id")
+        notification "error", "Cannot move read replica to another DBSubnetGroup."
+        return false
+      true
+
     serialize : () ->
       
       master = @master()

@@ -191,14 +191,14 @@
 
 <!-- {{modalPromoteConfirm}} -->
 <section class="modal-db-replica-promote-confirm">
-    <h5 class="modal-text-major">The following steps show the general process for promoting a read replica to a Single-AZ DB instance.</h5>
+    <h5 class="modal-text-major">{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_MAJOR"}}</h5>
     <ul>
-        <li>Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica.</p>
-        <li>To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica.</p>
-        <li>Perform all needed DDL operations, such as creating indexes, on the read replica.</p>
-        <li>Promote the read replica.</p>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4"}}</li>
     </ul>
-    <h5 class="modal-text-major">Note</h5>
-    <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>
-    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">Read AWS Document</a>
+    <h5 class="modal-text-major">{{i18n "PROP.DBINSTANCE_PROMOTE_NOTE"}}</h5>
+    <p>{{i18n "PROP.DBINSTANCE_PROMOTE_NOTE_CONTENT"}}</p>
+    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">{{i18n "PROP.DBINSTANCE_PROMOTE_LINK_TEXT"}}</a>
 </section>

@@ -2031,6 +2031,230 @@ module.exports =
       en: "Members"
       zh: ""
 
+    DBINSTANCE_PROMOTE_CONFIRM_MAJOR:
+      en: "The following steps show the general process for promoting a read replica to a Single-AZ DB instance."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1:
+      en: "Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2:
+      en: "To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3:
+      en: "Perform all needed DDL operations, such as creating indexes, on the read replica."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4:
+      en: "Promote the read replica."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_NOTE:
+      en: "Note"
+      zh: ""
+
+    DBINSTANCE_PROMOTE_NOTE_CONTENT:
+      en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
+      zh: ""
+
+    DBINSTANCE_PROMOTE_LINK_TEXT:
+      en: "Read AWS Document"
+      zh: ""
+
+    DBINSTANCE_NOT_AVAILABLE:
+      en: "This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."
+      zh: ""
+
+    DBINSTANCE_READ_REPLICA:
+      en: "Promote Read Replica"
+      zh: ""
+
+    DBINSTANCE_CANCEL_PROMOTE:
+      en: "Cancel Promote"
+      zh: ''
+
+    DBINSTANCE_APPLY_IMMEDIATELY:
+      en: "Apply Immediately"
+      zh: ""
+
+    DBINSTANCE_DETAILS:
+      en: "DB Instance Details"
+      zh: ""
+
+    DBINSTANCE_APPLY_IMMEDIATELY_LINK_TOOLTIP:
+      en: "Click to read AWS documentation on modifying DB instance using Apply Immediately."
+      zh: ""
+
+    DBINSTANCE_DBSNAPSHOT_ID:
+      en: "DB Snapshot ID"
+      zh: ""
+
+    DBINSTANCE_DBSNAPSHOT_SIZE:
+      en: "DB Snapshot Size"
+      zh: ""
+
+    DBINSTANCE_PENDING_APPLY:
+      en: "(Pending Apply)"
+      zh: ""
+
+    DBINSTANCE_NAME:
+      en: "DB Instance Name"
+      zh: ""
+
+    DBINSTANCE_AUTO_MINOR_VERSION_UPDATE:
+      en: "Auto Minor Version Update"
+      zh: ""
+
+    DBINSTANCE_ALLOCATED_STORAGE:
+      en: "Allocated Storage"
+      zh: ""
+
+    DBINSTANCE_SCALLING_NOT_SUPPORT:
+      en: "Scalling storage after launch a DB Instance is currently not supported for SQL Server."
+      zh: ""
+
+    DBINSTANCE_CURRENT_ALLOCATED_STORAGE:
+      en: "Current Allocated Storage: "
+      zh: ""
+
+    DBINSTANCE_USE_PROVISIONED_IOPS:
+      en: "Use Provisioned IOPS"
+      zh: ""
+
+    DBINSTANCE_PROVISIONED_IOPS:
+      en: "Provisioned IOPS"
+      zh: ""
+
+    DBINSTANCE_IOPS_AVAILABILITY_IMPACT:
+      en: "When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes."
+      zh: ""
+
+    DBINSTANCE_MASTER_USERNAME:
+      en: "Master Username"
+      zh: ""
+
+    DBINSTANCE_MASTER_PASSWORD:
+      en: "Master Password"
+      zh: ""
+
+    DBINSTANCE_DATABASE_CONFIG:
+      en: "Database Config"
+      zh: ""
+
+    DBINSTANCE_NOT_READY:
+      en: "Not Ready"
+      zh: ""
+
+    DBINSTANCE_DATABASE_NAME:
+      en: "Database Name"
+      zh: ""
+
+    DBINSTANCE_DATABASE_PORT:
+      en: "Database Port"
+      zh: ""
+
+    DBINSTANCE_CHARACTER_SET_NAME:
+      en: "Character Set Name"
+      zh: ""
+
+    DBINSTANCE_NETWORK_AZ_DEPLOYMENT:
+      en: "Network & AZ Deployment"
+      zh: ""
+
+    DBINSTANCE_PUBLICLY_ACCESSIBLE:
+      en: "Publicly Accessible"
+      zh: ""
+
+    DBINSTANCE_BACKUP_OPTION:
+      en: 'Backup Options'
+      zh: ""
+
+    DBINSTANCE_REPLICA_MUST_ENABLE_AUTOMATIC_BACKUPS:
+      en: "DB instance serving as replication source must enable automatic backups"
+      zh: ""
+
+    DBINSTANCE_ENABLE_AUTOMATIC_BACKUP:
+      en: "Enable Automatic Backups"
+      zh: ""
+
+    DBINSTANCE_BACKUP_RETENTION_PERIOD:
+      en: "Backup Retantion Period"
+      zh: ""
+
+    DBINSTANCE_BACK_RETANTION_PERIOD_DAY:
+      en: "day(s)"
+      zh: ""
+
+    DBINSTANCE_BACKUP_WINDOW:
+      en: "Backup Window"
+      zh: ""
+
+    DBINSTANCE_NO_PREFERENCE:
+      en: "No Preference"
+      zh: ""
+
+    DBINSTANCE_SELECT_WINDOW:
+      en: "Select Window"
+      zh: ""
+
+    DBINSTANCE_START_TIME:
+      en: "Start Time:"
+      zh: ""
+
+    DBINSTANCE_DURATION:
+      en: "Duration: "
+      en: ""
+
+    DBINSTANCE_BACKUP_DURATION_HOUR:
+      en: "hour(s)"
+      zh: ""
+
+    DBINSTANCE_CURRENT_BACKUP_WINDOW:
+      en: "Current Backup Window: "
+      zh: ""
+
+    DBINSTANCE_MAINTENANCE_OPTION:
+      en: "Maintenance Options"
+      zh: ""
+
+    DBINSTANCE_MAINTENANCE_WINDOW:
+      en: "Maintenance Window"
+      zh: ""
+
+    DBINSTANCE_MAINTENANCE_START_DAY:
+      en: "Start Day"
+      zh: ""
+
+
+    WEEKDAY_MONDAY:
+      en: "Monday"
+      zh: ""
+
+    WEEKDAY_TUESDAY:
+      en: "Tuesday"
+      zh: ""
+
+    WEEKDAY_WEDNESDAY:
+      en: "Wednesday"
+      zh: ""
+
+    WEEKDAY_THURSDAY:
+      en: "Thursday"
+      zh: ""
+
+    WEEKDAY_FRIDAY:
+      en: "Friday"
+      zh: ""
+    WEEKDAY_SATURDAY:
+      en: "Saturday"
+      zh: ""
+
+    WEEKDAY_SUNDAY:
+      en: "Sunday"
+      zh: ""
+
     SELECT_SNS_TOPIC:
       en: "Select SNS Topic"
       zh: ""

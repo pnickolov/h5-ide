@@ -92,7 +92,7 @@
 	</div>
 	<div class="modal-footer">
 		<button id="btn-confirm" class="btn btn-{{color}}" {{#if is_production}}disabled{{/if}}>{{confirm}}</button>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -107,7 +107,7 @@
 	</div>
 	<div class="modal-footer">
 		<a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain;, {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 

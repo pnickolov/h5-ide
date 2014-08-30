@@ -1,33 +1,33 @@
 <!-- {{removeStackConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOLBAR.TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
       <div class="modal-text-major">{{msg}}</div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+  <button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOLBAR.POP_BTN_DELETE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{dupStackConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOLBAR.TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
   <div class="modal-center-align-helper">
     <div class="modal-control-group">
-      <label class="modal-text-major">{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}</label>
+      <label class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_DUPLICATE_STACK"}}</label>
       <input id="confirmDupStackIpt" class="input" type="text" value="{{newName}}">
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-red" id="confirmDupStack">{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+  <button class="btn btn-red" id="confirmDupStack">{{i18n "TOOLBAR.POP_BTN_DUPLICATE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{startAppConfirm}} -->
   <div class="modal-center-align-helper">
-      <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP"}}</div>
+      <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_START_APP"}}</div>
       <ul class="modal-list-items">
           {{#if hasEC2Instance}}
           <li>
@@ -64,7 +64,7 @@
     </div>
 {{else}}
 <div class="modal-center-align-helper" style="padding: 20px">
-    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+    <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOLBAR.POP_BODY_STOP_APP_RIGHT"}}</div>
     <ul class="modal-list-items">
         {{#if hasEC2Instance}}
             <li>
@@ -115,7 +115,7 @@
     <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
     <div><input class="input" style="width:430px;" id="appNameConfirmIpt"/></div>
 {{else}}
-    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
+    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
 {{/if}}
 {{#if hasDBInstance.length}}
     <section class="check-final-snapshot checkbox-wrap">
@@ -147,6 +147,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn modal-close btn-red" id="forceTerminateApp">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
-  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+  <button class="btn modal-close btn-red" id="forceTerminateApp">{{i18n "TOOLBAR.POP_BTN_DELETE_STACK"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>

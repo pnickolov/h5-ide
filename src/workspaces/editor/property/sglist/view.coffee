@@ -59,12 +59,12 @@ define [ './template/stack',  'i18n!/nls/lang.js' ], ( template, lang ) ->
 
 			# show dialog to confirm that delete sg
 			if memberNum
-				mainContent = sprintf(lang.IDE.PROP.SGLIST_DELETE_SG_CONFIRM_TITLE, sgName)
-				descContent = sprintf lang.IDE.PROP.SGLIST_DELETE_SG_CONFIRM_DESC, sgName
+				mainContent = sprintf(lang.PROP.SGLIST_DELETE_SG_CONFIRM_TITLE, sgName)
+				descContent = sprintf lang.PROP.SGLIST_DELETE_SG_CONFIRM_DESC, sgName
 
 			if mainContent
 				tpl = MC.template.modalDeleteSGOrACL {
-					title : lang.IDE.PROP.SGLIST_DELETE_SG_TITLE,
+					title : lang.PROP.SGLIST_DELETE_SG_TITLE,
 					main_content : mainContent,
 					desc_content : descContent
 				}

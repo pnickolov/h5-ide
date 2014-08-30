@@ -178,7 +178,7 @@ function program13(depth0,data) {
   buffer += ">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
     + "</button>\n	</div>\n</div>";
   return buffer;
   };
@@ -203,7 +203,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
     + "</button>\n	</div>\n</div>";
   return buffer;
   };

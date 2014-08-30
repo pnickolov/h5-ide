@@ -2163,106 +2163,106 @@ module.exports =
       en: "Delete after applying updates"
       zh: ""
 
-    PROP_INSTANCE_ROOT_DEVICE:
+    INSTANCE_ROOT_DEVICE:
       en: "Root Device"
       zh: ""
 
-    PROP_INSTANCE_WATCH_LINK_TEXT:
+    INSTANCE_WATCH_LINK_TEXT:
       en: "Amazon Cloud Watch Product Page"
       zh: ""
 
-    PROP_INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS:
+    INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS:
       en: "User Data is disabled to allow installing OpsAgent for VisualOps."
       zh: ""
 
-    PROP_INSTANCE_VIEW_AGENT_USER_DATA_URL_TEXT:
+    INSTANCE_VIEW_AGENT_USER_DATA_URL_TEXT:
       en: "View content"
       zh: ""
 
-    PROP_INSTANCE_EBS_OPTIMIZED:
+    INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimized"
       zh: ""
 
-    PROP_INSTANCE_IOPS:
+    INSTANCE_IOPS:
       en: "IOPS"
       zh: ""
 
-    PROP_LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
+    LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
       zh: ""
 
-    PROP_MISSING_RESOURCE_UNAVAILABLE:
+    MISSING_RESOURCE_UNAVAILABLE:
       en: "Resource Unavailable"
       zh: ""
 
-    PROP_RTB_ALLOW_PROPAGATION:
+    RTB_ALLOW_PROPAGATION:
       en: "Allow Propagation"
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_REQUIRED:
+    RTB_CIDR_BLOCK_REQUIRED:
       en: "CIDR Block is required"
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_REQUIRED_DESC:
+    RTB_CIDR_BLOCK_REQUIRED_DESC:
       en: "Please provide a IP ranges for this route."
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_INVALID:
+    RTB_CIDR_BLOCK_INVALID:
       en: "%s is not a valid form of CIDR Block"
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_INVALID_DESC:
+    RTB_CIDR_BLOCK_INVALID_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_CONFLICTS:
+    RTB_CIDR_BLOCK_CONFLICTS:
       en: "%s conflicts with other route."
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_CONFLICTS_DESC:
+    RTB_CIDR_BLOCK_CONFLICTS_DESC:
       en: "Please choose a CIDR block not conflicting with existing route."
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_CONFLICTS_LOCAL:
+    RTB_CIDR_BLOCK_CONFLICTS_LOCAL:
       en: "%s conflicts with local route."
       zh: ""
 
-    PROP_RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC:
+    RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC:
       en: "Please choose a CIDR block not conflicting with local route."
       zh: ""
 
-    PROP_SG_INSTANCE_SUMMARY:
+    SG_INSTANCE_SUMMARY:
       en: "Instance Summary"
       zh: ""
 
-    PROP_SG_SERVER_GROUP_MEMBERS:
+    SG_SERVER_GROUP_MEMBERS:
       en: "Server Group Members"
       zh: ""
 
-    PROP_SG_LAUNCH_AFTER_APPLYING_UPDATES:
+    SG_LAUNCH_AFTER_APPLYING_UPDATES:
       en: "Launch after applying updates"
       zh: ""
 
-    PROP_SG_TERMINATE_AFTER_APPLYING_UPDATE:
+    SG_TERMINATE_AFTER_APPLYING_UPDATE:
       en: "Terminate after applying updates"
       zh: ""
 
-    PROP_SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE:
+    SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE:
       en: "Updating instance type is disabled for instances using instance store for root device."
       zh: ""
 
-    PROP_SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE:
+    SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE:
       en: "Amazon Cloud Watch Product Page"
       zh: ""
 
-    PROP_SGLIST_DELETE_SG_CONFIRM_TITLE:
+    SGLIST_DELETE_SG_CONFIRM_TITLE:
       en: "Are you sure you want to delete %s ?"
       zh: ""
 
-    PROP_SGLIST_DELETE_SG_CONFIRM_DESC:
+    SGLIST_DELETE_SG_CONFIRM_DESC:
       en: "The firewall settings of %s's member will be affected. Member only has this security group will be using DefaultSG."
       zh: ""
 
-    PROP_SGLIST_DELETE_SG_TITLE:
+    SGLIST_DELETE_SG_TITLE:
       en: "Delete Security Group"
       zh: ""

@@ -43,13 +43,13 @@
 
         {{#if isAppEdit}}
         <section class="property-control-group clearfix">
-            <label>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
+            <label>{{ i18n "PROP.DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
             <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}(Pending Apply){{/if}}</div>
         </section>
         {{else}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input" type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
         {{/if}}
@@ -66,7 +66,7 @@
 
         <section class="property-control-group">
             <label>Allocated Storage</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <div class="ranged-number-input">
                 <label for="property-dbinstance-storage"></label>
                 <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left tooltip" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number" {{#if isAppEdit}}{{#if isSqlserver}}disabled data-tooltip="Scalling storage after launch a DB Instance is currently not supported for SQL Server."{{/if}}{{/if}}>
@@ -102,20 +102,20 @@
 
         {{#if isAppEdit}}
         <section class="property-control-group clearfix">
-            <label>{{ i18n "PROP_DBINSTANCE_USERNAME" }}</label>
+            <label>{{ i18n "PROP.DBINSTANCE_USERNAME" }}</label>
             <div>{{MasterUsername}}</div>
         </section>
         {{else}}
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-username" >Master Username</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" id="property-dbinstance-master-username" value="{{username}}" data-ignore-regexp="^[a-zA-Z]+[0-9a-zA-Z_]*$" data-required-rollback="true"/>
         </section>
         {{/if}}
 
         <section class="property-control-group" >
             <label class="left" for="property-dbinstance-master-password" >Master Password</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input tooltip" data-tooltip="{{#ifCond password "****"}}{{else}}{{#if password}}Default Password: 12345678{{/if}}{{/ifCond}}" type="password" placeholder="****" id="property-dbinstance-master-password" value="{{#ifCond password "****"}}{{else}}{{password}}{{/ifCond}}" data-type="ascii" data-ignore="true" data-required="true"/>
         </section>
 
@@ -126,9 +126,9 @@
 
         {{#if isAppEdit}}
         <section class="property-control-group clearfix">
-            {{#if dbName}}<label>{{ i18n "PROP_DBINSTANCE_NAME" }}</label>
+            {{#if dbName}}<label>{{ i18n "PROP.DBINSTANCE_NAME" }}</label>
             <div>{{dbName}}</div>{{/if}}
-            <label>{{ i18n "PROP_DBINSTANCE_PORT" }}</label>
+            <label>{{ i18n "PROP.DBINSTANCE_PORT" }}</label>
             <div>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}</div>
         </section>
         {{else}}
@@ -346,13 +346,13 @@
     {{#if snapshotId}}
 
     {{#if isAppEdit}}
-    <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group-head" id="sg-head">{{ i18n "PROP.INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
     {{else}}
     {{/if}}
     
     {{else}}
-    <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group-head" id="sg-head">{{ i18n "PROP.INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
     {{/if}}
     

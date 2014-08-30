@@ -11,7 +11,7 @@
 
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
 
@@ -66,12 +66,12 @@
         <div class="property-control-group clearfix">
             {{#unless multiAz}}
                 {{#if AvailabilityZone}}
-                    <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+                    <label>{{ i18n "PROP.DBINSTANCE_PREFERRED_ZONE" }}</label>
                     <div>{{AvailabilityZone}}</div>
                 {{/if}}
             {{else}}
                 {{#if SecondaryAvailabilityZone}}
-                <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+                <label>{{ i18n "PROP.DBINSTANCE_SECONDARY_ZONE" }}</label>
                 <div>{{SecondaryAvailabilityZone}}</div>
                 {{/if}}
             {{/unless}}

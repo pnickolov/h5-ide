@@ -57,5 +57,5 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
             callback(null)
 
-    unusedOgWontCreate: unusedOgWontCreate
+    # unusedOgWontCreate: unusedOgWontCreate
     isOGExeedCountLimit: isOGExeedCountLimit

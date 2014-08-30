@@ -68,7 +68,7 @@ define [
       return
 
     replicate : ( evt )->
-      if not @canvas.design.modeIsApp() and @model.slaves().length < 5
+      if not @canvas.design.modeIsApp() and @model.slaves().length <= 5
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
       false
 
@@ -170,6 +170,7 @@ define [
         svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
+          svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
         else
           svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
@@ -198,15 +199,43 @@ define [
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
       # Update replica Image
-      if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
+      if m.get('engine') is constant.DB_ENGINE.MYSQL
+
         # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
-        CanvasManager.toggle $r, m.autobackup() isnt 0
-        if @model.slaves().length < 5
-          tip = "Drag to create a read replica."
-          CanvasManager.removeClass $r, "disabled"
+
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        if appData
+          backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
+
+        if m.slaves().length < 5
+
+          if m.autobackup()
+
+            tip = "Drag to create a read replica."
+
+            if m.category() is 'replica' and m.master() and m.master().master()
+
+              CanvasManager.toggle $r, false
+
+            else
+
+              CanvasManager.toggle $r, true
+
+              if m.get('appId') and not backup
+
+                tip = "Please wait Automatic Backup to be enabled to create read replica."
+                CanvasManager.addClass $r, "disabled"
+
+          else
+
+            tip = "Drag to create a read replica."
+            CanvasManager.toggle $r, false
+
         else
+
           tip = "Cannot create more read replica."
+          CanvasManager.toggle $r, true
           CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
@@ -224,7 +253,7 @@ define [
       appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
       if appData
         penddingObj = appData.get('PendingModifiedValues')
-        if (appData.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+        if (appData.get('BackupRetentionPeriod') in [0, '0']) or (penddingObj and penddingObj.BackupRetentionPeriod in [0, '0'])
           CanvasManager.toggle @$el.children(".dbrestore"), false
 
       @updateState()
@@ -240,7 +269,7 @@ define [
       if option and option.cloneSource?.master()
         # If we are cloning a replica, we should check if we can
         # If the model supports clone() interface, then clone the target.
-        if option.cloneSource.master().slaves().length >= 5
+        if option.cloneSource.master().slaves().length > 5
           notification "error", "Cannot create more read replica."
           return
         else

@@ -59,7 +59,14 @@ define [
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
         multiAz|__connections|__parent|license|iops|port|ogName|pgName|az"
 
-    slaves: -> if @master() then [] else @connectionTargets("DbReplication")
+    slaves: ->
+
+      that = @
+      _.filter @connectionTargets("DbReplication"), (dbModel) ->
+
+        if dbModel.master() is that
+          return true
+        return false
 
     getAllRestoreDB: ->
 

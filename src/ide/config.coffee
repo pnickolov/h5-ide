@@ -135,11 +135,23 @@ require.config {
     "OpsModel"  : "ide/submodels/OpsModel"
     "Workspace" : "ide/Workspace"
 
-
     #############################################
-    # opseditor                 # Merge in deploy
+    # coreeditor                # Merge in deploy
     #############################################
-    'Design'        : 'workspaces/editor/framework/Design'
+    'Design'           : 'workspaces/coreeditor/Design'
+    "ResourceModel"    : "workspaces/coreeditor/ModelResource"
+    "ComplexResModel"  : "workspaces/coreeditor/ModelComplex"
+    "ConnectionModel"  : "workspaces/coreeditor/ModelConnection"
+    "GroupModel"       : "workspaces/coreeditor/ModelGroup"
+    "CoreEditor"       : "workspaces/coreeditor/EditorCore"
+    "CoreEditorView"   : "workspaces/coreeditor/EditorView"
+    "ProgressViewer"   : "workspaces/coreeditor/ProgressViewer"
+    "CanvasElement"    : "workspaces/coreeditor/CanvasElement"
+    "CanvasLine"       : "workspaces/coreeditor/CanvasLine"
+    "CanvasView"       : "workspaces/coreeditor/CanvasView"
+    "CanvasViewLayout" : "workspaces/coreeditor/CanvasViewLayout"
+    "CanvasManager"    : "workspaces/coreeditor/CanvasManager"
+    "CanvasPopup"      : "workspaces/coreeditor/CanvasPopup"
 
     #############################################
     # deprecated service        # Merge in deploy
@@ -325,19 +337,19 @@ require [
   'ide/Application'
   "cloudres/CrBundle"
   "workspaces/Dashboard"
-  "workspaces/OpsEditor"
+  "workspaces/AwsEditor"
   "ide/Router"
   "MC"
   "MC.canvas"
   'lib/aws'
-], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
+], ( Application, CrBundle, Dashboard, AwsEditor, Router ) ->
 
   ###########
   # IDE Init
   ###########
   # There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
   window.Router    = new Router()
-  window.OpsEditor = OpsEditor
+  window.OpsEditor = AwsEditor
   (new Application()).initialize().then ()->
     window.Router.start()
     window.Dashboard = new Dashboard()

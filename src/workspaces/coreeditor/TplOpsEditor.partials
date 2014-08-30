@@ -1,0 +1,63 @@
+
+<!-- {{frame}} -->
+<div id="OpsEditor" class="pos-r">
+  <aside class="OEPanelLeft"></aside>
+  <aside class="OEPanelRight" id="OEPanelRight"></aside>
+
+<div class="OEMiddleWrap">
+  <nav class="OEPanelTop"></nav>
+  <div class="OEPanelBottom"></div>
+
+  <section class="OEPanelCenter nano"> <div class="nano-content">
+    <div class="canvas-view">
+      <button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
+      <button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
+      <button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
+      <button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
+      <svg width="100%" height="100%"></svg>
+    </div>
+  </div> </section>
+</div>
+</div>
+
+<!-- {{loading}} -->
+<div class="ops-process">
+  <header class="processing">Loading data...</header>
+  <section class="loading-spinner"></section>
+</div>
+
+<!-- {{modal.onClose}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  <div class="modal-text-major">{{this}} has unsaved changes.</div>
+  <div class="modal-text-major">Do you confirm to close it?</div>
+</div> </div>
+
+<!-- {{modal.confirmRemoveApp}} -->
+<p class="modal-text-major">VPC of this app has been deleted outside VisualOps.</p>
+<p class="modal-text-major">Do you want to remove the app?</p>
+
+<!-- {{progressView}} -->
+<div class='ops-process {{#if progress}}has-progess{{/if}}'>
+  <section class="processing-wrap">
+    <header class="processing">{{#if title}}{{title}}{{else}}{{ i18n "PROC_TITLE" }}{{/if}}<span class="process-info">{{progress}}%</span></header>
+    <header class="processing rolling-back-content">Rolling back...</header>
+    <section class="loading-spinner"></section>
+    <section class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </section>
+  </section>
+
+  <section class="success hide">
+    <p class="title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
+    <p class="sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
+  </section>
+
+  <section class="fail hide error-info-block">
+    <header>{{ i18n "PROC_FAILED_TITLE" }}</header>
+    <p class="sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail"></p>
+    </div>
+    <button class="btn btn-silver btn-close-process right">{{ i18n "PROC_CLOSE_TAB" }}</button>
+  </section>
+</div>
+

@@ -1,0 +1,226 @@
+<!-- {{loading}} -->
+<div class="ops-process">
+  <header class="processing">Loading data...</header>
+  <section class="loading-spinner"></section>
+</div>
+
+<!-- {{appProcessing}} -->
+<div class="ops-process">
+  <header class="processing">{{this}}<span class="process-info">0%</span></header>
+  <header class="processing rolling-back-content">Rolling back...</header>
+  <section class="loading-spinner"></section>
+  <section class="progress"> <div class="bar" style="width:0%;"></div> </section>
+</div>
+
+<!-- {{appUpdateStatus}} -->
+<div class="ops-process">
+{{#if loading}}
+  <header class="processing">Reloading data...</header>
+  <section class="loading-spinner"></section>
+{{else}}
+  <header class="processing">{{#unless error}}App has updated successfully.{{else}}The app failed to update.{{/unless}}</header>
+  {{#if error}}
+  <div class="error-info-block">
+    <div class="result-sub-title">{{i18n 'PROC_RLT_FAILED_SUB_TITLE'}}</div>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail">{{{error}}}</p>
+    </div>
+    <div class="result-error-notice">The state of your app has been rolled back, except for the already deleted resources.</div>
+  </div>
+  {{/if}}
+  <button class="btn btn-silver" id="processDoneBtn">Done</button>
+{{/if}}
+</div>
+
+<!-- {{toolbar.BtnActionPng}} -->
+<button class="btn-toolbar tooltip icon-export-png toolbar-btn-primary" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}' data-analytics-plus="export_vis_png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</button>
+
+<!-- {{toolbar.BtnZoom}} -->
+<button class="btn-toolbar icon-zoom-in tooltip" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOL_TIP_ZOOM_OUT" }}'></button>
+
+<!-- {{toolbar.BtnLinestyle}} -->
+<div class="selectbox btn-toolbar toolbar-line-style seperator">
+  <button class="selection tooltip" data-tooltip="SecurityGroup Line Style"></button>
+  <ul class="dropdown">
+    <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
+    <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
+    <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_CURVE" }}</span></li>
+  </ul>
+</div>
+<button class="btn-toolbar icon-hide-sg tooltip" data-tooltip='{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}'></button>
+
+<!-- {{toolbar.BtnRunStack}} -->
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
+
+<!-- {{toolbar.BtnStackOps}} -->
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOL_TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOL_TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOL_TIP_CREATE_STACK" }}'></button>
+
+<!-- {{toolbar.BtnExport}} -->
+<div class="selectbox btn-toolbar seperator">
+  <button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOL_EXPORT" }}'></button>
+  <ul class="dropdown">
+    <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOL_EXPORT_AS_PNG" }}</li>
+    <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOL_EXPORT_AS_JSON" }}</li>
+    <li data-analytics-plus="cloudformation" class="icon-toolbar-cloudformation">{{ i18n "TOOL_EXPORT_AS_CF" }}</li>
+  </ul>
+</div>
+
+<!-- {{toolbar.BtnEditApp}} -->
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_UPDATE_APP' }}">{{ i18n 'TOOL_EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOL_TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOL_APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOL_TIP_CANCEL_UPDATE_APP' }}"></button>
+
+<!-- {{toolbar.BtnAppOps}} -->
+<button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"><span style="display: none">{{i18n "TOOL_START_APP"}}</span></button>
+<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOL_TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOL_TIP_SAVE_APP_TO_STACK" }}'></button>
+
+<!-- {{toolbar.BtnPng}} -->
+<button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOL_EXPORT_AS_PNG" }}'></button>
+
+<!-- {{toolbar.BtnReloadRes}} -->
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOL_TIP_REFRESH_REOURCES'}}"></button>
+
+
+<!-- {{toolbar.BtnSwitchStates}} -->
+<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOL_TIP_CUSTOM_USER_DATA'}}">
+    <span class="switch-label" data-on="{{i18n 'TOOL_TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOL_TOGGLE_VISUALOPS_OFF'}}"></span>
+    <span class="switch-handle"></span>
+</label>
+
+<!-- {{toolbar.BtnReloadStates}} -->
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">Reload States</button>
+
+<!-- {{confirm.enableState}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>
+    </div>
+</div>
+
+<!-- {{export.CF}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  {{#if hasCustomOG}}<div class="modal-text-highlight">
+      DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be
+      used instead.
+  </div>{{/if}}
+  <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
+</div> </div>
+<div class="stack-validation">
+  <details open style="display:none;">
+    <summary>Stack Validation</summary>
+    <div id="stack-run-validation-container"></div>
+  </details>
+  <div class="nutshell">:<label></label></div>
+  <div class="validating">
+    <div class="loading-spinner loading-spinner-small"></div>
+    <p>Validating your stack...</p>
+  </div>
+</div>
+<div style="padding-top:20px;text-align:right;">
+  <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
+  <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.JSON}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper" style="padding:40px 20px;">
+  <div class="modal-text-major"></div>
+  <div class="modal-text-minor">{{i18n "TOOL_POP_BODY_EXPORT_AS_JSON"}}</div>
+</div> </div>
+<div class="modal-footer">
+  <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOL_POP_BTN_DOWNLOAD"}}</a>
+  <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.PNG}} -->
+<div class="loading-spinner"></div>
+<section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
+<div class="modal-footer">
+  <a class="btn btn-blue" style="display: inline-block;">Download</a>
+  <button class="btn modal-close btn-silver">Cancel</button>
+</div>
+
+<!-- {{modal.onClose}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  <div class="modal-text-major">{{this}} has unsaved changes.</div>
+  <div class="modal-text-major">Do you confirm to close it?</div>
+</div> </div>
+
+<!-- {{modal.cancelUpdate}} -->
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+  <div class="modal-text-major">This app has been changed.</div>
+  <div class="modal-text-major">Do you confirm to discard the changes?</div>
+</div> </div>
+
+<!-- {{modal.confirmImport}} -->
+<p class="modal-text-major">Well done! Your VPC {{name}} has been successfully imported as VisualOps app.</p>
+<p class="modal-text-major">Give this app an appropriate name.</p>
+<div class="modal-control-group">
+<label for="ImportSaveAppName">App Name</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
+<div class="modal-control-group app-usage-group clearfix">
+  <label for="">App Usage</label>
+  <div id="app-usage-selectbox" class="selectbox">
+    <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+    <ul class="dropdown" tabindex="-1">
+      <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+      <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+      <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+      <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+    </ul>
+  </div>
+</div>
+
+<section style="margin:5px 5px 20px 8px;">
+  <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
+  <label for="MonitorImportApp">Monitor and report external resource change of this app</label>
+  <i class="icon-info tooltip" data-tooltip="If resource has been changed outside VisualOps, an email notification will be sent to you." style="color:#148BE6;vertical-align:-3px;"></i>
+</section>
+
+<p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
+
+<!-- {{saveAppToStack}} -->
+<p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_1' }}</p>
+<p class="modal-text-minor">{{ i18n 'TOOL_POP_INTRO_2' }}</p>
+<div class="modal-center-align-helper">
+    <div class="modal-control-group">
+        {{#if originStackExist}}
+        <div id="replace_stack" style="padding: 10px 0">
+            <div class="radio">
+                <input id="radio-replace-stack" type="radio" name="save-stack-type" value="replace" checked>
+                <label for="radio-replace-stack"></label>
+            </div>
+            <label class="modal-text-minor" for="radio-replace-stack">{{ i18n 'TOOL_POP_REPLACE_STACK'}}</label>
+            <div style="padding: 10px 22px" class="radio-instruction">
+                {{ i18n 'TOOL_POP_REPLACE_STACK_INTRO'}} "{{input}}" {{i18n "TOOL_POP_REPLACE_STACK_INTRO_END"}}
+            </div>
+        </div>
+        <div id="save_new_stack">
+            <div class="radio">
+                <input id="radio-new-stack" type="radio" name="save-stack-type">
+                <label for="radio-new-stack"></label>
+            </div>
+            <label class="modal-text-minor" for="radio-new-stack">{{ i18n "TOOL_POP_SAVE_NEW_STACK" }}</label>
+            <div style="padding: 10px 22px" class="radio-instruction hide">
+                <p>{{ i18n "TOOL_POP_SAVE_STACK_INSTRUCTION" }}</p>
+                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOL_POP_STACK_NAME_ERROR"}}</div>
+            </div>
+        </div>
+        {{else}}
+        <div id="name_new_stack">
+            <input id="radio-new-stack" type="hidden" name="save-stack-type" checked>
+            <div style="padding: 10px 22px" class="radio-instruction">
+                <p>{{ i18n "TOOL_POP_SAVE_STACK_INSTRUCTION" }}</p>
+                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOL_POP_STACK_NAME_ERROR"}}</div>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>

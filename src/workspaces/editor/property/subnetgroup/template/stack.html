@@ -4,14 +4,14 @@
 
    <section class="property-control-group" data-bind="true">
     <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
-    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
     <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled{{/if}} />
   </section>
 
 
   <section class="property-control-group" data-bind="true">
     <label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
-    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
     <input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
   </section>
 </div>

@@ -271,13 +271,14 @@ define [ 'ApiRequest'
                 differ.getChangeInfo().hasResChange
 
             if e
-                _.defer () ->
-                    if diff()
-                        $( '.apply-immediately-section' ).show()
-                        $('.property-panel-wrapper').addClass('immediately')
-                    else
-                        $( '.apply-immediately-section' ).hide()
-                        $('.property-panel-wrapper').removeClass('immediately')
+                if not @isPromoted()
+                    _.defer () ->
+                        if diff()
+                            $( '.apply-immediately-section' ).show()
+                            $('.property-panel-wrapper').addClass('immediately')
+                        else
+                            $( '.apply-immediately-section' ).hide()
+                            $('.property-panel-wrapper').removeClass('immediately')
             else
                 diff()
 
@@ -510,7 +511,8 @@ define [ 'ApiRequest'
         setPromote: () ->
 
             @resModel.unsetMaster()
-            @resModel.autobackup 1
+            if not @resModel.autobackup()
+                @resModel.autobackup 1
 
         unsetPromote: () ->
 
@@ -609,7 +611,8 @@ define [ 'ApiRequest'
             changeApplyImmediately = @changeApplyImmediately.bind @
             @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
             .click checkChange
-            if @isAppEdit then $('.property-panel-wrapper').toggleClass('immediately', checkChange())
+            if @isAppEdit and not @isPromoted()
+                $('.property-panel-wrapper').toggleClass('immediately', checkChange())
             @setTitle(attr.name)
 
             @renderLVIA()

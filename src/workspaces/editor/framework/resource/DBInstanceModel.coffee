@@ -99,7 +99,8 @@ define [
         @set backupRetentionPeriod: 0, multiAz: false, instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
-      @connections("DbReplication")[0]?.remove()
+      # @connections("DbReplication")[0]?.remove()
+      @unsetMaster()
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
 
@@ -108,7 +109,10 @@ define [
 
     unsetMaster : () ->
 
-      @connections("DbReplication")[0]?.remove()
+      that = @
+      _.each @connections("DbReplication"), (connection) ->
+        if connection.slave() is that
+          connection.remove()
 
     setSourceDBForRestore : ( sourceDb ) ->
 

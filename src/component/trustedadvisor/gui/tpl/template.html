@@ -1,8 +1,8 @@
 <div class="validation-content">
 	<ul class="tab">
-		<li class="active {{#unless error_list.length}}no-item{{/unless}}" data-tab-target="#item-error">Error<span class="validation-counter validation-counter-error">{{ error_list.length }}</span></li>
-		<li data-tab-target="#item-warning" class="{{#unless warning_list.length}}no-item{{/unless}}">Warning<span class="validation-counter validation-counter-warning">{{ warning_list.length }}</span></li>
-		<li data-tab-target="#item-notice" class="{{#unless notice_list.length}}no-item{{/unless}}">Notice<span class="validation-counter validation-counter-notice">{{ notice_list.length }}</span></li>
+		<li class="active {{#unless error_list.length}}no-item{{/unless}}" data-tab-target="#item-error">{{i18n "PROP.LBL_ERROR"}}<span class="validation-counter validation-counter-error">{{ error_list.length }}</span></li>
+		<li data-tab-target="#item-warning" class="{{#unless warning_list.length}}no-item{{/unless}}">{{i18n "PROP.LBL_WARNING"}}<span class="validation-counter validation-counter-warning">{{ warning_list.length }}</span></li>
+		<li data-tab-target="#item-notice" class="{{#unless notice_list.length}}no-item{{/unless}}">{{i18n "PROP.LBL_NOTICE"}}<span class="validation-counter validation-counter-notice">{{ notice_list.length }}</span></li>
 	</ul>
 	<div class="scroll-wrap scroll-wrap-validation">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>

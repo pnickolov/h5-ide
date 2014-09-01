@@ -27,8 +27,32 @@ module.exports =
       en: "Capacity"
       zh: ""
 
+    LBL_VALIDATION:
+      en: "Validation"
+      zh: ""
+
+    LBL_PROPERTY:
+      en: "Property"
+      zh: ""
+
+    LBL_STATE:
+      en: "States"
+      zh: ""
+
     LBL_OWNER:
       en: "Owner"
+      zh: ""
+
+    LBL_ERROR:
+      en: "Error"
+      zh: ""
+
+    LBL_WARNING:
+      en: "Warning"
+      zh: ""
+
+    LBL_NOTICE:
+      en: 'Notice'
       zh: ""
 
     LBL_STARTED:
@@ -3131,13 +3155,6 @@ module.exports =
     ROLLING_BACK:
       en: "Rolling back..."
       zh: ""
-
-    LBL_PROPERTY:
-      en: "Property"
-      zh: ""
-
-    LBL_STATE:
-      en: "States"
 
     ALLOW:
       en: "Allow"

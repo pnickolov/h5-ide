@@ -3143,6 +3143,48 @@ module.exports =
     LBL_STATE:
       en: "States"
 
+    ALLOW:
+      en: "Allow"
+      zh: ""
+
+    INITIATE_TRAFFIC_TO:
+      en: "initiate traffic to"
+      zh: ""
+
+    ACCEPT_TRAFFIC_FROM:
+      en: "accept traffic from"
+      zh: ""
+
+    HAVE_2WAY_TRAFFIC_WITH:
+      en: "have 2-way traffic with"
+      zh: ""
+
+    DESTINATION_PROTOCOL:
+      en: "Destination Protocol"
+      zh: ""
+
+    PORT_RANGE_COLON:
+      en: "Port Range: "
+      zh: ""
+
+    ADD_RULE:
+      en: "Add Rule"
+      zh: ""
+
+    RULE_REF_ITS_OWN_SG:
+      en: "You have created a rule referencing its own security group. This rule will not be visualized as the blue connection lines."
+      zh: ""
+
+    CREATE_ANOTHER_RULE:
+      en: "Create another rule"
+      zh: ""
+
+    RELATED_RULE:
+      en: "Related Rule"
+      zh: ""
+
+
+
 
 
 

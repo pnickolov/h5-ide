@@ -5,7 +5,7 @@
   <section class="sg-rule-create-add-wrap">
 
     <section class="sg-node-wrap clearfix">
-      <label>{{i18n "ALLOW"}}</label>
+      <label>{{i18n "PROP.ALLOW"}}</label>
 
       {{#if owner.length}}
 
@@ -22,11 +22,11 @@
       </div>
 
       <div class="selectbox" id="sg-create-direction">
-        <div class="selection">{{i18n "INITIATE_TRAFFIC_TO"}}</div>
+        <div class="selection">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</div>
         <ul class="dropdown">
-          <li class="item selected" data-id="outbound">{{i18n "INITIATE_TRAFFIC_TO"}}</li>
-          <li class="item" data-id="inbound">{{i18n "ACCEPT_TRAFFIC_FROM"}}</li>
-          <li class="item" data-id="biway">{{i18n "HAVE_2WAY_TRAFFIC_WITH"}}</li>
+          <li class="item selected" data-id="outbound">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</li>
+          <li class="item" data-id="inbound">{{i18n "PROP.ACCEPT_TRAFFIC_FROM"}}</li>
+          <li class="item" data-id="biway">{{i18n "PROP.HAVE_2WAY_TRAFFIC_WITH"}}</li>
         </ul>
       </div>
 
@@ -37,7 +37,7 @@
       </div>
 
       <div id="sg-create-direction">
-        <div class="sg-create-selection selected" data-id="outbound">{{i18n "INITIATE_TRAFFIC_TO"}}</div>
+        <div class="sg-create-selection selected" data-id="outbound">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</div>
       </div>
 
       {{/if}}
@@ -56,7 +56,7 @@
     </section>
 
     <p class="clearfix mgt10">
-      <label class="sg-create-proto-label">{{i18n "DESTINATION_PROTOCOL"}}</label>
+      <label class="sg-create-proto-label">{{i18n "PROP.DESTINATION_PROTOCOL"}}</label>
       <label class="sg-create-proto-label-port">{{Port}}</label>
     </p>
 
@@ -178,7 +178,7 @@
             <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
           </section>
 
-          <section class="sg-proto-input" id="sg-proto-ipt-all">{{i18n "PORT_RANGE_COLON"}}0-65535</section>
+          <section class="sg-proto-input" id="sg-proto-ipt-all">{{i18n "PROP.PORT_RANGE_COLON"}}0-65535</section>
     {{/unless}}
       </div>
     </section>

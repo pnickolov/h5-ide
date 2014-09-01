@@ -2315,7 +2315,7 @@ module.exports =
 
     DBINSTANCE_DURATION:
       en: "Duration: "
-      en: ""
+      zh: ""
 
     DBINSTANCE_BACKUP_DURATION_HOUR:
       en: "hour(s)"

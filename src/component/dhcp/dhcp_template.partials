@@ -174,7 +174,7 @@
         </section>
         <section class="property-control-group">
 
-            <label>{{i18n "VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE"}}</label>
+            <label>{{i18n "PROP.VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE"}}</label>
             <div>{{netbios-node-type}}</div>
         </section>
     </div>

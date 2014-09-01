@@ -12,8 +12,8 @@
 
 <!-- {{no_option_group}} -->
 <div class="combo-dd-no-data">
-    <p>{{i18n "NO_OPTION_GROUP_PERIOD"}}</p>
-    <a class="create-one">{{i18n "CREATE_OPTION_GROUP"}}</a>
+    <p>{{i18n "PROP.NO_OPTION_GROUP_PERIOD"}}</p>
+    <a class="create-one">{{i18n "PROP.CREATE_OPTION_GROUP"}}</a>
 </div>
 
 <!-- {{og_slide}} -->
@@ -49,9 +49,9 @@
     {{#if OptionGroupOptionSettings}}
     <table class="table">
         <tr>
-            <th>{{i18n "OPTION_SETTING"}}</th>
-            <th>{{i18n "VALUE"}}</th>
-            <th>{{i18n "ALLOWED_VALUES"}}</th>
+            <th>{{i18n "PROP.OPTION_SETTING"}}</th>
+            <th>{{i18n "PROP.VALUE"}}</th>
+            <th>{{i18n "PROP.ALLOWED_VALUES"}}</th>
         </tr>
         {{#each OptionGroupOptionSettings}}
         <tr>
@@ -109,7 +109,7 @@
         </div>
         <div class="container">
             <div class="input-item">
-                <label class="left">{{i18n "NAME"}}</label>
+                <label class="left">{{i18n "PROP.NAME"}}</label>
                 <input class="input og-name" value="{{name}}" type="text" data-ignore="true" data-required-rollback="true"/>
             </div>
             <div class="input-item">
@@ -131,7 +131,7 @@
             {{/if}}
         </div>
         <div class="modal-footer">
-            {{#unless isCreate}}<button class="remove-btn btn btn-red {{#if appId}}disabled tooltip{{/if}}" {{#if appId}}data-tooltip="This option group canot be deleted since it is currently in use."{{/if}}>{{i18n "LBL_DELETE"}}</button>{{/unless}}
+            {{#unless isCreate}}<button class="remove-btn btn btn-red {{#if appId}}disabled tooltip{{/if}}" {{#if appId}}data-tooltip="This option group canot be deleted since it is currently in use."{{/if}}>{{i18n "PROP.LBL_DELETE"}}</button>{{/unless}}
             <span class="err-tip"></span>
             <button class="save-btn btn btn-blue">{{i18n "SAVE"}}</button>
             <button class="btn btn-silver modal-close cancel-btn">{{i18n "LBL_CANCEL"}}</button>
@@ -180,10 +180,10 @@
     <li class="option-item" data-idx="{{@index}}" data-name="{{OptionName}}">
         <div class="og-title clearfix">
             <div class="name">{{OptionName}}</div>
-            {{#if Persistent}}<div class="persistent">{{i18n "PERSISTENT"}}</div>{{/if}}
-            {{#if Permenant}}<div class="permenant">{{i18n "PERMENANT"}}</div>{{/if}}
-            <a class="toggle-og-detail show-og-detail">{{i18n "SHOW_DETAILS"}}</a>
-            <a class="toggle-og-detail hide-og-detail" style="display:none;">{{i18n "HIDE_DETAILS"}}</a>
+            {{#if Persistent}}<div class="persistent">{{i18n "PROP.PERSISTENT"}}</div>{{/if}}
+            {{#if Permenant}}<div class="permenant">{{i18n "PROP.PERMENANT"}}</div>{{/if}}
+            <a class="toggle-og-detail show-og-detail">{{i18n "PROP.SHOW_DETAILS"}}</a>
+            <a class="toggle-og-detail hide-og-detail" style="display:none;">{{i18n "PROP.HIDE_DETAILS"}}</a>
         </div>
         <div class="og-details">
             {{#if Port}}
@@ -194,7 +194,7 @@
             {{/if}}
             {{#each VpcSecurityGroupMemberships}}
             <div>
-                <span>{{i18n "SECURITY_GROUP_COLON"}}</span>
+                <span>{{i18n "PROP.SECURITY_GROUP_COLON"}}</span>
                 <span>{{VpcSecurityGroupId}}</span>
             </div>
             {{/each}}

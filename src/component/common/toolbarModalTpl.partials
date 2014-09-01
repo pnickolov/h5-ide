@@ -88,7 +88,7 @@
 
 <!-- {{nocredential}} -->
 <div class="kp-no-credential tac">
-    <p>{{i18n "COMBO_DROPDOWN_DEMO_AWS_ACCOUNT"}}</p>
+    <p>{{i18n "IDE.COMBO_DROPDOWN_DEMO_AWS_ACCOUNT"}}</p>
     <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL"}}</a>
 </div>
 

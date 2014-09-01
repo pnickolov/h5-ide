@@ -100,6 +100,10 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
               @generatedJson.component[originalKpComp.uid] = originalKpComp
           else
             originalJson.component[kpComp.uid] = kpComp
+
+        #patch for agent.enable
+        @generatedJson.agent.enabled = if originalJson then originalJson.agent.enabled else false
+
         ###### patch for app_json ######
       else
         ### env:dev ###

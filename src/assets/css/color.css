@@ -23,6 +23,7 @@
 .icon-export-json:before,
 .icon-caret-down:before,
 .icon-terminate:before,
+.icon-forget-app:before,
 .icon-close:before,
 .icon-caret-right:before,
 .icon-caret-left:before,
@@ -146,6 +147,9 @@
 
 .icon-terminate:before {
   content: "\F154"; }
+
+.icon-forget-app:before {
+  content: "\F11C"; }
 
 .icon-caret-right:before {
   content: "\F124"; }

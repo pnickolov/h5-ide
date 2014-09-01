@@ -72,6 +72,8 @@ define [
 
         if dbModel.category() is 'instance' and dbModel.get('appId')
           return false
+        if that.category() is 'replica' and not that.get('appId')
+          return false
         return true
 
     getAllRestoreDB: ->
@@ -618,7 +620,7 @@ define [
       for slave in @slaves()
         if not slave.get("appId")
           #remove nonexistent replica
-          slave.remove()
+          slave.remove() if slave isnt @
 
       for restore in @getAllRestoreDB()
         restore.remove()

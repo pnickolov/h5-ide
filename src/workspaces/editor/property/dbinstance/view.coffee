@@ -90,11 +90,17 @@ define [ 'ApiRequest'
             sourceDbModel = @resModel.getSourceDBForRestore()
             sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
 
-            penddingObj = sourceDbAppModel.get('PendingModifiedValues')
-            noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+            if sourceDbAppModel
 
-            if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
-                noRestore = true
+                penddingObj = sourceDbAppModel.get('PendingModifiedValues')
+                noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+
+                if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
+                    noRestore = true
+
+            else
+
+                noRestore = true                
 
             if noRestore
 
@@ -489,6 +495,9 @@ define [ 'ApiRequest'
             if sourceDBForRestore
                 attr.isRestoreDB = true
                 attr.sourceDbIdForRestore = sourceDBForRestore.get('appId')
+
+            if @resModel.isMysql and @resModel.master() and @resModel.getMajorVersion() in ['5.1', '5.5']
+                attr.disableBackupForOldMySQL = true
 
             attr
 

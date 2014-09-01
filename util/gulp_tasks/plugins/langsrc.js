@@ -65,6 +65,7 @@
       }
       cwd = file.cwd;
       base = file.base;
+      pipeline.setMaxListeners(100);
       pipeline.pipe(gulp.dest(langDest));
       if (compiled) {
         langWrite();
@@ -87,6 +88,7 @@
           contents: new Buffer(file.contents)
         }));
       }
+      pipeline.emit("end");
       if (langShouldLog) {
         console.log(util.compileTitle(), "Lang-file Compiled Done");
       }

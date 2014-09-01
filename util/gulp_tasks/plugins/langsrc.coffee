@@ -40,6 +40,7 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
     cwd = file.cwd
     base = file.base
 
+    pipeline.setMaxListeners(100)
     pipeline.pipe( gulp.dest(langDest) )
 
     if compiled then langWrite()
@@ -58,6 +59,9 @@ langWrite = () ->
         path     : file.path
         contents : new Buffer( file.contents )
       })
+
+    pipeline.emit "end"
+
     if langShouldLog then console.log util.compileTitle(), "Lang-file Compiled Done"
 
     null

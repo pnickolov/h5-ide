@@ -26,15 +26,15 @@
     <dl class="dl-vertical">
       <dt><label>{{ i18n "PROP.APP_LBL_INSTANCE_STATE"}}</label></dt>
       {{#if opsEnable}}
-      <dd>Enabled</dd>
+      <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
       {{else}}
-      <dd>Disabled</dd>
+      <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
       {{/if}}
       <dt><label>{{ i18n "PROP.APP_LBL_RESDIFF_VIEW"}}</label></dt>
       {{#if isResDiff}}
-      <dd>Enabled</dd>
+      <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
       {{else}}
-      <dd>Disabled</dd>
+      <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
       {{/if}}
     </dl>
 
@@ -97,7 +97,7 @@
 
 		</table>
 		<div class="property-control-group tac">
-			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">AWS EC2 Pricing</a>
+			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">{{i18n "STACK_LBL_AWS_EC2_PRICING"}}</a>
 		</div>
 	</div>
 

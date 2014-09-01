@@ -697,3 +697,42 @@ module.exports =
       en: "Import Existing VPC as App"
       zh: "将已存在 VPC 导入为 App"
 
+    DASH_LBL_SUPPORT:
+      en: "Support"
+      zh: "支持"
+
+    DASH_INVALID_SESSION:
+      en: "Invalid Session"
+      zh: ""
+
+    DASH_INVALID_SESSION_ERROR:
+      en: "Your account has signed in from other location or you last login has timed out."
+      zh: ""
+
+    DASH_INVALID_SESSION_ACTION:
+      en: "Would you like to reconnect this session or close it?"
+      zh: ""
+
+    DASH_INVALID_SESSION_WARNING:
+      en: "If you have unsaved changes, close this session will cause all your change to lose."
+      zh: ""
+
+    DASH_LBL_RECONNECT:
+      en: "Reconnect"
+      zh: ""
+
+    DASH_LBL_CLOSE_SESSION:
+      en: "Close Session"
+      zh: ""
+
+    DASH_RECONNECT_SESSION:
+      en: "Reconnect Session"
+      zh: ""
+
+    DASH_PROVIDE_PASSWORD_TO_RECONNECT:
+      en: "Please provide your password to reconnect:"
+      zh: ""
+
+    DASH_LBL_CONNECT:
+      en: "Connect"
+      zh: ""

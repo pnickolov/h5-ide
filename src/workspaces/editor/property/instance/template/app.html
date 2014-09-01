@@ -43,7 +43,7 @@
         {{#if keyName}}
             {{#if windows}}
                 {{keyName}}
-                <button class="btn btn-blue" id="property-app-keypair">Get Windows Password</button>
+                <button class="btn btn-blue" id="property-app-keypair">{{i18n "PROP.INSTANCE_GET_WINDOWS_PASSWORD"}}</button>
             {{else}}
                 <a href="#" id="property-app-keypair">{{keyName}}</a>
             {{/if}}
@@ -99,7 +99,7 @@
         <dt>{{i18n "PROP.VOLUME_ENCRYPTED"}}</dt>
         <dd>{{#if rootDevice.encrypted}}Encrypted{{else}}Not Encrypted{{/if}}</dd>
         {{#if rootDevice.iops}}
-        <dt>IOPS</dt>
+        <dt>{{i18n "PROP.INSTANCE_IOPS"}}</dt>
         <dd>{{rootDevice.iops}}</dd>
         {{/if}}
       </dl>
@@ -183,7 +183,7 @@
       </tr>
       {{#each eni.privateIpAddressesSet}}
       <tr>
-        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+        <td>{{privateIpAddress}}{{#if primary}}<span>({{i18n "PROP.ENI_PRIMARY"}})</span>{{/if}}</td>
         <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
       </tr>
       {{/each}}

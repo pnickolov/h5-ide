@@ -57,7 +57,7 @@
       </tr>
       {{#each privateIpAddressesSet}}
       <tr>
-        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+        <td>{{privateIpAddress}}{{#if primary}}<span>({{i18n "PROP.ENI_PRIMARY"}})</span>{{/if}}</td>
         <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
       </tr>
       {{/each}}

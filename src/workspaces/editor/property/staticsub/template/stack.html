@@ -15,13 +15,13 @@
     {{/if}}
     <div class="property-control-group property-ami-info">
         <div class="property-control-group tac">
-            <button id="changeAmi" class="btn btn-blue"><i class="icon-edit icon-label"></i>Change AMI</button>
+            <button id="changeAmi" class="btn btn-blue"><i class="icon-edit icon-label"></i>{{i18n "PROP.STATIC_SUB_CHANGE_AMI"}}</button>
         </div>
     </div>
     <div class="property-control-group hide" id="changeAmiPanel">
-        <p>Drag image from Resource Panel and drop below to change AMI.</p>
+        <p>{{i18n "PROP.DRAG_IMAGE_DROP_TO_CHANGE"}}</p>
         <div id="changeAmiDropZone">
-            <p>Drop AMI Here</p>
+            <p>{{i18n "PROP.DRAG_IMAGE_DROP_HERE"}}</p>
             <div class="resource-icon resource-icon-instance">
                 <img src="/assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
                 <div class="resource-label"></div>
@@ -29,9 +29,9 @@
         </div>
         <div class="hide" id="confirmChangeAmiWrap">
             <p id="changeAmiWarning"></p>
-            <button id="confirmChangeAmi" class="btn btn-blue">Confirm Change AMI</button>
+            <button id="confirmChangeAmi" class="btn btn-blue">{{i18n "PROP.CONFIRM_CHANGE_AMI"}}</button>
         </div>
-        <button id="cancelChangeAmi" class="btn-link">Cancel</button>
+        <button id="cancelChangeAmi" class="btn-link">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
 {{/if}}
 
@@ -59,17 +59,17 @@
     {{/unless}}
 {{else}}
     <dl class="dl-vertical">
-    <dt>Snapshot ID</dt>
+    <dt>{{i18n "PROP.VOLUME_SNAPSHOT_ID"}}</dt>
     <dd>{{id}}</dd>
-    <dt>Volume ID</dt>
+    <dt>{{i18n "PROP.VOLUME_ID"}}</dt>
     <dd>{{volumeId}}</dd>
-    <dt>Description</dt>
+    <dt>{{i18n "PROP.DESCRIPTION"}}</dt>
     <dd>{{emptyStr description}}</dd>
-    <dt>Capacity</dt>
+    <dt>{{i18n "PROP.LBL_CAPACITY"}}</dt>
     <dd>{{emptyStr volumeSize}}GB</dd>
-    <dt>Owner</dt>
+    <dt>{{i18n "PROP.LBL_OWNER"}}</dt>
     <dd>{{emptyStr ownerId}}</dd>
-    <dt>Started</dt>
+    <dt>{{i18n "PROP.LBL_STARTED"}}</dt>
     <dd>{{emptyStr startTime}}</dd>
     </dl>
 {{/if}}

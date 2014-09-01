@@ -23,6 +23,18 @@ module.exports =
       en: "Loading..."
       zh: ""
 
+    LBL_CAPACITY:
+      en: "Capacity"
+      zh: ""
+
+    LBL_OWNER:
+      en: "Owner"
+      zh: ""
+
+    LBL_STARTED:
+      en: "Started"
+      zh: ""
+
     INSTANCE_DETAIL:
       en: "Instance Details"
       zh: "实例设置"
@@ -361,6 +373,14 @@ module.exports =
 
     INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
+      zh: ""
+
+    INSTANCE_GET_WINDOWS_PASSWORD:
+      en: "Get Windows Password"
+      zh: ""
+
+    INSTANCE_IOPS:
+      en: "IOPS"
       zh: ""
 
     AMI_STACK_NOT_AVAILABLE:
@@ -975,6 +995,10 @@ module.exports =
       en: "e.g., 192.168.0.0/16"
       zh: ""
 
+    VPN_SUMMARY:
+      en: "VPN Summary"
+      zh: ""
+
     IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."
       zh: "互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器."
@@ -1321,6 +1345,10 @@ module.exports =
 
     ENI_TIP_ADD_IP_ADDRESS:
       en: "Add IP Address"
+      zh: ""
+
+    ENI_PRIMARY:
+      en: "Primary"
       zh: ""
 
     ELB_DETAILS:
@@ -1813,6 +1841,10 @@ module.exports =
 
     ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES:
       en: "You can only add 25 scaling policies"
+      zh: ""
+
+    ASG_ARN:
+      en: "Auto Scaling Group ARN"
       zh: ""
 
     LC_TITLE:
@@ -2933,6 +2965,14 @@ module.exports =
       en: "Importing..."
       zh: ""
 
+    LBL_DISABLED:
+      en: "Disabled"
+      zh: ""
+
+    LBL_ENABLED:
+      en: "Enabled"
+      zh: ""
+
     LBL_PARAMETER_NAME:
       en: "Parameter Name"
       zh: ""
@@ -3075,6 +3115,34 @@ module.exports =
     CONFIRM_TO_DELETE_THIS_OPTION_GROUP_QUESTION:
       en: "Confirm to delete this option group?"
       zh: ""
+
+    STATIC_SUB_CHANGE_AMI:
+      en: "Change AMI"
+      zh: ""
+
+    DRAG_IMAGE_DROP_TO_CHANGE:
+      en: "Drag image from Resource Panel and drop below to change AMI."
+      zh: ""
+
+    DRAG_IMAGE_DROP_HERE:
+      en: "Drop AMI Here"
+      zh: ""
+
+    CONFIRM_CHANGE_AMI:
+      en: "Confirm Change AMI"
+      zh: ""
+
+    ROLLING_BACK:
+      en: "Rolling back..."
+      zh: ""
+
+    LBL_PROPERTY:
+      en: "Property"
+      zh: ""
+
+    LBL_STATE:
+      en: "States"
+
 
 
 

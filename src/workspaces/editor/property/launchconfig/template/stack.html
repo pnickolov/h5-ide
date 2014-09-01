@@ -66,12 +66,11 @@
 			</div>
 			<label for="property-instance-enable-cloudwatch">{{i18n "PROP.INSTANCE_CW_ENABLED"}}</label>
 
-			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP.INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP.INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">{{i18n "PROP.INSTANCE_WATCH_LINK_TEXT"}}</a></p>
 		</section>
 		<section class="property-control-group">
 			{{#if stackAgentEnable}}
-			<div class="property-info"> User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP.AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.
-			</div>
+			<div class="property-info">{{i18n "PROP.INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS"}}</div>
 			{{else}}
 				<label for="property-instance-user-data">{{i18n "PROP.INSTANCE_USER_DATA"}}</label>
 				<textarea id="property-instance-user-data">{{userData}}</textarea>

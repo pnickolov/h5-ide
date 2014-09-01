@@ -1,31 +1,31 @@
 <article>
   <dl class="dl-vertical">
-    <dt>{{ i18n "PROP_SG_APP_SG_NAME" }}</dt>
+    <dt>{{ i18n "PROP.SG_APP_SG_NAME" }}</dt>
     <dd>{{groupName}}</dd>
 
-    <dt>{{ i18n "PROP_SG_APP_SG_ID" }}</dt>
+    <dt>{{ i18n "PROP.SG_APP_SG_ID" }}</dt>
     <dd>{{groupId}}</dd>
 
-    <dt>{{ i18n "PROP_SG_DETAIL_LBL_DESCRIPTION" }}</dt>
+    <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
     <dd>{{description}}</dd>
 
-    <dt>{{ i18n "PROP_SG_APP_VPC_ID" }}</dt>
+    <dt>{{ i18n "PROP.SG_APP_VPC_ID" }}</dt>
     <dd>{{vpcId}}</dd>
   </dl>
 
-  <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
+  <div class="option-group-head expand">{{ i18n "PROP.SG_TIT_RULE" }}
     <span class="property-head-num-wrap">(<span id="rule-count">{{rules.length}}</span>)</span>
   </div>
   <div class="option-group">
 
     <div class="rule-list-sort property-control-group">
-      <h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
+      <h5>{{ i18n "PROP.SG_RULE_SORT_BY" }}</h5>
       <div class="selectbox" id="sg-rule-filter-select">
-        <div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
+        <div class="selection">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</div>
         <ul class="dropdown" tabindex="-1">
-          <li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
-          <li class="item" data-id="relation">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
-          <li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
+          <li class="item selected" data-id="direction">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</li>
+          <li class="item" data-id="relation">{{ i18n "PROP.SG_RULE_SORT_BY_SRC_DEST" }}</li>
+          <li class="item" data-id="protocol">{{ i18n "PROP.SG_RULE_SORT_BY_PROTOCOL" }}</li>
         </ul>
       </div>
     </div>
@@ -33,7 +33,7 @@
     <ul class="sg-rule-list property-list" id="sg-rule-list"></ul>
   </div>
 
-  <div class="option-group-head expand">{{ i18n "PROP_SG_TIT_MEMBER" }}
+  <div class="option-group-head expand">{{ i18n "PROP.SG_TIT_MEMBER" }}
     <span class="property-head-num-wrap">(<span>{{members.length}}</span>)</span>
   </div>
   <div class="option-group">

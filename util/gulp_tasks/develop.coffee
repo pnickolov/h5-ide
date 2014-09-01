@@ -230,7 +230,7 @@ StreamFuncs =
     assetBranch = StreamFuncs.throughLiveReload()
 
     # Branch Used to handle lang-source.js
-    langSrcBranch = langsrc()
+    langSrcBranch = langsrc.langCache()
 
     # Branch Used to handle coffee files
     coffeeBranch = StreamFuncs.throughCoffee()
@@ -239,7 +239,7 @@ StreamFuncs =
     templateBranch = StreamFuncs.throughHandlebars()
 
     # Setup compile branch
-    langeSrcBranchRegex   = /lang-source\.coffee/
+    langeSrcBranchRegex   = /lang-source\/.*\.coffee/
     coffeeBranchRegex     = /\.coffee$/
     templateBranchRegex   = /(\.partials)|(\.html)$/
 
@@ -344,6 +344,7 @@ compileDev = ()->
     null
 
   compileStream.once "end", ()->
+    langsrc.langWrite()
     Helper.compileCompass().then ( value )-> deferred.resolve()
 
   deferred.promise

@@ -1,18 +1,18 @@
 <article class="property-app">
-  <div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
+  <div class="option-group-head expand">{{i18n "PROP.LC_TITLE"}}</div>
   <div class="option-group">
 
     <dl class="dl-vertical">
-      <dt>{{i18n "PROP_LC_CREATE_TIME"}}</dt>
+      <dt>{{i18n "PROP.LC_CREATE_TIME"}}</dt>
       <dd>{{timeStr lc.CreatedTime}}</dd>
     </dl>
 
     <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_AMI"}}</dt>
+      <dt>{{i18n "PROP.INSTANCE_AMI"}}</dt>
       <dd>{{imageId}}<dd>
-      <dt>{{i18n "PROP_INSTANCE_TYPE"}}</dt>
+      <dt>{{i18n "PROP.INSTANCE_TYPE"}}</dt>
       <dd>{{instanceType}}</dd>
-      <dt>{{i18n "PROP_INSTANCE_KEY_PAIR"}}</dt>
+      <dt>{{i18n "PROP.INSTANCE_KEY_PAIR"}}</dt>
       {{#if app_view}}
       <dd>{{keyName}}</dd>
       {{else}}
@@ -21,29 +21,29 @@
     </dl>
 
     <dl class="dl-vertical">
-      <dt>{{i18n "PROP_INSTANCE_EBS_OPTIMIZED"}}</dt>
+      <dt>{{i18n "PROP.INSTANCE_EBS_OPTIMIZED"}}</dt>
       <dd>{{ebsOptimized}}<dd>
     </dl>
   </div>
 
   {{#if rootDevice}}
-  <div class="option-group-head">Root Device</div>
+  <div class="option-group-head">{{i18n "PROP.INSTANCE_ROOT_DEVICE"}}</div>
   <div class="option-group">
     <article class="property-app">
       <dl class="dl-vertical">
-        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_DEVICE_NAME"}}</dt>
         <dd>{{emptyStr rootDevice.DeviceName}}</dd>
       </dl>
       <dl class="dl-vertical">
-        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_TYPE"}}</dt>
         <dd>{{readableVt rootDevice.Ebs.VolumeType}}</dd>
         {{#if rootDevice.Ebs.SnapshotId}}
-        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_SNAPSHOT_ID"}}</dt>
         <dd>{{rootDevice.Ebs.SnapshotId}}</dd>
         {{/if}}
-        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_SIZE"}}</dt>
         <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
-<!--         <dt>{{i18n "PROP_VOLUME_ENCRYPTED"}}</dt>
+<!--         <dt>{{i18n "PROP.VOLUME_ENCRYPTED"}}</dt>
         <dd>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</dd> -->
         {{#if rootDevice.Ebs.Iops}}
         <dt>IOPS</dt>
@@ -54,6 +54,6 @@
   </div>
   {{/if}}
 
-  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head expand">{{i18n "PROP.INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 </article>

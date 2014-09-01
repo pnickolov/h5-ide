@@ -1,7 +1,7 @@
 {{#each networkAcls}}<li data-uid="{{uid}}">
-<div class="col3 edit icon-btn-details tooltip" data-tooltip='{{ i18n "PROP_STACK_ACL_TIP_DETAIL" }}' ></div>
+<div class="col3 edit icon-btn-details tooltip" data-tooltip='{{ i18n "PROP.STACK_ACL_TIP_DETAIL" }}' ></div>
 <div class="col2">
 	<div class="col2-1 truncate">{{name}}</div>
-	<div class="col2-2 truncate">{{rule}} {{ i18n "PROP_STACK_ACL_LBL_RULE" }}, {{association}} {{ i18n "PROP_STACK_ACL_LBL_ASSOC" }} {{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{association}}">{{ i18n "PROP_STACK_ACL_BTN_DELETE" }}</a>{{/if}} </div>
+	<div class="col2-2 truncate">{{rule}} {{ i18n "PROP.STACK_ACL_LBL_RULE" }}, {{association}} {{ i18n "PROP.STACK_ACL_LBL_ASSOC" }} {{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{association}}">{{ i18n "PROP.STACK_ACL_BTN_DELETE" }}</a>{{/if}} </div>
 </div>
 </li>{{/each}}

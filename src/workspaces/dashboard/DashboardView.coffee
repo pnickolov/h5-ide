@@ -261,7 +261,7 @@ define [
 
     importJson : ()->
       modal = new Modal {
-        title         : lang.ide.POP_IMPORT_JSON_TIT
+        title         : lang.IDE.POP_IMPORT_JSON_TIT
         template      : tplPartials.importJSON()
         width         : "470"
         disableFooter : true
@@ -278,7 +278,7 @@ define [
         null
 
       reader.onerror = ()->
-        $("#import-json-error").html lang.ide.POP_IMPORT_ERROR
+        $("#import-json-error").html lang.IDE.POP_IMPORT_ERROR
         null
 
       hanldeFile = ( evt )->
@@ -350,7 +350,7 @@ define [
       , 60*8*1000 + 1000
 
       @visModal = new Modal {
-        title         : "Import Existing VPC as App"
+        title         : lang.IDE.DASH_IMPORT_VPC_AS_APP
         width         : "770"
         template      : VisualizeVpcTpl( attributes )
         disableFooter : true
@@ -427,139 +427,139 @@ define [
       switch type
         when "SUBSCRIPTION"
           return {
-            title    : data.Endpoint
-            Endpoint : data.Endpoint
-            Owner    : data.Owner
-            Protocol : data.Protocol
-            "Subscription ARN" : data.SubscriptionArn
-            "Topic ARN" : data.TopicArn
+            DASH_LBL_TITLE    : data.Endpoint
+            DASH_LBL_ENDPOINT : data.Endpoint
+            DASH_LBL_OWNER   : data.Owner
+            DASH_LBL_PROTOCOL : data.Protocol
+            DASH_LBL_SUBSCRIPTION_ARN : data.SubscriptionArn
+            DASH_LBL_TOPIC_ARN : data.TopicArn
           }
         when "VPC"
           return {
-            State   : data.state
-            CIDR    : data.cidrBlock
-            Tenancy : data.instanceTenancy
+            DASH_LBL_STATE   : data.state
+            DASH_LBL_CIDR    : data.cidrBlock
+            DASH_LBL_TENANCY : data.instanceTenancy
           }
         when "ASG"
           return {
-            "title" : data.Name
-            "Name"  : data.Name
-            "Availability Zone" : data.AvailabilityZones.join(", ")
-            "Create Time" : data.CreatedTime
-            "Default Cooldown" : data.DefaultCooldown
-            "Desired Capacity" : data.DesiredCapacity
-            "Max Size"         : data.MaxSize
-            "Min Size"         : data.MinSize
-            "HealthCheck Grace Period" : data.HealthCheckGracePeriod
-            "Health Check Type" : data.HealthCheckType
+            DASH_LBL_TITLE : data.Name
+            DASH_BUB_NAME : data.Name
+            DASH_LBL_AVAILABILITY_ZONE : data.AvailabilityZones.join(", ")
+            DASH_LBL_CREATE_TIME : data.CreatedTime
+            DASH_LBL_DEFAULT_COOLDOWN : data.DefaultCooldown
+            DASH_LBL_DESIRED_CAPACITY : data.DesiredCapacity
+            DASH_LBL_MAX_SIZE        : data.MaxSize
+            DASH_LBL_MIN_SIZE       : data.MinSize
+            DASH_LBL_HEALTH_CHECK_GRACE_PERIOD : data.HealthCheckGracePeriod
+            DASH_LBL_HEALTH_CHECK_TYPE : data.HealthCheckType
             #Instance : data.Instances
-            "Launch Configuration" : data.LaunchConfigurationName
-            "Termination Policy"   : data.TerminationPolicies.join(", ")
-            "Arn"   : data.id
+            DASH_LBL_LAUNCH_CONFIGURATION_NAME : data.LaunchConfigurationName
+            DASH_LBL_TERMINATION_POLICIES   : data.TerminationPolicies.join(", ")
+            DASH_LBL_AUTOSCALING_GROUP_ARN   : data.id
           }
         when "ELB"
           return {
-            "Availability Zone"       : data.AvailabilityZones.join(", ")
-            "Create Time"             : data.CreatedTime
-            "DNSName"                 : data.DNSName
-            "Health Check"            : @formartDetail('HealthCheck', [data.HealthCheck], "Health Check", true)
-            "Instance"                : data.Instances.join(", ")
-            "Listener Descriptions"   : @formartDetail('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
-            "Security Groups"         : data.SecurityGroups.join(", ")
-            Subnets                   : data.Subnets.join(", ")
+            DASH_LBL_AVAILABILITY_ZONE      : data.AvailabilityZones.join(", ")
+            DASH_LBL_CREATE_TIME            : data.CreatedTime
+            DASH_LBL_DNS_NAME               : data.DNSName
+            DASH_LBL_HEALTH_CHECK           : @formartDetail('HealthCheck', [data.HealthCheck], "Health Check", true)
+            DASH_LBL_INSTANCE               : data.Instances.join(", ")
+            DASH_LBL_LISTENER_DESC          : @formartDetail('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
+            DASH_LBL_SECURITY_GROUPS        : data.SecurityGroups.join(", ")
+            DASH_LBL_SUBNETS                : data.Subnets.join(", ")
           }
         when "VPN"
           return {
-            State    : data.state
-            "VGW Id" : data.vpnGatewayId
-            "CGW Id" : data.customerGatewayId
-            Type     : data.type
+            DASH_LBL_STATE    : data.state
+            DASH_LBL_VGW_ID : data.vpnGatewayId
+            DASH_LBL_CGW_ID : data.customerGatewayId
+            DASH_LBL_TYPE     : data.type
           }
         when "VOL"
           return {
-            "Volume ID"         : data.id
-            "Device Name"       : data.device
-            "Snapshot ID"       : data.snapshotId
-            "Volume Size(GiB)"  : data.size
-            "Status"            : data.status
-            "Instance Id"       : data.instanceId
-            'Delete on Termination' : data.deleteOnTermination
-            "Availability Zone" : data.availabilityZone
-            "Volume Type"       : data.volumeType
-            "Create Time"       : data.createTime
-            "Attach Time"       : data.attachTime
+            DASH_LBL_VOLUME_ID        : data.id
+            DASH_LBL_DEVICE_NAME       : data.device
+            DASH_LBL_SNAPSHOT_ID       : data.snapshotId
+            DASH_LBL_VOLUME_SIZE  : data.size
+            DASH_LBL_STATUS            : data.status
+            DASH_LBL_INSTANCE_ID       : data.instanceId
+            DASH_LBL_DELETE_ON_TERM : data.deleteOnTermination
+            DASH_LBL_AVAILABILITY_ZONE : data.availabilityZone
+            DASH_LBL_VOLUME_TYPE       : data.volumeType
+            DASH_LBL_CREATE_TIME       : data.createTime
+            DASH_LBL_ATTACH_TIME       : data.attachTime
           }
         when "INSTANCE"
           return {
-            Status               : data.instanceState.name
-            Monitoring           : data.monitoring.state
-            "Primary Private IP" : data.privateIpAddress
-            "Private DNS"        : data.privateDnsName
-            "Launch Time"        : data.launchTime
-            "Availability Zone"  : data.placement.availabilityZone
-            "AMI Launch Index"   : data.amiLaunchIndex
-            "Instance Type"      : data.instanceType
-            "Block Device Type"  : data.rootDeviceType
-            "Block Devices"      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
-            "Network Interface"  : if data.networkInterfaceSet then @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
+            DASH_LBL_STATUS             : data.instanceState.name
+            DASH_LBL_MONITORING         : data.monitoring.state
+            DASH_LBL_PRIMARY_PRIVATE_IP : data.privateIpAddress
+            DASH_LBL_PRIVATE_DNS        : data.privateDnsName
+            DASH_LBL_LAUNCH_TIME        : data.launchTime
+            DASH_LBL_AVAILABILITY_ZONE  : data.placement.availabilityZone
+            DASH_LBL_AMI_LAUNCH_INDEX   : data.amiLaunchIndex
+            DASH_LBL_INSTANCE_TYPE      : data.instanceType
+            DASH_LBL_BLOCK_DEVICE_TYPE  : data.rootDeviceType
+            DASH_LBL_BLOCK_DEVICES      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
+            DASH_LBL_NETWORK_INTERFACE  : if data.networkInterfaceSet then @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
           }
         when 'EIP'
             result = {
-                'Public IP' : data.publicIp
-                'Domain'    : data.domain
-                'Allocation ID' : data.id
-                'Category'  : data.category
-                'title'     : data.publicIp
+                DASH_LBL_PUBLIC_IP : data.publicIp
+                DASH_LBL_DOMAIN    : data.domain
+                DASH_LBL_ALLOCATION_ID : data.id
+                DASH_LBL_CATEGORY  : data.category
+                DASH_LBL_TITLE     : data.publicIp
             }
             if data.associationId
-                result['Association Id'] = data.associationId
+                result.DASH_LBL_ASSOCIATION_ID = data.associationId
             if data.networkInterfaceId
-                result['NetworkInterface Id'] = data.networkInterfaceId
+                result.DASH_LBL_NETWORK_INTERFACE_ID = data.networkInterfaceId
             if data.instanceId
-                result['Instance Id'] = data.instanceId
+                result.DASH_LBL_INSTANCE_ID = data.instanceId
             if data.privateIpAddresse
-                result['Private Ip Address'] = data.privateIpAddresses
+                result.DASH_LBL_PRIVATE_IP_ADDRESS = data.privateIpAddresses
             return result
         when 'CW'
             return {
-                'Alarm Name'        : data.Name
-                'Comparison Operator': data.ComparisonOperator
-                'Dimensions'        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
-                'Evaluation Periods': data.EvaluationPeriods
-                'Insufficient Data Actions': data.InsufficientDataActions
-                'Metric Name'       : data.MetricName
-                "Name Space"        : data.Namespace
-                'OK Actions'        : data.OKActions
-                'Period'            : data.Period
-                'State Reason'      : data.StateReason
-                'State Updated Timestamp': data.StateUpdatedTimestamp
-                'State Value'       : data.StateValue
-                'Statistic'         : data.Statistic
-                'Threshold'         : data.Threshold
-                'Category'          : data.category
-                'title'             : data.Name
-                'Actions Enabled'   : if data.ActionsEnabled then "true" else 'false'
-                'Alarm Actions'     : data.AlarmActions.member
-                'Alarm Arn'         : data.id
+                DASH_LBL_ALARM_NAME        : data.Name
+                DASH_LBL_COMPARISON_OPERATOR: data.ComparisonOperator
+                DASH_LBL_DIMENSIONS        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
+                DASH_LBL_EVALUATION_PERIODS: data.EvaluationPeriods
+                DASH_LBL_INSUFFICIENT_DATA_ACTIONS: data.InsufficientDataActions
+                DASH_LBL_METRIC_NAME      : data.MetricName
+                DASH_LBL_NAMESPACE        : data.Namespace
+                DASH_LBL_OK_ACTIONS        : data.OKActions
+                DASH_LBL_PERIOD            : data.Period
+                DASH_LBL_STATE_REGION      : data.StateReason
+                DASH_LBL_STATE_UPDATED_TIMESTAMP: data.StateUpdatedTimestamp
+                DASH_LBL_STATE_VALUE        : data.StateValue
+                DASH_LBL_STATISTIC         : data.Statistic
+                DASH_LBL_THRESHOLD         : data.Threshold
+                DASH_LBL_CATEGORY          : data.category
+                DASH_LBL_TITLE             : data.Name
+                DASH_LBL_ACTIONS_ENABLED   : if data.ActionsEnabled then "true" else 'false'
+                DASH_LBL_ALARM_ACTIONS     : data.AlarmActions.member
+                DASH_LBL_ALARM_ARN         : data.id
             }
         when "DBINSTANCE"
             json =  {
-              "Status"    : data.DBInstanceStatus
-              "Endpoint"  : data.Endpoint.Address + "" + data.Endpoint.Port
-              "Engine"    : data.Engine
-              "DB Name":    data.name || data.Name || data.DBName || "None"
-              "Option Group": data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
-              "Parameter Group": data.DBParameterGroups?.DBParameterGroupName || "None"
-              "Availability Zone": data.AvailabilityZone
-              "Subnet Group": data.sbgId || "None"
-              "Publicly Accessible": data.PubliclyAccessible.toString()
-              "IOPS": data.Iops || "OFF"
-              "Multi AZ": data.MultiAZ.toString()
-              "Automated Backup": data.AutoMinorVersionUpgrade
-              "Latest Restore Time": data.LatestRestorableTime
-              "Auto Minor Version Upgrade": data.AutoMinorVersionUpgrade
-              "Maintenance Window": data.PreferredMaintenanceWindow
-              "Backup Window": data.PreferredBackupWindow
+              DASH_LBL_STATUS    : data.DBInstanceStatus
+              DASH_LBL_ENDPOINT  : data.Endpoint.Address + "" + data.Endpoint.Port
+              DASH_LBL_ENGINE    : data.Engine
+              DASH_LBL_DB_NAME:    data.name || data.Name || data.DBName || "None"
+              DASH_LBL_OPTION_GROUP: data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
+              DASH_LBL_PARAMETER_GROUP: data.DBParameterGroups?.DBParameterGroupName || "None"
+              DASH_LBL_AVAILABILITY_ZONE : data.AvailabilityZone
+              DASH_LBL_SUBNET_GROUP: data.sbgId || "None"
+              DASH_LBL_PUBLICLY_ACCESSIBLE: data.PubliclyAccessible.toString()
+              DASH_LBL_IOPS: data.Iops || "OFF"
+              DASH_LBL_MULTI_AZ: data.MultiAZ.toString()
+              DASH_LBL_AUTOMATED_BACKUP: data.AutoMinorVersionUpgrade
+              DASH_LBL_LATEST_RESTORE_TIME: data.LatestRestorableTime
+              DASH_LBL_AUTO_MINOR_VERSION_UPGRADE: data.AutoMinorVersionUpgrade
+              DASH_LBL_MAINTENANCE_WINDOW: data.PreferredMaintenanceWindow
+              DASH_LBL_BACKUP_WINDOW: data.PreferredBackupWindow
             }
             return json
     # some format to the data so it can show in handlebars template

@@ -16,51 +16,51 @@
 <!-- {{slide_create}} -->
 <div class="slide-create" data-bind="true">
     <div class="before-create">
-        <label for="create-kp-name">Key Pair Name</label>
+        <label for="create-kp-name">{{i18n "PROP.KP_NAME"}}</label>
         <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
     </div>
-    <div class="after-create hide">Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created.</div>
+    <div class="after-create hide">{{{i18n "PROP.KP_CREATED_NEED_TO_DOWNLAOD"}}}</div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="create">Create</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-blue do-action" data-action="create">{{i18n "PROP.LBL_CREATE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Creating...</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>
     </div>
     <div class="download action" style="display:none;">
-        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">Download</a>
-        <button class="btn btn-silver cancel" disabled>Close</button>
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">{{i18n "PROP.LBL_DOWNLOAD"}}</a>
+        <button class="btn btn-silver cancel" disabled>{{i18n "PROP.LBL_CLOSE"}}</button>
     </div>
 </div>
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}{{selecteKeyName}}{{else}}selected {{selectedCount}} key pairs{{/if}}?</div>
+    <div class="modal-text-major">{{i18n "PROP.KP_CONFIRM_DELETE_1"}} {{#if selecteKeyName }}{{selecteKeyName}}{{else}}{{i18n "PROP.KP_CONFIRM_DELETE_2"}} {{selectedCount}} {{i18n "PROP.KP_CONFIRM_DELETE_3"}}{{/if}}?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
     </div>
 </div>
 <!-- {{slide_import}} -->
 <div class="slide-import" data-bind="true">
-    <label for="import-kp-name">Key Pair Name</label>
+    <label for="import-kp-name">{{i18n "PROP.KP_NAME"}}</label>
     <input class="input" type="text" id="import-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters">
     <div class="import-zone">
 
     </div>
     <div class="init action">
-        <button class="btn" disabled>Import</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_IMPORT"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="ready action" style="display:none;">
-        <button class="btn btn-blue do-action" data-action="import">Import</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-blue do-action" data-action="import">{{i18n "PROP.LBL_IMPORT"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Importing...</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_IMPORTING"}}</button>
     </div>
 </div>
 
@@ -68,9 +68,9 @@
 <div class="upload-kp-component drop-zone">
     <p class="upload-stuff">
         Drop {{type}},
-        <label for="modal-import" class="select-file-link">select a file</label>
-        <span class="display-empty">or paste the key content here.</span>
-        <span class="display-filled" style="display:none;">or paste the key content again to update.</span>
+        <label for="modal-import" class="select-file-link">{{i18n "PROP.KP_SELECT_A_FILE"}}</label>
+        <span class="display-empty">{{i18n "PROP.KP_OR_PASTE_KEY_CONTENT"}}</span>
+        <span class="display-filled" style="display:none;">{{i18n "PROP.KP_OR_PASTE_TO_UPDATE"}}</span>
         <input type="file" id="modal-import">
     </p>
     <p class="key-content"></p>

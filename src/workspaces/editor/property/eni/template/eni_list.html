@@ -1,32 +1,32 @@
 {{#if group}}
 {{#unless group.length}}
-<div class="option-group-head {{#if readOnly}}expand{{/if}}">Network Interface Summary</div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">{{i18n "PROP.ENI_NETWORK_INTERFACE_SUMMARY"}}</div>
 <div class="option-group">
   <dl class="dl-vertical">
-    <dt>{{i18n "PROP_ENI_DEVICE_NAME"}}</dt>
+    <dt>{{i18n "PROP.ENI_DEVICE_NAME"}}</dt>
     <dd>{{group.name}}</dd>
-    <dt>{{i18n "PROP_ENI_ID"}}</dt>
+    <dt>{{i18n "PROP.ENI_ID"}}</dt>
     <dd>{{group.appId}}</dd>
-    <dt>{{i18n "PROP_ENI_STATE"}}</dt>
+    <dt>{{i18n "PROP.ENI_STATE"}}</dt>
     <dd><i class="status status-{{group.status}}"></i>{{group.status}}</dd>
     {{#if group.description}}
-    <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
+    <dt>{{i18n "PROP.DESCRIPTION"}}</dt>
     <dd>{{group.desc}}</dd>
     {{/if}}
-    <dt>{{i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
+    <dt>{{i18n "PROP.INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
     <dd>{{group.sourceDestCheck}}</dd>
   </dl>
 <div>
 
 {{else}}
-<div class="option-group-head {{#if readOnly}}expand{{/if}}">Network Interface Group Members<span class="property-head-num-wrap">({{group.length}})</span> <span class="appedit-head-meta appedit-head-meta-add">{{group.increment}}</span></div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">{{i18n "PROP.ENI_NETWORK_INTERFACE_GROUP_MEMBERS"}}<span class="property-head-num-wrap">({{group.length}})</span><span class="appedit-head-meta appedit-head-meta-add">{{group.increment}}</span></div>
 <ul class="option-group property-list">
   {{#each group}}
     <li>
       <i class="status status-{{status}} icon-label tooltip" data-tooltip="{{status}}"></i>{{name}}
       {{#if appId}}<span class="subtitle">({{appId}})</span>{{/if}}
-      {{#if isNew}}<div class="subtitle subtitle-launch">Create after applying updates</div>
-      {{else}}{{#if isOld}}<div class="subtitle subtitle-terminate">Delete after applying updates</div>{{/if}}
+      {{#if isNew}}<div class="subtitle subtitle-launch">{{i18n "PROP.ENI_CREATE_AFTER_APPLYING_UPDATES"}}</div>
+      {{else}}{{#if isOld}}<div class="subtitle subtitle-terminate">{{i18n "PROP.ENI_DELETE_AFTER_APPLYING_UPDATES"}}</div>{{/if}}
       {{/if}}
     </li>
   {{/each}}

@@ -2,8 +2,8 @@
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 	<div id="VisualizeVpcDialog" class="scroll-content">
 {{#if fail}}
-<div class="unmanaged-vpc-empty">Oops, loading VPC failed.
-	<button class="btn btn-blue" id="VisualizeReload">Retry</button>
+<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_LOADING_VPC_FAILED"}}
+	<button class="btn btn-blue" id="VisualizeReload">{{i18n "DASH_POP_BTN_RETRY"}}</button>
 </div>
 <div class="loading-spinner hide"></div>
 {{else}}
@@ -17,19 +17,19 @@
 					{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
 					<h5>{{#if name}}{{name}} <span>({{id}})</span>{{else}}{{id}}{{/if}}</h5>
 					<ol class="tac">
-						<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">subnet</span></li>
-						<li class="visualize-res"><div class="vis-res-num">{{ami.length}}</div><span class="vis-res-name">running instance</span></li>
-						<li class="visualize-res"><div class="vis-res-num">{{stopped.length}}</div><span class="vis-res-name">stopped instance</span></li>
-						<li class="visualize-res"><div class="vis-res-num">{{eni.length}}</div><span class="vis-res-name">network interface</span></li>
-						<li class="visualize-res"><div class="vis-res-num">{{eip.length}}</div><span class="vis-res-name">elastic ip</span></li>
-						<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">load balancer</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_SUBNETS"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{ami.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{stopped.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_STOPPED_INSTANCE"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{eni.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_NETWORK_INTERFACE"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{eip.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span></li>
 					</ol>
-					<button class="btn btn-blue visualize-vpc-btn{{#if username}} tooltip disabled{{/if}}" {{#if username}}data-tooltip="This VPC was imported by {{username}}"{{/if}} data-vpcid="{{id}}">{{#if username}}Already Imported{{else}}Import{{/if}}</button>
+					<button class="btn btn-blue visualize-vpc-btn{{#if username}} tooltip disabled{{/if}}" {{#if username}}data-tooltip="This VPC was imported by {{username}}"{{/if}} data-vpcid="{{id}}">{{#if username}}{{i18n "DASH_TPL_ALREADY_IMPORTED"}}{{else}}{{i18n "DASH_TPL_TO_IMPORT"}}{{/if}}</button>
 				</li>
 				{{/each}}
 			</ul>
 		</section>{{/if}}
-		{{else}}<div class="unmanaged-vpc-empty">There is no VPC to import.</div>{{/each}}
+		{{else}}<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_NO_VPC_TO_IMPORT"}}</div>{{/each}}
 	{{/unless}}
 
 {{/if}}

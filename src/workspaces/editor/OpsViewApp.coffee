@@ -47,13 +47,13 @@ define [
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
-              return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+              return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
 
             apps = App.model.appList().where({name:val})
             if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
               return
 
-            sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'App', val
+            sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'App', val
 
           if not $ipt.parsley 'validate'
             return

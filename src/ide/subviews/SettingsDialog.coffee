@@ -46,12 +46,12 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           awsAccessKey : App.user.get("awsAccessKey")
           awsSecretKey : App.user.get("awsSecretKey")
 
-          credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
+          credRemoveTitle : sprintf lang.IDE.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
           credNeeded : !!App.model.appList().length
 
         @modal = new Modal {
           template: SettingsTpl attributes
-          title: lang.ide.HEAD_LABEL_SETTING
+          title: lang.IDE.HEAD_LABEL_SETTING
           disableFooter: true
           compact: true
           width: "490px"
@@ -67,7 +67,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           if tab is SettingsDialog.TAB.CredentialInvalid
             @showCredSetup()
             @modal.tpl.find(".modal-close").hide()
-            @modal.tpl.find("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+            @modal.tpl.find("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_VALIDATE
 
           if tab < 0 then tab = Math.abs( tab )
 
@@ -84,7 +84,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           awsAccessKey : App.user.get("awsAccessKey")
           awsSecretKey : App.user.get("awsSecretKey")
 
-          credRemoveTitle : sprintf lang.ide.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
+          credRemoveTitle : sprintf lang.IDE.SETTINGS_CRED_REMOVE_TIT, App.user.get("username")
 
         @modal.setContent SettingsTpl attributes
         @modal.$("#SettingsNav").children().eq( SettingsDialog.TAB.Credential ).click()
@@ -128,7 +128,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
         new_pwd = @modal.$("#AccountNewPwd").val() || ""
         if new_pwd.length < 6
-          @modal.$('#AccountInfo').text lang.ide.SETTINGS_ERR_INVALID_PWD
+          @modal.$('#AccountInfo').text lang.IDE.SETTINGS_ERR_INVALID_PWD
           return
 
         @modal.$("#AccountInfo").empty()
@@ -136,14 +136,14 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
 
         App.user.changePassword( old_pwd, new_pwd ).then ()->
-          notification 'info', lang.ide.SETTINGS_UPDATE_PWD_SUCCESS
+          notification 'info', lang.NOTIFY.SETTINGS_UPDATE_PWD_SUCCESS
           $("#AccountCancelPwd").click()
           return
         , ( err )->
           if err.error is 2
-            that.modal.$('#AccountInfo').html "#{lang.ide.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.ide.SETTINGS_INFO_FORGET_PWD}</a>"
+            that.modal.$('#AccountInfo').html "#{lang.IDE.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.IDE.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            that.modal.$('#AccountInfo').text lang.ide.SETTINGS_UPDATE_PWD_FAILURE
+            that.modal.$('#AccountInfo').text lang.NOTIFY.SETTINGS_UPDATE_PWD_FAILURE
 
           that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
@@ -180,18 +180,18 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         $("#AccountUpdateEmail").attr "disabled", "disabled"
 
         App.user.changeEmail( email, pwd ).then ()->
-          notification 'info', lang.ide.SETTINGS_UPDATE_EMAIL_SUCCESS
+          notification 'info', lang.NOTIFY.SETTINGS_UPDATE_EMAIL_SUCCESS
           $("#AccountCancelEmail").click()
           $(".accountEmailRO").children("span").text( App.user.get("email") )
           return
         , ( err )->
           switch err.error
             when 116
-              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL3
+              text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL3
             when 117
-              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL2
+              text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL2
             else
-              text = lang.ide.SETTINGS_UPDATE_EMAIL_FAIL1
+              text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL1
 
           $('#AccountEmailInfo').text text
           $("#AccountUpdateEmail").removeAttr "disabled"
@@ -228,7 +228,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.updateCredSettings()
           return
         , ()->
-          self.modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_REMOVE
+          self.modal.$("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_REMOVE
           self.modal.$("#modal-box .modal-close").show()
           self.showCredSetup()
         return
@@ -259,7 +259,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.setCred()
           return
         , ()->
-          self.modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+          self.modal.$("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_VALIDATE
           self.modal.$("#modal-box .modal-close").show()
           self.showCredSetup()
           return
@@ -286,7 +286,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           return
 
       showCredUpdateFail : ()->
-        @modal.$("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
+        @modal.$("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_UPDATE
         @modal.$("#modal-box .modal-close").show()
         @showCredSetup()
 
@@ -320,7 +320,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         @rmToken = $p.children(".tokenToken").text()
         @modal.$("#TokenManager").hide()
         @modal.$("#TokenRmConfirm").show()
-        @modal.$("#TokenRmTit").text( sprintf lang.ide.SETTINGS_CONFIRM_TOKEN_RM_TIT, name )
+        @modal.$("#TokenRmTit").text( sprintf lang.IDE.SETTINGS_CONFIRM_TOKEN_RM_TIT, name )
         return
 
       createToken : ()->
@@ -331,7 +331,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.updateTokenTab()
           self.modal.$("#TokenCreate").removeAttr "disabled"
         , ()->
-          notification "error", "Fail to create token, please retry."
+          notification "error", lang.NOTIFY.FAIL_TO_CREATE_TOKEN
           self.modal.$("#TokenCreate").removeAttr "disabled"
         return
 
@@ -356,7 +356,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           # If anything goes wrong, revert the name
           oldName = ""
           $p.children(".tokenName").val( oldName )
-          notification "error", "Fail to update token, please retry."
+          notification "error", lang.NOTIFY.FAIL_TO_UPDATE_TOKEN
         return
 
       confirmRmToken : ()->
@@ -367,7 +367,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           self.updateTokenTab()
           self.cancelRmToken()
         , ()->
-          notification "Fail to delete token, please retry."
+          notification lang.NOTIFY.FAIL_TO_DELETE_TOKEN
           self.cancelRmToken()
 
         return

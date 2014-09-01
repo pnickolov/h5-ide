@@ -56,7 +56,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n        <button class=\"btn modal-close btn-silver\">Cancel</button>\n    </div>\n</div>";
+    + "</button>\n        <button class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalAppToStack=Handlebars.template(__TEMPLATE__);
@@ -178,7 +180,7 @@ function program13(depth0,data) {
   buffer += ">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
     + "</button>\n	</div>\n</div>";
   return buffer;
   };
@@ -203,7 +205,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOL_POP_BTN_CANCEL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
     + "</button>\n	</div>\n</div>";
   return buffer;
   };
@@ -600,14 +602,26 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<section id=\"modal-run-stack\">\n	<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n		<label class=\"label\" for=\"app-name\">App Name</label>\n		<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+  buffer += "<section id=\"modal-run-stack\">\n	<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n		<label class=\"label\" for=\"app-name\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_NAME", {hash:{},data:data}))
+    + "</label>\n		<input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n		<div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n	</div>\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n	<div class=\"modal-control-group app-usage-group clearfix\">\n		<label for=\"\">App Usage</label>\n		<div id=\"app-usage-selectbox\" class=\"selectbox\">\n			<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n				<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n				<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n				<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n			</ul>\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>Stack Validation</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>Validating your stack...</p>\n		</div>\n	</div>\n	<div class=\"estimate clearfix\">\n		<span class=\"title\">Estimated Cost</span>\n		<span class=\"price\" id=\"label-total-fee\"><b>$"
+    + "\" data-ignore=\"true\">\n		<div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n	</div>\n	<div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n		<label for=\"\">$DefaultKeyPair</label>\n		<div id=\"kp-runtime-placeholder\"></div>\n		<div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n	</div>\n	<div class=\"modal-control-group app-usage-group clearfix\">\n		<label for=\"\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_USAGE", {hash:{},data:data}))
+    + "</label>\n		<div id=\"app-usage-selectbox\" class=\"selectbox\">\n			<div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n				<li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n				<li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n				<li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n			</ul>\n		</div>\n	</div>\n	<div class=\"stack-validation\">\n		<details open style=\"display:none;\">\n			<summary>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.STACK_VALIDATION", {hash:{},data:data}))
+    + "</summary>\n			<div id=\"stack-run-validation-container\"></div>\n		</details>\n		<div class=\"nutshell\">:<label></label></div>\n		<div class=\"validating\">\n			<div class=\"loading-spinner loading-spinner-small\"></div>\n			<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.VALIDATING_STACK", {hash:{},data:data}))
+    + "</p>\n		</div>\n	</div>\n	<div class=\"estimate clearfix\">\n		<span class=\"title\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.ESTIMATED_COST", {hash:{},data:data}))
+    + "</span>\n		<span class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</span>\n	</div>\n</section>";
+    + "</b>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.PER_MONTH", {hash:{},data:data}))
+    + "</span>\n	</div>\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -637,11 +651,11 @@ function program1(depth0,data,depth1) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += escapeExpression(((stack1 = (depth0 && depth0.relation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n</div>\n<div class=\"rule-list-row\">\n	<div><span class=\"rule-protocol tooltip\" data-tooltip='"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_SG_TIP_PROTOCOL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_PROTOCOL", {hash:{},data:data}))
     + "' >"
     + escapeExpression(((stack1 = (depth0 && depth0.protocol)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span></div>\n	<div class='rule-port tooltip' data-tooltip='"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_SG_TIP_PORT_CODE", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_PORT_CODE", {hash:{},data:data}))
     + "'>"
     + escapeExpression(((stack1 = (depth0 && depth0.port)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n</div>\n";
@@ -678,13 +692,13 @@ function program4(depth0,data) {
 function program6(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_SG_TIP_INBOUND", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_INBOUND", {hash:{},data:data}));
   }
 
 function program8(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_SG_TIP_OUTBOUND", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_OUTBOUND", {hash:{},data:data}));
   }
 
 function program10(depth0,data) {
@@ -712,7 +726,7 @@ function program16(depth0,data) {
   
   var buffer = "";
   buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip\" data-tooltip='"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_SG_TIP_REMOVE_RULE", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_REMOVE_RULE", {hash:{},data:data}))
     + "'></a>";
   return buffer;
   }
@@ -815,13 +829,13 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_INSTANCE_IP_MSG_2", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_2", {hash:{},data:data}));
   }
 
 function program4(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_INSTANCE_IP_MSG_1", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_1", {hash:{},data:data}));
   }
 
 function program6(depth0,data) {
@@ -839,13 +853,13 @@ function program8(depth0,data) {
 function program10(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_INSTANCE_IP_MSG_4", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_4", {hash:{},data:data}));
   }
 
 function program12(depth0,data) {
   
   
-  return escapeExpression(helpers.i18n.call(depth0, "PROP_INSTANCE_IP_MSG_3", {hash:{},data:data}));
+  return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_3", {hash:{},data:data}));
   }
 
 function program14(depth0,data) {
@@ -1560,23 +1574,23 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
   buffer += "<div style=\"width:343px\" id=\"modal-ssl-cert-setting\">\n	<div class=\"modal-header\"><h3>Server Certificate</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_LBL_LISTENER_NAME", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_NAME", {hash:{},data:data}))
     + "</label>\n			<input class=\"input\" value=\""
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" type=\"text\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-name-input\"/>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_LBL_LISTENER_PRIVATE_KEY", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_PRIVATE_KEY", {hash:{},data:data}))
     + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-privatekey-input\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.key)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</textarea>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\"  >"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_LBL_LISTENER_PUBLIC_KEY", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_PUBLIC_KEY", {hash:{},data:data}))
     + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-publickey-input\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</textarea>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\"  >"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN", {hash:{},data:data}))
     + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" id=\"elb-ssl-cert-chain-input\">"
@@ -1671,12 +1685,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
   buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_TITLE", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_TITLE", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_MAIN", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_MAIN", {hash:{},data:data}))
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
     + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
   return buffer;
   };
@@ -1794,7 +1808,7 @@ function program1(depth0,data) {
   buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" readonly/>\n	<span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "PROP_ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\"\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\"\"></button>\n		<button class=\"btn btn-blue tokenDone\">"

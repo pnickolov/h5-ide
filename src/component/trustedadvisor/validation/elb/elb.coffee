@@ -19,7 +19,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW, elbName
+			tipInfo = sprintf lang.TA.ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -47,7 +47,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
+			tipInfo = sprintf lang.TA.ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -63,7 +63,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_NO_ATTACH_TO_MULTI_AZ, elbName
+			tipInfo = sprintf lang.TA.WARNING_ELB_NO_ATTACH_TO_MULTI_AZ, elbName
 			# return
 			level: constant.TA.WARNING
 			info: tipInfo
@@ -88,7 +88,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_NOTICE_ELB_REDIRECT_PORT_443_TO_443, elbName
+			tipInfo = sprintf lang.TA.NOTICE_ELB_REDIRECT_PORT_443_TO_443, elbName
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo
@@ -135,7 +135,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM, elbName
+			tipInfo = sprintf lang.TA.ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -159,7 +159,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			return null
 		else
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_HAVE_NO_SSL_CERT, elbName
+			tipInfo = sprintf lang.TA.ERROR_ELB_HAVE_NO_SSL_CERT, elbName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo
@@ -192,7 +192,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		if not result
 
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER, elbName, resultPortAry.join(', ')
+			tipInfo = sprintf lang.TA.ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER, elbName, resultPortAry.join(', ')
 
 			return {
 				level: constant.TA.WARNING
@@ -227,7 +227,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		if not result
 
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER, elbName, resultPortAry.join(', ')
+			tipInfo = sprintf lang.TA.ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER, elbName, resultPortAry.join(', ')
 
 			return {
 				level: constant.TA.WARNING
@@ -276,7 +276,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 					targetType = 'Instance'
 					targetName = instanceComp.serverGroupName
 					portInfo = resultPortAry.join(', ')
-					tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER, targetType, targetName, portInfo, elbName
+					tipInfo = sprintf lang.TA.ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER, targetType, targetName, portInfo, elbName
 
 					resultAry.push({
 						level: constant.TA.WARNING
@@ -326,7 +326,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 				targetType = 'Launch Configuration'
 				targetName = lcComp.name
 				portInfo = resultPortAry.join(', ')
-				tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER, targetType, targetName, portInfo, elbName
+				tipInfo = sprintf lang.TA.ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER, targetType, targetName, portInfo, elbName
 
 				resultAry.push({
 					level: constant.TA.WARNING
@@ -362,7 +362,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		if not isInRange
 
 			elbName = elbComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT, elbName, pingPort
+			tipInfo = sprintf lang.TA.WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT, elbName, pingPort
 
 			return {
 				level: constant.TA.WARNING
@@ -394,7 +394,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 				if suffixNum > 27
 
-					tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27, elbName, subnetName
+					tipInfo = sprintf lang.TA.ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27, elbName, subnetName
 
 					resultAry.push({
 						level: constant.TA.ERROR
@@ -472,7 +472,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 					_.each elbNotExistCertMap, (sslCertNameAry, elbName) ->
 
 						uniqSSLCertNameAry = _.uniq(sslCertNameAry)
-						tipInfo = sprintf lang.ide.TA_MSG_ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, uniqSSLCertNameAry.join(', ')
+						tipInfo = sprintf lang.TA.ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS, elbName, uniqSSLCertNameAry.join(', ')
 						validResultAry.push {
 							level: constant.TA.ERROR,
 							info: tipInfo,
@@ -512,7 +512,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 			return null
 
-		Helper.message.error uid, i18n.TA_MSG_ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB, elb.get 'name'
+		Helper.message.error uid, i18n.ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB, elb.get 'name'
 
 
 

@@ -1,5 +1,5 @@
 <article class="property-info" style="margin-top:0;">
-   <section class="property-control-group">The selected connection reflects following security group rule(s):</section>
+   <section class="property-control-group">{{i18n "PROP.SGRULE_SELECTED_CONNECTION_REFLECTS_FOLLOWING_SGR"}}</section>
 </article>
 
 {{#each sg_group}}
@@ -16,7 +16,7 @@
       </div>
       <div class="rule-list-row">
         <div><span class="rule-protocol tooltip" data-tooltip="{{i18n 'DASH_LBL_PROTOCOL'}}">{{ipProtocol}}</span></div>
-        <div class="rule-port tooltip" data-tooltip="{{i18n 'PROP_SG_TIP_PORT_CODE'}}">{{dispPort}}</div>
+        <div class="rule-port tooltip" data-tooltip="{{i18n 'PROP.SG_TIP_PORT_CODE'}}">{{dispPort}}</div>
       </div>
     </li>
     {{/each}}

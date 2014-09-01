@@ -285,10 +285,10 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
     afterModify: (result)->
       if (result?.error)
-        notification 'error', "Parameter Group updated failed because of "+(result?.awsResult || result?.awsErrorCode || result?.msg)
+        notification 'error', sprintf lang.NOTIFY.PARAMETER_GROUP_UPDATED_FAILED, ( result?.awsResult || result?.awsErrorCode || result?.msg )
         @switchAction()
         return false
-      notification 'info', "Parameter Group is updated."
+      notification 'info', lang.NOTIFY.PARAMETER_GROUP_IS_UPDATED
       @manager.cancel()
 
     doAction: (action, checked)->
@@ -328,9 +328,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     afterCreated: (result)->
       @manager.cancel()
       if result.error
-        notification 'error', "Create failed because of: "+result.msg
+        notification 'error', sprintf lang.NOTIFY.CREATE_FAILED_BECAUSE_OF_XXX, result.msg
         return false
-      notification 'info', "New RDS Parameter Group is created successfully!"
+      notification 'info', lang.NOTIFY.NEW_RDS_PARAMETER_GROUP_IS_CREATED_SUCCESSFULLY
       #@collection.add newDbpg
 
     afterReset: (result)->
@@ -340,7 +340,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         notification 'error', result.awsResult
         return false
       #cancelselect && fetch
-      notification 'info', "RDS Parameter Group is reset successfully!"
+      notification 'info', lang.NOTIFY.RDS_PARAMETER_GROUP_IS_RESET_SUCCESSFULLY
 
     afterDeleted: (result)->
       deleteCount--
@@ -352,7 +352,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           @switchAction()
           deleteErrorCount = 0
         else
-          notification 'info', "Delete Successfully"
+          notification 'info', lang.NOTIFY.DELETE_SUCCESSFULLY
           @manager.unCheckSelectAll()
           deleteErrorCount = 0
           @manager.cancel()
@@ -369,8 +369,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     renderDropdown: ->
       that = this
       option =
-        manageBtnValue: lang.ide.PROP_VPC_MANAGE_RDS_PG
-        filterPlaceHolder: lang.ide.PROP_VPC_FILTER_RDS_PG
+        manageBtnValue: lang.PROP.VPC_MANAGE_RDS_PG
+        filterPlaceHolder: lang.PROP.VPC_FILTER_RDS_PG
       @dropdown = new combo_dropdown option
       if @resModel and  not @resModel.attributes.pgName
         that.dropdown.setSelection "Please Select Parameter Group"
@@ -449,7 +449,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       region = Design.instance().get('region')
       regionName = constant.REGION_SHORT_LABEL[ region ]
 
-      title: "Manage DB Parameter Group in #{regionName}"
+      title: sprintf(lang.IDE.COMPONENT_RDS_PG_MANAGER_TITLE, regionName)#"Manage DB Parameter Group in #{regionName}"
       slideable: true
       context: that
       buttons: [

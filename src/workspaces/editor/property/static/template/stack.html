@@ -4,12 +4,12 @@
     <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
     <dd>{{emptyStr appId}}</dd>
     {{#if isIGW}}
-      <dt>State</dt>
+      <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
       <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
     {{else}}
-      <dt>State</dt>
+      <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
       <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
-      <dt>Attachment State</dt>
+      <dt>{{i18n "PROP.VOLUME_ATTACHMENT_STATE"}}</dt>
       <dd><i class="status status-xgw-{{attachment_state}}"></i>{{attachment_state}}</dd>
     {{/if}}
     {{#if type}}
@@ -23,9 +23,9 @@
   <article>
   <div  class="property-control-group">
   {{#if isIGW}}
-    {{ i18n "PROP_IGW_TXT_DESCRIPTION" }}
+    {{ i18n "PROP.IGW_TXT_DESCRIPTION" }}
   {{else}}
-    {{ i18n "PROP_VGW_TXT_DESCRIPTION" }}
+    {{ i18n "PROP.VGW_TXT_DESCRIPTION" }}
   {{/if}}
   </div>
 {{/if}}

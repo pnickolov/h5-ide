@@ -91,7 +91,7 @@ define [
 
       targetSubnetGroup = dataTransfer.parent.model
       if targetSubnetGroup isnt dataTransfer.item.model.parent()
-        notification "error", "Read replica must be dropped in the same subnet group with source DB instance."
+        notification "error", lang.NOTIFY.READ_REPLICA_MUST_BE_DROPPED_IN_THE_SAME_SBG
         return
 
       # If the model supports clone() interface, then clone the target.
@@ -166,13 +166,13 @@ define [
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'db-sg'
           'data-alias'   : 'db-sg-left'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'db-sg'
           'data-alias'   : 'db-sg-right'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
       ])
 
@@ -287,7 +287,7 @@ define [
         # If we are cloning a replica, we should check if we can
         # If the model supports clone() interface, then clone the target.
         if option.cloneSource.master().slaves().length > 5
-          notification "error", "Cannot create more read replica."
+          notification "error", lang.NOTIFY.CANNOT_CREATE_MORE_READ_REPLICA
           return
         else
           option.master = option.cloneSource.master()
@@ -308,7 +308,7 @@ define [
           } , option )
 
           if not attr.parent.id
-            notification "error", "Cannot create subnet group due to insufficient subnets."
+            notification "error", lang.NOTIFY.CANNOT_CREATE_SBG_DUE_TO_INSUFFICIENT_SUBNETS
             return
 
           attr.x += 2

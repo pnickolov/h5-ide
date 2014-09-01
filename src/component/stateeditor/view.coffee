@@ -298,7 +298,7 @@ define [ 'event',
 
             that.markdownConvert = new Markdown.Converter()
 
-            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
+            that.generalTip = lang.IDE.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
@@ -2697,9 +2697,9 @@ define [ 'event',
             parseErrList = stateListObj.err_list
             if parseErrList.length
                 if 'command' in parseErrList or 'parameter' in parseErrList
-                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED
+                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_COMMAND_FAILED
                 if 'reference' in parseErrList
-                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
+                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_REFRENCE_FAILED
 
             newStateItems = $.trim(template.stateListTpl(stateListObj))
             $currentStateItems = that.$stateList.find('.state-item')
@@ -2906,7 +2906,7 @@ define [ 'event',
 
                 StateClipboard = stack
                 that.updateToolbar()
-                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+                notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2923,7 +2923,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+            notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 

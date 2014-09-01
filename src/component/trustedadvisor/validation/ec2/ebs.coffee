@@ -86,7 +86,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 
 										if not instanceId
 
-											tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
+											tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
 											tipInfoAry.push({
 												level: constant.TA.ERROR,
 												info: tipInfo,

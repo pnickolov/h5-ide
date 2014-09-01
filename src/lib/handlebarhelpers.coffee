@@ -6,10 +6,19 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   #i18n
   Handlebars.registerHelper 'i18n', ( text ) ->
-    t = lang.ide[ text ]
+    members = text.split '.'
+    if members.length is 1 then members.unshift 'IDE'
+
+    t = lang[ members[0] ][ members[1] ] or lang.PROP[ members[1] ]
     ### env:prod ###
     t = t || "undefined"
     ### env:prod:end ###
+
+    # Support sprint
+    if arguments.length > 2
+      args = [].slice.call arguments, 1, -1
+      args.unshift t
+      t = sprintf.apply null, args
 
     new Handlebars.SafeString t
 
@@ -26,7 +35,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     if text in [ '', undefined, null ]
       return '-'
 
-    lang.ide[ "PROP_VOLUME_TYPE_#{text.toUpperCase()}" ]
+    lang.ide[ "PROP.VOLUME_TYPE_#{text.toUpperCase()}" ]
 
   Handlebars.registerHelper 'UTC', ( text ) ->
     new Handlebars.SafeString new Date( +text ).toUTCString()

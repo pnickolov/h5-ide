@@ -1,54 +1,54 @@
 <article>
 {{#if association}}
-	<div class="property-control-group">{{i18n "PROP_RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP_RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
+	<div class="property-control-group">{{i18n "PROP.RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP.RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
 {{else}}
 	<div class="property-control-group" data-bind="true">
-		<label class="left" for="rt-name">{{i18n "PROP_RT_NAME"}}</label>
+		<label class="left" for="rt-name">{{i18n "PROP.RT_NAME"}}</label>
 		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled="disabled"{{/if}} value="{{title}}" id="rt-name">
 	</div>
 
 	{{#if isAppEdit}}
 	  <dl class="dl-vertical">
-	    <dt>{{i18n "PROP_RT_ID"}}</dt>
+	    <dt>{{i18n "PROP.RT_ID"}}</dt>
 	    <dd>{{routeTableId}}</dd>
 
-	    <dt>{{i18n "PROP_RT_LBL_MAIN_RT"}}</dt>
+	    <dt>{{i18n "PROP.RT_LBL_MAIN_RT"}}</dt>
 	    <dd>{{main}}</dd>
 
-	    <dt>{{i18n "PROP_RT_VPC_ID"}}</dt>
+	    <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
 	    <dd>{{vpcId}}</dd>
 	  </dl>
 
 	  	{{#unless isMain}}
 	  	<div class="tac property-control-group">
-			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
-			<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+			<p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
 		</div>
 		{{/unless}}
 
 	{{else}}
 		<div class="tac property-control-group">
 			{{#if isMain}}
-			<p>{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+			<p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
 			{{else}}
-			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP_RT_SET_MAIN"}}</button>
-			<p class="hide">{{i18n "PROP_RT_LBL_MAIN_RT"}}</p>
+			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+			<p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
 			{{/if}}
 		</div>
 	{{/if}}
 
 
 
-	<div class="option-group-head expand">{{i18n "PROP_RT_LBL_ROUTE"}}</div>
+	<div class="option-group-head expand">{{i18n "PROP.RT_LBL_ROUTE"}}</div>
 	<div class="option-group" data-bind="true">
 		<ul class="property-list property-list-no-padding route-list">
 			<li><table class="table-no-style">
 			  <tr class="route-target">
-			    <td class="route-label">{{i18n "PROP_RT_TARGET"}}</td>
-			    <td class="route-target-resource">{{i18n "PROP_RT_LOCAL"}}</td>
+			    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
+			    <td class="route-target-resource">{{i18n "PROP.RT_LOCAL"}}</td>
 			  </tr>
 			  <tr>
-			    <td class="route-label">{{i18n "PROP_RT_DESTINATION"}}</td>
+			    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
 			    <td class="route-destination-input">
 			    	<div class="route-destination-input multi-input"><input class="input" disabled="disabled" value="{{local_route}}"></div>
 			    </td>
@@ -58,12 +58,12 @@
 			{{#each routes}}
 			<li><table class="table-no-style">
 			  <tr class="route-target">
-			    <td class="route-label">{{i18n "PROP_RT_TARGET"}}</td>
+			    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
 			    <td class="route-target-resource">{{name}}</td>
 			  </tr>
 
 			  <tr>
-			    <td class="route-label">{{i18n "PROP_RT_DESTINATION"}}</td>
+			    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
 			    <td class="route-destination-input">
 			    	<div class="route-destination-input multi-input" data-ref="{{ref}}">
 
@@ -86,7 +86,7 @@
 								<input id="propagate_{{@index}}" type="checkbox" class="propagation" {{#if isProp}}checked="true"{{/if}}>
 								<label for="propagate_{{@index}}"></label>
 							</div>
-							<label for="propagate_{{@index}}">Allow propagation</label>
+							<label for="propagate_{{@index}}">{{i18n "PROP.RTB_ALLOW_PROPAGATION"}}</label>
 						</div>
 						{{/if}}
 			    </td>

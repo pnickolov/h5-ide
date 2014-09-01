@@ -1,29 +1,32 @@
 <section style="width:400px;" class="invalid-session" id="SessionDialog">
   <div class="confirmSession">
-  <div class="modal-header"><h3>Invalid Session</h3></div>
+  <div class="modal-header"><h3>{{i18n "IDE.DASH_INVALID_SESSION"}}</h3></div>
 
   <article class="modal-body">
-    <div class="modal-text-major"> <p>Your account has signed in from other location or you last login has timed out.</p> <p>Would you like to reconnect this session or close it?</p> </div>
-    <div class="modal-text-minor">If you have unsaved changes, close this session will cause all your change to lose.</div>
+    <div class="modal-text-major">
+        <p>{{i18n "IDE.DASH_INVALID_SESSION_ERROR"}}</p>
+        <p>{{i18n "IDE.DASH_INVALID_SESSION_ACTION"}}</p>
+    </div>
+    <div class="modal-text-minor">{{i18n "IDE.DASH_INVALID_SESSION_WARNING"}}</div>
   </article>
 
   <footer class="modal-footer">
-    <button id="SessionReconnect" class="btn btn-blue">Reconnect</button>
-    <button id="SessionClose" class="btn btn-silver">Close Session</button>
+    <button id="SessionReconnect" class="btn btn-blue">{{i18n "IDE.DASH_LBL_RECONNECT"}}</button>
+    <button id="SessionClose" class="btn btn-silver">{{i18n "IDE.DASH_LBL_CLOSE_SESSION"}}</button>
   </footer>
   </div>
 
   <div class="reconnectSession" style="display:none;">
-  <div class="modal-header"><h3>Reconnect Session</h3></div>
+  <div class="modal-header"><h3>{{i18n "IDE.DASH_RECONNECT_SESSION"}}</h3></div>
   <article class="modal-body">
-    <div class="modal-text-major">Please provide your password to reconnect:</div>
+    <div class="modal-text-major">{{i18n "IDE.DASH_PROVIDE_PASSWORD_TO_RECONNECT"}}</div>
     <div class="modal-input">
       <input type="password" id="SessionPassword" class="input" placeholder="Password" style="width:200px;" autofocus>
     </div>
   </article>
   <footer class="modal-footer">
-    <button id="SessionConnect" class="btn btn-blue" disabled>Connect</button>
-    <button id="SessionClose2" class="btn btn-red">Close Session</button>
+    <button id="SessionConnect" class="btn btn-blue" disabled>{{i18n "IDE.DASH_LBL_CONNECT"}}</button>
+    <button id="SessionClose2" class="btn btn-red">{{i18n "IDE.DASH_LBL_CLOSE_SESSION"}}</button>
   </footer>
   </div>
 </section>

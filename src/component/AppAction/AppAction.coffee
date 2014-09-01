@@ -240,4 +240,62 @@ define [
             notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
+
+    forgetApp : ( id )->
+      self = @
+      app  = App.model.appList().get( id )
+      name = app.get("name")
+      production = app.get("usage") is 'production'
+      forgetConfirm = new modalPlus(
+        title: "Confirm to Forget App"
+        template: AppTpl.loading()
+        confirm: {
+          text: "Forget"
+          color: "red"
+          disabled: production
+        }
+        disableClose: true
+      )
+      forgetConfirm.tpl.find('.modal-footer').hide()
+      self.__forgetApp(id, forgetConfirm)
+
+    __forgetApp: (id, forgetConfirm)->
+      app  = App.model.appList().get( id )
+      name = app.get("name")
+      production = app.get("usage") is 'production'
+
+      # Disable forget app with state
+      hasState = false
+      if Design.instance().get("agent").enabled
+        for uid,comp of Design.instance().serialize().component
+          if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ] and comp.state and comp.state.length>0
+            hasState = true
+            break
+          null
+
+      app.fetchJsonData().then ->
+        # Render Forget Confirm
+        forgetConfirm.tpl.find('.modal-body').html AppTpl.forgetAppConfirm {production, name, hasState}
+        forgetConfirm.tpl.find('.modal-footer').show()
+        forgetConfirm.resize()
+
+        if hasState
+          forgetConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
+
+        $("#appNameConfirmIpt").on "keyup change", ()->
+          if $("#appNameConfirmIpt").val() is name
+            forgetConfirm.tpl.find('.modal-confirm').removeAttr "disabled"
+          else
+            forgetConfirm.tpl.find('.modal-confirm').attr "disabled", "disabled"
+          return
+
+        forgetConfirm.on "confirm", ()->
+          forgetConfirm.close()
+          app.terminate(true, false).fail ( err )->
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
+          return
+        return
+
+
   new AppAction()

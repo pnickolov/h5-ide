@@ -51,6 +51,7 @@ define [
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
+      "click .icon-forget-app"        : "forgetApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"
       "click .icon-apply-app"         : "applyAppEdit"
@@ -488,6 +489,7 @@ define [
     startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
     stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     checkDBinstance : (oldDBInstanceList)->

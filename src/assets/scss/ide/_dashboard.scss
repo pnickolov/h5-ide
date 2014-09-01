@@ -817,7 +817,7 @@
       &:first-child { border-radius : 0 0 5px 0; }
     }
 
-    i.icon-terminate, i.icon-delete { &:hover { color: #ec3c38; } }
+    i.icon-terminate, i.icon-forget-app, i.icon-delete { &:hover { color: #ec3c38; } }
 
     > span {
       max-width : 110px;

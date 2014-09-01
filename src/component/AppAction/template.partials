@@ -124,6 +124,21 @@
     {{/if}}
 </div>
 
+<!-- {{forgetAppConfirm}} -->
+<div class="confirm-padding">
+    {{#if hasState}}
+        <div class="modal-center-align-helper"> <div class="modal-text-major">This app is created by Visualops with state, do not support forget currently</div></div>
+    {{else}}
+        {{#if production}}
+            <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances.</p>
+            <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+            <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
+        {{else}}
+            <div class="modal-center-align-helper"> <div class="modal-text-major">Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?</div></div>
+        {{/if}}
+    {{/if}}
+</div>
+
 <!-- {{disconnectedMsg}} -->
 <section class="disconnected-msg">
     <div>Connection lost. Attempting to reconnect…</div>

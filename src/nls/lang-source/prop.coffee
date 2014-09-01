@@ -1959,7 +1959,7 @@ module.exports =
       en: "DB Instance Identifier"
       zh: ""
 
-    DBINSTANCE_ENDPOINT:
+    ENDPOINT:
       en: "Endpoint"
       zh: ""
 
@@ -2641,10 +2641,6 @@ module.exports =
       en: "Amazon SQS"
       zh: ""
 
-    STACK_SNS_PROTOCOL_ENDPOINT:
-      en: "Endpoint"
-      zh: ""
-
     STACK_DELETE_NETWORK_ACL_TITLE:
       en: "Delete Network ACL"
       zh: ""
@@ -3183,8 +3179,54 @@ module.exports =
       en: "Related Rule"
       zh: ""
 
+    CREATE_SECURITY_GROUP_RULE:
+      en: "Create Security Group Rule"
+      zh: ""
+
+    NONE:
+      en: "None"
+      zh: ""
+
+    SUBSCRIPTIONS:
+      en: "Subscriptions"
+      zh: ""
+
+    SELECT_TOPIC:
+      en: "Select Topic"
+      zh: ""
+
+    NEW_TOPIC:
+      en: "New Topic"
+      zh: ""
+
+    TOPIC_NAME:
+      en: "Topic Name"
+      zh: ""
+
+    DISPLAY_NAME:
+      en: "Display Name"
+      zh: ""
+
+    CREATING_3PERIOD:
+      en: "Creating..."
+      zh: ""
+
+    DELETING_3PERIOD:
+      en: "Deleting..."
+      zh: ""
+
+    SUBSCRIPTION_ARN:
+      en: "Subscription ARN"
+      zh: ""
+
+    CREATE_SNS_TOPIC:
+      en: "Create SNS Topic"
+      zh: ""
 
 
+    NO_SNS_TOPIC_IN_XXX:
+      en: "No SNS Topic in %s."
+      zh: ""
 
 
 

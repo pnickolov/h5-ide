@@ -9,7 +9,7 @@
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP.DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.DbinstanceIdentifier}}]</span>{{/if}}</dd>
-            <dt>{{ i18n "PROP.DBINSTANCE_ENDPOINT" }}</dt>
+            <dt>{{ i18n "PROP.ENDPOINT" }}</dt>
             <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}{{/if}}</dd>
             <dt>{{ i18n "PROP.DBINSTANCE_STATUS" }}</dt>
             <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable{{/if}}</dd>

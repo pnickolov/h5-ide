@@ -3285,6 +3285,29 @@ module.exports =
       en: "Create SSL Certificate"
       zh: ""
 
+    NO_FAILED_ITEM_PERIOD:
+      en: "No failed item."
+      zh: ""
+
+    ALL_STATES_ARE_PENDING_PERIOLD:
+      en: "All states are pending."
+      zh: ""
+
+    A_MESSAGE_WILL_SHOW_HERE:
+      en: "A message will show here when a state succeeds or fails."
+      zh: ""
+
+    XXX_STATES_HAS_UPDATED_STATUS:
+      en: "%s states has updated status."
+      zh: ""
+
+    FAILED_STATE:
+      en: "Failed State"
+      zh: ""
+
+    EXPAND:
+      en: "Expand"
+      zh: ""
 
 
 

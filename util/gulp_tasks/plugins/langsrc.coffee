@@ -13,7 +13,7 @@ coffee      = require("gulp-coffee")
 buildLangSrc = require("./lang")
 cacheForLang = {}
 cwd = base = ""
-langemitError = pipeline = langDest = null
+langemitError = pipeline = langDest = langShouldLog = null
 compiled = false
 
 langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
@@ -25,6 +25,7 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
   cacheForLang = {}
   langDest = dest
   langemitError = emitError
+  langShouldLog = shouldLog
 
   pipeline = startPipeline.pipe es.through ( file )->
 
@@ -35,9 +36,6 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
     catch e
       console.log e
       console.log gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid"
-
-    if shouldLog
-      console.log util.compileTitle(), file.relative
 
     cwd = file.cwd
     base = file.base
@@ -52,18 +50,24 @@ langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )
   startPipeline
 
 langWrite = () ->
-  writeFile = ( p1, p2 ) ->
-    pipeline.emit "data", new gutil.File({
-      cwd      : cwd
-      base     : base
-      path     : p1
-      contents : new Buffer( p2 )
-    })
-    compiled = true
+  writeFile = ( files ) ->
+    for file in files
+      pipeline.emit "data", new gutil.File({
+        cwd      : cwd
+        base     : base
+        path     : file.path
+        contents : new Buffer( file.contents )
+      })
+    if langShouldLog then console.log util.compileTitle(), "Lang-file Compiled Done"
+
     null
 
   if buildLangSrc(writeFile, cacheForLang) is false and langemitError
     pipeline.emit "error", "LangSrc build failure"
+
+  compiled = true
+
+  null
 
 module.exports = {
   langCache: langCache

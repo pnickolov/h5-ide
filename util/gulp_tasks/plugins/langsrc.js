@@ -1,5 +1,5 @@
 (function() {
-  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langWrite, langemitError, pipeline, util, vm;
+  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langShouldLog, langWrite, langemitError, pipeline, util, vm;
 
   util = require("./util");
 
@@ -23,7 +23,7 @@
 
   cwd = base = "";
 
-  langemitError = pipeline = langDest = null;
+  langemitError = pipeline = langDest = langShouldLog = null;
 
   compiled = false;
 
@@ -49,6 +49,7 @@
     cacheForLang = {};
     langDest = dest;
     langemitError = emitError;
+    langShouldLog = shouldLog;
     pipeline = startPipeline.pipe(es.through(function(file) {
       var ctx, e;
       ctx = vm.createContext({
@@ -61,9 +62,6 @@
         e = _error;
         console.log(e);
         console.log(gutil.colors.red.bold("\n[LangSrc]"), "lang-source.coffee content is invalid");
-      }
-      if (shouldLog) {
-        console.log(util.compileTitle(), file.relative);
       }
       cwd = file.cwd;
       base = file.base;
@@ -78,19 +76,27 @@
 
   langWrite = function() {
     var writeFile;
-    writeFile = function(p1, p2) {
-      pipeline.emit("data", new gutil.File({
-        cwd: cwd,
-        base: base,
-        path: p1,
-        contents: new Buffer(p2)
-      }));
-      compiled = true;
+    writeFile = function(files) {
+      var file, _i, _len;
+      for (_i = 0, _len = files.length; _i < _len; _i++) {
+        file = files[_i];
+        pipeline.emit("data", new gutil.File({
+          cwd: cwd,
+          base: base,
+          path: file.path,
+          contents: new Buffer(file.contents)
+        }));
+      }
+      if (langShouldLog) {
+        console.log(util.compileTitle(), "Lang-file Compiled Done");
+      }
       return null;
     };
     if (buildLangSrc(writeFile, cacheForLang) === false && langemitError) {
-      return pipeline.emit("error", "LangSrc build failure");
+      pipeline.emit("error", "LangSrc build failure");
     }
+    compiled = true;
+    return null;
   };
 
   module.exports = {

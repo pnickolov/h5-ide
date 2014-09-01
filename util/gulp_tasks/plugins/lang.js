@@ -12,9 +12,9 @@ module.exports = function( callback, lang_src ) {
         en_us       = {};
 
     var hit = function(obj) {
-        var hitKey = obj.zh !== undefined && obj.en !== undefined;
+        var hitKey = obj.zh !== undefined || obj.en !== undefined;
 
-        var isString = toString.call(obj.zh) == '[object String]' && toString.call(obj.en) == '[object String]';
+        var isString = toString.call(obj.zh) == '[object String]' || toString.call(obj.en) == '[object String]';
 
         if (hitKey && isString) {
             return true;
@@ -95,14 +95,15 @@ module.exports = function( callback, lang_src ) {
         return 'define(' + s + ');';
     };
 
-    // do check
+    // Do check
     if (!check(lang)) {
         return false;
     }
 
-    // do divorce
+    // Do divorce
     divorce(lang, en_us, zh_cn);
 
+    // Do callbacks
     callback(en_file, format(en_us));
     callback(zh_file, format(zh_cn));
 };

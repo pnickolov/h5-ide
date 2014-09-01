@@ -3,7 +3,9 @@
     <header class="processing">{{#if title}}{{title}}{{else}}{{ i18n "PROC_TITLE" }}{{/if}}<span class="process-info">{{progress}}%</span></header>
     <header class="processing rolling-back-content">{{i18n "PROP.ROLLING_BACK"}}</header>
     <section class="loading-spinner"></section>
-    <section class="progress"> <div class="bar" style="width:{{progress}}%;"></div> </section>
+    <section class="progress">
+        <div class="bar" style="width:{{progress}}%;"></div>
+    </section>
   </section>
 
   <section class="success hide">

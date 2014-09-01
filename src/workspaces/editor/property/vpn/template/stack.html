@@ -22,39 +22,50 @@
 
   {{#if vgwTelemetry}}
   <div class="option-group-head expand">{{ i18n "PROP.CGW_APP_VPN_LBL_TUNNEL" }}</div>
-  <div class="option-group"> <table class="table">
-    <thead> <tr>
-      <th style="width:20px">{{ i18n "PROP.CGW_APP_VPN_COL_TUNNEL" }}</th>
-      <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP" }}</th>
-    </tr> </thead>
-    <tbody>
-    {{#each vgwTelemetry}}
-      <tr>
-        <td><i class="status status-{{status}} icon-label tooltip" data-tooltip="{{#ifCond status 'DOWN'}}DOWN{{else}}UP{{/ifCond}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}</td>
-        <td>{{outsideIpAddress}}</td>
-      </tr>
-    {{/each}}
-    </tbody>
-  </table> </div>
+    <div class="option-group">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:20px">{{ i18n "PROP.CGW_APP_VPN_COL_TUNNEL" }}</th>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP" }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each vgwTelemetry}}
+            <tr>
+                <td><i class="status status-{{status}} icon-label tooltip"
+                       data-tooltip="{{#ifCond status 'DOWN'}}DOWN{{else}}UP{{/ifCond}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}
+                </td>
+                <td>{{outsideIpAddress}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
   {{/if}}
 
 
   {{#if isApp}} {{#if routes.item}}
   <div class="option-group-head expand">{{ i18n "PROP.CGW_APP_VPN_LBL_STATUS_RT" }}</div>
-  <div class="option-group"> <table class="table">
-    <thead> <tr>
-      <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP_PREFIX" }}</th>
-      <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_SOURCE" }}</th>
-    </tr> </thead>
-    <tbody>
-      {{#each routes.item}}
-      <tr>
-        <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
-        <td>{{source}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table> </div>
+    <div class="option-group">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP_PREFIX" }}</th>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_SOURCE" }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each routes.item}}
+            <tr>
+                <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}
+                </td>
+                <td>{{source}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
   {{/if}} {{/if}}
 
 {{else}}

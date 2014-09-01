@@ -151,6 +151,38 @@ module.exports =
       en: "or paste the key content again to update."
       zh: ""
 
+    AZ_AND_SUBNET:
+      en: "AZ & subnet"
+      zh: ""
+
+
+    OG_NO_OPTION_GROUP:
+      en: "No Option Group"
+      zh: ""
+
+    OG_CREATE_OPTION_GROUP:
+      en: "Create Option Group"
+      zh: ""
+
+    OG_PORT:
+      en: "Port"
+      zh: ""
+
+    KP_SECURITY_GROUP:
+      en: "Security Group"
+      zh: ""
+
+    KP_OPTION_SETTING:
+      en: "Option Setting"
+      zh: ""
+
+
+
+
+
+
+
+
     INSTANCE_NO_KP:
       en: "No Key Pair"
       zh: ""
@@ -2863,6 +2895,10 @@ module.exports =
 
     LBL_DOWNLOADING:
       en: "Downloading..."
+      zh: ""
+
+    LBL_VIEW:
+      en: "View"
       zh: ""
 
     LBL_DUPLICATE:

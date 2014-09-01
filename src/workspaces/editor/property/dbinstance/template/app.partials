@@ -116,10 +116,10 @@
     <td>{{LogFileName}}</td>
     <td>{{timeStr LastWritten}}</td>
     <td>{{Size}}</td>
-    <td>{{#if LogFileName}}<a class="view" data-file-name="{{LogFileName}}">View</a>{{/if}}</td>
+    <td>{{#if LogFileName}}<a class="view" data-file-name="{{LogFileName}}">{{i18n "PROP.LBL_VIEW"}}</a>{{/if}}</td>
     {{#unless isSafari}}
     <td>
-        {{#if LogFileName}}<a class="download" data-file-name="{{LogFileName}}">Download</a>{{/if}}
+        {{#if LogFileName}}<a class="download" data-file-name="{{LogFileName}}">{{i18n "PROP.LBL_DOWNLOAD"}}</a>{{/if}}
     </td>
     {{/unless}}
 </tr>

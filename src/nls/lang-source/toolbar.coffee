@@ -398,6 +398,7 @@ module.exports =
     POP_STOP_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be deleted."
       zh: ""
+
     POP_STOP_CONFIRM_LIST_3_SPAN:
       en: "Auto Scaling Group will be recreated when the app is started."
       zh: ""
@@ -617,3 +618,13 @@ module.exports =
     START_APP:
       en: "Start App"
       zh: ""
+
+    CONNECTION_LOST_TO_RECONNECT:
+      en: "Connection lost. Attempting to reconnect..."
+      zh: ""
+
+    CHANGES_MAY_NOT_BE_SAVED:
+      en: "Changes made now may not be saved."
+      zh: ""
+
+    

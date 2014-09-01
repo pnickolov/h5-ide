@@ -26,8 +26,8 @@
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}} RDS Parameter{{else}}selected {{selectedCount}} RDS Parameter Groups{{/if}}?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
         <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
@@ -80,7 +80,7 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
+            <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP.LBL_CREATE"}}</button>
             <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CREATE"}}</button>
         </div>
         <div class="processing action" style="display:none;">
@@ -94,7 +94,7 @@
     <div class="formart_toolbar_modal" data-type="true">
         <div class="modal-text-major">{{i18n "PROP.DBPG_CONFIRM_RESET_1"}}{{name}}{{i18n "PROP.DBPG_CONFIRM_RESET_2"}}</div>
         <div class="init action">
-            <button class="btn btn-red do-action" data-action="reset">Reset</button>
+            <button class="btn btn-red do-action" data-action="reset">{{i18n "PROP.LBL_RESET"}}</button>
             <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">

@@ -256,17 +256,22 @@ define [
           CanvasManager.toggle $r, false
 
       # Update restore Image
+
+      # $r = @$el.children(".dbrestore")
+      # enableRestore = m.autobackup() isnt 0 and !!m.get("appId")
+      # CanvasManager.toggle $r, enableRestore
+      # if enableRestore
+      #   CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+
       $r = @$el.children(".dbrestore")
-      enableRestore = m.autobackup() isnt 0 and !!m.get("appId")
-      CanvasManager.toggle $r, enableRestore
-      if enableRestore
-        CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+      CanvasManager.toggle $r, !!m.get("appId")
+      CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
 
       appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
       if appData
         penddingObj = appData.get('PendingModifiedValues')
         if (appData.get('BackupRetentionPeriod') in [0, '0']) or (penddingObj and penddingObj.BackupRetentionPeriod in [0, '0'])
-          CanvasManager.toggle @$el.children(".dbrestore"), false
+          CanvasManager.toggle $r, false
 
       @updateState()
 

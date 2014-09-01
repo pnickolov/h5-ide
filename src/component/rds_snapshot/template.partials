@@ -171,11 +171,11 @@
             <div>{{MasterUsername}}</div>
         </section>
         <section class="property-control-group">
-            <label>{{i18n "PROP.DB_SNAPSHOT_OPTION_GROUP_NAME"}}</label>
+            <label>{{i18n "PROP.OPTION_GROUP_NAME"}}</label>
             <div>{{OptionGroupName}}</div>
         </section>
         <section class="property-control-group">
-            <label>{{i18n "PROP.DB_SNAPSHOT_PORT"}}</label>
+            <label>{{i18n "PROP.PORT"}}</label>
             <div>{{Port}}</div>
         </section>
         <section class="property-control-group">

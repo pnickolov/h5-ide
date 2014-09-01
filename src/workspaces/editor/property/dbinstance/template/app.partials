@@ -13,7 +13,7 @@
             <dd>{{#if Endpoint}}{{#if Endpoint.Address}}{{Endpoint.Address }}{{else}}(Not Ready){{/if}}:{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}{{/if}}</dd>
             <dt>{{ i18n "PROP.DBINSTANCE_STATUS" }}</dt>
             <dd><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}}"></i>{{#if DBInstanceStatus}}{{DBInstanceStatus}}{{else}}Unavailable{{/if}}</dd>
-            <dt>{{ i18n "PROP.DBINSTANCE_ENGINE" }}</dt>
+            <dt>{{ i18n "PROP.ENGINE" }}</dt>
             <dd>{{Engine}}({{EngineVersion}}){{#if PendingModifiedValues.EngineVersion}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.EngineVersion}}]</span>{{/if}}</dd>
             <dt>{{ i18n "PROP.DBINSTANCE_AUTO_UPGRADE" }}</dt>
             <dd>{{#if AutoMinorVersionUpgrade}}Yes{{else}}No{{/if}}</dd>

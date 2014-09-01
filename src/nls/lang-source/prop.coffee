@@ -399,10 +399,6 @@ module.exports =
       en: "Stack Description"
       zh: "模板描述"
 
-    STACK_LBL_DESC:
-      en: "Description"
-      zh: "描述"
-
     STACK_LBL_REGION:
       en: "Region"
       zh: "地区"
@@ -743,10 +739,6 @@ module.exports =
       en: "Name"
       zh: "名称"
 
-    SG_DETAIL_LBL_DESCRIPTION:
-      en: "Description"
-      zh: "描述"
-
     SG_TIT_RULE:
       en: "Rule"
       zh: "规则"
@@ -918,10 +910,6 @@ module.exports =
     ACL_TIP_PROTOCOL:
       en: "Protocol"
       zh: "协议"
-
-    ACL_TIP_PORT:
-      en: "Port"
-      zh: "端口"
 
     ACL_TIT_ASSOC:
       en: "Associations"
@@ -1231,10 +1219,6 @@ module.exports =
       en: "Network Interface Details"
       zh: "网卡设置"
 
-    ENI_LBL_DESC:
-      en: "Description"
-      zh: "描述"
-
     ENI_SOURCE_DEST_CHECK:
       en: "Enable Source/Destination Checking"
       zh: "打开 Source/Destination 检查"
@@ -1435,7 +1419,7 @@ module.exports =
       en: "Load Balancer Protocol"
       zh: "负载均衡器协议"
 
-    ELB_PORT:
+    PORT:
       en: "Port"
       zh: "端口"
 
@@ -1919,7 +1903,7 @@ module.exports =
       en: "Status"
       zh: ""
 
-    DBINSTANCE_ENGINE:
+    ENGINE:
       en: "Engine"
       zh: ""
 
@@ -2425,10 +2409,6 @@ module.exports =
       en: "Load Balancer Protocal"
       zh: ""
 
-    ELB_LBL_PORT:
-      en: "Port"
-      zh: ""
-
     ELB_INSTANCE_PROTOCOL:
       en: "Instance Protocol"
       zh: ""
@@ -2841,12 +2821,8 @@ module.exports =
       en: "Master Username"
       zh: ""
 
-    DB_SNAPSHOT_OPTION_GROUP_NAME:
+    OPTION_GROUP_NAME:
       en: "Option Group Name"
-      zh: ""
-
-    DB_SNAPSHOT_PORT:
-      en: "Port"
       zh: ""
 
     DB_SNAPSHOT_INSTANCE_CREATE_TIME:
@@ -2972,3 +2948,94 @@ module.exports =
     DELETE_SNAPSHOT_3:
       en: " Snapshot(s) "
       zh: ""
+
+
+
+
+    OPTION_SETTING:
+      en: "Option Setting"
+      zh: ""
+
+    VALUE:
+      en: "Value"
+      zh: ""
+
+    ALLOWED_VALUES:
+      en: "Allowed Values"
+      zh: ""
+
+    OPTION_GROUP_DESCRIPTION:
+      en: "Option Group Description"
+      zh: ""
+
+    ENGINE_VERSION:
+      en: "Engine Version"
+      zh: ""
+
+    PERSISTENT:
+      en: "PERSISTENT"
+      zh: ""
+
+    PERMENANT:
+      en: "PERMENANT"
+      zh: ""
+
+    OPTION:
+      en: "Option"
+      zh: ""
+
+    HIDE_DETAILS:
+      en: "Hide details"
+      zh: ""
+
+    PORT_COLON:
+      en: "Port:"
+      zh: ""
+
+    SECURITY_GROUP_COLON:
+      en: "Security Group:"
+      zh: ""
+
+    SETTING:
+      en: "Setting"
+      zh: ""
+
+    NO_OPTION_GROUP_PERIOD:
+      en: "No Option Group."
+      zh: ""
+
+    CREATE_OPTION_GROUP:
+      en: "Create Option Group"
+      zh: ""
+
+    SHOW_DETAILS:
+      en: "Show details"
+      zh: ""
+
+    SECURITY_GROUP:
+      en: "Security Group"
+      zh: ""
+
+    SAVE_OPTION:
+      en: "Save Option"
+      zh: ""
+
+    NAME:
+      en: "Name"
+      zh: ""
+
+    SAVE:
+      en: "Save"
+      zh: ""
+
+    DESCRIPTION:
+      en: "Description"
+      zh: "描述"
+
+    CONFIRM_TO_DELETE_THIS_OPTION_GROUP_QUESTION:
+      en: "Confirm to delete this option group?"
+      zh: ""
+
+
+
+

@@ -119,6 +119,38 @@ module.exports =
       en: "$DefaultKeyPair"
       zh: ""
 
+    KP_NAME:
+      en: "Key Pair Name"
+      zh: ""
+
+    KP_CREATED_NEED_TO_DOWNLAOD:
+      en: "Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created."
+      zh: ""
+
+    KP_CONFIRM_DELETE_1:
+      en: "Confirm to delete "
+      zh: ""
+
+    KP_CONFIRM_DELETE_2:
+      en: " selected"
+      zh: ""
+
+    KP_CONFIRM_DELETE_3:
+      en: " key pairs"
+      zh: ""
+
+    KP_SELECT_A_FILE:
+      en: "Select a file"
+      zh: ""
+
+    KP_OR_PASTE_KEY_CONTENT:
+      en: "or paste the key content here."
+      zh: ""
+
+    KP_OR_PASTE_TO_UPDATE:
+      en: "or paste the key content again to update."
+      zh: ""
+
     INSTANCE_NO_KP:
       en: "No Key Pair"
       zh: ""
@@ -2685,6 +2717,10 @@ module.exports =
       en: "Close"
       zh: ""
 
+    LBL_CLOSE:
+      en: "Close"
+      zh: ""
+
     RDS_NO_RECORDS_FOUND:
       en: "No records found."
       zh: ""
@@ -2845,6 +2881,14 @@ module.exports =
       en: "Creating..."
       zh: ""
 
+    LBL_DOWNLOAD:
+      en: "Download"
+      zh: ""
+
+    LBL_DOWNLOADING:
+      en: "Downloading..."
+      zh: ""
+
     LBL_DUPLICATE:
       en: "Duplicate"
       zh: ""
@@ -2863,6 +2907,14 @@ module.exports =
 
     LBL_CREATE:
       en: "Create"
+      zh: ""
+
+    LBL_IMPORT:
+      en: "Import"
+      zh: ""
+
+    LBL_IMPORTING:
+      en: "Importing..."
       zh: ""
 
     LBL_PARAMETER_NAME:

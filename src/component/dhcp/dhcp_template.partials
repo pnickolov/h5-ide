@@ -159,22 +159,22 @@
 <div class="detail-info">
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>Domain Name</label>
+            <label>{{i18n "PROP.VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME"}}</label>
             <div>{{#each domain-name}}{{this}}<br>{{/each}}</div>
         </section>
         <section class="property-control-group">
-            <label>Domain Name Server</label>
+            <label>{{i18n "PROP.VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME_SERVER"}}</label>
             <div>{{#each domain-name-servers}}{{this}}<br>{{/each}}</div>
         </section>
     </div>
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>NTP Server</label>
+            <label>{{i18n "PROP.VPC_DHCP_SPECIFIED_LBL_NTP_SERVER"}}</label>
             <div>{{#each ntp-servers}}{{this}}<br>{{/each}}</div>
         </section>
         <section class="property-control-group">
 
-            <label>NetBIOS Node Type</label>
+            <label>{{i18n "VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE"}}</label>
             <div>{{netbios-node-type}}</div>
         </section>
     </div>

@@ -100,7 +100,10 @@ define [ "Design" ], (Design)->
                         compo.resource.Endpoint.Address = ""
                         compo.resource.PreferredBackupWindow = ""
                         compo.resource.PreferredMaintenanceWindow = ""
-                        compo.resource.MasterUserPassword = "12345678"
+                        if compo.resource.ReadReplicaSourceDBInstanceIdentifier
+                            compo.resource.MasterUserPassword = "****"
+                        else
+                            compo.resource.MasterUserPassword = "12345678"
                     else
                         level2DBComp.resource.BackupRetentionPeriod = 0
                         delete components[compo.uid]

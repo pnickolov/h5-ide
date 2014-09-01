@@ -101,7 +101,7 @@
     <thead>
         <tr>
             <th style="width: 48px;">{{i18n "ACL_TIP_PROTOCOL"}}</th>
-            <th>Endpoint</th>
+            <th>{{i18n "Endpoint"}}</th>
             <th style="wdith: 30%;">{{i18n "SUBSCRIPTION_ARN"}}</th>
             <th style="width: 103px;"></th>
         </tr>

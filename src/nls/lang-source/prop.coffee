@@ -3245,6 +3245,54 @@ module.exports =
       en: "No SNS Topic in %s."
       zh: ""
 
+    UPLOAD:
+      en: "Upload"
+      zh: ""
+
+    UPLOAD_3PERIOD:
+      en: "Upload..."
+      zh: ""
+
+    UPDATE:
+      en: "Update"
+      zh: ""
+
+    UPDATING_3PERIOD:
+      en: "Updating..."
+      zh: ""
+
+    SERVER_CERTIFICATE_ID:
+      en: "Server Certificate ID"
+      zh: ""
+
+    SERVER_CERTIFICATE_ARN:
+      en: "Server Certificate ARN"
+      zh: ""
+
+    EXPIRATION_DATE:
+      en: "Expiration Date"
+      zh: ""
+
+    PATH:
+      en: "Path"
+      zh: ""
+
+    NO_SSL_CERTIFICATE:
+      en: "No SSL Certificate."
+      zh: ""
+
+    CREATE_SSL_CERTIFICATE:
+      en: "Create SSL Certificate"
+      zh: ""
+
+
+
+
+
+
+
+
+
 
 
 

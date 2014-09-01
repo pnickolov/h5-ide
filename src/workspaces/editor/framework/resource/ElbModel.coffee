@@ -7,8 +7,9 @@ define [ "Design",
          "./SgModel",
          "./SslCertModel",
          "../connection/SgAsso"
-         "../connection/ElbAsso"
          "i18n!/nls/lang.js"
+         "../connection/ElbAsso"
+
 ], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SslCertModel, SgAsso, lang )->
 
   Model = ComplexResModel.extend {

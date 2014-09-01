@@ -235,9 +235,9 @@
     <div class="option-group-head {{#if isPromoted}}expand{{/if}}">Backup Options</div>
     <div class="option-group">
 
-        <section class="property-control-group tooltip" {{#if hasSlave}}data-tooltip="DB instance serving as replication source must enable automatic backups"{{/if}}>
+        <section class="property-control-group tooltip" {{#if hasSlave}}data-tooltip="DB instance serving as replication source must enable automatic backups"{{else}}{{#if disableBackupForOldMySQL}}data-tooltip="DB Backups not supported on a read replica running a mysql version before 5.6"{{/if}}{{/if}}>
             <div class="checkbox">
-                <input id="property-dbinstance-auto-backup-check" type="checkbox" {{#if backupRetentionPeriod}}checked="true"{{/if}} value="None" name="property-dbinstance-auto-backup-check" {{#if hasSlave}}disabled checked{{/if}}>
+                <input id="property-dbinstance-auto-backup-check" type="checkbox" {{#if backupRetentionPeriod}}checked="true"{{/if}} value="None" name="property-dbinstance-auto-backup-check" {{#if hasSlave}}disabled checked{{/if}} {{#if disableBackupForOldMySQL}}disabled{{/if}}>
                 <label for="property-dbinstance-auto-backup-check"></label>
             </div>
             <label for="property-dbinstance-auto-backup-check">Enable Automatic Backups</label>

@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
+define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
 
   OS_TYPE_LIST = ['centos','redhat','rhel','ubuntu','debian','fedora','gentoo','opensuse','suse','amazon','amzn']
   SQL_WEB_PATTERN      = /sql.*?web.*?/i

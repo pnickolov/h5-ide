@@ -90,11 +90,17 @@ define [ 'ApiRequest'
             sourceDbModel = @resModel.getSourceDBForRestore()
             sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
 
-            penddingObj = sourceDbAppModel.get('PendingModifiedValues')
-            noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+            if sourceDbAppModel
 
-            if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
-                noRestore = true
+                penddingObj = sourceDbAppModel.get('PendingModifiedValues')
+                noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+
+                if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
+                    noRestore = true
+
+            else
+
+                noRestore = true                
 
             if noRestore
 
@@ -271,13 +277,14 @@ define [ 'ApiRequest'
                 differ.getChangeInfo().hasResChange
 
             if e
-                _.defer () ->
-                    if diff()
-                        $( '.apply-immediately-section' ).show()
-                        $('.property-panel-wrapper').addClass('immediately')
-                    else
-                        $( '.apply-immediately-section' ).hide()
-                        $('.property-panel-wrapper').removeClass('immediately')
+                if not @isPromoted()
+                    _.defer () ->
+                        if diff()
+                            $( '.apply-immediately-section' ).show()
+                            $('.property-panel-wrapper').addClass('immediately')
+                        else
+                            $( '.apply-immediately-section' ).hide()
+                            $('.property-panel-wrapper').removeClass('immediately')
             else
                 diff()
 
@@ -489,6 +496,9 @@ define [ 'ApiRequest'
                 attr.isRestoreDB = true
                 attr.sourceDbIdForRestore = sourceDBForRestore.get('appId')
 
+            if @resModel.isMysql and @resModel.master() and @resModel.getMajorVersion() in ['5.1', '5.5']
+                attr.disableBackupForOldMySQL = true
+
             attr
 
         isPromoted: () ->
@@ -510,7 +520,8 @@ define [ 'ApiRequest'
         setPromote: () ->
 
             @resModel.unsetMaster()
-            @resModel.autobackup 1
+            if not @resModel.autobackup()
+                @resModel.autobackup 1
 
         unsetPromote: () ->
 
@@ -609,7 +620,8 @@ define [ 'ApiRequest'
             changeApplyImmediately = @changeApplyImmediately.bind @
             @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
             .click checkChange
-            if @isAppEdit then $('.property-panel-wrapper').toggleClass('immediately', checkChange())
+            if @isAppEdit and not @isPromoted()
+                $('.property-panel-wrapper').toggleClass('immediately', checkChange())
             @setTitle(attr.name)
 
             @renderLVIA()

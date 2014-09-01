@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
+define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
 
   ### This Connection is used to fetch all the resource of an vpc ###
   CrCollection.extend {
@@ -100,6 +100,10 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
               @generatedJson.component[originalKpComp.uid] = originalKpComp
           else
             originalJson.component[kpComp.uid] = kpComp
+
+        #patch for agent.enable
+        @generatedJson.agent.enabled = if originalJson then originalJson.agent.enabled else false
+
         ###### patch for app_json ######
       else
         ### env:dev ###

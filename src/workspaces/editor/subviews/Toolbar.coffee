@@ -51,6 +51,7 @@ define [
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
+      "click .icon-forget-app"        : "forgetApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"
       "click .icon-apply-app"         : "applyAppEdit"
@@ -102,13 +103,13 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
 
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
           @$el.find(".icon-refresh").hide()
         else
           running = opsModel.testState(OpsModel.State.Running)
           stopped = opsModel.testState(OpsModel.State.Stopped)
 
-          @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-refresh, .icon-save-app, .icon-reload").show()
 
           # @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
           # @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
@@ -488,6 +489,7 @@ define [
     startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
     stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     checkDBinstance : (oldDBInstanceList)->

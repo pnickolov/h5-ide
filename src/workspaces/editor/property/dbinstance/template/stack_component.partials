@@ -56,9 +56,7 @@
         </div>
         <div class="dropdown">
             <div class="scroll-wrap scrollbar-auto-hide clearfix">
-                <div class="scrollbar-veritical-wrap">
-                    <div class="scrollbar-veritical-thumb"></div>
-                </div>
+                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                 <div class="scroll-content">
                     <ul>
                         {{#each classes}}

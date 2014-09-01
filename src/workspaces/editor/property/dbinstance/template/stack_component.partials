@@ -47,21 +47,26 @@
 
 <section class="property-control-group">
     <label class="left">{{i18n "PROP.DBINSTANCE_DB_INSTANCE_CLASS"}}</label>
+
     <div class="selectbox selectbox-mega combo-dd" id="property-dbinstance-class-select">
         <div class="selection">
             <div class="main truncate">{{classInfo.instanceClass}}</div>
-            <div class="sub"><span>{{classInfo.ecu}} ECU</span> <span>{{classInfo.cpu}}</span> <span>{{classInfo.memory}}</span></div>
+            <div class="sub"><span>{{classInfo.ecu}} ECU</span><span>{{classInfo.cpu}}</span>
+                <span>{{classInfo.memory}}</span></div>
         </div>
         <div class="dropdown">
             <div class="scroll-wrap scrollbar-auto-hide clearfix">
-                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scrollbar-veritical-wrap">
+                    <div class="scrollbar-veritical-thumb"></div>
+                </div>
                 <div class="scroll-content">
                     <ul>
                         {{#each classes}}
-                        <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
-                            <div class="main truncate">{{instanceClass}}</div>
-                            <div class="sub"><span>{{ecu}} ECU</span> <span>{{cpu}}</span> <span>{{memory}}</span></div>
-                        </li>
+                            <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
+                                <div class="main truncate">{{instanceClass}}</div>
+                                <div class="sub"><span>{{ecu}} ECU</span><span>{{cpu}}</span> <span>{{memory}}</span>
+                                </div>
+                            </li>
                         {{/each}}
                     </ul>
                 </div>

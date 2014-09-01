@@ -627,4 +627,10 @@ module.exports =
       en: "Changes made now may not be saved."
       zh: ""
 
-    
+    RELOAD_STATES:
+      en: "Reload States"
+      zh: ""
+
+    SHOW_UNUSED_REGIONS:
+      en: "Show unused regions"
+      zh: ""

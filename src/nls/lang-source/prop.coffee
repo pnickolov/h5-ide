@@ -2925,6 +2925,10 @@ module.exports =
       en: "Import"
       zh: ""
 
+    LBL_SUCCESS:
+      en: "Success"
+      zh: ""
+
     LBL_IMPORTING:
       en: "Importing..."
       zh: ""

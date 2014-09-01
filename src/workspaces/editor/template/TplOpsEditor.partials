@@ -8,15 +8,21 @@
   <nav class="OEPanelTop"></nav>
   <div class="OEPanelBottom"></div>
 
-  <section class="OEPanelCenter nano"> <div class="nano-content">
-    <div class="canvas-view">
-      <button class="svg_resizer icon-resize-down tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
-      <button class="svg_resizer icon-resize-up tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
-      <button class="svg_resizer icon-resize-right tooltip" data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
-      <button class="svg_resizer icon-resize-left tooltip" data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
-      <svg width="100%" height="100%"></svg>
-    </div>
-  </div> </section>
+    <section class="OEPanelCenter nano">
+        <div class="nano-content">
+            <div class="canvas-view">
+                <button class="svg_resizer icon-resize-down tooltip"
+                        data-tooltip='{{{ i18n "CVS_TIP_EXPAND_H" }}}'></button>
+                <button class="svg_resizer icon-resize-up tooltip"
+                        data-tooltip='{{{ i18n "CVS_TIP_SHRINK_H" }}}'></button>
+                <button class="svg_resizer icon-resize-right tooltip"
+                        data-tooltip='{{{ i18n "CVS_TIP_EXPAND_W" }}}'></button>
+                <button class="svg_resizer icon-resize-left tooltip"
+                        data-tooltip='{{{ i18n "CVS_TIP_SHRINK_W" }}}'></button>
+                <svg width="100%" height="100%"></svg>
+            </div>
+        </div>
+    </section>
 </div>
 </div>
 
@@ -28,10 +34,12 @@
 
 <!-- {{appProcessing}} -->
 <div class="ops-process">
-  <header class="processing">{{this}}<span class="process-info">0%</span></header>
-  <header class="processing rolling-back-content">{{i18n "TOOLBAR.ROLLING_BACK"}}</header>
-  <section class="loading-spinner"></section>
-  <section class="progress"> <div class="bar" style="width:0%;"></div> </section>
+    <header class="processing">{{this}}<span class="process-info">0%</span></header>
+    <header class="processing rolling-back-content">{{i18n "TOOLBAR.ROLLING_BACK"}}</header>
+    <section class="loading-spinner"></section>
+    <section class="progress">
+        <div class="bar" style="width:0%;"></div>
+    </section>
 </div>
 
 <!-- {{appUpdateStatus}} -->
@@ -117,7 +125,7 @@
 </label>
 
 <!-- {{toolbar.BtnReloadStates}} -->
-<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">Reload States</button>
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
 
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">
@@ -127,72 +135,83 @@
 </div>
 
 <!-- {{export.CF}} -->
-<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  {{#if hasCustomOG}}<div class="modal-text-highlight">{{i18n "TOOLBAR.EXPORT_CLOUDFORMATION_WARNNING"}}</div>{{/if}}
-  <div class="modal-text-minor">{{i18n "TOOLBAR.POP_EXPORT_CF_INFO"}}</div>
-</div> </div>
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        {{#if hasCustomOG}}
+            <div class="modal-text-highlight">{{i18n "TOOLBAR.EXPORT_CLOUDFORMATION_WARNNING"}}</div>{{/if}}
+        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_EXPORT_CF_INFO"}}</div>
+    </div>
+</div>
 <div class="stack-validation">
-  <details open style="display:none;">
-    <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
-    <div id="stack-run-validation-container"></div>
-  </details>
-  <div class="nutshell">:<label></label></div>
-  <div class="validating">
-    <div class="loading-spinner loading-spinner-small"></div>
-    <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
-  </div>
+    <details open style="display:none;">
+        <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
+        <div id="stack-run-validation-container"></div>
+    </details>
+    <div class="nutshell">:<label></label></div>
+    <div class="validating">
+        <div class="loading-spinner loading-spinner-small"></div>
+        <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
+    </div>
 </div>
 <div style="padding-top:20px;text-align:right;">
-  <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
-  <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
+    <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{export.JSON}} -->
-<div class="modal-text-wraper"> <div class="modal-center-align-helper" style="padding:40px 20px;">
-  <div class="modal-text-major"></div>
-  <div class="modal-text-minor">{{i18n "TOOLBAR.POP_BODY_EXPORT_AS_JSON"}}</div>
-</div> </div>
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper" style="padding:40px 20px;">
+        <div class="modal-text-major"></div>
+        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_BODY_EXPORT_AS_JSON"}}</div>
+    </div>
+</div>
 <div class="modal-footer">
-  <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOLBAR.POP_BTN_DOWNLOAD"}}</a>
-  <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
+    <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOLBAR.POP_BTN_DOWNLOAD"}}</a>
+    <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{export.PNG}} -->
 <div class="loading-spinner"></div>
 <section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
 <div class="modal-footer">
-  <a class="btn btn-blue" style="display: inline-block;">{{i18n "TOOLBAR.LBL_DOWNLOAD"}}</a>
-  <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.LBL_CANCEL"}}</button>
+    <a class="btn btn-blue" style="display: inline-block;">{{i18n "TOOLBAR.LBL_DOWNLOAD"}}</a>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.LBL_CANCEL"}}</button>
 </div>
 
 <!-- {{modal.onClose}} -->
-<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major">{{this}} {{i18n "TOOLBAR.HAS_UNSAVED_CHANGES"}}</div>
-  <div class="modal-text-major">{{i18n "TOOLBAR.CLOSE_CONFIRM"}}</div>
-</div> </div>
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{this}} {{i18n "TOOLBAR.HAS_UNSAVED_CHANGES"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.CLOSE_CONFIRM"}}</div>
+    </div>
+</div>
 
 <!-- {{modal.cancelUpdate}} -->
-<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-  <div class="modal-text-major">{{i18n "TOOLBAR.CANCEL_UPDATE_CONFIRM"}}</div>
-  <div class="modal-text-major">{{i18n "TOOLBAR.DISCARD_UPDATE_CHANGE"}}</div>
-</div> </div>
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CANCEL_UPDATE_CONFIRM"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.DISCARD_UPDATE_CHANGE"}}</div>
+    </div>
+</div>
 
 <!-- {{modal.confirmImport}} -->
 <p class="modal-text-major">{{i18n "IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
 <p class="modal-text-major">{{i18n "TOOLBAR.NAME_IMPORTED_APP"}}</p>
 <div class="modal-control-group">
-<label for="ImportSaveAppName">{{i18n "TOOLBAR.APP_NAME"}}</label> <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus> </div>
+    <label for="ImportSaveAppName">{{i18n "TOOLBAR.APP_NAME"}}</label>
+    <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus>
+</div>
 <div class="modal-control-group app-usage-group clearfix">
-  <label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
-  <div id="app-usage-selectbox" class="selectbox">
-    <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
-    <ul class="dropdown" tabindex="-1">
-      <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
-      <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
-      <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
-      <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-    </ul>
-  </div>
+    <label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
+    <div id="app-usage-selectbox" class="selectbox">
+        <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+        <ul class="dropdown" tabindex="-1">
+            <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+            <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+            <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+            <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+        </ul>
+    </div>
 </div>
 <p>{{i18n "TOOLBAR.IMPORT_SUCCESSFULLY_MANAGE_EASILY"}}</p>
 

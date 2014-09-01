@@ -68,8 +68,18 @@ define [
       return
 
     replicate : ( evt )->
-      if not @canvas.design.modeIsApp() and @model.slaves().length <= 5
+
+      if not @canvas.design.modeIsApp() and @model.slaves().length < 5
+
+        # for level 2 replica
+        appData = CloudResources( @model.type, @model.design().region() ).get( @model.get("appId") )
+        if appData
+          backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
+        if @model.autobackup() and @model.get('appId') and not backup
+          return false
+        
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
+
       false
 
     restore : ( evt )->
@@ -209,6 +219,8 @@ define [
           backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
 
         if m.slaves().length < 5
+
+          CanvasManager.removeClass $r, "disabled"
 
           if m.autobackup()
 

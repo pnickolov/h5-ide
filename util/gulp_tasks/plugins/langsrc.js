@@ -1,5 +1,5 @@
 (function() {
-  var base, buildLangSrc, cacheForLang, cached, coffee, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langShouldLog, langWrite, langemitError, pipeline, util, vm;
+  var base, buildLangSrc, cacheForLang, cached, coffee, compileImmediately, compiled, cwd, deepExtend, es, gulp, gutil, langCache, langDest, langShouldLog, langWrite, langemitError, pipeline, util, vm;
 
   util = require("./util");
 
@@ -26,6 +26,10 @@
   langemitError = pipeline = langDest = langShouldLog = null;
 
   compiled = false;
+
+  compileImmediately = function() {
+    return compiled = true;
+  };
 
   langCache = function(dest, useCache, shouldLog, emitError) {
     var startPipeline;
@@ -103,7 +107,8 @@
 
   module.exports = {
     langCache: langCache,
-    langWrite: langWrite
+    langWrite: langWrite,
+    compileImmediately: compileImmediately
   };
 
 }).call(this);

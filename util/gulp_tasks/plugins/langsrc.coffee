@@ -16,6 +16,8 @@ cwd = base = ""
 langemitError = pipeline = langDest = langShouldLog = null
 compiled = false
 
+compileImmediately = () -> compiled = true
+
 langCache = ( dest = ".", useCache = true, shouldLog = true, emitError = false )->
   if useCache
     startPipeline = cached( coffee() )
@@ -74,6 +76,7 @@ langWrite = () ->
   null
 
 module.exports = {
-  langCache: langCache
-  langWrite: langWrite
+  langCache         : langCache
+  langWrite         : langWrite
+  compileImmediately: compileImmediately
 }

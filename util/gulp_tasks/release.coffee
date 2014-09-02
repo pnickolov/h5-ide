@@ -145,8 +145,9 @@ Tasks =
     logTask "Compiling lang-source"
 
     d = Q.defer()
-    gulp.src(["./src/nls/lang-source.coffee"], SrcOption )
-        .pipe( langsrc("./build",false,GLOBAL.gulpConfig.verbose,true) )
+    langsrc.compileImmediately()
+    gulp.src(["./src/nls/lang-source/**/*.coffee"], SrcOption )
+        .pipe( langsrc.langCache("./build",false,GLOBAL.gulpConfig.verbose,true) )
         .on( "end", end(d) )
     d.promise
 

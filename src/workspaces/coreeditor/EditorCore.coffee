@@ -12,7 +12,8 @@ define [
   "Design"
   "ApiRequest"
   "UI.modalplus"
-], ( Workspace, CoreEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal )->
+  "i18n!/nls/lang.js"
+], ( Workspace, CoreEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal, lang )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
@@ -24,7 +25,7 @@ define [
       modal = new Modal {
         title    : "Confirm to remove the app #{name}?"
         template : OpsEditorTpl.modal.confirmRemoveApp()
-        confirm  : { text : "Confirm to Remove", color : "red" }
+        confirm  : { text : lang.IDE.POP_CONFIRM_TO_REMOVE, color : "red" }
         disableClose : true
         onConfirm    : ()->
           onConfirm()
@@ -105,7 +106,7 @@ define [
         # When we got this error, the opsmodel will destroy itself, resulting removal of the editor.
         return
 
-      notification "error", "Failed to load data, please retry."
+      notification "error", lang.NOTIFY.FAILED_TO_LOAD_DATA
       @remove()
 
     jsonLoaded : ()->
@@ -118,7 +119,7 @@ define [
     additionalDataLoadFailed : ()->
       if @isRemoved() then return
 
-      notification "error", "Failed to load aws data, please retry."
+      notification "error", lang.NOTIFY.FAILED_TO_LOAD_AWS_DATA
       @remove()
 
     additionalDataLoaded : ()->

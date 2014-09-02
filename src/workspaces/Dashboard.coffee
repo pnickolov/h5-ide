@@ -1,11 +1,11 @@
 
-define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard/DashboardModel"], ( Workspace, DashboardView, DashboardModel )->
+define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard/DashboardModel", 'i18n!/nls/lang.js'], ( Workspace, DashboardView, DashboardModel, lang )->
 
   class Dashboard extends Workspace
 
     isFixed  : ()-> true
     tabClass : ()-> "icon-dashboard"
-    title    : ()-> "Dashboard"
+    title    : ()-> lang.IDE.NAV_TIT_DASHBOARD
     url      : ()-> "/"
 
 

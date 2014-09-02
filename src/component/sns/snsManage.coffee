@@ -125,7 +125,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             m = @subCol.findWhere SubscriptionArn: subId
             m?.destroy()
                 .then( ( deletedModel )->
-                    notification 'info', "Remove Subscription Succeed."
+                    notification 'info', lang.NOTIFY.REMOVE_SUBSCRIPTION_SUCCEED
                     return deletedModel
                 )
                 .fail ( err ) ->
@@ -159,9 +159,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             finHandler = _.after times, ->
                 that.modal.cancel()
                 if success.length is 1
-                    notification 'info', "#{success[0].get 'Name'} is deleted."
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].get('Name')
                 else if success.length > 1
-                    notification 'info', "Selected #{success.length} SNS topic are deleted."
+                    notification 'info', sprintf lang.NOTIFY.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
 
                 if not error.length
                     that.modal.unCheckSelectAll()
@@ -197,7 +197,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     .save()
                     .then ( newSub ) ->
                         that.processSubCreate newSub
-                        notification 'info', 'Create Subscription Succeed'
+                        notification 'info', lang.NOTIFY.CREATE_SUBSCRIPTION_SUCCEED
                         that.modal.cancel()
                     .fail ( awsError ) ->
                         that.errorHandler awsError
@@ -292,41 +292,41 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
                     switch selectedProto
                         when "sqs"
-                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
-                            type        = lang.ide.PROP_STACK_SQS
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
+                            placeholder = lang.PROP.STACK_AMAZON_ARN
+                            type        = lang.PROP.STACK_SQS
+                            errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_AMAZON_SQS_ARN
 
                         when "arn"
-                            placeholder = lang.ide.PROP_STACK_AMAZON_ARN
-                            type        = lang.ide.PROP_STACK_ARN
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
+                            placeholder = lang.PROP.STACK_AMAZON_ARN
+                            type        = lang.PROP.STACK_ARN
+                            errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_APPLICATION_ARN
 
                         when "email"
-                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.ide.PROP_STACK_EMAIL
-                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+                            placeholder = lang.PROP.STACK_EXAMPLE_EMAIL
+                            type        = lang.PROP.STACK_EMAIL
+                            errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "email-json"
-                            placeholder = lang.ide.PROP_STACK_EXAMPLE_EMAIL
-                            type        = lang.ide.PROP_STACK_EMAIL
-                            errorMsg    = lang.ide.HEAD_MSG_ERR_UPDATE_EMAIL3
+                            placeholder = lang.PROP.STACK_EXAMPLE_EMAIL
+                            type        = lang.PROP.STACK_EMAIL
+                            errorMsg    = lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
 
                         when "sms"
-                            placeholder = lang.ide.PROP_STACK_E_G_1_206_555_6423
-                            type        = lang.ide.PROP_STACK_USPHONE
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
+                            placeholder = lang.PROP.STACK_E_G_1_206_555_6423
+                            type        = lang.PROP.STACK_USPHONE
+                            errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_PHONE_NUMBER
 
                         when "http"
                             #$input.addClass "http"
-                            placeholder = lang.ide.PROP_STACK_HTTP_WWW_EXAMPLE_COM
-                            type        = lang.ide.PROP_STACK_HTTP
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+                            placeholder = lang.PROP.STACK_HTTP_WWW_EXAMPLE_COM
+                            type        = lang.PROP.STACK_HTTP
+                            errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_URL
 
                         when "https"
                             #$input.addClass "https"
-                            placeholder = lang.ide.PROP_STACK_HTTPS_WWW_EXAMPLE_COM
-                            type        = lang.ide.PROP_STACK_HTTPS
-                            errorMsg    = lang.ide.PARSLEY_PLEASE_PROVIDE_A_VALID_URL
+                            placeholder = lang.PROP.STACK_HTTPS_WWW_EXAMPLE_COM
+                            type        = lang.PROP.STACK_HTTPS
+                            errorMsg    = lang.PARSLEY.PLEASE_PROVIDE_A_VALID_URL
 
                     endPoint = that.M$ '#create-endpoint'
                     endPoint.attr "placeholder", placeholder

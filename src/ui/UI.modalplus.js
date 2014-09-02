@@ -3,7 +3,7 @@
 
   modalGroup = [];
 
-  define(['backbone'], function(Backbone) {
+  define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
     var Modal;
     Modal = (function() {
       function Modal(option) {
@@ -32,7 +32,7 @@
             hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0
           },
           cancel: _.isString(this.option.cancel) ? {
-            text: this.option.cancel || "Cancel"
+            text: this.option.cancel || lang.IDE.POP_LBL_CANCEL
           } : _.isObject(this.option.cancel) ? this.option.cancel : {
             text: "Cancel"
           },

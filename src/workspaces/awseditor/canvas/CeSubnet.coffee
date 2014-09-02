@@ -35,12 +35,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'subnet-assoc-in'
-          'data-tooltip' : lang.ide.PORT_TIP_L
+          'data-tooltip' : lang.IDE.PORT_TIP_L
         })
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'subnet-assoc-out'
-          'data-tooltip' : lang.ide.PORT_TIP_M
+          'data-tooltip' : lang.IDE.PORT_TIP_M
         })
       ])
       m = @model

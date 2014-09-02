@@ -46,14 +46,14 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           $("#sg-rule-self-ref").hide()
 
           if ruleCount is 1
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE, out_target, out_target, action, in_target
+            info = sprintf lang.PROP.MSG_SG_CREATE, out_target, out_target, action, in_target
 
           else if data.target is data.relation
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
+            info = sprintf lang.PROP.MSG_SG_CREATE_SELF, ruleCount, out_target, out_target
             $("#sg-rule-self-ref").show()
 
           else
-            info = sprintf lang.ide.PROP_MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
+            info = sprintf lang.PROP.MSG_SG_CREATE_MULTI, ruleCount, out_target, in_target, out_target, action, in_target
 
           $("#sg-rule-create-msg").text info
 
@@ -91,7 +91,7 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           false
 
         onDirChange : () ->
-          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then lang.ide.POP_SGRULE_LBL_SOURCE else lang.ide.POP_SGRULE_LBL_DEST )
+          $(".sg-rule-direction").html( if $("#sg-rule-create-dir-i").is(":checked") then lang.IDE.POP_SGRULE_LBL_SOURCE else lang.IDE.POP_SGRULE_LBL_DEST )
 
         onProtocolChange : ( event, id ) ->
           $(".sg-proto-input").hide()
@@ -154,27 +154,27 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
               dom: custom_protocal_dom
               method: ( val ) ->
                 if not MC.validate.portRange(val)
-                  return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_NUMBER
+                  return lang.PARSLEY.MUST_BE_A_VALID_FORMAT_OF_NUMBER
                 if Number(val) < 0 or Number(val) > 255
-                  return lang.ide.PARSLEY_THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255
+                  return lang.PARSLEY.THE_PROTOCOL_NUMBER_RANGE_MUST_BE_0_255
                 null
             'tcp':
                 dom: tcp_port_dom
                 method: ( val ) ->
                   portAry = MC.validate.portRange(val)
                   if not portAry
-                      return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
+                      return lang.PARSLEY.MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                   if not MC.validate.portValidRange(portAry)
-                      return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
+                      return lang.PARSLEY.PORT_RANGE_BETWEEN_0_65535
                   null
             'udp':
                 dom: udp_port_dom
                 method: ( val ) ->
                   portAry = MC.validate.portRange(val)
                   if not portAry
-                      return lang.ide.PARSLEY_MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
+                      return lang.PARSLEY.MUST_BE_A_VALID_FORMAT_OF_PORT_RANGE
                   if not MC.validate.portValidRange(portAry)
-                      return lang.ide.PARSLEY_PORT_RANGE_BETWEEN_0_65535
+                      return lang.PARSLEY.PORT_RANGE_BETWEEN_0_65535
                   null
 
           if protocol_type of validateMap

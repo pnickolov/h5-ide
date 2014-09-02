@@ -83,7 +83,7 @@ define [ '../base/view',
             if target.parsley 'validate'
                 if not @model.setCidr cidr
                     target.val( @model.get("cidr") )
-                    notification lang.ide.NOTIFY_MSG_WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET
+                    notification lang.NOTIFY.WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET
             null
 
         onChangeTenancy : ( event, newValue ) ->

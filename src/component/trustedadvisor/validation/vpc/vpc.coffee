@@ -45,7 +45,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 		if isHaveVPN or isHaveEIP or isHavePubIP
 			return null
 
-		tipInfo = sprintf lang.ide.TA_MSG_WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
+		tipInfo = sprintf lang.TA.WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE
 
 		# return
 		level: constant.TA.WARNING
@@ -60,7 +60,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 		if dhcpId isnt 'default'
 			return null
 
-		Helper.message.warning vpc.id, i18n.TA_MSG_WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS
+		Helper.message.warning vpc.id, i18n.WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS
 
 	isVPCUsingNonexistentDhcp = ( callback ) ->
 		vpc = Design.modelClassForType(constant.RESTYPE.VPC).theVPC()
@@ -75,7 +75,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 			if dhcpCol.get dhcpId
 				callback null
 			else
-				callback Helper.message.error vpc.id, i18n.TA_MSG_ERROR_VPC_DHCP_NONEXISTENT
+				callback Helper.message.error vpc.id, i18n.ERROR_VPC_DHCP_NONEXISTENT
 
 		null
 
@@ -84,7 +84,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
 		hasRdsInstance = !!Design.modelClassForType(constant.RESTYPE.DBINSTANCE).size()
 
 		if hasRdsInstance and ( vpc.get('tenancy') isnt 'default' )
-			return Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_TENANCY_MUST_DEFAULT
+			return Helper.message.error uid, i18n.ERROR_RDS_TENANCY_MUST_DEFAULT
 
 		null
 
@@ -97,7 +97,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
         return null unless hasRdsAccessible
         return null if _.some(vpc.children(), (child) -> child.type is constant.RESTYPE.IGW)
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
+        Helper.message.error uid, i18n.ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW
 
     isVPCWithRdsAccessibleEnableDNS = ( uid ) ->
         vpc = Design.instance().component uid
@@ -107,7 +107,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' , 'Design', 'CloudResources', 'Ta
         return null unless hasRdsAccessible
         return null if vpc.get('dnsSupport') and vpc.get('dnsHostnames')
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
+        Helper.message.error uid, i18n.ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS
 
 	isVPCAbleConnectToOutside 		: isVPCAbleConnectToOutside
 	isVPCUsingNonexistentDhcp 		: isVPCUsingNonexistentDhcp

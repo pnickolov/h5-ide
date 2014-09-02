@@ -12,21 +12,21 @@ define [ '../base/view',
 ], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus )->
 
     metricMap =
-        "CPUUtilization"             : "CPU Utilization"
-        "DiskReadBytes"              : "Disk Reads"
-        "DiskReadOps"                : "Disk Read Operations"
-        "DiskWriteBytes"             : "Disk Writes"
-        "DiskWriteOps"               : "Disk Write Operations"
-        "NetworkIn"                  : "Network In"
-        "NetworkOut"                 : "Network Out"
-        "StatusCheckFailed"          : "Status Check Failed (Any)"
-        "StatusCheckFailed_Instance" : "Status Check Failed (Instance)"
-        "StatusCheckFailed_System"   : "Status Check Failed (System)"
+        "CPUUtilization"             : lang.PROP.ASG_POLICY_CPU
+        "DiskReadBytes"              : lang.PROP.ASG_POLICY_DISC_READS
+        "DiskReadOps"                : lang.PROP.ASG_POLICY_DISK_READ_OPERATIONS
+        "DiskWriteBytes"             : lang.PROP.ASG_POLICY_DISK_WRITES
+        "DiskWriteOps"               : lang.PROP.ASG_POLICY_DISK_WRITE_OPERATIONS
+        "NetworkIn"                  : lang.PROP.ASG_POLICY_NETWORK_IN
+        "NetworkOut"                 : lang.PROP.ASG_POLICY_NETWORK_OUT
+        "StatusCheckFailed"          : lang.PROP.ASG_POLICY_STATUS_CHECK_FAILED_ANY
+        "StatusCheckFailed_Instance" : lang.PROP.ASG_POLICY_STATUS_CHECK_FAILED_INSTANCE
+        "StatusCheckFailed_System"   : lang.PROP.ASG_POLICY_STATUS_CHECK_FAILED_SYSTEM
 
     adjustMap =
-        "ChangeInCapacity"        : "Change in Capacity"
-        "ExactCapacity"           : "Exact Capacity"
-        "PercentChangeInCapacity" : "Percent Change in Capacity"
+        "ChangeInCapacity"        : lang.PROP.ASG_ADD_POLICY_ADJUSTMENT_CHANGE
+        "ExactCapacity"           : lang.PROP.ASG_ADD_POLICY_ADJUSTMENT_EXACT
+        "PercentChangeInCapacity" : lang.PROP.ASG_ADD_POLICY_ADJUSTMENT_PERCENT
 
     adjustdefault =
         "ChangeInCapacity"        : "eg. -1"
@@ -34,9 +34,9 @@ define [ '../base/view',
         "PercentChangeInCapacity" : "eg. -30"
 
     adjustTooltip =
-        "ChangeInCapacity"        : "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-        "ExactCapacity"           : "Change the current capacity of your Auto Scaling group to the exact value specified."
-        "PercentChangeInCapacity" : "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
+        "ChangeInCapacity"        : lang.PROP.ASG_ADJUST_TOOLTIP_CHANGE
+        "ExactCapacity"           : lang.PROP.ASG_ADJUST_TOOLTIP_EXACT
+        "PercentChangeInCapacity" : lang.PROP.ASG_ADJUST_TOOLTIP_PERCENT
 
     unitMap =
         CPUUtilization : "%"
@@ -67,7 +67,7 @@ define [ '../base/view',
 
             $target.parsley 'custom', ( val ) ->
                 if _.isNumber( +val ) and +val > 86400
-                    return lang.ide.PARSLEY_MAX_VALUE_86400
+                    return lang.PARSLEY.MAX_VALUE_86400
                 null
 
             if $target.parsley 'validate'
@@ -88,7 +88,7 @@ define [ '../base/view',
                     data.push { name : policy, checked : true }
                     checked[ policy ] = true
 
-            for p in [lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST, lang.ide.PROP_ASG_TERMINATION_POLICY_NEWEST, lang.ide.PROP_ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.ide.PROP_ASG_TERMINATION_POLICY_CLOSEST]
+            for p in [lang.PROP.ASG_TERMINATION_POLICY_OLDEST, lang.PROP.ASG_TERMINATION_POLICY_NEWEST, lang.PROP.ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.PROP.ASG_TERMINATION_POLICY_CLOSEST]
                 if not checked[ p ]
                     data.push { name : p, checked : false }
 
@@ -177,7 +177,7 @@ define [ '../base/view',
             data = @model.getPolicy(uid)
 
             data.uid   = uid
-            data.title = lang.ide.PROP_ASG_ADD_POLICY_TITLE_EDIT
+            data.title = lang.PROP.ASG_ADD_POLICY_TITLE_EDIT
             data.isOld = isOld
 
             @showScalingPolicy( data )
@@ -215,7 +215,7 @@ define [ '../base/view',
         openPolicyModal: ( data ) ->
             options =
                 template        : policy_template data
-                title           : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                title           : lang.PROP.ASG_ADD_POLICY_TITLE_ADD
                 width           : '480px'
                 compact         : true
                 confirm         :
@@ -237,7 +237,7 @@ define [ '../base/view',
         showScalingPolicy : ( data ) ->
             if !data
                 data =
-                    title   : lang.ide.PROP_ASG_ADD_POLICY_TITLE_ADD
+                    title   : lang.PROP.ASG_ADD_POLICY_TITLE_ADD
                     name    : @model.defaultScalingPolicyName()
                     minAdjustStep : 1
                     alarmData : {
@@ -264,7 +264,7 @@ define [ '../base/view',
                 uid  = $("#property-asg-policy").data("uid")
 
                 if self.model.isDupPolicyName uid, name
-                    return lang.ide.PARSLEY_DUPLICATED_POLICY_NAME
+                    return lang.PARSLEY.DUPLICATED_POLICY_NAME
 
 
             $("#asg-policy-periods").on "change", () ->
@@ -488,21 +488,21 @@ define [ '../base/view',
 
             $min.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
+                    return lang.PARSLEY.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val > + $max.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.PARSLEY.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
 
             $max.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
+                    return lang.PARSLEY.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val < + $min.val()
-                    return lang.ide.PARSLEY_MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                    return lang.PARSLEY.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
 
             $capacity.parsley 'custom', ( val ) ->
                 if + val < 1
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_EQUAL_OR_GREATER_1
+                    return lang.PARSLEY.DESIRED_CAPACITY_EQUAL_OR_GREATER_1
                 if + val < + $min.val() or + val > + $max.val()
-                    return lang.ide.PARSLEY_DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                    return lang.PARSLEY.DESIRED_CAPACITY_IN_ALLOW_SCOPE
 
             if $( event.currentTarget ).parsley 'validateForm'
                 @model.setASGMin $min.val()

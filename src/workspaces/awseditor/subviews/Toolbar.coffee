@@ -51,6 +51,7 @@ define [
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
+      "click .icon-forget-app"        : "forgetApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"
       "click .icon-apply-app"         : "applyAppEdit"
@@ -102,13 +103,13 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
 
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
           @$el.find(".icon-refresh").hide()
         else
           running = opsModel.testState(OpsModel.State.Running)
           stopped = opsModel.testState(OpsModel.State.Stopped)
 
-          @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-refresh, .icon-save-app, .icon-reload").show()
 
           # @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
           # @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
@@ -142,9 +143,9 @@ define [
       sgBtn = $(".icon-hide-sg")
       show  = sgBtn.hasClass("selected")
       if show
-        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).removeClass("selected")
+        sgBtn.data("tooltip", lang.TOOLBAR.LBL_LINESTYLE_HIDE_SG).removeClass("selected")
       else
-        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).addClass("selected")
+        sgBtn.data("tooltip", lang.TOOLBAR.LBL_LINESTYLE_SHOW_SG).addClass("selected")
       @parent.canvas.toggleSgLine( show )
       return
 
@@ -162,11 +163,11 @@ define [
         self.workspace.opsModel.save( newJson, thumbnail ).then ()->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "info", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_SUCCESS, newJson.name)
+          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
         , ( )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "error", sprintf(lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name)
+          notification "error", sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
         return
 
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
@@ -236,7 +237,7 @@ define [
         # The browser doesn't support Blob. Fallback to show a dialog to
         # allow user to download the file.
         new Modal {
-          title         : lang.ide.TOOL_EXPORT_AS_JSON
+          title         : lang.TOOLBAR.EXPORT_AS_JSON
           template      : OpsEditorTpl.export.JSON( data )
           width         : "470"
           disableFooter : true
@@ -252,7 +253,7 @@ define [
           hasCustomOG = true
 
       modal = new Modal {
-        title         : lang.ide.TOOL_POP_EXPORT_CF
+        title         : lang.TOOLBAR.POP_EXPORT_CF
         template      : OpsEditorTpl.export.CF({hasCustomOG})
         width         : "470"
         disableFooter : true
@@ -268,16 +269,16 @@ define [
 
       Q.spread [ TAPromise, ApiPromise ], ( taError, apiReturn  ) ->
         modal?.resize()
-        btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
+        btn = modal.tpl.find("a.btn-blue").text(lang.TOOLBAR.POP_BTN_EXPORT_CF).removeClass("disabled")
         JsonExporter.genericExport btn, apiReturn, "#{name}.json"
         btn.click ()-> modal.close()
         return
 
       , ( err ) ->
         modal?.resize()
-        modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF)
+        modal.tpl.find("a.btn-blue").text(lang.TOOLBAR.POP_BTN_EXPORT_CF)
         if err.error
-          notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
+          notification "error", sprintf lang.NOTIFY.FAIL_TO_EXPORT_TO_CLOUDFORMATION, err.error
         return
 
     reloadState: (event)->
@@ -296,16 +297,16 @@ define [
             dataType: 'json'
             statusCode:
                 200: ->
-                    notification 'info', lang.ide.RELOAD_STATE_SUCCESS
+                    notification 'info', lang.NOTIFY.RELOAD_STATE_SUCCESS
                     ide_event.trigger ide_event.REFRESH_PROPERTY
                 401: ->
-                    notification 'error', lang.ide.RELOAD_STATE_INVALID_REQUEST
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_INVALID_REQUEST
                 404: ->
-                    notification 'error', lang.ide.RELOAD_STATE_NETWORKERROR
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_NETWORKERROR
                 429: ->
-                    notification 'error', lang.ide.RELOAD_STATE_NOT_READY
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_NOT_READY
                 500: ->
-                    notification 'error', lang.ide.RELOAD_STATE_INTERNAL_SERVER_ERROR
+                    notification 'error', lang.NOTIFY.RELOAD_STATE_INTERNAL_SERVER_ERROR
             error: ->
                 console.log 'Error while Reload State'
             success: ->
@@ -321,12 +322,12 @@ define [
         if $(event.currentTarget).attr('disabled')
             return false
         @modal = new Modal
-            title: lang.ide.RUN_STACK_MODAL_TITLE
+            title: lang.IDE.RUN_STACK_MODAL_TITLE
             template: MC.template.modalRunStack
             disableClose: true
             width: '450px'
             confirm:
-                text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+                text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
                 disabled: true
         @renderKpDropdown(@modal)
         cost = Design.instance().getCost()
@@ -364,11 +365,11 @@ define [
             , (err)->
                 self.modal.close()
                 error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
+                notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
         App.user.on 'change:credential', ->
           console.log 'We got it.'
           if App.user.hasCredential() and that.modal.isOpen()
-            that.modal.find(".modal-confirm").text lang.ide.RUN_STACK_MODAL_CONFIRM_BTN
+            that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
         @modal.on 'close', ->
           console.log 'We gave up.'
           App.user.off 'change:credential'
@@ -390,18 +391,18 @@ define [
                 appToStackModal.close()
                 newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
-                    notification "info", sprintf lang.ide.TOOL_MSG_INFO_HDL_SUCCESS, lang.ide.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
+                    notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.IDE.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
                 ,()->
-                    notification 'error', sprintf lang.ide.TOOL_MSG_ERR_SAVE_FAILED, newJson.name
+                    notification 'error', sprintf lang.NOTIFY.ERR_SAVE_FAILED, newJson.name
 
         originStackExist = !!stack
         appToStackModal = new Modal
-            title:  lang.ide.TOOL_POP_TIT_APP_TO_STACK
+            title:  lang.TOOLBAR.POP_TIT_APP_TO_STACK
             template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
             confirm:
-                text: lang.ide.TOOL_POP_BTN_SAVE_TO_STACK
+                text: lang.TOOLBAR.POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
         appToStackModal.tpl.find("input[name='save-stack-type']").change ->
             appToStackModal.tpl.find(".radio-instruction").toggleClass('hide')
@@ -441,10 +442,10 @@ define [
         copy_name + "-" + idx
     checkAppNameRepeat: (nameVal)->
         if App.model.appList().findWhere(name: nameVal)
-            @showError('appname', lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME)
+            @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
             return true
         else if not nameVal
-            @showError('appname', lang.ide.PROP_MSG_WARN_NO_APP_NAME)
+            @showError('appname', lang.PROP.MSG_WARN_NO_APP_NAME)
             return true
         else
             @hideError('appname')
@@ -480,7 +481,7 @@ define [
         kpModal = Design.modelClassForType( constant.RESTYPE.KP )
         defaultKP = kpModal.getDefaultKP()
         if not defaultKP.get('isSet') or not ((@modal||@updateModal) and (@modal || @updateModal).tpl.find("#kp-runtime-placeholder .item.selected").size())
-            @showError('kp', lang.ide.RUN_STACK_MODAL_KP_WARNNING)
+            @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
             return false
 
         true
@@ -488,6 +489,7 @@ define [
     startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
     stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     checkDBinstance : (oldDBInstanceList)->
@@ -523,7 +525,7 @@ define [
         dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
       @updateModal = new Modal
-        title: lang.ide.HEAD_INFO_LOADING
+        title: lang.IDE.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
         hasScroll: true
@@ -543,7 +545,7 @@ define [
         if (notAvailableDB.length)
           that.updateModal.find(".modal-footer").show().find(".modal-confirm").hide()
           that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB
-          that.updateModal.setTitle lang.ide.UPDATE_APP_MODAL_TITLE
+          that.updateModal.setTitle lang.IDE.UPDATE_APP_MODAL_TITLE
           return false
 
         removeList = []
@@ -562,8 +564,8 @@ define [
           notReadyDB: removeListNotReady
           removeList: removeList
         })
-        that.updateModal.tpl.find(".modal-header").find("h3").text(lang.ide.UPDATE_APP_MODAL_TITLE)
-        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.ide.UPDATE_APP_CONFIRM_BTN else lang.ide.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+        that.updateModal.tpl.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
+        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         window.setTimeout ->
           that.updateModal.resize()

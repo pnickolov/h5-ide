@@ -53,9 +53,9 @@ define [ '../base/view',
             attach  = not $target.hasClass("associated")
 
             if attach
-                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_4
+                tooltip = lang.PROP.INSTANCE_IP_MSG_4
             else
-                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_3
+                tooltip = lang.PROP.INSTANCE_IP_MSG_3
             $target.toggleClass("associated", attach).data("tooltip", tooltip)
 
             @model.attachEip index, attach

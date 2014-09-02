@@ -1,55 +1,55 @@
 <!-- {{removeStackConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOLBAR.TIP_DELETE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper">
         <div class="modal-text-major">{{msg}}</div>
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
-    <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+    <button class="btn modal-close btn-red" id="confirmRmStack">{{i18n "TOOLBAR.POP_BTN_DELETE_STACK"}}</button>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{dupStackConfirm}} -->
-<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOL_TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOLBAR.TIP_DUPLICATE_STACK"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper">
         <div class="modal-control-group">
-            <label class="modal-text-major">{{i18n "TOOL_POP_BODY_DUPLICATE_STACK"}}</label>
+            <label class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_DUPLICATE_STACK"}}</label>
             <input id="confirmDupStackIpt" class="input" type="text" value="{{newName}}">
         </div>
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-red" id="confirmDupStack">{{i18n "TOOL_POP_BTN_DUPLICATE_STACK"}}</button>
-    <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+    <button class="btn btn-red" id="confirmDupStack">{{i18n "TOOLBAR.POP_BTN_DUPLICATE_STACK"}}</button>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{startAppConfirm}} -->
 <div class="modal-center-align-helper">
-    <div class="modal-text-major">{{i18n "TOOL_POP_BODY_START_APP"}}</div>
+    <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_START_APP"}}</div>
     <ul class="modal-list-items">
         {{#if hasEC2Instance}}
             <li>
-                EC2 instances will be started.
+                {{i18n "TOOLBAR.POP_START_CONFIRM_LIST_1"}}
             </li>
         {{/if}}
         {{#if hasDBInstance}}
             <li>
-                DB instances will be restored from final snapshot.
+                {{i18n "TOOLBAR.POP_START_CONFIRM_LIST_2"}}
             </li>
         {{/if}}
         {{#if hasASG}}
             <li>
-                Auto Scaling Group will be recreated.
+                {{i18n "TOOLBAR.POP_START_CONFIRM_LIST_3"}}
             </li>
         {{/if}}
     </ul>
     {{#if lostDBSnapshot.length}}
         <div class="modal-shrink">
-            <div class="sub-gray">Warning</div>
+            <div class="sub-gray">{{i18n "TOOLBAR.POP_START_WARNNING"}}</div>
             <div class="error">
-                DB instance {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}}’s final snapshot is missing. This DB instance cannot be restored.
+                {{i18n "TOOLBAR.POP_START_MISSING_SNAPSHOT_1"}} {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}} {{i18n "TOOLBAR.POP_START_MISSING_SNAPSHOT_2"}}
             </div>
         </div>
     {{/if}}
@@ -64,24 +64,24 @@
     </div>
 {{else}}
     <div class="modal-center-align-helper" style="padding: 20px">
-        <div class="modal-text-major">{{i18n "TOOL_POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOL_POP_BODY_STOP_APP_RIGHT"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOLBAR.POP_BODY_STOP_APP_RIGHT"}}</div>
         <ul class="modal-list-items">
             {{#if hasEC2Instance}}
                 <li>
-                    EC2 instances will be stopped.
-                    {{#if hasInstanceStore}}<span class="error">Instance-stored instances will be deleted.</span>{{/if}}
+                    {{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_1"}}
+                    {{#if hasInstanceStore}}<span class="error">{{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_1_SPAN"}}</span>{{/if}}
                 </li>
             {{/if}}
             {{#if hasDBInstance}}
                 <li>
-                    DB instances will be deleted final snapshot will be taken.
-                    <span>Snapshots will be restored when the app is started.</span>
+                    {{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_2"}}
+                    <span>{{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_2_SPAN"}}</span>
                 </li>
             {{/if}}
             {{#if hasAsg }}
                 <li>
-                    Auto Scaling Group will be deleted.
-                    <span>Auto Scaling Group will be recreated when the app is started.</span>
+                    {{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_3"}}
+                    <span>{{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_3_SPAN"}}</span>
                 </li>
             {{/if}}
         </ul>
@@ -96,8 +96,8 @@
 <!-- {{cantStop}} -->
 <p>DB Instance
     {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-    cannot take final snapshot.</p>
-<p>Wait for the DB instance(s) to be available. Then try to stop the app again.</p>
+    {{i18n "TOOLBAR.POP_CANT_STOP_1"}}</p>
+<p>{{i18n "TOOLBAR.POP_CANT_STOP_2"}}</p>
 
 <!-- {{terminateAppConfirm}} -->
 <div class="confirm-padding">
@@ -106,7 +106,7 @@
         <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
         <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
     {{else}}
-        <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
+        <div class="modal-center-align-helper"><div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
     {{/if}}
     {{#if hasDBInstance.length}}
         <section class="check-final-snapshot checkbox-wrap">
@@ -114,12 +114,27 @@
                 <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                 <label for="take-rds-snapshot"></label>
             </div>
-            <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+            <label for="take-rds-snapshot">{{i18n "TOOLBAR.POP_TAKE_DB_SNAPSHOT"}}</label>
         </section>
         {{#if notReadyDB.length}}
-            <p class="cant-snapshot">DB Instance
+            <p class="cant-snapshot">{{i18n "TOOLBAR.POP_CANT_TAKE_SNAPSHOT_1"}}
                 {{#each notReadyDB}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                cannot take final snapshot.</p>
+                {{i18n "TOOLBAR.POP_CANT_TAKE_SNAPSHOT_2"}}</p>
+        {{/if}}
+    {{/if}}
+</div>
+
+<!-- {{forgetAppConfirm}} -->
+<div class="confirm-padding">
+    {{#if hasState}}
+        <div class="modal-center-align-helper"> <div class="modal-text-major">This app is created by Visualops with state, do not support forget currently</div></div>
+    {{else}}
+        {{#if production}}
+            <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances.</p>
+            <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+            <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
+        {{else}}
+            <div class="modal-center-align-helper"> <div class="modal-text-major">Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?</div></div>
         {{/if}}
     {{/if}}
 </div>
@@ -131,13 +146,13 @@
 </section>
 
 <!-- {{forceTerminateApp}} -->
-<header class="modal-header" style="width:390px;"><h3>Force to delete app</h3><i class="modal-close">&times;</i></header>
+<header class="modal-header" style="width:390px;"><h3>{{i18n "TOOLBAR.POP_FORCE_TERMINATE"}}</h3><i class="modal-close">&times;</i></header>
 <div class="modal-body modal-text-wraper" style="width:390px;">
     <div class="modal-center-align-helper">
-        <div class="modal-text-major">The app {{name}} failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console.</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.POP_FORCE_TERMINATE_CONTENT" name}}</div>
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn modal-close btn-red" id="forceTerminateApp">{{i18n "TOOL_POP_BTN_DELETE_STACK"}}</button>
-    <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+    <button class="btn modal-close btn-red" id="forceTerminateApp">{{i18n "TOOLBAR.POP_BTN_DELETE_STACK"}}</button>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>

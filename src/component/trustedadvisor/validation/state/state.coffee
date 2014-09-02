@@ -154,7 +154,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         # if there is no EIP or publicIP, push an error and stop continued validate.
         if not __hasEipOrPublicIp( lcOrInstance )
             name = lcOrInstance.get( 'name' )
-            result.push Helper.message.error lcOrInstance.id, i18n.TA_MSG_ERROR_NO_EIP_OR_PIP, name, name, subnetName
+            result.push Helper.message.error lcOrInstance.id, i18n.ERROR_NO_EIP_OR_PIP, name, name, subnetName
             true
         else if __isRouteIgw( component )
             true
@@ -162,7 +162,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
             false
 
     __genConnectedError = ( subnetName, uid ) ->
-        Helper.message.error uid, i18n.TA_MSG_ERROR_NOT_CONNECT_OUT, subnetName
+        Helper.message.error uid, i18n.ERROR_NOT_CONNECT_OUT, subnetName
 
 
     __isLcConnectedOut = ( uid ) ->
@@ -218,7 +218,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         if __hasType constant.RESTYPE.IGW
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_CGW
+        Helper.message.error uid, i18n.ERROR_NO_CGW
 
     isHasOutPort80and443 = ( uid ) ->
         component = __getComp uid
@@ -227,7 +227,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         if __sgsHasOutPort80and443 sgs
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_NO_OUTBOUND_RULES, component.name
+        Helper.message.error uid, i18n.ERROR_NO_OUTBOUND_RULES, component.name
 
     isHasOutPort80and443Strict = ( uid ) ->
         component = __getComp uid
@@ -236,7 +236,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         if isHasOutPort80and443( uid ) or __sgsHasOutPort80and443 sgs, true
             return null
 
-        Helper.message.warning uid, i18n.TA_MSG_WARNING_OUTBOUND_NOT_TO_ALL, component.name
+        Helper.message.warning uid, i18n.WARNING_OUTBOUND_NOT_TO_ALL, component.name
 
     isConnectedOut = ( uid ) ->
         result = []

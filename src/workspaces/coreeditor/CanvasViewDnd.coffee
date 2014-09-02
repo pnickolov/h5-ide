@@ -153,7 +153,7 @@ define [
     if not ItemClassProto.sticky
       # Caculate best drop rect for non-sticky item
       dropRect = @__bestFitRect( dropRect, group, excludeChild )
-      if not dropRect then return lang.ide.CVS_MSG_WARN_NO_ENOUGH_SPACE
+      if not dropRect then return lang.CANVAS.WARN_NO_ENOUGH_SPACE
 
     {
       group    : group
@@ -493,7 +493,7 @@ define [
 
     result = data.context.__handleDropData( data, ignore, true )
     if _.isString( result )
-      if result is lang.ide.CVS_MSG_WARN_NO_ENOUGH_SPACE
+      if result is lang.CANVAS.WARN_NO_ENOUGH_SPACE
         notification "warning", result
       return
 

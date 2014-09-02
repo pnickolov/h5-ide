@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, constant ) ->
+define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( PropertyModel, Design, constant, lang ) ->
 
   ConnectionModel = PropertyModel.extend {
 
@@ -13,7 +13,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       if cn.type is "EniAttachment"
         attr =
-          name : "Instance-ENI Attachment"
+          name : lang.PROP.ENI_ATTACHMENT_NAME
           eniAsso : {
             instance : cn.getTarget( constant.RESTYPE.INSTANCE  ).get("name")
             eni      : cn.getTarget( constant.RESTYPE.ENI ).get("name")
@@ -21,7 +21,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
 
       else if cn.type is "ElbSubnetAsso"
         attr =
-          name : "Load Balancer-Subnet Association"
+          name : lang.PROP.ELB_SUBNET_ASSO_NAME
           subnetAsso : {
             elb : cn.getTarget( constant.RESTYPE.ELB ).get("name")
             subnet : cn.getTarget( constant.RESTYPE.SUBNET  ).get("name")

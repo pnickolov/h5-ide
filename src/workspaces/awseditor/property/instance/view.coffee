@@ -116,15 +116,15 @@ define [ '../base/view',
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return sprintf lang.ide.PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             #
 
@@ -153,7 +153,7 @@ define [ '../base/view',
 
             target.parsley 'custom', ( val ) ->
                 if isNaN( val ) or val > 99 or val < 1
-                    return lang.ide.PARSLEY_THIS_VALUE_MUST_BETWEEN_1_99
+                    return lang.PARSLEY.THIS_VALUE_MUST_BETWEEN_1_99
 
             if target.parsley 'validate'
 
@@ -170,12 +170,12 @@ define [ '../base/view',
 
             if enable
                 $parent.find(".input-ip-wrap").removeClass("disabled")
-                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_1)
+                       .find(".name").data("tooltip", lang.PROP.INSTANCE_IP_MSG_1)
                        .find(".input-ip").prop("disabled", "")
 
             else
                 $parent.find(".input-ip-wrap").addClass("disabled")
-                       .find(".name").data("tooltip", lang.ide.PROP_INSTANCE_IP_MSG_2)
+                       .find(".name").data("tooltip", lang.PROP.INSTANCE_IP_MSG_2)
                        .find(".input-ip").attr("disabled", "disabled")
             null
 
@@ -302,9 +302,9 @@ define [ '../base/view',
             attach  = not $target.hasClass("associated")
 
             if attach
-                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_4
+                tooltip = lang.PROP.INSTANCE_IP_MSG_4
             else
-                tooltip = lang.ide.PROP_INSTANCE_IP_MSG_3
+                tooltip = lang.PROP.INSTANCE_IP_MSG_3
             $target.toggleClass("associated", attach).data("tooltip", tooltip)
 
             @model.attachEip index, attach
@@ -327,7 +327,7 @@ define [ '../base/view',
 
         # This function is used to display IP List
         refreshIPList : () ->
-            
+
             if not @model.attributes.eni
                 return
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
@@ -357,7 +357,7 @@ define [ '../base/view',
 
             if flag is true
                 $userDataInput.attr('disabled', 'disabled')
-                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.ide.PROP_INSTANCE_USER_DATA_DISABLE)
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.PROP.INSTANCE_USER_DATA_DISABLE)
                 # $userDataInput.val('')
                 # @userdataChange({
                 #     target: {

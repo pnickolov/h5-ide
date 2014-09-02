@@ -32,7 +32,7 @@ define [ '../base/model',
 
 				@set 'type_editable', ami.rootDeviceType isnt "instance-store"
 			else
-				notification 'warning', sprintf lang.ide.PROP_MSG_ERR_AMI_NOT_FOUND, ami_id
+				notification 'warning', sprintf lang.NOTIFY.ERR_AMI_NOT_FOUND, ami_id
 
 			#root device
 			rd = myInstanceComponent.getBlockDeviceMapping()

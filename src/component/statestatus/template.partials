@@ -1,6 +1,6 @@
 <!-- {{modal}} -->
 <div class="modal-header">
-	<h3>Failed State</h3>
+	<h3>{{i18n "FAILED_STATE"}}</h3>
 	<i class="modal-close">×</i>
 </div>
 <div class="modal-body">
@@ -16,7 +16,7 @@
 		<div class="content_wrap scroll-content">
 			<div class="update-tip"></div>
 			<div class="status-item">
-				<p class="no-item">No failed item.</p>
+				<p class="no-item">{{i18n "NO_FAILED_ITEM_PERIOD"}}</p>
 			</div>
 		</div>
 	</div>
@@ -37,8 +37,8 @@
 
 <!-- {{pending}} -->
 <dl class="state-status-pending">
-	<dt>All states are pending.</dt>
-	<dd>A message will show here when a state succeeds or fails.</dd>
+	<dt>{{i18n "ALL_STATES_ARE_PENDING_PERIOLD"}}</dt>
+	<dd>{{i18n "A_MESSAGE_WILL_SHOW_HERE"}}</dd>
 </dl>
 
 <!-- {{container}} -->
@@ -47,5 +47,5 @@
 
 <!-- {{update}} -->
 <div class="state-status-update">
-	{{this}} states has updated status.
+	{{i18n "XXX_STATES_HAS_UPDATED_STATUS" this}}
 </div>

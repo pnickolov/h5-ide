@@ -66,17 +66,17 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
 
         # Disable transfering exsiting volume between servergroups and others.
         if parent.get("count") > 1
-          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME
+          return lang.CANVAS.ERR_SERVERGROUP_VOLUME
 
         if newParent.get("count") > 1
-          return lang.ide.CVS_MSG_ERR_SERVERGROUP_VOLUME2
+          return lang.CANVAS.ERR_SERVERGROUP_VOLUME2
 
         while parent and parent.type isnt constant.RESTYPE.AZ
           parent    = parent.parent()
           newParent = newParent.parent()
 
         if parent and newParent and parent isnt newParent
-          return "Cannot move volume across availability zone."
+          return lang.IDE.VALIDATION_CANNOT_MOVE_VOLUME_ACROSS_AZ
 
       true
 
@@ -87,7 +87,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
     isRemovable : ()->
       if @design().modeIsAppEdit()
         if (@get("owner") || {}).type is constant.RESTYPE.LC
-          return lang.ide.NOTIFY_MSG_WARN_OPERATE_NOT_SUPPORT_YET
+          return lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
 
       true
 
@@ -193,7 +193,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
       ami_info = owner.getAmi()
 
       if !ami_info
-        notification "warning", sprintf(lang.ide.NOTIFY_MSG_WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
+        notification "warning", sprintf(lang.NOTIFY.WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
         return null
 
       else
@@ -220,7 +220,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
 
         #no valid deviceName
         if deviceName.length is 0
-          notification "warning", lang.ide.NOTIFY_MSG_WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
+          notification "warning", lang.NOTIFY.WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
           return null
 
         if ami_info.osType isnt "windows"

@@ -52,7 +52,7 @@
 #           width: "600px"
 #
 modalGroup = []
-define ['backbone'], (Backbone)->
+define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
     class Modal
         constructor: (@option)->
             _.extend @, Backbone.Events
@@ -73,7 +73,7 @@ define ['backbone'], (Backbone)->
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
                     hide    : @option.confirm?.hide
-                cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
+                cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.IDE.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact

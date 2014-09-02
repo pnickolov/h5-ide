@@ -15,7 +15,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
         if isConnectRTB
             return null
 
-        tipInfo = lang.ide.TA_MSG_WARNING_NO_RTB_CONNECT_IGW
+        tipInfo = lang.TA.WARNING_NO_RTB_CONNECT_IGW
 
         # return
         level   : constant.TA.WARNING

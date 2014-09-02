@@ -34,13 +34,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'vgw-tgt'
-          'data-tooltip' : lang.ide.PORT_TIP_C
+          'data-tooltip' : lang.IDE.PORT_TIP_C
         })
 
         svg.use("port_right").attr({
           'class'        : 'port port-purple tooltip'
           'data-name'    : 'vgw-vpn'
-          'data-tooltip' : lang.ide.PORT_TIP_H
+          'data-tooltip' : lang.IDE.PORT_TIP_H
         })
       ])
 

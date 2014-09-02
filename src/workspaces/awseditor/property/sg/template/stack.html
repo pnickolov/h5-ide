@@ -1,32 +1,32 @@
 <article>
-	<div class="option-group-head expand">{{ i18n "PROP_SG_TIT_DETAIL" }}</div>
+	<div class="option-group-head expand">{{ i18n "PROP.SG_TIT_DETAIL" }}</div>
 	<div class="option-group" data-bind="true">
 		<div class="property-control-group">
-			<label for="securitygroup-name" >{{ i18n "PROP_SG_DETAIL_LBL_NAME" }}</label>
-			<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+			<label for="securitygroup-name" >{{ i18n "PROP.SG_DETAIL_LBL_NAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
 			<input class="input"  type="text" id="securitygroup-name" {{#if nameReadOnly}}disabled="disabled"{{/if}} value="{{name}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</div>
 		<div class="property-control-group">
-			<label for="securitygroup-description" >{{ i18n "PROP_SG_DETAIL_LBL_DESCRIPTION" }}</label>
+			<label for="securitygroup-description" >{{ i18n "PROP.DESCRIPTION" }}</label>
 			<input class="input" type="text" id="securitygroup-description" {{#if descReadOnly}}disabled="disabled"{{/if}} value="{{description}}" maxlength="255" data-type="ascii" data-ignore="true"/>
 		</div>
 	</div>
 
-	<div class="option-group-head expand">{{ i18n "PROP_SG_TIT_RULE" }}
+	<div class="option-group-head expand">{{ i18n "PROP.SG_TIT_RULE" }}
 		<span class="property-head-num-wrap">(<span id="rule-count">{{rules.length}}</span>)</span>
 		{{#if ruleEditable}}
-		<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP_SG_TIP_CREATE_RULE" }}' ></a>
+		<a href="#" class="icon-add tooltip add-rule action-link" id="sg-add-rule-icon" data-tooltip='{{ i18n "PROP.SG_TIP_CREATE_RULE" }}' ></a>
 		{{/if}}
 	</div>
 	<div class="option-group">
 		<div class="rule-list-sort property-control-group">
-			<h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
+			<h5>{{ i18n "PROP.SG_RULE_SORT_BY" }}</h5>
 			<div class="selectbox" id="sg-rule-filter-select">
-				<div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
+				<div class="selection">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</div>
 				<ul class="dropdown" tabindex="-1">
-					<li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
-					<li class="item" data-id="relation">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
-					<li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
+					<li class="item selected" data-id="direction">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</li>
+					<li class="item" data-id="relation">{{ i18n "PROP.SG_RULE_SORT_BY_SRC_DEST" }}</li>
+					<li class="item" data-id="protocol">{{ i18n "PROP.SG_RULE_SORT_BY_PROTOCOL" }}</li>
 				</ul>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 		<ul class="sg-rule-list property-list" id="sg-rule-list"></ul>
 	</div>
 
-	<div class="option-group-head">{{ i18n "PROP_SG_TIT_MEMBER" }}<span class="property-head-num-wrap">({{members.length}})</span>	</div>
+	<div class="option-group-head">{{ i18n "PROP.SG_TIT_MEMBER" }}<span class="property-head-num-wrap">({{members.length}})</span>	</div>
 	<div class="option-group">
 		<ul class="sg-member-list property-list">
 			{{#each members}}<li class="sg-member-name">{{this}}</li>{{/each}}

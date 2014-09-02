@@ -59,7 +59,22 @@ define [
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
         multiAz|__connections|__parent|license|iops|port|ogName|pgName|az"
 
-    slaves: -> if @master() then [] else @connectionTargets("DbReplication")
+    slaves: () ->
+
+      that = @
+
+      if @master() and @master().master()
+        return []
+
+      # return @connectionTargets("DbReplication")
+
+      _.filter @connectionTargets("DbReplication"), (dbModel) ->
+
+        if dbModel.category() is 'instance' and dbModel.get('appId')
+          return false
+        if that.category() is 'replica' and not that.get('appId')
+          return false
+        return true
 
     getAllRestoreDB: ->
 
@@ -86,7 +101,8 @@ define [
         @set backupRetentionPeriod: 0, multiAz: false, instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
-      @connections("DbReplication")[0]?.remove()
+      # @connections("DbReplication")[0]?.remove()
+      @unsetMaster()
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
 
@@ -95,7 +111,10 @@ define [
 
     unsetMaster : () ->
 
-      @connections("DbReplication")[0]?.remove()
+      that = @
+      _.each @connections("DbReplication"), (connection) ->
+        if connection.slave() is that
+          connection.remove()
 
     setSourceDBForRestore : ( sourceDb ) ->
 
@@ -576,14 +595,14 @@ define [
       ComplexResModel.prototype.getNewName.apply this, args
 
     isRemovable :()->
-      if @slaves().length > 0
+      if @slaves(true).length > 0
         if not @get("appId")
           # Return a warning, delete DBInstance will remove all ReadReplica together when DBInstance hasn't existed
-          result = sprintf lang.ide.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
+          result = sprintf lang.IDE.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         else
           # Return a warning, delete DBInstance will remove nonexistent ReadReplica together when DBInstance has existed
-          result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
+          result = sprintf lang.IDE.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         return result
       allRestoreDB = @getAllRestoreDB()
@@ -601,7 +620,7 @@ define [
       for slave in @slaves()
         if not slave.get("appId")
           #remove nonexistent replica
-          slave.remove()
+          slave.remove() if slave isnt @
 
       for restore in @getAllRestoreDB()
         restore.remove()
@@ -609,6 +628,12 @@ define [
       #remove current node
       ComplexResModel.prototype.remove.call(this)
       null
+
+    isReparentable : ( newParent )->
+      if @master() and newParent.get("id") isnt @get("id")
+        notification "error", "Cannot move read replica to another DBSubnetGroup."
+        return false
+      true
 
     serialize : () ->
 

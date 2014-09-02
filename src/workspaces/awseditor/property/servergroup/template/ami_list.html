@@ -1,27 +1,27 @@
 {{#if group}}
 {{#unless group.length}}
-<div class="option-group-head {{#if readOnly}}expand{{/if}}">Instance Summary</div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">{{i18n "PROP.SG_INSTANCE_SUMMARY"}}</div>
 <div class="option-group">
   <dl class="dl-vertical">
-    <dt>{{i18n "PROP_INSTANCE_INSTANCE_ID"}}</dt>
+    <dt>{{i18n "PROP.INSTANCE_INSTANCE_ID"}}</dt>
     <dd>{{group.appId}}</dd>
 
-    <dt>{{i18n "PROP_INSTANCE_STATE"}}</dt>
+    <dt>{{i18n "PROP.INSTANCE_STATE"}}</dt>
     <dd><i class="status status-{{group.status}} icon-label"></i>{{group.status}}</dd>
 
-    <dt>{{i18n "PROP_INSTANCE_LAUNCH_TIME"}}</dt>
+    <dt>{{i18n "PROP.INSTANCE_LAUNCH_TIME"}}</dt>
     <dd>{{timeStr group.launchTime}}</dd>
   </dl>
 <div>
 {{else}}
-<div class="option-group-head {{#if readOnly}}expand{{/if}}">Server Group Members<span class="property-head-num-wrap">({{group.length}})</span> <span class="appedit-head-meta appedit-head-meta-add">{{group.increment}}</span></div>
+<div class="option-group-head {{#if readOnly}}expand{{/if}}">{{i18n "PROP.SG_SERVER_GROUP_MEMBERS"}}<span class="property-head-num-wrap">({{group.length}})</span> <span class="appedit-head-meta appedit-head-meta-add">{{group.increment}}</span></div>
 <ul class="option-group property-list">
   {{#each group}}
     <li>
       <i class="status status-{{status}} icon-label tooltip" data-tooltip="{{status}}"></i>{{name}}
       {{#if appId}}<span class="subtitle">({{appId}})</span>{{/if}}
-      {{#if isNew}}<div class="subtitle subtitle-launch">Launch after applying updates</div>
-      {{else}}{{#if isOld}}<div class="subtitle subtitle-terminate">Terminate after applying updates</div>{{/if}}
+      {{#if isNew}}<div class="subtitle subtitle-launch">{{i18n "PROP.SG_LAUNCH_AFTER_APPLYING_UPDATES"}}</div>
+      {{else}}{{#if isOld}}<div class="subtitle subtitle-terminate">{{i18n "PROP.SG_TERMINATE_AFTER_APPLYING_UPDATE"}}</div>{{/if}}
       {{/if}}
     </li>
   {{/each}}

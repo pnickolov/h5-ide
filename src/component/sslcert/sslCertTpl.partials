@@ -27,28 +27,28 @@
 <div class="slide-create" data-bind="true">
     <div class="modal-ssl-cert-create">
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_CERT_NAME"}}</label>
+            <label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_CERT_NAME"}}</label>
             <input placeholder="Required. Up to 128 characters" class="input" type="text" data-required="true" data-ignore="true" id="ssl-cert-name-input"/>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+            <label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
             <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-privatekey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+            <label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
             <textarea placeholder="Required. PEM Encoded" class="input ssl-cert-input" data-required="true" id="ssl-cert-publickey-input"></textarea>
         </div>
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+            <label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
             <textarea placeholder="Optional. PEM Encoded" class="input ssl-cert-input" id="ssl-cert-chain-input"></textarea>
         </div>
     </div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="create" disabled>Upload</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "UPLOAD"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Upload...</button>
+        <button class="btn" disabled>{{i18n "UPLOAD_3PERIOD"}}</button>
     </div>
 </div>
 
@@ -56,11 +56,11 @@
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SSL Certificate {{selecteKeyName}}{{else}}selected {{selectedCount}} SSL Certificates{{/if}} ?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "DELETING_3PERIOD"}}</button>
     </div>
 </div>
 
@@ -68,16 +68,16 @@
 <div class="slide-update" data-bind="true">
     <div class="modal-ssl-cert-update">
         <div class="modal-ssl-cert-item clearfix">
-            <label class="left">Certificate Name</label>
+            <label class="left">{{i18n "ELB_LBL_LISTENER_CERT_NAME"}}</label>
             <input class="input" value="{{cert_name}}" type="text" data-required="true" id="ssl-cert-name-update-input"/>
         </div>
     </div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="update">Update</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-blue do-action" data-action="update">{{i18n "UPDATE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Updating...</button>
+        <button class="btn" disabled>{{i18n "UPDATING_3PERIOD"}}</button>
     </div>
 </div>
 
@@ -85,21 +85,21 @@
 <div class="detail-info">
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>Server Certificate ID</label>
+            <label>{{i18n "SERVER_CERTIFICATE_ID"}}</label>
             <div>{{id}}</div>
         </section>
         <section class="property-control-group">
-            <label>Server Certificate ARN</label>
+            <label>{{i18n "SERVER_CERTIFICATE_ARN"}}</label>
             <div>{{Arn}}</div>
         </section>
     </div>
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>Expiration Date</label>
+            <label>{{i18n "EXPIRATION_DATE"}}</label>
             <div>{{Expiration}}</div>
         </section>
         <section class="property-control-group">
-            <label>Path</label>
+            <label>{{i18n "PATH"}}</label>
             <div>{{Path}}</div>
         </section>
     </div>
@@ -107,6 +107,6 @@
 
 <!-- {{no_sslcert}} -->
 <div class="combo-dd-no-data">
-    <p>No SSL Certificate.</p>
-    <a class="create-one">Create SSL Certificate</a>
+    <p>{{i18n "NO_SSL_CERTIFICATE"}}</p>
+    <a class="create-one">{{i18n "CREATE_SSL_CERTIFICATE"}}</a>
 </div>

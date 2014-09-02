@@ -95,14 +95,18 @@ module.exports = function( callback, lang_src ) {
         return 'define(' + s + ');';
     };
 
-    // do check
+    // Do check
     if (!check(lang)) {
         return false;
     }
 
-    // do divorce
+    // Do divorce
     divorce(lang, en_us, zh_cn);
 
-    callback(en_file, format(en_us));
-    callback(zh_file, format(zh_cn));
+    // Do callbacks
+    files = [
+        { path: en_file, contents: format(en_us) }
+      , { path: zh_file, contents: format(zh_cn) }
+    ]
+    callback(files);
 };

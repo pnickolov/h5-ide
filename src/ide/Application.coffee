@@ -19,9 +19,10 @@ define [
   "./WorkspaceManager"
   "OpsModel"
   "JsonExporter"
-  "constant",
+  "constant"
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant )->
+  "i18n!/nls/lang.js"
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang )->
 
   VisualOps = ()->
     if window.App
@@ -45,7 +46,7 @@ define [
 
     # This function returns a promise
     fetchModel = @model.fetch().fail ( err )->
-      notification "Cannot load application data. Please reload your browser."
+      notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
       throw err
     Q.all [ @user.fetch(), fetchModel ]
 

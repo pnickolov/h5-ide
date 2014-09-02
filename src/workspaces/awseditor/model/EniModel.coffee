@@ -99,7 +99,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
       # If changing the parent results in changing Instance's AZ, then
       # We need to check if there's connected Eni to this Instance.
       if check and @connectionTargets("EniAttachment").length > 0
-        return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+        return lang.CANVAS.ERR_MOVE_ATTACHED_ENI
 
       true
 
@@ -215,8 +215,8 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
       validObj = Design.modelClassForType(constant.RESTYPE.SUBNET).isIPInSubnet( ip, cidr )
       if not validObj.isValid
         if validObj.isReserved
-          return "This IP address is in subnet’s reserved address range"
-        return 'This IP address conflicts with subnet’s IP range'
+          return lang.IDE.VALIDATION_IP_IN_SUBNET_REVERSED_RANGE
+        return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_SUBNET_IP_RANGE
 
       realNewIp = @getRealIp( ip, cidr )
 
@@ -233,9 +233,9 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
           realIp = eni.getRealIp( ipObj.ip )
           if realIp is realNewIp
             if eni is this
-              return 'This IP address conflicts with other IP'
+              return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_OTHER_IP
             else
-              return 'This IP address conflicts with other network interface’s IP'
+              return lang.IDE.VALIDATION_IP_CONFLICTS_WITH_OTHER_NETWORK_INTERFACE_IP
 
       true
 
@@ -291,7 +291,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
       ips   = @get("ips")
 
       if ips.length >= maxIp
-        return sprintf( lang.ide.PROP_MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
+        return sprintf( lang.PROP.MSG_WARN_ENI_IP_EXTEND, instance.get("instanceType"), maxIp )
 
       subnet = if @__embedInstance then @__embedInstance.parent() else @parent()
 

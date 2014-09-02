@@ -43,7 +43,7 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, templa
         return
       , ( error )->
         $("#SessionConnect").removeAttr "disabled"
-        notification 'error', lang.ide.NOTIFY_MSG_WARN_AUTH_FAILED
+        notification 'error', lang.NOTIFY.WARN_AUTH_FAILED
         $("#SessionPassword").toggleClass "parsley-error", true
         return
 

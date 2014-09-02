@@ -1,11 +1,11 @@
-<header class="modal-header sg-rule-create-h"><h3>Create Security Group Rule</h3><i class="btn-modal-close">&times;</i></header>
+<header class="modal-header sg-rule-create-h"><h3>{{i18n "CREATE_SECURITY_GROUP_RULE"}}</h3><i class="btn-modal-close">&times;</i></header>
 
 
 <article class="modal-body" id="sg-rule-create-modal" data-bind="true">
   <section class="sg-rule-create-add-wrap">
 
     <section class="sg-node-wrap clearfix">
-      <label>Allow</label>
+      <label>{{i18n "PROP.ALLOW"}}</label>
 
       {{#if owner.length}}
 
@@ -22,11 +22,11 @@
       </div>
 
       <div class="selectbox" id="sg-create-direction">
-        <div class="selection">initiate traffic to</div>
+        <div class="selection">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</div>
         <ul class="dropdown">
-          <li class="item selected" data-id="outbound">initiate traffic to</li>
-          <li class="item" data-id="inbound">accept traffic from</li>
-          <li class="item" data-id="biway">have 2-way traffic with</li>
+          <li class="item selected" data-id="outbound">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</li>
+          <li class="item" data-id="inbound">{{i18n "PROP.ACCEPT_TRAFFIC_FROM"}}</li>
+          <li class="item" data-id="biway">{{i18n "PROP.HAVE_2WAY_TRAFFIC_WITH"}}</li>
         </ul>
       </div>
 
@@ -37,7 +37,7 @@
       </div>
 
       <div id="sg-create-direction">
-        <div class="sg-create-selection selected" data-id="outbound">initiate traffic to</div>
+        <div class="sg-create-selection selected" data-id="outbound">{{i18n "PROP.INITIATE_TRAFFIC_TO"}}</div>
       </div>
 
       {{/if}}
@@ -56,8 +56,8 @@
     </section>
 
     <p class="clearfix mgt10">
-      <label class="sg-create-proto-label">Destination Protocol</label>
-      <label class="sg-create-proto-label-port">Port</label>
+      <label class="sg-create-proto-label">{{i18n "PROP.DESTINATION_PROTOCOL"}}</label>
+      <label class="sg-create-proto-label-port">{{Port}}</label>
     </p>
 
     <section class="clearfix sg-proto-option-wrap">
@@ -178,27 +178,28 @@
             <input class="input" type="text" name="protocol-custom-ranged" value="1" min="1" max="255" data-ignore="true" data-ignore-regexp="^[0-9]*$" data-required="true">
           </section>
 
-          <section class="sg-proto-input" id="sg-proto-ipt-all">Port Range: 0-65535</section>
+          <section class="sg-proto-input" id="sg-proto-ipt-all">{{i18n "PROP.PORT_RANGE_COLON"}}0-65535</section>
     {{/unless}}
       </div>
     </section>
-    <button class="btn btn-blue sg-rule-create-add">Add Rule</button>
+    <button class="btn btn-blue sg-rule-create-add">{{i18n "ADD_RULE"}}</button>
   </section>
 
   <section class="sg-rule-create-done-wrap">
     <div>
       <p id="sg-rule-create-msg" class="modal-text-major"></p>
-      <p id="sg-rule-self-ref" class="hide"><i class="icon-info icon-label"></i>You have created a rule referencing its own security group. This rule will not be visualized as the blue connection lines.</p>
+      <p id="sg-rule-self-ref" class="hide"><i class="icon-info icon-label"></i>{{i18n "RULE_REF_ITS_OWN_SG"}}</p>
     </div>
-    <button class="btn sg-rule-create-readd">Create another rule</button>
-    <button class="btn btn-silver btn-modal-close">Close</button>
+    <button class="btn sg-rule-create-readd">{{i18n "CREATE_ANOTHER_RULE"}}</button>
+    <button class="btn btn-silver btn-modal-close">{{i18n "LBL_CLOSE"}}</button>
   </section>
 </article>
 
 
+
 <aside class="sg-rule-create-sidebar">
   <div class="sidebar-wrap">
-  <header class="sg-create-sb-h">Related Rule<span class="num-wrap" id="sgRuleCreateCount">({{ruleCount}})</span></header>
+  <header class="sg-create-sb-h">{{i18n "RELATED_RULE"}}<span class="num-wrap" id="sgRuleCreateCount">({{ruleCount}})</span></header>
   <section class="scroll-wrap scrollbar-auto-hide" style="max-height:358px">
       <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
       <div class="scroll-content sg-create-rule-list" id="sgRuleCreateSidebar"></div>

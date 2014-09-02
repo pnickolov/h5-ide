@@ -6,8 +6,10 @@ define [ "Design",
          "./SgModel",
          "./SslCertModel",
          "./connection/SgAsso"
+         "i18n!/nls/lang.js"
          "./connection/ElbAsso"
-], ( Design, constant, ResourceModel, ComplexResModel, SgModel, SslCertModel, SgAsso )->
+
+], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SslCertModel, SgAsso, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -56,7 +58,7 @@ define [ "Design",
         sg = new SgModel({
           name        : @getElbSgName()
           isElbSg     : true
-          description : "Automatically created SG for load-balancer"
+          description : lang.IDE.AUTOMATICALLY_CREATED_SG_FOR_LOAD_BALANCER
         })
         @__elbSg = sg
         SgAssoModel = Design.modelClassForType( "SgAsso" )
@@ -139,6 +141,7 @@ define [ "Design",
 
       listeners = @get("listeners")
       listeners[idx].sslCert = null
+      null
 
     getSSLCert : ( idx ) ->
 

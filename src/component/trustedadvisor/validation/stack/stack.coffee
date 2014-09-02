@@ -69,7 +69,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 						errCompName = _getCompName(errCompUID)
 						errCompType = _getCompType(errCompUID)
 
-						errInfoStr = sprintf lang.ide.TA_MSG_ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
+						errInfoStr = sprintf lang.TA.ERROR_STACK_FORMAT_VALID_FAILED, errCompName, errMessage
 
 						if (errCode is 'EMPTY_VALUE' and
 							errKey is 'InstanceId' and
@@ -109,7 +109,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 				callback(null)
 
 			# immediately return
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_CHECKING_FORMAT_VALID
+			tipInfo = sprintf lang.TA.ERROR_STACK_CHECKING_FORMAT_VALID
 			return {
 				level: constant.TA.ERROR,
 				info: tipInfo
@@ -181,7 +181,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
+										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
 										tipInfoAry.push({
 											level: constant.TA.ERROR,
 											info: tipInfo,
@@ -211,7 +211,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 										if instanceType is constant.RESTYPE.LC
 											infoObjType = 'Launch Configuration'
 											infoTagType = 'lc'
-										tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
+										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
 										tipInfoAry.push({
 											level: constant.TA.ERROR,
 											info: tipInfo,
@@ -273,7 +273,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 					if instanceType is constant.RESTYPE.LC
 						infoObjType = 'Launch Configuration'
 						infoTagType = 'lc'
-					tipInfo = sprintf lang.ide.TA_MSG_ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
+					tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
 					tipInfoAry.push({
 						level: constant.TA.ERROR,
 						info: tipInfo,

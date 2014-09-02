@@ -99,7 +99,7 @@
   <td>{{@key}}</td>
   <td>
     <span class="ami-table-name">{{name}}</span>
-    <div class="ami-meta {{osType}} icon-ami-os"> {{#ifCond isPublic "true"}}public{{else}}private{{/ifCond}} | {{architecture}} | {{rootDeviceType}}</div>
+    <div class="ami-meta {{osType}} icon-ami-os"> {{#ifCond isPublic "true"}}{{i18n "AMI_TYPE_PUBLIC"}}{{else}}{{i18n "AMI_TYPE_PRIVATE"}}{{/ifCond}} | {{architecture}} | {{rootDeviceType}}</div>
   </td>
   <td>{{imageSize}}</td>
 </tr>

@@ -3,17 +3,17 @@
 
   </div>
   {{#unless readOnly}}
-  <div class="option-group-head expand">{{i18n "PROP_INSTANCE_DETAIL"}}</div>
+  <div class="option-group-head expand">{{i18n "PROP.INSTANCE_DETAIL"}}</div>
   <div class="option-group">
     <section class="property-control-group" data-bind="true">
-      <label class="left" for="property-instance-count" >{{ i18n "PROP_INSTANCE_NUMBER" }}</label>
-      <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
-      <input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="{{i18n 'PROP_INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER'}}"{{else}}data-tooltip="{{i18n 'PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1'}}"{{/if}}/>
+      <label class="left" for="property-instance-count" >{{ i18n "PROP.INSTANCE_NUMBER" }}</label>
+      <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
+      <input class="input tooltip" type="text" value="{{ number }}" id="property-instance-count" data-ignore="true" data-required="true" data-type="digits" {{#if number_disable}}disabled="disabled" data-tooltip="{{i18n 'PROP.INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER'}}"{{else}}data-tooltip="{{i18n 'PROP.INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1'}}"{{/if}}/>
     </section>
 
     {{#if ami}}
     <section class="property-control-group">
-      <label>{{ i18n "PROP_INSTANCE_AMI" }}</label>
+      <label>{{ i18n "PROP.INSTANCE_AMI" }}</label>
       <div id="property-ami" class="property-block-wrap clearfix" data-uid='{{ami.id}}'>
         <img class="property-ami-icon left" src="/assets/images/ide/ami/{{ami.icon}}" / >
         <div class="property-ami-label">{{ami.name}}</div>
@@ -24,7 +24,7 @@
     {{#if type_editable}}
     {{#if instance_type.length}}
     <section class="property-control-group">
-      <label class="left">{{ i18n "PROP_INSTANCE_TYPE" }}</label>
+      <label class="left">{{ i18n "PROP.INSTANCE_TYPE" }}</label>
       <div class="selectbox selectbox-mega" id="instance-type-select">
         <div class="selection"></div>
         <ul class="dropdown">
@@ -42,18 +42,18 @@
         <input id="property-instance-ebs-optimized" type="checkbox" value="None" {{#if ebs_optimized}}checked="checked"{{/if}} name="ebs-optimized" />
         <label for="property-instance-ebs-optimized"></label>
       </div>
-      <label for="property-instance-ebs-optimized">EBS Optimized</label>
+      <label for="property-instance-ebs-optimized">{{i18n "PROP.INSTANCE_EBS_OPTIMIZED"}}</label>
     </section>
     {{/if}}
     {{else}}
     <section class="property-control-group">
-      <label>{{ i18n "PROP_INSTANCE_TYPE" }}</label>
-      <p class="property-info">Updating instance type is disabled for instances using instance store for root device.</p>
+      <label>{{ i18n "PROP.INSTANCE_TYPE" }}</label>
+      <p class="property-info">{{i18n "PROP.SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE"}}</p>
     </section>
     {{/if}}
   </div>
 
-  <div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
+  <div class="option-group-head">{{ i18n "PROP.INSTANCE_ADVANCED_DETAIL" }}</div>
   <div class="option-group">
     <section class="property-control-group">
       <div class="checkbox">
@@ -64,9 +64,9 @@
         {{/if}}
         <label for="property-instance-enable-cloudwatch"></label>
       </div>
-      <label for="property-instance-enable-cloudwatch" >{{ i18n "PROP_INSTANCE_CW_ENABLED" }}</label>
+      <label for="property-instance-enable-cloudwatch" >{{ i18n "PROP.INSTANCE_CW_ENABLED" }}</label>
 
-      <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP_INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+      <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP.INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">{{i18n "PROP.SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE"}}</a></p>
     </section>
   </div>
 
@@ -75,15 +75,15 @@
   <div class="option-group">
     <article class="property-app">
       <dl class="dl-vertical">
-        <dt>{{i18n "PROP_VOLUME_DEVICE_NAME"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_DEVICE_NAME"}}</dt>
         <dd>{{emptyStr rootDevice.DeviceName}}</dd>
-        <dt>{{i18n "PROP_VOLUME_TYPE"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_TYPE"}}</dt>
         <dd>{{emptyStr rootDevice.Ebs.VolumeType}}</dd>
         {{#if rootDevice.Ebs.SnapshotId}}
-        <dt>{{i18n "PROP_VOLUME_SNAPSHOT_ID"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_SNAPSHOT_ID"}}</dt>
         <dd>{{rootDevice.Ebs.SnapshotId}}</dd>
         {{/if}}
-        <dt>{{i18n "PROP_VOLUME_SIZE"}}</dt>
+        <dt>{{i18n "PROP.VOLUME_SIZE"}}</dt>
         <dd>{{emptyStr rootDevice.Ebs.VolumeSize}} GB</dd>
         {{#if rootDevice.Ebs.Iops}}
         <dt>IOPS</dt>
@@ -95,7 +95,7 @@
   {{/if}}
 
   {{#if eni}}
-  <div class="option-group-head">{{i18n "PROP_INSTANCE_ENI_DETAIL"}}</div>
+  <div class="option-group-head">{{i18n "PROP.INSTANCE_ENI_DETAIL"}}</div>
   <div class="option-group">
     <section class="property-control-group">
       <div class="checkbox">
@@ -106,13 +106,13 @@
         {{/if}}
         <label for="property-instance-source-check"></label>
       </div>
-      <label for="property-instance-source-check">{{ i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
+      <label for="property-instance-source-check">{{ i18n "PROP.INSTANCE_ENI_SOURCE_DEST_CHECK" }}</label>
     </section>
     <section class="property-control-group">
       <div class="network-list-wrap">
         <div class="network-list-header clearfix">
-          {{ i18n "PROP_INSTANCE_ENI_IP_ADDRESS" }}
-          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP_ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP_INSTANCE_ENI_ADD_IP" }}</button>
+          {{ i18n "PROP.INSTANCE_ENI_IP_ADDRESS" }}
+          <button id="instance-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP.ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP.INSTANCE_ENI_ADD_IP" }}</button>
         </div>
         <ul class="network-list" id="property-network-list" data-bind="true"></ul>
       </div>
@@ -120,7 +120,7 @@
   </div>
   {{/if}}
 
-  <div class="option-group-head"> {{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head"> {{i18n "PROP.INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
   {{/unless}}
 </article>

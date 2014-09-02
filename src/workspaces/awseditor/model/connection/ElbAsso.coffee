@@ -51,7 +51,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design", "componen
     isRemovable : ()->
       if @design().modeIsAppEdit()
         if @hasAppUpdateRestriction()
-          return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
+          return { error : lang.CANVAS.ERR_DEL_ELB_LINE_2 }
 
       elb    = @getTarget( constant.RESTYPE.ELB )
       subnet = @getTarget( constant.RESTYPE.SUBNET )
@@ -77,7 +77,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design", "componen
           connected = false
           break
 
-      if connected then return { error : lang.ide.CVS_MSG_ERR_DEL_ELB_LINE_2 }
+      if connected then return { error : lang.CANVAS.ERR_DEL_ELB_LINE_2 }
       true
 
   }, {
@@ -87,7 +87,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design", "componen
     #   if parseInt( subnet.get("cidr").split("/")[1] , 10 ) <= 27
     #     return true
 
-    #   lang.ide.CVS_MSG_WARN_CANNOT_CONNECT_SUBNET_TO_ELB
+    #   lang.CANVAS.WARN_CANNOT_CONNECT_SUBNET_TO_ELB
   }
 
   # Elb <==> Ami
@@ -198,7 +198,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design", "componen
           lc = comp2
 
         if lc and lc.get("appId")
-          return lang.ide.NOTIFY_MSG_WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
+          return lang.NOTIFY.WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
 
       true
   }

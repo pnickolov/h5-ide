@@ -4,10 +4,10 @@
     <input id="ppty-acl-{{@index}}" class="ppty-acl-cb" type="radio" {{#if isUsed}}checked="checked"{{/if}}/>
     <label for="ppty-acl-{{@index}}"></label>
   </div> </div>
-  <div class="col3 tooltip icon-btn-details" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
+  <div class="col3 tooltip icon-btn-details" data-tooltip='{{ i18n "PROP.SUBNET_ACL_TIP_DETAIL" }}'></div>
   <div class="col2">
     <div class="col2-1 truncate">{{name}}</div>
-    <div class="col2-2 truncate">{{rule}} {{ i18n "PROP_SUBNET_ACL_LBL_RULE" }}, {{association}} {{ i18n "PROP_SUBNET_ACL_LBL_ASSOC" }}{{#unless isDefault}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{association}}">{{ i18n "PROP_SUBNET_ACL_BTN_DELETE" }}</a>{{/unless}}</div>
+    <div class="col2-2 truncate">{{rule}} {{ i18n "PROP.SUBNET_ACL_LBL_RULE" }}, {{association}} {{ i18n "PROP.SUBNET_ACL_LBL_ASSOC" }}{{#unless isDefault}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{association}}">{{ i18n "PROP.SUBNET_ACL_BTN_DELETE" }}</a>{{/unless}}</div>
   </div>
 </li>
 {{/each}}

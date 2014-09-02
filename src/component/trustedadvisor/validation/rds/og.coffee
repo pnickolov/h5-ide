@@ -19,7 +19,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
             taId += og.id
 
         nameStr = nameStr.slice 0, -2
-        callback Helper.message.warning taId, i18n.TA_MSG_WARNING_RDS_UNUSED_OG_NOT_CREATE, nameStr
+        callback Helper.message.warning taId, i18n.WARNING_RDS_UNUSED_OG_NOT_CREATE, nameStr
 
         null
 
@@ -43,7 +43,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
                 ogModels.fetchForce().then (ogCol) ->
                     customOgAry = ogCol.filter (model) -> model.get('id').indexOf('default:') isnt 0
                     if customOgAry.length + customOGModels.length > 20
-                        callback Helper.message.error '', i18n.TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT, regionName
+                        callback Helper.message.error '', i18n.ERROR_RDS_OG_EXCEED_20_LIMIT, regionName
                     else
                         callback(null)
                 , (err) ->
@@ -57,5 +57,5 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
             callback(null)
 
-    unusedOgWontCreate: unusedOgWontCreate
+    # unusedOgWontCreate: unusedOgWontCreate
     isOGExeedCountLimit: isOGExeedCountLimit

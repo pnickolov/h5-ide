@@ -97,14 +97,9 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             finHandler = _.after times, ->
                 that.modal.cancel()
                 if success.length is 1
-                    notification 'info', "#{success[0].get 'Name'} is deleted."
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].get('Name')
                 else if success.length > 1
-                    notification 'info', "Selected #{success.length} SNS topic are deleted."
-
-                if not that.model.get( 'keys' ).length
-                    that.M$( '#kp-select-all' )
-                        .get( 0 )
-                        .checked = false
+                    notification 'info', sprintf lang.NOTIFY.SELECTED_XXX_SNS_TOPIC_ARE_DELETED, success.length
 
                 _.each error, ( s ) ->
                     console.log(s)
@@ -131,7 +126,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             certName = $certName.val()
 
             if certName is 'None'
-                notification 'error', "Certificate name #{certName} is invalid"
+                notification 'error', sprintf lang.NOTIFY.CERTIFICATE_NAME_XXX_IS_INVALID, certName
                 return
 
             @sslCertCol.create(
@@ -141,7 +136,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 CertificateChain: $certChain.val(),
                 Path: ''
             ).save().then (result) ->
-                notification 'info', "Certificate #{certName} is uploaded"
+                notification 'info', sprintf lang.NOTIFY.CERTIFICATE_XXX_IS_UPLOADED, certName
                 that.modal.cancel()
             , (result) ->
                 that.switchAction()
@@ -179,7 +174,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                         Name: newCertName
                     ).then (result) ->
                         certName = newCertName
-                        notification 'info', "Certificate #{certName} is updated"
+                        notification 'info', sprintf lang.NOTIFY.CERTIFICATE_XXX_IS_UPLOADED, certName
 
                         # refresh ssl cert related
                         sslCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()

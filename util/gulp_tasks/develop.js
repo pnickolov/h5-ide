@@ -246,10 +246,10 @@
     setupCompileStream: function(stream) {
       var assetBranch, coffeeBranch, coffeeBranchRegex, langSrcBranch, langeSrcBranchRegex, liveReloadBranchRegex, templateBranch, templateBranchRegex;
       assetBranch = StreamFuncs.throughLiveReload();
-      langSrcBranch = langsrc();
+      langSrcBranch = langsrc.langCache();
       coffeeBranch = StreamFuncs.throughCoffee();
       templateBranch = StreamFuncs.throughHandlebars();
-      langeSrcBranchRegex = /lang-source\.coffee/;
+      langeSrcBranchRegex = /lang-source\/.*\.coffee/;
       coffeeBranchRegex = /\.coffee$/;
       templateBranchRegex = /(\.partials)|(\.html)$/;
       if (GLOBAL.gulpConfig.reloadJsHtml) {
@@ -347,6 +347,7 @@
       return null;
     }));
     compileStream.once("end", function() {
+      langsrc.langWrite();
       return Helper.compileCompass().then(function(value) {
         return deferred.resolve();
       });

@@ -1,20 +1,20 @@
 <article>
-  <div class="option-group-head expand" id="vpc-property-detail">{{ i18n "PROP_VPC_TIT_DETAIL" }}</div>
+  <div class="option-group-head expand" id="vpc-property-detail">{{ i18n "PROP.VPC_TIT_DETAIL" }}</div>
 
   {{#if isAppEdit}}
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_VPC_APP_VPC_ID" }}</dt>
+      <dt>{{ i18n "PROP.VPC_APP_VPC_ID" }}</dt>
       <dd>{{vpcId}}</dd>
-      <dt>{{ i18n "PROP_VPC_APP_STATE" }}</dt>
+      <dt>{{ i18n "PROP.VPC_APP_STATE" }}</dt>
       <dd><i class="status status-{{state}}"></i>{{state}}</dd>
-      <dt>{{ i18n "PROP_VPC_APP_CIDR" }}</dt>
+      <dt>{{ i18n "PROP.VPC_APP_CIDR" }}</dt>
       <dd>{{cidrBlock}}</dd>
-      <dt>{{ i18n "PROP_VPC_DETAIL_LBL_TENANCY" }}</dt>
+      <dt>{{ i18n "PROP.VPC_DETAIL_LBL_TENANCY" }}</dt>
       <dd>{{instanceTenancy}}</dd>
-      <dt>{{ i18n "PROP_VPC_APP_MAIN_RT" }}</dt>
+      <dt>{{ i18n "PROP.VPC_APP_MAIN_RT" }}</dt>
       <dd>{{mainRTB}}</dd>
-      <dt>{{ i18n "PROP_VPC_APP_DEFAULT_ACL" }}</dt>
+      <dt>{{ i18n "PROP.VPC_APP_DEFAULT_ACL" }}</dt>
       <dd>{{defaultACL}}</dd>
     </dl>
     <section class="property-control-group">
@@ -22,7 +22,7 @@
         <input id="property-dns-resolution" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-resolution">
         <label for="property-dns-resolution"></label>
       </div>
-      <label for="property-dns-resolution">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
+      <label for="property-dns-resolution">{{ i18n "PROP.VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
     </section>
 
 
@@ -31,11 +31,11 @@
         <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
         <label for="property-dns-hostname"></label>
       </div>
-      <label for="property-dns-hostname">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
+      <label for="property-dns-hostname">{{ i18n "PROP.VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
     </section>
 
     <section class="property-control-group">
-      <label class="left">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</label>
+      <label class="left">{{ i18n "PROP.VPC_TIT_DHCP_OPTION" }}</label>
       <div id="dhcp-dropdown"></div>
     </section>
   </div>
@@ -44,27 +44,27 @@
   {{else}}
   <div class="option-group" data-bind="true">
     <section class="property-control-group clearfix">
-      <label class="left" for="property-vpc-name">{{ i18n "PROP_VPC_DETAIL_LBL_NAME" }}</label>
-      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+      <label class="left" for="property-vpc-name">{{ i18n "PROP.VPC_DETAIL_LBL_NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
       <input class="input vpc-name" type="text" value="{{name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
     </section>
 
     <section class="property-control-group clearfix">
-      <label class="left" for="property-cidr-block">{{ i18n "PROP_VPC_DETAIL_LBL_CIDR_BLOCK" }}</label>
-      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-      <input class="input cidr-block tooltip" type="text" value="{{cidr}}" id="property-cidr-block" data-tooltip="{{i18n 'PROP_VPC_TIP_EG_10_0_0_0_16'}}" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
+      <label class="left" for="property-cidr-block">{{ i18n "PROP.VPC_DETAIL_LBL_CIDR_BLOCK" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+      <input class="input cidr-block tooltip" type="text" value="{{cidr}}" id="property-cidr-block" data-tooltip="{{i18n 'PROP.VPC_TIP_EG_10_0_0_0_16'}}" maxlength="255" data-ignore="true" data-required-rollback="true" data-trigger="change" data-type="awsCidr"/>
     </section>
 
     <section class="property-control-group">
-      <label class="left">{{ i18n "PROP_VPC_DETAIL_LBL_TENANCY" }}</label>
+      <label class="left">{{ i18n "PROP.VPC_DETAIL_LBL_TENANCY" }}</label>
       <div class="selectbox selectbox-mega" id="property-tenancy">
-        <div class="selection">{{#if defaultTenancy}}{{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}}{{else}}Dedicated{{/if}}</div>
+        <div class="selection">{{#if defaultTenancy}}{{{ i18n "PROP.VPC_DETAIL_TENANCY_LBL_DEFAULT" }}}{{else}}Dedicated{{/if}}</div>
         <ul class="dropdown" tabindex="-1">
-          <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEFAULT" }}</li>
-          <li class="item{{#unless defaultTenancy}} selected{{/unless}}" data-id="dedicated">{{ i18n "PROP_VPC_DETAIL_TENANCY_LBL_DEDICATED" }}</li>
+          <li class="item{{#if defaultTenancy}} selected{{/if}}" data-id="default">{{ i18n "PROP.VPC_DETAIL_TENANCY_LBL_DEFAULT" }}</li>
+          <li class="item{{#unless defaultTenancy}} selected{{/unless}}" data-id="dedicated">{{ i18n "PROP.VPC_DETAIL_TENANCY_LBL_DEDICATED" }}</li>
         </ul>
       </div>
-      <div id="desc-dedicated" class="property-info">Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware. <a target="_blank" href="http://aws.amazon.com/dedicated-instances/">Additional charges will apply.</a></div>
+      <div id="desc-dedicated" class="property-info">{{i18n "PROP.VPC_SELECTING_DEDICATED_DESC"}}<a target="_blank" href="http://aws.amazon.com/dedicated-instances/">{{i18n "PROP.VPC_SELECTING_DEDICATED_LINK_TEXT"}}</a></div>
     </section>
 
     <section class="property-control-group">
@@ -72,7 +72,7 @@
         <input id="property-dns-resolution" type="checkbox"{{#if dnsSupport}} checked="checked"{{/if}} name="dns-resolution">
         <label for="property-dns-resolution"></label>
       </div>
-      <label for="property-dns-resolution">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
+      <label for="property-dns-resolution">{{ i18n "PROP.VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION" }}</label>
     </section>
 
 
@@ -81,11 +81,11 @@
         <input id="property-dns-hostname" type="checkbox"{{#if dnsHosts}} checked="checked"{{/if}} name="dns-hostname">
         <label for="property-dns-hostname"></label>
       </div>
-      <label for="property-dns-hostname">{{ i18n "PROP_VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
+      <label for="property-dns-hostname">{{ i18n "PROP.VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT" }}</label>
     </section>
 
     <section class="property-control-group">
-        <label class="left">{{ i18n "PROP_VPC_TIT_DHCP_OPTION" }}</label>
+        <label class="left">{{ i18n "PROP.VPC_TIT_DHCP_OPTION" }}</label>
         <div id="dhcp-dropdown"></div>
     </section>
   </div>

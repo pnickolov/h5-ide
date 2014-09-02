@@ -189,7 +189,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
     isReparentable : ( newParent )->
       for expand in @get("expandedList")
         if newParent.parent() is expand.parent().parent()
-          return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
+          return sprintf lang.CANVAS.ERR_DROP_ASG, @get("name"), newParent.parent().get("name")
 
       true
 

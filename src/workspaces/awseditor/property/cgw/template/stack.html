@@ -1,24 +1,24 @@
 <article id="property-cgw" data-bind="true">
 	<div class="property-control-group clearfix">
-		<label class="left" for="property-cgw-name">{{ i18n "PROP_CGW_LBL_NAME" }}</label>
-		<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+		<label class="left" for="property-cgw-name">{{ i18n "PROP.CGW_LBL_NAME" }}</label>
+		<span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
 		<input class="input" type="text" value="{{name}}" id="property-cgw-name" data-ignore="true"/>
 	</div>
 
 	<div class="property-control-group clearfix">
-		<label class="left" for="property-cgw-ip">{{ i18n "PROP_CGW_LBL_IPADDR" }}</label>
-		<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-		<input class="input tooltip" type="text" value="{{ip}}" data-ignore="true" data-ignore-regexp="^[0-9.]*$" id="property-cgw-ip" data-empty-remove="true" data-tooltip="{{i18n 'PROP_CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC'}}"/>
+		<label class="left" for="property-cgw-ip">{{ i18n "PROP.CGW_LBL_IPADDR" }}</label>
+		<span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+		<input class="input tooltip" type="text" value="{{ip}}" data-ignore="true" data-ignore-regexp="^[0-9.]*$" id="property-cgw-ip" data-empty-remove="true" data-tooltip="{{i18n 'PROP.CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC'}}"/>
 	</div>
 
 	<div class="property-control-group clearfix cgw-routing">
-		<label>{{ i18n "PROP_CGW_LBL_ROUTING" }}</label>
+		<label>{{ i18n "PROP.CGW_LBL_ROUTING" }}</label>
 		<p></p>
 		<div class="radio">
 			<input id="property-routing-static" type="radio" name="routing-type" {{#unless BGP}}checked="checked" {{/unless}}value="static" />
 			<label for="property-routing-static"></label>
 		</div>
-		<label for="property-routing-static">{{ i18n "PROP_CGW_LBL_STATIC" }}</label>
+		<label for="property-routing-static">{{ i18n "PROP.CGW_LBL_STATIC" }}</label>
 	</div>
 
 	<div class="property-control-group clearfix cgw-routing">
@@ -26,13 +26,13 @@
 			<input id="property-routing-dynamic" type="radio" name="routing-type" {{#if BGP}}checked="checked" {{/if}}value="dynamic" />
 			<label for="property-routing-dynamic"></label>
 		</div>
-		<label for="property-routing-dynamic">{{ i18n "PROP_CGW_LBL_DYNAMIC" }}</label>
+		<label for="property-routing-dynamic">{{ i18n "PROP.CGW_LBL_DYNAMIC" }}</label>
 	</div>
 
 	<div class="property-control-group clearfix" {{#unless BGP}}style="display:none;"{{/unless}} id="property-cgw-bgp-wrapper">
-		<label class="left" for="property-cgw-bgp">{{ i18n "PROP_CGW_LBL_BGP_ASN" }}</label>
-		<span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
-		<input class="input tooltip" type="text" value="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="{{i18n 'PROP_CGW_TIP_1TO65534'}}" data-type="digits" />
+		<label class="left" for="property-cgw-bgp">{{ i18n "PROP.CGW_LBL_BGP_ASN" }}</label>
+		<span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+		<input class="input tooltip" type="text" value="{{BGP}}" id="property-cgw-bgp" maxlength="5" data-tooltip="{{i18n 'PROP.CGW_TIP_1TO65534'}}" data-type="digits" />
 	</div>
 
 </article>

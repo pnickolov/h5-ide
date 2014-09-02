@@ -300,7 +300,7 @@ define [ "constant", "ConnectionModel", "ResourceModel" ], ( constant, Connectio
 
         for attach in p1Comp.connectionTargets("EniAttachment")
           if attach is p2Comp
-            return "The Network Interface is attached to the instance. No need to connect them by security group rule."
+            return lang.CANVAS.NETWORK_INTERFACE_ATTACHED_INTERFACE_NO_NEED_FOR_SG_RULE
 
       true
   }

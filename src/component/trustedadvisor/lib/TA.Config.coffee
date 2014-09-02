@@ -20,6 +20,8 @@ define({
         'AWS.EC2.EBS.Volume'                    : [ 'ebs' ]
         'AWS.EC2.KeyPair'                       : [ 'kp' ]
         'AWS.RDS.DBInstance'                    : [ 'dbinstance' ]
+        'AWS.RDS.OptionGroup'                   : [ 'og' ]
+        'AWS.RDS.DBSubnetGroup'                 : [ 'sbg' ]
 
     globalList:
         eip: [ 'isHasIGW' ]
@@ -39,7 +41,7 @@ define({
         elb: [ 'isSSLCertExist' ]
         asg: [ 'isTopicNonexist' ]
         vpc: [ 'isVPCUsingNonexistentDhcp' ]
-        og: [ 'unusedOgWontCreate', 'isOGExeedCountLimit' ]
+        og: [ 'isOGExeedCountLimit' ]
 
 
 })

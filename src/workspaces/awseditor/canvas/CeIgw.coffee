@@ -33,7 +33,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Des
         svg.use("port_left").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'igw-tgt'
-          'data-tooltip' : lang.ide.PORT_TIP_C
+          'data-tooltip' : lang.IDE.PORT_TIP_C
         })
       )
 

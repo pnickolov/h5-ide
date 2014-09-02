@@ -33,11 +33,11 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             $target.parsley 'custom', ( val ) ->
                 val = + val
                 if val < 1 or val > 65534
-                    return lang.ide.PARSLEY_MUST_BE_BETWEEN_1_AND_65534
+                    return lang.PARSLEY.MUST_BE_BETWEEN_1_AND_65534
                 if val is 7224 and region is 'us-east-1'
-                    return lang.ide.PARSLEY_ASN_NUMBER_7224_RESERVED
+                    return lang.PARSLEY.ASN_NUMBER_7224_RESERVED
                 if val is 9059 and region is 'eu-west-1'
-                    return lang.ide.PARSLEY_ASN_NUMBER_9059_RESERVED_IN_IRELAND
+                    return lang.PARSLEY.ASN_NUMBER_9059_RESERVED_IN_IRELAND
 
             if $target.parsley 'validate'
                 @model.setBGP $target.val()
@@ -65,14 +65,14 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
 
             haveError = true
             if !ipAddr
-                mainContent = 'IP Address is required.'
-                descContent = 'Please provide a IP Address of this Customer Gateway.'
+                mainContent = lang.PROP.CGW_IP_VALIDATE_REQUIRED
+                descContent = lang.PROP.CGW_IP_VALIDATE_REQUIRED_DESC
             else if !MC.validate 'ipv4', ipAddr
-                mainContent = "#{ipAddr} is not a valid IP Address."
-                descContent = 'Please provide a valid IP Address. For example, 192.168.1.1.'
+                mainContent = sprintf(lang.PROP.CGW_IP_VALIDATE_INVALID, ipAddr)
+                descContent = lang.PROP.CGW_IP_VALIDATE_INVALID_DESC
             else if MC.aws.aws.isValidInIPRange(ipAddr, 'private')
-                mainContent = "IP Address #{ipAddr} is invalid for customer gateway."
-                descContent = "The address must be static and can't be behind a device performing network address translation (NAT)."
+                mainContent = sprintf(lang.PROP.CGW_IP_VALIDATE_INVALID_CUSTOM, ipAddr)
+                descContent = lang.PROP.CGW_IP_VALIDATE_INVALID_CUSTOM_DESC
             else
                 haveError = false
 
@@ -82,7 +82,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 return
 
             dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : 'Remove Customer Gateway'
+                remove_content : lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY
                 main_content : mainContent
                 desc_content : descContent
             }

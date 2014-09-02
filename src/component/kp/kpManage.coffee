@@ -26,7 +26,7 @@ define [
                 if arguments[ 0 ] is false
                     @M$( '.cancel' ).prop 'disabled', false
             else
-                if @__needDownload then notification 'warning', 'You must download the keypair.'
+                if @__needDownload then notification 'warning', lang.NOTIFY.YOU_MUST_DOWNLOAD_THE_KEYPAIR
 
             @__needDownload
 
@@ -49,18 +49,18 @@ define [
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Create Key Pair'
+                    name: lang.IDE.COMPONENT_CREATE_KEYPAIR
                 }
                 {
                     icon: 'import'
                     type: 'import'
-                    name: 'Import Key Pair'
+                    name: lang.IDE.COMPONENT_IMPORT_KEY_PAIR
                 }
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: 'Delete'
+                    name: lang.IDE.COMPONENT_DELETE_KEY_PAIR
                 }
                 {
                     icon: 'refresh'
@@ -72,11 +72,11 @@ define [
                 {
                     sortable: true
                     width: "40%" # or 40%
-                    name: 'Name'
+                    name: lang.IDE.COMPONENT_KEY_PAIR_COL_NAME
                 }
                 {
                     sortable: false
-                    name: 'Fingerprint'
+                    name: lang.IDE.COMPONENT_KEY_PAIR_COL_FINGERPRINT
                 }
             ]
 
@@ -185,9 +185,9 @@ define [
                 that.cancel()
                 if success.length is 1
                     console.debug success
-                    notification 'info', "#{success[0].attributes.keyName} is deleted."
+                    sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
                 else if success.length > 1
-                    notification 'info', "Selected #{success.length} key pairs are deleted."
+                    notification 'info', sprintf lang.NOTIFY.SELECTED_KEYPAIRS_ARE_DELETED, success.length
 
                 if not that.collection.toJSON().length
                     that.M$( '#t-m-select-all' )
@@ -251,7 +251,7 @@ define [
 
                 @collection.create( {keyName:keyName, keyData: keyContent}).save()
                     .then (res) ->
-                        notification 'info', "#{keyName} is imported."
+                        notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED keyName
                         that.cancel()
                     ,( err ) ->
                         if err.awsResult and err.awsResult.indexOf( 'Length exceeds maximum of 2048' ) >= 0

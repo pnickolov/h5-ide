@@ -1,22 +1,22 @@
 <article class="property-dbinstance">
-    <div class="option-group-head expand">DB Instance Details</div>
+    <div class="option-group-head expand">{{i18n "PROP.DBINSTANCE_DETAILS"}}</div>
     <div class="option-group">
 
         {{#if sourceDbName}}
         <dl class="dl-vertical">
-            <dt>Master DB Instance</dt>
+            <dt>{{i18n "PROP.DBINSTANCE_MASTER_DB_INSTANCE"}}</dt>
             <dd>{{sourceDbName}}</dd>
         </dl>
         {{/if}}
 
         <section class="property-control-group" data-bind="true">
-            <label class="left" for="property-dbinstance-name" >DB Instance Name</label>
-            <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+            <label class="left" for="property-dbinstance-name" >{{i18n "PROP.DBINSTANCE_NAME"}}</label>
+            <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
 
         <section class="property-control-group">
-            <label class="left">DB Instance Class</label>
+            <label class="left">{{i18n "PROP.DBINSTANCE_CLASS"}}</label>
             <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">
                 <div class="selection"></div>
                 <ul class="dropdown">
@@ -35,7 +35,7 @@
                 <input id="property-dbinstance-version-update" type="checkbox" {{#if autoMinorVersionUpgrade}}checked="true"{{/if}} value="None" name="property-dbinstance-version-update">
                 <label for="property-dbinstance-version-update"></label>
             </div>
-            <label for="property-dbinstance-version-update">Auto Minor Version Update</label>
+            <label for="property-dbinstance-version-update">{{i18n "PROP.DBINSTANCE_AUTO_MINOR_VERSION_UPDATE"}}</label>
         </section>
 
         {{#if masterIops}}
@@ -44,12 +44,12 @@
                 <input id="property-dbinstance-iops-check" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
                 <label for="property-dbinstance-iops-check"></label>
             </div>
-            <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
+            <label for="property-dbinstance-iops-check">{{i18n "PROP.DBINSTANCE_USE_PROVISIONED_IOPS"}}</label>
         </section>
         {{/if}}
 
         <section class="property-control-group" data-bind="true">
-            <label class="left" for="property-dbinstance-database-port" >Database Port</label>
+            <label class="left" for="property-dbinstance-database-port" >{{i18n "PROP.DBINSTANCE_DATABASE_PORT"}}</label>
             <input class="input"  type="text" id="property-dbinstance-database-port" value="{{port}}" data-ignore="true" data-type="number" data-required="true"/>
         </section>
 
@@ -58,7 +58,7 @@
                 <input id="property-dbinstance-public-access-check" type="checkbox" {{#if accessible}}checked="true"{{/if}} value="None" name="property-dbinstance-public-access-check">
                 <label for="property-dbinstance-public-access-check"></label>
             </div>
-            <label for="property-dbinstance-public-access-check">Publicly Accessible</label>
+            <label for="property-dbinstance-public-access-check">{{i18n "PROP.DBINSTANCE_PUBLIC_ACCESS"}}</label>
         </section>
 
     {{#if isAppEdit}}
@@ -66,12 +66,12 @@
         <div class="property-control-group clearfix">
             {{#unless multiAz}}
                 {{#if AvailabilityZone}}
-                    <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+                    <label>{{ i18n "PROP.DBINSTANCE_PREFERRED_ZONE" }}</label>
                     <div>{{AvailabilityZone}}</div>
                 {{/if}}
             {{else}}
                 {{#if SecondaryAvailabilityZone}}
-                <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+                <label>{{ i18n "PROP.DBINSTANCE_SECONDARY_ZONE" }}</label>
                 <div>{{SecondaryAvailabilityZone}}</div>
                 {{/if}}
             {{/unless}}
@@ -81,11 +81,11 @@
 
         {{#if azNotEnough}}
         <section class="property-control-group">
-            <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+            <div class="property-info">{{i18n "PROP.DBINSTANCE_SUBNETGROUP_NOT_SETUP" subnetGroupName subnetGroupName}}</div>
         </section>
         {{else}}
         <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
-            <label class="left">Preferred Availability Zone</label>
+            <label class="left">{{i18n "PROP.DBINSTANCE_PREFERRED_ZONE"}}</label>
             <div class="selectbox" id="property-dbinstance-preferred-az"></div>
         </section>
         {{/if}}

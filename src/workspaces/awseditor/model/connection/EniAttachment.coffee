@@ -109,14 +109,14 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
       maxEniCount = instance.getMaxEniCount()
       # Instance have an embed eni
       if instance.connections( "EniAttachment" ).length + 1 >= maxEniCount
-        return sprintf lang.ide.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
+        return sprintf lang.IDE.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
 
 
       if instance.getEmbedEni().get("assoPublicIp") is true
         return {
           confirm  : true
-          title    : "Attach Network Interface to Instance"
-          action   : "Attach and Remove Public IP"
+          title    : lang.CANVAS.ATTACH_NETWORK_INTERFACE_TO_INTERFACE
+          action   : lang.CANVAS.ATTACH_AND_REMOVE_PUBLIC_IP
           template : MC.template.modalAttachingEni({
             host : instance.get("name")
             eni  : eni.get("name")

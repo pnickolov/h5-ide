@@ -26,6 +26,6 @@
 
 <!-- {{nocredential}} -->
 <div class="no-credential tac">
-    <p>You are using a demo AWS account.</p>
-    <a class="show-credential">Provide AWS Credential <br/>to manage key pairs</a>
+    <p>{{i18n "IDE.COMBO_DROPDOWN_DEMO_AWS_ACCOUNT"}}</p>
+    <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL"}}</a>
 </div>

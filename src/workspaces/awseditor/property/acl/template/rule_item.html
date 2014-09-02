@@ -1,20 +1,20 @@
 {{#each this}}
 <li data-uid="{{id}}">
-  <div class="acl-rule-number"><span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{number}}</span></div>
+  <div class="acl-rule-number"><span class="tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_RULE_NUMBER" }}'>{{number}}</span></div>
 
   <div class="acl-rule-details">
     <div class="rule-list-row">
-      <div class="acl-rule-allow-cb tooltip icon-{{action}}" data-tooltip='{{#ifCond action "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
-      {{#if egress}}<span class="icon-outbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}'></span>
-      {{else}}<span class="icon-inbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_INBOUND" }}}'></span>
+      <div class="acl-rule-allow-cb tooltip icon-{{action}}" data-tooltip='{{#ifCond action "deny"}}{{{ i18n "PROP.ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP.ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
+      {{#if egress}}<span class="icon-outbound tooltip" data-tooltip='{{{ i18n "PROP.ACL_TIP_OUTBOUND" }}}'></span>
+      {{else}}<span class="icon-inbound tooltip" data-tooltip='{{{ i18n "PROP.ACL_TIP_INBOUND" }}}'></span>
       {{/if}}
-      <span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}'>{{cidr}}</span>
+      <span class="tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_CIDR_BLOCK" }}'>{{cidr}}</span>
     </div>
     <div class="rule-list-row">
-      <div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}'>{{protocol}}</span></div>
+      <div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_PROTOCOL" }}'>{{protocol}}</span></div>
       <div class="tooltip" data-tooltip='{{tooltip}}'>{{port}}</div>
     </div>
-    {{#unless readOnly}}<a class="icon-remove rule-remove-icon tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_REMOVE_RULE" }}'></a>{{/unless}}
+    {{#unless readOnly}}<a class="icon-remove rule-remove-icon tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_REMOVE_RULE" }}'></a>{{/unless}}
   </div>
 </li>
 {{/each}}

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ './template/stack' ], ( template ) ->
+define [ './template/stack',  'i18n!/nls/lang.js' ], ( template, lang ) ->
 
 	SGListView = Backbone.View.extend {
 
@@ -59,12 +59,12 @@ define [ './template/stack' ], ( template ) ->
 
 			# show dialog to confirm that delete sg
 			if memberNum
-				mainContent = "Are you sure you want to delete #{sgName}?"
-				descContent = 'The firewall settings of ' + sgName + '\'s member will be affected. Member only has this security group will be using DefaultSG.'
+				mainContent = sprintf(lang.PROP.SGLIST_DELETE_SG_CONFIRM_TITLE, sgName)
+				descContent = sprintf lang.PROP.SGLIST_DELETE_SG_CONFIRM_DESC, sgName
 
 			if mainContent
 				tpl = MC.template.modalDeleteSGOrACL {
-					title : 'Delete Security Group',
+					title : lang.PROP.SGLIST_DELETE_SG_TITLE,
 					main_content : mainContent,
 					desc_content : descContent
 				}

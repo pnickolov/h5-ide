@@ -1,7 +1,7 @@
 {{#unless is_stack_sg}}
 <ul class="tab sg-info-list-tab">
-	<li data-tab-target="#item-group" class="active">{{ i18n "PROP_SGLIST_TAB_GROUP" }}</li>
-	<li data-tab-target="#item-rule">{{ i18n "PROP_SGLIST_TAB_RULE" }}</li>
+	<li data-tab-target="#item-group" class="active">{{ i18n "PROP.SGLIST_TAB_GROUP" }}</li>
+	<li data-tab-target="#item-rule">{{ i18n "PROP.SGLIST_TAB_RULE" }}</li>
 </ul>
 {{/unless}}
 
@@ -18,28 +18,28 @@
 						</div>
 					</div>
 				{{/unless}}
-				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP_SGLIST_TIP_VIEW_DETAIL" }}'></div>
+				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP.SGLIST_TIP_VIEW_DETAIL" }}'></div>
 
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
 					<div class="col2-2 truncate">{{desc}}</div>
-					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP_SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP_SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP_SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
+					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP.SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP.SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP.SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>
 			</li>
 			{{/each}}
 		</ul>
-		{{#unless readonly}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">{{ i18n "PROP_SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
+		{{#unless readonly}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">{{ i18n "PROP.SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
 	</div>
 
 	<div id="item-rule" class="tab-item">
 		<div class="rule-list-sort property-control-group">
-			<h5>{{ i18n "PROP_SG_RULE_SORT_BY" }}</h5>
+			<h5>{{ i18n "PROP.SG_RULE_SORT_BY" }}</h5>
 			<div class="selectbox" id="sg-rule-filter-select">
-				<div class="selection">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</div>
+				<div class="selection">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</div>
 				<ul class="dropdown" tabindex="-1">
-					<li class="item selected" data-id="direction">{{ i18n "PROP_SG_RULE_SORT_BY_DIRECTION" }}</li>
-					<li class="item" data-id="relation">{{ i18n "PROP_SG_RULE_SORT_BY_SRC_DEST" }}</li>
-					<li class="item" data-id="protocol">{{ i18n "PROP_SG_RULE_SORT_BY_PROTOCOL" }}</li>
+					<li class="item selected" data-id="direction">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</li>
+					<li class="item" data-id="relation">{{ i18n "PROP.SG_RULE_SORT_BY_SRC_DEST" }}</li>
+					<li class="item" data-id="protocol">{{ i18n "PROP.SG_RULE_SORT_BY_PROTOCOL" }}</li>
 				</ul>
 			</div>
 		</div>

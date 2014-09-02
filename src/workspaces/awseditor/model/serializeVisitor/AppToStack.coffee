@@ -88,12 +88,25 @@ define [ "Design" ], (Design)->
                     compo.resource.AlarmArn = ""
                     compo.resource.AlarmName = compo.name
                 when 'AWS.RDS.DBInstance'
-                    compo.resource.CreatedBy = ""
-                    compo.resource.DBInstanceIdentifier = ""
-                    compo.resource.Endpoint.Address = ""
-                    compo.resource.PreferredBackupWindow = ""
-                    compo.resource.PreferredMaintenanceWindow = ""
-                    compo.resource.MasterUserPassword = ""
+                    sourceDBId = ''
+                    level2DBId = MC.extractID(compo.resource.ReadReplicaSourceDBInstanceIdentifier)
+                    if level2DBId
+                        level2DBComp = components[level2DBId]
+                        if level2DBComp
+                            sourceDBId = level2DBComp.resource.ReadReplicaSourceDBInstanceIdentifier
+                    if not sourceDBId
+                        compo.resource.CreatedBy = ""
+                        compo.resource.DBInstanceIdentifier = ""
+                        compo.resource.Endpoint.Address = ""
+                        compo.resource.PreferredBackupWindow = ""
+                        compo.resource.PreferredMaintenanceWindow = ""
+                        if compo.resource.ReadReplicaSourceDBInstanceIdentifier
+                            compo.resource.MasterUserPassword = "****"
+                        else
+                            compo.resource.MasterUserPassword = "12345678"
+                    else
+                        level2DBComp.resource.BackupRetentionPeriod = 0
+                        delete components[compo.uid]
                 when "AWS.RDS.DBSubnetGroup"
                     compo.resource.CreatedBy = ''
                     compo.resource.DBSubnetGroupName = ""

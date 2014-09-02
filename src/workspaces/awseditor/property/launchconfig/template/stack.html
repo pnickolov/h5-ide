@@ -1,14 +1,14 @@
 <article>
 
-	<div class="option-group-head expand">{{i18n "PROP_LC_TITLE"}}</div>
+	<div class="option-group-head expand">{{i18n "PROP.LC_TITLE"}}</div>
 	<div class="option-group">
 		<section class="property-control-group" data-bind="true">
-			<label class="left" for="property-instance-name" >{{i18n "PROP_LC_NAME"}}</label>
-			<span class="required-input right">{{i18n "PROP_INSTANCE_REQUIRE"}}</span>
+			<label class="left" for="property-instance-name" >{{i18n "PROP.LC_NAME"}}</label>
+			<span class="required-input right">{{i18n "PROP.INSTANCE_REQUIRE"}}</span>
 			<input class="input launch-configuration-name"  type="text" value="{{name}}" name="property-instance-name" id="property-instance-name" maxlength="240" data-required-rollback="true" data-ignore="true"/>
 		</section>
 		<section class="property-control-group">
-			<label>{{i18n "PROP_INSTANCE_AMI"}}</label>
+			<label>{{i18n "PROP.INSTANCE_AMI"}}</label>
 			<div id="property-ami" class="property-block-wrap clearfix" data-uid="{{imageId}}">
 				<img class="property-ami-icon left" src="/assets/images/ide/ami/{{instance_ami.icon}}" / >
 				<div class="property-ami-label" {{#if instance_ami.unavailable}}style="color:red;"{{/if}}>{{instance_ami.name}}</div>
@@ -16,7 +16,7 @@
 		</section>
 		{{#if instance_type.length}}
 		<section class="property-control-group">
-			<label class="left">{{i18n "PROP_INSTANCE_TYPE"}}</label>
+			<label class="left">{{i18n "PROP.INSTANCE_TYPE"}}</label>
 			<div class="selectbox selectbox-mega" id="instance-type-select">
 				<div class="selection"></div>
 				<ul class="dropdown">
@@ -39,10 +39,10 @@
 				{{/if}}
 				<label for="property-instance-ebs-optimized"></label>
 			</div>
-			<label for="property-instance-ebs-optimized">EBS Optimized</label>
+			<label for="property-instance-ebs-optimized">{{i18n "PROP.INSTANCE_EBS_OPTIMIZED"}}</label>
 		</section>
 		<section class="property-control-group">
-			<label class="left">{{i18n "PROP_INSTANCE_KEY_PAIR"}}</label>
+			<label class="left">{{i18n "PROP.INSTANCE_KEY_PAIR"}}</label>
 			<i class="icon-info tooltip default-kp-info" data-tooltip="{{i18n 'POP_INSTANCE_KEYPAIR_INFO_TIP'}}"></i>
             <div id="kp-placeholder"></div>
 		</section>
@@ -52,28 +52,27 @@
 					<input id="property-instance-public-ip" type="checkbox" {{#if publicIp}}checked="checked"{{/if}} value="None" name="property-instance-public-ip" />
 					<label for="property-instance-public-ip"></label>
 				</div>
-				<label for="property-instance-public-ip">{{ i18n "PROP_INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
+				<label for="property-instance-public-ip">{{ i18n "PROP.INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>
 			</section>
 		{{/if}}
 	</div>
 
-	<div class="option-group-head">{{ i18n "PROP_INSTANCE_ADVANCED_DETAIL" }}</div>
+	<div class="option-group-head">{{ i18n "PROP.INSTANCE_ADVANCED_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
 			<div class="checkbox">
 				<input id="property-instance-enable-cloudwatch" type="checkbox" {{#if monitorEnabled}}{{#if monitoring}}checked="true"{{/if}}{{else}}disabled="disabled"{{/if}} value="None" name="property-instance-enable-cloudwatch" />
 				<label for="property-instance-enable-cloudwatch"></label>
 			</div>
-			<label for="property-instance-enable-cloudwatch">{{i18n "PROP_INSTANCE_CW_ENABLED"}}</label>
+			<label for="property-instance-enable-cloudwatch">{{i18n "PROP.INSTANCE_CW_ENABLED"}}</label>
 
-			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP_INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">Amazon Cloud Watch product page</a></p>
+			<p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{i18n "PROP.INSTANCE_CW_WARN"}}<a target="_blank" href="http://aws.amazon.com/cloudwatch">{{i18n "PROP.INSTANCE_WATCH_LINK_TEXT"}}</a></p>
 		</section>
 		<section class="property-control-group">
 			{{#if stackAgentEnable}}
-			<div class="property-info"> User Data is disabled to allow installing OpsAgent for VisualOps. <a href="{{ i18n "PROP_AGENT_USER_DATA_URL" }}" target="_blank">View content</a>.
-			</div>
+			<div class="property-info">{{i18n "PROP.INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS"}}</div>
 			{{else}}
-				<label for="property-instance-user-data">{{i18n "PROP_INSTANCE_USER_DATA"}}</label>
+				<label for="property-instance-user-data">{{i18n "PROP.INSTANCE_USER_DATA"}}</label>
 				<textarea id="property-instance-user-data">{{userData}}</textarea>
 			{{/if}}
 		</section>
@@ -83,11 +82,11 @@
 	<div class="option-group-head">Root Device</div>
 	<div class="option-group">
     <section class="property-control-group">
-      <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+      <label>{{ i18n "PROP.VOLUME_DEVICE_NAME" }}</label>
       <div>{{rootDevice.name}}</div>
     </section>
     <section class="property-control-group">
-      <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+      <label>{{ i18n "PROP.VOLUME_SIZE" }}</label>
       <div class="ranged-number-input">
           <label for="volume-size-ranged"></label>
           <input id="volume-size-ranged" type="text" class="input" value="{{rootDevice.size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number"/>
@@ -96,28 +95,28 @@
     </section>
 
     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+        <label>{{ i18n "PROP.VOLUME_TYPE" }}</label>
         <div id="volume-type-radios">
           <div>
              <div class="radio">
                   <input id="radio-standard" type="radio" name="volume-type" {{#if rootDevice.isStandard}}checked="checked"{{/if}} value="standard" />
                   <label for="radio-standard"></label>
               </div>
-              <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+              <label for="radio-standard">{{ i18n "PROP.VOLUME_TYPE_STANDARD" }}</label>
           </div>
           <div>
              <div class="radio">
                   <input id="radio-gp2" type="radio" name="volume-type" {{#if rootDevice.isGp2}}checked="checked"{{/if}} value="gp2" />
                   <label for="radio-gp2"></label>
               </div>
-              <label for="radio-gp2">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
+              <label for="radio-gp2">{{ i18n "PROP.VOLUME_TYPE_GP2" }}</label>
           </div>
-          <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}">
+          <div {{#if rootDevice.iopsDisabled}}class="tooltip"{{/if}} data-tooltip="{{ i18n 'PROP.VOLUME_MSG_WARN'}}">
             <div class="radio">
               <input id="radio-io1" type="radio" name="volume-type" {{#if rootDevice.isIo1}}checked="checked"{{/if}} {{#if rootDevice.iopsDisabled}}disabled{{/if}} value="io1" />
               <label for="radio-io1"></label>
             </div>
-            <label for="radio-io1">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
+            <label for="radio-io1">{{ i18n "PROP.VOLUME_TYPE_IO1" }}</label>
           </div>
         </div>
     </section>
@@ -131,13 +130,13 @@
     </section>
 
 <!--     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
+        <label>{{ i18n "PROP.VOLUME_ENCRYPTED" }}</label>
         <div>{{#if rootDevice.encrypted}}Yes{{else}}No{{/if}}</div>
     </section> -->
 
 	</div>
   {{/if}}
 
-	<div class="option-group-head">{{i18n "PROP_INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group-head">{{i18n "PROP.INSTANCE_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 </article>

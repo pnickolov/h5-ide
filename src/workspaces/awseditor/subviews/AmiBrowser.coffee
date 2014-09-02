@@ -16,7 +16,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
             $.extend this, attr
 
             modal = new Modal
-              title: lang.ide.AMI_LBL_COMMUNITY_AMIS
+              title: lang.IDE.AMI_LBL_COMMUNITY_AMIS
               width: "855px"
               template: TplAmiBrowser.dialog()
               disableFooter: true
@@ -92,7 +92,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
             self.communityAmiData = result.ami?.result || {}
             self.communityAmiRender(result)
           , (result)->
-            notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
+            notification 'error', lang.NOTIFY.UNABLE_TO_LOAD_COMMUNITY_AMIS
             self.communityAmiRender({ami:[]})
 
         searchPrev: ->
@@ -135,7 +135,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           itemEnd = itemBegin + pageSize - 1
           itemEnd = total if itemEnd > total
 
-          $( '.page-tip' ).text sprintf lang.ide.AMI_LBL_PAGEINFO, itemBegin, itemEnd, total
+          $( '.page-tip' ).text sprintf lang.IDE.AMI_LBL_PAGEINFO, itemBegin, itemEnd, total
 
           pagination = $ '.pagination'
 
@@ -164,12 +164,12 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
         communityShowContent: () ->
           $( ".show-loading" ).hide()
           $( "#ami-table-wrap .scroll-content" ).show()
-          $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCH ).removeAttr( "disabled" )
+          $( "#btn-search-ami" ).text( lang.IDE.AMI_LBL_SEARCH ).removeAttr( "disabled" )
           $( "#community-ami-page>div" ).show()
 
         renderAmiLoading: () ->
           $( "#ami-table-wrap .scroll-content" ).hide()
           $( ".show-loading" ).show()
-          $( "#btn-search-ami" ).text( lang.ide.AMI_LBL_SEARCHING ).attr( "disabled", "" )
+          $( "#btn-search-ami" ).text( lang.IDE.AMI_LBL_SEARCHING ).attr( "disabled", "" )
           $( "#community-ami-page>div" ).hide()
     }

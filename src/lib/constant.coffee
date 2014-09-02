@@ -221,11 +221,11 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     #private
     MESSAGE_E =
-        MESSAGE_E_SESSION  : "This session has expired, please log in again"
-        MESSAGE_E_EXTERNAL : "Sorry, there seems to be a problem with AWS"
-        MESSAGE_E_ERROR    : "Sorry, we're experiencing techincal difficulty"
-        MESSAGE_E_UNKNOWN  : "Something is wrong. Please contact support@visualops.io"
-        MESSAGE_E_PARAM    : "Parameter error!"
+        MESSAGE_E_SESSION  : lang.SERVICE.CONSTANT_MSG_E_SESSION
+        MESSAGE_E_EXTERNAL : lang.SERVICE.CONSTANT_MSG_E_EXTERNAL
+        MESSAGE_E_ERROR    : lang.SERVICE.CONSTANT_MSG_E_ERROR
+        MESSAGE_E_UNKNOWN  : lang.SERVICE.CONSTANT_MSG_E_UNKNOW
+        MESSAGE_E_PARAM    : lang.SERVICE.CONSTANT_MSG_E_PARAM
 
 
     #private
@@ -233,24 +233,24 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     #private
     REGION_LABEL =
-        'us-east-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_us-east-1']
-        'us-west-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_us-west-1']
-        'us-west-2'      : lang.ide[ 'IDE_LBL_REGION_NAME_us-west-2']
-        'eu-west-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_eu-west-1']
-        'ap-southeast-2' : lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
-        'ap-northeast-1' : lang.ide[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
-        'ap-southeast-1' : lang.ide[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
-        'sa-east-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_sa-east-1']
+        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
+        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
+        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
+        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
+        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
 
     REGION_SHORT_LABEL =
-        'us-east-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
-        'us-west-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
-        'us-west-2'      : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
-        'eu-west-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
-        'ap-southeast-1' : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
-        'ap-southeast-2' : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
-        'ap-northeast-1' : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
-        'sa-east-1'      : lang.ide[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
 
     #private
     RETURN_CODE =

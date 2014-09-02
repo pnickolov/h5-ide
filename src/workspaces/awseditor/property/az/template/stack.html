@@ -1,8 +1,8 @@
 <section class="property-control-group">
   {{#if appEdit}}
-  <div>Cannot edit existing availability zone. However, newly created availability zone is editable.</div>
+  <div>{{i18n "PROP.AZ_CANNOT_EDIT_EXISTING_AZ"}}</div>
   {{else}}
-  <label class="left">{{ i18n "PROP_AZ_LBL_SWITCH" }}</label>
+  <label class="left">{{ i18n "PROP.AZ_LBL_SWITCH" }}</label>
   <div class="selectbox selectbox-mega" id="az-quick-select">
     <div class="selection">{{name}}</div>
     <ul class="dropdown" tabindex="-1">

@@ -1,30 +1,30 @@
 <article id="stack-elb-property-panel">
 
-	<div class="option-group-head expand">{{ i18n "PROP_ELB_DETAILS" }}</div>
+	<div class="option-group-head expand">{{ i18n "PROP.ELB_DETAILS" }}</div>
 	<div class="option-group" data-bind="true" >
 	{{#if appData}}
     <dl class="dl-vertical property-app">
-      <dt>{{i18n "PROP_ELB_SCHEME"}}</dt>
-      <dd>{{#if isInternet}}Internet Facing{{else}}Internal{{/if}}</dd>
-      <dt>{{i18n "PROP_ELB_DNS_NAME"}}</dt>
+      <dt>{{i18n "PROP.ELB_SCHEME"}}</dt>
+      <dd>{{#if isInternet}}{{i18n "PROP.ELB_INTERNET_FACING"}}{{else}}{{i18n "PROP.ELB_INTERNAL"}}{{/if}}</dd>
+      <dt>{{i18n "PROP.ELB_DNS_NAME"}}</dt>
       <dd>
-        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A){{DNSName}}</div>
-        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(AAAA)ipv6.{{DNSName}}</div>
-        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A/AAAA)dualstack.{{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A){{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_CLICK_TO_SELECT_ALL'}}">(AAAA)ipv6.{{DNSName}}</div>
+        <div class="click-select tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_CLICK_TO_SELECT_ALL'}}">(A/AAAA)dualstack.{{DNSName}}</div>
       </dd>
-      <dt>{{i18n "PROP_ELB_HOST_ZONE_ID"}}</dt>
+      <dt>{{i18n "PROP.ELB_HOST_ZONE_ID"}}</dt>
       <dd>{{CanonicalHostedZoneNameID}}<dd>
     </dl>
 	{{else}}
 		<section class="property-control-group">
-			<label class="left" for="property-elb-name" >{{ i18n "PROP_ELB_NAME" }}</label>
-			<span class="required-input right">{{ i18n "PROP_ELB_REQUIRED" }}</span>
+			<label class="left" for="property-elb-name" >{{ i18n "PROP.ELB_NAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP.ELB_REQUIRED" }}</span>
 			<input data-ignore="true" data-required-rollback="true" maxlength="17" class="input elb-name"  type="text" value="{{name}}" id="property-elb-name"/>
 		</section>
 
 		{{#if isVpc}}
 		<section class="property-control-group">
-      <label>{{ i18n "PROP_ELB_SCHEME" }}</label>
+      <label>{{ i18n "PROP.ELB_SCHEME" }}</label>
       <div class="mgt5">
         <div class="radio">
             <input type="radio" {{#unless internal}}checked="checked"{{/unless}} value="internet" id="elb-scheme-select1" name="elb-schema-select"/>
@@ -47,26 +47,26 @@
 				<input id="elb-cross-az-select" type="checkbox" {{#if crossZone}}checked="checked"{{/if}}/>
 				<label for="elb-cross-az-select"></label>
 			</div>
-			<label for="elb-cross-az-select" >Enable cross-zone load balancing</label>
-			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
+			<label for="elb-cross-az-select" >{{i18n "PROP.ELB_ENABLE_CROSS_ZONE_BALANCING"}}</label>
+			<a class="elb-info-icon tooltip icon-info" href="https://aws.amazon.com/about-aws/whats-new/2013/11/06/elastic-load-balancing-adds-cross-zone-load-balancing/" data-tooltip="{{i18n 'PROP.ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
 		</section>
 		<section class="property-control-group">
 			<div class="checkbox">
 				<input id="elb-connection-draining-select" type="checkbox" {{#if connectionDrainingEnabled}}checked="checked"{{/if}}/>
 				<label for="elb-connection-draining-select"></label>
 			</div>
-			<label for="elb-connection-draining-select" >Enable Connection Draining</label>
-			<a class="elb-info-icon tooltip icon-info" href="http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/config-conn-drain.html" data-tooltip="{{i18n 'PROP_ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
+			<label for="elb-connection-draining-select" >{{i18n "PROP.ELB_CONNECTION_DRAINING"}}</label>
+			<a class="elb-info-icon tooltip icon-info" href="http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/config-conn-drain.html" data-tooltip="{{i18n 'PROP.ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT'}}" target="_blank"></a>
 			<div class="elb-connection-draining-input-group {{#unless connectionDrainingEnabled}}hide{{/unless}}">
-				<label for="elb-connection-draining-input" class="left">Timeout</label>
+				<label for="elb-connection-draining-input" class="left">{{i18n "PROP.ELB_CONNECTION_TIMEOUT"}}</label>
 				<input id="elb-connection-draining-input" class="input parsley-validated" type="text" value="{{#if connectionDrainingTimeout}}{{connectionDrainingTimeout}}{{else}}300{{/if}}" data-ignore="true" data-required="true" data-type="number">
-				<label for="elb-connection-draining-input">seconds</label>
+				<label for="elb-connection-draining-input">{{i18n "PROP.ELB_CONNECTION_SECONDS"}}</label>
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label for="property-elb-idle-timeout" >{{ i18n "PROP_ELB_IDLE_TIMEOUT" }}</label>
+			<label for="property-elb-idle-timeout" >{{ i18n "PROP.ELB_IDLE_TIMEOUT" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{idleTimeout}}" name="property-elb-idle-timeout" id="property-elb-idle-timeout" data-required="true" data-type="digits" data-min="1" data-max="3600" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-idle-timeout" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="elb-property-right-text" for="property-elb-idle-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 	</div>
 
@@ -87,15 +87,15 @@
 	</div>
 	-->
 
-	<div class="option-group-head"> {{ i18n "PROP_ELB_LISTENER_DETAIL" }} </div>
+	<div class="option-group-head"> {{ i18n "PROP.ELB_LISTENER_DETAIL" }} </div>
 	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
 		{{#each listeners}}
 		<li class="elb-property-listener">
-			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_REMOVE_LISTENER'}}"></div>
+			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_REMOVE_LISTENER'}}"></div>
 
 			<div class="property-control-group listener-item clearfix">
 				<div class="elb-property-listener-item-1">
-					<label class="left">Load Balancer Protocol</label>
+					<label class="left">{{i18n "PROP.ELB_LOAD_BALENCER_PROTOCOL"}}</label>
 					<div class="selectbox elb-property-elb-protocol">
 						<div class="selection">{{protocol}}</div>
 						<ul class="dropdown">
@@ -107,14 +107,14 @@
 					</div>
 				</div>
 				<div class="elb-property-listener-item-2">
-					<label class="left">Port</label>
-					<input class="input elb-property-elb-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_25_80_443OR1024TO65535'}}" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<label class="left">{{i18n "PROP.PORT"}}</label>
+					<input class="input elb-property-elb-port tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_25_80_443OR1024TO65535'}}" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 
 			<div class="property-control-group listener-item clearfix">
 				<div class="left elb-property-listener-item-1">
-					<label class="left">Instance Protocol</label>
+					<label class="left">{{i18n "PROP.ELB_INSTANCE_PROTOCOL"}}</label>
 					<div class="selectbox elb-property-instance-protocol">
 						<div class="selection">{{instanceProtocol}}</div>
 						<ul class="dropdown">
@@ -126,21 +126,21 @@
 					</div>
 				</div>
 				<div class="left elb-property-listener-item-2">
-					<label class="left">Port</label>
-					<input class="input elb-property-instance-port tooltip" data-tooltip="{{i18n 'PROP_ELB_TIP_1_65535'}}" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
+					<label class="left">{{i18n "PROP.PORT"}}</label>
+					<input class="input elb-property-instance-port tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_1_65535'}}" type="text" value="{{instancePort}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
 			</div>
 
 			<div class="property-control-group sslcert-select clearfix">
-				<label for="sslcert-placeholder">{{ i18n "PROP_ELB_SERVER_CERTIFICATE"}}</label>
+				<label for="sslcert-placeholder">{{ i18n "PROP.ELB_SERVER_CERTIFICATE"}}</label>
 				<div class="sslcert-placeholder"></div>
 			</div>
 		</li>
 		{{/each}}
 		</ul>
-		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">{{ i18n "PROP_ELB_BTN_ADD_LISTENER"}}</a>
+		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">{{ i18n "PROP.ELB_BTN_ADD_LISTENER"}}</a>
 <!-- 		<section class="property-control-group" id="property-control-group-cert-setting">
-			<label class="left">{{ i18n "PROP_ELB_SERVER_CERTIFICATE" }}</label>
+			<label class="left">{{ i18n "PROP.ELB_SERVER_CERTIFICATE" }}</label>
 			<div class="selectbox" id="sslcert-select">
 				<div class="selection"></div>
 				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
@@ -163,10 +163,10 @@
 		</section> -->
 	</div>
 
-	<div class="option-group-head"> {{ i18n "PROP_ELB_HEALTH_CHECK_DETAILS" }} </div>
+	<div class="option-group-head"> {{ i18n "PROP.ELB_HEALTH_CHECK_DETAILS" }} </div>
 	<div class="option-group" data-bind="true" data-validate="parsley" >
 		<section class="property-control-group">
-			<label>{{ i18n "PROP_ELB_PING_PROTOCOL" }}</label>
+			<label>{{ i18n "PROP.ELB_PING_PROTOCOL" }}</label>
 			<div class="selectbox mgt5" id="elb-property-health-protocol-select">
 				<div class="selection">{{pingProtocol}}</div>
 				<ul class="dropdown" tabindex="-1">
@@ -178,11 +178,11 @@
 			</div>
 		</section>
 		<section class="property-control-group" data-bind="true">
-			<label for="property-elb-health-port" >{{ i18n "PROP_ELB_PING_PORT"}}</label>
+			<label for="property-elb-health-port" >{{ i18n "PROP.ELB_PING_PORT"}}</label>
 			<input class="input mgt5" tooltip="1-65535" type="text" value="{{ pingPort }}" name="property-elb-health-port" id="property-elb-health-port" data-required="true" data-type="digits" data-ignore="true" maxlength="5"/>
 		</section>
 		<section class="property-control-group">
-			<label for="property-elb-health-path" >{{ i18n "PROP_ELB_PING_PATH"}}</label>
+			<label for="property-elb-health-path" >{{ i18n "PROP.ELB_PING_PATH"}}</label>
 			<div class="pos-r mgt5">
 				<input class="input" {{#ifCond pingProtocol 'SSL'}}disabled="disabled"{{/ifCond}}{{#ifCond pingProtocol 'TCP'}}disabled="disabled"{{/ifCond}}type="text" value="{{ pingPath }}" name="property-elb-health-path" id="property-elb-health-path" />
 				<span class="elb-pingpath-prefix">/</span>
@@ -190,25 +190,25 @@
 		</section>
 
 		<section class="property-control-group">
-			<label for="property-elb-health-interval" >{{ i18n "PROP_ELB_HEALTH_CHECK_INTERVAL" }}</label>
+			<label for="property-elb-health-interval" >{{ i18n "PROP.ELB_HEALTH_CHECK_INTERVAL" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{ healthCheckInterval }}" name="property-elb-health-interval" id="property-elb-health-interval" data-required="true" data-type="digits" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-health-interval" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="elb-property-right-text" for="property-elb-health-interval" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 		<section class="property-control-group">
-			<label for="property-elb-health-timout" >{{ i18n "PROP_ELB_HEALTH_CHECK_RESPOND_TIMEOUT" }}</label>
+			<label for="property-elb-health-timout" >{{ i18n "PROP.ELB_HEALTH_CHECK_RESPOND_TIMEOUT" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{ healthCheckTimeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout" data-required="true" data-type="digits" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-health-timeout" >{{i18n "PROP_ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="elb-property-right-text" for="property-elb-health-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 
 		<section class="property-control-group">
-			<label>{{ i18n "PROP_ELB_UNHEALTH_THRESHOLD" }}</label>
+			<label>{{ i18n "PROP.ELB_UNHEALTH_THRESHOLD" }}</label>
 			<div class="slider" id="elb-property-slider-unhealthy">
 				<a class="thumb"></a>
 				<ul class="marker"><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li></ul>
 			</div>
 		</section>
 		<section class="property-control-group">
-			<label>{{ i18n "PROP_ELB_HEALTH_THRESHOLD" }}</label>
+			<label>{{ i18n "PROP.ELB_HEALTH_THRESHOLD" }}</label>
 			<div class="slider" id="elb-property-slider-healthy">
 				<a class="thumb"></a>
 				<ul class="marker"><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li></ul>
@@ -217,12 +217,12 @@
 	</div>
 
 	{{#if isVpc}}
-	<div class="option-group-head expand">{{ i18n "PROP_ELB_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+	<div class="option-group-head expand">{{ i18n "PROP.ELB_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
 	<div class="option-group sg-group"></div>
 
 	{{else}}
 		{{#if azArray}}
-		<div class="option-group-head"> {{ i18n "PROP_ELB_AVAILABILITY_ZONE" }} </div>
+		<div class="option-group-head"> {{ i18n "PROP.ELB_AVAILABILITY_ZONE" }} </div>
 		<div class="option-group" id="property-elb-az-cb-group">
 			{{#each azArray}}
 			<section class="property-control-group">

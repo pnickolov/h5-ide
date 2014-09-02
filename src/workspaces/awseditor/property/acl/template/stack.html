@@ -2,48 +2,48 @@
   {{#if appId}}
   <section class="property-control-group">
     <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_ACL_APP_ID" }}</dt>
+      <dt>{{ i18n "PROP.ACL_APP_ID" }}</dt>
       <dd>{{appId}}</dd>
 
-      <dt>{{ i18n "PROP_ACL_APP_IS_DEFAULT" }}</dt>
+      <dt>{{ i18n "PROP.ACL_APP_IS_DEFAULT" }}</dt>
       <dd>{{isDefault}}</dd>
 
-      <dt>{{ i18n "PROP_ACL_APP_VPC_ID" }}</dt>
+      <dt>{{ i18n "PROP.ACL_APP_VPC_ID" }}</dt>
       <dd>{{vpcId}}</dd>
     </dl>
   </section>
   {{else}}
   <section class="property-control-group" data-bind="true">
-    <label class="left" for="property-acl-name">{{ i18n "PROP_ACL_LBL_NAME" }}</label>
-    <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+    <label class="left" for="property-acl-name">{{ i18n "PROP.ACL_LBL_NAME" }}</label>
+    <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
     <input class="input" type="text" value="{{name}}" {{#if isDefault}}disabled="disabled"{{/if}} id="property-acl-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
   </section>
   {{/if}}
 
 
-  <div class="option-group-head acl-header expand">{{ i18n "PROP_ACL_TIT_RULE" }}
+  <div class="option-group-head acl-header expand">{{ i18n "PROP.ACL_TIT_RULE" }}
     <span class="property-head-num-wrap">(<span id="acl-rule-count">{{rules.length}}</span>)</span>
     {{#unless isApp}}
-    <a href="#" class="icon-add add-rule tooltip action-link" id="acl-add-rule-icon" data-tooltip='{{ i18n "PROP_ACL_BTN_CREATE_NEW_RULE" }}'></a>
+    <a href="#" class="icon-add add-rule tooltip action-link" id="acl-add-rule-icon" data-tooltip='{{ i18n "PROP.ACL_BTN_CREATE_NEW_RULE" }}'></a>
     {{/unless}}
   </div>
   <div class="option-group">
     <div class="rule-list-sort property-control-group">
-      <h5>{{ i18n "PROP_ACL_RULE_SORT_BY" }}</h5>
+      <h5>{{ i18n "PROP.ACL_RULE_SORT_BY" }}</h5>
       <div class="selectbox" id="acl-sort-rule-select">
-        <div class="selection">{{ i18n "PROP_ACL_RULE_SORT_BY_NUMBER" }}</div>
+        <div class="selection">{{ i18n "PROP.ACL_RULE_SORT_BY_NUMBER" }}</div>
         <ul class="dropdown" tabindex="-1">
-          <li data-id="number" class="item selected">{{ i18n "PROP_ACL_RULE_SORT_BY_NUMBER" }}</li>
-          <li data-id="action" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_ACTION" }}</li>
-          <li data-id="direction" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_DIRECTION" }}</li>
-          <li data-id="source/destination" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_SRC_DEST" }}</li>
+          <li data-id="number" class="item selected">{{ i18n "PROP.ACL_RULE_SORT_BY_NUMBER" }}</li>
+          <li data-id="action" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_ACTION" }}</li>
+          <li data-id="direction" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_DIRECTION" }}</li>
+          <li data-id="source/destination" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_SRC_DEST" }}</li>
         </ul>
       </div>
     </div>
     <ul class="property-list acl-rule-list" id="acl-rule-list">{{acl_list}}</ul>
   </div>
 
-  <div class="option-group-head acl-header expand">{{ i18n "PROP_ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
+  <div class="option-group-head acl-header expand">{{ i18n "PROP.ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
   </div>
 
   <ul class="option-group property-list">{{#each associations}}<li>{{name}} ({{cidr}})</li>{{/each}}</ul>

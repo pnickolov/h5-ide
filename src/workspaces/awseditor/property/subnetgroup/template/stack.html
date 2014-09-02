@@ -1,22 +1,22 @@
 <article class="property-subnet-group">
-  <div class="option-group-head expand">Subnet Groups Details</div>
+  <div class="option-group-head expand">{{i18n "PROP.SUBNET_GROUP_DETAILS"}}</div>
   <div class="option-group">
 
    <section class="property-control-group" data-bind="true">
-    <label class="left" for="property-dbinstance-name" >Subnet Group Name</label>
-    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <label class="left" for="property-dbinstance-name" >{{i18n "PROP.SUBNET_GROUP_NAME"}}</label>
+    <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
     <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled{{/if}} />
   </section>
 
 
   <section class="property-control-group" data-bind="true">
-    <label class="left" for="property-dbinstance-name" >Subnet Group Description</label>
-    <span class="required-input right">{{ i18n "PROP_INSTANCE_REQUIRE" }}</span>
+    <label class="left" for="property-dbinstance-name" >{{i18n "PROP.SUBNET_GROUP_DESCRIPTION"}}</label>
+    <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
     <input class="input"  type="text" value="{{ description }}" id="property-subnet-desc" data-ignore="true" data-required-rollback="true"/>
   </section>
 </div>
 
-<div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span>
+<div class="option-group-head expand">{{i18n "PROP.SUBNET_GROUP_MEMBER"}}<span class="property-head-num-wrap">({{sbCount}})</span>
 <button class="icon-edit tooltip add-rule" data-tooltip="Edit subnet group"></button></div>
 
 {{#each azSb}}

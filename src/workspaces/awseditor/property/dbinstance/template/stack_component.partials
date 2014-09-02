@@ -19,7 +19,7 @@
 {{#if isAppEdit}}
 {{else}}
 <section class="property-control-group">
-    <label class="left">License Model</label>
+    <label class="left">{{i18n "PROP.DBINSTANCE_LICENSE_MODEL"}}</label>
     <div class="selectbox" id="property-dbinstance-license-select">
         <div class="selection">{{license}}</div>
         <ul class="dropdown" tabindex="-1">
@@ -35,7 +35,7 @@
 {{#unless isAppEdit}}
     {{#unless snapshotId}}
     <section class="property-control-group">
-        <label class="left">DB Engine Version</label>
+        <label class="left">{{i18n "PROP.DBINSTANCE_DB_ENGINE_VERSION"}}</label>
         <div class="selectbox combo-dd" id="property-dbinstance-engine-version-select">
             <div class="property-engine-label left" >{{engine}}</div>
             <div class="property-engineversion-label selection">{{engineVersion}}</div>
@@ -56,18 +56,20 @@
     {{/unless}}
 {{else}}
     <section class="property-control-group clearfix">
-        <label>DB Engine Version</label>
+        <label>{{i18n "PROP.DBINSTANCE_DB_ENGINE_VERSION"}}</label>
         <div>{{engine}}({{engineVersion}})</div>
     </section>
 {{/unless}}
 {{/unless}}
 
 <section class="property-control-group">
-    <label class="left">DB Instance Class</label>
+    <label class="left">{{i18n "PROP.DBINSTANCE_DB_INSTANCE_CLASS"}}</label>
+
     <div class="selectbox selectbox-mega combo-dd" id="property-dbinstance-class-select">
         <div class="selection">
             <div class="main truncate">{{classInfo.instanceClass}}</div>
-            <div class="sub"><span>{{classInfo.ecu}} ECU</span> <span>{{classInfo.cpu}}</span> <span>{{classInfo.memory}}</span></div>
+            <div class="sub"><span>{{classInfo.ecu}} ECU</span><span>{{classInfo.cpu}}</span>
+                <span>{{classInfo.memory}}</span></div>
         </div>
         <div class="dropdown">
             <div class="scroll-wrap scrollbar-auto-hide clearfix">
@@ -75,10 +77,11 @@
                 <div class="scroll-content">
                     <ul>
                         {{#each classes}}
-                        <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
-                            <div class="main truncate">{{instanceClass}}</div>
-                            <div class="sub"><span>{{ecu}} ECU</span> <span>{{cpu}}</span> <span>{{memory}}</span></div>
-                        </li>
+                            <li class="{{#if selected}}selected {{/if}}tooltip item" data-id="{{instanceClass}}">
+                                <div class="main truncate">{{instanceClass}}</div>
+                                <div class="sub"><span>{{ecu}} ECU</span><span>{{cpu}}</span> <span>{{memory}}</span>
+                                </div>
+                            </li>
                         {{/each}}
                     </ul>
                 </div>
@@ -88,9 +91,9 @@
 </section>
 
 <!-- {{preferred_az}} -->
-<div class="selection">Select Window</div>
+<div class="selection">{{i18n "PROP.DBINSTANCE_SELECT_WINDOW"}}</div>
 <ul class="dropdown" tabindex="-1">
-    <li class="item" data-id="no">No Preference</li>
+    <li class="item" data-id="no">{{i18n "PROP.DBINSTANCE_NO_PREFERENCE"}}</li>
     {{#each this}}
     <li class="item" data-id="{{name}}">{{name}}</li>
     {{/each}}
@@ -115,7 +118,7 @@
                 <div class="content clearfix">
                 </div>
                 <div class="error">
-                    something wrong
+                    {{i18n "PROP.DBINSTANCE_SOMETHING_ERROR"}}
                 </div>
             </div>
             <div class="table-head-fix">
@@ -159,10 +162,10 @@
 
 <!-- {{optionGroupDropDown}} -->
 {{#if canCustomOG}}
-<label for="property-dbinstance-optiongroup-placeholder">Option Group</label>
+<label for="property-dbinstance-optiongroup-placeholder">{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
 <div class="property-dbinstance-optiongroup-placeholder"></div>
 {{else}}
-<label>Option Group</label>
+<label>{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
 <div>{{ogName}}</div>
 {{/if}}
 
@@ -180,12 +183,12 @@
     <div class="property-control-group clearfix">
         {{#unless multiAz}}
             {{#if AvailabilityZone}}
-                <label>{{ i18n "PROP_DBINSTANCE_PREFERRED_ZONE" }}</label>
+                <label>{{ i18n "PROP.DBINSTANCE_PREFERRED_ZONE" }}</label>
                 <div>{{AvailabilityZone}}</div>
             {{/if}}
         {{else}}
             {{#if SecondaryAvailabilityZone}}
-            <label>{{ i18n "PROP_DBINSTANCE_SECONDARY_ZONE" }}</label>
+            <label>{{ i18n "PROP.DBINSTANCE_SECONDARY_ZONE" }}</label>
             <div>{{SecondaryAvailabilityZone}}</div>
             {{/if}}
         {{/unless}}
@@ -195,11 +198,11 @@
 
     {{#if azNotEnough}}
     <section class="property-control-group">
-        <div class="property-info">Subnet Group {{subnetGroupName}} is not correctly set up yet. Assign {{subnetGroupName}} to at lease 2 availability zones.</div>
+        <div class="property-info">{{i18n "PROP.DBINSTANCE_SUBNETGROUP_NOT_SETUP" subnetGroupName subnetGroupName}}</div>
     </section>
     {{else}}
     <section class="property-control-group property-dbinstance-preferred-az {{#if multiAz}}hide{{/if}}">
-        <label class="left">Preferred Availability Zone</label>
+        <label class="left">{{i18n "PROP.DBINSTANCE_PREFERRED_ZONE"}}</label>
         <div class="selectbox" id="property-dbinstance-preferred-az"></div>
     </section>
     {{/if}}
@@ -208,12 +211,12 @@
 
 <!-- {{modalPromoteConfirm}} -->
 <section class="modal-db-replica-promote-confirm">
-    <h5 class="modal-text-major">The following steps show the general process for promoting a read replica to a Single-AZ DB instance.</h5>
+    <h5 class="modal-text-major">{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_MAJOR"}}</h5>
     <ul>
-        <li>Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica.</p>
-        <li>To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica.</p>
-        <li>Perform all needed DDL operations, such as creating indexes, on the read replica.</p>
-        <li>Promote the read replica.</p>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3"}}</li>
+        <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4"}}</li>
     </ul>
     <h5 class="modal-text-major">Note</h5>
     <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>

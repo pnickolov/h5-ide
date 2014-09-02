@@ -43,7 +43,7 @@
     </div>
     <div class="modal-footer">
         <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-        <button class="btn modal-close btn-silver">Cancel</button>
+        <button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
 </div>
 
@@ -92,7 +92,7 @@
 	</div>
 	<div class="modal-footer">
 		<button id="btn-confirm" class="btn btn-{{color}}" {{#if is_production}}disabled{{/if}}>{{confirm}}</button>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -107,7 +107,7 @@
 	</div>
 	<div class="modal-footer">
 		<a id="btn-confirm" class="btn btn-{{color}}" href="data://text/plain;, {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -443,7 +443,7 @@ Additional Notes and Questions
 <!-- {{modalRunStack}} -->
 <section id="modal-run-stack">
 	<div class="modal-control-group clearfix" data-bind="true">
-		<label class="label" for="app-name">App Name</label>
+		<label class="label" for="app-name">{{i18n "TOOLBAR.APP_NAME"}}</label>
 		<input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
 		<div class="runtime-error" id="runtime-error-appname"></div>
 	</div>
@@ -453,7 +453,7 @@ Additional Notes and Questions
 		<div class="runtime-error" id="runtime-error-kp"></div>
 	</div>
 	<div class="modal-control-group app-usage-group clearfix">
-		<label for="">App Usage</label>
+		<label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
 		<div id="app-usage-selectbox" class="selectbox">
 			<div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
 			<ul class="dropdown" tabindex="-1">
@@ -466,18 +466,18 @@ Additional Notes and Questions
 	</div>
 	<div class="stack-validation">
 		<details open style="display:none;">
-			<summary>Stack Validation</summary>
+			<summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
 			<div id="stack-run-validation-container"></div>
 		</details>
 		<div class="nutshell">:<label></label></div>
 		<div class="validating">
 			<div class="loading-spinner loading-spinner-small"></div>
-			<p>Validating your stack...</p>
+			<p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
 		</div>
 	</div>
 	<div class="estimate clearfix">
-		<span class="title">Estimated Cost</span>
-		<span class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</span>
+		<span class="title">{{i18n "TOOLBAR.ESTIMATED_COST"}}</span>
+		<span class="price" id="label-total-fee"><b>${{total_fee}}</b>{{i18n "TOOLBAR.PER_MONTH"}}</span>
 	</div>
 </section>
 
@@ -490,14 +490,14 @@ Additional Notes and Questions
 <li class="sg-create-rule-item modal-list-body">
 {{/if}}
 <div class="rule-list-row">
-	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP_SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP_SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
+	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP.SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP.SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
 	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
 </div>
 <div class="rule-list-row">
-	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
-	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP_SG_TIP_PORT_CODE" }}'>{{port}}</div>
+	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
+	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP.SG_TIP_PORT_CODE" }}'>{{port}}</div>
 </div>
-{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP_SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
 </li>{{/each}}
 
 <!-- {{groupedSgRuleList}} -->
@@ -521,12 +521,12 @@ Additional Notes and Questions
 <!-- {{propertyIpList}} -->
 {{#each this}}
 <li class="input-ip-item">
-  <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP_INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_1'}}{{/if}}">
+  <div class="name tooltip" data-tooltip="{{#if autoAssign}}{{i18n 'PROP.INSTANCE_IP_MSG_2'}}{{else}}{{i18n 'PROP.INSTANCE_IP_MSG_1'}}{{/if}}">
     <label class="input-ip-wrap" for="propertyIpListItem-{{@index}}"><span class="input-ip-prefix">{{prefix}}</span>
     <input type="text" class="input input-ip"  id="propertyIpListItem-{{@index}}" value="{{suffix}}" {{#unless editable}}disabled="disabled"{{/unless}} data-ignore="true" data-ignore-regexp="^[0-9.x]*$" data-required="true">
     </label>
   </div>
-  <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP_INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP_INSTANCE_IP_MSG_3'}}{{/if}}"></div>
+  <div class="input-ip-eip-btn tooltip toggle-eip{{#if hasEip}} associated{{/if}}" data-tooltip="{{#if hasEip}}{{i18n 'PROP.INSTANCE_IP_MSG_4'}}{{else}}{{i18n 'PROP.INSTANCE_IP_MSG_3'}}{{/if}}"></div>
   {{#unless unDeletable}}<div class="icon-remove"></div>{{/unless}}
 </li>
 {{/each}}
@@ -1176,19 +1176,19 @@ Additional Notes and Questions
 	<div class="modal-header"><h3>Server Certificate</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:120px;">
 		<div class="modal-ssl-cert-item clearfix">
-			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_NAME"}}</label>
+			<label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_NAME"}}</label>
 			<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
-			<label class="left">{{ i18n "PROP_ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
+			<label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
 			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
-			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
+			<label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
 			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
 		</div>
 		<div class="modal-ssl-cert-item clearfix">
-			<label class="left"  >{{ i18n "PROP_ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
+			<label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
 			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
 		</div>
 	</div>
@@ -1244,12 +1244,12 @@ Additional Notes and Questions
 
 <!-- {{modalDeleteELBCert}} -->
 <div style="width:420px">
-	<div class="modal-header"> <h3>{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_TITLE"}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"> <h3>{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_TITLE"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="modal-text-wraper">
 			 <div class="modal-center-align-helper">
-				<div class="modal-text-major">{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_MAIN"}}{{cert_name}}?</div>
-				<div class="modal-text-minor">{{ i18n "PROP_ELB_CERT_REMOVE_CONFIRM_SUB"}}</div>
+				<div class="modal-text-major">{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_MAIN"}}{{cert_name}}?</div>
+				<div class="modal-text-minor">{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_SUB"}}</div>
 			</div>
 		 </div>
 	</div>
@@ -1290,7 +1290,7 @@ Additional Notes and Questions
 {{#each this}}
 <li>
 	<input class="tokenName input" value="{{name}}" readonly/>
-	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP_ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
+	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP.ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
 	<span class="tokenControl">
 		<button class="tooltip icon-edit" data-tooltip=""></button>
 		<button class="tooltip icon-delete" data-tooltip=""></button>

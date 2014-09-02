@@ -198,16 +198,16 @@ define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( Propert
         checkRuleNumber : ( rulenumber )->
             rulenumber = parseInt rulenumber, 10
             if not (0 < rulenumber < 32768)
-                return lang.ide.PARSLEY_VALID_RULE_NUMBER_1_TO_32767
+                return lang.PARSLEY.VALID_RULE_NUMBER_1_TO_32767
 
             if @get("isDefault") and rulenumber is 100
-                return lang.ide.PARSLEY_RULE_NUMBER_100_HAS_EXISTED
+                return lang.PARSLEY.RULE_NUMBER_100_HAS_EXISTED
 
 
             rule = _.find Design.instance().component( @get("uid") ).get("rules"), ( r )->
                 r.number is rulenumber
 
-            if rule then return sprintf lang.ide.PARSLEY_RULENUMBER_ALREADY_EXISTS, rulenumber
+            if rule then return sprintf lang.PARSLEY.RULENUMBER_ALREADY_EXISTS, rulenumber
             return true
     }
 

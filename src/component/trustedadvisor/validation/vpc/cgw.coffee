@@ -38,7 +38,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_servic
 								cgwIP = cgwObj.ipAddress
 								cgwState = cgwObj.state
 								if stackCGWIP is cgwIP and cgwState is 'available'
-									conflictInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_IP_CONFLICT, stackCGWName, stackCGWIP, cgwId, cgwIP
+									conflictInfo = sprintf lang.TA.ERROR_CGW_IP_CONFLICT, stackCGWName, stackCGWIP, cgwId, cgwIP
 									checkResult = false
 								null
 						else
@@ -57,7 +57,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_servic
 						null
 
 				# immediately return
-				tipInfo = sprintf lang.ide.TA_MSG_ERROR_CGW_CHECKING_IP_CONFLICT
+				tipInfo = sprintf lang.TA.ERROR_CGW_CHECKING_IP_CONFLICT
 				return {
 					level: constant.TA.ERROR,
 					info: tipInfo
@@ -79,7 +79,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_servic
 
 		if isInAnyPriIPRange
 
-			tipInfo = sprintf lang.ide.TA_MSG_WARNING_CGW_IP_RANGE_ERROR, cgwName, cgwIP
+			tipInfo = sprintf lang.TA.WARNING_CGW_IP_RANGE_ERROR, cgwName, cgwIP
 
 			return {
 				level: constant.TA.WARNING
@@ -95,7 +95,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'customergateway_servic
 
 		if hasAttachVgw then return null
 
-		Helper.message.error uid, i18n.TA_MSG_ERROR_CGW_MUST_ATTACH_VPN, cgw.get 'name'
+		Helper.message.error uid, i18n.ERROR_CGW_MUST_ATTACH_VPN, cgw.get 'name'
 
 
 

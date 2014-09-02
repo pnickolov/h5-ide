@@ -38,7 +38,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
                         vgwName = vgwComp.name
                         cgwName = cgwComp.name
 
-                        tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPN_NO_IP_FOR_STATIC_CGW, cgwName, vgwName
+                        tipInfo = sprintf lang.TA.ERROR_VPN_NO_IP_FOR_STATIC_CGW, cgwName, vgwName
                         returnObj = {
                             level   : constant.TA.ERROR
                             info    : tipInfo
@@ -80,7 +80,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
 
         if invalidRouteCIDRAry.length
 
-            tipInfo = sprintf lang.ide.TA_MSG_ERROR_VPN_NOT_PUBLIC_IP, vpnName, invalidRouteCIDRAry.join(', ')
+            tipInfo = sprintf lang.TA.ERROR_VPN_NOT_PUBLIC_IP, vpnName, invalidRouteCIDRAry.join(', ')
             returnObj = {
                 level   : constant.TA.ERROR
                 info    : tipInfo

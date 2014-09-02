@@ -210,7 +210,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       # If changing the parent results in changing Instance's AZ, then
       # We need to check if there's connected Eni to this Instance.
       if check and @connectionTargets("EniAttachment").length > 0
-        return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+        return lang.CANVAS.ERR_MOVE_ATTACHED_ENI
 
       true
 

@@ -1,88 +1,99 @@
 <article>
 {{#if vpnConnectionId}}
-  <div class="option-group-head expand">VPN Summary</div>
+  <div class="option-group-head expand">{{i18n "PROP.VPN_SUMMARY"}}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_ID" }}</dt>
+      <dt>{{ i18n "PROP.CGW_APP_VPN_LBL_ID" }}</dt>
       <dd>{{vpnConnectionId}}</dd>
 
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_STATE" }}</dt>
+      <dt>{{ i18n "PROP.CGW_APP_VPN_LBL_STATE" }}</dt>
       <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
 
-      <dt>{{ i18n "PROP_CGW_APP_VPN_LBL_TYPE" }}</dt>
+      <dt>{{ i18n "PROP.CGW_APP_VPN_LBL_TYPE" }}</dt>
       <dd>{{type}}</dd>
 
-      <dt>{{ i18n "PROP_CGW_LBL_ROUTING" }}</dt>
-      <dd>{{#if options.staticRoutesOnly}}Static{{else}}Dynamic{{/if}}</dd>
+      <dt>{{ i18n "PROP.CGW_LBL_ROUTING" }}</dt>
+      <dd>{{#if options.staticRoutesOnly}}{{i18n "PROP.VPN_STACK_STATIC"}}{{else}}{{i18n "PROP.VPN_STACK_DYNAMIC"}}{{/if}}</dd>
 
-      <a class='btn btn-primary vpn-download' href="data://text/plain;base64,{{{vpncfg.filecontent}}}" download="{{{vpncfg.filename}}}.txt" style="padding:8px;">{{ i18n "PROP_CGW_APP_TIT_DOWNLOAD_CONF" }}</a>
+      <a class='btn btn-primary vpn-download' href="data://text/plain;base64,{{{vpncfg.filecontent}}}" download="{{{vpncfg.filename}}}.txt" style="padding:8px;">{{ i18n "PROP.CGW_APP_TIT_DOWNLOAD_CONF" }}</a>
 
     </dl>
   </div>
 
   {{#if vgwTelemetry}}
-  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_TUNNEL" }}</div>
-  <div class="option-group"> <table class="table">
-    <thead> <tr>
-      <th style="width:20px">{{ i18n "PROP_CGW_APP_VPN_COL_TUNNEL" }}</th>
-      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP" }}</th>
-    </tr> </thead>
-    <tbody>
-    {{#each vgwTelemetry}}
-      <tr>
-        <td><i class="status status-{{status}} icon-label tooltip" data-tooltip="{{#ifCond status 'DOWN'}}DOWN{{else}}UP{{/ifCond}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}</td>
-        <td>{{outsideIpAddress}}</td>
-      </tr>
-    {{/each}}
-    </tbody>
-  </table> </div>
+  <div class="option-group-head expand">{{ i18n "PROP.CGW_APP_VPN_LBL_TUNNEL" }}</div>
+    <div class="option-group">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:20px">{{ i18n "PROP.CGW_APP_VPN_COL_TUNNEL" }}</th>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP" }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each vgwTelemetry}}
+            <tr>
+                <td><i class="status status-{{status}} icon-label tooltip"
+                       data-tooltip="{{#ifCond status 'DOWN'}}DOWN{{else}}UP{{/ifCond}} since {{lastStatusChange}}{{#if statusMessage}}because {{statusMessage}}{{/if}}"></i>{{index}}
+                </td>
+                <td>{{outsideIpAddress}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
   {{/if}}
 
 
   {{#if isApp}} {{#if routes.item}}
-  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</div>
-  <div class="option-group"> <table class="table">
-    <thead> <tr>
-      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_IP_PREFIX" }}</th>
-      <th style="width:100px">{{ i18n "PROP_CGW_APP_VPN_COL_SOURCE" }}</th>
-    </tr> </thead>
-    <tbody>
-      {{#each routes.item}}
-      <tr>
-        <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}</td>
-        <td>{{source}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table> </div>
+  <div class="option-group-head expand">{{ i18n "PROP.CGW_APP_VPN_LBL_STATUS_RT" }}</div>
+    <div class="option-group">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_IP_PREFIX" }}</th>
+                <th style="width:100px">{{ i18n "PROP.CGW_APP_VPN_COL_SOURCE" }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each routes.item}}
+            <tr>
+                <td><i class="status status-{{state}} icon-label tooltip" data-tooltip="{{state}}"></i>{{destinationCidrBlock}}
+                </td>
+                <td>{{source}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
   {{/if}} {{/if}}
 
 {{else}}
   {{#if dynamic}}
-    <section class="property-control-group"> Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary. </section>
+    <section class="property-control-group">{{i18n "PROP.VPN_GATEWAY_VPN_DYNAMIC"}}</section>
   {{/if}}
 {{/if}}
 
 {{#unless isApp}} {{#unless dynamic}}
   {{#if vpnConnectionId}}
-  <div class="option-group-head expand">{{ i18n "PROP_CGW_APP_VPN_LBL_STATUS_RT" }}</div>
+  <div class="option-group-head expand">{{ i18n "PROP.CGW_APP_VPN_LBL_STATUS_RT" }}</div>
   <div class="option-group">
   {{/if}}
   <section class="property-control-group">
     <div class="clearfix">
-      <label class="left" for="property-vpc-ips">{{ i18n "PROP_VPN_LBL_IP_PREFIX" }}</label>
-      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+      <label class="left" for="property-vpc-ips">{{ i18n "PROP.VPN_LBL_IP_PREFIX" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
     </div>
     <div id="property-vpn-ips" class="multi-input" data-max-row="100" data-bind="true">
       {{#each ips}}
       <div class="multi-ipt-row">
         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-        <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="{{i18n 'PROP_VPN_TIP_EG_192_168_0_0_16'}}" placeholder="{{i18n 'PROP_VPN_TIP_EG_192_168_0_0_16'}}" value="{{this}}" type="text"></span>
+        <span class="ipt-wrapper"><input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="{{i18n 'PROP.VPN_TIP_EG_192_168_0_0_16'}}" placeholder="{{i18n 'PROP.VPN_TIP_EG_192_168_0_0_16'}}" value="{{this}}" type="text"></span>
       </div>
       {{else}}
       <div class="multi-ipt-row">
         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-        <span class="ipt-wrapper"><input data-ignore="true" data-empty-remove="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="{{i18n 'PROP_VPN_TIP_EG_192_168_0_0_16'}}" placeholder="{{i18n 'PROP_VPN_TIP_EG_192_168_0_0_16'}}" type="text"></span>
+        <span class="ipt-wrapper"><input data-ignore="true" data-empty-remove="true" data-ignore-regexp="^[0-9./]*$" class="input tooltip" data-tooltip="{{i18n 'PROP.VPN_TIP_EG_192_168_0_0_16'}}" placeholder="{{i18n 'PROP.VPN_TIP_EG_192_168_0_0_16'}}" type="text"></span>
       </div>
       {{/each}}
     </div>

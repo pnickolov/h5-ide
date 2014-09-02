@@ -4,15 +4,15 @@
 <header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
   <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
   <ul class="dropdown-menu resources-dropdown-wrapper">
-    <li data-action="keypair" class="icon-kp"><span>Key Pair</span></li>
-    <li data-action="snapshot" class="icon-ebs-snap"><span>EBS Snapshot</span></li>
-    <li data-action="sns" class="icon-sns"><span>SNS Topic & Subscription</span></li>
-    <li data-action="sslcert" class="icon-cert"><span>Server Certificate</span></li>
-    <li data-action="dhcp" class="icon-dhcp"><span>DHCP Option Sets</span></li>
-    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>DB Parameter Groups</span></li>
-    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>DB Snapshot</span></li>
+    <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
+    <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EBS_SNAPSHOT"}}</span></li>
+    <li data-action="sns" class="icon-sns"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SNS_SUBSCRIPTION"}}</span></li>
+    <li data-action="sslcert" class="icon-cert"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SERVER_CERTIFICATE"}}</span></li>
+    <li data-action="dhcp" class="icon-dhcp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DHCP_OPTION_SETS"}}</span></li>
+    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_PARAMETER_GROUPS"}}</span></li>
+    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
   </ul>
-  <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="Refresh resource list"></i>
+  <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>
 </header>
 
 <div class="fixedaccordion accordion-default">
@@ -21,7 +21,7 @@
     <ul class="resource-list-az clearfix accordion-body">
       <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
         <div class="resource-count">{{count}}</div>
-        <div class="res-name">AZ & subnet</div>
+        <div class="res-name">{{i18n "PROP.AZ_AND_SUBNET"}}</div>
       </li>
       <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
       <li class="tooltip resource-item subnetgroup" data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
@@ -55,10 +55,10 @@
         <div class="resource-list-head">
           {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
           <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
-            <div class="selection">By Date</div>
+            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
             <ul class="dropdown">
-              <li class="item selected focused" data-id="date">By Date</li>
-              <li class="item" data-id="storge">By Storage</li>
+              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
             </ul>
           </div>
         </div>
@@ -78,11 +78,11 @@
         <div class="resource-list-head">
           {{i18n "RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT"}}
           <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-rds-snapshot">
-            <div class="selection">By Date</div>
+            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
             <ul class="dropdown">
-              <li class="item selected focused" data-id="date">By Date</li>
-              <li class="item" data-id="engine">By Engine</li>
-              <li class="item" data-id="storge">By Storage</li>
+              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+              <li class="item" data-id="engine">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_ENGINE"}}</li>
+              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
             </ul>
           </div>
         </div>
@@ -120,7 +120,7 @@
 <li class="resource-item bubble snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
   <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
 </li>{{/with}}{{else}}
-<div style="padding-bottom:15px;">No EBS Snapshot in {{region}}.</div>
+<div style="padding-bottom:15px;">{{i18n "TOOLBAR.CLOUD_RESOURCE_NO_EBS_SNAPSHOT" region}}</div>
 {{/each}}
 
 <!-- {{rds}} -->
@@ -139,7 +139,7 @@
   <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div></div>{{DBInstanceIdentifier}}
 </li>
 {{else}}
-<div style="padding-bottom:15px;">No DB Snapshot in {{region}}.</div>
+<div style="padding-bottom:15px;">{{i18n "TOOLBAR.CLOUD_RESOURCE_NO_DB_SNAPSHOT" region}}</div>
 {{/each}}
 
 <!-- {{ami}} -->
@@ -149,12 +149,12 @@
   <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
   {{name}}
 </li>{{/with}}
-{{else}}{{#if fav}}<p class="blank-slate">Use "Browse Community AMI" to add Favourite AMI.</p>{{/if}}{{/each}}
+{{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon resource-icon-instance" >
   <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
-</div>Auto Scaling Group ({{name}})
+</div>{{i18n "TOOLBAR.CLOUD_RESOURCE_AUTO_SCALING_GROUP"}} ({{name}})
 
 <!-- {{resourcePanelBubble}} -->
 <div class="bubble-head">{{id}}</div>

@@ -3,7 +3,8 @@ define [
   "ComplexResModel"
   "Design"
   "constant"
-], ( ComplexResModel, Design, constant ) ->
+  'i18n!/nls/lang.js'
+], ( ComplexResModel, Design, constant, lang ) ->
 
   Model = ComplexResModel.extend {
 
@@ -27,7 +28,8 @@ define [
         @set('name', prefix + @getNewName(undefined, @newNameTmpl))
 
         # set new description
-        @set 'description', "custom option group for #{@get('engineName')} #{@get('engineVersion')}"
+        self = @
+        @set 'description', sprintf(lang.IDE.CUSTOM_OPTION_GROUP_FOR_ENGINE, self.get('engineName'), self.get('engineVersion'))
 
       null
 

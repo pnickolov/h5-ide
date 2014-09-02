@@ -40,7 +40,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       })
       if res and res.id then return
 
-      notification 'error', sprintf(lang.ide.CVS_MSG_ERR_DROP_ASG, originalAsg.get("name"), target.parent().get("name"))
+      notification 'error', sprintf(lang.CANVAS.ERR_DROP_ASG, originalAsg.get("name"), target.parent().get("name"))
       return
 
     # Creates a svg element
@@ -53,7 +53,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.use("asg_frame", true).classes("asg-frame")
         svg.use("asg_prompt", true).classes("asg-prompt")
         # dragger
-        svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", 'Expand the group by drag-and-drop in other availability zone.')
+        svg.use("asg_dragger").classes("asg-dragger tooltip").attr("data-tooltip", lang.CANVAS.CVS_TIP_ASG_DRAGGER)
         svg.plain("").move(4,14).classes('group-label')
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.split(".").join("-") )

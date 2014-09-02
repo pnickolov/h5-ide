@@ -110,13 +110,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
             'class'        : 'port port-blue tooltip'
             'data-name'    : 'launchconfig-sg'
             'data-alias'   : 'launchconfig-sg-left'
-            'data-tooltip' : lang.ide.PORT_TIP_D
+            'data-tooltip' : lang.IDE.PORT_TIP_D
           })
           svg.use("port_diamond").move( 80, 20 ).attr({
             'class'        : 'port port-blue tooltip'
             'data-name'    : 'launchconfig-sg'
             'data-alias'   : 'launchconfig-sg-right'
-            'data-tooltip' : lang.ide.PORT_TIP_D
+            'data-tooltip' : lang.IDE.PORT_TIP_D
           })
 
           # Volume Image

@@ -32,7 +32,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
         svg.use("port_right").attr({
           'class'        : 'port port-purple tooltip'
           'data-name'    : 'cgw-vpn'
-          'data-tooltip' : lang.ide.PORT_TIP_I
+          'data-tooltip' : lang.IDE.PORT_TIP_I
         })
       ])
 

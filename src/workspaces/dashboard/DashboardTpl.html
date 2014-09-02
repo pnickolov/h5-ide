@@ -1,7 +1,7 @@
 <div>
 
 <header id="global-region-header">
-	<button id="RefreshResource" class="icon-refresh">just now</button>
+	<button id="RefreshResource" class="icon-refresh">{{i18n "DASH_TPL_JUST_NOW"}}</button>
 
 	<button class="btn btn-primary icon-new-stack js-toggle-dropdown">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
 
@@ -18,20 +18,22 @@
 <div id="global-region-wrap" class="nano">
 <div class="nano-content">
 	<!-- Global Map -->
-	<div id="global-region-map-wrap"> <div id="global-region-map-content" class="clearfix">
-		<ul id="global-region-spot" class="pos-r"></ul>
-		<div id="global-region-status-widget">
-			<header class="clearfix">
-			  <div class="global-region-status-tab">
-			    <span>0</span><h5>{{i18n "DASH_LBL_APP"}}</h5>
-			  </div>
-			  <div class="global-region-status-tab on stack">
-		      <span>0</span><h5>{{i18n "DASH_LBL_STACK"}}</h5>
-			  </div>
-			</header>
-			<section id="global-region-recent-list"></section>
-		</div>
-	</div> </div>
+    <div id="global-region-map-wrap">
+        <div id="global-region-map-content" class="clearfix">
+            <ul id="global-region-spot" class="pos-r"></ul>
+            <div id="global-region-status-widget">
+                <header class="clearfix">
+                    <div class="global-region-status-tab">
+                        <span>0</span><h5>{{i18n "DASH_LBL_APP"}}</h5>
+                    </div>
+                    <div class="global-region-status-tab on stack">
+                        <span>0</span><h5>{{i18n "DASH_LBL_STACK"}}</h5>
+                    </div>
+                </header>
+                <section id="global-region-recent-list"></section>
+            </div>
+        </div>
+    </div>
 	<!-- Global Map -->
 
 <section id="dashboard-data-wrap">
@@ -82,8 +84,8 @@
 
 	<div id="DashboardDemo">
 	  <div class="enter-credential">
-	    This is only sample data of global resource sumary.</br>
-	    <a class="show-credential">Provide your AWS Credential</a> to see real data
+	    {{i18n "DASH_TPL_SAMPLE_INSTRUCTION"}}</br>
+	    <a class="show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
 	  </div>
 	  <img src="/assets/images/ide/global-demo.png"/>
 	</div>

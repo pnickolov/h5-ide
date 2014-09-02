@@ -44,17 +44,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'elb-sg-in'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'elb-assoc'
-          'data-tooltip' : lang.ide.PORT_TIP_K
+          'data-tooltip' : lang.IDE.PORT_TIP_K
         })
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'elb-sg-out'
-          'data-tooltip' : lang.ide.PORT_TIP_J
+          'data-tooltip' : lang.IDE.PORT_TIP_J
         })
       ])
 

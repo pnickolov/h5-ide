@@ -49,25 +49,25 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'rtb-tgt'
           'data-alias'   : 'rtb-tgt-left'
-          'data-tooltip' : lang.ide.PORT_TIP_B
+          'data-tooltip' : lang.IDE.PORT_TIP_B
         })
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'rtb-tgt'
           'data-alias'   : 'rtb-tgt-right'
-          'data-tooltip' : lang.ide.PORT_TIP_B
+          'data-tooltip' : lang.IDE.PORT_TIP_B
         })
         svg.use("port_bottom").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'rtb-src'
           'data-alias'   : 'rtb-src-top'
-          'data-tooltip' : lang.ide.PORT_TIP_A
+          'data-tooltip' : lang.IDE.PORT_TIP_A
         })
         svg.use("port_top").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'rtb-src'
           'data-alias'   : 'rtb-src-bottom'
-          'data-tooltip' : lang.ide.PORT_TIP_A
+          'data-tooltip' : lang.IDE.PORT_TIP_A
         })
       ])
 

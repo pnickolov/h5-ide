@@ -17,7 +17,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
         if count.az > 1
             return null
 
-        tipInfo = lang.ide.TA_MSG_WARNING_SINGLE_AZ
+        tipInfo = lang.TA.WARNING_SINGLE_AZ
 
         # return
         level   : constant.TA.WARNING

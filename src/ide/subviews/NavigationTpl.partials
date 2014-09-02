@@ -11,7 +11,7 @@
       <ul class="scroll-content hide" id="nav-app-region"></ul>
       <div class="scroll-content" id="nav-stack">
         <ul id="nav-stack-region"></ul>
-        <div id="nav-show-empty">Show unused regions</div>
+        <div id="nav-show-empty">{{i18n "TOOLBAR.SHOW_UNUSED_REGIONS"}}</div>
         <ul id="nav-region-empty-list" class="hide"></ul>
       </div>
     </div>

@@ -14,7 +14,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js' ], ( constant, MC, lang ) ->
         if not connectSubnet or HasAllowACLRule
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_NOTICE_ACL_HAS_NO_ALLOW_RULE, acl.name
+        tipInfo = sprintf lang.TA.NOTICE_ACL_HAS_NO_ALLOW_RULE, acl.name
 
         # return
         level   : constant.TA.NOTICE

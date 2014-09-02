@@ -25,9 +25,9 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
         }
 
       modal = new Modal({
-        title        : "Select Subnet for Subnet Group"
+        title        : lang.IDE.POP_SELECT_SUBNET_FOR_SUBNET_GROUP_TITLE
         template     : template( _.groupBy(subnets, "az") )
-        confirm      : { text : "Done" }
+        confirm      : { text : lang.IDE.POP_LBL_DONE }
         disableClose : true
         onCancel     : ()-> self.cancel()
         onClose      : ()-> self.cancel()

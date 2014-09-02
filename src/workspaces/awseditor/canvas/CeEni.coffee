@@ -79,23 +79,23 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'eni-sg'
           'data-alias'   : 'eni-sg-left'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_right").attr({
           'class'        : 'port port-green tooltip'
           'data-name'    : 'eni-attach'
-          'data-tooltip' : lang.ide.PORT_TIP_G
+          'data-tooltip' : lang.IDE.PORT_TIP_G
         })
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'eni-sg'
           'data-alias'   : 'eni-sg-right'
-          'data-tooltip' : lang.ide.PORT_TIP_F
+          'data-tooltip' : lang.IDE.PORT_TIP_F
         })
         svg.use("port_bottom").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'eni-rtb'
-          'data-tooltip' : lang.ide.PORT_TIP_C
+          'data-tooltip' : lang.IDE.PORT_TIP_C
         })
 
         svg.group().add([

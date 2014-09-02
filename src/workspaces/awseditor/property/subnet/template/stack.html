@@ -1,25 +1,25 @@
 <article data-bind="true">
-  <div class="option-group-head expand" id="subnet-property-detail">{{ i18n "PROP_SUBNET_TIT_DETAIL" }}</div>
+  <div class="option-group-head expand" id="subnet-property-detail">{{ i18n "PROP.SUBNET_TIT_DETAIL" }}</div>
   {{#if isAppEdit}}
 
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_SUBNET_APP_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_ID" }}</dt>
       <dd>{{subnetId}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_STATE" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_STATE" }}</dt>
       <dd><i class="status status-{{state}}"></i>{{state}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_CIDR" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_CIDR" }}</dt>
       <dd>{{cidrBlock}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_AVAILABLE_IP" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_AVAILABLE_IP" }}</dt>
       <dd>{{availableIpAddressCount}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_VPC_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_VPC_ID" }}</dt>
       <dd>{{vpcId}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_RT_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_RT_ID" }}</dt>
       <dd>{{routeTable}}</dd>
     </dl>
   </div>
@@ -27,26 +27,26 @@
   {{else}}
   <div class="option-group">
     <section class="property-control-group" data-bind="true">
-      <label class="left" for="property-subnet-name">{{ i18n "PROP_SUBNET_DETAIL_LBL_NAME" }}</label>
-      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+      <label class="left" for="property-subnet-name">{{ i18n "PROP.SUBNET_DETAIL_LBL_NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
       <input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-subnet-name" maxlength="255" data-required-rollback="true" data-ignore="true"/>
     </section>
 
     <section class="property-control-group">
-      <label class="left" for="property-cidr-block">{{ i18n "PROP_SUBNET_DETAIL_LBL_CIDR_BLOCK" }}</label>
-      <span class="required-input right">{{ i18n "PROP_LBL_REQUIRED" }}</span>
+      <label class="left" for="property-cidr-block">{{ i18n "PROP.SUBNET_DETAIL_LBL_CIDR_BLOCK" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
       <div class="subnet-cidr-wrapper">
         <span class="cidr-prefix" id="property-cidr-prefix">{{CIDRPrefix}}</span>
-        <input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input cidr-rest tooltip" type="text" value="{{CIDR}}" lastValue="{{CIDR}}" id="property-cidr-block" data-empty-remove="true" data-tooltip="{{i18n 'PROP_SUBNET_TIP_CIDR_BLOCK'}}"/>
+        <input data-ignore="true" data-ignore-regexp="^[0-9./]*$" class="input cidr-rest tooltip" type="text" value="{{CIDR}}" lastValue="{{CIDR}}" id="property-cidr-block" data-empty-remove="true" data-tooltip="{{i18n 'PROP.SUBNET_TIP_CIDR_BLOCK'}}"/>
       </div>
     </section>
   </div>
   {{/if}}
 
-  <div class="option-group-head expand">{{ i18n "PROP_SUBNET_TIT_ASSOC_ACL" }}</div>
+  <div class="option-group-head expand">{{ i18n "PROP.SUBNET_TIT_ASSOC_ACL" }}</div>
   <div class="option-group">
     <ul id="networkacl-list" class="acl-sg-info-list acl-info-list property-list stack-property-acl-list"></ul>
-    <a href="#" class="add-to-list action-link" id="networkacl-create">{{ i18n "PROP_SUBNET_BTN_CREATE_NEW_ACL" }}</a>
+    <a href="#" class="add-to-list action-link" id="networkacl-create">{{ i18n "PROP.SUBNET_BTN_CREATE_NEW_ACL" }}</a>
   </div>
 </article>
 

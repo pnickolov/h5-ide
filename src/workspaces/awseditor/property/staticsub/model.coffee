@@ -2,7 +2,7 @@
 #  View Mode for design/property/cgw
 #############################
 
-define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design" ], ( PropertyModel, constant, PropertyModule, CloudResources, Design ) ->
+define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design",'i18n!/nls/lang.js' ], ( PropertyModel, constant, PropertyModule, CloudResources, Design, lang ) ->
 
   StaticSubModel = PropertyModel.extend {
 
@@ -39,18 +39,18 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
       newAmi = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
       if newAmi then newAmi = newAmi.toJSON()
 
-      if not oldAmi and not newAmi then return "Ami info is missing, please reopen stack and try again."
+      if not oldAmi and not newAmi then return lang.PROP.STATICSUB_VALIDATION_AMI_INFO_MISSING
 
       if oldAmi.osType is "windows" and newAmi.osType isnt "windows"
-        return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
+        return sprintf(lang.PROP.STATICSUB_VALIDATION_AMI_TYPE_NOT_SUPPORT, newAmi.osFamily)
 
       if oldAmi.osType isnt "windows" and newAmi.osType is "windows"
-        return "Changing AMI platform is not supported. To use a #{newAmi.osFamily} AMI, please create a new instance instead."
+        return sprintf(lang.PROP.STATICSUB_VALIDATION_AMI_TYPE_NOT_SUPPORT, newAmi.osFamily)
 
       instanceType = Design.modelClassForType( constant.RESTYPE.INSTANCE ).getInstanceType( newAmi, Design.instance().region() )
 
       if instanceType.indexOf( component.get("instanceType") ) is -1
-        return "#{newAmi.name} does not support previously used instance type #{component.get("instanceType")}. Please change another AMI."
+        return sprintf(lang.PROP.STATICSUB_VALIDATION_AMI_INSTANCETYPE_NOT_VALID, newAmi.name, component.get("instanceType"))
 
       true
 

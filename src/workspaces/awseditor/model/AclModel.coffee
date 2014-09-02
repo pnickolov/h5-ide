@@ -197,7 +197,10 @@ define [ "ComplexResModel", "ConnectionModel", "constant" ], ( ComplexResModel, 
       acl = resolve( data.uid )
 
       for asso in data.resource.AssociationSet || []
-        c = new AclAsso( acl, resolve( MC.extractID(asso.SubnetId) ) )
+        subnet = resolve( MC.extractID(asso.SubnetId) )
+        if not subnet then continue
+
+        c = new AclAsso( acl, subnet )
         # Must use set. Because new AclAsso might return an object that already exists.
         # Resulting the associationId is not set.
         c.set "associationId", asso.NetworkAclAssociationId

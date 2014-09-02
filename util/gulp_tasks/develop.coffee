@@ -239,7 +239,7 @@ StreamFuncs =
     templateBranch = StreamFuncs.throughHandlebars()
 
     # Setup compile branch
-    langeSrcBranchRegex   = /lang-source\/.*\.coffee/
+    langeSrcBranchRegex   = /lang-source[\/\\].*\.coffee/
     coffeeBranchRegex     = /\.coffee$/
     templateBranchRegex   = /(\.partials)|(\.html)$/
 

@@ -9,7 +9,7 @@ define [ "Design",
          "i18n!/nls/lang.js"
          "./connection/ElbAsso"
 
-], ( Design, constant, ResourceModel, ComplexResModel, VpcModel, SgModel, SslCertModel, SgAsso, lang )->
+], ( Design, constant, ResourceModel, ComplexResModel, SgModel, SslCertModel, SgAsso, lang )->
 
   Model = ComplexResModel.extend {
 

@@ -249,7 +249,7 @@
       langSrcBranch = langsrc.langCache();
       coffeeBranch = StreamFuncs.throughCoffee();
       templateBranch = StreamFuncs.throughHandlebars();
-      langeSrcBranchRegex = /lang-source\/.*\.coffee/;
+      langeSrcBranchRegex = /lang-source[\/\\].*\.coffee/;
       coffeeBranchRegex = /\.coffee$/;
       templateBranchRegex = /(\.partials)|(\.html)$/;
       if (GLOBAL.gulpConfig.reloadJsHtml) {

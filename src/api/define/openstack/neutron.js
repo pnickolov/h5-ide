@@ -1,0 +1,53 @@
+define(['ApiRequestDefs'], function( ApiRequestDefs ){
+	var Apis = {
+		'neutron_List'                      : { url:'/os/neutron/v2_0/neutron/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'neutron_V2_Info'                   : { url:'/os/neutron/v2_0/neutron/',	method:'V2_Info',	params:['username', 'session_id', 'region']   },
+		'neutron_V2_Extension'              : { url:'/os/neutron/v2_0/neutron/',	method:'V2_Extension',	params:['username', 'session_id', 'region']   },
+		'agent_List'                        : { url:'/os/neutron/v2_0/agent/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'agent_Info'                        : { url:'/os/neutron/v2_0/agent/',	method:'Info',	params:['username', 'session_id', 'region', 'agent_ids']   },
+		'agent_ListNetworksOnDhcpAgent'     : { url:'/os/neutron/v2_0/agent/',	method:'ListNetworksOnDhcpAgent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'agent_ListDhcpAgentsHostingNetwork' : { url:'/os/neutron/v2_0/agent/',	method:'ListDhcpAgentsHostingNetwork',	params:['username', 'session_id', 'region', 'network_id']   },
+		'agent_ListRoutersOnL3Agent'        : { url:'/os/neutron/v2_0/agent/',	method:'ListRoutersOnL3Agent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'agent_ListL3AgentsHostingRouter'   : { url:'/os/neutron/v2_0/agent/',	method:'ListL3AgentsHostingRouter',	params:['username', 'session_id', 'region', 'router_id']   },
+		'agent_ListPoolsOnLbaasAgent'       : { url:'/os/neutron/v2_0/agent/',	method:'ListPoolsOnLbaasAgent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'agent_GetLbaasAgentHostingPool'    : { url:'/os/neutron/v2_0/agent/',	method:'GetLbaasAgentHostingPool',	params:['username', 'session_id', 'region', 'pool_id']   },
+		'firewall_ListFirewall'             : { url:'/os/neutron/v2_0/firewall/',	method:'ListFirewall',	params:['username', 'session_id', 'region', 'fw_id']   },
+		'firewall_ListFirewallRule'         : { url:'/os/neutron/v2_0/firewall/',	method:'ListFirewallRule',	params:['username', 'session_id', 'fw_rule_id']   },
+		'firewall_ListFirewallPolicy'       : { url:'/os/neutron/v2_0/firewall/',	method:'ListFirewallPolicy',	params:['username', 'session_id', 'region', 'fw_policy_id']   },
+		'ip_ListFloatingIP'                 : { url:'/os/neutron/v2_0/ip/',	method:'ListFloatingIP',	params:['username', 'session_id', 'region', 'floatingip_id']   },
+		'loadbalancer_List'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'loadbalancer_Info'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'load_balancer_ids']   },
+		'loadbalancer_List'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'loadbalancer_Info'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'listener_ids']   },
+		'loadbalancer_List'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'loadbalancer_Info'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'pool_ids']   },
+		'loadbalancer_ListMember'           : { url:'/os/neutron/v2_0/loadbalancer/',	method:'ListMember',	params:['username', 'session_id', 'region', 'pool_id']   },
+		'loadbalancer_MemberInfo'           : { url:'/os/neutron/v2_0/loadbalancer/',	method:'MemberInfo',	params:['username', 'session_id', 'region', 'pool_id', 'member_ids']   },
+		'loadbalancer_List'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'loadbalancer_List'                 : { url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region', 'health_monitor_ids']   },
+		'metering_ListMeteringLabel'        : { url:'/os/neutron/v2_0/metering/',	method:'ListMeteringLabel',	params:['username', 'session_id', 'region', 'metering_label_id']   },
+		'metering_ListMeteringLabelRule'    : { url:'/os/neutron/v2_0/metering/',	method:'ListMeteringLabelRule',	params:['username', 'session_id', 'region', 'rule_id']   },
+		'network_List'                      : { url:'/os/neutron/v2_0/network/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'network_Info'                      : { url:'/os/neutron/v2_0/network/',	method:'Info',	params:['username', 'session_id', 'region', 'network_ids']   },
+		'port_List'                         : { url:'/os/neutron/v2_0/port/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'port_Info'                         : { url:'/os/neutron/v2_0/port/',	method:'Info',	params:['username', 'session_id', 'region', 'port_ids']   },
+		'quota_List'                        : { url:'/os/neutron/v2_0/quota/',	method:'List',	params:['username', 'session_id', 'region', 'quota_tenant_id']   },
+		'quota_Info'                        : { url:'/os/neutron/v2_0/quota/',	method:'Info',	params:['username', 'session_id', 'region', 'quota_tenant_id', 'user_ids']   },
+		'router_List'                       : { url:'/os/neutron/v2_0/router/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'router_Info'                       : { url:'/os/neutron/v2_0/router/',	method:'Info',	params:['username', 'session_id', 'region', 'router_ids']   },
+		'securitygroup_List'                : { url:'/os/neutron/v2_0/sg/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'securitygroup_Info'                : { url:'/os/neutron/v2_0/sg/',	method:'Info',	params:['username', 'session_id', 'region', 'sg_ids']   },
+		'securitygroup_ListSecurityGroupRule' : { url:'/os/neutron/v2_0/sg/',	method:'ListSecurityGroupRule',	params:['username', 'session_id', 'region', 'sg_rule_id']   },
+		'subnet_List'                       : { url:'/os/neutron/v2_0/subnet/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'subnet_Info'                       : { url:'/os/neutron/v2_0/subnet/',	method:'Info',	params:['username', 'session_id', 'region', 'subnet_ids']   },
+		'vpn_ListVPNService'                : { url:'/os/neutron/v2_0/vpn/',	method:'ListVPNService',	params:['username', 'session_id', 'region', 'service_id']   },
+		'vpn_ListIKEPolicy'                 : { url:'/os/neutron/v2_0/vpn/',	method:'ListIKEPolicy',	params:['username', 'session_id', 'region', 'ikepolicy_id']   },
+		'vpn_ListIPsecPolicy'               : { url:'/os/neutron/v2_0/vpn/',	method:'ListIPsecPolicy',	params:['username', 'session_id', 'region', 'ipsecpolicy_id']   },
+		'vpn_ListIPsecSiteConnection'       : { url:'/os/neutron/v2_0/vpn/',	method:'ListIPsecSiteConnection',	params:['username', 'session_id', 'region', 'connection_id']   },
+	}
+
+	for ( var i in Apis ) {
+		ApiRequestDefs.Defs[ i ] = Apis[ i ];
+	}
+
+});

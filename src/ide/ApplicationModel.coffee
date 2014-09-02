@@ -8,7 +8,7 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
+define [ "./submodels/OpsCollection", "./submodels/AwsOpsModel", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -32,11 +32,11 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     clearImportOps : ()-> @attributes.appList.remove @attributes.appList.find ( m )-> m.isImported()
 
     createImportOps : ( region, vpcId )->
-      m = @attributes.appList.findWhere({importVpcId:vpcId})
+      m = @attributes.appList.findWhere({importMsrId:vpcId})
       if m then return m
       m = new OpsModel({
         name        : ""
-        importVpcId : vpcId
+        importMsrId : vpcId
         region      : region
         state       : OpsModel.State.Running
       })

@@ -13,7 +13,7 @@ define [
 
     viewClass : AppView
 
-    title    : ()-> ((@design || @opsModel).get("name") || @opsModel.get("importVpcId")) + " - app"
+    title    : ()-> ((@design || @opsModel).get("name") || @opsModel.getMsrId()) + " - app"
     tabClass : ()->
       switch @opsModel.get("state")
         when OpsModel.State.Running
@@ -121,7 +121,7 @@ define [
       return
 
     loadVpcResource : ()->
-      CloudResources( "OpsResource", @opsModel.getVpcId() ).init( @opsModel.get("region") ).fetchForce()
+      CloudResources( "OpsResource", @opsModel.getMsrId() ).init( @opsModel.get("region") ).fetchForce()
 
     ###
      AppEdit

@@ -26,6 +26,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   OpsModel = Backbone.Model.extend {
 
+    type : "GenericOps"
+
     defaults : ()->
       updateTime : +(new Date())
       region     : ""
@@ -38,7 +40,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # terminateFail  : false
       # progress       : 0
       # opsActionError : ""
-      # importVpcId    : ""
+      # importMsrId    : ""
       # requestId      : ""
       # sampleId       : ""
 
@@ -65,7 +67,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
-    isImported : ()-> !!@attributes.importVpcId
+    isImported : ()-> !!@attributes.importMsrId
 
     testState : ( state )-> @attributes.state is state
     getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]
@@ -93,14 +95,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       !!(@get("id") && state isnt OpsModelState.Destroyed)
 
-    getVpcId : ()->
-      if @get("importVpcId") then return @get("importVpcId")
-      if not @__jsonData then return undefined
-      for uid, comp of @__jsonData.component
-        if comp.type is constant.RESTYPE.VPC
-          return comp.resource.VpcId
-
-      undefined
+    # Get the Most Significant Resource id.
+    getMsrId : ()-> @get("importMsrId") || undefined
 
     getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
     saveThumbnail : ( thumb )->
@@ -146,9 +142,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+      CloudResources( "OpsResource", @getMsrId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getMsrId() ).generatedJson
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()
@@ -366,20 +362,22 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw err
 
     # Terminate the app, returns a promise
-    terminate : ( force = false , create_db_snapshot = false)->
+    terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
       @attributes.progress = 0
       @attributes.terminateFail = false
       self = @
-      ApiRequest("app_terminate", {
-        region_name : @get("region")
-        app_id      : @get("id")
-        app_name    : @get("name")
-        flag        : force
-        create_snapshot: create_db_snapshot
-      }).then ()->
+
+      options = $.extend {
+        region_name     : @get("region")
+        app_id          : @get("id")
+        app_name        : @get("name")
+        flag            : force
+      }, ( extraOption || {} )
+
+      ApiRequest("app_terminate", options).then ()->
         # Force Termination will immediately returns sucess / failure.
         # Normal Termination will returns its status by Websockt.
         if force then self.__destroy()
@@ -428,7 +426,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__jsonData = null
         self.fetchJsonData().then ()->
           self.__updateAppDefer = null
-          self.importVpcId = undefined # Mark as not imported once we've finish saving.
+          self.importMsrId = undefined # Mark as not imported once we've finish saving.
           self.set {
             name  : newJson.name
             state : OpsModelState.Running
@@ -470,7 +468,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("app_save_info", {spec:newJson}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
-        self.attributes.importVpcId = undefined
+        self.attributes.importMsrId = undefined
         return
       , ( error )->
         self.__saveAppDefer.reject( error )
@@ -599,8 +597,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ThumbUtil.remove( @get("id") )
 
       # Cleanup CloudResources if we are an app
-      if @getVpcId()
-        CloudResources( "OpsResource", @getVpcId() )?.destroy()
+      msrId = @getMsrId()
+      if msrId
+        CloudResources( "OpsResource", msrId )?.destroy()
 
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
@@ -621,8 +620,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state       : "Enabled"
       version     : "2014-02-17"
       component   : {}
+      cloud_type  : "aws"
+      provider    : "aws"
       layout      : { size : [240, 240] }
-      agent :
+      agent       :
         enabled : true
         module  :
           repo : App.user.get("repo")

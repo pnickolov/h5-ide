@@ -235,7 +235,7 @@ define [
         terminateConfirm.on "confirm", ()->
           terminateConfirm.close()
           takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
-          app.terminate(null, takeSnapshot).fail ( err )->
+          app.terminate(null, {create_snapshot:takeSnapshot}).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification sprintf(lang.NOTIFY.ERROR_FAILED_TERMINATE , name, error)
           return
@@ -291,7 +291,7 @@ define [
 
         forgetConfirm.on "confirm", ()->
           forgetConfirm.close()
-          app.terminate(true, false).fail ( err )->
+          app.terminate(true).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
           return

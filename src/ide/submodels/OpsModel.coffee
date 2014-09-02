@@ -763,7 +763,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       @__jsonData = json
       return
-    }
+  }
 
   OpsModel.State = OpsModelState
 

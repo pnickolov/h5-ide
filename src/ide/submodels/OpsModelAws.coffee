@@ -155,6 +155,6 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
       @__jsonData = json
       return
-    }
+  }
 
   AwsOpsModel

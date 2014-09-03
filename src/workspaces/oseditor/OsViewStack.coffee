@@ -18,4 +18,9 @@ define [
         CanvasView  : CanvasView
       }
       CoreEditorView.apply this, arguments
+
+    initialize : ()->
+      @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
+      return
+
   }

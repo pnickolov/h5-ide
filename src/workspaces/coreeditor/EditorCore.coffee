@@ -54,7 +54,8 @@ define [
     url         : ()-> @opsModel.url()
     isWorkingOn : ( att )-> @opsModel is att
 
-    viewClass : CoreEditorView
+    viewClass   : CoreEditorView
+    designClass : Design
 
     # Returns a promise that will be fulfilled when all the data is ready.
     # This will be called after the OpsModel's json is fetched.
@@ -177,7 +178,7 @@ define [
     isInited : ()-> !!@__inited
     __initEditor : ()->
       @__inited = true
-      @design = new Design( @opsModel )
+      @design = new @designClass( @opsModel )
 
       @listenTo @design, "change:name", @updateTab
 

@@ -1,5 +1,5 @@
 
-define [ "Design", "constant" ], ( Design, constant )->
+define [ "../DesignAws", "constant" ], ( Design, constant )->
 
   Design.registerDeserializeVisitor ( data, layout_data, version )->
 

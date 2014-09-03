@@ -1,5 +1,5 @@
 
-define [ "Design"], ( Design )->
+define [ "../DesignAws"], ( Design )->
 
   # JsonFixer is an util function to normalize JSON before the JSON gets deserilized.
 

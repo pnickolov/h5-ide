@@ -1,4 +1,4 @@
-define [ "Design" ], (Design)->
+define [ "../DesignAws" ], (Design)->
 
     # AppToStack is an util function to make sure a JSON is a stack JSON,
     # when serializing.

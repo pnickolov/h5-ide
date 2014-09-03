@@ -4,7 +4,7 @@ define [
   "./AwsViewApp"
   "ResDiff"
   "OpsModel"
-  "Design"
+  "./model/DesignAws"
   "CloudResources"
   "constant"
 ], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant )->

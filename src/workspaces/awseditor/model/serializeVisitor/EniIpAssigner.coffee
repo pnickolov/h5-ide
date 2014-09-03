@@ -1,5 +1,5 @@
 
-define [ "Design", "constant" ], ( Design, constant )->
+define [ "../DesignAws", "constant" ], ( Design, constant )->
 
   # EniIpVisitor is an util function to allow Subnet to re-assign IPs for all Eni,
   # when serializing.

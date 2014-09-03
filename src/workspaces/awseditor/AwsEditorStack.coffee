@@ -2,17 +2,19 @@
 define [
   "CoreEditor"
   "./AwsViewStack"
-  "Design"
+  "./model/DesignAws"
   "CloudResources"
   "constant"
-], ( CoreEditor, StackView, Design, CloudResources, constant )->
+], ( CoreEditor, StackView, DesignAws, CloudResources, constant )->
 
   ###
     StackEditor is mainly for editing a stack
   ###
   class StackEditor extends CoreEditor
 
-    viewClass : StackView
+    viewClass   : StackView
+    designClass : DesignAws
+
     title : ()-> (@design || @opsModel).get("name") + " - stack"
 
     isReady : ()->

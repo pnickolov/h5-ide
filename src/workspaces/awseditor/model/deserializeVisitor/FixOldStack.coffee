@@ -1,5 +1,5 @@
 
-define [ "Design", "constant","i18n!/nls/lang.js" ], ( Design, constant, lang )->
+define [ "../DesignAws", "constant","i18n!/nls/lang.js" ], ( Design, constant, lang )->
 
   # FixOldStack is used to insert DefaultKP and DefaultSG if they're missing
 

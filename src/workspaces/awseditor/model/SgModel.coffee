@@ -40,7 +40,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
       # If we are deserializing, we don't want to update sgline when are deserializing.
       # We will thoroughly update sg line at the moment we finish deserialize.
       design = @design()
-      if not design.__sgmodelregdes
+      if not design.__sgmodelregdes and design.initializing()
         design.__sgmodelregdes = true
         design.on Design.EVENT.Deserialized, Model.updateSgLines
 
@@ -107,7 +107,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
 
     vlineAdd : ( resource )->
       # Don't modify SgLine when Design is not ready for drawing
-      if Design.instance().initializing() then return
+      if @design().initializing() then return
 
       connectedResMap = {}
       # Get all the resources that will connect to SG.
@@ -125,7 +125,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
 
     vlineAddBatch : ( otherSg )->
 
-      if Design.instance().initializing() then return
+      if @design().initializing() then return
 
       # Do not add visual line for self reference rule
       if otherSg is @ then return
@@ -141,7 +141,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
 
     vlineRemove : ( resource, possibleAffectedRes, reason )->
 
-      if Design.instance().initializing() then return
+      if @design().initializing() then return
 
       # Get a list of target resources that might need to update.
       if not possibleAffectedRes
@@ -173,7 +173,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
       null
 
     vlineRemoveBatch : ( otherSg, reason )->
-      if Design.instance().initializing() then return
+      if @design().initializing() then return
 
       possibleAffectedRes = otherSg.connectionTargets( "SgAsso" )
 

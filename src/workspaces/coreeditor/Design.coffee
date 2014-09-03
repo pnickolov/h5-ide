@@ -29,6 +29,11 @@ define [
 
   noop = ()-> return
 
+
+  __modelClassMap   = {}
+  __resolveFirstMap = {}
+  __instance        = null
+
   ###
     -------------------------------
      Design is the main controller of the framework. It handles the input / ouput of the Application ( a.k.a the DesignCanvas ).
@@ -77,540 +82,458 @@ define [
     # getCost() : Array
         description : return an array of cost object to represent the cost of the stack.
 
-
-
   ###
 
-  Design = ( opsModel )->
-    design = (new DesignImpl( opsModel )).use()
-    # Deserialize
-    json = opsModel.getJsonData()
-    design.deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-    design
+  # Warning! Although Design extends from Backbone.Model
+  # But do not use any Backbone.Model method on Design object.
+  Design = Backbone.Model.extend {
 
-  _.extend( Design, Backbone.Events )
-  Design.__modelClassMap       = {}
-  Design.__resolveFirstMap     = {}
-  Design.__serializeVisitors   = []
-  Design.__deserializeVisitors = []
-  Design.__instance            = null
+    constructor : ( opsModel )->
+      @__opsModel = opsModel
+      Backbone.Model.call this
 
+      @use()
+      # Deserialize
+      json = opsModel.getJsonData()
+      @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+      return
 
-  DesignImpl = ( opsModel )->
-    @__componentMap = {}
-    @__classCache   = {}
-    @__usedUidCache = {}
-    @__opsModel     = opsModel
-    @__initializing = false # Disable drawing for deserializing, delay it until everything is deserialized
+    initialize : ( )->
+      @__componentMap = {}
+      @__classCache   = {}
+      @__usedUidCache = {}
+      @__initializing = false # Disable drawing for deserializing, delay it until everything is deserialized
 
-    canvas_data = opsModel.getJsonData()
+      canvas_data = @__opsModel.getJsonData()
 
-    # Mode
-    if opsModel.testState( OpsModel.State.UnRun )
-      @__mode = Design.MODE.Stack
-    else
-      @__mode = Design.MODE.App
+      # Mode
+      if @__opsModel.testState( OpsModel.State.UnRun )
+        @__mode = Design.MODE.Stack
+      else
+        @__mode = Design.MODE.App
 
-    # Delete these two attr before copying canvas_data.
-    component = canvas_data.component
-    layout    = canvas_data.layout
-    delete canvas_data.component
-    delete canvas_data.layout
+      # Delete these two attr before copying canvas_data.
+      component = canvas_data.component
+      layout    = canvas_data.layout
+      delete canvas_data.component
+      delete canvas_data.layout
 
-    @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
+      @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
 
-    # Restore these two attr
-    canvas_data.component = component
-    canvas_data.layout    = layout
-    null
+      # Restore these two attr
+      canvas_data.component = component
+      canvas_data.layout    = layout
+      null
 
+    deserialize : ( json_data, layout_data )->
 
+      console.assert( Design.instance() is this )
 
+      console.debug "Deserializing data :", [json_data, layout_data]
 
-  Design.TYPE = {
-    Classic    : "ec2-classic"
-    Vpc        : "ec2-vpc"
-    DefaultVpc : "default-vpc"
-    CustomVpc  : "custom-vpc"
-  }
-  Design.MODE = {
-    Stack   : "stack"
-    App     : "app"
-    AppEdit : "appedit"
-  }
+      # Let visitor to fix JSON before it get deserialized.
+      version = @get("version")
+      for devistor in @constructor.__deserializeVisitors || []
+        devistor( json_data, layout_data, version )
 
-  Design.EVENT = {
-    # Events that will trigger using Design.trigger
+      # Disable triggering event when Design is deserializing
+      @trigger = noop
+      @__initializing = true
 
-    # Events that will trigger using Design.instance().trigger
-    ChangeResource : "CHANGE_RESOURCE"
+      defaultLayout = {
+        coordinate : [0, 0]
+        size       : [0, 0]
+      }
 
-    # Events that will trigger both using Design.trigger and Design.instance().trigger
-    AddResource    : "ADD_RESOURCE"
-    RemoveResource : "REMOVE_RESOURCE"
-    Deserialized   : "DESERIALIZED"
-  }
+      # A helper function to let each resource to get its dependency
+      that = this
+      resolveDeserialize = ( uid )->
 
-  DesignImpl.prototype.deserialize = ( json_data, layout_data )->
+        if not uid then return null
 
-    console.assert( Design.instance() is this )
+        obj = that.__componentMap[ uid ]
+        if obj then return obj
 
-    console.debug "Deserializing data :", [json_data, layout_data]
+        # Check if we have recursive dependency
+        recursiveCheck.check( uid )
 
-    # Let visitor to fix JSON before it get deserialized.
-    version = @get("version")
-    for devistor in Design.__deserializeVisitors
-      devistor( json_data, layout_data, version )
+        component_data = json_data[ uid ]
 
-    # Disable triggering event when Design is deserializing
-    @trigger = Design.trigger = noop
-    @__initializing = true
+        if not component_data
+          console.warn "Unknown uid for resolving component :", uid, json_data
+          return
 
-    defaultLayout = {
-      coordinate : [0, 0]
-      size       : [0, 0]
-    }
-
-    # A helper function to let each resource to get its dependency
-    that = this
-    resolveDeserialize = ( uid )->
-
-      if not uid then return null
-
-      obj = that.__componentMap[ uid ]
-      if obj then return obj
-
-      # Check if we have recursive dependency
-      recursiveCheck.check( uid )
-
-      component_data = json_data[ uid ]
-
-      if not component_data
-        console.warn "Unknown uid for resolving component :", uid, json_data
-        return
-
-      ModelClass = Design.modelClassForType( component_data.type )
-      if not ModelClass
-        console.warn "We do not support deserializing resource of type : #{component_data.type}"
-        return
-
-      ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
-
-      Design.__instance.__componentMap[ uid ]
-
-    # Use resolve to replace component(), so that during deserialization,
-    # dependency can be resolved by using design.component()
-    _old_get_component_ = @component
-
-    ###########################
-    # Start deserialization
-    # Deserialization cases :
-    # subnets need mainRTB and defaultACL, mainRTB needs VPC.
-    # Thus, there're 3 steps in the deserialization
-    ###########################
-    # Deserialize resolveFisrt resources
-    @component = null # Forbid user to call component at this time.
-    for uid, comp of json_data
-
-      # Collect Used UID. So that we can ensure we will always generate unique uid.
-      @__usedUidCache[ uid ] = true
-
-      if Design.__resolveFirstMap[ comp.type ] is true
-        ModelClass = Design.modelClassForType( comp.type )
-
+        ModelClass = Design.modelClassForType( component_data.type )
         if not ModelClass
           console.warn "We do not support deserializing resource of type : #{component_data.type}"
-          continue
-        if not ModelClass.preDeserialize
-          console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
-          continue
+          return
 
-        ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
+        ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
+
+        __instance.__componentMap[ uid ]
+
+      # Use resolve to replace component(), so that during deserialization,
+      # dependency can be resolved by using design.component()
+      _old_get_component_ = @component
+
+      ###########################
+      # Start deserialization
+      # Deserialization cases :
+      # subnets need mainRTB and defaultACL, mainRTB needs VPC.
+      # Thus, there're 3 steps in the deserialization
+      ###########################
+      # Deserialize resolveFisrt resources
+      @component = null # Forbid user to call component at this time.
+      for uid, comp of json_data
+
+        # Collect Used UID. So that we can ensure we will always generate unique uid.
+        @__usedUidCache[ uid ] = true
+
+        if __resolveFirstMap[ comp.type ] is true
+          ModelClass = Design.modelClassForType( comp.type )
+
+          if not ModelClass
+            console.warn "We do not support deserializing resource of type : #{component_data.type}"
+            continue
+          if not ModelClass.preDeserialize
+            console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
+            continue
+
+          ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
 
 
-    # Deserialize normal resources
-    @component = resolveDeserialize
-    for uid, comp of json_data
+      # Deserialize normal resources
+      @component = resolveDeserialize
+      for uid, comp of json_data
 
-      # If the resource is resolveFirst, it means it will create a resource component
-      # in the preDeserialize, meaning that its deserialize will not be called. Thus
-      # we directly call the deserialize() of the resource here.
-      if Design.__resolveFirstMap[ comp.type ] is true
-        recursiveCheck = createRecursiveCheck( uid )
-        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
+        # If the resource is resolveFirst, it means it will create a resource component
+        # in the preDeserialize, meaning that its deserialize will not be called. Thus
+        # we directly call the deserialize() of the resource here.
+        if __resolveFirstMap[ comp.type ] is true
+          recursiveCheck = createRecursiveCheck( uid )
+          Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
+        else
+          recursiveCheck = createRecursiveCheck()
+          resolveDeserialize uid
+
+
+      # Give a chance for resources to create connection between each others.
+      @component = _old_get_component_
+      for uid, comp of json_data
+        ModelClass = Design.modelClassForType( comp.type )
+        if ModelClass and ModelClass.postDeserialize
+          ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
+
+      ####################
+      # Broadcast event
+      ####################
+      @__initializing = false
+      Backbone.Events.trigger.call @, Design.EVENT.Deserialized
+
+      # Only at this point, we are finally deserialized.
+      @trigger = Backbone.Events.trigger
+      null
+
+    reload : ()->
+      oldDesign = Design.instance()
+
+      @use()
+
+      DesignImpl.call this, @__opsModel
+      json = @__opsModel.getJsonData()
+      @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
+
+      if oldDesign
+        oldDesign.use()
+      return
+
+    classCacheForCid : ( cid )->
+      if @__classCache[ cid ]
+        return @__classCache[ cid ]
+
+      cache = @__classCache[ cid ] = []
+      return cache
+
+    cacheComponent : ( id, comp )->
+      if not comp
+        comp = @__componentMap
+        delete @__componentMap[ id ]
+
+        # Only in stack mode, we reclaim the id once the component is removed from cache.
+        if @modeIsAppEdit()
+          @reclaimGuid( id )
       else
-        recursiveCheck = createRecursiveCheck()
-        resolveDeserialize uid
+        @__componentMap[ id ] = comp
+      null
 
-
-    # Give a chance for resources to create connection between each others.
-    @component = _old_get_component_
-    for uid, comp of json_data
-      ModelClass = Design.modelClassForType( comp.type )
-      if ModelClass and ModelClass.postDeserialize
-        ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
-
-    ####################
-    # Broadcast event
-    ####################
-    @__initializing = false
-    Backbone.Events.trigger.call Design, Design.EVENT.Deserialized
-    Backbone.Events.trigger.call @, Design.EVENT.Deserialized
-
-    # Only at this point, we are finally deserialized.
-    @trigger = Design.trigger = Backbone.Events.trigger
-    null
-
-  DesignImpl.prototype.reload = ()->
-    oldDesign = Design.instance()
-
-    @use()
-
-    DesignImpl.call this, @__opsModel
-    json = @__opsModel.getJsonData()
-    @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-
-    if oldDesign
-      oldDesign.use()
-    return
-
-
-  ### Private Interface ###
-  Design.registerModelClass = ( type, modelClass, resolveFirst )->
-    @__modelClassMap[ type ] = modelClass
-    if resolveFirst
-      @__resolveFirstMap[ type ] = resolveFirst
-    null
-
-  DesignImpl.prototype.classCacheForCid = ( cid )->
-    if @__classCache[ cid ]
-      return @__classCache[ cid ]
-
-    cache = @__classCache[ cid ] = []
-    return cache
-
-  DesignImpl.prototype.cacheComponent = ( id, comp )->
-    if not comp
-      comp = @__componentMap
-      delete @__componentMap[ id ]
-
-      # Only in stack mode, we reclaim the id once the component is removed from cache.
-      if @modeIsAppEdit()
-        @reclaimGuid( id )
-    else
-      @__componentMap[ id ] = comp
-    null
-
-
-  Design.registerSerializeVisitor = ( func )->
-    @__serializeVisitors.push func
-    null
-
-  Design.registerDeserializeVisitor = ( func )->
-    @__deserializeVisitors.push func
-    null
-
-  ### Private Interface End ###
-
-
-
-  Design.instance = ()-> @__instance
-  Design.modelClassForType = ( type )-> @__modelClassMap[ type ]
-  Design.modelClassForPorts = ( port1, port2 )->
-    if port1 < port2
-      type = port1 + ">" + port2
-    else
-      type = port2 + ">" + port1
-
-    @__modelClassMap[ type ]
-
-  Design.lineModelClasses = ()->
-    if @__lineModelClasses then return @__lineModelClasses
-
-    @__lineModelClasses = cs = []
-    for type, modelClass of @__modelClassMap
-      # Ignore every type that has ">", because that's duplicated class for a line.
-      if modelClass.__isLineClass and type.indexOf(">") is -1
-        cs.push modelClass
-
-    @__lineModelClasses
-
-  DesignImpl.prototype.reclaimGuid = ( guid )-> delete @__usedUidCache[ guid ]
-  DesignImpl.prototype.guid = ()->
-    newId = MC.guid()
-    while @__usedUidCache[ newId ]
-      console.warn "GUID collision detected, the generated GUID is #{newId}. Try generating a new one."
+    reclaimGuid : ( guid )-> delete @__usedUidCache[ guid ]
+    guid : ()->
       newId = MC.guid()
+      while @__usedUidCache[ newId ]
+        console.warn "GUID collision detected, the generated GUID is #{newId}. Try generating a new one."
+        newId = MC.guid()
 
-    @__usedUidCache[ newId ] = true
-    newId
+      @__usedUidCache[ newId ] = true
+      newId
 
-  DesignImpl.prototype.set = ( key, value )->
-    @attributes[key] = value
-    @trigger "change:#{key}"
-    @trigger "change"
-    return
+    set : ( key, value )->
+      @attributes[key] = value
+      @trigger "change:#{key}"
+      @trigger "change"
+      return
 
-  DesignImpl.prototype.get = ( key )->
-    if key is "id"
-      @__opsModel.get( "id" )
-    else if key is "state"
-      @__opsModel.getStateDesc()
-    else
-      @attributes[key]
+    get : ( key )->
+      if key is "id"
+        @__opsModel.get( "id" )
+      else if key is "state"
+        @__opsModel.getStateDesc()
+      else
+        @attributes[key]
 
-  DesignImpl.prototype.type   = ()-> Design.TYPE.Vpc
-  DesignImpl.prototype.region = ()-> @attributes.region
+    type   : ()-> Design.TYPE.Vpc
+    region : ()-> @attributes.region
 
-  DesignImpl.prototype.modeIsStack   = ()->  @__mode == Design.MODE.Stack
-  DesignImpl.prototype.modeIsApp     = ()->  @__mode == Design.MODE.App
-  DesignImpl.prototype.modeIsAppView = ()->  false
-  DesignImpl.prototype.modeIsAppEdit = ()->  @__mode == Design.MODE.AppEdit
-  DesignImpl.prototype.mode    = ()-> @__mode
-  DesignImpl.prototype.setMode = (m)->
-    if @__mode is m then return
-    @__mode = m
+    modeIsStack   : ()->  @__mode == Design.MODE.Stack
+    modeIsApp     : ()->  @__mode == Design.MODE.App
+    modeIsAppView : ()->  false
+    modeIsAppEdit : ()->  @__mode == Design.MODE.AppEdit
+    mode    : ()-> @__mode
+    setMode : (m)->
+      if @__mode is m then return
+      @__mode = m
 
-    @preserveName()
+      @preserveName()
 
-    @trigger "change:mode", m
-    return
+      @trigger "change:mode", m
+      return
 
 
-  DesignImpl.prototype.initializing = ()-> @__initializing
-  DesignImpl.prototype.use = ()-> Design.__instance = @; @
-  DesignImpl.prototype.unuse = ()-> if Design.__instance is @ then Design.__instance = null; return
+    initializing : ()-> @__initializing
+    use : ()-> __instance = @; @
+    unuse : ()-> if __instance is @ then __instance = null; return
 
-  DesignImpl.prototype.component = ( uid )-> @__componentMap[ uid ]
+    component : ( uid )-> @__componentMap[ uid ]
 
-  DesignImpl.prototype.componentsOfType = ( type )->
-    @classCacheForCid( Design.modelClassForType(type).prototype.classId ).slice(0)
+    componentsOfType : ( type )->
+      @classCacheForCid( Design.modelClassForType(type).prototype.classId ).slice(0)
 
-  DesignImpl.prototype.eachComponent = ( func, context )->
-    console.assert( _.isFunction(func), "User must pass in a function for Design.instance().eachComponent()" )
+    eachComponent : ( func, context )->
+      console.assert( _.isFunction(func), "User must pass in a function for Design.instance().eachComponent()" )
 
-    context = context || this
-    for uid, comp of @__componentMap
-      if func.call( context, comp ) is false
-        break
-    null
+      context = context || this
+      for uid, comp of @__componentMap
+        if func.call( context, comp ) is false
+          break
+      null
 
-  DesignImpl.prototype.isModified = ()->
-    # This api only compares name / component / layout
-    if @modeIsApp()
-      console.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
-      return false
-
-    backing = @__opsModel.getJsonData()
-
-    # Shallow Compare.
-    if @attributes.name isnt backing.name then return true
-
-    newData = @serialize()
-
-    if _.isEqual( backing.component, newData.component )
-      if _.isEqual( backing.layout, newData.layout )
+    isModified : ()->
+      # This api only compares name / component / layout
+      if @modeIsApp()
+        console.warn "Testing Design.isModified() in app mode and visualize mode. This should not be happening."
         return false
-    true
 
-  DesignImpl.prototype.serialize = ( options )->
+      backing = @__opsModel.getJsonData()
 
-    # A hack to get around the caveat of the current framework design.
-    # The Design is singleton (Because the Design is created with the mind
-    # that trying to affect as little as possible of the current system)
-    # Which makes it unusable in work with multiple design objects in the same time.
-    # It seems like if we do want to support this feature, we need to introduce
-    # inconvenient api, which I don't want to.
-    currentDesignObj = Design.instance()
-    @use()
+      # Shallow Compare.
+      if @attributes.name isnt backing.name then return true
 
-    console.debug "Design is serializing."
+      newData = @serialize()
 
-    component_data = {}
-    layout_data    = {}
+      if _.isEqual( backing.component, newData.component )
+        if _.isEqual( backing.layout, newData.layout )
+          return false
+      true
 
-    connections = []
-    mockArray   = []
+    serialize : ( options )->
 
-    # ResourceModel can only add json component.
-    for uid, comp of @__componentMap
-      if comp.isRemoved()
-        console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
-        continue
+      # A hack to get around the caveat of the current framework design.
+      # The Design is singleton (Because the Design is created with the mind
+      # that trying to affect as little as possible of the current system)
+      # Which makes it unusable in work with multiple design objects in the same time.
+      # It seems like if we do want to support this feature, we need to introduce
+      # inconvenient api, which I don't want to.
+      currentDesignObj = Design.instance()
+      @use()
 
-      if comp.node_line
-        connections.push comp
-        continue
+      console.debug "Design is serializing."
 
-      try
-        json = comp.serialize options
-        ### env:prod ###
-      catch error
-        console.error "Error occur while serializing", error
-        ### env:prod:end ###
-      finally
+      component_data = {}
+      layout_data    = {}
 
-      if not json then continue
+      connections = []
+      mockArray   = []
 
-      # Make json to be an array
-      if not _.isArray( json )
-        mockArray[0] = json
-        json = mockArray
+      # ResourceModel can only add json component.
+      for uid, comp of @__componentMap
+        if comp.isRemoved()
+          console.warn( "Resource has been removed, yet it remains in cache when serializing :", comp )
+          continue
 
-      for j in json
-        if j.component
-          console.assert( j.component.uid, "Serialized JSON data has no uid." )
-          console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
-          component_data[ j.component.uid ] = j.component
+        if comp.node_line
+          connections.push comp
+          continue
 
-        if j.layout
-          layout_data[ j.layout.uid ] = j.layout
-
-    # Connection
-    for c in connections
-      p1 = c.port1Comp()
-      p2 = c.port2Comp()
-      if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
         try
-          c.serialize( component_data, layout_data )
+          json = comp.serialize options
           ### env:prod ###
         catch error
           console.error "Error occur while serializing", error
           ### env:prod:end ###
         finally
 
-      else
-        console.error "Serializing an connection while one of the port is isRemoved() or null"
+        if not json then continue
+
+        # Make json to be an array
+        if not _.isArray( json )
+          mockArray[0] = json
+          json = mockArray
+
+        for j in json
+          if j.component
+            console.assert( j.component.uid, "Serialized JSON data has no uid." )
+            console.assert( not component_data[ j.component.uid ], "ResourceModel cannot modify existing JSON data." )
+            component_data[ j.component.uid ] = j.component
+
+          if j.layout
+            layout_data[ j.layout.uid ] = j.layout
+
+      # Connection
+      for c in connections
+        p1 = c.port1Comp()
+        p2 = c.port2Comp()
+        if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
+          try
+            c.serialize( component_data, layout_data )
+            ### env:prod ###
+          catch error
+            console.error "Error occur while serializing", error
+            ### env:prod:end ###
+          finally
+
+        else
+          console.error "Serializing an connection while one of the port is isRemoved() or null"
 
 
-    # Seems like some other place have call Design.instance().set("layout")
-    # So we assign component/layout at last
-    data = $.extend true, {}, @attributes
-    data.component = component_data
-    data.layout    = layout_data
+      # Seems like some other place have call Design.instance().set("layout")
+      # So we assign component/layout at last
+      data = $.extend true, {}, @attributes
+      data.component = component_data
+      data.layout    = layout_data
 
 
 
-    # At this point, we allow each visitors to have full privilege to modify
-    # the component data. This is necessary for visitors that wants to work on
-    # many components at once. ( One use-case is Subnet would like to assign IPs. )
-    for visitor in Design.__serializeVisitors
-      visitor( component_data, layout_data, options )
+      # At this point, we allow each visitors to have full privilege to modify
+      # the component data. This is necessary for visitors that wants to work on
+      # many components at once. ( One use-case is Subnet would like to assign IPs. )
+      for visitor in @constructor.__serializeVisitors || []
+        visitor( component_data, layout_data, options )
 
 
-    # Quick Fix for some other property
-    # 1. save canvas's size to layout
-    data.layout.size = data.canvasSize
-    delete data.canvasSize
+      # Quick Fix for some other property
+      # 1. save canvas's size to layout
+      data.layout.size = data.canvasSize
+      delete data.canvasSize
 
-    # 2. save stoppable to property
-    data.property = @attributes.property || {}
-    data.property.stoppable = @isStoppable()
+      # 2. property
+      data.property = @attributes.property || {}
+      data.version  = "2014-02-17"
+      data.state    = @__opsModel.getStateDesc() || "Enabled"
+      data.id       = @__opsModel.get("id")
 
-    data.version = "2014-02-17"
-    data.state   = @__opsModel.getStateDesc() || "Enabled"
-    data.id      = @__opsModel.get("id")
+      if currentDesignObj
+        currentDesignObj.use()
 
-    if currentDesignObj
-      currentDesignObj.use()
-
-    data
+      data
 
 
-  DesignImpl.prototype.serializeAsStack = (new_name)->
-    json = @serialize( { toStack : true } )
+    serializeAsStack : (new_name)->
+      json = @serialize( { toStack : true } )
 
-    json.name = new_name||json.name
-    json.state = "Enabled"
-    json.id = ""
-    json.owner = ""
-    json.usage = ""
-    delete json.history
-    delete json.stack_id
-    json
+      json.name = new_name||json.name
+      json.state = "Enabled"
+      json.id = ""
+      json.owner = ""
+      json.usage = ""
+      delete json.history
+      delete json.stack_id
+      json
 
 
-  ########## General Business logics ############
-  DesignImpl.prototype.preserveName = ()->
-    if not @modeIsAppEdit() then return
-    @__preservedNames = {}
-    for uid, comp of @__componentMap
-      switch comp.type
-        when constant.RESTYPE.ELB, constant.RESTYPE.ASG, constant.RESTYPE.LC, constant.RESTYPE.DBINSTANCE
-          names = @__preservedNames[ comp.type ] || ( @__preservedNames[ comp.type ] = {} )
-          names[ comp.get("name") ] = true
-
-    return
-
-  DesignImpl.prototype.isPreservedName = ( type, name )->
-    if not @modeIsAppEdit() then return false
-    if not @__preservedNames then return false
-    names = @__preservedNames[type]
-    names and names[name]
-
-  DesignImpl.prototype.getCost = (stopped)->
-    costList = []
-    totalFee = 0
-
-    priceMap = App.model.getPriceData( @region() )
-
-    if priceMap
-      currency = priceMap.currency || 'USD'
-
+    preserveName : ()->
+      if not @modeIsAppEdit() then return
+      @__preservedNames = {}
       for uid, comp of @__componentMap
-        if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
-          continue
-        if comp.getCost
-          cost = comp.getCost( priceMap, currency )
-          if not cost then continue
+        names = @__preservedNames[ comp.type ] || ( @__preservedNames[ comp.type ] = {} )
+        names[ comp.get("name") ] = true
+      return
 
-          if cost.length
-            for c in cost
-              totalFee += c.fee
-              costList.push c
-          else
-            totalFee += cost.fee
-            costList.push cost
+    isPreservedName : ( type, name )->
+      if not @modeIsAppEdit() then return false
+      if not @__preservedNames then return false
+      names = @__preservedNames[type]
+      names and names[name]
 
-      costList = _.sortBy costList, "resource"
+    getCost : (stopped)-> { costList : [], totalFee : 0 }
 
-    { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
+  }, {
+    TYPE:
+      Vpc : "ec2-vpc"
 
-  DesignImpl.prototype.isStoppable = ()->
-    # Previous version will set canvas_data.property.stoppable to false
-    # If the stack contains instance-stor ami.
-    InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
-    LcModel = Design.modelClassForType( constant.RESTYPE.LC )
-    allObjects = InstanceModel.allObjects( @ ).concat LcModel.allObjects( @ )
-    for comp in allObjects
-      ami = comp.getAmi() or comp.get("cachedAmi")
-      if ami and ami.rootDeviceType is 'instance-store'
-        return false
+    MODE:
+      Stack   : "stack"
+      App     : "app"
+      AppEdit : "appedit"
 
-    vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
-    if vpc.length>0
-      vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( m ) -> m.get("vpcId") is vpcId
-      for ins in instanceAry
-        ins = ins.attributes
-        for bdm in (ins.blockDeviceMapping || [])
-          if bdm.ebs is null and bdm.VirtualName
-            #blockDevice is instance-store
-            return false
-    true
+    EVENT:
+      # Events that will trigger using Design.trigger
 
-  DesignImpl::instancesNoUserData = ()->
-    result = true
-    instanceModels = Design.modelClassForType(constant.RESTYPE.INSTANCE).allObjects()
-    _.each instanceModels , (instanceModel)->
-      result = if  instanceModel.get('userData') then false else true
+      # Events that will trigger using Design.instance().trigger
+      ChangeResource : "CHANGE_RESOURCE"
+
+      # Events that will trigger both using Design.trigger and Design.instance().trigger
+      AddResource    : "ADD_RESOURCE"
+      RemoveResource : "REMOVE_RESOURCE"
+      Deserialized   : "DESERIALIZED"
+
+
+    registerModelClass : ( type, modelClass, resolveFirst )->
+      __modelClassMap[ type ] = modelClass
+      if resolveFirst
+        __resolveFirstMap[ type ] = resolveFirst
       null
-    lcModels = Design.modelClassForType( constant.RESTYPE.LC ).allObjects()
-    _.each lcModels , (lcModel)->
-      result = if lcModel.get('userData') then false else true
-      null
-    return result
 
-  _.extend DesignImpl.prototype, Backbone.Events
+    registerSerializeVisitor : ( func )->
+      if not @__serializeVisitors
+        @__serializeVisitors = []
+      @__serializeVisitors.push func
+      null
+
+    registerDeserializeVisitor : ( func )->
+      if not @__deserializeVisitors
+        @__deserializeVisitors = []
+      @__deserializeVisitors.push func
+      null
+
+    instance : ()-> __instance
+    modelClassForType : ( type )-> __modelClassMap[ type ]
+    modelClassForPorts : ( port1, port2 )->
+      if port1 < port2
+        type = port1 + ">" + port2
+      else
+        type = port2 + ">" + port1
+
+      __modelClassMap[ type ]
+
+    lineModelClasses : ()->
+      if @__lineModelClasses then return @__lineModelClasses
+
+      @__lineModelClasses = cs = []
+      for type, modelClass of __modelClassMap
+        # Ignore every type that has ">", because that's duplicated class for a line.
+        if modelClass.__isLineClass and type.indexOf(">") is -1
+          cs.push modelClass
+
+      @__lineModelClasses
+  }
 
   Design

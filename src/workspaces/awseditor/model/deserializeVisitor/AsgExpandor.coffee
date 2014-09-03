@@ -1,5 +1,5 @@
 
-define [ "Design"], ( Design )->
+define [ "../DesignAws"], ( Design )->
 
   Design.registerDeserializeVisitor ( data, layout_data, version )->
 

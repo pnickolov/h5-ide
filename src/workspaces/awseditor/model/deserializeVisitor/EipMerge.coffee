@@ -1,5 +1,5 @@
 
-define [ "Design"], ( Design )->
+define [ "../DesignAws"], ( Design )->
 
   # EipMerge is an util function to merge Eip.resource into Eni.resource.PrivateIpAddressSet.EipResource
 

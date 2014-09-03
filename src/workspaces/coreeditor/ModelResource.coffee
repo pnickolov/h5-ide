@@ -229,7 +229,6 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
 
       # Trigger Design AddResource Event here.
       # Because only at this time, the resource is fully created.
-      Design.trigger Design.EVENT.AddResource, this
       design.trigger Design.EVENT.AddResource, this
 
       @listenTo @, "change", @__triggerChangeInDesign
@@ -350,7 +349,6 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
 
       # Trigger Design RemoveResource Event here.
       # Because only at this time, the resource is fully removed.
-      Design.trigger Design.EVENT.RemoveResource, this
       design.trigger Design.EVENT.RemoveResource, this
       null
 

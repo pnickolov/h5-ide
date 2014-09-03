@@ -13,11 +13,11 @@ define [
   CoreEditorView.extend {
     constructor : ( options )->
       _.extend options, {
-        Toolbar       : Toolbar
-        PropertyPanel : PropertyPanel
-        ResourcePanel : ResourcePanel
-        Statusbar     : Statusbar
-        CanvasView    : CanvasView
+        TopPanel    : Toolbar
+        RightPanel  : PropertyPanel
+        LeftPanel   : ResourcePanel
+        BottomPanel : Statusbar
+        CanvasView  : CanvasView
       }
       CoreEditorView.apply this, arguments
   }

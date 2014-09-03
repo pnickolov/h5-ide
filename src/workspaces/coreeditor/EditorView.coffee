@@ -92,10 +92,10 @@ define [
         workspace : @workspace
         parent    : @
 
-      @toolbar       = new options.Toolbar(opt)
-      @propertyPanel = new options.PropertyPanel(opt)
-      @resourcePanel = new options.ResourcePanel(opt)
-      @statusbar     = new options.Statusbar(opt)
+      @toolbar       = new (options.TopPanel    || Backbone.View)(opt)
+      @propertyPanel = new (options.RightPanel  || Backbone.View)(opt)
+      @resourcePanel = new (options.LeftPanel   || Backbone.View)(opt)
+      @statusbar     = new (options.BottomPanel || Backbone.View)(opt)
       @canvas        = new options.CanvasView(opt)
 
       @initialize()

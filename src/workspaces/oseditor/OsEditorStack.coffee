@@ -2,10 +2,7 @@
 define [
   "CoreEditor"
   "./OsViewStack"
-  "Design"
-  "CloudResources"
-  "constant"
-], ( CoreEditor, StackView, Design, CloudResources, constant )->
+], ( CoreEditor, StackView )->
 
   ###
     StackEditor is mainly for editing a stack

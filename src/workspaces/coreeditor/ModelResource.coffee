@@ -71,7 +71,7 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
 
     parent = this
 
-    funcName = protoProps.type.replace(/\./g, "_")
+    funcName = protoProps.type.replace(/\.|:/g, "_")
     childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
 
     if protoProps and protoProps.hasOwnProperty "constructor"

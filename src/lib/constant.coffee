@@ -42,6 +42,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     # A short version
     RESTYPE =
+        # AWS RESOURCE
         AZ           : "AWS.EC2.AvailabilityZone"
         INSTANCE     : "AWS.EC2.Instance"
         KP           : "AWS.EC2.KeyPair"
@@ -81,6 +82,20 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         DBES         : 'AWS.RDS.EventSubscription'
         DBOG         : 'AWS.RDS.OptionGroup'
         DBENGINE     : 'AWS.RDS.DBEngineVersion'
+
+        # Openstack Resource
+        OSSERVER   : "OS::Nova::Server"
+        OSNETWORK  : "OS::Neutron::Network"
+        OSSUBNET   : "OS::Neutron::Subnet"
+        OSPORT     : "OS::Neutron::Port"
+        OSSG       : "OS::Neutron::SecurityGroup"
+        OSRT       : "OS::Neutron::Router"
+        OSFIP      : "OS::Neutron::FloatingIP"
+        OSELB      : "OS::Neutron::LoadBalancer"
+        OSLISTENER : "OS::Neutron::Listener"
+        OSPOOL     : "OS::Neutron::Pool"
+        OSHM       : "OS::Neutron::HealthMonitor"
+        OSVOL      : "OS::Cinder::Volume"
 
 
     RESNAME =

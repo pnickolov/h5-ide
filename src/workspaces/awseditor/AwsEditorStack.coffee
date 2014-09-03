@@ -104,15 +104,6 @@ define [
         # And will ask user to load ide again.
         throw error
 
-    cleanup : ()->
-      # Ask parent to cleanup first, so that removing opsModel won't trigger change event.
-      CoreEditor.prototype.cleanup.call this
-
-      # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
-      if not @opsModel.isPersisted()
-        @opsModel.remove()
-      return
-
     isModified : ()->
       if not @opsModel.isPersisted() then return true
       @design && @design.isModified()

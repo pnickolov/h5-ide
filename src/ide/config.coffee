@@ -342,7 +342,10 @@ require [
   "MC"
   "MC.canvas"
   'lib/aws'
-  "workspaces/AwsEditor"
+
+  # Extra Workspaces
+  "workspaces/EditorAws"
+  "workspaces/EditorOs"
 ], ( Application, CrBundle, Dashboard, Router ) ->
 
   ###########

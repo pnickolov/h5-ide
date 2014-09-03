@@ -10,7 +10,6 @@
 define [
   "OpsEditor" # Dependency
 
-  "ProgressViewer"
   "./awseditor/AwsEditorStack"
   "./awseditor/AwsEditorApp"
 
@@ -72,16 +71,10 @@ define [
   "./awseditor/canvas/CeDbInstance"
   "./awseditor/canvas/CeDbSubnetGroup"
 
-], ( OpsEditor, ProgressViewer, StackEditor, AppEditor )->
+], ( OpsEditor, StackEditor, AppEditor )->
 
   # OpsEditor defination
   AwsEditor = ( opsModel )->
-    if not opsModel
-      throw new Error("Cannot find opsmodel while openning workspace.")
-
-    if opsModel.isProcessing()
-      return new ProgressViewer opsModel
-
     if opsModel.isStack()
       return new StackEditor opsModel
     else

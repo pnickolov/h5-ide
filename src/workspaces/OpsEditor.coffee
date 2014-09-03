@@ -2,8 +2,20 @@
 ###
   This file is used to include all the core functionality of the editor
 ###
+
+###
+  OpsEditor is a workspace for working on an OpsModel
+  This class is implemented as a class cluster. Actually implementation is seperated in
+  other concrete class :
+
+  ProgressViewer  : For starting app.
+###
+
 define [
+  "ProgressViewer"
+
   "Design"
+
   "ResourceModel"
   "ComplexResModel"
   "ConnectionModel"
@@ -12,7 +24,6 @@ define [
   "CoreEditor"
 
   "CoreEditorView"
-  "ProgressViewer"
 
   "CanvasManager"
   "CanvasView"
@@ -25,7 +36,7 @@ define [
 
   "workspaces/coreeditor/TplOpsEditor"
   "workspaces/coreeditor/TplSvgDef"
-], ( Design )->
+], ( ProgressViewer, Design )->
 
   ### env:dev ###
   require ["workspaces/coreeditor/DesignDebugger"], ()->
@@ -39,6 +50,12 @@ define [
   registeredEditors = []
 
   OpsEditor = ( opsmodel )->
+    if not opsModel
+      throw new Error("Cannot find opsmodel while openning workspace.")
+
+    if opsModel.isProcessing()
+      return new ProgressViewer opsModel
+
     for e in registeredEditors
       if e.handler( opsmodel )
         return new e.editor( opsmodel )

@@ -168,6 +168,10 @@ define [
       if @design
         @design.unuse()
         @design = null
+
+      # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
+      if not @opsModel.isPersisted()
+        @opsModel.remove()
       return
 
     isInited : ()-> !!@__inited

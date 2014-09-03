@@ -4749,7 +4749,7 @@ div.modal-text-highlight {
       color: #fefefe; }
     .region-resource-list .region-resource-info > i:first-child {
       border-radius: 0 0 5px 0; }
-  .region-resource-list .region-resource-info i.icon-foget-app:hover i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
+  .region-resource-list .region-resource-info i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-forget-app:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
     color: #ec3c38; }
   .region-resource-list .region-resource-info > span {
     max-width: 110px; }

@@ -151,17 +151,6 @@ define [
     Deserialized   : "DESERIALIZED"
   }
 
-  DesignImpl.prototype.refreshAppUpdate = () ->
-    needRefresh = [
-      constant.RESTYPE.ASG
-    ]
-
-    @eachComponent ( component ) ->
-      if component.type in needRefresh
-        component.draw()
-
-    null
-
   DesignImpl.prototype.deserialize = ( json_data, layout_data )->
 
     console.assert( Design.instance() is this )
@@ -623,13 +612,5 @@ define [
     return result
 
   _.extend DesignImpl.prototype, Backbone.Events
-
-  # Export DesignImpl through Design, so that we can add debug code in DesignDebugger
-  ### env:dev ###
-  Design.DesignImpl = DesignImpl
-  ### env:dev:end ###
-  ### env:debug ###
-  Design.DesignImpl = DesignImpl
-  ### env:debug:end ###
 
   Design

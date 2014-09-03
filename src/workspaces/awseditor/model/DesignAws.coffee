@@ -1,9 +1,8 @@
 define [
   "Design"
   "constant"
-  "OpsModel"
   'CloudResources'
-], ( Design, constant, OpsModel, CloudResources ) ->
+], ( Design, constant, CloudResources ) ->
 
   AwsDesign = Design.extend {
     serialize : ( options )->

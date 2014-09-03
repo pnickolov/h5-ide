@@ -2,14 +2,16 @@
 define [
   "CoreEditor"
   "./OsViewStack"
-], ( CoreEditor, StackView )->
+  "./model/DesignOs"
+], ( CoreEditor, StackView, DesignOs )->
 
   ###
     StackEditor is mainly for editing a stack
   ###
   class StackEditor extends CoreEditor
 
-    viewClass : StackView
+    viewClass   : StackView
+    designClass : DesignOs
     title : ()-> (@design || @opsModel).get("name") + " - stack"
 
     isReady : ()->

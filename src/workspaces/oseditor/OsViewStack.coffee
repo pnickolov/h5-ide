@@ -5,7 +5,7 @@ define [
   "./subviews/RightPanel"
   "./subviews/Toolbar"
   "./subviews/Statusbar"
-  "./canvas/CanvasViewAws"
+  "./canvas/CanvasViewOs"
 
 ], ( CoreEditorView, RightPanel, Toolbar, Statusbar, CanvasView )->
 

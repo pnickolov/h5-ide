@@ -50,10 +50,10 @@ define [
   registeredEditors = []
 
   OpsEditor = ( opsmodel )->
-    if not opsModel
+    if not opsmodel
       throw new Error("Cannot find opsmodel while openning workspace.")
 
-    if opsModel.isProcessing()
+    if opsmodel.isProcessing()
       return new ProgressViewer opsModel
 
     for e in registeredEditors

@@ -10,6 +10,45 @@
 
 define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"], ( ApiRequest, constant, CloudResources, ThumbUtil )->
 
+  KnownOpsModelClass = {}
+
+  __detailExtend = Backbone.Model.extend
+
+  ### env:dev ###
+  __detailExtend = ( protoProps, staticProps )->
+    ### jshint -W061 ###
+
+    parent = this
+
+    funcName = protoProps.type
+    childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
+
+    if protoProps and protoProps.hasOwnProperty "constructor"
+      cstr = protoProps.constructor
+    else
+      cstr = ()-> return parent.apply( this, arguments )
+
+    child = childSpawner( cstr )
+
+    _.extend(child, parent, staticProps)
+
+    funcName = "PROTO_" + funcName
+    prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
+
+    Surrogate = prototypeSpawner( child )
+    Surrogate.prototype = parent.prototype
+    child.prototype = new Surrogate()
+
+    if protoProps
+      _.extend(child.prototype, protoProps)
+
+    child.__super__ = parent.prototype
+    ### jshint +W061 ###
+
+    child
+  ### env:dev:end ###
+
+
   OpsModelState =
     UnRun        : 0
     Running      : 1
@@ -35,7 +74,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
 
-
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -43,6 +81,27 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # importMsrId    : ""
       # requestId      : ""
       # sampleId       : ""
+
+    constructor : ( attr, opts )->
+      attr = attr || {}
+      opts = opts || {}
+      if this.type is "GenericOps"
+        # Finds out the concrete opsmodel
+        if opts.jsonData
+          cloudType = opts.jsonData.cloud_type
+
+        cloudType = cloudType || attr.cloudType || "aws"
+        type = cloudType.replace(/[a-z]/, (w)->w.toUpperCase()) + "Ops"
+
+        console.assert( KnownOpsModelClass[type], "Cannot find specific OpsModel for cloudType: " + cloudType )
+
+        Model = KnownOpsModelClass[ type ]
+        return new Model( attr, opts )
+
+      console.log this.type
+
+      Backbone.Model.apply this, arguments
+      return
 
     initialize : ( attr, options )->
       if options
@@ -621,7 +680,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       version     : "2014-02-17"
       component   : {}
       cloud_type  : "aws"
-      provider    : "aws"
+      provider    : "amazon"
       layout      : { size : [240, 240] }
       agent       :
         enabled : true
@@ -631,138 +690,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       property :
         stoppable : true
 
-    __initJsonData : ()->
-      json   = @__createRawJson()
-      vpcId  = MC.guid()
-      vpcRef = "@{#{vpcId}.resource.VpcId}"
-
-      layout =
-        VPC :
-          coordinate : [5,3]
-          size       : [60,60]
-        RTB :
-          coordinate : [50,5]
-          groupUId   : vpcId
-
-      component =
-        KP :
-          type : "AWS.EC2.KeyPair"
-          name : "DefaultKP"
-          resource : {
-            KeyName : "DefaultKP"
-            KeyFingerprint : ""
-          }
-        SG :
-          type : "AWS.EC2.SecurityGroup"
-          name : "DefaultSG"
-          resource :
-            IpPermissions: [{
-              IpProtocol : "tcp",
-              IpRanges   : "0.0.0.0/0",
-              FromPort   : "22",
-              ToPort     : "22",
-            }],
-            IpPermissionsEgress : [{
-              FromPort: "0",
-              IpProtocol: "-1",
-              IpRanges: "0.0.0.0/0",
-              ToPort: "65535"
-            }],
-            Default          : true
-            GroupId          : ""
-            GroupName        : "DefaultSG"
-            GroupDescription : 'default VPC security group'
-            VpcId            : vpcRef
-        ACL :
-          type : "AWS.VPC.NetworkAcl"
-          name : "DefaultACL"
-          resource :
-            AssociationSet : []
-            Default        : true
-            NetworkAclId   : ""
-            VpcId          : vpcRef
-            EntrySet : [
-              {
-                RuleAction : "allow"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : true
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 100
-              }
-              {
-                RuleAction : "allow"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : false
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 100
-              }
-              {
-                RuleAction : "deny"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : true
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 32767
-              }
-              {
-                RuleAction : "deny"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : false
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 32767
-              }
-            ]
-        VPC :
-          type : "AWS.VPC.VPC"
-          name : "vpc"
-          resource :
-            VpcId              : ""
-            CidrBlock          : "10.0.0.0/16"
-            DhcpOptionsId      : ""
-            EnableDnsHostnames : false
-            EnableDnsSupport   : true
-            InstanceTenancy    : "default"
-        RTB :
-          type : "AWS.VPC.RouteTable"
-          name : "RT-0"
-          resource :
-            VpcId : vpcRef
-            RouteTableId: ""
-            AssociationSet : [{
-              Main:"true"
-              SubnetId : ""
-              RouteTableAssociationId : ""
-            }]
-            PropagatingVgwSet:[]
-            RouteSet : [{
-              InstanceId           : ""
-              NetworkInterfaceId   : ""
-              Origin               : 'CreateRouteTable'
-              GatewayId            : 'local'
-              DestinationCidrBlock : '10.0.0.0/16'
-            }]
-
-      # Generate new GUID for each component
-      for id, comp of component
-        if id is "VPC"
-          comp.uid = vpcId
-        else
-          comp.uid = MC.guid()
-        json.component[ comp.uid ] = comp
-        if layout[ id ]
-          l = layout[id]
-          l.uid = comp.uid
-          json.layout[ comp.uid ] = l
-
-      @__jsonData = json
-      return
+    __initJsonData : ()-> @__jsonData = @__createRawJson()
+  }, {
+    extend : ( protoProps, staticProps ) ->
+      # Create subclass
+      subClass = __detailExtend.call( this, protoProps, staticProps )
+      KnownOpsModelClass[ protoProps.type ] = subClass
+      subClass
   }
 
   OpsModel.State = OpsModelState

@@ -8,7 +8,17 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "./submodels/OpsModelAws", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
+define [
+  "./submodels/OpsCollection"
+  "OpsModel"
+  "ApiRequest"
+  "backbone"
+  "constant"
+  "ThumbnailUtil"
+
+  "./submodels/OpsModelOs"
+  "./submodels/OpsModelAws"
+], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -53,11 +63,13 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModelAws", "ApiRequest", "
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
-    createStack : ( region )->
-      console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
+    createStack : ( region, cloudType = "aws", provider = "amazon" )->
+      # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
-        name   : @stackList().getNewName()
-        region : region
+        name      : @stackList().getNewName()
+        region    : region
+        cloudType : cloudType
+        provider  : provider
       }, {
         initJsonData : true
       })
@@ -69,8 +81,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModelAws", "ApiRequest", "
         json.name = @stackList().getNewName( json.name )
 
       m = new OpsModel({
-        name   : json.name
-        region : json.region
+        name      : json.name
+        region    : json.region
       }, {
         jsonData : json
       })
@@ -172,6 +184,8 @@ define [ "./submodels/OpsCollection", "./submodels/OpsModelAws", "ApiRequest", "
           region     : ops.region
           usage      : ops.usage
           name       : ops.name
+          cloudType  : ops.cloud_type
+          provider   : ops.provider
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)
         }

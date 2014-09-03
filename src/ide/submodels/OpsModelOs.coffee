@@ -11,7 +11,14 @@
 define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, ApiRequest, constant, CloudResources )->
 
   AwsOpsModel = OpsModel.extend {
-    type : "OpenStackOps"
+    type : "OpenstackOps"
+
+    # This method init a json for a newly created stack.
+    __createRawJson : ()->
+      json = OpsModel.prototype.__createRawJson.call this
+      json.cloud_type = "openstack"
+      json.provider   = "awcloud"
+      json
   }
 
   AwsOpsModel

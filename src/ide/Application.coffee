@@ -20,9 +20,10 @@ define [
   "OpsModel"
   "JsonExporter"
   "constant"
-  "underscore"
   "i18n!/nls/lang.js"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang )->
+  "OpsEditor"
+  "underscore"
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang, OpsEditor )->
 
   VisualOps = ()->
     if window.App

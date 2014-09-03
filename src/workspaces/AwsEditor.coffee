@@ -8,11 +8,11 @@
 ###
 
 define [
+  "OpsEditor" # Dependency
+
   "ProgressViewer"
   "./awseditor/AwsEditorStack"
   "./awseditor/AwsEditorApp"
-
-  "./CoreEditor" # Dependency
 
   # Extra Includes
   './awseditor/model/connection/EniAttachment'
@@ -72,10 +72,10 @@ define [
   "./awseditor/canvas/CeDbInstance"
   "./awseditor/canvas/CeDbSubnetGroup"
 
-], ( ProgressViewer, StackEditor, AppEditor )->
+], ( OpsEditor, ProgressViewer, StackEditor, AppEditor )->
 
   # OpsEditor defination
-  OpsEditor = ( opsModel )->
+  AwsEditor = ( opsModel )->
     if not opsModel
       throw new Error("Cannot find opsmodel while openning workspace.")
 
@@ -87,4 +87,6 @@ define [
     else
       return new AppEditor opsModel
 
-  OpsEditor
+  OpsEditor.registerEditors AwsEditor, ( model )-> model.type is "AwsOps"
+
+  AwsEditor

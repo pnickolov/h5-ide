@@ -98,8 +98,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         Model = KnownOpsModelClass[ type ]
         return new Model( attr, opts )
 
-      console.log this.type
-
       Backbone.Model.apply this, arguments
       return
 

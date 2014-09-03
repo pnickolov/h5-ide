@@ -138,6 +138,7 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
+    "OpsEditor"        : "workspaces/OpsEditor"
     'Design'           : 'workspaces/coreeditor/Design'
     "ResourceModel"    : "workspaces/coreeditor/ModelResource"
     "ComplexResModel"  : "workspaces/coreeditor/ModelComplex"
@@ -337,19 +338,18 @@ require [
   'ide/Application'
   "cloudres/CrBundle"
   "workspaces/Dashboard"
-  "workspaces/AwsEditor"
   "ide/Router"
   "MC"
   "MC.canvas"
   'lib/aws'
-], ( Application, CrBundle, Dashboard, AwsEditor, Router ) ->
+  "workspaces/AwsEditor"
+], ( Application, CrBundle, Dashboard, Router ) ->
 
   ###########
   # IDE Init
   ###########
   # There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
   window.Router    = new Router()
-  window.OpsEditor = AwsEditor
   (new Application()).initialize().then ()->
     window.Router.start()
     window.Dashboard = new Dashboard()

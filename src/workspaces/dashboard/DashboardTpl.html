@@ -6,6 +6,7 @@
 	<button class="btn btn-primary icon-new-stack js-toggle-dropdown">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
 
 	<ul id="global-region-create-stack-list" class="dropdown-menu">
+  <li data-region="awcloud" data-cloud="openstack" data-provider="awcloud">AwCloud - OpenStack</li>
 	{{#each this}}<li data-region="{{id}}">{{name}} - {{shortName}}</li>{{/each}}</ul>
 
 	<button id="ImportStack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>

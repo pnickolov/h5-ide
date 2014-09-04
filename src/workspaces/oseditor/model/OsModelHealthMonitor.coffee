@@ -1,5 +1,5 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, ConnectionModel, constant )->
+define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
   Model = ComplexResModel.extend {
 

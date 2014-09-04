@@ -216,8 +216,9 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       if start.x is end.x or start.y is end.y
         return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
 
-      @__lastDir = if start.y >= end.y then 1 else -1
-      MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
+      # @__lastDir = if start.y >= end.y then 1 else -1
+      #MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
+      @generateElbowPath( start, end )
 
     lineStyle : ()-> 4
 
@@ -464,12 +465,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         children = []
         children.push ch.rect() for ch in p1.children()
 
-        areas.push {
-          bound    : p1.rect()
-          children : children
-        }
         p2Index = p2Parents.indexOf( p1 )
-        if p2Index >= -1
+        if p2Index is -1
+          areas.push {
+            bound    : p1.rect()
+            children : children
+          }
+        else
           while p2Index >= 0
             p2 = p2Parents[ p2Index ]
             children = []
@@ -484,86 +486,87 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       areas
 
-    nextElbowPoint : ( currentPoint, endPoint, area, targetArea )->
-      # 1. Find out the next point we want to reach.
+    nextElbowPoint : ( currentPoint, endPoint, area )->
+      # 0. Find out the path we need to walk.
+      targetPoint = $.extend {}, endPoint
       switch currentPoint.angle
         when CanvasElement.PORT_UP_ANGLE
-          targetPoint =
-            x : currentPoint.x
-            y : targetArea.y1
-          rect =
-            x1 : targetPoint.x
-            y1 : targetPoint.y
-            x2 : currentPoint.x
-            y2 : currentPoint.x
-
+          linex1 = linex2 = targetPoint.x
+          liney1 = targetPoint.y
+          liney2 = currentPoint.y
         when CanvasElement.PORT_DOWN_ANGLE
-          targetPoint =
-            x : currentPoint.x
-            y : targetArea.y2
-          rect =
-            x1 : currentPoint.x
-            y1 : currentPoint.x
-            x2 : targetPoint.x
-            y2 : targetPoint.y
-
+          linex1 = linex2 = targetPoint.x
+          liney1 = currentPoint.y
+          liney2 = targetPoint.y
         when CanvasElement.PORT_LEFT_ANGLE
-          targetPoint =
-            x : targetArea.x1
-            y : currentPoint.y
-          rect =
-            x1 : targetPoint.x
-            y1 : targetPoint.y
-            x2 : currentPoint.x
-            y2 : currentPoint.x
-
+          liney1 = liney2 = targetPoint.y
+          linex1 = targetPoint.x
+          linex2 = currentPoint.x
         when CanvasElement.PORT_RIGHT_ANGLE
-          targetPoint =
-            x : targetArea.x2
-            y : currentPoint.y
-          rect =
-            x1 : currentPoint.x
-            y1 : currentPoint.x
-            x2 : targetPoint.x
-            y2 : targetPoint.y
+          liney1 = liney2 = targetPoint.y
+          linex1 = currentPoint.x
+          linex2 = targetPoint.x
 
-      # 2. See if that point is blocked.
+      # 1. See if that point is blocked.
       cross = []
       for ch in area.children
-        if not ( ch.x1 >= rect.x2 or ch.x2 <= rect.x1 or ch.y1 >= rect.y2 or ch.y2 <= rect.y1 )
+        if not ( ch.x1 >= linex2 or ch.x2 <= linex1 or ch.y1 >= liney2 or ch.y2 <= liney1 )
           # This children cross the line
           cross.push ch
 
-      # 3. Find out which block comes first
+      # 2. Find out which block comes first
       minCross = -1
       theCross = null
       for ch in cross
         if currentPoint.angle is CanvasElement.PORT_LEFT_ANGLE or currentPoint.angle is CanvasElement.PORT_RIGHT_ANGLE
-          dis = Math.abs( ch.x1 - rect.x1 )
+          dis = Math.abs( ch.x1 - linex1 )
         else
-          dis = Math.abs( ch.y1 - rect.y1 )
+          dis = Math.abs( ch.y1 - liney1 )
 
         if dis < minCross
           theCross = ch
           minCross = dis
 
-      # 4.1 The position is not blocked.
+      # 3.1 The position is not blocked.
       if not theCross
         return [ targetPoint ]
 
-      # 4.2 Stop at the cloest block. And find next point.
+      # 3.2 Stop at the cloest block. And find next point.
       if currentPoint.angle is CanvasElement.PORT_UP_ANGLE or currentPoint.angle is CanvasElement.PORT_DOWN_ANGLE
         if CanvasElement.PORT_UP_ANGLE
           targetPoint.y = theCross.y2
         else
           targetPoint.y = theCross.y1
+
+        # See if we should go left or right
+        nextPoint =
+          angle : currentPoint.angle
+          y     : targetPoint.y
+          x     : theCross.x1
+        if Math.abs(endPoint.x - theCross.x1) < Math.abs( endPoint.x - theCross.x2 )
+          # Go left
+          targetPoint.angle is CanvasElement.PORT_LEFT_ANGLE
+        else
+          targetPoint.angle is CanvasElement.PORT_RIGHT_ANGLE
+          nextPoint.x = theCross.x2
+
       else
         if CanvasElement.PORT_LEFT_ANGLE
           targetPoint.x = theCross.x2
         else
           targetPoint.x = theCross.x1
 
-      [ targetPoint ]
+        nextPoint =
+          angle : currentPoint.angle
+          y     : theCross.y1
+          x     : targetPoint.x
+        if Math.abs(endPoint.y - theCross.y1) < Math.abs( endPoint.y - theCross.y2 )
+          targetPoint.angle is CanvasElement.PORT_UP_ANGLE
+        else
+          targetPoint.angle is CanvasElement.PORT_DOWN_ANGLE
+          nextPoint.y = theCross.y2
+
+      [ targetPoint, nextPoint ]
 
     searchElbowPoint : ( currentPoint, endPoint, area, bound )->
       points = []
@@ -575,11 +578,35 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           y2 : Math.min( Math.min( area.bound.y2, bound.y2 ), bound.preferY )
         }
         point = currentPoint
-        while point
-          ps = nextElbowPoint( point, endPoint, area, targetArea )
-          if ps
-            points = points.concat ps
-            point  = points[ points.length - 1 ]
+
+        while true
+          targetX = targetY = null
+          switch point.angle
+            when CanvasElement.PORT_UP_ANGLE
+              targetY = targetArea.y1
+              targetPoint =
+                x : currentPoint.x
+                y : targetArea.y1
+            when CanvasElement.PORT_DOWN_ANGLE
+              targetY = targetArea.y2
+              targetPoint =
+                x : currentPoint.x
+                y : targetArea.y2
+            when CanvasElement.PORT_LEFT_ANGLE
+              targetX = targetArea.x1
+              targetPoint =
+                x : targetArea.x1
+                y : currentPoint.y
+            when CanvasElement.PORT_RIGHT_ANGLE
+              targetX = targetArea.x2
+              targetPoint =
+                x : targetArea.x2
+                y : currentPoint.y
+
+          points = points.concat @nextElbowPoint( point, targetPoint, area )
+          point  = points[ points.length - 1 ]
+          if point.x is targetX or point.y is targetY
+            break
 
         return points
 
@@ -606,3 +633,4 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
   }
 
   CeLine
+

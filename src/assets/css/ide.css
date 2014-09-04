@@ -9117,7 +9117,11 @@ g.shadow {
         .openstack .OEPanelRight nav ul.action li:hover {
           background: #3970af; }
   .openstack .OEPanelRight .panel-body {
-    overflow: auto; }
+    overflow: auto;
+    position: absolute;
+    top: 91px;
+    bottom: 0;
+    height: auto; }
   .openstack .OEPanelRight .panel-body section header {
     background: #2c2f4d;
     color: white;
@@ -9142,3 +9146,10 @@ g.shadow {
           border-top-color: white; }
   .openstack .OEPanelRight .panel-body section article {
     padding: 10px; }
+    .openstack .OEPanelRight .panel-body section article .resource-item {
+      cursor: pointer; }
+    .openstack .OEPanelRight .panel-body section article > ul::after {
+      content: "";
+      display: block;
+      height: 0;
+      clear: both; }

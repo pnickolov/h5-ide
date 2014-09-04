@@ -76,6 +76,10 @@
         }
         .panel-body {
             overflow: auto;
+            position: absolute;
+            top: 91px;
+            bottom: 0;
+            height: auto;
         }
         .panel-body section {
             header {
@@ -109,6 +113,17 @@
 
             article {
                 padding: 10px;
+
+                .resource-item {
+                    cursor: pointer;
+                }
+
+                & > ul::after {
+                    content : "";
+                    display : block;
+                    height  : 0;
+                    clear   : both;
+                }
             }
         }
     }

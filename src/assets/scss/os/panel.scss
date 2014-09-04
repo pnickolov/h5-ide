@@ -1,0 +1,114 @@
+@import "color";
+
+@mixin activedPanelTab {
+    border-bottom: 3px solid $base-b;
+    color: $base-b;
+}
+
+.openstack {
+    .OEPanelRight {
+        width: 380px;
+
+        &.resource .resource { @include activedPanelTab; }
+        &.property .property { @include activedPanelTab; }
+        &.state    .state    { @include activedPanelTab; }
+
+        .sidebar-title {
+            box-sizing: border-box;
+            border-bottom: 1px solid #555252;
+            a {
+                width: 25%;
+                float: left;
+                text-align: center;
+                cursor: pointer;
+            }
+            a:hover {
+                color: #eee;
+            }
+        }
+
+        nav {
+            padding: 14px 20px;
+
+            ul {
+                li {
+                    float: left;
+                    text-align: center;
+                    cursor: pointer;
+                    width: 30px;
+                    height: 24px;
+                    line-height: 24px;
+
+                    &:first-child {
+                        border-left: 1px solid $dark-p-1;
+                        border-top-left-radius: 15%;
+                        border-bottom-left-radius: 15%;
+                    }
+                    &:last-child {
+                        border-top-right-radius: 15%;
+                        border-bottom-right-radius: 15%;
+                    }
+                }
+
+                &.anchor {
+                    float: left;
+                    li {
+                        line-height: 24px;
+                        color: #ccc;
+                        background: #51568e;
+                        border-right: 1px solid $dark-p-1;
+                        &:hover { color: #eee }
+                    }
+                }
+
+                &.action {
+                    float: right;
+                    color: white;
+                    li {
+                        background: $base-b;
+                        &:hover { background: $dark-b; }
+                    }
+                }
+
+
+            }
+        }
+        .panel-body {
+            overflow: auto;
+        }
+        .panel-body section {
+            header {
+                background: $dark-p-1;
+                color: white;
+                height: 28px;
+                line-height: 28px;
+                position: relative;
+                padding: 0 8px;
+                aside {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    .selection {
+                        background: $dark-p-1;
+                        color: #F3F3F3;
+                        height: 28px;
+                        padding: 0 20px 0 8px;
+                        border: none;
+                        border-left: 1px solid $dark-p-2;
+                        border-radius: 0;
+                        box-shadow: none;
+
+                        &::after {
+                            border-top-color: white;
+                        }
+                    }
+                }
+
+            }
+
+            article {
+                padding: 10px;
+            }
+        }
+    }
+}

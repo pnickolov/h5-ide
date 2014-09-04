@@ -2,7 +2,7 @@
 define [
   "CoreEditorView"
 
-  "./subviews/RightPanel"
+  "./subviews/Panel"
   "./subviews/Toolbar"
   "./subviews/Statusbar"
   "./canvas/CanvasViewOs"

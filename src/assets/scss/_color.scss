@@ -1,51 +1,53 @@
-/* Rectangle 5: */
+/* Light Purple */
 $light-p: #4D4E8C;
 
 
-/* Rectangle 6: */
+/* Base Purple */
 $base-p: #363B76;
 $base-p-l: saturate(lighten($base-p,30%),15%);
 
+$light-p-1: desaturate(lighten($base-p, 20%), 20%);
+$light-p-2: desaturate(lighten($base-p, 10%), 10%);
 
-/* Rectangle 9: */
+$dark-p-1: desaturate(darken($base-p, 10%), 10%);
+$dark-p-2: desaturate(darken($base-p, 20%), 20%);
+
+
+/* Dark Purple */
 $dark-p: #25254C;
 
+/* Background Purple */
 $bg-p: #202027;
 
-
-// /* Rectangle 7: */
+/* Base Blue */
 $base-b: #4A90E2;
 
+// $base-b-1: desaturate(lighten($base-b, 20%), 20%);
+// $base-b-2: desaturate(lighten($base-b, 10%), 10%);
 
-// /* Rectangle 11: */
-$light-b: #9AB7D9;
+// $base-b-4: desaturate(darken($base-b, 10%), 10%);
+// $base-b-5: desaturate(darken($base-b, 20%), 20%);
 
 
-// /* Rectangle 10: */
+/* Light Blue: */
+$light-b: desaturate(lighten($base-b, 10%), 10%);
+
+
+/* Dark Blue: */
 $dark-b: #3970AF;
 
 
-// /* Rectangle 8: */
-$base-g: #00D38F;
+/* Base Green: */
+$base-g: #11C568;
+$dark-g: saturate(darken($base-g,10%),10%);
 
-
+/* Orange */
 $orange: #ff9c00;
 
-// /* Rectangle 13: */
-// background: #93ECD0;
+/* Yellow */
+$yellow: #FFBB0D;
 
-
-// /* Rectangle 12: */
-// background: #1BA57A;
-
-
-// /* Rectangle 16: */
-// background: #2CBE29;
-
-
-// /* Rectangle 15: */
-// background: #41E23D;
-
-
-// /* Rectangle 14: */
-// background: #2E8F2C;
+/* Red */
+$base-r: #A42B2B;
+$light-r: desaturate(lighten($base-r, 10%), 10%);
+$dark-r: saturate(darken($base-r, 20%), 20%);

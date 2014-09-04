@@ -5,18 +5,18 @@ define [
   "./oseditor/OsEditorStack"
 
   # Extra Includes
-  "./model/OsModelElb"
-  "./model/OsModelFloatIp"
-  "./model/OsModelHealthMonitor"
-  "./model/OsModelListener"
-  "./model/OsModelNetwork"
-  "./model/OsModelPool"
-  "./model/OsModelPort"
-  "./model/OsModelPt"
-  "./model/OsModelServer"
-  "./model/OsModelSg"
-  "./model/OsModelSubnet"
-  "./model/OsModelVolume"
+  "./oseditor/model/OsModelElb"
+  "./oseditor/model/OsModelFloatIp"
+  "./oseditor/model/OsModelHealthMonitor"
+  "./oseditor/model/OsModelListener"
+  "./oseditor/model/OsModelNetwork"
+  "./oseditor/model/OsModelPool"
+  "./oseditor/model/OsModelPort"
+  "./oseditor/model/OsModelPt"
+  "./oseditor/model/OsModelServer"
+  "./oseditor/model/OsModelSg"
+  "./oseditor/model/OsModelSubnet"
+  "./oseditor/model/OsModelVolume"
 
 ], ( OpsEditor, StackEditor )->
 

@@ -20,6 +20,9 @@
   .openstack .OEPanelRight.state .state {
     border-bottom: 3px solid #4a90e2;
     color: #4a90e2; }
+  .openstack .OEPanelRight.config .config {
+    border-bottom: 3px solid #4a90e2;
+    color: #4a90e2; }
   .openstack .OEPanelRight .sidebar-title {
     box-sizing: border-box;
     border-bottom: 1px solid #555252; }

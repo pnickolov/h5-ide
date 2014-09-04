@@ -4,22 +4,24 @@ define [
     'constant'
     '../template/TplPanel'
     './panels/ResourcePanel'
+    './panels/ConfigPanel'
     './panels/PropertyPanel'
     './panels/StatePanel'
 
-], ( Backbone, constant, PanelTpl, ResourcePanel, PropertyPanel, StatePanel )->
+], ( Backbone, constant, PanelTpl, ResourcePanel, ConfigPanel, PropertyPanel, StatePanel )->
 
   Panels = {
-    resource: ResourcePanel
-    property: PropertyPanel
-    state   : StatePanel
+    resource : ResourcePanel
+    config   : ConfigPanel
+    property : PropertyPanel
+    state    : StatePanel
   }
 
   Backbone.View.extend
 
     events:
         'click .anchor li'       : '__scrollTo'
-        'click .sidebar-title a' : '__switchPanel'
+        'click .sidebar-title a' : '__openPanel'
 
     initialize: ( options ) ->
         _.extend this, options
@@ -29,7 +31,7 @@ define [
         @setElement @parent.$el.find(".OEPanelRight")
 
         @$el.html PanelTpl {}
-        @renderSubPanel Panels.resource
+        @openPanel 'resource'
 
         @
 
@@ -45,7 +47,7 @@ define [
 
         $container.animate scrollTop: newTop
 
-    switchPanel: ( panelName ) ->
+    openPanel: ( panelName ) ->
         targetPanel = Panels[ panelName ]
         unless targetPanel then return
 
@@ -56,11 +58,9 @@ define [
         @$el.prop 'class', "OEPanelRight #{panelName}"
         @renderSubPanel targetPanel
 
-    __switchPanel: ( e ) ->
+    __openPanel: ( e ) ->
         targetPanelName = $( e.currentTarget ).prop 'class'
-        @switchPanel targetPanelName
-
-
+        @openPanel targetPanelName
 
     __scrollTo: ( e ) ->
         targetClassName = $( e.currentTarget ).data 'scrollTo'

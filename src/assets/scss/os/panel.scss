@@ -12,6 +12,7 @@
         &.resource .resource { @include activedPanelTab; }
         &.property .property { @include activedPanelTab; }
         &.state    .state    { @include activedPanelTab; }
+        &.config   .config   { @include activedPanelTab; }
 
         .sidebar-title {
             box-sizing: border-box;

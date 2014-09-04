@@ -12,7 +12,7 @@ define [
   "./oseditor/model/OsModelNetwork"
   "./oseditor/model/OsModelPool"
   "./oseditor/model/OsModelPort"
-  "./oseditor/model/OsModelPt"
+  "./oseditor/model/OsModelRt"
   "./oseditor/model/OsModelServer"
   "./oseditor/model/OsModelSg"
   "./oseditor/model/OsModelSubnet"

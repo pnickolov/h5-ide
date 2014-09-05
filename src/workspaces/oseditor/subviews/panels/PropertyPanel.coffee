@@ -11,9 +11,9 @@ define [
 
   Backbone.View.extend
 
-  	events:
+    events:
 
-  		'DOMNodeInserted .property .group': 'bindSelection'
+        'DOMNodeInserted .property .group': 'bindSelection'
 
     initialize: ( options ) ->
 

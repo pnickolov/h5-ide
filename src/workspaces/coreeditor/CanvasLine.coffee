@@ -378,7 +378,9 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           throw new Error( "Failed to search elbow path" )
 
       # 4. Optimize points
+      lineData.result.unshift( { x:lineData.start.x, y:lineData.start.y } )
       lineData.result.unshift( { x:start.x, y:start.y } )
+      lineData.result.push( { x:lineData.end.x, y:lineData.end.y } )
       lineData.result.push( { x:end.x, y:end.y } )
       @optimizeElbowPoints( lineData )
 
@@ -648,7 +650,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       if angle
         switch p.angle
           when CanvasElement.constant.PORT_LEFT_ANGLE
-            p.x = Math.floor( (p.x - 1) / 10 ) * 10
+            p.x = Math.floor( (p.x - 1) / 5 ) * 5
           when CanvasElement.constant.PORT_RIGHT_ANGLE
             p.x = Math.ceil(  (p.x + 1) / 10 ) * 10
           when CanvasElement.constant.PORT_UP_ANGLE

@@ -1,0 +1,10 @@
+.OEPanelRight.resource {
+    .resource-item {
+        &:hover    { background-color: rgba(255, 255, 255, 0.2); }
+        &.ossubnet { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osrt     { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osport   { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.oselb    { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osvol    { background-image: url('/assets/images/ide/icon/res-vol.png'); }
+    }
+}

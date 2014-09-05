@@ -1334,3 +1334,44 @@ VisualOps API. You cannot UNDO this action.'
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
       zh: ""
+
+    DRAG_AND_DROP_IN_NETOWRK_TO_CREATE_SUBNET:
+      en: "Drag and drop in Netowrk to create subnet"
+      zh: ""
+
+    DRAG_AND_DROP_OUTSIDE_NETOWRK_TO_CREATE_ROUTER:
+      en: "Drag and drop outside Netowrk to create router"
+      zh: ""
+
+    DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT:
+      en: "Drag and drop in subnet to create port"
+      zh: ""
+
+    DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE:
+      en: "Drag and drop in subnet to create Load Balance"
+      zh: ""
+
+    DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME:
+      en: "Drag and drop on server to attach volume"
+      zh: ""
+
+    LBL_OSSUBNET:
+      en: "Subnet"
+      zh: ""
+
+    LBL_OSRT:
+      en: "Router"
+      zh: ""
+
+    LBL_OSPORT:
+      en: "Port"
+      zh: ""
+
+    LBL_OSELB:
+      en: "Load Balancer"
+      zh: ""
+
+    LBL_OSVOL:
+      en: "Volume"
+      zh: ""
+

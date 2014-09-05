@@ -21,102 +21,28 @@
     </article>
 </section>
 
-<section class="test">
-    <header>
-        Server
-        <aside class="selectbox">
-            <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
-            <ul class="dropdown">
-              <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-              <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
-              <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
-          </ul>
-      </aside>
-  </header>
-  <article>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-</article>
-<article>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-</article>
-<article>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-    <p>BBBBBBBBBBBB</p>
-</article>
+<section class="block-storage">
+    <header>Block Storage</header>
+    <article>
+        <ul class="resource-list-volume clearfix">
+            <li class="tooltip resource-item osvol" data-tooltip='{{i18n "DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME"}}' data-type="OSVOL">{{i18n "LBL_OSVOL"}}</li>
+        </ul>
+    </article>
 </section>
 
-<section class="test2">
-    <header>
-        Server
-        <aside class="selectbox">
-            <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
-            <ul class="dropdown">
-              <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-              <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
-              <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
-          </ul>
-      </aside>
-  </header>
-  <article>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-</article>
-<article>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-</article>
-<article>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-    <p>NNNNNNNNNNNN</p>
-</article>
+<section class="network">
+    <header>Network</header>
+    <article>
+        <ul class="resource-list-network clearfix">
+            <li class="tooltip resource-item ossubnet" data-tooltip='{{i18n "DRAG_AND_DROP_IN_NETOWRK_TO_CREATE_SUBNET"}}' data-type="OSSUBNET">{{i18n "LBL_OSSUBNET"}}</li>
+
+            <li class="tooltip resource-item osrt" data-tooltip='{{i18n "DRAG_AND_DROP_OUTSIDE_NETOWRK_TO_CREATE_ROUTER"}}' data-type="OSRT">{{i18n "LBL_OSRT"}}</li>
+
+            <li class="tooltip resource-item osport" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT"}}' data-type="OSPORT">{{i18n "LBL_OSPORT"}}</li>
+
+            <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSELB">{{ i18n "LBL_OSELB" }}</li>
+
+        </ul>
+    </article>
+
 </section>

@@ -7,7 +7,7 @@
 
 .openstack {
     .OEPanelRight {
-        width: 380px;
+        width: 320px;
 
         &.resource .resource { @include activedPanelTab; }
         &.property .property { @include activedPanelTab; }
@@ -128,3 +128,10 @@
         }
     }
 }
+
+@import "panels/resource-panel";
+@import "panels/property-panel";
+@import "panels/config-panel";
+@import "panels/state-panel";
+
+

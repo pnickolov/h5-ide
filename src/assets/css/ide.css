@@ -9061,7 +9061,7 @@ g.shadow {
 /* Yellow */
 /* Red */
 .openstack .OEPanelRight {
-  width: 380px; }
+  width: 320px; }
   .openstack .OEPanelRight.resource .resource {
     border-bottom: 3px solid #4a90e2;
     color: #4a90e2; }
@@ -9153,3 +9153,16 @@ g.shadow {
       display: block;
       height: 0;
       clear: both; }
+
+.OEPanelRight.resource .resource-item:hover {
+  background-color: rgba(255, 255, 255, 0.2); }
+.OEPanelRight.resource .resource-item.ossubnet {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osrt {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osport {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.oselb {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osvol {
+  background-image: url("/assets/images/ide/icon/res-vol.png"); }

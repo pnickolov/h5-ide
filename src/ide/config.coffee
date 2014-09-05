@@ -115,6 +115,7 @@ require.config {
     'jqtimepicker'       : 'ui/jquery.timepicker'
     'jqdatetimepicker'   : 'ui/jquery.datetimepicker'
     'UI.modalplus'       : 'ui/UI.modalplus'
+    'selectize'          : 'ui/selectize'
 
     #############################################
     # cloud resources           # Merge in deploy
@@ -256,6 +257,7 @@ require.config {
       "jqdatetimepicker"
       "UI.modalplus"
       "UI.nanoscroller"
+      "selectize"
     ]
     "api/api" : ["ApiRequest"]
     "service/service" : [

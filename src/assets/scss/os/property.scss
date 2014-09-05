@@ -10,15 +10,18 @@ $propertyFontSize: 12px;
     width: $propertyKeyWidth + $propertyValueWidth;
     font-size: $propertyFontSize;
     .group {
-        display: inline-block;
+        // display: inline-block;
         position: relative;
+        display: table;
+        border-bottom: 1px #000 solid;
         &.required:after {
             position: absolute;
             z-index: 1;
             content: "";
             color: #fff;
             text-align: right;
-            float: right;
+            right: 0;
+            top: 0;
             width: 0;
             height: 0;
             line-height: 24px;
@@ -34,34 +37,35 @@ $propertyFontSize: 12px;
             color: #fff;
             text-align: right;
             right: 0;
+            top: 0;
             margin-top: 3px;
             margin-right: 3px;
         }
     }
     .key {
         width: $propertyKeyWidth;
-        float: left;
-        padding: 10px;
+        padding: 4px 10px;
+        display: table-cell;
+        vertical-align: middle;
         background-color: #34343e;
-        display: block;
-        height: $propertyGroupHeight;
-        line-height: 18px;
+        line-height: 14px;
+        // text-align: right;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
     }
     .value {
         width: $propertyValueWidth;
-        float: left;
         background-color: #27272b;
         border: 0;
     }
     input.value {
         color: #fff;
-        padding: 10px;
+        padding: 11px;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         margin: 0;
-        height: $propertyGroupHeight;
+        // height: 100%;
+        // height: $propertyGroupHeight + 2;
         font-size: $propertyFontSize;
         &:focus {
             background-color: #424242;
@@ -72,11 +76,16 @@ $propertyFontSize: 12px;
         }
     }
     .selectize-control {
-        height: $propertyGroupHeight;
+        // height: $propertyGroupHeight;
+        height: 100%;
+        &.mutil .selectize-input {
+            overflow-y: auto;
+        }
         .selectize-input {
             color: #fff;
             border: 0;
-            height: $propertyGroupHeight;
+            // height: $propertyGroupHeight;
+            height: 100%;
             &.focus {
                 background-color: #424242;
             }
@@ -109,6 +118,19 @@ $propertyFontSize: 12px;
                     color: #fff;
                 }
             }
+        }
+    }
+    .selectize-control.multi .selectize-input > div {
+        height: 100%;
+        background-color: #000;
+        border: 1px #444 solid;
+        border-radius: 3px;
+        color: #fff;
+        padding: 1px 5px;
+        &.active {
+            background-color: #2a608d;
+            border: 1px #444 solid;
+            color: #fff;
         }
     }
 }

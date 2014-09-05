@@ -14,15 +14,17 @@
   width: 380px;
   font-size: 12px; }
   .property .group {
-    display: inline-block;
-    position: relative; }
+    position: relative;
+    display: table;
+    border-bottom: 1px #000 solid; }
     .property .group.required:after {
       position: absolute;
       z-index: 1;
       content: "";
       color: #fff;
       text-align: right;
-      float: right;
+      right: 0;
+      top: 0;
       width: 0;
       height: 0;
       line-height: 24px;
@@ -37,30 +39,28 @@
       color: #fff;
       text-align: right;
       right: 0;
+      top: 0;
       margin-top: 3px;
       margin-right: 3px; }
   .property .key {
     width: 150px;
-    float: left;
-    padding: 10px;
+    padding: 4px 10px;
+    display: table-cell;
+    vertical-align: middle;
     background-color: #34343e;
-    display: block;
-    height: 34px;
-    line-height: 18px;
+    line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
   .property .value {
     width: 230px;
-    float: left;
     background-color: #27272b;
     border: 0; }
   .property input.value {
     color: #fff;
-    padding: 10px;
+    padding: 11px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin: 0;
-    height: 34px;
     font-size: 12px; }
     .property input.value:focus {
       background-color: #424242;
@@ -68,11 +68,13 @@
     .property input.value[disabled] {
       color: #777; }
   .property .selectize-control {
-    height: 34px; }
+    height: 100%; }
+    .property .selectize-control.mutil .selectize-input {
+      overflow-y: auto; }
     .property .selectize-control .selectize-input {
       color: #fff;
       border: 0;
-      height: 34px; }
+      height: 100%; }
       .property .selectize-control .selectize-input.focus {
         background-color: #424242; }
       .property .selectize-control .selectize-input.disabled {
@@ -95,3 +97,14 @@
       .property .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
         background-color: #363644;
         color: #fff; }
+  .property .selectize-control.multi .selectize-input > div {
+    height: 100%;
+    background-color: #000;
+    border: 1px #444 solid;
+    border-radius: 3px;
+    color: #fff;
+    padding: 1px 5px; }
+    .property .selectize-control.multi .selectize-input > div.active {
+      background-color: #2a608d;
+      border: 1px #444 solid;
+      color: #fff; }

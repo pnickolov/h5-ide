@@ -116,29 +116,25 @@ define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2
 
       ApiRequest( api, params ).then ( result )->
 
-        data = result
-        if data.length < 2
-          notification "warn", "AppService return data is not correct"
-        else
-          if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5 and (typeof data[1] is "string")
-            #return is xml
-            try
-              data[1] = $.xml2json ($.parseXML data[1])
-            catch
-          else if apiDef.url.indexOf("/os/") is 0
-            if apiDef.method is "Info"
-              for item,idx in data
-                try
-                  data[idx][1] = JSON.parse(item[1])
-                catch
-            else
-              #return is json
+        if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5 and (typeof result[1] is "string")
+          #return is xml
+          try
+            result[1] = $.xml2json ($.parseXML result[1])
+          catch
+        else if apiDef.url.indexOf("/os/") is 0
+          if apiDef.method is "Info"
+            for item,idx in result
               try
-                data[1] = JSON.parse(data[1])
+                result[idx][1] = JSON.parse(item[1])
               catch
+          else
+            #return is json
+            try
+              result[1] = JSON.parse(result[1])
+            catch
 
 
-        $("#ApiResult").text JSON.stringify( data, undefined, 4 )
+        $("#ApiResult").text JSON.stringify( result, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")
         $("#ApiResult").attr("finish","true")
       , ( error )->

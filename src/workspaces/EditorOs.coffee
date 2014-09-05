@@ -17,6 +17,24 @@ define [
   "./oseditor/model/OsModelSg"
   "./oseditor/model/OsModelSubnet"
   "./oseditor/model/OsModelVolume"
+  "./oseditor/model/OsModelExtNetwork"
+
+  "./oseditor/model/connection/OsPortUsage"
+  "./oseditor/model/connection/OsSgAsso"
+  "./oseditor/model/connection/OsRouterAsso"
+  "./oseditor/model/connection/OsMonitorUsage"
+  "./oseditor/model/connection/OsListenerAsso"
+
+  "./oseditor/model/deserializeVisitor/ExternalNetwork"
+
+  "./oseditor/canvas/CeNetwork"
+  "./oseditor/canvas/CeSubnet"
+  "./oseditor/canvas/CeRt"
+  "./oseditor/canvas/CePool"
+  "./oseditor/canvas/CeListener"
+  "./oseditor/canvas/CeExtNetwork"
+  "./oseditor/canvas/CeServer"
+  "./oseditor/canvas/CePort"
 
 ], ( OpsEditor, StackEditor )->
 

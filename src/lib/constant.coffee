@@ -92,7 +92,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSRT       : "OS::Neutron::Router"
         OSFIP      : "OS::Neutron::FloatingIP"
         OSELB      : "OS::Neutron::LoadBalancer"
-        OSLISTENER : "OS::Neutron::Listener"
+        OSLISTENER : "OS::Neutron::VIP"
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"
         OSVOL      : "OS::Cinder::Volume"

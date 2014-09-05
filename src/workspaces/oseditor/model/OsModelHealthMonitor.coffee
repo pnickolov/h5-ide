@@ -29,7 +29,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     deserialize : ( data, layout_data, resolve )->
       new Model({
         id    : data.uid
-        name  : data.name
+        name  : data.resource.name
         appId : data.resource.id
       })
       return

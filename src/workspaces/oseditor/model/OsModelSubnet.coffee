@@ -1,7 +1,7 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "GroupModel", "constant" ], ( GroupModel, constant )->
 
-  Model = ComplexResModel.extend {
+  Model = GroupModel.extend {
 
     type : constant.RESTYPE.OSSUBNET
     newNameTmpl : "Subnet-"
@@ -35,8 +35,15 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     deserialize : ( data, layout_data, resolve )->
       new Model({
         id    : data.uid
-        name  : data.name
+        name  : data.resource.name
         appId : data.resource.id
+
+        parent : resolve( MC.extractID(data.resource.network_id) )
+
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
+        width  : layout_data.size[0]
+        height : layout_data.size[1]
       })
       return
   }

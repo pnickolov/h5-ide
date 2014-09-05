@@ -244,7 +244,7 @@ define [
       el.add([
         svg.rect(width-1, height-1).move(0.5,0.5).radius(5).classes("node-background")
         svg.image( MC.IMG_URL + option.image, option.imageW, option.imageH ).move( option.imageX, option.imageY )
-      ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\.|:/g, "-") )
 
       if option.labelBg
         el.add( svg.use("label_path").classes("node-label-name-bg") )
@@ -293,7 +293,7 @@ define [
         svg.rect( pad, pad ).move(width - pad, height - pad).classes("group-resizer bottom-right")
 
         svg.text("").move(5,15).classes("group-label")
-      ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
+      ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\.|:/g, "-") )
 
     label      : ()->
       if @model.type is "ExpandedAsg" and @model.get("originalAsg")

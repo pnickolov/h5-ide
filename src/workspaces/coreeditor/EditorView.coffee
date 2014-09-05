@@ -132,7 +132,8 @@ define [
       ###
       Revoke all the IDs of every dom.
       ###
-      @propertyPanel.backup()
+      if @propertyPanel and @propertyPanel.backbone
+        @propertyPanel.backup()
 
       @$el.attr("id", "")
       return

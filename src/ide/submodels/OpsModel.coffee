@@ -688,7 +688,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       property :
         stoppable : true
 
-    __initJsonData : ()-> @__jsonData = @__createRawJson()
+    __initJsonData : ()-> @__jsonData = @__createRawJson(); return
   }, {
     extend : ( protoProps, staticProps ) ->
       # Create subclass

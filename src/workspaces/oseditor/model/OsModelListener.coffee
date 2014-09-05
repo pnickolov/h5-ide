@@ -1,5 +1,5 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
 
   Model = ComplexResModel.extend {
 
@@ -30,11 +30,18 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     handleTypes  : constant.RESTYPE.OSLISTENER
 
     deserialize : ( data, layout_data, resolve )->
-      new Model({
+      listener = new Model({
         id    : data.uid
-        name  : data.name
+        name  : data.resource.name
         appId : data.resource.id
+
+        parent : resolve( MC.extractID( data.resource.subnet_id ) )
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
       })
+
+      Asso = Design.modelClassForType( "OsListenerAsso" )
+      new Asso( listener, resolve(MC.extractID( data.resource.pool_id )) )
       return
   }
 

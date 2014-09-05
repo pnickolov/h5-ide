@@ -746,3 +746,44 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 
 }
 
+
+// OpenStack
+.OS--Neutron--Network {
+  .group {
+    stroke: #dcdcdc;
+    stroke-linejoin: round;
+    stroke-dasharray: none;
+    stroke-width: 4;
+  }
+
+  &:hover .group { stroke: #C6C4C4; }
+
+  .group-label {
+    fill:#aaa;
+  }
+
+  .canvas-view &.selected .group {
+    stroke: #C6C4C4;
+    fill: rgba(255, 255, 255, 0);
+    stroke-width: 5;
+  }
+}
+
+.OS--Neutron--Subnet {
+  .group {
+    fill: rgba(252, 190, 23, 0.02);
+    stroke: #f9be76;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    .group { stroke: #F69722; }
+  }
+
+  .group-label {
+    fill: #F69722;
+  }
+}
+

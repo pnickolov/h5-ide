@@ -581,6 +581,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         pt1 = lineData.result[ idx+1 ]
         pt2 = lineData.result[ idx+2 ]
 
+        if pt1 and pt1.y is pt0.y and pt0.x is pt1.x
+          # Ignore the point, because the point is the same as the next one.
+          idx += 1
+          continue
+
         optPoints.push pt0
         if pt1 and pt2
           if ( pt1.x is pt2.x and pt0.x is pt1.x ) or ( pt1.y is pt2.y and pt0.y is pt1.y )

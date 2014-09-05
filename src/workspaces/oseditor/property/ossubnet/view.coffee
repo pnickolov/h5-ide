@@ -6,7 +6,8 @@ define [
 
     OsPropertyView.extend {
         render: ->
-
+            @$el.html '123'
+            @
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]

@@ -24,6 +24,7 @@ define [
         'click .sidebar-title a' : '__openPanel'
 
     initialize: ( options ) ->
+        window.Panel = @
         _.extend this, options
         @render()
 

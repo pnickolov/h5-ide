@@ -27,7 +27,8 @@ define [
 
 
     render: () ->
-        @$el.html new @viewClass( model: @model )
+        @$el.html new @viewClass( model: @model ).render().el
+        @
 
     bindSelection: (event) ->
 

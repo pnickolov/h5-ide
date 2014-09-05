@@ -5,15 +5,14 @@ define [
     'Design'
     '../../property/OsPropertyView'
     '../../property/OsPropertyBundle'
-    './template/TplPropertyPanel'
     'selectize'
-], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle, TplPropertyPanel )->
+], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle )->
 
   Backbone.View.extend
 
     events:
 
-        'DOMNodeInserted .property .group': 'bindSelection'
+        'DOMNodeInserted .group': 'bindSelection'
 
     initialize: ( options ) ->
 
@@ -27,12 +26,16 @@ define [
 
 
     render: () ->
+
+        that = @
         @$el.html new @viewClass( model: @model ).render().el
+
+        _.each @$el.find('select.value'), (valueDom) ->
+            that.bindSelection($(valueDom))
+
         @
 
-    bindSelection: (event) ->
-
-        $valueDom = $(event.target).find('select.value')
+    bindSelection: ($valueDom) ->
 
         if not $valueDom.hasClass('selectized')
 

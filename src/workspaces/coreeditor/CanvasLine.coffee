@@ -375,7 +375,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         @getNextElbowTarget( lineData )
         ++lineData.test
         if lineData.test >= 100
-          throw new Error( "Failed to search elbow path" )
+          throw new Error( "Failed to search elbow path for: " + this.type )
 
       # 4. Optimize points
       lineData.result.unshift( { x:lineData.start.x, y:lineData.start.y } )
@@ -432,7 +432,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       if nextArea
         if nextArea.endParent
-          if nextArea.x2 > lineData.target.x and nextArea.x1 < lineData.target.x and nextArea.y2 > lineData.target.y and nextArea.y1 < lineData.target.y
+          if nextArea.x1 < lineData.target.x < nextArea.x2 and nextArea.y1 < lineData.target.y < nextArea.y2
             if (nextArea.x1 is lineData.current.x or nextArea.x2 is lineData.current.x) or (nextArea.y1 is lineData.current.y or nextArea.y2 is lineData.current.y)
               ++lineData.areaIdx
               area     = lineData.areas[ lineData.areaIdx ]
@@ -697,33 +697,36 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       bound
 
-    __getElbowChildRect : ( ch )->
-      rect = ch.rect()
-      rect.item = ch
-      rect.x1 *= 10
-      rect.y1 *= 10
-      rect.x2 *= 10
-      rect.y2 *= 10
-      if ch.isGroup()
-        rect.x1 -= 5
-        rect.y1 -= 5
-        rect.x2 += 5
-        rect.y2 += 5
-      rect
+    __getElbowChildRect : ( p )->
+      children = []
+      for ch in p.children()
+        rect = ch.rect()
+        rect.item = ch
+        rect.x1 *= 10
+        rect.y1 *= 10
+        rect.x2 *= 10
+        rect.y2 *= 10
+        if ch.isGroup()
+          rect.x1 -= 5
+          rect.y1 -= 5
+          rect.x2 += 5
+          rect.y2 += 5
+        children.push rect
+      children
 
-    __getElbowParentRect : ( ch, children )->
+    __getElbowParentRect : ( ch )->
       rect = ch.rect()
       rect.item = ch
       rect.x1 = rect.x1 * 10 - 5
       rect.y1 = rect.y1 * 10 - 5
       rect.x2 = rect.x2 * 10 + 5
       rect.y2 = rect.y2 * 10 + 5
-      rect.children = children
+      rect.children = @__getElbowChildRect( ch )
       rect
 
     getElbowAreas : ( start, end )->
       p1 = start.item
-      p2 = end.item.parent()
+      p2 = end.item
 
       p2Parents = []
       while p2
@@ -732,30 +735,21 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       areas = []
       while p1
-        p1 = p1.parent()
-        children = []
-        for ch in p1.children()
-          if ch is start.item then continue
-          children.push @__getElbowChildRect( ch )
-
         p2Index = p2Parents.indexOf( p1 )
         if p2Index is -1
-          areas.push @__getElbowParentRect( p1, children )
+          areas.push @__getElbowParentRect( p1 )
         else
           endParent = false
           while p2Index >= 0
-            p2 = p2Parents[ p2Index ]
-            children = []
-            for ch in p2.children()
-              if ch is start.item or ch is end.item then continue
-              children.push @__getElbowChildRect( ch )
-
-            rect = @__getElbowParentRect( p2, children )
+            rect = @__getElbowParentRect( p2Parents[p2Index] )
             rect.endParent = endParent
             areas.push rect
             endParent = true
             --p2Index
           break
+
+        p1 = p1.parent()
+
       areas
 
   }, {

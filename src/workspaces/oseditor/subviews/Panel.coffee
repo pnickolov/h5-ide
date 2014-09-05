@@ -31,12 +31,12 @@ define [
         @setElement @parent.$el.find(".OEPanelRight")
 
         @$el.html PanelTpl {}
-        @openPanel 'resource'
+        @open 'resource'
 
         @
 
-    renderSubPanel: ( subPanel ) ->
-        @$( '.panel-body' ).html new subPanel().render().el
+    renderSubPanel: ( subPanel, args ) ->
+        @$( '.panel-body' ).html new subPanel( args ).render().el
 
     scrollTo: ( className ) ->
         $container = @$ '.panel-body'
@@ -47,7 +47,7 @@ define [
 
         $container.animate scrollTop: newTop
 
-    openPanel: ( panelName ) ->
+    open: ( panelName, args = {} ) ->
         targetPanel = Panels[ panelName ]
         unless targetPanel then return
 
@@ -56,11 +56,14 @@ define [
         if isCurrentPanel then return
 
         @$el.prop 'class', "OEPanelRight #{panelName}"
-        @renderSubPanel targetPanel
+        @renderSubPanel targetPanel, args
+
+    openProperty: ( args ) ->
+        @open 'property', args
 
     __openPanel: ( e ) ->
         targetPanelName = $( e.currentTarget ).prop 'class'
-        @openPanel targetPanelName
+        @open targetPanelName
 
     __scrollTo: ( e ) ->
         targetClassName = $( e.currentTarget ).data 'scrollTo'

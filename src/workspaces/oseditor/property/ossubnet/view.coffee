@@ -5,6 +5,8 @@ define [
 ], ( constant, OsPropertyView ) ->
 
     OsPropertyView.extend {
+        render: ->
+
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]

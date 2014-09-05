@@ -1,0 +1,97 @@
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+.property {
+  background-color: #1a1a1b;
+  width: 380px;
+  font-size: 12px; }
+  .property .group {
+    display: inline-block;
+    position: relative; }
+    .property .group.required:after {
+      position: absolute;
+      z-index: 1;
+      content: "";
+      color: #fff;
+      text-align: right;
+      float: right;
+      width: 0;
+      height: 0;
+      line-height: 24px;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      margin-left: -20px;
+      border-color: transparent #0b8900 transparent transparent; }
+    .property .group.required:before {
+      position: absolute;
+      z-index: 2;
+      content: "*";
+      color: #fff;
+      text-align: right;
+      right: 0;
+      margin-top: 3px;
+      margin-right: 3px; }
+  .property .key {
+    width: 150px;
+    float: left;
+    padding: 10px;
+    background-color: #34343e;
+    display: block;
+    height: 34px;
+    line-height: 18px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+  .property .value {
+    width: 230px;
+    float: left;
+    background-color: #27272b;
+    border: 0; }
+  .property input.value {
+    color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    height: 34px;
+    font-size: 12px; }
+    .property input.value:focus {
+      background-color: #424242;
+      outline: none; }
+    .property input.value[disabled] {
+      color: #777; }
+  .property .selectize-control {
+    height: 34px; }
+    .property .selectize-control .selectize-input {
+      color: #fff;
+      border: 0;
+      height: 34px; }
+      .property .selectize-control .selectize-input.focus {
+        background-color: #424242; }
+      .property .selectize-control .selectize-input.disabled {
+        color: #777;
+        background-color: #27272b; }
+      .property .selectize-control .selectize-input input {
+        color: #fff;
+        padding: 2px;
+        font: inherit; }
+      .property .selectize-control .selectize-input div {
+        padding: 2px; }
+    .property .selectize-control .selectize-dropdown {
+      background-color: #373737;
+      color: #9d9d97;
+      border: 0; }
+      .property .selectize-control .selectize-dropdown [data-selectable], .property .selectize-control .selectize-dropdown .optgroup-header {
+        padding: 10px; }
+      .property .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
+        color: #fff; }
+      .property .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
+        background-color: #363644;
+        color: #fff; }

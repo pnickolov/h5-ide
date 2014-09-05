@@ -1,0 +1,114 @@
+@import "color";
+
+$propertyGroupHeight: 34px;
+$propertyKeyWidth: 150px;
+$propertyValueWidth: 230px;
+$propertyFontSize: 12px;
+
+.property {
+    background-color: #1a1a1b;
+    width: $propertyKeyWidth + $propertyValueWidth;
+    font-size: $propertyFontSize;
+    .group {
+        display: inline-block;
+        position: relative;
+        &.required:after {
+            position: absolute;
+            z-index: 1;
+            content: "";
+            color: #fff;
+            text-align: right;
+            float: right;
+            width: 0;
+            height: 0;
+            line-height: 24px;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            margin-left: -20px;
+            border-color: transparent #0b8900 transparent transparent;
+        }
+        &.required:before {
+            position: absolute;
+            z-index: 2;
+            content: "*";
+            color: #fff;
+            text-align: right;
+            right: 0;
+            margin-top: 3px;
+            margin-right: 3px;
+        }
+    }
+    .key {
+        width: $propertyKeyWidth;
+        float: left;
+        padding: 10px;
+        background-color: #34343e;
+        display: block;
+        height: $propertyGroupHeight;
+        line-height: 18px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .value {
+        width: $propertyValueWidth;
+        float: left;
+        background-color: #27272b;
+        border: 0;
+    }
+    input.value {
+        color: #fff;
+        padding: 10px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        margin: 0;
+        height: $propertyGroupHeight;
+        font-size: $propertyFontSize;
+        &:focus {
+            background-color: #424242;
+            outline: none;
+        }
+        &[disabled] {
+            color: #777;
+        }
+    }
+    .selectize-control {
+        height: $propertyGroupHeight;
+        .selectize-input {
+            color: #fff;
+            border: 0;
+            height: $propertyGroupHeight;
+            &.focus {
+                background-color: #424242;
+            }
+            &.disabled {
+                color: #777;
+                background-color: #27272b;
+            }
+            input {
+                color: #fff;
+                padding: 2px;
+                font: inherit;
+            }
+            div {
+                padding: 2px;
+            }
+        }
+        .selectize-dropdown {
+            background-color: #373737;
+            color: #9d9d97;
+            border: 0;
+            [data-selectable], .optgroup-header {
+                padding: 10px;
+            }
+            .selectize-dropdown-content {
+                .selected {
+                    color: #fff;
+                }
+                .active {
+                    background-color: #363644;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

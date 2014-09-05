@@ -1,4 +1,5 @@
 define [
-  './ossubnet/view'
+    './default/view'
+    './ossubnet/view'
 
 ], () ->

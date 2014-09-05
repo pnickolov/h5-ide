@@ -17,6 +17,9 @@ define [
     state    : StatePanel
   }
 
+  __defaultArgs = { uid: '', type: 'default' }
+  __openArgs = __defaultArgs
+
   Backbone.View.extend
 
     events:
@@ -48,24 +51,31 @@ define [
 
         $container.animate scrollTop: newTop
 
-    open: ( panelName, args = {} ) ->
+    open: ( panelName, args = __defaultArgs ) ->
+        __openArgs = args
         targetPanel = Panels[ panelName ]
         unless targetPanel then return
 
         @$el.removeClass( 'hide' )
         isCurrentPanel = @$el.hasClass panelName
-        if isCurrentPanel then return
+        #if isCurrentPanel then return
 
         @$el.prop 'class', "OEPanelRight #{panelName}"
         @renderSubPanel targetPanel, args
 
-    openProperty: ( args ) ->
-        @open 'property', args
+    openResource: ( args ) -> @open 'property', args
+    openProperty: ( args ) -> @open 'property', args
+    openConfig  : ( args ) -> @open 'config', args
+    openState   : ( args ) -> @open 'state', args
 
     __openPanel: ( e ) ->
         targetPanelName = $( e.currentTarget ).prop 'class'
-        @open targetPanelName
+        @open targetPanelName, __openArgs
 
     __scrollTo: ( e ) ->
         targetClassName = $( e.currentTarget ).data 'scrollTo'
         @scrollTo targetClassName
+
+
+
+

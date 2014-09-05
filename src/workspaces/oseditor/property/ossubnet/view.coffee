@@ -6,7 +6,6 @@ define [
 
     OsPropertyView.extend {
         render: ->
-            @$el.html '123'
             @
 
     }, {

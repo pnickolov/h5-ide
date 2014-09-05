@@ -216,9 +216,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       if start.x is end.x or start.y is end.y
         return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
 
-      # @__lastDir = if start.y >= end.y then 1 else -1
-      #MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
-      @generateElbowPath( start, end )
+      try
+        return @generateElbowPath( start, end )
+      catch e
+        console.log e
+        @__lastDir = if start.y >= end.y then 1 else -1
+        return MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
 
     lineStyle : ()-> 4
 
@@ -354,71 +357,308 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
     generateElbowPath : ( start, end )->
       # 1. Find out the area we want our line to fit in.
-      bound = @getElbowBounds( start, end )
+      lineData = @getElbowBounds( start, end )
 
       # 2. Find out all the area that we might go through
-      areas = @getElbowAreas( start, end )
+      lineData.areas = @getElbowAreas( start, end )
+
+      lineData.result  = []
+      lineData.areaIdx = 0
+      lineData.current = { x:lineData.start.x, y:lineData.start.y }
+      lineData.target  = {}
+      lineData.test    = 0
 
       # 3. Search best points for each area
-      newPoints = []
-      currentPoint = bound.start
-      for area in areas
-        newPoints    = newPoints.concat @searchElbowPoint( currentPoint, bound.end, area, bound )
-        currentPoint = newPoints[ newPoints.length - 1 ]
+      @getNextElbowTarget( lineData )
+      while not lineData.done
+        @proceedElbowTarget( lineData )
+        @getNextElbowTarget( lineData )
+        ++lineData.test
+        if lineData.test >= 100
+          throw new Error( "Failed to search elbow path" )
 
       # 4. Optimize points
-      newPoints = @optimizeElbowPoints( newPoints )
+      lineData.result.unshift( { x:start.x, y:start.y } )
+      lineData.result.push( { x:end.x, y:end.y } )
+      @optimizeElbowPoints( lineData )
 
       # 5. Generate Path
-      "M#{start.x} #{start.y}" + @getElbowPathFromPoints( newPoints ) + "L#{end.x} #{end.y}"
+      @getElbowPathFromPoints( lineData.result )
 
-    optimizeElbowPoints : ( newPoints )-> newPoints
+    getNextElbowTarget : ( lineData )->
+      if lineData.current.x is lineData.end.x and lineData.current.y is lineData.end.y
+        lineData.done = true
+        return
+
+      lineData.target.x = lineData.current.x
+      lineData.target.y = lineData.current.y
+
+      if lineData.start.angle is CanvasElement.constant.PORT_RIGHT_ANGLE or lineData.start.angle is CanvasElement.constant.PORT_LEFT_ANGLE
+        if lineData.start.angle is CanvasElement.constant.PORT_RIGHT_ANGLE
+          left  = lineData.current.x
+          right = lineData.preferX
+        else
+          left  = lineData.preferX
+          right = lineData.current.x
+
+        if left < right
+          lineData.target.x = lineData.preferX
+        else if lineData.current.y isnt lineData.end.y
+          lineData.target.y = lineData.end.y
+        else
+          lineData.target.x = lineData.end.x
+      else
+        if lineData.start.angle is CanvasElement.constant.PORT_DOWN_ANGLE
+          top  = lineData.current.y
+          down = lineData.preferY
+        else
+          top  = lineData.preferY
+          down = lineData.current.y
+        if top < down
+          lineData.target.y = lineData.preferY
+        else if lineData.current.x isnt lineData.end.x
+          lineData.target.x = lineData.end.x
+        else
+          lineData.target.y = lineData.end.y
+
+      return
+
+    proceedElbowTarget : ( lineData )->
+      area     = lineData.areas[ lineData.areaIdx ]
+      nextArea = lineData.areas[ lineData.areaIdx + 1 ]
+      target   = $.extend {}, lineData.target
+
+      if nextArea
+        if nextArea.endParent
+          if nextArea.x2 > lineData.target.x and nextArea.x1 < lineData.target.x and nextArea.y2 > lineData.target.y and nextArea.y1 < lineData.target.y
+            if (nextArea.x1 is lineData.current.x or nextArea.x2 is lineData.current.x) or (nextArea.y1 is lineData.current.y or nextArea.y2 is lineData.current.y)
+              ++lineData.areaIdx
+              area     = lineData.areas[ lineData.areaIdx ]
+              nextArea = lineData.areas[ lineData.areaIdx + 1 ]
+
+            if nextArea
+              if lineData.current.x > nextArea.x2
+                target.x = nextArea.x2
+              else if lineData.current.x < nextArea.x1
+                target.x = nextArea.x1
+              else if lineData.current.y > nextArea.y2
+                target.y = nextArea.y2
+              else if lineData.current.y < nextArea.y1
+                target.y = nextArea.y1
+        else
+          if not (area.x1 < lineData.target.x and area.x2 > lineData.target.x and area.y1 < lineData.target.y and area.y2 > lineData.target.y)
+            if (area.x1 is lineData.current.x or area.x2 is lineData.current.x) or (area.y1 is lineData.current.y or area.y2 is lineData.current.y)
+              ++lineData.areaIdx
+              area     = lineData.areas[ lineData.areaIdx ]
+              nextArea = lineData.areas[ lineData.areaIdx + 1 ]
+
+            if target.x > area.x2
+              target.x = area.x2
+            else if target.x < area.x1
+              target.x = area.x1
+            else if target.y > area.y2
+              target.y = area.y2
+            else if target.y < area.y1
+              target.y = area.y1
+
+      # 1. See if that point is blocked.
+      cross = []
+      if target.x < lineData.current.x
+        linex1 = target.x
+        linex2 = lineData.current.x
+      else
+        linex1 = lineData.current.x
+        linex2 = target.x
+      if target.y < lineData.current.y
+        liney1 = target.y
+        liney2 = lineData.current.y
+      else
+        liney1 = lineData.current.y
+        liney2 = target.y
+
+      for ch in area.children
+        if not ( ch.x1 >= linex2 or ch.x2 <= linex1 or ch.y1 >= liney2 or ch.y2 <= liney1 )
+          # This children cross the line
+          cross.push ch
+
+
+      # 2. Find out which block comes first
+      if lineData.current.x > target.x
+        currentAngle = CanvasElement.constant.PORT_LEFT_ANGLE
+      else if lineData.current.x < target.x
+        currentAngle = CanvasElement.constant.PORT_RIGHT_ANGLE
+      else if lineData.current.y > target.y
+        currentAngle = CanvasElement.constant.PORT_UP_ANGLE
+      else
+        currentAngle = CanvasElement.constant.PORT_DOWN_ANGLE
+
+      minCross = -1
+      theCross = null
+      for ch in cross
+        if currentAngle is CanvasElement.constant.PORT_LEFT_ANGLE or currentAngle is CanvasElement.constant.PORT_RIGHT_ANGLE
+          dis = Math.abs( ch.x1 - linex1 )
+        else
+          dis = Math.abs( ch.y1 - liney1 )
+
+        if dis < minCross or minCross is -1
+          theCross = ch
+          minCross = dis
+
+      if not theCross
+        lineData.result.push target
+        lineData.current.x = target.x
+        lineData.current.y = target.y
+        return
+
+      # 3 Stop at the cloest block. And find next point.
+      if currentAngle is CanvasElement.constant.PORT_UP_ANGLE or currentAngle is CanvasElement.constant.PORT_DOWN_ANGLE
+        if currentAngle is CanvasElement.constant.PORT_UP_ANGLE
+          theCrossY   = theCross.y2
+          theCrossEnd = theCross.y1
+        else
+          theCrossY   = theCross.y1
+          theCrossEnd = theCross.y2
+
+        lineData.result.push { x : lineData.current.x, y : theCrossY }
+
+        # Choose left or right
+        if theCross.x2 < lineData.end.x
+          theCrossX = theCross.x2
+        else if theCross.x1 > lineData.end.x
+          theCrossX = theCross.x1
+        else if (theCross.x2 - lineData.current.x) <= (lineData.current.x - theCross.x1)
+          theCrossX = theCross.x2
+        else
+          theCrossX = theCross.x1
+
+        lineData.result.push { x : theCrossX, y : theCrossY }
+
+        if Math.abs(theCrossEnd - lineData.current.y) > Math.abs(lineData.preferY - lineData.current.y)
+          lineData.result.push { x : theCrossX, y : lineData.preferY }
+        else
+          lineData.result.push { x : theCrossX, y : theCrossEnd }
+
+        lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
+
+      else
+        if currentAngle is CanvasElement.constant.PORT_LEFT_ANGLE
+          theCrossX   = theCross.x2
+          theCrossEnd = theCross.x1
+        else
+          theCrossX   = theCross.x1
+          theCrossEnd = theCross.x2
+
+        lineData.result.push { x : theCrossX, y : lineData.current.y }
+
+        # Choose top or bottom
+        if theCross.y2 < lineData.end.y
+          theCrossY = theCross.y2
+        else if theCross.y1 > lineData.end.y
+          theCrossY = theCross.y1
+        else if (theCross.y2 - lineData.current.y) <= (lineData.current.y - theCross.y1)
+          theCrossY = theCross.y2
+        else
+          theCrossY = theCross.y1
+
+        lineData.result.push { x : theCrossX, y : theCrossY }
+
+        if Math.abs(theCrossEnd - lineData.current.x) > Math.abs(lineData.preferX - lineData.current.x)
+          lineData.result.push { y : theCrossY, x : lineData.preferX }
+        else
+          lineData.result.push { y : theCrossY, x : theCrossEnd }
+
+        lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
+
+      return
+
+
+
+    optimizeElbowPoints : ( lineData )->
+      optPoints = []
+      idx = 0
+      while idx < lineData.result.length
+        pt0 = lineData.result[ idx ]
+        pt1 = lineData.result[ idx+1 ]
+        pt2 = lineData.result[ idx+2 ]
+
+        optPoints.push pt0
+        if pt1 and pt2
+          if ( pt1.x is pt2.x and pt0.x is pt1.x ) or ( pt1.y is pt2.y and pt0.y is pt1.y )
+            # Ignore the useless point.
+            idx += 2
+            continue
+        ++idx
+      lineData.result = optPoints
+      return
+
 
     getElbowPathFromPoints : ( newPoints )->
       path = ""
-      path += "L#{p.x} #{p.y}" for p in newPoints
+      for p, idx in newPoints
+        if idx is 0
+          path = "M#{p.x} #{p.y}"
+          continue
+
+        lastPt = newPoints[ idx-1 ]
+        nextPt = newPoints[ idx+1 ]
+        if lastPt and nextPt
+          x = 0
+          y = 0
+          if lastPt.y is p.y and nextPt.x is p.x
+            x = p.x + ( if lastPt.x > p.x then 5 else -5 )
+            y = p.y + ( if nextPt.y > p.y then 5 else -5 )
+            path += "L#{x} #{p.y} Q#{p.x} #{p.y} #{p.x} #{y}"
+            continue
+          else if lastPt.x is p.x and nextPt.y is p.y
+            x = p.x + ( if nextPt.x > p.x then 5 else -5 )
+            y = p.y + ( if lastPt.y > p.y then 5 else -5 )
+            path += "L#{p.x} #{y} Q#{p.x} #{p.y} #{x} #{p.y}"
+            continue
+
+        path += "L#{p.x} #{p.y}"
+
       path
 
     __fixElbowEndpoint : ( point, relative )->
       p = $.extend {}, point
 
-      if point.angle is CanvasElement.PORT_2D_H_ANGLE or point.angle is CanvasElement.PORT_4D_ANGLE
+      if point.angle is CanvasElement.constant.PORT_2D_H_ANGLE or point.angle is CanvasElement.constant.PORT_4D_ANGLE
         if point.x >= relative.x
-          p.angle = CanvasElement.PORT_LEFT_ANGLE
+          p.angle = CanvasElement.constant.PORT_LEFT_ANGLE
         else
-          p.angle = CanvasElement.PORT_RIGHT_ANGLE
+          p.angle = CanvasElement.constant.PORT_RIGHT_ANGLE
 
-      if point.angle is CanvasElement.PORT_2D_V_ANGLE
+      if point.angle is CanvasElement.constant.PORT_2D_V_ANGLE
         if point.y >= relative.y
-          p.angle = CanvasElement.PORT_UP_ANGLE
+          p.angle = CanvasElement.constant.PORT_UP_ANGLE
         else
-          p.pointangle = CanvasElement.PORT_DOWN_ANGLE
+          p.pointangle = CanvasElement.constant.PORT_DOWN_ANGLE
 
-      if (p.angle is CanvasElement.PORT_LEFT_ANGLE and p.x < relative.x) or (p.angle is CanvasElement.PORT_RIGHT_ANGLE and p.x > relative.x)
-        angle = if relative.y >= p.y then CanvasElement.PORT_DOWN_ANGLE else CanvasElement.PORT_UP_ANGLE
+      if (p.angle is CanvasElement.constant.PORT_LEFT_ANGLE and p.x < relative.x) or (p.angle is CanvasElement.constant.PORT_RIGHT_ANGLE and p.x > relative.x)
+        angle = if relative.y >= p.y then CanvasElement.constant.PORT_DOWN_ANGLE else CanvasElement.constant.PORT_UP_ANGLE
 
-      else if (p.angle is CanvasElement.PORT_UP_ANGLE and p.y < relative.y) or (p.angle is CanvasElement.PORT_DOWN_ANGLE and p.y > relative.y )
-        angle = if relative.x >= p.x then CanvasElement.PORT_RIGHT_ANGLE else CanvasElement.PORT_LEFT_ANGLE
+      else if (p.angle is CanvasElement.constant.PORT_UP_ANGLE and p.y < relative.y) or (p.angle is CanvasElement.constant.PORT_DOWN_ANGLE and p.y > relative.y )
+        angle = if relative.x >= p.x then CanvasElement.constant.PORT_RIGHT_ANGLE else CanvasElement.constant.PORT_LEFT_ANGLE
 
       if angle
         switch p.angle
-          when CanvasElement.PORT_LEFT_ANGLE
+          when CanvasElement.constant.PORT_LEFT_ANGLE
             p.x = Math.floor( (p.x - 1) / 10 ) * 10
-          when CanvasElement.PORT_RIGHT_ANGLE
+          when CanvasElement.constant.PORT_RIGHT_ANGLE
             p.x = Math.ceil(  (p.x + 1) / 10 ) * 10
-          when CanvasElement.PORT_UP_ANGLE
+          when CanvasElement.constant.PORT_UP_ANGLE
             p.y = Math.floor( (p.y - 1) / 10 ) * 10
-          when CanvasElement.PORT_DOWN_ANGLE
+          when CanvasElement.constant.PORT_DOWN_ANGLE
             p.y = Math.ceil(  (p.y + 1) / 10 ) * 10
 
         p.angle = angle
       p
 
     __ensurePointInParent : ( point, parentRect )->
-      point.x = Math.max( point.x, parentRect.x1 )
-      point.x = Math.min( point.x, parentRect.x2 )
-      point.y = Math.min( point.y, parentRect.y1 )
-      point.y = Math.max( point.y, parentRect.y2 )
+      point.x = Math.max( point.x, parentRect.x1 * 10 )
+      point.x = Math.min( point.x, parentRect.x2 * 10 )
+      point.y = Math.max( point.y, parentRect.y1 * 10 )
+      point.y = Math.min( point.y, parentRect.y2 * 10 )
       point
 
     getElbowBounds : ( start, end ) ->
@@ -427,28 +667,52 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       bound = {}
       if (start0.angle + end0.angle) % 180 is 0
-        if start0.angle is CanvasElement.PORT_UP_ANGLE or start0.angle is CanvasElement.PORT_DOWN_ANGLE
+        if start0.angle is CanvasElement.constant.PORT_UP_ANGLE or start0.angle is CanvasElement.constant.PORT_DOWN_ANGLE
           bound.preferX = end0.x
-          bound.preferY = (start0.y + end0.y) / 2
+          bound.preferY = Math.round( (start0.y + end0.y) / 20 ) * 10
         else
           bound.preferY = end0.y
-          bound.preferX = (start0.x + end0.x) / 2
+          bound.preferX = Math.round( (start0.x + end0.x) / 20 ) * 10
       else
-        if start0.angle is CanvasElement.PORT_UP_ANGLE or start0.angle is CanvasElement.PORT_DOWN_ANGLE
-          bound.preferX = end0.x
-          bound.preferY = start0.y
-        else
+        if start0.angle is CanvasElement.constant.PORT_UP_ANGLE or start0.angle is CanvasElement.constant.PORT_DOWN_ANGLE
           bound.preferX = start0.x
           bound.preferY = end0.y
+        else
+          bound.preferX = end0.x
+          bound.preferY = start0.y
 
       bound.x1 = Math.min( start0.x, end0.x )
       bound.x2 = Math.max( start0.x, end0.x )
-      bound.y1 = Math.min( start0.x, end0.x )
-      bound.y2 = Math.max( start0.x, end0.x )
+      bound.y1 = Math.min( start0.y, end0.y )
+      bound.y2 = Math.max( start0.y, end0.y )
       bound.start = @__ensurePointInParent( start0, start.item.parent().rect() )
       bound.end   = @__ensurePointInParent( end0,   end.item.parent().rect() )
 
       bound
+
+    __getElbowChildRect : ( ch )->
+      rect = ch.rect()
+      rect.item = ch
+      rect.x1 *= 10
+      rect.y1 *= 10
+      rect.x2 *= 10
+      rect.y2 *= 10
+      if ch.isGroup()
+        rect.x1 -= 5
+        rect.y1 -= 5
+        rect.x2 += 5
+        rect.y2 += 5
+      rect
+
+    __getElbowParentRect : ( ch, children )->
+      rect = ch.rect()
+      rect.item = ch
+      rect.x1 = rect.x1 * 10 - 5
+      rect.y1 = rect.y1 * 10 - 5
+      rect.x2 = rect.x2 * 10 + 5
+      rect.y2 = rect.y2 * 10 + 5
+      rect.children = children
+      rect
 
     getElbowAreas : ( start, end )->
       p1 = start.item
@@ -463,154 +727,29 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       while p1
         p1 = p1.parent()
         children = []
-        children.push ch.rect() for ch in p1.children()
+        for ch in p1.children()
+          if ch is start.item then continue
+          children.push @__getElbowChildRect( ch )
 
         p2Index = p2Parents.indexOf( p1 )
         if p2Index is -1
-          areas.push {
-            bound    : p1.rect()
-            children : children
-          }
+          areas.push @__getElbowParentRect( p1, children )
         else
+          endParent = false
           while p2Index >= 0
             p2 = p2Parents[ p2Index ]
             children = []
-            children.push ch.rect() for ch in p2.children()
-            areas.push {
-              bound     : p2.rect()
-              children  : children
-              endParent : true
-            }
+            for ch in p2.children()
+              if ch is start.item or ch is end.item then continue
+              children.push @__getElbowChildRect( ch )
+
+            rect = @__getElbowParentRect( p2, children )
+            rect.endParent = endParent
+            areas.push rect
+            endParent = true
             --p2Index
           break
-
       areas
-
-    nextElbowPoint : ( currentPoint, endPoint, area )->
-      # 0. Find out the path we need to walk.
-      targetPoint = $.extend {}, endPoint
-      switch currentPoint.angle
-        when CanvasElement.PORT_UP_ANGLE
-          linex1 = linex2 = targetPoint.x
-          liney1 = targetPoint.y
-          liney2 = currentPoint.y
-        when CanvasElement.PORT_DOWN_ANGLE
-          linex1 = linex2 = targetPoint.x
-          liney1 = currentPoint.y
-          liney2 = targetPoint.y
-        when CanvasElement.PORT_LEFT_ANGLE
-          liney1 = liney2 = targetPoint.y
-          linex1 = targetPoint.x
-          linex2 = currentPoint.x
-        when CanvasElement.PORT_RIGHT_ANGLE
-          liney1 = liney2 = targetPoint.y
-          linex1 = currentPoint.x
-          linex2 = targetPoint.x
-
-      # 1. See if that point is blocked.
-      cross = []
-      for ch in area.children
-        if not ( ch.x1 >= linex2 or ch.x2 <= linex1 or ch.y1 >= liney2 or ch.y2 <= liney1 )
-          # This children cross the line
-          cross.push ch
-
-      # 2. Find out which block comes first
-      minCross = -1
-      theCross = null
-      for ch in cross
-        if currentPoint.angle is CanvasElement.PORT_LEFT_ANGLE or currentPoint.angle is CanvasElement.PORT_RIGHT_ANGLE
-          dis = Math.abs( ch.x1 - linex1 )
-        else
-          dis = Math.abs( ch.y1 - liney1 )
-
-        if dis < minCross
-          theCross = ch
-          minCross = dis
-
-      # 3.1 The position is not blocked.
-      if not theCross
-        return [ targetPoint ]
-
-      # 3.2 Stop at the cloest block. And find next point.
-      if currentPoint.angle is CanvasElement.PORT_UP_ANGLE or currentPoint.angle is CanvasElement.PORT_DOWN_ANGLE
-        if CanvasElement.PORT_UP_ANGLE
-          targetPoint.y = theCross.y2
-        else
-          targetPoint.y = theCross.y1
-
-        # See if we should go left or right
-        nextPoint =
-          angle : currentPoint.angle
-          y     : targetPoint.y
-          x     : theCross.x1
-        if Math.abs(endPoint.x - theCross.x1) < Math.abs( endPoint.x - theCross.x2 )
-          # Go left
-          targetPoint.angle is CanvasElement.PORT_LEFT_ANGLE
-        else
-          targetPoint.angle is CanvasElement.PORT_RIGHT_ANGLE
-          nextPoint.x = theCross.x2
-
-      else
-        if CanvasElement.PORT_LEFT_ANGLE
-          targetPoint.x = theCross.x2
-        else
-          targetPoint.x = theCross.x1
-
-        nextPoint =
-          angle : currentPoint.angle
-          y     : theCross.y1
-          x     : targetPoint.x
-        if Math.abs(endPoint.y - theCross.y1) < Math.abs( endPoint.y - theCross.y2 )
-          targetPoint.angle is CanvasElement.PORT_UP_ANGLE
-        else
-          targetPoint.angle is CanvasElement.PORT_DOWN_ANGLE
-          nextPoint.y = theCross.y2
-
-      [ targetPoint, nextPoint ]
-
-    searchElbowPoint : ( currentPoint, endPoint, area, bound )->
-      points = []
-      if not area.endParent
-        targetArea = {
-          x1 : Math.max( Math.max( area.bound.x1, bound.x1 ), bound.preferX )
-          x2 : Math.min( Math.min( area.bound.x2, bound.x2 ), bound.preferX )
-          y1 : Math.max( Math.max( area.bound.y1, bound.y1 ), bound.preferY )
-          y2 : Math.min( Math.min( area.bound.y2, bound.y2 ), bound.preferY )
-        }
-        point = currentPoint
-
-        while true
-          targetX = targetY = null
-          switch point.angle
-            when CanvasElement.PORT_UP_ANGLE
-              targetY = targetArea.y1
-              targetPoint =
-                x : currentPoint.x
-                y : targetArea.y1
-            when CanvasElement.PORT_DOWN_ANGLE
-              targetY = targetArea.y2
-              targetPoint =
-                x : currentPoint.x
-                y : targetArea.y2
-            when CanvasElement.PORT_LEFT_ANGLE
-              targetX = targetArea.x1
-              targetPoint =
-                x : targetArea.x1
-                y : currentPoint.y
-            when CanvasElement.PORT_RIGHT_ANGLE
-              targetX = targetArea.x2
-              targetPoint =
-                x : targetArea.x2
-                y : currentPoint.y
-
-          points = points.concat @nextElbowPoint( point, targetPoint, area )
-          point  = points[ points.length - 1 ]
-          if point.x is targetX or point.y is targetY
-            break
-
-        return points
-
-      return []
 
   }, {
     cleanLineMask : ( line )->

@@ -61,11 +61,14 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
       bdm = {}
       for item in ami.blockDeviceMapping?.item || []
+        if item.ebs and not ami.imageSize and ami.rootDeviceName.indexOf(item.deviceName) isnt -1
+          ami.imageSize = Number(item.ebs.volumeSize)
         bdm[ item.deviceName ] = item.ebs || {}
 
       ami.osType   = getOSType( ami )
       ami.osFamily = getOSFamily( ami )
       ami.blockDeviceMapping = bdm
+      ami.isPublic = ami.isPublic.toString()
 
       ms.push ami.id
     ms
@@ -352,6 +355,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         return d.promise
 
       ApiRequest("favorite_remove", {
+        region_name : self.region()
         resource_ids : [id]
       }).then ()->
         idx = self.__models.indexOf id
@@ -369,6 +373,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
       self = @
       ApiRequest("favorite_add", {
+        region_name : self.region()
         resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
         self.__models.push imageId

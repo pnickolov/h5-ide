@@ -355,6 +355,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         return d.promise
 
       ApiRequest("favorite_remove", {
+        region_name : self.region()
         resource_ids : [id]
       }).then ()->
         idx = self.__models.indexOf id

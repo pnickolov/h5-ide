@@ -61,11 +61,14 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
       bdm = {}
       for item in ami.blockDeviceMapping?.item || []
+        if item.ebs and not ami.imageSize and ami.rootDeviceName.indexOf(item.deviceName) isnt -1
+          ami.imageSize = Number(item.ebs.volumeSize)
         bdm[ item.deviceName ] = item.ebs || {}
 
       ami.osType   = getOSType( ami )
       ami.osFamily = getOSFamily( ami )
       ami.blockDeviceMapping = bdm
+      ami.isPublic = ami.isPublic.toString()
 
       ms.push ami.id
     ms

@@ -83,17 +83,38 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           returnPage = parseInt(pageNum, 10)
 
           self = @
-          ApiRequest("aws_public",
-            region_name: @region
-            filters:
-              ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
-          ).then (result)->
-            result = self.addFavStar(result)
-            self.communityAmiData = result.ami?.result || {}
-            self.communityAmiRender(result)
-          , (result)->
-            notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
-            self.communityAmiRender({ami:[]})
+          reg_ami = /ami-[a-zA-Z0-9]{8}$/
+          amiId = name.trim()
+          if amiId and reg_ami.test(amiId)
+            #search by ami id
+            amiRes = CloudResources( "AWS.EC2.AMI", self.region )
+            amiRes.fetchAmis( [amiId] ).then ->
+              amiData = amiRes.where({id:amiId})
+              result =
+                "ami":
+                  "curPageNum" : 1
+                  "result": {}
+                  "totalNum": 0
+                  "totalPageNum": 1
+              if amiData.length > 0
+                result.ami.result[amiId] = amiData[0].toJSON()
+                result.ami.totalNum = 1
+              result = self.addFavStar(result)
+              self.communityAmiData = result.ami?.result || {}
+              self.communityAmiRender(result)
+          else
+            #search public ami
+            ApiRequest("aws_public",
+              region_name: @region
+              filters:
+                ami: {name, platform, isPublic, architecture, rootDeviceType, perPageNum, returnPage}
+            ).then (result)->
+              result = self.addFavStar(result)
+              self.communityAmiData = result.ami?.result || {}
+              self.communityAmiRender(result)
+            , (result)->
+              notification 'error', lang.ide.RES_MSG_WARN_GET_COMMUNITY_AMI_FAILED
+              self.communityAmiRender({ami:[]})
 
         searchPrev: ->
           page = parseInt( $("#community_ami_page_current").attr("page"), 10)

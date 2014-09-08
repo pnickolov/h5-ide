@@ -372,6 +372,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
       self = @
       ApiRequest("favorite_add", {
+        region_name : self.region()
         resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
         self.__models.push imageId

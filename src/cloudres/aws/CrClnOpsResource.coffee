@@ -75,7 +75,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
           #fill attachmentId of ENI
           if comp.type is constant.RESTYPE.ENI
             eni = CloudResources(constant.RESTYPE.ENI,@__region ).where({id:comp.resource.NetworkInterfaceId})
-            if eni and eni.length>0 and not comp.resource.Attachment.AttachmentId
+            if eni and eni.length>0 and eni.attachment and not comp.resource.Attachment.AttachmentId
               eni = eni[0].attributes
               comp.resource.Attachment.AttachmentId = eni.attachment.attachmentId
               console.warn "[patch app_json] fill AttachmentId of eni"

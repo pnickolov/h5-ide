@@ -243,6 +243,9 @@ define [
         ide_event.trigger ide_event.OPEN_PROPERTY
       return
 
+    triggerSelected : ( type, id )->
+      @trigger "selectItem",
+
     clearItems : ()->
       item.remove() for id, item of @__itemMap
       @__itemMap = {}

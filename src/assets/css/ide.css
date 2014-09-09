@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* Light Purple */
 /* Base Purple */
 /* Dark Purple */
@@ -5600,7 +5599,7 @@ button#property-app-keypair {
 .canvas-view {
   position: relative;
   font-size: 0;
-  /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  /* A hack to make sure #canvas_body.scrollHeight is correct. */
   background: white url('/assets/images/ide/grid_x1.png'); }
   .canvas-view[data-scale="1.2"] {
     background-image: url('/assets/images/ide/grid_x1.2.png'); }
@@ -7073,8 +7072,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

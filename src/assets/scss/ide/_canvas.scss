@@ -1,7 +1,7 @@
 
 .canvas-view {
   position   : relative;
-  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
   background : #fff image-url('ide/grid_x1.png');
 
   &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }

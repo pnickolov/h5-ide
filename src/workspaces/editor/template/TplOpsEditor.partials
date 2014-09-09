@@ -109,6 +109,7 @@
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
 <button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOLBAR.TIP_START_APP' }}"><span style="display: none">{{i18n "TOOLBAR.START_APP"}}</span></button>
 <button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-forget-app seperator" data-tooltip="Forget the App, but keep all Resources"></button>
 <button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_APP_TO_STACK" }}'></button>
 
 <!-- {{toolbar.BtnPng}} -->

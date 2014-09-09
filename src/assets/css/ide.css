@@ -7075,7 +7075,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9190,7 +9191,7 @@ g.shadow {
 .OEPanelRight.resource .resource-item.osport {
   background-image: url("/assets/images/ide/icon/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.oselb {
-  background-image: url("/assets/images/ide/icon/openstack/res-pool.png"); }
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.osvol {
   background-image: url("/assets/images/ide/icon/res-vol.png"); }
 

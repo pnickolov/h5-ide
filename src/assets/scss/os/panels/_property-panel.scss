@@ -383,14 +383,12 @@ $propertyFontSize: 12px;
         background-color: #27272b;
         border: 0;
     }
-    input.value {
+    input.value, textarea.value {
         color: #fff;
         padding: 8px 8px;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         margin: 0;
-        // height: 100%;
-        // height: $propertyGroupHeight + 2;
         font-size: $propertyFontSize;
         &:focus {
             background-color: #424242;

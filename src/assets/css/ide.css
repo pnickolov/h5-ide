@@ -9572,17 +9572,17 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 100%;
   background-color: #27272b;
   border: 0; }
-#OpsEditor .OEPanelRight.property input.value {
+#OpsEditor .OEPanelRight.property input.value, #OpsEditor .OEPanelRight.property textarea.value {
   color: #fff;
   padding: 8px 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
   font-size: 12px; }
-  #OpsEditor .OEPanelRight.property input.value:focus {
+  #OpsEditor .OEPanelRight.property input.value:focus, #OpsEditor .OEPanelRight.property textarea.value:focus {
     background-color: #424242;
     outline: none; }
-  #OpsEditor .OEPanelRight.property input.value[disabled] {
+  #OpsEditor .OEPanelRight.property input.value[disabled], #OpsEditor .OEPanelRight.property textarea.value[disabled] {
     color: #555; }
 #OpsEditor .OEPanelRight.property .selectize-control {
   height: 100%; }

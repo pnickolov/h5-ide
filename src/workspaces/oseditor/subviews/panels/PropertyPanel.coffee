@@ -62,7 +62,8 @@ define [
                     openOnFocus: false,
                     plugins: ['custom_selection'],
                     onInitialize: () ->
-                        @setValue(@$input.attr('value').split(','), true)
+                        value = @$input.attr('value')
+                        @setValue(value.split(','), true) if value
                     options: [
                         {text: 'True', value: 'true'},
                         {text: 'False', value: 'false'}
@@ -85,8 +86,8 @@ define [
                     openOnFocus: false,
                     plugins: ['custom_selection']
                     onInitialize: () ->
-                        @setValue(@$input.attr('value').split(','), true)
-                    ,
+                        value = @$input.attr('value')
+                        @setValue(value.split(','), true) if value
                     render: {
                         option: (item) ->
                             tplName = @$input.data('select-tpl')

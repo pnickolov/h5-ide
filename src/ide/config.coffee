@@ -126,6 +126,7 @@ require.config {
     # api                       # Merge in deploy
     #############################################
     'ApiRequest'      : 'api/ApiRequest'
+    'ApiRequestOs'    : 'api/ApiRequestOs'
     'ApiRequestDefs'  : 'api/ApiRequestDefs'
     "ApiRequestR"     : "api/ApiRequestR"
     "ApiRequestRDefs" : "api/ApiRequestRDefs"

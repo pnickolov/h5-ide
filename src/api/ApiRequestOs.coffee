@@ -29,7 +29,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
 
   # Request Handlers
   AjaxSuccessHandler = (res)->
-    if not res or not res.result or not res.result[0] or not res.result[1]
+    if not res or not res.result or res.result.length != 2
       logAndThrow McError( ApiErrors.InvalidRpcReturn , "Invalid JsonRpc Return Data")
 
     # Try parse AWS Return result if we have correct return.

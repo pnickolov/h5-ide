@@ -5,79 +5,78 @@
     color: $base-b;
 }
 
-.openstack {
-    .OEPanelRight {
-        width: 320px;
+.openstack .OEPanelRight {
 
-        &.resource .resource { @include activedPanelTab; }
-        &.property .property { @include activedPanelTab; }
-        &.state    .state    { @include activedPanelTab; }
-        &.config   .config   { @include activedPanelTab; }
+    width: 320px;
 
-        .sidebar-title {
-            box-sizing: border-box;
-            border-bottom: 1px solid #555252;
-            a {
-                width: 25%;
-                float: left;
-                text-align: center;
-                cursor: pointer;
-            }
-            a:hover {
-                color: #eee;
-            }
+    &.resource .resource { @include activedPanelTab; }
+    &.property .property { @include activedPanelTab; }
+    &.state    .state    { @include activedPanelTab; }
+    &.config   .config   { @include activedPanelTab; }
+
+    .sidebar-title {
+        box-sizing: border-box;
+        border-bottom: 1px solid #555252;
+        a {
+            width: 25%;
+            float: left;
+            text-align: center;
+            cursor: pointer;
         }
-
-        .panel-body {
-            overflow: auto;
-            position: absolute;
-            top: 43px;
-            bottom: 0;
-            height: auto;
+        a:hover {
+            color: #eee;
         }
-        .panel-body section {
-            header {
-                background: $dark-p-1;
-                color: white;
-                height: 28px;
-                line-height: 28px;
-                position: relative;
-                padding: 0 8px;
-                aside {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    .selection {
-                        background: $dark-p-1;
-                        color: #F3F3F3;
-                        height: 28px;
-                        padding: 0 20px 0 8px;
-                        border: none;
-                        border-left: 1px solid $dark-p-2;
-                        border-radius: 0;
-                        box-shadow: none;
+    }
 
-                        &::after {
-                            border-top-color: white;
-                        }
+    .panel-body {
+        overflow: auto;
+        position: absolute;
+        top: 43px;
+        bottom: 0;
+        height: auto;
+    }
+    .panel-body section {
+        header {
+            background: $dark-p-1;
+            color: white;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            padding: 0 8px;
+            aside {
+                position: absolute;
+                top: 0;
+                right: 0;
+                .selection {
+                    background: $dark-p-1;
+                    color: #F3F3F3;
+                    height: 28px;
+                    padding: 0 20px 0 8px;
+                    border: none;
+                    border-left: 1px solid $dark-p-2;
+                    border-radius: 0;
+                    box-shadow: none;
+
+                    &::after {
+                        border-top-color: white;
                     }
                 }
-
             }
 
-            article {
-                padding: 10px;
+        }
 
-                .resource-item {
-                    cursor: pointer;
-                }
+        article {
+            padding: 10px;
 
-                & > ul::after {
-                    content : "";
-                    display : block;
-                    height  : 0;
-                    clear   : both;
-                }
+            .resource-item {
+                cursor: pointer;
+            }
+
+            & > ul::after {
+                content : "";
+                display : block;
+                height  : 0;
+                clear   : both;
             }
         }
     }

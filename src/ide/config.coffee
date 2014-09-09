@@ -259,7 +259,7 @@ require.config {
       "UI.nanoscroller"
       "selectize"
     ]
-    "api/api" : ["ApiRequest"]
+    "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
     "service/service" : [
       'base_model'
       'state_model'

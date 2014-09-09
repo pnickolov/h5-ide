@@ -30,8 +30,8 @@ define [
         that = @
         @$el.html new @viewClass( model: @model ).render().el
 
-        _.each @$el.find('select.value'), (valueDom) ->
-            that.bindSelection($(valueDom))
+        @$el.find('select.value'), () ->
+            that.bindSelection($(@))
 
         @
 

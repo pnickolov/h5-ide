@@ -98,6 +98,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSVOL      : "OS::Cinder::Volume"
         OSEXTNET   : "OS::ExternalNetwork"
         OSIMAGE    : "OS::Image"
+        OSFLAVOR   : "OS::Flavor"
 
 
     RESNAME =

@@ -1,7 +1,6 @@
 
-define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
+define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
 
-  ### This Collection is used to fetch generic ami ###
   CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsImageCollection"
@@ -9,6 +8,25 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     type : constant.RESTYPE.OSIMAGE
 
-    doFetch        : ()-> ApiRequest("os_image_List", {region_name : @region()})
+    doFetch        : ()-> ApiRequest("os_image_List", {region : @region()})
     parseFetchData : (res)-> res.images
+  }
+
+
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsFlavorCollection"
+    ### env:dev:end ###
+
+    type : constant.RESTYPE.OSFLAVOR
+
+    doFetch : ()->
+      region = @region()
+      ApiRequest("os_flavor_List", {region : region}).then (res)->
+        ApiRequest("os_flavor_Info", {
+          region : region
+          ids    : _.pluck( res.flavors )
+        })
+
+    parseFetchData : (res)-> res.flavor
   }

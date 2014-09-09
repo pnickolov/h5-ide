@@ -3,7 +3,8 @@ define [
   "CoreEditor"
   "./OsViewStack"
   "./model/DesignOs"
-], ( CoreEditor, StackView, DesignOs )->
+  "CloudResources"
+], ( CoreEditor, StackView, DesignOs, CloudResources )->
 
   ###
     StackEditor is mainly for editing a stack
@@ -21,6 +22,8 @@ define [
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
 
+      CloudResources( constant.RESTYPE.OSFLAVOR, region ).isReady() &&
+      CloudResources( constant.RESTYPE.OSIMAGE,  region ).isReady() &&
       !!App.model.getStateModule( stateModule.repo, stateModule.tag )
 
     fetchAdditionalData : ()->
@@ -29,6 +32,8 @@ define [
 
       jobs = [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
+        CloudResources( constant.RESTYPE.OSFLAVOR, region ).fetch()
+        CloudResources( constant.RESTYPE.OSIMAGE,  region ).fetch()
       ]
 
       if not @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )

@@ -15,7 +15,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       "route"    : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 35 ]
     }
 
-    iconUrl : ()-> "ide/icon/cvs-rtb.png"
+    iconUrl : ()-> "ide/icon/openstack/cvs-router.png"
 
     # Creates a svg element
     create : ()->
@@ -27,12 +27,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       # Call parent's createNode to do basic creation
       node = @createNode({
         image   : @iconUrl()
-        imageX  : 10
-        imageY  : 13
-        imageW  : 60
-        imageH  : 57
+        imageX  : 0
+        imageY  : 0
+        imageW  : 80
+        imageH  : 80
       }).add([
-        svg.text("").move(41, 27).classes('node-label')
+        svg.text("").move(41, 75).classes('node-label')
 
         svg.use("port_left").attr({
           'class'        : 'port port-blue tooltip'

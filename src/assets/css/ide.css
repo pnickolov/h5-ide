@@ -9185,11 +9185,11 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .OEPanelRight.resource .resource-item:hover {
   background-color: rgba(255, 255, 255, 0.2); }
 .OEPanelRight.resource .resource-item.ossubnet {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+  background-image: url("/assets/images/ide/icon/openstack/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.osrt {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+  background-image: url("/assets/images/ide/icon/openstack/res-router.png"); }
 .OEPanelRight.resource .resource-item.osport {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+  background-image: url("/assets/images/ide/icon/openstack/res-port.png"); }
 .OEPanelRight.resource .resource-item.oselb {
   background-image: url("/assets/images/ide/icon/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.osvol {

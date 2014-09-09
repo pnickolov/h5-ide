@@ -112,18 +112,18 @@
 </section>
 <section class="group">
     <div class="key">Credential</div>
-    <select class="value option">
-        <option value="xxxxxx1">KeyPair</option>
-        <option value="xxxxxx2">Password</option>
+    <select id="property-os-server-credential" class="value option">
+        <option value="keypair" selected>KeyPair</option>
+        <option value="password">Password</option>
     </select>
 </section>
-<section class="group required">
+<section class="group required" style="display: none">
     <div class="key">Admin Password</div>
-    <input type="password" class="value string" value="{{adminPass}}" placeholder="Password of the Image"/>
+    <input id="property-os-server-adminPass" type="password" class="value string" value="{{adminPass}}" placeholder="Password of the Image"/>
 </section>
 <section class="group required">
     <div class="key">Key Pair</div>
-    <select class="value option">
+    <select id="property-os-server-keypair" class="value option">
         <option value="xxxxxx1">KeyPair 1</option>
         <option value="xxxxxx2">KeyPair 2</option>
         <option value="xxxxxx3">KeyPair 3</option>

@@ -5,9 +5,21 @@ define [
 ], ( constant, OsPropertyView, stackTpl ) ->
 
   OsPropertyView.extend {
+    events:
+      "change #property-os-server-credential": "onChangeCredential"
+
     render: ->
       @$el.html stackTpl(@model.toJSON())
       @
+
+    onChangeCredential: (event)->
+      result = $(event.currentTarget)
+      if result.getValue() is "keypair"
+        @$el.find("#property-os-server-keypair").parent().show()
+        @$el.find('#property-os-server-adminPass').parent().hide()
+      else
+        @$el.find("#property-os-server-keypair").parent().hide()
+        @$el.find('#property-os-server-adminPass').parent().show()
 
     selectTpl:
 

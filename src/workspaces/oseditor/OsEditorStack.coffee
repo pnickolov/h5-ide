@@ -4,7 +4,8 @@ define [
   "./OsViewStack"
   "./model/DesignOs"
   "CloudResources"
-], ( CoreEditor, StackView, DesignOs, CloudResources )->
+  "constant"
+], ( CoreEditor, StackView, DesignOs, CloudResources, constant )->
 
   ###
     StackEditor is mainly for editing a stack

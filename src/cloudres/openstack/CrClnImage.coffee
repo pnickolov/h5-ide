@@ -25,7 +25,7 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
       ApiRequest("os_flavor_List", {region : region}).then (res)->
         ApiRequest("os_flavor_Info", {
           region : region
-          ids    : _.pluck( res.flavors )
+          ids    : _.pluck( res.flavors, "id" )
         })
 
     parseFetchData : (res)-> res.flavor

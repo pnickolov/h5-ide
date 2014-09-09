@@ -125,7 +125,11 @@ define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2
           if apiDef.method is "Info"
             for item,idx in result
               try
-                result[idx][1] = JSON.parse(item[1])
+                if $.type(result) is 'array'
+                  for c,i in item
+                    result[idx][i] = JSON.parse(c)
+                else
+                  result[idx] = JSON.parse(item)
               catch
           else
             #return is json

@@ -31,7 +31,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     #    }
 
     defaults:
-      userData: ""
+      userData: "User Data Sample"
       meta: ""
       NICS: []
       adminPass: "xxxxxx"

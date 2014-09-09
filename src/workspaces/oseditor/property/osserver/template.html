@@ -28,7 +28,7 @@
 -->
 <section class="group required">
     <div class="key">Server Name</div>
-    <input class="value string" value="host-1"/>
+    <input class="value string" value="{{name}}"/>
 </section>
 <section class="group required">
     <div class="key">Server Image</div>
@@ -67,7 +67,7 @@
 </section>
 <section class="group required">
     <div class="key">Admin Password</div>
-    <input type="password" class="value string" placeholder="Password of the Image"/>
+    <input type="password" class="value string" value="{{adminPass}}" placeholder="Password of the Image"/>
 </section>
 <section class="group required">
     <div class="key">Key Pair</div>
@@ -81,5 +81,5 @@
 </section>
 <section class="group required">
     <div class="key">User Data</div>
-    <input type="text" class="value string"/>
+    <input type="text" class="value string" value="{{userData}}"/>
 </section>

@@ -6,7 +6,7 @@ define [
 
   OsPropertyView.extend {
     render: ->
-      @$el.html stackTpl({})
+      @$el.html stackTpl(@model.toJSON())
       @
 
   }, {

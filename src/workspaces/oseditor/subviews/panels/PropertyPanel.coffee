@@ -28,14 +28,16 @@ define [
     render: () ->
 
         that = @
-        @$el.html new @viewClass( model: @model ).render().el
+
+        propertyView = new @viewClass( model: @model )
+        @$el.html propertyView.render().el
 
         @$el.find('select.value').each ->
-            that.bindSelection($(@))
+            that.bindSelection($(@), propertyView.selectTpl)
 
         @
 
-    bindSelection: ($valueDom) ->
+    bindSelection: ($valueDom, selectTpl) ->
 
         return if (not $valueDom or not $valueDom.length)
 
@@ -87,8 +89,17 @@ define [
                     ,
                     render: {
                         option: (item) ->
-                            return '<div>' + item.text + '</div>'
+                            tplName = @$input.data('select-tpl')
+                            if tplName and selectTpl and selectTpl[tplName]
+                                return selectTpl[tplName](item)
+                            else
+                                return '<div>' + item.text + '</div>'
+                            
                         item: (item) ->
-                            return '<div>' + item.text + '</div>'
+                            tplName = @$input.data('item-tpl')
+                            if tplName and selectTpl and selectTpl[tplName]
+                                return selectTpl[tplName](item)
+                            else
+                                return '<div>' + item.text + '</div>'
                     }
                 })

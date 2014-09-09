@@ -12,7 +12,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
     portPosMap : {
       "listener" : [ 2,  35, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "port"     : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 20 ]
+      "pool"     : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 20 ]
     }
 
     # Creates a svg element
@@ -36,7 +36,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         })
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
-          'data-name'    : 'port'
+          'data-name'    : 'pool'
           'data-tooltip' : lang.IDE.PORT_TIP_K
         })
       ])

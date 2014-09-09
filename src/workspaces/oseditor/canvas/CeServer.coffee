@@ -16,8 +16,8 @@ define [
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
-      "port" : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "pool" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "pool"   : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "server" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
 
     # Creates a svg element
@@ -39,12 +39,12 @@ define [
       }).add([
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
-          'data-name'    : 'port'
+          'data-name'    : 'pool'
           'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_right").attr({
           'class'        : 'port port-green tooltip'
-          'data-name'    : 'pool'
+          'data-name'    : 'server'
           'data-tooltip' : lang.IDE.PORT_TIP_E
         })
       ])

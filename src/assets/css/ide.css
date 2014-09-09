@@ -6225,6 +6225,9 @@ g.shadow {
 .OS--Neutron--Subnet .group-label {
   fill: #F69722; }
 
+.OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
+  stroke: #12CD4F; }
+
 .resources-dropdown-wrapper {
   position: absolute;
   left: 206px;

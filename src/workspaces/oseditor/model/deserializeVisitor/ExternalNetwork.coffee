@@ -1,10 +1,10 @@
 
-define [ "../DesignOs"], ( Design )->
+define [ "../DesignOs", "constant" ], ( Design, constant )->
 
   Design.registerDeserializeVisitor ( data, layout_data, version )->
 
     data.ExternalNetwork =
-      type : "OS::ExternalNetwork"
+      type : constant.RESTYPE.OSEXTNET
       uid  : "ExternalNetwork"
 
   null

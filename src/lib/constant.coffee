@@ -96,6 +96,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"
         OSVOL      : "OS::Cinder::Volume"
+        OSEXTNET   : "OS::ExternalNetwork"
 
 
     RESNAME =

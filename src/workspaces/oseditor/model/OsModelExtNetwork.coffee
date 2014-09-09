@@ -8,19 +8,21 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     defaults :
       name : "ExtNetwork"
 
-    serialize : ()-> return
+    serialize : ()-> { layout : @generateLayout() }
 
   }, {
 
     handleTypes  : "OS::ExternalNetwork"
+    resolveFirst : true
 
-    deserialize : ( data, layout_data, resolve )->
+    preDeserialize : ( data, layout_data )->
       new Model({
         id : data.uid
         x  : layout_data.coordinate[0]
         y  : layout_data.coordinate[1]
       })
-      return
+
+    deserialize : ()->
   }
 
   Model

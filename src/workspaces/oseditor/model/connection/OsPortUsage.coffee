@@ -10,8 +10,12 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
           name : "server"
           type : constant.RESTYPE.OSSERVER
         port2 :
-          name : "port"
+          name : "server"
           type : constant.RESTYPE.OSPORT
       }
     ]
+
+    isVisual : ()->
+      server = @getTarget( constant.RESTYPE.OSSERVER )
+      server.embedPort() isnt @getTarget( constant.RESTYPE.OSPORT )
   }

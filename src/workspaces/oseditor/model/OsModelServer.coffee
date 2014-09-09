@@ -39,6 +39,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       blockDeviceMapping: []
       flavor_id: "10"
 
+    embedPort : ()-> @connectionTargets("OsPortUsage")[0]
 
     serialize : ()->
       component =

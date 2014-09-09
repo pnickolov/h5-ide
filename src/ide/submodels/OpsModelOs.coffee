@@ -40,11 +40,11 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
         "server0001" :
           coordinate : [ 42, 10 ]
         "port0002" :
-          coordinate : [ 42, 20 ]
+          coordinate : [ 65, 11 ]
         "pool0001" :
-          coordinate : [ 42, 40 ]
-        "listener0001" :
           coordinate : [ 65, 40 ]
+        "listener0001" :
+          coordinate : [ 42, 40 ]
 
       json.component =
         "server0001" :

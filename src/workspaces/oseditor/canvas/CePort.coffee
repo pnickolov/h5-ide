@@ -11,8 +11,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
-      "server" : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "pool"   : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+      "pool"   : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+      "server" : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]
     }
 
     # Creates a svg element
@@ -34,12 +34,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
       }).add([
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
-          'data-name'    : 'server'
+          'data-name'    : 'pool'
           'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_right").attr({
           'class'        : 'port port-green tooltip'
-          'data-name'    : 'pool'
+          'data-name'    : 'server'
           'data-tooltip' : lang.IDE.PORT_TIP_G
         })
       ])

@@ -24,6 +24,7 @@ define [
   "./oseditor/model/connection/OsRouterAsso"
   "./oseditor/model/connection/OsMonitorUsage"
   "./oseditor/model/connection/OsListenerAsso"
+  "./oseditor/model/connection/OsPoolMembership"
 
   "./oseditor/model/deserializeVisitor/ExternalNetwork"
 
@@ -35,6 +36,7 @@ define [
   "./oseditor/canvas/CeExtNetwork"
   "./oseditor/canvas/CeServer"
   "./oseditor/canvas/CePort"
+  "./oseditor/canvas/CeOsLine"
 
 ], ( OpsEditor, StackEditor )->
 

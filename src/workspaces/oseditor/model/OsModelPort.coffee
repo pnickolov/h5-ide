@@ -6,6 +6,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSPORT
     newNameTmpl : "Port-"
 
+    server : ()-> @connectionTargets("OsPortUsage")[0]
+
+    isEmbedded : ()-> @server().embedPort() is @
+    isVisual   : ()-> !@isEmbedded()
+
+
     serialize : ()->
       component =
         name : @get("name")

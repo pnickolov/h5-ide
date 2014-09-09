@@ -34,10 +34,14 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         y : layout_data.coordinate[1]
       })
 
+      # Router <=> Subnet
       Asso = Design.modelClassForType( "OsRouterAsso" )
       for subnet in data.resource.router_interface
         new Asso( router, resolve(MC.extractID( subnet.subnet_id )) )
 
+      # ExtNetwork <=> Router
+      Attach = Design.modelClassForType( "OsExtRouterAttach" )
+      new Attach( router )
       return
   }
 

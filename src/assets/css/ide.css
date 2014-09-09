@@ -7075,8 +7075,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9520,6 +9519,20 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .selectize-control .selectize-input.disabled {
   /*opacity: 0.5;*/
   background-color: #fafafa; }
+
+img.property-os-image-icon {
+  display: inline-block;
+  vertical-align: baseline; }
+
+p.property-os-image-text {
+  display: inline-block;
+  font-size: 14px;
+  color: #DEDEDE;
+  margin: -5px 0; }
+  p.property-os-image-text span {
+    display: block;
+    font-size: 12px;
+    color: #8D8D8D; }
 
 #OpsEditor .OEPanelRight.property .group {
   background-color: #27272b;

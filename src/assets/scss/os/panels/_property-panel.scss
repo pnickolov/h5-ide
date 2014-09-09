@@ -317,7 +317,21 @@
   background-color: #fafafa;
 }
 
-
+img.property-os-image-icon{
+  display: inline-block;
+  vertical-align: baseline;
+}
+p.property-os-image-text {
+  display: inline-block;
+  font-size: 14px;
+  color: #DEDEDE;
+  margin: -5px 0;
+  span{
+    display: block;
+    font-size: 12px;
+    color: #8D8D8D;
+  }
+}
 
 $propertyGroupHeight: 34px;
 $propertyWidth: 100%;

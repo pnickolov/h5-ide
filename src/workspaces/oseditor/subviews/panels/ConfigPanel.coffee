@@ -35,7 +35,7 @@ define [
             that = @
             @$el.html new @viewClass( model: @model ).render().el
 
-            @$el.find('select.value').each() ->
+            @$el.find('select.value').each ->
                 that.bindSelection($(@))
 
             @

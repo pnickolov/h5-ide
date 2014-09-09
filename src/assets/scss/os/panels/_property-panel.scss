@@ -319,19 +319,16 @@
 
 
 $propertyGroupHeight: 34px;
-$propertyKeyWidth: 150px;
-$propertyValueWidth: 230px;
+$propertyWidth: 100%;
 $propertyFontSize: 12px;
 
-.property {
-    background-color: #1a1a1b;
-    width: $propertyKeyWidth + $propertyValueWidth;
-    font-size: $propertyFontSize;
+#OpsEditor .OEPanelRight.property {
     .group {
-        // display: inline-block;
+        background-color: #27272b;
+        font-size: $propertyFontSize;
         position: relative;
-        display: table;
         border-bottom: 1px #000 solid;
+        margin-bottom: 1px;
         &.required:after {
             position: absolute;
             z-index: 1;
@@ -361,11 +358,11 @@ $propertyFontSize: 12px;
         }
     }
     .key {
-        width: $propertyKeyWidth;
-        padding: 4px 10px;
+        width: $propertyWidth;
+        padding: 8px 10px;
         display: table-cell;
         vertical-align: middle;
-        background-color: #34343e;
+        // background-color: #27272b;
         line-height: 14px;
         // text-align: right;
         box-sizing: border-box;
@@ -381,7 +378,7 @@ $propertyFontSize: 12px;
         }
     }
     .value {
-        width: $propertyValueWidth;
+        width: $propertyWidth;
         background-color: #27272b;
         border: 0;
     }

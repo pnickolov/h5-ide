@@ -9519,118 +9519,115 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   /*opacity: 0.5;*/
   background-color: #fafafa; }
 
-.property {
-  background-color: #1a1a1b;
-  width: 380px;
+#OpsEditor .OEPanelRight.property .group {
+  background-color: #27272b;
+  font-size: 12px;
+  position: relative;
+  border-bottom: 1px #000 solid;
+  margin-bottom: 1px; }
+  #OpsEditor .OEPanelRight.property .group.required:after {
+    position: absolute;
+    z-index: 1;
+    content: "";
+    color: #fff;
+    text-align: right;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    line-height: 24px;
+    border-style: solid;
+    border-width: 0 20px 20px 0;
+    margin-left: -20px;
+    border-color: transparent #0b8900 transparent transparent; }
+  #OpsEditor .OEPanelRight.property .group.required:before {
+    position: absolute;
+    z-index: 2;
+    content: "*";
+    color: #fff;
+    text-align: right;
+    right: 0;
+    top: 0;
+    margin-top: 3px;
+    margin-right: 3px; }
+#OpsEditor .OEPanelRight.property .key {
+  width: 100%;
+  padding: 8px 10px;
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 14px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box; }
+  #OpsEditor .OEPanelRight.property .key.tooltip:after {
+    content: " ";
+    width: 103px;
+    height: 8px;
+    position: absolute;
+    left: 12px;
+    margin-top: 8px;
+    border-bottom: 1px #555 dashed; }
+#OpsEditor .OEPanelRight.property .value {
+  width: 100%;
+  background-color: #27272b;
+  border: 0; }
+#OpsEditor .OEPanelRight.property input.value {
+  color: #fff;
+  padding: 11px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
   font-size: 12px; }
-  .property .group {
-    position: relative;
-    display: table;
-    border-bottom: 1px #000 solid; }
-    .property .group.required:after {
-      position: absolute;
-      z-index: 1;
-      content: "";
-      color: #fff;
-      text-align: right;
-      right: 0;
-      top: 0;
-      width: 0;
-      height: 0;
-      line-height: 24px;
-      border-style: solid;
-      border-width: 0 20px 20px 0;
-      margin-left: -20px;
-      border-color: transparent #0b8900 transparent transparent; }
-    .property .group.required:before {
-      position: absolute;
-      z-index: 2;
-      content: "*";
-      color: #fff;
-      text-align: right;
-      right: 0;
-      top: 0;
-      margin-top: 3px;
-      margin-right: 3px; }
-  .property .key {
-    width: 150px;
-    padding: 4px 10px;
-    display: table-cell;
-    vertical-align: middle;
-    background-color: #34343e;
-    line-height: 14px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box; }
-    .property .key.tooltip:after {
-      content: " ";
-      width: 103px;
-      height: 8px;
-      position: absolute;
-      left: 12px;
-      margin-top: 8px;
-      border-bottom: 1px #555 dashed; }
-  .property .value {
-    width: 230px;
-    background-color: #27272b;
-    border: 0; }
-  .property input.value {
+  #OpsEditor .OEPanelRight.property input.value:focus {
+    background-color: #424242;
+    outline: none; }
+  #OpsEditor .OEPanelRight.property input.value[disabled] {
+    color: #555; }
+#OpsEditor .OEPanelRight.property .selectize-control {
+  height: 100%; }
+  #OpsEditor .OEPanelRight.property .selectize-control.mutil .selectize-input {
+    overflow-y: auto; }
+  #OpsEditor .OEPanelRight.property .selectize-control .selectize-input {
     color: #fff;
-    padding: 11px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    margin: 0;
-    font-size: 12px; }
-    .property input.value:focus {
-      background-color: #424242;
-      outline: none; }
-    .property input.value[disabled] {
-      color: #555; }
-  .property .selectize-control {
+    border: 0;
     height: 100%; }
-    .property .selectize-control.mutil .selectize-input {
-      overflow-y: auto; }
-    .property .selectize-control .selectize-input {
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-input.focus {
+      background-color: #424242; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-input.disabled {
+      color: #555;
+      background-color: #27272b; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-input input {
       color: #fff;
-      border: 0;
-      height: 100%; }
-      .property .selectize-control .selectize-input.focus {
-        background-color: #424242; }
-      .property .selectize-control .selectize-input.disabled {
-        color: #555;
-        background-color: #27272b; }
-      .property .selectize-control .selectize-input input {
-        color: #fff;
-        padding: 2px;
-        font: inherit; }
-      .property .selectize-control .selectize-input div {
-        padding: 2px; }
-    .property .selectize-control .selectize-dropdown {
-      background-color: #373737;
-      color: #9d9d97;
-      border: 0; }
-      .property .selectize-control .selectize-dropdown [data-selectable], .property .selectize-control .selectize-dropdown .optgroup-header {
-        padding: 10px; }
-      .property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar {
-        width: 8px; }
-      .property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-track {
-        background: none; }
-      .property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-thumb {
-        background: #000;
-        border: 1px solid #444;
-        border-radius: 8px; }
-      .property .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
-        color: #fff; }
-      .property .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
-        background-color: #363644;
-        color: #fff; }
-  .property .selectize-control.multi .selectize-input > div {
-    height: 100%;
-    background-color: #000;
-    border: 1px #444 solid;
-    border-radius: 3px;
-    color: #fff;
-    padding: 1px 5px; }
-    .property .selectize-control.multi .selectize-input > div.active {
-      background-color: #2a608d;
-      border: 1px #444 solid;
+      padding: 2px;
+      font: inherit; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-input div {
+      padding: 2px; }
+  #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown {
+    background-color: #373737;
+    color: #9d9d97;
+    border: 0; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown [data-selectable], #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .optgroup-header {
+      padding: 10px; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar {
+      width: 8px; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-track {
+      background: none; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-thumb {
+      background: #000;
+      border: 1px solid #444;
+      border-radius: 8px; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
       color: #fff; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
+      background-color: #363644;
+      color: #fff; }
+#OpsEditor .OEPanelRight.property .selectize-control.multi .selectize-input > div {
+  height: 100%;
+  background-color: #000;
+  border: 1px #444 solid;
+  border-radius: 3px;
+  color: #fff;
+  padding: 1px 5px; }
+  #OpsEditor .OEPanelRight.property .selectize-control.multi .selectize-input > div.active {
+    background-color: #2a608d;
+    border: 1px #444 solid;
+    color: #fff; }

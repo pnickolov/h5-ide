@@ -27,7 +27,6 @@ define [
                         id         : design.get("id")
                         usage      : design.get("usage")
                         description: design.get('description')
-                        type       : typeMap[ design.type() ]
                     }
             }
 

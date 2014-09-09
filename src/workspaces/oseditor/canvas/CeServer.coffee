@@ -16,8 +16,8 @@ define [
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
-      "pool"   : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "server" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "pool"   : [ 5, 30, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "server" : [ 82, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,30 ]
     }
 
     # Creates a svg element
@@ -29,11 +29,11 @@ define [
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image   : "ide/icon/cvs-instance.png"
-        imageX  : 15
-        imageY  : 11
-        imageW  : 61
-        imageH  : 62
+        image   : "ide/icon/openstack/cvs-server.png"
+        imageX  : 0
+        imageY  : 0
+        imageW  : 90
+        imageH  : 90
         label   : true
         labelBg : true
       }).add([

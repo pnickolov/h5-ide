@@ -9191,7 +9191,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .OEPanelRight.resource .resource-item.osport {
   background-image: url("/assets/images/ide/icon/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.oselb {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+  background-image: url("/assets/images/ide/icon/openstack/res-pool.png"); }
 .OEPanelRight.resource .resource-item.osvol {
   background-image: url("/assets/images/ide/icon/res-vol.png"); }
 

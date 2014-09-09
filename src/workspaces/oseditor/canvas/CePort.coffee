@@ -24,11 +24,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image   : "ide/icon/cvs-eni-att.png"
-        imageX  : 16
-        imageY  : 15
-        imageW  : 59
-        imageH  : 49
+        image   : "ide/icon/openstack/cvs-port-att.png"
+        imageX  : 0
+        imageY  : 0
+        imageW  : 80
+        imageH  : 80
         label   : true
         labelBg : true
       }).add([

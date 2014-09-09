@@ -11,7 +11,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [8,8]
 
     portPosMap : {
-      "listener" : [ 78, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "listener" : [ 72, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 35 ]
     }
 
     # Creates a svg element
@@ -21,11 +21,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       # Call parent's createNode to do basic creation
       svgEl = @createNode({
-        image  : "ide/icon/cvs-igw.png"
-        imageX : 9
-        imageY : 11
-        imageW : 70
-        imageH : 53
+        image  : "ide/icon/openstack/cvs-vip.png"
+        imageX : 0
+        imageY : 0
+        imageW : 80
+        imageH : 80
         label  : m.get "name"
       }).add([
         svg.use("port_right").attr({

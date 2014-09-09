@@ -6,6 +6,40 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSSERVER
     newNameTmpl : "Server-"
 
+    #    Server sample json
+    #    =====================
+    #    "server-id": {
+    #      "type": "OS::Nova::Server",
+    #      "uid": "server-id",
+    #      "resource": {
+    #        "name": "helloworldserver",
+    #        "flavor": "10",
+    #        "image": "03f66db6-a74f-40b5-9933-4a19352083da",
+    #        "meta": "",
+    #        "userdata": "",
+    #        "availabilityZone": "",
+    #        "blockDeviceMapping" :[],
+    #        "key_name": "testkp",
+    #        "NICS":[
+    #          {
+    #            "port-id": "@{port-id.resource.id}"
+    #          }
+    #        ],
+    #        "adminPass" : "12345678",
+    #        "id" : ""
+    #      }
+    #    }
+
+    default:
+      userData: ""
+      meta: ""
+      NICS: []
+      adminPass: "xxxxxx"
+      key_name: "Default-KP"
+      blockDeviceMapping: []
+      flavor_id: "10"
+
+
     serialize : ()->
       component =
         name : @get("name")
@@ -14,14 +48,14 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         resource :
           id        : @get("appId")
           name      : @get("name")
-          flavor    : ""
-          image     : ""
-          meta      : ""
-          NICS      : []
-          userdata  : ""
-          adminPass : ""
-          availabilityZone   : ""
-          blockDeviceMapping : []
+          flavor    : @get('flavor_id')
+          image     : @get('image')
+          meta      : @get('meta')
+          NICS      : @get('NICS')
+          userdata  : @get('userData')
+          adminPass : @get('adminPass')
+          availabilityZone   : @get('az')
+          blockDeviceMapping : @get('blockDeviceMapping')
 
       { component : component }
 

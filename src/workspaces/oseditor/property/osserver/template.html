@@ -40,21 +40,46 @@
 </section>
 <section class="group required">
     <div class="key">CPU</div>
-    <select class="value option" value="1 Core">
+    <select class="value option">
         <option value='xxxxxx1'>1 Core</option>
         <option value='xxxxxx2'>2 Core</option>
         <option value='xxxxxx3'>3 Core</option>
-        <option value='xxxxxx4'>4 Core</option>
+        <option value='xxxxxx4' selected>4 Core</option>
         <option value='xxxxxx5'>5 Core</option>
     </select>
 </section>
 <section class="group required">
     <div class="key">RAM</div>
-    <select class="value option" value="1 Core">
+    <select class="value option">
         <option value='xxxxxx1'>1 G</option>
         <option value='xxxxxx2'>2 G</option>
         <option value='xxxxxx3'>3 G</option>
-        <option value='xxxxxx4'>4 G</option>
+        <option value='xxxxxx4' selected>4 G</option>
         <option value='xxxxxx5'>5 G</option>
     </select>
+</section>
+<section class="group">
+    <div class="key">Credential</div>
+    <select class="value option">
+        <option value="xxxxxx1">KeyPair</option>
+        <option value="xxxxxx2">Password</option>
+    </select>
+</section>
+<section class="group required">
+    <div class="key">Admin Password</div>
+    <input type="password" class="value string" placeholder="Password of the Image"/>
+</section>
+<section class="group required">
+    <div class="key">Key Pair</div>
+    <select class="value option">
+        <option value="xxxxxx1">KeyPair 1</option>
+        <option value="xxxxxx2">KeyPair 2</option>
+        <option value="xxxxxx3">KeyPair 3</option>
+        <option value="xxxxxx4">KeyPair 4</option>
+        <option value="xxxxxx5">KeyPair 5</option>
+    </select>
+</section>
+<section class="group required">
+    <div class="key">User Data</div>
+    <input type="text" class="value string"/>
 </section>

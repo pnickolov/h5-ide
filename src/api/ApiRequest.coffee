@@ -110,6 +110,10 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
       console.error "Cannot find defination of the api:", apiName
       return
 
+    if ApiDef.type isnt "aws" or ApiDef.type isnt "forge"
+      console.error "Cannot send non-aws request(#{apiName}) by using `ApiRequest`"
+      return
+
     RequestData.method = ApiDef.method || ""
     if ApiDef.params
       RequestData.params = p = []

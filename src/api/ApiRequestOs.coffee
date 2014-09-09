@@ -70,7 +70,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
       return
 
     if ApiDef.type isnt "openstack"
-      console.error "Cannot send non-openstack request(#{apiName}) by using `ApiRequestOst`"
+      console.error "Cannot send non-openstack request(#{apiName}) by using `ApiRequestOs`"
       return
 
     RequestData.method = ApiDef.method || ""

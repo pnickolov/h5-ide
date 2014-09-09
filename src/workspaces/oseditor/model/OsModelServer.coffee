@@ -30,7 +30,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     #      }
     #    }
 
-    default:
+    defaults:
       userData: ""
       meta: ""
       NICS: []
@@ -38,6 +38,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       key_name: "Default-KP"
       blockDeviceMapping: []
       flavor_id: "10"
+      availabilityZone: ""
+      image: ""
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]
 
@@ -55,7 +57,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           NICS      : @get('NICS')
           userdata  : @get('userData')
           adminPass : @get('adminPass')
-          availabilityZone   : @get('az')
+          availabilityZone   : @get('availabilityZone')
           blockDeviceMapping : @get('blockDeviceMapping')
 
       { component : component }

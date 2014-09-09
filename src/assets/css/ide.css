@@ -9111,42 +9111,10 @@ g.shadow {
       cursor: pointer; }
     .openstack .OEPanelRight .sidebar-title a:hover {
       color: #eee; }
-  .openstack .OEPanelRight nav {
-    padding: 14px 20px; }
-    .openstack .OEPanelRight nav ul li {
-      float: left;
-      text-align: center;
-      cursor: pointer;
-      width: 30px;
-      height: 24px;
-      line-height: 24px; }
-      .openstack .OEPanelRight nav ul li:first-child {
-        border-left: 1px solid #2c2f4d;
-        border-top-left-radius: 15%;
-        border-bottom-left-radius: 15%; }
-      .openstack .OEPanelRight nav ul li:last-child {
-        border-top-right-radius: 15%;
-        border-bottom-right-radius: 15%; }
-    .openstack .OEPanelRight nav ul.anchor {
-      float: left; }
-      .openstack .OEPanelRight nav ul.anchor li {
-        line-height: 24px;
-        color: #ccc;
-        background: #51568e;
-        border-right: 1px solid #2c2f4d; }
-        .openstack .OEPanelRight nav ul.anchor li:hover {
-          color: #eeeeee; }
-    .openstack .OEPanelRight nav ul.action {
-      float: right;
-      color: white; }
-      .openstack .OEPanelRight nav ul.action li {
-        background: #4a90e2; }
-        .openstack .OEPanelRight nav ul.action li:hover {
-          background: #3970af; }
   .openstack .OEPanelRight .panel-body {
     overflow: auto;
     position: absolute;
-    top: 91px;
+    top: 43px;
     bottom: 0;
     height: auto; }
   .openstack .OEPanelRight .panel-body section header {
@@ -9181,6 +9149,38 @@ g.shadow {
       height: 0;
       clear: both; }
 
+.OEPanelRight.resource nav {
+  padding: 14px 20px; }
+  .OEPanelRight.resource nav ul li {
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    line-height: 24px; }
+    .OEPanelRight.resource nav ul li:first-child {
+      border-left: 1px solid #2c2f4d;
+      border-top-left-radius: 15%;
+      border-bottom-left-radius: 15%; }
+    .OEPanelRight.resource nav ul li:last-child {
+      border-top-right-radius: 15%;
+      border-bottom-right-radius: 15%; }
+  .OEPanelRight.resource nav ul.anchor {
+    float: left; }
+    .OEPanelRight.resource nav ul.anchor li {
+      line-height: 24px;
+      color: #ccc;
+      background: #51568e;
+      border-right: 1px solid #2c2f4d; }
+      .OEPanelRight.resource nav ul.anchor li:hover {
+        color: #eeeeee; }
+  .OEPanelRight.resource nav ul.action {
+    float: right;
+    color: white; }
+    .OEPanelRight.resource nav ul.action li {
+      background: #4a90e2; }
+      .OEPanelRight.resource nav ul.action li:hover {
+        background: #3970af; }
 .OEPanelRight.resource .resource-item:hover {
   background-color: rgba(255, 255, 255, 0.2); }
 .OEPanelRight.resource .resource-item.ossubnet {

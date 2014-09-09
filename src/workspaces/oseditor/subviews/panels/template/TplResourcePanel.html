@@ -1,14 +1,25 @@
+<nav class="clearfix">
+    <ul class="anchor clearfix">
+        <li data-scroll-to="system-image">S</li>
+        <li data-scroll-to="block-storage">B</li>
+        <li data-scroll-to="network">N</li>
+    </ul>
+    <ul class="action clearfix">
+        <li class="btn-refresh-panel icon-refresh"></li>
+        <li class="btn-open-shareres icon-resources"></li>
+    </ul>
+</nav>
 <section class="system-image">
     <header>
         Server
         <aside class="selectbox">
             <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
             <ul class="dropdown">
-              <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-              <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
-              <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
-          </ul>
-      </aside>
+                <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+                <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
+                <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+            </ul>
+        </aside>
     </header>
     <article>
         <ul class="nano-content resource-list-ami" tabindex="0">

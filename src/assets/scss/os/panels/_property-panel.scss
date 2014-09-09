@@ -131,10 +131,10 @@
 }
 .selectize-input {
   border: 1px solid #d0d0d0;
-  padding: 8px 8px;
+  padding: 5px 8px;
   display: inline-block;
   width: 100%;
-  overflow: hidden;
+  /*overflow: hidden;*/
   position: relative;
   z-index: 1;
   -webkit-box-sizing: border-box;
@@ -217,14 +217,14 @@
   clear: left;
 }
 .selectize-input.dropdown-active::before {
-  content: ' ';
+/*  content: ' ';
   display: block;
   position: absolute;
-  /*background: #f0f0f0;*/
+  background: #f0f0f0;
   height: 1px;
   bottom: 0;
   left: 0;
-  right: 0;
+  right: 0;*/
 }
 .selectize-dropdown {
   position: absolute;
@@ -244,7 +244,7 @@
 }
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 .selectize-dropdown [data-selectable] .highlight {
   background: rgba(125, 168, 208, 0.2);
@@ -275,7 +275,7 @@
   color: rgba(48, 48, 48, 0.5);
 }
 .selectize-dropdown-content {
-  overflow-y: auto;
+  /*overflow-y: auto;*/
   overflow-x: hidden;
   max-height: 200px;
 }
@@ -316,6 +316,7 @@
   /*opacity: 0.5;*/
   background-color: #fafafa;
 }
+
 
 
 $propertyGroupHeight: 34px;
@@ -384,7 +385,7 @@ $propertyFontSize: 12px;
     }
     input.value {
         color: #fff;
-        padding: 11px;
+        padding: 8px 8px;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         margin: 0;
@@ -403,11 +404,13 @@ $propertyFontSize: 12px;
         // height: $propertyGroupHeight;
         height: 100%;
         &.mutil .selectize-input {
-            overflow-y: auto;
+            // overflow-y: auto;
         }
         .selectize-input {
             color: #fff;
             border: 0;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
             // height: $propertyGroupHeight;
             height: 100%;
             &.focus {

@@ -12,7 +12,7 @@ define [
 
     events:
 
-        'DOMNodeInserted .group': 'bindSelection'
+        null
 
     initialize: ( options ) ->
 
@@ -36,6 +36,8 @@ define [
         @
 
     bindSelection: ($valueDom) ->
+
+        return if (not $valueDom or not $valueDom.length)
 
         if not $valueDom.hasClass('selectized')
 

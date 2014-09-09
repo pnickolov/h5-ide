@@ -401,17 +401,17 @@ function fn_generate_coffee() {
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
         elif [ "${__TYPE}" == "openstack" ]
         then
-            case "${RESOURCE_URL}" in
-                ### Neutron ###
-                "securitygroup" )    RESOURCE_URL="sg";;
-                *)                   RESOURCE_URL=${RESOURCE_URL};
-            esac
+            # case "${RESOURCE_URL}" in
+            #     ### Neutron ###
+            #     "securitygroup" )    RESOURCE_URL="sg";;
+            #     *)                   RESOURCE_URL=${RESOURCE_URL};
+            # esac
             _URL="'/os/${_SERVICE_l}/v2_0/${RESOURCE_URL}/'"
-            _API_NAME="'${_RESOURCE_l}_${_CUR_API}'"
-            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-35s", $0}'`
+            _API_NAME="'os_${_RESOURCE_l}_${_CUR_API}'"
+            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-38s", $0}'`
         fi
         
-        echo -e "\t\t${_API_NAME} : { url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
+        echo -e "\t\t${_API_NAME} : { type:'openstack', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
     
 
         _LAST_API=${_CUR_API}

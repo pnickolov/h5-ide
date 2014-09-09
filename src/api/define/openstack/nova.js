@@ -58,8 +58,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_keypair_Delete'                    : { type:'openstack', url:'/os/nova/v2_0/keypair/',	method:'Delete',	params:['username', 'session_id', 'region', 'keypair_name']   },
 		'os_network_List'                      : { type:'openstack', url:'/os/nova/v2_0/network/',	method:'List',	params:['username', 'session_id', 'region', 'network_id']   },
 		'os_network_Info'                      : { type:'openstack', url:'/os/nova/v2_0/network/',	method:'Info',	params:['username', 'session_id', 'region', 'network_ids']   },
-		'os_securitygroup_List'                : { type:'openstack', url:'/os/nova/v2_0/sg/',	method:'List',	params:['username', 'session_id', 'region', 'server_id', 'sg_id']   },
-		'os_securitygroup_ListDefaultRules'    : { type:'openstack', url:'/os/nova/v2_0/sg/',	method:'ListDefaultRules',	params:['username', 'session_id', 'region', 'default_sg_id']   },
 		'os_server_List'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'List',	params:['username', 'session_id', 'region', 'changes_since', 'image', 'flavor', 'name', 'marker', 'limit', 'status', 'host']   },
 		'os_server_Info'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_server_CreateServerMetadata'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'CreateServerMetadata',	params:['username', 'session_id', 'region', 'server_id', 'metadata']   },

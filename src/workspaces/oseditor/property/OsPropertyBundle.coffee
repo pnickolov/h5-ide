@@ -3,5 +3,6 @@ define [
     './globalconfig/view'
 
     './ossubnet/view'
+    './osserver/view'
 
 ], () ->

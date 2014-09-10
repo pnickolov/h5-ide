@@ -2,15 +2,31 @@ define [
   'constant'
   '../OsPropertyView'
   './template'
-], ( constant, OsPropertyView, stackTpl ) ->
+  'CloudResources'
+], ( constant, OsPropertyView, template, CloudResources ) ->
 
   OsPropertyView.extend {
     events:
       "change #property-os-server-credential": "onChangeCredential"
+      "change #property-os-server-name": "updateServerAttr"
+      "change #property-os-server-image": "updateServerAttr"
+      "change #property-os-server-CPU":  "updateServerAttr"
+      "change #property-os-server-RAM": "updateServerAttr"
+      "change #property-os-server-keypair": "updateServerAttr"
+      "change #property-os-server-adminPass": "updateServerAttr"
+      "change #property-os-server-userdata": "updateServerAttr"
+
 
     render: ->
-      @$el.html stackTpl(@model.toJSON())
+      console.log template
+      @$el.html template.stackTemplate(@model.toJSON())
+      CloudResources( constant.RESTYPE.OSIMAGE,  "guangzhou" )
+      @bindSelectizeEvent()
       @
+
+    bindSelectizeEvent: ()->
+      renderLoadingImageList = @renderLoadingImageList.bind @
+      @$el.find("#property-os-server-image")[0].selectize.on 'dropdown_open', renderLoadingImageList
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -20,6 +36,9 @@ define [
       else
         @$el.find("#property-os-server-keypair").parent().hide()
         @$el.find('#property-os-server-adminPass').parent().show()
+
+    updateServerAttr: (event)->
+      console.log event
 
     selectTpl:
 

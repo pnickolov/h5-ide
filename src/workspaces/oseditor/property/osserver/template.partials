@@ -1,38 +1,12 @@
-<!--
-<section class="group required">
-    <div class="key">PROPERTY NAME</div>
-    <select class="value bool" value="true"></select>
-</section>
-<section class="group required">
-    <div class="key">PROPERTY NAME</div>
-    <input class="value string" value="host-1"/>
-</section>
-<section class="group">
-    <div class="key">PROPERTY NAME</div>
-    <select class="value option" value="2">
-        <option value="1">1</option>
-        <option value="2">2</option>
-    </select>
-</section>
-<section class="group">
-    <div class="key">LONG LONG PROPERTY NAME</div>
-    <select class="value option mutil" value="nop,abc,def">
-        <option value="abc">abc</option>
-        <option value="def">def</option>
-        <option value="hij">hij</option>
-        <option value="klm">klm</option>
-        <option value="nop">nop</option>
-        <option value="qrs">qrs</option>
-    </select>
-</section>
--->
+<!-- {{stackTemplate}} -->
+
 <section class="group required">
     <div class="key">Server Name</div>
-    <input class="value string" value="{{name}}"/>
+    <input id="property-os-server-name" class="value string" value="{{name}}"/>
 </section>
 <section class="group required">
     <div class="key">Server Image</div>
-    <select class="value option" value="zzzzzz" data-select-tpl="imageItems" data-item-tpl="imageValue">
+    <select class="value option" value="zzzzzz" id="change #property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
         <option value="amazon.i386.ebs.png">amazon.i386.ebs</option>
         <option value="amazon.i386.instance-store.png">amazon.i386.instance-store</option>
         <option value="amazon.x86_64.ebs.png">amazon.x86_64.ebs</option>
@@ -54,7 +28,7 @@
         <option value="fedora.x86_64.ebs.png">fedora.x86_64.ebs</option>
         <option value="fedora.x86_64.instance-store.png">fedora.x86_64.instance-store</option>
         <option value="gentoo.i386.ebs.png">gentoo.i386.ebs</option>
-<!--        <option value="gentoo.i386.instance-store.png">gentoo.i386.instance-store</option>
+        <option value="gentoo.i386.instance-store.png">gentoo.i386.instance-store</option>
         <option value="gentoo.x86_64.ebs.png">gentoo.x86_64.ebs</option>
         <option value="gentoo.x86_64.instance-store.png">gentoo.x86_64.instance-store</option>
         <option value="linux-other.i386.ebs.png">linux-other.i386.ebs</option>
@@ -87,12 +61,12 @@
         <option value="windows.i386.ebs.png">windows.i386.ebs</option>
         <option value="windows.i386.instance-store.png">windows.i386.instance-store</option>
         <option value="windows.x86_64.ebs.png">windows.x86_64.ebs</option>
-        <option value="windows.x86_64.instance-store.png">windows.x86_64.instance-store</option>-->
+        <option value="windows.x86_64.instance-store.png">windows.x86_64.instance-store</option>
     </select>
 </section>
 <section class="group required">
     <div class="key">CPU</div>
-    <select class="value option">
+    <select class="value option" id="change #property-os-server-CPU">
         <option value='xxxxxx1'>1 Core</option>
         <option value='xxxxxx2'>2 Core</option>
         <option value='xxxxxx3'>3 Core</option>
@@ -102,7 +76,7 @@
 </section>
 <section class="group required">
     <div class="key">RAM</div>
-    <select class="value option">
+    <select class="value option" id="change #property-os-server-RAM">
         <option value='xxxxxx1'>1 G</option>
         <option value='xxxxxx2'>2 G</option>
         <option value='xxxxxx3'>3 G</option>
@@ -133,5 +107,9 @@
 </section>
 <section class="group required">
     <div class="key">User Data</div>
-    <textarea type="text" class="value string">{{userData}}</textarea>
+    <textarea id="property-os-server-userdata" type="text" class="value string">{{userData}}</textarea>
 </section>
+
+
+<!--{{key}}-->
+<p>What the fuxk</p>

@@ -448,6 +448,15 @@ $propertyFontSize: 12px;
             [data-selectable], .optgroup-header {
                 padding: 10px;
             }
+            &.loading {
+              height: 145px !important;
+              .selectize-dropdown-content {
+                display: none !important;
+              }
+              .dropdown_button {
+                display: none !important;
+              }
+            }
             .selectize-dropdown-content {
 
                 &::-webkit-scrollbar {

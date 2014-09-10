@@ -29,9 +29,9 @@ define [
 
                 return '<div>Add...</div>'
 
-        onClick: ->
+        onClick: (event) ->
 
-            alert(1)
+            $(event.target)[0].selectize.setLoading(true);
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]

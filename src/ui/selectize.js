@@ -1070,6 +1070,7 @@
             isRequired       : $input.is('[required]'),
             isInvalid        : false,
             isLocked         : false,
+            isLoading        : false,
             isFocused        : false,
             isInputHidden    : false,
             isSetup          : false,
@@ -2624,7 +2625,7 @@
         open: function() {
             var self = this;
     
-            if (self.isLocked || self.isOpen || (self.settings.mode === 'multi' && self.isFull())) return;
+            if ((self.isLocked && !self.isLoading) || self.isOpen || (self.settings.mode === 'multi' && self.isFull())) return;
             self.focus();
             self.isOpen = true;
             self.refreshState();
@@ -3600,13 +3601,27 @@
                         self.$dropdown.append($dropdown_button);
                         $dropdown_button.on('click', function(event) {
                             self.close();
-                            self.$input.trigger('dropdown_button_click');
+                            self.$input.trigger('select_dropdown_button_click');
                         });
                     }
                 }
                 return result;
             };
         })();
+
+        this.setLoading = function(show) {
+            var self = this;
+            self.$dropdown_content.nextAll('.box-loading').remove();
+            self.isLoading = show;
+            if (show) {
+                self.lock();
+                self.$dropdown.addClass('loading');
+                self.$dropdown.append('<div class="box-loading box-wrapper"><div class="loading-spinner"></div></div>');
+            } else {
+                self.unlock();
+                self.$dropdown.removeClass('loading');
+            }
+        };
 
     });
 

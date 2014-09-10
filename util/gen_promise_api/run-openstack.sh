@@ -421,6 +421,11 @@ function fn_generate_coffee() {
     echo -e "\t}" >> ${OUTPUT_FILE}.js
     echo -e "" >> ${OUTPUT_FILE}.js
     echo -e "\tfor ( var i in Apis ) {" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t/* env:dev */" >> ${OUTPUT_FILE}.js
+    echo -e "\t\tif (ApiRequestDefs.Defs[ i ]){" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t\tconsole.warn('api duplicate: ' + i);" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t}" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t/* env:dev:end */" >> ${OUTPUT_FILE}.js
     echo -e "\t\tApiRequestDefs.Defs[ i ] = Apis[ i ];" >> ${OUTPUT_FILE}.js
     echo -e "\t}" >> ${OUTPUT_FILE}.js
     echo -e "" >> ${OUTPUT_FILE}.js
@@ -750,6 +755,11 @@ then
     sed '/var Apis = /r out.tmp/service/openstack/glance_.tmp' ${TGT_BASE_DIR}/service/openstack/glance.js > ${TGT_BASE_DIR}/service/openstack/glance2.js
     rm -rf ${TGT_BASE_DIR}/service/openstack/glance_*.*
     mv ${TGT_BASE_DIR}/service/openstack/glance2.js ${TGT_BASE_DIR}/service/openstack/glance.js
+fi
+
+if [ -f ${TGT_BASE_DIR}/service/openstack/os.js ]
+then
+    rm ${TGT_BASE_DIR}/service/openstack/os.js -rf
 fi
 
 ##############################################################

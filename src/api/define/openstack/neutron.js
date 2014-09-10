@@ -11,6 +11,12 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_agent_ListL3AgentsHostingRouter'   : { type:'openstack', url:'/os/neutron/v2_0/agent/',	method:'ListL3AgentsHostingRouter',	params:['username', 'session_id', 'region', 'router_id']   },
 		'os_agent_ListPoolsOnLbaasAgent'       : { type:'openstack', url:'/os/neutron/v2_0/agent/',	method:'ListPoolsOnLbaasAgent',	params:['username', 'session_id', 'region', 'agent_id']   },
 		'os_agent_GetLbaasAgentHostingPool'    : { type:'openstack', url:'/os/neutron/v2_0/agent/',	method:'GetLbaasAgentHostingPool',	params:['username', 'session_id', 'region', 'pool_id']   },
+		'os_agentscheduler_ListNetworksOnDhcpAgent' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'ListNetworksOnDhcpAgent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'os_agentscheduler_ListDhcpAgentsHostingNetwork' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'ListDhcpAgentsHostingNetwork',	params:['username', 'session_id', 'region', 'network_id']   },
+		'os_agentscheduler_ListRoutersOnL3Agent' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'ListRoutersOnL3Agent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'os_agentscheduler_ListL3AgentsHostingRouter' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'ListL3AgentsHostingRouter',	params:['username', 'session_id', 'region', 'router_id']   },
+		'os_agentscheduler_ListPoolsOnLbaasAgent' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'ListPoolsOnLbaasAgent',	params:['username', 'session_id', 'region', 'agent_id']   },
+		'os_agentscheduler_GetLbaasAgentHostingPool' : { type:'openstack', url:'/os/neutron/v2_0/agentscheduler/',	method:'GetLbaasAgentHostingPool',	params:['username', 'session_id', 'region', 'pool_id']   },
 		'os_firewall_ListFirewall'             : { type:'openstack', url:'/os/neutron/v2_0/firewall/',	method:'ListFirewall',	params:['username', 'session_id', 'region', 'fw_id']   },
 		'os_firewall_ListFirewallRule'         : { type:'openstack', url:'/os/neutron/v2_0/firewall/',	method:'ListFirewallRule',	params:['username', 'session_id', 'fw_rule_id']   },
 		'os_firewall_ListFirewallPolicy'       : { type:'openstack', url:'/os/neutron/v2_0/firewall/',	method:'ListFirewallPolicy',	params:['username', 'session_id', 'region', 'fw_policy_id']   },
@@ -21,14 +27,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_listener_Info'                     : { type:'openstack', url:'/os/neutron/v2_0/listener/',	method:'Info',	params:['username', 'session_id', 'region', 'listener_ids']   },
 		'os_loadbalancer_List'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
 		'os_loadbalancer_Info'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'load_balancer_ids']   },
-		'os_loadbalancer_List'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_loadbalancer_Info'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'listener_ids']   },
-		'os_loadbalancer_List'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_loadbalancer_Info'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'Info',	params:['username', 'session_id', 'region', 'pool_ids']   },
-		'os_loadbalancer_ListMember'           : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'ListMember',	params:['username', 'session_id', 'region', 'pool_id']   },
-		'os_loadbalancer_MemberInfo'           : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'MemberInfo',	params:['username', 'session_id', 'region', 'pool_id', 'member_ids']   },
-		'os_loadbalancer_List'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_loadbalancer_List'                 : { type:'openstack', url:'/os/neutron/v2_0/loadbalancer/',	method:'List',	params:['username', 'session_id', 'region', 'health_monitor_ids']   },
 		'os_member_List'                       : { type:'openstack', url:'/os/neutron/v2_0/member/',	method:'List',	params:['username', 'session_id', 'region']   },
 		'os_member_Info'                       : { type:'openstack', url:'/os/neutron/v2_0/member/',	method:'Info',	params:['username', 'session_id', 'region', 'member_ids']   },
 		'os_metering_ListMeteringLabel'        : { type:'openstack', url:'/os/neutron/v2_0/metering/',	method:'ListMeteringLabel',	params:['username', 'session_id', 'region', 'metering_label_id']   },
@@ -57,6 +55,11 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	}
 
 	for ( var i in Apis ) {
+		/* env:dev */
+		if (ApiRequestDefs.Defs[ i ]){
+			console.warn('api duplicate: ' + i);
+		}
+		/* env:dev:end */
 		ApiRequestDefs.Defs[ i ] = Apis[ i ];
 	}
 

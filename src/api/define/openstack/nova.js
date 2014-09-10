@@ -4,10 +4,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_nova_V2_Info'                      : { type:'openstack', url:'/os/nova/v2_0/nova/',	method:'V2_Info',	params:['username', 'session_id', 'region']   },
 		'os_nova_V2_Extension'                 : { type:'openstack', url:'/os/nova/v2_0/nova/',	method:'V2_Extension',	params:['username', 'session_id', 'region', 'alias']   },
 		'os_nova_V2_Limits'                    : { type:'openstack', url:'/os/nova/v2_0/nova/',	method:'V2_Limits',	params:['username', 'session_id', 'region', 'spec_tenant_id']   },
-		'os_agent_List'                        : { type:'openstack', url:'/os/nova/v2_0/agent/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_agent_Create'                      : { type:'openstack', url:'/os/nova/v2_0/agent/',	method:'Create',	params:['username', 'session_id', 'region', 'agent']   },
-		'os_agent_Delete'                      : { type:'openstack', url:'/os/nova/v2_0/agent/',	method:'Delete',	params:['username', 'session_id', 'region']   },
-		'os_agent_Update'                      : { type:'openstack', url:'/os/nova/v2_0/agent/',	method:'Update',	params:['username', 'session_id', 'region', 'agent_id', 'agent']   },
 		'os_aggregate_List'                    : { type:'openstack', url:'/os/nova/v2_0/aggregate/',	method:'List',	params:['username', 'session_id', 'region']   },
 		'os_aggregate_Info'                    : { type:'openstack', url:'/os/nova/v2_0/aggregate/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_aggregate_Create'                  : { type:'openstack', url:'/os/nova/v2_0/aggregate/',	method:'Create',	params:['username', 'session_id', 'region', 'aggregate']   },
@@ -50,8 +46,8 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_keypair_Info'                      : { type:'openstack', url:'/os/nova/v2_0/keypair/',	method:'Info',	params:['username', 'session_id', 'region', 'keypair_names']   },
 		'os_keypair_Create'                    : { type:'openstack', url:'/os/nova/v2_0/keypair/',	method:'Create',	params:['username', 'session_id', 'region', 'keypair_name', 'public_key']   },
 		'os_keypair_Delete'                    : { type:'openstack', url:'/os/nova/v2_0/keypair/',	method:'Delete',	params:['username', 'session_id', 'region', 'keypair_name']   },
-		'os_network_List'                      : { type:'openstack', url:'/os/nova/v2_0/network/',	method:'List',	params:['username', 'session_id', 'region', 'network_id']   },
-		'os_network_Info'                      : { type:'openstack', url:'/os/nova/v2_0/network/',	method:'Info',	params:['username', 'session_id', 'region', 'network_ids']   },
+		'os_servergroup_List'                  : { type:'openstack', url:'/os/nova/v2_0/servergroup/',	method:'List',	params:['username', 'session_id', 'region']   },
+		'os_servergroup_Info'                  : { type:'openstack', url:'/os/nova/v2_0/servergroup/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_server_List'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'List',	params:['username', 'session_id', 'region', 'changes_since', 'image', 'flavor', 'name', 'marker', 'limit', 'status', 'host']   },
 		'os_server_Info'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_server_CreateServerMetadata'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'CreateServerMetadata',	params:['username', 'session_id', 'region', 'server_id', 'metadata']   },
@@ -62,21 +58,18 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_server_GetServerPassword'          : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetServerPassword',	params:['username', 'session_id', 'region', 'server_id']   },
 		'os_server_DeleteServerPassword'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'DeleteServerPassword',	params:['username', 'session_id', 'region', 'server_id']   },
 		'os_server_GetServerDiagnostics'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetServerDiagnostics',	params:['username', 'session_id', 'region', 'server_id']   },
-		'os_server_List'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_server_Info'                       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_service_List'                      : { type:'openstack', url:'/os/nova/v2_0/service/',	method:'List',	params:['username', 'session_id', 'region', 'is_disabled']   },
-		'os_snapshot_List'                     : { type:'openstack', url:'/os/nova/v2_0/snapshot/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_snapshot_Info'                     : { type:'openstack', url:'/os/nova/v2_0/snapshot/',	method:'Info',	params:['username', 'session_id', 'region', 'snapshot_id']   },
 		'os_v2_CreateRootCertificate'          : { type:'openstack', url:'/os/nova/v2_0/v2/',	method:'CreateRootCertificate',	params:['username', 'session_id', 'region']   },
 		'os_v2_GetRootCertificate'             : { type:'openstack', url:'/os/nova/v2_0/v2/',	method:'GetRootCertificate',	params:['username', 'session_id', 'region']   },
 		'os_v2_ListTenantUsage'                : { type:'openstack', url:'/os/nova/v2_0/v2/',	method:'ListTenantUsage',	params:['username', 'session_id', 'region', 'spec_tenant_id']   },
-		'os_volume_List'                       : { type:'openstack', url:'/os/nova/v2_0/volume/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_volume_Info'                       : { type:'openstack', url:'/os/nova/v2_0/volume/',	method:'Info',	params:['username', 'session_id', 'region', 'volume_id']   },
-		'os_volume_ListVolumeType'             : { type:'openstack', url:'/os/nova/v2_0/volume/',	method:'ListVolumeType',	params:['username', 'session_id', 'region', 'volume_type_id']   },
-		'os_volume_ListVolumeAttachment'       : { type:'openstack', url:'/os/nova/v2_0/volume/',	method:'ListVolumeAttachment',	params:['username', 'session_id', 'region', 'server_id', 'attachment_id']   },
 	}
 
 	for ( var i in Apis ) {
+		/* env:dev */
+		if (ApiRequestDefs.Defs[ i ]){
+			console.warn('api duplicate: ' + i);
+		}
+		/* env:dev:end */
 		ApiRequestDefs.Defs[ i ] = Apis[ i ];
 	}
 

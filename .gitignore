@@ -38,4 +38,3 @@ util/gen_apilist/**/*.js
 *.styl
 src/ui/UI.modalplus.js
 
-src/assets/css/os/**/*.css

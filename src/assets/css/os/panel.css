@@ -12,16 +12,16 @@
 .openstack .OEPanelRight {
   width: 320px; }
   .openstack .OEPanelRight.resource .resource {
-    border-bottom: 3px solid #4a90e2;
+    border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }
   .openstack .OEPanelRight.property .property {
-    border-bottom: 3px solid #4a90e2;
+    border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }
   .openstack .OEPanelRight.state .state {
-    border-bottom: 3px solid #4a90e2;
+    border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }
   .openstack .OEPanelRight.config .config {
-    border-bottom: 3px solid #4a90e2;
+    border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }
   .openstack .OEPanelRight .sidebar-title {
     box-sizing: border-box;
@@ -30,7 +30,9 @@
       width: 25%;
       float: left;
       text-align: center;
-      cursor: pointer; }
+      cursor: pointer;
+      height: 100%;
+      box-sizing: border-box; }
     .openstack .OEPanelRight .sidebar-title a:hover {
       color: #eee; }
   .openstack .OEPanelRight .panel-body {
@@ -547,6 +549,12 @@ p.property-os-image-text {
     border: 0; }
     #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown [data-selectable], #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .optgroup-header {
       padding: 10px; }
+    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading {
+      height: 145px !important; }
+      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown-content {
+        display: none !important; }
+      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown_button {
+        display: none !important; }
     #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar {
       width: 8px; }
     #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-track {

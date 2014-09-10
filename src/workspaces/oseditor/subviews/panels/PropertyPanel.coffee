@@ -13,7 +13,7 @@ define [
 
     events:
 
-        null
+      "click .option-group-head" : "updateRightPanelOption"
 
     initialize: ( options ) ->
 
@@ -49,6 +49,37 @@ define [
             $title.eq(0).text title
         else
             @$el.html PropertyPanelTpl.title { title: title }
+
+          
+    updateRightPanelOption : ( event ) ->
+#      $toggle = $(event.currentTarget)
+#
+#      if $toggle.is("button") or $toggle.is("a") then return
+#
+#      hide    = $toggle.hasClass("expand")
+#      $target = $toggle.next()
+#
+#      if hide
+#        $target.css("display", "block").slideUp(200)
+#      else
+#        $target.slideDown(200)
+#      $toggle.toggleClass("expand")
+#
+#      if not $toggle.parents(".property-first-panel").length then return
+#
+#      @__optionStates = @__optionStates || {}
+#
+#      # added by song ######################################
+#      # record head state
+#      comp = PropertyBaseModule.activeModule().uid || "Stack"
+#      status = _.map @$el.find('.property-first-panel').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+#      @__optionStates[ comp ] = status
+#
+#      comp = @workspace.design.component( comp )
+#      if comp then @__optionStates[ comp.type ] = status
+#      # added by song ######################################
+#
+#      return false
 
 
     bindSelection: ($valueDom, selectTpl) ->

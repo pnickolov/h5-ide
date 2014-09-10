@@ -1,5 +1,7 @@
 <!-- {{stackTemplate}} -->
-
+<div class="option-group-head expand">
+    Server Details
+</div>
 <section class="group required">
     <div class="key">Server Name</div>
     <input id="property-os-server-name" data-target="name" class="value string" value="{{name}}"/>

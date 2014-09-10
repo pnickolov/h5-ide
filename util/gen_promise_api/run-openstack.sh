@@ -407,7 +407,12 @@ function fn_generate_coffee() {
                 *)            OS_VER="v2_0";;
             esac
             _URL="'/os/${_SERVICE_l}/${OS_VER}/${RESOURCE_URL}/'"
-            _API_NAME="'os_${_RESOURCE_l}_${_CUR_API}'"
+            if [ "${_RESOURCE_l}" != "quota" ]
+            then
+                _API_NAME="'os_${_RESOURCE_l}_${_CUR_API}'"
+            else
+                _API_NAME="'os_${_SERVICE_l}_${_RESOURCE_l}_${_CUR_API}'"
+            fi
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-38s", $0}'`
         fi
         

@@ -13,27 +13,32 @@
 	background: rgba(255,255,255,.05);
 }
 
-#state-editor .parameter-item.text .parameter-text-expand {
+#state-editor .parameter-item .parameter-text-expand {
 	position:    absolute;
 	margin-left: -20px;
 	cursor:      pointer;
 	color:       #aaa;
 	display:     none;
-	background:  rgba(0,0,0,.6);
+	// background:  rgba(0,0,0,.6);
 	padding:     4px;
 	z-index:     55;
-	right:       16px;
+	right:       23px;
 }
 
-#state-editor .parameter-item.text .parameter-text-expand:before {
+#state-editor .parameter-item .parameter-text-expand:before {
 	margin-right: 5px;
+	font-size: 12px;
 }
 
-#state-editor .parameter-item.text:hover .parameter-text-expand {
+#state-editor .parameter-item .parameter-container:hover .parameter-text-expand {
 	display: block;
 }
 
-#state-editor .parameter-item.text .parameter-text-expand:hover {
+// #state-editor .parameter-item.dict .editable-area.value:hover + .parameter-text-expand {
+// 	display: block;
+// }
+
+#state-editor .parameter-item .parameter-text-expand:hover {
 	color: #fff;
 }
 
@@ -589,6 +594,17 @@
 	overflow  : auto;
 	padding: 4px 0 0 0;
 	max-width: 440px;
+}
+
+#state-editor .parameter-dict-item .editable-area.text {
+	height: 14px !important;
+	overflow: hidden;
+	margin-top: -3px;
+}
+
+#state-editor .parameter-item.dict .parameter-text-expand {
+	margin-top: -4px;
+	right: 0px;
 }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {

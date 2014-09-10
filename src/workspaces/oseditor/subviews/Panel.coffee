@@ -28,7 +28,7 @@ define [
 
     initialize: ( options ) ->
         window.Panel = @
-        _.extend this, options
+        _.extend @, options
         @render()
 
     render: () ->
@@ -40,6 +40,7 @@ define [
         @
 
     renderSubPanel: ( subPanel, args ) ->
+        args = _.extend { workspace: @workspace }, args
         @$( '.panel-body' ).html new subPanel( args ).render().el
 
     scrollTo: ( className ) ->

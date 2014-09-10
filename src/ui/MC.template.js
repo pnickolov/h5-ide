@@ -441,71 +441,27 @@ TEMPLATE.bubbleAMIInfo=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n    <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_IMAGEOWNERALIAS", {hash:{},data:data}))
-    + "</dt> <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.imageOwnerAlias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    ";
-  return buffer;
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n    <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_IMAGEOWNERID", {hash:{},data:data}))
-    + "</dt> <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.imageOwnerId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    ";
-  return buffer;
-  }
 
   buffer += "<div class=\"bubble-head\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_NAME", {hash:{},data:data}))
-    + "</dt>            <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_DESCRIPTION", {hash:{},data:data}))
-    + "</dt>     <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>Distro</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Version</dt><dd>"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.os_version)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n        <dt>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ARCHITECTURE", {hash:{},data:data}))
-    + "</dt>    <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_IMAGELOCATION", {hash:{},data:data}))
-    + "</dt>   <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.imageLocation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.imageOwnerAlias), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n    <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ISPUBLIC", {hash:{},data:data}))
-    + "</dt>       <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.isPublic)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_KERNELID", {hash:{},data:data}))
-    + "</dt>       <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.kernelId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ROOTDEVICENAME", {hash:{},data:data}))
-    + "</dt> <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ROOTDEVICETYPE", {hash:{},data:data}))
-    + "</dt> <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Image Size</dt>    <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.imageSize)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Instance Type</dt> <dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dt><dd>"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Volume Size</dt><dd>"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "GB</dd>\n        <dt>id</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Size</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0['OS-EXT-IMG-SIZE:size'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Created</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.created)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n    </dl>\n</div>";
   return buffer;
   };

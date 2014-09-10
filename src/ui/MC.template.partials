@@ -244,26 +244,16 @@
 </div>
 
 <!-- {{bubbleOsAmiInfo}} -->
-<div class="bubble-head">{{id}}</div>
+<div class="bubble-head">{{name}}</div>
 <div class="bubble-content">
     <dl class="dl-horizontal">
-        <dt>{{i18n "DASH_BUB_NAME"}}</dt>            <dd>{{name}}</dd>
-        <dt>{{i18n "DASH_BUB_DESCRIPTION"}}</dt>     <dd>{{description}}</dd>
-        <dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt>    <dd>{{architecture}}</dd>
-        <dt>{{i18n "DASH_BUB_IMAGELOCATION"}}</dt>   <dd>{{imageLocation}}</dd>
-
-    {{#if imageOwnerAlias}}
-    <dt>{{i18n 'DASH_BUB_IMAGEOWNERALIAS'}}</dt> <dd>{{imageOwnerAlias}}</dd>
-    {{else}}
-    <dt>{{i18n "DASH_BUB_IMAGEOWNERID"}}</dt> <dd>{{imageOwnerId}}</dd>
-    {{/if}}
-
-    <dt>{{i18n "DASH_BUB_ISPUBLIC"}}</dt>       <dd>{{isPublic}}</dd>
-        <dt>{{i18n "DASH_BUB_KERNELID"}}</dt>       <dd>{{kernelId}}</dd>
-        <dt>{{i18n "DASH_BUB_ROOTDEVICENAME"}}</dt> <dd>{{rootDeviceName}}</dd>
-        <dt>{{i18n "DASH_BUB_ROOTDEVICETYPE"}}</dt> <dd>{{rootDeviceType}}</dd>
-    <dt>Image Size</dt>    <dd>{{imageSize}}</dd>
-    <dt>Instance Type</dt> <dd>{{instanceType}}</dd>
+        <dt>Distro</dt><dd>{{name}}</dd>
+        <dt>Version</dt><dd>{{metadata.os_version}}</dd>
+        <dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt><dd>{{metadata.architecture}}</dd>
+        <dt>Volume Size</dt><dd>{{metadata.vol_size}}GB</dd>
+        <dt>id</dt><dd>{{id}}</dd>
+        <dt>Size</dt><dd>{{OS-EXT-IMG-SIZE:size}}</dd>
+        <dt>Created</dt><dd>{{created}}</dd>
     </dl>
 </div>
 

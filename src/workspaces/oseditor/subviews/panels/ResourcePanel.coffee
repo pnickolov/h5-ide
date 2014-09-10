@@ -2,46 +2,69 @@
 define [
     'backbone'
     'constant'
+    'CloudResources'
     './template/TplResourcePanel'
 
-], ( Backbone, constant, ResourcePanelTpl )->
+], ( Backbone, constant, CloudResources, ResourcePanelTpl )->
 
-  Backbone.View.extend
+    MC.template.resPanelOsAmiInfo = ( data ) ->
+        if not data.region or not data.imageId then return
 
-    events:
-        'mousedown .resource-item'   : 'startDrag'
+        ami = CloudResources( constant.RESTYPE.OSIMAGE, data.region ).get( data.imageId )
 
-    initialize: ( options ) ->
+        MC.template.bubbleOsAmiInfo( ami?.toJSON() or {} )
 
-    render: () ->
-        @$el.html ResourcePanelTpl {}
-        @
 
-    startDrag : ( evt )->
-        if evt.button isnt 0 then return false
-        $tgt = $( evt.currentTarget )
-        if $tgt.hasClass("disabled") then return false
-        if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
+    Backbone.View.extend
 
-        type = constant.RESTYPE[ $tgt.attr("data-type") ]
+        events:
+            'mousedown .resource-item'   : 'startDrag'
 
-        dropTargets = "#OpsEditor .OEPanelCenter"
-        if type is constant.RESTYPE.INSTANCE
-            dropTargets += ",#changeAmiDropZone"
+        initialize: ( options ) ->
+            _.extend @, options
+            region = @workspace.opsModel.get("region")
 
-        option = $.extend true, {}, $tgt.data("option") || {}
-        option.type = type
+            @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), "update", @renderAmi
 
-        $tgt.dnd( evt, {
-            dropTargets  : $( dropTargets )
-            dataTransfer : option
-            eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
-            onDragStart  : ( data )->
-                if type is constant.RESTYPE.AZ
-                    data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
-                else if type is constant.RESTYPE.ASG
-                    data.shadow.text( "ASG" )
-          })
-        return false
+        render: () ->
+            @$el.html ResourcePanelTpl.frame {}
+            @renderAmi()
+            @
+
+        renderAmi: ->
+            region = @workspace.opsModel.get("region")
+
+            amis = CloudResources( constant.RESTYPE.OSIMAGE,  region ).toJSON()
+            data = _.map amis, ( ami ) -> _.extend { region: region }, ami
+
+            @$( '.resource-list-ami' ).html ResourcePanelTpl.ami data
+            @
+
+        startDrag : ( evt )->
+            if evt.button isnt 0 then return false
+            $tgt = $( evt.currentTarget )
+            if $tgt.hasClass("disabled") then return false
+            if evt.target && $( evt.target ).hasClass("btn-fav-ami") then return
+
+            type = constant.RESTYPE[ $tgt.attr("data-type") ]
+
+            dropTargets = "#OpsEditor .OEPanelCenter"
+            if type is constant.RESTYPE.INSTANCE
+                dropTargets += ",#changeAmiDropZone"
+
+            option = $.extend true, {}, $tgt.data("option") || {}
+            option.type = type
+
+            $tgt.dnd( evt, {
+                dropTargets  : $( dropTargets )
+                dataTransfer : option
+                eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
+                onDragStart  : ( data )->
+                    if type is constant.RESTYPE.AZ
+                        data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
+                    else if type is constant.RESTYPE.ASG
+                        data.shadow.text( "ASG" )
+              })
+            return false
 
 

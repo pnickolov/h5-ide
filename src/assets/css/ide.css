@@ -4749,7 +4749,7 @@ div.modal-text-highlight {
       color: #fefefe; }
     .region-resource-list .region-resource-info > i:first-child {
       border-radius: 0 0 5px 0; }
-  .region-resource-list .region-resource-info i.icon-foget-app:hover i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
+  .region-resource-list .region-resource-info i.icon-terminate:hover, .region-resource-list .region-resource-info i.icon-forget-app:hover, .region-resource-list .region-resource-info i.icon-delete:hover {
     color: #ec3c38; }
   .region-resource-list .region-resource-info > span {
     max-width: 110px; }
@@ -7032,7 +7032,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7684,24 +7685,24 @@ g.shadow {
 #state-editor .parameter-item:hover .parameter-container {
   background: rgba(255, 255, 255, 0.05); }
 
-#state-editor .parameter-item.text .parameter-text-expand {
+#state-editor .parameter-item .parameter-text-expand {
   position: absolute;
   margin-left: -20px;
   cursor: pointer;
   color: #aaa;
   display: none;
-  background: rgba(0, 0, 0, 0.6);
   padding: 4px;
   z-index: 55;
-  right: 16px; }
+  right: 23px; }
 
-#state-editor .parameter-item.text .parameter-text-expand:before {
-  margin-right: 5px; }
+#state-editor .parameter-item .parameter-text-expand:before {
+  margin-right: 5px;
+  font-size: 12px; }
 
-#state-editor .parameter-item.text:hover .parameter-text-expand {
+#state-editor .parameter-item .parameter-container:hover .parameter-text-expand {
   display: block; }
 
-#state-editor .parameter-item.text .parameter-text-expand:hover {
+#state-editor .parameter-item .parameter-text-expand:hover {
   color: #fff; }
 
 #state-editor-wrap, #state-editor-body, #state-editor {
@@ -8168,6 +8169,15 @@ g.shadow {
   overflow: auto;
   padding: 4px 0 0 0;
   max-width: 440px; }
+
+#state-editor .parameter-dict-item .editable-area.text {
+  height: 14px !important;
+  overflow: hidden;
+  margin-top: -3px; }
+
+#state-editor .parameter-item.dict .parameter-text-expand {
+  margin-top: -4px;
+  right: 0px; }
 
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
   width: 147px;

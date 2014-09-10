@@ -248,12 +248,11 @@
 <div class="bubble-content">
     <dl class="dl-horizontal">
         <dt>Distro</dt><dd>{{name}}</dd>
-        <dt>Version</dt><dd>{{metadata.os_version}}</dd>
-        <dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt><dd>{{metadata.architecture}}</dd>
-        <dt>Volume Size</dt><dd>{{metadata.vol_size}}GB</dd>
+        <dt>Version</dt><dd>{{os_version}}</dd>
+        <dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt><dd>{{architecture}}</dd>
+        <dt>Volume Size</dt><dd>{{vol_size}}GB</dd>
         <dt>id</dt><dd>{{id}}</dd>
-        <dt>Size</dt><dd>{{OS-EXT-IMG-SIZE:size}}</dd>
-        <dt>Created</dt><dd>{{created}}</dd>
+        <dt>Created</dt><dd>{{timeStr created_at}}</dd>
     </dl>
 </div>
 

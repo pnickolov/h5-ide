@@ -449,19 +449,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>Distro</dt><dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n        <dt>Version</dt><dd>"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.os_version)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.os_version)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n        <dt>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ARCHITECTURE", {hash:{},data:data}))
     + "</dt><dd>"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n        <dt>Volume Size</dt><dd>"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.metadata)),stack1 == null || stack1 === false ? stack1 : stack1.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = (depth0 && depth0.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "GB</dd>\n        <dt>id</dt><dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n        <dt>Size</dt><dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0['OS-EXT-IMG-SIZE:size'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n        <dt>Created</dt><dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.created)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(helpers.timeStr.call(depth0, (depth0 && depth0.created_at), {hash:{},data:data}))
     + "</dd>\n    </dl>\n</div>";
   return buffer;
   };

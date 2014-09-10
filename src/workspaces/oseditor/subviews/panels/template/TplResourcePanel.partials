@@ -56,7 +56,7 @@
 <!-- {{ami}} -->
 {{#each this}}
 <li class="bubble resource-item instance" data-bubble-template="resPanelOsAmiInfo" data-bubble-data='{"region":"{{region}}","imageId":"{{id}}"}' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
-    <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{os_distro}}.{{architecture}}.ebs.png" width="39" height="27"></div>
+    <div class="resource-icon-instance"><img src="/assets/images/ide/ami/openstack/{{os_distro}}.{{architecture}}.png" width="39" height="27"></div>
     {{name}}
 </li>
 {{/each}}

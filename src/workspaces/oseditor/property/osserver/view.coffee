@@ -48,7 +48,6 @@ define [
 
 
     render: ->
-      console.log template
       json = @model.toJSON()
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       @$el.html template.stackTemplate json
@@ -59,19 +58,7 @@ define [
       that = @
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
         that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('image'))
-
-    renderLoadingImageList: ()->
-      imageListInstance = @$el.find("#property-os-server-image")[0].selectize
-      imageListInstance.setLoading(true)
-      imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
-      imageList.fetch().then ->
-        imageListInstance.setLoading(false)
-        imageListInstance.clearOptions()
-        _.each imageList.toJSON(), (e)->
-          console.log e
-          imageListInstance.addOption {value: e.id, text: e.name}
-        imageListInstance.$input.off 'select_dropdown_open'
-        imageListInstance.refreshOptions()
+      window.a = CloudResources constant.RESTYPE.OSFLAVOR, Design.instance().region()
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -84,6 +71,9 @@ define [
 
     updateServerAttr: (event)->
       console.log event
+      target = $(event.currentTarget)
+      attr = target.data('target')
+      @model.set(attr, target.val()) if attr
 
     selectTpl:
 

@@ -94,9 +94,6 @@
     .switcher.disabled {
         opacity: 0.2;
     }
-    .remove-btn {
-        cursor: pointer;
-    }
     .switcher.on {
         border-color: #0E8F38;
         background: #4fb845;
@@ -105,6 +102,9 @@
         .switch-handle {
             left: 34px;
         }
+    }
+    .remove-btn {
+        cursor: pointer;
     }
     .option-list-head {
         margin-top: 20px;

@@ -32,6 +32,7 @@ define [
         onClick: (event) ->
 
             $(event.target)[0].selectize.setLoading(true);
+            $(event.target)[0].selectize.setLoading(false);
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]

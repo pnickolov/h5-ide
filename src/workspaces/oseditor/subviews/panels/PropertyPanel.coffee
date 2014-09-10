@@ -90,7 +90,7 @@ define [
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
                         $valueDom.trigger 'selectized', @
-                  render: {
+                    render: {
                         option: (item) ->
                             tplName = @$input.data('select-tpl')
                             if tplName and selectTpl and selectTpl[tplName]

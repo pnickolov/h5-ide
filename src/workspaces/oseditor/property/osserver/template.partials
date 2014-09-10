@@ -7,61 +7,7 @@
 <section class="group required">
     <div class="key">Server Image</div>
     <select class="value option" value="zzzzzz" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
-        <option value="amazon.i386.ebs.png">amazon.i386.ebs</option>
-        <option value="amazon.i386.instance-store.png">amazon.i386.instance-store</option>
-        <option value="amazon.x86_64.ebs.png">amazon.x86_64.ebs</option>
-        <option value="amazon.x86_64.instance-store.png">amazon.x86_64.instance-store</option>
-        <option value="ami-linux.png">ami-linux</option>
-        <option value="ami-not-available.png">ami-not-available</option>
-        <option value="ami-unknown.png">ami-unknown</option>
-        <option value="ami-win.png">ami-win</option>
-        <option value="centos.i386.ebs.png">centos.i386.ebs</option>
-        <option value="centos.i386.instance-store.png">centos.i386.instance-store</option>
-        <option value="centos.x86_64.ebs.png">centos.x86_64.ebs</option>
-        <option value="centos.x86_64.instance-store.png">centos.x86_64.instance-store</option>
-        <option value="debian.i386.ebs.png">debian.i386.ebs</option>
-        <option value="debian.i386.instance-store.png">debian.i386.instance-store</option>
-        <option value="debian.x86_64.ebs.png">debian.x86_64.ebs</option>
-        <option value="debian.x86_64.instance-store.png">debian.x86_64.instance-store</option>
-        <option value="fedora.i386.ebs.png">fedora.i386.ebs</option>
-        <option value="fedora.i386.instance-store.png">fedora.i386.instance-store</option>
-        <option value="fedora.x86_64.ebs.png">fedora.x86_64.ebs</option>
-        <option value="fedora.x86_64.instance-store.png">fedora.x86_64.instance-store</option>
-        <option value="gentoo.i386.ebs.png">gentoo.i386.ebs</option>
-        <option value="gentoo.i386.instance-store.png">gentoo.i386.instance-store</option>
-        <option value="gentoo.x86_64.ebs.png">gentoo.x86_64.ebs</option>
-        <option value="gentoo.x86_64.instance-store.png">gentoo.x86_64.instance-store</option>
-        <option value="linux-other.i386.ebs.png">linux-other.i386.ebs</option>
-        <option value="linux-other.i386.instance-store.png">linux-other.i386.instance-store</option>
-        <option value="linux-other.x86_64.ebs.png">linux-other.x86_64.ebs</option>
-        <option value="linux-other.x86_64.instance-store.png">linux-other.x86_64.instance-store</option>
-        <option value="my-ami-other.png">my-ami-other</option>
-        <option value="my-ami-unknown.png">my-ami-unknown</option>
-        <option value="my-ami-win.png">my-ami-win</option>
-        <option value="opensuse.i386.ebs.png">opensuse.i386.ebs</option>
-        <option value="opensuse.i386.instance-store.png">opensuse.i386.instance-store</option>
-        <option value="opensuse.x86_64.ebs.png">opensuse.x86_64.ebs</option>
-        <option value="opensuse.x86_64.instance-store.png">opensuse.x86_64.instance-store</option>
-        <option value="redhat.i386.ebs.png">redhat.i386.ebs</option>
-        <option value="redhat.i386.instance-store.png">redhat.i386.instance-store</option>
-        <option value="redhat.x86_64.ebs.png">redhat.x86_64.ebs</option>
-        <option value="redhat.x86_64.instance-store.png">redhat.x86_64.instance-store</option>
-        <option value="suse.i386.ebs.png">suse.i386.ebs</option>
-        <option value="suse.i386.instance-store.png">suse.i386.instance-store</option>
-        <option value="suse.x86_64.ebs.png">suse.x86_64.ebs</option>
-        <option value="suse.x86_64.instance-store.png">suse.x86_64.instance-store</option>
-        <option value="ubuntu.i386.ebs.png">ubuntu.i386.ebs</option>
-        <option value="ubuntu.i386.instance-store.png">ubuntu.i386.instance-store</option>
-        <option value="ubuntu.x86_64.ebs.png">ubuntu.x86_64.ebs</option>
-        <option value="ubuntu.x86_64.instance-store.png">ubuntu.x86_64.instance-store</option>
-        <option value="unknown.i386.ebs.png">unknown.i386.ebs</option>
-        <option value="unknown.i386.instance-store.png">unknown.i386.instance-store</option>
-        <option value="unknown.x86_64.ebs.png">unknown.x86_64.ebs</option>
-        <option value="unknown.x86_64.instance-store.png">unknown.x86_64.instance-store</option>
-        <option value="windows.i386.ebs.png">windows.i386.ebs</option>
-        <option value="windows.i386.instance-store.png">windows.i386.instance-store</option>
-        <option value="windows.x86_64.ebs.png">windows.x86_64.ebs</option>
-        <option value="windows.x86_64.instance-store.png">windows.x86_64.instance-store</option>
+        <option value='xxxxxxx'>amazon.i386.ebs</option>
     </select>
 </section>
 <section class="group required">
@@ -111,5 +57,8 @@
 </section>
 
 
-<!--{{key}}-->
-<p>What the fuxk</p>
+<!--{{imageListKey}}-->
+<div><img class="property-os-image-icon" src="/assets/images/ide/ami/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span>{{or id value}}</span></p></div>
+
+<!--{{imageValue}}-->
+<div><img src="/assets/images/ide/ami/{{distro}}.png" alt=""/>{{name}}</div>

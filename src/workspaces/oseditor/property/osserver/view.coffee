@@ -6,6 +6,35 @@ define [
   'underscore'
 ], ( constant, OsPropertyView, template, CloudResources, _ ) ->
 
+  operationArray = [
+    "amazon.i386.ebs"
+    "amazon.x86_64.ebs"
+    "centos.i386.ebs"
+    "centos.x86_64.ebs"
+    "debian.i386.ebs"
+    "debian.x86_64.ebs"
+    "fedora.i386.ebs"
+    "fedora.x86_64.ebs"
+    "gentoo.i386.ebs"
+    "gentoo.x86_64.ebs"
+    "linux-other.i386.ebs"
+    "linux-other.x86_64.ebs"
+    "my-ami-o.ebs"
+    "my-ami-unk.ebs"
+    "my-ami.ebs"
+    "opensuse.i386.ebs"
+    "opensuse.x86_64.ebs"
+    "redhat.i386.ebs"
+    "redhat.x86_64.ebs"
+    "suse.i386.ebs"
+    "suse.x86_64.ebs"
+    "ubuntu.i386.ebs"
+    "ubuntu.x86_64.ebs"
+    "unknown.i386.ebs"
+    "unknown.x86_64.ebs"
+    "windows.i386.ebs"
+    "windows.x86_64.ebs"
+  ]
   OsPropertyView.extend {
     events:
       "change #property-os-server-credential": "onChangeCredential"
@@ -32,11 +61,15 @@ define [
         that.$el.find("#property-os-server-image")[0].selectize.on 'dropdown_open', renderLoadingImageList
 
     renderLoadingImageList: ()->
-      @$el.find("#property-os-server-image")[0].selectize.lock()
+      imageListInstance = @$el.find("#property-os-server-image")[0].selectize
+      imageListInstance.setLoading(true)\
       imageList = CloudResources( constant.RESTYPE.OSIMAGE,  "guangzhou" )
       imageList.fetch().then ->
+        imageListInstance.clearOptions()
         _.each imageList.toJSON(), (e)->
           console.log e
+          imageListInstance.addOption {value: e.id, text: e.name}
+        imageListInstance.refreshOptions(true)
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -53,10 +86,30 @@ define [
     selectTpl:
 
       imageItems: (item) ->
-        return '<div><img class="property-os-image-icon" src="/assets/images/ide/ami/'+item.value+'" alt=""/><p class="property-os-image-text">' + item.text + '<span>'+item.value+'</span></p></div>'
+        imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
+        console.log imageList
+        imageObj = imageList.get(item.value)?.toJSON()
+        if not imageObj
+          item.distro = "ami-unknown"
+          return template.imageListKey(item)
+
+        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture + ".ebs"
+        if imageObj.distro not in operationArray
+          imageObj.distro = "ami-unknown"
+        template.imageListKey(imageObj)
 
       imageValue: (item) ->
-        return '<div><img src="/assets/images/ide/ami/'+item.value+'" alt=""/>' + item.text + '</div>'
+        imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
+        console.log imageList
+        imageObj = imageList.get(item.value)?.toJSON()
+        if not imageObj
+          item.distro = "ami-unknown"
+          return template.imageValue(item)
+
+        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture + ".ebs"
+        if imageObj.distro not in operationArray
+          imageObj.distro = "ami-unknown"
+        template.imageValue(imageObj)
 
   }, {
     handleTypes: [ constant.RESTYPE.OSSERVER ]

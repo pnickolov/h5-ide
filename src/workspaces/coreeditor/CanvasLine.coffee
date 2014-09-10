@@ -362,6 +362,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       # 2. Find out all the area that we might go through
       lineData.areas = @getElbowAreas( start, end )
 
+      console.log "=========== #{@type}", lineData
+
       lineData.result  = []
       lineData.areaIdx = 0
       lineData.current = { x:lineData.start.x, y:lineData.start.y }
@@ -426,34 +428,34 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       return
 
     proceedElbowTarget : ( lineData )->
-      area     = lineData.areas[ lineData.areaIdx ]
-      nextArea = lineData.areas[ lineData.areaIdx + 1 ]
-      target   = $.extend {}, lineData.target
+      # 0. Find out which area we are in
+      target  = $.extend {}, lineData.target
+      current = lineData.current
+
+      for thearea, idx in lineData.areas
+        if area and area.depth < thearea.depth then continue
+
+        xRange = thearea.x1 < current.x and current.x < thearea.x2
+        yRange = thearea.y1 < current.y and current.y < thearea.y2
+        xSide  = thearea.x1 is current.x or thearea.x2 is current.x
+        ySide  = thearea.y1 is current.y or thearea.y2 is current.y
+        if ( xRange and yRange ) or ( thearea.endParent and (( xRange and ySide ) or (yRange and xSide)) )
+          area     = thearea
+          nextArea = lineData.areas[ idx + 1 ]
 
       if nextArea
         if nextArea.endParent
-          if nextArea.x1 < lineData.target.x < nextArea.x2 and nextArea.y1 < lineData.target.y < nextArea.y2
-            if (nextArea.x1 is lineData.current.x or nextArea.x2 is lineData.current.x) or (nextArea.y1 is lineData.current.y or nextArea.y2 is lineData.current.y)
-              ++lineData.areaIdx
-              area     = lineData.areas[ lineData.areaIdx ]
-              nextArea = lineData.areas[ lineData.areaIdx + 1 ]
-
-            if nextArea
-              if lineData.current.x > nextArea.x2
-                target.x = nextArea.x2
-              else if lineData.current.x < nextArea.x1
-                target.x = nextArea.x1
-              else if lineData.current.y > nextArea.y2
-                target.y = nextArea.y2
-              else if lineData.current.y < nextArea.y1
-                target.y = nextArea.y1
+          if nextArea.x1 < target.x < nextArea.x2 and nextArea.y1 < target.y < nextArea.y2
+            if current.x > nextArea.x2
+              target.x = nextArea.x2
+            else if current.x < nextArea.x1
+              target.x = nextArea.x1
+            else if current.y > nextArea.y2
+              target.y = nextArea.y2
+            else if current.y < nextArea.y1
+              target.y = nextArea.y1
         else
-          if not (area.x1 < lineData.target.x and area.x2 > lineData.target.x and area.y1 < lineData.target.y and area.y2 > lineData.target.y)
-            if (area.x1 is lineData.current.x or area.x2 is lineData.current.x) or (area.y1 is lineData.current.y or area.y2 is lineData.current.y)
-              ++lineData.areaIdx
-              area     = lineData.areas[ lineData.areaIdx ]
-              nextArea = lineData.areas[ lineData.areaIdx + 1 ]
-
+          if not (area.x1 < target.x < area.x2 and area.y1 < target.y < area.y2 )
             if target.x > area.x2
               target.x = area.x2
             else if target.x < area.x1
@@ -714,14 +716,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         children.push rect
       children
 
-    __getElbowParentRect : ( ch )->
+    __getElbowParentRect : ( ch, depth, endParent )->
       rect = ch.rect()
       rect.item = ch
-      rect.x1 = rect.x1 * 10 - 5
-      rect.y1 = rect.y1 * 10 - 5
-      rect.x2 = rect.x2 * 10 + 5
-      rect.y2 = rect.y2 * 10 + 5
+      factor = if ch.isGroup() then 5 else 0
+      rect.x1 = rect.x1 * 10 - factor
+      rect.y1 = rect.y1 * 10 - factor
+      rect.x2 = rect.x2 * 10 + factor
+      rect.y2 = rect.y2 * 10 + factor
       rect.children = @__getElbowChildRect( ch )
+      rect.depth = depth
+      rect.endParent = endParent
       rect
 
     getElbowAreas : ( start, end )->
@@ -734,18 +739,20 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         p2 = p2.parent()
 
       areas = []
+      depth = 0
       while p1
+        ++depth
+
         p2Index = p2Parents.indexOf( p1 )
         if p2Index is -1
-          areas.push @__getElbowParentRect( p1 )
+          areas.push @__getElbowParentRect( p1, depth )
         else
           endParent = false
           while p2Index >= 0
-            rect = @__getElbowParentRect( p2Parents[p2Index] )
-            rect.endParent = endParent
-            areas.push rect
+            areas.push @__getElbowParentRect( p2Parents[p2Index], depth, endParent )
             endParent = true
             --p2Index
+            --depth
           break
 
         p1 = p1.parent()

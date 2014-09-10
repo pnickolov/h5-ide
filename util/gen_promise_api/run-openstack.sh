@@ -401,12 +401,12 @@ function fn_generate_coffee() {
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
         elif [ "${__TYPE}" == "openstack" ]
         then
-            # case "${RESOURCE_URL}" in
-            #     ### Neutron ###
-            #     "securitygroup" )    RESOURCE_URL="sg";;
-            #     *)                   RESOURCE_URL=${RESOURCE_URL};
-            # esac
-            _URL="'/os/${_SERVICE_l}/v2_0/${RESOURCE_URL}/'"
+            case "${_SERVICE_l}" in
+                ### Neutron ###
+                "glance" )    OS_VER="v2_2";;
+                *)            OS_VER="v2_0";;
+            esac
+            _URL="'/os/${_SERVICE_l}/${OS_VER}/${RESOURCE_URL}/'"
             _API_NAME="'os_${_RESOURCE_l}_${_CUR_API}'"
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-38s", $0}'`
         fi
@@ -568,8 +568,9 @@ function fn_scan_openstack() {
     # SERVICE: Cinder
     # SERVICE: Neutron
     # SERVICE: Nova
+    # SERVICE: Glance
 
-    # if [ "${SERVICE}" != "Nova" ]
+    # if [ "${SERVICE}" != "Glance" ]
     # then
     #     return
     # fi
@@ -629,7 +630,11 @@ function fn_scan_openstack() {
         done
 
 
-        for RESOURCE in `ls ${CUR_DIR}/${SERVICE}/v2_0 | grep -v "__init__"`
+        case "${SERVICE}" in
+            "Glance" )    OS_VER="v2_2";;
+            *)            OS_VER="v2_0";;
+        esac
+        for RESOURCE in `ls ${CUR_DIR}/${SERVICE}/${OS_VER} | grep -v "__init__"`
         do
         #resource
             CUR_FILE=${RESOURCE}
@@ -650,7 +655,7 @@ function fn_scan_openstack() {
             #create subdir in out.tmp
             #mkdir -p ${TGT_DIR}                             #create out.tmp/service/
 
-            fn_generate_coffee "openstack" "${CUR_DIR}/${SERVICE}/v2_0" "${CUR_FILE}" "${TGT_DIR}"
+            fn_generate_coffee "openstack" "${CUR_DIR}/${SERVICE}/${OS_VER}" "${CUR_FILE}" "${TGT_DIR}"
         done
 
     fi
@@ -683,77 +688,6 @@ do
 done
 echo "end"
 ##############################################################
-
-### merge rds and vpc ####
-
-# echo "merge ec2"
-# LINE_LST=""
-# if [ -f ${TGT_BASE_DIR}/service/aws/ec2.js ]
-# then
-#     rm -rf ${TGT_BASE_DIR}/service/aws/ec2.tmp
-#     for LINE in `ls ${TGT_BASE_DIR}/service/aws/ec2_*.js`
-#     do
-#         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/aws/ec2_.tmp
-#     done
-#     #cat ${TGT_BASE_DIR}/service/aws/ec2.tmp
-#     sed '/ec2_DescribeAvailabilityZones/r out.tmp/service/aws/ec2_.tmp' ${TGT_BASE_DIR}/service/aws/ec2.js > ${TGT_BASE_DIR}/service/aws/ec22.js
-#     rm -rf ${TGT_BASE_DIR}/service/aws/ec2_*.*
-#     mv ${TGT_BASE_DIR}/service/aws/ec22.js ${TGT_BASE_DIR}/service/aws/ec2.js
-# fi
-
-
-# echo "merge rds"
-# LINE_LST=""
-# if [ -f ${TGT_BASE_DIR}/service/aws/rds.js ]
-# then
-#     rm -rf ${TGT_BASE_DIR}/service/aws/rds.tmp
-#     for LINE in `ls ${TGT_BASE_DIR}/service/aws/rds_*.js`
-#     do
-#         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/aws/rds_.tmp
-#     done
-#     #cat ${TGT_BASE_DIR}/service/aws/rds.tmp
-#     sed '/rds_DescribeEvents/r out.tmp/service/aws/rds_.tmp' ${TGT_BASE_DIR}/service/aws/rds.js > ${TGT_BASE_DIR}/service/aws/rds2.js
-#     rm -rf ${TGT_BASE_DIR}/service/aws/rds_*.*
-#     mv ${TGT_BASE_DIR}/service/aws/rds2.js ${TGT_BASE_DIR}/service/aws/rds.js
-# fi
-
-# echo "merge vpc"
-# LINE_LST=""
-# if [ -f ${TGT_BASE_DIR}/service/aws/vpc.js ]
-# then
-#     rm -rf ${TGT_BASE_DIR}/service/aws/vpc.tmp
-#     for LINE in `ls ${TGT_BASE_DIR}/service/aws/vpc_*.js`
-#     do
-#         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/aws/vpc_.tmp
-#     done
-#     #cat ${TGT_BASE_DIR}/service/aws/vpc.tmp
-#     sed '/vpc_DescribeVpcAttribute/r out.tmp/service/aws/vpc_.tmp' ${TGT_BASE_DIR}/service/aws/vpc.js > ${TGT_BASE_DIR}/service/aws/vpc2.js
-#     rm -rf ${TGT_BASE_DIR}/service/aws/vpc_*.*
-#     mv ${TGT_BASE_DIR}/service/aws/vpc2.js ${TGT_BASE_DIR}/service/aws/vpc.js
-# fi
-
-# echo "merge forge"
-# LINE_LST=""
-
-# if [ `ls ${TGT_BASE_DIR}/service/*.js | wc -l` -gt 0 ]
-# then
-#     rm -rf ${TGT_BASE_DIR}/service/forge.tmp
-#     for LINE in `ls ${TGT_BASE_DIR}/service/*.js| grep -v session`
-#     do
-#         if [ "${FIRST_FILE}" == "" ]
-#         then
-#             FIRST_FILE=${LINE}
-#         fi
-#         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/forge.tmp
-#     done
-#     #cat ${TGT_BASE_DIR}/service/.tmp
-#     sed '/session_set_credential/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
-#     rm -rf ${TGT_BASE_DIR}/service/*.js
-#     mv ${TGT_BASE_DIR}/service/forge.rlt ${TGT_BASE_DIR}/service/forge.js
-#     rm -rf ${TGT_BASE_DIR}/service/*.tmp
-# fi
-
-###========================================================================
 
 LINE_LST=""
 if [ -f ${TGT_BASE_DIR}/service/openstack/cinder.js ]
@@ -802,6 +736,21 @@ then
     mv ${TGT_BASE_DIR}/service/openstack/nova2.js ${TGT_BASE_DIR}/service/openstack/nova.js
 fi
 
+LINE_LST=""
+if [ -f ${TGT_BASE_DIR}/service/openstack/glance.js ]
+then
+    echo "merge glance"
+    rm -rf ${TGT_BASE_DIR}/service/openstack/glance.tmp
+    for LINE in `ls ${TGT_BASE_DIR}/service/openstack/glance_*.js`
+    do
+        echo "processing ${LINE}..." 
+        cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/openstack/glance_.tmp
+    done
+    #cat ${TGT_BASE_DIR}/service/openstack/glance.tmp
+    sed '/var Apis = /r out.tmp/service/openstack/glance_.tmp' ${TGT_BASE_DIR}/service/openstack/glance.js > ${TGT_BASE_DIR}/service/openstack/glance2.js
+    rm -rf ${TGT_BASE_DIR}/service/openstack/glance_*.*
+    mv ${TGT_BASE_DIR}/service/openstack/glance2.js ${TGT_BASE_DIR}/service/openstack/glance.js
+fi
 
 ##############################################################
 echo 

@@ -22,7 +22,7 @@ define [
         @type = options.type
 
         @model      = Design.instance().component @uid
-        @viewClass  = OsPropertyView.getClass @mode, @type
+        @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
 
     render: () ->
@@ -97,7 +97,7 @@ define [
                                 return selectTpl[tplName](item)
                             else
                                 return '<div>' + item.text + '</div>'
-                            
+
                         item: (item) ->
                             tplName = @$input.data('item-tpl')
                             if tplName and selectTpl and selectTpl[tplName]

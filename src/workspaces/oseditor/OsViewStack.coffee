@@ -22,10 +22,17 @@ define [
       CoreEditorView.apply this, arguments
 
     initialize : ()->
+      @panel = @propertyPanel
+
       @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
       return
 
-    showProperty   : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
-    onItemSelected : ( type, id )-> ide_event.trigger ide_event.OPEN_PROPERTY, type, id; return
+    showProperty   : ()->
+      @panel.openProperty()
+      return
+
+    onItemSelected : ( type, id )->
+      @panel.openProperty { uid: id, type: type }
+      return
 
   }

@@ -6,7 +6,7 @@
 </section>
 <section class="group required">
     <div class="key">Server Image</div>
-    <select class="value option" value="zzzzzz" id="change #property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
+    <select class="value option" value="zzzzzz" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
         <option value="amazon.i386.ebs.png">amazon.i386.ebs</option>
         <option value="amazon.i386.instance-store.png">amazon.i386.instance-store</option>
         <option value="amazon.x86_64.ebs.png">amazon.x86_64.ebs</option>
@@ -66,7 +66,7 @@
 </section>
 <section class="group required">
     <div class="key">CPU</div>
-    <select class="value option" id="change #property-os-server-CPU">
+    <select class="value option" id="property-os-server-CPU">
         <option value='xxxxxx1'>1 Core</option>
         <option value='xxxxxx2'>2 Core</option>
         <option value='xxxxxx3'>3 Core</option>
@@ -76,7 +76,7 @@
 </section>
 <section class="group required">
     <div class="key">RAM</div>
-    <select class="value option" id="change #property-os-server-RAM">
+    <select class="value option" id="property-os-server-RAM">
         <option value='xxxxxx1'>1 G</option>
         <option value='xxxxxx2'>2 G</option>
         <option value='xxxxxx3'>3 G</option>

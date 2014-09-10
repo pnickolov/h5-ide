@@ -3,7 +3,8 @@ define [
   '../OsPropertyView'
   './template'
   'CloudResources'
-], ( constant, OsPropertyView, template, CloudResources ) ->
+  'underscore'
+], ( constant, OsPropertyView, template, CloudResources, _ ) ->
 
   OsPropertyView.extend {
     events:
@@ -20,13 +21,22 @@ define [
     render: ->
       console.log template
       @$el.html template.stackTemplate(@model.toJSON())
-      CloudResources( constant.RESTYPE.OSIMAGE,  "guangzhou" )
       @bindSelectizeEvent()
       @
 
     bindSelectizeEvent: ()->
       renderLoadingImageList = @renderLoadingImageList.bind @
-      @$el.find("#property-os-server-image")[0].selectize.on 'dropdown_open', renderLoadingImageList
+      that = @
+
+      that.$el.find('#property-os-server-image').on 'selectized', ->
+        that.$el.find("#property-os-server-image")[0].selectize.on 'dropdown_open', renderLoadingImageList
+
+    renderLoadingImageList: ()->
+      @$el.find("#property-os-server-image")[0].selectize.lock()
+      imageList = CloudResources( constant.RESTYPE.OSIMAGE,  "guangzhou" )
+      imageList.fetch().then ->
+        _.each imageList.toJSON(), (e)->
+          console.log e
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)

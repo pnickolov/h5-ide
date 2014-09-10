@@ -64,6 +64,7 @@ define [
                     onInitialize: () ->
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
+                        $valueDom.trigger 'selectized', @
                     options: [
                         {text: 'True', value: 'true'},
                         {text: 'False', value: 'false'}
@@ -88,7 +89,8 @@ define [
                     onInitialize: () ->
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
-                    render: {
+                        $valueDom.trigger 'selectized', @
+                  render: {
                         option: (item) ->
                             tplName = @$input.data('select-tpl')
                             if tplName and selectTpl and selectTpl[tplName]

@@ -475,7 +475,7 @@ p.property-os-image-text {
     border: 0; }
   #OpsEditor .OEPanelRight.property input.value, #OpsEditor .OEPanelRight.property textarea.value {
     color: #fff;
-    padding: 8px 8px;
+    padding: 8px 10px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     margin: 0;

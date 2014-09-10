@@ -3605,6 +3605,15 @@
                         });
                     }
                 }
+                if (self.$input.hasClass('bool')) {
+                    self.$input.prevAll('.switcher').remove();
+                    self.$input.prepend(
+                        '<label class="switcher on">' +
+                            '<span class="switch-label" data-on="" data-off=""></span>' +
+                            '<span class="switch-handle"></span>' +
+                        '</label>'
+                    );
+                }
                 return result;
             };
         })();

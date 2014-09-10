@@ -3596,8 +3596,8 @@
                 if (self.settings.render.button) {
                     var domStr = self.settings.render.button.apply(self);
                     if (domStr) {
-                        var $dropdown_button = $(domStr).addClass('dropdown_button');
-                        self.$dropdown_content.nextAll().remove()
+                        var $dropdown_button = $(domStr).addClass('selectize-dropdown_button');
+                        self.$dropdown_content.nextAll('.selectize-dropdown_button').remove()
                         self.$dropdown.append($dropdown_button);
                         $dropdown_button.on('click', function(event) {
                             self.close();

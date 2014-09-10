@@ -85,7 +85,7 @@ define [
                     persist: false,
                     create: false,
                     openOnFocus: false,
-                    plugins: ['custom_selection', 'remove_button']
+                    plugins: ['custom_selection']
                     onInitialize: () ->
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value

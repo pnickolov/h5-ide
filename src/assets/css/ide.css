@@ -9627,7 +9627,7 @@ p.property-os-image-text {
       height: 145px !important; }
       #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown-content {
         display: none !important; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .dropdown_button {
+      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown_button {
         display: none !important; }
     #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar {
       width: 8px; }

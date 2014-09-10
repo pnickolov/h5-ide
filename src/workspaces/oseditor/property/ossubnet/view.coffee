@@ -8,7 +8,7 @@ define [
 
         events:
 
-            'dropdown_button_click select': 'onClick'
+            'select_dropdown_close select': 'onClick'
 
         render: ->
 

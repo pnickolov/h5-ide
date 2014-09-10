@@ -1357,10 +1357,18 @@
                 'type'           : 'onType'
             };
     
+            var self = this;
             for (key in callbacks) {
                 if (callbacks.hasOwnProperty(key)) {
                     fn = this.settings[callbacks[key]];
                     if (fn) this.on(key, fn);
+                    (function(key) {
+                        self.on(key, function() {
+                            if (self.$input) {
+                                self.$input.trigger('select_' + key, arguments);
+                            }
+                        });
+                    })(key);
                 }
             }
         },

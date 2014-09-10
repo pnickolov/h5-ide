@@ -49,27 +49,29 @@ define [
 
     render: ->
       console.log template
-      @$el.html template.stackTemplate(@model.toJSON())
+      json = @model.toJSON()
+      json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
+      @$el.html template.stackTemplate json
       @bindSelectizeEvent()
       @
 
     bindSelectizeEvent: ()->
-      renderLoadingImageList = @renderLoadingImageList.bind @
       that = @
-
-      that.$el.find('#property-os-server-image').on 'selectized', ->
-        that.$el.find("#property-os-server-image")[0].selectize.on 'dropdown_open', renderLoadingImageList
+      @$el.find("#property-os-server-image").on 'select_initialize', ()->
+        that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('image'))
 
     renderLoadingImageList: ()->
       imageListInstance = @$el.find("#property-os-server-image")[0].selectize
-      imageListInstance.setLoading(true)\
-      imageList = CloudResources( constant.RESTYPE.OSIMAGE,  "guangzhou" )
+      imageListInstance.setLoading(true)
+      imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
       imageList.fetch().then ->
+        imageListInstance.setLoading(false)
         imageListInstance.clearOptions()
         _.each imageList.toJSON(), (e)->
           console.log e
           imageListInstance.addOption {value: e.id, text: e.name}
-        imageListInstance.refreshOptions(true)
+        imageListInstance.$input.off 'select_dropdown_open'
+        imageListInstance.refreshOptions()
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -87,7 +89,6 @@ define [
 
       imageItems: (item) ->
         imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
-        console.log imageList
         imageObj = imageList.get(item.value)?.toJSON()
         if not imageObj
           item.distro = "ami-unknown"
@@ -99,11 +100,12 @@ define [
         template.imageListKey(imageObj)
 
       imageValue: (item) ->
+        console.log item
         imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
-        console.log imageList
         imageObj = imageList.get(item.value)?.toJSON()
         if not imageObj
           item.distro = "ami-unknown"
+          item.text = item.text || "Unknow"
           return template.imageValue(item)
 
         imageObj.distro = imageObj.os_distro + "." + imageObj.architecture + ".ebs"

@@ -6,8 +6,10 @@
 </section>
 <section class="group required">
     <div class="key">Server Image</div>
-    <select class="value option" value="zzzzzz" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
-        <option value='xxxxxxx'>amazon.i386.ebs</option>
+    <select class="value option" value="{{image}}" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
+        {{#each imageList}}
+            <option value='{{id}}' {{#ifCond id ../image}}selected='selected'{{/ifCond}}>{{name}}</option>
+        {{/each}}
     </select>
 </section>
 <section class="group required">

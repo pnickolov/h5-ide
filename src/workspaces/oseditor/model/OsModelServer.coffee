@@ -39,7 +39,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       blockDeviceMapping: []
       flavor_id: "10"
       availabilityZone: ""
-      image: ""
+      image: "39f8faf0bcfa623ea056ab9fea5cc1b3"
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]
 

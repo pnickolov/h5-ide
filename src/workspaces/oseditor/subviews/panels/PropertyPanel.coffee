@@ -84,7 +84,7 @@ define [
                     persist: false,
                     create: false,
                     openOnFocus: false,
-                    plugins: ['custom_selection']
+                    plugins: ['custom_selection', 'remove_button']
                     onInitialize: () ->
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
@@ -102,5 +102,11 @@ define [
                                 return selectTpl[tplName](item)
                             else
                                 return '<div>' + item.text + '</div>'
+                        button: () ->
+                            tplName = @$input.data('button-tpl')
+                            if tplName and selectTpl and selectTpl[tplName]
+                                return selectTpl[tplName]()
+                            else
+                                return null
                     }
                 })

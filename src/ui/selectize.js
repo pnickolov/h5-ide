@@ -3579,6 +3579,27 @@
                 return original.apply(this, arguments);
             };
         })();
+
+        this.render = (function() {
+            var original = self.render;
+            return function() {
+                var result = original.apply(self, arguments);
+                if (self.settings.render.button) {
+                    var domStr = self.settings.render.button.apply(self);
+                    if (domStr) {
+                        var $dropdown_button = $(domStr).addClass('dropdown_button');
+                        self.$dropdown_content.nextAll().remove()
+                        self.$dropdown.append($dropdown_button);
+                        $dropdown_button.on('click', function(event) {
+                            self.close();
+                            self.$input.trigger('dropdown_button_click');
+                        });
+                    }
+                }
+                return result;
+            };
+        })();
+
     });
 
     return Selectize;

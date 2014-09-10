@@ -6,6 +6,10 @@ define [
 
     OsPropertyView.extend {
 
+        events:
+
+            'dropdown_button_click select': 'onClick'
+
         render: ->
 
             @$el.html stackTpl({})
@@ -13,13 +17,21 @@ define [
 
         selectTpl:
 
-          ABC: (item) ->
+            ABC: (item) ->
 
-            return '<div>XXX ' + item.text + '</div>'
+                return '<div>XXX ' + item.text + '</div>'
 
-          DEF: (item) ->
+            DEF: (item) ->
 
-            return '<div>XXX ' + item.text + '</div>'
+                return '<div>XXX ' + item.text + '</div>'
+
+            HIJ: () ->
+
+                return '<div>Add...</div>'
+
+        onClick: ->
+
+            alert(1)
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]

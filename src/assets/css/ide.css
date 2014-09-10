@@ -9116,7 +9116,7 @@ g.shadow {
   .openstack .OEPanelRight .panel-body {
     overflow: auto;
     position: absolute;
-    top: 43px;
+    top: 39px;
     bottom: 0;
     height: auto; }
   .openstack .OEPanelRight .panel-body section header {

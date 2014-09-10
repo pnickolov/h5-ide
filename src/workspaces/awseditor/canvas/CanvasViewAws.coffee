@@ -73,6 +73,9 @@ define [
     selectVolume : ( volumeId )->
       @deselectItem( true )
       @__selectedVolume = volumeId
+
+      if volumeId
+        @triggerSelected constant.RESTYPE.VOL, volumeId
       false
 
     isReadOnly : ()-> @design.modeIsApp()

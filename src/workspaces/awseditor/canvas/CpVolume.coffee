@@ -70,8 +70,6 @@ define [ "CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ], (
 
       @selected = evt.currentTarget
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, volId
-
       if not @canvas.design.modeIsApp() and evt.which is 1
         $vol.dnd( evt, {
           dropTargets  : @canvas.$el

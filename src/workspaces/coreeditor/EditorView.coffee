@@ -98,8 +98,13 @@ define [
       @statusbar     = new (options.BottomPanel || Backbone.View)(opt)
       @canvas        = new options.CanvasView(opt)
 
+      @listenTo @canvas, "itemSelected", @onItemSelected
+
       @initialize()
       return
+
+    showProperty   : ()->
+    onItemSelected : ( type, id )->
 
     toggleLeftPanel  : ()->
       @resourcePanel.toggleLeftPanel()
@@ -168,8 +173,6 @@ define [
           return
       }
       return
-
-    showProperty : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
 
     showStateEditor : ()->
       com = @workspace.getSelectedComponent()

@@ -7,7 +7,9 @@ define [
   "./subviews/Statusbar"
   "./canvas/CanvasViewOs"
 
-], ( CoreEditorView, RightPanel, Toolbar, Statusbar, CanvasView )->
+  "event"
+
+], ( CoreEditorView, RightPanel, Toolbar, Statusbar, CanvasView, ide_event )->
 
   CoreEditorView.extend {
     constructor : ( options )->
@@ -22,5 +24,8 @@ define [
     initialize : ()->
       @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
       return
+
+    showProperty   : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
+    onItemSelected : ( type, id )-> ide_event.trigger ide_event.OPEN_PROPERTY, type, id; return
 
   }

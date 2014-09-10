@@ -362,7 +362,7 @@ define [
 
     # Canvas Interaction
     select : ( selectedDomElement )->
-      ide_event.trigger ide_event.OPEN_PROPERTY, @type, @model.id
+      @canvas.triggerSelected @type, @model.id
       return
 
     destroy : ( selectedDomElement )->

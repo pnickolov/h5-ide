@@ -240,11 +240,12 @@ define [
         @__selected = null
 
       if silent isnt true
-        ide_event.trigger ide_event.OPEN_PROPERTY
+        @triggerSelected()
       return
 
     triggerSelected : ( type, id )->
-      @trigger "selectItem",
+      @trigger "itemSelected", type, id
+      return
 
     clearItems : ()->
       item.remove() for id, item of @__itemMap

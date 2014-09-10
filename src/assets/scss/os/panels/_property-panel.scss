@@ -338,6 +338,10 @@ $propertyWidth: 100%;
 $propertyFontSize: 12px;
 
 #OpsEditor .OEPanelRight.property {
+    .os-property-default {
+      color: #ccc;
+      padding: 20px 0 0 26px;
+    }
     .group {
         background-color: #27272b;
         font-size: $propertyFontSize;

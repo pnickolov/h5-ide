@@ -5,8 +5,9 @@ define [
     'Design'
     '../../property/OsPropertyView'
     '../../property/OsPropertyBundle'
+    './template/TplPropertyPanel'
     'selectize'
-], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle )->
+], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle, PropertyPanelTpl )->
 
   Backbone.View.extend
 
@@ -29,13 +30,26 @@ define [
 
         that = @
 
-        propertyView = new @viewClass( model: @model )
-        @$el.html propertyView.render().el
+        propertyView = @propertyView = new @viewClass( model: @model )
+
+        @setTitle()
+        @$el.append propertyView.render().el
 
         @$el.find('select.value').each ->
             that.bindSelection($(@), propertyView.selectTpl)
 
         @
+
+    setTitle: ( title = @propertyView.getTitle() ) ->
+        unless title then return
+
+        $title = @$ 'h1'
+
+        if $title.size()
+            $title.eq(0).text title
+        else
+            @$el.html PropertyPanelTpl.title { title: title }
+
 
     bindSelection: ($valueDom, selectTpl) ->
 

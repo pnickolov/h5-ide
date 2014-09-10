@@ -9,6 +9,8 @@ define [
     }
 
     OsPropertyView = Backbone.View.extend {
+        # Overwrite it in subview
+        getTitle: -> @model?.get( 'name' )
 
     }, {
         extend : ( protoProps, staticProps ) ->

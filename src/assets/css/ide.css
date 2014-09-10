@@ -7075,8 +7075,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9119,7 +9118,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     position: absolute;
     top: 39px;
     bottom: 0;
-    height: auto; }
+    height: auto;
+    width: 100%; }
   .openstack .OEPanelRight .panel-body section header {
     background: #2c2f4d;
     color: white;
@@ -9493,6 +9493,9 @@ p.property-os-image-text {
   #OpsEditor .OEPanelRight.property .selectize-control .selectize-input.disabled {
     /*opacity: 0.5;*/
     background-color: #fafafa; }
+  #OpsEditor .OEPanelRight.property .os-property-default {
+    color: #ccc;
+    padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .group {
     background-color: #27272b;
     font-size: 12px;

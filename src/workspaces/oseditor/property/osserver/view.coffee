@@ -34,7 +34,16 @@ define [
 
     render: ->
       json = @model.toJSON()
+      flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
+
+      flavorGroup = _.groupBy flavorList.toJSON(), 'vcpus'
+      currentFlavor = flavorList.get(@model.get('flavor_id'))
+
+      json.flavorGroup = flavorGroup
+      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> Math.round(e/1024)
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
+      json.ram = Math.round(currentFlavor.get('ram')/1024)
+      json.vcpus = currentFlavor.get('vcpus')
       @$el.html template.stackTemplate json
       @bindSelectizeEvent()
       @

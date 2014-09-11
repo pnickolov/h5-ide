@@ -18,21 +18,17 @@
     <section class="group required">
         <div class="key">CPU</div>
         <select class="value option"  data-target="CPU" id="property-os-server-CPU">
-            <option value='xxxxxx1'>1 Core</option>
-            <option value='xxxxxx2'>2 Core</option>
-            <option value='xxxxxx3'>3 Core</option>
-            <option value='xxxxxx4' selected>4 Core</option>
-            <option value='xxxxxx5'>5 Core</option>
+            {{#each flavor}}
+                <option value='{{@key}}' {{#ifCond @key ../vcpus}}selected="selected"{{/ifCond}}>{{@key}} Core</option>
+            {{/each}}
         </select>
     </section>
     <section class="group required">
         <div class="key">RAM</div>
         <select class="value option" data-target="RAM" id="property-os-server-RAM">
-            <option value='xxxxxx1'>1 G</option>
-            <option value='xxxxxx2'>2 G</option>
-            <option value='xxxxxx3'>3 G</option>
-            <option value='xxxxxx4' selected>4 G</option>
-            <option value='xxxxxx5'>5 G</option>
+            {{#each avaliableRams}}
+                <option value='{{this}}' {{#ifCond this ../ram}}selected="selected"{{/ifCond}}>{{this}} G</option>
+            {{/each}}
         </select>
     </section>
     <section class="group">

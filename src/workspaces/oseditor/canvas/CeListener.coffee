@@ -14,6 +14,23 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       "listener" : [ 72, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 35 ]
     }
 
+    events :
+      "mousedown .fip-status"          : "toggleFip"
+
+    toggleFip : ()->
+      if @canvas.design.modeIsApp() then return false
+
+      #toggle = !@model.hasPrimaryEip()
+      #@model.setPrimaryEip( toggle )
+
+      # if toggle
+      #   Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+
+      CanvasManager.updateFip @$el.children(".fip-status"), @model
+
+      # ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+      false
+
     # Creates a svg element
     create : ()->
       m = @model
@@ -28,6 +45,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         imageH : 80
         label  : m.get "name"
       }).add([
+        svg.image( "", 12, 14).move(36, 36).classes('fip-status tooltip')
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'listener'
@@ -41,6 +59,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       svgEl
 
     render : ()->
+      m = @model
       # Update label
       CanvasManager.setLabel @, @$el.children(".node-label")
+      # Update FIP
+      CanvasManager.updateFip @$el.children(".fip-status"), m
+      null
+
   }

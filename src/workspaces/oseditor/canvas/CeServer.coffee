@@ -21,6 +21,9 @@ define [
       "server" : [ 82, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,30 ]
     }
 
+    events :
+      "mousedown .fip-status"          : "toggleFip"
+
     iconUrl : ()->
       image = @model.getImage() || @model.get("cachedAmi")
 
@@ -36,8 +39,23 @@ define [
         else
           url = "ide/ami/openstack/image-not-available.png"
       else
-        url = "ide/ami/openstack/#{image.os_distro}.#{image.architecture}.png"
+        url = "ide/ami/openstack/#{image.os_type}.#{image.architecture}.png"
       url
+
+    toggleFip : ()->
+      if @canvas.design.modeIsApp() then return false
+
+      #toggle = !@model.hasPrimaryEip()
+      #@model.setPrimaryEip( toggle )
+
+      # if toggle
+      #   Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+
+      CanvasManager.updateFip @$el.children(".fip-status"), @model
+
+      # ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+      false
+
 
     # Creates a svg element
     create : ()->
@@ -58,6 +76,9 @@ define [
       }).add([
         # Image Icon
         svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
+        # FIP
+        svg.image( "", 12, 14).move(50, 55).classes('fip-status tooltip')
+
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'
@@ -75,6 +96,10 @@ define [
       svgEl
 
     render : ()->
+      m = @model
       CanvasManager.setLabel @, @$el.children(".node-label")
+      # Update FIP
+      CanvasManager.updateFip @$el.children(".fip-status"), m
+      null
   }
 

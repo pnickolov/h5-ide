@@ -93,6 +93,35 @@ define [], ()->
 
       null
 
+    updateFip : ( node, targetModel )->
+      if node.length then node = node[0]
+
+      #toggle = targetModel.hasPrimaryEip()
+      toggle = false
+
+      if toggle
+        tootipStr = 'Detach Floating IP'
+        imgUrl    = 'ide/icon/openstack/icn-fipon.png'
+      else
+        tootipStr = 'Associate Floating IP'
+        imgUrl    = 'ide/icon/openstack/icn-fipoff.png'
+
+      # if targetModel.design().modeIsApp()
+      #   if targetModel.getEmbedEni then targetModel = targetModel.getEmbedEni()
+      #   if targetModel
+      #     ip = (targetModel.get("ips") || [])[0]
+      #     tootipStr = ip?.eipData?.publicIp || ""
+      #   else
+      #     console.warn "updateEip(): can not found EmbedEni"
+
+      node.setAttribute "data-tooltip", tootipStr
+
+      $( node ).data("tooltip", tootipStr)
+
+      this.update( node, imgUrl, "href" )
+
+      null
+
     update : ( element, value, attr )->
 
       if _.isString element

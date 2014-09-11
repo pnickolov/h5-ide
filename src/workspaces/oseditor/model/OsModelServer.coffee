@@ -68,7 +68,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       null
 
     getImage : ()->
-      image = CloudResources( constant.RESTYPE.OSIMAGE, @design().region() ).get( @get("image") )
+      image = CloudResources( constant.RESTYPE.OSIMAGE, @design().region() ).get( @get("imageId") )
       if image
         image.toJSON()
       else

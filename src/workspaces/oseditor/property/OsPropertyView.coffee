@@ -9,6 +9,11 @@ define [
     }
 
     OsPropertyView = Backbone.View.extend {
+        constructor: ( options ) ->
+            @parent = options.parent
+            Backbone.View.apply @, arguments
+
+        setTitle: ( title ) -> @parent.setTitle title
         # Overwrite it in subview
         getTitle: -> @model?.get( 'name' )
 

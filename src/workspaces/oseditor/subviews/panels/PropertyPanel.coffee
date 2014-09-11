@@ -30,7 +30,7 @@ define [
 
         that = @
 
-        propertyView = @propertyView = new @viewClass( model: @model )
+        propertyView = @propertyView = new @viewClass( model: @model, parent: @ )
 
         @setTitle()
         @$el.append propertyView.render().el

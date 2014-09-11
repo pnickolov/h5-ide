@@ -403,3 +403,127 @@
         color: #fff;
     }
 }
+
+// added for extend conponent
+
+.selection {
+    width: 100%;
+    background-color: #27272b;
+    border: 0;
+}
+.ip_container {
+    .ip_octet {
+        width: 12%;
+        border: 0;
+        background-color: transparent;
+        padding: 10px 8px;
+        color: #fff;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        display: inline-block;
+        text-align: center;
+        &:focus {
+            outline: none;
+        }
+        &:last-child {
+            width: 194px;
+            text-align: left;
+        }
+    }
+}
+input.selection, textarea.selection {
+    color: #fff;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    font-size: 12px;
+    &:focus {
+        background-color: #424242;
+        outline: none;
+    }
+    &[disabled] {
+        color: #555;
+    }
+}
+
+/* boolean switcher component */
+.switcher {
+    float: right;
+    position: absolute;
+    z-index: 2;
+    font-size: 12px;
+    margin: 4px 10px;
+    width: 45px;
+    height: 21px;
+    border: 1px solid #ccc;
+    background: #dadada;
+    font-size: 12px;
+    // position: relative;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 2px;
+    cursor: pointer;
+    -webkit-transition: 0.15s ease-out;
+    -moz-transition: 0.15s ease-out;
+    -o-transition: 0.15s ease-out;
+    transition: 0.15s ease-out;
+    -webkit-transition-property: opacity background;
+    -moz-transition-property: opacity background;
+    -o-transition-property: opacity background;
+    transition-property: opacity background;
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .switch-label {
+        position: relative;
+        display: block;
+        height: 100%;
+    }
+    .switch-label:before, .switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+    }
+    .switch-label:before {
+        content     : attr(data-off);
+        right       : 6px;
+        color       : #aaa;
+        font-variant: small-caps;
+    }
+    .switch-label:after {
+        content     : attr(data-on);
+        left        : 6px;
+        color       : white;
+        opacity     : 0;
+        font-variant: small-caps;
+    }
+    .switch-handle {
+        position: absolute;
+        top: 2px;
+        left: 3px;
+        width: 20px;
+        height: 17px;
+        background: white;
+        border-radius: 2px;
+        -webkit-transition: left 0.15s ease-out;
+        -moz-transition: left 0.15s ease-out;
+        -o-transition: left 0.15s ease-out;
+        transition: left 0.15s ease-out;
+    }
+}
+.switcher.disabled {
+    opacity: 0.2;
+}
+.switcher.on {
+    border-color: #0E8F38;
+    background: #4fb845;
+    .switch-label:before { opacity: 0; }
+    .switch-label:after  { opacity: 1; }
+    .switch-handle {
+        left: 23px;
+    }
+}

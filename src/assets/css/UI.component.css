@@ -981,16 +981,21 @@
   background-color: #27272b;
   border: 0; }
 
-.ip_octet {
-  width: 24%;
+.ip_container .ip_octet {
+  width: 12%;
   border: 0;
   background-color: transparent;
-  padding: 5px 8px;
+  padding: 10px 8px;
   color: #fff;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   display: inline-block;
   text-align: center; }
+  .ip_container .ip_octet:focus {
+    outline: none; }
+  .ip_container .ip_octet:last-child {
+    width: 194px;
+    text-align: left; }
 
 input.selection, textarea.selection {
   color: #fff;

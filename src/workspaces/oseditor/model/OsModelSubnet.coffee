@@ -8,6 +8,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
 
     defaults :
       public : false
+      cidr   : ""
 
     serialize : ()->
       {

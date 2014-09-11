@@ -9,6 +9,7 @@ define [
   "./aws/CrClnRdsParam"
 
   "./openstack/CrClnImage"
+  "./openstack/CrClnExtNetwork"
 ], ( CloudResources )->
   ### env:dev ###
   require ["./cloudres/aws/CloudImportVpc"], ()->

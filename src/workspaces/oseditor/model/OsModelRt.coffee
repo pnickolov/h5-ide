@@ -6,6 +6,16 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSRT
     newNameTmpl : "Router-"
 
+    connect : ( cn )->
+      if cn.type is 'OsExtRouterAttach'
+        @set "public", true
+      return
+
+    disconnect : ( cn )->
+      if cn.type is 'OsExtRouterAttach'
+        @set "public", false
+      return
+
     serialize : ()->
       component =
         name : @get("name")
@@ -41,7 +51,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
       # ExtNetwork <=> Router
       Attach = Design.modelClassForType( "OsExtRouterAttach" )
-      new Attach( router )
+      new Attach( router, resolve(MC.extractID( data.resource.external_gateway_info.network_id )) )
       return
   }
 

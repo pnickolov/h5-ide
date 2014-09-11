@@ -26,8 +26,6 @@ define [
   "./oseditor/model/connection/OsListenerAsso"
   "./oseditor/model/connection/OsPoolMembership"
 
-  "./oseditor/model/deserializeVisitor/ExternalNetwork"
-
   "./oseditor/canvas/CeNetwork"
   "./oseditor/canvas/CeSubnet"
   "./oseditor/canvas/CeRt"

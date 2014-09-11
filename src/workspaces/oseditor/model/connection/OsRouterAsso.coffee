@@ -32,10 +32,4 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
           type : constant.RESTYPE.OSRT
       }
     ]
-
-    # This connection only accept one component ( p1Comp as the router ), the p2Comp is ignore.
-    # Since this connection will automatically find the ext network.
-    constructor : ( p1Comp, p2Comp, attr, option ) ->
-      extNetwork = p1Comp.design().componentsOfType( constant.RESTYPE.OSEXTNET )[0]
-      ConnectionModel.call this, p1Comp, extNetwork, attr, option
   }

@@ -24,7 +24,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
       json = @__createRawJson()
       json.layout    =
         size : [ 240, 240 ]
-        "ExternalNetwork" :
+        "extnetwork001" :
           coordinate : [ 5, 5 ]
         "router0001" :
           coordinate : [ 20, 5 ]
@@ -47,6 +47,12 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           coordinate : [ 42, 40 ]
 
       json.component =
+        "extnetwork001" :
+          type : "OS::ExternalNetwork"
+          uid  : "extnetwork001"
+          resource :
+            name : "ExternalNetwork"
+            id   : ""
         "server0001" :
           type : "OS::Nova::Server"
           uid  : "server0001"
@@ -105,8 +111,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           type : "OS::Neutron::Router"
           uid  : "router0001"
           resource :
-            external_gateway_info : { network_id : "1f0fd926-9c82-4536-b498-0c00a4133914"}
-            router_interface : [{"subnet_id": "@{subnet0001.resource.id}"}]
+            external_gateway_info : { network_id : "@{extnetwork001.resource.id}" }
+            router_interface : [{subnet_id: "@{subnet0001.resource.id}"}]
         "pool0001" :
           type : "OS::Neutron::Pool"
           uid  : "pool0001"

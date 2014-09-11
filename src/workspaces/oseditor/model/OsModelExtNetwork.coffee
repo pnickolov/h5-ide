@@ -1,18 +1,31 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, constant, CloudResources )->
 
   Model = ComplexResModel.extend {
 
-    type : "OS::ExternalNetwork"
+    type : constant.RESTYPE.OSEXTNET
 
     defaults :
       name : "ExtNetwork"
 
-    serialize : ()-> { layout : @generateLayout() }
+    getResourceId : ()->
+      if @get("appId") then return @get("appId")
+      CloudResources( @type, @design().region() ).models[0].id || ""
+
+    serialize : ()->
+      {
+        component :
+          uid  : @id
+          type : @type
+          resource :
+            id : @getResourceId()
+
+        layout : @generateLayout()
+      }
 
   }, {
 
-    handleTypes  : "OS::ExternalNetwork"
+    handleTypes  : constant.RESTYPE.OSEXTNET
     resolveFirst : true
 
     preDeserialize : ( data, layout_data )->
@@ -20,9 +33,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         id : data.uid
         x  : layout_data.coordinate[0]
         y  : layout_data.coordinate[1]
+        appId : data.resource.id
       })
 
-    deserialize : ()->
+    deserialize : ()-> # Empty function to suppress warning.
   }
 
   Model

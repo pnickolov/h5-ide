@@ -6,6 +6,9 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
     type : constant.RESTYPE.OSSUBNET
     newNameTmpl : "Subnet-"
 
+    defaults :
+      public : false
+
     serialize : ()->
       component =
         name : @get("name")

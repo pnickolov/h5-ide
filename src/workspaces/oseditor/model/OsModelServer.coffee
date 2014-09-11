@@ -42,6 +42,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       image: ""
 
     initialize : ( attr, option )->
+      console.log attr, option
       option = option || {}
       console.assert( attr.imageId, "Invalid attributes when creating OsModelServer", attr )
       @setImage( attr.imageId )
@@ -90,6 +91,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     handleTypes  : constant.RESTYPE.OSSERVER
 
     deserialize : ( data, layout_data, resolve )->
+      console.log data
       server = new Model({
         id    : data.uid
         name  : data.resource.name

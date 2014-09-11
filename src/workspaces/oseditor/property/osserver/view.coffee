@@ -40,7 +40,7 @@ define [
       currentFlavor = @flavorList.get(@model.get('flavor_id'))
 
       json.flavorGroup = flavorGroup
-      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: Math.round(e/1024), value: e}
+      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024, value: e}
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
@@ -73,15 +73,16 @@ define [
         if availableRams?.length
           ramSelectize = @$el.find("#property-os-server-RAM")[0].selectize
           ramValue = ramSelectize.getValue()
-          availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (Math.round(e/1024) + " G"), value: e}
+          availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (e/1024 + " G"), value: e}
           currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
 
           if not currentRamFlavor
             ramValue = _.min(_.pluck availableRamsValue, 'value')
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
 
-          @updateRamOptions(availableRamsValue, ramValue)
           @model.set("flavor_id", currentRamFlavor.get('id'))
+          @updateRamOptions(availableRamsValue, ramValue)
+          console.log currentRamFlavor.get('id')
 
         else
           return false

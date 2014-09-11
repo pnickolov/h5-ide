@@ -1,8 +1,9 @@
-@import "color";
+@import "utility";
 
 #OpsEditor .OEPanelRight.property {
 
     color: #ccc;
+    @include font-mono;
 
     /* property component style */
     h1 {

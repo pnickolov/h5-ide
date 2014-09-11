@@ -8,7 +8,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     server : ()-> @connectionTargets("OsPortUsage")[0]
 
-    isEmbedded : ()-> @server().embedPort() is @
+    isEmbedded : ()-> @server() and @server().embedPort() is @
     isVisual   : ()-> !@isEmbedded()
 
 

@@ -365,7 +365,6 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       console.log "=========== #{@type}", lineData
 
       lineData.result  = []
-      lineData.areaIdx = 0
       lineData.current = { x:lineData.start.x, y:lineData.start.y }
       lineData.target  = {}
       lineData.test    = 0
@@ -375,23 +374,39 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       while not lineData.done
         @proceedElbowTarget( lineData )
         @getNextElbowTarget( lineData )
+
+        if lineData.inFinalArea
+          @proceedElbowLastArea( lineData )
+          break
+
         ++lineData.test
-        if lineData.test >= 100
-          throw new Error( "Failed to search elbow path for: " + this.type )
+        if lineData.test >= 50
+          lineData.failure = true
+          break
 
-      # 3.1 We are not at the target point yet.
-      if lineData.inFinalArea
-        @proceedElbowLastArea( lineData )
+      # 3.1 If it fails, fallback to old strategy to generate the line
+      if lineData.failure
+        @getElbowFallback( lineData )
 
-      # 4. Optimize points
       lineData.result.unshift( { x:lineData.start.x, y:lineData.start.y } )
       lineData.result.unshift( { x:start.x, y:start.y } )
       lineData.result.push( { x:lineData.end.x, y:lineData.end.y } )
       lineData.result.push( { x:end.x, y:end.y } )
+
+      # 4. Optimize points
       @optimizeElbowPoints( lineData )
 
       # 5. Generate Path
       @getElbowPathFromPoints( lineData.result )
+
+    getElbowFallback : ( lineData )->
+      start = lineData.start
+      end   = lineData.end
+      if lineData.start.angle is CanvasElement.constant.PORT_UP_ANGLE or lineData.start.angle is CanvasElement.constant.PORT_DOWN_ANGLE
+        lineData.result = [ {x:start.x,y:lineData.preferY}, {x:lineData.preferX,y:lineData.preferY} ]
+      else
+        lineData.result = [ {y:start.y,x:lineData.preferX}, {y:lineData.preferY,x:lineData.preferX} ]
+      return
 
     getNextElbowTarget : ( lineData )->
       if lineData.current.x is lineData.end.x and lineData.current.y is lineData.end.y
@@ -590,22 +605,49 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       target   = lineData.target
       toX      = target.x
       toY      = target.y
+      current  = lineData.result[ lineData.result.length - 1 ]
 
       if end.angle is CanvasElement.constant.PORT_UP_ANGLE or end.angle is CanvasElement.constant.PORT_DOWN_ANGLE
         if Math.abs( target.y - lastArea.y1 ) < Math.abs( target.y - lastArea.y2 )
           toY = lastArea.y1
+          otherSide = lastArea.y2
         else
           toY = lastArea.y2
+          otherSide = lastArea.y1
 
-        lineData.result.push { x : lineData.current.x, y : toY }
+        if current.y is otherSide
+          if Math.abs( current.x - lastArea.x1 ) < Math.abs( current.x - lastArea.x2 )
+            nextX = lastArea.x1
+          else
+            nextX = lastArea.x2
+          lineData.result.push { x : nextX, y : current.y }
+          lineData.result.push { x : nextX, y : toY }
+        else
+          lineData.result.push { x : current.x, y : toY }
+
+        lineData.result.push { x : toX, y : toY }
+        lineData.result.push { x : lineData.end.x, y : toY }
       else
         if Math.abs( target.x - lastArea.x1 ) < Math.abs( target.x - lastArea.x2 )
           toX = lastArea.x1
+          otherSide = lastArea.x2
         else
           toX = lastArea.x2
-        lineData.result.push { y : lineData.current.y, x : toX }
+          otherSide = lastArea.x1
 
-      lineData.result.push { x : toX, y : toY }
+        if current.x is otherSide
+          if Math.abs( current.y - lastArea.y1 ) < Math.abs( current.y - lastArea.y2 )
+            nextY = lastArea.y1
+          else
+            nextY = lastArea.y2
+          lineData.result.push { x : current.x, y : nextY }
+          lineData.result.push { x : toX, y : nextY }
+        else
+          lineData.result.push { x : toX, y : current.y }
+
+        lineData.result.push { x : toX, y : toY }
+        lineData.result.push { x : toX, y : lineData.end.y }
+
 
     optimizeElbowPoints : ( lineData )->
       optPoints = []
@@ -706,12 +748,24 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       bound = {}
       if (start0.angle + end0.angle) % 180 is 0
+        if start.item.sticky
+          sticky = start
+        else if end.item.sticky
+          sticky = end
+
         if start0.angle is CanvasElement.constant.PORT_UP_ANGLE or start0.angle is CanvasElement.constant.PORT_DOWN_ANGLE
           bound.preferX = end0.x
-          bound.preferY = Math.round( (start0.y + end0.y) / 20 ) * 10
+
+          if sticky
+            bound.preferY = sticky.y + (if sticky.angle is CanvasElement.constant.PORT_UP_ANGLE then -10 else 10)
+          else
+            bound.preferY = Math.round( (start0.y + end0.y) / 20 ) * 10
         else
           bound.preferY = end0.y
-          bound.preferX = Math.round( (start0.x + end0.x) / 20 ) * 10
+          if sticky
+            bound.preferX = sticky.x + (if sticky.angle is CanvasElement.constant.PORT_LEFT_ANGLE then -10 else 10)
+          else
+            bound.preferX = Math.round( (start0.x + end0.x) / 20 ) * 10
       else
         if start0.angle is CanvasElement.constant.PORT_UP_ANGLE or start0.angle is CanvasElement.constant.PORT_DOWN_ANGLE
           bound.preferX = start0.x

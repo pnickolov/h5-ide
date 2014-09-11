@@ -65,7 +65,7 @@
     </section>
     <section class="group required">
         <div class="name tooltip" data-target="associateFip">Associate Floating IP</div>
-        <select class="selection bool" value="true"></select>
+        <select class="selection bool" value="false"></select>
     </section>
 </div>
 

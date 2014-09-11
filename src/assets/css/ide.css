@@ -9559,9 +9559,10 @@ pre {
     vertical-align: baseline; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text {
     display: inline-block;
-    font-size: 14px;
     color: #DEDEDE;
-    margin: -5px 0; }
+    margin: -5px 0;
+    max-width: 245px;
+    white-space: nowrap; }
     #OpsEditor .OEPanelRight.property p.property-os-image-text span {
       display: block;
       font-size: 12px;

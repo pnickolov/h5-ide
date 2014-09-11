@@ -31,9 +31,10 @@
 
     p.property-os-image-text {
         display: inline-block;
-        font-size: 14px;
         color: #DEDEDE;
         margin: -5px 0;
+        max-width: 245px;
+        white-space: nowrap;
         span{
             display: block;
             font-size: 12px;

@@ -104,6 +104,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     handleTypes  : constant.RESTYPE.OSSERVER
 
     deserialize : ( data, layout_data, resolve )->
+      console.log data, "\n=========="
       server = new Model({
         id    : data.uid
         name  : data.resource.name
@@ -111,6 +112,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         imageId : data.resource.image
         adminPass: data.resource.adminPass
         keypair : data.resource.key_name
+        NICS : data.resource.NICS
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       })

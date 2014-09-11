@@ -70,6 +70,8 @@ define [
       console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
+      if attr is 'name'
+        @setTitle target.val()
       if attr is 'CPU'
         flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
         availableRams = flavorGroup[target.val()]

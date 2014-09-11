@@ -9,6 +9,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
     defaults :
       public : false
       cidr   : ""
+      dhcp   : true
 
     serialize : ()->
       {
@@ -25,7 +26,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
             network_id  : "@{#{@parent().id}.resource.id}"
             gateway_ip  : ""
             ip_version  : ""
-            enable_dhcp : ""
+            enable_dhcp : @get("dhcp")
             allocation_pools :
               start : "192.168.199.2"
               end   : "192.168.199.254"
@@ -44,6 +45,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
         parent : resolve( MC.extractID(data.resource.network_id) )
 
         cidr : data.resource.cidr
+        dhcp : data.resource.enable_dhcp
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

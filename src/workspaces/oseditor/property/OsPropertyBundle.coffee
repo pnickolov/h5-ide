@@ -4,5 +4,7 @@ define [
 
     './ossubnet/view'
     './osserver/view'
+    './oslistener-asso/view'
+    './ospool-membership/view'
 
-], () ->
+], ->

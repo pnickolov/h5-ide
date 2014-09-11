@@ -9212,24 +9212,6 @@ g.shadow {
 /* Orange */
 /* Yellow */
 /* Red */
-img.property-os-image-icon {
-  display: inline-block;
-  vertical-align: baseline; }
-
-p.property-os-image-text {
-  display: inline-block;
-  font-size: 14px;
-  color: #DEDEDE;
-  margin: -5px 0; }
-  p.property-os-image-text span {
-    display: block;
-    font-size: 12px;
-    color: #8D8D8D; }
-
-.os-property-default {
-  color: #ccc;
-  padding: 20px 0 0 26px; }
-
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
   /* property component style */
@@ -9239,8 +9221,21 @@ p.property-os-image-text {
     padding: 5px;
     text-align: center; }
   #OpsEditor .OEPanelRight.property .os-property-default {
-    color: #ccc;
     padding: 20px 0 0 26px; }
+  #OpsEditor .OEPanelRight.property .os-property-message {
+    padding: 20px 0 0 26px; }
+  #OpsEditor .OEPanelRight.property img.property-os-image-icon {
+    display: inline-block;
+    vertical-align: baseline; }
+  #OpsEditor .OEPanelRight.property p.property-os-image-text {
+    display: inline-block;
+    font-size: 14px;
+    color: #DEDEDE;
+    margin: -5px 0; }
+    #OpsEditor .OEPanelRight.property p.property-os-image-text span {
+      display: block;
+      font-size: 12px;
+      color: #8D8D8D; }
   #OpsEditor .OEPanelRight.property .group {
     background-color: #27272b;
     font-size: 12px;

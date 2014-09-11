@@ -47,6 +47,16 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       console.assert( attr.imageId, "Invalid attributes when creating OsModelServer", attr )
       @setImage( attr.imageId )
       @setCredential(attr)
+      NICS = @get('NICS')
+      if not NICS.length
+        # create Server default port
+        Port = Design.modelClassForType( constant.RESTYPE.OSPORT )
+        newPort = new Port()
+        PortUsage = Design.modelClassForType( "OsPortUsage" )
+        newPortUsage = new PortUsage(@, newPort)
+        console.log newPort, newPortUsage, "\n====-=-=-=-=-=-=-="
+        @set("NICS", [{"prot-id": "@{"+newPort.get("id")+".resource.id"}])
+
       null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]

@@ -17,18 +17,23 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       return
 
     serialize : ()->
-      component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
-          id                    : @get("appId")
-          name                  : @get("name")
-          external_gateway_info : {}
-          admin_state_up        : true
-          router_interface      : []
+      extNetwork = @connectionTargets( "OsExtRouterAttach" )[0]
+      if extNetwork
+        extNetwork = { network_id : "@{#{extNetwork.id}.resource.id}" }
 
-      { component : component }
+      {
+        layout    : @generateLayout()
+        component :
+          name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            id                    : @get("appId")
+            name                  : @get("name")
+            external_gateway_info : extNetwork || {}
+            admin_state_up        : true
+            router_interface : @connectionTargets("OsRouterAsso").map ( subnet )-> {subnet_id:"@{#{subnet.id}.resource.id}" }
+      }
 
   }, {
 

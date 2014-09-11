@@ -118,8 +118,11 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       })
 
       PortUsage = Design.modelClassForType( "OsPortUsage" )
-      for port in data.resource.NICS || []
+      for port, idx in data.resource.NICS || []
         port = resolve( MC.extractID( port["port-id"] ) )
+        if idx is 0
+          # Set server's parent here.
+          port.parent().addChild( server )
         new PortUsage( server, port )
 
       return

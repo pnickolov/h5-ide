@@ -76,7 +76,8 @@
   .openstack .OEPanelRight .option-group-head, .openstack .OEPanelRight .fixedaccordion-head {
     border-top: 1px solid #000000;
     height: 40px;
-    line-height: 40px; }
+    line-height: 40px;
+    margin-top: -2px; }
   .openstack .OEPanelRight .expand + .option-group {
     border-bottom: 0; }
 

@@ -9267,7 +9267,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       top: 0;
       margin-top: 3px;
       margin-right: 3px; }
-  #OpsEditor .OEPanelRight.property .key {
+  #OpsEditor .OEPanelRight.property .name {
     width: 100%;
     padding: 8px 10px;
     display: table-cell;
@@ -9275,7 +9275,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
-    #OpsEditor .OEPanelRight.property .key.tooltip:after {
+    #OpsEditor .OEPanelRight.property .name.tooltip:after {
       content: " ";
       width: 103px;
       height: 8px;

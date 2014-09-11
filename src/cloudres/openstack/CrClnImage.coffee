@@ -28,5 +28,5 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
           ids    : _.pluck( res.flavors, "id" )
         })
 
-    parseFetchData : (res)-> res.flavors
+    parseFetchData : (res)-> _.values(res)
   }

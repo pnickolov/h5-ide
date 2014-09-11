@@ -29,6 +29,15 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
       { component : component }
 
+
+
+    updateFip: (ip)->
+      #todo: Update Floating Ips
+      @set("fixed_ips", [{
+        subnet_id: ""
+        ip_address: ip
+      }])
+
   }, {
 
     handleTypes  : constant.RESTYPE.OSPORT

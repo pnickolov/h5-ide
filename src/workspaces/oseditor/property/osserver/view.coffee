@@ -70,10 +70,13 @@ define [
       console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
+
       if attr is 'imageId'
         @model.setImage target.val()
+
       if attr is 'name'
         @setTitle target.val()
+
       if attr is 'CPU'
         flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
         availableRams = flavorGroup[target.val()]
@@ -83,26 +86,32 @@ define [
           ramValue = ramSelectize.getValue()
           availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (e/1024 + " G"), value: e}
           currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
-
           if not currentRamFlavor
             ramValue = _.min(_.pluck availableRamsValue, 'value')
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
-
           @model.set("flavorId", currentRamFlavor.get('id'))
           @updateRamOptions(availableRamsValue, ramValue)
           console.log currentRamFlavor.get('id')
-
         else
           return false
         return false
 
       if attr is 'RAM'
-
         oldRamFlavor = @flavorList.get @model.get('flavorId')
         flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
         availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
         targetFlavor = _.find availableRams, (e)->return e.get('ram') is +target.val()
         @model.set('flavorId', targetFlavor.get('id'))
+        return false
+
+      if attr is "fixedIp"
+        serverPort = @model.embedPort()
+        serverPort.updateFip(target.val())
+        return false
+
+      if attr is 'associateFip'
+        serverPort = @model.embedPort()
+        serverPort.set('associateFip', target.val())
         return false
 
       @model.set(attr, target.val()) if attr

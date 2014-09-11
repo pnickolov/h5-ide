@@ -56,7 +56,6 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         newPortUsage = new PortUsage(@, newPort)
         console.log newPort, newPortUsage, "\n====-=-=-=-=-=-=-="
         @set("NICS", [{"prot-id": "@{"+newPort.get("id")+".resource.id"}])
-
       null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]

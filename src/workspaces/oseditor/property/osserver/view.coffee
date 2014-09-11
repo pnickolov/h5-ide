@@ -77,12 +77,10 @@ define [
           currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
 
           if not currentRamFlavor
-
             ramValue = _.min(_.pluck availableRamsValue, 'value')
-            @updateRamOptions(availableRamsValue, ramValue)
-
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
 
+          @updateRamOptions(availableRamsValue, ramValue)
           @model.set("flavor_id", currentRamFlavor.get('id'))
 
         else
@@ -106,10 +104,8 @@ define [
       ramSelection.load (callback)->
         console.log currentRam
         callback availableRams
-        ramSelection.setValue(currentRam)
         ramSelection.refreshOptions(false)
-
-
+        ramSelection.setValue(currentRam)
 
 
     selectTpl:

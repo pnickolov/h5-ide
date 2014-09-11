@@ -101,7 +101,10 @@ define [
 
     render : ()->
       m = @model
+      # Update Label
       CanvasManager.setLabel @, @$el.children(".node-label")
+      # Update Image
+      CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
       # Update FIP
       CanvasManager.updateFip @$el.children(".fip-status"), m
       null

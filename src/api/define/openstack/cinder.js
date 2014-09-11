@@ -22,11 +22,11 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_cinder_quota_UpdateUserQuota'      : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'UpdateUserQuota',	params:['uesrname', 'session_id', 'region', 'quota_tenant_id', 'user_id', 'quota']   },
 		'os_cinder_quota_DeleteUserQuota'      : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'DeleteUserQuota',	params:['uesrname', 'session_id', 'region', 'quota_tenant_id', 'user_id']   },
 		'os_snapshot_List'                     : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_snapshot_Info'                     : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Info',	params:['username', 'session_id', 'region', 'snapshot_ids']   },
+		'os_snapshot_Info'                     : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_snapshot_Update'                   : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Update',	params:['username', 'session_id', 'region', 'snapshot_id', 'display_name', 'display_description']   },
 		'os_snapshot_Delete'                   : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Delete',	params:['username', 'session_id', 'region', 'snapshot_id']   },
 		'os_volume_List'                       : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'List',	params:['username', 'session_id', 'region']   },
-		'os_volume_Info'                       : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'Info',	params:['username', 'session_id', 'region', 'volume_ids']   },
+		'os_volume_Info'                       : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_volume_GetVolumeType'              : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'GetVolumeType',	params:['username', 'session_id', 'region', 'volume_type_id']   },
 	}
 

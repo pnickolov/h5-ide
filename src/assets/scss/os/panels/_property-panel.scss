@@ -75,20 +75,19 @@
         padding: 8px 10px;
         display: table-cell;
         vertical-align: middle;
-        // background-color: #27272b;
+        color: #777;
         line-height: 14px;
-        // text-align: right;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
-        &.tooltip:after {
-            content: " ";
-            width: 103px;
-            height: 8px;
-            position: absolute;
-            left: 12px;
-            margin-top: 8px;
-            border-bottom: 1px #555 dashed;
-        }
+        // &.tooltip:after {
+        //     content: " ";
+        //     width: 103px;
+        //     height: 8px;
+        //     position: absolute;
+        //     left: 12px;
+        //     margin-top: 8px;
+        //     border-bottom: 1px #555 dashed;
+        // }
     }
 
 }

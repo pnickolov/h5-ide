@@ -1084,6 +1084,14 @@ input.selection, textarea.selection {
   .switcher.on .switch-handle {
     left: 23px; }
 
+#selection-tip {
+  position: absolute;
+  display: none;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  z-index: 999; }
+
 /* Light Purple */
 /* Base Purple */
 /* Dark Purple */

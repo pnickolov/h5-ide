@@ -527,3 +527,12 @@ input.selection, textarea.selection {
         left: 23px;
     }
 }
+
+#selection-tip {
+    position: absolute;
+    display: none;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    z-index: 999;
+}

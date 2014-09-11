@@ -1,3 +1,22 @@
+// for data-tip
+$(function() {
+    $(document.body).on('focus blur', 'input.selection[data-tip]', function(event) {
+        var $target = $(event.target);
+        var tip = $target.data('tip');
+        if (event.type === 'focusin' && tip) {
+            if (!$('#selection-tip').length) {
+                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i>' + tip + '</div>');
+            }
+            var width = $target.outerWidth() + 'px';
+            var posX = $target.offset().left + 'px';
+            var posY = $target.outerHeight() + $target.offset().top + 'px';
+            $('#selection-tip').css({width: width, left: posX, top: posY}).show();
+        } else {
+            $('#selection-tip').hide();
+        }
+    });
+});
+
 // for ip address
 (function($){
   $.fn.caret = function(s, e) {
@@ -900,6 +919,7 @@
      * @returns {string|null}
      */
     var hash_key = function(value) {
+        if (typeof value === 'object') return value;
         if (typeof value === 'undefined' || value === null) return null;
         if (typeof value === 'boolean') return value ? 'true' : 'false';
         return value + '';

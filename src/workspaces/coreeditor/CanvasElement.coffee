@@ -332,6 +332,12 @@ define [
       items
 
     siblings : ( includeStickyChildren )->
+
+      if not @parent()
+        # TopLevel items.
+        self = @
+        return _.reject @canvas.__itemTopLevel, ( i )-> i is self
+
       s = @parent().children( includeStickyChildren )
       idx = s.indexOf( this )
       if idx >= 0

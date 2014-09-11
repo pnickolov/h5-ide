@@ -18,7 +18,7 @@
     <section class="group required">
         <div class="key">CPU</div>
         <select class="selection option"  data-target="CPU" id="property-os-server-CPU">
-            {{#each flavor}}
+            {{#each flavorGroup}}
                 <option value='{{@key}}' {{#ifCond @key ../vcpus}}selected="selected"{{/ifCond}}>{{@key}} Core</option>
             {{/each}}
         </select>
@@ -27,7 +27,7 @@
         <div class="key">RAM</div>
         <select class="selection option" data-target="RAM" id="property-os-server-RAM">
             {{#each avaliableRams}}
-                <option value='{{this}}' {{#ifCond this ../ram}}selected="selected"{{/ifCond}}>{{this}} G</option>
+                <option value='{{value}}' {{#ifCond value ../ram}}selected="selected"{{/ifCond}}>{{text}} G</option>
             {{/each}}
         </select>
     </section>

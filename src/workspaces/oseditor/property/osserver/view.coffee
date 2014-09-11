@@ -34,15 +34,15 @@ define [
 
     render: ->
       json = @model.toJSON()
-      flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
+      @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
 
-      flavorGroup = _.groupBy flavorList.toJSON(), 'vcpus'
-      currentFlavor = flavorList.get(@model.get('flavor_id'))
+      flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
+      currentFlavor = @flavorList.get(@model.get('flavor_id'))
 
       json.flavorGroup = flavorGroup
-      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> Math.round(e/1024)
+      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: Math.round(e/1024), value: e}
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
-      json.ram = Math.round(currentFlavor.get('ram')/1024)
+      json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
       @$el.html template.stackTemplate json
       @bindSelectizeEvent()
@@ -52,7 +52,6 @@ define [
       that = @
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
         that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('image'))
-      window.a = CloudResources constant.RESTYPE.OSFLAVOR, Design.instance().region()
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -67,7 +66,51 @@ define [
       console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
+      if attr is 'CPU'
+        flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
+        availableRams = flavorGroup[target.val()]
+        console.log availableRams
+        if availableRams?.length
+          ramSelectize = @$el.find("#property-os-server-RAM")[0].selectize
+          ramValue = ramSelectize.getValue()
+          availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (Math.round(e/1024) + " G"), value: e}
+          currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
+
+          if not currentRamFlavor
+
+            ramValue = _.min(_.pluck availableRamsValue, 'value')
+            @updateRamOptions(availableRamsValue, ramValue)
+
+            currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
+
+          @model.set("flavor_id", currentRamFlavor.get('id'))
+
+        else
+          return false
+        return false
+
+      if attr is 'RAM'
+
+        oldRamFlavor = @flavorList.get @model.get('flavor_id')
+        flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
+        availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
+        targetFlavor = _.find availableRams, (e)->return e.get('ram') is +target.val()
+        @model.set('flavor_id', targetFlavor.get('id'))
+        return false
+
       @model.set(attr, target.val()) if attr
+
+    updateRamOptions: (availableRams, currentRam)->
+      ramSelection = @$el.find("#property-os-server-RAM")[0].selectize
+      ramSelection.clearOptions()
+      ramSelection.load (callback)->
+        console.log currentRam
+        callback availableRams
+        ramSelection.setValue(currentRam)
+        ramSelection.refreshOptions(false)
+
+
+
 
     selectTpl:
 

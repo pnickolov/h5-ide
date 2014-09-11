@@ -901,7 +901,7 @@
      */
     var hash_key = function(value) {
         if (typeof value === 'undefined' || value === null) return null;
-        if (typeof value === 'boolean') return value ? '1' : '0';
+        if (typeof value === 'boolean') return value ? 'true' : 'false';
         return value + '';
     };
     
@@ -3187,6 +3187,8 @@
          * If new value in options list, used for check before set the value
          */
         isValueInOptions: function(value) {
+
+            value = hash_key(value);
             
             if (!value || !value.length) {
                 return false;

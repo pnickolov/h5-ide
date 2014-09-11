@@ -6,34 +6,19 @@ define [
   'underscore'
 ], ( constant, OsPropertyView, template, CloudResources, _ ) ->
 
-  operationArray = [
-    "amazon.i386.ebs"
-    "amazon.x86_64.ebs"
-    "centos.i386.ebs"
-    "centos.x86_64.ebs"
-    "debian.i386.ebs"
-    "debian.x86_64.ebs"
-    "fedora.i386.ebs"
-    "fedora.x86_64.ebs"
-    "gentoo.i386.ebs"
-    "gentoo.x86_64.ebs"
-    "linux-other.i386.ebs"
-    "linux-other.x86_64.ebs"
-    "my-ami-o.ebs"
-    "my-ami-unk.ebs"
-    "my-ami.ebs"
-    "opensuse.i386.ebs"
-    "opensuse.x86_64.ebs"
-    "redhat.i386.ebs"
-    "redhat.x86_64.ebs"
-    "suse.i386.ebs"
-    "suse.x86_64.ebs"
-    "ubuntu.i386.ebs"
-    "ubuntu.x86_64.ebs"
-    "unknown.i386.ebs"
-    "unknown.x86_64.ebs"
-    "windows.i386.ebs"
-    "windows.x86_64.ebs"
+  osDistroArray = [
+    'amazon'
+    'centos'
+    'debian'
+    'fedora'
+    'gentoo'
+    'linux-other'
+    'opensuse'
+    'redhat'
+    'suse'
+    'ubuntu'
+    'unknown'
+    'windows'
   ]
   OsPropertyView.extend {
     events:
@@ -84,9 +69,9 @@ define [
           item.distro = "ami-unknown"
           return template.imageListKey(item)
 
-        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture + ".ebs"
-        if imageObj.distro not in operationArray
-          imageObj.distro = "ami-unknown"
+        if imageObj.os_distro not in osDistroArray
+          imageObj.os_distro = "unknown"
+        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture
         template.imageListKey(imageObj)
 
       imageValue: (item) ->
@@ -98,9 +83,9 @@ define [
           item.text = item.text || "Unknow"
           return template.imageValue(item)
 
-        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture + ".ebs"
-        if imageObj.distro not in operationArray
-          imageObj.distro = "ami-unknown"
+        if imageObj.os_distro not in osDistroArray
+          imageObj.os_distro = "unknown"
+        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture
         template.imageValue(imageObj)
 
   }, {

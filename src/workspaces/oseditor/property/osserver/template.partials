@@ -65,7 +65,7 @@
 
 
 <!--{{imageListKey}}-->
-<div><img class="property-os-image-icon" src="/assets/images/ide/ami/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span>{{or id value}}</span></p></div>
+<div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span>{{or id value}}</span></p></div>
 
 <!--{{imageValue}}-->
-<div><img src="/assets/images/ide/ami/{{distro}}.png" alt=""/>{{name}}</div>
+<div><img src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/>{{name}}</div>

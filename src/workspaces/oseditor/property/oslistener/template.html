@@ -10,7 +10,11 @@
 
 <section class="group required">
     <div class="name">Protocol</div>
-    <input id="property-os-listener-protocol" data-target="protocol" class="selection string" value="{{protocol}}"/>
+    <select class="selection option" value="{{image}}" data-target="protocol" id="property-os-listener-protocol">
+        <option value='http' {{#ifCond 'http' protocol}}selected='selected'{{/ifCond}}>HTTP</option>
+        <option value='https' {{#ifCond 'https' protocol}}selected='selected'{{/ifCond}}>HTTPS</option>
+        <option value='tcp' {{#ifCond 'tcp' protocol}}selected='selected'{{/ifCond}}>TCP</option>
+    </select>
 </section>
 
 <section class="group required">

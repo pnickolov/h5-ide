@@ -10,26 +10,25 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
       public : false
 
     serialize : ()->
-      component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
-          id   : @get("appId")
+      {
+        layout : @generateLayout()
+        component :
           name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            id   : @get("appId")
+            name : @get("name")
 
-          network_id     : ""
-          gateway_ip     : ""
-          ip_version     : ""
-          cidr           : ""
-          enable_dhcp    : ""
-          admin_state_up : ""
-          shared         : ""
-          allocation_pools :
-            start : "192.168.199.2"
-            end   : "192.168.199.254"
-
-      { component : component }
+            cidr        : @get("cidr")
+            network_id  : "@{#{@parent().id}.resource.id}"
+            gateway_ip  : ""
+            ip_version  : ""
+            enable_dhcp : ""
+            allocation_pools :
+              start : "192.168.199.2"
+              end   : "192.168.199.254"
+      }
 
   }, {
 
@@ -42,6 +41,8 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
         appId : data.resource.id
 
         parent : resolve( MC.extractID(data.resource.network_id) )
+
+        cidr : data.resource.cidr
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

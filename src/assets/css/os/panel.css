@@ -136,8 +136,7 @@
 /* Red */
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
-  /* property component style */
-  /* boolean switcher component */ }
+  /* property component style */ }
   #OpsEditor .OEPanelRight.property h1 {
     font-size: 20px;
     padding: 5px;
@@ -158,16 +157,6 @@
       display: block;
       font-size: 12px;
       color: #8D8D8D; }
-  #OpsEditor .OEPanelRight.property .ip_octet {
-    width: 24%;
-    border: 0;
-    background-color: transparent;
-    padding: 5px;
-    color: #fff;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    display: inline-block;
-    text-align: center; }
   #OpsEditor .OEPanelRight.property .group {
     background-color: #27272b;
     font-size: 12px;
@@ -215,146 +204,3 @@
       left: 12px;
       margin-top: 8px;
       border-bottom: 1px #555 dashed; }
-  #OpsEditor .OEPanelRight.property .value {
-    width: 100%;
-    background-color: #27272b;
-    border: 0; }
-  #OpsEditor .OEPanelRight.property input.value, #OpsEditor .OEPanelRight.property textarea.value {
-    color: #fff;
-    padding: 8px 10px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    margin: 0;
-    font-size: 12px; }
-    #OpsEditor .OEPanelRight.property input.value:focus, #OpsEditor .OEPanelRight.property textarea.value:focus {
-      background-color: #424242;
-      outline: none; }
-    #OpsEditor .OEPanelRight.property input.value[disabled], #OpsEditor .OEPanelRight.property textarea.value[disabled] {
-      color: #555; }
-  #OpsEditor .OEPanelRight.property .selectize-control {
-    height: 100%; }
-    #OpsEditor .OEPanelRight.property .selectize-control.bool .selectize-input {
-      padding-left: 65px; }
-    #OpsEditor .OEPanelRight.property .selectize-control .selectize-input {
-      color: #fff;
-      border: 0;
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      height: 100%; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-input.focus {
-        background-color: #424242; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-input.disabled {
-        color: #555;
-        background-color: #27272b; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-input input {
-        color: #fff;
-        padding: 2px;
-        font: inherit; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-input div {
-        padding: 2px; }
-    #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown {
-      background-color: #373737;
-      color: #9d9d97;
-      border: 0; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown [data-selectable], #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .optgroup-header {
-        padding: 10px; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading {
-        height: 145px !important; }
-        #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown-content {
-          display: none !important; }
-        #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown.loading .selectize-dropdown_button {
-          display: none !important; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar {
-        width: 8px; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-track {
-        background: none; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content::-webkit-scrollbar-thumb {
-        background: #000;
-        border: 1px solid #444;
-        border-radius: 8px; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
-        color: #fff; }
-      #OpsEditor .OEPanelRight.property .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
-        background-color: #363644;
-        color: #fff; }
-  #OpsEditor .OEPanelRight.property .selectize-control.multi .selectize-input > div {
-    height: 100%;
-    background-color: #000;
-    border: 1px #444 solid;
-    border-radius: 3px;
-    color: #fff;
-    padding: 1px 5px; }
-    #OpsEditor .OEPanelRight.property .selectize-control.multi .selectize-input > div.active {
-      background-color: #2a608d;
-      border: 1px #444 solid;
-      color: #fff; }
-  #OpsEditor .OEPanelRight.property .switcher {
-    float: right;
-    position: absolute;
-    z-index: 2;
-    font-size: 12px;
-    margin: 4px 10px;
-    width: 45px;
-    height: 21px;
-    border: 1px solid #ccc;
-    background: #dadada;
-    font-size: 12px;
-    display: inline-block;
-    vertical-align: top;
-    border-radius: 2px;
-    cursor: pointer;
-    -webkit-transition: 0.15s ease-out;
-    -moz-transition: 0.15s ease-out;
-    -o-transition: 0.15s ease-out;
-    transition: 0.15s ease-out;
-    -webkit-transition-property: opacity background;
-    -moz-transition-property: opacity background;
-    -o-transition-property: opacity background;
-    transition-property: opacity background; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-input {
-      position: absolute;
-      top: 0;
-      left: 0; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-label {
-      position: relative;
-      display: block;
-      height: 100%; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-label:before, #OpsEditor .OEPanelRight.property .switcher .switch-label:after {
-      position: absolute;
-      top: 50%;
-      margin-top: -.5em;
-      line-height: 1; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-label:before {
-      content: attr(data-off);
-      right: 6px;
-      color: #aaa;
-      font-variant: small-caps; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-label:after {
-      content: attr(data-on);
-      left: 6px;
-      color: white;
-      opacity: 0;
-      font-variant: small-caps; }
-    #OpsEditor .OEPanelRight.property .switcher .switch-handle {
-      position: absolute;
-      top: 2px;
-      left: 3px;
-      width: 20px;
-      height: 17px;
-      background: white;
-      border-radius: 2px;
-      -webkit-transition: left 0.15s ease-out;
-      -moz-transition: left 0.15s ease-out;
-      -o-transition: left 0.15s ease-out;
-      transition: left 0.15s ease-out; }
-  #OpsEditor .OEPanelRight.property .switcher.disabled {
-    opacity: 0.2; }
-  #OpsEditor .OEPanelRight.property .switcher.on {
-    border-color: #0E8F38;
-    background: #4fb845; }
-    #OpsEditor .OEPanelRight.property .switcher.on .switch-label:before {
-      opacity: 0; }
-    #OpsEditor .OEPanelRight.property .switcher.on .switch-label:after {
-      opacity: 1; }
-    #OpsEditor .OEPanelRight.property .switcher.on .switch-handle {
-      left: 23px; }

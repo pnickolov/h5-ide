@@ -104,7 +104,7 @@
         return false;
       };
 
-      $('input.ip_octet').bind('keydown', function(e){
+      $this.nextAll().find('input.ip_octet').on('keydown', function(e){
         if (!isValidKey(e)) return false;
 
         var next_octet = $(this).next('input.ip_octet');
@@ -151,7 +151,7 @@
             return false;
           }
         }
-    }).bind('keyup', function(e){
+    }).on('keyup', function(e){
         // save value to original input if all octets have been entered
         if ($('input.ip_octet', $(this).parent()).filter(function(){ return this.value.length; }).length == 4) {
           var ip_value = [];
@@ -160,7 +160,7 @@
           });
           $this.val(ip_value.join('.'));
         }
-      }).bind('blur', function(){
+      }).on('blur', function(){
         if (this.value > 255) this.value = 255;
       });
 

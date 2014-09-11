@@ -36,7 +36,7 @@ define [
         @$el.append propertyView.render().el
 
         @restoreAccordion(@model?.type, @uid)
-        @$el.find('select.value,input.ipv4').each ->
+        @$el.find('select.selection,input.ipv4').each ->
             that.bindSelection($(@), propertyView.selectTpl)
 
         @

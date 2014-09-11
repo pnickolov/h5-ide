@@ -3,7 +3,11 @@
 #OpsEditor .OEPanelRight.property {
 
     color: #ccc;
-    @include font-mono;
+
+    .panel-body {
+        @include font-mono;
+    }
+
 
     /* property component style */
     h1 {

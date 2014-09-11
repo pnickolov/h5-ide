@@ -269,8 +269,9 @@ pre {
 
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
   /* property component style */ }
+  #OpsEditor .OEPanelRight.property .panel-body {
+    font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
   #OpsEditor .OEPanelRight.property h1 {
     font-size: 20px;
     padding: 5px;

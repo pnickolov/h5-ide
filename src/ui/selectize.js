@@ -65,18 +65,45 @@ $(function() {
 })(jQuery);
 
 (function($){
-  $.fn.ipAddress = function(type) {
-    $(this).attr('data-ignore', 'true');
-    $(this).attr('data-required', 'true');
-    if (type === 'cidrv4') {
-      $(this).attr('data-ignore-regexp', '^[0-9./]*$');
-    } else if (type === 'ipcidrv4') {
-      $(this).attr('data-ignore-regexp', '^[0-9./]*$');
-    } else if (type === 'ipv4') {
-      $(this).attr('data-ignore-regexp', '^[0-9.]*$');
-    }
-    $(this).parent().attr('data-bind', 'true');
-  };
+    $.fn.ipAddress = function(type) {
+
+        $(this).attr('data-ignore', 'true');
+        $(this).attr('data-required', 'true');
+        if (type === 'cidrv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9./]*$');
+        } else if (type === 'ipcidrv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9./]*$');
+        } else if (type === 'ipv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9.]*$');
+        }
+        $(this).parent().attr('data-bind', 'true');
+
+        $(this).on('focus', function() {
+            $(this).data('origin-value', $(this).val());
+        }).on('blur', function() {
+
+            var val = $(this).val();
+            var originVal = $(this).data('origin-value');
+
+            ipcidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))?$/;
+            ipRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+            cidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
+
+            if (type === 'ipv4' && !ipRegx.test(val)) {
+                $(this).val(originVal);
+            }
+
+            if (type === 'ipcidrv4' && !ipcidrRegx.test(val)) {
+                $(this).val(originVal);
+            }
+
+            if (type === 'cidrv4' && !cidrRegx.test(val)) {
+                $(this).val(originVal);
+            }
+
+        });
+
+    };
 })(jQuery);
 
 /**

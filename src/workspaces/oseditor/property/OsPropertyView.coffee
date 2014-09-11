@@ -13,6 +13,16 @@ define [
             @parent = options.parent
             Backbone.View.apply @, arguments
 
+        updateAttribute: ( e )->
+            $target = $ e.currentTarget
+            attr = $target.data 'target'
+
+            unless attr then return
+            value = $target.val()
+            @model.set(attr, value)
+
+            if attr is 'name' then @setTitle value
+
         setTitle: ( title ) -> @parent.setTitle title
         # Overwrite it in subview
         getTitle: -> @model?.get( 'name' )

@@ -16,15 +16,7 @@ define [
             @$el.html template @model.toJSON()
             @
 
-        updateAttribute: ( e )->
-            $target = $ e.currentTarget
-            attr = $target.data 'target'
 
-            unless attr then return
-            value = $target.val()
-            @model.set(attr, value)
-
-            if attr is 'name' then @setTitle value
 
     }, {
         handleTypes: [ constant.RESTYPE.OSLISTENER ]

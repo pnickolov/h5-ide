@@ -6,22 +6,37 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSPOOL
     newNameTmpl : "Pool-"
 
+    defaults:
+      protocol: 'HTTP'
+      method: 'ROUND_ROBIN'
+
     ports : ()->
       @connectionTargets("")
 
     serialize : ()->
+      member = _.map @connections( 'OsPoolMembership' ), ( c ) ->
+        target = c.getOtherTarget( constant.RESTYPE.OSPOOL )
+        target = target.embedPort() if target.type is constant.RESTYPE.OSSERVER
+
+        {
+          protocol_port : c.get 'port'
+          address       : target.createRef 'fixed_ips.0.ip_address'
+          weight        : c.get 'weight'
+          id            : ''
+        }
+
       component =
-        name : @get("name")
+        name : @get 'name'
         type : @type
         uid  : @id
         resource :
-          id   : @get("appId")
-          name : @get("name")
-          protocol         : ""
-          lb_algorithm     : ""
-          subnet_id        : ""
-          healthmonitor_id : ""
-          member           : []
+          id   : @get 'appId'
+          name : @get 'name'
+          protocol         : @get 'protocol'
+          lb_method        : @get 'method'
+          subnet_id        : @parent().createRef 'id'
+          healthmonitor_id : @connectionTargets( 'OsMonitorUsage' )[ 0 ].createRef 'id'
+          member           : member
 
       { component : component }
 
@@ -31,13 +46,16 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     deserialize : ( data, layout_data, resolve )->
       pool = new Model({
-        id    : data.uid
-        name  : data.resource.name
-        appId : data.resource.id
+        id        : data.uid
+        name      : data.resource.name
+        appId     : data.resource.id
 
-        parent : resolve( MC.extractID( data.resource.subnet_id ) )
-        x      : layout_data.coordinate[0]
-        y      : layout_data.coordinate[1]
+        protocol  : data.resource.protocol
+        method    : data.resource.lb_method
+
+        parent    : resolve( MC.extractID( data.resource.subnet_id ) )
+        x         : layout_data.coordinate[0]
+        y         : layout_data.coordinate[1]
       })
 
       MonitorUsage = Design.modelClassForType( "OsMonitorUsage" )
@@ -53,7 +71,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       Membership = Design.modelClassForType("OsPoolMembership")
 
       for member in data.resource.member
-        new Membership( pool, design.component( MC.extractID(member.address) ) )
+        membership = new Membership( pool, design.component( MC.extractID(member.address) ) )
+        membership.set { weight: member.weight, port: member.protocol_port }
 
       return
   }

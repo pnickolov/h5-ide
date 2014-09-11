@@ -1,7 +1,7 @@
 define [
   'constant'
   '../OsPropertyView'
-  './template'
+  './stack'
 
 ], ( constant, OsPropertyView, template ) ->
 

@@ -34,8 +34,9 @@ define [
 
         @setTitle()
         @$el.append propertyView.render().el
+
         @restoreAccordion(@model?.type, @uid)
-        @$el.find('select.value').each ->
+        @$el.find('select.value,input.ipv4').each ->
             that.bindSelection($(@), propertyView.selectTpl)
 
         @
@@ -172,3 +173,7 @@ define [
                                 return null
                     }
                 })
+
+            if $valueDom.hasClass('ipv4')
+
+                $valueDom.ipAddress()

@@ -40,6 +40,18 @@ $propertyFontSize: 12px;
         }
     }
 
+    .ip_octet {
+        width: 24%;
+        border: 0;
+        background-color: transparent;
+        padding: 5px;
+        color: #fff;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        display: inline-block;
+        text-align: center;
+    }
+
     .group {
         background-color: #27272b;
         font-size: $propertyFontSize;

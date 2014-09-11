@@ -42,6 +42,10 @@ define [
         url = "ide/ami/openstack/#{image.os_type}.#{image.architecture}.png"
       url
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:imageId", @render
+      return
+
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
 

@@ -38,7 +38,7 @@ define [
       @kpList = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
       window.a = CloudResources( constant.RESTYPE.OSKP, Design.instance().region())
       flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
-      currentFlavor = @flavorList.get(@model.get('flavor_id')) || _.first @flavorList.models
+      currentFlavor = @flavorList.get(@model.get('flavorId')) || _.first @flavorList.models
       json.kpList = @kpList.toJSON()
       json.flavorGroup = flavorGroup
       json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024, value: e}
@@ -86,7 +86,7 @@ define [
             ramValue = _.min(_.pluck availableRamsValue, 'value')
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
 
-          @model.set("flavor_id", currentRamFlavor.get('id'))
+          @model.set("flavorId", currentRamFlavor.get('id'))
           @updateRamOptions(availableRamsValue, ramValue)
           console.log currentRamFlavor.get('id')
 
@@ -96,11 +96,11 @@ define [
 
       if attr is 'RAM'
 
-        oldRamFlavor = @flavorList.get @model.get('flavor_id')
+        oldRamFlavor = @flavorList.get @model.get('flavorId')
         flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
         availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
         targetFlavor = _.find availableRams, (e)->return e.get('ram') is +target.val()
-        @model.set('flavor_id', targetFlavor.get('id'))
+        @model.set('flavorId', targetFlavor.get('id'))
         return false
 
       @model.set(attr, target.val()) if attr

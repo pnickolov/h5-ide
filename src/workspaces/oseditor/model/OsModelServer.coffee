@@ -37,9 +37,9 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       adminPass: "xxxxxx"
       keypair: "Default-KP"
       blockDeviceMapping: []
-      flavor_id: "10"
+      flavorId: "10"
       availabilityZone: ""
-      image: ""
+      imageId: ""
       credential: "keypair"
 
     initialize : ( attr, option )->
@@ -58,7 +58,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         @.set('credential', 'adminPass')
 
     setImage : ( imageId )->
-      @set "image", imageId
+      @set "imageId", imageId
       # Update cached image
       image    = @getImage()
       cached = @get("cachedAmi")
@@ -82,8 +82,8 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         resource :
           id        : @get("appId")
           name      : @get("name")
-          flavor    : @get('flavor_id')
-          image     : @get('image')
+          flavor    : @get('flavorId')
+          image     : @get('imageId')
           meta      : @get('meta')
           NICS      : @get('NICS')
           userdata  : @get('userData')

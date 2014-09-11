@@ -379,6 +379,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         if lineData.test >= 100
           throw new Error( "Failed to search elbow path for: " + this.type )
 
+      # 3.1 We are not at the target point yet.
+      if lineData.inFinalArea
+        @proceedElbowLastArea( lineData )
+
       # 4. Optimize points
       lineData.result.unshift( { x:lineData.start.x, y:lineData.start.y } )
       lineData.result.unshift( { x:start.x, y:start.y } )
@@ -392,6 +396,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     getNextElbowTarget : ( lineData )->
       if lineData.current.x is lineData.end.x and lineData.current.y is lineData.end.y
         lineData.done = true
+        return
+
+      lastArea = lineData.areas[ lineData.areas.length - 1 ]
+      if lastArea.x1 <= lineData.current.x <= lastArea.x2 and lastArea.y1 <= lineData.current.y <= lastArea.y2
+        lineData.done = true
+        lineData.inFinalArea = true
         return
 
       lineData.target.x = lineData.current.x
@@ -467,17 +477,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       # 1. See if that point is blocked.
       cross = []
-      if target.x < lineData.current.x
+      if target.x < current.x
         linex1 = target.x
-        linex2 = lineData.current.x
+        linex2 = current.x
       else
-        linex1 = lineData.current.x
+        linex1 = current.x
         linex2 = target.x
-      if target.y < lineData.current.y
+      if target.y < current.y
         liney1 = target.y
-        liney2 = lineData.current.y
+        liney2 = current.y
       else
-        liney1 = lineData.current.y
+        liney1 = current.y
         liney2 = target.y
 
       for ch in area.children
@@ -487,11 +497,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
 
       # 2. Find out which block comes first
-      if lineData.current.x > target.x
+      if current.x > target.x
         currentAngle = CanvasElement.constant.PORT_LEFT_ANGLE
-      else if lineData.current.x < target.x
+      else if current.x < target.x
         currentAngle = CanvasElement.constant.PORT_RIGHT_ANGLE
-      else if lineData.current.y > target.y
+      else if current.y > target.y
         currentAngle = CanvasElement.constant.PORT_UP_ANGLE
       else
         currentAngle = CanvasElement.constant.PORT_DOWN_ANGLE
@@ -500,9 +510,9 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       theCross = null
       for ch in cross
         if currentAngle is CanvasElement.constant.PORT_LEFT_ANGLE or currentAngle is CanvasElement.constant.PORT_RIGHT_ANGLE
-          dis = Math.abs( ch.x1 - linex1 )
+          dis = Math.abs( ch.x1 - current.x )
         else
-          dis = Math.abs( ch.y1 - liney1 )
+          dis = Math.abs( ch.y1 - current.y )
 
         if dis < minCross or minCross is -1
           theCross = ch
@@ -542,8 +552,6 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         else
           lineData.result.push { x : theCrossX, y : theCrossEnd }
 
-        lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
-
       else
         if currentAngle is CanvasElement.constant.PORT_LEFT_ANGLE
           theCrossX   = theCross.x2
@@ -571,11 +579,33 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         else
           lineData.result.push { y : theCrossY, x : theCrossEnd }
 
-        lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
 
+      lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
       return
 
+    proceedElbowLastArea : ( lineData )->
 
+      end      = lineData.end
+      lastArea = lineData.areas[ lineData.areas.length - 1 ]
+      target   = lineData.target
+      toX      = target.x
+      toY      = target.y
+
+      if end.angle is CanvasElement.constant.PORT_UP_ANGLE or end.angle is CanvasElement.constant.PORT_DOWN_ANGLE
+        if Math.abs( target.y - lastArea.y1 ) < Math.abs( target.y - lastArea.y2 )
+          toY = lastArea.y1
+        else
+          toY = lastArea.y2
+
+        lineData.result.push { x : lineData.current.x, y : toY }
+      else
+        if Math.abs( target.x - lastArea.x1 ) < Math.abs( target.x - lastArea.x2 )
+          toX = lastArea.x1
+        else
+          toX = lastArea.x2
+        lineData.result.push { y : lineData.current.y, x : toX }
+
+      lineData.result.push { x : toX, y : toY }
 
     optimizeElbowPoints : ( lineData )->
       optPoints = []

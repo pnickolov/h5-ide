@@ -34,7 +34,7 @@ define [
 
         @setTitle()
         @$el.append propertyView.render().el
-
+        @restoreAccordion(@model?.type, @uid)
         @$el.find('select.value').each ->
             that.bindSelection($(@), propertyView.selectTpl)
 
@@ -50,37 +50,52 @@ define [
         else
             @$el.html PropertyPanelTpl.title { title: title }
 
-          
-    updateRightPanelOption : ( event ) ->
-#      $toggle = $(event.currentTarget)
-#
-#      if $toggle.is("button") or $toggle.is("a") then return
-#
-#      hide    = $toggle.hasClass("expand")
-#      $target = $toggle.next()
-#
-#      if hide
-#        $target.css("display", "block").slideUp(200)
-#      else
-#        $target.slideDown(200)
-#      $toggle.toggleClass("expand")
-#
-#      if not $toggle.parents(".property-first-panel").length then return
-#
-#      @__optionStates = @__optionStates || {}
-#
-#      # added by song ######################################
-#      # record head state
-#      comp = PropertyBaseModule.activeModule().uid || "Stack"
-#      status = _.map @$el.find('.property-first-panel').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
-#      @__optionStates[ comp ] = status
-#
-#      comp = @workspace.design.component( comp )
-#      if comp then @__optionStates[ comp.type ] = status
-#      # added by song ######################################
-#
-#      return false
 
+    updateRightPanelOption : ( event ) ->
+      $toggle = $(event.currentTarget)
+
+      if $toggle.is("button") or $toggle.is("a") then return
+
+      hide    = $toggle.hasClass("expand")
+      $target = $toggle.next()
+
+      if hide
+        $target.css("display", "block").slideUp(200)
+      else
+        $target.slideDown(200)
+      $toggle.toggleClass("expand")
+
+      if not $toggle.parents(".panel-body").length then return
+
+      @__optionStates = @__optionStates || {}
+
+      # added by song ######################################
+      # record head state
+      comp = @uid || "Stack"
+      status = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+      @__optionStates[ comp ] = status
+
+      comp = Design.instance().component( comp )
+      console.log comp
+      if comp then @__optionStates[ comp.type ] = status
+      # added by song ######################################
+
+      return false
+
+    restoreAccordion : ( type, uid )->
+      console.log type, uid
+      if not @__optionStates then return
+      states = @__optionStates[ uid ]
+      if not states then states = @__optionStates[ type ]
+      if states
+        for el, idx in @$el.find('.property-first-panel').find('.option-group-head')
+          $(el).toggleClass("expand", states[idx])
+
+        for uid, states of @__optionStates
+          if not uid or Design.instance().component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
+            continue
+          delete @__optionStates[ uid ]
+      return
 
     bindSelection: ($valueDom, selectTpl) ->
 

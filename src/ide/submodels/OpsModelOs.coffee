@@ -52,6 +52,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           uid  : "server0001"
           resource :
             name   : "Server01"
+            image  : "59f7d81c-73fc-4a1e-9f4d-4a9149c99c83"
             NICS : [{"port-id" : "@{port0001.resource.id}"}, {"port-id" : "@{port0002.resource.id}"}]
         "port0001" :
           type : "OS::Neutron::Port"

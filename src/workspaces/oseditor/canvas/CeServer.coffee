@@ -4,7 +4,8 @@ define [
   "constant"
   "CanvasManager"
   "i18n!/nls/lang.js"
-], ( CanvasElement, constant, CanvasManager, lang )->
+  "CloudResources"
+], ( CanvasElement, constant, CanvasManager, lang, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -19,6 +20,24 @@ define [
       "pool"   : [ 5, 30, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "server" : [ 82, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,30 ]
     }
+
+    iconUrl : ()->
+      image = @model.getImage() || @model.get("cachedAmi")
+
+      if not image
+        m = @model
+        server = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        if server
+          server = server.attributes
+          if server.platform and server.platform is "windows"
+            url = "ide/ami/openstack/windows.#{server.architecture}.png"
+          else
+            url = "ide/ami/openstack/linux-other.#{server.architecture}.png"
+        else
+          url = "ide/ami/openstack/image-not-available.png"
+      else
+        url = "ide/ami/openstack/#{image.os_distro}.#{image.architecture}.png"
+      url
 
     # Creates a svg element
     create : ()->
@@ -37,6 +56,8 @@ define [
         label   : true
         labelBg : true
       }).add([
+        # Image Icon
+        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'

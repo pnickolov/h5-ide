@@ -1,5 +1,5 @@
 
-define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
+define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexResModel, constant, Design, CloudResources )->
 
   Model = ComplexResModel.extend {
 
@@ -39,9 +39,32 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       blockDeviceMapping: []
       flavor_id: "10"
       availabilityZone: ""
-      image: "59f7d81c-73fc-4a1e-9f4d-4a9149c99c83"
+      image: ""
+
+    initialize : ( attr, option )->
+      option = option || {}
+      console.assert( attr.imageId, "Invalid attributes when creating OsModelServer", attr )
+      @setImage( attr.imageId )
+      null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]
+
+    setImage : ( imageId )->
+      @set "image", imageId
+      # Update cached image
+      image    = @getImage()
+      cached = @get("cachedAmi")
+      if image and cached
+        cached.os_distro      = image.os_distro
+        cached.architecture   = image.architecture
+      null
+
+    getImage : ()->
+      image = CloudResources( constant.RESTYPE.OSIMAGE, @design().region() ).get( @get("image") )
+      if image
+        image.toJSON()
+      else
+        null
 
     serialize : ()->
       component =
@@ -71,6 +94,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
+        imageId : data.resource.image
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

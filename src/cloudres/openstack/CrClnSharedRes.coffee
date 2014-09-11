@@ -5,7 +5,8 @@ define [
   "ApiRequestOs"
   "constant"
   "./CrModelKeypair"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair )->
+  "./CrModelSnapshot"
+], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair, CrModelSnapshot )->
 
 
   ### Keypair ###
@@ -28,6 +29,21 @@ define [
           rlt.push i
         null
       rlt
+
+  }
+ 
+  ### Snapshot ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsSnapshotCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSSNAP
+    model : CrModelSnapshot
+
+    doFetch : ()-> ApiRequest("os_snapshot_List", {region : @region()})
+    parseFetchData : (res)->
+      res?.snapshots || []
 
   }
  

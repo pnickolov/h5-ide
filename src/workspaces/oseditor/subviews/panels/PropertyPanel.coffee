@@ -176,4 +176,12 @@ define [
 
             if $valueDom.hasClass('ipv4')
 
-                $valueDom.ipAddress()
+                $valueDom.ipAddress('ipv4')
+
+            else if $valueDom.hasClass('cidrv4')
+
+                $valueDom.ipAddress('cidrv4')
+
+            else if $valueDom.hasClass('ipcidrv4')
+
+                $valueDom.ipAddress('ipcidrv4')

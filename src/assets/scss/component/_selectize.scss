@@ -536,3 +536,7 @@ input.selection, textarea.selection {
     padding: 10px;
     z-index: 999;
 }
+
+.selection.ipv4, .selection.cidrv4, .selection.ipcidrv4 {
+    letter-spacing: 1px;
+}

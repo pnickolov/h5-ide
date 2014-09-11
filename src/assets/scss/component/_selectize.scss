@@ -322,6 +322,9 @@
     &.mutil .selectize-input {
         // overflow-y: auto;
     }
+    &.bool .selectize-input {
+        padding-left: 65px;
+    }
     .selectize-input {
         color: #fff;
         border: 0;
@@ -351,6 +354,15 @@
         border: 0;
         [data-selectable], .optgroup-header {
             padding: 10px;
+        }
+        &.loading {
+          height: 145px !important;
+          .selectize-dropdown-content {
+            display: none !important;
+          }
+          .selectize-dropdown_button {
+            display: none !important;
+          }
         }
         .selectize-dropdown-content {
 

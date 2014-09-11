@@ -1,3 +1,8 @@
+.selection {
+    width: 100%;
+    background-color: #27272b;
+    border: 0;
+}
 .ip_octet {
     width: 24%;
     border: 0;
@@ -8,11 +13,6 @@
     -moz-box-sizing: border-box;
     display: inline-block;
     text-align: center;
-}
-.selection {
-    width: 100%;
-    background-color: #27272b;
-    border: 0;
 }
 input.selection, textarea.selection {
     color: #fff;
@@ -27,93 +27,6 @@ input.selection, textarea.selection {
     }
     &[disabled] {
         color: #555;
-    }
-}
-.selectize-control {
-    // height: $propertyGroupHeight;
-    height: 100%;
-    &.mutil .selectize-input {
-        // overflow-y: auto;
-    }
-    &.bool .selectize-input {
-        padding-left: 65px;
-    }
-    .selectize-input {
-        color: #fff;
-        border: 0;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        // height: $propertyGroupHeight;
-        height: 100%;
-        &.focus {
-            background-color: #424242;
-        }
-        &.disabled {
-            color: #555;
-            background-color: #27272b;
-        }
-        input {
-            color: #fff;
-            padding: 2px;
-            font: inherit;
-        }
-        div {
-            padding: 2px;
-        }
-    }
-    .selectize-dropdown {
-        background-color: #373737;
-        color: #9d9d97;
-        border: 0;
-        [data-selectable], .optgroup-header {
-            padding: 10px;
-        }
-        &.loading {
-          height: 145px !important;
-          .selectize-dropdown-content {
-            display: none !important;
-          }
-          .selectize-dropdown_button {
-            display: none !important;
-          }
-        }
-        .selectize-dropdown-content {
-
-            &::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            &::-webkit-scrollbar-track {
-                background: none;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: #000;
-                border: 1px solid #444;
-                border-radius: 8px;
-            }
-
-            .selected {
-                color: #fff;
-            }
-            .active {
-                background-color: #363644;
-                color: #fff;
-            }
-        }
-    }
-}
-.selectize-control.multi .selectize-input > div {
-    height: 100%;
-    background-color: #000;
-    border: 1px #444 solid;
-    border-radius: 3px;
-    color: #fff;
-    padding: 1px 5px;
-    &.active {
-        background-color: #2a608d;
-        border: 1px #444 solid;
-        color: #fff;
     }
 }
 

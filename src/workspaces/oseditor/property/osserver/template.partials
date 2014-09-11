@@ -9,9 +9,9 @@
     </section>
     <section class="group required">
         <div class="name">Server Image</div>
-        <select class="selection option" value="{{image}}" data-target="image" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
+        <select class="selection option" value="{{imageId}}" data-target="imageId" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
             {{#each imageList}}
-                <option value='{{id}}' {{#ifCond id ../image}}selected='selected'{{/ifCond}}>{{name}}</option>
+                <option value='{{id}}' {{#ifCond id ../imageId}}selected='selected'{{/ifCond}}>{{name}}</option>
             {{/each}}
         </select>
     </section>

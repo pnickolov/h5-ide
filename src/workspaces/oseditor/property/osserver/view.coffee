@@ -54,7 +54,7 @@ define [
     bindSelectizeEvent: ()->
       that = @
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
-        that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('image'))
+        that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('imageId'))
 
     onChangeCredential: (event)->
       result = $(event.currentTarget)
@@ -70,7 +70,7 @@ define [
       console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
-      if attr is 'image'
+      if attr is 'imageId'
         @model.setImage target.val()
       if attr is 'name'
         @setTitle target.val()

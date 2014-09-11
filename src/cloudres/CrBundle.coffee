@@ -8,6 +8,7 @@ define [
   "./aws/CrClnRds"
   "./aws/CrClnRdsParam"
 
+  "./openstack/CrClnSharedRes"
   "./openstack/CrClnImage"
   "./openstack/CrClnExtNetwork"
 ], ( CloudResources )->

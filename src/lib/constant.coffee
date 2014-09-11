@@ -99,6 +99,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSEXTNET   : "OS::ExternalNetwork"
         OSIMAGE    : "OS::Image"
         OSFLAVOR   : "OS::Flavor"
+        OSKP       : "OS::Keypair"
 
 
     RESNAME =

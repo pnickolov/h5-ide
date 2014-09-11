@@ -100,6 +100,7 @@ define [
       CanvasManager.setLabel @, @$el.children(".node-label")
       # Update FIP
       CanvasManager.updateFip @$el.children(".fip-status"), m
+      CloudResources( constant.RESTYPE.OSKP, m.design().region() ).fetchForce()
       null
   }
 

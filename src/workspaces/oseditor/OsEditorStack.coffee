@@ -25,6 +25,7 @@ define [
 
       CloudResources( constant.RESTYPE.OSFLAVOR, region ).isReady() &&
       CloudResources( constant.RESTYPE.OSIMAGE,  region ).isReady() &&
+      CloudResources( constant.RESTYPE.OSKP,     region ).isReady() &&
       CloudResources( constant.RESTYPE.OSEXTNET, region ).isReady() &&
       !!App.model.getStateModule( stateModule.repo, stateModule.tag )
 
@@ -36,6 +37,7 @@ define [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
         CloudResources( constant.RESTYPE.OSFLAVOR, region ).fetch()
         CloudResources( constant.RESTYPE.OSIMAGE,  region ).fetch()
+        CloudResources( constant.RESTYPE.OSKP,     region ).fetch()
         CloudResources( constant.RESTYPE.OSEXTNET, region ).fetch()
       ]
 

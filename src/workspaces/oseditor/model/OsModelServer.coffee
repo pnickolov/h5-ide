@@ -75,6 +75,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         null
 
     serialize : ()->
+      console.log @embedPort(), "\n========"
       component =
         name : @get("name")
         type : @type

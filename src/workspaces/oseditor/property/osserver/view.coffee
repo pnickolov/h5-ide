@@ -70,6 +70,8 @@ define [
       console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
+      if attr is 'image'
+        @model.setImage target.val()
       if attr is 'name'
         @setTitle target.val()
       if attr is 'CPU'

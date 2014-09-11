@@ -57,7 +57,19 @@
         <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string">{{userData}}</textarea>
     </section>
 </div>
-
+<div class="option-group-head expand">
+    Port Details
+</div>
+<div class="option-group">
+    <section class="group required">
+        <div class="name">Fixed IP</div>
+        <input class="selection ipv4" data-target="fixedIp" name="form[ip]" value="192.168.1.1"/>
+    </section>
+    <section class="group required">
+        <div class="name tooltip" data-target="associateFip">Associate Floating IP</div>
+        <select class="selection bool" value="true"></select>
+    </section>
+</div>
 
 
 <!--{{imageListKey}}-->

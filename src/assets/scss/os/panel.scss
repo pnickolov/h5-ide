@@ -87,6 +87,10 @@
       border-top: 1px solid #000000;
       height: 40px;
       line-height: 40px;
+      margin-top: -2px;
+    }
+    .expand + .option-group{
+      border-bottom: 0;
     }
 }
 

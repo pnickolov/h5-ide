@@ -77,6 +77,8 @@
     border-top: 1px solid #000000;
     height: 40px;
     line-height: 40px; }
+  .openstack .OEPanelRight .expand + .option-group {
+    border-bottom: 0; }
 
 .OEPanelRight.resource nav {
   padding: 14px 20px; }

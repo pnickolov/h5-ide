@@ -7075,8 +7075,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9156,6 +9155,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     border-top: 1px solid #000000;
     height: 40px;
     line-height: 40px; }
+  .openstack .OEPanelRight .expand + .option-group {
+    border-bottom: 0; }
 
 .OEPanelRight.resource nav {
   padding: 14px 20px; }

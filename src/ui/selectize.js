@@ -3722,12 +3722,13 @@ $(function() {
                     var domStr = self.settings.render.button.apply(self);
                     if (domStr) {
                         var $dropdown_button = $(domStr).addClass('selectize-dropdown_button');
-                        self.$dropdown_content.nextAll('.selectize-dropdown_button').remove()
-                        self.$dropdown.append($dropdown_button);
-                        $dropdown_button.on('click', function(event) {
-                            self.close();
-                            self.$input.trigger('select_dropdown_button_click');
-                        });
+                        if (!self.$dropdown_content.nextAll('.selectize-dropdown_button').length) {
+                            self.$dropdown.append($dropdown_button);
+                            $dropdown_button.on('click', function(event) {
+                                self.close();
+                                self.$input.trigger('select_dropdown_button_click');
+                            });
+                        }
                     }
                 }
                 if (self.$input.hasClass('bool')) {

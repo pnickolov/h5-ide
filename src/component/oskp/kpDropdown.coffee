@@ -1,8 +1,10 @@
-define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant'], (Design, CloudResources, Backbone, _, $, constant)->
+define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/kp/kpDialogTpl', 'kp_upload'],
+( Design, CloudResources, Backbone, _, $, constant, toolbar_modal, modalplus, template, upload )->
   Backbone.View.extend {
-    initialize: (resModel, template)->
-      @template = template
+    initialize: (resModel, selectTemplate)->
+      @template = selectTemplate
       @resModel = resModel
+      @
     render: ->
       console.log "Initializing...."
       dropdown = $("<div/>")
@@ -14,6 +16,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
           {text: e.name, value: e.name}
         optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
         @selectize = dropdownSelect[0].selectize
+        @selectize.clearOptions()
         @selectize.addOption optionList
         @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
       @$input = dropdownSelect
@@ -34,6 +37,9 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
         console.error "Not Rendered Yet...."
         return false
       @selectize.getValue()
+
+    manage: ()->
+
 
   }
 

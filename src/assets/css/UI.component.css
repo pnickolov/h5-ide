@@ -1020,11 +1020,11 @@ pre {
 
 .selectize-control.single .selectize-input:after {
   content: ' ';
-  display: none;
   position: absolute;
+  opacity: 0.6;
   top: 50%;
-  right: 15px;
-  margin-top: 0px;
+  right: 10px;
+  margin-top: -2px;
   width: 0;
   height: 0;
   border-style: solid;
@@ -1032,7 +1032,7 @@ pre {
   border-color: #808080 transparent transparent transparent; }
 
 .selectize-control.single .selectize-input.dropdown-active:after {
-  margin-top: -4px;
+  margin-top: -2px;
   border-width: 0 5px 5px 5px;
   border-color: transparent transparent #808080 transparent; }
 

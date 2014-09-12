@@ -179,14 +179,19 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
       {
         start : {
-          x     : port_from.pos[0]
-          y     : port_from.pos[1]
-          angle : port_from.pos[2]
-          type  : connection.port1Comp().type
-          name  : port_from.name
-          itemCX : pos_from.x + size_from.width  / 2 * 10
-          itemCY : pos_from.y + size_from.height / 2 * 10
-          item   : item_from
+          x        : port_from.pos[0]
+          y        : port_from.pos[1]
+          angle    : port_from.pos[2]
+          type     : connection.port1Comp().type
+          name     : port_from.name
+          itemCX   : pos_from.x + size_from.width  / 2 * 10
+          itemCY   : pos_from.y + size_from.height / 2 * 10
+          item     : item_from
+          itemRect :
+            x1 : pos_from.x
+            x2 : pos_from.x + size_from.width * 10
+            y1 : pos_from.y
+            y2 : pos_from.y + size_from.height * 10
         }
         end : {
           x     : port_to.pos[0]
@@ -197,6 +202,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           itemCX : pos_to.x + size_to.width  / 2 * 10
           itemCY : pos_to.y + size_to.height / 2 * 10
           item   : item_to
+          itemRect :
+            x1 : pos_to.x
+            x2 : pos_to.x + size_to.width * 10
+            y1 : pos_to.y
+            y2 : pos_to.y + size_to.height * 10
         }
       }
 
@@ -755,12 +765,32 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
             bound.preferY = sticky.y + (if sticky.angle is CanvasElement.constant.PORT_UP_ANGLE then -10 else 10)
           else
             bound.preferY = Math.round( (start0.y + end0.y) / 20 ) * 10
+            if start.itemRect.y1 < bound.preferY < start.itemRect.y2 or end.itemRect.y1 < bound.preferY < end.itemRect.y2
+              y1 = Math.min( start.itemRect.y1, end.itemRect.y1 )
+              y2 = Math.max( start.itemRect.y2, end.itemRect.y2 )
+              if Math.abs( y1-start0.y ) + Math.abs( y1-end0.y ) < Math.abs( y2-start0.y ) + Math.abs( y2-end0.y )
+                bound.preferY = y1 - 5
+              else
+                bound.preferY = y2 + 5
+
+              start0.angle = if start0.y <= bound.preferY then CanvasElement.constant.PORT_DOWN_ANGLE else CanvasElement.constant.PORT_UP_ANGLE
+              end0.angle   = if end0.y   <= bound.preferY then CanvasElement.constant.PORT_DOWN_ANGLE else CanvasElement.constant.PORT_UP_ANGLE
+
         else
           bound.preferY = end0.y
           if sticky
             bound.preferX = sticky.x + (if sticky.angle is CanvasElement.constant.PORT_LEFT_ANGLE then -10 else 10)
           else
             bound.preferX = Math.round( (start0.x + end0.x) / 20 ) * 10
+            if start.itemRect.x1 < bound.preferX < start.itemRect.x2 or end.itemRect.x1 < bound.preferX < end.itemRect.x2
+              x1 = Math.min( start.itemRect.x1, end.itemRect.x1 )
+              x2 = Math.max( start.itemRect.x2, end.itemRect.x2 )
+              if Math.abs( x1-start0.x ) + Math.abs( x1-end0.x ) < Math.abs( x2-start0.x ) + Math.abs( x2-end0.x )
+                bound.preferX = x1 - 5
+              else
+                bound.preferX = x2 + 5
+              start0.angle = if start0.x <= bound.preferX then CanvasElement.constant.PORT_RIGHT_ANGLE else CanvasElement.constant.PORT_LEFT_ANGLE
+              end0.angle   = if end0.x   <= bound.preferX then CanvasElement.constant.PORT_RIGHT_ANGLE else CanvasElement.constant.PORT_LEFT_ANGLE
       else
         if start0.angle is CanvasElement.constant.PORT_UP_ANGLE or start0.angle is CanvasElement.constant.PORT_DOWN_ANGLE
           bound.preferX = start0.x

@@ -42,6 +42,10 @@ define [
         url = "ide/ami/openstack/#{image.os_type}.#{image.architecture}.png"
       url
 
+    listenModelEvents : ()->
+      @listenTo @model, "change:imageId", @render
+      return
+
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
 
@@ -97,7 +101,11 @@ define [
 
     render : ()->
       m = @model
+      CloudResources(constant.RESTYPE.OSSNAP, m.design().region()).fetchForce()
+      # Update Label
       CanvasManager.setLabel @, @$el.children(".node-label")
+      # Update Image
+      CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
       # Update FIP
       CanvasManager.updateFip @$el.children(".fip-status"), m
       null

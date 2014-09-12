@@ -9,6 +9,71 @@
 /* Orange */
 /* Yellow */
 /* Red */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/Lato-light.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 100;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -5423,6 +5488,71 @@ button#property-app-keypair {
 /* Orange */
 /* Yellow */
 /* Red */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/Lato-light.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 100;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
   height: 100%;
@@ -9042,6 +9172,71 @@ g.shadow {
 /* Orange */
 /* Yellow */
 /* Red */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/Lato-light.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 100;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
   position: relative;
@@ -9087,6 +9282,71 @@ g.shadow {
 /* Orange */
 /* Yellow */
 /* Red */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/Lato-light.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 100;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
 .openstack .OEPanelRight {
   width: 320px; }
   .openstack .OEPanelRight.resource .resource {
@@ -9208,9 +9468,76 @@ g.shadow {
 /* Orange */
 /* Yellow */
 /* Red */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/Lato-light.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-weight: 100;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
   /* property component style */ }
+  #OpsEditor .OEPanelRight.property .panel-body {
+    font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
   #OpsEditor .OEPanelRight.property h1 {
     font-size: 20px;
     padding: 5px;
@@ -9224,9 +9551,10 @@ g.shadow {
     vertical-align: baseline; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text {
     display: inline-block;
-    font-size: 14px;
     color: #DEDEDE;
-    margin: -5px 0; }
+    margin: -5px 0;
+    max-width: 245px;
+    white-space: nowrap; }
     #OpsEditor .OEPanelRight.property p.property-os-image-text span {
       display: block;
       font-size: 12px;
@@ -9277,14 +9605,7 @@ g.shadow {
     padding: 8px 10px;
     display: table-cell;
     vertical-align: middle;
+    color: #777;
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
-    #OpsEditor .OEPanelRight.property .name.tooltip:after {
-      content: " ";
-      width: 103px;
-      height: 8px;
-      position: absolute;
-      left: 12px;
-      margin-top: 8px;
-      border-bottom: 1px #555 dashed; }

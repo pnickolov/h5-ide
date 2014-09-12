@@ -8,9 +8,15 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     server : ()-> @connectionTargets("OsPortUsage")[0]
 
-    isEmbedded : ()-> @server().embedPort() is @
+    isEmbedded : ()-> @server() and @server().embedPort() is @
     isVisual   : ()-> !@isEmbedded()
 
+    initialize: ()->
+      console.log ("Initializing....")
+
+    removeReference: ->
+      console.log "Removing......."
+      #@server().removePort()
 
     serialize : ()->
       component =
@@ -28,6 +34,19 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           network_id      : ""
 
       { component : component }
+
+
+
+    updateFip: (ip)->
+      #todo: Update Floating Ips
+     # if not @isEmbedded() then return false
+      server = @server()
+      subnet = server.getSubnetRef()
+      console.log( server, subnet )
+      @set("fixed_ips", [{
+        subnet_id: ""
+        ip_address: ip
+      }])
 
   }, {
 

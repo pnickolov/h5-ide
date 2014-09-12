@@ -97,8 +97,10 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSHM       : "OS::Neutron::HealthMonitor"
         OSVOL      : "OS::Cinder::Volume"
         OSEXTNET   : "OS::ExternalNetwork"
+        OSFLAVOR   : "OS::Nova::Flavor"
+        OSKP       : "OS::Nova::KeyPair"
         OSIMAGE    : "OS::Image"
-        OSFLAVOR   : "OS::Flavor"
+        OSSNAP     : "OS::Snapshot"
 
 
     RESNAME =

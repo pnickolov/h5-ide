@@ -36,7 +36,7 @@ define [
         @$el.append propertyView.render().el
 
         @restoreAccordion(@model?.type, @uid)
-        @$el.find('select.selection,input.ipv4').each ->
+        @$el.find('.selection').each ->
             that.bindSelection($(@), propertyView.selectTpl)
 
         @
@@ -176,4 +176,12 @@ define [
 
             if $valueDom.hasClass('ipv4')
 
-                $valueDom.ipAddress()
+                $valueDom.ipAddress('ipv4')
+
+            if $valueDom.hasClass('cidrv4')
+
+                $valueDom.ipAddress('cidrv4')
+
+            if $valueDom.hasClass('ipcidrv4')
+
+                $valueDom.ipAddress('ipcidrv4')

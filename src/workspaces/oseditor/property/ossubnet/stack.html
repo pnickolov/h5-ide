@@ -1,18 +1,30 @@
 <section class="group required">
-    <div class="name tooltip" data-tooltip="REQUIRED">PROPERTY NAME</div>
+    <div class="name">Subnet Name</div>
+    <input class="selection string" value="{{name}}" data-target="name" />
+</section>
+<section class="group required">
+    <div class="name">Cidr</div>
+    <input class="selection ipv4" name="form[ip]" value="{{cidr}}" data-target="cidr"/>
+</section>
+<section class="group required">
+    <div class="name">PROPERTY NAME</div>
     <select class="selection bool" value="true"></select>
 </section>
 <section class="group required">
     <div class="name">PROPERTY NAME</div>
-    <input class="selection string" value="host-1"></input>
+    <input class="selection string" value="host-1" data-tip="blablablabla..." />
 </section>
 <section class="group required">
     <div class="name">PROPERTY NAME</div>
-    <input class="selection ipv4" name="form[ip]" value="192.168.1.1"></input>
+    <input class="selection ipv4" value="192.168.1.1" />
 </section>
 <section class="group required">
     <div class="name">PROPERTY NAME</div>
-    <textarea class="selection string" value="text..."></textarea>
+    <input class="selection cidrv4" value="192.168.1.1/28" />
+</section>
+<section class="group required">
+    <div class="name">PROPERTY NAME</div>
+    <textarea class="selection string">text...</textarea>
 </section>
 <section class="group">
     <div class="name">PROPERTY NAME</div>

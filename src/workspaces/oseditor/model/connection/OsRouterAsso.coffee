@@ -15,6 +15,26 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
           type : constant.RESTYPE.OSSUBNET
       }
     ]
+
+    initialize : ()->
+      rt = @getTarget( constant.RESTYPE.OSRT )
+      @listenTo rt, "change:public", @onRtPublicityChanged
+
+      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", rt.get("public")
+      return
+
+    remove : ()->
+      subnet = @getTarget( constant.RESTYPE.OSSUBNET )
+
+      res = ConnectionModel.prototype.remove.apply this, arguments
+
+      subnet.set "public", false
+      return res
+
+    onRtPublicityChanged : ()->
+      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", @getTarget(constant.RESTYPE.OSRT).get("public")
+      return
+
   }
 
 

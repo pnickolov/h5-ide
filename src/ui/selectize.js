@@ -1,3 +1,22 @@
+// for data-tip
+$(function() {
+    $(document.body).on('focus blur', 'input.selection[data-tip]', function(event) {
+        var $target = $(event.target);
+        var tip = $target.data('tip');
+        if (event.type === 'focusin' && tip) {
+            if (!$('#selection-tip').length) {
+                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i>' + tip + '</div>');
+            }
+            var width = $target.outerWidth() + 'px';
+            var posX = $target.offset().left + 'px';
+            var posY = $target.outerHeight() + $target.offset().top + 'px';
+            $('#selection-tip').css({width: width, left: posX, top: posY}).show();
+        } else {
+            $('#selection-tip').hide();
+        }
+    });
+});
+
 // for ip address
 (function($){
   $.fn.caret = function(s, e) {
@@ -46,127 +65,45 @@
 })(jQuery);
 
 (function($){
-  $.fn.ipAddress = function() {
-    return $(this).each(function(){
-      var $this = $(this);
+    $.fn.ipAddress = function(type) {
 
-      if (!$this.hasClass('ip-enabled')) {
-        $this.hide();
-
-        var ip_value = (this.value) ? this.value.split('.') : ['','','',''];
-
-        var octets = [];
-        var id_prefix = $this.attr('name').replace(/\[/g, '_').replace(/\]/g, '');
-        for (var i = 0; i <=3; i++) {
-          octets.push('<input type="text" class="ip_octet" id="' + id_prefix + '_octet_' + (i+1) + '" maxlength="3" value="' + ip_value[i] + '" />');
+        $(this).attr('data-ignore', 'true');
+        $(this).attr('data-required', 'true');
+        if (type === 'cidrv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9./]*$');
+        } else if (type === 'ipcidrv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9./]*$');
+        } else if (type === 'ipv4') {
+            $(this).attr('data-ignore-regexp', '^[0-9.]*$');
         }
-        var octet_html = octets.join('.');
-        $this.after($('<div class="ip_container" style="display: inline-block;"/>').html(octet_html));
-        $this.addClass('ip-enabled');
-      }
+        $(this).parent().attr('data-bind', 'true');
 
-      var isNumeric = function(e){
-        if (e.shiftKey) return false;
-        return (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105);
-      };
+        $(this).on('focus', function() {
+            $(this).data('origin-value', $(this).val());
+        }).on('blur', function() {
 
-      var isValidKey = function(e){
-        var valid = [
-          8,        // backspace
-          9,        // tab
-          13,       // enter
-          27,       // escape
-          35,       // end
-          36,       // home
-          37,       // left arrow
-          39,       // right arrow
-          46,       // delete
-          48, 96,   // 0
-          49, 97,   // 1
-          50, 98,   // 2
-          51, 99,   // 3
-          52, 100,  // 4
-          53, 101,  // 5
-          54, 102,  // 6
-          55, 103,  // 7
-          56, 104,  // 8
-          57, 105,  // 9
-          110, 190  // period
-        ];
+            var val = $(this).val();
+            var originVal = $(this).data('origin-value');
 
-        // only allow shift key with tab
-        if (e.shiftKey && e.keyCode != 9) return false;
+            ipcidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))?$/;
+            ipRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+            cidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
 
-        for (var i = 0, c; c = valid[i]; i++) {
-          if (e.keyCode == c) return true;
-        }
-
-        return false;
-      };
-
-      $this.nextAll().find('input.ip_octet').on('keydown', function(e){
-        if (!isValidKey(e)) return false;
-
-        var next_octet = $(this).next('input.ip_octet');
-        var prev_octet = $(this).prev('input.ip_octet');
-
-        // jump to next octet on period if this octet has a value
-        if (e.keyCode == 110 || e.keyCode == 190) {
-          if ($(this).val().length) {
-            if (next_octet.length) {
-              next_octet.focus();
-              next_octet.select();
+            if (type === 'ipv4' && !ipRegx.test(val)) {
+                $(this).val(originVal);
             }
-          }
-          return false;
-        }
 
-        if (($(this).caret()[1] - $(this).caret()[0]) && isNumeric(e)) {
-          return true;
-        }
+            if (type === 'ipcidrv4' && !ipcidrRegx.test(val)) {
+                $(this).val(originVal);
+            }
 
-        // jump to next octet if maxlength is reached and number key or right arrow is pressed
-        if ((this.value.length == this.getAttribute('maxlength') && $(this).caret()[0] == this.getAttribute('maxlength') && (isNumeric(e) || e.keyCode == 39)) || (e.keyCode == 39 && $(this).caret()[0] == this.value.length)) {
-          if (next_octet.length) {
-            $(this).trigger('blur');
-            next_octet.focus().caret(0);
-            return true;
-          }
-        }
+            if (type === 'cidrv4' && !cidrRegx.test(val)) {
+                $(this).val(originVal);
+            }
 
-        // jump to previous octet if left arrow is pressed and caret is at the 0 position
-        if (e.keyCode == 37 && $(this).caret()[0] == 0) {
-          if (prev_octet.length) {
-            $(this).trigger('blur');
-            prev_octet.caret(prev_octet.val().length);
-            return false;
-          }
-        }
+        });
 
-        // jump to previous octet on backspace
-        if (e.keyCode == 8 && $(this).caret()[0] == 0 && $(this).caret()[0] == $(this).caret()[1]) {
-          if (prev_octet.length) {
-            $(this).trigger('blur');
-            prev_octet.focus().caret(prev_octet.val().length);
-            return false;
-          }
-        }
-    }).on('keyup', function(e){
-        // save value to original input if all octets have been entered
-        if ($('input.ip_octet', $(this).parent()).filter(function(){ return this.value.length; }).length == 4) {
-          var ip_value = [];
-          $('input.ip_octet', $(this).parent()).each(function(){
-            ip_value.push(this.value);
-          });
-          $this.val(ip_value.join('.'));
-        }
-      }).on('blur', function(){
-        if (this.value > 255) this.value = 255;
-      });
-
-    });
-
-  };
+    };
 })(jQuery);
 
 /**
@@ -900,6 +837,7 @@
      * @returns {string|null}
      */
     var hash_key = function(value) {
+        if (typeof value === 'object') return value;
         if (typeof value === 'undefined' || value === null) return null;
         if (typeof value === 'boolean') return value ? 'true' : 'false';
         return value + '';

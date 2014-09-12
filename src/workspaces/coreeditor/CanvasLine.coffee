@@ -387,6 +387,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       lineData.target  = {}
       lineData.test    = 0
 
+      lineData.addResult = ( x, y, area )->
+        @result.push {
+          x : x
+          y : y
+          area : area
+        }
+
       # 3. Search best points for each area
       @getNextElbowTarget( lineData )
       while not lineData.done
@@ -552,7 +559,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           minCross = dis
 
       if not theCross
-        lineData.result.push target
+        lineData.addResult( target.x, target.y, area )
         lineData.current.x = target.x
         lineData.current.y = target.y
         return
@@ -566,7 +573,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           theCrossY   = theCross.y1
           theCrossEnd = theCross.y2
 
-        lineData.result.push { x : lineData.current.x, y : theCrossY }
+        lineData.addResult( lineData.current.x, theCrossY, area )
 
         # Choose left or right
         if theCross.x2 < lineData.end.x
@@ -578,12 +585,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         else
           theCrossX = theCross.x1
 
-        lineData.result.push { x : theCrossX, y : theCrossY }
+        lineData.addResult( theCrossX, theCrossY, area )
 
         if Math.abs(theCrossEnd - theCrossY) > Math.abs(lineData.preferY - theCrossY)
-          lineData.result.push { x : theCrossX, y : lineData.preferY }
+          lineData.addResult( theCrossX, lineData.preferY, area )
         else
-          lineData.result.push { x : theCrossX, y : theCrossEnd }
+          lineData.addResult( theCrossX, theCrossEnd, area )
 
       else
         if currentAngle is CanvasElement.constant.PORT_LEFT_ANGLE
@@ -593,7 +600,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           theCrossX   = theCross.x1
           theCrossEnd = theCross.x2
 
-        lineData.result.push { x : theCrossX, y : lineData.current.y }
+        lineData.addResult( theCrossX, lineData.current.y, area )
 
         # Choose top or bottom
         if theCross.y2 < lineData.end.y
@@ -605,13 +612,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         else
           theCrossY = theCross.y1
 
-        lineData.result.push { x : theCrossX, y : theCrossY }
+        lineData.addResult( theCrossX, theCrossY, area )
 
         if Math.abs(theCrossEnd - theCrossX) > Math.abs(lineData.preferX - theCrossX)
-          lineData.result.push { y : theCrossY, x : lineData.preferX }
+          lineData.addResult( lineData.preferX, theCrossY, area )
         else
-          lineData.result.push { y : theCrossY, x : theCrossEnd }
-
+          lineData.addResult( theCrossEnd, theCrossY, area )
 
       lineData.current = $.extend {}, lineData.result[ lineData.result.length - 1 ]
       return
@@ -638,13 +644,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
             nextX = lastArea.x1
           else
             nextX = lastArea.x2
-          lineData.result.push { x : nextX, y : current.y }
-          lineData.result.push { x : nextX, y : toY }
-        else
-          lineData.result.push { x : current.x, y : toY }
 
-        lineData.result.push { x : toX, y : toY }
-        lineData.result.push { x : lineData.end.x, y : toY }
+          lineData.addResult( nextX, current.y, lastArea )
+          lineData.addResult( nextX, toY, lastArea )
+        else
+          lineData.addResult( current.x, toY, lastArea )
+
+        lineData.addResult( toX, toY, lastArea )
+        lineData.addResult( lineData.end.x, toY, lastArea )
       else
         if Math.abs( target.x - lastArea.x1 ) < Math.abs( target.x - lastArea.x2 )
           toX = lastArea.x1
@@ -658,13 +665,15 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
             nextY = lastArea.y1
           else
             nextY = lastArea.y2
-          lineData.result.push { x : current.x, y : nextY }
-          lineData.result.push { x : toX, y : nextY }
+          lineData.addResult( current.x, nextY, lastArea )
+          lineData.addResult( toX, nextY, lastArea )
         else
-          lineData.result.push { x : toX, y : current.y }
+          lineData.addResult( toX, current.y, lastArea )
 
-        lineData.result.push { x : toX, y : toY }
-        lineData.result.push { x : toX, y : lineData.end.y }
+        lineData.addResult( toX, toY, lastArea )
+        lineData.addResult( toX, lineData.end.y, lastArea )
+
+      return
 
 
     optimizeElbowPoints : ( lineData )->

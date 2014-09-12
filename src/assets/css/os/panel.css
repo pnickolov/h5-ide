@@ -107,6 +107,8 @@ pre {
     bottom: 0;
     height: auto;
     width: 100%; }
+  .openstack .OEPanelRight .panel-body section.system-image .selectbox {
+    width: 108px; }
   .openstack .OEPanelRight .panel-body section header {
     background: #2c2f4d;
     color: white;
@@ -126,9 +128,13 @@ pre {
         border: none;
         border-left: 1px solid #1d1e29;
         border-radius: 0;
-        box-shadow: none; }
+        box-shadow: none;
+        box-sizing: border-box; }
         .openstack .OEPanelRight .panel-body section header aside .selection::after {
           border-top-color: white; }
+      .openstack .OEPanelRight .panel-body section header aside .dropdown {
+        right: 0;
+        min-width: 0; }
   .openstack .OEPanelRight .panel-body section article {
     padding: 10px; }
     .openstack .OEPanelRight .panel-body section article .resource-item {

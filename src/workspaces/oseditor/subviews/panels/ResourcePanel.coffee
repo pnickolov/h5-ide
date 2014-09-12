@@ -21,19 +21,26 @@ define [
 
         MC.template.bubbleOsSnapshotInfo( snapshot?.toJSON() or {} )
 
+    amiType = 'public' # public | private
 
     Backbone.View.extend
 
         events:
-            'mousedown .resource-item'   : 'startDrag'
+            'mousedown .resource-item'      : 'startDrag'
+            'OPTION_CHANGE .ami-type-select'  : 'changeAmiType'
 
         initialize: ( options ) ->
             _.extend @, options
             region = @workspace.opsModel.get("region")
             window.snapshot = CloudResources( constant.RESTYPE.OSSNAP, region )
+            window.ami = CloudResources( constant.RESTYPE.OSIMAGE, region )
 
             @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), 'update', @renderSnapshot
             @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
+
+        changeAmiType: ( event, type ) ->
+            amiType = type
+            @renderAmi()
 
         render: () ->
             @$el.html ResourcePanelTpl.frame {}
@@ -56,7 +63,9 @@ define [
             region = @workspace.opsModel.get("region")
 
             amis = CloudResources( constant.RESTYPE.OSIMAGE,  region ).toJSON()
-            data = _.map amis, ( ami ) -> _.extend { region: region }, ami
+            currentTypeAmis = _.filter amis, ( ami ) -> ami.visibility is amiType
+
+            data = _.map currentTypeAmis, ( ami ) -> _.extend { region: region }, ami
 
             @$( '.resource-list-ami' ).html ResourcePanelTpl.ami data
             @

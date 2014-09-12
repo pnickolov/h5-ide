@@ -13,12 +13,11 @@
 <section class="system-image">
     <header>
         Server
-        <aside class="selectbox">
-            <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
+        <aside class="selectbox ami-type-select">
+            <div class="selection">System Image</div>
             <ul class="dropdown">
-                <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
-                <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
-                <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+                <li class="item selected" data-id="public">System Image</li>
+                <li class="item" data-id="private">Image Snapshot</li>
             </ul>
         </aside>
     </header>

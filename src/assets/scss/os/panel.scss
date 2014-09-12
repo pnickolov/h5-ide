@@ -39,6 +39,10 @@
         width: 100%;
     }
     .panel-body section {
+        &.system-image .selectbox {
+            width: 108px;
+        }
+
         header {
             background: $dark-p-1;
             color: white;
@@ -59,11 +63,13 @@
                     border-left: 1px solid $dark-p-2;
                     border-radius: 0;
                     box-shadow: none;
+                    box-sizing: border-box;
 
                     &::after {
                         border-top-color: white;
                     }
                 }
+                .dropdown { right: 0; min-width: 0; }
             }
 
         }

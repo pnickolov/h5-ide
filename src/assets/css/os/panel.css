@@ -336,3 +336,19 @@ pre {
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
+  #OpsEditor .OEPanelRight.property .ipgroup {
+    display: inline-block; }
+    #OpsEditor .OEPanelRight.property .ipgroup select.selection {
+      float: left;
+      width: 72px;
+      display: inline-block; }
+    #OpsEditor .OEPanelRight.property .ipgroup .selectize-control {
+      float: left;
+      width: 72px;
+      display: inline-block;
+      text-align: center; }
+    #OpsEditor .OEPanelRight.property .ipgroup span {
+      width: 10px;
+      text-align: center;
+      padding-top: 20px;
+      float: left; }

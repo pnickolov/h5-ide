@@ -3683,7 +3683,19 @@ $(function() {
             return function(newValue) {
                 if (newValue !== self.oldValue && self.isValueInOptions(newValue)) {
                     self.oldValue = newValue;
-                    return original.apply(this, arguments);
+                    var result = original.apply(this, arguments);
+                    if (self.$input.hasClass('bool')) {
+                        var $switcher = self.$input.prevAll('.switcher');
+                        if ($switcher.length) {
+                            var value = self.getValue();
+                            if (value === 'true') {
+                                $switcher.addClass('on');
+                            } else {
+                                $switcher.removeClass('on');
+                            }
+                        }
+                    }
+                    return result;
                 }
                 return;
             };
@@ -3717,13 +3729,30 @@ $(function() {
                     }
                 }
                 if (self.$input.hasClass('bool')) {
-                    self.$input.prevAll('.switcher').remove();
-                    self.$input.before(
-                        '<label class="switcher on">' +
-                            '<span class="switch-label" data-on="" data-off=""></span>' +
-                            '<span class="switch-handle"></span>' +
-                        '</label>'
-                    );
+                    var $switcher = self.$input.prevAll('.switcher');
+                    if (!$switcher.length) {
+                        var value = self.getValue();
+                        var status = '';
+                        if (value === 'true') {
+                            status = 'on';
+                        }
+                        self.$input.before(
+                            '<label class="switcher ' + status + '">' +
+                                '<span class="switch-label" data-on="" data-off=""></span>' +
+                                '<span class="switch-handle"></span>' +
+                            '</label>'
+                        );
+                        var $switcher = self.$input.prevAll('.switcher');
+                        $switcher.on('click', function() {
+                            if ($(this).hasClass('on')) {
+                                $(this).removeClass('on');
+                                self.setValue(false);
+                            } else {
+                                $(this).addClass('on');
+                                self.setValue(true);
+                            }
+                        });
+                    }
                 }
                 return result;
             };

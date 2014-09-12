@@ -113,5 +113,25 @@
         //     border-bottom: 1px #555 dashed;
         // }
     }
+    .ipgroup {
+        display: inline-block;
+        select.selection {
+            float: left;
+            width: 72px;
+            display: inline-block;
+        }
+        .selectize-control {
+            float: left;
+            width: 72px;
+            display: inline-block;
+            text-align: center;
+        }
+        span {
+            width: 10px;
+            text-align: center;
+            padding-top: 20px;
+            float: left;
+        }
+    }
 
 }

@@ -58,7 +58,7 @@
 <div class="option-group">
     <section class="group required">
         <label class="name">Fixed IP</label>
-        <input class="selection ipv4" id="property-os-server-fip" data-target="fixedIp" name="form[ip]" value="192.168.1.1"/>
+        <input class="selection ipv4" id="property-os-server-fip" data-target="fixedIp" value="192.168.1.1"/>
     </section>
     <section class="group required">
         <label class="name tooltip" data-target="associateFip">Associate Floating IP</label>

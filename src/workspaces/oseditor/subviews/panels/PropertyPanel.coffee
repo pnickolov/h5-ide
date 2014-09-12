@@ -173,6 +173,10 @@ define [
                             else
                                 return null
                     }
+                    createFilter: (a, b) ->
+
+                        a
+                        b
                 })
 
             if $valueDom.hasClass('ipv4')

@@ -14,6 +14,7 @@ define [
         render: ->
 
             @$el.html stackTpl({})
+            @
 
         updateServerAttr: (event)->
 

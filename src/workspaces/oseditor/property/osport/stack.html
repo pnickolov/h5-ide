@@ -1,12 +1,17 @@
-<section class="group required">
-    <label class="name">Name</label>
-    <input data-target="name" class="selection string" value="{{name}}"/>
-</section>
-<section class="group required">
-    <label class="name">Fixed IP</label>
-    <input data-target="fixed_ip" class="selection string" value="{{name}}"/>
-</section>
-<section class="group required">
-    <label class="name">Associate Floating IP</label>
-    <input data-target="float_ip" class="selection bool" value="{{name}}"/>
-</section>
+<div class="option-group-head expand">
+    Port Details
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Fixed IP</label>
+        <input data-target="fixed_ip" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Associate Floating IP</label>
+        <select class="selection bool" value="true"></select>
+    </section>
+</div>

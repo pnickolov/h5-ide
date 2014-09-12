@@ -216,12 +216,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       if start.x is end.x or start.y is end.y
         return "M#{start.x} #{start.y} L#{end.x} #{end.y}"
 
-      try
-        return @generateElbowPath( start, end )
-      catch e
-        console.log e
-        @__lastDir = if start.y >= end.y then 1 else -1
-        return MC.canvas._round_corner( MC.canvas.route2(start, end, @lineStyle()) )
+      return @generateElbowPath( start, end )
 
     lineStyle : ()-> 4
 

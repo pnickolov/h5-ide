@@ -1,15 +1,15 @@
 <section class="group required">
-    <div class="name">Name</div>
+    <label class="name">Name</label>
     <input data-id="listener-name" data-target="name" class="selection string" value="{{name}}"/>
 </section>
 
 <section class="group required">
-    <div class="name">Connection Limit</div>
+    <label class="name">Connection Limit</label>
     <input data-id="listener-limit" data-target="limit" class="selection string" value="{{limit}}"/>
 </section>
 
 <section class="group required">
-    <div class="name">Protocol</div>
+    <label class="name">Protocol</label>
     <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="listener-protocol">
         <option value='HTTP' {{#ifCond 'HTTP' protocol}}selected='selected'{{/ifCond}}>HTTP</option>
         <option value='HTTPS' {{#ifCond 'HTTPS' protocol}}selected='selected'{{/ifCond}}>HTTPS</option>
@@ -18,6 +18,6 @@
 </section>
 
 <section class="group required">
-    <div class="name">Protocol Port</div>
+    <label class="name">Protocol Port</label>
     <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"/>
 </section>

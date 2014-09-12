@@ -4,11 +4,11 @@
 </div>
 <div class="option-group">
     <section class="group required">
-        <div class="name">Server Name</div>
+        <label class="name">Server Name</label>
         <input id="property-os-server-name" data-target="name" class="selection string" value="{{name}}"/>
     </section>
     <section class="group required">
-        <div class="name">Server Image</div>
+        <label class="name">Server Image</label>
         <select class="selection option" value="{{imageId}}" data-target="imageId" id="property-os-server-image" data-select-tpl="imageItems" data-item-tpl="imageValue">
             {{#each imageList}}
                 <option value='{{id}}' {{#ifCond id ../imageId}}selected='selected'{{/ifCond}}>{{name}}</option>
@@ -16,7 +16,7 @@
         </select>
     </section>
     <section class="group required">
-        <div class="name">CPU</div>
+        <label class="name">CPU</label>
         <select class="selection option"  data-target="CPU" id="property-os-server-CPU">
             {{#each flavorGroup}}
                 <option value='{{@key}}' {{#ifCond @key ../vcpus}}selected="selected"{{/ifCond}}>{{@key}} Core</option>
@@ -24,7 +24,7 @@
         </select>
     </section>
     <section class="group required">
-        <div class="name">RAM</div>
+        <label class="name">RAM</label>
         <select class="selection option" data-target="RAM" id="property-os-server-RAM">
             {{#each avaliableRams}}
                 <option value='{{value}}' {{#ifCond value ../ram}}selected="selected"{{/ifCond}}>{{text}} G</option>
@@ -32,23 +32,23 @@
         </select>
     </section>
     <section class="group">
-        <div class="name">Credential</div>
+        <label class="name">Credential</label>
         <select id="property-os-server-credential" data-target="credential" class="selection option">
             <option value="keypair" {{#ifCond credential 'keypair'}}selected="selected"{{/ifCond}}>KeyPair</option>
             <option value="adminPass" {{#ifCond credential 'keypair'}}{{else}}selected="selected"{{/ifCond}}>Password</option>
         </select>
     </section>
     <section class="group required"  {{#ifCond credential "keypair"}}style="display: none"{{/ifCond}}>
-        <div class="name">Admin Password</div>
+        <label class="name">Admin Password</label>
         <input id="property-os-server-adminPass" data-target="adminPass" type="password" class="selection string" value="{{adminPass}}" placeholder="Password of the Image"/>
     </section>
     <section class="group required" {{#ifCond credential "keypair"}}{{else}}style="display: none"{{/ifCond}}>
-        <div class="name">Key Pair</div>
+        <label class="name">Key Pair</label>
         <div id="property-os-server-keypair">
         </div>
     </section>
     <section class="group">
-        <div class="name">User Data</div>
+        <label class="name">User Data</label>
         <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string">{{userData}}</textarea>
     </section>
 </div>
@@ -57,11 +57,11 @@
 </div>
 <div class="option-group">
     <section class="group required">
-        <div class="name">Fixed IP</div>
+        <label class="name">Fixed IP</label>
         <input class="selection ipv4" id="property-os-server-fip" data-target="fixedIp" name="form[ip]" value="192.168.1.1"/>
     </section>
     <section class="group required">
-        <div class="name tooltip" data-target="associateFip">Associate Floating IP</div>
+        <label class="name tooltip" data-target="associateFip">Associate Floating IP</label>
         <select class="selection bool" id="property-os-server-aip" value="false"></select>
     </section>
 </div>

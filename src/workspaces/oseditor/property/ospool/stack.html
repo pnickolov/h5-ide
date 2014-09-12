@@ -3,12 +3,12 @@
 </div>
 <div class="option-group">
     <section class="group required">
-        <div class="name">Pool</div>
+        <label class="name">Pool</label>
         <input data-id="pool-name" data-target="name" class="selection string" value="{{name}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">Protocol</div>
+        <label class="name">Protocol</label>
         <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="pool-protocol">
             <option value='HTTP' {{#ifCond 'HTTP' protocol}}selected='selected'{{/ifCond}}>HTTP</option>
             <option value='HTTPS' {{#ifCond 'HTTPS' protocol}}selected='selected'{{/ifCond}}>HTTPS</option>
@@ -17,7 +17,7 @@
     </section>
 
     <section class="group required">
-        <div class="name">Load Balancing Method</div>
+        <label class="name">Load Balancing Method</label>
         <select class="selection option" value="{{method}}" data-target="method" data-id="listener-method">
             <option value='Round_Robin' {{#ifCond 'Round_Robin' method}}selected='selected'{{/ifCond}}>Round Robin</option>
             <option value='Least_Connections' {{#ifCond 'Least_Connections' method}}selected='selected'{{/ifCond}}>Least Connections</option>
@@ -31,7 +31,7 @@
 </div>
 <div class="option-group" data-model="hm">
     <section class="group required">
-        <div class="name">Type</div>
+        <label class="name">Type</label>
         <select class="selection option" value="{{hm.type}}" data-target="type" data-id="hm-method">
             <option value='PING' {{#ifCond 'PING' type}}selected='selected'{{/ifCond}}>PING</option>
             <option value='HTTP' {{#ifCond 'HTTP' type}}selected='selected'{{/ifCond}}>HTTP</option>
@@ -41,27 +41,27 @@
     </section>
 
     <section class="group required">
-        <div class="name">Delay</div>
+        <label class="name">Delay</label>
         <input data-id="hm-delay" data-target="delay" class="selection string" value="{{hm.delay}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">Timeout</div>
+        <label class="name">Timeout</label>
         <input data-id="hm-timeout" data-target="delay" class="selection string" value="{{hm.timeout}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">Max Retries</div>
+        <label class="name">Max Retries</label>
         <input data-id="hm-maxretries" data-target="maxRetries" class="selection string" value="{{hm.maxRetries}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">URL Path</div>
+        <label class="name">URL Path</label>
         <input data-id="hm-urlpath" data-target="urlPath" class="selection string" value="{{hm.urlPath}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">Expected Codes</div>
+        <label class="name">Expected Codes</label>
         <input data-id="hm-expectedcodes" data-target="expectedCodes" class="selection string" value="{{hm.expectedCodes}}"/>
     </section>
 </div>
@@ -73,12 +73,12 @@
     {{#each mems}}
     <header>{{osport.name}}</header>
     <section class="group required">
-        <div class="name">Weight</div>
+        <label class="name">Weight</label>
         <input data-id="mem-weight" data-index="{{@index}}" data-target="weight" class="selection string" value="{{weight}}"/>
     </section>
 
     <section class="group required">
-        <div class="name">Protocol Port</div>
+        <label class="name">Protocol Port</label>
         <input data-id="mem-port" data-target="port" data-index="{{@index}}" class="selection string" value="{{port}}"/>
     </section>
     {{/each}}

@@ -366,21 +366,6 @@
           }
         }
         .selectize-dropdown-content {
-
-            &::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            &::-webkit-scrollbar-track {
-                background: none;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: #000;
-                border: 1px solid #444;
-                border-radius: 8px;
-            }
-
             .selected {
                 color: #fff;
             }
@@ -402,6 +387,19 @@
         background-color: #2a608d;
         border: 1px #444 solid;
         color: #fff;
+    }
+}
+.selectize-dropdown-content, textarea {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: none;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #000;
+        border: 1px solid #444;
+        border-radius: 8px;
     }
 }
 

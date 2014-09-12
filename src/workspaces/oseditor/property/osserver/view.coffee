@@ -30,6 +30,8 @@ define [
       "change #property-os-server-keypair": "updateServerAttr"
       "change #property-os-server-adminPass": "updateServerAttr"
       "change #property-os-server-userdata": "updateServerAttr"
+      'change #property-os-server-fip': "updateServerAttr"
+      'change #property-os-server-aip': "updateServerAttr"
 
 
     render: ->

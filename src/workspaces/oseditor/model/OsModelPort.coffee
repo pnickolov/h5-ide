@@ -11,6 +11,16 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     isEmbedded : ()-> @server() and @server().embedPort() is @
     isVisual   : ()-> !@isEmbedded()
 
+    initialize: ()->
+      console.log ("Initializing....")
+      @bindEvent()
+
+    bindEvent: ()->
+      console.log "Destroying"
+      @on 'destroy', @removeReference()
+
+    removeReference: ->
+      @server().removePort()
 
     serialize : ()->
       component =
@@ -32,7 +42,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
 
     updateFip: (ip)->
+      console.log "Updating Fixed Ip"
       #todo: Update Floating Ips
+     # if not @isEmbedded() then return false
+      server = @server()
+      subnet = server.getSubnetRef()
+      console.log( server, subnet )
       @set("fixed_ips", [{
         subnet_id: ""
         ip_address: ip

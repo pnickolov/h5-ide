@@ -51,7 +51,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       if not NICS.length
         # create Server default port
         Port = Design.modelClassForType( constant.RESTYPE.OSPORT )
-        newPort = new Port()
+        newPort = new Port({name: @.get('name')+"-port"})
         PortUsage = Design.modelClassForType( "OsPortUsage" )
         newPortUsage = new PortUsage(@, newPort)
         console.log newPort, newPortUsage, "\n====-=-=-=-=-=-=-="

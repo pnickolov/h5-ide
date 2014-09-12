@@ -359,8 +359,21 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       c1y = dis * Math.sin( rad )
       [{x:c1x,y:-c1y},{x:end.x,y:end.y/2}]
 
-
     generateElbowPath : ( start, end )->
+      s1 = @getElbowPoints( start, end )
+      s2 = @getElbowPoints( end, start )
+
+      # Generate Path
+      if s2.failure
+        s = s1
+      else if s1.failure
+        s = s2
+      else
+        s = if s1.length < s2.length then s1 else s2
+
+      @getElbowPathFromPoints( s.result )
+
+    getElbowPoints : ( start, end )->
       # 1. Find out the area we want our line to fit in.
       lineData = @getElbowBounds( start, end )
 
@@ -387,6 +400,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         ++lineData.test
         if lineData.test >= 50
           lineData.failure = true
+          console.info "Failed to search elbow path", @type, start, end
           break
 
       # 3.1 If it fails, fallback to old strategy to generate the line
@@ -401,8 +415,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       # 4. Optimize points
       @optimizeElbowPoints( lineData )
 
-      # 5. Generate Path
-      @getElbowPathFromPoints( lineData.result )
+      lineData
 
     getElbowFallback : ( lineData )->
       start = lineData.start

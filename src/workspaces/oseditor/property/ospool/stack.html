@@ -10,18 +10,18 @@
     <section class="group required">
         <label class="name">Protocol</label>
         <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="pool-protocol">
-            <option value='HTTP' {{#ifCond 'HTTP' protocol}}selected='selected'{{/ifCond}}>abc</option>
-            <option value='HTTPS' {{#ifCond 'HTTPS' protocol}}selected='selected'{{/ifCond}}>def</option>
-            <option value='TCP' {{#ifCond 'TCP' protocol}}selected='selected'{{/ifCond}}>uij</option>
+            <option value='HTTP'>HTTP</option>
+            <option value='HTTPS'>HTTPS</option>
+            <option value='TCP'>TCP</option>
         </select>
     </section>
 
     <section class="group required">
         <label class="name">Load Balancing Method</label>
         <select class="selection option" value="{{method}}" data-target="method" data-id="listener-method">
-            <option value='Round_Robin' {{#ifCond 'Round_Robin' method}}selected='selected'{{/ifCond}}>Round Robin</option>
-            <option value='Least_Connections' {{#ifCond 'Least_Connections' method}}selected='selected'{{/ifCond}}>Least Connections</option>
-            <option value='Source_IP' {{#ifCond 'Source_IP' method}}selected='selected'{{/ifCond}}>Source IP</option>
+            <option value='Round_Robin'>Round Robin</option>
+            <option value='Least_Connections'>Least Connections</option>
+            <option value='Source_IP'>Source IP</option>
         </select>
     </section>
 </div>
@@ -33,10 +33,10 @@
     <section class="group required">
         <label class="name">Type</label>
         <select class="selection option" value="{{hm.type}}" data-target="type" data-id="hm-method">
-            <option value='PING' {{#ifCond 'PING' type}}selected='selected'{{/ifCond}}>PING</option>
-            <option value='HTTP' {{#ifCond 'HTTP' type}}selected='selected'{{/ifCond}}>HTTP</option>
-            <option value='HTTPS' {{#ifCond 'HTTPS' type}}selected='selected'{{/ifCond}}>HTTPS</option>
-            <option value='TCP' {{#ifCond 'TCP' type}}selected='selected'{{/ifCond}}>TCP</option>
+            <option value='PING'>PING</option>
+            <option value='HTTP'>HTTP</option>
+            <option value='HTTPS'>HTTPS</option>
+            <option value='TCP'>TCP</option>
         </select>
     </section>
 

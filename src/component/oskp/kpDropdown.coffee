@@ -31,7 +31,7 @@ define ['Design', "CloudResources", "backbone", "component/oskp/template", 'unde
       @setElement(dropdown)
       @$el.find('.dropdown-list-btn').click =>
         @.trigger 'manage'
-      @.$input = selectize.$input
+      @.$input = @selectize.$input
       @
 
     setValue: (value)->
@@ -45,7 +45,6 @@ define ['Design', "CloudResources", "backbone", "component/oskp/template", 'unde
         console.error "Not Rendered Yet...."
         return false
       @selectize.getValue()
-
 
   }
 

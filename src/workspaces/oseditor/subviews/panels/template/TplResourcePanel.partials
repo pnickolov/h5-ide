@@ -30,9 +30,7 @@
 <section class="block-storage">
     <header>Block Storage</header>
     <article>
-        <ul class="resource-list-volume clearfix">
-            <li class="tooltip resource-item osvol" data-tooltip='{{i18n "DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME"}}' data-type="OSVOL">{{i18n "LBL_OSVOL"}}</li>
-        </ul>
+        <ul class="resource-list-volume clearfix"></ul>
     </article>
 </section>
 
@@ -60,4 +58,14 @@
     {{name}}
 </li>
 {{/each}}
+
+<!-- {{snapshot}} -->
+<li class="tooltip resource-item osvol" data-tooltip='{{i18n "DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME"}}' data-type="OSVOL">{{i18n "LBL_OSVOL"}}</li>
+{{#each this}}
+<li class="resource-item bubble snapshot" data-date="{{created_at}}" data-storge="{{size}}" data-bubble-template="resPanelOsSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{region}}"}' data-type="OSSNAP" data-option='{"size":{{size}}, "id": "{{id}}"'>
+  <div class="ebs-size">{{size}} GB</div>{{name}}
+</li>
+{{/each}}
+
+
 

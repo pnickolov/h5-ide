@@ -9456,6 +9456,8 @@ pre {
   background-image: url("/assets/images/ide/icon/res-subnet.png"); }
 .OEPanelRight.resource .resource-item.osvol {
   background-image: url("/assets/images/ide/icon/res-vol.png"); }
+.OEPanelRight.resource .ebs-size {
+  margin-top: -1.8em; }
 
 /* Light Purple */
 /* Base Purple */

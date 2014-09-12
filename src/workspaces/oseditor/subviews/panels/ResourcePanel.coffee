@@ -14,6 +14,13 @@ define [
 
         MC.template.bubbleOsAmiInfo( ami?.toJSON() or {} )
 
+    MC.template.resPanelOsSnapshot = ( data ) ->
+        if not data.region or not data.id then return
+
+        snapshot = CloudResources( constant.RESTYPE.OSSNAP, data.region ).get( data.id )
+
+        MC.template.bubbleOsSnapshotInfo( snapshot?.toJSON() or {} )
+
 
     Backbone.View.extend
 
@@ -23,12 +30,26 @@ define [
         initialize: ( options ) ->
             _.extend @, options
             region = @workspace.opsModel.get("region")
+            window.snapshot = CloudResources( constant.RESTYPE.OSSNAP, region )
 
-            @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), "update", @renderAmi
+            @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), 'update', @renderSnapshot
+            @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
 
         render: () ->
             @$el.html ResourcePanelTpl.frame {}
+
             @renderAmi()
+            @renderSnapshot()
+
+            @
+
+        renderSnapshot: ->
+            region = @workspace.opsModel.get("region")
+
+            snapshots = CloudResources( constant.RESTYPE.OSSNAP, region ).toJSON()
+            data = _.map snapshots, ( ss ) -> _.extend { region: region }, ss
+
+            @$( '.resource-list-volume' ).html ResourcePanelTpl.snapshot data
             @
 
         renderAmi: ->

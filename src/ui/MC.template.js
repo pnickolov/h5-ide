@@ -469,6 +469,30 @@ TEMPLATE.bubbleOsAmiInfo=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"bubble-head\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>Status</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>UUID</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Parent Volume</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.volume_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Volume Size</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "GB</dd>\n        <dt>Created</dt><dd>"
+    + escapeExpression(helpers.timeStr.call(depth0, (depth0 && depth0.created_at), {hash:{},data:data}))
+    + "</dd>\n    </dl>\n</div>";
+  return buffer;
+  };
+TEMPLATE.bubbleOsSnapshotInfo=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 

@@ -20,7 +20,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       @on 'destroy', @removeReference()
 
     removeReference: ->
-      @server().removePort()
+      #@server().removePort()
 
     serialize : ()->
       component =

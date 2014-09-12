@@ -562,7 +562,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
         lineData.result.push { x : theCrossX, y : theCrossY }
 
-        if Math.abs(theCrossEnd - lineData.current.y) > Math.abs(lineData.preferY - lineData.current.y)
+        if Math.abs(theCrossEnd - theCrossY) > Math.abs(lineData.preferY - theCrossY)
           lineData.result.push { x : theCrossX, y : lineData.preferY }
         else
           lineData.result.push { x : theCrossX, y : theCrossEnd }
@@ -589,7 +589,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
         lineData.result.push { x : theCrossX, y : theCrossY }
 
-        if Math.abs(theCrossEnd - lineData.current.x) > Math.abs(lineData.preferX - lineData.current.x)
+        if Math.abs(theCrossEnd - theCrossX) > Math.abs(lineData.preferX - theCrossX)
           lineData.result.push { y : theCrossY, x : lineData.preferX }
         else
           lineData.result.push { y : theCrossY, x : theCrossEnd }

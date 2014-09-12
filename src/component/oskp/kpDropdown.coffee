@@ -4,34 +4,15 @@ define ['Design', "CloudResources", "backbone", "component/oskp/template", 'unde
       console.log "Initializing...."
       dropdown = $("<div/>")
       dropdown.append template.selection()
-      dropdownSelect = dropdown.find("select.selection.dropdown")
+      dropdownSelect = dropdown.find("select.selection.option")
+      dropdownSelect.on 'select_initialize', =>
+        @selectize = dropdownSelect[0].selectize
+        @selectize.addOption([{value: "www", text:"xxxxx"}, {value: "eee", text: "rrrrr"}])
 
-      @selectize = dropdownSelect.selectize({
-        multi: false,
-        maxItems: undefined,
-        persist: false,
-        create: false,
-        openOnFocus: false,
-        plugins: ['custom_selection']
-        onInitialize: () ->
-          value = @$input.attr('value')
-          @setValue(value.split(','), true) if value
-        render: {
-          option: (item) ->
-            tplName = @$input.data('select-tpl')
-            if tplName and selectTpl and selectTpl[tplName]
-              return selectTpl[tplName](item)
-            else
-              return '<div>' + item.text + '</div>'
-        }
-      })[0].selectize
-
-      @selectize.addOption([{value: "www", text:"xxxxx"}, {value: "eee", text: "rrrrr"}])
-      dropdown.find(".selectize-dropdown-content").after($(template.manageBtn()))
+      @.$input = dropdownSelect
+      dropdownSelect.on 'select_dropdown_button_click', =>
+        @trigger 'manage'
       @setElement(dropdown)
-      @$el.find('.dropdown-list-btn').click =>
-        @.trigger 'manage'
-      @.$input = @selectize.$input
       @
 
     setValue: (value)->

@@ -128,7 +128,7 @@ define [
 
     selectTpl:
 
-      imageItems: (item) ->
+      imageSelect: (item) ->
         imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
         imageObj = imageList.get(item.value)?.toJSON()
         if not imageObj
@@ -153,6 +153,8 @@ define [
         imageObj.distro = imageObj.os_distro + "." + imageObj.architecture
         template.imageValue(imageObj)
 
+      kpButton: ()->
+        template.kpButton()
   }, {
     handleTypes: [ constant.RESTYPE.OSSERVER ]
     handleModes: [ 'stack', 'appedit' ]

@@ -47,8 +47,6 @@ define [
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
-      console.log json
-
       @$el.html template.stackTemplate json
       @bindSelectizeEvent()
       @
@@ -69,7 +67,6 @@ define [
         @$el.find('#property-os-server-adminPass').parent().show()
 
     updateServerAttr: (event)->
-      console.log event
       target = $(event.currentTarget)
       attr = target.data('target')
 
@@ -143,7 +140,6 @@ define [
         template.imageListKey(imageObj)
 
       imageValue: (item) ->
-        console.log item
         imageList = CloudResources constant.RESTYPE.OSIMAGE, Design.instance().region()
         imageObj = imageList.get(item.value)?.toJSON()
         if not imageObj

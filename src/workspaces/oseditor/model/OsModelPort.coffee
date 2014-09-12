@@ -13,13 +13,9 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     initialize: ()->
       console.log ("Initializing....")
-      @bindEvent()
-
-    bindEvent: ()->
-      console.log "Destroying"
-      @on 'destroy', @removeReference()
 
     removeReference: ->
+      console.log "Removing......."
       #@server().removePort()
 
     serialize : ()->
@@ -42,7 +38,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
 
     updateFip: (ip)->
-      console.log "Updating Fixed Ip"
       #todo: Update Floating Ips
      # if not @isEmbedded() then return false
       server = @server()

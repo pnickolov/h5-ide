@@ -1,11 +1,12 @@
 define ['Design', "CloudResources", "backbone", "component/oskp/template", 'underscore', 'jquery'], (Design, CloudResources, Backbone, template, _, $)->
   Backbone.View.extend {
-    render: ->
+    render: (collection,selectTpl)->
       console.log "Initializing...."
-      dropdown = $(template.selection())
+      dropdown = $("<div/>")
+      dropdown.append template.selection()
       dropdownSelect = dropdown.find("select.selection.dropdown")
-      console.log dropdownSelect
-      selectize=dropdownSelect.selectize({
+
+      @selectize = dropdownSelect.selectize({
         multi: false,
         maxItems: undefined,
         persist: false,
@@ -21,27 +22,31 @@ define ['Design', "CloudResources", "backbone", "component/oskp/template", 'unde
             if tplName and selectTpl and selectTpl[tplName]
               return selectTpl[tplName](item)
             else
-              return '<div>xxx-' + item.text + '</div>'
-
-          item: (item) ->
-            tplName = @$input.data('item-tpl')
-            if tplName and selectTpl and selectTpl[tplName]
-              return selectTpl[tplName](item)
-            else
-              return '<div>xxx-' + item.text + '</div>'
-          button: () ->
-            tplName = @$input.data('button-tpl')
-            if tplName and selectTpl and selectTpl[tplName]
-              return selectTpl[tplName]()
-            else
-              return null
+              return '<div>' + item.text + '</div>'
         }
-      })
-      console.log selectize[0].selectize.$wrapper
-      console.log dropdown
-      dropdown = selectize[0].selectize.$wrapper
+      })[0].selectize
+
+      @selectize.addOption([{value: "www", text:"xxxxx"}, {value: "eee", text: "rrrrr"}])
+      dropdown.find(".selectize-dropdown-content").after($(template.manageBtn()))
       @setElement(dropdown)
+      @$el.find('.dropdown-list-btn').click =>
+        @.trigger 'manage'
+      @.$input = selectize.$input
       @
+
+    setValue: (value)->
+      if not @selectize
+        console.error "Not Rendered Yet...."
+        return false
+      @selectize.setValue(value)
+
+    getValue: ()->
+      if not @selectize
+        console.error "Not Rendered Yet...."
+        return false
+      @selectize.getValue()
+
+
   }
 
 

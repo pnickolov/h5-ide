@@ -26,8 +26,9 @@ define [
     Backbone.View.extend
 
         events:
-            'mousedown .resource-item'      : 'startDrag'
-            'OPTION_CHANGE .ami-type-select'  : 'changeAmiType'
+            'mousedown .resource-item'          : 'startDrag'
+            'OPTION_CHANGE .ami-type-select'    : 'changeAmiType'
+            'click .btn-refresh-panel'          : 'refreshPanelData'
 
         initialize: ( options ) ->
             _.extend @, options
@@ -69,6 +70,21 @@ define [
 
             @$( '.resource-list-ami' ).html ResourcePanelTpl.ami data
             @
+
+        refreshPanelData : ( evt )->
+            $tgt = $( evt.currentTarget )
+            if $tgt.hasClass("reloading") then return
+
+            $tgt.addClass("reloading")
+            region = @workspace.opsModel.get("region")
+
+            jobs = [
+                CloudResources( constant.RESTYPE.OSIMAGE, region ).fetchForce()
+                CloudResources( constant.RESTYPE.OSSNAP,  region ).fetchForce()
+            ]
+
+            Q.all(jobs).done ()-> $tgt.removeClass("reloading")
+            return
 
         startDrag : ( evt )->
             if evt.button isnt 0 then return false

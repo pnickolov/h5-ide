@@ -1,0 +1,48 @@
+<!-- {{BtnZoom}} -->
+<button class="btn-toolbar icon-zoom-in tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_OUT" }}'></button>
+
+<!-- {{BtnRunStack}} -->
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
+
+<!-- {{BtnStackOps}} -->
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
+
+<!-- {{BtnExport}} -->
+<div class="selectbox btn-toolbar seperator">
+  <button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOLBAR.EXPORT" }}'></button>
+  <ul class="dropdown">
+    <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}</li>
+    <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOLBAR.EXPORT_AS_JSON" }}</li>
+  </ul>
+</div>
+
+<!-- {{BtnEditApp}} -->
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
+
+<!-- {{BtnAppOps}} -->
+<button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOLBAR.TIP_START_APP' }}"><span style="display: none">{{i18n "TOOLBAR.START_APP"}}</span></button>
+<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_APP_TO_STACK" }}'></button>
+
+<!-- {{BtnPng}} -->
+<button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
+
+<!-- {{BtnReloadRes}} -->
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
+
+
+<!-- {{BtnSwitchStates}} -->
+<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOLBAR.TIP_CUSTOM_USER_DATA'}}">
+    <span class="switch-label" data-on="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_OFF'}}"></span>
+    <span class="switch-handle"></span>
+</label>
+
+<!-- {{BtnReloadStates}} -->
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>

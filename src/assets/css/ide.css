@@ -126,8 +126,7 @@ select,
 textarea {
   margin: 0;
   font-size: 100%;
-  vertical-align: middle;
-  font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+  vertical-align: middle; }
 
 button,
 input {
@@ -9348,7 +9347,7 @@ pre {
   background: #000; }
 
 .openstack .OEPanelRight {
-  width: 320px; }
+  width: 280px; }
   .openstack .OEPanelRight.resource .resource {
     border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }

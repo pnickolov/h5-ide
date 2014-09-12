@@ -116,7 +116,7 @@ define [
                 $valueDom.selectize({
                     multi: mutil,
                     maxItems: maxItems,
-                    persist: false,
+                    persist: true,
                     valueField: 'value',
                     labelField: 'text',
                     searchField: ['text'],
@@ -144,7 +144,7 @@ define [
                 $valueDom.selectize({
                     multi: mutil,
                     maxItems: maxItems,
-                    persist: false,
+                    persist: true,
                     create: false,
                     openOnFocus: false,
                     plugins: ['custom_selection']

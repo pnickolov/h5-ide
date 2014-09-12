@@ -8,5 +8,6 @@ define [
     './ospool-membership/view'
     './oslistener/view'
     './ospool/view'
+    './osport/view'
 
 ], ->

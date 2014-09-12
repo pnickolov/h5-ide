@@ -117,13 +117,18 @@
         select.selection {
             float: left;
             width: 72px;
+            font-size: 12px;
             display: inline-block;
         }
         .selectize-control {
             float: left;
-            width: 72px;
+            width: 62px;
+            font-size: 12px;
             display: inline-block;
             text-align: center;
+            .selectize-input:after {
+                display: none;
+            }
         }
         span {
             width: 10px;

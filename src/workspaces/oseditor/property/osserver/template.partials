@@ -25,7 +25,7 @@
     </section>
     <section class="group required">
         <label class="name">RAM</label>
-        <select class="selection option" data-target="RAM" id="property-os-server-RAM">
+        <select class="selection option required" data-target="RAM" id="property-os-server-RAM">
             {{#each avaliableRams}}
                 <option value='{{value}}' {{#ifCond value ../ram}}selected="selected"{{/ifCond}}>{{text}} G</option>
             {{/each}}

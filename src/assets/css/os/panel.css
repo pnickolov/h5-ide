@@ -343,12 +343,16 @@ pre {
     #OpsEditor .OEPanelRight.property .ipgroup select.selection {
       float: left;
       width: 72px;
+      font-size: 12px;
       display: inline-block; }
     #OpsEditor .OEPanelRight.property .ipgroup .selectize-control {
       float: left;
-      width: 72px;
+      width: 62px;
+      font-size: 12px;
       display: inline-block;
       text-align: center; }
+      #OpsEditor .OEPanelRight.property .ipgroup .selectize-control .selectize-input:after {
+        display: none; }
     #OpsEditor .OEPanelRight.property .ipgroup span {
       width: 10px;
       text-align: center;

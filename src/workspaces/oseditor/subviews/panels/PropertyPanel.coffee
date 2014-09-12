@@ -89,7 +89,7 @@ define [
       states = @__optionStates[ uid ]
       if not states then states = @__optionStates[ type ]
       if states
-        for el, idx in @$el.find('.property-first-panel').find('.option-group-head')
+        for el, idx in @$el.find('.panel-body').find('.option-group-head')
           $(el).toggleClass("expand", states[idx])
 
         for uid, states of @__optionStates
@@ -106,6 +106,7 @@ define [
 
             mutil = false
             maxItems = undefined
+            if $valueDom.hasClass('dropdown') then return false
             if $valueDom.hasClass('mutil')
                 mutil = true
                 maxItems = null

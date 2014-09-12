@@ -54,7 +54,6 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         newPort = new Port({name: @.get('name')+"-port"})
         PortUsage = Design.modelClassForType( "OsPortUsage" )
         newPortUsage = new PortUsage(@, newPort)
-        console.log newPort, newPortUsage, "\n====-=-=-=-=-=-=-="
         @set("NICS", [{"prot-id": "@{"+newPort.get("id")+".resource.id"}])
       null
 
@@ -84,7 +83,6 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         null
 
     serialize : ()->
-      console.log @embedPort(), "\n========"
       component =
         name : @get("name")
         type : @type
@@ -114,7 +112,6 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     handleTypes  : constant.RESTYPE.OSSERVER
 
     deserialize : ( data, layout_data, resolve )->
-      console.log data, "\n=========="
       server = new Model({
         id    : data.uid
         name  : data.resource.name

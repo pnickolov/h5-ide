@@ -4,7 +4,8 @@ define [
   './template'
   'CloudResources'
   'underscore'
-], ( constant, OsPropertyView, template, CloudResources, _ ) ->
+  'OsKp'
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp ) ->
 
   osDistroArray = [
     'amazon'
@@ -37,17 +38,17 @@ define [
     render: ->
       json = @model.toJSON()
       @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
-      @kpList = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
       window.a = CloudResources( constant.RESTYPE.OSKP, Design.instance().region())
       flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
       currentFlavor = @flavorList.get(@model.get('flavorId')) || _.first @flavorList.models
-      json.kpList = @kpList.toJSON()
       json.flavorGroup = flavorGroup
       json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024, value: e}
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
       @$el.html template.stackTemplate json
+      kpDropdown = new OsKp()
+      @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @bindSelectizeEvent()
       @
 

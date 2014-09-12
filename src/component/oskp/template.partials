@@ -1,0 +1,9 @@
+<!--{{selection}}-->
+<div>
+    <select class="selection dropdown" name="kp" id="kp">
+        <option value="xxx1">xxx1</option>
+        <option value="xxx2">xxx2</option>
+        <option value="xxx3">xxx3</option>
+        <option value="xxx4">xxx4</option>
+    </select>
+</div>

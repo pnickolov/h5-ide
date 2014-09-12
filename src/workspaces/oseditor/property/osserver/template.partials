@@ -44,11 +44,8 @@
     </section>
     <section class="group required" {{#ifCond credential "keypair"}}{{else}}style="display: none"{{/ifCond}}>
         <div class="name">Key Pair</div>
-        <select id="property-os-server-keypair"  data-target="keypair" class="selection option">
-            {{#each kpList}}
-                <option value="{{name}}" {{#ifCond name keypair}}selected="selected"{{/ifCond}}>{{name}}</option>
-            {{/each}}
-        </select>
+        <div id="property-os-server-keypair">
+        </div>
     </section>
     <section class="group">
         <div class="name">User Data</div>

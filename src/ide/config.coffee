@@ -201,6 +201,8 @@ require.config {
     'og_manage_app'    : 'component/optiongroup/ogManageApp'
     'og_dropdown'      : 'component/optiongroup/ogDropDown'
 
+    'OsKp'             : 'component/oskp/kpDropdown'
+
   ### env:dev:end ###
   shim :
     'underscore'   :

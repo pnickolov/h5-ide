@@ -1,10 +1,11 @@
 @charset "utf-8";
+@import "utility";
 @import "component/toolbar-modal";
 @import "component/combo-dropdown";
 @import "component/drop-zone";
 @import "component/modal";
 @import "component/selectize";
-@import "utility";
+
 
 /* Table */
 .table {

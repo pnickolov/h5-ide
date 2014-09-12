@@ -9,17 +9,6 @@
 /* Orange */
 /* Yellow */
 /* Red */
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -5476,82 +5465,6 @@ button#property-app-keypair {
   #property-db-instance-choose .dropdown .scroll-wrap {
     width: 318px; }
 
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 300;
-  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
-body {
-  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 300;
-  color: #acacc6;
-  font-size: 14px; }
-
-a {
-  color: #4a90e2;
-  text-decoration: none; }
-  a:hover {
-    color: #a2d3f0; }
-
-h1 {
-  font-size: 1.6em; }
-
-h2 {
-  font-size: 1.4em; }
-
-h3 {
-  font-size: 1.2em; }
-
-h4 {
-  font-size: 1.1em; }
-
-p {
-  font-size: 1em; }
-
-code {
-  background: #000;
-  color: #059e4f;
-  font-size: 14px;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-
-pre {
-  background: #000; }
-
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
   height: 100%;
@@ -9160,82 +9073,6 @@ g.shadow {
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
 
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 300;
-  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
-body {
-  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 300;
-  color: #acacc6;
-  font-size: 14px; }
-
-a {
-  color: #4a90e2;
-  text-decoration: none; }
-  a:hover {
-    color: #a2d3f0; }
-
-h1 {
-  font-size: 1.6em; }
-
-h2 {
-  font-size: 1.4em; }
-
-h3 {
-  font-size: 1.2em; }
-
-h4 {
-  font-size: 1.1em; }
-
-p {
-  font-size: 1em; }
-
-code {
-  background: #000;
-  color: #059e4f;
-  font-size: 14px;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-
-pre {
-  background: #000; }
-
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
   position: relative;
@@ -9269,82 +9106,6 @@ pre {
   margin: 0 20px; }
   .modal-db-replica-promote-confirm a:hover {
     text-decoration: underline; }
-
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 300;
-  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
-body {
-  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 300;
-  color: #acacc6;
-  font-size: 14px; }
-
-a {
-  color: #4a90e2;
-  text-decoration: none; }
-  a:hover {
-    color: #a2d3f0; }
-
-h1 {
-  font-size: 1.6em; }
-
-h2 {
-  font-size: 1.4em; }
-
-h3 {
-  font-size: 1.2em; }
-
-h4 {
-  font-size: 1.1em; }
-
-p {
-  font-size: 1em; }
-
-code {
-  background: #000;
-  color: #059e4f;
-  font-size: 14px;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-
-pre {
-  background: #000; }
 
 .openstack .OEPanelRight {
   width: 280px; }
@@ -9463,82 +9224,6 @@ pre {
   background-image: url("/assets/images/ide/icon/res-vol.png"); }
 .OEPanelRight.resource .ebs-size {
   margin-top: -1.8em; }
-
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-/* Light Purple */
-/* Base Purple */
-/* Dark Purple */
-/* Background Purple */
-/* Base Blue */
-/* Light Blue: */
-/* Dark Blue: */
-/* Base Green: */
-/* Orange */
-/* Yellow */
-/* Red */
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 300;
-  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
-body {
-  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 300;
-  color: #acacc6;
-  font-size: 14px; }
-
-a {
-  color: #4a90e2;
-  text-decoration: none; }
-  a:hover {
-    color: #a2d3f0; }
-
-h1 {
-  font-size: 1.6em; }
-
-h2 {
-  font-size: 1.4em; }
-
-h3 {
-  font-size: 1.2em; }
-
-h4 {
-  font-size: 1.1em; }
-
-p {
-  font-size: 1em; }
-
-code {
-  background: #000;
-  color: #059e4f;
-  font-size: 14px;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-
-pre {
-  background: #000; }
 
 #OpsEditor .OEPanelRight.property {
   color: #ccc;

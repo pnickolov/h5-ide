@@ -5,7 +5,7 @@
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/Lato-regular.woff') format('woff');
+	src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/LatoRegular.woff') format('woff');
 }
 
 @font-face
@@ -13,15 +13,15 @@
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 700;
-	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
+	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/LatoBold.woff') format('woff');
 }
 
 @font-face
 {
 	font-family: 'Lato';
 	font-style: normal;
-	font-weight: 100;
-	src: local('Lato Light'), local('Lato-Light'), url('../fonts/Lato-light.woff') format('woff');
+	font-weight: 300;
+	src: local('Lato Light'), local('Lato-Light'), url('../fonts/LatoLight.woff') format('woff');
 }
 
 @mixin font-mono {
@@ -30,7 +30,7 @@
 
 body {
 	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;;
-	font-weight : 100;
+	font-weight : 300;
 	color       : desaturate(lighten($light-p, 30%),10%);
 	font-size   : 14px;
 }

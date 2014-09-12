@@ -38,7 +38,6 @@ define [
     render: ->
       json = @model.toJSON()
       @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
-      window.a = CloudResources( constant.RESTYPE.OSKP, Design.instance().region())
       flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
       currentFlavor = @flavorList.get(@model.get('flavorId')) || _.first @flavorList.models
       json.flavorGroup = flavorGroup
@@ -47,7 +46,8 @@ define [
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
       @$el.html template.stackTemplate json
-      kpDropdown = new OsKp()
+      console.log json
+      kpDropdown = new OsKp(@model,template.kpSelection())
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @bindSelectizeEvent()
       @

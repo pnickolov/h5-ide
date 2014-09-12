@@ -75,3 +75,6 @@
 
 <!--{{kpButton}}-->
 <button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>
+
+<!--{{kpSelection}}-->
+<select class="selection option" name="kpDropdown" data-button-tpl="kpButton"></select>

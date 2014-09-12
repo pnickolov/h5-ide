@@ -35,7 +35,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       meta: ""
       NICS: []
       adminPass: "xxxxxx"
-      keypair: "Default-KP"
+      keypair: "$DefaultKeyPair"
       blockDeviceMapping: []
       flavorId: "10"
       availabilityZone: ""

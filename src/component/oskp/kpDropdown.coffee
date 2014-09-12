@@ -1,16 +1,24 @@
-define ['Design', "CloudResources", "backbone", "component/oskp/template", 'underscore', 'jquery'], (Design, CloudResources, Backbone, template, _, $)->
+define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant'], (Design, CloudResources, Backbone, _, $, constant)->
   Backbone.View.extend {
-    render: (collection,selectTpl)->
+    initialize: (resModel, template)->
+      @template = template
+      @resModel = resModel
+    render: ->
       console.log "Initializing...."
       dropdown = $("<div/>")
-      dropdown.append template.selection()
+      dropdown.append @template
       dropdownSelect = dropdown.find("select.selection.option")
       dropdownSelect.on 'select_initialize', =>
+        @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
+        optionList = _.map @collection.toJSON(), (e)->
+          {text: e.name, value: e.name}
+        optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
         @selectize = dropdownSelect[0].selectize
-        @selectize.addOption([{value: "www", text:"xxxxx"}, {value: "eee", text: "rrrrr"}])
-
-      @.$input = dropdownSelect
+        @selectize.addOption optionList
+        @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
+      @$input = dropdownSelect
       dropdownSelect.on 'select_dropdown_button_click', =>
+        console.log 'manage'
         @trigger 'manage'
       @setElement(dropdown)
       @

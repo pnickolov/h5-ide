@@ -1,0 +1,88 @@
+<div class="option-group-head expand">
+    Pool
+</div>
+<div class="option-group">
+    <section class="group required">
+        <div class="name">Pool</div>
+        <input data-id="pool-name" data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">Protocol</div>
+        <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="pool-protocol">
+            <option value='HTTP' {{#ifCond 'HTTP' protocol}}selected='selected'{{/ifCond}}>HTTP</option>
+            <option value='HTTPS' {{#ifCond 'HTTPS' protocol}}selected='selected'{{/ifCond}}>HTTPS</option>
+            <option value='TCP' {{#ifCond 'TCP' protocol}}selected='selected'{{/ifCond}}>TCP</option>
+        </select>
+    </section>
+
+    <section class="group required">
+        <div class="name">Load Balancing Method</div>
+        <select class="selection option" value="{{method}}" data-target="method" data-id="listener-method">
+            <option value='Round_Robin' {{#ifCond 'Round_Robin' method}}selected='selected'{{/ifCond}}>Round Robin</option>
+            <option value='Least_Connections' {{#ifCond 'Least_Connections' method}}selected='selected'{{/ifCond}}>Least Connections</option>
+            <option value='Source_IP' {{#ifCond 'Source_IP' method}}selected='selected'{{/ifCond}}>Source IP</option>
+        </select>
+    </section>
+</div>
+
+<div class="option-group-head expand">
+    Health Montior
+</div>
+<div class="option-group" data-model="hm">
+    <section class="group required">
+        <div class="name">Type</div>
+        <select class="selection option" value="{{hm.type}}" data-target="type" data-id="hm-method">
+            <option value='PING' {{#ifCond 'PING' type}}selected='selected'{{/ifCond}}>PING</option>
+            <option value='HTTP' {{#ifCond 'HTTP' type}}selected='selected'{{/ifCond}}>HTTP</option>
+            <option value='HTTPS' {{#ifCond 'HTTPS' type}}selected='selected'{{/ifCond}}>HTTPS</option>
+            <option value='TCP' {{#ifCond 'TCP' type}}selected='selected'{{/ifCond}}>TCP</option>
+        </select>
+    </section>
+
+    <section class="group required">
+        <div class="name">Delay</div>
+        <input data-id="hm-delay" data-target="delay" class="selection string" value="{{hm.delay}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">Timeout</div>
+        <input data-id="hm-timeout" data-target="delay" class="selection string" value="{{hm.timeout}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">Max Retries</div>
+        <input data-id="hm-maxretries" data-target="maxRetries" class="selection string" value="{{hm.maxRetries}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">URL Path</div>
+        <input data-id="hm-urlpath" data-target="urlPath" class="selection string" value="{{hm.urlPath}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">Expected Codes</div>
+        <input data-id="hm-expectedcodes" data-target="expectedCodes" class="selection string" value="{{hm.expectedCodes}}"/>
+    </section>
+</div>
+
+<div class="option-group-head expand">
+    Member({{mems.length}})
+</div>
+<div class="option-group" data-model="mem">
+    {{#each mems}}
+    <header>{{osport.name}}</header>
+    <section class="group required">
+        <div class="name">Weight</div>
+        <input data-id="mem-weight" data-index="{{@index}}" data-target="weight" class="selection string" value="{{weight}}"/>
+    </section>
+
+    <section class="group required">
+        <div class="name">Protocol Port</div>
+        <input data-id="mem-port" data-target="port" data-index="{{@index}}" class="selection string" value="{{port}}"/>
+    </section>
+    {{/each}}
+</div>
+
+
+

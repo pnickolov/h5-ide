@@ -8,6 +8,12 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
       port    : 80
       weight  : 1
 
+    getPort: ->
+      pool = @getOtherTarget constant.RESTYPE.OSPOOL
+      pool = pool.embedPort() if pool.type is constant.RESTYPE.OSSERVER
+
+      pool
+
     portDefs : [
       {
         port1 :

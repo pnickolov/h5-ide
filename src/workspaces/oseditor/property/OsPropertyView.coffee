@@ -19,9 +19,12 @@ define [
 
             unless attr then return
             value = $target.val()
-            @model.set(attr, value)
+            @getModelForUpdateAttr( e ).set(attr, value)
 
             if attr is 'name' then @setTitle value
+
+        getModelForUpdateAttr: ->
+            @model
 
         setTitle: ( title ) -> @parent.setTitle title
         # Overwrite it in subview

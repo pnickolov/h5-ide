@@ -36,12 +36,30 @@
         }
     }
 
+    .option-group-head {
+        &:first-child { border-top: 1px solid #000000; }
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .option-group {
+        header {
+            padding: 8px 10px;
+            background: $dark-p-2;
+        }
+    }
+
     .group {
         background-color: #27272b;
         font-size: 12px;
         position: relative;
         border-bottom: 1px #000 solid;
         margin-bottom: 1px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
         &.required:after {
             position: absolute;
             z-index: 1;

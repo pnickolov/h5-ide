@@ -7,5 +7,6 @@ define [
     './oslistener-asso/view'
     './ospool-membership/view'
     './oslistener/view'
+    './ospool/view'
 
 ], ->

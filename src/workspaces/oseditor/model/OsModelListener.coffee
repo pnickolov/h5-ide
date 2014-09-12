@@ -7,7 +7,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     newNameTmpl : "Listener-"
 
     defaults:
-      protocol: 'http'
+      protocol: 'HTTP'
       port: 80
       adminStateUp: ''
       limit: 1000

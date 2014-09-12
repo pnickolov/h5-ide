@@ -7,10 +7,7 @@ define [
 
     OsPropertyView.extend {
         events:
-            'change #property-os-listener-name': 'updateAttribute'
-            'change #property-os-listener-limit': 'updateAttribute'
-            'change #property-os-listener-protocol': 'updateAttribute'
-            'change #property-os-listener-port': 'updateAttribute'
+            'change [data-target]': 'updateAttribute'
 
         render: ->
             @$el.html template @model.toJSON()

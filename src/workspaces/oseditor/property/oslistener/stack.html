@@ -1,0 +1,23 @@
+<section class="group required">
+    <div class="name">Name</div>
+    <input data-id="listener-name" data-target="name" class="selection string" value="{{name}}"/>
+</section>
+
+<section class="group required">
+    <div class="name">Connection Limit</div>
+    <input data-id="listener-limit" data-target="limit" class="selection string" value="{{limit}}"/>
+</section>
+
+<section class="group required">
+    <div class="name">Protocol</div>
+    <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="listener-protocol">
+        <option value='HTTP' {{#ifCond 'HTTP' protocol}}selected='selected'{{/ifCond}}>HTTP</option>
+        <option value='HTTPS' {{#ifCond 'HTTPS' protocol}}selected='selected'{{/ifCond}}>HTTPS</option>
+        <option value='TCP' {{#ifCond 'TCP' protocol}}selected='selected'{{/ifCond}}>TCP</option>
+    </select>
+</section>
+
+<section class="group required">
+    <div class="name">Protocol Port</div>
+    <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"/>
+</section>

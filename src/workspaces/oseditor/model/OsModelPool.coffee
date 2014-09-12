@@ -10,6 +10,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       protocol: 'HTTP'
       method: 'ROUND_ROBIN'
 
+    getHm: -> @connectionTargets( 'OsMonitorUsage' )[ 0 ]
+
     ports : ()->
       @connectionTargets("")
 

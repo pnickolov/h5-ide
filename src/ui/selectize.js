@@ -2566,7 +2566,9 @@ $(function() {
                 self.updateOriginalInput();
                 self.positionDropdown();
                 self.trigger('item_remove', value);
-                self.setTextboxValue(value);
+                
+                var obj = self.options[value];
+                if (obj && obj.text) self.setTextboxValue(obj.text);
             }
         },
     

@@ -21,6 +21,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
         @selectize = dropdownSelect[0].selectize
         @updateOption()
       @$input = dropdownSelect
+      @$input.change => @resModel.set('keypair', @$input.val())
       dropdownSelect.on 'select_dropdown_button_click', =>
         console.log 'manage'
         @trigger 'manage'

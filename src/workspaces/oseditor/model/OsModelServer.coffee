@@ -95,15 +95,13 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
           meta      : @get('meta')
           NICS      : @get('NICS')
           userdata  : @get('userData')
-          adminPass : @get('adminPass')
-          key_name  : @get("keypair")
           availabilityZone   : @get('availabilityZone')
           blockDeviceMapping : @get('blockDeviceMapping')
 
       if @get('credential') is "keypair"
-        delete component.resource.adminPass
+        component.resource.key_name = @get("keypair")
       else
-        delete component.resource.key_name
+        component.resource.adminPass = @get("adminPass")
 
       { component : component }
 

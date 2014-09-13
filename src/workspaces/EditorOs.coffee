@@ -5,7 +5,6 @@ define [
   "./oseditor/OsEditorStack"
 
   # Extra Includes
-  "./oseditor/model/OsModelElb"
   "./oseditor/model/OsModelFloatIp"
   "./oseditor/model/OsModelHealthMonitor"
   "./oseditor/model/OsModelListener"

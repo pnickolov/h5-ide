@@ -91,7 +91,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSSG       : "OS::Neutron::SecurityGroup"
         OSRT       : "OS::Neutron::Router"
         OSFIP      : "OS::Neutron::FloatingIP"
-        OSELB      : "OS::Neutron::LoadBalancer"
         OSLISTENER : "OS::Neutron::VIP"
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"

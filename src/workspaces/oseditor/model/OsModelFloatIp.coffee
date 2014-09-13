@@ -10,6 +10,9 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       port = @connectionTargets("OsFloatIpUsage")[0]
       if not port then return
 
+      extNetworkAry = @design().componentsOfType(constant.RESTYPE.OSEXTNET)
+      if extNetworkAry and extNetworkAry.length
+        extNetworkId = extNetworkAry[0].getResourceId()
       {
         component :
           name : @get("name")
@@ -20,7 +23,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             fixed_ip_address    : port.createRef("fixed_ips.0.ip_address")
             floating_ip_address : @get("address")
             port_id             : port.createRef("id")
-            floating_network_id : @design().componentsOfType( constant.RESTYPE.OSEXTNET ).getResourceId()
+            floating_network_id : extNetworkId
       }
 
   }, {

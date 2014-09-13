@@ -106,7 +106,7 @@ define [
 
       if attr is "fixedIp"
         serverPort = @model.embedPort()
-        serverPort.updateFip(target.val())
+        serverPort.setIp(target.val())
         return false
 
       if attr is 'associateFip'

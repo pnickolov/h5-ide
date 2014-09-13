@@ -24,6 +24,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
+      subnet = (server || @).parent()
+
       component =
         name : @get("name")
         type : @type
@@ -34,24 +36,17 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
           admin_state_up  : ""
           mac_address     : ""
-          fixed_ips       : []
+          fixed_ips       : [{
+            subnet_id  : "@{#{subnet.id}.resource.id}"
+            ip_address : @get("ip")
+          }]
           security_groups : []
           network_id      : ""
 
       { component : component }
 
-
-
-    updateFip: (ip)->
-      #todo: Update Floating Ips
-     # if not @isEmbedded() then return false
-      server = @server()
-      subnet = server.getSubnetRef()
-      console.log( server, subnet )
-      @set("fixed_ips", [{
-        subnet_id: ""
-        ip_address: ip
-      }])
+    setIp: (ip)->
+      @set "ip", ip
 
   }, {
 
@@ -64,6 +59,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         appId : data.resource.id
 
         parent : resolve( MC.extractID( data.resource.fixed_ips[0].subnet_id) )
+
+        ip : data.resource.fixed_ips[0].ip_address
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

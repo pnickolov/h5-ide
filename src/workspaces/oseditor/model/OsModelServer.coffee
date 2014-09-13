@@ -126,8 +126,9 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       for port, idx in data.resource.NICS || []
         port = resolve( MC.extractID( port["port-id"] ) )
         if idx is 0
-          # Set server's parent here.
+          # Use server to replace port.
           port.parent().addChild( server )
+          port.parent().removeChild( port )
         new PortUsage( server, port )
 
       return

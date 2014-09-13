@@ -23,13 +23,14 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
             name : @get("name")
 
             cidr        : @get("cidr")
+            enable_dhcp : @get("dhcp")
             network_id  : @parent().createRef("id")
             gateway_ip  : ""
             ip_version  : "4"
-            enable_dhcp : @get("dhcp")
-            allocation_pools :
-              start : "192.168.199.2"
-              end   : "192.168.199.254"
+            allocation_pools : {
+              #start : "192.168.199.2"
+              #end   : "192.168.199.254"
+            }
       }
 
   }, {

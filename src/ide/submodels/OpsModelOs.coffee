@@ -32,24 +32,24 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
         size : [ 240, 240 ]
         "extnetwork001" :
           coordinate : [ 5, 5 ]
-        "router0001" :
+        "router-id" :
           coordinate : [ 20, 5 ]
-        "network0001" :
+        "network-id" :
           coordinate : [ 34, 3 ]
           size       : [ 60, 60 ]
-        "subnet0001" :
+        "subnet-id" :
           coordinate : [ 36, 6 ]
           size       : [ 20, 50 ]
         "subnet0002" :
           coordinate : [ 60, 6 ]
           size       : [ 20, 50 ]
-        "server0001" :
+        "server-id" :
           coordinate : [ 42, 10 ]
         "port0002" :
           coordinate : [ 65, 11 ]
-        "pool0001" :
+        "pool-id" :
           coordinate : [ 65, 40 ]
-        "listener0001" :
+        "listener-id" :
           coordinate : [ 42, 40 ]
 
       json.component =
@@ -59,86 +59,184 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           resource :
             name : "ExternalNetwork"
             id   : ""
-        "server0001" :
-          type : "OS::Nova::Server"
-          uid  : "server0001"
+
+        "server-id":
+          type: "OS::Nova::Server"
+          uid: "server-id"
+          resource:
+            name: "helloworldserver"
+            flavor: "10"
+            image: "03f66db6-a74f-40b5-9933-4a19352083da"
+            meta: ""
+            userdata: ""
+            availabilityZone: ""
+            blockDeviceMapping: []
+            key_name: "testkp"
+            NICS: [
+              {"port-id": "@{port-id.resource.id}"}
+              {"port0002": "@{port0002.resource.id}"}
+            ]
+            adminPass: "12345678"
+            id: ""
+
+        "network-id":
+          type: "OS::Neutron::Network"
+          uid: "network-id"
+          resource:
+            name: "helloworldnetwork"
+            admin_state_up: ""
+            shared: ""
+            id: ""
+
+        "subnet-id":
+          type: "OS::Neutron::Subnet"
+          uid: "subnet-id"
+          resource:
+            name: "helloworldsubnet"
+            network_id: "@{network-id.resource.id}"
+            allocation_pools: [
+              start: "10.0.0.10"
+              end: "10.0.0.30"
+            ]
+            gateway_ip: "10.0.0.1"
+            ip_version: "4"
+            cidr: "10.0.0.0/24"
+            enable_dhcp: true
+            id: ""
+
+        "subnet0002" :
+          type : "OS::Neutron::Subnet"
+          uid  : "subnet0002"
           resource :
-            name   : "Server01"
-            image  : "59f7d81c-73fc-4a1e-9f4d-4a9149c99c83"
-            NICS : [{"port-id" : "@{port0001.resource.id}"}, {"port-id" : "@{port0002.resource.id}"}]
-        "port0001" :
-          type : "OS::Neutron::Port"
-          uid  : "port0001"
-          resource :
-            name : "Port01"
-            fixed_ips: [{
-              "subnet_id"  : "@{subnet0001.resource.id}"
-              "ip_address" : "10.0.0.12"
-            }]
-            security_groups : [ "@{sg0001.resource.id}"]
-            network_id      : "@{network0001.resource.id}"
+            name        : "Subnet02"
+            network_id  : "@{network-id.resource.id}"
+            allocation_pools : [{start:"10.0.0.40", end:"10.0.0.50"}]
+
+        "port-id":
+          type: "OS::Neutron::Port"
+          uid: "port-id"
+          resource:
+            name: "helloworldport"
+            admin_state_up: ""
+            mac_address: ""
+            fixed_ips: [
+              subnet_id: "@{subnet-id.resource.id}"
+              ip_address: "10.0.0.12"
+            ]
+            security_groups: ["@{sg-id.resource.id}"]
+            network_id: "@{network-id.resource.id}"
+            id: ""
+
         "port0002" :
           type : "OS::Neutron::Port"
           uid  : "port0002"
           resource :
             name : "Port02"
             fixed_ips: [{
-              "subnet_id"  : "@{subnet0002.resource.id}"
+              "subnet_id"  : "@{subnet-id.resource.id}"
               "ip_address" : "10.0.0.13"
             }]
-            security_groups : [ "@{sg0001.resource.id}"]
-            network_id      : "@{network0001.resource.id}"
-        "network0001" :
-          type : "OS::Neutron::Network"
-          uid  : "network0001"
-          resource :
-            name : "Network01"
-        "subnet0001" :
-          type : "OS::Neutron::Subnet"
-          uid  : "subnet0001"
-          resource :
-            name        : "Subnet01"
-            network_id  : "@{network0001.resource.id}"
-            allocation_pools : [{start:"10.0.0.10", end:"10.0.0.30"}]
-        "subnet0002" :
-          type : "OS::Neutron::Subnet"
-          uid  : "subnet0002"
-          resource :
-            name        : "Subnet02"
-            network_id  : "@{network0001.resource.id}"
-            allocation_pools : [{start:"10.0.0.10", end:"10.0.0.30"}]
-        "sg0001" :
-          type : "OS::Neutron::SecurityGroup"
-          uid  : "sg0001"
-          resource :
-            name  : "Sg01"
-            rules : []
-        "router0001" :
-          type : "OS::Neutron::Router"
-          uid  : "router0001"
-          resource :
-            external_gateway_info : { network_id : "@{extnetwork001.resource.id}" }
-            router_interface : [{subnet_id: "@{subnet0001.resource.id}"}]
-        "pool0001" :
-          type : "OS::Neutron::Pool"
-          uid  : "pool0001"
-          resource :
-            name : "Pool01"
-            subnet_id        : "@{subnet0002.resource.id}"
-            healthmonitor_id : "@{monitor0001.resource.id}"
-            member : [{address : "@{port0001.resource.fixed_ips.0.ip_address}"}]
-        "listener0001" :
-          type : "OS::Neutron::VIP"
-          uid  : "listener0001"
-          resource :
-            name      : "Listener01"
-            pool_id   : "@{pool0001.resource.id}"
-            subnet_id : "@{subnet0001.resource.id}"
-        "monitor0001" :
-          type : "OS::Neutron::HealthMonitor"
-          uid  : "monitor0001"
-          resource :
-            type : "HTTP"
+            security_groups : [ "@{sg-id.resource.id}"]
+            network_id      : "@{network-id.resource.id}"
+
+        "sg-id":
+          type: "OS::Neutron::SecurityGroup"
+          uid: "sg-id"
+          resource:
+            name: "helloworldsg"
+            description: "haha"
+            rules: [
+              direction: "egress"
+              port_range_min: "0"
+              port_range_max: "65535"
+              protocol: "tcp"
+              remote_group_id: ""
+              remote_ip_prefix: "10.0.0.1/24"
+              id: ""
+            ]
+            id: ""
+
+        "router-id":
+          type: "OS::Neutron::Router"
+          uid: "router-id"
+          resource:
+            name: "helloworldrouter"
+            external_gateway_info :
+              network_id : "@{extnetwork001.resource.id}"
+            admin_state_up: true
+            id: ""
+            router_interface: [subnet_id: "@{subnet-id.resource.id}"]
+
+        # "floating-ip-id":
+        #   type: "OS::Neutron::FloatingIP"
+        #   uid: "floating-ip-id"
+        #   resource:
+        #     floating_network_id: "1f0fd926-9c82-4536-b498-0c00a4133914"
+        #     fixed_ip_address: "@{port-id.resource.fixed_ips.0.ip_address}"
+        #     floating_ip_address: ""
+        #     port_id: "@{port-id.resource.id}"
+        #     id: ""
+
+        "pool-id":
+          type: "OS::Neutron::Pool"
+          uid: "pool-id"
+          resource:
+            name: "hellworldpool"
+            protocol: "HTTP"
+            lb_method: "ROUND_ROBIN"
+            subnet_id: "@{subnet-id.resource.id}"
+            healthmonitor_id: "@{healthmonitor-id.resource.id}"
+            member: [
+              protocol_port: 80
+              address: "@{port-id.resource.fixed_ips.0.ip_address}"
+              weight: 1
+              id: ""
+            ]
+            id: ""
+
+        "listener-id":
+          type: "OS::Neutron::VIP"
+          uid: "listener-id"
+          resource:
+            name: "helloworldlistener"
+            pool_id: "@{pool-id.resource.id}"
+            subnet_id: "@{subnet-id.resource.id}"
+            connection_limit: "1000"
+            protocol: "HTTP"
+            protocol_port: "80"
+            admin_state_up: ""
+            address: "10.0.0.13"
+            port_id: ""
+            id: ""
+
+        "healthmonitor-id":
+          type: "OS::Neutron::HealthMonitor"
+          uid: "healthmonitor-id"
+          resource:
+            type: "HTTP"
+            delay: 30
+            timeout: 30
+            max_retries: 3
+            url_path: "/index.html"
+            expected_codes: "200-299"
+            id: ""
+
+        "volume-id":
+          type: "OS::Cinder::Volume"
+          uid: "volume-id"
+          resource:
+            availability_zone: ""
+            source_volid: ""
+            display_description: "test"
+            snapshot_id: ""
+            size: 30
+            display_name: "helloworldvolume"
+            imageRef: ""
+            volume_type: ""
+            bootable: ""
+            server_id: "@{server-id.resource.id}"
+            mount_point: "/dev/sdf"
+            id: ""
 
       @__jsonData = json
       return

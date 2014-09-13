@@ -18,12 +18,13 @@ define [
   "./oseditor/model/OsModelVolume"
   "./oseditor/model/OsModelExtNetwork"
 
-  "./oseditor/model/connection/OsPortUsage"
-  "./oseditor/model/connection/OsSgAsso"
-  "./oseditor/model/connection/OsRouterAsso"
-  "./oseditor/model/connection/OsMonitorUsage"
+  "./oseditor/model/connection/OsFloatIpUsage"
   "./oseditor/model/connection/OsListenerAsso"
+  "./oseditor/model/connection/OsMonitorUsage"
   "./oseditor/model/connection/OsPoolMembership"
+  "./oseditor/model/connection/OsPortUsage"
+  "./oseditor/model/connection/OsRouterAsso"
+  "./oseditor/model/connection/OsSgAsso"
 
   "./oseditor/canvas/CeNetwork"
   "./oseditor/canvas/CeSubnet"

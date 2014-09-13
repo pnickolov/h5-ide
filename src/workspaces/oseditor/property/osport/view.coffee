@@ -9,7 +9,7 @@ define [
 
         events:
 
-            "change #property-os-server-credential": "onChangeCredential"
+            "change [data-target]": "updateServerAttr"
 
         render: ->
 

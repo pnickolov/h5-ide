@@ -1542,7 +1542,12 @@ $(function() {
          * input / select element.
          */
         onChange: function() {
-            this.$input.trigger('change');
+            if (this.$input.hasClass('bool')) {
+                var value = this.getValue() === 'true' ? true : false;
+                this.$input.trigger('change', value);
+            } else {
+                this.$input.trigger('change');
+            }
         },
     
     
@@ -3374,7 +3379,11 @@ $(function() {
     $.fn.getValue = function() {
         var dom = this[0];
         if (dom.selectize) {
-            return dom.selectize.getValue();
+            if (this.hasClass('bool')) {
+                return dom.selectize.getValue() === 'true' ? true : false;
+            } else {
+                return dom.selectize.getValue();
+            }
         } else {
             return null;
         }

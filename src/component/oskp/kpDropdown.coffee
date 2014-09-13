@@ -17,13 +17,9 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       dropdownSelect = dropdown.find("select.selection.option")
       dropdownSelect.on 'select_initialize', =>
         @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
-        optionList = _.map @collection.toJSON(), (e)->
-          {text: e.name, value: e.name}
-        optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
+        @listenTo @collection, 'update', @updateOption.bind(@)
         @selectize = dropdownSelect[0].selectize
-        @selectize.clearOptions()
-        @selectize.addOption optionList
-        @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
+        @updateOption()
       @$input = dropdownSelect
       dropdownSelect.on 'select_dropdown_button_click', =>
         console.log 'manage'
@@ -31,6 +27,14 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
         @manage()
       @setElement(dropdown)
       @
+
+    updateOption: ->
+      optionList = _.map @collection.toJSON(), (e)->
+        {text: e.name, value: e.name}
+      optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
+      @selectize.clearOptions()
+      @selectize.addOption optionList
+      @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
 
     setValue: (value)->
       if not @selectize
@@ -106,9 +110,6 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
 
     initModal: () ->
       new toolbar_modal @getModalOptions()
-      @modal.on 'close', () ->
-        @remove()
-      , @
       @modal.on 'slidedown', @renderSlides, @
       @modal.on 'action', @doAction, @
       @modal.on 'refresh', @refresh, @
@@ -116,9 +117,6 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
 
     manage: ( options ) ->
       options = {} if not options
-      @model = options.model
-      @resModel = options.resModel
-      @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
       @initModal()
       @modal.render()
       if App.user.hasCredential()

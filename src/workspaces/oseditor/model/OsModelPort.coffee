@@ -24,7 +24,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
-      subnet = (server || @).parent()
+      subnet = (@server() || @).parent()
 
       component =
         name : @get("name")

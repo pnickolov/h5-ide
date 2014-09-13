@@ -1542,11 +1542,11 @@ $(function() {
          * input / select element.
          */
         onChange: function() {
+            var value = this.getValue();
             if (this.$input.hasClass('bool')) {
-                var value = this.getValue() === 'true' ? true : false;
-                this.$input.trigger('change', value);
+                this.$input.trigger('change', (value === 'true' ? true : false));
             } else {
-                this.$input.trigger('change');
+                this.$input.trigger('change', value);
             }
         },
     

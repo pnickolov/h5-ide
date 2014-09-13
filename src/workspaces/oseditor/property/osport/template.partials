@@ -1,3 +1,4 @@
+<!-- {{stack}} -->
 <div class="option-group-head expand">
     Port Details
 </div>
@@ -15,3 +16,5 @@
         <select data-target="float_ip" class="selection bool" value="{{#if hasFloatIP}}true{{else}}false{{/if}}" ></select>
     </section>
 </div>
+<!-- {{unattached}} -->
+Attach the port to a server

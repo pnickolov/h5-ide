@@ -25,7 +25,6 @@ define [
 
     events:
         'click .anchor li'       : '__scrollTo'
-        'click .sidebar-title a' : '__openOrHidePanel'
 
     initialize: ( options ) ->
         window.Panel = @
@@ -64,16 +63,17 @@ define [
         if @hidden() then return
 
         @$el.removeClass( 'hide' )
-        isCurrentPanel = @$el.hasClass panelName
-        #if isCurrentPanel then return
 
         @$el.prop 'class', "OEPanelRight #{panelName}"
+        $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
         @renderSubPanel targetPanel, args
 
-    show: -> @$el.removeClass 'hidden'
-    hide: -> @$el.addClass 'hidden'
     shown: -> not @$el.hasClass( 'hidden' )
     hidden: -> @$el.hasClass( 'hidden' )
+    show: -> @$el.removeClass 'hidden'
+    hide: ->
+        @$el.addClass 'hidden'
+        $('.sidebar-title').prop 'class', 'sidebar-title'
 
     openResource: ( args ) -> @open 'property', args
     openProperty: ( args ) -> @open 'property', args

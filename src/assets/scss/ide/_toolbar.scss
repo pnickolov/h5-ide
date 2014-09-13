@@ -1,5 +1,10 @@
 /* Styles for Design Module Toolbar */
 
+@mixin activedPanelTab {
+    border-bottom: 2px solid $base-b;
+    color: $base-b;
+}
+
 /* App/Stack Toolbar */
 #main-toolbar {
   position : relative;
@@ -217,3 +222,33 @@
 .icon-hide-sg.selected {
   @extend .btn-toolbar:hover;
 }
+
+.openstack .OEPanelTop .sidebar-title {
+
+  width: 280px;
+  padding-left: 0;
+  float: right;
+  box-sizing: border-box;
+  border-bottom: 1px solid #555252;
+
+  &.resource .resource { @include activedPanelTab; }
+  &.property .property { @include activedPanelTab; }
+  &.state    .state    { @include activedPanelTab; }
+  &.config   .config   { @include activedPanelTab; }
+
+  a {
+    width: 25%;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    height: 100%;
+    box-sizing: border-box;
+
+    &::selection { background: transparent; }
+  }
+  a:hover {
+    color: #eee;
+  }
+
+}
+

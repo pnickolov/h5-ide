@@ -42,6 +42,7 @@ define [
       'click .toolbar-visual-ops-switch' : 'opsOptionChanged'
       'click .reload-states'          : "reloadState"
       'click .icon-save-app'          : 'appToStack'
+      'click .sidebar-title a'        : 'openOrHidePanel'
 
     initialize : ( options )->
       _.extend this, options
@@ -50,9 +51,9 @@ define [
 
       # Toolbar
       if opsModel.isStack()
-        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnSwitchStates"]
+        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "PanelHeader", "BtnSwitchStates"]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnReloadRes"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnReloadRes", "PanelHeader"]
 
       tpl = ""
       for btn in btns
@@ -65,6 +66,8 @@ define [
       @setElement @parent.$el.find(".OEPanelTop").html( tpl )
       @updateZoomButtons()
       return
+
+    openOrHidePanel: ( e ) -> @parent.propertyPanel.__openOrHidePanel.call @parent.propertyPanel, e
 
     updateTbBtns : ()->
       opsModel = @workspace.opsModel

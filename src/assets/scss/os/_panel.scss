@@ -1,50 +1,20 @@
-@mixin activedPanelTab {
-    border-bottom: 2px solid $base-b;
-    color: $base-b;
-}
 
 .openstack .OEPanelRight {
 
     width: 280px;
 
-    &.resource .resource { @include activedPanelTab; }
-    &.property .property { @include activedPanelTab; }
-    &.state    .state    { @include activedPanelTab; }
-    &.config   .config   { @include activedPanelTab; }
-
     &.hidden {
-        right: 0;
-        background: transparent;
-        pointer-events: none;
-        .sidebar-title { pointer-events: auto; }
-        .panel-body { right: -280px; }
-    }
-
-    .sidebar-title {
-        box-sizing: border-box;
-        border-bottom: 1px solid #555252;
-        a {
-            width: 25%;
-            float: left;
-            text-align: center;
-            cursor: pointer;
-            height: 100%;
-            box-sizing: border-box;
-        }
-        a:hover {
-            color: #eee;
-        }
     }
 
     .panel-body {
         overflow: auto;
         position: absolute;
-        top: 39px;
+        top: 0;
         bottom: 0;
         height: auto;
         width: 100%;
     }
-    .panel-body section {
+    .panel-body section {hide
         &.system-image .selectbox {
             width: 108px;
         }

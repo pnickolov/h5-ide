@@ -43,7 +43,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
         pool = p1Comp
 
       if port and port.isEmbedded()
-        p1Comp = port.server()
+        p1Comp = port.owner()
         p2Comp = pool
 
       ConnectionModel.call this, p1Comp, p2Comp, attr, option

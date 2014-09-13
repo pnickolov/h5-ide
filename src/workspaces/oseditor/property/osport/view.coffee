@@ -9,17 +9,21 @@ define [
 
         events:
 
-            "change [data-target]": "updateServerAttr"
+            "change [data-target]": "updateAttribute"
 
         render: ->
 
             @$el.html stackTpl({})
             @
 
-        updateServerAttr: (event)->
+        updateAttribute: (event)->
 
-            target = $(event.currentTarget)
-            attr = target.data('target')
+            $target = $(event.currentTarget)
+
+            attr = $target.data 'target'
+            value = $target.getValue()
+
+            @model.set(attr, value)
 
         }, {
             handleTypes: [ constant.RESTYPE.OSPORT ]

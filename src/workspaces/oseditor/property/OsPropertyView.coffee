@@ -18,7 +18,7 @@ define [
             attr = $target.data 'target'
 
             unless attr then return
-            value = $target.val()
+            value = $target.getValue()
             @getModelForUpdateAttr( e ).set(attr, value)
 
             if attr is 'name' then @setTitle value

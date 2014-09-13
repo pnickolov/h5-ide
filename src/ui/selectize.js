@@ -3385,7 +3385,7 @@ $(function() {
                 return dom.selectize.getValue();
             }
         } else {
-            return null;
+            return this.val();
         }
     };
 

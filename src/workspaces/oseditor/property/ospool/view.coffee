@@ -34,9 +34,6 @@ define [
                 when 'mem' then return @memConn[ $target.data( 'index' ) ]
                 else return @model
 
-
-
-
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]
         handleModes: [ 'stack', 'appedit' ]

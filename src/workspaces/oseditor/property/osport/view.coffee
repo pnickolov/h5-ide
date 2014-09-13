@@ -13,7 +13,11 @@ define [
 
         render: ->
 
-            @$el.html stackTpl({})
+            value = _.extend {
+                hasFloatIP: !!@model.getFloatingIp()
+            }, @model.toJSON()
+            
+            @$el.html stackTpl(value)
             @
 
         updateAttribute: (event)->
@@ -23,7 +27,10 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            @model.set(attr, value)
+            if attr is 'float_ip'
+                @model.setFloatingIp(value)
+            else
+                @model.set(attr, value)
 
         }, {
             handleTypes: [ constant.RESTYPE.OSPORT ]

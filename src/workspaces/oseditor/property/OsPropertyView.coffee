@@ -13,7 +13,7 @@ define [
             @parent = options.parent
             Backbone.View.apply @, arguments
 
-        updateAttribute: ( e )->
+        updateAttribute: ( e ) ->
             $target = $ e.currentTarget
             attr = $target.data 'target'
 

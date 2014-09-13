@@ -9110,6 +9110,14 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   .openstack .OEPanelRight.config .config {
     border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }
+  .openstack .OEPanelRight.hidden {
+    right: 0;
+    background: transparent;
+    pointer-events: none; }
+    .openstack .OEPanelRight.hidden .sidebar-title {
+      pointer-events: auto; }
+    .openstack .OEPanelRight.hidden .panel-body {
+      right: -280px; }
   .openstack .OEPanelRight .sidebar-title {
     box-sizing: border-box;
     border-bottom: 1px solid #555252; }

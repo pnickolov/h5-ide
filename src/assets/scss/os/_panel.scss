@@ -12,6 +12,14 @@
     &.state    .state    { @include activedPanelTab; }
     &.config   .config   { @include activedPanelTab; }
 
+    &.hidden {
+        right: 0;
+        background: transparent;
+        pointer-events: none;
+        .sidebar-title { pointer-events: auto; }
+        .panel-body { right: -280px; }
+    }
+
     .sidebar-title {
         box-sizing: border-box;
         border-bottom: 1px solid #555252;

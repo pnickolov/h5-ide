@@ -19,12 +19,13 @@ define [
 
   __defaultArgs = { uid: '', type: 'default' }
   __openArgs = __defaultArgs
+  __currentPanel = 'resource'
 
   Backbone.View.extend
 
     events:
         'click .anchor li'       : '__scrollTo'
-        'click .sidebar-title a' : '__openPanel'
+        'click .sidebar-title a' : '__openOrHidePanel'
 
     initialize: ( options ) ->
         window.Panel = @
@@ -55,8 +56,12 @@ define [
 
     open: ( panelName, args = __defaultArgs ) ->
         __openArgs = args
+        __currentPanel = panelName
+
         targetPanel = Panels[ panelName ]
         unless targetPanel then return
+
+        if @hidden() then return
 
         @$el.removeClass( 'hide' )
         isCurrentPanel = @$el.hasClass panelName
@@ -65,14 +70,23 @@ define [
         @$el.prop 'class', "OEPanelRight #{panelName}"
         @renderSubPanel targetPanel, args
 
+    show: -> @$el.removeClass 'hidden'
+    hide: -> @$el.addClass 'hidden'
+    shown: -> not @$el.hasClass( 'hidden' )
+    hidden: -> @$el.hasClass( 'hidden' )
+
     openResource: ( args ) -> @open 'property', args
     openProperty: ( args ) -> @open 'property', args
     openConfig  : ( args ) -> @open 'config', args
     openState   : ( args ) -> @open 'state', args
 
-    __openPanel: ( e ) ->
+    __openOrHidePanel: ( e ) ->
         targetPanelName = $( e.currentTarget ).prop 'class'
-        @open targetPanelName, __openArgs
+        if __currentPanel is targetPanelName and @shown()
+            @hide()
+        else
+            @show()
+            @open targetPanelName, __openArgs
 
     __scrollTo: ( e ) ->
         targetClassName = $( e.currentTarget ).data 'scrollTo'

@@ -54,7 +54,7 @@ define [
       throw new Error("Cannot find opsmodel while openning workspace.")
 
     if opsmodel.isProcessing()
-      return new ProgressViewer opsModel
+      return new ProgressViewer opsmodel
 
     for e in registeredEditors
       if e.handler( opsmodel )

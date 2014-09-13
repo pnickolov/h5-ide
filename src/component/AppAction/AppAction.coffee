@@ -17,6 +17,7 @@ define [
   'component/trustedadvisor/gui/main'
 ], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, TA )->
   AppAction = Backbone.View.extend
+
     runStack: (event, workspace)->
       @workspace = workspace
       cloudType = @workspace.opsModel.get('cloudType')
@@ -37,7 +38,13 @@ define [
       @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
 
       # load TA
-      TA.loadModule('stack').then ()=>
+      modeType = 'stack'
+      console.log cloudType
+      if cloudType is 'openstack'
+
+        modeType = "openstack"
+
+      TA.loadModule(modeType).then ()=>
         @modal.resize()
         @modal?.toggleConfirm false
 
@@ -91,6 +98,20 @@ define [
         if @updateModal then @updateModal.on 'close', ->
           keyPairDropdown.remove()
       null
+
+    hideError: (type)->
+      selector = if type then $("#runtime-error-#{type}") else $(".runtime-error")
+      selector.hide()
+
+    defaultKpIsSet: ->
+      if not kpDropdown.hasResourceWithDefaultKp()
+        return true
+      kpModal = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKP = kpModal.getDefaultKP()
+      if not defaultKP.get('isSet') or not ((@modal||@updateModal) and (@modal || @updateModal).tpl.find("#kp-runtime-placeholder .item.selected").size())
+        @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
+        return false
+      true
 
     checkAppNameRepeat: (nameVal)->
       if App.model.appList().findWhere(name: nameVal)

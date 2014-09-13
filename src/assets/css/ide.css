@@ -5517,7 +5517,9 @@ button#property-app-keypair {
   height: 40px;
   width: 100%;
   min-width: 610px;
-  background: #2b2b35; }
+  background: #2b2b35;
+  position: absolute;
+  z-index: 10; }
   .OEPanelTop + .OEPanelRight {
     top: 40px; }
 
@@ -7108,8 +7110,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

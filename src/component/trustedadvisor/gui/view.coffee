@@ -28,7 +28,9 @@ define [ 'event',
                 @processStatusBarDetails()
                 #
                 $('.status-bar-modal').show()
-
+            else if type is 'openstack'
+              $('.validating').hide()
+              false
             null
 
         processStatusBarDetails: ()->

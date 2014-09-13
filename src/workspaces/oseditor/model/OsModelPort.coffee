@@ -26,22 +26,24 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     serialize : ()->
       subnet = (@server() || @).parent()
 
-      component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
-          id   : @get("appId")
+      {
+        layout : @generateLayout()
+        component :
           name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            id   : @get("appId")
+            name : @get("name")
 
-          network_id      : "@{#{subnet.parent().id}.resource.id}"
-          fixed_ips       : [{
-            subnet_id  : "@{#{subnet.id}.resource.id}"
-            ip_address : @get("ip")
-          }]
-          security_groups : []
-
-      { component : component }
+            mac_address     : @get("macAddress")
+            security_groups : @connectionTargets("OsSgAsso").map ( sg )-> "@{#{sg.id}.resource.id}"
+            network_id      : "@{#{subnet.parent().id}.resource.id}"
+            fixed_ips       : [{
+              subnet_id  : "@{#{subnet.id}.resource.id}"
+              ip_address : @get("ip")
+            }]
+      }
 
     setIp: (ip)->
       @set "ip", ip
@@ -59,6 +61,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         parent : resolve( MC.extractID( data.resource.fixed_ips[0].subnet_id) )
 
         ip : data.resource.fixed_ips[0].ip_address
+        macAddress : data.resource.mac_address
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

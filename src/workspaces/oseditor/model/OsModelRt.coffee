@@ -31,7 +31,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             id                    : @get("appId")
             name                  : @get("name")
             external_gateway_info : extNetwork || {}
-            admin_state_up        : true
             router_interface : @connectionTargets("OsRouterAsso").map ( subnet )-> {subnet_id:"@{#{subnet.id}.resource.id}" }
       }
 

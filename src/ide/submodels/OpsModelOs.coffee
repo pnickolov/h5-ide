@@ -74,7 +74,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             key_name: "testkp"
             NICS: [
               {"port-id": "@{port-id.resource.id}"}
-              {"port0002": "@{port0002.resource.id}"}
+              {"port-id": "@{port0002.resource.id}"}
             ]
             adminPass: "12345678"
             id: ""
@@ -131,7 +131,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           type : "OS::Neutron::Port"
           uid  : "port0002"
           resource :
-            name : "Port02"
+            name : "port0002"
             fixed_ips: [{
               "subnet_id"  : "@{subnet-id.resource.id}"
               "ip_address" : "10.0.0.13"
@@ -206,7 +206,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             protocol_port: "80"
             admin_state_up: ""
             address: "10.0.0.13"
-            port_id: ""
+            port_id: "@{port0003.resource.id}"
             id: ""
 
         "healthmonitor-id":
@@ -237,6 +237,22 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             server_id: "@{server-id.resource.id}"
             mount_point: "/dev/sdf"
             id: ""
+
+        "port0003":
+          name: "port0003"
+          type: "OS::Neutron::Port"
+          uid: "port0003"
+          resource:
+            id: ""
+            name: "port0003"
+            mac_address: ""
+            security_groups: []
+            network_id: "@{network-id.resource.id}"
+            fixed_ips: [
+              subnet_id: "@{subnet-id.resource.id}"
+              ip_address: ""
+            ]
+
 
       @__jsonData = json
       return

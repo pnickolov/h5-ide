@@ -11,12 +11,17 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     isEmbedded : ()-> @server() and @server().embedPort() is @
     isVisual   : ()-> !@isEmbedded()
 
-    initialize: ()->
-      console.log ("Initializing....")
+    setFloatingIp : ( hasFip )->
+      oldUsage = @connections("OsFloatIpUsage")[0]
+      if not hasFip
+        if oldUsage then oldUsage.remove()
+      else
+        if not oldUsage
+          Usage = Design.modelClassForType("OsFloatIpUsage")
+          new Usage( this )
+      return
 
-    removeReference: ->
-      console.log "Removing......."
-      #@server().removePort()
+    getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
       component =

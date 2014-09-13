@@ -1,6 +1,14 @@
 
-define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
+define [ "ConnectionModel", "constant", "Design" ], ( ConnectionModel, constant, Design )->
 
   ConnectionModel.extend {
     type : "OsFloatIpUsage"
+
+    constructor : ( p1comp, p2comp, attr, options )->
+
+      if not p2comp and p1comp.type is constant.RESTYPE.OSPORT
+        FloatIpModel = Design.modelClassForType( constant.RESTYPE.OSFIP )
+        p2Comp = new FloatIpModel()
+
+      ConnectionModel.call this, p1comp, p2Comp, attr, options
   }

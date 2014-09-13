@@ -30,6 +30,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             id                : @get 'appId'
             name              : @get 'name'
             pool_id           : @connectionTargets( 'OsListenerAsso' )[ 0 ].createRef 'id'
+            port_id           : @connectionTargets( 'OsPortUsage' )[ 0 ].createRef 'id'
             connection_limit  : @get 'limit'
             protocol          : @get 'protocol'
             protocol_port     : @get 'port'
@@ -60,7 +61,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       # TO DO
       PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
       PortUsage = Design.modelClassForType( "OsPortUsage" )
-      new PortUsage( listener, new PortModel() )
+      osport = resolve( MC.extractID( data.resource.port_id ) )
+      new PortUsage( listener, osport or new PortModel() )
 
       return
   }

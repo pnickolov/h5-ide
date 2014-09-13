@@ -11,6 +11,14 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       port: 80
       limit: 1000
 
+    initialize : ( attr, options )->
+      if options.createByUser
+        PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
+        PortUsage = Design.modelClassForType( "OsPortUsage" )
+        new PortUsage( @, new PortModel() )
+
+    port : ()-> @connectionTargets("OsPortUsage")[0]
+
     serialize : ()->
       {
         layout : @generateLayout()

@@ -10,9 +10,9 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       ip : ""
       macAddress : ""
 
-    server : ()-> @connectionTargets("OsPortUsage")[0]
+    owner : ()-> @connectionTargets("OsPortUsage")[0]
 
-    isEmbedded : ()-> @server() and @server().embedPort() is @
+    isEmbedded : ()-> @owner() and @owner().embedPort() is @
     isVisual   : ()-> !@isEmbedded()
 
     setFloatingIp : ( hasFip )->
@@ -28,7 +28,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
-      subnet = (@server() || @).parent()
+      subnet = (@owner() || @).parent()
 
       {
         layout : @generateLayout()

@@ -42,6 +42,8 @@ define [
 
       "mousedown svg" : "__dragCanvasMouseDown"
 
+      "dblclick" : "onDblClick"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design
@@ -74,6 +76,8 @@ define [
       return
 
     isReadOnly : ()-> false
+
+    onDblClick : ( evt )-> @trigger "doubleclick"
 
     remove : ()->
       for type, popup of @__popupCache

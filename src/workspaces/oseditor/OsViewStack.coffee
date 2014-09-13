@@ -35,6 +35,8 @@ define [
       @panel.openProperty()
       return
 
+    onCanvasDoubleClick : ()->
+
     onItemSelected : ( type, id )->
       @panel.openProperty { uid: id, type: type }
       return

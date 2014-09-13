@@ -101,12 +101,15 @@ define [
       @canvas        = new options.CanvasView(opt)
 
       @listenTo @canvas, "itemSelected", @onItemSelected
+      @listenTo @canvas, "doubleclick",  @onCanvasDoubleClick
 
       @initialize()
       return
 
     showProperty   : ()->
     onItemSelected : ( type, id )->
+
+    onCanvasDoubleClick : ()->
 
     toggleLeftPanel  : ()->
       @resourcePanel.toggleLeftPanel()

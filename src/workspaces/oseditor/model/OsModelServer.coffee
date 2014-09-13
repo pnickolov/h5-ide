@@ -51,10 +51,10 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       if not NICS.length
         # create Server default port
         Port = Design.modelClassForType( constant.RESTYPE.OSPORT )
-        newPort = new Port({name: @.get('name')+"-port"})
+        newPort = new Port({name: @.get('name')+"-port", isEmbedded: true})
         PortUsage = Design.modelClassForType( "OsPortUsage" )
         newPortUsage = new PortUsage(@, newPort)
-        @set("NICS", [{"prot-id": "@{"+newPort.get("id")+".resource.id"}])
+        @set("NICS", [{"port-id": "@{"+newPort.get("id")+".resource.id"}])
       null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]

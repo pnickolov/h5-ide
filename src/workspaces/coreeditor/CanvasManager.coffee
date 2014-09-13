@@ -94,6 +94,7 @@ define [], ()->
       null
 
     updateFip : ( node, targetModel )->
+      if not node.size() then return false
       if node.length then node = node[0]
 
       #toggle = targetModel.hasPrimaryEip()

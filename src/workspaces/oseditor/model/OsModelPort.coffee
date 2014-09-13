@@ -6,6 +6,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSPORT
     newNameTmpl : "Port-"
 
+    defaults :
+      ip : ""
+      macAddress : ""
+
     server : ()-> @connectionTargets("OsPortUsage")[0]
 
     isEmbedded : ()-> @server() and @server().embedPort() is @
@@ -37,10 +41,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             name : @get("name")
 
             mac_address     : @get("macAddress")
-            security_groups : @connectionTargets("OsSgAsso").map ( sg )-> "@{#{sg.id}.resource.id}"
-            network_id      : "@{#{subnet.parent().id}.resource.id}"
+            security_groups : @connectionTargets("OsSgAsso").map ( sg )-> sg.createRef("id")
+            network_id      : subnet.parent().createRef("id")
             fixed_ips       : [{
-              subnet_id  : "@{#{subnet.id}.resource.id}"
+              subnet_id  : subnet.createRef("id")
               ip_address : @get("ip")
             }]
       }

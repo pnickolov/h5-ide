@@ -23,7 +23,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
             name : @get("name")
 
             cidr        : @get("cidr")
-            network_id  : "@{#{@parent().id}.resource.id}"
+            network_id  : @parent().createRef("id")
             gateway_ip  : ""
             ip_version  : "4"
             enable_dhcp : @get("dhcp")

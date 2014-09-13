@@ -19,7 +19,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     serialize : ()->
       extNetwork = @connectionTargets( "OsExtRouterAttach" )[0]
       if extNetwork
-        extNetwork = { network_id : "@{#{extNetwork.id}.resource.id}" }
+        extNetwork = { network_id : extNetwork.createRef("id") }
 
       {
         layout    : @generateLayout()
@@ -31,7 +31,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             id                    : @get("appId")
             name                  : @get("name")
             external_gateway_info : extNetwork || {}
-            router_interface : @connectionTargets("OsRouterAsso").map ( subnet )-> {subnet_id:"@{#{subnet.id}.resource.id}" }
+            router_interface : @connectionTargets("OsRouterAsso").map ( subnet )->
+              { subnet_id : subnet.createRef("id") }
       }
 
   }, {

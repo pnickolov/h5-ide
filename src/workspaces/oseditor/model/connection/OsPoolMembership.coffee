@@ -7,6 +7,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
     defaults:
       port    : 80
       weight  : 1
+      appId   : ""
 
     getPort: ->
       pool = @getOtherTarget constant.RESTYPE.OSPOOL

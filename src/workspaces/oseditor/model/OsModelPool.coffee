@@ -24,10 +24,13 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           protocol_port : c.get 'port'
           address       : target.createRef 'fixed_ips.0.ip_address'
           weight        : c.get 'weight'
-          id            : ''
+          id            : c.get 'appId'
         }
 
-      component =
+      {
+
+      layout : @generateLayout()
+      component :
         name : @get 'name'
         type : @type
         uid  : @id
@@ -39,8 +42,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           subnet_id        : @parent().createRef 'id'
           healthmonitor_id : @connectionTargets( 'OsMonitorUsage' )[ 0 ].createRef 'id'
           member           : member
-
-      { component : component }
+      }
 
   }, {
 
@@ -73,7 +75,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       Membership = Design.modelClassForType("OsPoolMembership")
 
       for member in data.resource.member
-        membership = new Membership( pool, design.component( MC.extractID(member.address) ) )
+        membership = new Membership( pool, design.component( MC.extractID(member.address) ), { appId : member.id } )
         membership.set { weight: member.weight, port: member.protocol_port }
 
       return

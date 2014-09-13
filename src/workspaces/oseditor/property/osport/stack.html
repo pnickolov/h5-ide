@@ -8,10 +8,10 @@
     </section>
     <section class="group required">
         <label class="name">Fixed IP</label>
-        <input data-target="fixed_ip" class="selection string" value="{{ip}}"/>
+        <input data-target="ip" class="selection string ipv4" value="{{ip}}"/>
     </section>
     <section class="group required">
         <label class="name">Associate Floating IP</label>
-        <select data-target="float_ip" class="selection bool" value="{{hasFloatIP}}" ></select>
+        <select data-target="float_ip" class="selection bool" value="{{#if hasFloatIP}}true{{else}}false{{/if}}" ></select>
     </section>
 </div>

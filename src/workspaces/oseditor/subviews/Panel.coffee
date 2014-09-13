@@ -53,7 +53,7 @@ define [
 
         $container.animate scrollTop: newTop
 
-    open: ( panelName, args = __defaultArgs ) ->
+    open: ( panelName, args = __openArgs ) ->
         __openArgs = args
         __currentPanel = panelName
 
@@ -68,12 +68,17 @@ define [
         $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
         @renderSubPanel targetPanel, args
 
-    shown: -> not @$el.hasClass( 'hidden' )
-    hidden: -> @$el.hasClass( 'hidden' )
-    show: -> @$el.removeClass 'hidden'
+    show: ->
+        @$el.removeClass 'hidden'
+        @
+
     hide: ->
         @$el.addClass 'hidden'
         $('.sidebar-title').prop 'class', 'sidebar-title'
+        @
+
+    shown: -> not @$el.hasClass( 'hidden' )
+    hidden: -> @$el.hasClass( 'hidden' )
 
     openResource: ( args ) -> @open 'property', args
     openProperty: ( args ) -> @open 'property', args

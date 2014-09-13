@@ -31,14 +31,8 @@ define [
       @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
       return
 
-    showProperty   : ()->
-      @panel.openProperty()
-      return
-
-    onCanvasDoubleClick : ()->
-
-    onItemSelected : ( type, id )->
-      @panel.openProperty { uid: id, type: type }
-      return
+    showProperty: () -> @panel.openProperty()
+    onItemSelected: ( type, id ) -> @panel.openProperty { uid: id, type: type }
+    onCanvasDoubleClick: () -> @panel.show().openProperty()
 
   }

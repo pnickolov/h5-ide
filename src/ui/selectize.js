@@ -3730,8 +3730,8 @@ $(function() {
                 if (self.settings.render.button) {
                     var domStr = self.settings.render.button.apply(self);
                     if (domStr) {
-                        var $dropdown_button = $(domStr).addClass('selectize-dropdown_button');
-                        if (!self.$dropdown_content.nextAll('.selectize-dropdown_button').length) {
+                        var $dropdown_button = $(domStr).addClass('selectize-dropdown-button');
+                        if (!self.$dropdown_content.nextAll('.selectize-dropdown-button').length) {
                             self.$dropdown.append($dropdown_button);
                             $dropdown_button.on('click', function(event) {
                                 self.close();

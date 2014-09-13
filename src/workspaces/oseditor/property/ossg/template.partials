@@ -1,0 +1,22 @@
+<!-- {{stack}} -->
+<div class="option-group-head expand">
+    Security Group
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Description</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+</div>
+<div class="option-group-head expand">
+    Rule
+</div>
+<div class="option-group"></div>
+<div class="option-group-head expand">
+    Member ()
+</div>
+<div class="option-group"></div>

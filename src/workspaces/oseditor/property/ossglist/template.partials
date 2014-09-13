@@ -4,7 +4,7 @@
 </div>
 <section class="group">
     <label class="name">Security Group</label>
-    <select class="selection option mutil" value="nop,abc,def">
+    <select class="selection option mutil sglist" value="nop,abc,def" data-button-tpl="button">
         <option value="abc">abc</option>
         <option value="def">def</option>
         <option value="hij">hij</option>

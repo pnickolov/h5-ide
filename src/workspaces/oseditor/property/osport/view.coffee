@@ -3,7 +3,8 @@ define [
     '../OsPropertyView'
     './template'
     'CloudResources'
-], ( constant, OsPropertyView, template, CloudResources ) ->
+    '../ossglist/view'
+], ( constant, OsPropertyView, template, CloudResources, SgListView ) ->
 
     OsPropertyView.extend {
 
@@ -20,6 +21,12 @@ define [
                 @$el.html template.stack(value)
             else
                 @$el.html template.unattached(value)
+
+            # append sglist
+            sgListView = new SgListView()
+            @$el.append sgListView.render().el
+            @selectTpl = sgListView.selectTpl
+            
             @
 
         updateAttribute: (event)->

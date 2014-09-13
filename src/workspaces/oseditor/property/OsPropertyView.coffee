@@ -10,7 +10,7 @@ define [
 
     OsPropertyView = Backbone.View.extend {
         constructor: ( options ) ->
-            @parent = options.parent
+            @parent = options?.parent
             Backbone.View.apply @, arguments
 
         updateAttribute: ( e ) ->
@@ -19,14 +19,13 @@ define [
 
             unless attr then return
             value = $target.getValue()
-            @getModelForUpdateAttr( e ).set(attr, value)
+            @getModelForUpdateAttr( e )?.set(attr, value)
 
             if attr is 'name' then @setTitle value
 
-        getModelForUpdateAttr: ->
-            @model
+        getModelForUpdateAttr: -> @model
 
-        setTitle: ( title ) -> @parent.setTitle title
+        setTitle: ( title ) -> @parent?.setTitle title
         # Overwrite it in subview
         getTitle: -> @model?.get( 'name' )
 

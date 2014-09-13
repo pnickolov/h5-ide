@@ -17,7 +17,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         PortUsage = Design.modelClassForType( "OsPortUsage" )
         new PortUsage( @, new PortModel() )
 
-    port : ()-> @connectionTargets("OsPortUsage")[0]
+    embedPort : ()-> @connectionTargets("OsPortUsage")[0]
 
     serialize : ()->
       {
@@ -56,6 +56,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
       Asso = Design.modelClassForType( "OsListenerAsso" )
       new Asso( listener, resolve(MC.extractID( data.resource.pool_id )) )
+
+      # TO DO
+      PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
+      PortUsage = Design.modelClassForType( "OsPortUsage" )
+      new PortUsage( listener, new PortModel() )
+
       return
   }
 

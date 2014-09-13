@@ -1,9 +1,11 @@
 define [
-  'constant'
-  '../OsPropertyView'
-  './stack'
+    'constant'
+    '../OsPropertyView'
+    '../osport/view'
+    './stack'
 
-], ( constant, OsPropertyView, template ) ->
+
+], ( constant, OsPropertyView, portView, template ) ->
 
     OsPropertyView.extend {
         events:
@@ -11,7 +13,14 @@ define [
 
         render: ->
             @$el.html template @model.toJSON()
+            @$el.append new portView( model: @model.embedPort() ).render().el
             @
+
+        getModelForUpdateAttr: ( e ) ->
+            $target = $ e.currentTarget
+            dataModel = $target.closest( '[data-model]' ).data 'model'
+
+            if dataModel is 'listener' then @model else null
 
 
 

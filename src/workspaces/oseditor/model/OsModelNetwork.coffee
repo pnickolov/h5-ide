@@ -7,17 +7,16 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
     newNameTmpl : "Network-"
 
     serialize : ()->
-      component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
-          id             : @get("appId")
-          name           : @get("name")
-          admin_state_up : ""
-          shared         : ""
-
-      { component : component }
+      {
+        layout : @generateLayout()
+        component :
+          name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            id     : @get("appId")
+            name   : @get("name")
+      }
 
   }, {
 

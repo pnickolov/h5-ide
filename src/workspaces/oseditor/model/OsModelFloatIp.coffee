@@ -17,9 +17,9 @@ define [ "ResourceModel", "constant", "Design" ], ( ResourceModel, constant, Des
           uid  : @id
           resource :
             id : @get("appId")
-            fixed_ip_address    : "@{#{port.id}.resource.fixed_ips.0.ip_address}"
+            fixed_ip_address    : port.createRef("fixed_ips.0.ip_address")
             floating_ip_address : @get("address")
-            port_id             : "@{#{port.id}.resource.id}"
+            port_id             : port.createRef("id")
             floating_network_id : @design().componentsOfType( constant.RESTYPE.OSEXTNET ).getResourceId()
       }
 

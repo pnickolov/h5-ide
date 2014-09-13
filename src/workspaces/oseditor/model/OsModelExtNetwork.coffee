@@ -14,13 +14,12 @@ define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, c
 
     serialize : ()->
       {
+        layout : @generateLayout()
         component :
           uid  : @id
           type : @type
           resource :
             id : @getResourceId()
-
-        layout : @generateLayout()
       }
 
   }, {

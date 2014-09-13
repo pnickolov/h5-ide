@@ -83,7 +83,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           resource :
             name : "Port02"
             fixed_ips: [{
-              "subnet_id"  : "@{subnet0001.resource.id}"
+              "subnet_id"  : "@{subnet0002.resource.id}"
               "ip_address" : "10.0.0.13"
             }]
             security_groups : [ "@{sg0001.resource.id}"]

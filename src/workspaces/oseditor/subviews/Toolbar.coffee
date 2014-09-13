@@ -242,6 +242,9 @@ define [
 
 
     runStack: (event)->
+        console.log Design.instance(), @workspace.opsModel, (Design.instance() is @workspace.opsModel)
+        appAction.runStack(event, @workspace)
+        return false
         that = @
         if $(event.currentTarget).attr('disabled')
             return false

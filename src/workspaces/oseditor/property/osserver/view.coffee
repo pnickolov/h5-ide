@@ -111,8 +111,7 @@ define [
 
       if attr is 'associateFip'
         serverPort = @model.embedPort()
-        console.log target.getValue(), !!target.val(), selectize.getValue()
-        serverPort.setFloatingIp target.getValue()
+        serverPort.setFloatingIp target.getValue() #bool type use jQuery $el.getValue()
         return false
 
       @model.set(attr, target.val()) if attr

@@ -13,8 +13,95 @@ define [
   'constant'
   'UI.modalplus'
   'ApiRequest'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest )->
+  'kp_dropdown'
+  'component/trustedadvisor/gui/main'
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, TA )->
   AppAction = Backbone.View.extend
+    runStack: (event, workspace)->
+      @workspace = workspace
+      cloudType = @workspace.opsModel.get('cloudType')
+      that = @
+      if $(event.currentTarget).attr('disabled')
+        return false
+      @modal = new modalPlus
+        title: lang.IDE.RUN_STACK_MODAL_TITLE
+        template: MC.template.modalRunStack
+        disableClose: true
+        width: '450px'
+        confirm:
+          text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+          disabled: true
+      @renderKpDropdown(@modal, cloudType)
+      cost = Design.instance().getCost()
+      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
+      @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+
+      # load TA
+      TA.loadModule('stack').then ()=>
+        @modal.resize()
+        @modal?.toggleConfirm false
+
+      appNameDom = @modal.tpl.find('#app-name')
+      checkAppNameRepeat = @checkAppNameRepeat.bind @
+      appNameDom.keyup ->
+        checkAppNameRepeat(appNameDom.val())
+
+      self = @
+      @modal.on 'confirm', ()=>
+        @hideError()
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+        # setUsage
+        appNameRepeated = @checkAppNameRepeat(appNameDom.val())
+        if not @defaultKpIsSet() or appNameRepeated
+          return false
+
+        @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
+        @json = @workspace.design.serialize usage: 'runStack'
+        @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        @json.name = appNameDom.val()
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+          self.modal.close()
+          App.openOps( ops )
+        , (err)->
+          self.modal.close()
+          error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
+          notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
+      App.user.on 'change:credential', ->
+        console.log 'We got it.'
+        if App.user.hasCredential() and that.modal.isOpen()
+          that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
+      @modal.on 'close', ->
+        console.log 'We gave up.'
+        App.user.off 'change:credential'
+
+    renderKpDropdown: (modal, cloudType)->
+      if cloudType is 'openstack'
+        return false
+      if kpDropdown.hasResourceWithDefaultKp()
+        keyPairDropdown = new kpDropdown()
+        if modal then modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el else return false
+        hideKpError = @hideError.bind @
+        keyPairDropdown.dropdown.on 'change', ->
+          hideKpError('kp')
+        modal.tpl.find('.default-kp-group').show()
+        if @modal then @modal.on 'close', ->
+          keyPairDropdown.remove()
+        if @updateModal then @updateModal.on 'close', ->
+          keyPairDropdown.remove()
+      null
+
+    checkAppNameRepeat: (nameVal)->
+      if App.model.appList().findWhere(name: nameVal)
+        @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
+        return true
+      else if not nameVal
+        @showError('appname', lang.PROP.MSG_WARN_NO_APP_NAME)
+        return true
+      else
+        @hideError('appname')
+        return false
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
 

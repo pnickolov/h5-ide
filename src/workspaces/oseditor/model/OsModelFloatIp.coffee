@@ -1,7 +1,7 @@
 
-define [ "ResourceModel", "constant", "Design" ], ( ResourceModel, constant, Design )->
+define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
 
-  Model = ResourceModel.extend {
+  Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSFIP
     newNameTmpl : "FloatIp-"

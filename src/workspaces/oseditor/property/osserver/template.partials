@@ -61,8 +61,8 @@
         <input class="selection ipv4" id="property-os-server-fip" data-target="fixedIp" value="192.168.1.1"/>
     </section>
     <section class="group required">
-        <label class="name tooltip" data-target="associateFip">Associate Floating IP</label>
-        <select class="selection bool" id="property-os-server-aip" value="false"></select>
+        <label class="name tooltip">Associate Floating IP</label>
+        <select class="selection bool" id="property-os-server-aip" data-target="associateFip" value="false"></select>
     </section>
 </div>
 

@@ -46,7 +46,6 @@ define [
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
       @$el.html template.stackTemplate json
-      console.log json
       kpDropdown = new OsKp(@model,template.kpSelection())
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @bindSelectizeEvent()
@@ -70,6 +69,7 @@ define [
     updateServerAttr: (event)->
       target = $(event.currentTarget)
       attr = target.data('target')
+      selectize = target[0].selectize
 
       if attr is 'imageId'
         @model.setImage target.val()
@@ -100,7 +100,7 @@ define [
         oldRamFlavor = @flavorList.get @model.get('flavorId')
         flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
         availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
-        targetFlavor = _.find availableRams, (e)->return e.get('ram') is +target.val()
+        targetFlavor = _.find availableRams, (e)->return e.get('ram') is +selectize.getValue()
         @model.set('flavorId', targetFlavor.get('id'))
         return false
 
@@ -111,7 +111,8 @@ define [
 
       if attr is 'associateFip'
         serverPort = @model.embedPort()
-        serverPort.set('associateFip', target.val())
+        console.log target.getValue(), !!target.val(), selectize.getValue()
+        serverPort.setFloatingIp target.getValue()
         return false
 
       @model.set(attr, target.val()) if attr

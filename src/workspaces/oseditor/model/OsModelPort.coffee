@@ -36,12 +36,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
           admin_state_up  : ""
           mac_address     : ""
+          network_id      : "@{#{subnet.parent().id}.resource.id}"
           fixed_ips       : [{
             subnet_id  : "@{#{subnet.id}.resource.id}"
             ip_address : @get("ip")
           }]
           security_groups : []
-          network_id      : ""
 
       { component : component }
 

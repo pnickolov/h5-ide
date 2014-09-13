@@ -34,8 +34,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           id   : @get("appId")
           name : @get("name")
 
-          admin_state_up  : ""
-          mac_address     : ""
           network_id      : "@{#{subnet.parent().id}.resource.id}"
           fixed_ips       : [{
             subnet_id  : "@{#{subnet.id}.resource.id}"

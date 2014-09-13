@@ -15,7 +15,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           id   : @get("appId")
           name : @get("name")
 
-          description : ""
+          description : @get("description")
           rules       : []
 
       { component : component }
@@ -29,6 +29,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
+        description : data.resource.description
       })
       return
   }

@@ -25,7 +25,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
             cidr        : @get("cidr")
             network_id  : "@{#{@parent().id}.resource.id}"
             gateway_ip  : ""
-            ip_version  : ""
+            ip_version  : "4"
             enable_dhcp : @get("dhcp")
             allocation_pools :
               start : "192.168.199.2"

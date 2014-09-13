@@ -103,7 +103,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       else
         component.resource.adminPass = @get("adminPass")
 
-      { component : component }
+      { component : component, layout : @generateLayout() }
 
   }, {
 

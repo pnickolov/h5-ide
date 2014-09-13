@@ -5455,9 +5455,10 @@ button#property-app-keypair {
 
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
-  height: 100%;
   z-index: 3;
-  background: #202027; }
+  background: #202027;
+  top: 0;
+  bottom: 0; }
 
 .OEPanelLeft {
   width: 246px;
@@ -5517,6 +5518,8 @@ button#property-app-keypair {
   width: 100%;
   min-width: 610px;
   background: #2b2b35; }
+  .OEPanelTop + .OEPanelRight {
+    top: 40px; }
 
 .OEPanelBottom {
   position: absolute;

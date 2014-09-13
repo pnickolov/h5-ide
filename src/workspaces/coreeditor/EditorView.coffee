@@ -83,10 +83,12 @@ define [
       "click .HideOEPanelLeft"  : "toggleLeftPanel"
       "click .HideOEPanelRight" : "toggleRightPanel"
 
+    template : OpsEditorTpl.frame
+
     constructor : ( options )->
       _.extend this, options
 
-      @setElement $( OpsEditorTpl.frame() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
+      @setElement $( @template() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
       opt =
         workspace : @workspace

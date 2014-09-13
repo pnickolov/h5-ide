@@ -2,6 +2,8 @@
 define [
   "CoreEditorView"
 
+  "./template/TplOsEditor"
+
   "./subviews/Panel"
   "./subviews/Toolbar"
   "./subviews/Statusbar"
@@ -9,9 +11,11 @@ define [
 
   "event"
 
-], ( CoreEditorView, RightPanel, Toolbar, Statusbar, CanvasView, ide_event )->
+], ( CoreEditorView, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView, ide_event )->
 
   CoreEditorView.extend {
+    template : TplOsEditor
+
     constructor : ( options )->
       _.extend options, {
         TopPanel    : Toolbar

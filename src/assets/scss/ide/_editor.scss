@@ -25,14 +25,15 @@ $BottomPanelHeight    : 24px;
 // Sidebar and Layout
 .OEPanelLeft, .OEPanelRight {
   position   : absolute;
-  height     : 100%;
   z-index    : 3;
   background : $bg-p;
+  top        : 0;
+  bottom     : 0;
 }
 
 .OEPanelLeft {
-  width      : $LeftPanelWidth;
-  left       : 0;
+  width : $LeftPanelWidth;
+  left  : 0;
 
   @include slide(left);
 
@@ -77,6 +78,7 @@ $BottomPanelHeight    : 24px;
   &::selection {
     background: transparent;
   }
+
 }
 
 .OEMiddleWrap {
@@ -99,6 +101,10 @@ $BottomPanelHeight    : 24px;
   width      : 100%;
   min-width  : 610px;
   background : lighten($bg-p, 5%);
+
+  + .OEPanelRight {
+    top : $TopPanelHeight;
+  }
 }
 
 .OEPanelBottom {

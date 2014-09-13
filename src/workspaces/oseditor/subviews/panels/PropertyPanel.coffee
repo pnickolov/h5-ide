@@ -133,9 +133,9 @@ define [
                     ],
                     render: {
                         option: (item) ->
-                            return '<div>O ' + item.text + '</div>'
+                            return '<div>' + item.text + '</div>'
                         item: (item) ->
-                            return '<div>O ' + item.text + '</div>'
+                            return '<div>' + item.text + '</div>'
                     }
                 })
 

@@ -54,3 +54,38 @@
     <a class="property">P</a>
     <a class="state">S</a>
 </header>
+
+<!-- {{confirm.enableState}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_ENABLE_STATE"}}</div>
+    </div>
+</div>
+
+<!-- {{modal.cancelUpdate}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CANCEL_UPDATE_CONFIRM"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.DISCARD_UPDATE_CHANGE"}}</div>
+    </div>
+</div>
+
+<!-- {{export.JSON}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper" style="padding:40px 20px;">
+        <div class="modal-text-major"></div>
+        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_BODY_EXPORT_AS_JSON"}}</div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOLBAR.POP_BTN_DOWNLOAD"}}</a>
+    <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.PNG}} -->
+<div class="loading-spinner"></div>
+<section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
+<div class="modal-footer">
+    <a class="btn btn-blue" style="display: inline-block;">{{i18n "TOOLBAR.LBL_DOWNLOAD"}}</a>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.LBL_CANCEL"}}</button>
+</div>

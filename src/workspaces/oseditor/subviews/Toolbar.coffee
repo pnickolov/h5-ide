@@ -159,7 +159,7 @@ define [
     exportPNG : ()->
       modal = new Modal {
         title         : "Export PNG"
-        template      : OpsEditorTpl.export.PNG()
+        template      : ToolbarTpl.export.PNG()
         width         : "470"
         disableFooter : true
         compact       : true
@@ -202,7 +202,7 @@ define [
         # allow user to download the file.
         new Modal {
           title         : lang.TOOLBAR.EXPORT_AS_JSON
-          template      : OpsEditorTpl.export.JSON( data )
+          template      : ToolbarTpl.export.JSON( data )
           width         : "470"
           disableFooter : true
           compact       : true
@@ -331,7 +331,7 @@ define [
         originStackExist = !!stack
         appToStackModal = new Modal
             title:  lang.TOOLBAR.POP_TIT_APP_TO_STACK
-            template: OpsEditorTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
+            template: ToolbarTpl.saveAppToStack {input: name, stackName: newName, originStackExist: originStackExist}
             confirm:
                 text: lang.TOOLBAR.POP_BTN_SAVE_TO_STACK
             onConfirm: onConfirm
@@ -544,7 +544,7 @@ define [
                 confirmModal = new Modal(
                     title: "Confirm to Enable VisualOps"
                     width: "420px"
-                    template: OpsEditorTpl.confirm.enableState()
+                    template: ToolbarTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"
                     onConfirm: ->
                         agent.enabled = true
@@ -571,7 +571,7 @@ define [
         self  = @
         modal = new Modal {
           title    : "Changes not applied"
-          template : OpsEditorTpl.modal.cancelUpdate()
+          template : ToolbarTpl.modal.cancelUpdate()
           width    : "400"
           confirm  : { text : "Discard", color : "red" }
           onConfirm : ()->

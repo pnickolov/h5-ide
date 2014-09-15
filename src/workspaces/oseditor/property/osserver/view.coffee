@@ -46,6 +46,7 @@ define [
       json.ram = currentFlavor.get('ram')
       json.vcpus = currentFlavor.get('vcpus')
       json.floatingIp = !!@model.embedPort().getFloatingIp()
+      json.fixedIp = @model.embedPort().get('ip')
       @$el.html template.stackTemplate json
       kpDropdown = new OsKp(@model,template.kpSelection())
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)

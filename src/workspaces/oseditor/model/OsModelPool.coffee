@@ -75,8 +75,15 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       Membership = Design.modelClassForType("OsPoolMembership")
 
       for member in data.resource.member
-        membership = new Membership( pool, design.component( MC.extractID(member.address) ), { appId : member.id } )
-        membership.set { weight: member.weight, port: member.protocol_port }
+        new Membership(
+          pool,
+          design.component( MC.extractID(member.address) ),
+          {
+            appId  : member.id
+            weight : member.weight
+            port   : member.protocol_port
+          }
+        )
 
       return
   }

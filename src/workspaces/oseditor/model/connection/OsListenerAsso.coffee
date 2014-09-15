@@ -14,4 +14,17 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
           type : constant.RESTYPE.OSPOOL
       }
     ]
+
+    isRemovable : ()-> false
+
+    remove : ()->
+      ConnectionModel.prototype.remove.apply this, arguments
+
+      listener = @getTarget( constant.RESTYPE.OSLISTENER )
+      pool     = @getTarget( constant.RESTYPE.OSPOOL )
+
+      if listener.isRemoved() and not pool.isRemoved() then pool.remove()
+      if pool.isRemoved() and not listener.isRemoved() then listener.remove()
+
+      return
   }

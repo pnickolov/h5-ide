@@ -43,7 +43,7 @@
 
             <li class="tooltip resource-item osport" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT"}}' data-type="OSPORT">{{i18n "LBL_OSPORT"}}</li>
 
-            <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSELB">{{ i18n "LBL_OSELB" }}</li>
+            <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSPOOL">{{ i18n "LBL_OSELB" }}</li>
 
         </ul>
     </article>

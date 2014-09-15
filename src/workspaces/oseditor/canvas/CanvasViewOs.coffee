@@ -83,13 +83,9 @@ define [
 
       if not data.volDropTargets
         data.hoverItem = null
-
-        RTP     = constant.RESTYPE
-        targets = @design.componentsOfType( RTP.INSTANCE ).concat( @design.componentsOfType(RTP.LC) )
-
         data.volDropTargets = dropzones = []
 
-        for tgt in targets
+        for tgt in @design.componentsOfType( constant.RESTYPE.OSSERVER )
           tgt = @getItem( tgt.id )
 
           for el in tgt.$el

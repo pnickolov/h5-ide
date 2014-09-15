@@ -135,9 +135,9 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           type : "OS::Neutron::Port"
           uid  : "port0002"
           resource :
-            name : "port0002"
+            name : "Port02"
             fixed_ips: [{
-              "subnet_id"  : "@{subnet-id.resource.id}"
+              "subnet_id"  : "@{subnet0002.resource.id}"
               "ip_address" : "10.0.0.13"
             }]
             security_groups : [ "@{sg-id.resource.id}"]
@@ -188,7 +188,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             name: "hellworldpool"
             protocol: "HTTP"
             lb_method: "ROUND_ROBIN"
-            subnet_id: "@{subnet-id.resource.id}"
+            subnet_id: "@{subnet0002.resource.id}"
             healthmonitor_id: "@{healthmonitor-id.resource.id}"
             member: [
               protocol_port: 80

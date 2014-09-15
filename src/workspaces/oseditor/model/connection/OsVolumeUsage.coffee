@@ -11,4 +11,12 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
           usage.remove()
 
       return
+
+    remove : ( option )->
+      ConnectionModel.prototype.remove.call this, option
+
+      if @getTarget( constant.RESTYPE.OSSERVER ).isRemoved()
+        @getTarget( constant.RESTYPE.OSVOL ).remove()
+
+      return
   }

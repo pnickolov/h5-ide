@@ -6,6 +6,8 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
     type : constant.RESTYPE.OSNETWORK
     newNameTmpl : "Network-"
 
+    isRemovable : ()-> false
+
     serialize : ()->
       {
         layout : @generateLayout()

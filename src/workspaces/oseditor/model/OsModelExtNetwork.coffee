@@ -8,6 +8,8 @@ define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, c
     defaults: ()->
       name : "ExtNetwork"
 
+    isRemovable : ()-> false
+
     getResourceId : ()->
       if @get("appId") then return @get("appId")
       CloudResources( @type, @design().region() ).models[0].id || ""

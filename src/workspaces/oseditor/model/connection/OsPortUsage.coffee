@@ -27,4 +27,15 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
     isVisual : ()->
       server = @getTarget( constant.RESTYPE.OSSERVER )
       server and server.embedPort() isnt @getTarget( constant.RESTYPE.OSPORT )
+
+    remove : ( option )->
+      ConnectionModel.prototype.remove.call this, option
+
+      server = @getTarget( constant.RESTYPE.OSSERVER )
+      port   = @getTarget( constant.RESTYPE.OSPORT )
+      if server.isRemoved() and server.embedPort() is port
+        port.remove()
+
+      return
+
   }

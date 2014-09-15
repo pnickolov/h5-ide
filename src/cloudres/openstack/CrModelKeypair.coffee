@@ -40,7 +40,6 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
     doDestroy : ()->
       ApiRequest("os_keypair_Delete", {
         region : @getCollection().region()
-        keypair_name: @get("id")
+        keypair_name: @get("name")
       })
-
   }

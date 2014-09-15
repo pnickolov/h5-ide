@@ -45,7 +45,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     awsresult = res.result[1]
     if awsresult and _.isArray(awsresult)
 
-      if awsresult[0] is 200
+      if 200 <= awsresult[0] < 300
         return awsresult[1]
       else
         error = McError( res.result[0], "Service Error", res.result[1] )

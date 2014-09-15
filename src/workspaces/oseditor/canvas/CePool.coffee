@@ -49,4 +49,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     render : ()->
       # Update label
       CanvasManager.setLabel @, @$el.children(".node-label")
+  }, {
+    createResource : ( type, attributes, options )->
+      PoolModel = Design.modelClassForType constant.RESTYPE.OSPOOL
+      pool = new PoolModel( $.extend({}, attributes, { x : attributes.x + 9 }), options )
+
+      ListenerModel = Design.modelClassForType constant.RESTYPE.OSLISTENER
+      listener = new ListenerModel( attributes, $.extend({ pool : pool }, options) )
+      return
   }

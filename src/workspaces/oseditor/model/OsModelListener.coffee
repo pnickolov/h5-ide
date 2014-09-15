@@ -12,6 +12,13 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       limit    : 1000
       ip       : "" # The same as OsModelPort's `ip`
 
+    initialize : ( attr, options )->
+      console.assert options.pool, "Pool must be specified when creating a listener"
+      Asso = Design.modelClassForType( "OsListenerAsso" )
+      new Asso( @, options.pool )
+      return
+
+
     embedPort  : ()-> @connectionTargets("OsPortUsage")[0]
     isAttached : ()-> true
 
@@ -56,10 +63,10 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
 
         portId : data.resource.port_id
         ip     : data.resource.address
+      },{
+        pool : resolve( MC.extractID( data.resource.pool_id ) )
       })
 
-      Asso = Design.modelClassForType( "OsListenerAsso" )
-      new Asso( listener, resolve(MC.extractID( data.resource.pool_id )) )
       return
   }
 

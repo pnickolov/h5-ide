@@ -24,6 +24,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_snapshot_List'                     : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'List',	params:['username', 'session_id', 'region']   },
 		'os_snapshot_Info'                     : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },
 		'os_snapshot_Update'                   : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Update',	params:['username', 'session_id', 'region', 'snapshot_id', 'display_name', 'display_description']   },
+		'os_snapshot_Create'                   : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Create',	params:['username', 'session_id', 'region', 'volume_id', 'display_name', 'display_description', 'is_force']   },
 		'os_snapshot_Delete'                   : { type:'openstack', url:'/os/cinder/v2_0/snapshot/',	method:'Delete',	params:['username', 'session_id', 'region', 'snapshot_id']   },
 		'os_volume_List'                       : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'List',	params:['username', 'session_id', 'region']   },
 		'os_volume_Info'                       : { type:'openstack', url:'/os/cinder/v2_0/volume/',	method:'Info',	params:['username', 'session_id', 'region', 'ids']   },

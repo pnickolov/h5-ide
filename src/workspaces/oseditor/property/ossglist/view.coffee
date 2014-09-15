@@ -10,10 +10,32 @@ define [
         events:
 
             "change [data-target]": "updateAttribute"
+            "select_item_add .sglist": "addSG"
+            "select_dropdown_button_click .sglist": "addSG"
+            "select_item_remove .sglist": "removeSG"
 
         render: ->
 
-            @$el.html template.stack()
+            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+            sgModels = OSSGModel.allObjects()
+
+            _.each sgModels, (sgModel) ->
+                sgModel
+
+            @$el.html template.stack({
+
+            })
+
+            @selectTpl =
+
+                button: () ->
+
+                    return '<div>Create New Security Group...</div>'
+
+                sgItem: (data) ->
+
+                sgOption: (data) ->
+
             @
 
         updateAttribute: (event)->
@@ -23,11 +45,14 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-        selectTpl:
+        addSG: (event) ->
 
-            button: () ->
 
-                return '<div>Create New Security Group...</div>'
+            oSSGModel = new OSSGModel({})
+
+        removeSG: (event) ->
+
+            null
 
     }, {
         handleTypes: [ 'sglist' ]

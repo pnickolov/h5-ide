@@ -9346,7 +9346,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         content: '';
         border-bottom: 2px solid #0D49CA;
         width: 100%;
-        z-index: 80; }
+        z-index: 1; }
     #OpsEditor .OEPanelRight.property .btn-group button:hover {
       color: #ccc;
       background: #161616;

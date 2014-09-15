@@ -74,7 +74,7 @@ define [
             if (attr in ['protocol', 'port', 'source'])
                 rule = @getRuleValue($target)
                 if rule.protocol and rule.port and rule.source
-                    null
+                    @model
 
         getRuleValue: ($target) ->
 
@@ -95,6 +95,6 @@ define [
             }
 
     }, {
-        handleTypes: [ 'sgrule' ]
+        handleTypes: [ constant.RESTYPE.OSSG ]
         handleModes: [ 'stack', 'appedit' ]
     }

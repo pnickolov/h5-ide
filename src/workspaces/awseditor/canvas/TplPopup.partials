@@ -12,7 +12,7 @@
 {{/each}}
 </ul>
 {{else}}
-<div class="volume-pp-empty">{{i18n "canvas.CVS_POP_NO_ATTACHED_VOLUME"}}</div>
+<div class="volume-pp-empty">{{i18n "CANVAS.CVS_POP_NO_ATTACHED_VOLUME"}}</div>
 {{/if}}
 
 <!-- {{instance}} -->
@@ -26,7 +26,7 @@
     <div class="vpp-ins-name">{{id}}</div></li>{{/each}}
 </ul>
 {{else}}
-<div class="instance-pp-empty">{{i18n "canvas.CVS_POP_NO_INSTANCES"}}</div>
+<div class="instance-pp-empty">{{i18n "CANVAS.CVS_POP_NO_INSTANCES"}}</div>
 {{/if}}
 
 <!-- {{eni}} -->
@@ -38,5 +38,5 @@
   {{id}}</li>{{/each}}
 </ul>
 {{else}}
-<div class="instance-pp-empty">{{i18n "canvas.CVS_POP_NO_NETWORK_INTERFACE"}}</div>
+<div class="instance-pp-empty">{{i18n "CANVAS.CVS_POP_NO_NETWORK_INTERFACE"}}</div>
 {{/if}}

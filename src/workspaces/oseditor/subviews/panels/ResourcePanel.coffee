@@ -100,13 +100,8 @@ define [
             $tgt.dnd( evt, {
                 dropTargets  : $( dropTargets )
                 dataTransfer : option
-                eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
-                onDragStart  : ( data )->
-                    if type is constant.RESTYPE.AZ
-                        data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
-                    else if type is constant.RESTYPE.ASG
-                        data.shadow.text( "ASG" )
-              })
+                eventPrefix  : if type is constant.RESTYPE.OSVOL then "addVol_" else "addItem_"
+            })
             return false
 
 

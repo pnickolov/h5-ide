@@ -5,7 +5,8 @@ define [
   "i18n!/nls/lang.js"
   "CanvasManager"
   "Design"
-], ( CanvasView, constant, lang, CanvasManager, Design )->
+  "./CpVolume"
+], ( CanvasView, constant, lang, CanvasManager, Design, VolumePopup )->
 
   isPointInRect = ( point, rect )->
     rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y

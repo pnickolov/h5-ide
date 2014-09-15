@@ -30,7 +30,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     #      }
     #    }
 
-    defaults:
+    defaults : ()->
       userData: "User Data Sample"
       meta: ""
       NICS: []
@@ -41,6 +41,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       availabilityZone: ""
       imageId: ""
       credential: "keypair"
+      volumeList : []
 
     initialize : ( attr, option )->
       option = option || {}

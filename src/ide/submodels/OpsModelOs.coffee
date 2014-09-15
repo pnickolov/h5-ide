@@ -209,7 +209,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             protocol: "HTTP"
             protocol_port: "80"
             admin_state_up: ""
-            address: "10.0.0.13"
+            address: "10.0.0.20"
             port_id: ""
             id: ""
 

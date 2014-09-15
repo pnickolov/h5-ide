@@ -108,9 +108,13 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           type : "OS::Neutron::Subnet"
           uid  : "subnet0002"
           resource :
-            name        : "Subnet02"
-            network_id  : "@{network-id.resource.id}"
-            allocation_pools : [{start:"10.0.0.40", end:"10.0.0.50"}]
+            name             : "Subnet02"
+            network_id       : "@{network-id.resource.id}"
+            allocation_pools : [{start:"10.1.0.40", end:"10.1.0.50"}]
+            gateway_ip       : "10.1.0.1"
+            ip_version       : "4"
+            cidr             : "10.1.0.0/24"
+            enable_dhcp      : true
 
         "port-id":
           type: "OS::Neutron::Port"
@@ -206,7 +210,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             protocol_port: "80"
             admin_state_up: ""
             address: "10.0.0.13"
-            port_id: "@{port0003.resource.id}"
+            port_id: ""
             id: ""
 
         "healthmonitor-id":
@@ -237,21 +241,6 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             server_id: "@{server-id.resource.id}"
             mount_point: "/dev/sdf"
             id: ""
-
-        "port0003":
-          name: "port0003"
-          type: "OS::Neutron::Port"
-          uid: "port0003"
-          resource:
-            id: ""
-            name: "port0003"
-            mac_address: ""
-            security_groups: []
-            network_id: "@{network-id.resource.id}"
-            fixed_ips: [
-              subnet_id: "@{subnet-id.resource.id}"
-              ip_address: ""
-            ]
 
 
       @__jsonData = json

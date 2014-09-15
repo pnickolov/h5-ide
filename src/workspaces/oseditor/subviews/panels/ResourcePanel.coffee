@@ -33,8 +33,6 @@ define [
         initialize: ( options ) ->
             _.extend @, options
             region = @workspace.opsModel.get("region")
-            window.snapshot = CloudResources( constant.RESTYPE.OSSNAP, region )
-            window.ami = CloudResources( constant.RESTYPE.OSIMAGE, region )
 
             @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), 'update', @renderSnapshot
             @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
@@ -95,8 +93,6 @@ define [
             type = constant.RESTYPE[ $tgt.attr("data-type") ]
 
             dropTargets = "#OpsEditor .OEPanelCenter"
-            if type is constant.RESTYPE.INSTANCE
-                dropTargets += ",#changeAmiDropZone"
 
             option = $.extend true, {}, $tgt.data("option") || {}
             option.type = type

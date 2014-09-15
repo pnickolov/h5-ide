@@ -15,6 +15,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       "pool"     : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
     }
 
+    size : ()-> { width : 8, height : 8 }
+
     # Creates a svg element
     create : ()->
       m = @model
@@ -51,6 +53,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       CanvasManager.setLabel @, @$el.children(".node-label")
   }, {
     createResource : ( type, attributes, options )->
+      attributes.width = 8
       PoolModel = Design.modelClassForType constant.RESTYPE.OSPOOL
       pool = new PoolModel( $.extend({}, attributes, { x : attributes.x + 9 }), options )
 

@@ -15,7 +15,7 @@ define [
 
         render: ->
 
-            if @model.owner()
+            if @model.isAttached()
                 value = _.extend {
                     hasFloatIP: @model.getFloatingIp()
                 }, @model.toJSON()

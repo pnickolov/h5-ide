@@ -6,7 +6,7 @@ define [ "ConnectionModel", "constant", "Design" ], ( ConnectionModel, constant,
 
     constructor : ( p1comp, p2comp, attr, options )->
 
-      if not p2comp and p1comp.type is constant.RESTYPE.OSPORT
+      if not p2comp and p1comp.type isnt constant.RESTYPE.OSFIP
         FloatIpModel = Design.modelClassForType( constant.RESTYPE.OSFIP )
         p2Comp = new FloatIpModel()
 

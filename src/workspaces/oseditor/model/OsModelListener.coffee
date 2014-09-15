@@ -1,23 +1,19 @@
 
-define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
+define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Design )->
 
-  Model = ComplexResModel.extend {
+  Model = OsModelPort.extend {
 
     type : constant.RESTYPE.OSLISTENER
     newNameTmpl : "Listener-"
 
     defaults:
-      protocol: 'HTTP'
-      port: 80
-      limit: 1000
+      protocol : 'HTTP'
+      port     : 80
+      limit    : 1000
+      ip       : "" # The same as OsModelPort's `ip`
 
-    initialize : ( attr, options )->
-      if options.createByUser
-        PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
-        PortUsage = Design.modelClassForType( "OsPortUsage" )
-        new PortUsage( @, new PortModel() )
-
-    embedPort : ()-> @connectionTargets("OsPortUsage")[0]
+    embedPort  : ()-> @connectionTargets("OsPortUsage")[0]
+    isAttached : ()-> true
 
     serialize : ()->
       {
@@ -30,11 +26,14 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             id                : @get 'appId'
             name              : @get 'name'
             pool_id           : @connectionTargets( 'OsListenerAsso' )[ 0 ].createRef 'id'
-            port_id           : @connectionTargets( 'OsPortUsage' )[ 0 ].createRef 'id'
             subnet_id         : @parent().createRef( 'id' )
             connection_limit  : @get 'limit'
             protocol          : @get 'protocol'
             protocol_port     : @get 'port'
+
+            port_id         : @get "portId"
+            address         : @get "ip"
+            security_groups : []
       }
 
   }, {
@@ -54,17 +53,13 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         parent        : resolve( MC.extractID( data.resource.subnet_id ) )
         x             : layout_data.coordinate[0]
         y             : layout_data.coordinate[1]
+
+        portId : data.resource.port_id
+        ip     : data.resource.address
       })
 
       Asso = Design.modelClassForType( "OsListenerAsso" )
       new Asso( listener, resolve(MC.extractID( data.resource.pool_id )) )
-
-      # TO DO
-      PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
-      PortUsage = Design.modelClassForType( "OsPortUsage" )
-      osport = resolve( MC.extractID( data.resource.port_id ) )
-      new PortUsage( listener, osport or new PortModel() )
-
       return
   }
 

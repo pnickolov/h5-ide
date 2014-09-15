@@ -11,9 +11,13 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       macAddress : ""
 
     owner : ()-> @connectionTargets("OsPortUsage")[0]
+    isAttached : ()-> !!@owner()
 
-    isEmbedded : ()-> @owner() and @owner().embedPort() is @
-    isVisual   : ()-> !@isEmbedded()
+    isVisual : ()-> !@isEmbedded()
+    isEmbedded : ()->
+      if not @owner() then return false
+      @owner().embedPort() is @
+
 
     setFloatingIp : ( hasFip )->
       oldUsage = @connections("OsFloatIpUsage")[0]

@@ -13,7 +13,7 @@ define [
 
         render: ->
             @$el.html template @model.toJSON()
-            @$el.append new portView( model: @model.embedPort() ).render().el
+            @$el.append new portView( model: @model ).render().el
             @
 
         getModelForUpdateAttr: ( e ) ->

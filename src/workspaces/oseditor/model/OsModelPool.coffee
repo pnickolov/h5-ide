@@ -21,6 +21,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     ports : ()->
       @connectionTargets("")
 
+    remove : ()->
+      @getHm().remove()
+      ComplexResModel.prototype.remove.apply this, arguments
+
     serialize : ()->
       member = _.map @connections( 'OsPoolMembership' ), ( c ) ->
         target = c.getOtherTarget( constant.RESTYPE.OSPOOL )

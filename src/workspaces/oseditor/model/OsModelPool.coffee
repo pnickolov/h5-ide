@@ -10,7 +10,13 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       protocol: 'HTTP'
       method: 'ROUND_ROBIN'
 
-    getHm: -> @connectionTargets( 'OsMonitorUsage' )[ 0 ]
+    initialize : ( attr, options )->
+      if not attr.healthMonitor
+        HmModel = Design.modelClassForType( constant.RESTYPE.OSHM )
+        @set "healthMonitor", new HmModel()
+      return
+
+    getHm: -> @get( 'healthMonitor' )
 
     ports : ()->
       @connectionTargets("")
@@ -40,7 +46,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           protocol         : @get 'protocol'
           lb_method        : @get 'method'
           subnet_id        : @parent().createRef 'id'
-          healthmonitor_id : @connectionTargets( 'OsMonitorUsage' )[ 0 ].createRef 'id'
+          healthmonitor_id : @getHm().createRef 'id'
           member           : member
       }
 
@@ -60,10 +66,9 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         parent    : resolve( MC.extractID( data.resource.subnet_id ) )
         x         : layout_data.coordinate[0]
         y         : layout_data.coordinate[1]
-      })
 
-      MonitorUsage = Design.modelClassForType( "OsMonitorUsage" )
-      new MonitorUsage( pool, resolve(MC.extractID( data.resource.healthmonitor_id)) )
+        healthMonitor : resolve( MC.extractID( data.resource.healthmonitor_id) )
+      })
       return
 
     postDeserialize : ( data, layout_data )->

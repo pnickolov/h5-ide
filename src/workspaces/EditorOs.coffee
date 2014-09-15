@@ -20,7 +20,6 @@ define [
 
   "./oseditor/model/connection/OsFloatIpUsage"
   "./oseditor/model/connection/OsListenerAsso"
-  "./oseditor/model/connection/OsMonitorUsage"
   "./oseditor/model/connection/OsPoolMembership"
   "./oseditor/model/connection/OsPortUsage"
   "./oseditor/model/connection/OsRouterAsso"

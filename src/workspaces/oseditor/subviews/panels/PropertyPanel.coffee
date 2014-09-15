@@ -141,42 +141,49 @@ define [
 
             if $valueDom.hasClass('option')
 
+                create = false
+                validHandleName = $valueDom.data('valid-handle')
+                if validHandleName and selectTpl and selectTpl[validHandleName]
+                    validHandle = selectTpl[validHandleName]
+                    create = true if validHandle
+
                 $valueDom.selectize({
                     multi: mutil,
                     maxItems: maxItems,
                     persist: true,
-                    create: false,
+                    create: create,
+                    createOnBlur: create,
                     openOnFocus: false,
                     plugins: ['custom_selection']
                     onInitialize: () ->
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
                         $valueDom.trigger 'selectized', @
+                    validHandle: validHandle
                     render: {
                         option: (item) ->
                             tplName = @$input.data('select-tpl')
                             if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName](item)
+                                return selectTpl[tplName].call(@$input, item)
                             else
                                 return '<div>' + item.text + '</div>'
 
                         item: (item) ->
                             tplName = @$input.data('item-tpl')
                             if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName](item)
+                                return selectTpl[tplName].call(@$input, item)
                             else
                                 return '<div>' + item.text + '</div>'
                         button: () ->
                             tplName = @$input.data('button-tpl')
                             if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName]()
+                                return selectTpl[tplName].call(@$input)
                             else
                                 return null
                     }
-                    createFilter: (a, b) ->
-
-                        a
-                        b
+                    createFilter: (value) ->
+                        return validHandle.call(@$input, value) if validHandle
+                        return false
                 })
 
             if $valueDom.hasClass('ipv4')

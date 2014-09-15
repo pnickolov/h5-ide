@@ -26,10 +26,11 @@ define [
             # append sglist
             sgListView = new SgListView()
             @$el.append sgListView.render().el
-            @selectTpl = sgListView.selectTpl
 
             sgView = new SgView()
             @$el.append sgView.render().el
+
+            @selectTpl = _.extend sgListView.selectTpl, sgView.selectTpl
 
             @
 

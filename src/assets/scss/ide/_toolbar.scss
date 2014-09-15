@@ -225,11 +225,10 @@
 
 .openstack .OEPanelTop .sidebar-title {
 
-  width: 280px;
-  padding-left: 0;
-  float: right;
-  box-sizing: border-box;
-  border-bottom: 1px solid #555252;
+  width        : 280px;
+  padding-left : 0;
+  float        : right;
+  box-sizing   : border-box;
 
   &.resource .resource { @include activedPanelTab; }
   &.property .property { @include activedPanelTab; }

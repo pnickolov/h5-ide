@@ -48,11 +48,7 @@
         -moz-transition-property: opacity background;
         -o-transition-property: opacity background;
         transition-property: opacity background;
-        .switch-input {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+
         .switch-label {
             position: relative;
             display: block;
@@ -95,8 +91,9 @@
         opacity: 0.2;
     }
     .switcher.on {
-        border-color: #0E8F38;
-        background: #4fb845;
+        border-color : #0E8F38;
+        background   : #4fb845;
+        
         .switch-label:before { opacity: 0; }
         .switch-label:after  { opacity: 1; }
         .switch-handle {
@@ -116,25 +113,25 @@
     .option-list {
         margin-top: 30px;
         .option-item {
-            display: inline-block;
-            width: 100%;
-            min-height: 39px;
+            display    : inline-block;
+            width      : 100%;
+            min-height : 39px;
 
             .name, .persistent, .permenant {
-                float: left;
-                margin-left: 10px;
-                margin-top: 10px;
+                float       : left;
+                margin-left : 10px;
+                margin-top  : 10px;
             }
             .persistent, .permenant {
-                border: 1px #FF9100 solid;
-                color: #FF9100;
-                padding: 2px 4px;
-                border-radius: 3px;
-                font-size: 12px;
+                border        : 1px #FF9100 solid;
+                color         : #FF9100;
+                padding       : 2px 4px;
+                border-radius : 3px;
+                font-size     : 12px;
             }
             .permenant {
-                border: 1px #008CFF solid;
-                color: #008CFF;
+                border : 1px #008CFF solid;
+                color  : #008CFF;
             }
             .option-edit-btn {
                 float: right;

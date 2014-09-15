@@ -1,6 +1,7 @@
 #OpsEditor .OEPanelRight.property {
 
     color: #ccc;
+    // @include no-selection-bg;
 
     .panel-body {
         @include font-mono;
@@ -42,8 +43,9 @@
 
     .option-group-head {
         &:first-child { border-top: 1px solid #000000; }
-        height: 40px;
-        line-height: 40px;
+
+        height      : 32px;
+        line-height : 34px;
     }
 
     .option-group {
@@ -54,31 +56,31 @@
     }
 
     .group {
-        background-color: #27272b;
-        font-size: 12px;
-        position: relative;
-        border-bottom: 1px #000 solid;
-        margin-bottom: 1px;
+        background-color : #27272b;
+        font-size        : 12px;
+        position         : relative;
+        border-bottom    : 1px #000 solid;
+        margin-bottom    : 0;
 
         &:last-child {
             border-bottom: none;
         }
 
         &.required:after {
-            position: absolute;
-            z-index: 1;
-            content: "";
-            color: #fff;
-            text-align: right;
-            right: 0;
-            top: 0;
-            width: 0;
-            height: 0;
-            line-height: 24px;
-            border-style: solid;
-            border-width: 0 20px 20px 0;
-            margin-left: -20px;
-            border-color: transparent #0b8900 transparent transparent;
+            position     : absolute;
+            z-index      : 1;
+            content      : "";
+            color        : #fff;
+            text-align   : right;
+            right        : 0;
+            top          : 0;
+            width        : 0;
+            height       : 0;
+            line-height  : 24px;
+            border-style : solid;
+            border-width : 0 20px 20px 0;
+            margin-left  : -20px;
+            border-color : transparent #0b8900 transparent transparent;
         }
         &.required:before {
             position: absolute;
@@ -93,22 +95,22 @@
         }
     }
     .name {
-        width: 100%;
-        padding: 8px 10px;
-        display: table-cell;
-        vertical-align: middle;
-        color: #777;
-        line-height: 14px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        // &.tooltip:after {
-        //     content: " ";
-        //     width: 103px;
-        //     height: 8px;
-        //     position: absolute;
-        //     left: 12px;
-        //     margin-top: 8px;
-        //     border-bottom: 1px #555 dashed;
+        width                : 100%;
+        padding              : 8px 10px 2px 9px;
+        display              : table-cell;
+        vertical-align       : middle;
+        color                : #777;
+        line-height          : 14px;
+        box-sizing           : border-box;
+        -moz-box-sizing      : border-box;
+        // &.tooltip         : after {
+        //     content       : " ";
+        //     width         : 103px;
+        //     height        : 8px;
+        //     position      : absolute;
+        //     left          : 12px;
+        //     margin-top    : 8px;
+        //     border-bottom : 1px #555 dashed;
         // }
     }
     .ipgroup {

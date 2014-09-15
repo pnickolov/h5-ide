@@ -14,6 +14,8 @@
  * @author Brian Reavis <brian@thirdroute.com>
  */
 
+ $selection-bg: #27272b;
+
 .selectize-control.plugin-drag_drop.multi > .selectize-input > div.ui-sortable-placeholder {
   visibility: visible !important;
   background: #f2f2f2 !important;
@@ -128,16 +130,16 @@
   display: inline-block;
 }
 .selectize-input {
-  border: 1px solid #d0d0d0;
-  padding: 5px 8px;
-  display: inline-block;
-  width: 100%;
-  /*overflow: hidden;*/
-  position: relative;
-  z-index: 1;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  border             : 1px solid #d0d0d0;
+  padding            : 5px 8px;
+  display            : inline-block;
+  width              : 100%;
+  /*overflow         : hidden;*/
+  position           : relative;
+  z-index            : 1;
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
 /*  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   -webkit-border-radius: 3px;
@@ -227,18 +229,12 @@
 .selectize-dropdown {
   position: absolute;
   z-index: 10;
-  border: 1px solid #d0d0d0;
-  /*background: #ffffff;*/
+  border: 1px solid $bg-p;
   margin: -1px 0 0 0;
   border-top: 0 none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-/*  -webkit-border-radius: 0 0 3px 3px;
-  -moz-border-radius: 0 0 3px 3px;
-  border-radius: 0 0 3px 3px;*/
+
+  box-sizing : border-box;
+  box-shadow : 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
@@ -246,9 +242,6 @@
 }
 .selectize-dropdown [data-selectable] .highlight {
   background: rgba(125, 168, 208, 0.2);
-/*  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;*/
 }
 .selectize-dropdown [data-selectable],
 .selectize-dropdown .optgroup-header {
@@ -286,18 +279,18 @@
   cursor: text;
 }
 .selectize-control.single .selectize-input:after {
-  content: ' ';
-  // display: none;
-  position: absolute;
-  opacity: 0.6;
-  top: 50%;
-  right: 10px;
-  margin-top: -2px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 5px 0 5px;
-  border-color: #808080 transparent transparent transparent;
+  content      : ' ';
+  //           display   : none;
+  position     : absolute;
+  opacity      : 0.6;
+  top          : 50%;
+  right        : 10px;
+  margin-top   : -2px;
+  width        : 0;
+  height       : 0;
+  border-style : solid;
+  border-width : 5px 5px 0 5px;
+  border-color : #808080 transparent transparent transparent;
 }
 .selectize-control.single .selectize-input.dropdown-active:after {
   margin-top: -2px;
@@ -327,14 +320,14 @@
         padding-left: 65px;
     }
     .selectize-input {
-        color: #fff;
-        border: 0;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        // height: $propertyGroupHeight;
-        height: 100%;
+        color           : #eee;
+        border          : 0;
+        box-sizing      : border-box;
+        -moz-box-sizing : border-box;
+        // height       : $propertyGroupHeight;
+        height          : 100%;
         &.focus {
-            background-color: #424242;
+            background-color : darken($selection-bg, 5%);
         }
         &.disabled {
             color: #555;
@@ -350,11 +343,13 @@
         }
     }
     .selectize-dropdown {
-        background-color: #373737;
-        color: #9d9d97;
-        border: 0;
+        background-color : darken($bg-p,5%);
+        color            : #9d9d97;
+        border           : 0;
+        border-top       : 1px solid #000;
         [data-selectable], .optgroup-header {
-            padding: 10px;
+            padding : 4px 9px;
+            margin  : 5px;
         }
         &.loading {
           height: 145px !important;
@@ -370,8 +365,11 @@
                 color: #fff;
             }
             .active {
-                background-color: #363644;
-                color: #fff;
+                border           : 1px solid $light-p-2;
+                border-radius    : 2px;
+                margin           : 4px;
+                background-color : $dark-p-2;
+                color            : #fff;
             }
         }
     }
@@ -407,8 +405,11 @@
 
 .selection {
     width: 100%;
-    background-color: #27272b;
+    background-color: $selection-bg;
     border: 0;
+    &::selection {
+      background: $base-b !important;
+    }
 }
 .ip_container {
     .ip_octet {
@@ -430,18 +431,21 @@
         }
     }
 }
+
 input.selection, textarea.selection {
-    color           : #fff;
+    color           : #eee;
     padding         : 8px 10px;
     box-sizing      : border-box;
     -moz-box-sizing : border-box;
     margin          : 0;
     font-size       : 12px;
+
     @include font-mono;
 
     &:focus {
-        background-color: #424242;
-        outline: none;
+        background-color : darken($selection-bg, 5%);
+        outline          : none;
+        color            : #fff;
     }
     &[disabled] {
         color: #555;
@@ -473,11 +477,7 @@ input.selection, textarea.selection {
     -moz-transition-property: opacity background;
     -o-transition-property: opacity background;
     transition-property: opacity background;
-    .switch-input {
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
+
     .switch-label {
         position: relative;
         display: block;

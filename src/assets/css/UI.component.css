@@ -30,7 +30,6 @@
 
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
-  font-weight: 300;
   color: #acacc6;
   font-size: 14px; }
 
@@ -63,6 +62,12 @@ code {
 
 pre {
   background: #000; }
+
+.mg20 {
+  margin: 20px; }
+
+.bd3 {
+  border-radius: 3px; }
 
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
@@ -778,7 +783,7 @@ pre {
   padding: 5px 8px;
   display: inline-block;
   width: 100%;
-  /*overflow: hidden;*/
+  /*overflow         : hidden;*/
   position: relative;
   z-index: 1;
   -webkit-box-sizing: border-box;
@@ -873,28 +878,18 @@ pre {
 .selectize-dropdown {
   position: absolute;
   z-index: 10;
-  border: 1px solid #d0d0d0;
-  /*background: #ffffff;*/
+  border: 1px solid #202027;
   margin: -1px 0 0 0;
   border-top: 0 none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  /*  -webkit-border-radius: 0 0 3px 3px;
-    -moz-border-radius: 0 0 3px 3px;
-    border-radius: 0 0 3px 3px;*/ }
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4); }
 
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
   /*overflow: hidden;*/ }
 
 .selectize-dropdown [data-selectable] .highlight {
-  background: rgba(125, 168, 208, 0.2);
-  /*  -webkit-border-radius: 1px;
-    -moz-border-radius: 1px;
-    border-radius: 1px;*/ }
+  background: rgba(125, 168, 208, 0.2); }
 
 .selectize-dropdown [data-selectable],
 .selectize-dropdown .optgroup-header {
@@ -965,13 +960,13 @@ pre {
   .selectize-control.bool .selectize-input {
     padding-left: 65px; }
   .selectize-control .selectize-input {
-    color: #fff;
+    color: #eee;
     border: 0;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     height: 100%; }
     .selectize-control .selectize-input.focus {
-      background-color: #424242; }
+      background-color: #1b1b1e; }
     .selectize-control .selectize-input.disabled {
       color: #555;
       background-color: #27272b; }
@@ -982,11 +977,13 @@ pre {
     .selectize-control .selectize-input div {
       padding: 2px; }
   .selectize-control .selectize-dropdown {
-    background-color: #373737;
+    background-color: #151519;
     color: #9d9d97;
-    border: 0; }
+    border: 0;
+    border-top: 1px solid #000; }
     .selectize-control .selectize-dropdown [data-selectable], .selectize-control .selectize-dropdown .optgroup-header {
-      padding: 10px; }
+      padding: 4px 9px;
+      margin: 5px; }
     .selectize-control .selectize-dropdown.loading {
       height: 145px !important; }
       .selectize-control .selectize-dropdown.loading .selectize-dropdown-content {
@@ -996,7 +993,10 @@ pre {
     .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
       color: #fff; }
     .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
-      background-color: #363644;
+      border: 1px solid #51568e;
+      border-radius: 2px;
+      margin: 4px;
+      background-color: #1d1e29;
       color: #fff; }
 
 .selectize-control.multi .selectize-input > div {
@@ -1024,6 +1024,8 @@ pre {
   width: 100%;
   background-color: #27272b;
   border: 0; }
+  .selection::selection {
+    background: #4a90e2 !important; }
 
 .ip_container .ip_octet {
   width: 12%;
@@ -1042,7 +1044,7 @@ pre {
     text-align: left; }
 
 input.selection, textarea.selection {
-  color: #fff;
+  color: #eee;
   padding: 8px 10px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1050,8 +1052,9 @@ input.selection, textarea.selection {
   font-size: 12px;
   font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
   input.selection:focus, textarea.selection:focus {
-    background-color: #424242;
-    outline: none; }
+    background-color: #1b1b1e;
+    outline: none;
+    color: #fff; }
   input.selection[disabled], textarea.selection[disabled] {
     color: #555; }
 
@@ -1079,10 +1082,6 @@ input.selection, textarea.selection {
   -moz-transition-property: opacity background;
   -o-transition-property: opacity background;
   transition-property: opacity background; }
-  .switcher .switch-input {
-    position: absolute;
-    top: 0;
-    left: 0; }
   .switcher .switch-label {
     position: relative;
     display: block;

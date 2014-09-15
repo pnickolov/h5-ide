@@ -1,5 +1,6 @@
-define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/oskp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js'],
-( Design, CloudResources, Backbone, _, $, constant, toolbar_modal, modalplus, template, upload, lang )->
+define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/oskp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter'],
+( Design, CloudResources, Backbone, _, $, constant, toolbar_modal, modalplus, template, upload, lang, JsonExporter )->
+  download = JsonExporter.download
   Backbone.View.extend {
     __needDownload: false
     __upload: null
@@ -234,10 +235,10 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       if not invalid
         keyName = @M$( '#create-kp-name' ).val()
         @switchAction 'processing'
-        @collection.create( {keyName} ).save()
+        @collection.create( {name: keyName} ).save()
         .then (res) ->
           that.needDownload true
-          that.genDownload "#{res.attributes.keyName}.pem", res.attributes.keyMaterial
+          that.genDownload "#{res.attributes.name}.pem", res.attributes.private_key
           that.switchAction 'download'
           that.M$( '.before-create' ).hide()
           that.M$( '.after-create' ).find( 'span' ).text( res.attributes.keyName ).end().show()
@@ -258,7 +259,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       @switchAction 'processing'
       that = @
       _.each checked, ( c ) =>
-        @collection.findWhere(keyName: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
+        @collection.findWhere(name: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
     import: ( invalid ) ->
       that = @
       if not invalid
@@ -272,7 +273,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
           return
 
 
-        @collection.create( {keyName:keyName, keyData: keyContent}).save()
+        @collection.create( {name:keyName, public_key: keyContent}).save()
         .then (res) ->
           notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED keyName
           that.cancel()

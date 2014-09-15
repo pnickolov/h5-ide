@@ -6,6 +6,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSPORT
     newNameTmpl : "Port-"
 
+    initialize: ()->
+      console.log "Initializing Port...."
+      if @owner() and @owner().type is constant.RESTYPE.OSSERVER
+        @.listenTo @owner(), 'destroy', =>
+          @destroy()
+
     defaults :
       ip : ""
       macAddress : ""

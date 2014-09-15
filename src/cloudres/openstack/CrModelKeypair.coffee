@@ -18,17 +18,17 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
     doCreate : ()->
       self = @
       promise = ApiRequest("os_keypair_Create", {
-        region_name : @getCollection().region()
-        keypair_name    : @get("name")
-        key_data    : @get("public_key")
+        region : @getCollection().region()
+        keypair_name : @get("name")
+        public_key   : @get("public_key")
       })
 
       promise.then ( res )->
         console.log res
         try
-          res = res.CreateKeyPairResponse || res.ImportKeyPairResponse
+          res = res.keypair
           self.set res
-          keyName = res.keyName
+          keyName = res.name
         catch e
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid data." )
 
@@ -38,7 +38,9 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
 
 
     doDestroy : ()->
-      #TO-DO
-      null
+      ApiRequest("os_keypair_Delete", {
+        region : @getCollection().region()
+        keypair_name: @get("id")
+      })
 
   }

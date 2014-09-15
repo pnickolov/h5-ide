@@ -36,7 +36,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     create : ()->
 
       m = @model
-      if @model.get("isEmbedded") then return false
+      console.assert not @model.isEmbedded()
 
       svg = @canvas.svg
 

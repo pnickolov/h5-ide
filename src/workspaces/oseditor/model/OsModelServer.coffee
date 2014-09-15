@@ -50,10 +50,6 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         cached.os_distro      = image.os_distro
         cached.architecture   = image.architecture
       null
-    remove: ->
-      # Hack: remove EmbedPort when remove server.
-      @embedPort().remove()
-      ComplexResModel.prototype.remove.call this
 
     getImage : ()->
       image = CloudResources( constant.RESTYPE.OSIMAGE, @design().region() ).get( @get("imageId") )

@@ -18,9 +18,9 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       new Asso( @, options.pool )
       return
 
-
-    embedPort  : ()-> @connectionTargets("OsPortUsage")[0]
     isAttached : ()-> true
+    isVisual   : ()-> true
+    isEmbedded : ()-> false
 
     serialize : ()->
       {

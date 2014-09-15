@@ -16,8 +16,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     isVisual : ()-> !@isEmbedded()
     isEmbedded : ()->
-      if not @owner() then return false
-      @owner().embedPort() is @
+      if not @parent() then return false
+      @owner() and @owner().embedPort() is @
 
 
     setFloatingIp : ( hasFip )->
@@ -48,6 +48,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             mac_address     : @get("macAddress")
             security_groups : @connectionTargets("OsSgAsso").map ( sg )-> sg.createRef("id")
             network_id      : subnet.parent().createRef("id")
+            device_id       : if @owner() then @owner().createRef("id") else ""
             fixed_ips       : [{
               subnet_id  : subnet.createRef("id")
               ip_address : @get("ip")

@@ -8,7 +8,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     type : constant.RESTYPE.OSPOOL
 
     parentType  : [ constant.RESTYPE.OSSUBNET ]
-    defaultSize : [8,8]
+    defaultSize : [17,8]
 
     portPosMap : {
       "listener" : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]

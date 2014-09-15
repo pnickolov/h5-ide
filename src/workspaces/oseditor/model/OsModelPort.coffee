@@ -7,7 +7,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     newNameTmpl : "Port-"
 
 
-    defaults :
+    defaults: ()->
       ip : ""
       macAddress : ""
 

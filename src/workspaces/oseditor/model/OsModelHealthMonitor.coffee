@@ -6,7 +6,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     type : constant.RESTYPE.OSHM
     newNameTmpl : "Pool-"
 
-    defaults:
+    defaults: ()->
       type            : 'PING'
       delay           : 30
       timeout         : 30

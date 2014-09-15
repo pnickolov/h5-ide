@@ -4,7 +4,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
   ConnectionModel.extend {
     type : "OsPoolMembership"
 
-    defaults:
+    defaults: ()->
       port    : 80
       weight  : 1
       appId   : ""

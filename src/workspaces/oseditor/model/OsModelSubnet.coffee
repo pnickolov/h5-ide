@@ -6,7 +6,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
     type : constant.RESTYPE.OSSUBNET
     newNameTmpl : "Subnet-"
 
-    defaults :
+    defaults: ()->
       public : false
       cidr   : ""
       dhcp   : true

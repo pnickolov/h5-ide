@@ -5,7 +5,7 @@ define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, c
 
     type : constant.RESTYPE.OSEXTNET
 
-    defaults :
+    defaults: ()->
       name : "ExtNetwork"
 
     getResourceId : ()->

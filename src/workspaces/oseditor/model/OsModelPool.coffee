@@ -6,7 +6,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSPOOL
     newNameTmpl : "Pool-"
 
-    defaults:
+    defaults: ()->
       protocol: 'HTTP'
       method: 'ROUND_ROBIN'
 

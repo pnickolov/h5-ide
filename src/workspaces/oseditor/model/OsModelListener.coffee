@@ -6,7 +6,7 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
     type : constant.RESTYPE.OSLISTENER
     newNameTmpl : "Listener-"
 
-    defaults:
+    defaults: ()->
       protocol : 'HTTP'
       port     : 80
       limit    : 1000

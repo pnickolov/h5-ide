@@ -6,56 +6,29 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     type : constant.RESTYPE.OSSERVER
     newNameTmpl : "Server-"
 
-    #    Server sample json
-    #    =====================
-    #    "server-id": {
-    #      "type": "OS::Nova::Server",
-    #      "uid": "server-id",
-    #      "resource": {
-    #        "name": "helloworldserver",
-    #        "flavor": "10",
-    #        "image": "03f66db6-a74f-40b5-9933-4a19352083da",
-    #        "meta": "",
-    #        "userdata": "",
-    #        "availabilityZone": "",
-    #        "blockDeviceMapping" :[],
-    #        "key_name": "testkp",
-    #        "NICS":[
-    #          {
-    #            "port-id": "@{port-id.resource.id}"
-    #          }
-    #        ],
-    #        "adminPass" : "12345678",
-    #        "id" : ""
-    #      }
-    #    }
-
     defaults : ()->
-      userData: "User Data Sample"
-      meta: ""
-      NICS: []
-      adminPass: "xxxxxx"
-      keypair: "$DefaultKeyPair"
-      blockDeviceMapping: []
-      flavorId: "10"
-      availabilityZone: ""
-      imageId: ""
-      credential: "keypair"
-      volumeList : []
+      userData         : "User Data Sample"
+      meta             : ""
+      adminPass        : "xxxxxx"
+      keypair          : "$DefaultKeyPair"
+      flavorId         : "10"
+      availabilityZone : ""
+      imageId          : ""
+      credential       : "keypair"
 
     initialize : ( attr, option )->
       option = option || {}
       console.assert( attr.imageId, "Invalid attributes when creating OsModelServer", attr )
       @setImage( attr.imageId )
       @setCredential(attr)
-      NICS = @get('NICS')
-      if not NICS.length
-        # create Server default port
-        Port = Design.modelClassForType( constant.RESTYPE.OSPORT )
-        newPort = new Port({name: @.get('name')+"-port", isEmbedded: true, ip: "10.0.0.1"})
+
+      if option.createByUser
+        # Create a port if the server is created by user.
+        PortModel = Design.modelClassForType( constant.RESTYPE.OSPORT )
         PortUsage = Design.modelClassForType( "OsPortUsage" )
-        newPortUsage = new PortUsage(@, newPort)
-        @set("NICS", [{"port-id": "@{"+newPort.get("id")+".resource.id"}])
+
+        newPort = new PortModel({name: @get('name')+"-port"})
+        new PortUsage(@, newPort)
       null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]
@@ -94,10 +67,10 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
           flavor    : @get('flavorId')
           image     : @get('imageId')
           meta      : @get('meta')
-          NICS      : @get('NICS')
+          NICS      : @connectionTargets( "OsPortUsage" ).map ( port )-> { "port-id" : port.createRef("id") }
           userdata  : @get('userData')
           availabilityZone   : @get('availabilityZone')
-          blockDeviceMapping : @get('blockDeviceMapping')
+          blockDeviceMapping : []
 
       if @get('credential') is "keypair"
         component.resource.key_name = @get("keypair")
@@ -115,10 +88,11 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
-        imageId : data.resource.image
-        adminPass: data.resource.adminPass
-        keypair : data.resource.key_name
-        NICS : data.resource.NICS
+
+        imageId   : data.resource.image
+        adminPass : data.resource.adminPass
+        keypair   : data.resource.key_name
+
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       })

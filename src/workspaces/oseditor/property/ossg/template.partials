@@ -1,5 +1,5 @@
 <!-- {{stack}} -->
-<div class="option-group-head expand">
+<div class="option-group-head">
     Security Group
 </div>
 <div class="option-group">
@@ -12,11 +12,31 @@
         <input data-target="name" class="selection string" value="{{name}}"/>
     </section>
 </div>
-<div class="option-group-head expand">
-    Rule
+<div class="option-group-head expand">Rule ()</div>
+<div class="btn-group">
+    <button class="icon-unknown t-m-btn active" data-btn="ingress">Ingress ()</button>
+    <button class="icon-unknown t-m-btn" data-btn="egress">Egress ()</button>
+</div>
+<div class="os-sg-rule-list-container">
+    <ul class="head-list">
+        <li class="head">Protocol</li>
+        <li class="head">Port/Code</li>
+        <li class="head">Source</li>
+    </ul>
+    <div class="rule-list">
+        <select data-target="" class="selection option" value="TCP" >
+            <option value="TCP">TCP</option>
+            <option value="UDP">UDP</option>
+            <option value="ICMP">ICMP</option>
+            <option value="Custom">Custom</option>
+            <option value="All">All</option>
+        </select>
+        <select data-target="" class="selection option" value="a" ></select>
+        <select data-target="" class="selection option" value="a" ></select>
+    </div>
 </div>
 <div class="option-group"></div>
-<div class="option-group-head expand">
+<div class="option-group-head">
     Member ()
 </div>
 <div class="option-group"></div>

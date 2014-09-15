@@ -23,13 +23,7 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-        selectTpl:
-
-            button: () ->
-
-                return '<div>Create New Security Group...</div>'
-
     }, {
-        handleTypes: [ 'sglist' ]
+        handleTypes: [ 'sgrule' ]
         handleModes: [ 'stack', 'appedit' ]
     }

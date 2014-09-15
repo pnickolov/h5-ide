@@ -4,7 +4,8 @@ define [
     './template'
     'CloudResources'
     '../ossglist/view'
-], ( constant, OsPropertyView, template, CloudResources, SgListView ) ->
+    '../ossg/view'
+], ( constant, OsPropertyView, template, CloudResources, SgListView, SgView ) ->
 
     OsPropertyView.extend {
 
@@ -26,7 +27,10 @@ define [
             sgListView = new SgListView()
             @$el.append sgListView.render().el
             @selectTpl = sgListView.selectTpl
-            
+
+            sgView = new SgView()
+            @$el.append sgView.render().el
+
             @
 
         updateAttribute: (event)->

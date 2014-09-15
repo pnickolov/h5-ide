@@ -1424,6 +1424,59 @@ a.btn-primary {
   text-decoration: underline;
   background: none; }
 
+button {
+  float: left;
+  display: inline-block;
+  padding: 8px;
+  line-height: 18px;
+  height: 34px;
+  position: relative; }
+  button:before {
+    margin-right: 5px;
+    float: left;
+    display: inline-block;
+    margin-top: 1px; }
+  button.active {
+    background: #001324;
+    color: #fff !important; }
+    button.active:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0px;
+      content: '';
+      border-bottom: 2px solid #0D49CA;
+      width: 100%;
+      z-index: 80; }
+  button.icon-edit {
+    font-size: 14px !important; }
+
+.btn-group button {
+  cursor: pointer;
+  color: #999;
+  border-right: 1px solid #131313;
+  -webkit-transition: background .2s;
+  -moz-transition: background .2s;
+  -ms-transition: background .2s;
+  -o-transition: background .2s;
+  transition: background .2s; }
+  .btn-group button:hover {
+    color: #ccc;
+    background: #161616;
+    color: #9C6DC0; }
+  .btn-group button.active:hover {
+    background: #001324;
+    color: #fff !important; }
+  .btn-group button.disabled, .btn-group button[disabled] {
+    pointer-events: none;
+    color: #555; }
+
+.btn-blue {
+  border-radius: 0; }
+
+.icon-refresh {
+  float: right; }
+
 .link-red {
   color: #D64442; }
 

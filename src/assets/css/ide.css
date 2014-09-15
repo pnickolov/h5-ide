@@ -7111,7 +7111,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9223,6 +9224,7 @@ g.shadow {
 
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
+  width: 500px;
   /* property component style */ }
   #OpsEditor .OEPanelRight.property .panel-body {
     font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
@@ -9318,6 +9320,55 @@ g.shadow {
       text-align: center;
       padding-top: 20px;
       float: left; }
+  #OpsEditor .OEPanelRight.property .btn-group button {
+    font-size: 12px;
+    width: 50%;
+    cursor: pointer;
+    color: #999;
+    border-right: 1px solid #131313;
+    float: left;
+    display: inline-block;
+    padding: 8px;
+    position: relative; }
+    #OpsEditor .OEPanelRight.property .btn-group button:before {
+      margin-right: 5px;
+      float: left;
+      display: inline-block;
+      margin-top: 1px; }
+    #OpsEditor .OEPanelRight.property .btn-group button.active {
+      background: #2c2f46;
+      color: #fff !important; }
+      #OpsEditor .OEPanelRight.property .btn-group button.active:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0px;
+        content: '';
+        border-bottom: 2px solid #0D49CA;
+        width: 100%;
+        z-index: 80; }
+    #OpsEditor .OEPanelRight.property .btn-group button:hover {
+      color: #ccc;
+      background: #161616;
+      color: #9C6DC0; }
+    #OpsEditor .OEPanelRight.property .btn-group button.active:hover {
+      background: #2c2f46;
+      color: #fff !important; }
+    #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled] {
+      pointer-events: none;
+      color: #555; }
+  #OpsEditor .OEPanelRight.property .os-sg-rule-list-container {
+    font-size: 12px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li {
+      float: left;
+      text-align: center;
+      width: 33%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      padding: 15px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection {
+      float: left;
+      width: 33%; }
 
 .dropdown-list-btn {
   display: block;

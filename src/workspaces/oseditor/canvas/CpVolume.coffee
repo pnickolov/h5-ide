@@ -13,7 +13,7 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
       CanvasPopup.prototype.initialize.apply this, arguments
 
       if @host
-        @listenTo @host, "change:volumeList", @render
+        @listenTo @host, "change:volume", @render
 
       # Watch Changes of volume name
       data = @models || []

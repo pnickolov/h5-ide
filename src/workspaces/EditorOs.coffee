@@ -24,6 +24,7 @@ define [
   "./oseditor/model/connection/OsPortUsage"
   "./oseditor/model/connection/OsRouterAsso"
   "./oseditor/model/connection/OsSgAsso"
+  "./oseditor/model/connection/OsVolumeUsage"
 
   "./oseditor/canvas/CeNetwork"
   "./oseditor/canvas/CeSubnet"

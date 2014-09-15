@@ -1,12 +1,29 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
 
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSVOL
     newNameTmpl : "Volume-"
 
-    getOwner : ()-> @get("owner")
+    constructor : ( attr, option )->
+      if attr.owner
+        owner = attr.owner
+        delete attr.owner
+
+      ComplexResModel.call this, attr, option
+
+      @attachTo( owner )
+      return
+
+    getOwner : ()-> @connectionTargets( "OsVolumeUsage" )[0]
+
+    attachTo : ( owner )->
+      if owner
+        VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )
+        new VolumeUsage( @, owner )
+
+      return
 
     serialize : ()->
       {
@@ -22,7 +39,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
             size        : @get("size")
             mount_point : @get("mountPoint")
             bootable    : @get("bootable")
-            server_id   : @get("owner").createRef("id")
+            server_id   : @connectionTargets( "OsVolumeUsage" )[0].createRef("id")
 
             display_description : @get("description")
             display_name        : @get("name")

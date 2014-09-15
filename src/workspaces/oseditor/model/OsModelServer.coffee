@@ -33,6 +33,8 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]
 
+    volumes : ()-> @connectionTargets("OsVolumeUsage")
+
     setCredential: (attr)->
       if attr.keypair
         @.set('credential', "keypair")

@@ -117,7 +117,7 @@ define [
           data.popup = new VolumePopup {
             attachment : hoverItem.el
             host       : model
-            models     : model.get("volumeList")
+            models     : model.volumes()
             canvas     : @
           }
 
@@ -152,22 +152,14 @@ define [
           @selectItem( data.hoverItem.el )
         return
 
-      # Avoid adding volume for existing LC.
-      if owner.type is constant.RESTYPE.LC and owner.get("appId")
-        notification "error", lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
-        return
-
       attr.owner = owner
-      if _.isString( attr.encrypted )
-        attr.encrypted = attr.encrypted is 'true'
-
-      VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
+      VolumeModel = Design.modelClassForType( constant.RESTYPE.OSVOL )
       v = new VolumeModel( attr )
 
       new VolumePopup {
         attachment    : data.hoverItem.el
         host          : owner
-        models        : owner.get("volumeList")
+        models        : owner.volumes()
         canvas        : @
         selectAtBegin : v
       }

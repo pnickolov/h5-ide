@@ -28,7 +28,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     addNewHm : ()->
       MonitorModel = Design.modelClassForType( constant.RESTYPE.OSHM )
       monitor = new MonitorModel()
-      @get("healthmonitors").push( monitor )
+      @get("healthMonitors").push( monitor )
 
       monitor
 

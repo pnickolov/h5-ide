@@ -12,11 +12,11 @@ define [
 
             "change [data-target]": "updateAttribute"
 
-            "select_dropdown_button_click .item-list": "addSG"
-            "click .item-list .item": "editSG"
+            "select_dropdown_button_click .item-list": "addItem"
+            "click .item-list .item": "editItem"
 
-            "select_item_add .item-list": "attachSG"
-            "select_item_remove .item-list": "unAttachSG"
+            "select_item_add .item-list": "attachItem"
+            "select_item_remove .item-list": "unAttachItem"
 
         initialize: (options) ->
 
@@ -72,13 +72,13 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-        addSG: (event) ->
+        addItem: (event) ->
 
             OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
             oSSGModel = new OSSGModel({})
             @refreshList()
 
-        editSG: (event) ->
+        editItem: (event) ->
 
             $target = $(event.currentTarget)
             sgModel = @getSelectSGModel($target)
@@ -95,12 +95,12 @@ define [
             sgModel.remove()
             @refreshList()
 
-        attachSG: (event, sgUID) ->
+        attachItem: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
             @targetModel.attachSG(sgModel)
 
-        unAttachSG: (event, sgUID) ->
+        unAttachItem: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
             @targetModel.unAttachSG(sgModel)

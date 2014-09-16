@@ -44,12 +44,6 @@ define [
         $(document.activeElement).filter("input, textarea").blur()
         @$( '.panel-body' ).html new subPanel( args ).render().el
 
-    showFloatPanel: ( dom, data ) ->
-        @$( '.panel-float' ).html dom if dom
-        @$( '.panel-float' ).removeClass 'hidden'
-
-    hideFloatPanel: () -> @$( '.panel-float' ).addClass 'hidden'
-
     scrollTo: ( className ) ->
         $container = @$ '.panel-body'
         $target = $( "section.#{className}" )
@@ -65,14 +59,20 @@ define [
 
         targetPanel = Panels[ panelName ]
         unless targetPanel then return
-
         if @hidden() then return
 
         @$el.removeClass( 'hide' )
+        @hideFloatPanel()
 
         @$el.prop 'class', "OEPanelRight #{panelName}"
         $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
         @renderSubPanel targetPanel, args
+
+    showFloatPanel: ( dom, data ) ->
+        @$( '.panel-float' ).html dom if dom
+        @$( '.panel-float' ).removeClass 'hidden'
+
+    hideFloatPanel: () -> @$( '.panel-float' ).addClass 'hidden'
 
     show: ->
         @$el.removeClass 'hidden'

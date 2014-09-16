@@ -17,6 +17,7 @@ define [
 
             "select_item_add .item-list": "attachItem"
             "select_item_remove .item-list": "unAttachItem"
+            "click .item-list .item .item-remove": "unAttachItemClick"
 
         initialize: (options) ->
 
@@ -85,6 +86,7 @@ define [
 
             OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
             oSSGModel = new OSSGModel({})
+            @attachItem(null, oSSGModel.get('id'))
             @refreshList()
 
         editItem: (event) ->
@@ -94,15 +96,7 @@ define [
 
             sgView = new SgView({sgModel: sgModel})
             @showFloatPanel(sgView.render().el)
-            return false
-
-        removeSG: (event) ->
-
-            $target = $(event.currentTarget)
-            $sgItem = $target.parents('.item')
-            sgModel = @getSelectSGModel($sgItem)
-            sgModel.remove()
-            @refreshList()
+            # return false
 
         attachItem: (event, sgUID) ->
 
@@ -113,6 +107,15 @@ define [
 
             sgModel = Design.instance().component(sgUID)
             @targetModel.unAttachSG(sgModel)
+
+        unAttachItemClick: (event) ->
+
+            $target = $(event.currentTarget)
+            $sgItem = $target.parents('.item')
+            sgModel = @getSelectSGModel($sgItem)
+            @targetModel.unAttachSG(sgModel)
+            @refreshList()
+            return false
 
     }, {
         handleTypes: [ 'ossglist' ]

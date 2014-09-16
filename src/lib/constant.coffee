@@ -89,6 +89,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSSUBNET   : "OS::Neutron::Subnet"
         OSPORT     : "OS::Neutron::Port"
         OSSG       : "OS::Neutron::SecurityGroup"
+        OSSGRULE   : "OS::Neutron::SecurityGroupRule"
         OSRT       : "OS::Neutron::Router"
         OSFIP      : "OS::Neutron::FloatingIP"
         OSLISTENER : "OS::Neutron::VIP"

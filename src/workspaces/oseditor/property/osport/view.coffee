@@ -16,9 +16,9 @@ define [
 
             @sgListView = new SgListView {
                 panel: @panel,
-                portModel: @model
+                targetModel: @model
             }
-            
+
             @selectTpl = @sgListView.selectTpl
 
         render: ->
@@ -33,7 +33,6 @@ define [
                 @$el.html template.unattached(value)
 
             # append sglist
-
             @$el.append @sgListView.render().el
 
             @

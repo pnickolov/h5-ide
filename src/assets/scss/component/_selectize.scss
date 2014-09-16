@@ -543,7 +543,7 @@ input.selection, textarea.selection {
 }
 
 // sg list
-.selection.item-list.multi {
+.selection.item-list {
     .selectize-input > div {
         padding: 5px 10px;
         width: 92%;
@@ -559,7 +559,7 @@ input.selection, textarea.selection {
             float: left;
         }
     }
-    &.selectize-dropdown {
+    .selectize-dropdown {
         .selectize-dropdown-button {
             position: absolute;
             top: 0;

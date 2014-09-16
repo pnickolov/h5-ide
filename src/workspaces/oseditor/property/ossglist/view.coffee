@@ -20,7 +20,7 @@ define [
 
         initialize: (options) ->
 
-            @portModel = options.portModel
+            @targetModel = options.targetModel
 
             @selectTpl =
 
@@ -98,12 +98,12 @@ define [
         attachSG: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
-            @portModel.attachSG(sgModel)
+            @targetModel.attachSG(sgModel)
 
         unAttachSG: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
-            @portModel.unAttachSG(sgModel)
+            @targetModel.unAttachSG(sgModel)
 
     }, {
         handleTypes: [ 'ossglist' ]

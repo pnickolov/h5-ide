@@ -21,7 +21,7 @@ define [
         @mode    = Design.instance().mode()
         @uid     = options.uid
         @type    = options.type
-        @parent  = options.parent
+        @panel   = options.panel
 
         @model      = Design.instance().component @uid
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
@@ -31,7 +31,7 @@ define [
 
         that = @
 
-        propertyView = @propertyView = new @viewClass( model: @model, parent: @ )
+        propertyView = @propertyView = new @viewClass( model: @model, propertyPanel: @, panel: @panel )
 
         bindSelection(@$el, propertyView.selectTpl)
 
@@ -52,8 +52,8 @@ define [
         else
             @$el.html PropertyPanelTpl.title { title: title }
 
-    showFloatPanel: -> @parent.showFloatPanel.apply @parent, arguments
-    hideFloatPanel: -> @parent.hideFloatPanel.apply @parent, arguments
+    showFloatPanel: -> @panel.showFloatPanel.apply @panel, arguments
+    hideFloatPanel: -> @panel.hideFloatPanel.apply @panel, arguments
 
     updateRightPanelOption : ( event ) ->
       $toggle = $(event.currentTarget)

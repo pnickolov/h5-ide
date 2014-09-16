@@ -14,7 +14,7 @@ define [
 
         initialize: ->
 
-            @sgListView = new SgListView { parent: @parent }
+            @sgListView = new SgListView { panel: @panel }
             @selectTpl = @sgListView.selectTpl
 
         render: ->

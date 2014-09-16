@@ -25,6 +25,28 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           ports.push p
       ports
 
+    addNewHm : ()->
+      MonitorModel = Design.modelClassForType( constant.RESTYPE.OSHM )
+      monitor = new MonitorModel()
+      @get("healthmonitors").push( monitor )
+
+      monitor
+
+    getHm : ( id )->
+      for hm in @get("healthMonitors")
+        if hm.id is id
+          return hm
+
+      null
+
+    removeHm : ( idOrModel )->
+      for h, idx in @get("healthMonitors")
+        if h is idOrModel or h.id is idOrModel
+          @get("healthMonitors").splice( idx, 1 )
+          break
+
+      return
+
     remove : ()->
       for hm in @get("healthMonitors")
         hm.remove()

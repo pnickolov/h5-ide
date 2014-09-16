@@ -27,6 +27,15 @@
     img.property-os-image-icon{
         display: inline-block;
         vertical-align: baseline;
+        background: #FFF;
+        padding: 5px 0;
+        border-radius: 3px;
+        margin: 0px 2px -4px -2px;
+    }
+
+    img.property-os-image-value{
+      vertical-align: middle;
+      margin: -2px 2px -2px 2px;
     }
 
     p.property-os-image-text {

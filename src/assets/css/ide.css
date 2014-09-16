@@ -9243,7 +9243,14 @@ g.shadow {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property img.property-os-image-icon {
     display: inline-block;
-    vertical-align: baseline; }
+    vertical-align: baseline;
+    background: #FFF;
+    padding: 5px 0;
+    border-radius: 3px;
+    margin: 0px 2px -4px -2px; }
+  #OpsEditor .OEPanelRight.property img.property-os-image-value {
+    vertical-align: middle;
+    margin: -2px 2px -2px 2px; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text {
     display: inline-block;
     color: #DEDEDE;

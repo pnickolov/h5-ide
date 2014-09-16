@@ -295,8 +295,6 @@ define [
                 canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
 
         canStop.on "confirm", ()->
-          console.log "Stop...."
-          return false
           canStop.close()
           app.stop().fail ( err )->
             console.log err

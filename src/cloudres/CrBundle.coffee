@@ -11,6 +11,7 @@ define [
   "./openstack/CrClnSharedRes"
   "./openstack/CrClnImage"
   "./openstack/CrClnExtNetwork"
+  "./openstack/CrClnCommonRes"
 ], ( CloudResources )->
   ### env:dev ###
   require ["./cloudres/aws/CloudImportVpc"], ()->

@@ -19,7 +19,13 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getHm: -> @get( 'healthMonitor' )
 
     ports : ()->
-      @connectionTargets("")
+      ports = []
+      for p in @connectionTargets("OsPoolMembership")
+        if p.type is constant.RESTYPE.OSSERVER
+          ports.push p.embedPort()
+        else
+          ports.push p
+      ports
 
     remove : ()->
       @getHm().remove()

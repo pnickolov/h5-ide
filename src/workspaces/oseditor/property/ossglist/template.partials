@@ -4,8 +4,8 @@
 </div>
 <section class="group">
     <label class="name">Security Group</label>
-    <select class="selection option mutil item-list" value="nop,abc,def" data-button-tpl="button" data-item-tpl="sgItem">
-        {{#each sgListData}}
+    <select class="selection option mutil item-list" value="{{attachedSGList}}" data-button-tpl="button" data-item-tpl="sgItem">
+        {{#each sgList}}
         <option value="{{uid}}">{{name}}</option>
         {{/each}}
     </select>

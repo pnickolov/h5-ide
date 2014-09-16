@@ -44,19 +44,28 @@ define [
         refreshList: () ->
 
             OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
-            sgModels = OSSGModel.allObjects()
 
-            sgListData = []
-            _.each sgModels, (sgModel) ->
+            # all sg
+            allSGModels = OSSGModel.allObjects()
+            sgList = []
+            _.each allSGModels, (sgModel) ->
                 sgName = sgModel.get('name')
                 sgUID = sgModel.get('id')
-                sgListData.push({
+                sgList.push({
                     name: sgName,
                     uid: sgUID
                 })
 
+            # attached sg
+            attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+            attachedSGList = []
+            _.each attachedSGModels, (sgModel) ->
+                sgUID = sgModel.get('id')
+                attachedSGList.push(sgUID)
+
             @$el.html template.stack({
-                sgListData: sgListData
+                sgList: sgList
+                attachedSGList: attachedSGList.join(',')
             })
 
         getSelectSGModel: ($sgItem) ->

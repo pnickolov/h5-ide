@@ -16,7 +16,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     isVisual : ()-> !@isEmbedded()
     isEmbedded : ()->
-      if not @parent() then return false
+      if not @parent() then return true
       @owner() and @owner().embedPort() is @
 
     attachSG : (sgModel) ->

@@ -54,6 +54,8 @@ define [
         $container.animate scrollTop: newTop
 
     open: ( panelName, args = __openArgs ) ->
+        lastPanel = __currentPanel
+        lastArgs = _.extend {}, __openArgs
         __openArgs = args
         __currentPanel = panelName
 
@@ -62,13 +64,13 @@ define [
         if @hidden() then return
 
         @$el.removeClass( 'hide' )
-        @hideFloatPanel()
+        @hideFloatPanel() unless lastPanel is __currentPanel and _.isEqual( lastArgs, args )
 
         @$el.prop 'class', "OEPanelRight #{panelName}"
         $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
         @renderSubPanel targetPanel, args
 
-    showFloatPanel: ( dom, data ) ->
+    showFloatPanel: ( dom ) ->
         @$( '.panel-float' ).html dom if dom
         @$( '.panel-float' ).removeClass 'hidden'
 
@@ -87,9 +89,9 @@ define [
     hidden: -> not @shown()
 
     openResource: ( args ) -> @open 'property', args
-    openProperty: ( args ) -> @open 'property', args
     openState   : ( args ) -> @open 'state', args
     openCurrent : ( args ) -> @open __currentPanel, args
+    openProperty: ( args ) -> @open 'property', args
     openConfig  : ( args ) ->
         @open 'config', args
         __openArgs = __defaultArgs

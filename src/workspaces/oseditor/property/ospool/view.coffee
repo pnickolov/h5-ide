@@ -2,27 +2,35 @@ define [
   'constant'
   '../OsPropertyView'
   './stack'
+  '../oshmlist/view'
 
-], ( constant, OsPropertyView, template ) ->
+], ( constant, OsPropertyView, template, HmlistView ) ->
 
     OsPropertyView.extend {
         events:
             'change [data-target]': 'updateAttribute'
 
         initialize: ->
-            @hm = @model.getHm()
             @memConn = @model.connections 'OsPoolMembership'
+            @hmlistView = new HmlistView( {
+                panel: @panel,
+                targetModel: @model
+            } )
+            @selectTpl = @hmlistView.selectTpl
 
         render: ->
             data = @model.toJSON()
-            data.hm = @hm.toJSON()
             data.mems = _.map @memConn, ( mc ) ->
                 json = mc.toJSON()
                 json.osport = mc.getPort().toJSON()
                 json
 
             @$el.html template data
+            @renderHmlist()
+
             @
+
+        renderHmlist: -> @$( '.pool-details' ).after @hmlistView.render().el
 
         getModelForUpdateAttr: ( e ) ->
             $target = $ e.currentTarget
@@ -33,6 +41,10 @@ define [
                 when 'hm' then return @hm
                 when 'mem' then return @memConn[ $target.data( 'index' ) ]
                 else return @model
+
+        remove: ->
+            @hmlistView?.remove()
+            OsPropertyView.prototype.remove.apply @, arguments
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

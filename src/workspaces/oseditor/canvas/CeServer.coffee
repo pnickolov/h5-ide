@@ -101,7 +101,6 @@ define [
 
     render : ()->
       m = @model
-      CloudResources(constant.RESTYPE.OSSNAP, m.design().region()).fetchForce()
       # Update Label
       CanvasManager.setLabel @, @$el.children(".node-label")
       # Update Image

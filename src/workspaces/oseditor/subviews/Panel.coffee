@@ -44,7 +44,7 @@ define [
         $(document.activeElement).filter("input, textarea").blur()
         @$( '.panel-body' ).html new subPanel( args ).render().el
 
-    showFloatPanel: ( dom ) ->
+    showFloatPanel: ( dom, data ) ->
         @$( '.panel-float' ).html dom if dom
         @$( '.panel-float' ).removeClass 'hidden'
 
@@ -106,7 +106,3 @@ define [
     __scrollTo: ( e ) ->
         targetClassName = $( e.currentTarget ).data 'scrollTo'
         @scrollTo targetClassName
-
-
-
-

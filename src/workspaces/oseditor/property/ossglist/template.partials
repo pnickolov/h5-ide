@@ -12,4 +12,7 @@
 </section>
 
 <!-- {{sgitem}} -->
-<div class="sgitem">{{name}}<div class="icon-delete"></div></div>
+<div class="sgitem">
+    <span class="sgname">{{name}}</span>
+    <div class="icon-delete"></div>
+</div>

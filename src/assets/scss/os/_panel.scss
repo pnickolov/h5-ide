@@ -4,7 +4,7 @@
     width: 280px;
 
     .panel-float {
-        width: 280px;
+        width: 450px;
         position: absolute;
         top: 0;
         right: 280px;
@@ -79,5 +79,3 @@
 @import "panels/property-panel";
 @import "panels/config-panel";
 @import "panels/state-panel";
-
-

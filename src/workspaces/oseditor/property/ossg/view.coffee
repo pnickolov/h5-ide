@@ -3,7 +3,8 @@ define [
     '../OsPropertyView'
     './template'
     'CloudResources'
-], ( constant, OsPropertyView, template, CloudResources ) ->
+    'UI.selection'
+], ( constant, OsPropertyView, template, CloudResources, bindSelection ) ->
 
     OsPropertyView.extend {
 
@@ -12,9 +13,11 @@ define [
             "change [data-target]": "updateAttribute"
             "click .direction-switch .t-m-btn": "switchDirection"
 
-        initialize: ->
+        initialize: (options) ->
 
             that = @
+
+            that.sgModel = options.sgModel
 
             @selectTpl =
 
@@ -49,6 +52,7 @@ define [
 
         render: ->
 
+            bindSelection(@$el, @selectTpl)
             @$el.html template.stack()
             @
 
@@ -74,7 +78,14 @@ define [
             if (attr in ['protocol', 'port', 'source'])
                 rule = @getRuleValue($target)
                 if rule.protocol and rule.port and rule.source
-                    @model
+                    @sgModel.addRule({
+                        # direction:
+                        # portMin:
+                        # portMax:
+                        # protocol:
+                        # sg: null
+                        # ip:
+                    })
 
         getRuleValue: ($target) ->
 
@@ -95,6 +106,6 @@ define [
             }
 
     }, {
-        handleTypes: [ constant.RESTYPE.OSSG ]
+        handleTypes: [ 'ossg' ]
         handleModes: [ 'stack', 'appedit' ]
     }

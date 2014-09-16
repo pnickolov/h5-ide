@@ -7111,7 +7111,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9129,7 +9130,7 @@ g.shadow {
 .openstack .OEPanelRight {
   width: 280px; }
   .openstack .OEPanelRight .panel-float {
-    width: 280px;
+    width: 450px;
     position: absolute;
     top: 0;
     right: 280px;
@@ -9381,6 +9382,10 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 33%; }
+  #OpsEditor .OEPanelRight.property .sglist .sgitem .icon-delete {
+    float: right; }
+  #OpsEditor .OEPanelRight.property .sglist .sgitem .sgname {
+    float: left; }
 
 .dropdown-list-btn {
   display: block;

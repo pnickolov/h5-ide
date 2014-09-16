@@ -221,4 +221,12 @@
             }
         }
     }
+    .sglist .sgitem {
+        .icon-delete {
+            float: right;
+        }
+        .sgname {
+            float: left;
+        }
+    }
 }

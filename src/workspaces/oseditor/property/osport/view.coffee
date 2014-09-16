@@ -12,6 +12,11 @@ define [
 
             "change [data-target]": "updateAttribute"
 
+        initialize: ->
+
+            @sgListView = new SgListView { parent: @parent }
+            @selectTpl = @sgListView.selectTpl
+
         render: ->
 
             if @model.isAttached()
@@ -24,10 +29,8 @@ define [
                 @$el.html template.unattached(value)
 
             # append sglist
-            sgListView = new SgListView()
-            @$el.append sgListView.render().el
 
-            @selectTpl = sgListView.selectTpl
+            @$el.append @sgListView.render().el
 
             @
 

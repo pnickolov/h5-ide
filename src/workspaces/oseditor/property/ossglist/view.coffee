@@ -15,9 +15,7 @@ define [
             "click .sglist .sgitem": "editSG"
             "click .sglist .sgitem .icon-delete": "removeSG"
 
-        render: ->
-
-            @refreshList()
+        initialize: ->
 
             @selectTpl =
 
@@ -33,12 +31,10 @@ define [
 
                 sgOption: (data) ->
 
+        render: ->
+
+            @refreshList()
             @
-
-        renderSGEdit: () ->
-
-            sgView = new SgView()
-            @$el.append sgView.render().el
 
         updateAttribute: (event)->
 
@@ -53,12 +49,17 @@ define [
             oSSGModel = new OSSGModel({})
             @refreshList()
 
+        getSelectSGModel: ($sgItem) ->
+
+            sgId = $sgItem.data('value')
+            sgModel = Design.instance().component(sgId)
+            return sgModel
+
         removeSG: (event) ->
 
             $target = $(event.currentTarget)
             $sgItem = $target.parents('.sgitem')
-            sgId = $sgItem.data('value')
-            sgModel = Design.instance().component(sgId)
+            sgModel = @getSelectSGModel($sgItem)
             sgModel.remove()
             @refreshList()
 
@@ -83,10 +84,13 @@ define [
         editSG: (event) ->
 
             $target = $(event.currentTarget)
-            @renderSGEdit()
+            sgModel = @getSelectSGModel($target)
+
+            sgView = new SgView({sgModel: sgModel})
+            @showFloatPanel(sgView.render().el)
             return false
 
     }, {
-        handleTypes: [ 'sglist' ]
+        handleTypes: [ 'ossglist' ]
         handleModes: [ 'stack', 'appedit' ]
     }

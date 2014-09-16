@@ -3,10 +3,12 @@
     Port Details
 </div>
 <div class="option-group">
+    {{#if isPurePort}}
     <section class="group required">
         <label class="name">Name</label>
         <input data-target="name" class="selection string" value="{{name}}"/>
     </section>
+    {{/if}}
     <section class="group required">
         <label class="name">Fixed IP</label>
         <input data-target="ip" class="selection string ipv4" value="{{ip}}"/>

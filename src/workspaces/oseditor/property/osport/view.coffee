@@ -17,6 +17,7 @@ define [
             if @model.isAttached()
                 value = _.extend {
                     hasFloatIP: @model.getFloatingIp()
+                    isPurePort: @model.type is constant.RESTYPE.OSPORT
                 }, @model.toJSON()
                 @$el.html template.stack(value)
             else

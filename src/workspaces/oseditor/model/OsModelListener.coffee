@@ -40,7 +40,7 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
 
             port_id         : @get "portId"
             address         : @get "ip"
-            security_groups : []
+            security_groups : @connectionTargets("OsSgAsso").map ( sg )-> sg.createRef("id")
       }
 
   }, {
@@ -66,6 +66,10 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       },{
         pool : resolve( MC.extractID( data.resource.pool_id ) )
       })
+
+      SgAsso = Design.modelClassForType( "OsSgAsso" )
+      for sg in data.resource.security_groups or []
+        new SgAsso( listener, resolve( MC.extractID( sg ) ) )
 
       return
   }

@@ -32,7 +32,14 @@ define [
       return
 
     showProperty: () -> @panel.openProperty()
-    onItemSelected: ( type, id ) -> @panel.openProperty { uid: id, type: type }
-    onCanvasDoubleClick: () -> @panel.show().openProperty()
+    onCanvasDoubleClick: () -> @panel.show().openCurrent()
+
+    onItemSelected: ( type, id ) ->
+      if not id and not type
+        @panel.openConfig()
+        return
+
+      @panel.openProperty { uid: id, type: type }
+
 
   }

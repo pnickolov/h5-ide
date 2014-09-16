@@ -82,8 +82,12 @@ define [
 
     openResource: ( args ) -> @open 'property', args
     openProperty: ( args ) -> @open 'property', args
-    openConfig  : ( args ) -> @open 'config', args
     openState   : ( args ) -> @open 'state', args
+    openCurrent : ( args ) -> @open __currentPanel, args
+    openConfig  : ( args ) ->
+        @open 'config', args
+        __openArgs = __defaultArgs
+
 
     __openOrHidePanel: ( e ) ->
         targetPanelName = $( e.currentTarget ).prop 'class'

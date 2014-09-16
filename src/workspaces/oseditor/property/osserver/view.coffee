@@ -57,6 +57,8 @@ define [
       that = @
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
         that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('imageId'))
+      @$el.find("#property-os-server-credential").on 'select_initialize', ()->
+        that.checkWindowsDistro that.model.get("imageId")
 
     onChangeCredential: (event, value)->
       result = if event then $(event.currentTarget).getValue() else value
@@ -68,6 +70,17 @@ define [
         @$el.find("#property-os-server-keypair").parent().hide()
         @$el.find('#property-os-server-adminPass').parent().show()
 
+    checkWindowsDistro: (imageId)->
+      image = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
+      distro = image.get("os_distro")
+      distroIsWindows = distro is 'windows'
+      $serverCredential = @$el.find("#property-os-server-credential")
+      $serverCredential.parents(".group").toggle(not distroIsWindows)
+      if distroIsWindows
+        @model.set('credential', 'adminPass')
+        $serverCredential[0].selectize?.setValue('adminPass')
+        @onChangeCredential(null, 'adminPass')
+
     updateServerAttr: (event)->
       target = $(event.currentTarget)
       attr = target.data('target')
@@ -75,15 +88,7 @@ define [
 
       if attr is 'imageId'
         @model.setImage target.val()
-        image = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(target.val())
-        distro = image.get("os_distro")
-        distroIsWindows = distro is 'windows'
-        $serverCredential = $("#property-os-server-credential")
-        $serverCredential.parents(".group").toggle(not distroIsWindows)
-        if distroIsWindows
-          @model.set('credential', 'adminPass')
-          $serverCredential[0].selectize.setValue('adminPass')
-          @onChangeCredential(null, 'adminPass')
+        @checkWindowsDistro(target.val())
 
       if attr is 'name'
         @setTitle target.val()

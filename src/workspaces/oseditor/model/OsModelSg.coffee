@@ -6,6 +6,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     type : constant.RESTYPE.OSSG
     newNameTmpl : "SecurityGroup-"
 
+    defaults : ()->
+      description : ""
+      rules       : []
+
     addRule : ( ruleData )->
       for rule in @get("rules")
         if rule.isEqualToData( ruleData )
@@ -59,9 +63,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         rules : data.resource.rules.map ( rule )->
           if rule.remote_group_id
             rule.remote_group_id = resolve( MC.extractID( rule.remote_group_id ) )
-            rModel = new RuleModel()
-            rModel.fromJSON( rule )
-            rModel
+
+          rModel = new RuleModel()
+          rModel.fromJSON( rule )
+          rModel
       })
       return
   }

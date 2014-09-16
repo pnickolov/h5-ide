@@ -31,12 +31,13 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       return
 
     toJSON : ()->
+      sg = @get("sg")
       {
         direction        : @get( "direction" )
         port_range_min   : @get( "portMin" )
         port_range_max   : @get( "portMax" )
         protocol         : @get( "protocol" )
-        remote_group_id  : @get( "sg" )?.createRef( "id" )
+        remote_group_id  : if sg then sg.createRef( "id" ) else ""
         remote_ip_prefix : @get( "ip" )
         id               : @get( "appId" )
       }
@@ -48,9 +49,11 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       attr.portMin   = json.port_range_min
       attr.portMax   = json.port_range_max
       attr.protocol  = json.protocol
-      attr.sg        = json.remote_group_id
-      attr.ip        = json.remote_ip_prefix
       attr.appId     = json.id
+
+      attr.sg = if json.remote_group_id  then json.remote_group_id else null
+      attr.ip = if json.remote_ip_prefix then json.remote_ip_prefix else null
+
       return
 
     isEqualToData : ( data )->

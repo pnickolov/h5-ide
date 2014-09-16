@@ -20,6 +20,7 @@ define [
             "click .item-list .item .item-remove": "unAttachItemClick"
 
         initialize: (options) ->
+            
             @targetModel = options.targetModel
 
             @selectTpl =

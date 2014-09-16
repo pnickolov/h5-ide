@@ -25,16 +25,22 @@
             <li class="head">Source</li>
         </ul>
         <div class="rule-list">
+            {{#each ingressRules}}
             <div class="rule-item">
-                <select data-target="protocol" class="selection option" value="tcp" >
+                <select data-target="protocol" class="selection option" value="{{protocol}}" >
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
-                    <option value="all">All</option>
+                    <option value="null">All</option>
                 </select>
-                <select data-target="port" class="selection option" value="65536" data-valid-handle="portValid" ></select>
-                <select data-target="source" class="selection option" value="211.98.26.5/24" data-valid-handle="sourceValid" ></select>
+                <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
+                    <option value="{{port}}">{{port}}</option>
+                </select>
+                <select data-target="source" class="selection option" value="{{ip}}" data-valid-handle="sourceValid" >
+                    <option value="{{ip}}">{{ip}}</option>
+                </select>
             </div>
+            {{/each}}
         </div>
     </div>
     <div class="rule-container egress hide">
@@ -44,16 +50,22 @@
             <li class="head">Target</li>
         </ul>
         <div class="rule-list">
+            {{#each egressRules}}
             <div class="rule-item">
-                <select data-target="protocol" class="selection option" value="tcp" >
+                <select data-target="protocol" class="selection option" value="{{protocol}}" >
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
                     <option value="null">All</option>
                 </select>
-                <select data-target="port" class="selection option" value="65536" data-valid-handle="portValid" ></select>
-                <select data-target="source" class="selection option" value="211.98.26.5/24" data-valid-handle="sourceValid" ></select>
+                <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
+                    <option value="{{port}}">{{port}}</option>
+                </select>
+                <select data-target="source" class="selection option" value="{{ip}}" data-valid-handle="sourceValid" >
+                    <option value="{{ip}}">{{ip}}</option>
+                </select>
             </div>
+            {{/each}}
         </div>
     </div>
 </div>

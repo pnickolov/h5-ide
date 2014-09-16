@@ -30,17 +30,20 @@ define [
 
                 portValid: (value) ->
 
-                    return false if not value
+                    return false if not (value and value[0])
+
+                    value = value[0]
 
                     rule = that.getRuleValue(@)
 
                     # for tcp and udp
-                    if rule.protocol in ['tcp', 'udp']
+                    if rule.protocol in ['tcp', 'udp', 'null']
                         portRange = MC.validate.portRange(value)
                         if portRange and MC.validate.portValidRange(portRange)
                             return true
                         else
                             return false
+
                     # for icmp
                     else
                         valueAry = value.split('/')
@@ -52,10 +55,45 @@ define [
                                     return true
                         return false
 
+        getPortStr: (min, max) ->
+
+            if min is max
+                return min + ''
+            else
+                return min + '-' + max
+
         render: ->
 
+            that = @
+
             bindSelection(@$el, @selectTpl)
-            @$el.html template.stack()
+
+            ingressRules = []
+            egressRules = []
+            sgRules = that.sgModel.get('rules')
+
+            _.each sgRules, (ruleModel) ->
+
+                rule = ruleModel.toJSON()
+
+                portStr = that.getPortStr(rule.port_range_min, rule.port_range_max)
+
+                ruleData = {
+                    protocol: rule.protocol,
+                    ip: rule.remote_ip_prefix,
+                    port: portStr
+                }
+
+                if rule.direction is 'ingress'
+                    ingressRules.push(ruleData)
+                else if rule.direction is 'egress'
+                    egressRules.push(ruleData)
+
+            @$el.html template.stack({
+                ingressRules: ingressRules,
+                egressRules: egressRules
+            })
+
             @
 
         switchDirection: (event) ->
@@ -80,13 +118,22 @@ define [
             if (attr in ['protocol', 'port', 'source'])
                 rule = @getRuleValue($target)
                 if rule.protocol and rule.port and rule.source
+
+                    # direction        : @get( "direction" )
+                    # port_range_min   : @get( "portMin" )
+                    # port_range_max   : @get( "portMax" )
+                    # protocol         : @get( "protocol" )
+                    # remote_group_id  : if sg then sg.createRef( "id" ) else ""
+                    # remote_ip_prefix : @get( "ip" )
+                    # id               : @get( "appId" )
+
                     @sgModel.addRule({
-                        # direction:
-                        # portMin:
-                        # portMax:
-                        # protocol:
-                        # sg: null
-                        # ip:
+                        direction: rule.ip
+                        portMin: rule.ip
+                        portMax: rule.ip
+                        protocol: rule.protocol
+                        sg: null
+                        ip: rule.ip
                     })
 
         getRuleValue: ($target) ->
@@ -95,16 +142,16 @@ define [
 
             $protocol = $ruleItem.find('select[data-target="protocol"]')
             $port = $ruleItem.find('select[data-target="port"]')
-            $source = $ruleItem.find('select[data-target="source"]')
+            $ip = $ruleItem.find('select[data-target="source"]')
 
             protocol = $protocol.getValue()
             port = $port.getValue()
-            source = $source.getValue()
+            ip = $source.getValue()
 
             return {
                 protocol: protocol,
                 port: port,
-                source: source
+                ip: ip
             }
 
     }, {

@@ -41,5 +41,5 @@ define [
 
       @panel.openProperty { uid: id, type: type }
 
-
+    showStateEditor : ()-> return
   }

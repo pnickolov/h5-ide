@@ -106,9 +106,9 @@ define [
       @initialize()
       return
 
-    showProperty   : ()->
-    onItemSelected : ( type, id )->
-
+    showProperty        : ()->
+    onItemSelected      : ( type, id )->
+    showStateEditor     : ()->
     onCanvasDoubleClick : ()->
 
     toggleLeftPanel  : ()->
@@ -177,12 +177,6 @@ define [
           self.workspace.remove()
           return
       }
-      return
-
-    showStateEditor : ()->
-      com = @workspace.getSelectedComponent()
-      if com
-        ide_event.trigger ide_event.SHOW_STATE_EDITOR, com.id
       return
 
     getSvgElement : ()->

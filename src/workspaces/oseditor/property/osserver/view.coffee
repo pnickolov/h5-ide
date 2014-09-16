@@ -58,10 +58,10 @@ define [
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
         that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('imageId'))
 
-    onChangeCredential: (event)->
-      result = $(event.currentTarget)
-      @model.set('credential', result.getValue())
-      if result.getValue() is "keypair"
+    onChangeCredential: (event, value)->
+      result = if event then $(event.currentTarget).getValue() else value
+      @model.set('credential', result)
+      if result is "keypair"
         @$el.find("#property-os-server-keypair").parent().show()
         @$el.find('#property-os-server-adminPass').parent().hide()
       else
@@ -75,6 +75,15 @@ define [
 
       if attr is 'imageId'
         @model.setImage target.val()
+        image = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(target.val())
+        distro = image.get("os_distro")
+        distroIsWindows = distro is 'windows'
+        $serverCredential = $("#property-os-server-credential")
+        $serverCredential.parents(".group").toggle(not distroIsWindows)
+        if distroIsWindows
+          @model.set('credential', 'adminPass')
+          $serverCredential[0].selectize.setValue('adminPass')
+          @onChangeCredential(null, 'adminPass')
 
       if attr is 'name'
         @setTitle target.val()
@@ -126,7 +135,6 @@ define [
         callback availableRams
         ramSelection.refreshOptions(false)
         ramSelection.setValue(currentRam)
-
 
     selectTpl:
 

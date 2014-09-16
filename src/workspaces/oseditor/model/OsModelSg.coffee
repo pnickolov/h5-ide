@@ -33,6 +33,11 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       return
 
+    remove : ()->
+      for rule in @get("rules")
+        rule.remove()
+      ComplexResModel.prototype.remove.apply this, arguments
+
     serialize : ()->
       {
         component :

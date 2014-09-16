@@ -189,7 +189,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             protocol: "HTTP"
             lb_method: "ROUND_ROBIN"
             subnet_id: "@{subnet0002.resource.id}"
-            healthmonitor_id: "@{healthmonitor-id.resource.id}"
+            healthmonitors : ["@{healthmonitor-id.resource.id}"]
             member: [
               protocol_port: 80
               address: "@{port-id.resource.fixed_ips.0.ip_address}"

@@ -11,11 +11,11 @@
     </select>
 </section>
 
-<!-- {{sgitem}} -->
+<!-- {{item}} -->
 <div class="item">
     <span class="item-name">{{name}}</span>
     <div class="item-remove icon-delete"></div>
 </div>
 
-<!-- {{addSGButton}} -->
+<!-- {{addButton}} -->
 <div>Create New Security Group...</div>

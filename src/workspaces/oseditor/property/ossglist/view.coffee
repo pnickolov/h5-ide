@@ -20,18 +20,14 @@ define [
             "click .item-list .item .item-remove": "unAttachItemClick"
 
         initialize: (options) ->
-
             @targetModel = options.targetModel
 
             @selectTpl =
-
                 button: () ->
-
-                    return template.addSGButton()
+                    return template.addButton()
 
                 sgItem: (item) ->
-
-                    return template.sgitem({
+                    return template.item({
                         name: item.text
                     })
 
@@ -69,7 +65,7 @@ define [
                 attachedSGList: attachedSGList.join(',')
             })
 
-        getSelectSGModel: ($sgItem) ->
+        getSelectItemModel: ($sgItem) ->
 
             sgId = $sgItem.data('value')
             sgModel = Design.instance().component(sgId)
@@ -92,7 +88,7 @@ define [
         editItem: (event) ->
 
             $target = $(event.currentTarget)
-            sgModel = @getSelectSGModel($target)
+            sgModel = @getSelectItemModel($target)
 
             sgView = new SgView({sgModel: sgModel})
             @showFloatPanel(sgView.render().el)
@@ -112,7 +108,7 @@ define [
 
             $target = $(event.currentTarget)
             $sgItem = $target.parents('.item')
-            sgModel = @getSelectSGModel($sgItem)
+            sgModel = @getSelectItemModel($sgItem)
             @targetModel.unAttachSG(sgModel)
             @refreshList()
             return false

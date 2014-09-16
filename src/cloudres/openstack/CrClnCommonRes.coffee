@@ -16,15 +16,13 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSNETWORK
-    doFetch : ()-> ApiRequest("os_network_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_network_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for vpc in data
-        null
-      data
+      data?.networks or []
+
     parseExternalData: ( data ) ->
-      for vpc in data
-        null
-      data
+      data?.networks or []
   }
 
 
@@ -35,15 +33,13 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSSUBNET
-    doFetch : ()-> ApiRequest("os_subnet_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_subnet_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for subnet in data
-        null
-      data
+      data?.subnets or []
+
     parseExternalData: ( data ) ->
-      for subnet in data
-        null
-      data
+      data?.subnets or []
 
   }
 
@@ -55,15 +51,13 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSSG
-    doFetch : ()-> ApiRequest("os_securitygroup_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_securitygroup_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for sg in data
-        null
-      data
+      data?.security_groups or []
+
     parseExternalData: ( data ) ->
-      for sg in data
-        null
-      data
+      data?.security_groups or []
 
   }
 
@@ -75,15 +69,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSPORT
-    doFetch : ()-> ApiRequest("os_port_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_port_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for port in data
-        null
-      data
+      data?.ports or []
     parseExternalData: ( data ) ->
-      for port in data
-        null
-      data
+      data?.ports or []
   }
 
 
@@ -94,15 +85,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSFIP
-    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for fip in data
-        null
-      data
+      data?.floatingips or []
     parseExternalData: ( data ) ->
-      for fip in data
-        null
-      data
+      data?.floatingips or []
 
   }
 
@@ -114,15 +102,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSPOOL
-    doFetch : ()-> ApiRequest("os_pool_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_pool_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for pool in data
-        null
-      data
+      data?.pools or []
     parseExternalData: ( data ) ->
-      for pool in data
-        null
-      data
+      data?.pools or []
   }
 
 
@@ -133,15 +118,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSLISTENER
-    doFetch : ()-> ApiRequest("os_listener_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_listener_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for vip in data
-        null
-      data
+      data?.vips or []
     parseExternalData: ( data ) ->
-      for vip in data
-        null
-      data
+      data?.vips or []
   }
 
 
@@ -152,15 +134,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSHM
-    doFetch : ()-> ApiRequest("os_healthmonitor_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_healthmonitor_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for hm in data
-        null
-      data
+      data?.health_monitors or []
     parseExternalData: ( data ) ->
-      for hm in data
-        null
-      data
+      data?.health_monitors or []
   }
 
 
@@ -171,15 +150,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSRT
-    doFetch : ()-> ApiRequest("os_router_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()-> ApiRequest("os_router_List", {region : 'guangzhou'})
     parseFetchData : ( data )->
-      for rt in data
-        null
-      data
+      data?.routers or []
     parseExternalData: ( data ) ->
-      for rt in data
-        null
-      data
+      data?.routers or []
   }
 
 
@@ -194,16 +170,19 @@ define [
     #   return
 
     type  : constant.RESTYPE.OSSERVER
-    doFetch : ()-> ApiRequest("os_server_List", {region : @region()})
-    parseFetchData : ( data, region )->
-      for server in data
-        null
-      data
+    __selfParseData : false
+    doFetch : ()->
+      ApiRequest("os_server_List", {region : "guangzhou"}).then (res)->
+        ApiRequest("os_server_Info", {
+          region : "guangzhou"
+          ids    : _.pluck( res.servers, "id" )
+        })
 
-    parseExternalData: ( data, region ) ->
-      for server in data
-        null
-      data
+    parseFetchData : ( data )->
+      data = _.values(data)
+
+    parseExternalData: ( data ) ->
+      data?.server or []
   }
 
 
@@ -214,14 +193,18 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSVOL
-    doFetch : ()-> ApiRequest("os_volume_List", {region : @region()})
+    __selfParseData : false
+    doFetch : ()->
+      ApiRequest("os_volume_List", {region : "guangzhou"}).then (res)->
+        ApiRequest("os_volume_Info", {
+          region : "guangzhou"
+          ids    : _.pluck( res.volumes, "id" )
+        })
+
     parseFetchData : ( data )->
-      for vol in data
-        null
-      data
+      data = _.values(data)
+
     parseExternalData: ( data ) ->
-      for vol in data
-        null
-      data
+      data?.volume or []
   }
 

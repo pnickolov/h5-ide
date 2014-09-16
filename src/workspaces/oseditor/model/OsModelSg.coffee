@@ -6,6 +6,29 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     type : constant.RESTYPE.OSSG
     newNameTmpl : "SecurityGroup-"
 
+    addRule : ( ruleData )->
+      for rule in @get("rules")
+        if rule.isEqualToData( ruleData )
+          return false
+
+      RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
+      @get("rules").push( new RuleModel(ruleData) )
+
+    getRule : ( id )->
+      for rule in @get("rules")
+        if rule.id is id
+          return rule
+
+      null
+
+    removeRule : ( idOrModel )->
+      for r, idx in @get("rules")
+        if r is idOrModel or r.id is idOrModel
+          @get("rules").splice( idx, 1 )
+          break
+
+      return
+
     serialize : ()->
       {
         component :

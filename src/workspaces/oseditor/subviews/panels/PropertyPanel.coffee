@@ -6,8 +6,8 @@ define [
     '../../property/OsPropertyView'
     '../../property/OsPropertyBundle'
     './template/TplPropertyPanel'
-    'selectize'
-], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle, PropertyPanelTpl )->
+    'UI.selection'
+], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection )->
 
   Backbone.View.extend
 
@@ -32,12 +32,12 @@ define [
 
         propertyView = @propertyView = new @viewClass( model: @model, parent: @ )
 
+        bindSelection(@$el, propertyView.selectTpl)
+
         @setTitle()
         @$el.append propertyView.render().el
 
         @restoreAccordion(@model?.type, @uid)
-        @$el.find('.selection').each ->
-            that.bindSelection($(@), propertyView.selectTpl)
 
         @
 
@@ -97,103 +97,3 @@ define [
             continue
           delete @__optionStates[ uid ]
       return
-
-    bindSelection: ($valueDom, selectTpl) ->
-
-        return if (not $valueDom or not $valueDom.length)
-
-        if not $valueDom.hasClass('selectized')
-
-            mutil = false
-            maxItems = undefined
-            if $valueDom.hasClass('dropdown') then return false
-            if $valueDom.hasClass('mutil')
-                mutil = true
-                maxItems = null
-
-            if $valueDom.hasClass('bool')
-
-                $valueDom.selectize({
-                    multi: mutil,
-                    maxItems: maxItems,
-                    persist: true,
-                    valueField: 'value',
-                    labelField: 'text',
-                    searchField: ['text'],
-                    create: false,
-                    openOnFocus: false,
-                    plugins: ['custom_selection'],
-                    onInitialize: () ->
-                        value = @$input.attr('value')
-                        @setValue(value.split(','), true) if value
-                        $valueDom.trigger 'selectized', @
-                    options: [
-                        {text: 'True', value: 'true'},
-                        {text: 'False', value: 'false'}
-                    ],
-                    render: {
-                        option: (item) ->
-                            return '<div>' + item.text + '</div>'
-                        item: (item) ->
-                            return '<div>' + item.text + '</div>'
-                    }
-                })
-
-            if $valueDom.hasClass('option')
-
-                create = false
-                validHandleName = $valueDom.data('valid-handle')
-                if validHandleName and selectTpl and selectTpl[validHandleName]
-                    validHandle = selectTpl[validHandleName]
-                    create = true if validHandle
-
-                $valueDom.selectize({
-                    multi: mutil,
-                    maxItems: maxItems,
-                    persist: true,
-                    create: create,
-                    createOnBlur: create,
-                    openOnFocus: false,
-                    plugins: ['custom_selection']
-                    onInitialize: () ->
-                        value = @$input.attr('value')
-                        @setValue(value.split(','), true) if value
-                        $valueDom.trigger 'selectized', @
-                    validHandle: validHandle
-                    render: {
-                        option: (item) ->
-                            tplName = @$input.data('select-tpl')
-                            if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName].call(@$input, item)
-                            else
-                                return '<div>' + item.text + '</div>'
-
-                        item: (item) ->
-                            tplName = @$input.data('item-tpl')
-                            if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName].call(@$input, item)
-                            else
-                                return '<div>' + item.text + '</div>'
-                        button: () ->
-                            tplName = @$input.data('button-tpl')
-                            if tplName and selectTpl and selectTpl[tplName]
-                                return selectTpl[tplName].call(@$input)
-                            else
-                                return null
-                    }
-                    createFilter: (value) ->
-                        return validHandle.call(@$input, value) if validHandle
-                        return false
-                })
-
-            if $valueDom.hasClass('ipv4')
-
-                $valueDom.ipAddress('ipv4')
-
-            if $valueDom.hasClass('cidrv4')
-
-                $valueDom.ipAddress('cidrv4')
-
-            if $valueDom.hasClass('ipcidrv4')
-
-                $valueDom.ipAddress('ipcidrv4')

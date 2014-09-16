@@ -44,7 +44,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
             name : @get("name")
 
             description : @get("description")
-            rules       : @get("rules").map ( rule )-> rule.toJSON()
+            rules       : @get("rules")?.map ( rule )-> rule.toJSON()
       }
 
   }, {

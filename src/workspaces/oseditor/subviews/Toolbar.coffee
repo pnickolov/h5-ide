@@ -65,6 +65,7 @@ define [
 
       @setElement @parent.$el.find(".OEPanelTop").html( tpl )
       @updateZoomButtons()
+      @updateTbBtns()
       return
 
     openOrHidePanel: ( e ) -> @parent.propertyPanel.__openOrHidePanel.call @parent.propertyPanel, e
@@ -74,6 +75,7 @@ define [
 
       # App Run & Stop
       if opsModel.isApp()
+        console.log "isApp"
         isAppEdit = @workspace.isAppEditMode and @workspace.isAppEditMode()
         @$el.children(".icon-update-app").toggle( not isAppEdit )
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )

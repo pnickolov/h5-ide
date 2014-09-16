@@ -198,12 +198,22 @@ define [
             return
           return
 
+    checkNotReadyRDS: ()->
+      cloudType = Design.instance().get('cloud_type')
+      if cloudType is "openstack"
+        console.log "CloudType is OpenStack"
+        defer = new Q.defer()
+        defer.resolve()
+        return defer.promise
+      else
+        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList.fetchForce()
+
     stopApp : ( id )->
       app  = App.model.appList().get( id )
       name = app.get("name")
       that = this
-
-      AppTpl.cantStop {}
+      cloudType = Design.instance().get('cloud_type')
       isProduction = app.get('usage') is "production"
       appName = app.get('name')
       canStop = new modalPlus {
@@ -216,18 +226,30 @@ define [
         disableClose: true
       }
       canStop.tpl.find(".modal-footer").hide()
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
       awsError = null
 
-      resourceList.fetchForce()
+      @checkNotReadyRDS()
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
+        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
         if awsError and awsError isnt 403
           canStop.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
+
+        if cloudType is 'openstack'
+          canStop.tpl.find(".modal-footer").show()
+          canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName}
+          canStop.resize()
+          $("#appNameConfirmIpt").on "keyup change", ()->
+            if $("#appNameConfirmIpt").val() is name
+              canStop.tpl.find('.modal-confirm').removeAttr "disabled"
+            else
+              canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
+          return false
+
         app.fetchJsonData().then ()->
           comp = app.getJsonData().component
           toFetch = {}
@@ -266,22 +288,20 @@ define [
               canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, hasInstanceStore}
             canStop.resize()
 
-            canStop.on "confirm", ()->
-              canStop.close()
-              app.stop().fail ( err )->
-                console.log err
-                error = if err.awsError then err.error + "." + err.awsError else err.error
-                notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
-                return
-              return
-
             $("#appNameConfirmIpt").on "keyup change", ()->
               if $("#appNameConfirmIpt").val() is name
                 canStop.tpl.find('.modal-confirm').removeAttr "disabled"
               else
                 canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
-              return
-            return
+
+        canStop.on "confirm", ()->
+          console.log "Stop...."
+          return false
+          canStop.close()
+          app.stop().fail ( err )->
+            console.log err
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
 
     terminateApp : ( id )->
       self = @
@@ -298,6 +318,11 @@ define [
         }
         disableClose: true
       )
+      cloudType = Design.instance().get('cloud_type')
+      if cloudType is 'openstack'
+        @__terminateApp(id, null, terminateConfirm)
+        return false
+
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
@@ -309,20 +334,34 @@ define [
           terminateConfirm.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
+
     __terminateApp: (id, resourceList, terminateConfirm)->
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
+      cloudType = Design.instance().get('cloud_type')
       # renderLoading
 
-      app.fetchJsonData().then ->
-        comp = app.getJsonData().component
-        hasDBInstance = _.filter comp, (e)->
-          e.type == constant.RESTYPE.DBINSTANCE
-        dbInstanceName = _.map hasDBInstance, (e)->
-          return e.resource.DBInstanceIdentifier
-        notReadyDB = resourceList.filter (e)->
-          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+      fetchJsonData = ->
+        if cloudType is 'openstack'
+          defer = new Q.defer()
+          defer.resolve()
+          defer.promise
+        else
+          app.fetchJsonData()
+
+      fetchJsonData().then ->
+        if cloudType is 'openstack'
+          hasDBInstance = null
+          notReadyDB = []
+        else
+          comp = app.getJsonData().component
+          hasDBInstance = _.filter comp, (e)->
+            e.type == constant.RESTYPE.DBINSTANCE
+          dbInstanceName = _.map hasDBInstance, (e)->
+            return e.resource.DBInstanceIdentifier
+          notReadyDB = resourceList.filter (e)->
+            (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
         # Render Terminate Confirm
         terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}

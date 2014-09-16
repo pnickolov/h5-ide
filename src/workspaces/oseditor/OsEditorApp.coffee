@@ -13,4 +13,6 @@ define [
 
     isModified : ()-> @design and @design.modeIsAppEdit() and @design.isModified()
 
+    switchToEditMode : ()-> @design.setMode( Design.MODE.AppEdit )
+
   AppEditor

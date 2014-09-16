@@ -13,6 +13,8 @@ define [
             "change [data-target]": "updateAttribute"
             "click .direction-switch .t-m-btn": "switchDirection"
 
+        className: 'float-panel-sg'
+
         initialize: (options) ->
 
             that = @

@@ -2,14 +2,13 @@
 <div class="option-group-head expand">
     Security Group
 </div>
-<section class="group">
-    <label class="name">Security Group</label>
+<div class="option-group">
     <select class="selection option mutil item-list" value="{{attachedSGList}}" data-button-tpl="button" data-item-tpl="sgItem">
         {{#each sgList}}
         <option value="{{uid}}">{{name}}</option>
         {{/each}}
     </select>
-</section>
+</div>
 
 <!-- {{item}} -->
 <div class="item">

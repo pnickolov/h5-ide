@@ -92,7 +92,7 @@ define [
 
             sgView = new SgView({sgModel: sgModel})
             @showFloatPanel(sgView.render().el)
-            # return false
+            return false
 
         attachItem: (event, sgUID) ->
 

@@ -58,12 +58,12 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     isEqualToData : ( data )->
       attr = @attributes
-      if attr.direction isnt json.direction then return false
-      if attr.portMin   isnt json.portMin   then return false
-      if attr.portMax   isnt json.portMax   then return false
-      if attr.protocol  isnt json.protocol  then return false
-      if attr.sg        isnt json.sg        then return false
-      if attr.ip        isnt json.ip        then return false
+      if attr.direction isnt data.direction then return false
+      if attr.portMin   isnt data.portMin   then return false
+      if attr.portMax   isnt data.portMax   then return false
+      if attr.protocol  isnt data.protocol  then return false
+      if attr.sg        isnt data.sg        then return false
+      if attr.ip        isnt data.ip        then return false
 
       true
   }

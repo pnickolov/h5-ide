@@ -7111,7 +7111,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9384,6 +9385,8 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 33%; }
+  #OpsEditor .OEPanelRight.property div.float-panel-sg {
+    width: 450px; }
 
 .dropdown-list-btn {
   display: block;

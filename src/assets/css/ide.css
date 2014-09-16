@@ -9131,11 +9131,12 @@ g.shadow {
   .openstack .OEPanelRight.hidden .panel-float {
     display: none; }
   .openstack .OEPanelRight .panel-float {
-    width: 450px;
     position: absolute;
     top: 0;
     right: 280px;
     background: #202027; }
+    .openstack .OEPanelRight .panel-float > div {
+      width: 280px; }
     .openstack .OEPanelRight .panel-float.hidden {
       display: none; }
   .openstack .OEPanelRight .panel-body {

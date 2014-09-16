@@ -6,11 +6,13 @@
     &.hidden .panel-float { display: none; }
 
     .panel-float {
-        width: 450px;
         position: absolute;
         top: 0;
         right: 280px;
         background: $bg-p;
+
+        // Rewrite below values to customise floating-panel
+        & > div { width: 280px; }
 
         &.hidden { display: none; }
     }

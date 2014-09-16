@@ -11,12 +11,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       method: 'ROUND_ROBIN'
 
     initialize : ( attr, options )->
-      if not attr.healthMonitor
+      if not attr.healthMonitors
         HmModel = Design.modelClassForType( constant.RESTYPE.OSHM )
-        @set "healthMonitor", new HmModel()
+        @attributes.healthMonitors = [ new HmModel() ]
       return
-
-    getHm: -> @get( 'healthMonitor' )
 
     ports : ()->
       ports = []
@@ -28,7 +26,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       ports
 
     remove : ()->
-      @getHm().remove()
+      for hm in @get("healthMonitors")
+        hm.remove()
       ComplexResModel.prototype.remove.apply this, arguments
 
     serialize : ()->
@@ -44,20 +43,19 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         }
 
       {
-
-      layout : @generateLayout()
-      component :
-        name : @get 'name'
-        type : @type
-        uid  : @id
-        resource :
-          id   : @get 'appId'
+        layout : @generateLayout()
+        component :
           name : @get 'name'
-          protocol         : @get 'protocol'
-          lb_method        : @get 'method'
-          subnet_id        : @parent().createRef 'id'
-          healthmonitor_id : @getHm().createRef 'id'
-          member           : member
+          type : @type
+          uid  : @id
+          resource :
+            id             : @get 'appId'
+            name           : @get 'name'
+            protocol       : @get 'protocol'
+            lb_method      : @get 'method'
+            subnet_id      : @parent().createRef 'id'
+            healthmonitors : @get("healthMonitors").map (hm)-> hm.createRef 'id'
+            member         : member
       }
 
   }, {
@@ -65,7 +63,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     handleTypes  : constant.RESTYPE.OSPOOL
 
     deserialize : ( data, layout_data, resolve )->
-      pool = new Model({
+      new Model({
         id        : data.uid
         name      : data.resource.name
         appId     : data.resource.id
@@ -77,7 +75,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         x         : layout_data.coordinate[0]
         y         : layout_data.coordinate[1]
 
-        healthMonitor : resolve( MC.extractID( data.resource.healthmonitor_id) )
+        healthMonitors : (data.resource.healthmonitors||[]).map (hmid)-> resolve( MC.extractID(hmid) )
       })
       return
 

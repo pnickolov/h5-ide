@@ -3,6 +3,8 @@
 
     width: 280px;
 
+    &.hidden .panel-float { display: none; }
+
     .panel-float {
         width: 450px;
         position: absolute;

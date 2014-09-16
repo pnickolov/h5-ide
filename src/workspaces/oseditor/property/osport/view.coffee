@@ -14,7 +14,11 @@ define [
 
         initialize: ->
 
-            @sgListView = new SgListView { panel: @panel }
+            @sgListView = new SgListView {
+                panel: @panel,
+                portModel: @model
+            }
+            
             @selectTpl = @sgListView.selectTpl
 
         render: ->

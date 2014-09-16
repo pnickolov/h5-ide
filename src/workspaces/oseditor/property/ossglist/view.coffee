@@ -11,17 +11,22 @@ define [
         events:
 
             "change [data-target]": "updateAttribute"
-            "select_dropdown_button_click .sglist": "addSG"
-            "click .sglist .sgitem": "editSG"
-            "click .sglist .sgitem .icon-delete": "removeSG"
 
-        initialize: ->
+            "select_dropdown_button_click .item-list": "addSG"
+            "click .item-list .item": "editSG"
+
+            "select_item_add .item-list": "attachSG"
+            "select_item_remove .item-list": "unAttachSG"
+
+        initialize: (options) ->
+
+            @portModel = options.portModel
 
             @selectTpl =
 
                 button: () ->
 
-                    return '<div>Create New Security Group...</div>'
+                    return template.addSGButton()
 
                 sgItem: (item) ->
 
@@ -35,33 +40,6 @@ define [
 
             @refreshList()
             @
-
-        updateAttribute: (event)->
-
-            $target = $(event.currentTarget)
-
-            attr = $target.data 'target'
-            value = $target.getValue()
-
-        addSG: (event) ->
-
-            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
-            oSSGModel = new OSSGModel({})
-            @refreshList()
-
-        getSelectSGModel: ($sgItem) ->
-
-            sgId = $sgItem.data('value')
-            sgModel = Design.instance().component(sgId)
-            return sgModel
-
-        removeSG: (event) ->
-
-            $target = $(event.currentTarget)
-            $sgItem = $target.parents('.sgitem')
-            sgModel = @getSelectSGModel($sgItem)
-            sgModel.remove()
-            @refreshList()
 
         refreshList: () ->
 
@@ -81,6 +59,25 @@ define [
                 sgListData: sgListData
             })
 
+        getSelectSGModel: ($sgItem) ->
+
+            sgId = $sgItem.data('value')
+            sgModel = Design.instance().component(sgId)
+            return sgModel
+
+        updateAttribute: (event)->
+
+            $target = $(event.currentTarget)
+
+            attr = $target.data 'target'
+            value = $target.getValue()
+
+        addSG: (event) ->
+
+            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+            oSSGModel = new OSSGModel({})
+            @refreshList()
+
         editSG: (event) ->
 
             $target = $(event.currentTarget)
@@ -89,6 +86,24 @@ define [
             sgView = new SgView({sgModel: sgModel})
             @showFloatPanel(sgView.render().el)
             return false
+
+        removeSG: (event) ->
+
+            $target = $(event.currentTarget)
+            $sgItem = $target.parents('.item')
+            sgModel = @getSelectSGModel($sgItem)
+            sgModel.remove()
+            @refreshList()
+
+        attachSG: (event, sgUID) ->
+
+            sgModel = Design.instance().component(sgUID)
+            @portModel.attachSG(sgModel)
+
+        unAttachSG: (event, sgUID) ->
+
+            sgModel = Design.instance().component(sgUID)
+            @portModel.unAttachSG(sgModel)
 
     }, {
         handleTypes: [ 'ossglist' ]

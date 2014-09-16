@@ -543,7 +543,7 @@ input.selection, textarea.selection {
 }
 
 // sg list
-.selection.sglist.multi {
+.selection.item-list.multi {
     .selectize-input > div {
         padding: 5px 10px;
         width: 92%;
@@ -551,29 +551,37 @@ input.selection, textarea.selection {
         background-color: #32324d;
         border: 1px solid #222;
     }
-}
-.selection.sglist.selectize-dropdown {
-    .selectize-dropdown-button {
-        position: absolute;
-        top: 0;
-        padding: 20px;
-        right: 0;
-        left: 0;
-        text-align: center;
-        height: 30px;
-        background-color: #111;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        line-height: 4px;
-        background-color: #434351;
-        color: #fff;
-        cursor: pointer;
-        &:hover {
-            background-color: #4e4e5f;
+    .item {
+        .item-remove {
+            float: right;
+        }
+        .item-name {
+            float: left;
         }
     }
-    .selectize-dropdown-content {
-        margin-top: 40px;
+    &.selectize-dropdown {
+        .selectize-dropdown-button {
+            position: absolute;
+            top: 0;
+            padding: 20px;
+            right: 0;
+            left: 0;
+            text-align: center;
+            height: 30px;
+            background-color: #111;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            line-height: 4px;
+            background-color: #434351;
+            color: #fff;
+            cursor: pointer;
+            &:hover {
+                background-color: #4e4e5f;
+            }
+        }
+        .selectize-dropdown-content {
+            margin-top: 40px;
+        }
     }
 }

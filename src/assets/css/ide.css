@@ -9384,10 +9384,6 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 33%; }
-  #OpsEditor .OEPanelRight.property .sglist .sgitem .icon-delete {
-    float: right; }
-  #OpsEditor .OEPanelRight.property .sglist .sgitem .sgname {
-    float: left; }
 
 .dropdown-list-btn {
   display: block;

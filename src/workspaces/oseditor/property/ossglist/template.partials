@@ -4,7 +4,7 @@
 </div>
 <section class="group">
     <label class="name">Security Group</label>
-    <select class="selection option mutil sglist" value="nop,abc,def" data-button-tpl="button" data-item-tpl="sgItem">
+    <select class="selection option mutil item-list" value="nop,abc,def" data-button-tpl="button" data-item-tpl="sgItem">
         {{#each sgListData}}
         <option value="{{uid}}">{{name}}</option>
         {{/each}}
@@ -12,7 +12,10 @@
 </section>
 
 <!-- {{sgitem}} -->
-<div class="sgitem">
-    <span class="sgname">{{name}}</span>
-    <div class="icon-delete"></div>
+<div class="item">
+    <span class="item-name">{{name}}</span>
+    <div class="item-remove icon-delete"></div>
 </div>
+
+<!-- {{addSGButton}} -->
+<div>Create New Security Group...</div>

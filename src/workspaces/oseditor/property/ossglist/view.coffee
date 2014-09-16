@@ -3,28 +3,21 @@ define [
     '../OsPropertyView'
     './template'
     'CloudResources'
-], ( constant, OsPropertyView, template, CloudResources ) ->
+    '../ossg/view'
+], ( constant, OsPropertyView, template, CloudResources, SgView ) ->
 
     OsPropertyView.extend {
 
         events:
 
             "change [data-target]": "updateAttribute"
-            "select_item_add .sglist": "addSG"
             "select_dropdown_button_click .sglist": "addSG"
-            "select_item_remove .sglist": "removeSG"
+            "click .sglist .sgitem": "editSG"
+            "click .sglist .sgitem .icon-delete": "removeSG"
 
         render: ->
 
-            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
-            sgModels = OSSGModel.allObjects()
-
-            _.each sgModels, (sgModel) ->
-                sgModel
-
-            @$el.html template.stack({
-
-            })
+            @refreshList()
 
             @selectTpl =
 
@@ -32,11 +25,20 @@ define [
 
                     return '<div>Create New Security Group...</div>'
 
-                sgItem: (data) ->
+                sgItem: (item) ->
+
+                    return template.sgitem({
+                        name: item.text
+                    })
 
                 sgOption: (data) ->
 
             @
+
+        renderSGEdit: () ->
+
+            sgView = new SgView()
+            @$el.append sgView.render().el
 
         updateAttribute: (event)->
 
@@ -47,12 +49,42 @@ define [
 
         addSG: (event) ->
 
-
+            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
             oSSGModel = new OSSGModel({})
+            @refreshList()
 
         removeSG: (event) ->
 
-            null
+            $target = $(event.currentTarget)
+            $sgItem = $target.parents('.sgitem')
+            sgId = $sgItem.data('value')
+            sgModel = Design.instance().component(sgId)
+            sgModel.remove()
+            @refreshList()
+
+        refreshList: () ->
+
+            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+            sgModels = OSSGModel.allObjects()
+
+            sgListData = []
+            _.each sgModels, (sgModel) ->
+                sgName = sgModel.get('name')
+                sgUID = sgModel.get('id')
+                sgListData.push({
+                    name: sgName,
+                    uid: sgUID
+                })
+
+            @$el.html template.stack({
+                sgListData: sgListData
+            })
+
+        editSG: (event) ->
+
+            $target = $(event.currentTarget)
+            @renderSGEdit()
+            return false
 
     }, {
         handleTypes: [ 'sglist' ]

@@ -9224,7 +9224,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 #OpsEditor .OEPanelRight.property {
   color: #ccc;
-  width: 500px;
   /* property component style */ }
   #OpsEditor .OEPanelRight.property .panel-body {
     font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }

@@ -3,6 +3,7 @@ define [
   "OpsEditor" # Dependency
 
   "./oseditor/OsEditorStack"
+  "./oseditor/OsEditorApp"
 
   # Extra Includes
   "./oseditor/model/OsModelFloatIp"
@@ -37,12 +38,14 @@ define [
   "./oseditor/canvas/CePort"
   "./oseditor/canvas/CeOsLine"
 
-], ( OpsEditor, StackEditor )->
+], ( OpsEditor, StackEditor, AppEditor )->
 
   # OpsEditor defination
   OsEditor = ( opsModel )->
     if opsModel.isStack()
-      return new StackEditor opsModel
+      return new StackEditor( opsModel )
+    else
+      return new AppEditor( opsModel )
 
   OpsEditor.registerEditors OsEditor, ( model )-> model.type is "OpenstackOps"
 

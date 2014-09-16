@@ -6,7 +6,8 @@ define [
   "constant"
   "./CrModelKeypair"
   "./CrModelSnapshot"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair, CrModelSnapshot )->
+  "./CrModelVolume"
+], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair, CrModelSnapshot, CrModelVolume )->
 
 
   ### Keypair ###
@@ -44,6 +45,22 @@ define [
     doFetch : ()-> ApiRequest("os_snapshot_List", {region : @region()})
     parseFetchData : (res)->
       res?.snapshots || []
+
+  }
+
+  ### Volume ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName: "CrOsVolumeCollection"
+    ### env:dev:end ###
+
+    type: constant.RESTYPE.OSVOL
+    model: CrModelVolume
+
+    doFetch: ->
+      ApiRequest('os_volume_List', {region: @region()})
+    parseFetchData: (res)->
+      res?.volumes || []
 
   }
  

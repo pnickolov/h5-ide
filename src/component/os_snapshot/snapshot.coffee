@@ -1,4 +1,4 @@
-define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/os_snapshot/snapshot_template'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
+define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/os_snapshot/snapshot_template', 'UI.selection'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template, selection)->
     fetched = false
     deleteCount = 0
     deleteErrorCount = 0
@@ -26,7 +26,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             option =
                 filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
-            @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
+            @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
             selection = lang.PROP.VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
@@ -65,9 +65,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
-                currentRegion = Design.instance().get('region')
-                data = _.filter data, (volume)->
-                    volume.category == currentRegion
+                console.log data
                 dataSet =
                     isRuntime: false
                     data: data
@@ -282,12 +280,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     icon: 'new-stack'
                     type: 'create'
                     name: 'Create Snapshot'
-                }
-                {
-                    icon: 'duplicate'
-                    type: 'duplicate'
-                    disabled: true
-                    name: 'Duplicate'
                 }
                 {
                     icon: 'del'

@@ -267,7 +267,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
         keyName = @M$( '#import-kp-name' ).val()
         @switchAction 'processing'
         try
-          keyContent = btoa that.__upload.getData()
+          keyContent = that.__upload.getData()
         catch
           @modal.error 'Key is not in valid OpenSSH public key format'
           that.switchAction 'init'
@@ -276,7 +276,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
 
         @collection.create( {name:keyName, public_key: keyContent}).save()
         .then (res) ->
-          notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED keyName
+          notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED, keyName
           that.cancel()
         ,( err ) ->
           if err.awsResult and err.awsResult.indexOf( 'Length exceeds maximum of 2048' ) >= 0

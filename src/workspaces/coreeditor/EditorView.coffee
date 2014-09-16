@@ -142,7 +142,7 @@ define [
       ###
       Revoke all the IDs of every dom.
       ###
-      if @propertyPanel and @propertyPanel.backbone
+      if @propertyPanel and @propertyPanel.backup
         @propertyPanel.backup()
 
       @$el.attr("id", "")
@@ -150,17 +150,20 @@ define [
 
     recover : ()->
       @$el.show().attr("id", "OpsEditor")
-      @resourcePanel.recalcAccordion()
 
-      @propertyPanel.recover()
+      if @resourcePanel and @resourcePanel.recalcAccordion
+        @resourcePanel.recalcAccordion()
+
+      if @propertyPanel and @propertyPanel.recover
+        @propertyPanel.recover()
       return
 
     remove : ()->
-      @toolbar.remove()
-      @propertyPanel.remove()
-      @resourcePanel.remove()
-      @statusbar.remove()
-      @canvas.remove()
+      if @toolbar       then @toolbar.remove()
+      if @propertyPanel then @propertyPanel.remove()
+      if @resourcePanel then @resourcePanel.remove()
+      if @statusbar     then @statusbar.remove()
+      if @canvas        then @canvas.remove()
 
       Backbone.View.prototype.remove.call this
 

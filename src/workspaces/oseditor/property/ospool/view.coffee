@@ -10,8 +10,6 @@ define [
             'change [data-target]': 'updateAttribute'
 
         initialize: ->
-            window.pool = @
-
             @hm = @model.getHm()
             @memConn = @model.connections 'OsPoolMembership'
 

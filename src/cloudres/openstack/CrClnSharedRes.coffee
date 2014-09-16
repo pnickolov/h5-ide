@@ -58,9 +58,12 @@ define [
     model: CrModelVolume
 
     doFetch: ->
-      ApiRequest('os_volume_List', {region: @region()})
+      region = @region()
+      ApiRequest('os_volume_List', {region: region}).then (res)->
+        ids = _.pluck (res?.volumes || []), "id"
+        ApiRequest('os_volume_Info', {region: region, ids: ids})
     parseFetchData: (res)->
-      res?.volumes || []
+      _.values(res)
 
   }
  

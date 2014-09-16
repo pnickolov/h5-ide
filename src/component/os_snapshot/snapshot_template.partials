@@ -2,8 +2,8 @@
 {{#each data}}
 <li class="item{{#if selected}} selected{{/if}}" data-id="{{id}}" tabindex="-1">
     {{#if id}}
-    <div class="manager-content-main" data-id="{{id}}">{{#if tagSet}}{{tagSet.Name}}{{else}}&lt;No Name&gt;{{/if}}</div>
-    <div class="manager-content-sub">{{#if id}}{{id}}{{else}}{{name}}{{/if}} &nbsp;&nbsp;&nbsp;&nbsp;Size: {{size}} GiB</div>
+    <div class="manager-content-main" data-id="{{id}}">{{#if name}}{{name}}{{else}}&lt;No Name&gt;{{/if}}</div>
+    <div class="manager-content-sub">Name: {{name}} &nbsp;&nbsp;&nbsp;&nbsp;Size: {{size}} GiB</div>
     {{else}}
     <div class="manager-content-main" data-id="{{region}}">{{name}}</div>
     {{/if}}

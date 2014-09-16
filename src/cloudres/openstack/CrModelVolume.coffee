@@ -10,6 +10,12 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
     defaults :
       name: ""
       id: ""
+      status: ""
+      user_id: ""
+      availability_zone: ""
+      created_at: ""
+      description: ""
+      size: 0
 
     #idAttribute : "id"
     taggable: false

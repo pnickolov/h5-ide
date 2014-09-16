@@ -66,4 +66,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       if attr.ip        isnt data.ip        then return false
 
       true
+
+    serialize : ()-> # Supress warning
   }

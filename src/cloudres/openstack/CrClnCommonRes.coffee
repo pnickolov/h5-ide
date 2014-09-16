@@ -16,65 +16,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSNETWORK
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_network_List", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.networks or []
 
     parseExternalData: ( data ) ->
       data?.networks or []
-  }
-
-
-  ### Subnet ###
-  CrCollection.extend {
-    ### env:dev ###
-    ClassName : "CrOsSubnetCollection"
-    ### env:dev:end ###
-
-    type  : constant.RESTYPE.OSSUBNET
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_subnet_List", {region : 'guangzhou'})
-    parseFetchData : ( data )->
-      data?.subnets or []
-
-    parseExternalData: ( data ) ->
-      data?.subnets or []
-
-  }
-
-
-  ### SG ###
-  CrCollection.extend {
-    ### env:dev ###
-    ClassName : "CrOsSgCollection"
-    ### env:dev:end ###
-
-    type  : constant.RESTYPE.OSSG
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_securitygroup_List", {region : 'guangzhou'})
-    parseFetchData : ( data )->
-      data?.security_groups or []
-
-    parseExternalData: ( data ) ->
-      data?.security_groups or []
-
-  }
-
-
-  ### Port ###
-  CrCollection.extend {
-    ### env:dev ###
-    ClassName : "CrOsPortCollection"
-    ### env:dev:end ###
-
-    type  : constant.RESTYPE.OSPORT
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_port_List", {region : 'guangzhou'})
-    parseFetchData : ( data )->
-      data?.ports or []
-    parseExternalData: ( data ) ->
-      data?.ports or []
   }
 
 
@@ -85,8 +32,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSFIP
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.floatingips or []
     parseExternalData: ( data ) ->
@@ -102,8 +48,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSPOOL
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_pool_List", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.pools or []
     parseExternalData: ( data ) ->
@@ -118,8 +63,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSLISTENER
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_listener_List", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.vips or []
     parseExternalData: ( data ) ->
@@ -134,8 +78,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSHM
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_healthmonitor_List", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.health_monitors or []
     parseExternalData: ( data ) ->
@@ -150,8 +93,7 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSRT
-    __selfParseData : false
-    doFetch : ()-> ApiRequest("os_router_List", {region : 'guangzhou'})
+
     parseFetchData : ( data )->
       data?.routers or []
     parseExternalData: ( data ) ->
@@ -170,11 +112,12 @@ define [
     #   return
 
     type  : constant.RESTYPE.OSSERVER
-    __selfParseData : false
+
     doFetch : ()->
-      ApiRequest("os_server_List", {region : "guangzhou"}).then (res)->
+      region = @region()
+      ApiRequest("os_server_List", {region : region}).then (res)->
         ApiRequest("os_server_Info", {
-          region : "guangzhou"
+          region : region
           ids    : _.pluck( res.servers, "id" )
         })
 
@@ -193,11 +136,12 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.OSVOL
-    __selfParseData : false
+
     doFetch : ()->
-      ApiRequest("os_volume_List", {region : "guangzhou"}).then (res)->
+      region = @region()
+      ApiRequest("os_volume_List", {region : region}).then (res)->
         ApiRequest("os_volume_Info", {
-          region : "guangzhou"
+          region : region
           ids    : _.pluck( res.volumes, "id" )
         })
 
@@ -208,3 +152,56 @@ define [
       data?.volume or []
   }
 
+
+  ## The following resource data need fetch from ide ########################################################
+
+  ### Subnet ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsSubnetCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSSUBNET
+
+    doFetch : ()-> ApiRequest("os_subnet_List", {region : @region()})
+    parseFetchData : ( data )->
+      data?.subnets or []
+
+    parseExternalData: ( data ) ->
+      data?.subnets or []
+
+  }
+
+
+  ### SG ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsSgCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSSG
+
+    doFetch : ()-> ApiRequest("os_securitygroup_List", {region : @region()})
+    parseFetchData : ( data )->
+      data?.security_groups or []
+
+    parseExternalData: ( data ) ->
+      data?.security_groups or []
+
+  }
+
+
+  ### Port ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsPortCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSPORT
+
+    doFetch : ()-> ApiRequest("os_port_List", {region : @region()})
+    parseFetchData : ( data )->
+      data?.ports or []
+    parseExternalData: ( data ) ->
+      data?.ports or []
+  }

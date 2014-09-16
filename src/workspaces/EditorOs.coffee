@@ -14,6 +14,7 @@ define [
   "./oseditor/model/OsModelRt"
   "./oseditor/model/OsModelServer"
   "./oseditor/model/OsModelSg"
+  "./oseditor/model/OsModelSgRule"
   "./oseditor/model/OsModelSubnet"
   "./oseditor/model/OsModelVolume"
   "./oseditor/model/OsModelExtNetwork"

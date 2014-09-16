@@ -56,7 +56,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         name  : data.resource.name
         appId : data.resource.id
         description : data.resource.description
-        rules : data.rules.map ( rule )->
+        rules : data.resource.rules.map ( rule )->
           if rule.remote_group_id
             rule.remote_group_id = resolve( MC.extractID( rule.remote_group_id ) )
             rModel = new RuleModel()

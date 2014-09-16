@@ -3,7 +3,14 @@
 
     width: 280px;
 
-    &.hidden {
+    .panel-float {
+        width: 280px;
+        position: absolute;
+        top: 0;
+        right: 280px;
+        background: $bg-p;
+
+        &.hidden { display: none; }
     }
 
     .panel-body {
@@ -14,7 +21,8 @@
         height: auto;
         width: 100%;
     }
-    .panel-body section {hide
+
+    .panel-body section {
         &.system-image .selectbox {
             width: 108px;
         }

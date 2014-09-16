@@ -25,7 +25,10 @@ define [
 
         getModelForUpdateAttr: -> @model
 
-        setTitle: ( title ) -> @parent?.setTitle title
+        setTitle      : -> @parent.setTitle.apply @parent, arguments
+        showFloatPanel: -> @parent.showFloatPanel.apply @parent, arguments
+        hideFloatPanel: -> @parent.hideFloatPanel.apply @parent, arguments
+
         # Overwrite it in subview
         getTitle: -> @model?.get( 'name' )
 

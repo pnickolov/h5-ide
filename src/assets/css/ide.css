@@ -9128,6 +9128,14 @@ g.shadow {
 
 .openstack .OEPanelRight {
   width: 280px; }
+  .openstack .OEPanelRight .panel-float {
+    width: 280px;
+    position: absolute;
+    top: 0;
+    right: 280px;
+    background: #202027; }
+    .openstack .OEPanelRight .panel-float.hidden {
+      display: none; }
   .openstack .OEPanelRight .panel-body {
     overflow: auto;
     position: absolute;
@@ -9135,7 +9143,6 @@ g.shadow {
     bottom: 0;
     height: auto;
     width: 100%; }
-  hide
   .openstack .OEPanelRight .panel-body section.system-image .selectbox {
     width: 108px; }
   .openstack .OEPanelRight .panel-body section header {
@@ -9226,10 +9233,10 @@ g.shadow {
   /* property component style */ }
   #OpsEditor .OEPanelRight.property .panel-body {
     font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-  #OpsEditor .OEPanelRight.property h1 {
-    font-size: 20px;
-    padding: 5px;
-    text-align: center; }
+    #OpsEditor .OEPanelRight.property .panel-body h1 {
+      font-size: 20px;
+      padding: 5px;
+      text-align: center; }
   #OpsEditor .OEPanelRight.property .os-property-default {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .os-property-message {

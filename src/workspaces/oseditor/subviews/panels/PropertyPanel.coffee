@@ -18,9 +18,10 @@ define [
     initialize: ( options ) ->
 
         @options = options
-        @mode = Design.instance().mode()
-        @uid  = options.uid
-        @type = options.type
+        @mode    = Design.instance().mode()
+        @uid     = options.uid
+        @type    = options.type
+        @parent  = options.parent
 
         @model      = Design.instance().component @uid
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
@@ -51,6 +52,8 @@ define [
         else
             @$el.html PropertyPanelTpl.title { title: title }
 
+    showFloatPanel: -> @parent.showFloatPanel.apply @parent, arguments
+    hideFloatPanel: -> @parent.hideFloatPanel.apply @parent, arguments
 
     updateRightPanelOption : ( event ) ->
       $toggle = $(event.currentTarget)

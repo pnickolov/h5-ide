@@ -40,9 +40,15 @@ define [
         @
 
     renderSubPanel: ( subPanel, args ) ->
-        args = _.extend { workspace: @workspace }, args
+        args = _.extend { workspace: @workspace, parent: @ }, args
         $(document.activeElement).filter("input, textarea").blur()
         @$( '.panel-body' ).html new subPanel( args ).render().el
+
+    showFloatPanel: ( dom ) ->
+        @$( '.panel-float' ).html dom if dom
+        @$( '.panel-float' ).removeClass 'hidden'
+
+    hideFloatPanel: () -> @$( '.panel-float' ).addClass 'hidden'
 
     scrollTo: ( className ) ->
         $container = @$ '.panel-body'
@@ -78,7 +84,7 @@ define [
         @
 
     shown: -> not @$el.hasClass( 'hidden' )
-    hidden: -> @$el.hasClass( 'hidden' )
+    hidden: -> not @shown()
 
     openResource: ( args ) -> @open 'property', args
     openProperty: ( args ) -> @open 'property', args

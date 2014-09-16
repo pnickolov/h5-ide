@@ -1,4 +1,4 @@
-define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/oskp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter'],
+define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/os_kp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter'],
 ( Design, CloudResources, Backbone, _, $, constant, toolbar_modal, modalplus, template, upload, lang, JsonExporter )->
   download = JsonExporter.download
   Backbone.View.extend {
@@ -34,6 +34,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       optionList = _.map @collection.toJSON(), (e)->
         {text: e.name, value: e.name}
       optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
+      if not @selectize then return false
       @selectize.clearOptions()
       @selectize.addOption optionList
       @selectize.setValue(@resModel.get('keypair')||optionList[0].value)

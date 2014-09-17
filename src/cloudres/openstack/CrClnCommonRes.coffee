@@ -1,46 +1,44 @@
 
 define [
-  "./CrCommonCollection"
   "../CrCollection"
   "../CrModel"
   "ApiRequestOs"
   "constant"
   "CloudResources"
-], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant, CloudResources )->
+], ( CrCollection, CrModel, ApiRequest, constant, CloudResources )->
 
   ### FIP ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsFipCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSFIP
+    type : constant.RESTYPE.OSFIP
 
-    parseFetchData : ( data )->
-      data?.floatingips or []
-    parseExternalData: ( data ) ->
-      data?.floatingips or []
+    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region:@region()})
 
+    parseFetchData    : ( data )-> data.floatingips or []
+    parseExternalData : ( data )-> data.floatingips or []
   }
 
 
   ### Pool ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsPoolCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSPOOL
+    type : constant.RESTYPE.OSPOOL
 
-    parseFetchData : ( data )->
-      data?.pools or []
-    parseExternalData: ( data ) ->
-      data?.pools or []
+    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region:@region()})
+
+    parseFetchData    : ( data )-> data.pools or []
+    parseExternalData : ( data )-> data.pools or []
   }
 
 
   ### Listener(VIP) ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsListenerCollection"
     ### env:dev:end ###
@@ -55,7 +53,7 @@ define [
 
 
   ### HealthMonitor ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsHealthMonitorCollection"
     ### env:dev:end ###
@@ -70,7 +68,7 @@ define [
 
 
   ### Router ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsRouterCollection"
     ### env:dev:end ###
@@ -85,7 +83,7 @@ define [
 
 
   ### Server ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsServerCollection"
     ### env:dev:end ###
@@ -113,7 +111,7 @@ define [
 
 
   ### Volume ###
-  CrCommonCollection.extend {
+  CrCollection.extend {
     ### env:dev ###
     ClassName : "CrOsVolumeCollection"
     ### env:dev:end ###
@@ -135,8 +133,6 @@ define [
       data?.volume or []
   }
 
-
-  ## The following resource data need fetch from ide ########################################################
 
   ### Subnet ###
   CrCollection.extend {

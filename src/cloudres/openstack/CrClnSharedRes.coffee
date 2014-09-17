@@ -6,8 +6,7 @@ define [
   "constant"
   "./CrModelKeypair"
   "./CrModelSnapshot"
-  "./CrModelVolume"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair, CrModelSnapshot, CrModelVolume )->
+], ( CrCollection, CloudResources, ApiRequest, constant, CrModelKeypair, CrModelSnapshot )->
 
 
   ### Keypair ###

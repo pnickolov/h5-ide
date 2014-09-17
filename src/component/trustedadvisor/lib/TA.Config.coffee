@@ -24,7 +24,8 @@ define({
             'AWS.RDS.OptionGroup'                   : [ 'og' ]
             'AWS.RDS.DBSubnetGroup'                 : [ 'sbg' ]
 
-        openstack: {}
+        openstack:
+            'OS::Neutron::Port'                     : [ 'osport' ]
 
     globalList:
         aws:

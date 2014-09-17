@@ -324,5 +324,10 @@ module.exports =
       en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
       zh: ""
 
+    ERROR_PORT_MUST_CONNECT_WITH_SERVER:
+      en: "Port <span class='validation-tag tag-osport'>%s</span> must connect with server."
+      zh: ""
+
+
 
     ##### Trust Advisor

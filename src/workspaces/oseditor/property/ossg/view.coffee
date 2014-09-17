@@ -73,6 +73,8 @@ define [
 
             @
 
+        nullStr: 'N/A'
+
         switchDirection: (event) ->
 
             $target = $(event.target)
@@ -94,14 +96,41 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            if (attr in ['protocol', 'port', 'ip'])
-                rule = @getRuleValue($target)
-                @sgModel.addRule(rule) if rule
+            rule = @getRuleValue($target)
+
+            return if not rule
+
+            if attr is 'protocol'
+                @setDefaultPort(rule, $target)
+
+            $ruleItem = $target.parents('.rule-item')
+            ruleId = $ruleItem.data('id')
+            ruleModel = @sgModel.getRule(ruleId)
+
+            if ruleModel
+                @sgModel.updateRule(ruleId, rule) if rule
+            else
+                newRuleId = @sgModel.addRule(rule) if rule
+                $ruleItem.data('id', newRuleId)
+
+        setDefaultPort: (rule, $target) ->
+
+            $ruleContainer = $target.parents('.rule-item')
+            $port = $ruleContainer.find('input[data-target="port"]')
+
+            $port.removeAttr('disabled')
+            if rule.protocol in ['tcp', 'udp']
+                $port.val('0-65535')
+            else if rule.protocol is 'icmp'
+                $port.val('-1/-1')
+            else if rule.protocol is null
+                $port.val(@nullStr)
+                $port.attr('disabled', 'disabled')
 
         getPortStr: (min, max) ->
 
             if min is null or max is null
-                return 'n/a'
+                return '0-65535'
 
             if min is max
                 return min + ''
@@ -116,7 +145,7 @@ define [
 
         getPortRange: (portStr) ->
 
-            return [null, null] if portStr is 'n/a'
+            return [null, null] if portStr is '0-65535'
 
             portRange = MC.validate.portRange(portStr)
             if portRange and MC.validate.portValidRange(portRange)
@@ -152,7 +181,7 @@ define [
             $ruleContainer = $ruleItem.parents('.rule-container')
 
             $protocol = $ruleItem.find('select[data-target="protocol"]')
-            $port = $ruleItem.find('select[data-target="port"]')
+            $port = $ruleItem.find('input[data-target="port"]')
             $ip = $ruleItem.find('select[data-target="ip"]')
 
             protocol = $protocol.getValue()
@@ -171,20 +200,28 @@ define [
                 port_range_max = null
             else if protocol is 'icmp'
                 port = @getICMPRange(port)
-                port_range_min = port[0]
-                port_range_max = port[1]
+                if port is null
+                    port_range_min = null
+                    port_range_max = null
+                else
+                    port_range_min = port[0]
+                    port_range_max = port[1]
             else
                 port = @getPortRange(port)
-                port_range_min = port[0]
-                port_range_max = port[1]
+                if port is null
+                    port_range_min = null
+                    port_range_max = null
+                else
+                    port_range_min = port[0]
+                    port_range_max = port[1]
 
             return {
                 direction: direction,
                 protocol: protocol,
-                port_range_min: port_range_min,
-                port_range_max: port_range_max,
-                remote_ip_prefix: ip,
-                remote_group_id: null
+                portMin: port_range_min,
+                portMax: port_range_max,
+                ip: ip,
+                sg: null
             }
 
         # for view to use
@@ -206,9 +243,10 @@ define [
                 port = @getICMPStr(rule.port_range_min, rule.port_range_max)
             else
                 protocol = 'all'
-                port = 'n/a'
+                port = @nullStr
 
             ruleData = {
+                id: rule.id,
                 direction: direction,
                 protocol: protocol,
                 port: port,

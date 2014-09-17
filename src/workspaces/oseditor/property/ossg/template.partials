@@ -27,16 +27,14 @@
         </ul>
         <div class="rule-list">
             {{#each ingressRules}}
-            <div class="rule-item">
+            <div class="rule-item" data-id="{{id}}">
                 <select data-target="protocol" class="selection option" value="{{protocol}}" >
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
-                    <option value="{{port}}">{{port}}</option>
-                </select>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} />
                 <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>
@@ -52,16 +50,14 @@
         </ul>
         <div class="rule-list">
             {{#each egressRules}}
-            <div class="rule-item">
+            <div class="rule-item" data-id="{{id}}">
                 <select data-target="protocol" class="selection option" value="{{protocol}}" >
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
-                    <option value="{{port}}">{{port}}</option>
-                </select>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} />
                 <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>

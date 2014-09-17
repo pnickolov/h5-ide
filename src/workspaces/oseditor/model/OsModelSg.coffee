@@ -18,7 +18,9 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           return false
 
       RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
-      @get("rules").push( new RuleModel(ruleData) )
+      rule = new RuleModel(ruleData)
+      @get("rules").push(rule)
+      return rule.id
 
     getRule : ( id )->
       for rule in @get("rules")
@@ -26,6 +28,12 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           return rule
 
       null
+
+    updateRule : (id, ruleData) ->
+
+        for rule in @get("rules")
+          if rule.id is id
+            rule.set(ruleData)
 
     removeRule : ( idOrModel )->
       for r, idx in @get("rules")

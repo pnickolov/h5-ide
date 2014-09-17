@@ -7110,7 +7110,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9277,8 +9278,11 @@ g.shadow {
       font-size: 12px;
       color: #8D8D8D; }
   #OpsEditor .OEPanelRight.property .option-group-head, #OpsEditor .OEPanelRight.config .option-group-head {
+    width: 100%;
     height: 32px;
-    line-height: 34px; }
+    line-height: 34px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
     #OpsEditor .OEPanelRight.property .option-group-head:first-child, #OpsEditor .OEPanelRight.config .option-group-head:first-child {
       border-top: 1px solid #000000; }
   #OpsEditor .OEPanelRight.property .option-group header, #OpsEditor .OEPanelRight.config .option-group header {
@@ -9402,6 +9406,10 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }
+  #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
+    float: right;
+    margin: 5px;
+    cursor: pointer; }
   #OpsEditor .OEPanelRight.property .os-sg-rule-list-container, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container {
     font-size: 12px; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list li {
@@ -9413,7 +9421,12 @@ g.shadow {
       padding: 15px; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
       float: left;
-      width: 33%; }
+      width: 31%; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .rule-item-remove, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .rule-item-remove {
+      margin-top: 5px;
+      float: left;
+      margin-left: 8px;
+      cursor: pointer; }
   #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
     width: 450px; }
 

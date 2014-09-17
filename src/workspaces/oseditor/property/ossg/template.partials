@@ -1,5 +1,6 @@
 <!-- {{stack}} -->
 <h1>{{name}}</h1>
+{{#unless default}}<div class="os-sg-remove icon-delete"></div>{{/unless}}
 <div class="option-group-head expand">
     Security Group
 </div>
@@ -10,7 +11,7 @@
     </section>
     <section class="group required">
         <label class="name">Description</label>
-        <input data-target="name" class="selection string" value="{{name}}"/>
+        <input data-target="description" class="selection string" value="{{description}}"/>
     </section>
 </div>
 <div class="option-group-head expand">Rule ()</div>
@@ -25,7 +26,7 @@
             <li class="head">Port/Code</li>
             <li class="head">Source</li>
         </ul>
-        <div class="rule-list">
+        <div class="rule-list ingress">
             {{#each ingressRules}}
             <div class="rule-item" data-id="{{id}}">
                 <select data-target="protocol" class="selection option" value="{{protocol}}" >
@@ -38,6 +39,7 @@
                 <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>
+                <div class="rule-item-remove icon-delete"></div>
             </div>
             {{/each}}
         </div>
@@ -48,7 +50,7 @@
             <li class="head">Port/Code</li>
             <li class="head">Target</li>
         </ul>
-        <div class="rule-list">
+        <div class="rule-list egress">
             {{#each egressRules}}
             <div class="rule-item" data-id="{{id}}">
                 <select data-target="protocol" class="selection option" value="{{protocol}}" >
@@ -61,6 +63,7 @@
                 <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>
+                <div class="rule-item-remove icon-delete"></div>
             </div>
             {{/each}}
         </div>
@@ -70,3 +73,16 @@
     Member ()
 </div>
 <div class="option-group"></div>
+
+<!-- {{newItem}} -->
+<div class="rule-item">
+    <select data-target="protocol" class="selection option" value="" >
+        <option value="tcp">TCP</option>
+        <option value="udp">UDP</option>
+        <option value="icmp">ICMP</option>
+        <option value="all">All</option>
+    </select>
+    <input class="selection" data-target="port" value="" />
+    <select data-target="ip" class="selection option" value="" data-valid-handle="ipValid" ></select>
+    <div class="rule-item-remove icon-delete hide"></div>
+</div>

@@ -43,6 +43,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       return
 
+    isDefault : () ->
+
+      return (@get('name') is 'DefaultSG')
+
     remove : ()->
       for rule in @get("rules")
         rule.remove()

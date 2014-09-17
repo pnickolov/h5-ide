@@ -3698,7 +3698,10 @@ $(function() {
         this.onChange = (function(e) {
             var original = self.onChange;
             return function(newValue) {
-                if (newValue !== self.oldValue && self.isValueInOptions(newValue)) {
+                var oldValue = self.oldValue;
+                if ($.isArray(self.oldValue) && self.oldValue[0])
+                    oldValue = self.oldValue[0];
+                if (newValue !== oldValue && self.isValueInOptions(newValue)) {
                     self.oldValue = newValue;
                     var result = original.apply(this, arguments);
                     if (self.$input.hasClass('bool')) {

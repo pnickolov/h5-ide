@@ -12,6 +12,8 @@ define [
 
             "change [data-target]": "updateAttribute"
             "click .direction-switch .t-m-btn": "switchDirection"
+            "click .rule-item-remove": "removeRule"
+            "click .os-sg-remove": "removeSG"
 
         className: 'float-panel-sg'
 
@@ -68,8 +70,15 @@ define [
 
             @$el.html template.stack({
                 ingressRules: ingressRules,
-                egressRules: egressRules
+                egressRules: egressRules,
+                name: @sgModel.get('name'),
+                description: @sgModel.get('description'),
+                defaultSG: @sgModel.isDefault()
             })
+
+            @addNewItem(@$el.find('.rule-list'))
+
+            @setTitle(@sgModel.get('name'))
 
             @
 
@@ -96,33 +105,51 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            rule = @getRuleValue($target)
+            if attr in ['protocol', 'port', 'ip']
 
-            return if not rule
+                rule = @getRuleValue($target)
 
-            if attr is 'protocol'
-                @setDefaultPort(rule, $target)
+                return if not rule
 
-            $ruleItem = $target.parents('.rule-item')
-            ruleId = $ruleItem.data('id')
-            ruleModel = @sgModel.getRule(ruleId)
+                if attr is 'protocol'
+                    @setDefaultPort(rule, $target)
 
-            if ruleModel
-                @sgModel.updateRule(ruleId, rule) if rule
+                $ruleItem = $target.parents('.rule-item')
+                ruleId = $ruleItem.data('id')
+                ruleModel = @sgModel.getRule(ruleId)
+
+                if ruleModel
+                    @sgModel.updateRule(ruleId, rule) if rule
+                else
+                    newRuleId = @sgModel.addRule(rule) if rule
+                    @addNewItem($ruleItem)
+                    $ruleItem.data('id', newRuleId)
+                    $ruleItem.find('.icon-delete').removeClass('hide')
+
+            if attr is 'name'
+                @sgModel.set('name', value)
+
+            if attr is 'description'
+                @sgModel.set('description', value)
+
+        addNewItem: ($lastItem) ->
+
+            if $lastItem.hasClass('rule-item')
+                $lastItem.after(template.newItem())
             else
-                newRuleId = @sgModel.addRule(rule) if rule
-                $ruleItem.data('id', newRuleId)
+                $lastItem.append(template.newItem())
 
         setDefaultPort: (rule, $target) ->
 
             $ruleContainer = $target.parents('.rule-item')
             $port = $ruleContainer.find('input[data-target="port"]')
 
+            originVal = $port.val()
             $port.removeAttr('disabled')
             if rule.protocol in ['tcp', 'udp']
-                $port.val('0-65535')
+                $port.val('0-65535') if originVal
             else if rule.protocol is 'icmp'
-                $port.val('-1/-1')
+                $port.val('-1/-1') if originVal
             else if rule.protocol is null
                 $port.val(@nullStr)
                 $port.attr('disabled', 'disabled')
@@ -252,6 +279,19 @@ define [
                 port: port,
                 ip: ip
             }
+
+        removeRule: (event) ->
+
+            $target = $(event.target)
+            $ruleItem = $target.parents('.rule-item')
+            ruleId = $ruleItem.data('id')
+            if ruleId
+                @sgModel.removeRule(ruleId)
+                $ruleItem.remove()
+
+        removeSG: (event) ->
+
+            @sgModel.remove()
 
     }, {
         handleTypes: [ 'ossg' ]

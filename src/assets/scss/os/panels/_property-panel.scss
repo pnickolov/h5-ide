@@ -74,9 +74,11 @@
 
     .option-group-head {
         &:first-child { border-top: 1px solid #000000; }
-
+        width: 100%;
         height      : 32px;
         line-height : 34px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
     }
 
     .option-group {
@@ -239,6 +241,11 @@
             color:          #555;
         }
     }
+    .os-sg-remove {
+        float: right;
+        margin: 5px;
+        cursor: pointer;
+    }
     .os-sg-rule-list-container {
         font-size: 12px;
         .head-list {
@@ -254,7 +261,13 @@
         .rule-list {
             .selection {
                 float: left;
-                width: 33%;
+                width: 31%;
+            }
+            .rule-item-remove {
+                margin-top: 5px;
+                float: left;
+                margin-left: 8px;
+                cursor: pointer;
             }
         }
     }

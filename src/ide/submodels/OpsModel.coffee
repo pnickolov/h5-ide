@@ -74,6 +74,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
 
+      cloudType  : ""
+      provider   : ""
+
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -683,8 +686,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state       : "Enabled"
       version     : "2014-02-17"
       component   : {}
-      cloud_type  : "aws"
-      provider    : "global"
+      cloud_type  : @get("cloudType")
+      provider    : @get("provider")
       layout      : { size : [240, 240] }
       agent       :
         enabled : true

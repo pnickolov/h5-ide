@@ -14,17 +14,12 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
     type : "OpenstackOps"
 
     initialize : ( attr, options )->
-      if options.jsonData
-        attr.provider = options.jsonData.provider
-
       OpsModel.prototype.initialize.call this, attr, options
 
-    # This method init a json for a newly created stack.
-    __createRawJson : ()->
-      json = OpsModel.prototype.__createRawJson.call this
-      json.cloud_type = "openstack"
-      json.provider   = "awcloud"
-      json
+      @attributes.cloudType = "openstack"
+      if not @get("provider")
+        @attributes.provider = if options.jsonData.provider then options.jsonData.provider else "awcloud"
+      return
 
     __initJsonData : ()->
       json = @__createRawJson()

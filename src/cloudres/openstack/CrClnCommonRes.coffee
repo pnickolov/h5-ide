@@ -8,23 +8,6 @@ define [
   "CloudResources"
 ], ( CrCommonCollection, CrCollection, CrModel, ApiRequest, constant, CloudResources )->
 
-
-  ### Network ###
-  CrCommonCollection.extend {
-    ### env:dev ###
-    ClassName : "CrOsNetworkCollection"
-    ### env:dev:end ###
-
-    type  : constant.RESTYPE.OSNETWORK
-
-    parseFetchData : ( data )->
-      data?.networks or []
-
-    parseExternalData: ( data ) ->
-      data?.networks or []
-  }
-
-
   ### FIP ###
   CrCommonCollection.extend {
     ### env:dev ###

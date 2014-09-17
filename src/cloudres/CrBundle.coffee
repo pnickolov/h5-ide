@@ -10,7 +10,7 @@ define [
 
   "./openstack/CrClnSharedRes"
   "./openstack/CrClnImage"
-  "./openstack/CrClnExtNetwork"
+  "./openstack/CrClnNetwork"
   "./openstack/CrClnCommonRes"
 ], ( CloudResources )->
   ### env:dev ###

@@ -37,7 +37,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         port_range_min   : @get( "portMin" )
         port_range_max   : @get( "portMax" )
         protocol         : @get( "protocol" )
-        remote_group_id  : if sg then sg.createRef( "id" ) else ""
+        remote_group_id  : if sg then sg.createRef( "id" ) else null
         remote_ip_prefix : @get( "ip" )
         id               : @get( "appId" )
       }

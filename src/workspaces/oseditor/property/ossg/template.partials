@@ -37,7 +37,7 @@
                 <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
                     <option value="{{port}}">{{port}}</option>
                 </select>
-                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="sourceValid" >
+                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>
             </div>
@@ -62,7 +62,7 @@
                 <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
                     <option value="{{port}}">{{port}}</option>
                 </select>
-                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="sourceValid" >
+                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
                     <option value="{{ip}}">{{ip}}</option>
                 </select>
             </div>

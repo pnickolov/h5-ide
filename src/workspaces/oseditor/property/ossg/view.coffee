@@ -23,7 +23,7 @@ define [
 
             @selectTpl =
 
-                sourceValid: (value) ->
+                ipValid: (value) ->
 
                     return true if MC.validate('cidr', value)
                     return false
@@ -54,13 +54,6 @@ define [
                                 if _.isNumber(icmpType) and _.isNumber(icmpCode)
                                     return true
                         return false
-
-        getPortStr: (min, max) ->
-
-            if min is max
-                return min + ''
-            else
-                return min + '-' + max
 
         render: ->
 
@@ -138,6 +131,27 @@ define [
                         ip: rule.ip
                     })
 
+        getPortStr: (min, max) ->
+
+            if min is max
+                return min + ''
+            else
+                return min + '-' + max
+
+        getPortRange: (portStr) ->
+
+            portRange = MC.validate.portRange(portStr)
+            return portRange
+
+        getICMPStr: (type, code) ->
+
+            return type + '/' + code
+
+        getICMPRange: (icmpStr) ->
+
+            icmpAry = icmpStr.split('/')
+            return icmpAry
+
         getRuleValue: ($target) ->
 
             $ruleItem = $target.parents('.rule-item')
@@ -152,7 +166,7 @@ define [
 
             return {
                 protocol: protocol,
-                port: port,
+                port: @getPortRange(port),
                 ip: ip
             }
 

@@ -8,15 +8,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     initialize : () ->
 
-        @addRule({
-            direction: 'egress'
-            portMin: '1'
-            portMax: '65535'
-            protocol: 'null'
-            sg: null
-            ip: '0.0.0.0/0'
-        })
-
     defaults : ()->
       description : ""
       rules       : []

@@ -145,17 +145,18 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
         "sg-id":
           type: "OS::Neutron::SecurityGroup"
-          uid: "sg-id"
+          uid: MC.guid()
           resource:
-            name: "helloworldsg"
-            description: "haha"
+            name: "DefaultSG"
+            description: "default security group"
             rules: [
               direction: "egress"
-              port_range_min: "0"
-              port_range_max: "65535"
-              protocol: "tcp"
-              remote_group_id: ""
-              remote_ip_prefix: "10.0.0.1/24"
+              ethertype: "IPv4"
+              port_range_min: null
+              port_range_max: null
+              protocol: null
+              remote_group_id: null
+              remote_ip_prefix: null
               id: ""
             ]
             id: ""

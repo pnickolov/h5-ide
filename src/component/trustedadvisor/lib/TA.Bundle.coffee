@@ -24,13 +24,14 @@ define ['MC',
         '../validation/aws/rds/sbg'
 
         '../validation/os/osport'
+        '../validation/os/ossubnet'
 
 ], ( MC,
      stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn,igw, acl,
      cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og, sbg,
 
      # Open Stack
-     osport
+     osport, ossubnet
    ) ->
 
         # AWS
@@ -61,3 +62,6 @@ define ['MC',
 
         # Open Stack
         osport          : osport
+        ossubnet        : ossubnet
+
+

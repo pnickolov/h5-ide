@@ -26,6 +26,7 @@ define({
 
         openstack:
             'OS::Neutron::Port'                     : [ 'osport' ]
+            'OS::Neutron::Subnet'                   : [ 'ossubnet' ]
 
     globalList:
         aws:
@@ -37,7 +38,8 @@ define({
             kp: [ 'longLiveNotice' ]
             dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]
 
-        openstack: {}
+        openstack:
+            ossubnet: [ 'subnetHasPortShouldConncectedOut' ]
 
     asyncList:
         aws:

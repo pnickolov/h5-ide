@@ -324,8 +324,14 @@ module.exports =
       en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
       zh: ""
 
+    # Open Stack
+
     ERROR_PORT_MUST_CONNECT_WITH_SERVER:
       en: "Port <span class='validation-tag tag-osport'>%s</span> must connect with server."
+      zh: ""
+
+    ERROR_SUBNET_HAS_PORT_SHOULD_CONNECTED_OUT:
+      en: "Subnet %s should be connected to a router associated with External Gateway, so that Floating IP would work. "
       zh: ""
 
 

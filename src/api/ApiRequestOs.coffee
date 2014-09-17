@@ -1,5 +1,5 @@
 
-define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api/ApiBundle", "MC" ], ( ApiDefination, ApiErrors, ApiHandlers )->
+define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api/ApiBundle", "MC", "api/ApiRequestOsHandlers" ], ( ApiDefination, ApiErrors, ApiHandlers )->
   ###
   # === ApiRequest ===
   #
@@ -28,20 +28,25 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     throw obj
 
   # Request Handlers
-  AjaxSuccessHandler = (res)->
+  AjaxSuccessHandler = (res, apiName, apiParameters)->
     if not res or not res.result or res.result.length != 2
       logAndThrow McError( ApiErrors.InvalidRpcReturn , "Invalid JsonRpc Return Data")
 
-    # Some of the error involved with AWS request are considered correct return.
     if res.result[0] isnt 0
       # We can do aditional global handling for some specific error here.
       # For example, Invalid Session.
       globalHandler = ApiHandlers[ res.result[0] ]
-      if globalHandler then return globalHandler( res )
+
+      osResult = res.result[1]
+      if osResult
+        osHandler = ApiHandlers.OsHandlers[ osResult[0] ]
+
+      if globalHandler or osHandler
+        return (osHandler || globalHandler)( res, apiName, apiParameters, ApiRequest )
 
       logAndThrow McError( res.result[0], "Service Error", res.result[1] )
 
-    # Try parse AWS Return result if we have correct return.
+    # Try parse OS Return result if we have correct return.
     awsresult = res.result[1]
     if awsresult and _.isArray(awsresult)
 
@@ -106,7 +111,7 @@ define ["ApiRequestDefs", "api/ApiRequestErrors", "api/ApiRequestHandlers", "api
     }
 
     # Generic hanlder for the ajax request.
-    request = Q(ajax).then(AjaxSuccessHandler, AjaxErrorHandler)
+    request = Q(ajax).then( ((res)-> AjaxSuccessHandler res, apiName, apiParameters), AjaxErrorHandler)
 
     # Pass result to parser if defined.
     if ApiDefination.Parsers[ apiName ]

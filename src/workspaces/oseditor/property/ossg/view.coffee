@@ -142,11 +142,11 @@ define [
 
             $protocol = $ruleItem.find('select[data-target="protocol"]')
             $port = $ruleItem.find('select[data-target="port"]')
-            $ip = $ruleItem.find('select[data-target="source"]')
+            $ip = $ruleItem.find('select[data-target="ip"]')
 
             protocol = $protocol.getValue()
             port = $port.getValue()
-            ip = $source.getValue()
+            ip = $ip.getValue()
 
             return {
                 protocol: protocol,

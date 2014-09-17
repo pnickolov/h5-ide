@@ -327,7 +327,8 @@
         // height       : $propertyGroupHeight;
         height          : 100%;
         &.focus {
-            background-color : darken($selection-bg, 5%);
+            background-color : darken($selection-bg, 3%);
+            // box-shadow: inset 0 -1px 0 $base-b;
         }
         &.disabled {
             color: #555;

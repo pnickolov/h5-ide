@@ -45,11 +45,6 @@ define [ 'jquery', 'event', './view', './model' ], ( $, ide_event, View, Model )
         if type is 'stack'
             view.closedPopup()
             return processRun()
-        else if type is 'openstack'
-          openstackDefer= Q.defer()
-          view.render type, status
-          openstackDefer.resolve(true)
-          openstackDefer.promise
         else
             processBar()
 

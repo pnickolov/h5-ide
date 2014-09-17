@@ -1,4 +1,4 @@
-define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/os_snapshot/snapshot_template', 'UI.selection'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template, selection)->
+define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/os_snapshot/snapshot_template', 'UI.selection'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template, bindSelection)->
     fetched = false
     deleteCount = 0
     deleteErrorCount = 0
@@ -23,17 +23,22 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @renderManager()
 
         renderDropdown: ()->
-            option =
-                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
-            @dropdown = new combo_dropdown(option)
+            that = @
             @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
-            selection = lang.PROP.VOLUME_SNAPSHOT_SELECT
-            @dropdown.setSelection selection
-
-            @dropdown.on 'open', @openDropdown, @
-            @dropdown.on 'filter', @filterDropdown, @
-            @dropdown.on 'change', @selectSnapshot, @
-            @dropdown
+            @manager.$el.find("#snapshot-volume-choose").on 'select_initialize', ->
+              that.selectize = @selectize
+              console.debug @selectize
+              @selectize.setLoading true
+              $(@).on 'select_dropdown_open', ->
+                that.selectize.load (cb)->
+                  that.volume.fetch().then ->
+                    volData = _.map @volume.toJSON(), (e)->
+                      {text: e.name, value: e.id}
+                    cb(volData)
+                    that.selectize.setLoading false
+#            @dropdown.on 'open', @openDropdown, @
+#            @dropdown.on 'change', @selectSnapshot, @
+#            @dropdown
 
         renderRegionDropdown: ()->
             option =
@@ -77,13 +82,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @dropdown.toggleControls true, 'filter'
                 @dropdown.setContent content
 
-        filterDropdown: (keyword)->
-            hitKeys = _.filter @volumes.toJSON(), ( data ) ->
-                data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
-            if keyword
-                @openDropdown hitKeys
-            else
-                @openDropdown()
 
 
         filterRegionDropdown: (keyword)->
@@ -171,10 +169,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             'create':(tpl)->
                 data =
                     volumes : {}
+                bindSelection @manager.$el, template
                 @manager.setSlide tpl data
-                @dropdown = @renderDropdown()
+                @renderDropdown()
 
-                @manager.$el.find('#property-volume-choose').html(@dropdown.$el)
             'duplicate': (tpl, checked)->
                 data = {}
                 data.originSnapshot = checked[0]

@@ -9,7 +9,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
     defaults : ()->
       userData         : "User Data Sample"
       meta             : ""
-      adminPass        : "xxxxxx"
+      adminPass        : "12345678"
       keypair          : "$DefaultKeyPair"
       flavorId         : "10"
       availabilityZone : ""

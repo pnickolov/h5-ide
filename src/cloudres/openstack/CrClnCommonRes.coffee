@@ -45,7 +45,7 @@ define [
 
     type : constant.RESTYPE.OSLISTENER
 
-    doFetch : ()-> ApiRequest("os_pool_List", {region:@region()})
+    doFetch : ()-> ApiRequest("os_vip_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.vips
     parseExternalData : ( data )-> data.vips

@@ -21,11 +21,34 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
     taggable: false
 
     doCreate : ()->
-      #TO-DO
-      null
+      self = @
+      promise = ApiRequest("os_snapshot_Create", {
+        region : @getCollection().region()
+        display_name: @get("name")
+        volume_id:  @get('volume_id')
+        display_description: @get("description")
+        is_force: true
+      })
+
+      promise.then ( res )->
+        console.log res
+        try
+          res = res.snapshot
+          self.set res
+          name = res.name
+        catch e
+          throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid data." )
+
+        self.set 'name', name
+        console.log "Created keypair resource", self
+        self
+
+
 
     doDestroy : ()->
-      #TO-DO
-      null
+      ApiRequest("os_snapshot_Delete", {
+        region : @getCollection().region()
+        snapshot_id: @get("id")
+      })
 
   }

@@ -1827,7 +1827,7 @@ $(function() {
          */
         load: function(fn) {
             var self = this;
-            var $wrapper = self.$wrapper.addClass('loading');
+            var $wrapper = self.$wrapper.addClass('loading-selection');
 
             self.loading++;
             fn.apply(self, [function(results) {
@@ -1837,7 +1837,7 @@ $(function() {
                     self.refreshOptions(self.isFocused && !self.isInputHidden);
                 }
                 if (!self.loading) {
-                    $wrapper.removeClass('loading');
+                    $wrapper.removeClass('loading-selection');
                 }
                 self.trigger('load', results);
             }]);
@@ -3785,11 +3785,11 @@ $(function() {
             self.isLoading = show;
             if (show) {
                 self.lock();
-                self.$dropdown.addClass('loading');
+                self.$dropdown.addClass('loading-selection');
                 self.$dropdown.append('<div class="box-loading box-wrapper"><div class="loading-spinner"></div></div>');
             } else {
                 self.unlock();
-                self.$dropdown.removeClass('loading');
+                self.$dropdown.removeClass('loading-selection');
             }
         };
 

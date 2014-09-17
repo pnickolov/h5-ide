@@ -59,7 +59,7 @@
                 <label for="property-volume-choose">{{ i18n "PROP.SNAPSHOT_SET_VOLUME"}}</label>
                 <div>
                     <div id="property-volume-choose">
-                        <select id="snapshot-volume-choose" data-select-tpl="select" data-item-tpl="item" class="selection option" placeholder="{{i18n "PROP.VOLUME_SNAPSHOT_SELECT"}}"></select>
+                        <select id="snapshot-volume-choose" data-select-tpl="option" data-item-tpl="item" class="selection option" placeholder="{{i18n "PROP.VOLUME_SNAPSHOT_SELECT"}}"></select>
                     </div>
                 </div>
             </div>
@@ -125,8 +125,11 @@
 </div>
 
 <!-- {{option}} -->
-<div>{{value}}<div>
+<div>
+    <div class="manager-content-main">{{name}}</div>
+    <div class="manager-content-sub">{{size}} G &nbsp;&nbsp;|&nbsp;&nbsp;{{id}}</div>
+</div>
 
 <!--{{item}}-->
-<div>{{value}}</div>
+<div>{{text}}</div>
 

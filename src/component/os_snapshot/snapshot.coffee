@@ -22,20 +22,26 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         render: ()->
             @renderManager()
 
-        renderDropdown: ()->
+        bindVolumeSelection: ()->
             that = @
+            console.log "We Got You...."
             @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
-            @manager.$el.find("#snapshot-volume-choose").on 'select_initialize', ->
+            @manager.$el.on 'select_change', "#snapshot-volume-choose", ->
+              that.selectSnapshot()
+            @manager.$el.on 'select_initialize', "#snapshot-volume-choose",->
+              console.log "We Got You...., again."
               that.selectize = @selectize
               console.debug @selectize
               @selectize.setLoading true
-              $(@).on 'select_dropdown_open', ->
+              that.manager.$el.find("#snapshot-volume-choose").on 'select_dropdown_open', ->
+                console.log "opened!"
                 that.selectize.load (cb)->
-                  that.volume.fetch().then ->
-                    volData = _.map @volume.toJSON(), (e)->
+                  that.volumes.fetch().then ->
+                    volData = _.map that.volumes.toJSON(), (e)->
                       {text: e.name, value: e.id}
-                    cb(volData)
+                    console.log volData
                     that.selectize.setLoading false
+                    cb(volData)
 #            @dropdown.on 'open', @openDropdown, @
 #            @dropdown.on 'change', @selectSnapshot, @
 #            @dropdown
@@ -169,33 +175,35 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             'create':(tpl)->
                 data =
                     volumes : {}
-                bindSelection @manager.$el, template
+                bindSelection @manager.$el, @selectionTemplate.bind(@)()
+                @bindVolumeSelection()
                 @manager.setSlide tpl data
-                @renderDropdown()
 
-            'duplicate': (tpl, checked)->
-                data = {}
-                data.originSnapshot = checked[0]
-                data.region = Design.instance().get('region')
-                if not checked
-                    return
-                @manager.setSlide tpl data
-                @regionsDropdown = @renderRegionDropdown()
-                @regionsDropdown.on 'change', =>
-                    @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
-
-                @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
+#            'duplicate': (tpl, checked)->
+#                data = {}
+#                data.originSnapshot = checked[0]
+#                data.region = Design.instance().get('region')
+#                if not checked
+#                    return
+#                @manager.setSlide tpl data
+#                @regionsDropdown = @renderRegionDropdown()
+#                @regionsDropdown.on 'change', =>
+#                    @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
+#
+#                @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
 
         doAction: (action, checked)->
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
-            volume = @volumes.findWhere('id': $('#property-volume-choose').find('.selectbox .selection .manager-content-main').data('id'))
+            volumeId = @selectize.getValue()
+            if not volumeId then return false
+            volume = @volumes.findWhere('id': @selectize.getValue())
             if not volume
                 return false
             data =
                 "name": $("#property-snapshot-name-create").val()
-                'volumeId': volume.id
+                'volume_id': volume.get('id')
                 'description': $('#property-snapshot-desc-create').val()
             @switchAction 'processing'
             afterCreated = @afterCreated.bind @
@@ -264,6 +272,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     $(@).show()
                 else
                     $(@).hide()
+
+        selectionTemplate: ->
+          that = @
+          {
+            option: (result)->
+              volume = that.volumes.get(result.value)
+              template.option volume.toJSON()
+            item: template.item
+          }
 
         getModalOptions: ->
             that = @

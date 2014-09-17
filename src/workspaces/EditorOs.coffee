@@ -28,6 +28,8 @@ define [
   "./oseditor/model/connection/OsSgAsso"
   "./oseditor/model/connection/OsVolumeUsage"
 
+  "./oseditor/model/seVisitors/AppToStack"
+
   "./oseditor/canvas/CeNetwork"
   "./oseditor/canvas/CeSubnet"
   "./oseditor/canvas/CeRt"

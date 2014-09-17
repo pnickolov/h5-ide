@@ -121,7 +121,9 @@ define [
       return
 
     loadVpcResource : ()->
-      CloudResources( "OpsResource", @opsModel.getMsrId() ).init( @opsModel.get("region") ).fetchForce()
+      CloudResources( "OpsResource", @opsModel.getMsrId() )
+        .init( @opsModel.get("region"), @opsModel.get("provider") )
+        .fetchForce()
 
     ###
      AppEdit

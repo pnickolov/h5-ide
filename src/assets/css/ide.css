@@ -9332,9 +9332,12 @@ g.shadow {
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
-  #OpsEditor .OEPanelRight.property .main {
+  #OpsEditor .OEPanelRight.property .main, #OpsEditor .OEPanelRight.config .main {
     padding: 10px 0 0 10px; }
-    #OpsEditor .OEPanelRight.property .ipgroup, #OpsEditor .OEPanelRight.config .ipgroup{
+  #OpsEditor .OEPanelRight.property .sub, #OpsEditor .OEPanelRight.config .sub {
+    padding: 5px 10px;
+    color: #888; }
+  #OpsEditor .OEPanelRight.property .ipgroup, #OpsEditor .OEPanelRight.config .ipgroup {
     display: inline-block; }
     #OpsEditor .OEPanelRight.property .ipgroup select.selection, #OpsEditor .OEPanelRight.config .ipgroup select.selection {
       float: left;

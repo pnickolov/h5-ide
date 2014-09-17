@@ -19,7 +19,7 @@
     {{#each subnets}}
     <section class="group">
         <div class="main">{{name}}</div>
-        <div class="name">({{cidr}})</div>
+        <div class="sub">({{cidr}})</div>
     </section>
     {{/each}}
 </div>

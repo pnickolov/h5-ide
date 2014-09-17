@@ -32,7 +32,7 @@ define [
       rlt
 
   }
- 
+
   ### Snapshot ###
   CrCollection.extend {
     ### env:dev ###
@@ -47,23 +47,3 @@ define [
       res?.snapshots || []
 
   }
-
-  ### Volume ###
-  CrCollection.extend {
-    ### env:dev ###
-    ClassName: "CrOsVolumeCollection"
-    ### env:dev:end ###
-
-    type: constant.RESTYPE.OSVOL
-    model: CrModelVolume
-
-    doFetch: ->
-      region = @region()
-      ApiRequest('os_volume_List', {region: region}).then (res)->
-        ids = _.pluck (res?.volumes || []), "id"
-        ApiRequest('os_volume_Info', {region: region, ids: ids})
-    parseFetchData: (res)->
-      _.values(res)
-
-  }
- 

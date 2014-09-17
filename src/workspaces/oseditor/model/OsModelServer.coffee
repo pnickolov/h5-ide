@@ -11,7 +11,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       meta             : ""
       adminPass        : "12345678"
       keypair          : "$DefaultKeyPair"
-      flavorId         : "10"
+      flavorId         : "6"
       availabilityZone : ""
       imageId          : ""
       credential       : "keypair"
@@ -90,7 +90,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
-
+        flavorId  : data.resource.flavor
         imageId   : data.resource.image
         adminPass : data.resource.adminPass
         keypair   : data.resource.key_name

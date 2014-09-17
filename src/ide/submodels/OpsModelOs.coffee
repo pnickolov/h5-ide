@@ -65,8 +65,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           uid: "server-id"
           resource:
             name: "helloworldserver"
-            flavor: "10"
-            image: "03f66db6-a74f-40b5-9933-4a19352083da"
+            flavor: "6"
+            image: "2e973595-7f72-4528-a69f-9cf070e445af"
             meta: ""
             userdata: ""
             availabilityZone: ""

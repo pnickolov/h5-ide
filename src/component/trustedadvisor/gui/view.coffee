@@ -49,6 +49,7 @@ define [ 'event',
             else
                 @$el.find( '.validation-content' ).text 'Great job! No error, warning or notice here.'
                 @$el.find( '.validation-content' ).addClass 'empty'
+
         processDetails: () ->
             error = @model.get 'error_list'
             warning = @model.get 'warning_list'
@@ -98,11 +99,8 @@ define [ 'event',
                 processNutshell()
                 $( '.validation-content' ).text 'Great job! No error, warning or notice here.'
 
-
-
         restoreRun: ->
             $( '#btn-confirm, #confirm-update-app' ).removeAttr( 'disabled' )
-
 
         _clickCurrentTab : ( status ) ->
             console.log '_clickCurrentTab, status = ' + status

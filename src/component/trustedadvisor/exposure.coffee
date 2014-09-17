@@ -27,12 +27,9 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
     _pushResult = ( result, method, filename, uid ) ->
         TaCore.set "#{filename}.#{method}", result, uid
 
-    _syncStart = () ->
-        ide_event.trigger ide_event.TA_SYNC_START
-
-    _genSyncFinish = ( times ) ->
-        _.after times, () ->
-            ide_event.trigger ide_event.TA_SYNC_FINISH
+    _syncStart = -> ide_event.trigger ide_event.TA_SYNC_START
+    _syncFinish = -> ide_event.trigger ide_event.TA_SYNC_FINISH
+    _genSyncFinish = ( times ) -> _.after times, () -> _syncFinish()
 
     _asyncCallback = ( method, filename, done ) ->
         hasRun = false
@@ -98,14 +95,20 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
         null
 
     _validAsync = ->
-        finishTimes = _.reduce config.get( 'asyncList' ), ( memo, arr ) ->
+        asyncList = config.get( 'asyncList' )
+
+        if not asyncList or not asyncList.length
+            _syncFinish()
+            return
+
+        finishTimes = _.reduce asyncList, ( memo, arr ) ->
             return memo + arr.length
         ,0
 
         _syncStart()
         syncFinish = _genSyncFinish( finishTimes )
 
-        _.each config.get( 'asyncList' ), ( methods, filename ) ->
+        _.each asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
                     result = TaBundle[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )

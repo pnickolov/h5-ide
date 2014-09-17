@@ -9240,6 +9240,16 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       font-size: 20px;
       padding: 5px;
       text-align: center; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .selectize-dropdown-content .info, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .selectize-dropdown-content .info {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #777;
+      padding: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .selectize-dropdown-content .name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .selectize-dropdown-content .name {
+      color: #fff; }
     #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
       position: relative; }
       #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
@@ -9427,6 +9437,14 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       float: left;
       margin-left: 8px;
       cursor: pointer; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list input.selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list input.selection {
+      height: 32px; }
+  #OpsEditor .OEPanelRight.property .os-sg-member-list li, #OpsEditor .OEPanelRight.config .os-sg-member-list li {
+    padding: 10px;
+    width: 100%;
+    border-bottom: 1px #000 solid;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
   #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
     width: 450px; }
 

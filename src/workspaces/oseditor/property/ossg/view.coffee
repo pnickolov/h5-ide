@@ -59,26 +59,34 @@ define [
 
             _.each sgRules, (ruleModel) ->
 
-                rule = ruleModel.toJSON()
-
-                ruleStrObj = that.getRuleStr(rule)
+                ruleStrObj = that.getRuleStr(ruleModel)
 
                 if ruleStrObj.direction is 'ingress'
                     ingressRules.push(ruleStrObj)
                 else if ruleStrObj.direction is 'egress'
                     egressRules.push(ruleStrObj)
 
+            memberModelList = @sgModel.getMemberList()
+
+            memberList = _.map memberModelList, (member) ->
+                return {
+                    name: member.get('name')
+                }
+
             @$el.html template.stack({
                 ingressRules: ingressRules,
                 egressRules: egressRules,
                 name: @sgModel.get('name'),
                 description: @sgModel.get('description'),
-                defaultSG: @sgModel.isDefault()
+                defaultSG: @sgModel.isDefault(),
+                memberList: memberList
             })
 
             @addNewItem(@$el.find('.rule-list'))
 
             @setTitle(@sgModel.get('name'))
+
+            @updateCount()
 
             @
 
@@ -125,6 +133,7 @@ define [
                     @addNewItem($ruleItem)
                     $ruleItem.data('id', newRuleId)
                     $ruleItem.find('.icon-delete').removeClass('hide')
+                    @updateCount()
 
             if attr is 'name'
                 @sgModel.set('name', value)
@@ -139,17 +148,26 @@ define [
             else
                 $lastItem.append(template.newItem())
 
+        removeRule: (event) ->
+
+            $target = $(event.target)
+            $ruleItem = $target.parents('.rule-item')
+            ruleId = $ruleItem.data('id')
+            if ruleId
+                @sgModel.removeRule(ruleId)
+                $ruleItem.remove()
+                @updateCount()
+
         setDefaultPort: (rule, $target) ->
 
             $ruleContainer = $target.parents('.rule-item')
             $port = $ruleContainer.find('input[data-target="port"]')
 
-            originVal = $port.val()
             $port.removeAttr('disabled')
             if rule.protocol in ['tcp', 'udp']
-                $port.val('0-65535') if originVal
+                $port.val('0-65535')
             else if rule.protocol is 'icmp'
-                $port.val('-1/-1') if originVal
+                $port.val('-1/-1')
             else if rule.protocol is null
                 $port.val(@nullStr)
                 $port.attr('disabled', 'disabled')
@@ -252,11 +270,13 @@ define [
             }
 
         # for view to use
-        getRuleStr: (rule) ->
+        getRuleStr: (ruleModel) ->
 
             # protocol: protocol,
             # port: @getPortRange(port),
             # ip: ip
+
+            rule = ruleModel.toJSON()
 
             direction = rule.direction
             ip = rule.remote_ip_prefix
@@ -273,25 +293,27 @@ define [
                 port = @nullStr
 
             ruleData = {
-                id: rule.id,
+                id: ruleModel.get('ruleId'),
                 direction: direction,
                 protocol: protocol,
                 port: port,
                 ip: ip
             }
 
-        removeRule: (event) ->
-
-            $target = $(event.target)
-            $ruleItem = $target.parents('.rule-item')
-            ruleId = $ruleItem.data('id')
-            if ruleId
-                @sgModel.removeRule(ruleId)
-                $ruleItem.remove()
-
         removeSG: (event) ->
 
             @sgModel.remove()
+
+        updateCount: () ->
+
+            sgRules = @sgModel.get('rules')
+            ingressRules = _.filter sgRules, (ruleModel) ->
+                return ruleModel.get('direction') is 'ingress'
+
+            @$el.find('.sg-rule-count').text(sgRules.length)
+            @$el.find('.sg-ingress-count').text(ingressRules.length)
+            @$el.find('.sg-egress-count').text(sgRules.length - ingressRules.length)
+            @$el.find('.sg-member-count').text(@sgModel.getMemberList().length)
 
     }, {
         handleTypes: [ 'ossg' ]

@@ -20,19 +20,31 @@ define [
             "click .item-list .item .item-remove": "unAttachItemClick"
 
         initialize: (options) ->
-            
+
             @targetModel = options.targetModel
 
             @selectTpl =
+
                 button: () ->
                     return template.addButton()
 
                 sgItem: (item) ->
+
+                    sgModel = Design.instance().component(item.value)
                     return template.item({
-                        name: item.text
+                        name: item.text,
+                        defaultSG: sgModel.isDefault()
                     })
 
                 sgOption: (data) ->
+
+                    sgModel = Design.instance().component(data.value)
+                    return template.option({
+                        name: data.text,
+                        ruleCount: sgModel.get('rules').length,
+                        memberCount: sgModel.getMemberList().length,
+                        description: sgModel.get('description')
+                    })
 
         render: ->
 

@@ -9,7 +9,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     initialize : () ->
 
     defaults : ()->
-      description : ""
+      description : "custom security group"
       rules       : []
 
     addRule : ( ruleData )->
@@ -26,7 +26,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       for rule in @get("rules")
         if rule.id is id
           return rule
-
       null
 
     updateRule : (id, ruleData) ->
@@ -42,6 +41,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           break
 
       return
+
+    getMemberList : () ->
+      return _.filter @connectionTargets('OsSgAsso'), (tgt) ->
+        return true
 
     isDefault : () ->
 

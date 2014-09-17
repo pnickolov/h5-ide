@@ -14,7 +14,8 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       sg        : null
       ip        : null
       appId     : ""
-      id        : MC.guid()
+      id        : ""
+      ruleId    : MC.guid()
 
     setTarget : ( ipOrSgModel )->
       if typeof ip is "string"
@@ -40,7 +41,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         protocol         : @get( "protocol" )
         remote_group_id  : if sg then sg.createRef( "id" ) else null
         remote_ip_prefix : @get( "ip" )
-        id               : @id
+        id               : @get( "id" )
       }
 
     fromJSON : ( json )->
@@ -50,7 +51,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       attr.portMin   = json.port_range_min
       attr.portMax   = json.port_range_max
       attr.protocol  = json.protocol
-      @id            = json.id
+      attr.id        = json.id
 
       attr.sg = if json.remote_group_id  then json.remote_group_id else null
       attr.ip = if json.remote_ip_prefix then json.remote_ip_prefix else null

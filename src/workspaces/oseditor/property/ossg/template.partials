@@ -14,10 +14,10 @@
         <input data-target="description" class="selection string" value="{{description}}"/>
     </section>
 </div>
-<div class="option-group-head expand">Rule ()</div>
+<div class="option-group-head expand">Rule (<span class="sg-rule-count"></span>)</div>
 <div class="direction-switch btn-group">
-    <button class="icon-unknown t-m-btn ingress active">Ingress ()</button>
-    <button class="icon-unknown t-m-btn egress">Egress ()</button>
+    <button class="icon-unknown t-m-btn ingress active">Ingress (<span class="sg-ingress-count"></span>)</button>
+    <button class="icon-unknown t-m-btn egress">Egress (<span class="sg-egress-count"></span>)</button>
 </div>
 <div class="os-sg-rule-list-container">
     <div class="rule-container ingress">
@@ -70,9 +70,15 @@
     </div>
 </div>
 <div class="option-group-head expand">
-    Member ()
+    Member (<span class="sg-member-count"></span>)
 </div>
-<div class="option-group"></div>
+<div class="option-group">
+    <ul class="os-sg-member-list">
+        {{#each memberList}}
+        <li class="member-item">{{name}}</li>
+        {{/each}}
+    </ul>
+</div>
 
 <!-- {{newItem}} -->
 <div class="rule-item">

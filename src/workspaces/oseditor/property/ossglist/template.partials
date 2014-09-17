@@ -3,7 +3,7 @@
     Security Group
 </div>
 <div class="option-group">
-    <select class="selection option mutil item-list" value="{{attachedSGList}}" data-button-tpl="button" data-item-tpl="sgItem">
+    <select class="selection option mutil item-list" value="{{attachedSGList}}" data-button-tpl="button" data-select-tpl="sgOption" data-item-tpl="sgItem">
         {{#each sgList}}
         <option value="{{uid}}">{{name}}</option>
         {{/each}}
@@ -13,7 +13,15 @@
 <!-- {{item}} -->
 <div class="item">
     <span class="item-name">{{name}}</span>
-    <div class="item-remove icon-delete"></div>
+    {{#unless defaultSG}}<div class="item-remove icon-delete"></div>{{/unless}}
+</div>
+
+<!-- {{option}} -->
+<div class="option">
+    <div class="name">{{name}}</div>
+    <div class="info">
+        {{ruleCount}} Rules, {{memberCount}} Members, {{description}}
+    </div>
 </div>
 
 <!-- {{addButton}} -->

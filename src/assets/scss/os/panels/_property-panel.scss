@@ -13,6 +13,23 @@
           text-align: center;
         }
 
+        .selection.item-list {
+            .selectize-dropdown-content {
+                .info {
+                    display: inline-block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    color: #777;
+                    padding: 10px;
+                    text-overflow: ellipsis;
+                    white-space:nowrap;
+                }
+                .name {
+                    color: #fff;
+                }
+            }
+        }
+
         .selection.item-list .hm-item.item {
             position: relative;
 
@@ -269,6 +286,18 @@
                 margin-left: 8px;
                 cursor: pointer;
             }
+            input.selection {
+                height: 32px;
+            }
+        }
+    }
+    .os-sg-member-list {
+        li {
+            padding: 10px;
+            width: 100%;
+            border-bottom: 1px #000 solid;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
         }
     }
     div.float-panel-sg {

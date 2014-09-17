@@ -17,8 +17,8 @@ define [
 
     doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region:@region()})
 
-    parseFetchData    : ( data )-> data.floatingips or []
-    parseExternalData : ( data )-> data.floatingips or []
+    parseFetchData    : ( data )-> data.floatingips
+    parseExternalData : ( data )-> data.floatingips
   }
 
 
@@ -30,10 +30,10 @@ define [
 
     type : constant.RESTYPE.OSPOOL
 
-    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region:@region()})
+    doFetch : ()-> ApiRequest("os_pool_List", {region:@region()})
 
-    parseFetchData    : ( data )-> data.pools or []
-    parseExternalData : ( data )-> data.pools or []
+    parseFetchData    : ( data )-> data.pools
+    parseExternalData : ( data )-> data.pools
   }
 
 
@@ -43,12 +43,12 @@ define [
     ClassName : "CrOsListenerCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSLISTENER
+    type : constant.RESTYPE.OSLISTENER
 
-    parseFetchData : ( data )->
-      data?.vips or []
-    parseExternalData: ( data ) ->
-      data?.vips or []
+    doFetch : ()-> ApiRequest("os_pool_List", {region:@region()})
+
+    parseFetchData    : ( data )-> data.vips
+    parseExternalData : ( data )-> data.vips
   }
 
 
@@ -58,12 +58,12 @@ define [
     ClassName : "CrOsHealthMonitorCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSHM
+    type : constant.RESTYPE.OSHM
 
-    parseFetchData : ( data )->
-      data?.health_monitors or []
-    parseExternalData: ( data ) ->
-      data?.health_monitors or []
+    doFetch : ()-> ApiRequest("os_healthmonitor_List", {region:@region()})
+
+    parseFetchData    : ( data )-> data.health_monitors
+    parseExternalData : ( data )-> data.health_monitors
   }
 
 
@@ -73,12 +73,12 @@ define [
     ClassName : "CrOsRouterCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSRT
+    type : constant.RESTYPE.OSRT
 
-    parseFetchData : ( data )->
-      data?.routers or []
-    parseExternalData: ( data ) ->
-      data?.routers or []
+    doFetch : ()-> ApiRequest("os_router_List", {region:@region()})
+
+    parseFetchData    : ( data )-> data.routers
+    parseExternalData : ( data )-> data.routers
   }
 
 
@@ -88,11 +88,7 @@ define [
     ClassName : "CrOsServerCollection"
     ### env:dev:end ###
 
-    # initialize : ()->
-    #   @listenTo @, "add", ( m )-> CloudResources( constant.RESTYPE.AMI, m.attributes.category ).fetchAmi( m.attributes.imageId )
-    #   return
-
-    type  : constant.RESTYPE.OSSERVER
+    type : constant.RESTYPE.OSSERVER
 
     doFetch : ()->
       region = @region()
@@ -102,11 +98,8 @@ define [
           ids    : _.pluck( res.servers, "id" )
         })
 
-    parseFetchData : ( data )->
-      data = _.values(data)
-
-    parseExternalData: ( data ) ->
-      data?.server or []
+    parseFetchData    : ( data )-> _.values(data)
+    parseExternalData : ( data )-> data.server
   }
 
 
@@ -126,11 +119,8 @@ define [
           ids    : _.pluck( res.volumes, "id" )
         })
 
-    parseFetchData : ( data )->
-      data = _.values(data)
-
-    parseExternalData: ( data ) ->
-      data?.volume or []
+    parseFetchData    : ( data )-> _.values(data)
+    parseExternalData : ( data )-> data.volume
   }
 
 
@@ -140,15 +130,12 @@ define [
     ClassName : "CrOsSubnetCollection"
     ### env:dev:end ###
 
-    type  : constant.RESTYPE.OSSUBNET
+    type : constant.RESTYPE.OSSUBNET
 
     doFetch : ()-> ApiRequest("os_subnet_List", {region : @region()})
-    parseFetchData : ( data )->
-      data?.subnets or []
 
-    parseExternalData: ( data ) ->
-      data?.subnets or []
-
+    parseFetchData    : ( data )-> data.subnets
+    parseExternalData : ( data )-> data.subnets
   }
 
 
@@ -161,12 +148,9 @@ define [
     type  : constant.RESTYPE.OSSG
 
     doFetch : ()-> ApiRequest("os_securitygroup_List", {region : @region()})
-    parseFetchData : ( data )->
-      data?.security_groups or []
 
-    parseExternalData: ( data ) ->
-      data?.security_groups or []
-
+    parseFetchData    : ( data )-> data.security_groups
+    parseExternalData : ( data )-> data.security_groups
   }
 
 
@@ -179,8 +163,7 @@ define [
     type  : constant.RESTYPE.OSPORT
 
     doFetch : ()-> ApiRequest("os_port_List", {region : @region()})
-    parseFetchData : ( data )->
-      data?.ports or []
-    parseExternalData: ( data ) ->
-      data?.ports or []
+
+    parseFetchData    : ( data )-> data.ports
+    parseExternalData : ( data )-> data.ports
   }

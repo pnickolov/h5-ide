@@ -684,7 +684,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       version     : "2014-02-17"
       component   : {}
       cloud_type  : "aws"
-      provider    : "amazon"
+      provider    : "global"
       layout      : { size : [240, 240] }
       agent       :
         enabled : true

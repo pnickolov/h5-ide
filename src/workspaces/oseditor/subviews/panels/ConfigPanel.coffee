@@ -2,40 +2,19 @@
 define [
     'backbone'
     'constant'
+    './PropertyPanel'
     '../../property/OsPropertyView'
-    '../../property/OsPropertyBundle'
 
-], ( Backbone, constant, OsPropertyView )->
+], ( Backbone, constant, PropertyPanel, OsPropertyView )->
 
 
-    Backbone.View.extend
+    PropertyPanel.extend
 
         initialize: ( options ) ->
-            @options = options
-            @mode = Design.instance().mode()
-            @type = 'globalconfig'
+            PropertyPanel.prototype.initialize.apply @, arguments
 
-            @model      = @getModel()
+            @type = 'globalconfig'
+            @model      = Design.instance()
             @viewClass  = OsPropertyView.getClass @mode, @type
 
-        getModel: ->
-            Backbone.Model.extend {
-                initialize: () ->
-                    design = Design.instance()
-                    @set {
-                        name       : design.get("name").replace(/\s+/g, '')
-                        id         : design.get("id")
-                        usage      : design.get("usage")
-                        description: design.get('description')
-                    }
-            }
-
-        render: () ->
-            that = @
-            @$el.html new @viewClass( model: @model ).render().el
-
-            @$el.find('select.value').each ->
-                that.bindSelection($(@))
-
-            @
 

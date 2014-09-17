@@ -9230,69 +9230,69 @@ g.shadow {
 .OEPanelRight.resource .ebs-size {
   margin-top: -1.8em; }
 
-#OpsEditor .OEPanelRight.property {
+#OpsEditor .OEPanelRight.property, #OpsEditor .OEPanelRight.config {
   color: #ccc;
   /* property component style */ }
-  #OpsEditor .OEPanelRight.property .panel-body {
+  #OpsEditor .OEPanelRight.property .panel-body, #OpsEditor .OEPanelRight.config .panel-body {
     font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-    #OpsEditor .OEPanelRight.property .panel-body h1 {
+    #OpsEditor .OEPanelRight.property .panel-body h1, #OpsEditor .OEPanelRight.config .panel-body h1 {
       font-size: 20px;
       padding: 5px;
       text-align: center; }
-    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item {
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
       position: relative; }
-      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name {
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
         float: none; }
-      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove {
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
         position: absolute;
         top: 16px;
         right: 20px; }
-  #OpsEditor .OEPanelRight.property .panel-float h1 {
+  #OpsEditor .OEPanelRight.property .panel-float h1, #OpsEditor .OEPanelRight.config .panel-float h1 {
     font-size: 20px;
     padding: 5px;
     text-align: center; }
-  #OpsEditor .OEPanelRight.property .os-property-default {
+  #OpsEditor .OEPanelRight.property .os-property-default, #OpsEditor .OEPanelRight.config .os-property-default {
     padding: 20px 0 0 26px; }
-  #OpsEditor .OEPanelRight.property .os-property-message {
+  #OpsEditor .OEPanelRight.property .os-property-message, #OpsEditor .OEPanelRight.config .os-property-message {
     padding: 20px 0 0 26px; }
-  #OpsEditor .OEPanelRight.property img.property-os-image-icon {
+  #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
     display: inline-block;
     vertical-align: baseline;
     background: #FFF;
     padding: 5px 0;
     border-radius: 3px;
     margin: 0px 2px -4px -2px; }
-  #OpsEditor .OEPanelRight.property img.property-os-image-value {
+  #OpsEditor .OEPanelRight.property img.property-os-image-value, #OpsEditor .OEPanelRight.config img.property-os-image-value {
     vertical-align: middle;
     margin: -2px 2px -2px 2px; }
-  #OpsEditor .OEPanelRight.property p.property-os-image-text {
+  #OpsEditor .OEPanelRight.property p.property-os-image-text, #OpsEditor .OEPanelRight.config p.property-os-image-text {
     display: inline-block;
     color: #DEDEDE;
     margin: -5px 0;
     max-width: 220px;
     white-space: nowrap;
     margin-right: -20px; }
-    #OpsEditor .OEPanelRight.property p.property-os-image-text span.uid {
+    #OpsEditor .OEPanelRight.property p.property-os-image-text span.uid, #OpsEditor .OEPanelRight.config p.property-os-image-text span.uid {
       display: block;
       font-size: 12px;
       color: #8D8D8D; }
-  #OpsEditor .OEPanelRight.property .option-group-head {
+  #OpsEditor .OEPanelRight.property .option-group-head, #OpsEditor .OEPanelRight.config .option-group-head {
     height: 32px;
     line-height: 34px; }
-    #OpsEditor .OEPanelRight.property .option-group-head:first-child {
+    #OpsEditor .OEPanelRight.property .option-group-head:first-child, #OpsEditor .OEPanelRight.config .option-group-head:first-child {
       border-top: 1px solid #000000; }
-  #OpsEditor .OEPanelRight.property .option-group header {
+  #OpsEditor .OEPanelRight.property .option-group header, #OpsEditor .OEPanelRight.config .option-group header {
     padding: 8px 10px;
     background: #1d1e29; }
-  #OpsEditor .OEPanelRight.property .group {
+  #OpsEditor .OEPanelRight.property .group, #OpsEditor .OEPanelRight.config .group {
     background-color: #27272b;
     font-size: 12px;
     position: relative;
     border-bottom: 1px #000 solid;
     margin-bottom: 0; }
-    #OpsEditor .OEPanelRight.property .group:last-child {
+    #OpsEditor .OEPanelRight.property .group:last-child, #OpsEditor .OEPanelRight.config .group:last-child {
       border-bottom: none; }
-    #OpsEditor .OEPanelRight.property .group.required:after {
+    #OpsEditor .OEPanelRight.property .group.required:after, #OpsEditor .OEPanelRight.config .group.required:after {
       position: absolute;
       z-index: 1;
       content: "";
@@ -9307,7 +9307,7 @@ g.shadow {
       border-width: 0 20px 20px 0;
       margin-left: -20px;
       border-color: transparent #0b8900 transparent transparent; }
-    #OpsEditor .OEPanelRight.property .group.required:before {
+    #OpsEditor .OEPanelRight.property .group.required:before, #OpsEditor .OEPanelRight.config .group.required:before {
       position: absolute;
       z-index: 2;
       content: "*";
@@ -9317,7 +9317,13 @@ g.shadow {
       top: 0;
       margin-top: 3px;
       margin-right: 3px; }
-  #OpsEditor .OEPanelRight.property .name {
+  #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
+    margin: 0;
+    padding: 8px 9px; }
+  #OpsEditor .OEPanelRight.property dt, #OpsEditor .OEPanelRight.config dt {
+    width: 80px;
+    float: left; }
+  #OpsEditor .OEPanelRight.property .name, #OpsEditor .OEPanelRight.config .name {
     width: 100%;
     padding: 8px 10px 2px 9px;
     display: table-cell;
@@ -9326,27 +9332,27 @@ g.shadow {
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
-  #OpsEditor .OEPanelRight.property .ipgroup {
+  #OpsEditor .OEPanelRight.property .ipgroup, #OpsEditor .OEPanelRight.config .ipgroup {
     display: inline-block; }
-    #OpsEditor .OEPanelRight.property .ipgroup select.selection {
+    #OpsEditor .OEPanelRight.property .ipgroup select.selection, #OpsEditor .OEPanelRight.config .ipgroup select.selection {
       float: left;
       width: 72px;
       font-size: 12px;
       display: inline-block; }
-    #OpsEditor .OEPanelRight.property .ipgroup .selectize-control {
+    #OpsEditor .OEPanelRight.property .ipgroup .selectize-control, #OpsEditor .OEPanelRight.config .ipgroup .selectize-control {
       float: left;
       width: 62px;
       font-size: 12px;
       display: inline-block;
       text-align: center; }
-      #OpsEditor .OEPanelRight.property .ipgroup .selectize-control .selectize-input:after {
+      #OpsEditor .OEPanelRight.property .ipgroup .selectize-control .selectize-input:after, #OpsEditor .OEPanelRight.config .ipgroup .selectize-control .selectize-input:after {
         display: none; }
-    #OpsEditor .OEPanelRight.property .ipgroup span {
+    #OpsEditor .OEPanelRight.property .ipgroup span, #OpsEditor .OEPanelRight.config .ipgroup span {
       width: 10px;
       text-align: center;
       padding-top: 20px;
       float: left; }
-  #OpsEditor .OEPanelRight.property .btn-group button {
+  #OpsEditor .OEPanelRight.property .btn-group button, #OpsEditor .OEPanelRight.config .btn-group button {
     font-size: 12px;
     width: 50%;
     cursor: pointer;
@@ -9356,15 +9362,15 @@ g.shadow {
     display: inline-block;
     padding: 8px;
     position: relative; }
-    #OpsEditor .OEPanelRight.property .btn-group button:before {
+    #OpsEditor .OEPanelRight.property .btn-group button:before, #OpsEditor .OEPanelRight.config .btn-group button:before {
       margin-right: 5px;
       float: left;
       display: inline-block;
       margin-top: 1px; }
-    #OpsEditor .OEPanelRight.property .btn-group button.active {
+    #OpsEditor .OEPanelRight.property .btn-group button.active, #OpsEditor .OEPanelRight.config .btn-group button.active {
       background: #2c2f46;
       color: #fff !important; }
-      #OpsEditor .OEPanelRight.property .btn-group button.active:after {
+      #OpsEditor .OEPanelRight.property .btn-group button.active:after, #OpsEditor .OEPanelRight.config .btn-group button.active:after {
         content: "";
         position: absolute;
         left: 0;
@@ -9373,29 +9379,29 @@ g.shadow {
         border-bottom: 2px solid #0D49CA;
         width: 100%;
         z-index: 1; }
-    #OpsEditor .OEPanelRight.property .btn-group button:hover {
+    #OpsEditor .OEPanelRight.property .btn-group button:hover, #OpsEditor .OEPanelRight.config .btn-group button:hover {
       color: #ccc;
       background: #161616;
       color: #9C6DC0; }
-    #OpsEditor .OEPanelRight.property .btn-group button.active:hover {
+    #OpsEditor .OEPanelRight.property .btn-group button.active:hover, #OpsEditor .OEPanelRight.config .btn-group button.active:hover {
       background: #2c2f46;
       color: #fff !important; }
-    #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled] {
+    #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }
-  #OpsEditor .OEPanelRight.property .os-sg-rule-list-container {
+  #OpsEditor .OEPanelRight.property .os-sg-rule-list-container, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container {
     font-size: 12px; }
-    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li {
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list li {
       float: left;
       text-align: center;
       width: 33%;
       box-sizing: border-box;
       -moz-box-sizing: border-box;
       padding: 15px; }
-    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection {
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 33%; }
-  #OpsEditor .OEPanelRight.property div.float-panel-sg {
+  #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
     width: 450px; }
 
 .dropdown-list-btn {

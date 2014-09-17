@@ -1,4 +1,4 @@
-#OpsEditor .OEPanelRight.property {
+#OpsEditor .OEPanelRight.property, #OpsEditor .OEPanelRight.config {
 
     color: #ccc;
     // @include no-selection-bg;
@@ -125,6 +125,11 @@
             margin-right: 3px;
         }
     }
+
+    dl { margin: 0; padding: 8px 9px; }
+    dt { width: 80px; float: left; }
+    dd {}
+
     .name {
         width                : 100%;
         padding              : 8px 10px 2px 9px;

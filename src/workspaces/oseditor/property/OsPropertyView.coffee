@@ -10,7 +10,9 @@ define [
 
     OsPropertyView = Backbone.View.extend {
         constructor: ( options ) ->
-            @panel = options?.panel
+            if options and _.isObject options
+                _.extend @, options
+
             Backbone.View.apply @, arguments
 
         updateAttribute: ( e ) ->
@@ -25,7 +27,7 @@ define [
 
         getModelForUpdateAttr: -> @model
 
-        setTitle      : -> @panel?.setTitle.apply @panel, arguments
+        setTitle      : -> @propertyPanel?.setTitle.apply @propertyPanel, arguments
         showFloatPanel: -> @panel?.showFloatPanel.apply @panel, arguments
         hideFloatPanel: -> @panel?.hideFloatPanel.apply @panel, arguments
 

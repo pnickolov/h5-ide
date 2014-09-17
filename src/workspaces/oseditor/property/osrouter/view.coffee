@@ -8,9 +8,16 @@ define [
 ], ( constant, OsPropertyView, template, CloudResources, _, OsKp ) ->
 
   OsPropertyView.extend {
+    events:
+      "change [data-target]": "updateAttribute"
+
     render: ->
       console.log @model
-      @$el.html template.stackTemplate @model.toJSON()
+      subnets = @model.connectionTargets("OsRouterAsso")
+      json = @model.toJSON()
+      json.subnets = _.map subnets, (e)->
+        e.toJSON()
+      @$el.html template.stackTemplate json
       @
 
   }, {

@@ -1,6 +1,6 @@
 <!-- {{volume}} -->
 {{#if this.length}}
-<header class="volume-pph">{{i18n "canvas.CVS_POP_ATTACHED_VOLUMES"}} <span>({{this.length}})</span></header>
+<header class="volume-pph">{{i18n "CANVAS.CVS_POP_ATTACHED_VOLUMES"}} <span>({{this.length}})</span></header>
 <ul class="popup-content popup-volume">
 
     {{#each this}}

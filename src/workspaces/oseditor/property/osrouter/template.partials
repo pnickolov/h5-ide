@@ -5,10 +5,21 @@
 <div class="option-group">
     <section class="group required">
         <label class="name">Router Name</label>
-        <input id="property-os-server-name" data-target="name" class="selection string" value="{{name}}"/>
+        <input id="property-os-router-name" data-target="name" class="selection string" value="{{name}}"/>
     </section>
     <section class="group required">
-        <label class="name">Router Property</label>
-        <input type="text" class="selection string" value="Route Property"/>
+        <label class="name">Enable NAT</label>
+        <select class="selection bool" id="property-os-router-enablenat" data-target="enableNAT" value="{{#if floatingIp}}true{{else}}false{{/if}}"></select>
     </section>
+</div>
+<div class="option-group-head expand">
+    Router Detail
+</div>
+<div class="option-group">
+    {{#each subnets}}
+    <section class="group">
+        <div class="main">{{name}}</div>
+        <div class="name">({{cidr}})</div>
+    </section>
+    {{/each}}
 </div>

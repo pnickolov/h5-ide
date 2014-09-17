@@ -4,7 +4,8 @@ define [
     './template'
     'CloudResources'
     '../ossg/view'
-], ( constant, OsPropertyView, template, CloudResources, SgView ) ->
+    'UI.selection'
+], ( constant, OsPropertyView, template, CloudResources, SgView, bindSelection ) ->
 
     OsPropertyView.extend {
 
@@ -22,6 +23,7 @@ define [
         initialize: (options) ->
 
             @targetModel = options.targetModel
+            @panel = options.panel
 
             @selectTpl =
 
@@ -48,6 +50,7 @@ define [
 
         render: ->
 
+            bindSelection(@$el, @selectTpl)
             @refreshList()
             @
 

@@ -5,10 +5,13 @@ define [
   'CloudResources'
   'underscore'
   'OsKp'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp ) ->
+  '../ossglist/view'
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView ) ->
 
   OsPropertyView.extend {
+
     events:
+
       "change #property-os-server-credential": "onChangeCredential"
       "change #property-os-server-name": "updateServerAttr"
       "change #property-os-server-image": "updateServerAttr"
@@ -20,6 +23,12 @@ define [
       'change #property-os-server-fip': "updateServerAttr"
       'change #property-os-server-aip': "updateServerAttr"
 
+    initialize: ->
+
+        @sgListView = new SgListView {
+            panel: @panel,
+            targetModel: @model
+        }
 
     render: ->
       json = @model.toJSON()
@@ -37,6 +46,10 @@ define [
       kpDropdown = new OsKp(@model,template.kpSelection())
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @bindSelectizeEvent()
+
+      # append sglist
+      @$el.append @sgListView.render().el
+
       @
 
     bindSelectizeEvent: ()->

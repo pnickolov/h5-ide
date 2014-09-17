@@ -19,8 +19,6 @@ define [
                 targetModel: @model
             }
 
-            @selectTpl = @sgListView.selectTpl
-
         render: ->
 
             if @model.isAttached()

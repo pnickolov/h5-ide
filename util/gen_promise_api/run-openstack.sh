@@ -163,7 +163,14 @@ function fn_generate_coffee() {
         RESOURCE_URL=${SERVICE_URL}
         API_TYPE="OpenStack"
         api_type="OpenStack"
+    elif [ "${__TYPE}" == "osutil"  ]
+    then
+        SERVICE_URL=${_RESOURCE_l}
+        RESOURCE_URL=${SERVICE_URL}
+        API_TYPE="OpenStack"
+        api_type="OpenStack"
     fi
+
 
     echo
     echo "#......................................................."
@@ -414,7 +421,13 @@ function fn_generate_coffee() {
                 _API_NAME="'os_${_SERVICE_l}_${_RESOURCE_l}_${_CUR_API}'"
             fi
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-38s", $0}'`
+        elif [ "${__TYPE}" == "osutil" ]
+        then
+            _URL="'/os/'"
+            _API_NAME="'os_${_CUR_API}'"
+            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-18s", $0}'`
         fi
+
         
         echo -e "\t\t${_API_NAME} : { type:'openstack', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
     
@@ -580,7 +593,7 @@ function fn_scan_openstack() {
     # SERVICE: Nova
     # SERVICE: Glance
 
-    # if [ "${SERVICE}" != "Glance" ]
+    # if [ "${SERVICE}" != "OSUtil.py" ]
     # then
     #     return
     # fi
@@ -762,10 +775,10 @@ then
     mv ${TGT_BASE_DIR}/service/openstack/glance2.js ${TGT_BASE_DIR}/service/openstack/glance.js
 fi
 
-if [ -f ${TGT_BASE_DIR}/service/openstack/os.js ]
-then
-    rm ${TGT_BASE_DIR}/service/openstack/os.js -rf
-fi
+# if [ -f ${TGT_BASE_DIR}/service/openstack/os.js ]
+# then
+#     rm ${TGT_BASE_DIR}/service/openstack/os.js -rf
+# fi
 
 ##############################################################
 echo 

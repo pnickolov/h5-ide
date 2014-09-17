@@ -4,7 +4,7 @@
 </div>
 <div class="option-group">
     <section class="group">
-        <select class="selection option mutil item-list" value="{{list}}" data-button-tpl="button" data-item-tpl="getItem">
+        <select class="selection option mutil item-list" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem">
             {{#each list}}
             <option value="{{id}}">{{name}}</option>
             {{/each}}
@@ -13,8 +13,10 @@
 </div>
 
 <!-- {{item}} -->
-<div class="item">
-    <span class="item-name">{{name}}</span>
+<div class="item hm-item">
+    <div class="item-name">{{name}}</div>
+    <div class="item-info">{{type}} | {{urlPath}}</div>
+
     <div class="item-remove icon-delete"></div>
 </div>
 

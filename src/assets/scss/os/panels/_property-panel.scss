@@ -12,6 +12,18 @@
           padding: 5px;
           text-align: center;
         }
+
+        .selection.item-list .hm-item.item {
+            position: relative;
+
+            .item-name { float: none; }
+            .item-remove {
+                position: absolute;
+                top: 16px;
+                right: 20px;
+            }
+        }
+
     }
 
     /* property component style */

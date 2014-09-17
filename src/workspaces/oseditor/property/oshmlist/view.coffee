@@ -9,14 +9,11 @@ define [
     OsPropertyView.extend {
 
         events:
-
             "change [data-target]": "updateAttribute"
 
             "select_dropdown_button_click .item-list": "addItem"
             "click .item-list .item": "editItem"
-
-            "select_item_remove .item-list": "unAttachItem"
-            "click .item-list .item .item-remove": "unAttachItemClick"
+            "click .item-list .item .item-remove": "removeItem"
 
         initialize: (options) ->
             @targetModel = options.targetModel
@@ -25,10 +22,7 @@ define [
                 button: () ->
                     return template.addButton()
 
-                getItem: (item) ->
-                    return template.item({
-                        name: item.text
-                    })
+                getItem: (item) -> template.item( Design.instance().component( item.value ).toJSON() )
 
         render: ->
             @refreshList()
@@ -36,6 +30,7 @@ define [
 
         refreshList: () ->
             @$el.html template.stack({
+                activeList: @targetModel.get("healthMonitors").map( (hm) -> hm.id ).join( ',' )
                 list: @targetModel.get("healthMonitors").map (hm)-> hm.toJSON()
             })
 
@@ -63,23 +58,16 @@ define [
             @listenTo model, 'change', @refreshList
             @showFloatPanel(view.render().el)
 
-        attachItem: (event, sgUID) ->
-            sgModel = Design.instance().component(sgUID)
-            @targetModel.attachSG(sgModel)
+        removeItem: (event) ->
+            $target = $ event.currentTarget
 
-        unAttachItem: (event, sgUID) ->
+            id = $target.closest( '.item' ).data 'value'
+            @targetModel.removeHm id
 
-            sgModel = Design.instance().component(sgUID)
-            @targetModel.unAttachSG(sgModel)
-
-        unAttachItemClick: (event) ->
-
-            $target = $(event.currentTarget)
-            $sgItem = $target.parents('.item')
-            sgModel = @getSelectItemModel($sgItem)
-            @targetModel.unAttachSG(sgModel)
             @refreshList()
-            return false
+            @hideFloatPanel()
+
+            false
 
         remove: ->
             @hmView?.remove()

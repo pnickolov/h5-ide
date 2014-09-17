@@ -11,7 +11,7 @@ define [
         events:
             "change [data-target]": "updateAttribute"
 
-        initialize: (options) ->
+        setTitle: ( title ) -> @$( 'h1' ).text title
 
         render: ->
             bindSelection(@$el, @selectTpl)

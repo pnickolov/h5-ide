@@ -1139,17 +1139,17 @@ input.selection, textarea.selection {
 .selection.ipv4, .selection.cidrv4, .selection.ipcidrv4 {
   letter-spacing: 1px; }
 
-.selection.item-list.multi .selectize-input > div {
+.selection.item-list .selectize-input > div {
   padding: 5px 10px;
   width: 92%;
   margin-bottom: 5px;
   background-color: #32324d;
   border: 1px solid #222; }
-.selection.item-list.multi .item .item-remove {
+.selection.item-list .item .item-remove {
   float: right; }
-.selection.item-list.multi .item .item-name {
+.selection.item-list .item .item-name {
   float: left; }
-.selection.item-list.multi.selectize-dropdown .selectize-dropdown-button {
+.selection.item-list .selectize-dropdown .selectize-dropdown-button {
   position: absolute;
   top: 0;
   padding: 20px;
@@ -1165,9 +1165,9 @@ input.selection, textarea.selection {
   background-color: #434351;
   color: #fff;
   cursor: pointer; }
-  .selection.item-list.multi.selectize-dropdown .selectize-dropdown-button:hover {
+  .selection.item-list .selectize-dropdown .selectize-dropdown-button:hover {
     background-color: #4e4e5f; }
-.selection.item-list.multi.selectize-dropdown .selectize-dropdown-content {
+.selection.item-list .selectize-dropdown .selectize-dropdown-content {
   margin-top: 40px; }
 
 /* Table */

@@ -7111,8 +7111,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9241,6 +9240,14 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       font-size: 20px;
       padding: 5px;
       text-align: center; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item {
+      position: relative; }
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name {
+        float: none; }
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove {
+        position: absolute;
+        top: 16px;
+        right: 20px; }
   #OpsEditor .OEPanelRight.property .os-property-default {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .os-property-message {

@@ -1,30 +1,31 @@
 define ['MC',
-        '../validation/stack/stack',
-        '../validation/ec2/instance',
-        '../validation/vpc/subnet',
-        '../validation/vpc/vpc',
-        '../validation/elb/elb',
-        '../validation/ec2/securitygroup',
-        '../validation/asg/asg',
-        '../validation/ec2/eip',
-        '../validation/ec2/az',
-        '../validation/vpc/vgw',
-        '../validation/vpc/vpn',
-        '../validation/vpc/igw',
-        '../validation/vpc/networkacl',
-        '../validation/vpc/cgw',
-        '../validation/vpc/eni'
-        '../validation/vpc/rtb'
-        '../validation/stateeditor/main'
-        '../validation/state/state'
-        '../validation/ec2/ebs'
-        '../validation/ec2/kp'
-        '../validation/rds/dbinstance'
-        '../validation/rds/og'
-        '../validation/rds/sbg'
+        '../validation/aws/stack/stack',
+        '../validation/aws/ec2/instance',
+        '../validation/aws/vpc/subnet',
+        '../validation/aws/vpc/vpc',
+        '../validation/aws/elb/elb',
+        '../validation/aws/ec2/securitygroup',
+        '../validation/aws/asg/asg',
+        '../validation/aws/ec2/eip',
+        '../validation/aws/ec2/az',
+        '../validation/aws/vpc/vgw',
+        '../validation/aws/vpc/vpn',
+        '../validation/aws/vpc/igw',
+        '../validation/aws/vpc/networkacl',
+        '../validation/aws/vpc/cgw',
+        '../validation/aws/vpc/eni'
+        '../validation/aws/vpc/rtb'
+        '../validation/aws/stateeditor/main'
+        '../validation/aws/state/state'
+        '../validation/aws/ec2/ebs'
+        '../validation/aws/ec2/kp'
+        '../validation/aws/rds/dbinstance'
+        '../validation/aws/rds/og'
+        '../validation/aws/rds/sbg'
 
 ], ( MC, stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn, igw, acl, cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og, sbg ) ->
 
+        # AWS
         stack           : stack
         instance        : instance
         subnet          : subnet
@@ -50,4 +51,5 @@ define ['MC',
         sbg             : sbg
 
 
+        # Open Stack
 

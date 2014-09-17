@@ -11,14 +11,14 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
         TaCore.reset()
 
     _isGlobal = ( filename, method ) ->
-        config.globalList[ filename ] and _.contains config.globalList[ filename ], method
+        config.get( 'globalList' )[ filename ] and _.contains config.get( 'globalList' )[ filename ], method
 
     _isAsync = ( filename, method ) ->
-        config.asyncList[ filename ] and _.contains config.asyncList[ filename ], method
+        config.get( 'asyncList' )[ filename ] and _.contains config.get( 'asyncList' )[ filename ], method
 
     _getFilename = ( componentType ) ->
-        if config.componentTypeToFileMap[ componentType ]
-            return config.componentTypeToFileMap[ componentType ]
+        if config.get( 'componentTypeToFileMap' )[ componentType ]
+            return config.get( 'componentTypeToFileMap' )[ componentType ]
 
         filename = _.last componentType.split '.'
         filename = filename.toLowerCase()
@@ -56,7 +56,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
     ########## Sub Validation Method ##########
 
     _validGlobal = ( env ) ->
-        _.each config.globalList, ( methods, filename ) ->
+        _.each config.get( 'globalList' ), ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
                     if method.indexOf( '~' ) is 0
@@ -98,14 +98,14 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
         null
 
     _validAsync = ->
-        finishTimes = _.reduce config.asyncList, ( memo, arr ) ->
+        finishTimes = _.reduce config.get( 'asyncList' ), ( memo, arr ) ->
             return memo + arr.length
         ,0
 
         _syncStart()
         syncFinish = _genSyncFinish( finishTimes )
 
-        _.each config.asyncList, ( methods, filename ) ->
+        _.each config.get( 'asyncList' ), ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
                     result = TaBundle[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )

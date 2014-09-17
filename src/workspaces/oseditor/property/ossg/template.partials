@@ -32,7 +32,7 @@
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
-                    <option value="null">All</option>
+                    <option value="all">All</option>
                 </select>
                 <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
                     <option value="{{port}}">{{port}}</option>
@@ -57,7 +57,7 @@
                     <option value="tcp">TCP</option>
                     <option value="udp">UDP</option>
                     <option value="icmp">ICMP</option>
-                    <option value="null">All</option>
+                    <option value="all">All</option>
                 </select>
                 <select data-target="port" class="selection option" value="{{port}}" data-valid-handle="portValid" >
                     <option value="{{port}}">{{port}}</option>

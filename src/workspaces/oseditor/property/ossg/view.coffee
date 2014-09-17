@@ -37,23 +37,13 @@ define [
                     rule = that.getRuleValue(@)
 
                     # for tcp and udp
-                    if rule.protocol in ['tcp', 'udp', 'null']
-                        portRange = MC.validate.portRange(value)
-                        if portRange and MC.validate.portValidRange(portRange)
-                            return true
-                        else
-                            return false
-
+                    if rule.protocol in ['tcp', 'udp', 'all']
+                        return true if that.getPortRange(value)
                     # for icmp
                     else
-                        valueAry = value.split('/')
-                        if valueAry and valueAry.length
-                            if valueAry.length is 2
-                                icmpType = Number(valueAry[0])
-                                icmpCode = Number(valueAry[1])
-                                if _.isNumber(icmpType) and _.isNumber(icmpCode)
-                                    return true
-                        return false
+                        return true if that.getICMPRange(value)
+
+                    return false
 
         render: ->
 
@@ -69,17 +59,11 @@ define [
 
                 rule = ruleModel.toJSON()
 
-                portStr = that.getPortStr(rule.port_range_min, rule.port_range_max)
+                ruleStrObj = @getRuleStr(rule)
 
-                ruleData = {
-                    protocol: rule.protocol,
-                    ip: rule.remote_ip_prefix,
-                    port: portStr
-                }
-
-                if rule.direction is 'ingress'
+                if ruleStrObj.direction is 'ingress'
                     ingressRules.push(ruleData)
-                else if rule.direction is 'egress'
+                else if ruleStrObj.direction is 'egress'
                     egressRules.push(ruleData)
 
             @$el.html template.stack({
@@ -110,51 +94,62 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            if (attr in ['protocol', 'port', 'source'])
+            if (attr in ['protocol', 'port', 'ip'])
                 rule = @getRuleValue($target)
-                if rule.protocol and rule.port and rule.source
-
-                    # direction        : @get( "direction" )
-                    # port_range_min   : @get( "portMin" )
-                    # port_range_max   : @get( "portMax" )
-                    # protocol         : @get( "protocol" )
-                    # remote_group_id  : if sg then sg.createRef( "id" ) else ""
-                    # remote_ip_prefix : @get( "ip" )
-                    # id               : @get( "appId" )
-
-                    @sgModel.addRule({
-                        direction: rule.ip
-                        portMin: rule.ip
-                        portMax: rule.ip
-                        protocol: rule.protocol
-                        sg: null
-                        ip: rule.ip
-                    })
+                @sgModel.addRule(rule) if rule
 
         getPortStr: (min, max) ->
+
+            if min is null or max is null
+                return 'n/a'
 
             if min is max
                 return min + ''
             else
                 return min + '-' + max
 
-        getPortRange: (portStr) ->
-
-            portRange = MC.validate.portRange(portStr)
-            return portRange
-
         getICMPStr: (type, code) ->
 
+            type = -1 if type is null
+            code = -1 if code is null
             return type + '/' + code
+
+        getPortRange: (portStr) ->
+
+            return [null, null] if portStr is 'n/a'
+
+            portRange = MC.validate.portRange(portStr)
+            if portRange and MC.validate.portValidRange(portRange)
+                return portRange
+            else
+                return null
 
         getICMPRange: (icmpStr) ->
 
             icmpAry = icmpStr.split('/')
-            return icmpAry
+            if icmpAry and icmpAry.length and icmpAry.length is 2
+                icmpType = Number(icmpAry[0])
+                icmpCode = Number(icmpAry[1])
+                if _.isNumber(icmpType) and _.isNumber(icmpCode)
+                    icmpAry[0] = null if icmpType is -1
+                    icmpAry[1] = null if icmpCode is -1
+                    return icmpAry
+            return null
 
+        # for model to use
         getRuleValue: ($target) ->
 
+            # direction        : @get( "direction" )
+            # port_range_min   : @get( "portMin" )
+            # port_range_max   : @get( "portMax" )
+            # protocol         : @get( "protocol" )
+            # remote_group_id  : if sg then sg.createRef( "id" ) else null
+            # remote_ip_prefix : @get( "ip" )
+            # id               : @get( "appId" )
+
             $ruleItem = $target.parents('.rule-item')
+
+            $ruleContainer = $ruleItem.parents('.rule-container')
 
             $protocol = $ruleItem.find('select[data-target="protocol"]')
             $port = $ruleItem.find('select[data-target="port"]')
@@ -164,9 +159,58 @@ define [
             port = $port.getValue()
             ip = $ip.getValue()
 
+            if not (protocol and port and ip)
+                return null
+
+            direction = 'ingress'
+            if $ruleContainer.hasClass('egress')
+                direction = 'egress'
+
+            if protocol is 'all'
+                protocol = null
+                port_range_min = null
+                port_range_max = null
+            else if protocol is 'icmp'
+                port = @getICMPRange(port)
+                port_range_min = port[0]
+                port_range_max = port[1]
+            else
+                port = @getPortRange(port)
+                port_range_min = port[0]
+                port_range_max = port[1]
+
             return {
+                direction: direction,
                 protocol: protocol,
-                port: @getPortRange(port),
+                port_range_min: port_range_min,
+                port_range_max: port_range_max,
+                remote_ip_prefix: ip,
+                remote_group_id: null
+            }
+
+        # for view to use
+        getRuleStr: (rule) ->
+
+            # protocol: protocol,
+            # port: @getPortRange(port),
+            # ip: ip
+
+            direction = rule.direction
+            ip = rule.remote_ip_prefix
+            protocol = rule.protocol
+
+            if rule.protocol in ['tcp', 'udp']
+                port = @getPortStr(rule.port_range_min, rule.port_range_max)
+            else if rule.protocol in ['icmp']
+                port = @getICMPStr(rule.port_range_min, rule.port_range_max)
+            else
+                protocol = 'all'
+                port = 'n/a'
+
+            ruleData = {
+                direction: direction,
+                protocol: protocol,
+                port: port,
                 ip: ip
             }
 

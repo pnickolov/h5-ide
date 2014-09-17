@@ -31,7 +31,6 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
       })
 
       promise.then ( res )->
-        console.log res
         try
           res = res.snapshot
           self.set res
@@ -42,8 +41,6 @@ define [ "../CrModel", "ApiRequestOs" ], ( CrModel, ApiRequest )->
         self.set 'name', name
         console.log "Created keypair resource", self
         self
-
-
 
     doDestroy : ()->
       ApiRequest("os_snapshot_Delete", {

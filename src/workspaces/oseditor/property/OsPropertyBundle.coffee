@@ -9,5 +9,5 @@ define [
     './oslistener/view'
     './ospool/view'
     './osport/view'
-
+    './osrouter/view'
 ], ->

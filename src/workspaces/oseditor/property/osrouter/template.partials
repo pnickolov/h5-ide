@@ -1,0 +1,14 @@
+<!-- {{stackTemplate}} -->
+<div class="option-group-head expand">
+    Router Detail
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Router Name</label>
+        <input id="property-os-server-name" data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Router Property</label>
+        <input type="text" class="selection string" value="Route Property"/>
+    </section>
+</div>

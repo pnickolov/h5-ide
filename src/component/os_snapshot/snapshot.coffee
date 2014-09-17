@@ -24,22 +24,17 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         bindVolumeSelection: ()->
             that = @
-            console.log "We Got You...."
             @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
             @manager.$el.on 'select_change', "#snapshot-volume-choose", ->
               that.selectSnapshot()
             @manager.$el.on 'select_initialize', "#snapshot-volume-choose",->
-              console.log "We Got You...., again."
               that.selectize = @selectize
-              console.debug @selectize
               @selectize.setLoading true
               that.manager.$el.find("#snapshot-volume-choose").on 'select_dropdown_open', ->
-                console.log "opened!"
                 that.selectize.load (cb)->
                   that.volumes.fetch().then ->
                     volData = _.map that.volumes.toJSON(), (e)->
                       {text: e.name, value: e.id}
-                    console.log volData
                     that.selectize.setLoading false
                     cb(volData)
 #            @dropdown.on 'open', @openDropdown, @
@@ -76,7 +71,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         openDropdown: (keySet)->
             @volumes.fetch().then =>
                 data = @volumes.toJSON()
-                console.log data
                 dataSet =
                     isRuntime: false
                     data: data
@@ -134,7 +128,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             fetching = false
             fetched = true
             data = @collection.toJSON()
-            console.log data
             data = _.map data, (e,f)->
                 if e.status is "available"
                     e.completed = true

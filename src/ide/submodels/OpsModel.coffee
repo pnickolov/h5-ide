@@ -201,7 +201,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       CloudResources( "OpsResource", @getMsrId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+    generateJsonFromRes : ()->
+      json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+      if not json.agent.module.repo
+        json.agent.module =
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
+      json
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()

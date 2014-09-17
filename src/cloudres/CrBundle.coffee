@@ -1,9 +1,10 @@
 
 define [
   "CloudResources"
+  "./CrOpsResource"
+
   "./aws/CrClnSharedRes"
   "./aws/CrClnCommonRes"
-  "./aws/CrClnOpsResource"
   "./aws/CrClnAmi"
   "./aws/CrClnRds"
   "./aws/CrClnRdsParam"

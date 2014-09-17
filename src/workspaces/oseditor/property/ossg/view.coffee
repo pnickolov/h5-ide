@@ -59,12 +59,12 @@ define [
 
                 rule = ruleModel.toJSON()
 
-                ruleStrObj = @getRuleStr(rule)
+                ruleStrObj = that.getRuleStr(rule)
 
                 if ruleStrObj.direction is 'ingress'
-                    ingressRules.push(ruleData)
+                    ingressRules.push(ruleStrObj)
                 else if ruleStrObj.direction is 'egress'
-                    egressRules.push(ruleData)
+                    egressRules.push(ruleStrObj)
 
             @$el.html template.stack({
                 ingressRules: ingressRules,
@@ -159,8 +159,7 @@ define [
             port = $port.getValue()
             ip = $ip.getValue()
 
-            if not (protocol and port and ip)
-                return null
+            ip = null if ip is '0.0.0.0/0'
 
             direction = 'ingress'
             if $ruleContainer.hasClass('egress')
@@ -198,6 +197,8 @@ define [
             direction = rule.direction
             ip = rule.remote_ip_prefix
             protocol = rule.protocol
+
+            ip = '0.0.0.0/0' if ip is null
 
             if rule.protocol in ['tcp', 'udp']
                 port = @getPortStr(rule.port_range_min, rule.port_range_max)

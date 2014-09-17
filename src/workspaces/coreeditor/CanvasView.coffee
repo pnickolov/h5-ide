@@ -575,6 +575,12 @@ define [
     __moveItemMouseDown : ( evt )->
     ###
 
+    ###
+    # Highlight some items ( Implemented in CavasViewEffect )
+    hightLightItems  : ( items )->
+    removeHightLight : ()->
+    ###
+
   }, {
     GRID_WIDTH  : 10
     GRID_HEIGHT : 10

@@ -12,7 +12,7 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
     parseFetchData : (res)->
       data = res?.images || []
       for item in data
-        if item.architecture and item.os_distro and item.architecture in ["i686","x86_64"] and item.os_distro in ["centos","debian","fedora","gentoo","opensuse","redhat","suse","ubuntu","windows"]
+        if item.architecture and item.os_distro and item.architecture in ["i686","x86_64"] and item.os_distro in ["centos","debian","fedora","gentoo","opensuse","redhat","suse","ubuntu","windows","cirros"]
           item.os_type = item.os_distro
         else
           item.os_type = "unknown"

@@ -7,20 +7,6 @@ define [
   'OsKp'
 ], ( constant, OsPropertyView, template, CloudResources, _, OsKp ) ->
 
-  osDistroArray = [
-    'amazon'
-    'centos'
-    'debian'
-    'fedora'
-    'gentoo'
-    'linux-other'
-    'opensuse'
-    'redhat'
-    'suse'
-    'ubuntu'
-    'unknown'
-    'windows'
-  ]
   OsPropertyView.extend {
     events:
       "change #property-os-server-credential": "onChangeCredential"
@@ -150,9 +136,7 @@ define [
           item.distro = "ami-unknown"
           return template.imageListKey(item)
 
-        if imageObj.os_distro not in osDistroArray
-          imageObj.os_distro = "unknown"
-        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture
+        imageObj.distro = imageObj.os_type + "." + imageObj.architecture
         template.imageListKey(imageObj)
 
       imageValue: (item) ->
@@ -163,9 +147,7 @@ define [
           item.text = item.text || "Unknow"
           return template.imageValue(item)
 
-        if imageObj.os_distro not in osDistroArray
-          imageObj.os_distro = "unknown"
-        imageObj.distro = imageObj.os_distro + "." + imageObj.architecture
+        imageObj.distro = imageObj.os_type + "." + imageObj.architecture
         template.imageValue(imageObj)
 
       kpButton: ()->

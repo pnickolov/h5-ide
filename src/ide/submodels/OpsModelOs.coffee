@@ -127,7 +127,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
               subnet_id: "@{subnet-id.resource.id}"
               ip_address: "10.0.0.12"
             ]
-            security_groups: ["@{sg-id.resource.id}"]
+            security_groups: ["@{C0F3722B-94C8-4F03-8DF1-6B8AF41F0939.resource.id}"]
             network_id: "@{network-id.resource.id}"
             id: ""
 
@@ -140,12 +140,12 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
               "subnet_id"  : "@{subnet0002.resource.id}"
               "ip_address" : "10.0.0.13"
             }]
-            security_groups : [ "@{sg-id.resource.id}"]
+            security_groups : [ "@{C0F3722B-94C8-4F03-8DF1-6B8AF41F0939.resource.id}"]
             network_id      : "@{network-id.resource.id}"
 
-        "sg-id":
+        "C0F3722B-94C8-4F03-8DF1-6B8AF41F0939":
           type: "OS::Neutron::SecurityGroup"
-          uid: MC.guid()
+          uid: "C0F3722B-94C8-4F03-8DF1-6B8AF41F0939"
           resource:
             name: "DefaultSG"
             description: "default security group"

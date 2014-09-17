@@ -9,6 +9,9 @@ define [
     }
 
     OsPropertyView = Backbone.View.extend {
+        events:
+            'change [data-target]': 'updateAttribute'
+
         constructor: ( options ) ->
             if options and _.isObject options
                 _.extend @, options

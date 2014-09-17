@@ -38,13 +38,7 @@ define [
       @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
 
       # load TA
-      modeType = 'stack'
-      console.log cloudType
-      if cloudType is 'openstack'
-
-        modeType = "openstack"
-
-      TA.loadModule(modeType).then ()=>
+      TA.loadModule('stack').then ()=>
         @modal.resize()
         @modal?.toggleConfirm false
 

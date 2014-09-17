@@ -12,7 +12,11 @@ define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, c
 
     getResourceId : ()->
       if @get("appId") then return @get("appId")
-      CloudResources( @type, @design().region() ).models[0].id || ""
+      extNetwork = CloudResources( constant.RESTYPE.OSNETWORK, @design().region() ).getExtNetworks()[0]
+      if extNetwork
+        extNetwork.id
+      else
+        ""
 
     serialize : ()->
       {

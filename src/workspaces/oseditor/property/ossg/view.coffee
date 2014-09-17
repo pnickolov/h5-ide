@@ -108,6 +108,8 @@ define [
             else
                 @$el.find('.rule-container.egress').removeClass('hide')
 
+        setTitle: ( title ) -> @$( 'h1' ).text title
+
         updateAttribute: (event)->
 
             $target = $(event.currentTarget)

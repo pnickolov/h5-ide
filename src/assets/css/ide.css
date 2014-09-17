@@ -9248,6 +9248,10 @@ g.shadow {
         position: absolute;
         top: 16px;
         right: 20px; }
+  #OpsEditor .OEPanelRight.property .panel-float h1 {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center; }
   #OpsEditor .OEPanelRight.property .os-property-default {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .os-property-message {

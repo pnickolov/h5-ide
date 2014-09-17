@@ -126,9 +126,12 @@
         }
     }
 
-    dl { margin: 0; padding: 8px 9px; }
-    dt { width: 80px; float: left; }
-    dd {}
+    dl {
+        margin: 0 9px;
+        &::after { content: ""; height: 0; display: block; clear: both; }
+    }
+    dt { min-width: 80px; float: left; margin: 8px 0 8px; }
+    dd { float: left; margin: 8px 0 8px; }
 
     .name {
         width                : 100%;

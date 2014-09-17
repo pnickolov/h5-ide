@@ -9318,11 +9318,19 @@ g.shadow {
       margin-top: 3px;
       margin-right: 3px; }
   #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
-    margin: 0;
-    padding: 8px 9px; }
+    margin: 0 9px; }
+    #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
+      content: "";
+      height: 0;
+      display: block;
+      clear: both; }
   #OpsEditor .OEPanelRight.property dt, #OpsEditor .OEPanelRight.config dt {
-    width: 80px;
-    float: left; }
+    min-width: 80px;
+    float: left;
+    margin: 8px 0 8px; }
+  #OpsEditor .OEPanelRight.property dd, #OpsEditor .OEPanelRight.config dd {
+    float: left;
+    margin: 8px 0 8px; }
   #OpsEditor .OEPanelRight.property .name, #OpsEditor .OEPanelRight.config .name {
     width: 100%;
     padding: 8px 10px 2px 9px;

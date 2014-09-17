@@ -10,4 +10,5 @@ define [
     './ospool/view'
     './osport/view'
     './osrouter/view'
+    './osextnet/view'
 ], ->

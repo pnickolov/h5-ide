@@ -9301,15 +9301,11 @@ g.shadow {
     position: relative;
     border-bottom: 1px #000 solid;
     margin-bottom: 0; }
-<<<<<<< HEAD
+    #OpsEditor .OEPanelRight.property .group ::selection, #OpsEditor .OEPanelRight.config .group ::selection {
+      background: transparent; }
+    #OpsEditor .OEPanelRight.property .group::selection, #OpsEditor .OEPanelRight.config .group::selection {
+      background: transparent; }
     #OpsEditor .OEPanelRight.property .group:last-child, #OpsEditor .OEPanelRight.config .group:last-child {
-=======
-    #OpsEditor .OEPanelRight.property .group ::selection {
-      background: transparent; }
-    #OpsEditor .OEPanelRight.property .group::selection {
-      background: transparent; }
-    #OpsEditor .OEPanelRight.property .group:last-child {
->>>>>>> [feature/openstack] update style
       border-bottom: none; }
     #OpsEditor .OEPanelRight.property .group.required:after, #OpsEditor .OEPanelRight.config .group.required:after {
       position: absolute;
@@ -9325,13 +9321,8 @@ g.shadow {
       border-style: solid;
       border-width: 0 20px 20px 0;
       margin-left: -20px;
-<<<<<<< HEAD
-      border-color: transparent #0b8900 transparent transparent; }
-    #OpsEditor .OEPanelRight.property .group.required:before, #OpsEditor .OEPanelRight.config .group.required:before {
-=======
       border-color: transparent #11c568 transparent transparent; }
-    #OpsEditor .OEPanelRight.property .group.required:before {
->>>>>>> [feature/openstack] update style
+    #OpsEditor .OEPanelRight.property .group.required:before, #OpsEditor .OEPanelRight.config .group.required:before {
       position: absolute;
       z-index: 2;
       content: "*";

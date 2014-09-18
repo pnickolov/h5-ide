@@ -232,35 +232,41 @@ define [
         if paymentState is 'active'
           checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
 
-    showPayment: (modal)->
-      if modal
-        loadingPayment = modal
-        loadingPayment.setContent MC.template.loadingSpiner
-        loadingPayment.setTitle lang.ide.PAYMENT_LOADING
+    showPayment: (elem)->
+      if elem
+        $(elem).html MC.template.loadingSpiner
       else
-        loadingPayment = new modalPlus
+        paymentModal = new modalPlus
           title: lang.ide.PAYMENT_LOADING
           template: MC.template.loadingSpiner
           disableClose: true
           confirm:
             text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
-      loadingPayment.find('.modal-footer').hide()
+      paymentModal.find('.modal-footer').hide()
       paymentState = App.user.get('paymentState')
       if paymentState is 'pastdue'
         App.user.getPaymentUpdate().then (result)->
-          if loadingPayment.isClosed then return false
-          loadingPayment.setTitle lang.ide.PAYMENT_INVALID_BILLING
-          loadingPayment.setContent MC.template.paymentUpdate result
+          dom = MC.template.paymentUpdate result
+          if elem
+            $(elem).html dom
+            $(elem).trigger 'paymentRendered'
+          else
+            if paymentModal.isClosed then return false
+            paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
+            paymentModal.setContent dom
       else if not paymentState or paymentState is 'unpay'
         App.user.getPaymentInfo().then (result)->
-          if loadingPayment.isClosed then return false
-          loadingPayment.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
-          loadingPayment.setContent(MC.template.paymentSubscribe result)
-      loadingPayment.find('.modal-body').on 'click', 'a.btn.btn-xlarge', (event)->
-          event.preventDefault()
-          loadingPayment.trigger 'clickPayment', event
-      loadingPayment
+          dom = MC.template.paymentSubscribe result
+          if elem
+            $(elem).html dom
+            $(elem).trigger 'paymentRendered'
+          else
+            if paymentModal.isClosed then return false
+            paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
+            paymentModal.setContent(dom)
+
+      if elem then elem else paymentModal
 
     checkPayment: ()->
       that = @

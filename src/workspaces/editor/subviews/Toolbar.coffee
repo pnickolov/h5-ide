@@ -296,19 +296,25 @@ define [
 
 
     runStack: (event)->
-        if $(event.currentTarget).attr('disabled')
-            return false
-        appAction.showPayment().on 'clickPayment', (event)->
-          window.open $(event.currentTarget).attr('href'), ""
-          console.log "WTF..."
+      that = @
+      if $(event.currentTarget).attr 'disabled'
         return false
-        appAction.checkPayment().then (result)=>
-          @__runStack(result)
+      paymentState = App.user.get('paymentState')
+      if paymentState and paymentState isnt "unpay"
+        @__runStack()
+      else
+        appAction.showPayment().then (result)->
+          paymentUpdate = result.result
+          paymentModal = result.element
+          paymentModal.listenTo App.user, 'change:paymentState', ->
+            if paymentModal.isClosed then return false
+            paymentState = App.user.get("paymentState")
+            if paymentState is 'active'
+              paymentModal.stopListening()
+              that.__runStack(paymentUpdate,paymentModal)
 
-    __runStack: (result)->
-      paymentState = App.user.get("paymentState")
-      if result
-        {paymentModal , paymentUpdate} = result
+    __runStack: (paymentUpdate,paymentModal)->
+      paymentState = App.user.get('paymentState')
       if paymentModal
         @modal = paymentModal
         @modal.setTitle lang.ide.RUN_STACK_MODAL_TITLE

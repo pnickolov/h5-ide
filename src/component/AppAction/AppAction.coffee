@@ -244,29 +244,41 @@ define [
             text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
       paymentModal.find('.modal-footer').hide()
-      paymentState = App.user.get('paymentState')
-      if paymentState is 'pastdue'
-        App.user.getPaymentUpdate().then (result)->
-          dom = MC.template.paymentUpdate result
-          if elem
-            $(elem).html dom
-            $(elem).trigger 'paymentRendered'
-          else
-            if paymentModal.isClosed then return false
-            paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
-            paymentModal.setContent dom
-      else if not paymentState or paymentState is 'unpay'
+      showPaymentDefer = Q.defer()
+      App.user.getPaymentUpdate().then (result)->
+        dom = MC.template.paymentUpdate result
+        if elem
+          $(elem).html dom
+          $(elem).trigger 'paymentRendered'
+          showPaymentDefer.resolve({result: result, element: $(elem)})
+        else
+          if paymentModal.isClosed then return false
+          paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
+          paymentModal.setContent dom
+          paymentModal.trigger 'paymentRendered'
+          showPaymentDefer.resolve({result:result, element:paymentModal})
+      , (err)->
         App.user.getPaymentInfo().then (result)->
           dom = MC.template.paymentSubscribe result
           if elem
             $(elem).html dom
             $(elem).trigger 'paymentRendered'
+            showPaymentDefer.resolve({result: result, element: $(elem)})
           else
             if paymentModal.isClosed then return false
             paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
             paymentModal.setContent(dom)
+            paymentModal.trigger 'paymentRendered'
+            showPaymentDefer.resolve({result:result, element: paymentModal})
+        , (err)->
+          if elem then elem.html ""
+          else
+            if paymentModal.isClosed then return false
+            paymentModal.close()
+          notification 'error', "Error while getting user payment info. please try again later."
+          showPaymentDefer.reject({error: err, element:(elem||paymentModal)})
 
-      if elem then elem else paymentModal
+      showPaymentDefer.promise
 
     checkPayment: ()->
       that = @

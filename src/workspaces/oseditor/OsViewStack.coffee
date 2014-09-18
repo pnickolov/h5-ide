@@ -9,12 +9,10 @@ define [
   "./subviews/Statusbar"
   "./canvas/CanvasViewOs"
 
-  "event"
-
-], ( CoreEditorView, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView, ide_event )->
+], ( CoreEditorView, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView )->
 
   CoreEditorView.extend {
-    template : TplOsEditor.frame
+    template : TplOsEditor
 
     constructor : ( options )->
       _.extend options, {

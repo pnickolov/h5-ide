@@ -65,3 +65,34 @@
   </section>
 </div>
 
+<!-- {{appProcessing}} -->
+<div class="ops-process">
+    <header class="processing">{{this}}<span class="process-info">0%</span></header>
+    <header class="processing rolling-back-content">{{i18n "TOOLBAR.ROLLING_BACK"}}</header>
+    <section class="loading-spinner"></section>
+    <section class="progress">
+        <div class="bar" style="width:0%;"></div>
+    </section>
+</div>
+
+<!-- {{appUpdateStatus}} -->
+<div class="ops-process">
+{{#if loading}}
+  <header class="processing">{{i18n "TOOLBAR.RELOADING_DATA"}}</header>
+  <section class="loading-spinner"></section>
+{{else}}
+  <header class="processing">{{#unless error}}{{i18n "TOOLBAR.APP_UPDATE_SUCCESSFULLY_TITLE"}}{{else}}{{i18n "TOOLBAR.APP_UPDATE_FAILED_TITLE"}}{{/unless}}</header>
+  {{#if error}}
+  <div class="error-info-block">
+    <div class="result-sub-title">{{i18n 'PROC_RLT_FAILED_SUB_TITLE'}}</div>
+    <div class="result-error-info">
+      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="detail">{{{error}}}</p>
+    </div>
+    <div class="result-error-notice">{{i18n "TOOLBAR.APP_ROllBACK_DESC"}}</div>
+  </div>
+  {{/if}}
+  <button class="btn btn-silver" id="processDoneBtn">{{i18n "TOOLBAR.LBL_DONE"}}</button>
+{{/if}}
+</div>
+

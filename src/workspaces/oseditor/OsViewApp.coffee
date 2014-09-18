@@ -1,83 +1,52 @@
 
 define [
-  "./OsViewStack"
-  "OpsModel"
-  "./template/TplOsEditor"
-  "UI.modalplus"
-  "i18n!/nls/lang.js"
-], ( OsViewStack, OpsModel, OsEditorTpl, Modal, lang )->
+  "CoreEditorViewApp"
 
-  OsViewStack.extend {
+  "./template/TplOsEditor"
+
+  "./subviews/Panel"
+  "./subviews/Toolbar"
+  "./subviews/Statusbar"
+  "./canvas/CanvasViewOs"
+
+], ( CoreEditorViewApp, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView )->
+
+  CoreEditorViewApp.extend {
+    template : TplOsEditor
+
+    constructor : ( options )->
+      _.extend options, {
+        TopPanel    : Toolbar
+        RightPanel  : RightPanel
+        BottomPanel : Statusbar
+        CanvasView  : CanvasView
+      }
+      CoreEditorViewApp.apply this, arguments
 
     initialize : ()->
-      OsViewStack.prototype.initialize.apply this, arguments
+      @panel = @propertyPanel
 
-      @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+      @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
 
-      @toggleProcessing()
-      @updateProgress()
-
-      @listenTo @workspace.design, "change:mode", @switchMode
+      CoreEditorViewApp.prototype.initialize.apply this, arguments
       return
 
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
       @statusbar.update()
 
-      @propertyPanel.openPanel()
+      @propertyPanel.openCurrent()
       return
 
-    toggleProcessing : ()->
-      if not @$el then return
+    showProperty: () -> @panel.openProperty()
+    onCanvasDoubleClick: () -> @panel.show().openCurrent()
 
-      @toolbar.updateTbBtns()
-      @statusbar.update()
-      @$el.children(".ops-process").remove()
+    onItemSelected: ( type, id ) ->
+      if not id and not type
+        @panel.openConfig()
+        return
 
-      opsModel = @workspace.opsModel
-      if not opsModel.isProcessing() then return
+      @panel.openProperty { uid: id, type: type }
 
-      switch opsModel.get("state")
-        when OpsModel.State.Starting
-          text = "Starting your app..."
-        when OpsModel.State.Stopping
-          text = "Stopping your app..."
-        when OpsModel.State.Terminating
-          text = "Terminating your app.."
-        when OpsModel.State.Updating
-          text = "Applying changes to your app..."
-        else
-          console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
-          text = "Processing your request..."
-
-      @__progress = 0
-
-      @$el.append OsEditorTpl.appProcessing(text)
-      return
-
-    updateProgress : ()->
-      pp = @workspace.opsModel.get("progress")
-
-      $p = @$el.find(".ops-process")
-      $p.toggleClass("has-progess", !!pp)
-
-      if @__progress > pp
-        $p.toggleClass("rolling-back", true)
-      @__progress = pp
-
-      pro = "#{pp}%"
-
-      $p.find(".process-info").text( pro )
-      $p.find(".bar").css { width : pro }
-      return
-
-    showUpdateStatus : ( error, loading )->
-      @$el.find(".ops-process").remove()
-
-      self = @
-      $(OsEditorTpl.appUpdateStatus({ error : error, loading : loading }))
-        .appendTo(@$el)
-        .find("#processDoneBtn")
-        .click ()-> self.$el.find(".ops-process").remove()
-      return
+    showStateEditor : ()-> return
   }

@@ -141,21 +141,23 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"        : "workspaces/OpsEditor"
-    'Design'           : 'workspaces/coreeditor/Design'
-    "ResourceModel"    : "workspaces/coreeditor/ModelResource"
-    "ComplexResModel"  : "workspaces/coreeditor/ModelComplex"
-    "ConnectionModel"  : "workspaces/coreeditor/ModelConnection"
-    "GroupModel"       : "workspaces/coreeditor/ModelGroup"
-    "CoreEditor"       : "workspaces/coreeditor/EditorCore"
-    "CoreEditorView"   : "workspaces/coreeditor/EditorView"
-    "ProgressViewer"   : "workspaces/coreeditor/ProgressViewer"
-    "CanvasElement"    : "workspaces/coreeditor/CanvasElement"
-    "CanvasLine"       : "workspaces/coreeditor/CanvasLine"
-    "CanvasView"       : "workspaces/coreeditor/CanvasView"
-    "CanvasViewLayout" : "workspaces/coreeditor/CanvasViewLayout"
-    "CanvasManager"    : "workspaces/coreeditor/CanvasManager"
-    "CanvasPopup"      : "workspaces/coreeditor/CanvasPopup"
+    "OpsEditor"         : "workspaces/OpsEditor"
+    'Design'            : 'workspaces/coreeditor/Design'
+    "ResourceModel"     : "workspaces/coreeditor/ModelResource"
+    "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
+    "ConnectionModel"   : "workspaces/coreeditor/ModelConnection"
+    "GroupModel"        : "workspaces/coreeditor/ModelGroup"
+    "CoreEditor"        : "workspaces/coreeditor/EditorCore"
+    "CoreEditorView"    : "workspaces/coreeditor/EditorView"
+    "CoreEditorApp"     : "workspaces/coreeditor/EditorCoreApp"
+    "CoreEditorViewApp" : "workspaces/coreeditor/EditorViewApp"
+    "ProgressViewer"    : "workspaces/coreeditor/ProgressViewer"
+    "CanvasElement"     : "workspaces/coreeditor/CanvasElement"
+    "CanvasLine"        : "workspaces/coreeditor/CanvasLine"
+    "CanvasView"        : "workspaces/coreeditor/CanvasView"
+    "CanvasViewLayout"  : "workspaces/coreeditor/CanvasViewLayout"
+    "CanvasManager"     : "workspaces/coreeditor/CanvasManager"
+    "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
 
     #############################################
     # deprecated service        # Merge in deploy

@@ -1,16 +1,16 @@
 
 define [
-  "./AwsViewStack"
+  "CoreEditorView"
   "OpsModel"
-  "./template/TplOpsEditor"
+  "workspaces/coreeditor/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
-], ( AwsViewStack, OpsModel, OpsEditorTpl, Modal, lang )->
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang )->
 
-  AwsViewStack.extend {
+  StackView.extend {
 
     initialize : ()->
-      AwsViewStack.prototype.initialize.apply this, arguments
+      StackView.prototype.initialize.apply this, arguments
 
       @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
 

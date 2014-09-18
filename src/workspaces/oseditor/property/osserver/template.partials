@@ -67,6 +67,19 @@
 </div>
 
 
+<!-- {{appTemplate}} -->
+<div class="option-group-head expand">
+    Server Details
+</div>
+<div class="option-group">
+    <div class="main">
+        App View for Server {{name}}
+    </div>
+    <div class="sub">
+        Coming soon...
+    </div>
+</div>
+
 <!--{{imageListKey}}-->
 <div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
 

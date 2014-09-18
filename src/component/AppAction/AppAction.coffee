@@ -232,6 +232,36 @@ define [
         if paymentState is 'active'
           checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
 
+    showPayment: (modal)->
+      if modal
+        loadingPayment = modal
+        loadingPayment.setContent MC.template.loadingSpiner
+        loadingPayment.setTitle lang.ide.PAYMENT_LOADING
+      else
+        loadingPayment = new modalPlus
+          title: lang.ide.PAYMENT_LOADING
+          template: MC.template.loadingSpiner
+          disableClose: true
+          confirm:
+            text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+            disabled: true
+      loadingPayment.find('.modal-footer').hide()
+      paymentState = App.user.get('paymentState')
+      if paymentState is 'pastdue'
+        App.user.getPaymentUpdate().then (result)->
+          if loadingPayment.isClosed then return false
+          loadingPayment.setTitle lang.ide.PAYMENT_INVALID_BILLING
+          loadingPayment.setContent MC.template.paymentUpdate result
+      else if not paymentState or paymentState is 'unpay'
+        App.user.getPaymentInfo().then (result)->
+          if loadingPayment.isClosed then return false
+          loadingPayment.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
+          loadingPayment.setContent(MC.template.paymentSubscribe result)
+      loadingPayment.find('.modal-body').on 'click', 'a.btn.btn-xlarge', (event)->
+          event.preventDefault()
+          loadingPayment.trigger 'clickPayment', event
+      loadingPayment
+
     checkPayment: ()->
       that = @
       checkPaymentDefer = Q.defer()

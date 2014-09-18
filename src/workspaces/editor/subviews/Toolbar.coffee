@@ -298,7 +298,10 @@ define [
     runStack: (event)->
         if $(event.currentTarget).attr('disabled')
             return false
-
+        appAction.showPayment().on 'clickPayment', (event)->
+          window.open $(event.currentTarget).attr('href'), ""
+          console.log "WTF..."
+        return false
         appAction.checkPayment().then (result)=>
           @__runStack(result)
 

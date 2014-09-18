@@ -127,4 +127,8 @@ define [
           notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
         return
       return
+
+    notifyUnpay : ()->
+      notification "error", "Your billing info is invalid, please update your billing info."
+      return
   }

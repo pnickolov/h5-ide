@@ -75,6 +75,8 @@ define [
       @WS.subscribe()
 
     @user.on "change:credential", ()=> @discardAwsCache()
+
+    @user.on "change:paymentState", ()=> @onPaymentStateChange()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
@@ -156,5 +158,11 @@ define [
     editor = new OpsEditor( @model.createStack(region) )
     editor.activate()
     editor
+
+  VisualOps.prototype.onPaymentStateChange = ()->
+    if @user.get("paymentState") is "unpay"
+      @workspaces?.removeAllSpaces()
+      @__view?.notifyUnpay()
+    return
 
   VisualOps

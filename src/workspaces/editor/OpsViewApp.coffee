@@ -126,4 +126,12 @@ define [
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()
       return
+
+    showUnpayUI : ()->
+      @statusbar.remove()
+      @propertyPanel.remove()
+      @toolbar.remove()
+
+      @canvas.updateSize()
+      return
   }

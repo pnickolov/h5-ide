@@ -12,7 +12,6 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       @resModel = resModel
       @
     render: ->
-      console.log "Initializing...."
       dropdown = $("<div/>")
       dropdown.append @template
       dropdownSelect = dropdown.find("select.selection.option")

@@ -4,6 +4,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
   ### Router <=> Subnet ###
   ConnectionModel.extend {
     type : "OsRouterAsso"
+    oneToMany : constant.RESTYPE.OSRT
 
     portDefs : [
       {

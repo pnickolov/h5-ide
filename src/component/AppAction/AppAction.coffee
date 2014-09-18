@@ -247,6 +247,10 @@ define [
       showPaymentDefer = Q.defer()
       App.user.getPaymentUpdate().then (result)->
         dom = MC.template.paymentUpdate result
+        if App.user.get('paymentState') is 'pastdue'
+          if elem
+            paymentModal = elem
+          showPaymentDefer.resolve({result: result, modal: paymentModal})
         if elem
           $(elem).html dom
           $(elem).trigger 'paymentRendered'

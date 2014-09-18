@@ -14,6 +14,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
   Backbone.Model.extend {
 
+    defaults :
+      paymentState : "unpay"
+
     initialize : ()->
       @set {
         usercode     : $.cookie "usercode"

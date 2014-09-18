@@ -60,6 +60,8 @@
   width: 100%;
   min-width: 610px;
   background: #313131; }
+  .OEPanelTop ~ .OEPanelCenter {
+    top: 40px; }
 
 .OEPanelBottom {
   position: absolute;
@@ -79,7 +81,7 @@
 .OEPanelCenter {
   position: absolute !important;
   width: 100%;
-  top: 40px;
+  top: 0;
   bottom: 0;
   height: auto; }
   .OEPanelCenter .nano-pane {

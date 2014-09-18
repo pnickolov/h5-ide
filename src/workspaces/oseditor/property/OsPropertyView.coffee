@@ -9,8 +9,6 @@ define [
     }
 
     OsPropertyView = Backbone.View.extend {
-        events:
-            'change [data-target]': 'updateAttribute'
 
         constructor: ( options ) ->
             if options and _.isObject options
@@ -20,14 +18,26 @@ define [
 
             Backbone.View.apply @, arguments
 
+        # Register subview for gc and bind some params
         reg: ( subView ) ->
             if subView in @__subViews then return subView
             if subView is @ then return subView
 
             @__subViews.push subView
             _.extend subView, _.pick @, 'propertyPanel', 'panel'
+            subView.__superView = @
+
             subView
 
+        remove: ->
+            sv?.remove?() for sv in @__subViews
+            Backbone.View.prototype.remove.apply @, arguments
+
+        # Auto Bind 'data-target=attr', you need add a event first like below.
+            ###
+            events:
+                'change [data-target]': 'updateAttribute'
+            ###
         updateAttribute: ( e ) ->
             $target = $ e.currentTarget
             attr = $target.data 'target'
@@ -38,18 +48,18 @@ define [
 
             if attr is 'name' then @setTitle value
 
+        # Overwrite it in subview if `updateAttribute`'s model isnt this.model or it is changeable
         getModelForUpdateAttr: -> @model
+        getPanel: -> @panel or @__superView?.panel
+        getPropertyPanel: -> @propertyPanel or @__superView?.propertyPanel
 
-        setTitle      : -> @propertyPanel?.setTitle.apply @propertyPanel, arguments
-        showFloatPanel: -> @panel?.showFloatPanel.apply @panel, arguments
-        hideFloatPanel: -> @panel?.hideFloatPanel.apply @panel, arguments
+        # Overwrite it in subview if the title is not `name` attribute
+        getTitle        : -> @model?.get( 'name' )
+        setTitle        : -> @getPropertyPanel()?.setTitle.apply @getPropertyPanel(), arguments
+        showFloatPanel  : -> @getPanel()?.showFloatPanel.apply @getPanel(), arguments
+        hideFloatPanel  : -> @getPanel()?.hideFloatPanel.apply @getPanel(), arguments
 
-        # Overwrite it in subview
-        getTitle: -> @model?.get( 'name' )
 
-        remove: ->
-            sv?.remove?() for sv in @__subViews
-            Backbone.View.prototype.remove.apply @, arguments
 
     }, {
         extend : ( protoProps, staticProps ) ->

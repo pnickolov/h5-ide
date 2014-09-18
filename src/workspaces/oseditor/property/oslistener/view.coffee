@@ -16,10 +16,7 @@ define [
         render: ->
 
             @$el.html template @model.toJSON()
-            @$el.append new portView({
-                panel: this.panel,
-                model: @model
-            }).render().el
+            @$el.append @reg( new portView model: @model ).render().el
             @
 
         getModelForUpdateAttr: ( e ) ->

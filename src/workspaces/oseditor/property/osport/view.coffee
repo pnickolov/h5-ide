@@ -9,18 +9,12 @@ define [
     OsPropertyView.extend {
 
         events:
-
             "change [data-target]": "updateAttribute"
 
         initialize: ->
-
-            @sgListView = new SgListView {
-                panel: @panel,
-                targetModel: @model
-            }
+            @sgListView = @reg new SgListView targetModel: @model
 
         render: ->
-
             if @model.isAttached()
                 value = _.extend {
                     hasFloatIP: @model.getFloatingIp()
@@ -36,7 +30,6 @@ define [
             @
 
         updateAttribute: (event)->
-
             $target = $(event.currentTarget)
 
             attr = $target.data 'target'

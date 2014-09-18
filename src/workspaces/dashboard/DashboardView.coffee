@@ -336,7 +336,22 @@ define [
       })
       return
 
-    visualizeVPC : ()->
+    visualizeVPC: ()->
+      that = @
+      paymentState = App.user.get 'paymentState'
+      console.log paymentState
+      if paymentState and paymentState isnt 'unpay'
+        @__visualizeVPC()
+      else
+        appAction.showPayment().then (data)->
+          data.modal.listenTo App.user, 'change:paymentState', ->
+            if data.modal.isClosed then return false
+            paymentState = App.user.get('paymentState')
+            if paymentState and paymentState isnt 'unpay'
+              that.__visualizeVPC(data.modal)
+
+
+    __visualizeVPC : (modal)->
       @model.visualizeVpc()
       attributes = {
         ready : @model.isVisualizeReady()
@@ -349,17 +364,27 @@ define [
         self.updateVisModel()
       , 60*8*1000 + 1000
 
-      @visModal = new Modal {
-        title         : "Import Existing VPC as App"
-        width         : "770"
-        template      : VisualizeVpcTpl( attributes )
-        disableFooter : true
-        compact       : true
-        onClose       : ()->
+      if modal
+        @visModal = modal
+        @visModal.setTitle "Import Existing VPC as App"
+        .setContent VisualizeVpcTpl attributes
+        .setWidth('770px').compact().resize()
+        .on 'close', ->
           self.visModal = null
-          clearTimeout(TO)
+          clearTimeout TO
           return
-      }
+      else
+        @visModal = new Modal {
+          title         : "Import Existing VPC as App"
+          width         : "770"
+          template      : VisualizeVpcTpl( attributes )
+          disableFooter : true
+          compact       : true
+          onClose       : ()->
+            self.visModal = null
+            clearTimeout(TO)
+            return
+        }
 
       @visModal.tpl.on "click", "#VisualizeReload", ()->
         self.model.visualizeVpc(true)

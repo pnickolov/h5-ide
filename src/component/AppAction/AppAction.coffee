@@ -250,78 +250,35 @@ define [
         if elem
           $(elem).html dom
           $(elem).trigger 'paymentRendered'
-          showPaymentDefer.resolve({result: result, element: $(elem)})
+          showPaymentDefer.resolve({result: result})
         else
           if paymentModal.isClosed then return false
           paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
           paymentModal.setContent dom
           paymentModal.trigger 'paymentRendered'
-          showPaymentDefer.resolve({result:result, element:paymentModal})
+          showPaymentDefer.resolve({result:result, modal:paymentModal})
       , (err)->
         App.user.getPaymentInfo().then (result)->
           dom = MC.template.paymentSubscribe result
           if elem
             $(elem).html dom
             $(elem).trigger 'paymentRendered'
-            showPaymentDefer.resolve({result: result, element: $(elem)})
+            showPaymentDefer.resolve({result: result})
           else
             if paymentModal.isClosed then return false
             paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
             paymentModal.setContent(dom)
             paymentModal.trigger 'paymentRendered'
-            showPaymentDefer.resolve({result:result, element: paymentModal})
+            showPaymentDefer.resolve({result:result, modal: paymentModal})
         , (err)->
           if elem then elem.html ""
           else
             if paymentModal.isClosed then return false
             paymentModal.close()
           notification 'error', "Error while getting user payment info. please try again later."
-          showPaymentDefer.reject({error: err, element:(elem||paymentModal)})
+          showPaymentDefer.reject({error: err})
 
       showPaymentDefer.promise
 
-    checkPayment: ()->
-      that = @
-      checkPaymentDefer = Q.defer()
-      stackAgentEnabled = Design.instance().serialize().agent.enabled
-
-      if stackAgentEnabled
-        userPaymentState = App.user.get("paymentState")
-        if userPaymentState isnt 'active'
-          paymentModal = new modalPlus
-            title: lang.ide.PAYMENT_LOADING
-            template: MC.template.loadingSpiner
-            disableClose: true
-            confirm:
-              text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
-              disabled: true
-            #disableFooter: true
-
-          paymentModal.find('.modal-footer').hide()
-          App.user.getPaymentUpdate().then (result)->
-            if paymentModal.isClosed then return false
-            if App.user.get('paymentState') is 'past_due'
-              checkPaymentDefer.resolve {paymentUpdate: result,paymentModal: paymentModal}
-              return false
-            paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
-            paymentModal.setContent(MC.template.paymentUpdate result)
-            that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
-          , (err)->
-            if paymentModal.isClosed then return false
-            App.user.getPaymentInfo().then (result)->
-              if paymentModal.isClosed then return false
-              paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
-              paymentModal.setContent(MC.template.paymentSubscribe result)
-              that._bindPaymentEvent(paymentModal, checkPaymentDefer, result)
-            ,(err)->
-              if paymentModal.isClosed then return false
-              notification 'error', "Error while getting user payment info. please try again later."
-              paymentModal.close()
-        else
-          checkPaymentDefer.resolve()
-      else
-        checkPaymentDefer.resolve()
-
-      checkPaymentDefer.promise
 
   new AppAction()

@@ -305,7 +305,7 @@ define [
       else
         appAction.showPayment().then (result)->
           paymentUpdate = result.result
-          paymentModal = result.element
+          paymentModal = result.modal
           paymentModal.listenTo App.user, 'change:paymentState', ->
             if paymentModal.isClosed then return false
             paymentState = App.user.get("paymentState")

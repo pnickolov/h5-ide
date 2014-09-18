@@ -27,7 +27,7 @@ define [
 
         @sgListView = new SgListView {
             panel: @panel,
-            targetModel: @model
+            targetModel: @model.embedPort()
         }
 
     render: ->

@@ -207,6 +207,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             admin_state_up: ""
             address: "10.0.0.20"
             port_id: ""
+            security_groups : [ "@{C0F3722B-94C8-4F03-8DF1-6B8AF41F0939.resource.id}"]
             id: ""
 
         "healthmonitor-id":

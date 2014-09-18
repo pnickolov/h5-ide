@@ -12,4 +12,5 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
 
     doFetch        : ()-> ApiRequest("os_network_List", {region : @region()})
     parseFetchData : (res)-> res.networks
+    parseExternalData : ( res )-> res
   }

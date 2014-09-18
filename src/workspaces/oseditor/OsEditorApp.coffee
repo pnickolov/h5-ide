@@ -52,6 +52,7 @@ define [
       if not @opsModel.testState( OpsModel.State.Running ) then return
 
       newJson = @opsModel.generateJsonFromRes()
+      newJson = @opsModel.getJsonData()
 
       self = @
       differ = new ResDiff({

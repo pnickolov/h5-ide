@@ -22,6 +22,7 @@ define [
 
         initialize: (options) ->
 
+            that = @
             @targetModel = options.targetModel
             @panel = options.panel
 
@@ -32,10 +33,8 @@ define [
 
                 sgItem: (item) ->
 
-                    sgModel = Design.instance().component(item.value)
                     return template.item({
-                        name: item.text,
-                        defaultSG: sgModel.isDefault()
+                        name: item.text
                     })
 
                 sgOption: (data) ->
@@ -81,6 +80,16 @@ define [
                 attachedSGList: attachedSGList.join(',')
             })
 
+            @refreshRemoveState()
+
+        refreshRemoveState: () ->
+
+            attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+            if attachedSGModels.length <= 1
+                @$el.find('.item-list .item-remove').addClass('hide')
+            else
+                @$el.find('.item-list .item-remove').removeClass('hide')
+
         getSelectItemModel: ($sgItem) ->
 
             sgId = $sgItem.data('value')
@@ -106,26 +115,32 @@ define [
             $target = $(event.currentTarget)
             sgModel = @getSelectItemModel($target)
 
-            sgView = new SgView({sgModel: sgModel})
+            sgView = new SgView({
+                sgModel: sgModel,
+                listView: @
+            })
+
             @showFloatPanel(sgView.render().el)
             return false
 
         attachItem: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
-            @targetModel.attachSG(sgModel)
+            sgModel.attachSG(@targetModel)
+            @refreshRemoveState()
 
         unAttachItem: (event, sgUID) ->
 
             sgModel = Design.instance().component(sgUID)
-            @targetModel.unAttachSG(sgModel)
+            sgModel.unAttachSG(@targetModel)
+            @refreshRemoveState()
 
         unAttachItemClick: (event) ->
 
             $target = $(event.currentTarget)
             $sgItem = $target.parents('.item')
             sgModel = @getSelectItemModel($sgItem)
-            @targetModel.unAttachSG(sgModel)
+            sgModel.unAttachSG(@targetModel)
             @refreshList()
             return false
 

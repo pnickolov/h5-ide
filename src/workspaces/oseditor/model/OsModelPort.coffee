@@ -19,16 +19,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       if not @parent() then return true
       @owner() and @owner().embedPort() is @
 
-    attachSG : (sgModel) ->
-
-        SgAsso = Design.modelClassForType( "OsSgAsso" )
-        new SgAsso( @, sgModel )
-
-    unAttachSG : (sgModel) ->
-
-        SgAsso = Design.modelClassForType( "OsSgAsso" )
-        (new SgAsso( @, sgModel )).remove()
-
     setFloatingIp : ( hasFip )->
       oldUsage = @connections("OsFloatIpUsage")[0]
       if not hasFip

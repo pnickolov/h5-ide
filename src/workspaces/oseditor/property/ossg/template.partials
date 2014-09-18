@@ -1,6 +1,6 @@
 <!-- {{stack}} -->
 <h1>{{name}}</h1>
-{{#unless default}}<div class="os-sg-remove icon-delete"></div>{{/unless}}
+{{#unless defaultSG}}<div class="os-sg-remove icon-delete"></div>{{/unless}}
 <div class="option-group-head expand">
     Security Group
 </div>

@@ -15,7 +15,11 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       ip        : null
       appId     : ""
       id        : ""
-      ruleId    : MC.guid()
+      ruleId    : ""
+
+    initialize : () ->
+
+      @set('ruleId', MC.guid())
 
     setTarget : ( ipOrSgModel )->
       if typeof ip is "string"
@@ -41,7 +45,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         protocol         : @get( "protocol" )
         remote_group_id  : if sg then sg.createRef( "id" ) else null
         remote_ip_prefix : @get( "ip" )
-        id               : @get( "id" )
+        id               : @get( "appId" )
       }
 
     fromJSON : ( json )->

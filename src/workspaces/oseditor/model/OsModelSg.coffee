@@ -12,6 +12,16 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       description : "custom security group"
       rules       : []
 
+    attachSG : (targetModel) ->
+
+        SgAsso = Design.modelClassForType( "OsSgAsso" )
+        new SgAsso( targetModel, @ )
+
+    unAttachSG : (targetModel) ->
+
+        SgAsso = Design.modelClassForType( "OsSgAsso" )
+        (new SgAsso( targetModel, @ )).remove()
+
     addRule : ( ruleData )->
       for rule in @get("rules")
         if rule.isEqualToData( ruleData )
@@ -20,26 +30,28 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
       rule = new RuleModel(ruleData)
       @get("rules").push(rule)
-      return rule.id
+      return rule.get('ruleId')
 
-    getRule : ( id )->
+    getRule : ( ruleId )->
+
       for rule in @get("rules")
-        if rule.id is id
+        if rule.get('ruleId') is ruleId
           return rule
       null
 
-    updateRule : (id, ruleData) ->
+    updateRule : (ruleId, ruleData) ->
 
         for rule in @get("rules")
-          if rule.id is id
+          if rule.get('ruleId') is ruleId
             rule.set(ruleData)
+            return
 
     removeRule : ( idOrModel )->
+
       for r, idx in @get("rules")
-        if r is idOrModel or r.id is idOrModel
+        if r is idOrModel or r.get('ruleId') is idOrModel
           @get("rules").splice( idx, 1 )
           break
-
       return
 
     getMemberList : () ->

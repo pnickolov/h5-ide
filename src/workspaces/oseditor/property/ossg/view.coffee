@@ -22,6 +22,7 @@ define [
             that = @
 
             that.sgModel = options.sgModel
+            that.listView = options.listView
 
             @selectTpl =
 
@@ -94,7 +95,7 @@ define [
 
         switchDirection: (event) ->
 
-            $target = $(event.target)
+            $target = $(event.currentTarget)
             @$el.find('.direction-switch .t-m-btn').removeClass('active')
             $target.addClass('active')
 
@@ -150,7 +151,7 @@ define [
 
         removeRule: (event) ->
 
-            $target = $(event.target)
+            $target = $(event.currentTarget)
             $ruleItem = $target.parents('.rule-item')
             ruleId = $ruleItem.data('id')
             if ruleId
@@ -194,6 +195,8 @@ define [
 
             portRange = MC.validate.portRange(portStr)
             if portRange and MC.validate.portValidRange(portRange)
+                if portRange.length is 1
+                    portRange[1] = portRange[0]
                 return portRange
             else
                 return null
@@ -303,6 +306,8 @@ define [
         removeSG: (event) ->
 
             @sgModel.remove()
+            @listView.refreshList()
+            @listView.hideFloatPanel()
 
         updateCount: () ->
 

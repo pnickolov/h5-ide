@@ -11,6 +11,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       ip : ""
       macAddress : ""
 
+    initialize : ( attributes, option ) ->
+
+      if option.createByUser
+          availableIP = Model.getAvailableIP(@parent())
+          @set('ip', availableIP) if availableIP
+
     owner : ()-> @connectionTargets("OsPortUsage")[0]
     isAttached : ()-> !!@owner()
 
@@ -81,6 +87,35 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         new SgAsso( port, resolve( MC.extractID( sg ) ) )
 
       return
+
+    getAvailableIP : (subnetModel) ->
+
+        subnetCIDR = subnetModel.get('cidr')
+
+        # get ip filter list
+        filterList = []
+        allPortModels = Design.modelClassForType(constant.RESTYPE.OSPORT).allObjects()
+        allListenerModels = Design.modelClassForType(constant.RESTYPE.OSLISTENER).allObjects()
+
+        models = allPortModels.concat(allListenerModels)
+        _.each models, (model) ->
+            isAttachedPort = false
+            attachedServerAry = model.connectionTargets(constant.OSSERVER)
+            if attachedServerAry and attachedServerAry[0]
+                attachedServer = attachedServerAry[0]
+                isAttachedPort = (attachedServer.parent() is subnetModel)
+            if (model.parent() is subnetModel) or isAttachedPort
+                filterList.push(model.get('ip'))
+            null
+
+        # get available ip
+        availableIPAry = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPInCIDR(subnetCIDR, filterList, 0)
+        if availableIPAry and availableIPAry[availableIPAry.length - 1]
+            ipObj = availableIPAry[availableIPAry.length - 1]
+            return ipObj.ip if ipObj.available
+
+        return null
+
   }
 
   Model

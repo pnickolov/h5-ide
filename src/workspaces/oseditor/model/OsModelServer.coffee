@@ -29,6 +29,10 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
 
         newPort = new PortModel({name: @get('name')+"-port"})
         new PortUsage(@, newPort)
+
+        availableIP = Design.modelClassForType(constant.RESTYPE.OSPORT).getAvailableIP(@parent())
+        newPort.set('ip', availableIP) if availableIP
+
       null
 
     embedPort : ()-> @connectionTargets("OsPortUsage")[0]

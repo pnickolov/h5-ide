@@ -2018,7 +2018,9 @@ $(function() {
          */
         hideInput: function() {
             var self = this;
-
+            if (self.$input && self.$input.hasClass('show-input')) {
+                return;
+            }
             self.setTextboxValue('');
             self.$control_input.css({opacity: 0, position: 'absolute', left: self.rtl ? 10000 : -10000});
             self.isInputHidden = true;

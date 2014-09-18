@@ -19,6 +19,7 @@ define [
             "select_item_add .item-list": "attachItem"
             "select_item_remove .item-list": "unAttachItem"
             "click .item-list .item .item-remove": "unAttachItemClick"
+            "mousedown .item-list .item .item-remove": "unAttachItemMousedown"
 
         initialize: (options) ->
 
@@ -107,8 +108,12 @@ define [
 
             OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
             oSSGModel = new OSSGModel({})
-            @attachItem(null, oSSGModel.get('id'))
+            sgUID = oSSGModel.get('id')
+            @attachItem(null, sgUID)
             @refreshList()
+            $newItem = @$el.find('.item-list .item[data-value="' + sgUID + '"]')
+            $newItem.click()
+            return false
 
         editItem: (event) ->
 
@@ -142,6 +147,10 @@ define [
             sgModel = @getSelectItemModel($sgItem)
             sgModel.unAttachSG(@targetModel)
             @refreshList()
+            return false
+
+        unAttachItemMousedown: () ->
+
             return false
 
     }, {

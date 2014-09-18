@@ -32,7 +32,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state      : OpsModelState.UnRun
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
-
+      version    : "2014-09-18"
 
       # usage          : ""
       # terminateFail  : false
@@ -66,6 +66,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importVpcId
+
+    # Payment restricted
+    isPMRestricted : ()-> @get("version") >= "2013-09-18"
 
     testState : ( state )-> @attributes.state is state
     getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]
@@ -274,7 +277,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
                 if asso_b.SubnetId is asso_f.SubnetId
                   asso_b.NetworkAclAssociationId = asso_f.NetworkAclAssociationId
               null
-      
+
       console.info "app_json_backend(patched)"
       console.debug JSON.stringify app_json_xu.models[0].attributes
       console.info "\n\n--------------------------------------------------------------------------------------------------------------------------------------\n\n"
@@ -679,7 +682,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       region      : @get("region")
       platform    : "ec2-vpc"
       state       : "Enabled"
-      version     : "2014-02-17"
+      version     : @get("version")
       component   : {}
       layout      : { size : [240, 240] }
       agent :

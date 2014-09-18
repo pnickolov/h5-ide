@@ -160,9 +160,24 @@ define [
     editor
 
   VisualOps.prototype.onPaymentStateChange = ()->
-    if @user.get("paymentState") is "unpay"
-      @workspaces?.removeAllSpaces()
-      @__view?.notifyUnpay()
+    oldPaymentState = @user.previous("paymentState")
+    switch @user.get("paymentState")
+      when "unpay"
+        if oldPaymentState isnt ""
+          @__view?.notifyUnpay()
+          @workspaces?.removeAllSpaces ( space )->
+            opsModel = space.opsModel
+            opsModel and opsModel.isPMRestricted() and opsModel.isApp()
+
+      when "active"
+        if oldPaymentState is "unpay"
+          for space, idx in @workspaces.spaces()
+            opsModel = space.opsModel
+            if opsModel and opsModel.isPMRestricted() and opsModel.isApp()
+              # Re-open all the restricted apps.
+              space.remove()
+              @workspaces.setIndex( new OpsEditor( opsModel ), idx )
+
     return
 
   VisualOps

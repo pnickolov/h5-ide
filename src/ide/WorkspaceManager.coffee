@@ -106,9 +106,9 @@ define [ "./subviews/WorkspaceView", "underscore" ], ( WorkspaceView )->
 
       workspace
 
-    removeAllSpaces : ()->
+    removeAllSpaces : ( filter )->
       for space in @__spaces.slice(0)
-        if not space.isFixed()
+        if not space.isFixed() and ( not filter or filter(space) )
           @remove( space, true )
 
       return

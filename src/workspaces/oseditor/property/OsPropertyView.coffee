@@ -16,7 +16,17 @@ define [
             if options and _.isObject options
                 _.extend @, options
 
+            @__subViews = []
+
             Backbone.View.apply @, arguments
+
+        reg: ( subView ) ->
+            if subView in @__subViews then return subView
+            if subView is @ then return subView
+
+            @__subViews.push subView
+            _.extend subView, _.pick @, 'propertyPanel', 'panel'
+            subView
 
         updateAttribute: ( e ) ->
             $target = $ e.currentTarget
@@ -36,6 +46,10 @@ define [
 
         # Overwrite it in subview
         getTitle: -> @model?.get( 'name' )
+
+        remove: ->
+            sv?.remove?() for sv in @__subViews
+            Backbone.View.prototype.remove.apply @, arguments
 
     }, {
         extend : ( protoProps, staticProps ) ->

@@ -55,48 +55,54 @@ define [
     showFloatPanel: -> @panel.showFloatPanel.apply @panel, arguments
     hideFloatPanel: -> @panel.hideFloatPanel.apply @panel, arguments
 
+    remove: ->
+        @propertyView.remove()
+        Backbone.View.prototype.remove.apply @, arguments
+
     updateRightPanelOption : ( event ) ->
-      $toggle = $(event.currentTarget)
+        $toggle = $(event.currentTarget)
 
-      if $toggle.is("button") or $toggle.is("a") then return
+        if $toggle.is("button") or $toggle.is("a") then return
 
-      hide    = $toggle.hasClass("expand")
-      $target = $toggle.next()
+        hide    = $toggle.hasClass("expand")
+        $target = $toggle.next()
 
-      if hide
-        $target.css("display", "block").slideUp(200)
-      else
-        $target.slideDown(200)
-      $toggle.toggleClass("expand")
+        if hide
+            $target.css("display", "block").slideUp(200)
+        else
+            $target.slideDown(200)
 
-      if not $toggle.parents(".panel-body").length then return
+        $toggle.toggleClass("expand")
 
-      @__optionStates = @__optionStates || {}
+        if not $toggle.parents(".panel-body").length then return
 
-      # added by song ######################################
-      # record head state
-      comp = @uid || "Stack"
-      status = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
-      @__optionStates[ comp ] = status
+        @__optionStates = @__optionStates || {}
 
-      comp = Design.instance().component( comp )
-      console.log comp
-      if comp then @__optionStates[ comp.type ] = status
-      # added by song ######################################
+        # added by song ######################################
+        # record head state
+        comp = @uid || "Stack"
+        status = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+        @__optionStates[ comp ] = status
 
-      return false
+        comp = Design.instance().component( comp )
+        console.log comp
+        if comp then @__optionStates[ comp.type ] = status
+        # added by song ######################################
+
+        false
 
     restoreAccordion : ( type, uid )->
-      console.log type, uid
-      if not @__optionStates then return
-      states = @__optionStates[ uid ]
-      if not states then states = @__optionStates[ type ]
-      if states
-        for el, idx in @$el.find('.panel-body').find('.option-group-head')
-          $(el).toggleClass("expand", states[idx])
+        if not @__optionStates then return
+        states = @__optionStates[ uid ]
+        if not states then states = @__optionStates[ type ]
+        if states
+            for el, idx in @$el.find('.panel-body').find('.option-group-head')
+                $(el).toggleClass("expand", states[idx])
 
-        for uid, states of @__optionStates
-          if not uid or Design.instance().component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
-            continue
-          delete @__optionStates[ uid ]
-      return
+              for uid, states of @__optionStates
+                    if not uid or Design.instance().component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
+                        continue
+                        delete @__optionStates[ uid ]
+                        return
+
+

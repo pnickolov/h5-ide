@@ -53,7 +53,7 @@ define [
             $target = $(event.currentTarget)
 
             model = @getSelectItemModel($target)
-            view = @hmView = new HmView model: model
+            view = @reg new HmView model: model
 
             @listenTo model, 'change', @refreshList
             @showFloatPanel(view.render().el)
@@ -68,10 +68,6 @@ define [
             @hideFloatPanel()
 
             false
-
-        remove: ->
-            @hmView?.remove()
-            OsPropertyView.prototype.remove.apply @, arguments
 
     }, {
         handleTypes: [ 'ossglist' ]

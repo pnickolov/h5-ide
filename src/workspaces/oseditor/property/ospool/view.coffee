@@ -13,10 +13,9 @@ define [
         initialize: ->
             @memConn = @model.connections 'OsPoolMembership'
             @hmlistView = new HmlistView( {
-                panel: @panel,
                 targetModel: @model
             } )
-            @selectTpl = @hmlistView.selectTpl
+            @selectTpl = @reg( @hmlistView ).selectTpl
 
         render: ->
             data = @model.toJSON()
@@ -42,9 +41,6 @@ define [
                 when 'mem' then return @memConn[ $target.data( 'index' ) ]
                 else return @model
 
-        remove: ->
-            @hmlistView?.remove()
-            OsPropertyView.prototype.remove.apply @, arguments
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

@@ -24,11 +24,7 @@ define [
       'change #property-os-server-aip': "updateServerAttr"
 
     initialize: ->
-
-        @sgListView = new SgListView {
-            panel: @panel,
-            targetModel: @model.embedPort()
-        }
+        @sgListView = @reg new SgListView targetModel: @model.embedPort()
 
     render: ->
       json = @model.toJSON()

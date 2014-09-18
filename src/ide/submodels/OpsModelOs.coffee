@@ -152,7 +152,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
               protocol: null
               remote_group_id: null
               remote_ip_prefix: null
-              id: MC.guid()
+              id: ""
             ]
             id: ""
 

@@ -15,7 +15,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
   Backbone.Model.extend {
 
     defaults :
-      paymentState : "unpay" # "" || "pastdue" || "unpay"
+      paymentState : "" # "" || "pastdue" || "unpay" || "active"
 
     initialize : ()->
       @set {
@@ -37,6 +37,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequestR("payment_statement")
     getPaymentUsage: ->
       ApiRequestR("payment_usage")
+
+
+    isUnpay : ()-> @get("paymentState") is "unpay"
 
 
     userInfoAccuired : ( result )->

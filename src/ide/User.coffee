@@ -15,7 +15,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
   Backbone.Model.extend {
 
     defaults :
-      paymentState : "unpay"
+      paymentState : "unpay" # "" || "pastdue" || "unpay"
 
     initialize : ()->
       @set {
@@ -38,8 +38,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     getPaymentUsage: ->
       ApiRequestR("payment_usage")
 
-    payment: ->
-      false
 
     userInfoAccuired : ( result )->
       res =
@@ -53,7 +51,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         awsSecretKey : result.secret_key
         tokens       : result.tokens || []
         defaultToken : ""
-        paymentState : result.payment_state || "unpay"
+        paymentState : result.payment_state || ""
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""

@@ -14,7 +14,7 @@ define [
 ], ( CoreEditorView, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView, ide_event )->
 
   CoreEditorView.extend {
-    template : TplOsEditor
+    template : TplOsEditor.frame
 
     constructor : ( options )->
       _.extend options, {

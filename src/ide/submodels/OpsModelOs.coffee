@@ -21,6 +21,15 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
         @attributes.provider = if options.jsonData.provider then options.jsonData.provider else "awcloud"
       return
 
+    getMsrId : ()->
+      msrId = OpsModel.prototype.getMsrId.call this
+      if msrId then return msrId
+      if not @__jsonData then return undefined
+      for uid, comp of @__jsonData.component
+        if comp.type is constant.RESTYPE.OSNETWORK
+          return comp.resource.id
+      undefined
+
     __initJsonData : ()->
       json = @__createRawJson()
       json.layout    =

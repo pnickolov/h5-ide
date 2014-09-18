@@ -44,9 +44,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       })
 
     parseFetchData : ( data )->
-      # OpsResource doesn't return anything, Instead, it injects the data to other collection.
-      delete data.resource_id
-
       app_json = data.app_json
       delete data.app_json
 
@@ -60,7 +57,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         cln.__parseExternalData d, extraAttr, @__region
 
       # 2. Fix buggy generated json.
-      @generated = @fixGeneratedJson( app_json )
+      @generatedJson = @fixGeneratedJson( app_json )
       return
 
     fixGeneratedJson : ( json )-> json

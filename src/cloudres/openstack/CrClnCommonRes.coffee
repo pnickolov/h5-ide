@@ -15,7 +15,7 @@ define [
 
     type : constant.RESTYPE.OSFIP
 
-    doFetch : ()-> ApiRequest("os_ip_ListFloatingIP", {region:@region()})
+    doFetch : ()-> ApiRequest("os_floatingip_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.floatingips
     parseExternalData : ( data )-> data.floatingips

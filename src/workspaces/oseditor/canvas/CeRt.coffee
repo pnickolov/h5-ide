@@ -11,8 +11,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "external" : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE,  8, 35]
-      "route"    : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 35 ]
+      "external" : [ 10, 30, CanvasElement.constant.PORT_LEFT_ANGLE,  8, 30]
+      "route"    : [ 70, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 30 ]
     }
 
     iconUrl : ()-> "ide/icon/openstack/cvs-router.png"

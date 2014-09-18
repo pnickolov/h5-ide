@@ -17,8 +17,8 @@ define [
     defaultSize : [ 9, 9 ]
 
     portPosMap : {
-      "pool"   : [ 5, 30, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "server" : [ 82, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,30 ]
+      "pool"   : [ 5, 36, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "server" : [ 82, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,36 ]
     }
 
     events :

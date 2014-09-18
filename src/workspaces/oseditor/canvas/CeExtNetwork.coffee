@@ -11,7 +11,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Des
     defaultSize : [8,8]
 
     portPosMap : {
-      "router" : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "router" : [ 70, 30, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
 
     # Creates a svg element

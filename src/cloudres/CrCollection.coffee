@@ -334,6 +334,27 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
       obj
 
+    camelToUnderscore: ( obj ) ->
+      exceptionList = []
+      if not _.isObject obj then return obj
+
+      for camelKey, value of obj
+        if not (obj.hasOwnProperty camelKey) then continue
+
+        if not _.isArray( obj )  and camelKey not in exceptionList
+          underscoreKey = _.map camelKey, ( char, index ) ->
+            if index is 0 or index then return char
+            if 65 <= char.charCodeAt() <= 90 then return "_#{char.toLowerCase()}"
+            char
+          .join( '' )
+
+          obj[underscoreKey] = value
+          delete obj[camelKey]
+
+        @camelToUnderscore value
+
+      obj
+
 
   }, {
 

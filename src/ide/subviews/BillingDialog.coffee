@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus", 'appAction'], ( BillingDialogTpl, lang, ApiRequest, Modal, appAction ) ->
+define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus" ,"backbone" ], ( BillingDialogTpl, lang, ApiRequest, Modal ) ->
 
     BillingDialog = Backbone.View.extend {
 
@@ -21,10 +21,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           confirm: hide: true
           delay: 1
         @modal.find('.modal-body').css({background: "#252525"})
-        if not paymentState or paymentState is "unpay"
-          @modal.setWidth("550px")
-          appAction.showPayment(@modal.find('.modal-body'), 'billing').then ->
-            that.modal.resize()
+        if not paymentState
+          App.user.getPaymentInfo().then (result)=>
+            @modal.setContent BillingDialogTpl.noPaymentCard result
+          , ()->
+            notification 'error', "Error while getting user payment info, please try again later."
         else
           Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
             that.modal.find(".modal-body").css 'padding', "0"

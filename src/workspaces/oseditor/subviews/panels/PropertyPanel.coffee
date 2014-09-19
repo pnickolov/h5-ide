@@ -3,11 +3,12 @@ define [
     'backbone'
     'constant'
     'Design'
+    'CloudResources'
     '../../property/OsPropertyView'
     '../../property/OsPropertyBundle'
     './template/TplPropertyPanel'
     'UI.selection'
-], ( Backbone, constant, Design, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection )->
+], ( Backbone, constant, Design, CloudResources, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection )->
 
   Backbone.View.extend
 

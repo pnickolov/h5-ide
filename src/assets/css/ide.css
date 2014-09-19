@@ -9332,20 +9332,38 @@ g.shadow {
       top: 0;
       margin-top: 3px;
       margin-right: 3px; }
+  #OpsEditor .OEPanelRight.property dl.horizontal, #OpsEditor .OEPanelRight.config dl.horizontal {
+    margin: 0 9px;
+    padding: 0; }
+    #OpsEditor .OEPanelRight.property dl.horizontal::after, #OpsEditor .OEPanelRight.config dl.horizontal::after {
+      content: "";
+      height: 0;
+      display: block;
+      clear: both; }
+    #OpsEditor .OEPanelRight.property dl.horizontal dt, #OpsEditor .OEPanelRight.config dl.horizontal dt {
+      min-width: 80px;
+      float: left;
+      margin: 8px 0 8px; }
+    #OpsEditor .OEPanelRight.property dl.horizontal dd, #OpsEditor .OEPanelRight.config dl.horizontal dd {
+      float: left;
+      margin: 8px 0 8px; }
   #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
-    margin: 0 9px; }
+    margin: 8px 9px; }
+    #OpsEditor .OEPanelRight.property dl:first-child, #OpsEditor .OEPanelRight.config dl:first-child {
+      margin-top: 0;
+      padding-top: 8px; }
     #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
       content: "";
       height: 0;
       display: block;
       clear: both; }
-  #OpsEditor .OEPanelRight.property dt, #OpsEditor .OEPanelRight.config dt {
-    min-width: 80px;
-    float: left;
-    margin: 8px 0 8px; }
-  #OpsEditor .OEPanelRight.property dd, #OpsEditor .OEPanelRight.config dd {
-    float: left;
-    margin: 8px 0 8px; }
+    #OpsEditor .OEPanelRight.property dl dt, #OpsEditor .OEPanelRight.config dl dt {
+      min-width: 80px;
+      margin: 0;
+      padding: 5px 0 5px 0; }
+    #OpsEditor .OEPanelRight.property dl dd, #OpsEditor .OEPanelRight.config dl dd {
+      margin: 0;
+      padding: 5px 0 5px 8px; }
   #OpsEditor .OEPanelRight.property .name, #OpsEditor .OEPanelRight.config .name {
     width: 100%;
     padding: 8px 10px 2px 9px;

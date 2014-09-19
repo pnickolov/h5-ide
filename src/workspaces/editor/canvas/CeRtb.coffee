@@ -11,8 +11,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "rtb-tgt-left"   : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "rtb-tgt-right"  : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "rtb-tgt-left"   : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE, 8, 35]
+      "rtb-tgt-right"  : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 35 ]
       "rtb-src-top"    : [ 40, 3,  CanvasElement.constant.PORT_UP_ANGLE ]
       "rtb-src-bottom" : [ 40, 77, CanvasElement.constant.PORT_DOWN_ANGLE ]
     }
@@ -75,9 +75,10 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
       @initNode node, m.x(), m.y()
       node
 
+    labelWidth : (width)-> CanvasElement.prototype.labelWidth.call(this, width) - 20
     # Update the svg element
     render : ()->
-      CanvasManager.update @$el.children(".node-label"), @model.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
       CanvasManager.update @$el.children("image"), @iconUrl(), "href"
 
   }

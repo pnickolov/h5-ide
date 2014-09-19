@@ -52,6 +52,9 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
             event.stopPropagation()
 
         __optionShow: ->
+            # Reset filter.
+            @$('.combo-dd-filter').val ''
+
             if not @$('.combo-dd-content').html().trim()
                 @render 'loading'
 

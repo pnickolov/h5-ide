@@ -82,7 +82,7 @@ define [ 'event',
 
             'click .parameter-item .parameter-name': 'onParaNameClick'
 
-            'click .parameter-item.text .parameter-text-expand': 'onTextParaExpandClick'
+            'click .parameter-item .parameter-text-expand': 'onTextParaExpandClick'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -95,6 +95,8 @@ define [ 'event',
             'ACE_TAB_SWITCH': 'aceTabSwitch'
 
             'ACE_UTAB_SWITCH': 'aceUTabSwitch'
+
+            'SAVE_STATE': 'onStateSaveClick'
 
         editorShow: false
 
@@ -1844,7 +1846,9 @@ define [ 'event',
                     highlightSelectedWord: false,
                     enableSnippets: false,
                     singleLine: editorSingleLine,
-                    enableTab: enableTab
+                    enableTab: enableTab,
+                    useSoftTabs: false,
+                    tabSize: 4
                 })
 
                 # move cursor to last
@@ -3413,14 +3417,17 @@ define [ 'event',
 
             that = this
             $focusElem = $(event.target)
-            $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
+            if $focusElem.parents('.parameter-dict-item').length
+                $paraValue = $focusElem.parents('.parameter-dict-item').find('.parameter-value.value')
+            else
+                $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
 
             if paraEditor
 
                 $paraItem = $paraValue.parents('.parameter-item')
 
-                if $paraItem.hasClass('text')
+                if $paraItem.hasClass('text') or $paraItem.hasClass('dict')
 
                     paraName = $paraItem.attr('data-para-name')
                     $stateItem = $paraItem.parents('.state-item')
@@ -3494,7 +3501,12 @@ define [ 'event',
                             $paraItem.addClass('disabled')
 
                     originEditor.setValue(codeEditorValue)
+
+                    if $paraItem.hasClass('dict')
+                        originEditor.getSelection().selectFileStart()
+
                     originEditor.clearSelection()
+                
                     originEditor.focus()
 
                     modal.close()

@@ -101,6 +101,7 @@ define [ '../base/view',
             null
 
         render : () ->
+
             @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
 
@@ -125,8 +126,6 @@ define [ '../base/view',
                 else if( val > 10 * volume_size)
                     return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
-            @bindIpItemValidate()
-
             #
 
             # currentStateData = @model.getStateData()
@@ -142,7 +141,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if PropertyView.checkResName( @model.get('uid'), target, "Instance" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Instance" )
                 @model.setName name
                 @setTitle name
             null
@@ -328,12 +327,12 @@ define [ '../base/view',
 
         # This function is used to display IP List
         refreshIPList : () ->
+            
             if not @model.attributes.eni
                 return
-
             $( '#property-network-list' ).html( MC.template.propertyIpList( @model.attributes.eni.ips ) )
-
             @updateIPAddBtnState()
+            @bindIpItemValidate()
             null
 
         updateIPAddBtnState : ( enabled ) ->

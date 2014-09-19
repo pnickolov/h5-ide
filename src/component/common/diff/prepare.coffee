@@ -85,10 +85,11 @@ define [ 'constant' ], ( constant ) ->
                 'SecurityGroups'
                 'Subnets'
                 'Routes'
-                ]
+            ]
 
             # Replace keyword
             switch parentKey
+
                 when 'BlockDeviceMapping'
                     deviceObj = childNode.DeviceName
                     data.key = 'Device'
@@ -119,6 +120,12 @@ define [ 'constant' ], ( constant ) ->
                 when 'SubnetIds'
                     data.key = 'Subnet'
 
+                when 'OptionSettings'
+                    data.key = 'Option'
+
+                when 'Options'
+                    data.key = 'Option'
+
             # Convert need convert pluralKey
             if parentKey in pluralKeys
                 data.key = @pluralToSingular parentKey
@@ -126,6 +133,13 @@ define [ 'constant' ], ( constant ) ->
             # Replace first level node
             if path.length is 1
                 data.key = constant.RESNAME[ data.key ] or data.key
+
+            try
+                if data.key is 'MasterUserPassword' and data.value
+                    if data.value.type is 'changed'
+                        data.value.__new__ = data.value.__new__.replace /./g, '*'
+            catch err
+                null
 
             data
 

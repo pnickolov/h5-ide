@@ -57,9 +57,11 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
           vols.push {
             id       : vol.id
+            appId    : vol.id
             name     : bdm.deviceName
             snapshot : vol.get("snapshotId")
             size     : vol.get("size")
+            state    : vol.get('state') or 'unknown'
           }
 
       @volPopup = new VolumePopup {

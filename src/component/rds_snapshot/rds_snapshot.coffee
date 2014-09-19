@@ -35,11 +35,13 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @dropdown.on 'change', @selectSnapshot, @
             @dropdown
 
-        renderRegionDropdown: ()->
+        renderRegionDropdown: (exceptRegion)->
             option =
                 filterPlaceHolder: lang.ide.PROP_SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
+            if exceptRegion
+              @regions = _.without @regions, exceptRegion
             selection = lang.ide.PROP_VOLUME_SNAPSHOT_SELECT_REGION
             @regionsDropdown.setSelection selection
             @regionsDropdown.on 'open', @openRegionDropdown, @
@@ -189,8 +191,14 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 data.region = Design.instance().get('region')
                 if not checked
                     return
+                data.newCopyName = checked[0].id.split(':').pop()+ "-copy"
+                snapshot = @collection.get checked[0].id
+                console.log(snapshot)
                 @manager.setSlide tpl data
-                @regionsDropdown = @renderRegionDropdown()
+                if snapshot.isAutomated()
+                  @regionsDropdown = @renderRegionDropdown()
+                else
+                  @regionsDropdown = @renderRegionDropdown(snapshot.collection.region())
                 @regionsDropdown.on 'change', =>
                     @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
                 @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
@@ -227,9 +235,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 return false
             @switchAction 'processing'
             newName = @manager.$el.find('#property-snapshot-name').val()
-            description =  @manager.$el.find('#property-snapshot-desc').val()
             afterDuplicate = @afterDuplicate.bind @
-            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName, description).then afterDuplicate, afterDuplicate
+            accountNumber = App.user.attributes.account
+            if not /^\d+$/.test accountNumber.split('-').join('')
+              notification('error', 'Please fill update your accountNumber to Numbered')
+              return false
+            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
 
 
         afterCreated: (result,newSnapshot)->
@@ -244,15 +255,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
-                notification 'error', "Duplicate failed because of: "+ result.msg
+                notification 'error', "Duplicate failed because of: "+ (result.awsResult || result.msg)
                 return false
             #cancelselect && fetch
             if result.attributes.region is currentRegion
                 @collection.add result
-                notification 'info', "New Snapshot is duplicated successfully!"
+                notification 'info', "New RDS Snapshot is duplicated successfully!"
             else
                 @initManager()
-                notification 'info', 'New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created.'
+                notification 'info', 'New RDS Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created.'
 
         afterDeleted: (result)->
             deleteCount--
@@ -262,7 +273,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 if deleteErrorCount > 0
                     notification 'error', deleteErrorCount+" Snapshot failed to delete, Please try again later."
                 else
-                    notification 'info', "Delete Successfully"
+                    notification 'info', "RDS Snapshot(s) Delete Successfully"
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
@@ -287,7 +298,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage RDS Snapshots in #{regionName}"
+            title: "Manage DB Snapshots in #{regionName}"
             slideable: true
             context: that
             buttons: [
@@ -296,12 +307,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     type: 'create'
                     name: 'Create Snapshot'
                 }
-#                {
-#                    icon: 'duplicate'
-#                    type: 'duplicate'
-#                    disabled: true
-#                    name: 'Duplicate'
-#                }
+                {
+                    icon: 'duplicate'
+                    type: 'duplicate'
+                    disabled: true
+                    name: 'Duplicate'
+                }
                 {
                     icon: 'del'
                     type: 'delete'

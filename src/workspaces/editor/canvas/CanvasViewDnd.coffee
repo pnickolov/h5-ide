@@ -374,9 +374,10 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
       canvasX      : canvasOffset.left
       canvasY      : canvasOffset.top
 
-      onDragStart : __moveItemStart
-      onDrag      : __moveItemDrag
-      onDragEnd   : __moveItemDrop
+      onDragStart  : __moveItemStart
+      onDrag       : __moveItemDrag
+      onDragEnd    : __moveItemDrop
+      onDragCancel : __moveItemCancel
 
       includeSource : ( evt )-> evt.data.altState and !!evt.altKey
     }
@@ -402,7 +403,8 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     $dom.dnd( evt, options )
 
     # Make selectItem the last, since PropertyPanel is really easy to throw error
-    @selectItem( $tgt[0] )
+    # We will have a select after mouseup, so this seems like a duplicated select.
+    # @selectItem( $tgt[0] )
     false
 
   __moveItemStart = ( data )->
@@ -471,9 +473,7 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     data = evt.data
 
     # Cleanup
-    data.context.__addItemDragLeave()
-    data.targetSvg.attr("id", "")
-    if data.cloneSvg then data.cloneSvg.remove()
+    __moveItemCancel( evt )
 
     # Drop
     size = data.item.size()
@@ -512,6 +512,15 @@ define [ "./CanvasView", "./CanvasElement", "constant", "./CanvasManager", "i18n
     dataTransfer.item[m]( dataTransfer.parent, dataTransfer.x, dataTransfer.y )
     return
 
+
+  __moveItemCancel = ( evt )->
+    data = evt.data
+
+    # Cleanup.
+    data.context.__addItemDragLeave()
+    data.targetSvg.attr("id", "")
+    if data.cloneSvg then data.cloneSvg.remove()
+    return
 
   __moveStickyItemStart = ( evt )->
 

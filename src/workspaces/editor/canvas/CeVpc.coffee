@@ -20,11 +20,13 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "./CanvasView" ], ( C
       canvas = @canvas
       canvas.design.componentsOfType( constant.RESTYPE.CGW ).map ( m )-> canvas.getItem( m.id )
 
+    label : ()-> "#{@model.get('name')} (#{@model.get('cidr')})"
+
     # Update the svg element
     render : ()->
       # Move the group to right place
       m = @model
-      @$el.children("text").text "#{m.get('name')} (#{m.get('cidr')})"
+      CanvasManager.setLabel @, @$el.children("text")
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
 
   }

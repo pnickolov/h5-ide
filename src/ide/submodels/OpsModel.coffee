@@ -149,11 +149,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()->
-        json = self.generateJsonFromRes()
-        self.__setJsonData json
-        self.attributes.name = json.name
-        self
+      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+
+    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+
+    __onFjdImported : ()->
+      json = @generateJsonFromRes()
+      @__setJsonData json
+      @attributes.name = json.name
+      @
 
     __fjdStack : ( self )->
       if not @isStack() then return
@@ -449,6 +453,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         flag        : force
         create_snapshot: create_db_snapshot
       }).then ()->
+        # Force Termination will immediately returns sucess / failure.
+        # Normal Termination will returns its status by Websockt.
         if force then self.__destroy()
         return
       , ( err )->
@@ -664,6 +670,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Remove thumbnail
       ThumbUtil.remove( @get("id") )
+
+      # Cleanup CloudResources if we are an app
+      if @getVpcId()
+        CloudResources( "OpsResource", @getVpcId() )?.destroy()
 
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed

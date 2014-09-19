@@ -81,8 +81,12 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
     portDirection : ( portName )->
       if this.portDirMap then this.portDirMap[ portName ] else null
 
-    portPosition : ( portName )->
-      if this.portPosMap then this.portPosMap[ portName ] else null
+    portPosition : ( portName, isAtomic )->
+      if not this.portPosMap then return null
+      p = this.portPosMap[ portName ]
+      if isAtomic and p.length >= 5
+        return [ p[3], p[4], p[2] ]
+      p
 
     hover    : ( evt )-> CanvasManager.addClass(cn.$el, "hover") for cn in @connections(); return
     hoverOut : ( evt )-> CanvasManager.removeClass(cn.$el, "hover") for cn in @connections(); return
@@ -283,6 +287,12 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
         svg.text("").move(5,15).classes("group-label")
       ]).attr({ "data-id" : @cid }).classes("canvasel group " + @type.replace(/\./g, "-") )
 
+    label      : ()->
+      if @model.type is "ExpandedAsg" and @model.get("originalAsg")
+        @model.get("originalAsg").get("groupName")
+      else
+        @model.get("name")
+    labelWidth : ( width )-> (width || @size().width * CanvasView.GRID_WIDTH) - 8
 
     isGroup : ()-> !!@model.node_group
 
@@ -465,7 +475,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
     updateConnections : ()-> cn.update() for cn in @connections(); return
 
-    applyGeometry : ( x, y, width, height )->
+    applyGeometry : ( x, y, width, height, updateConnections = true )->
       if x isnt undefined or y isnt undefined
         @model.set { x : x, y : y }
         @$el[0].instance.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
@@ -507,6 +517,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
           ch.move(width - pad, height - pad)
         else if classes.indexOf("port") >= 0
           ports.push ch
+        else if classes.indexOf("group-label") >= 0
+          CanvasManager.setLabel( @, ch.node )
 
       # Update groups port
       for p in ports
@@ -515,9 +527,8 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
           pos = @portPosition( name )
           if pos then p.move( pos[0], pos[1] )
 
-      cn.update() for cn in @connections()
-
-
+      if updateConnections
+        cn.update() for cn in @connections()
       return
 
   }, {
@@ -544,10 +555,13 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
   }
 
   CanvasElement.constant =
-    PORT_RIGHT_ANGLE  : 0
-    PORT_UP_ANGLE     : 90
-    PORT_LEFT_ANGLE   : 180
-    PORT_DOWN_ANGLE   : 270
+    PORT_4D_ANGLE    : -1
+    PORT_2D_H_ANGLE  : -2
+    PORT_2D_V_ANGLE  : -3
+    PORT_RIGHT_ANGLE : 0
+    PORT_UP_ANGLE    : 90
+    PORT_LEFT_ANGLE  : 180
+    PORT_DOWN_ANGLE  : 270
 
   CanvasElement.setCanvasViewClass = ( c )-> CanvasView = c; return
 

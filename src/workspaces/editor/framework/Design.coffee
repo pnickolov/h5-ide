@@ -177,6 +177,10 @@ define [
     @trigger = Design.trigger = noop
     @__initializing = true
 
+    defaultLayout = {
+      coordinate : [0, 0]
+      size       : [0, 0]
+    }
 
     # A helper function to let each resource to get its dependency
     that = this
@@ -201,7 +205,7 @@ define [
         console.warn "We do not support deserializing resource of type : #{component_data.type}"
         return
 
-      ModelClass.deserialize( component_data, layout_data[uid], resolveDeserialize )
+      ModelClass.deserialize( component_data, layout_data[uid] || defaultLayout, resolveDeserialize )
 
       Design.__instance.__componentMap[ uid ]
 
@@ -232,7 +236,7 @@ define [
           console.error "The class is marked as resolveFirst, yet it doesn't implement preDeserialize()"
           continue
 
-        ModelClass.preDeserialize( comp, layout_data[uid] )
+        ModelClass.preDeserialize( comp, layout_data[uid] || defaultLayout )
 
 
     # Deserialize normal resources
@@ -244,7 +248,7 @@ define [
       # we directly call the deserialize() of the resource here.
       if Design.__resolveFirstMap[ comp.type ] is true
         recursiveCheck = createRecursiveCheck( uid )
-        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid], resolveDeserialize )
+        Design.modelClassForType( comp.type ).deserialize( comp, layout_data[uid] || defaultLayout, resolveDeserialize )
       else
         recursiveCheck = createRecursiveCheck()
         resolveDeserialize uid
@@ -255,15 +259,17 @@ define [
     for uid, comp of json_data
       ModelClass = Design.modelClassForType( comp.type )
       if ModelClass and ModelClass.postDeserialize
-        ModelClass.postDeserialize( comp, layout_data[uid] )
+        ModelClass.postDeserialize( comp, layout_data[uid] || defaultLayout )
 
     ####################
     # Broadcast event
     ####################
     @__initializing = false
+    Backbone.Events.trigger.call Design, Design.EVENT.Deserialized
+    Backbone.Events.trigger.call @, Design.EVENT.Deserialized
+
+    # Only at this point, we are finally deserialized.
     @trigger = Design.trigger = Backbone.Events.trigger
-    Design.trigger Design.EVENT.Deserialized
-    @trigger Design.EVENT.Deserialized
     null
 
   DesignImpl.prototype.reload = ()->
@@ -277,7 +283,6 @@ define [
 
     if oldDesign
       oldDesign.use()
-
     return
 
 
@@ -554,7 +559,7 @@ define [
     names = @__preservedNames[type]
     names and names[name]
 
-  DesignImpl.prototype.getCost = ()->
+  DesignImpl.prototype.getCost = (stopped)->
     costList = []
     totalFee = 0
 
@@ -564,6 +569,8 @@ define [
       currency = priceMap.currency || 'USD'
 
       for uid, comp of @__componentMap
+        if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
+          continue
         if comp.getCost
           cost = comp.getCost( priceMap, currency )
           if not cost then continue
@@ -594,7 +601,7 @@ define [
     vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects( @ )
     if vpc.length>0
       vpcId = vpc[0].get("appId")
-      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( model ) -> model.RES_TAG is vpcId
+      instanceAry = CloudResources( constant.RESTYPE.INSTANCE, @region() ).filter ( m ) -> m.get("vpcId") is vpcId
       for ins in instanceAry
         ins = ins.attributes
         for bdm in (ins.blockDeviceMapping || [])

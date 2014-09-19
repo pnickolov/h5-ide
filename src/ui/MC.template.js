@@ -771,11 +771,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<ul>\n<h3 class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "<ul>\n<header class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n";
+    + "</header>\n";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</ul>";
@@ -1324,8 +1324,9 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "(<span class=\"db-stop-status\">"
+  buffer += "<span class=\"resource-tag\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>(<span class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>) ";
   return buffer;
@@ -1336,7 +1337,7 @@ function program2(depth0,data) {
   return ", ";
   }
 
-  buffer += "<p class=\"modal-text-minor\">DB Instance\n    ";
+  buffer += "<p class=\"modal-text-major\">DB Instance\n    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    cannot be modified now.</p>\n<p>Wait for the DB instance(s) to be available. Then try to apply updates\n    again.</p>";
@@ -1876,27 +1877,14 @@ function program9(depth0,data) {
 function program11(depth0,data) {
   
   
-  return "style=\"padding: 0;\"";
+  return " style=\"padding: 0;\"";
   }
 
 function program13(depth0,data) {
   
-  var stack1;
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
-  if(stack1 || stack1 === 0) { return stack1; }
-  else { return ''; }
-  }
-function program14(depth0,data) {
-  
-  
-  return " style=\"padding: 0;\"";
-  }
-
-function program16(depth0,data) {
-  
   var buffer = "", stack1;
   buffer += "\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                <div class=\"scroll-content\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.program(17, program17, data),fn:self.program(14, program14, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">\n                    ";
   stack1 = ((stack1 = (depth0 && depth0.template)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -1904,13 +1892,8 @@ function program16(depth0,data) {
   buffer += "\n                </div>\n            ";
   return buffer;
   }
-function program17(depth0,data) {
-  
-  
-  return "style=\"padding: 12px 15px\"";
-  }
 
-function program19(depth0,data) {
+function program15(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            ";
@@ -1920,38 +1903,38 @@ function program19(depth0,data) {
   return buffer;
   }
 
-function program21(depth0,data) {
+function program17(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n        <div class=\"modal-footer\">\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </div>\n        ";
   return buffer;
   }
-function program22(depth0,data) {
+function program18(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-confirm btn-"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" ";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;
   }
-function program23(depth0,data) {
+function program19(depth0,data) {
   
   
   return " disabled ";
   }
 
-function program25(depth0,data) {
+function program21(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-close btn-silver\">"
@@ -1974,14 +1957,14 @@ function program25(depth0,data) {
   buffer += "\n        </div>\n        <div class=\"modal-body context-wrap";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(13, program13, data),fn:self.program(11, program11, data),data:data});
+  buffer += "\"";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">\n            ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(19, program19, data),fn:self.program(16, program16, data),data:data});
+  buffer += " >\n            ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(15, program15, data),fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </div>\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</div>";
   return buffer;

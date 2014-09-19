@@ -12,7 +12,13 @@
 /* Define as MC module */
 define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
 
-Analytics.update("version", window.version);
+var tz = (new Date().getTimezoneOffset())/-60;
+if (tz >= 0) { tz = "+" + tz; }
+Analytics.update({
+	  "version"   : window.version
+	, "lastlogin" : (new Date()).toString()
+	, "timezone"  : "UTC" + tz
+});
 
 window.Q = Q;
 
@@ -50,7 +56,7 @@ var MC = {
 	// Global Variable
 
 	DOMAIN   : window.MC_DOMAIN,
-	API_HOST : window.MC_PROTO + "://api." + window.MC_DOMAIN,
+	API_HOST : window.MC_API_HOST,
 
 	IMG_URL: '/assets/images/',
 
@@ -260,9 +266,11 @@ var MC = {
 	extractID: function (uid)
 	{
 		if (!uid) { return ""; }
-
+		if (uid.indexOf("@{") != 0)
+		{
+			return uid
+		}
 		var result = _extractIDRegex.exec(uid);
-
 		return result ? result[1] : uid;
 	},
 
@@ -477,8 +485,8 @@ var MC = {
 		if (typeof left + typeof right !== "stringstring") {
 			return false;
 		}
-		a = left.split(".");
-		b = right.split(".");
+		a = left.replace(/[a-zA-Z]/g, '').split(".");
+		b = right.replace(/[a-zA-Z]/g, '').split(".");
 		i = 0;
 		len = Math.max(a.length, b.length);
 		while (i < len) {

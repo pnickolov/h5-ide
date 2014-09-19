@@ -22,7 +22,7 @@ define [
     portPosMap : {
       "instance-sg-left"  : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "instance-sg-right" : [ 80, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "instance-attach"   : [ 78, 50, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 50 ]
       "instance-rtb"      : [ 45, 2,  CanvasElement.constant.PORT_UP_ANGLE  ]
     }
     portDirMap : {
@@ -43,9 +43,19 @@ define [
       ami = @model.getAmi() || @model.get("cachedAmi")
 
       if not ami
-        "ide/ami/ami-not-available.png"
+        m = @model
+        instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        if instance
+          instance = instance.attributes
+          if instance.platform and instance.platform is "windows"
+            url = "ide/ami/windows.#{instance.architecture}.#{instance.rootDeviceType}.png"
+          else
+            url = "ide/ami/linux-other.#{instance.architecture}.#{instance.rootDeviceType}.png"
+        else
+          url = "ide/ami/ami-not-available.png"
       else
-        "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+        url = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+      url
 
     listenModelEvents : ()->
       @listenTo @model, "change:primaryEip", @render
@@ -75,6 +85,13 @@ define [
 
       ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
+
+    select : ( selectedDomElement )->
+      type = @type
+      if @model.get("appId") and @canvas.design.modeIsAppEdit()
+        type = "component_server_group"
+      ide_event.trigger ide_event.OPEN_PROPERTY, type, @model.id
+      return
 
     # Creates a svg element
     create : ()->
@@ -134,7 +151,7 @@ define [
       ])
 
       if not @model.design().modeIsStack() and m.get("appId")
-        svgEl.add( svg.circle(8).move(63, 14).classes('instance-state unknown') )
+        svgEl.add( svg.circle(8).move(63, 14).classes('res-state unknown') )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -145,14 +162,14 @@ define [
       m = @model
 
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
 
       # Update Image
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
 
       # Update Server number
       numberGroup = @$el.children(".server-number-group")
-      statusIcon  = @$el.children(".instance-state")
+      statusIcon  = @$el.children(".res-state")
       if m.get("count") > 1
         CanvasManager.toggle statusIcon, false
         CanvasManager.toggle numberGroup, true
@@ -165,7 +182,7 @@ define [
         if statusIcon.length
           instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
           state    = instance?.get("instanceState").name || "unknown"
-          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "instance-state tooltip #{state}")
+          statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
       # Update EIP
       CanvasManager.updateEip @$el.children(".eip-status"), m

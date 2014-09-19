@@ -18,11 +18,15 @@
 
 <div class="option-group-head expand">Member<span class="property-head-num-wrap">({{sbCount}})</span>
 <button class="icon-edit tooltip add-rule" data-tooltip="Edit subnet group"></button></div>
-<section class="property-control-group">
-  {{#each azSb}}
-  <div class='property-az-name'>{{@key}}</div>
-  {{#each this}} <div>{{name}}</div> <div class="dbsgppp-cidr">({{cidr}})</div> {{/each}}
-  {{/each}}
-</section>
+
+{{#each azSb}}
+<div class='option-group-category'>{{@key}}</div>
+<dl class="dl-vertical sbg-list">
+{{#each this}}             
+    <dd>{{name}}</dd>
+    <dt>({{cidr}})</dt>
+{{/each}}</dl> 
+{{/each}}
+
 
 </article>

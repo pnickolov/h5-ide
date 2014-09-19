@@ -87,18 +87,6 @@
         </ul>
     </div>
 {{/if}}
-{{#if totalFee}}
-    <div class="estimate-stop clearfix">
-        <div>
-            <span class="title">Estimated Cost When Stopped</span>
-            <span class="price" id="label-total-fee"><b>${{totalFee}}</b> / month</span>
-        </div>
-        <div class="hide">
-            <span class="title">Saving Compared to Running App</span>
-            <span class="price" id="label-total-saving"><b>${{savingFee}}</b>/ month</span>
-        </div>
-    </div>
-{{/if}}
 
 
 <!-- {{loading}} -->
@@ -116,7 +104,7 @@
     {{#if production}}
         <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
         <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
-        <div><input class="input" style="width:430px;" id="appNameConfirmIpt"/></div>
+        <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
     {{else}}
         <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOL_POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOL_POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
     {{/if}}
@@ -130,8 +118,23 @@
         </section>
         {{#if notReadyDB.length}}
             <p class="cant-snapshot">DB Instance
-                {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                {{#each notReadyDB}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
                 cannot take final snapshot.</p>
+        {{/if}}
+    {{/if}}
+</div>
+
+<!-- {{forgetAppConfirm}} -->
+<div class="confirm-padding">
+    {{#if hasState}}
+        <div class="modal-center-align-helper"> <div class="modal-text-major">This app is created by Visualops with state, do not support forget currently</div></div>
+    {{else}}
+        {{#if production}}
+            <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances.</p>
+            <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+            <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
+        {{else}}
+            <div class="modal-center-align-helper"> <div class="modal-text-major">Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?</div></div>
         {{/if}}
     {{/if}}
 </div>

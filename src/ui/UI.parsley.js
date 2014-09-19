@@ -348,7 +348,7 @@ define(["jquery"], function(){
            break;
 
           case 'database':
-           regExp = /(?=[a-zA-Z0-9-]{3,25}$)^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
+           regExp = /(?=[a-zA-Z0-9-]{2,25}$)^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
            break;
 
           case 'domain':

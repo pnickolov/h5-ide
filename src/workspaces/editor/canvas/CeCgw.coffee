@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "CloudResources" ], ( CanvasElement, constant, CanvasManager, lang, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -27,7 +27,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
         imageW  : 151
         imageH  : 76
       }).add([
-        svg.text("").move(100, 95).classes('node-label')
+        svg.text("").move(90, 95).classes('node-label')
 
         svg.use("port_right").attr({
           'class'        : 'port port-purple tooltip'
@@ -41,7 +41,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
       svgEl
 
+    labelWidth : (width)-> CanvasElement.prototype.labelWidth.call(this, width) - 4
     # Update the svg element
     render : ()->
-      CanvasManager.update @$el.children(".node-label"), @model.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
   }

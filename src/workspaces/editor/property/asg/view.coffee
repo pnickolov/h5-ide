@@ -131,7 +131,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if PropertyView.checkResName( @model.get('uid'), target, "ASG" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "ASG" )
                 @model.setName name
                 @setTitle name
 

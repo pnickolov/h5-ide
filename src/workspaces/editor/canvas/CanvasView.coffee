@@ -154,7 +154,10 @@ define [
 
       for ch in children
         if ch is item then continue
-        parentRect = ch.rect()
+        if item.isGroup()
+          parentRect = ch.rect()
+        else
+          parentRect = ch.effectiveRect()
         if not ( parentRect.x1 >= subRect.x2 or parentRect.x2 <= subRect.x1 or parentRect.y1 >= subRect.y2 or parentRect.y2 <= subRect.y1 )
           return false
 
@@ -247,14 +250,14 @@ define [
 
     lineStyle : ()-> @__linestyle
     updateLineStyle : ()->
-      @__linestyle = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+      ls = parseInt( localStorage.getItem("canvas/lineStyle") ) || 0
+      if @__linestyle is ls then return
 
-      CanvasManager.toggle $( @svg.node ).children( ".layer_sgline" ), @__linestyle isnt 4
-
-      if @__linestyle isnt 4
-        for cn in Design.modelClassForType("SgRuleLine").allObjects()
-          @getItem( cn.id )?.update()
+      @__linestyle = ls
+      cn.update() for uid, cn of @__itemLineMap
       return
+
+    toggleSgLine : ( show )-> CanvasManager.toggle $( @svg.node ).children( ".layer_sgline" ), show
 
     zoomOut : ()-> @zoom(  0.2 )
     zoomIn  : ()-> @zoom( -0.2 )

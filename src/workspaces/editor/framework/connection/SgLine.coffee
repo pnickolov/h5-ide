@@ -1,16 +1,10 @@
 
-define [ "constant", "../ConnectionModel", "../ResourceModel", "component/sgrule/SGRulePopup" ], ( constant, ConnectionModel, ResourceModel, SGRulePopup )->
+define [ "constant", "../ConnectionModel", "../ResourceModel" ], ( constant, ConnectionModel, ResourceModel )->
 
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {
 
     constructor : ( p1Comp, p2Comp, attr, option ) ->
-
-      # If the line is created by the user, we should a popup dialog to let
-      # user add sgrule. And then immediately remove the sgline
-      if option and option.createByUser
-        new SGRulePopup( p1Comp, p2Comp )
-        return
 
       console.assert( p1Comp isnt p2Comp, "Sgline should connect to different resources." )
 

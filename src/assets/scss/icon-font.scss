@@ -29,6 +29,7 @@
 .icon-export-json,
 .icon-caret-down,
 .icon-terminate,
+.icon-forget-app,
 .icon-close,
 .icon-caret-right,
 .icon-caret-left,
@@ -82,7 +83,14 @@
 .icon-reload,
 .icon-resources,
 .icon-hide-sg,
-.icon-kp {
+.icon-kp,
+.icon-ebs-snap,
+.icon-sns,
+.icon-cert,
+.icon-dhcp,
+.icon-pg,
+.icon-rds-snap,
+.icon-rds-restore {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -111,6 +119,7 @@
 .icon-caret-down:before { content : "\F121"; }
 .icon-close:before { content : "\F122"; }
 .icon-terminate:before { content : "\F154"; }
+.icon-forget-app:before { content : "\F11C"; }
 .icon-caret-right:before { content : "\F124"; }
 .icon-caret-left:before { content : "\F125"; }
 .icon-close-circle:before { content : "\F126"; }
@@ -162,7 +171,14 @@
 .icon-reload:before {content:"\F156";}
 .icon-resources:before {content:"\F157";}
 .icon-hide-sg:before {content:"\F160";}
-.icon-kp:before {content:"\F162";}
+.icon-kp:before {content:"\F161";}
+.icon-ebs-snap:before {content:"\F162";}
+.icon-sns:before {content:"\F163";}
+.icon-cert:before {content:"\F164";}
+.icon-dhcp:before {content:"\F165";}
+.icon-pg:before {content:"\F166";}
+.icon-rds-snap:before {content:"\F167";}
+.icon-rds-restore:before {content:"\F168";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

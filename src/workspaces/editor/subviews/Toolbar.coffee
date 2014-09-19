@@ -18,17 +18,19 @@ define [
   "backbone"
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
 
-  # Set domain and set http
-  API_HOST       = "api.visualops.io"
+  location = window.location
 
-  ### env:debug ###
-  API_HOST = "api.mc3.io"
-  ### env:debug:end ###
+  if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
+    # This is a ip address
+    console.error "VisualOps IDE can not be browsed with IP address."
+    return
+  hosts = location.hostname.split(".")
+  if hosts.length >= 3
+    API_HOST = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
+  else
+    API_HOST = location.hostname
 
-  ### env:dev ###
-  API_HOST = "api.mc3.io"
-  ### env:dev:end ###
-  API_URL = "https://" + API_HOST + "/v1/apps/"
+  API_URL = "https://api." + API_HOST + "/v1/apps/"
 
   Backbone.View.extend {
 
@@ -44,10 +46,12 @@ define [
       "click .icon-toolbar-cloudformation" : "exportCF"
       "click .runApp"                      : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
+      "click .icon-hide-sg"                : "toggleSgLine"
 
       "click .icon-stop"              : "stopApp"
       "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
+      "click .icon-forget-app"        : "forgetApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"
       "click .icon-apply-app"         : "applyAppEdit"
@@ -72,12 +76,7 @@ define [
         attr = { stateOn: @workspace.design.get("agent").enabled }
         tpl += OpsEditorTpl.toolbar[ btn ]( attr )
 
-      if @workspace.opsModel.isApp()
-        ami = [].concat(
-          @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
-          @workspace.design.componentsOfType( constant.RESTYPE.LC )
-        )
-        if _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+      if @workspace.opsModel.isApp() and @workspace.design.attributes.agent.enabled
           tpl += OpsEditorTpl.toolbar.BtnReloadStates()
 
       @setElement @parent.$el.find(".OEPanelTop").html( tpl )
@@ -104,13 +103,13 @@ define [
         @$el.children(".icon-apply-app, .icon-cancel-update-app").toggle( isAppEdit )
 
         if isAppEdit
-          @$el.children(".icon-terminate, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
           @$el.find(".icon-refresh").hide()
         else
           running = opsModel.testState(OpsModel.State.Running)
           stopped = opsModel.testState(OpsModel.State.Stopped)
 
-          @$el.children(".icon-terminate, .icon-refresh, .icon-save-app, .icon-reload").show()
+          @$el.children(".icon-terminate, .icon-forget-app, .icon-refresh, .icon-save-app, .icon-reload").show()
 
           # @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )
           # @$el.children(".icon-play").toggle( opsModel.testState( OpsModel.State.Stopped ) )
@@ -119,6 +118,12 @@ define [
           @$el.children(".icon-play").toggle( stopped ).toggleClass("toolbar-btn-primary seperator", opsModel.testState(OpsModel.State.Stopped)).find("span").toggle( stopped )
           @$el.children('.icon-update-app').toggle( not stopped )
           @$el.find(".icon-refresh").toggle( running )
+          ami = [].concat(
+            @workspace.design.componentsOfType( constant.RESTYPE.INSTANCE ),
+            @workspace.design.componentsOfType( constant.RESTYPE.LC )
+          )
+          hasState = _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
+          @$el.find('.reload-states').toggle(!!hasState)
 
       if @__saving
         @$el.children(".icon-save").attr("disabled", "disabled")
@@ -132,6 +137,16 @@ define [
       localStorage.setItem("canvas/lineStyle", attr)
       if @parent.canvas
         @parent.canvas.updateLineStyle()
+      return
+
+    toggleSgLine : ()->
+      sgBtn = $(".icon-hide-sg")
+      show  = sgBtn.hasClass("selected")
+      if show
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_HIDE_SG).removeClass("selected")
+      else
+        sgBtn.data("tooltip", lang.ide.TOOL_LBL_LINESTYLE_SHOW_SG).addClass("selected")
+      @parent.canvas.toggleSgLine( show )
       return
 
     saveStack : ( evt )->
@@ -244,19 +259,26 @@ define [
         disableFooter : true
       }
 
-      name   = design.get("name")
+      name = design.get("name")
 
-      ApiRequest("stack_export_cloudformation", {
+      TAPromise = TA.loadModule('stack')
+      ApiPromise = ApiRequest("stack_export_cloudformation", {
         region : design.get("region")
         stack  : design.serialize()
-      }).then ( data )->
+      })
+
+      Q.spread [ TAPromise, ApiPromise ], ( taError, apiReturn  ) ->
+        modal?.resize()
         btn = modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF).removeClass("disabled")
-        JsonExporter.genericExport btn, data, "#{name}.json"
+        JsonExporter.genericExport btn, apiReturn, "#{name}.json"
         btn.click ()-> modal.close()
         return
-      , ( err )->
-        modal.tpl.find("a.btn-blue").text("Fail to export...")
-        notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
+
+      , ( err ) ->
+        modal?.resize()
+        modal.tpl.find("a.btn-blue").text(lang.ide.TOOL_POP_BTN_EXPORT_CF)
+        if err.error
+          notification "error", "Fail to export to AWS CloudFormation Template, Error code:#{err.error}"
         return
 
     reloadState: (event)->
@@ -317,6 +339,7 @@ define [
               that.__runStack(paymentUpdate,paymentModal)
 
     __runStack: (paymentUpdate,paymentModal)->
+      that = @
       paymentState = App.user.get('paymentState')
       if paymentModal
         @modal = paymentModal
@@ -374,7 +397,12 @@ define [
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.ide.PROP_MSG_WARN_FAILA_TO_RUN_BECAUSE,self.workspace.opsModel.get('name'),error)
-
+      @modal.listenTo App.user, 'change:credential', ->
+        console.log 'We got it.'
+        if App.user.hasCredential() and that.modal.isOpen()
+          that.modal.find(".modal-confirm").text lang.ide.RUN_STACK_MODAL_CONFIRM_BTN
+      @modal.on 'close', ->
+        that.modal.stopListening(App.user)
     appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
@@ -491,8 +519,19 @@ define [
     startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
     stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
+    checkDBinstance : (oldDBInstanceList)->
+      checkDB = new Q.defer()
+      if oldDBInstanceList.length
+        DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+        DBInstances.fetchForce().then ->
+          checkDB.resolve(DBInstances)
+      else
+        checkDB.resolve([])
+      checkDB.promise
+
     applyAppEdit    : ()->
       that = @
       oldJson = @workspace.opsModel.getJsonData()
@@ -508,23 +547,34 @@ define [
         return @workspace.applyAppEdit()
 
       removes = differ.removedComps
-
-      changeList = []
+      console.log differ
+      dbInstanceList = []
+      console.log newJson
       components = newJson.component
-      _.each components, (e, key)->
-        changeList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
+      _.each components, (e)->
+        dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
       DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.ide.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
+        hasScroll: true
+        maxHeight: "450px"
+        cancel: "Close"
 
       @updateModal.tpl.find(".modal-footer").hide()
-      DBInstances.fetchForce().then ->
+
+      oldDBInstanceList = []
+      _.each oldJson.component, (e)->
+        oldDBInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
+
+      @checkDBinstance(oldDBInstanceList).then (DBInstances)->
+
         notAvailableDB = DBInstances.filter (e)->
-          e.attributes.DBInstanceIdentifier in changeList and e.attributes.DBInstanceStatus isnt "available"
+          e.attributes.DBInstanceIdentifier in dbInstanceList and e.attributes.DBInstanceStatus isnt "available"
         if (notAvailableDB.length)
+          that.updateModal.find(".modal-footer").show().find(".modal-confirm").hide()
           that.updateModal.setContent MC.template.cantUpdateApp data:notAvailableDB
           that.updateModal.setTitle lang.ide.UPDATE_APP_MODAL_TITLE
           return false
@@ -567,7 +617,7 @@ define [
 
           if not that.defaultKpIsSet()
               return false
-
+          newJson = that.workspace.design.serialize usage: 'updateApp'
           that.workspace.applyAppEdit( newJson, not result.compChange )
           that.updateModal?.close()
 

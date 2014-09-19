@@ -12,8 +12,8 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     portPosMap : {
       "elb-sg-in"  : [ 2,  35, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "elb-assoc"  : [ 79, 50, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "elb-sg-out" : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "elb-assoc"  : [ 79, 50, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 50 ]
+      "elb-sg-out" : [ 79, 20, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 20 ]
     }
 
     iconUrl : ()->
@@ -66,7 +66,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
     render : ()->
       m = @model
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
       # Update Image
       CanvasManager.update @$el.children("image"), @iconUrl(), "href"
       # Toggle left port

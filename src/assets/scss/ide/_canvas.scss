@@ -31,9 +31,18 @@
     .group-resizer { display : none; }
     .group-label, .port { pointer-events : none; }
     ~ .canvas-pp {
-      .vpp-volume, .vpp-snapshot { cursor: default; }
+      .vpp-volume, .vpp-snapshot {
+        cursor: default;
+        position: relative;
+        .res-state {
+          position: absolute;
+          top: 3px;
+          right: 7px;
+        }
+      }
     }
     .dbreplicate { display:none; }
+    .dbrestore { display:none; }
   }
 }
 
@@ -273,11 +282,49 @@
   .replica-bg {
     stroke : #b2bccc;
     fill   : #fff;
+    -webkit-transform : translate(0.5px,0.5px);
+       -moz-transform : translate(0.5px,0.5px);
+            transform : translate(0.5px,0.5px);
   }
 
   &:hover {
     .replica-bg { stroke:#6daefe; }
     fill:#3887e8;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    fill: #ccc;
+    .replica-bg {
+      stroke : #ccc;
+      fill   : #eee;
+     }
+  }
+}
+
+.dbrestore {
+  fill   : #ff9955;
+  cursor : pointer;
+  .restore-bg {
+    stroke : #b2bccc;
+    fill   : #fff;
+    -webkit-transform : translate(0.5px,0.5px);
+       -moz-transform : translate(0.5px,0.5px);
+            transform : translate(0.5px,0.5px);
+  }
+
+  &:hover {
+    .restore-bg { stroke:#6daefe; }
+    fill:#ff6600;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    fill: #ccc;
+    .restore-bg {
+      stroke : #ccc;
+      fill   : #eee;
+     }
   }
 }
 
@@ -344,7 +391,7 @@
 
 .line {
   cursor: pointer;
-  stroke-linejoin: round;
+  stroke-linecap: round;
   fill: none;
   stroke-width: 2px;
 
@@ -374,6 +421,12 @@
 
 .RTB_Route {
   stroke: #6DAEFE;
+  stroke-width: 2px;
+  stroke-linecap: square;
+
+  &:hover {
+    stroke-width:4px;
+  }
   .dash-line {
     stroke: #9FC9FD;
     stroke-dasharray: 10px 10px;
@@ -393,7 +446,8 @@
 .SgRuleLine {
   stroke: #6DAEFE;
   opacity: 0.2;
-  stroke-dasharray: 10,5;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square;
 }
 
 .fill-line {
@@ -415,6 +469,10 @@
   &.AWS-VPC-Subnet {
     > .group { stroke-width: 4px; }
     @extend .AWS-VPC-Subnet:hover;
+  }
+  &.AWS-RDS-DBSubnetGroup {
+    > .group { stroke-width: 4px; }
+    @extend .AWS-RDS-DBSubnetGroup:hover;
   }
   &.AWS-AutoScaling-Group {
     > .asg-frame {
@@ -493,16 +551,17 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 
   &.pp-left {
     margin-left : -10px;
+
     &:before, &:after {
       left     : auto;
-      right    : -20px;
+      right    : -10px;
       border-left-color : #fff;
+      border-right : none;
     }
     &:before {
-      border-right-color : transparent;
       border-left-color : #ccc;
       left  : auto;
-      right : -21px;
+      right : -11px;
     }
   }
 
@@ -545,6 +604,13 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   font-size  : 9px;
   color      : #333;
   text-align : center;
+
+  position: relative;
+  .res-state {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+  }
 
   background : image-url('ide/icon/cvs-vol.png') center no-repeat;
 
@@ -660,16 +726,23 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   top        : 36px;
 }
 
-// Instance State Dot
-.instance-state {
+// Resource State Dot
+.res-state {
   opacity : 0.8;
 
-  &.unknown { fill: gray; }
-  &.running { fill: green; }
-  &.pending { fill: yellow; }
-  &.shuttingdown { fill: yellow; }
-  &.stopping { fill: yellow; }
-  &.stopped { fill: red; }
-  &.terminated { fill: red; }
+  &.unknown
+  { fill: #a0a0a0; background: #a0a0a0; }
+  // green
+  &.running, &.ok, &.attached, &.available
+  { fill: #17c249; background: #17c249; }
+  // yellow
+  &.shuttingdown, &.stopping, &.pending, &.insufficient-data, &.attaching, &.detaching,
+  &.backing-up, &.creating, &.deleting, &.incompatible-restore, &.incompatible-parameters,
+  &.modifying, &.rebooting, &.resetting-master-credentials
+  { fill: #ffa740; background: #ffa740; }
+  // red
+  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full
+  { fill: #ec3c38; background: #ec3c38; }
+
 }
 

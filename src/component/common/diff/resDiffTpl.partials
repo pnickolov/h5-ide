@@ -1,11 +1,9 @@
 <!-- {{frame}} -->
-<div class="scroll-wrap scroll-wrap-res-diff">
+<p>Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s).</p>
+<h5>What have been changed:</h5>
+<div class="scroll-wrap scroll-wrap-res-diff" style="max-height: 350px;">
 	<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-	<div class="content_wrap scroll-content">
-		<p>Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s).</p>
-		<h5>What have been changed:</h5>
-		<article></article>
-	</div>
+	<article class="content_wrap scroll-content"></article>
 </div>
 
 <!-- {{resDiffGroup}} -->

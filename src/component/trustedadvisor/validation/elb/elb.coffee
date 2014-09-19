@@ -1,4 +1,6 @@
-define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( constant, MC, lang, taHelper, CloudResources ) ->
+define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( constant, MC, lang, Helper, CloudResources ) ->
+
+	i18n = Helper.i18n.short()
 
 	isHaveIGWForInternetELB = (elbUID) ->
 
@@ -169,8 +171,8 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 		elbName = elbComp.name
 
-		sgCompAry = taHelper.sg.get(elbComp)
-		portData = taHelper.sg.port(sgCompAry)
+		sgCompAry = Helper.sg.get(elbComp)
+		portData = Helper.sg.port(sgCompAry)
 
 		listenerAry = elbComp.resource.ListenerDescriptions
 
@@ -182,7 +184,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			listenerObj = listenerItem.Listener
 			elbProtocol = listenerObj.Protocol
 			elbPort = listenerObj.LoadBalancerPort
-			isInRange = taHelper.sg.isInRange('tcp', elbPort, portData, 'in')
+			isInRange = Helper.sg.isInRange('tcp', elbPort, portData, 'in')
 			if not isInRange
 				result = false
 				resultPortAry.push(elbProtocol + ' <span class="validation-tag tag-port">' + elbPort + '</span>')
@@ -204,8 +206,8 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 		elbComp = MC.canvas_data.component[elbUID]
 
-		sgCompAry = taHelper.sg.get(elbComp)
-		portData = taHelper.sg.port(sgCompAry)
+		sgCompAry = Helper.sg.get(elbComp)
+		portData = Helper.sg.port(sgCompAry)
 
 		listenerAry = elbComp.resource.ListenerDescriptions
 
@@ -217,7 +219,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			listenerObj = listenerItem.Listener
 			instanceProtocol = listenerObj.InstanceProtocol
 			instancePort = listenerObj.InstancePort
-			isInRange = taHelper.sg.isInRange('tcp', instancePort, portData, 'out')
+			isInRange = Helper.sg.isInRange('tcp', instancePort, portData, 'out')
 			if not isInRange
 				result = false
 				resultPortAry.push(instanceProtocol + ' <span class="validation-tag tag-port">' + instancePort + '</span>')
@@ -257,15 +259,15 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 				if instanceComp.index isnt 0
 					return
 
-				sgCompAry = taHelper.sg.get(instanceComp)
-				portData = taHelper.sg.port(sgCompAry)
+				sgCompAry = Helper.sg.get(instanceComp)
+				portData = Helper.sg.port(sgCompAry)
 
 				for listenerItem in listenerAry
 
 					listenerObj = listenerItem.Listener
 					instanceProtocol = listenerObj.InstanceProtocol
 					instancePort = listenerObj.InstancePort
-					isInRange = taHelper.sg.isInRange('tcp', instancePort, portData, 'in')
+					isInRange = Helper.sg.isInRange('tcp', instancePort, portData, 'in')
 					if not isInRange
 						resultPortAry.push(instanceProtocol + ' <span class="validation-tag tag-port">' + instancePort + '</span>')
 
@@ -307,15 +309,15 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			else
 				return
 
-			sgCompAry = taHelper.sg.get(lcComp)
-			portData = taHelper.sg.port(sgCompAry)
+			sgCompAry = Helper.sg.get(lcComp)
+			portData = Helper.sg.port(sgCompAry)
 
 			for listenerItem in listenerAry
 
 				listenerObj = listenerItem.Listener
 				instanceProtocol = listenerObj.InstanceProtocol
 				instancePort = listenerObj.InstancePort
-				isInRange = taHelper.sg.isInRange('tcp', instancePort, portData, 'in')
+				isInRange = Helper.sg.isInRange('tcp', instancePort, portData, 'in')
 				if not isInRange
 					resultPortAry.push(instanceProtocol + ' <span class="validation-tag tag-port">' + instancePort + '</span>')
 
@@ -340,8 +342,8 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 		elbName = elbComp.name
 
-		sgCompAry = taHelper.sg.get(elbComp)
-		portData = taHelper.sg.port(sgCompAry)
+		sgCompAry = Helper.sg.get(elbComp)
+		portData = Helper.sg.port(sgCompAry)
 
 		pingPort = null
 
@@ -355,7 +357,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 			return null
 
-		isInRange = taHelper.sg.isInRange('tcp', pingPort, portData, 'in')
+		isInRange = Helper.sg.isInRange('tcp', pingPort, portData, 'in')
 
 		if not isInRange
 
@@ -453,12 +455,11 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			# if have cert, fetch aws cert res and check if exist
 			if haveCert
 
-				if not window.sslCertCol
-					window.sslCertCol = CloudResources constant.RESTYPE.IAM
+				sslCertCol = CloudResources constant.RESTYPE.IAM
 
-				window.sslCertCol.fetchForce().then (result) ->
+				sslCertCol.fetchForce().then (result) ->
 
-					sslCertAry = window.sslCertCol.toJSON()
+					sslCertAry = sslCertCol.toJSON()
 					_.each sslCertAry, (sslCertData) ->
 						allExistCertAry.push sslCertData.Name
 
@@ -496,6 +497,29 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 			callback(null)
 
+	isInternetElbRouteOut = ( uid ) ->
+		elb = Design.instance().component uid
+
+		if elb.get('internal') then return null
+
+		subnets = elb.connectionTargets( 'ElbSubnetAsso' )
+		rtbs = _.map subnets, ( sb ) -> sb.connectionTargets('RTB_Asso')[ 0 ]
+
+		if _.some( rtbs, ( rtb ) ->
+			rtbConnTarget = rtb.connectionTargets('RTB_Route')
+			igw = _.where rtbConnTarget, type: constant.RESTYPE.IGW
+			igw.length > 0 )
+
+			return null
+
+		Helper.message.error uid, i18n.TA_MSG_ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB, elb.get 'name'
+
+
+
+
+
+
+
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
 	isAttachELBToMultiAZ : isAttachELBToMultiAZ
@@ -508,3 +532,4 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 	isRuleInboundToELBPingPort : isRuleInboundToELBPingPort
 	isELBSubnetCIDREnough : isELBSubnetCIDREnough
 	isSSLCertExist : isSSLCertExist
+	isInternetElbRouteOut : isInternetElbRouteOut

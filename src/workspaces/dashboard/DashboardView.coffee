@@ -392,7 +392,8 @@ define [
         self.visModal.tpl.find(".loading-spinner").show()
         false
 
-      @visModal.tpl.on "click", ".visualize-vpc-btn", ()->
+      @visModal.tpl.on "click", ".visualize-vpc-btn", (event)->
+        if $(event.currentTarget).hasClass('disabled') then return false
         $tgt = $(this)
         if $tgt.hasClass(".disabled") then return false
         id = $tgt.attr("data-vpcid")

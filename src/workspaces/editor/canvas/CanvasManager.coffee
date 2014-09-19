@@ -79,8 +79,11 @@ define ['CloudResources'], (CloudResources)->
 
       if targetModel.design().modeIsApp()
         if targetModel.getEmbedEni then targetModel = targetModel.getEmbedEni()
-        ip = (targetModel.get("ips") || [])[0]
-        tootipStr = ip?.eipData?.publicIp || ""
+        if targetModel
+          ip = (targetModel.get("ips") || [])[0]
+          tootipStr = ip?.eipData?.publicIp || ""
+        else
+          console.warn "updateEip(): can not found EmbedEni"
 
       node.setAttribute "data-tooltip", tootipStr
 
@@ -119,6 +122,43 @@ define ['CloudResources'], (CloudResources)->
         element.attr("style", "fill:#{value}")
       else
         element.attr( attr, value )
+
+    setLabel : ( canvasItem, labelElement )->
+
+      text     = canvasItem.label()
+      maxWidth = canvasItem.labelWidth()
+
+      if _.isString labelElement
+        labelElement = document.getElementById( labelElement )
+
+      if not labelElement.length and labelElement.length isnt 0 then labelElement = [ labelElement ]
+
+      if not text.length
+        $( labelElement ).text( text )
+        # If the text is empty, return now. Since the getSubStringLength will throw error.
+        return
+
+      $(labelElement[0]).text( text )
+      try
+        # There's a bug in webkit browser.
+        # If the text element is not displayed, then its internal textLength would be 0
+        # Resulting getSubStringLength will throw error.
+        currentLength = labelElement[0].getSubStringLength(0, text.length)
+      catch e
+        currentLength = 0
+
+      if currentLength > maxWidth
+        length = text.length - 1
+        while true and length > 0
+          if labelElement[0].getSubStringLength(0, length) + 8 <= maxWidth
+            text = text.substr( 0, length ) + "..."
+            break
+          --length
+
+      for el in labelElement
+        $(el).text( text )
+
+      return
   }
 
   CanvasManager

@@ -7,7 +7,7 @@ define [
 
   Model = ComplexResModel.extend {
 
-    newNameTmpl : "-og"
+    newNameTmpl : "-og-"
 
     type : constant.RESTYPE.DBOG
 
@@ -22,9 +22,9 @@ define [
       if not @get 'description'
 
         # set new name
-        typeName = @engineType()
-        mainVersion = @get('engineVersion').replace(/\./g, '-')
-        @set('name', typeName + mainVersion + @get('name'))
+        prefix = @engineType() + @get('engineVersion').replace(/\./g, '-')
+        @set('name', prefix + @get('name'))
+        @set('name', prefix + @getNewName(undefined, @newNameTmpl))
 
         # set new description
         @set 'description', "custom option group for #{@get('engineName')} #{@get('engineVersion')}"
@@ -63,13 +63,13 @@ define [
     serialize : ( options )->
       if @isDefault() then return # Default OG don't have component.
 
-      isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
-      if isRunOrUpdate and not @connections().length
-        console.debug( "Option Group is not serialized, because nothing use it." )
-        return
+      # isRunOrUpdate = options and options.usage and _.contains( ['runStack', 'updateApp'] , options.usage)
+      # if isRunOrUpdate and not @connections().length
+      #   console.debug( "Option Group is not serialized, because nothing use it." )
+      #   return
 
-      if not @connections().length
-        return
+      # if not @connections().length
+      #   return
 
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
 

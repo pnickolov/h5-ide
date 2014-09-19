@@ -22,32 +22,45 @@ define [
     portPosMap : {
       "db-sg-left"  : [ 10, 35, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "db-sg-right" : [ 79, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-      "replica"     : [ 45, 45, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "replica"     : [ 45, 45, CanvasElement.constant.PORT_DOWN_ANGLE ]
     }
     portDirMap : {
       "db-sg" : "horizontal"
     }
 
-    # portPosition : ( portName, isAtomic )->
-    #   p = @portPosMap[ portName ]
-    #   if portName is "replica"
-    #     p = p.slice(0)
-    #     if @model.master()
-    #       p[1] = 45
-    #     else
-    #       p[1] = 65
-    #   p
+    portPosition : ( portName, isAtomic )->
+      p = @portPosMap[ portName ]
+      if portName is "replica"
+        p = p.slice(0)
+        if @model.master()
+          p[1] = 45
+          p[2] = CanvasElement.constant.PORT_2D_V_ANGLE
+        else
+          p[1] = 61
+          p[2] = CanvasElement.constant.PORT_DOWN_ANGLE
+      p
 
     typeIcon   : ()-> "ide/icon/icn-#{@model.category()}.png"
     engineIcon : ()-> "ide/icon/rds-" + (@model.get("engine")||"").split("-")[0] + ".png"
 
     events :
       "mousedown .dbreplicate" : "replicate"
+      "mousedown .dbrestore"   : "restore"
 
     listenModelEvents : ()->
       @listenTo @model, "change:backupRetentionPeriod", @render
       @listenTo @model, "change:connections", @updateReplicaTip
+      @listenTo @canvas, "change:externalData", @updateState
       return
+
+    updateState: ->
+      m = @model
+      stateIcon  = @$el.children(".res-state")
+
+      if stateIcon
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        state    = appData?.get("DBInstanceStatus") || "unknown"
+        stateIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
     updateReplicaTip : ( cnn )->
       if cnn.type is "DbReplication"
@@ -55,11 +68,32 @@ define [
       return
 
     replicate : ( evt )->
+
       if not @canvas.design.modeIsApp() and @model.slaves().length < 5
+
+        # for level 2 replica
+        appData = CloudResources( @model.type, @model.design().region() ).get( @model.get("appId") )
+        if appData
+          backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
+        if @model.autobackup() and @model.get('appId') and not backup
+          return false
+        
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
+
+      false
+
+    restore : ( evt )->
+      if not @canvas.design.modeIsApp()
+        @canvas.dragItem( evt, { onDrop : @onDropRestore } )
       false
 
     onDropReplicate : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+      if targetSubnetGroup isnt dataTransfer.item.model.parent()
+        notification "error", "Read replica must be dropped in the same subnet group with source DB instance."
+        return
+
       # If the model supports clone() interface, then clone the target.
       name = dataTransfer.item.model.get("name")
       nameMatch = name.match /(.+-replica)(\d*)$/
@@ -73,7 +107,7 @@ define [
         x        : dataTransfer.x
         y        : dataTransfer.y
         name     : name
-        parent   : dataTransfer.parent.model
+        parent   : targetSubnetGroup
         sourceId : dataTransfer.item.model.id
       }, {
         master : dataTransfer.item.model
@@ -83,6 +117,30 @@ define [
         dataTransfer.item.canvas.selectItem( replica.id )
 
       return
+
+    onDropRestore : ( evt, dataTransfer )->
+
+      targetSubnetGroup = dataTransfer.parent.model
+
+      # If the model supports clone() interface, then clone the target.
+      name = dataTransfer.item.model.get("name")
+
+      DbInstance = Design.modelClassForType( constant.RESTYPE.DBINSTANCE )
+      newDbIns = new DbInstance({
+        x        : dataTransfer.x
+        y        : dataTransfer.y
+        name     : "from-" + name
+        parent   : targetSubnetGroup
+      }, {
+        master : dataTransfer.item.model
+        isRestore: true
+      })
+
+      if newDbIns.id
+        dataTransfer.item.canvas.selectItem( newDbIns.id )
+
+      return
+
 
     # Creates a svg element
     create : ()->
@@ -122,9 +180,16 @@ define [
         svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
+          svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
         else
           svgEl.add( svg.plain("MASTER").move(45,60).classes("master-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
+
+      # Create State Icon
+      if not m.design().modeIsStack() and m.get("appId")
+        svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
+
+      svgEl.add( svg.use("restore_dragger").attr({"class" : "dbrestore tooltip"}) )
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -135,7 +200,7 @@ define [
       m = @model
 
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
 
       # Update Type and Engine Image
       CanvasManager.update @$el.children(".type-image"), @typeIcon(), "href"
@@ -143,17 +208,72 @@ define [
 
       CanvasManager.toggle @$el.children(".master-text"), m.design().modeIsApp() and m.slaves().length
 
-      # Update Image
-      if m.get('engine') is constant.DB_ENGINE.MYSQL and m.category() isnt 'replica'
-        # If mysql DB instance has disabled "Automatic Backup", the hide the create read replica button.
+      # Update replica Image
+      if m.get('engine') is constant.DB_ENGINE.MYSQL
+
+        # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
-        CanvasManager.toggle $r, m.autobackup() isnt 0
-        if @model.slaves().length < 5
-          tip = "Drag to create a read replica."
+
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        if appData
+          backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
+
+        if m.slaves().length < 5
+
+          CanvasManager.removeClass $r, "disabled"
+
+          if m.autobackup()
+
+            tip = "Drag to create a read replica."
+
+            if m.category() is 'replica' and m.master() and m.master().master()
+
+              CanvasManager.toggle $r, false
+
+            else
+
+              CanvasManager.toggle $r, true
+
+              if m.get('appId') and not backup
+
+                tip = "Please wait Automatic Backup to be enabled to create read replica."
+                CanvasManager.addClass $r, "disabled"
+
+          else
+
+            tip = "Drag to create a read replica."
+            CanvasManager.toggle $r, false
+
         else
+
           tip = "Cannot create more read replica."
+          CanvasManager.toggle $r, true
+          CanvasManager.addClass $r, "disabled"
 
         CanvasManager.update $r, tip, "tooltip"
+
+        if m.getSourceDBForRestore()
+          CanvasManager.toggle $r, false
+
+      # Update restore Image
+
+      # $r = @$el.children(".dbrestore")
+      # enableRestore = m.autobackup() isnt 0 and !!m.get("appId")
+      # CanvasManager.toggle $r, enableRestore
+      # if enableRestore
+      #   CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+
+      $r = @$el.children(".dbrestore")
+      CanvasManager.toggle $r, !!m.get("appId")
+      CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+
+      appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+      if appData
+        penddingObj = appData.get('PendingModifiedValues')
+        if (appData.get('BackupRetentionPeriod') in [0, '0']) or (penddingObj and penddingObj.BackupRetentionPeriod in [0, '0'])
+          CanvasManager.toggle $r, false
+
+      @updateState()
 
       return
 
@@ -166,7 +286,7 @@ define [
       if option and option.cloneSource?.master()
         # If we are cloning a replica, we should check if we can
         # If the model supports clone() interface, then clone the target.
-        if option.cloneSource.master().slaves().length >= 5
+        if option.cloneSource.master().slaves().length > 5
           notification "error", "Cannot create more read replica."
           return
         else

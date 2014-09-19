@@ -184,3 +184,65 @@ span.payment-next-billing{
   vertical-align: bottom;
   line-height: 2em;
 }
+.table.gray th,
+.table.gray td,
+.table-head-fix.gray .table-head thead th{
+  border-color: #7e7e7e;
+}
+.table tbody tr td.align-right{
+  text-align: right;
+}
+.btn-xlarge{
+  padding: 10px 20px;
+  font-size: 17px;
+}
+
+.payment-modal-wrap{
+  text-align: center;
+  padding-top: 30px;
+}
+
+.payment-modal-btn-wraper{
+  margin-bottom: 20px;
+}
+
+.link-blue{
+  color: #148BE6;
+}
+.payment-credit-card{
+  text-align: center;
+}
+.payment-credit-card i{
+  font-size: 100px;
+}
+.payment-wrapper{
+  width: 454px;
+  float: left;
+}
+.payment-wrapper > .scroll-wrap > .scroll-content{
+  padding: 12px 15px;
+}
+.payment-wrapper-right{
+  width: 210px;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  border-left: 1px solid #000000;
+  background-color: #212121;
+}
+.payment-warning{
+  display: block;
+  border: 1px solid #f9b42d;
+  color: #f9b42d;
+  font-size: 12px;
+  padding: 3px;
+  margin: 0 10px;
+  background-color: #393939;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+.payment-warning a{
+  color: #f9b42d;
+  text-decoration: underline;
+}

@@ -19,8 +19,8 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
         @svg.group().classes("layer_vpc")
         @svg.group().classes("layer_az")
         @svg.group().classes("layer_subnet")
-        @svg.group().classes("layer_line")
         @svg.group().classes("layer_asg")
+        @svg.group().classes("layer_line")
         @svg.group().classes("layer_sgline")
         @svg.group().classes("layer_node")
       ])
@@ -34,7 +34,7 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
 
     fixConnection : ( coord, initiator, target )->
       if target.type is constant.RESTYPE.ELB and ( initiator.type is constant.RESTYPE.INSTANCE or initiator.type is constant.RESTYPE.LC )
-        if coord.x < target.pos().x + target.size().width / 2
+        if coord.x > target.pos().x + target.size().width / 2
           toPort = "elb-sg-out"
         else
           toPort = "elb-sg-in"
@@ -74,9 +74,15 @@ define [ "./CanvasView", "constant", "i18n!/nls/lang.js", "./CpVolume", "./Canva
       if @isReadOnly() then return false
 
       if @__selectedVolume
+        volume = @design.component( @__selectedVolume )
+        res = volume.isRemovable()
+        if _.isString( res )
+          notification "error", res
+          return
+
         s = @__selectedVolume
         @__selectedVolume = null
-        @design.component( s ).remove()
+        volume.remove()
         nextVol = $( ".canvas-pp .popup-volume" ).children().eq(0)
         if nextVol.length
           nextVol.trigger("mousedown")

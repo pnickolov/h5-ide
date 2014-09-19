@@ -507,6 +507,10 @@ module.exports =
       en: "Manage EBS Snapshot"
       zh: "管理 EBS 快照"
 
+    RES_MSG_RDS_DISABLED:
+      en: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
+      zh: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
+
     RES_TIT_RDS:
       en: "RDS & Snapshot"
       zh: ""
@@ -843,9 +847,17 @@ module.exports =
       en: "Automatically add an internet gateway for using Elastic IP or public IP"
       zh: "为设置EIP，自动添加了一个互联网网关"
 
-    CVS_CFM_DEL_DBINSTANCE:
-      en: "Deleting %s will also remove all read replica to related it. Are you sure to delete?"
-      zh: "删除 %s 会同时删除与之相关的所有只读副本，确定要删除它吗？"
+    CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
+      en: "Deleting <span class='resource-tag'>%s</span> will remove all read replica related to it. Are you sure to continue?"
+      zh: "%s 未创建,删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
+
+    CVS_CFM_DEL_EXISTENT_DBINSTANCE:
+      en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"
+      zh: "%s已存在，删除它会同时删除与之相关的只读副本，但会保留，确定要删除它吗？"
+
+    CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE:
+      en: "You are going to restore DB instance <span class='resource-tag'>%s</span> to a point in time. By deleting it, restored DB instance %s will be deleted too. Are you sure to continue?"
+      zh: ""
 
     CVS_MSG_ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -1094,7 +1106,7 @@ module.exports =
       zh: "确认销毁"
 
     TOOL_POP_BODY_TERMINATE_APP_LEFT:
-      en: "Do you confirm to terminate app"
+      en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
       zh: "本操作将销毁应用中的相关资源，您确认销毁当前应用"
 
     TOOL_POP_BODY_TERMINATE_APP_RIGHT:
@@ -1227,8 +1239,8 @@ module.exports =
       zh: ""
 
     TOOL_TIP_LINESTYLE:
-      en: "Security Group Rule Line Style..."
-      zh: "安全组规则连线类型..."
+      en: "Line Style"
+      zh: "连线类型"
 
     TOOL_LBL_LINESTYLE_STRAIGHT:
       en: "Straight"
@@ -1236,11 +1248,11 @@ module.exports =
 
     TOOL_LBL_LINESTYLE_ELBOW:
       en: "Elbow"
-      zh: "肘型线"
+      zh: "折线"
 
-    TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER:
-      en: "Quadratic Belzier curve"
-      zh: "二次贝赛尔曲线"
+    TOOL_LBL_LINESTYLE_CURVE:
+      en: "Curve"
+      zh: "曲线"
 
     TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
       en: "Smooth quadratic Belzier curve"
@@ -1249,6 +1261,10 @@ module.exports =
     TOOL_LBL_LINESTYLE_HIDE_SG:
       en: "Hide SecurityGroup line"
       zh: "隐藏SecurityGroup线"
+
+    TOOL_LBL_LINESTYLE_SHOW_SG:
+      en: "Show SecurityGroup line"
+      zh: "显示SecurityGroup线"
 
     TOOL_EXPERIMENT:
       en: "Experimental Feature!"
@@ -1545,6 +1561,10 @@ module.exports =
 
     PROP_INSTANCE_TIP_GET_SYSTEM_LOG:
       en: "Get System Log"
+      zh: ""
+
+    PROP_DB_INSTANCE_TIP_GET_LOG:
+      en: "Get Logs & Events"
       zh: ""
 
     PROP_INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
@@ -2846,7 +2866,7 @@ module.exports =
       zh: ""
 
     PROP_ELB_HEALTH_INTERVAL_VALID:
-      en: "Response timeout must be less than or equal to the health check interval value"
+      en: "Response timeout must be less than the health check interval value"
       zh: ""
 
     PROP_ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:
@@ -3318,7 +3338,7 @@ module.exports =
       zh: ""
 
     PROP_INSTANCE_SNAPSHOT_SELECT:
-      en: "Select Instance from which to create snapshot"
+      en: "Select DB instance from which to create snapshot"
       zh: ""
 
     PROP_SNAPSHOT_SET_DESC:
@@ -3609,6 +3629,14 @@ module.exports =
       en: "Change Password"
       zh: "修改密码"
 
+    HEAD_LABEL_CHANGE_EMAIL:
+      en: "Change Email"
+      zh: "修改电子邮箱"
+
+    HEAD_LABEL_NEW_EMAIL:
+      en: "Email Address"
+      zh: "电子邮箱"
+
     HEAD_LABEL_CURRENT_PASSWORD:
       en: "Current Password"
       zh: "当前密码"
@@ -3824,6 +3852,22 @@ VisualOps API. You cannot UNDO this action.'
       en: "Password has been updated."
       zh: "密码修改成功。"
 
+    SETTINGS_UPDATE_EMAIL_SUCCESS:
+      en: "Email has been updated."
+      zh: "电子邮箱修改成功。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL1:
+      en: "To change email, please provide correct password."
+      zh: "修改电子邮箱失败。请确认当前密码输入正确。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL2:
+      en: "This email is already taken. Please use another."
+      zh: "电子邮箱已被使用。"
+
+    SETTINGS_UPDATE_EMAIL_FAIL3:
+      en: "This email is invalid. Please enter a valid email."
+      zh: "无效的电子邮箱，请重试。"
+
     SETTINGS_UPDATE_PWD_FAILURE:
       en: "Update password failed. Make sure current password is correct."
       zh: "修改密码失败。请确认当前密码输入正确。"
@@ -3885,12 +3929,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: "You are using a demo AWS account."
 
     WELCOME_DONE_MSG:
-      en: "<li>Play with the 10 sample stacks prebuilt in Virginia region.</li>
+      en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
-      zh: "<li>Play with the 10 sample stacks prebuilt in Virginia region.</li>
+<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+      zh: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/source/tutorial/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."
@@ -4945,7 +4989,7 @@ VisualOps API. You cannot UNDO this action.'
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/source/reference/mod.html' target='_blank'>documentation</a>.</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/state_modules/README.html' target='_blank'>documentation</a>.</p>"
       zh: ""
 
     ##### Request Invite to Experimental Feature
@@ -5347,6 +5391,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
       zh: ""
 
+    TA_MSG_ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB:
+      en: "Internet-facing Load Balancer <span class='validation-tag tag-elb'>%s</span> should attach to a public subnet."
+      zh: ""
+
     TA_MSG_ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
       zh: ""
@@ -5558,7 +5606,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     TA_MSG_ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: " DB Instance <span class='validation-tag tag-rds'>%s</span> has db.t1.micro instance class, which can only be members of the default option group."
+      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
       zh: ""
 
     TA_MSG_ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
@@ -5593,8 +5641,12 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unused Option Group %s will not be created in live app."
       zh: ""
 
+    TA_MSG_ERROR_RDS_OG_EXCEED_20_LIMIT:
+      en: "Region %s has reached the limit of 20 option groups."
+      zh: ""
+
     TA_MSG_ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
-      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ) its subnet group must have 3 subnets in distinct Availability Zones."
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ). Its subnet group must have 3 subnets in distinct Availability Zones."
       zh: ""
 
     TA_MSG_ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP:
@@ -5611,6 +5663,10 @@ VisualOps API. You cannot UNDO this action.'
 
     TA_MSG_ERROR_MASTER_PASSWORD_INVALID:
       en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
+      zh: ""
+
+    TA_MSG_ERROR_OG_DB_BOTH_MODIFIED:
+      en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:

@@ -16,7 +16,8 @@ define [ "jquery" ], ()->
     use_visualops  : true
     app_to_stack   : true
     version        : true
-
+    timezone       : true
+    lastlogin      : true
 
   IntercomAnalytics = {
     increase : ( key )->
@@ -30,12 +31,20 @@ define [ "jquery" ], ()->
       window.Intercom && window.Intercom 'update', {increments:o}
 
     update : ( key, value )->
-      if not IntercomKeys[ key ]
-        console.error "The key `#{key}` is not enabled for analytics"
-        return
-
       o = {}
-      o[ key ] = value
+      if key and value
+        if not IntercomKeys[ key ]
+          console.error "The key `#{key}` is not enabled for analytics"
+          return
+
+        o[ key ] = value
+      else if key
+        for k, v of key
+          if IntercomKeys[ k ]
+            o[ k ] = v
+          else
+            console.error "The key `#{key}` is not enabled for analytics"
+
       window.Intercom && window.Intercom "update", o
   }
 

@@ -80,7 +80,10 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       @__isVisReady = true
       @__isVisFail  = false
       @attributes.visualizeData = null
-      @set "visualizeData", @parseVisData( result )
+      self = @
+      data = self.parseVisData(result)
+      self.set "visualizeData", data
+
       return
 
     isVisualizeReady   : ()-> !!@__isVisReady
@@ -139,6 +142,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
                 eni     : resourceMap resources["AWS|VPC|NetworkInterface"]
                 eip     : resourceMap resources["AWS|EC2|EIP"]
                 elb     : resourceMap resources["AWS|ELB"]
+                username: if resources['username'] then MC.base64Decode resources['username'] else undefined
 
               obj.disabled = obj.eni.length > 300
               vpcs.push obj

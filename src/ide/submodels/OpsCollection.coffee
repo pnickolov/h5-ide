@@ -80,6 +80,7 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       now = Math.round( +(new Date()) / 1000 )
       filters = []
       for m in @models
+        if m.testState( OpsModel.State.Terminating ) then continue
         time = m.get("updateTime")
         if now - time >= 2592000 then break
 

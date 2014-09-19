@@ -13,8 +13,10 @@ define [ 'ApiRequest'
          'constant'
          'CloudResources'
          'rds_pg'
+         'UI.modalplus'
          'jqtimepicker'
-], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup  ) ->
+         'jqdatetimepicker'
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup, Modal ) ->
 
     noop = ()-> null
 
@@ -45,6 +47,7 @@ define [ 'ApiRequest'
             'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
             'change #property-dbinstance-maintenance-window-start-time': 'changeMaintenanceTime'
 
+            'OPTION_CHANGE #property-dbinstance-engine-select': 'changeEngine'
             'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
             'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
             'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
@@ -52,15 +55,218 @@ define [ 'ApiRequest'
 
             'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
 
-            'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+            #'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
 
             'OPTION_CHANGE': 'checkChange'
             'change *': 'checkChange'
 
-        checkChange: () ->
+            'click #property-dbinstance-promote-replica': 'promoteReplica'
+            'click .property-btn-db-restore-config': 'openRestoreConfigModal'
+
+        promoteReplica: () ->
+
+            that = @
+
+            if @isPromoted()
+                @unsetPromote()
+                App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+            else
+
+                modal = new Modal({
+                    title        : "Confirm to promote Read Replica"
+                    template     : template_component.modalPromoteConfirm({})
+                    confirm      : {text : "Confirm"}
+                    disableClose : true
+                    onConfirm : ()->
+                        that.setPromote()
+                        App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                        modal.close()
+                })
+
+        openRestoreConfigModal: () ->
+
+            that = @
+
+            sourceDbModel = @resModel.getSourceDBForRestore()
+            sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
+
+            if sourceDbAppModel
+
+                penddingObj = sourceDbAppModel.get('PendingModifiedValues')
+                noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+
+                if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
+                    noRestore = true
+
+            else
+
+                noRestore = true                
+
+            if noRestore
+
+                modal = new Modal({
+                    title        : "Restore to point in time config"
+                    template     : template_component.modalRestoreConfirm({
+                        noRestore: noRestore
+                    })
+                    confirm      : {hide: true}
+                    cancel       : {text: 'Close'}
+                    disableClose : true
+                    disableConfirm: true
+                    width        : "580"
+                    onCancel: () ->
+                        that.resModel.remove()
+                    onClose: () ->
+                        that.resModel.remove()
+                })
+
+            else
+
+                lastestRestoreTime = new Date(sourceDbAppModel.get('LatestRestorableTime'))
+
+                dbRestoreTime = @resModel.get('dbRestoreTime')
+
+                if dbRestoreTime
+                    currentTime = new Date(dbRestoreTime)
+
+                else
+                    currentTime = lastestRestoreTime
+
+                lastestYear = lastestRestoreTime.getFullYear()
+                lastestMonth = lastestRestoreTime.getMonth() + 1
+                lastestDay = lastestRestoreTime.getDate()
+
+                customYear = currentTime.getFullYear()
+                customMonth = currentTime.getMonth() + 1
+                customDay = currentTime.getDate()
+
+                customYearStr = if String(customYear).length is 1 then "0#{customYear}" else customYear
+                customMonthStr = if String(customMonth).length is 1 then "0#{customMonth}" else customMonth
+                customDayStr = if String(customDay).length is 1 then "0#{customDay}" else customDay
+
+                timezone = -((new Date()).getTimezoneOffset() / 60)
+                if timezone > 0
+                    timezone = "+#{timezone}"
+                else
+                    timezone = "#{timezone}"
+
+                _getCurrentSelectedTime = () ->
+
+                    dateStr = $('.modal-db-instance-restore-config .datepicker').val()
+                    selectedDate = new Date(dateStr)
+                    hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
+                    minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
+                    second = $('.modal-db-instance-restore-config .timepicker.second').val()
+                    selectedDate.setHours(Number(hour))
+                    selectedDate.setMinutes(Number(minute))
+                    selectedDate.setSeconds(Number(second))
+                    return selectedDate
+
+                _setDefaultSelectedTime = (needMax) ->
+
+                    if needMax
+                        hourStr = String(lastestRestoreTime.getHours())
+                        minuteStr = String(lastestRestoreTime.getMinutes())
+                        secondStr = String(lastestRestoreTime.getSeconds())
+                    else
+                        hourStr = String(currentTime.getHours())
+                        minuteStr = String(currentTime.getMinutes())
+                        secondStr = String(currentTime.getSeconds())
+
+                    hour = if hourStr.length is 1 then "0#{hourStr}" else hourStr
+                    minute = if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
+                    second = if secondStr.length is 1 then "0#{secondStr}" else secondStr
+                    $('.modal-db-instance-restore-config .timepicker.hour').val(hour)
+                    $('.modal-db-instance-restore-config .timepicker.minute').val(minute)
+                    $('.modal-db-instance-restore-config .timepicker.second').val(second)
+
+                modal = new Modal({
+                    title        : "Restore to point in time config"
+                    template     : template_component.modalRestoreConfirm({
+                        lastest: lastestRestoreTime.toString()
+                        custom: not dbRestoreTime
+                        timezone: timezone
+                        noRestore: noRestore
+                    })
+                    confirm      : {text : "Restore"}
+                    disableClose : true
+                    width        : "580"
+                    onConfirm : ()->
+                        isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
+                        if isCustomTime
+                            selectedDate = _getCurrentSelectedTime()
+                            that.resModel.set('dbRestoreTime', selectedDate.toISOString())
+                        else
+                            that.resModel.set('dbRestoreTime', '')
+                        that.resModel.isRestored = true
+                        modal.close()
+                    onCancel: () ->
+                        if not that.resModel.isRestored
+                            that.resModel.remove()
+                    onClose: () ->
+                        if not that.resModel.isRestored
+                            that.resModel.remove()
+                })
+
+                _setDefaultSelectedTime()
+
+                # bind datetime picker event
+                $('.modal-db-instance-restore-config .datepicker').datetimepicker({
+                    timepicker: false,
+                    defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
+                    maxDate: "#{lastestMonth}/#{lastestDay}/#{lastestYear}",
+                    closeOnDateSelect: true,
+                    format: 'm/d/Y',
+                    formatDate:'m/d/Y',
+                    value: "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
+                    onSelectDate: () ->
+                        selectedDate = _getCurrentSelectedTime()
+                        if selectedDate > lastestRestoreTime
+                            _setDefaultSelectedTime(true)
+                })
+                $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
+                    $('#modal-db-instance-restore-radio-custom').prop('checked', true)
+
+                $('.modal-db-instance-restore-config .timepicker').on 'change', (event) ->
+
+                    valStr = $(event.target).val()
+                    currentValue = Number(valStr)
+
+                    if $(event.target).hasClass('hour')
+                        maxValue = 23
+                        maxLatestValue = currentTime.getHours()
+
+                    else if $(event.target).hasClass('minute')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getMinutes()
+
+                    else if $(event.target).hasClass('second')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getSeconds()
+
+                    if currentValue > maxValue
+                        $(event.target).val(maxValue)
+                    else if not currentValue or currentValue < 0
+                        $(event.target).val('00')
+
+                    # check max time
+                    selectedDate = _getCurrentSelectedTime()
+                    if selectedDate > lastestRestoreTime
+                        _setDefaultSelectedTime()
+
+                    newValStr = $(event.target).val()
+                    if newValStr.length < 2
+                        newValStr = "0#{newValStr}"
+                        $(event.target).val(newValStr)
+
+            return false
+
+        checkChange: ( e ) ->
+
             return unless @resModel.get 'appId'
             that = @
-            _.defer () ->
+
+            diff = ( oldComp, newComp ) ->
                 comp = that.resModel.serialize()
 
                 differ = new ResDiff({
@@ -68,10 +274,19 @@ define [ 'ApiRequest'
                     new : comp
                 })
 
-                if differ.getChangeInfo().hasResChange
-                    that.$( '.apply-immediately-section' ).show()
-                else
-                    that.$( '.apply-immediately-section' ).hide()
+                differ.getChangeInfo().hasResChange
+
+            if e
+                if not @isPromoted()
+                    _.defer () ->
+                        if diff()
+                            $( '.apply-immediately-section' ).show()
+                            $('.property-panel-wrapper').addClass('immediately')
+                        else
+                            $( '.apply-immediately-section' ).hide()
+                            $('.property-panel-wrapper').removeClass('immediately')
+            else
+                diff()
 
         durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
 
@@ -87,6 +302,13 @@ define [ 'ApiRequest'
 
             value = event.target.checked
             @resModel.set('applyImmediately', value)
+
+        changeEngine: ( event, value, data ) ->
+            @resModel.set 'engine', value
+            @resModel.setDefaultParameterGroup()
+            @resModel.setDefaultOptionGroup()
+            @renderOptionGroup()
+            @renderLVIA()
 
         changeLicense: ( event, value, data ) ->
             @resModel.set 'license', value
@@ -217,8 +439,17 @@ define [ 'ApiRequest'
 
                 if startWeek
 
+                    endWeek = startWeek
+
+                    # cross day
+                    weekAry = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+                    if start.getDay() isnt end.getDay()
+                        startWeekIdx = weekAry.indexOf(startWeek) + 1
+                        endWeekIdx = (startWeekIdx + 1) % 7
+                        endWeek = weekAry[endWeekIdx - 1]
+
                     startTimeStr = "#{startWeek}:#{startTimeStr}"
-                    endTimeStr = "#{startWeek}:#{endTimeStr}"
+                    endTimeStr = "#{endWeek}:#{endTimeStr}"
 
                 return "#{startTimeStr}-#{endTimeStr}"
 
@@ -252,10 +483,52 @@ define [ 'ApiRequest'
             # for app edit
             if @isAppEdit
                 attr.isAppEdit = @isAppEdit
-                _.extend attr, @appModel.toJSON()
+                _.extend attr, @appModel.toJSON() if @appModel
                 _.extend attr, @getOriginAttr()
+            attr.snapshotId = if attr.instanceId then '' else attr.snapshotId
+
+
+            attr.isCanPromote = @isCanPromote()
+            attr.isPromoted = @isPromoted()
+            attr.isPromote = @isCanPromote() or @isPromoted()
+            sourceDBForRestore = @resModel.getSourceDBForRestore()
+            if sourceDBForRestore
+                attr.isRestoreDB = true
+                attr.sourceDbIdForRestore = sourceDBForRestore.get('appId')
+
+            if @resModel.isMysql and @resModel.master() and @resModel.getMajorVersion() in ['5.1', '5.5']
+                attr.disableBackupForOldMySQL = true
 
             attr
+
+        isPromoted: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and not @resModel.master())
+            return false
+
+        isCanPromote: () ->
+
+            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and @resModel.master())
+            return false
+
+        setPromote: () ->
+
+            @resModel.unsetMaster()
+            if not @resModel.autobackup()
+                @resModel.autobackup 1
+
+        unsetPromote: () ->
+
+            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
+            if srcDBId
+                srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
+                @resModel.setMaster(srcDBModel) if srcDBModel
 
         getOriginAttr: () ->
 
@@ -290,11 +563,13 @@ define [ 'ApiRequest'
 
             attr.hasSlave = !!@resModel.slaves().length
             attr.engineType = @resModel.engineType()
+            attr.isChanged = @checkChange()
 
             _.extend attr, {
                 isOracle: @resModel.isOracle()
                 isSqlserver: @resModel.isSqlserver()
                 isPostgresql: @resModel.isPostgresql()
+                isMysql: @resModel.isMysql()
             }
 
             if @resModel.master()
@@ -309,6 +584,10 @@ define [ 'ApiRequest'
 
             template = template_instance
 
+            # hide az config section if it has no item.
+            if @isAppEdit and @resModel.get('engine') not in [ 'sqlserver-ee', 'sqlserver-se' ]
+                attr.hideAZConfig = true
+
             # if replica
             if @resModel.master()
                 if @isAppEdit
@@ -321,7 +600,7 @@ define [ 'ApiRequest'
             else if attr.snapshotId
                 template = template_instance
                 snapshotModel = @resModel.getSnapshotModel()
-                attr.snapshotSize = Number(snapshotModel.get('AllocatedStorage'))
+                attr.snapshotSize = Number(snapshotModel?.get('AllocatedStorage') || @resModel.get("allocatedStorage"))
 
             # if oracle
             if @resModel.isOracle()
@@ -337,7 +616,12 @@ define [ 'ApiRequest'
 
             # render
             @$el.html template attr
-
+            checkChange = @checkChange.bind @
+            changeApplyImmediately = @changeApplyImmediately.bind @
+            @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
+            .click checkChange
+            if @isAppEdit and not @isPromoted()
+                $('.property-panel-wrapper').toggleClass('immediately', checkChange())
             @setTitle(attr.name)
 
             @renderLVIA()
@@ -374,6 +658,9 @@ define [ 'ApiRequest'
                         $tipDom.addClass('hide')
 
             attr.name
+
+            if @resModel.getSourceDBForRestore() and not @resModel.isRestored
+                @openRestoreConfigModal()
 
         bindParsley: ->
 
@@ -416,6 +703,12 @@ define [ 'ApiRequest'
                     if originValue and (storage < originValue.originAllocatedStorage)
                         return 'Allocated storage cannot be reduced.'
 
+                    increaseSize = storage - originValue.originAllocatedStorage
+                    if increaseSize > 0
+                        minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1)
+                        if increaseSize < minIncreaseSize
+                            return "Allocated storage must increase by at least 10%, for a new storage size of at least #{originValue.originAllocatedStorage + minIncreaseSize}."
+
                 if not (storage >= min and storage <= max)
                     return "Must be an integer from #{min} to #{max}"
 
@@ -425,7 +718,9 @@ define [ 'ApiRequest'
 
             @$('#property-dbinstance-iops-value').parsley 'custom', (val) ->
 
-                storage = $('#property-dbinstance-storage').val()
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = that.resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
 
                 iopsRange = that._getIOPSRange(storage)
 
@@ -439,15 +734,15 @@ define [ 'ApiRequest'
                 # if not that.resModel.isSqlserver() and storage < Math.round(iops / 10)
                 #     return "Require #{Math.round(iops / 10)}-#{Math.round(iops / 3)} GB Allocated Storage for #{iops} IOPS"
 
-                if (iops % 1000) isnt 0
-                    return "Require a multiple of 1000"
+                if that.resModel.isSqlserver() and ((iops % 1000) isnt 0 or (storage * 10) isnt iops)
+                    return "SQL Server IOPS requires a multiple of 1000 and a multiple of 10 for Allocated Storage"
 
                 if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
                     return null
 
                 return "Require IOPS / GB ratios between 3 and 10"
 
-            @$('#property-dbinstance-master-password').parsley 'custom', (val) ->
+            @$('#property-dbinstance-master-password').parsley 'custom', ( val ) ->
 
                 if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
                     return 'Cannot contain character /,",@'
@@ -469,6 +764,11 @@ define [ 'ApiRequest'
 
                 return "Must contain from #{min} to #{max} characters"
 
+            @$('#property-dbinstance-database-port').parsley 'custom', ( val ) ->
+                if db.isSqlserver() and +val in [ 1434, 3389, 47001, 49152, 49153, 49154, 49155, 49156 ]
+                    return "This value can't be 1434, 3389, 47001, 49152-49156"
+                null
+
         renderOptionGroup: ->
 
             # if can create custom og
@@ -476,6 +776,7 @@ define [ 'ApiRequest'
             regionName       = Design.instance().region()
             attr             = @getModelJSON()
             attr.canCustomOG = false
+            attr.ogName = @resModel.getOptionGroupName()
             engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
             ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
@@ -502,9 +803,9 @@ define [ 'ApiRequest'
                         majorVersion: @resModel.getMajorVersion()
                     }).el
 
-            else
+            # else
 
-                @$el.find('.property-dbinstance-optiongroup').hide()
+            #     @$el.find('.property-dbinstance-optiongroup').hide()
 
         renderParameterGroup: ->
             #update selection
@@ -522,6 +823,7 @@ define [ 'ApiRequest'
                 versions : lvi[1]
                 classes  : lvi[2]
                 azCapable: lvi[3]
+                engines: constant.DB_ENGINE_ARY[@resModel.engineType()]
             }
             attr = @getModelJSON()
             attr.classInfo = @resModel.getInstanceClassDict()
@@ -535,14 +837,15 @@ define [ 'ApiRequest'
 
             # hack for SQL Server
             engine = @resModel.get('engine')
-            multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+            disableMutilAZForMirror = false
+            disableMutilAZForMirror = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
-            if not multiAZCapable
-                @resModel.set('multiAz', false)
+            @resModel.set 'multiAz', '' unless multiAZCapable
 
             # set az list
 
             sgData = {
+                disableMutilAZForMirror: disableMutilAZForMirror
                 multiAZCapable: multiAZCapable
             }
             sgData = _.extend sgData, attr
@@ -558,7 +861,8 @@ define [ 'ApiRequest'
             if usedAZCount < 2
                 sgData.azNotEnough = true
 
-            $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
+            if multiAZCapable
+                $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
 
             @renderAZList()
 
@@ -597,16 +901,13 @@ define [ 'ApiRequest'
             $preferredAZSelect.find('.selection').text($item.text())
 
         changeInstanceName: (event) ->
+            that = @
+            $target = $ event.currentTarget
 
-            that = this
-
-            target = $ event.currentTarget
-
-            if PropertyView.checkResName(@resModel.get('id'), target, 'DBInstance')
-
-                value = target.val()
-
-                target.parsley 'custom', ( val ) ->
+            if MC.aws.aws.checkResName(@resModel.get('id'), $target, 'DBInstance')
+                value = $target.val().toLowerCase()
+                $target.parsley 'custom', ( val ) ->
+                    val = val.toLowerCase()
 
                     if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                         return errTip
@@ -624,7 +925,7 @@ define [ 'ApiRequest'
                     if not MC.validate('letters', val[0])
                         return errTip
 
-                if target.parsley 'validate'
+                if $target.parsley 'validate'
 
                     @resModel.setName value
                     @setTitle value
@@ -669,42 +970,45 @@ define [ 'ApiRequest'
             if not (that.resModel.master() and not that.isAppEdit)
 
                 iops = that.resModel.get 'iops'
-                if that._haveEnoughStorageForIOPS(storge)
-                    that._disableIOPSCheck(false)
+
+                # check have enough storage for IOPS
+                iopsRange = @_getIOPSRange(storge)
+                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                    if @resModel.isSqlserver() and @isAppEdit
+                        that._disableIOPSCheck(true) # disable
+                    else
+                        that._disableIOPSCheck(false) # enable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', '')
                 else
-                    that._disableIOPSCheck(true)
+                    iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS
+                    that._disableIOPSCheck(true) # disable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', 'Allocated Storage must be at least 100 GB to use Provisioned IOPS.')
 
         _disableIOPSCheck: (isDisable) ->
 
             checkedDom = $('#property-dbinstance-iops-check')[0]
 
-            if isDisable
+            if checkedDom
 
-                $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
-                $('.property-dbinstance-iops-value-section').hide()
-                $('#property-dbinstance-iops-value').val('')
-                @resModel.setIops 0
-                checkedDom.checked = false
+                if isDisable
 
-            else
-
-                $('#property-dbinstance-iops-check').removeAttr('disabled')
-                checked = checkedDom.checked
-                if checked
-                    $('.property-dbinstance-iops-value-section').show()
-                    checkedDom.checked = true
-                else
+                    $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
                     $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops 0
                     checkedDom.checked = false
-                # @resModel.setIops ''
 
-        _haveEnoughStorageForIOPS: (storge) ->
+                else
 
-            iopsRange = @_getIOPSRange(storge)
-            if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
-                return true
-            else
-                return false
+                    $('#property-dbinstance-iops-check').removeAttr('disabled')
+                    checked = checkedDom.checked
+                    if checked
+                        $('.property-dbinstance-iops-value-section').show()
+                        checkedDom.checked = true
+                    else
+                        $('.property-dbinstance-iops-value-section').hide()
+                        checkedDom.checked = false
+                    # @resModel.setIops ''
 
         _getIOPSRange: (storage) ->
 
@@ -755,9 +1059,13 @@ define [ 'ApiRequest'
 
         changeProvisionedIOPSCheck: (event) ->
 
+            that = this
+
             value = event.target.checked
 
-            storage = Number($('#property-dbinstance-storage').val())
+            fillValue = $('#property-dbinstance-storage').val()
+            originValue = @resModel.get('allocatedStorage')
+            storage = Number(fillValue or originValue)
             iopsRange = @_getIOPSRange(storage)
 
             # for replica
@@ -773,7 +1081,8 @@ define [ 'ApiRequest'
                         defaultIOPS = @_getDefaultIOPS(storage)
                         if defaultIOPS
                             $('#property-dbinstance-iops-value').val(defaultIOPS)
-                            @resModel.setIops defaultIOPS
+                            that.changeProvisionedIOPS()
+                            # @resModel.setIops defaultIOPS
                 else
                     $('.property-dbinstance-iops-value-section').hide()
                     $('#property-dbinstance-iops-value').val('')
@@ -789,7 +1098,9 @@ define [ 'ApiRequest'
                 value = target.val()
                 iops = Number(value)
 
-                storage = Number($('#property-dbinstance-storage').val())
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = @resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
 
                 if target.parsley 'validate'
 
@@ -930,10 +1241,12 @@ define [ 'ApiRequest'
 
         getInstanceStatus: () ->
 
+            that = this
+
             _setStatus = (showError) ->
 
                 $('.property-dbinstance-status-icon-warning').remove()
-                that.setTitle(that.appModel.get('name'))
+                that.setTitle(that.appModel.get('name')) if that.appModel
                 if showError is true
                     $('.db-status-loading').remove()
                     $('.property-dbinstance-not-available-info').show()
@@ -945,31 +1258,47 @@ define [ 'ApiRequest'
                     tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
                 that.prependTitle tip
 
-            that = this
-            dbId = @appModel.get('DBInstanceIdentifier')
             _setStatus()
 
             region = Design.instance().region()
-            ApiRequest('rds_ins_DescribeDBInstances', {
-                id: dbId,
-                region_name: region
-            }).then (data) ->
 
-                data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
-                dbData = if not _.isArray(data) then data else data[0]
+            dbId = that.resModel.get('appId')
 
-                if dbData
+            currentResModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(dbId)
 
-                    dbStatus = dbData.DBInstanceStatus
-                    if dbStatus isnt 'available'
-                        _setStatus(true)
-                        return
+            if currentResModel
 
-                _setStatus(false)
+                ApiRequest("rds_ins_DescribeDBInstances",{
+                    region_name: region
+                    id: dbId
+                }).then (data) ->
 
-            , () ->
+                    data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
+                    dbData = if not _.isArray(data) then data else data[0]
 
-                _setStatus(false)
+                    if dbData
+
+                        oldSrcId = currentResModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                        newSrcId = dbData.ReadReplicaSourceDBInstanceIdentifier
+                        
+                        if oldSrcId isnt newSrcId
+
+                            currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)
+                            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
+                        else
+
+                            dbStatus = dbData.DBInstanceStatus
+                            if dbStatus isnt 'available'
+                                _setStatus(true)
+                                return
+                            else
+                                that.$el.find('.property-dbinstance-promote-replica').show()
+
+                    _setStatus(false)
+
+                , () ->
+                    _setStatus(false)
 
     }
 

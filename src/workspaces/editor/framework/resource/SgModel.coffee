@@ -289,7 +289,7 @@ define [ "../ComplexResModel", "../ResourceModel", "../connection/SgRuleSet", ".
     deserialize : ( data, layout_data, resolve )->
 
       group = new Model({
-        name      : data.name
+        name      : if data.resource.Default then "DefaultSG" else data.name
         id        : data.uid
         appId     : data.resource.GroupId
         groupName : data.resource.GroupName

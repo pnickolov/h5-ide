@@ -96,7 +96,7 @@ define [ '../base/view',
 
             oldName = @model.get("name")
 
-            if PropertyView.checkResName( @model.get('uid'), target, "Load Balancer" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Load Balancer" )
                 @model.setName name
                 @setTitle name
 
@@ -139,7 +139,7 @@ define [ '../base/view',
             $target.parsley 'custom', (val) ->
                 intervalValue = Number(val)
                 timeoutValue = Number($timeoutDom.val())
-                if intervalValue < timeoutValue
+                if intervalValue <= timeoutValue
                     return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
                 null
 
@@ -158,7 +158,7 @@ define [ '../base/view',
             $target.parsley 'custom', (val) ->
                 intervalValue = Number($intervalDom.val())
                 timeoutValue = Number(val)
-                if intervalValue < timeoutValue
+                if intervalValue <= timeoutValue
                     return lang.ide.PROP_ELB_HEALTH_INTERVAL_VALID
                 null
 

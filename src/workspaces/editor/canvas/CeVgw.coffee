@@ -1,5 +1,5 @@
 
-define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ], ( CanvasElement, constant, CanvasManager, lang )->
+define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", "CloudResources" ], ( CanvasElement, constant, CanvasManager, lang, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -12,7 +12,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js" ]
 
     portPosMap : {
       "vgw-tgt" : [ 3,  35, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "vgw-vpn" : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "vgw-vpn" : [ 70, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 35 ]
     }
 
     sticky : "right"

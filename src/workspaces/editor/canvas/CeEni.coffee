@@ -113,7 +113,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       m = @model
 
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
 
       # Update Image
       CanvasManager.update @$el.children("image:not(.eip-status)"), @iconUrl(), "href"

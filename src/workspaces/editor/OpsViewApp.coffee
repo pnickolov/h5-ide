@@ -62,9 +62,18 @@ define [
           json       = self.workspace.design.serialize()
           json.name  = $ipt.val()
           json.usage = $("#app-usage-selectbox").find(".item.selected").attr('data-value') || "testing"
+          json.resource_diff = $("#MonitorImportApp").is(":checked")
 
           self.workspace.opsModel.saveApp(json).then ()->
-            self.workspace.design.set "name", json.name
+            design = self.workspace.design
+
+            design.set "name", json.name
+            design.set "resource_diff", json.resource_diff
+            design.set "usage", json.usage
+
+            # "Refresh property"
+            $("#OEPanelRight").trigger "REFRESH"
+
             modal.close()
           , ( err )->
             notification "error", err.msg

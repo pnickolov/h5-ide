@@ -39,6 +39,8 @@ define [
       ogName: ''
       pgName: ''
       applyImmediately: false
+      dbRestoreTime: ''
+      isRestored: false
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -51,9 +53,40 @@ define [
     # -------- Master and Slave -------- #
     slaveIndependentAttr: "id|appId|x|y|width|height|name|\
         accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
-        accessible|backupRetentionPeriod|multiAz|__connections|__parent"
+        accessible|backupRetentionPeriod|multiAz|password|__connections|__parent"
 
-    slaves: -> if @master() then [] else @connectionTargets("DbReplication")
+    sourceDbIndependentAttrForRestore: "id|appId|x|y|width|height|name|\
+        accessible|createdBy|instanceId|instanceClass|autoMinorVersionUpgrade|\
+        multiAz|__connections|__parent|license|iops|port|ogName|pgName|az"
+
+    slaves: () ->
+
+      that = @
+
+      if @master() and @master().master()
+        return []
+
+      # return @connectionTargets("DbReplication")
+
+      _.filter @connectionTargets("DbReplication"), (dbModel) ->
+
+        if dbModel.category() is 'instance' and dbModel.get('appId')
+          return false
+        if that.category() is 'replica' and not that.get('appId')
+          return false
+        return true
+
+    getAllRestoreDB: ->
+
+      srcDb = @getSourceDBForRestore()
+      return [] if srcDb
+
+      that = @
+      dbModels = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).allObjects()
+      return _.filter dbModels, (dbModel) ->
+        if dbModel.getSourceDBForRestore() is that
+          return true
+        return false
 
     master: ->
       m =  @connections( 'DbReplication' )[0]
@@ -65,17 +98,40 @@ define [
       @clone master
 
       unless @get 'appId'
-        @set backupRetentionPeriod: 0, multiAz: false, createdBy: '', instanceId: '', snapshotId: ''
+        @set backupRetentionPeriod: 0, multiAz: false, instanceId: '', snapshotId: '', password: '****'
 
     setMaster : ( master ) ->
-      @connections("DbReplication")[0]?.remove()
+      # @connections("DbReplication")[0]?.remove()
+      @unsetMaster()
       Replication = Design.modelClassForType("DbReplication")
       new Replication( master, @ )
 
       @listenTo master, 'change', @syncMasterAttr
       null
 
+    unsetMaster : () ->
+
+      that = @
+      _.each @connections("DbReplication"), (connection) ->
+        if connection.slave() is that
+          connection.remove()
+
+    setSourceDBForRestore : ( sourceDb ) ->
+
+      @sourceDBForRestore = sourceDb
+      @setDefaultParameterGroup()
+      # DefaultSg
+      defaultSg = Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg()
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      new SgAsso( defaultSg, this )
+      @listenTo sourceDb, 'change', @syncAttrSourceDBForRestore
+
+    getSourceDBForRestore: ->
+      
+      @sourceDBForRestore
+
     syncMasterAttr: ( master ) ->
+
       if @get 'appId'
         return false
 
@@ -89,11 +145,21 @@ define [
 
       @set needSync
 
+    syncAttrSourceDBForRestore: ( sourceDb ) ->
+
+      needSync = {}
+
+      for k, v of sourceDb.changedAttributes()
+        if @sourceDbIndependentAttrForRestore.indexOf( k ) < 0
+          needSync[ k ] = v
+
+      @set needSync
+
     needSyncMasterConn: ( cnn ) ->
       if @master() then return false
 
       if @get 'appId'
-        connTypesToCopy = [ 'SgAsso' ]
+        connTypesToCopy = []
       else
         connTypesToCopy = [ 'SgAsso', 'OgUsage' ]
 
@@ -124,6 +190,14 @@ define [
 
     # -------- Master and Slave -------- #
 
+    # -------- Restore to Point In Time -------- #
+    restoreMaster: ( master ) ->
+      @clone master
+      @set "snapshotId", master.get("snapshotId")
+      null
+
+    # -------- Restore to Point In Time -------- #
+
     constructor : ( attr, option )->
       if option and not option.master and option.createByUser
 
@@ -136,7 +210,7 @@ define [
             "snapshotId": snapshotModel.get('DBSnapshotIdentifier'),
             "allocatedStorage": snapshotModel.get('AllocatedStorage'),
             "port": snapshotModel.get('Port'),
-            "iops": snapshotModel.get('Iops') or '',
+            "iops": snapshotModel.get('Iops') or 0,
             "multiAz": snapshotModel.get('MultiAZ'),
             "ogName": snapshotModel.get('OptionGroupName'),
             "license": snapshotModel.get('LicenseModel'),
@@ -154,8 +228,14 @@ define [
         return
 
       if option.master
-        @copyMaster option.master
-        @setMaster option.master
+
+        if not option.isRestore
+          @copyMaster option.master
+          @setMaster option.master
+        else
+          @cloneForRestore option.master
+          @setSourceDBForRestore option.master
+
       else if option.createByUser
         # Default Sg
         SgAsso = Design.modelClassForType "SgAsso"
@@ -181,14 +261,30 @@ define [
       return
 
     clone : ( srcTarget )->
+
       @cloneAttributes srcTarget, {
-        reserve : "newInstanceId|instanceId"
+        reserve : "newInstanceId|instanceId|createdBy"
         copyConnection : [ "SgAsso", "OgUsage" ]
       }
+
       @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
+
       return
 
+    cloneForRestore : ( srcTarget ) ->
 
+      @cloneAttributes srcTarget, {
+        reserve : "newInstanceId|instanceId|createdBy|pgName"
+        copyConnection : [ "OgUsage" ]
+      }
+
+      @set 'snapshotId', ''
+      if @get('password') is '****'
+        @set 'password', '12345678'
+
+      return
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
@@ -220,13 +316,6 @@ define [
       regionName = Design.instance().region()
       engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
-      if origEngineVersion
-        origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
-
-      if origDefaultInfo and origDefaultInfo.family and defaultInfo and defaultInfo.family
-        if origDefaultInfo.family is defaultInfo.family
-          #family no changed, then no need change parametergroup
-          return null
 
       if defaultInfo and defaultInfo.defaultPGName
         defaultPG = defaultInfo.defaultPGName
@@ -234,7 +323,7 @@ define [
         defaultPG = "default." + @get('engine') + @getMajorVersion()
         console.warn "can not get default parametergroup for #{ @get 'engine' } #{ @getMajorVersion() }"
       @set 'pgName', defaultPG || ""
-      null
+      defaultPG
 
 
     getAllocatedRange: ->
@@ -255,11 +344,11 @@ define [
           if engine in ['sqlserver-ex', 'sqlserver-web']
               obj = { min: 30, max: 1024 }
 
-      classInfo = @getInstanceClassDict()
-      defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          obj.min = 100
+      # classInfo = @getInstanceClassDict()
+      # defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     obj.min = 100
 
       return obj
 
@@ -307,11 +396,11 @@ define [
     getDefaultCharSet: -> constant.DB_DEFAULTSETTING[@get('engine')].charset
     getInstanceClassDict: -> _.find constant.DB_INSTANCECLASS, ( claDict ) => claDict.instanceClass is @get 'instanceClass'
     getDefaultAllocatedStorage: ->
-      classInfo = @getInstanceClassDict()
+      # classInfo = @getInstanceClassDict()
       defaultStorage = constant.DB_DEFAULTSETTING[@get('engine')].allocatedStorage
-      if classInfo and classInfo['ebs']
-        if defaultStorage < 100
-          return 100
+      # if classInfo and classInfo['ebs']
+      #   if defaultStorage < 100
+      #     return 100
       return defaultStorage
 
     getOptionGroup: -> @connectionTargets('OgUsage')[0]
@@ -413,11 +502,13 @@ define [
         _.where(version.instanceClasses, {instanceClass: instanceClass.instanceClass})?.selected = true
 
       multiAZCapable = instanceClass.multiAZCapable
+      # Unset multiAz must before sqlserver engine judge.
+      if not multiAZCapable
+        @set 'multiAz', ''
+
       engine = @get('engine')
       multiAZCapable = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
 
-      if not multiAZCapable
-        @set 'multiAz', false
 
       [spec, license.versions, version.instanceClasses, multiAZCapable, instanceClass.availabilityZones]
 
@@ -426,7 +517,8 @@ define [
 
       engine = @engineType()
 
-      if engine is 'sqlserver' then sufix = engine.split('-')[1]
+      if engine is 'sqlserver'
+        sufix = @get('engine').split('-')[1]
 
       dbInstanceType = @attributes.instanceClass.split('.')
       deploy = if @attributes.multiAz then 'multiAZ' else 'standard'
@@ -444,7 +536,7 @@ define [
           license = 'byol'
 
         if license == 'li' and engine == 'sqlserver'
-          license = license + sufix
+          license = license + '-' + sufix
 
         for p in fee
           if p.deploy != deploy
@@ -503,23 +595,57 @@ define [
       ComplexResModel.prototype.getNewName.apply this, args
 
     isRemovable :()->
-      if @slaves().length > 0
-        # Return a warning, delete DBInstance will remove ReadReplica together
-        result = sprintf lang.ide.CVS_CFM_DEL_DBINSTANCE, @get("name")
+      if @slaves(true).length > 0
+        if not @get("appId")
+          # Return a warning, delete DBInstance will remove all ReadReplica together when DBInstance hasn't existed
+          result = sprintf lang.ide.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
+        else
+          # Return a warning, delete DBInstance will remove nonexistent ReadReplica together when DBInstance has existed
+          result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
+          result = "<div class='modal-text-major'>#{result}</div>"
+        return result
+      allRestoreDB = @getAllRestoreDB()
+      if allRestoreDB.length > 0
+        dbNameAry = []
+        _.each allRestoreDB, (dbModel) ->
+          dbNameAry.push("<span class='resource-tag'>#{dbModel.get('name')}</span>")
+        result = sprintf lang.ide.CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE, @get("name"), dbNameAry.join(', ')
         result = "<div class='modal-text-major'>#{result}</div>"
         return result
       true
 
     remove :()->
       #remove readReplica related to current DBInstance
-      slave.remove() for slave in @slaves()
+      for slave in @slaves()
+        if not slave.get("appId")
+          #remove nonexistent replica
+          slave.remove() if slave isnt @
+
+      for restore in @getAllRestoreDB()
+        restore.remove()
 
       #remove current node
       ComplexResModel.prototype.remove.call(this)
       null
 
+    isReparentable : ( newParent )->
+      if @master() and newParent.get("id") isnt @get("id")
+        notification "error", "Cannot move read replica to another DBSubnetGroup."
+        return false
+      true
+
     serialize : () ->
+      
       master = @master()
+
+      useLatestRestorableTime = ''
+      if @getSourceDBForRestore()
+        useLatestRestorableTime = if @get('dbRestoreTime') then false else true
+
+      restoreTime = ''
+      restoreTime = @get('dbRestoreTime') if @get('dbRestoreTime')
+
       component =
         name : @get("name")
         type : @type
@@ -534,11 +660,11 @@ define [
           AllowMajorVersionUpgrade              : @get 'allowMajorVersionUpgrade'
           AvailabilityZone                      : @get 'az'
           MultiAZ                               : @get 'multiAz'
-          Iops                                  : @getIops()
+          Iops                                  : @getIops() or 0
           BackupRetentionPeriod                 : @get 'backupRetentionPeriod'
           CharacterSetName                      : @get 'characterSetName'
           DBInstanceClass                       : @get 'instanceClass'
-          DBName                                : @get 'dbName'
+          DBName                                : if (@isMysql() and @get('snapshotId')) then '' else @get('dbName')
           Endpoint:
             Port   : @get 'port'
           Engine                                : @get 'engine'
@@ -559,6 +685,9 @@ define [
             DBSubnetGroupName                   : @parent().createRef 'DBSubnetGroupName'
           VpcSecurityGroupIds                   : _.map @connectionTargets( "SgAsso" ), ( sg )-> sg.createRef 'GroupId'
           ReadReplicaSourceDBInstanceIdentifier : master?.createRef('DBInstanceIdentifier') or ''
+          SourceDBInstanceIdentifierForPoint    : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
+          UseLatestRestorableTime               : useLatestRestorableTime
+          RestoreTime                           : restoreTime
 
       { component : component, layout : @generateLayout() }
 
@@ -627,7 +756,9 @@ define [
       # Asso OptionGroup
       ogName = data.resource.OptionGroupMembership?.OptionGroupName
       if ogName
-        ogComp = resolve MC.extractID ogName
+        ogUid = MC.extractID(ogName)
+        if ogUid and ogUid isnt ogName
+          ogComp = resolve(ogUid)
 
         new OgUsage( model, ogComp or model.getDefaultOgInstance(ogName) )
   }

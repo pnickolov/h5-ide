@@ -6,9 +6,8 @@ define [
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'
-    './workspaces/editor/property/base/view'
 
-], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus, PropertyView ) ->
+], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
 
     valueInRange = ( start, end ) ->
         ( val ) ->
@@ -80,7 +79,8 @@ define [
             that = @
 
             _.each appData.Options, (option) -> appOptions[option.OptionName] = option
-            _.some appOptions, ( option, name ) -> +that.ogDataStore[ name ].Port isnt +option.Port
+            _.some appOptions, ( option, name ) ->
+                that.ogDataStore[ name ] and +that.ogDataStore[ name ].Port isnt +option.Port
 
 
         initModal: (tpl) ->
@@ -141,6 +141,9 @@ define [
                 else
                     option.unmodify = false
 
+                if not (!option.DefaultPort && !option.OptionGroupOptionSettings)
+                    option.visible = true
+
                 # if option.OptionsDependedOn and option.OptionsDependedOn.OptionName
                 #     option.disabled = true
 
@@ -156,6 +159,7 @@ define [
             ogData.isAppPortChanged = @isAppPortChanged()
 
             @$el.html template.og_modal(ogData)
+
             @initModal @el
             @renderOptionList()
             @__modalplus.resize()
@@ -298,7 +302,7 @@ define [
                 start = +$this.data 'start'
                 end = +$this.data 'end'
 
-                if start and end
+                if isFinite(start) and isFinite(end)
                     $this.parsley 'custom', valueInRange start, end
 
             null
@@ -312,7 +316,7 @@ define [
         renderRemoveConfirm: () ->
 
             @$('.slidebox').addClass 'show'
-            @$('form').html template.og_slide_remove {}
+            @$('.slidebox .form').html template.og_slide_remove {}
 
         processCol: () ->
 
@@ -386,9 +390,11 @@ define [
 
             if $switcher.hasClass('on')
 
-                $optionEdit.removeClass('invisible')
+                option = @ogOptions[optionIdx]
+                if not (!option.DefaultPort && !option.OptionGroupOptionSettings)
+                    $optionEdit.removeClass('invisible')
 
-                @slide @ogOptions[optionIdx], (optionData) ->
+                @slide option, (optionData) ->
                     if optionData
                         that.ogDataStore[optionName] = optionData
                     else
@@ -444,8 +450,9 @@ define [
             $ogName = @$('.og-name')
             $ogDesc = @$('.og-description')
 
-            $ogName.parsley 'custom', ( val ) ->
+            $ogName.val $ogName.val().toLowerCase()
 
+            $ogName.parsley 'custom', ( val ) ->
                 errTip = 'Option group name invalid'
                 if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                     return errTip
@@ -454,7 +461,7 @@ define [
                 if not MC.validate('letters', val[0])
                     return errTip
 
-            ogNameCheck = PropertyView.checkResName( @ogModel.get('id'), $ogName, "OptionGroup" )
+            ogNameCheck = MC.aws.aws.checkResName( @ogModel.get('id'), $ogName, "OptionGroup" )
 
             $ogDesc.parsley 'custom', ( val ) ->
 
@@ -484,7 +491,7 @@ define [
                             needAry.push(depend) if not isOn
                         if needAry.length
                             isRightDepend = false
-                            errTip = "#{ogName} depend on #{needAry.join(',')} option."
+                            errTip = "#{ogName} has a dependency on #{needAry.join(',')} option."
                             that.$('.err-tip').text(errTip)
                 null
 
@@ -518,10 +525,11 @@ define [
 
                 null
 
-        removeClicked: () ->
+        removeClicked: (event) ->
 
             that = this
-            @renderRemoveConfirm()
+            if not $(event.target).hasClass('disabled')
+                @renderRemoveConfirm()
 
         cancelClicked: () ->
 

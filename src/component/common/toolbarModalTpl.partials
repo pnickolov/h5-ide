@@ -6,61 +6,83 @@
 </div>
 
 
-<!-- {{content}} -->
+<!-- {{toolbar_slide}} -->
+{{#if hasButton}}
 <div class="toolbar">
-    {{#if btnValueCreate}}
-    <button class="icon-new-stack btn btn-blue t-m-btn" data-btn="create">{{btnValueCreate}}</button>
-    {{/if}}
-    <div class="btn-group">
-        {{#each buttons}}
-        <button class="icon-{{icon}} t-m-btn" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
-        {{/each}}
-    </div>
+        {{#if btnValueCreate}}
+        <button class="icon-new-stack btn btn-blue t-m-btn {{#if active}}active{{/if}}" data-btn="create">{{btnValueCreate}}</button>
+        {{/if}}
+        <div class="btn-group">
+            {{#each buttons}}
+            <button class="icon-{{icon}} t-m-btn {{#if active}}active{{/if}}" data-btn="{{type}}" {{#if disabled}}disabled{{/if}}>{{name}}</button>
+            {{/each}}
+        </div>
 </div>
+{{/if}}
+
 <div class="list">
     <div class="slidebox" style="{{slideStyle}}">
         <div class="content clearfix">
+            <div class="loading-spinner"></div>
         </div>
         <div class="error">
             something wrong
         </div>
     </div>
-    <div class="table-head-fix will-be-covered">
-        <table class="table-head">
-            <thead>
-                <tr>
-                    <th>
-                        <div class="checkbox">
-                            <input id="t-m-select-all" type="checkbox" value="None">
-                            <label for="t-m-select-all"></label>
-                        </div>
-                    </th>
-                    {{#each columns}}
-                    <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
-                    {{/each}}
-                </tr>
-            </thead>
-        </table>
+    {{beforeTable}}
+    <div class="list-content">
+    </div>
+
+
+</div>
+
+<!-- {{table}} -->
+<div class="table-head-fix will-be-covered">
+    <table class="table-head">
+        <thead>
+            <tr>
+                {{#unless noCheckbox}}
+                <th>
+                    <div class="checkbox">
+                        <input id="t-m-select-all" type="checkbox" value="None">
+                        <label for="t-m-select-all"></label>
+                    </div>
+                </th>
+                {{/unless}}
+                {{#each columns}}
+                <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
+                {{/each}}
+            </tr>
+        </thead>
+    </table>
+    {{#unless useCustomScroll}}
+    <div style="overflow-y:auto;overflow-x:hidden;height: {{height}}px;">
+        {{else}}
         <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
             <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content" style="display:block;">
+                {{/unless}}
+
                 <table class="table">
                     <thead>
                         <tr>
-                            <th><div class="th-inner"></div></th>
+                            {{#unless noCheckbox}}<th><div class="th-inner"></div></th>{{/unless}}
                             {{#each columns}}
                             <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                             {{/each}}
                         </tr>
                     </thead>
                     <tbody class='t-m-content'>
-
                     </tbody>
                 </table>
+                {{#unless useCustomScroll}}
             </div>
+            {{else}}
         </div>
     </div>
+    {{/unless}}
 </div>
+
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
 

@@ -95,12 +95,17 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
     isReady : ()-> @__fetchPromise && this.__ready
 
+    isLastFetchFailed : ()-> !!@lastFetchError()
+    lastFetchError    : ()-> @__lastFetchError
+
     # Fetch the data from AWS. The data is only fetched once even if called multiple time.
     fetch : ()->
-      if @__fetchPromise then return @__fetchPromise
+      if not @isLastFetchFailed() and @__fetchPromise
+        return @__fetchPromise
 
       @lastFetch = +new Date()
       @__ready = false
+      @__lastFetchError = null
 
       self = @
       @__fetchPromise = @doFetch().then ( data )->
@@ -135,7 +140,9 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
       , ( error )->
         self.lastFetch = 0
-        self.__fetchPromise = null
+        self.__lastFetchError = error
+        self.__ready = true
+        self.trigger "update"
         throw error
 
       @__fetchPromise

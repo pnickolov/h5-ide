@@ -110,7 +110,7 @@ define [ '../base/view',
             if iopsEnabled
                 iopsValidate = $( '#iops-ranged' ).parsley 'validate'
             if volumeValidate and iopsValidate
-                @model.setVolumeSize value
+                @model.setVolumeSize volumeSize
                 if iopsEnabled
                     @model.setVolumeType 'io1', $( '#iops-ranged' ).val()
             null

@@ -1,6 +1,10 @@
 <!-- {{appView}} -->
 <article class="property-app app-dbinstance">
-    <div class="option-group-head expand">{{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group-head expand">
+        {{ i18n "PROP_DBINSTANCE_TIT_DETAIL" }}
+        <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="{{i18n 'PROP_DB_INSTANCE_TIP_GET_LOG'}}" ></a>
+    </div>
+
     <div class="option-group" style="display: block">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP_DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
@@ -37,17 +41,17 @@
     <div class="option-group-head">{{ i18n "PROP_DBINSTANCE_DBCONFIG" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
-            {{#if name}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
-            <dd>{{name}}</dd>{{/if}}
+            {{#if DBName}}<dt>{{ i18n "PROP_DBINSTANCE_NAME" }}</dt>
+            <dd>{{DBName}}</dd>{{/if}}
             <dt>{{ i18n "PROP_DBINSTANCE_PORT" }}</dt>
             <dd>{{#if Endpoint}}{{Endpoint.Port}}{{else}}Not Ready{{/if}}{{#if PendingModifiedValues.Port}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.Port}}]</span>{{/if}}</dd>
             {{#if optionGroups.length}}
                 <dt>{{ i18n "PROP_DBINSTANCE_OG" }}</dt>
                 <dd>{{#each optionGroups}}
                     {{#if isDefault}}
-                        {{OptionGroupName}}({{Status}})
+                        {{OptionGroupName}}<span class="highlight-status {{Status}}">({{Status}})</span>
                     {{else}}
-                        <a class="db-og-in-app">{{OptionGroupName}}({{Status}})</a>
+                        <a class="db-og-in-app">{{OptionGroupName}}</a><span class="highlight-status {{Status}}">({{Status}})</span>
                     {{/if}}
                 {{/each}}
                 </dd>
@@ -56,7 +60,7 @@
                 <dt>{{ i18n "PROP_DBINSTANCE_PG" }}</dt>
                 <dd>
                     {{#each DBParameterGroups}}
-                        {{DBParameterGroupName}}({{ParameterApplyStatus}})
+                        {{DBParameterGroupName}}<span class="highlight-status {{ParameterApplyStatus}}">({{ParameterApplyStatus}})</span>
                     {{/each}}
                 </dd>
             {{/if}}
@@ -103,6 +107,43 @@
 
     <div class="option-group-head">{{ i18n "PROP_STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
-
-
 </article>
+
+
+<!-- {{log_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{LogFileName}}</td>
+    <td>{{timeStr LastWritten}}</td>
+    <td>{{Size}}</td>
+    <td>{{#if LogFileName}}<a class="view" data-file-name="{{LogFileName}}">View</a>{{/if}}</td>
+    {{#unless isSafari}}
+    <td>
+        {{#if LogFileName}}<a class="download" data-file-name="{{LogFileName}}">Download</a>{{/if}}
+    </td>
+    {{/unless}}
+</tr>
+{{/each}}
+
+<!-- {{event_list}} -->
+{{#each this}}
+<tr class="item">
+    <td>{{timeStr Date}}</td>
+    <td>{{SourceIdentifier}}</td>
+    <td>{{Message}}</td>
+</tr>
+{{/each}}
+
+<!-- {{log_content}} -->
+<section class="db-sys-log-content font-mono">
+    {{breaklines LogFileData}}
+    <br/>
+    ----------------------- END OF LOG ----------------------
+</section>
+<div class="action">
+    <button class="btn btn-blue refresh-log" data-file-name="{{filename}}">Refresh</button>
+    <button class="btn btn-silver close cancel">Close</button>
+</div>
+
+<!-- {{list_empty}} -->
+<div class="text-center no-data">No records found.</div>

@@ -402,7 +402,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
 
     getMaxEniCount : ()->
       config = @getInstanceTypeConfig()
-      if config then config = config.eni
+      if config then config = config.max_eni
 
       config or 16
 
@@ -864,7 +864,9 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       model = new Model( attr )
 
       # Add Keypair
-      KP = resolve( MC.extractID( data.resource.KeyName ) )
+      kpUid = MC.extractID( data.resource.KeyName )
+      if kpUid and kpUid isnt data.resource.KeyName
+        KP = resolve( kpUid )
 
       if KP
         KP.assignTo( model )

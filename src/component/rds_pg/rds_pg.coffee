@@ -10,11 +10,20 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @collection = CloudResources constant.RESTYPE.DBPG, Design.instance().region()
       @listenTo @collection, 'update', (@onUpdate.bind @)
       @listenTo @collection, 'change', (@onUpdate.bind @)
+      @listenTo @collection, 'remove', (@onRemove.bind @)
+      @listenTo @collection, 'add',    (@onAdd.bind @)
       @
 
     onUpdate: ->
       @initManager()
       @trigger 'datachange', @
+    onAdd: ->
+      @initDropdown()
+    onRemove: ->
+      @initDropdown()
+      if @resModel and  not (@collection.get @resModel.get('pgName'))
+        @resModel.setDefaultParameterGroup( @resModel.get 'engineVersion' )
+      @dropdown?.setSelection @resModel.get('pgName')
 
     remove: ()->
       Backbone.View::remove.call @
@@ -154,8 +163,18 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
     renderEditTpl: (parameters, tpl, option)->
       that = @
       data = if parameters.toJSON then parameters.toJSON() else parameters
+      isNumberString = (e)->
+        !isNaN(parseFloat(e)) && isFinite(e)
+      isMixedValue = (e)->
+        isMixed = false
+        tempArray = e.split(",")
+        _.each tempArray, (value)->
+          range = value.split('-')
+          if range.length = 2 and isNumberString(range[0]) and isNumberString(range[1])
+            isMixed = true
+        isMixed
       _.each data, (e)->
-        if e.AllowedValues?.split(',').length > 1
+        if e.AllowedValues?.split(',').length > 1 and not isMixedValue(e.AllowedValues)
           e.inputType = "select"
           e.selections = e.AllowedValues.split(",")
           return
@@ -181,12 +200,12 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         $("#parameter-table").html template.filter {data:data}
       if option?.filter or option?.sort then return false
       console.log "Rendering...."
-      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53}
+      that.manager.setSlide tpl {data:data, height: $('.table-head-fix.will-be-covered>div').height() - 76}
       $(".slidebox").css('max-height', "none")
       @manager.on "slideup", ->
         $('.slidebox').removeAttr("style")
       $(window).on 'resize', ->
-        $("#parameter-table").height($('.table-head-fix.will-be-covered>.scroll-wrap').height() - 53)
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>div').height() - 67)
         .find(".scrollbar-veritical-thumb").removeAttr("style")
 
     bindFilter: (parameters, tpl)->
@@ -199,7 +218,11 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           data:
             id: parameters.groupModel.id
         ]
-        (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+        if that.filterDelay
+          window.clearTimeout(that.filterDelay)
+        that.filterDelay = window.setTimeout ->
+          (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
+        , 200
       $("#sort-parameter-name").on 'OPTION_CHANGE', (event, value, data)->
         sortType = data?.id || value
         filter.trigger 'change'
@@ -221,7 +244,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           $("[data-action='preview']").prop 'disabled', false
           if this.value is "<engine-default>" or (this.value is "" and not e.get("ParameterValue"))
             e.unset('newValue')
-          if e.isValidValue(this.value) or this.value is "" or e.isFunctionValue(this.value)
+          if e.isValidValue(this.value) or this.value is "" or (e.isFunctionValue(this.value) and not e.isNumber(this.value))
             $(this).removeClass "parsley-error"
             if this.value isnt "" then e.set('newValue', this.value)
           else
@@ -242,6 +265,8 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
             e.inputType = 'input'
             return
         that.manager.setSlide tpl {data:data, preview: true}
+        $("#parameter-table").height($('.table-head-fix.will-be-covered>div').height() - 67)
+        .find(".scrollbar-veritical-thumb").removeAttr("style")
         $("#rds-pg-save").click ->
           that.modifyParams(parameters, getChange())
         $("#pg-back-to-edit").click ->
@@ -323,12 +348,14 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         deleteErrorCount++
       if deleteCount is 0
         if deleteErrorCount > 0
-          notification 'error', deleteErrorCount+" RDS Parameter Group failed to delete, Please try again later."
+          @manager.error (result.awsResult || deleteErrorCount + " DB Parameter Group(s) failed to delete, please try again later.")
+          @switchAction()
+          deleteErrorCount = 0
         else
           notification 'info', "Delete Successfully"
-        @manager.unCheckSelectAll()
-        deleteErrorCount = 0
-        @manager.cancel()
+          @manager.unCheckSelectAll()
+          deleteErrorCount = 0
+          @manager.cancel()
 
     switchAction: ( state ) ->
       if not state
@@ -361,6 +388,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         @renderNoCredential()
 
     renderDefault: ->
+      if not @dropdown then return false
       if not fetched
         @renderLoading()
         @collection.fetch().then =>

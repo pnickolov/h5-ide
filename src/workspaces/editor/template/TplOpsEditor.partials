@@ -64,15 +64,14 @@
 
 <!-- {{toolbar.BtnLinestyle}} -->
 <div class="selectbox btn-toolbar toolbar-line-style seperator">
-  <button class="selection tooltip" data-tooltip="{{i18n 'TOOL_TIP_LINESTYLE'}}"></button>
+  <button class="selection tooltip" data-tooltip="SecurityGroup Line Style"></button>
   <ul class="dropdown">
     <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOL_LBL_LINESTYLE_STRAIGHT" }}</span></li>
     <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOL_LBL_LINESTYLE_ELBOW" }}</span></li>
-    <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_QUADRATIC_BELZIER" }}</span></li>
-    <li class='item' data-id="3"><span class="icon-bezier-qt">{{ i18n "TOOL_LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER" }}</span></li>
-    <li class='item' data-id="4"><span class="icon-hide-sg">{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}</span></li>
+    <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOL_LBL_LINESTYLE_CURVE" }}</span></li>
   </ul>
 </div>
+<button class="btn-toolbar icon-hide-sg tooltip" data-tooltip='{{ i18n "TOOL_LBL_LINESTYLE_HIDE_SG" }}'></button>
 
 <!-- {{toolbar.BtnRunStack}} -->
 <button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOL_TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOL_BTN_RUN_STACK" }}</button>
@@ -102,6 +101,7 @@
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOL_TIP_STOP_APP' }}"></button>
 <button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOL_TIP_START_APP' }}"><span style="display: none">{{i18n "TOOL_START_APP"}}</span></button>
 <button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOL_TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-forget-app seperator" data-tooltip="Forget the App, but keep all Resources"></button>
 <button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOL_TIP_SAVE_APP_TO_STACK" }}'></button>
 
 <!-- {{toolbar.BtnPng}} -->
@@ -135,6 +135,17 @@
   </div>{{/if}}
   <div class="modal-text-minor">{{i18n "TOOL_POP_EXPORT_CF_INFO"}}</div>
 </div> </div>
+<div class="stack-validation">
+  <details open style="display:none;">
+    <summary>Stack Validation</summary>
+    <div id="stack-run-validation-container"></div>
+  </details>
+  <div class="nutshell">:<label></label></div>
+  <div class="validating">
+    <div class="loading-spinner loading-spinner-small"></div>
+    <p>Validating your stack...</p>
+  </div>
+</div>
 <div style="padding-top:20px;text-align:right;">
   <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
   <button class="btn modal-close btn-silver">{{i18n "TOOL_POP_BTN_CANCEL"}}</button>
@@ -187,6 +198,13 @@
     </ul>
   </div>
 </div>
+
+<section style="margin:5px 5px 20px 8px;">
+  <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
+  <label for="MonitorImportApp">Monitor and report external resource change of this app</label>
+  <i class="icon-info tooltip" data-tooltip="If resource has been changed outside VisualOps, an email notification will be sent to you." style="color:#148BE6;vertical-align:-3px;"></i>
+</section>
+
 <p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
 
 <!-- {{modal.confirmRemoveApp}} -->

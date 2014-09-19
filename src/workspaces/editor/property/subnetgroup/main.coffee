@@ -17,12 +17,14 @@ define [ "Design"
         initStack : ( uid )->
             @model = Design.instance().component uid
             @view  = view
+            @view.isAppEdit = false
             null
 
         initApp : (uid) ->
             @model = Design.instance().component uid
             @view  = app_view
             @view.appModel = CloudResources(constant.RESTYPE.DBSBG, Design.instance().region())?.get @model.get('appId')
+            @view.isAppEdit = false
             null
 
         initAppEdit : ( uid ) ->

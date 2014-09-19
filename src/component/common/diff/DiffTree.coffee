@@ -26,11 +26,18 @@ define ['constant'], (constant) ->
                 '*.resource.GroupDescription': true
                 '*.resource.ListenerDescriptions.n.Listener.SSLCertificateId' : true
                 '*.resource.Attachment.AttachmentId': true
-                #DBINSTANCE
-                #'DBINSTANCE.resource.Iops': true
+                # DBINSTANCE
+                # 'DBINSTANCE.resource.Iops': true
                 # 'DBINSTANCE.resource.MasterUserPassword': true
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true
+                'DBINSTANCE.resource.ApplyImmediately': true
+                'DBINSTANCE.resource.Endpoint': true
+                'DBINSTANCE.resource.SourceDBInstanceIdentifierForPoint': true
+                'DBINSTANCE.resource.UseLatestRestorableTime': true
+                'ASG.resource.AutoScalingGroupARN': true
+                'ASG.resource.PolicyARN': true
+                # 'VOL.resource.AttachmentSet.Device': true
             }
 
         if not option.noDiffArrayAttrMap
@@ -78,7 +85,7 @@ define ['constant'], (constant) ->
                 a = aAry
                 b = bAry
 
-            attrPath = ''
+            attrPathStr = ''
 
             if path
 
@@ -145,7 +152,7 @@ define ['constant'], (constant) ->
                 if typeA is 'array' and typeB is 'array'
 
                     # ignore array diff of specified in noDiffArrayAttrMap
-                    if (not attrPath or (attrPath and not option.noDiffArrayAttrMap[attrPath]))
+                    if (not attrPath2 or (attrPath2 and not option.noDiffArrayAttrMap[attrPath2]))
 
                         diffAryResult = {}
 

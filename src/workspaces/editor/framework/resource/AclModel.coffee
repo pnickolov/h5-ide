@@ -186,7 +186,7 @@ define [ "../ComplexResModel", "../ConnectionModel", "constant" ], ( ComplexResM
     preDeserialize : ( data, layout_data )->
       new Model({
         id    : data.uid
-        name  : data.name
+        name  : if data.resource.Default then "DefaultACL" else data.name
         appId : data.resource.NetworkAclId
         rules : formatRules( data.resource.EntrySet )
       })

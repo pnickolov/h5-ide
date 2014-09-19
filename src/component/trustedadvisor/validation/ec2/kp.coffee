@@ -1,4 +1,12 @@
-define [ 'constant', 'MC', 'Design', 'TaHelper', 'keypair_service', 'underscore' ], ( constant, MC, Design, Helper, keypair_service, _ ) ->
+define [
+	'constant'
+	'MC'
+	'Design'
+	'TaHelper'
+	'keypair_service'
+	'underscore'
+	'CloudResources'
+], ( constant, MC, Design, Helper, keypair_service, _, CloudResources ) ->
 
 	i18n = Helper.i18n.short()
 
@@ -60,12 +68,9 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'keypair_service', 'underscore'
 			session  = $.cookie "session_id"
 			region = Design.instance().region()
 
-			keypair_service.DescribeKeyPairs( null, username, session, region ).then( ( res ) ->
-				if res.is_error
-					throw res
-
-				kpList = res.resolved_data or []
-
+			kpCollection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+			kpCollection.fetchForce().then ( col ) ->
+				kpList = col.toJSON()
 				_.each needValidate, ( i ) ->
 					inexist = _.every kpList, ( kp ) ->
 						kp.keyName isnt i.get 'keyName'
@@ -97,14 +102,8 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'keypair_service', 'underscore'
 					results.push Helper.message.error keyName, i18n.TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR, message, keyName
 
 				callback results
-
-
-			).fail( ( error ) ->
+			, () ->
 				callback null
-			)
-
-
-
 
 
 

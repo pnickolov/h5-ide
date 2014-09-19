@@ -148,9 +148,14 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
     deserialize : ( data, layout_data, resolve )->
 
+      originalAsg = resolve( layout_data.originalId )
+      if not originalAsg
+        console.warn "The ExpandedAsg is removed because its ASG is not found."
+        return
+
       new ExpandedAsgModel({
         id          : data.uid
-        originalAsg : resolve( layout_data.originalId )
+        originalAsg : originalAsg
         parent      : resolve( layout_data.groupUId )
         x           : layout_data.coordinate[0]
         y           : layout_data.coordinate[1]

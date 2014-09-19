@@ -167,10 +167,17 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       return
 
     changePassword : ( oldPwd, newPwd )->
-      ApiRequest "account_update_account", { attributes : {
+      ApiRequest("account_update_account", { attributes : {
         password     : oldPwd
         new_password : newPwd
-      }}
+      }})
+
+    changeEmail : ( email, oldPwd )->
+      self = @
+      ApiRequest("account_update_account", { attributes : {
+        password : oldPwd
+        email    : email
+      }}).then ()-> self.set("email", email)
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

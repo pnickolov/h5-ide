@@ -33,7 +33,7 @@ define [ '../base/view',
             target = $ event.currentTarget
             name = target.val()
 
-            if PropertyView.checkResName( @model.get('uid'), target, "Subnet" )
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Subnet" )
                 @model.setName name
                 @setTitle name
 

@@ -29,7 +29,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     lang.ide[ "PROP_VOLUME_TYPE_#{text.toUpperCase()}" ]
 
   Handlebars.registerHelper 'UTC', ( text ) ->
-    new Handlebars.SafeString new Date( text ).toUTCString()
+    new Handlebars.SafeString new Date( +text ).toUTCString()
 
   Handlebars.registerHelper 'breaklines', (text) ->
     text = Handlebars.Utils.escapeExpression(text)
@@ -48,7 +48,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
 
   Handlebars.registerHelper 'timeStr', ( v1 ) ->
-      d = new Date( v1 )
+      d = new Date( +v1 )
 
       if not isNaN(parseFloat(v1)) and isFinite(v1) and v1 > 0
         return d.toLocaleDateString() + " "+ d.toTimeString()
@@ -189,3 +189,23 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
   Handlebars.registerHelper "awsIsEip", ( ip, region )->
     # This is a placeholder.
     # The actually implementation is in DashboardView
+
+  Handlebars.registerHelper 'ifLogic', (v1, operator, v2, options) ->
+
+      switch operator
+          when 'is'
+              return if (v1 is v2) then options.fn(this) else options.inverse(this)
+          when '<'
+              return if (v1 < v2) then options.fn(this) else options.inverse(this)
+          when '<='
+              return if (v1 <= v2) then options.fn(this) else options.inverse(this)
+          when '>'
+              return if (v1 > v2) then options.fn(this) else options.inverse(this)
+          when '>='
+              return if (v1 >= v2) then options.fn(this) else options.inverse(this)
+          when 'and' 
+              return if (v1 and v2) then options.fn(this) else options.inverse(this)
+          when 'or'
+              return if (v1 or v2) then options.fn(this) else options.inverse(this)
+          else
+              return options.inverse(this)

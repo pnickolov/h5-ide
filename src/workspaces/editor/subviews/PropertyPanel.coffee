@@ -259,6 +259,7 @@ define [
       if type is "component_server_group" or type is CONST.RESTYPE.LC or type is CONST.RESTYPE.INSTANCE
         if Design.instance().attributes.agent.enabled
           supports = true
+          $('#state-editor-body').trigger('SAVE_STATE')
         else
           supports = false
         if design.modeIsApp()

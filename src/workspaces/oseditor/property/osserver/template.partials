@@ -9,7 +9,7 @@
     </section>
     <section class="group required">
         <label class="name">Server Image</label>
-        <select class="selection option" value="{{imageId}}" data-target="imageId" id="property-os-server-image" data-select-tpl="imageSelect" data-item-tpl="imageValue">
+        <select class="selection option" value="{{imageId}}" data-target="imageId" id="property-os-server-image" data-select-tpl="imageSelect" data-item-tpl="imageValue" {{#if isAppEdit}}disabled="disabled"{{/if}}>
             {{#each imageList}}
                 <option value='{{id}}' {{#ifCond id ../imageId}}selected='selected'{{/ifCond}}>{{name}}</option>
             {{/each}}
@@ -33,14 +33,14 @@
     </section>
     <section class="group">
         <label class="name">Credential</label>
-        <select id="property-os-server-credential" data-target="credential" class="selection option">
+        <select id="property-os-server-credential" data-target="credential" class="selection option" {{#if isAppEdit}}disabled="disabled"{{/if}}>
             <option value="keypair" {{#ifCond credential 'keypair'}}selected="selected"{{/ifCond}}>KeyPair</option>
             <option value="adminPass" {{#ifCond credential 'keypair'}}{{else}}selected="selected"{{/ifCond}}>Password</option>
         </select>
     </section>
     <section class="group required"  {{#ifCond credential "keypair"}}style="display: none"{{/ifCond}}>
         <label class="name">Admin Password</label>
-        <input id="property-os-server-adminPass" data-target="adminPass" type="password" class="selection string" value="{{adminPass}}" placeholder="Password of the Image"/>
+        <input id="property-os-server-adminPass" data-target="adminPass" type="password" class="selection string" value="{{adminPass}}" placeholder="Password of the Image" {{#if isAppEdit}}disabled="disabled"{{/if}}/>
     </section>
     <section class="group required" {{#ifCond credential "keypair"}}{{else}}style="display: none"{{/ifCond}}>
         <label class="name">Key Pair</label>
@@ -49,7 +49,7 @@
     </section>
     <section class="group">
         <label class="name">User Data</label>
-        <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string">{{userData}}</textarea>
+        <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string" {{#if isAppEdit}}disabled="disabled"{{/if}}>{{userData}}</textarea>
     </section>
 </div>
 <div class="option-group-head expand">
@@ -90,4 +90,4 @@
 <button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>
 
 <!--{{kpSelection}}-->
-<select class="selection option" name="kpDropdown" data-button-tpl="kpButton"></select>
+<select class="selection option" name="kpDropdown" data-button-tpl="kpButton" {{#if isAppEdit}}disabled="disabled"{{/if}}></select>

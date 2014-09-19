@@ -380,7 +380,75 @@ define [
         checkDB.resolve([])
       checkDB.promise
 
+
+    applyOpenstackAppEdit: ()->
+      that = @
+      oldJson = @workspace.opsModel.getJsonData()
+      newJson = @workspace.design.serialize usage: 'updateApp'
+
+      differ = new ResDiff {
+        old: oldJson
+        new: newJson
+      }
+
+      result = differ.getDiffInfo()
+      if not result.compChange and not result.layoutChange and not result.stateChange
+        return @workspace.applyAppEdit()
+
+      notification = []
+      changedServers = []
+      # if  changed server flaver
+      _.each differ.modifiedComps, (comp, id)->
+        if newJson.component[id]?.type is constant.RESTYPE.OSSERVER and comp.resource.flavor
+          changedServers.push newJson.component[id].name
+
+      if changedServers.length
+        notification.push "Server #{changedServers.join(", ")} will be restarted to change flavor."
+
+      _.each differ.removedComps, (comp, id)->
+        if oldJson.component[id]
+          notification.push "Note: deleted resources cannot be restored."
+
+      @updateModal = new Modal
+        title: lang.IDE.UPDATE_APP_MODAL_TITLE
+        template: MC.template.updateApp {
+            isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
+            notification: notification
+          }
+        disableClose: true
+        hasScroll: true
+        maxHeight: "450px"
+        cancel: "Close"
+      that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+      that.updateModal.on 'confirm', ->
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+
+        if not that.defaultKpIsSet()
+          return false
+        newJson = that.workspace.design.serialize usage: 'updateApp'
+        that.workspace.applyAppEdit( newJson, not result.compChange )
+        that.updateModal?.close()
+
+      if result.compChange
+        $diffTree = differ.renderAppUpdateView()
+        $('#app-update-summary-table').html $diffTree
+
+      that.renderKpDropdown(that.updateModal)
+      TA.loadModule('stack').then ->
+        that.updateModal and that.updateModal.toggleConfirm false
+        that.updateModal?.resize()
+      , (err)->
+        console.log err
+        that.updateModal and that.updateModal.toggleConfirm true
+        that.updateModal and that.updateModal.tpl.find("#take-rds-snapshot").off 'change'
+        that.updateModal?.resize()
+
     applyAppEdit    : ()->
+      if Design.instance().get("cloud_type") is 'openstack'
+        @applyOpenstackAppEdit()
+        return false
       that = @
       oldJson = @workspace.opsModel.getJsonData()
       newJson = @workspace.design.serialize usage: 'updateApp'
@@ -442,7 +510,7 @@ define [
           notReadyDB: removeListNotReady
           removeList: removeList
         })
-        that.updateModal.tpl.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
+        that.updateModal.setTitle(lang.IDE.UPDATE_APP_MODAL_TITLE)
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         window.setTimeout ->

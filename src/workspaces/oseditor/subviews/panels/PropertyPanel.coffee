@@ -24,6 +24,7 @@ define [
         @panel   = options.panel
 
         @model      = Design.instance().component @uid
+        @appModel   = CloudResources( @type, Design.instance().region() )
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
 
@@ -31,7 +32,12 @@ define [
 
         that = @
 
-        propertyView = @propertyView = new @viewClass( model: @model, propertyPanel: @, panel: @panel )
+        propertyView = @propertyView = new @viewClass({
+            model           : @model
+            appModel        : @appModel
+            propertyPanel   : @
+            panel           : @panel
+        })
 
         bindSelection(@$el, propertyView.selectTpl)
 

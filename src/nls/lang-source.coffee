@@ -4689,7 +4689,7 @@ VisualOps API. You cannot UNDO this action.'
     # Payment
 
     PAYMENT_PAYMENT_NEEDED:
-      en: "Instance State is a Paid Feature"
+      en: "Upgrade your account"
       zh: ""
 
     PAYMENT_INVALID_BILLING:

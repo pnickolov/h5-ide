@@ -2,8 +2,8 @@
 <div id="no-payment-card" class="text-center" xmlns="http://www.w3.org/1999/html">
     <div class="payment-card"></div>
     <div class="text-left no-payment-card-info">
-        <p>To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
-        <p><a class="link-blue" href="#">Learn more about pricing</a></p>
+        <p>Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
+        <p><a class="link-blue" href="#">Pricing in detail</a></p>
     </div>
     <div class="provide-payment-info">
         <a href="{{url}}" target="_blank" class="btn btn-blue btn-xlarge">Provide Billing Information <i

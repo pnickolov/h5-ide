@@ -1,4 +1,4 @@
-@charset "US-ASCII";
+@charset "UTF-8";
 /* Rectangle 5: */
 /* Rectangle 6: */
 /* Rectangle 9: */
@@ -9040,6 +9040,9 @@ g.shadow {
   .modal-db-replica-promote-confirm a:hover {
     text-decoration: underline; }
 
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
 #PaymentNav {
   background: #0c0c0c;
   height: 38px;
@@ -9204,33 +9207,51 @@ span.payment-next-billing {
   vertical-align: bottom;
   line-height: 2em; }
 
-.table.gray th,
-.table.gray td,
-.table-head-fix.gray .table-head thead th {
-  border-color: #7e7e7e; }
+.table.payment-table {
+  color: #a3a7d5; }
+  .table.payment-table tbody tr td.align-right {
+    text-align: right;
+    color: #cee1f7; }
 
-.table tbody tr td.align-right {
-  text-align: right; }
-
-.btn-xlarge {
-  padding: 10px 20px;
-  font-size: 17px; }
+.link-blue {
+  font-size: 12px;
+  color: #4a90e2; }
+  .link-blue:hover {
+    text-decoration: underline; }
 
 .payment-modal-wrap {
   text-align: center;
   padding-top: 30px; }
+  .payment-modal-wrap .btn-xlarge {
+    padding: 10px 20px;
+    font-size: 17px; }
+  .payment-modal-wrap p {
+    font-size: 12px;
+    color: #666; }
 
 .payment-modal-btn-wraper {
-  margin-bottom: 20px; }
-
-.link-blue {
-  color: #148BE6; }
+  margin-bottom: 10px; }
 
 .payment-credit-card {
-  text-align: center; }
-
-.payment-credit-card i {
-  font-size: 100px; }
+  width: 100%;
+  height: 100px;
+  background: url("../images/ide/creditcard-normal.png") center center no-repeat; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .payment-credit-card {
+      background-image: url("../images/ide/creditcard-normal@2x.png");
+      -webkit-background-size: 110px auto;
+      -moz-background-size: 110px auto;
+      -o-background-size: 110px auto;
+      background-size: 110px auto; } }
+  .payment-credit-card.payment-failed {
+    background: url("../images/ide/creditcard-failed.png") center center no-repeat; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+      .payment-credit-card.payment-failed {
+        background-image: url("../images/ide/creditcard-failed@2x.png");
+        -webkit-background-size: 121px auto;
+        -moz-background-size: 121px auto;
+        -o-background-size: 121px auto;
+        background-size: 121px auto; } }
 
 .payment-wrapper {
   width: 454px;

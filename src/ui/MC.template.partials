@@ -1371,49 +1371,48 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
-<p class="payment-credit-card">
-    <i class="icon-detail"></i>
-</p>
-<p class="modal-text-minor">You have enabled <a class="link-style" href="#">Instance State</a> in this stack. To enjoy this paid feature, your billing informaiton is required.</p>
-<p class="modal-text-major">How do we charge:</p>
-<table class="table gray">
+<div class="payment-credit-card">
+</div>
+<p class="modal-text-minor">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
+<p class="modal-text-major">Pricing:</p>
+<table class="table payment-table">
     <tbody>
         <tr>
-            <td>10 or less running instances</td>
+            <td>Up to 10 running instances</td>
             <td class="align-right">Free</td>
         </tr>
         <tr>
-            <td>Running instances exceeding 10</td>
+            <td>10 or more running instances</td>
             <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
         </tr>
     </tbody>
 </table>
-<a href="#" class="link-blue">Learn more about pricing</a>
+<a href="#" class="link-blue">Pricing in detail</a>
 <div class="payment-modal-wrap">
     <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
-        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
+        This will open a new window with Chargify.<br>
+Meanwhile please keep this page open
     </p>
 </div>
 
 
 
 <!--{{paymentUpdate}}-->
-<p class="payment-credit-card">
-    <i class="icon-detail"></i>
-</p>
+<div class="payment-credit-card payment-failed">
+</div>
 {{#ifCond usage "billing"}}
     <p class="modal-text-minor">To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
 {{else}}
-<p class="modal-text-minor">We have failed to charge your credit card. Before you can continue to
-    start or update app with instance state feature, please update your
-    payment information.</p>
+<p class="modal-text-minor">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>
 {{/ifCond}}
 
-<a href="#" class="link-blue">Learn more about pricing</a>
+<a href="#" class="link-blue">Pricing detail</a>
+
 <div class="payment-modal-wrap">
     <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Update Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
-        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.
+        This will open a new window with Chargify.<br/>
+Meanwhile please keep this page open
     </p>
 </div>

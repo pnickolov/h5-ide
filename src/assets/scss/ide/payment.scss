@@ -1,3 +1,4 @@
+@import "color";
 $navHeight : 38px;
 
 #PaymentNav {
@@ -184,37 +185,68 @@ span.payment-next-billing{
   vertical-align: bottom;
   line-height: 2em;
 }
-.table.gray th,
-.table.gray td,
-.table-head-fix.gray .table-head thead th{
-  border-color: #7e7e7e;
-}
-.table tbody tr td.align-right{
-  text-align: right;
-}
-.btn-xlarge{
-  padding: 10px 20px;
-  font-size: 17px;
+
+.table.payment-table {
+    color : lighten($base-p,40%);
+
+  tbody tr td.align-right {
+    text-align : right;
+    color      : lighten($base-b,30%);
+  }
+} 
+
+.link-blue {
+  font-size : 12px;
+  color     : $base-b;
+  &:hover {
+    text-decoration : underline;
+  }
 }
 
 .payment-modal-wrap{
   text-align: center;
   padding-top: 30px;
+
+  .btn-xlarge {
+    padding: 10px 20px;
+    font-size: 17px;
+  }
+
+  p {
+    font-size : 12px;
+    color     : #666;
+  }
 }
 
 .payment-modal-btn-wraper{
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
-.link-blue{
-  color: #148BE6;
+.payment-credit-card {
+  width  : 100%;
+  height : 100px;
+
+  background: url("../images/ide/creditcard-normal.png") center center no-repeat;
+
+  @include retina() {
+      & {
+        background-image : url("../images/ide/creditcard-normal@2x.png");
+        @include background-size( image-width("../images/ide/creditcard-normal.png") auto ); 
+      }
+    }
+
+  &.payment-failed {
+    background: url("../images/ide/creditcard-failed.png") center center no-repeat;
+
+    @include retina() {
+      & {
+        background-image : url("../images/ide/creditcard-failed@2x.png");
+        @include background-size( image-width("../images/ide/creditcard-failed.png") auto ); 
+      }
+    }
+  }
 }
-.payment-credit-card{
-  text-align: center;
-}
-.payment-credit-card i{
-  font-size: 100px;
-}
+
 .payment-wrapper{
   width: 454px;
   float: left;

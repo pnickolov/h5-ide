@@ -25,7 +25,9 @@ define [
         @panel   = options.panel
 
         @model      = Design.instance().component @uid
-        @appModel   = CloudResources( @type, Design.instance().region() )
+        if @mode in [ 'app', 'appedit' ] and @model.get( 'appId' )
+            @appModel   = CloudResources( @type, Design.instance().region() ).get @model.get( 'appId' )
+
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
 
@@ -35,7 +37,7 @@ define [
 
         propertyView = @propertyView = new @viewClass({
             model           : @model
-            appModel        : @appModel
+            appModel        : @appModel or null
             propertyPanel   : @
             panel           : @panel
         })

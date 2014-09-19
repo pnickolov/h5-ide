@@ -21,7 +21,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -39,7 +39,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -57,7 +57,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -75,7 +75,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -93,7 +93,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -117,7 +117,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -141,7 +141,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -159,7 +159,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -177,7 +177,7 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }
 
 
@@ -195,5 +195,5 @@ define [
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
+
   }

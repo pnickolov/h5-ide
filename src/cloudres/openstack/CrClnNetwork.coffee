@@ -15,7 +15,6 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
-      res
 
 
   }

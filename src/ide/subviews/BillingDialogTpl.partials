@@ -44,7 +44,7 @@
                 <table class="table-head">
                     <thead>
                     <tr>
-                        <th class="sortable" data-row-type="string" style="width:25%;">Date</th>
+                        <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">Date</th>
                         <th data-row-type="string" style="width:25%;">Amount</th>
                         <th data-row-type="string" style="width:25%;">Status</th>
                         <th data-row-type="string" style="width:25%;">Action</th>

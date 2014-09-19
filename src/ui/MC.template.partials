@@ -939,7 +939,7 @@ Additional Notes and Questions
     <div class="payment-wrapper">
         <div class="scroll-wrap">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="scroll-content" style="height: 450px">
+            <div class="scroll-content" style="height: 400px">
                 <div class="default-kp-group clearfix" style="display: none;">
                     <label for="kp-runtime-placeholder">$DefaultKeyPair</label>
                     <div id="kp-runtime-placeholder"></div>
@@ -954,9 +954,7 @@ Additional Notes and Questions
                        style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
                 {{/if}}
                 <div class="scroll-wrap" style="max-height:256px;">
-                    <div class="scrollbar-veritical-wrap">
-                        <div class="scrollbar-veritical-thumb"></div>
-                    </div>
+                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                     <div class="scroll-content res_diff_tree" id="app-update-summary-table">
                     </div>
                 </div>
@@ -994,7 +992,7 @@ Additional Notes and Questions
             <div class="title">Estimated Cost</div>
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
         </div>
-        <div class="estimate-visualops clearfix">
+        <div class="estimate-visualops clearfix hide">
             <div class="title">Estimated VisualOps Cost</div>
             <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
         </div>

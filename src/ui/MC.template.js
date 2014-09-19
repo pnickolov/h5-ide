@@ -1291,10 +1291,10 @@ function program10(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"app-apply-update\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\" style=\"height: 450px\">\n                <div class=\"default-kp-group clearfix\" style=\"display: none;\">\n                    <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                ";
+  buffer += "<div id=\"app-apply-update\" class=\"clearfix\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\" style=\"height: 400px\">\n                <div class=\"default-kp-group clearfix\" style=\"display: none;\">\n                    <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\">\n                        <div class=\"scrollbar-veritical-thumb\"></div>\n                    </div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
+  buffer += "\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                <div class=\"stack-validation\">\n                    <details open style=\"display:none;\">\n                        <summary>"
@@ -1303,7 +1303,7 @@ function program10(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
     + "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
+    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix hide\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</b> / month</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});

@@ -559,8 +559,6 @@ define [
         title: lang.ide.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
-        hasScroll: true
-        maxHeight: "450px"
         cancel: "Close"
 
       @updateModal.tpl.find(".modal-footer").hide()

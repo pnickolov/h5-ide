@@ -29,10 +29,13 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
             that.modal.find(".modal-body").css 'padding', "0"
             hasPaymentHistory = (_.keys paymentHistory).length
+            tempArray = []
             _.each paymentHistory, (e)->
               e.ending_balance = e.ending_balance_in_cents/100
-              e
-            that.paymentHistory = _.clone paymentHistory
+              tempArray.push(e)
+            tempArray.reverse()
+            paymentHistory = tempArray
+            that.paymentHistory = tempArray
             that.paymentUsage = _.clone paymentUsage
             that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
           , ()->

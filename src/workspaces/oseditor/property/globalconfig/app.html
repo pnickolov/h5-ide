@@ -1,0 +1,31 @@
+<section class="group">
+    <dl class="horizontal">
+        <dt>Platform</dt><dd>{{platform}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Region</dt><dd>{{region}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>App ID</dt><dd>{{id}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Usage</dt><dd>{{usage}}</dd>
+    </dl>
+</section>
+
+<section class="group">
+    <dl>
+        <dt>Description</dt><dd>{{description}}</dd>
+    </dl>
+    <dl>
+        <dt>Instance State</dt><dd>{{state}}</dd>
+    </dl>
+    <dl>
+        <dt>{{ i18n "PROP.APP_LBL_RESDIFF_VIEW"}}</dt>
+        {{#if resource_diff}}
+            <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
+        {{else}}
+            <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
+        {{/if}}
+    </dl>
+</section>

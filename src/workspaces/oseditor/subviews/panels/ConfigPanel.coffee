@@ -14,7 +14,8 @@ define [
             PropertyPanel.prototype.initialize.apply @, arguments
 
             @type = 'globalconfig'
-            @model      = Design.instance()
+            @model = @appModel = Design.instance()
+
             @viewClass  = OsPropertyView.getClass @mode, @type
 
 

@@ -1,18 +1,20 @@
 define [
     'constant'
     '../OsPropertyView'
-    './template'
+    './stack'
+    './app'
 
-], ( constant, OsPropertyView, template ) ->
+], ( constant, OsPropertyView, TplStack, TplApp ) ->
 
     OsPropertyView.extend {
         events:
             'change [data-target]': 'updateAttribute'
 
-        initialize: ->
-            @model = Design.instance()
-
         render: ->
+            template = switch
+                when @mode is 'app' then TplApp
+                else TplStack
+
             @$el.html template @model.toJSON()
             @
 

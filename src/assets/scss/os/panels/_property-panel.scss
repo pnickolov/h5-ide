@@ -158,6 +158,8 @@
     dl {
         margin: 8px 9px;
         &:first-child { margin-top: 0; padding-top: 8px; }
+        &:last-child { margin-bottom: 0; padding-bottom: 8px; }
+
         &::after { content: ""; height: 0; display: block; clear: both; }
 
         dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }

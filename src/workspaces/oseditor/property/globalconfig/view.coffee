@@ -18,7 +18,7 @@ define [
             @$el.html template @model.toJSON()
             @
 
-        setName: ->
+        getTitle: -> null
 
     }, {
         handleTypes: [ 'globalconfig' ]

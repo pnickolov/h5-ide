@@ -9354,6 +9354,9 @@ g.shadow {
     #OpsEditor .OEPanelRight.property dl:first-child, #OpsEditor .OEPanelRight.config dl:first-child {
       margin-top: 0;
       padding-top: 8px; }
+    #OpsEditor .OEPanelRight.property dl:last-child, #OpsEditor .OEPanelRight.config dl:last-child {
+      margin-bottom: 0;
+      padding-bottom: 8px; }
     #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
       content: "";
       height: 0;

@@ -17,7 +17,6 @@ define [
     state    : StatePanel
   }
 
-  __subPanel = null
   __defaultArgs = { uid: '', type: 'default' }
   __openArgs = __defaultArgs
   __currentPanel = 'resource'
@@ -28,7 +27,6 @@ define [
         'click .anchor li'       : '__scrollTo'
 
     initialize: ( options ) ->
-        window.Panel = @
         _.extend @, options
         @render()
 
@@ -43,12 +41,12 @@ define [
     renderSubPanel: ( subPanel, args ) ->
         args = _.extend { workspace: @workspace, panel: @ }, args
 
-        __subPanel?.remove()
-        __subPanel = new subPanel( args )
+        @subPanel?.remove()
+        @subPanel = new subPanel( args )
 
         $(document.activeElement).filter("input, textarea").blur()
 
-        @$( '.panel-body' ).html __subPanel.render().el
+        @$( '.panel-body' ).html @subPanel.render().el
 
     scrollTo: ( className ) ->
         $container = @$ '.panel-body'

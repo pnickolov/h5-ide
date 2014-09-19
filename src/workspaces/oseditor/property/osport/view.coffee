@@ -15,14 +15,21 @@ define [
             @sgListView = @reg new SgListView targetModel: @model
 
         render: ->
-            if @model.isAttached()
-                value = _.extend {
-                    hasFloatIP: @model.getFloatingIp()
-                    isPurePort: @model.type is constant.RESTYPE.OSPORT
-                }, @model.toJSON()
-                @$el.html template.stack(value)
+
+            if @mode in ['stack', 'appedit']
+
+                if @model.isAttached()
+                    value = _.extend {
+                        hasFloatIP: @model.getFloatingIp()
+                        isPurePort: @model.type is constant.RESTYPE.OSPORT
+                    }, @model.toJSON()
+                    @$el.html template.stack(value)
+                else
+                    @$el.html template.unattached(value)
+
             else
-                @$el.html template.unattached(value)
+
+                @$el.html template.app()
 
             # append sglist
             @$el.append @sgListView.render().el
@@ -44,5 +51,5 @@ define [
 
         }, {
             handleTypes: [ constant.RESTYPE.OSPORT ]
-            handleModes: [ 'stack', 'appedit' ]
+            handleModes: [ 'stack', 'app', 'appedit' ]
         }

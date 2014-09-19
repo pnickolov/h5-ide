@@ -3758,6 +3758,9 @@ $(function() {
                     var $switcher = self.$input.prevAll('.switcher');
                     if (!$switcher.length) {
                         var value = self.getValue();
+                        if (!value) {
+                            value = self.$input.attr('value')
+                        }
                         var status = '';
                         if (value === 'true') {
                             status = 'on';

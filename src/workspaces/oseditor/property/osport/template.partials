@@ -1,4 +1,15 @@
 <!-- {{stack}} -->
+<section class="group">
+    <dl class="horizontal">
+        <dt>ID</dt><dd>{{id}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Status</dt><dd>{{status}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Mac Address</dt><dd>{{mac_address}}</dd>
+    </dl>
+</section>
 <div class="option-group-head expand">
     Port Details
 </div>
@@ -11,12 +22,35 @@
     {{/if}}
     <section class="group required">
         <label class="name">Fixed IP</label>
-        <input data-target="ip" class="selection string ipv4" value="{{ip}}"/>
+        <input data-target="ip" class="selection string ipv4" data-tip="blablablabla..." value="{{ip}}"/>
     </section>
     <section class="group required">
         <label class="name">Associate Floating IP</label>
         <select data-target="float_ip" class="selection bool" value="{{#if hasFloatIP}}true{{else}}false{{/if}}" ></select>
     </section>
 </div>
+
 <!-- {{unattached}} -->
 Attach the port to a server
+
+<!-- {{app}} -->
+<section class="group">
+    <dl class="horizontal">
+        <dt>Name</dt><dd>{{name}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>ID</dt><dd>{{id}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Status</dt><dd>{{status}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Mac Address</dt><dd>{{mac_address}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Fixed IP</dt><dd>{{ip}}</dd>
+    </dl>
+    <dl class="horizontal">
+        <dt>Floating IP</dt><dd>{{float_ip}}</dd>
+    </dl>
+</section>

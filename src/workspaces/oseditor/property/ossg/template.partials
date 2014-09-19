@@ -35,9 +35,9 @@
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} />
-                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
-                    <option value="{{ip}}">{{ip}}</option>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." />
+                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" >
+                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                 </select>
                 <div class="rule-item-remove icon-delete"></div>
             </div>
@@ -59,9 +59,9 @@
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} />
-                <select data-target="ip" class="selection option" value="{{ip}}" data-valid-handle="ipValid" >
-                    <option value="{{ip}}">{{ip}}</option>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." />
+                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" >
+                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                 </select>
                 <div class="rule-item-remove icon-delete"></div>
             </div>

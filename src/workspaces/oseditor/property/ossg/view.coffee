@@ -28,7 +28,12 @@ define [
 
                 ipValid: (value) ->
 
-                    return true if MC.validate('cidr', value)
+                    if MC.validate('cidr', value)
+                        return true
+
+                    if Design.instance().component(value)
+                        return true
+
                     return false
 
                 portValid: (value) ->
@@ -84,6 +89,21 @@ define [
             })
 
             @addNewItem(@$el.find('.rule-list'))
+
+            allSGModels = Design.modelClassForType(constant.RESTYPE.OSSG).allObjects()
+            allSGObjs = _.map allSGModels, (sgModel) ->
+                return {
+                    text: sgModel.get('name')
+                    value: sgModel.id
+                }
+
+            _.delay () ->
+
+                that.$el.find('.rule-item select.selection[data-target="ip"]').each () ->
+                    selectDom = $(this)[0]
+                    if selectDom and selectDom.selectize
+                        # selectDom.selectize.clearOptions()
+                        selectDom.selectize.addOption(allSGObjs)
 
             @setTitle(@sgModel.get('name'))
 
@@ -238,6 +258,12 @@ define [
             ip = $ip.getValue()
 
             ip = null if ip is '0.0.0.0/0'
+            sg = null
+
+            sgModel = Design.instance().component(ip)
+            if sgModel
+                sg = sgModel
+                ip = null
 
             direction = 'ingress'
             if $ruleContainer.hasClass('egress')
@@ -270,7 +296,7 @@ define [
                 portMin: port_range_min,
                 portMax: port_range_max,
                 ip: ip,
-                sg: null
+                sg: sg
             }
 
         # for view to use
@@ -287,6 +313,10 @@ define [
             protocol = rule.protocol
 
             ip = '0.0.0.0/0' if ip is null
+            sgModel = ruleModel.get('sg')
+            if sgModel
+                ip = sgModel.get('name')
+                sgId = sgModel.id
 
             if rule.protocol in ['tcp', 'udp']
                 port = @getPortStr(rule.port_range_min, rule.port_range_max)
@@ -301,7 +331,8 @@ define [
                 direction: direction,
                 protocol: protocol,
                 port: port,
-                ip: ip
+                ip: ip,
+                sgId: sgId
             }
 
         removeSG: (event) ->

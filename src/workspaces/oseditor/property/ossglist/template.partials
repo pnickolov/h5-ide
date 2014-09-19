@@ -3,7 +3,7 @@
     Security Group
 </div>
 <div class="option-group">
-    <select placeholder="Pick a state..." class="selection option mutil show-input item-list" value="{{attachedSGList}}" data-button-tpl="button" data-select-tpl="sgOption" data-item-tpl="sgItem">
+    <select class="selection option mutil show-input item-list" value="{{attachedSGList}}" data-button-tpl="button" data-select-tpl="sgOption" data-item-tpl="sgItem">
         {{#each sgList}}
         <option value="{{uid}}">{{name}}</option>
         {{/each}}

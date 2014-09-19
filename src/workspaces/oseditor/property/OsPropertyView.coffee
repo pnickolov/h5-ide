@@ -36,11 +36,22 @@ define [
             sv?.remove?() for sv in @__subViews
             Backbone.View.prototype.remove.apply @, arguments
 
+        getRenderData: -> _.extend {}, @getExtendJson(), @getModelJson()
+
+        getExtendJson: ->
+            {
+                modeIsApp       : @modeIsApp
+                modeIsAppEdit   : @modeIsAppEdit
+                modeIsStack     : @modeIsStack
+            }
+
+        getModelJson: -> @model.toJSON()
+
         # Auto Bind 'data-target=attr', you need add a event first like below.
-            ###
-            events:
-                'change [data-target]': 'updateAttribute'
-            ###
+        ###
+        events:
+            'change [data-target]': 'updateAttribute'
+        ###
         updateAttribute: ( e ) ->
             $target = $ e.currentTarget
             attr = $target.data 'target'

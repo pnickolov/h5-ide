@@ -15,7 +15,7 @@ define [
                 when @mode is 'app' then TplApp
                 else TplStack
 
-            @$el.html template @model.toJSON()
+            @$el.html template @getRenderData()
             @
 
         getTitle: -> null

@@ -32,15 +32,17 @@ define [
 
 
     render: () ->
-
-        that = @
+        design = @options.workspace.design
 
         propertyView = @propertyView = new @viewClass({
-            mode            : @mode
             model           : @model
             appModel        : @appModel or null
             propertyPanel   : @
             panel           : @panel
+            mode            : @mode
+            modeIsApp       : design.modeIsApp()
+            modeIsAppEdit   : design.modeIsAppEdit()
+            modeIsStack     : design.modeIsStack()
         })
 
         bindSelection(@$el, propertyView.selectTpl)
@@ -49,14 +51,11 @@ define [
         @$el.append propertyView.render().el
 
         @restoreAccordion(@model?.type, @uid)
-
         @
 
     setTitle: ( title = @propertyView.getTitle() ) ->
         unless title then return
-
         $title = @$ 'h1'
-
         if $title.size()
             $title.eq(0).text title
         else

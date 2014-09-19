@@ -11,6 +11,11 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
     getExtNetworks : ()-> @where {"router:external":true}
 
     doFetch        : ()-> ApiRequest("os_network_List", {region : @region()})
-    parseFetchData : (res)-> res.networks
-    parseExternalData : ( res )-> res
+    parseFetchData : (data)-> data.networks
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
+
+
   }

@@ -336,9 +336,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
     camelToUnderscore: ( obj ) ->
       exceptionList = []
+      self = @
       if not _.isObject obj then return obj
       if _.isArray obj
-        return _.map obj, ( arr ) -> @camelToUnderscore arr
+        return _.map obj, ( arr ) -> self.camelToUnderscore arr
 
       for camelKey, value of obj
         if not (obj.hasOwnProperty camelKey) then continue
@@ -353,7 +354,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
           obj[underscoreKey] = value
           delete obj[camelKey]
 
-        @camelToUnderscore value
+        self.camelToUnderscore value
 
       obj
 

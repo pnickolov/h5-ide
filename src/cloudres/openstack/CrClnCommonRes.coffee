@@ -18,7 +18,10 @@ define [
     doFetch : ()-> ApiRequest("os_floatingip_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.floatingips
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -33,7 +36,10 @@ define [
     doFetch : ()-> ApiRequest("os_pool_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.pools
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -48,7 +54,10 @@ define [
     doFetch : ()-> ApiRequest("os_vip_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.vips
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -63,7 +72,10 @@ define [
     doFetch : ()-> ApiRequest("os_healthmonitor_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.health_monitors
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -78,7 +90,10 @@ define [
     doFetch : ()-> ApiRequest("os_router_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.routers
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -99,7 +114,10 @@ define [
         })
 
     parseFetchData    : ( data )-> _.values(data)
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -120,7 +138,10 @@ define [
         })
 
     parseFetchData    : ( data )-> _.values(data)
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -135,7 +156,10 @@ define [
     doFetch : ()-> ApiRequest("os_subnet_List", {region : @region()})
 
     parseFetchData    : ( data )-> data.subnets
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -150,7 +174,10 @@ define [
     doFetch : ()-> ApiRequest("os_securitygroup_List", {region : @region()})
 
     parseFetchData    : ( data )-> data.security_groups
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }
 
 
@@ -165,5 +192,8 @@ define [
     doFetch : ()-> ApiRequest("os_port_List", {region : @region()})
 
     parseFetchData    : ( data )-> data.ports
-    parseExternalData : ( data )-> data
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+      res
   }

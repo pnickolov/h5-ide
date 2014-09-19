@@ -351,8 +351,9 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
             char
           .join( '' )
 
-          obj[underscoreKey] = value
-          delete obj[camelKey]
+          if underscoreKey isnt camelKey
+            obj[underscoreKey] = value
+            delete obj[camelKey]
 
         self.camelToUnderscore value
 

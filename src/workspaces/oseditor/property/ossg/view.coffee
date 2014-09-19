@@ -88,22 +88,11 @@ define [
                 memberList: memberList
             })
 
-            @addNewItem(@$el.find('.rule-list'))
-
-            allSGModels = Design.modelClassForType(constant.RESTYPE.OSSG).allObjects()
-            allSGObjs = _.map allSGModels, (sgModel) ->
-                return {
-                    text: sgModel.get('name')
-                    value: sgModel.id
-                }
-
             _.delay () ->
+                that.$el.find('.rule-item').each () ->
+                    that.initSGList($(this))
 
-                that.$el.find('.rule-item select.selection[data-target="ip"]').each () ->
-                    selectDom = $(this)[0]
-                    if selectDom and selectDom.selectize
-                        # selectDom.selectize.clearOptions()
-                        selectDom.selectize.addOption(allSGObjs)
+            @addNewItem(@$el.find('.rule-list'))
 
             @setTitle(@sgModel.get('name'))
 
@@ -112,6 +101,21 @@ define [
             @
 
         nullStr: 'N/A'
+
+        initSGList: ($ruleItem) ->
+
+            allSGModels = Design.modelClassForType(constant.RESTYPE.OSSG).allObjects()
+            allSGObjs = _.map allSGModels, (sgModel) ->
+                return {
+                    text: sgModel.get('name')
+                    value: sgModel.id
+                }
+
+            $selectDom = $ruleItem.find('select.selection[data-target="ip"]')
+            selectDom = $selectDom[0]
+            if selectDom and selectDom.selectize
+                # selectDom.selectize.clearOptions()
+                selectDom.selectize.addOption(allSGObjs)
 
         switchDirection: (event) ->
 
@@ -153,7 +157,6 @@ define [
                     newRuleId = @sgModel.addRule(rule) if rule
                     @addNewItem($ruleItem)
                     $ruleItem.data('id', newRuleId)
-                    $ruleItem.find('.icon-delete').removeClass('hide')
                     @updateCount()
 
             if attr is 'name'
@@ -163,12 +166,25 @@ define [
             if attr is 'description'
                 @sgModel.set('description', value)
 
+            @refreshDeleteState()
+
+        refreshDeleteState: () ->
+
+            @$el.find('.rule-item').each () ->
+                if $(this).data('id')
+                    $(this).find('.icon-delete').removeClass('hide')
+                else
+                    $(this).find('.icon-delete').addClass('hide')
+
         addNewItem: ($lastItem) ->
 
+            that = @
             if $lastItem.hasClass('rule-item')
-                $lastItem.after(template.newItem())
+                $newItem = $(template.newItem()).insertAfter($lastItem)
             else
-                $lastItem.append(template.newItem())
+                $newItem = $(template.newItem()).appendTo($lastItem)
+            _.delay () ->
+                that.initSGList($newItem) if $newItem
 
         removeRule: (event) ->
 

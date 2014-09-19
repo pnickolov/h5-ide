@@ -17,7 +17,7 @@ define [
       "click .option-group-head" : "updateRightPanelOption"
 
     initialize: ( options ) ->
-
+        region = options.workspace.design.region()
         @options = options
         @mode    = Design.instance().mode()
         @uid     = options.uid
@@ -26,7 +26,7 @@ define [
 
         @model      = Design.instance().component @uid
         if @model and @mode in [ 'app', 'appedit' ] and @model.get( 'appId' )
-            @appModel   = CloudResources( @type, Design.instance().region() ).get @model.get( 'appId' )
+            @appModel = CloudResources( @type, region ).get @model.get( 'appId' )
 
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 

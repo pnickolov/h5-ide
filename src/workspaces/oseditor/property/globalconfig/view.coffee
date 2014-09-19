@@ -18,6 +18,8 @@ define [
             @$el.html template @model.toJSON()
             @
 
+        setName: ->
+
     }, {
         handleTypes: [ 'globalconfig' ]
         handleModes: [ 'stack', 'app', 'appedit' ]

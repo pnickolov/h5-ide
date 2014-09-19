@@ -373,6 +373,7 @@
         body.parent().css({
           width: width
         });
+        this.resize();
         return this;
       };
 

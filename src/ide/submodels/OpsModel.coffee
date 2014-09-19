@@ -693,6 +693,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       platform    : "ec2-vpc"
       state       : "Enabled"
       version     : @get("version")
+      resource_diff: true
       component   : {}
       layout      : { size : [240, 240] }
       agent :

@@ -1989,10 +1989,24 @@ TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  
+  return "\n    <p class=\"modal-text-minor\">To enjoy adavanced feature of instance state, your billing informaiton is required.</p>\n";
+  }
 
-  buffer += "<p class=\"payment-credit-card\">\n    <i class=\"icon-detail\"></i>\n</p>\n<p class=\"modal-text-minor\">We have failed to charge your credit card. Before you can continue to\n    start or update app with instance state feature, please update your\n    payment information.</p>\n\n<a href=\"#\" class=\"link-blue\">Learn more about pricing</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+function program3(depth0,data) {
+  
+  
+  return "\n<p class=\"modal-text-minor\">We have failed to charge your credit card. Before you can continue to\n    start or update app with instance state feature, please update your\n    payment information.</p>\n";
+  }
+
+  buffer += "<p class=\"payment-credit-card\">\n    <i class=\"icon-detail\"></i>\n</p>\n";
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.usage), "billing", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n<a href=\"#\" class=\"link-blue\">Learn more about pricing</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        You will be brought to Chargify in a new browser window. <br/> Meanwhile, make sure this window is alive.\n    </p>\n</div>";
   return buffer;

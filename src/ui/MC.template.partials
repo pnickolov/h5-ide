@@ -1402,9 +1402,13 @@ Additional Notes and Questions
 <p class="payment-credit-card">
     <i class="icon-detail"></i>
 </p>
+{{#ifCond usage "billing"}}
+    <p class="modal-text-minor">To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
+{{else}}
 <p class="modal-text-minor">We have failed to charge your credit card. Before you can continue to
     start or update app with instance state feature, please update your
     payment information.</p>
+{{/ifCond}}
 
 <a href="#" class="link-blue">Learn more about pricing</a>
 <div class="payment-modal-wrap">

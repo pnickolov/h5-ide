@@ -330,6 +330,7 @@ define [
           paymentModal = result.modal
           paymentState = App.user.get('paymentState')
           if paymentState is 'pastdue'
+
             that.__runStack(paymentUpdate,paymentModal)
           paymentModal.listenTo App.user, 'change:paymentState', ->
             if paymentModal.isClosed then return false

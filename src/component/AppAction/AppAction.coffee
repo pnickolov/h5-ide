@@ -315,7 +315,7 @@ define [
         if paymentState is 'active'
           checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
 
-    showPayment: (elem)->
+    showPayment: (elem, usage)->
       if elem
         $(elem).html MC.template.loadingSpiner
       else
@@ -326,10 +326,12 @@ define [
           confirm:
             text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
-      paymentModal.find('.modal-footer').hide()
+        paymentModal.find('.modal-footer').hide()
       showPaymentDefer = Q.defer()
       App.user.getPaymentUpdate().then (result)->
-        dom = MC.template.paymentUpdate result
+        data = _.clone result
+        data.usage = usage
+        dom = MC.template.paymentUpdate  data
         if App.user.get('paymentState') is 'pastdue'
           if elem
             paymentModal = elem
@@ -346,7 +348,9 @@ define [
           showPaymentDefer.resolve({result:result, modal:paymentModal})
       , (err)->
         App.user.getPaymentInfo().then (result)->
-          dom = MC.template.paymentSubscribe result
+          data = _.clone result
+          data.usage = usage
+          dom = MC.template.paymentSubscribe data
           if elem
             $(elem).html dom
             $(elem).trigger 'paymentRendered'

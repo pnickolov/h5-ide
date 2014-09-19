@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus" ,"backbone" ], ( BillingDialogTpl, lang, ApiRequest, Modal ) ->
+define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus", 'appAction'], ( BillingDialogTpl, lang, ApiRequest, Modal, appAction ) ->
 
     BillingDialog = Backbone.View.extend {
 
@@ -20,11 +20,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           template: MC.template.loadingSpiner
           confirm: hide: true
           delay: 1
-        if  paymentState is "unpay"
-          App.user.getPaymentInfo().then (result)=>
-            @modal.setContent BillingDialogTpl.noPaymentCard result
-          , ()->
-            notification 'error', "Error while getting user payment info, please try again later."
+        @modal.find('.modal-body').css({background: "#252525"})
+        if not paymentState or paymentState is "unpay"
+          @modal.setWidth("550px")
+          appAction.showPayment(@modal.find('.modal-body'), 'billing').then ->
+            that.modal.resize()
         else
           Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
             that.modal.find(".modal-body").css 'padding', "0"
@@ -181,7 +181,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
 
       animateUsage: ()->
         that = @
-        seconds = 3
+        seconds = 2
         loaderBg = document.getElementById('usage_all')
         loader = document.getElementById('usage_free')
         numElem = document.getElementById('usage_num')
@@ -211,7 +211,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           tempElement = element || tempElement
           tempAngle = angle || tempAngle
           tempElement.setAttribute( 'd' , anim)
-          console.log num, a
           if not direct then numElem.innerText = Math.round(if num > numMax then numMax else num)
           if(a < tempAngle and not direct)
             that.chartTimeOut = window.setTimeout draw, t

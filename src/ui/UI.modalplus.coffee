@@ -276,6 +276,7 @@ define ['backbone'], (Backbone)->
         setWidth: (width)->
           body = @.tpl.find('.modal-body')
           body.parent().css( width: width )
+          @.resize()
           @
         compact: ()->
           @tpl.find('.modal-body').css(padding: 0)

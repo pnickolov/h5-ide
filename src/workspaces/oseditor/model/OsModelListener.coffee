@@ -18,10 +18,19 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       new Asso( @, options.pool )
 
       if options.createByUser
-        availableIP = Design.modelClassForType(constant.RESTYPE.OSPORT).getAvailableIP(@parent())
-        @set('ip', availableIP) if availableIP
-      
+        Design.modelClassForType(constant.RESTYPE.OSSG).attachDefaultSG(@)
+        @assignIP()
+
       return
+
+    assignIP : () ->
+
+      availableIP = Design.modelClassForType(constant.RESTYPE.OSPORT).getAvailableIP(@parent())
+      @set('ip', availableIP) if availableIP
+
+    onParentChanged : (oldParent) ->
+
+      @assignIP() if oldParent
 
     isAttached : ()-> true
     isVisual   : ()-> true

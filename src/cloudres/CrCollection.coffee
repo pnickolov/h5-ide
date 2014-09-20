@@ -108,7 +108,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       @__lastFetchError = null
 
       self = @
-      @__fetchPromise = @doFetch().then ( data )->
+      @__fetchPromise = @doFetch().then? ( data )->
 
         if not self.__selfParseData
           try

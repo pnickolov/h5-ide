@@ -24,6 +24,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving"]
 
+  OpsModelLastestVersion = "2014-09-18"
+
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
@@ -32,7 +34,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state      : OpsModelState.UnRun
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
-      version    : "2014-09-18"
+      version    : OpsModelLastestVersion
 
       # usage          : ""
       # terminateFail  : false
@@ -769,5 +771,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     }
 
   OpsModel.State = OpsModelState
+  OpsModel.LatestVersion = OpsModelLastestVersion
 
   OpsModel

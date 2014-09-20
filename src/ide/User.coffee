@@ -12,10 +12,16 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
   UserState =
     NotFirstTime : 2
 
-  Backbone.Model.extend {
+  PaymentState =
+    NoInfo  : ""
+    Pastdue : "pastdue"
+    Unpaid  : "unpaid"
+    Active  : "active"
+
+  Model = Backbone.Model.extend {
 
     defaults :
-      paymentState : "" # "" || "pastdue" || "unpay" || "active"
+      paymentState : "" # "" || "pastdue" || "unpaid" || "active"
 
     initialize : ()->
       @set {
@@ -39,7 +45,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequestR("payment_usage")
 
 
-    isUnpay : ()-> @get("paymentState") is "unpay"
+    isUnpaid : ()-> @get("paymentState") is PaymentState.Unpaid
 
 
     userInfoAccuired : ( result )->
@@ -254,3 +260,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
             break
         return
   }
+
+  Model.PaymentState = PaymentState
+
+  Model

@@ -162,15 +162,15 @@ define [
   VisualOps.prototype.onPaymentStateChange = ()->
     oldPaymentState = @user.previous("paymentState")
     switch @user.get("paymentState")
-      when "unpay"
-        if oldPaymentState isnt ""
+      when User.PaymentState.Unpaid
+        if oldPaymentState isnt User.PaymentState.NoInfo
           @__view?.notifyUnpay()
           @workspaces?.removeAllSpaces ( space )->
             opsModel = space.opsModel
             opsModel and opsModel.isPMRestricted() and opsModel.isApp()
 
-      when "active"
-        if oldPaymentState is "unpay"
+      when User.PaymentState.Active
+        if oldPaymentState is User.PaymentState.Unpaid
           for space, idx in @workspaces.spaces()
             opsModel = space.opsModel
             if opsModel and opsModel.isPMRestricted() and opsModel.isApp()

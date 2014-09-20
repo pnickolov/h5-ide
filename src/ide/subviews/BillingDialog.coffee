@@ -178,6 +178,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           if that.modal.isClosed then return false
           if paymentState isnt ''
             that._renderBillingDialog(that.modal)
+        @modal.stopListening App.user
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 

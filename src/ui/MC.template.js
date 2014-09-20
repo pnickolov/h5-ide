@@ -1989,24 +1989,10 @@ TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  
-  return "\n    <p class=\"modal-text-minor\">To enjoy adavanced feature of instance state, your billing informaiton is required.</p>\n";
-  }
 
-function program3(depth0,data) {
-  
-  
-  return "\n<p class=\"modal-text-minor payment-text\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n";
-  }
-
-  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n";
-  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.usage), "billing", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open.\n    </p>\n</div>";
   return buffer;

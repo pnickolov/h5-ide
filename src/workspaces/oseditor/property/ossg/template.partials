@@ -5,6 +5,7 @@
     Security Group
 </div>
 <div class="option-group">
+    {{#if modeIsApp}}
     <section class="group">
         <dl class="vertical">
             <dt>ID</dt><dd>{{emptyStr id}}</dd>
@@ -16,6 +17,7 @@
             <dt>Description</dt><dd>{{emptyStr description}}</dd>
         </dl>
     </section>
+    {{else}}
     <section class="group required">
         <label class="name">Name</label>
         <input data-target="name" class="selection string" value="{{name}}"/>
@@ -24,6 +26,7 @@
         <label class="name">Description</label>
         <input data-target="description" class="selection string" value="{{description}}"/>
     </section>
+    {{/if}}
 </div>
 <div class="option-group-head expand">Rule (<span class="sg-rule-count"></span>)</div>
 <div class="direction-switch btn-group">

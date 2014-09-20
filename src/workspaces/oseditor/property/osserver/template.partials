@@ -132,7 +132,7 @@
         <dt>Size</dt><dd>{{emptyStr size}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Created</dt><dd>{{emptyStr created}}</dd>
+        <dt>Created</dt><dd>{{emptyStr created_at}}</dd>
     </dl>
 </section>
 

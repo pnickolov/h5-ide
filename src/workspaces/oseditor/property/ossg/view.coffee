@@ -370,5 +370,5 @@ define [
 
     }, {
         handleTypes: [ 'ossg' ]
-        handleModes: [ 'stack', 'appedit' ]
+        handleModes: [ 'stack', 'appedit', 'app' ]
     }

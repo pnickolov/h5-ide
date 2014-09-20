@@ -77,8 +77,9 @@ define [
                 attachedSGList.push(sgUID)
 
             @$el.html template.stack({
-                sgList: sgList
-                attachedSGList: attachedSGList.join(',')
+                sgList: sgList,
+                attachedSGList: attachedSGList.join(','),
+                appData: @getRenderData()
             })
 
             @refreshRemoveState()
@@ -155,5 +156,5 @@ define [
 
     }, {
         handleTypes: [ 'ossglist' ]
-        handleModes: [ 'stack', 'appedit' ]
+        handleModes: [ 'stack', 'appedit', 'app' ]
     }

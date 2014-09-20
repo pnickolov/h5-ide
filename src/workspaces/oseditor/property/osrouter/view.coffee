@@ -14,7 +14,7 @@ define [
 
         render: ->
 
-            if @mode in ['stack']
+            if @mode in ['stack', 'appedit']
                 console.log @model
                 subnets = @model.connectionTargets("OsRouterAsso")
                 json = @model.toJSON()

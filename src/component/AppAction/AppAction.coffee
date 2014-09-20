@@ -298,23 +298,6 @@ define [
         return
 
 
-
-
-    _bindPaymentEvent: (modal, checkPaymentDefer, paymentUpdate)->
-      modal.find("a.btn.btn-xlarge").click (event)->
-        event.preventDefault()
-        window.open $(event.currentTarget).attr("href"), ""
-        modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
-        modal.setContent MC.template.loadingSpiner()
-        return false
-      App.WS.once 'userStateChange', (idx, dag)->
-        paymentState = dag.payment_state
-        App.user.set('paymentState', paymentState)
-        console.log paymentState
-        if modal.isClosed then return false
-        if paymentState is 'active'
-          checkPaymentDefer.resolve {paymentModal: modal, paymentUpdate: paymentUpdate}
-
     showPayment: (elem, usage)->
       if elem
         $(elem).html MC.template.loadingSpiner

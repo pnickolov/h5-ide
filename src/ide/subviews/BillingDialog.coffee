@@ -11,15 +11,21 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
         "click .btn.btn-xlarge"               : "_bindPaymentEvent"
 
-      initialize : ()->
+      initialize : (modal)->
         that = @
         paymentState = App.user.get("paymentState")
-        @modal = new Modal
-          title: lang.ide.PAYMENT_SETTING_TITLE
-          width: "650px"
-          template: MC.template.loadingSpiner
-          confirm: hide: true
-          delay: 1
+        if modal
+          @modal = modal
+          @modal.setWidth "650px"
+          .setTitle lang.ide.PAYMENT_SETTING_TITLE
+          .setContent MC.template.loadingSpiner
+          .find('.modal-confirm').hide()
+        else
+          @modal = new Modal
+            title: lang.ide.PAYMENT_SETTING_TITLE
+            width: "650px"
+            template: MC.template.loadingSpiner
+            confirm: hide: true
         @modal.find('.modal-body').css({background: "#252525"})
         if not paymentState
           App.user.getPaymentInfo().then (result)=>
@@ -167,18 +173,13 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         window.open $(event.currentTarget).attr("href"), ""
         @modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
         @modal.setContent MC.template.loadingSpiner()
-        App.WS.once 'userStateChange', (idx, dag)->
-          paymentState = dag.payment_state
-          App.user.set('paymentState', paymentState)
-          console.log paymentState
-          if @modal.isClosed then return false
-          if paymentState is 'active'
-            that.modal.close()
-            window.setTimeout ()->
-              that._renderBillingDialog()
-            , 2
-      _renderBillingDialog: ->
-        new BillingDialog()
+        @modal.listenTo App.user, 'change:paymentState', ->
+          paymentState = App.user.get 'paymentState'
+          if that.modal.isClosed then return false
+          if paymentState isnt ''
+            that._renderBillingDialog(that.modal)
+      _renderBillingDialog: (modal)->
+        new BillingDialog(modal)
 
       animateUsage: ()->
         that = @

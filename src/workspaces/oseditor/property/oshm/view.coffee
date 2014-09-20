@@ -1,21 +1,29 @@
 define [
     'constant'
     '../OsPropertyView'
-    './template'
+    './stack'
+    './app'
     'CloudResources'
     'UI.selection'
-], ( constant, OsPropertyView, template, CloudResources, bindSelection ) ->
+], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, bindSelection ) ->
 
     OsPropertyView.extend {
 
         events:
             "change [data-target]": "updateAttribute"
 
+        initialize: ( options ) ->
+            @isApp = options.isApp
+
         setTitle: ( title ) -> @$( 'h1' ).text title
 
         render: ->
-            bindSelection(@$el, @selectTpl)
-            @$el.html template @model.toJSON()
+            if @isApp
+                @$el.html TplApp @model.toJSON()
+            else
+                bindSelection(@$el, @selectTpl)
+                @$el.html TplStack @model.toJSON()
+
             @
 
 

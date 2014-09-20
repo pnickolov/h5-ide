@@ -4,7 +4,7 @@
 </div>
 <div class="option-group">
     <section class="group">
-        <select class="selection option mutil item-list" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem">
+        <select class="selection option mutil item-list" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
             {{#each list}}
             <option value="{{id}}">{{name}}</option>
             {{/each}}

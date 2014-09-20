@@ -1,7 +1,7 @@
 define [
   'constant'
   '../OsPropertyView'
-  './stack'
+  './template/stack'
   '../oshmlist/view'
 
 ], ( constant, OsPropertyView, template, HmlistView ) ->
@@ -12,10 +12,8 @@ define [
 
         initialize: ->
             @memConn = @model.connections 'OsPoolMembership'
-            @hmlistView = new HmlistView( {
-                targetModel: @model
-            } )
-            @selectTpl = @reg( @hmlistView ).selectTpl
+            @hmlistView = @reg new HmlistView targetModel: @model
+            @selectTpl = @hmlistView.selectTpl
 
         render: ->
             data = @model.toJSON()

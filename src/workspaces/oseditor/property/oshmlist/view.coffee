@@ -1,10 +1,11 @@
 define [
     'constant'
     '../OsPropertyView'
-    './template'
+    './stack'
+    './app'
     'CloudResources'
     '../oshm/view'
-], ( constant, OsPropertyView, template, CloudResources, HmView ) ->
+], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, HmView ) ->
 
     OsPropertyView.extend {
 
@@ -17,21 +18,43 @@ define [
 
         initialize: (options) ->
             @targetModel = options.targetModel
+            @isApp = options.isApp
+            if @isApp
+                @appModelList = @targetModel
+                delete @targetModel
 
+            that = @
             @selectTpl =
                 button: () ->
-                    return template.addButton()
+                    return that.getTpl().addButton()
 
-                getItem: (item) -> template.item( Design.instance().component( item.value ).toJSON() )
+                getItem: (item) -> that.getTpl().item( Design.instance().component( item.value ).toJSON() )
+
+        getTpl: ->
+            if @isApp
+                TplApp
+            else
+                TplStack
 
         render: ->
-            @refreshList()
+            if @isApp
+                @renderApp()
+            else
+                @refreshList()
+
             @
 
         refreshList: () ->
-            @$el.html template.stack({
-                activeList: @targetModel.get("healthMonitors").map( (hm) -> hm.id ).join( ',' )
+            @$el.html @getTpl().stack({
+                activeList: @targetModel.get("healthMonitors").map( (hm) -> hm.id ).join ','
                 list: @targetModel.get("healthMonitors").map (hm)-> hm.toJSON()
+            })
+
+        renderApp: ->
+            @$el.html @getTpl().stack({
+                activeList: _.pluck( @appModelList, 'id' ).join ','
+                list: _.map @appModelList, ( model ) -> model.toJSON()
+                isApp: true
             })
 
         getSelectItemModel: ( $item ) ->
@@ -53,7 +76,7 @@ define [
             $target = $(event.currentTarget)
 
             model = @getSelectItemModel($target)
-            view = @reg new HmView model: model
+            view = @reg new HmView model: model, isApp: @isApp
 
             @listenTo model, 'change', @refreshList
             @showFloatPanel(view.render().el)

@@ -10,6 +10,7 @@ define [
     './oslistener/view'
     './oslistener/appView'
     './ospool/view'
+    './ospool/appView'
     './osport/view'
     './osrouter/view'
     './osextnet/view'

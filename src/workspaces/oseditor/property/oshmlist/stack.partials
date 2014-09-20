@@ -1,0 +1,24 @@
+<!-- {{stack}} -->
+<div class="option-group-head expand">
+    Health Monitor({{list.length}})
+</div>
+<div class="option-group">
+    <section class="group">
+        <select class="selection option mutil item-list" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
+            {{#each list}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
+        </select>
+    </section>
+</div>
+
+<!-- {{item}} -->
+<div class="item hm-item">
+    <div class="item-name">{{name}}</div>
+    <div class="item-info">{{type}} | {{urlPath}}</div>
+
+    <div class="item-remove icon-delete"></div>
+</div>
+
+<!-- {{addButton}} -->
+<div>Create New Health Monitor...</div>

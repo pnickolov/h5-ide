@@ -1,3 +1,8 @@
+{{#if modeIsAppEdit}}
+    <dl><dt>ID</dt><dd>{{appId}}</dd></dl>
+    <dl><dt>Status</dt><dd>{{app.status}}</dd></dl>
+    <dl><dt>Subnet ID</dt><dd>{{app.subnet_id}}</dd></dl>
+{{/if}}
 <div class="option-group-head expand">
     Listener Details
 </div>
@@ -14,7 +19,7 @@
 
     <section class="group required">
         <label class="name">Protocol</label>
-        <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="listener-protocol">
+        <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="listener-protocol" {{#if modeIsAppEdit}}disabled{{/if}}>
             <option value='HTTP'>HTTP</option>
             <option value='HTTPS'>HTTPS</option>
             <option value='TCP'>TCP</option>
@@ -23,7 +28,7 @@
 
     <section class="group required">
         <label class="name">Protocol Port</label>
-        <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"/>
+        <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"  {{#if modeIsAppEdit}}disabled{{/if}}/>
     </section>
 </div>
 

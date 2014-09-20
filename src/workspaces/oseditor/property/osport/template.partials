@@ -1,4 +1,5 @@
 <!-- {{stack}} -->
+{{#if modeIsAppEdit}}
 <section class="group">
     <dl class="horizontal">
         <dt>ID</dt><dd>{{id}}</dd>
@@ -10,6 +11,7 @@
         <dt>Mac Address</dt><dd>{{mac_address}}</dd>
     </dl>
 </section>
+{{/if}}
 <div class="option-group-head expand">
     Port Details
 </div>

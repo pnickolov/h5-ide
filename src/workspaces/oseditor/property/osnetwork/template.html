@@ -1,4 +1,7 @@
 {{#unless modeIsApp}}
+{{#if modeIsAppEdit}}
+<dl><dt>ID</dt><dd>{{app.id}}</dd></dl>
+{{/if}}
 <section class="group required">
     <label class="name">Name</label>
     <input data-target="name" class="selection string" value="{{name}}"/>

@@ -8,6 +8,7 @@ define [
     './oslistener-asso/view'
     './ospool-membership/view'
     './oslistener/view'
+    './oslistener/appView'
     './ospool/view'
     './osport/view'
     './osrouter/view'

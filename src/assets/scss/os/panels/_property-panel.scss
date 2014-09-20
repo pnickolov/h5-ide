@@ -6,10 +6,31 @@
 
     .panel-body {
         @include font-mono;
+
         h1 {
           font-size: 20px;
           padding: 5px;
           text-align: center;
+        }
+
+        dl.horizontal {
+            margin: 8px 9px;
+            padding: 0;
+            &::after { content: ""; height: 0; display: block; clear: both; }
+
+            dt { min-width: 80px; float: left; padding: 0; margin: 0; }
+            dd { float: left; padding: 0; margin: 0; }
+        }
+
+        dl {
+            margin: 8px 9px;
+            &:first-child { margin-top: 0; padding-top: 8px; }
+            &:last-child { margin-bottom: 0; padding-bottom: 8px; }
+
+            &::after { content: ""; height: 0; display: block; clear: both; }
+
+            dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }
+            dd { margin: 0; padding: 5px 0 5px 8px;}
         }
 
         .selection.item-list {
@@ -144,26 +165,6 @@
             margin-top: 3px;
             margin-right: 3px;
         }
-    }
-
-    dl.horizontal {
-        margin: 8px 9px;
-        padding: 0;
-        &::after { content: ""; height: 0; display: block; clear: both; }
-
-        dt { min-width: 80px; float: left; padding: 0; margin: 0; }
-        dd { float: left; padding: 0; margin: 0; }
-    }
-
-    dl {
-        margin: 8px 9px;
-        &:first-child { margin-top: 0; padding-top: 8px; }
-        &:last-child { margin-bottom: 0; padding-bottom: 8px; }
-
-        &::after { content: ""; height: 0; display: block; clear: both; }
-
-        dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }
-        dd { margin: 0; padding: 5px 0 5px 8px;}
     }
 
     .name {

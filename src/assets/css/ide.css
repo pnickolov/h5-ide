@@ -9237,6 +9237,43 @@ g.shadow {
       font-size: 20px;
       padding: 5px;
       text-align: center; }
+    #OpsEditor .OEPanelRight.property .panel-body dl.horizontal, #OpsEditor .OEPanelRight.config .panel-body dl.horizontal {
+      margin: 8px 9px;
+      padding: 0; }
+      #OpsEditor .OEPanelRight.property .panel-body dl.horizontal::after, #OpsEditor .OEPanelRight.config .panel-body dl.horizontal::after {
+        content: "";
+        height: 0;
+        display: block;
+        clear: both; }
+      #OpsEditor .OEPanelRight.property .panel-body dl.horizontal dt, #OpsEditor .OEPanelRight.config .panel-body dl.horizontal dt {
+        min-width: 80px;
+        float: left;
+        padding: 0;
+        margin: 0; }
+      #OpsEditor .OEPanelRight.property .panel-body dl.horizontal dd, #OpsEditor .OEPanelRight.config .panel-body dl.horizontal dd {
+        float: left;
+        padding: 0;
+        margin: 0; }
+    #OpsEditor .OEPanelRight.property .panel-body dl, #OpsEditor .OEPanelRight.config .panel-body dl {
+      margin: 8px 9px; }
+      #OpsEditor .OEPanelRight.property .panel-body dl:first-child, #OpsEditor .OEPanelRight.config .panel-body dl:first-child {
+        margin-top: 0;
+        padding-top: 8px; }
+      #OpsEditor .OEPanelRight.property .panel-body dl:last-child, #OpsEditor .OEPanelRight.config .panel-body dl:last-child {
+        margin-bottom: 0;
+        padding-bottom: 8px; }
+      #OpsEditor .OEPanelRight.property .panel-body dl::after, #OpsEditor .OEPanelRight.config .panel-body dl::after {
+        content: "";
+        height: 0;
+        display: block;
+        clear: both; }
+      #OpsEditor .OEPanelRight.property .panel-body dl dt, #OpsEditor .OEPanelRight.config .panel-body dl dt {
+        min-width: 80px;
+        margin: 0;
+        padding: 5px 0 5px 0; }
+      #OpsEditor .OEPanelRight.property .panel-body dl dd, #OpsEditor .OEPanelRight.config .panel-body dl dd {
+        margin: 0;
+        padding: 5px 0 5px 8px; }
     #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .selectize-dropdown-content .info, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .selectize-dropdown-content .info {
       display: inline-block;
       overflow: hidden;
@@ -9332,43 +9369,6 @@ g.shadow {
       top: 0;
       margin-top: 3px;
       margin-right: 3px; }
-  #OpsEditor .OEPanelRight.property dl.horizontal, #OpsEditor .OEPanelRight.config dl.horizontal {
-    margin: 8px 9px;
-    padding: 0; }
-    #OpsEditor .OEPanelRight.property dl.horizontal::after, #OpsEditor .OEPanelRight.config dl.horizontal::after {
-      content: "";
-      height: 0;
-      display: block;
-      clear: both; }
-    #OpsEditor .OEPanelRight.property dl.horizontal dt, #OpsEditor .OEPanelRight.config dl.horizontal dt {
-      min-width: 80px;
-      float: left;
-      padding: 0;
-      margin: 0; }
-    #OpsEditor .OEPanelRight.property dl.horizontal dd, #OpsEditor .OEPanelRight.config dl.horizontal dd {
-      float: left;
-      padding: 0;
-      margin: 0; }
-  #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
-    margin: 8px 9px; }
-    #OpsEditor .OEPanelRight.property dl:first-child, #OpsEditor .OEPanelRight.config dl:first-child {
-      margin-top: 0;
-      padding-top: 8px; }
-    #OpsEditor .OEPanelRight.property dl:last-child, #OpsEditor .OEPanelRight.config dl:last-child {
-      margin-bottom: 0;
-      padding-bottom: 8px; }
-    #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
-      content: "";
-      height: 0;
-      display: block;
-      clear: both; }
-    #OpsEditor .OEPanelRight.property dl dt, #OpsEditor .OEPanelRight.config dl dt {
-      min-width: 80px;
-      margin: 0;
-      padding: 5px 0 5px 0; }
-    #OpsEditor .OEPanelRight.property dl dd, #OpsEditor .OEPanelRight.config dl dd {
-      margin: 0;
-      padding: 5px 0 5px 8px; }
   #OpsEditor .OEPanelRight.property .name, #OpsEditor .OEPanelRight.config .name {
     width: 100%;
     padding: 8px 10px 2px 9px;

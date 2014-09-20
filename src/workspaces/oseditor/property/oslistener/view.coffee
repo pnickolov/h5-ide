@@ -2,7 +2,7 @@ define [
     'constant'
     '../OsPropertyView'
     '../osport/view'
-    './stack'
+    './template/stack'
 
 
 ], ( constant, OsPropertyView, portView, template ) ->

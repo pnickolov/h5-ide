@@ -197,3 +197,21 @@ define [
       @camelToUnderscore res
 
   }
+
+
+  ### Member ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrOsMemberCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSMEMBER
+
+    doFetch : ()-> ApiRequest("os_member_List", {region : @region()})
+
+    parseFetchData    : ( data )-> data.members
+    parseExternalData : ( data )->
+      res = $.extend(true, [], data)
+      @camelToUnderscore res
+
+  }

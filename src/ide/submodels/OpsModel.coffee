@@ -214,7 +214,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
-      if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
+      if (json.version or "").split("-").length < 3 then json.version = OpsModelLastestVersion
 
       @__jsonData = json
 
@@ -252,6 +252,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
         attr = {
           name       : newJson.name
+          version    : newJson.version
           updateTime : +(new Date())
           stoppable  : newJson.property.stoppable
           state      : OpsModelState.UnRun
@@ -315,6 +316,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           progress      : 0
           region        : region
           usage         : toRunJson.usage
+          version       : toRunJson.version
           updateTime    : +(new Date())
           stoppable     : toRunJson.property.stoppable
           resource_diff : false

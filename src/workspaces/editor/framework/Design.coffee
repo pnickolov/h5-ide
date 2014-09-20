@@ -518,7 +518,7 @@ define [
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
 
-    data.version = @__opsModel.get("version")
+    data.version = OpsModel.LatestVersion
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 

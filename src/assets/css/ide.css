@@ -9268,6 +9268,11 @@ span.payment-next-billing {
   width: 454px;
   float: left; }
 
+.payment-text {
+  letter-spacing: .4px;
+  line-height: 20px;
+  margin: 10px 0; }
+
 .payment-wrapper > .scroll-wrap > .scroll-content {
   padding: 12px 15px; }
 

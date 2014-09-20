@@ -1373,16 +1373,16 @@ Additional Notes and Questions
 <!--{{paymentSubscribe}}-->
 <div class="payment-credit-card">
 </div>
-<p class="modal-text-minor">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
+<p class="modal-text-minor payment-text">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
 <p class="modal-text-major">Pricing:</p>
 <table class="table payment-table">
     <tbody>
         <tr>
-            <td>Up to 10 running instances</td>
+            <td>Up to 10 managed instances</td>
             <td class="align-right">Free</td>
         </tr>
         <tr>
-            <td>10 or more running instances</td>
+            <td>10 or more managed instances</td>
             <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
         </tr>
     </tbody>
@@ -1404,10 +1404,8 @@ Meanwhile please keep this page open
 {{#ifCond usage "billing"}}
     <p class="modal-text-minor">To enjoy adavanced feature of instance state, your billing informaiton is required.</p>
 {{else}}
-<p class="modal-text-minor">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>
+<p class="modal-text-minor payment-text">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>
 {{/ifCond}}
-
-<a href="#" class="link-blue">Pricing detail</a>
 
 <div class="payment-modal-wrap">
     <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Update Billing Information <i class="icon-caret-right"></i></a></div>

@@ -1978,7 +1978,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"payment-credit-card\">\n</div>\n<p class=\"modal-text-minor\">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>\n<p class=\"modal-text-major\">Pricing:</p>\n<table class=\"table payment-table\">\n    <tbody>\n        <tr>\n            <td>Up to 10 running instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>10 or more running instances</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n    </tbody>\n</table>\n<a href=\"#\" class=\"link-blue\">Pricing in detail</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "<div class=\"payment-credit-card\">\n</div>\n<p class=\"modal-text-minor payment-text\">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>\n<p class=\"modal-text-major\">Pricing:</p>\n<table class=\"table payment-table\">\n    <tbody>\n        <tr>\n            <td>Up to 10 managed instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>10 or more managed instances</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n    </tbody>\n</table>\n<a href=\"#\" class=\"link-blue\">Pricing in detail</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br>\nMeanwhile please keep this page open\n    </p>\n</div>";
   return buffer;
@@ -2000,13 +2000,13 @@ function program1(depth0,data) {
 function program3(depth0,data) {
   
   
-  return "\n<p class=\"modal-text-minor\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n";
+  return "\n<p class=\"modal-text-minor payment-text\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n";
   }
 
   buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.usage), "billing", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<a href=\"#\" class=\"link-blue\">Pricing detail</a>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open\n    </p>\n</div>";
   return buffer;

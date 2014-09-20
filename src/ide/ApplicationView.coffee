@@ -129,6 +129,6 @@ define [
       return
 
     notifyUnpay : ()->
-      notification "error", "Your billing info is invalid, please update your billing info."
+      notification "error", "Failed to charge your account. Please update your billing info."
       return
   }

@@ -48,7 +48,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       dbparameterGroups    : "DBParameterGroups"
       dbsecurityGroups     : "DBSecurityGroups"
       dbsubnetGroup        : "DBSubnetGroup"
-      dbname               : "DBName"
 
     # All resource type will be replaced in below list
     ALL:

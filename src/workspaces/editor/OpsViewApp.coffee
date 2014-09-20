@@ -5,7 +5,8 @@ define [
   "./template/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
-], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang )->
+  "appAction"
+], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang, AppAction )->
 
   OpsViewBase.extend {
 
@@ -142,5 +143,7 @@ define [
       @toolbar.remove()
 
       @canvas.updateSize()
+
+      AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
       return
   }

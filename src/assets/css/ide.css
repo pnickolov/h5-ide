@@ -5587,6 +5587,16 @@ button#property-app-keypair {
 #OpsEditor .disabled-event-layout {
   z-index: 6; }
 
+.ops-apppm-wrapper {
+  position: absolute;
+  width: 300px;
+  min-height: 300px;
+  right: 20px;
+  background: #333;
+  z-index: 1000000000;
+  top: 20px;
+  border-radius: 4px; }
+
 .canvas-view {
   position: relative;
   font-size: 0;
@@ -7038,7 +7048,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

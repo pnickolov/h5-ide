@@ -171,14 +171,12 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         that = @
         event.preventDefault()
         window.open $(event.currentTarget).attr("href"), ""
-        @modal.setTitle lang.ide.PAYMENT_LOADING_BILLING
-        @modal.setContent MC.template.loadingSpiner()
         @modal.listenTo App.user, 'change:paymentState', ->
           paymentState = App.user.get 'paymentState'
           if that.modal.isClosed then return false
           if paymentState isnt ''
             that._renderBillingDialog(that.modal)
-        @modal.stopListening App.user
+        @modal.on 'close', ()->that.modal.stopListening App.user
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 

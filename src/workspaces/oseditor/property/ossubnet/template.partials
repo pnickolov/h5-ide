@@ -1,0 +1,31 @@
+<!-- {{stack}} -->
+<section class="group required">
+    <label class="name">Subnet Name</label>
+    <input class="selection string" value="{{name}}" data-target="name" />
+</section>
+<section class="group required">
+    <label class="name">Cidr</label>
+    <input class="selection cidrv4" value="{{cidr}}" data-target="cidr"/>
+</section>
+
+<!-- {{app}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>CIDR</dt><dd>{{emptyStr cidr}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Enable DHCP</dt><dd>{{#if enable_dhcp}}true{{else}}false{{/if}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>DNS Name Server</dt><dd>{{emptyStr dns_nameservers.[0]}}</dd>
+    </dl>
+</section>

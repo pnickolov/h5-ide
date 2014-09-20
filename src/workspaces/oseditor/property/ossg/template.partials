@@ -5,6 +5,17 @@
     Security Group
 </div>
 <div class="option-group">
+    <section class="group">
+        <dl class="vertical">
+            <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Description</dt><dd>{{emptyStr description}}</dd>
+        </dl>
+    </section>
     <section class="group required">
         <label class="name">Name</label>
         <input data-target="name" class="selection string" value="{{name}}"/>

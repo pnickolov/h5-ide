@@ -26,3 +26,18 @@
 
 <!-- {{addButton}} -->
 <div>Create New Security Group...</div>
+
+<!-- {{app}} -->
+<div class="option-group-head expand">
+    Security Group ({{sgCount}})
+</div>
+<div class="option-group">
+    <ul class="os-sg-view-list">
+        {{#each sgViewList}}
+        <li class="item">
+            <div class="name">{{name}}</div>
+            <span class="info">{{sg_info}}</span>
+        </li>
+        {{/each}}
+    </ul>
+</div>

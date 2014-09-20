@@ -29,7 +29,7 @@ define [
 
             else
 
-                @$el.html template.app()
+                @$el.html template.app @getRenderData()
 
             # append sglist
             @$el.append @sgListView.render().el

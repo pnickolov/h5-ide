@@ -35,22 +35,22 @@ Attach the port to a server
 
 <!-- {{app}} -->
 <section class="group">
-    <dl class="horizontal">
-        <dt>Name</dt><dd>{{name}}</dd>
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>ID</dt><dd>{{id}}</dd>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>Status</dt><dd>{{status}}</dd>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>Mac Address</dt><dd>{{mac_address}}</dd>
+    <dl class="vertical">
+        <dt>Mac Address</dt><dd>{{emptyStr mac_address}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>Fixed IP</dt><dd>{{ip}}</dd>
+    <dl class="vertical">
+        <dt>Fixed IP</dt><dd>{{emptyStr ip}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>Floating IP</dt><dd>{{float_ip}}</dd>
+    <dl class="vertical">
+        <dt>Floating IP</dt><dd>{{emptyStr float_ip}}</dd>
     </dl>
 </section>

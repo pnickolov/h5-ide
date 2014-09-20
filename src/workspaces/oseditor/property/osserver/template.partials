@@ -66,20 +66,6 @@
     </section>
 </div>
 
-
-<!-- {{appTemplate}} -->
-<div class="option-group-head expand">
-    Server Details
-</div>
-<div class="option-group">
-    <div class="main">
-        App View for Server {{name}}
-    </div>
-    <div class="sub">
-        Coming soon...
-    </div>
-</div>
-
 <!--{{imageListKey}}-->
 <div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
 
@@ -91,3 +77,86 @@
 
 <!--{{kpSelection}}-->
 <select class="selection option" name="kpDropdown" data-button-tpl="kpButton" {{#if isAppEdit}}disabled="disabled"{{/if}}></select>
+
+<!-- {{appTemplate}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Image</dt><dd>
+            <div class="os-server-image-info">
+                <img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png" alt=""/>
+                <p class="property-os-image-text">{{emptyStr system_metadata.image_image_name}}<span class="uid">{{emptyStr system_metadata.image_image_id}}</span></p>
+            </div>
+        </dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Flavor</dt><dd>{{emptyStr flavor_id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Availability Zone</dt><dd>{{emptyStr availability_zone}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Key Name</dt><dd>{{emptyStr key_name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Launched at</dt><dd>{{emptyStr category}}</dd>
+    </dl>
+</section>
+
+<!-- {{imageTemplate}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr image_image_id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Distro</dt><dd>{{emptyStr image_os_distro}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Version</dt><dd>{{emptyStr image_os_version}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Arichitecture</dt><dd>{{emptyStr image_architecture}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Volume Size</dt><dd>{{emptyStr image_vol_size}} GB</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Created</dt><dd>{{emptyStr created}}</dd>
+    </dl>
+</section>
+
+<!-- {{volumeTemplate}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Device Name</dt><dd>{{emptyStr device_name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Description</dt><dd>{{emptyStr description}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Created at</dt><dd>{{emptyStr created}}</dd>
+    </dl>
+</section>

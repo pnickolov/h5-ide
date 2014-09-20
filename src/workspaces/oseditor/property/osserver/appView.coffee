@@ -10,6 +10,9 @@ define [
 
   OsPropertyView.extend {
 
+    events:
+
+        'click .os-server-image-info': 'openImageInfoPanel'
 
     initialize: ->
 
@@ -19,15 +22,18 @@ define [
         }
 
     render: ->
-      json = @model.toJSON()
-      @$el.html template.appTemplate json
+
+      @$el.html template.appTemplate @getRenderData()
       # append sglist
       @$el.append @sgListView.render().el
       @
+
+    openImageInfoPanel: ->
+
+      serverData = @getRenderData()
+      @showFloatPanel(template.imageTemplate(serverData.system_metadata))
 
   }, {
     handleTypes: [ constant.RESTYPE.OSSERVER ]
     handleModes: [ 'app' ]
   }
-
-#  Panel.openProperty({uid:'server0001',type: "OS::Nova::Server"})

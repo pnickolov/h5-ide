@@ -1,8 +1,8 @@
 define [
   'constant'
   '../OsPropertyView'
-  './stack'
-], ( constant, OsPropertyView, stackTpl ) ->
+  './template'
+], ( constant, OsPropertyView, template ) ->
 
     OsPropertyView.extend {
 
@@ -10,10 +10,14 @@ define [
             "change [data-target]" : "updateAttribute"
 
         render: ->
-            @$el.html stackTpl( @model.toJSON() )
+
+            if @mode in ['stack', 'appedit']
+                @$el.html template.stack( @model.toJSON() )
+            else
+                @$el.html template.app @getRenderData()
             @
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]
-        handleModes: [ 'stack', 'appedit' ]
+        handleModes: [ 'stack', 'app', 'appedit' ]
     }

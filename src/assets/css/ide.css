@@ -9232,13 +9232,13 @@ g.shadow {
   .link-blue:hover {
     text-decoration: underline; }
 
-.payment-modal-wrap {
+.payment-modal-wrap, .provide-payment-info {
   text-align: center;
   padding-top: 30px; }
-  .payment-modal-wrap .btn-xlarge {
+  .payment-modal-wrap .btn-xlarge, .provide-payment-info .btn-xlarge {
     padding: 10px 20px;
     font-size: 17px; }
-  .payment-modal-wrap p {
+  .payment-modal-wrap p, .provide-payment-info p {
     font-size: 12px;
     color: #888; }
 

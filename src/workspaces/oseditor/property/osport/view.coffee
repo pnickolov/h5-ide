@@ -37,6 +37,7 @@ define [
             @
 
         updateAttribute: (event)->
+
             $target = $(event.currentTarget)
 
             attr = $target.data 'target'

@@ -29,14 +29,14 @@
 
 <!-- {{app}} -->
 <div class="option-group-head expand">
-    Security Group ({{sgCount}})
+    Security Group ({{attachedSGList.length}})
 </div>
 <div class="option-group">
-    <ul class="os-sg-view-list">
-        {{#each sgViewList}}
-        <li class="item">
+    <ul class="item-list">
+        {{#each attachedSGList}}
+        <li class="item" data-id="{{id}}">
             <div class="name">{{name}}</div>
-            <span class="info">{{sg_info}}</span>
+            <span class="info">{{ruleCount}} Rules, {{memberCount}} Members, {{description}}</span>
         </li>
         {{/each}}
     </ul>

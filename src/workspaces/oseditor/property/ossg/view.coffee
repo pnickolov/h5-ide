@@ -79,20 +79,28 @@ define [
                     name: member.get('name')
                 }
 
+            currentMode = Design.instance().mode()
+            modeIsAppEdit = currentMode is 'appedit'
+            modeIsApp = currentMode is 'app'
+
             @$el.html template.stack({
-                ingressRules: ingressRules,
-                egressRules: egressRules,
+                id: @sgModel.get('appId'),
                 name: @sgModel.get('name'),
                 description: @sgModel.get('description'),
                 defaultSG: @sgModel.isDefault(),
-                memberList: memberList
+                ingressRules: ingressRules,
+                egressRules: egressRules,
+                memberList: memberList,
+                modeIsAppEdit: modeIsAppEdit,
+                modeIsApp: modeIsApp
             })
 
             _.delay () ->
                 that.$el.find('.rule-item').each () ->
                     that.initSGList($(this))
 
-            @addNewItem(@$el.find('.rule-list'))
+            if not modeIsApp
+                @addNewItem(@$el.find('.rule-list'))
 
             @setTitle(@sgModel.get('name'))
 

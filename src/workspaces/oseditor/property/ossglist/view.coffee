@@ -48,6 +48,18 @@ define [
                         description: sgModel.get('description')
                     })
 
+        getAttachSGForApp: () ->
+
+            attachedSGModel = []
+            region = Design.instance().region()
+            targetAppModel = CloudResources(@targetModel.type, region)?.get @targetModel.get('appId')
+            if targetAppModel and targetAppModel.security_groups
+                _.each targetAppModel.security_groups, (sgId) ->
+                    sgAppModel = CloudResources(constant.RESTYPE.OSSG, region)?.get(sgId)
+                    attachedSGModel.push(sgAppModel) if sgAppModel
+                    null
+            return attachedSGModel
+
         render: ->
 
             bindSelection(@$el, @selectTpl)
@@ -56,33 +68,53 @@ define [
 
         refreshList: () ->
 
-            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+            currentMode = Design.instance().mode()
 
-            # all sg
-            allSGModels = OSSGModel.allObjects()
-            sgList = []
-            _.each allSGModels, (sgModel) ->
-                sgName = sgModel.get('name')
-                sgUID = sgModel.get('id')
-                sgList.push({
-                    name: sgName,
-                    uid: sgUID
+            if currentMode in ['stack', 'appedit']
+
+                OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+
+                # all sg
+                allSGModels = OSSGModel.allObjects()
+                sgList = []
+                _.each allSGModels, (sgModel) ->
+                    sgName = sgModel.get('name')
+                    sgUID = sgModel.get('id')
+                    sgList.push({
+                        name: sgName,
+                        uid: sgUID
+                    })
+
+                # attached sg
+                attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+                attachedSGList = []
+                _.each attachedSGModels, (sgModel) ->
+                    sgUID = sgModel.get('id')
+                    attachedSGList.push(sgUID)
+
+                @$el.html template.stack({
+                    sgList: sgList,
+                    attachedSGList: attachedSGList.join(',')
                 })
 
-            # attached sg
-            attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
-            attachedSGList = []
-            _.each attachedSGModels, (sgModel) ->
-                sgUID = sgModel.get('id')
-                attachedSGList.push(sgUID)
+                @refreshRemoveState()
 
-            @$el.html template.stack({
-                sgList: sgList,
-                attachedSGList: attachedSGList.join(','),
-                appData: @getRenderData()
-            })
+            else
 
-            @refreshRemoveState()
+                # attached sg
+                attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+                attachedSGList = []
+                _.each attachedSGModels, (sgModel) ->
+                    attachedSGList.push({
+                        id: sgModel.id,
+                        name: sgModel.get('name'),
+                        ruleCount: sgModel.get('rules').length,
+                        memberCount: sgModel.getMemberList().length,
+                        description: sgModel.get('description')
+                    })
+                @$el.html template.app({
+                    attachedSGList: attachedSGList
+                })
 
         refreshRemoveState: () ->
 
@@ -94,7 +126,7 @@ define [
 
         getSelectItemModel: ($sgItem) ->
 
-            sgId = $sgItem.data('value')
+            sgId = $sgItem.data('value') or $sgItem.data('id')
             sgModel = Design.instance().component(sgId)
             return sgModel
 

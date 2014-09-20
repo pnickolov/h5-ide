@@ -1980,7 +1980,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"payment-credit-card\">\n</div>\n<p class=\"modal-text-minor payment-text\">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>\n<p class=\"modal-text-major\">Pricing:</p>\n<table class=\"table payment-table\">\n    <tbody>\n        <tr>\n            <td>Up to 10 managed instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>10 or more managed instances</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n    </tbody>\n</table>\n<a href=\"#\" class=\"link-blue\">Pricing in detail</a>\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br>\nMeanwhile please keep this page open\n    </p>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br>\nMeanwhile please keep this page open.\n    </p>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
@@ -2008,7 +2008,7 @@ function program3(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open\n    </p>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open.\n    </p>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);

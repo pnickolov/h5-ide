@@ -1392,7 +1392,7 @@ Additional Notes and Questions
     <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
         This will open a new window with Chargify.<br>
-Meanwhile please keep this page open
+Meanwhile please keep this page open.
     </p>
 </div>
 
@@ -1411,6 +1411,6 @@ Meanwhile please keep this page open
     <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Update Billing Information <i class="icon-caret-right"></i></a></div>
     <p>
         This will open a new window with Chargify.<br/>
-Meanwhile please keep this page open
+Meanwhile please keep this page open.
     </p>
 </div>

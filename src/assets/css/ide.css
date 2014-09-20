@@ -5592,10 +5592,15 @@ button#property-app-keypair {
   width: 300px;
   min-height: 300px;
   right: 20px;
-  background: #333;
-  z-index: 1000000000;
+  background: #1c1c1f;
+  z-index: 9;
   top: 20px;
-  border-radius: 4px; }
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(22, 21, 27, 0.2); }
+  .ops-apppm-wrapper:hover {
+    top: 22px;
+    box-shadow: 0 0 5px rgba(22, 21, 27, 0.6); }
 
 .canvas-view {
   position: relative;
@@ -7048,8 +7053,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9127,8 +9131,13 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 100%; }
 
 .payment-credit-middle {
-  width: 120px;
-  height: 60px; }
+  width: 80px;
+  height: 44px;
+  background: url("../images/ide/creditcard-normal.png") left center no-repeat;
+  background-size: 60px auto; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .payment-credit-middle {
+      background-image: url("../images/ide/creditcard-normal@2x.png"); } }
 
 .usage-wrapper {
   width: 300px;
@@ -9211,13 +9220,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   text-align: left;
   right: -160px; }
 
-span.payment-next-billing {
-  position: absolute;
-  right: 20px;
-  font-size: 12px;
-  vertical-align: bottom;
-  line-height: 2em; }
-
 .table.payment-table {
   color: #a3a7d5; }
   .table.payment-table tbody tr td.align-right {
@@ -9271,7 +9273,8 @@ span.payment-next-billing {
 .payment-text {
   letter-spacing: .4px;
   line-height: 20px;
-  margin: 10px 0; }
+  margin: 10px 0;
+  color: #eee; }
 
 .payment-wrapper > .scroll-wrap > .scroll-content {
   padding: 12px 15px; }
@@ -9299,3 +9302,20 @@ span.payment-next-billing {
 .payment-warning a {
   color: #f9b42d;
   text-decoration: underline; }
+
+/* Billing Modal */
+#PaymentBillingTab h5 {
+  color: #eee;
+  line-height: 32px;
+  margin-bottom: 4px; }
+#PaymentBillingTab div + h5 {
+  margin-top: 8px; }
+#PaymentBillingTab .left p {
+  margin-bottom: 4px; }
+#PaymentBillingTab .payment-next-billing {
+  float: right;
+  margin-top: 5px;
+  font-size: 12px;
+  vertical-align: bottom;
+  line-height: 2em;
+  color: #99a; }

@@ -93,8 +93,16 @@ $navHeight : 38px;
   width: 100%;
 }
 .payment-credit-middle{
-  width: 120px;
-  height: 60px;
+  width           : 80px;
+  height          : 44px;
+  background      : url("../images/ide/creditcard-normal.png") left center no-repeat;
+  background-size : 60px auto;
+
+  @include retina() {
+      & {
+        background-image : url("../images/ide/creditcard-normal@2x.png");
+      }
+    }
 }
 
 .usage-wrapper {
@@ -178,13 +186,6 @@ $navHeight : 38px;
   text-align: left;
   right: -160px;
 }
-span.payment-next-billing{
-  position: absolute;
-  right: 20px;
-  font-size: 12px;
-  vertical-align: bottom;
-  line-height: 2em;
-}
 
 .table.payment-table {
     color : lighten($base-p,40%);
@@ -256,6 +257,7 @@ span.payment-next-billing{
   letter-spacing : .4px;
   line-height    : 20px;
   margin         : 10px 0;
+  color          : #eee;
 }
 
 .payment-wrapper > .scroll-wrap > .scroll-content{
@@ -284,4 +286,33 @@ span.payment-next-billing{
 .payment-warning a{
   color: #f9b42d;
   text-decoration: underline;
+}
+
+/* Billing Modal */
+
+#PaymentBillingTab {
+  h5 {
+    color         : #eee;
+    line-height   : 32px;
+    margin-bottom : 4px;
+  }
+
+  div + h5 {
+    margin-top : 8px;
+  }
+
+  .left p {
+    margin-bottom : 4px;
+  }
+
+  .payment-next-billing {
+    float      : right;
+    margin-top : 5px;
+
+    font-size      : 12px;
+    vertical-align : bottom;
+    line-height    : 2em;
+    color          : #99a;
+  }
+
 }

@@ -23,7 +23,7 @@
     </nav>
     <div class="tabContent" id="PaymentBody">
         <section id="PaymentBillingTab">
-            <div>Credit Card Infomation</div>
+            <h5>Credit Card Infomation</h5>
             <div class="clearfix">
                 <div class="left clearfix">
                     <div class="payment-credit-middle left">
@@ -38,7 +38,7 @@
                     <a class="btn btn-blue" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>
-            <p>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.period_end_at "MMMM d, yyyy"}}</span></p>
+            <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.period_end_at "MMMM d, yyyy"}}</span></h5>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">

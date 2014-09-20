@@ -1,4 +1,9 @@
+{{#unless modeIsApp}}
 <section class="group required">
     <label class="name">Name</label>
     <input data-target="name" class="selection string" value="{{name}}"/>
 </section>
+{{else}}
+<dl><dt>Name</dt><dd>{{name}}</dd></dl>
+<dl><dt>ID</dt><dd>{{id}}</dd></dl>
+{{/unless}}

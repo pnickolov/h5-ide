@@ -7,10 +7,10 @@ define [
 
     OsPropertyView.extend {
         render: ->
-            @$el.html template @model.toJSON()
+            @$el.html template @getRenderData()
             @
 
     }, {
         handleTypes: [ constant.RESTYPE.OSNETWORK ]
-        handleModes: [ 'stack', 'appedit' ]
+        handleModes: [ 'stack', 'app', 'appedit' ]
     }

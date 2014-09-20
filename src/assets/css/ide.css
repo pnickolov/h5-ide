@@ -9237,13 +9237,11 @@ g.shadow {
   padding-top: 30px; }
   .payment-modal-wrap .btn-xlarge, .provide-payment-info .btn-xlarge {
     padding: 10px 20px;
-    font-size: 17px; }
+    font-size: 17px;
+    margin-bottom: 10px; }
   .payment-modal-wrap p, .provide-payment-info p {
     font-size: 12px;
     color: #888; }
-
-.payment-modal-btn-wraper {
-  margin-bottom: 10px; }
 
 .payment-credit-card {
   width: 100%;

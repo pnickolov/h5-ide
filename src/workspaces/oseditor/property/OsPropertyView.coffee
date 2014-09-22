@@ -27,7 +27,7 @@ define [
             if subView is @ then return subView
 
             @__subViews.push subView
-            _.extend subView, _.pick @, 'propertyPanel', 'panel', 'mode', 'modeIsApp', 'modeIsAppEdit', 'modeIsStack'
+            _.extend subView, _.pick @, 'propertyPanel', 'panel'
             subView.__superView = @
 
             subView
@@ -40,9 +40,9 @@ define [
 
         getExtendJson: ->
             {
-                modeIsApp       : @modeIsApp
-                modeIsAppEdit   : @modeIsAppEdit
-                modeIsStack     : @modeIsStack
+                modeIsApp       : @modeIsApp()
+                modeIsAppEdit   : @modeIsAppEdit()
+                modeIsStack     : @modeIsStack()
             }
 
         getModelJson: ->
@@ -71,11 +71,27 @@ define [
         getPanel: -> @panel or @__superView?.panel
         getPropertyPanel: -> @propertyPanel or @__superView?.propertyPanel
 
+        # Modes
+        getModelForMode: -> @model
+        mode: ->
+            model = @getModelForMode()
+            unless model then return ''
+
+            mod = Design.instance().mode()
+            mod = 'stack' if mod is 'appedit' and not model.get( 'appId' )
+            mod
+
+        modeIsApp       : -> @mode() is 'app'
+        modeIsAppEdit   : -> @mode() is 'appedit'
+        modeIsStack     : -> @mode() is 'stack'
+
+
         # Overwrite it in subview if the title is not `name` attribute
         getTitle        : -> @model?.get( 'name' )
         setTitle        : -> @getPropertyPanel()?.setTitle.apply @getPropertyPanel(), arguments
         showFloatPanel  : -> @getPanel()?.showFloatPanel.apply @getPanel(), arguments
         hideFloatPanel  : -> @getPanel()?.hideFloatPanel.apply @getPanel(), arguments
+
 
 
 

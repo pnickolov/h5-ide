@@ -33,6 +33,8 @@ define [
                 getItem: (item) ->
                     that.getTpl().item( that.getItemData item )
 
+        getModelForMode: -> @targetModel
+
         getItemData: ( item ) -> Design.instance().component( item.value ).toJSON()
 
         getAppData: () ->

@@ -23,7 +23,7 @@ define [
                 @$el.html TplApp @modelData
             else
                 bindSelection(@$el, @selectTpl)
-                @$el.html TplStack @model.toJSON()
+                @$el.html TplStack @getRenderData()
 
             @
 

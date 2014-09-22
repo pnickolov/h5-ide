@@ -24,7 +24,7 @@ define [
         @panel   = options.panel
         @model   = Design.instance().component @uid
 
-        @mode    = Design.instance().mode()
+        @mode    = options.workspace.design.mode()
         @mode    = 'stack' if @mode is 'appedit' and not @model.get( 'appId' )
 
         if @model and @mode in [ 'app', 'appedit' ] and @model.get( 'appId' )
@@ -41,10 +41,6 @@ define [
             appModel        : @appModel or null
             propertyPanel   : @
             panel           : @panel
-            mode            : @mode
-            modeIsApp       : @mode is 'app'
-            modeIsAppEdit   : @mode is 'appedit'
-            modeIsStack     : @mode is 'stack'
         })
 
         bindSelection(@$el, propertyView.selectTpl)

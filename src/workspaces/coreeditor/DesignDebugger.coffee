@@ -89,6 +89,13 @@ define [ "Design" ], ( Design )->
     App.workspaces.getAwakeSpace().view.canvas.autoLayout()
 
 
+  Design.debug.getDataFromLocal = ( app_id ) ->
+    JSON.parse(localStorage.getItem("get_resource/" + app_id))
+
+  Design.debug.setDataToLocal = ( data ) ->
+    localStorage.setItem("get_resource/" + data.app_json.id, JSON.stringify(data) )
+
+
   window.d    = ()-> Design.instance()
   window.dd   = Design.debug
   window.dget = ( a )-> Design.instance().get(a)

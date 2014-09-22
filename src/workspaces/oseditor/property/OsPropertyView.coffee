@@ -47,9 +47,9 @@ define [
 
         getModelJson: ->
             switch
-                when @modeIsStack then @model.toJSON()
-                when @modeIsApp then @appModel?.toJSON()
-                when @modeIsAppEdit then _.extend @model.toJSON(), app: @appModel?.toJSON()
+                when @modeIsStack() then @model.toJSON()
+                when @modeIsApp() then @appModel?.toJSON()
+                when @modeIsAppEdit() then _.extend @model.toJSON(), app: @appModel?.toJSON()
 
         # Auto Bind 'data-target=attr', you need add a event first like below.
         ###

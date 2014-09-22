@@ -48,7 +48,11 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
-      subnet = @parent()
+
+      if @isEmbedded()
+        subnet = @owner().parent()
+      else
+        subnet = @parent()
 
       {
         layout : @generateLayout()

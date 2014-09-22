@@ -33,6 +33,7 @@ define [
   "workspaces/coreeditor/CanvasViewConnect"
   "workspaces/coreeditor/CanvasViewDnd"
   "workspaces/coreeditor/CanvasViewGResizer"
+  "workspaces/coreeditor/CanvasViewEffect"
 
   "workspaces/coreeditor/TplOpsEditor"
   "workspaces/coreeditor/TplSvgDef"

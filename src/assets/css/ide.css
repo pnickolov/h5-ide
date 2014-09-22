@@ -6262,6 +6262,9 @@ g.shadow {
 .OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
   stroke: #12CD4F; }
 
+#hlArea {
+  fill-opacity: 0.5; }
+
 .resources-dropdown-wrapper {
   position: absolute;
   left: 206px;

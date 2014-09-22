@@ -16,6 +16,8 @@ define [
 
     data.context.__clearDragScroll()
 
+    data.context.removeHightLight()
+
     if data.marker
       data.marker.remove()
       data.lineSvg.remove()
@@ -57,17 +59,17 @@ define [
 
     # Highlight connectable ports.
     highlightEls = []
+    targetItems  = []
     for type, data of Design.modelClassForType("Framework_CN").connectionData( item.type, portName )
       for comp in @design.componentsOfType( type )
         for toPort in data
-          if item.isConnectable( portName, comp.id, toPort )
+          if comp isnt item.model and item.isConnectable( portName, comp.id, toPort )
             ti = @getItem( comp.id )
             if ti
               ports = ti.$el.children("[data-name='#{toPort}']")
-              CanvasManager.addClass ti.$el, "connectable"
               CanvasManager.addClass ports,  "connectable"
               highlightEls.push ports
-              highlightEls.push ti.$el
+              targetItems.push ti
 
     # Add temporary line.
     marker  = @svg.marker(3, 3).classes(portName).attr("id", "draw-line-marker").add( @svg.path( "M1.5,0 L1.5,3 L3,1.5 L1.5,0" ) )
@@ -81,6 +83,8 @@ define [
       y1 : co.top
       x2 : co.left + @$el.outerWidth()
       y2 : co.top  + @$el.outerHeight()
+
+    @hightLightItems( targetItems )
 
     $.extend d, {
       marker        : marker

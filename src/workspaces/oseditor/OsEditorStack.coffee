@@ -39,7 +39,7 @@ define [
         CloudResources( constant.RESTYPE.OSFLAVOR,  region ).fetch()
         CloudResources( constant.RESTYPE.OSIMAGE,   region ).fetch()
         CloudResources( constant.RESTYPE.OSKP,      region ).fetch()
-        CloudResources( constant.RESTYPE.OSIMAGE,   region ).fetch()
+        CloudResources( constant.RESTYPE.OSSNAP,   region ).fetch()
         CloudResources( constant.RESTYPE.OSNETWORK, region ).fetch()
       ]
 

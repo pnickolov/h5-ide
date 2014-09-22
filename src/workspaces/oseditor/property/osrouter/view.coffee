@@ -14,14 +14,14 @@ define [
 
         render: ->
 
-            if @mode in ['stack', 'appedit']
+            if @mode() in ['stack', 'appedit']
                 console.log @model
                 subnets = @model.connectionTargets("OsRouterAsso")
                 json = @model.toJSON()
                 json.subnets = _.map subnets, (e)->
                     e.toJSON()
 
-                if @mode is 'appedit'
+                if @mode() is 'appedit'
                     resData = @getRenderData()
                     _.extend(json, resData) if resData
                     json.status = resData?.app?.status

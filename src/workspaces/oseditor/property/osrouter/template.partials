@@ -5,7 +5,7 @@
         <dt>ID</dt><dd>{{emptyStr appId}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr app.status}}</dd>
     </dl>
 </section>
 {{/if}}

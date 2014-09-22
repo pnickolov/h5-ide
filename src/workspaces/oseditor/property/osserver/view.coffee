@@ -27,7 +27,7 @@ define [
         @sgListView = @reg new SgListView targetModel: @model.embedPort()
 
     render: ->
-      mode = Design.instance().mode()
+
       json = @model.toJSON()
       @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
       flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
@@ -39,9 +39,9 @@ define [
       json.vcpus = currentFlavor.get('vcpus')
       json.floatingIp = !!@model.embedPort().getFloatingIp()
       json.fixedIp = @model.embedPort().get('ip')
-      json.isAppEdit = mode is 'appedit'
+      json.isAppEdit = @modeIsAppEdit()
       @$el.html template.stackTemplate json
-      kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: mode is 'appedit'})
+      kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: @modeIsAppEdit()})
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @bindSelectizeEvent()
 

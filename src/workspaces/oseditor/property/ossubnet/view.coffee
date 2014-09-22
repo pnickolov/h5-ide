@@ -11,9 +11,9 @@ define [
 
         render: ->
 
-            if @mode in ['stack', 'appedit']
+            if @mode() in ['stack', 'appedit']
                 json = @model.toJSON()
-                if @mode is 'appedit'
+                if @mode() is 'appedit'
                     json = _.extend(json, @getRenderData())
                 @$el.html template.stack(json)
             else

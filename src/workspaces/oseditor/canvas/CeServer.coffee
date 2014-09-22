@@ -100,7 +100,7 @@ define [
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
-      @listenTo @model, 'attachVolume', @updateVolume
+      @listenTo @model, 'change:volume', @updateVolume
       svgEl
 
     render : ()->

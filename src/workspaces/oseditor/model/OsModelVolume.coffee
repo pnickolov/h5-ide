@@ -1,5 +1,5 @@
 
-define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant, Design )->
+define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( ComplexResModel, constant, Design, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -55,7 +55,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             index = mountPoint.indexOf(k)
             mountPoint.splice index, 1  if index >= 0
 
-        console.log mountPoint
         #no valid deviceName
         if mountPoint.length is 0
           notification "warning", lang.NOTIFY.WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false

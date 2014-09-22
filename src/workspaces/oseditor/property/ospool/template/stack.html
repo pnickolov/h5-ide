@@ -1,3 +1,9 @@
+{{#if modeIsAppEdit}}
+<dl>ID<dt></dt><dd>{{app.id}}</dd></dl>
+<dl>Status<dt></dt><dd class="os-status {{app.status}}">{{app.status}}</dd></dl>
+<dl>Subnet ID<dt></dt><dd>{{app.subnet_id}}</dd></dl>
+{{/if}}
+
 <div class="option-group-head expand">
     Pool
 </div>

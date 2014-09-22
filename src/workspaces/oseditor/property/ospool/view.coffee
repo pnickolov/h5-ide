@@ -15,16 +15,18 @@ define [
             @hmlistView = @reg new HmlistView targetModel: @model
 
         render: ->
-            data = @model.toJSON()
+            @$el.html template @getRenderData()
+            @renderHmlist()
+
+            @
+
+        getModelJson: ->
+            data = OsPropertyView.prototype.getModelJson.call @
             data.mems = _.map @memConn, ( mc ) ->
                 json = mc.toJSON()
                 json.osport = mc.getPort().toJSON()
                 json
-
-            @$el.html template data
-            @renderHmlist()
-
-            @
+            data
 
         renderHmlist: -> @$( '.pool-details' ).after @hmlistView.render().el
 

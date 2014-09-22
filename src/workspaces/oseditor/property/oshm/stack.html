@@ -5,7 +5,7 @@
 </section>
 <section class="group required">
     <label class="name">Type</label>
-    <select class="selection option" value="{{type}}" data-target="type" data-id="hm-method">
+    <select class="selection option" value="{{type}}" data-target="type" data-id="hm-method" {{#if modeIsAppEdit}}disabled{{/if}}>
         <option value='PING'>PING</option>
         <option value='HTTP'>HTTP</option>
         <option value='HTTPS'>HTTPS</option>

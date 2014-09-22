@@ -9250,7 +9250,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         right: 20px; }
     #OpsEditor .OEPanelRight.property .panel-body .item-readable-list, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list {
       padding: 6px 8px 3px; }
-      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > div {
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li {
         padding: 5px 10px;
         width: 92%;
         margin-bottom: 5px;
@@ -9258,9 +9258,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         border: 1px solid #222;
         border-radius: 3px;
         color: #fff; }
-        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > div > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > div > div {
+        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li > div {
           padding: 2px; }
-        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > div:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > div:hover {
+        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li:hover {
           cursor: pointer; }
       #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
         background: #2a608d; }

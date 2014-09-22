@@ -15,6 +15,7 @@ define [
 
             "select_dropdown_button_click .item-list": "addItem"
             "click .item-list .item": "editItem"
+            "click .item-readable-list .item": "editItem"
 
             "select_item_add .item-list": "attachItem"
             "select_item_remove .item-list": "unAttachItem"

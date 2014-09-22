@@ -32,11 +32,11 @@
     Security Group ({{attachedSGList.length}})
 </div>
 <div class="option-group">
-    <ul class="item-list">
+    <ul class="item-readable-list">
         {{#each attachedSGList}}
         <li class="item" data-id="{{id}}">
-            <div class="name">{{name}}</div>
-            <span class="info">{{ruleCount}} Rules, {{memberCount}} Members, {{description}}</span>
+            <div class="item-name">{{name}}</div>
+            <span class="item-info">{{ruleCount}} Rules, {{memberCount}} Members, {{description}}</span>
         </li>
         {{/each}}
     </ul>

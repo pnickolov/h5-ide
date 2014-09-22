@@ -3,12 +3,12 @@
     Health Monitor({{list.length}})
 </div>
 <div class="option-group">
-    <section class="group item-readable-list">
+    <ul class="item-readable-list">
     {{#each list}}
-    <div class="item hm-item" data-id="{{id}}">
+    <li class="item hm-item" data-id="{{id}}">
         <div class="item-name">{{name}}</div>
         <div class="item-info">{{type}} | {{url_path}}</div>
-    </div>
+    </li>
     {{/each}}
-    </section>
+    </ul>
 </div>

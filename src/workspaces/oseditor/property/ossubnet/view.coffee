@@ -12,7 +12,10 @@ define [
         render: ->
 
             if @mode in ['stack', 'appedit']
-                @$el.html template.stack( @model.toJSON() )
+                json = @model.toJSON()
+                if @mode is 'appedit'
+                    json = _.extend(json, @getRenderData())
+                @$el.html template.stack()
             else
                 @$el.html template.app @getRenderData()
             @

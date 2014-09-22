@@ -51,7 +51,7 @@ Attach the port to a server
         <dt>Mac Address</dt><dd>{{emptyStr mac_address}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Fixed IP</dt><dd>{{emptyStr ip}}</dd>
+        <dt>Fixed IP</dt><dd>{{emptyStr fixed_ips.[0].ip_address}}</dd>
     </dl>
     <dl class="vertical">
         <dt>Floating IP</dt><dd>{{emptyStr float_ip}}</dd>

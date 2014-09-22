@@ -23,6 +23,8 @@ define [
                         hasFloatIP: @model.getFloatingIp()
                         isPurePort: @model.type is constant.RESTYPE.OSPORT
                     }, @model.toJSON()
+                    if @mode is 'appedit'
+                        value = _.extend(value, @getRenderData())
                     @$el.html template.stack(value)
                 else
                     @$el.html template.unattached(value)

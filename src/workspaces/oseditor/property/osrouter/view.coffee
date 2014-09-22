@@ -20,6 +20,13 @@ define [
                 json = @model.toJSON()
                 json.subnets = _.map subnets, (e)->
                     e.toJSON()
+
+                if @mode is 'appedit'
+                    resData = @getRenderData()
+                    if resData and resData.app
+                        json.id = resData.app.id
+                        json.status = resData.app.status
+
                 @$el.html template.stackTemplate json
             else
                 @$el.html template.appTemplate @getRenderData()

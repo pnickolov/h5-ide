@@ -117,6 +117,10 @@ define [
       else
         @hideError('appname')
         return false
+
+    showError: (id, msg)->
+        $("#runtime-error-#{id}").text(msg).show()
+
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
 

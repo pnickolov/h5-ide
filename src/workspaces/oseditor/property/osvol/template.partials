@@ -1,6 +1,6 @@
 <!-- {{stackTemplate}} -->
 <div class="option-group-head expand">
-    Server Details
+    Volume Details
 </div>
 <div class="option-group">
     <section class="group required">
@@ -24,3 +24,29 @@
         <select class="selection bool" data-target="bootable" value="{{#if bootable}}true{{else}}false{{/if}}"></select>
     </section>
 </div>
+
+
+<!-- {{appTemplate}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr display_name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Description</dt><dd>{{emptyStr display_description}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Created at</dt><dd>{{emptyStr created_at}}</dd>
+    </dl>
+</section>

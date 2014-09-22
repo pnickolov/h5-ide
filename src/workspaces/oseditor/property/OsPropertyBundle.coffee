@@ -6,6 +6,7 @@ define [
     './osserver/view'
     './osserver/appView'
     './osvol/view'
+    './osvol/appView'
     './oslistener-asso/view'
     './ospool-membership/view'
     './oslistener/view'

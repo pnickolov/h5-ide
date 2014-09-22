@@ -19,15 +19,14 @@ define [
     initialize: ( options ) ->
         region = options.workspace.design.region()
         @options = options
-
-        @mode    = Design.instance().mode()
-        @mode    = 'stack' if @mode is 'app' and not @model.get( 'appId' )
-
         @uid     = options.uid
         @type    = options.type
         @panel   = options.panel
+        @model   = Design.instance().component @uid
 
-        @model      = Design.instance().component @uid
+        @mode    = Design.instance().mode()
+        @mode    = 'stack' if @mode is 'appedit' and not @model.get( 'appId' )
+
         if @model and @mode in [ 'app', 'appedit' ] and @model.get( 'appId' )
             @appModel = CloudResources( @type, region )?.get @model.get( 'appId' )
 

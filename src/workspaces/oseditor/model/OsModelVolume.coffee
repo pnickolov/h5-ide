@@ -22,11 +22,51 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     attachTo : ( owner )->
       if owner
+        mountPoint = @get('mountPoint') || @getMountPoint(owner)
+        if not mountPoint then return false
+        @.set("mountPoint", mountPoint)
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )
         new VolumeUsage( @, owner )
         owner.trigger 'change:volume'
 
       return
+
+
+    getMountPoint : (owner)->
+
+      image = owner.getImage()
+      volumes = owner.volumes()
+      if !image
+        notification "warning", sprintf(lang.NOTIFY.WARN_AMI_NOT_EXIST_TRY_USE_OTHER, imageId), false  unless ami_info
+        return null
+
+      else
+        console.log image
+        #set deviceName
+        mountPoint = null
+        if image.os_distro isnt "windows"
+          mountPoint = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+        else
+          mountPoint = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
+
+        $.each volumes || [], (key, value) ->
+          if value.get('mountPoint').slice(0, 5) is "/dev/"
+            k = value.get('mountPoint').slice(-1)
+            index = mountPoint.indexOf(k)
+            mountPoint.splice index, 1  if index >= 0
+
+        console.log mountPoint
+        #no valid deviceName
+        if mountPoint.length is 0
+          notification "warning", lang.NOTIFY.WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT, false
+          return null
+
+        if image.os_distro isnt "windows"
+          mountPoint = "/dev/sd" + mountPoint[0]
+        else
+          mountPoint = "xvd" + mountPoint[0]
+
+        return mountPoint
 
     serialize : ()->
       {

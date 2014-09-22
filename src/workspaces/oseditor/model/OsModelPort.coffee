@@ -48,7 +48,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
     serialize : ()->
-      subnet = (@owner() || @).parent()
+      subnet = @parent()
 
       {
         layout : @generateLayout()

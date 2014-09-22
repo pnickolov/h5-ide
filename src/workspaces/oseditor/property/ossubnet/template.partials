@@ -1,4 +1,15 @@
 <!-- {{stack}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>DNS Name Server</dt><dd>{{emptyStr dns_nameservers.[0]}}</dd>
+    </dl>
+</section>
 <section class="group required">
     <label class="name">Subnet Name</label>
     <input class="selection string" value="{{name}}" data-target="name" />

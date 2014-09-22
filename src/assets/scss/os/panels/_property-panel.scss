@@ -320,4 +320,42 @@
     div.float-panel-sg {
         width: 450px;
     }
+    .os-status {
+        padding-left: 20px !important;
+        &:before {
+            content: " ";
+            width: 8px;
+            height: 8px;
+            border-radius: 8px;
+            background-color: yellow;
+            position: absolute;
+            margin-left: -12px;
+            margin-top: 2px;
+        }
+    }
+    .os-status-ACTIVE {
+        &:before {
+            background-color: green;
+        }
+    }
+    .os-status-Running {
+        &:before {
+            background-color: green;
+        }
+    }
+    .os-status-INACTIVE {
+        &:before {
+            background-color: yellow;
+        }
+    }
+    .os-status-DOWN {
+        &:before {
+            background-color: yellow;
+        }
+    }
+    .os-status- {
+        &:before {
+            background-color: yellow;
+        }
+    }
 }

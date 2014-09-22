@@ -1,15 +1,14 @@
 <!-- {{stack}} -->
 {{#if modeIsAppEdit}}
 <section class="group">
-    <dl class="horizontal">
+    <dl class="vertical">
         <dt>ID</dt><dd>{{appId}}</dd>
     </dl>
-    <dl class="horizontal">
-        <dt>Status</dt><dd>{{status}}</dd>
+    <dl class="vertical">
+        <dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd>
     </dl>
-    <!-- <i class="status status-green icon-label"></i> -->
-    <dl class="horizontal">
-        <dt>Mac Address</dt><dd>{{mac_address}}</dd>
+    <dl class="vertical">
+        <dt>Mac Address</dt><dd>{{app.mac_address}}</dd>
     </dl>
 </section>
 {{/if}}
@@ -45,7 +44,7 @@ Attach the port to a server
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
     </dl>
     <dl class="vertical">
         <dt>Mac Address</dt><dd>{{emptyStr mac_address}}</dd>

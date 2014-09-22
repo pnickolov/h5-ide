@@ -1,6 +1,6 @@
 {{#if modeIsAppEdit}}
     <dl><dt>ID</dt><dd>{{appId}}</dd></dl>
-    <dl><dt>Status</dt><dd>{{app.status}}</dd></dl>
+    <dl><dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd></dl>
     <dl><dt>Subnet ID</dt><dd>{{app.subnet_id}}</dd></dl>
 {{/if}}
 <div class="option-group-head expand">
@@ -31,4 +31,3 @@
         <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"  {{#if modeIsAppEdit}}disabled{{/if}}/>
     </section>
 </div>
-

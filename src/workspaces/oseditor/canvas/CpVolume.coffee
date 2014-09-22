@@ -20,7 +20,7 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
       if data[0] and data[0].get
         for volume in @models
           @listenTo volume, "change:name", @updateVolume
-          @listenTo volume, "change:volumeSize", @updateVolume
+          @listenTo volume, "change:size", @updateVolume
 
       if @selectAtBegin
         @clickVolume { currentTarget : @$el.find('[data-id=' + @selectAtBegin.id + ']')[0] }
@@ -42,14 +42,14 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
 
       if data[0] and data[0].get
         data = []
-        for volume in @models
+        for volume in @host.volumes()
           appId = volume.get("appId")
 
           data.push {
             id       : volume.get("id")
             appId    : appId
             name     : volume.get("name")
-            size     : volume.get("volumeSize")
+            size     : volume.get("size")
             snapshot : volume.get("snapshotId")
           }
 

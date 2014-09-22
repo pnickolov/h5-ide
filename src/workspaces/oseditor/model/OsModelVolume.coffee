@@ -10,6 +10,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       if attr.owner
         owner = attr.owner
         delete attr.owner
+        @on 'change', -> owner.trigger 'change:volume'
+        @on 'destroy', -> owner.trigger 'change:volume'
 
       ComplexResModel.call this, attr, option
 
@@ -22,7 +24,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       if owner
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )
         new VolumeUsage( @, owner )
-        owner.trigger 'attachVolume'
+        owner.trigger 'change:volume'
 
       return
 

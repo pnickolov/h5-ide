@@ -31,6 +31,7 @@
     <article>
         <ul class="resource-list-volume clearfix"></ul>
     </article>
+    <button class="btn btn-primary full-width manage-snapshot">Manage Snapshots</button>
 </section>
 
 <section class="network">

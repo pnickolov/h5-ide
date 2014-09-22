@@ -70,7 +70,7 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
     getModalOptions: ->
       that = @
       region = Design.instance().get('region')
-      regionName = constant.REGION_SHORT_LABEL[ region ]
+      regionName = constant.REGION_SHORT_LABEL[ region ] || region
 
       title: "Manage Key Pairs in #{regionName}"
       slideable: _.bind that.denySlide, that

@@ -4,8 +4,9 @@ define [
     'constant'
     'CloudResources'
     './template/TplResourcePanel'
+    'OsSnapshot'
 
-], ( Backbone, constant, CloudResources, ResourcePanelTpl )->
+], ( Backbone, constant, CloudResources, ResourcePanelTpl, OsSnapshot )->
 
     MC.template.resPanelOsAmiInfo = ( data ) ->
         if not data.region or not data.imageId then return
@@ -29,6 +30,7 @@ define [
             'mousedown .resource-item'          : 'startDrag'
             'OPTION_CHANGE .ami-type-select'    : 'changeAmiType'
             'click .btn-refresh-panel'          : 'refreshPanelData'
+            'click .manage-snapshot'                : "manageSnapshot"
 
         initialize: ( options ) ->
             _.extend @, options
@@ -57,6 +59,10 @@ define [
 
             @$( '.resource-list-volume' ).html ResourcePanelTpl.snapshot data
             @
+
+        manageSnapshot: ->
+          snapshotManager = new OsSnapshot()
+          snapshotManager.render()
 
         renderAmi: ->
             region = @workspace.opsModel.get("region")

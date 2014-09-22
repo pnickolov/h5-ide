@@ -278,7 +278,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
-            regionName = constant.REGION_SHORT_LABEL[ region ]
+            regionName = constant.REGION_SHORT_LABEL[ region ] || region
 
             title: "Manage Snapshots in #{regionName}"
             slideable: true

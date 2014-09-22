@@ -9180,6 +9180,8 @@ g.shadow {
       display: block;
       height: 0;
       clear: both; }
+  .openstack .OEPanelRight .panel-body section .full-width {
+    width: 100%; }
 
 .OEPanelRight.resource nav {
   padding: 14px 20px; }

@@ -8,7 +8,6 @@ define [
   OsPropertyView.extend {
 
     render: ->
-      console.log @getRenderData()
       @$el.html template.appTemplate @getRenderData()
       @
 

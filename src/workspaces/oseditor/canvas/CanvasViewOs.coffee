@@ -155,7 +155,7 @@ define [
 
       attr.owner = owner
 
-      attr.size = 1  #size of new Volume
+      attr.size?= 1  #size of new Volume
 
       VolumeModel = Design.modelClassForType( constant.RESTYPE.OSVOL )
       v = new VolumeModel( attr )

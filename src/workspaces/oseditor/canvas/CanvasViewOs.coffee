@@ -145,12 +145,14 @@ define [
       if attr.id
         # Moving volume
         volume = @design.component( attr.id )
+        oldServer = volume.getOwner()
         doable = volume.isReparentable( owner )
         if _.isString( doable )
           return notification "error", doable
         else if doable
           volume.attachTo( owner )
           @selectItem( data.hoverItem.el )
+          oldServer.trigger 'change:volume'
         return
 
       attr.owner = owner

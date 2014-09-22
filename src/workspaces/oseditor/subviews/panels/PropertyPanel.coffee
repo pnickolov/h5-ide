@@ -19,7 +19,10 @@ define [
     initialize: ( options ) ->
         region = options.workspace.design.region()
         @options = options
+
         @mode    = Design.instance().mode()
+        @mode    = 'stack' if @mode is 'app' and not @model.get( 'appId' )
+
         @uid     = options.uid
         @type    = options.type
         @panel   = options.panel
@@ -40,9 +43,9 @@ define [
             propertyPanel   : @
             panel           : @panel
             mode            : @mode
-            modeIsApp       : design.modeIsApp()
-            modeIsAppEdit   : design.modeIsAppEdit()
-            modeIsStack     : design.modeIsStack()
+            modeIsApp       : @mode is 'app'
+            modeIsAppEdit   : @mode is 'appedit'
+            modeIsStack     : @mode is 'stack'
         })
 
         bindSelection(@$el, propertyView.selectTpl)

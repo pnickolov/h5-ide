@@ -14,12 +14,13 @@ define [
 
         initialize: ( options ) ->
             @isApp = options.isApp
+            @modelData = options.modelData if @isApp
 
         setTitle: ( title ) -> @$( 'h1' ).text title
 
         render: ->
             if @isApp
-                @$el.html TplApp @model.toJSON()
+                @$el.html TplApp @modelData
             else
                 bindSelection(@$el, @selectTpl)
                 @$el.html TplStack @model.toJSON()

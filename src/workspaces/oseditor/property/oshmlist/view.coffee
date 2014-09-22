@@ -5,7 +5,8 @@ define [
     './app'
     'CloudResources'
     '../oshm/view'
-], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, HmView ) ->
+    'UI.selection'
+], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, HmView, bindSelection ) ->
 
     OsPropertyView.extend {
 
@@ -14,6 +15,7 @@ define [
 
             "select_dropdown_button_click .item-list": "addItem"
             "click .item-list .item": "editItem"
+            "click .item-readable-list .item": "viewItem"
             "click .item-list .item .item-remove": "removeItem"
 
         initialize: (options) ->
@@ -28,7 +30,21 @@ define [
                 button: () ->
                     return that.getTpl().addButton()
 
-                getItem: (item) -> that.getTpl().item( Design.instance().component( item.value ).toJSON() )
+                getItem: (item) ->
+                    that.getTpl().item( that.getItemData item )
+
+        getItemData: ( item ) -> Design.instance().component( item.value ).toJSON()
+
+        getAppData: () ->
+            HmClass = Design.modelClassForType constant.RESTYPE.OSHM
+            _.map @appModelList, ( model ) ->
+                json = model.toJSON()
+                oshm = HmClass.find ( hm ) -> hm.get( 'appId' ) is json.id
+                json.name = oshm?.get 'name'
+                json.url_path = oshm?.get 'urlPath'
+                json
+
+        getSingleAppData: ( id ) -> _.findWhere @getAppData(), id: id
 
         getTpl: ->
             if @isApp
@@ -37,6 +53,9 @@ define [
                 TplStack
 
         render: ->
+
+            bindSelection(@$el, @selectTpl)
+
             if @isApp
                 @renderApp()
             else
@@ -45,17 +64,13 @@ define [
             @
 
         refreshList: () ->
+
             @$el.html @getTpl().stack({
                 activeList: @targetModel.get("healthMonitors").map( (hm) -> hm.id ).join ','
                 list: @targetModel.get("healthMonitors").map (hm)-> hm.toJSON()
             })
 
-        renderApp: ->
-            @$el.html @getTpl().stack({
-                activeList: _.pluck( @appModelList, 'id' ).join ','
-                list: _.map @appModelList, ( model ) -> model.toJSON()
-                isApp: true
-            })
+        renderApp: -> @$el.html @getTpl().stack list: @getAppData()
 
         getSelectItemModel: ( $item ) ->
             uid = $item.data('value')
@@ -79,6 +94,17 @@ define [
             view = @reg new HmView model: model, isApp: @isApp
 
             @listenTo model, 'change', @refreshList
+            @showFloatPanel(view.render().el)
+
+        viewItem: ( event ) ->
+            $target = $ event.currentTarget
+            $( '.item-readable-list .item' ).removeClass 'focus'
+            $target.addClass 'focus'
+
+            id = $target.data 'id'
+            modelData = @getSingleAppData id
+            view = @reg new HmView modelData: modelData, isApp: @isApp
+
             @showFloatPanel(view.render().el)
 
         removeItem: (event) ->

@@ -13,42 +13,6 @@
           text-align: center;
         }
 
-        dl.horizontal {
-            margin: 8px 9px;
-            padding: 0;
-            &::after { content: ""; height: 0; display: block; clear: both; }
-
-            dt { min-width: 80px; float: left; padding: 0; margin: 0; }
-            dd { float: left; padding: 0; margin: 0; }
-        }
-
-        dl {
-            margin: 8px 9px;
-            &:first-child { margin-top: 0; padding-top: 8px; }
-            &:last-child { margin-bottom: 0; padding-bottom: 8px; }
-
-            &::after { content: ""; height: 0; display: block; clear: both; }
-
-            dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }
-            dd { margin: 0; padding: 5px 0 5px 8px;}
-        }
-
-        .selection.item-list {
-            .selectize-dropdown-content {
-                .info {
-                    display: inline-block;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    color: #777;
-                    padding: 10px;
-                    text-overflow: ellipsis;
-                    white-space:nowrap;
-                }
-                .name {
-                    color: #fff;
-                }
-            }
-        }
 
         .selection.item-list .hm-item.item {
             position: relative;
@@ -61,10 +25,28 @@
             }
         }
 
+        .item-readable-list {
+            padding: 6px 8px 3px;
+
+            & > div {
+                padding: 5px 10px;
+                width: 92%;
+                margin-bottom: 5px;
+                background: #32324d;
+                border: 1px solid #222;
+                border-radius: 3px;
+                color: #fff;
+
+                & > div { padding: 2px; }
+                &:hover { cursor: pointer; }
+            }
+
+            .item.focus { background: #2a608d; }
+        }
+
     }
 
     .panel-float {
-        min-width: 300px;
         h1 {
           font-size: 20px;
           padding: 5px;
@@ -73,6 +55,25 @@
     }
 
     /* property component style */
+    dl.horizontal {
+        margin: 8px 9px;
+        padding: 0;
+        &::after { content: ""; height: 0; display: block; clear: both; }
+
+        dt { min-width: 80px; float: left; padding: 0; margin: 0; }
+        dd { float: left; padding: 0; margin: 0; }
+    }
+
+    dl {
+        margin: 8px 9px;
+        &:first-child { margin-top: 0; padding-top: 8px; }
+        &:last-child { margin-bottom: 0; padding-bottom: 8px; }
+
+        &::after { content: ""; height: 0; display: block; clear: both; }
+
+        dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }
+        dd { margin: 0; padding: 5px 0 5px 8px;}
+    }
 
     .os-property-default {
       padding: 20px 0 0 26px;

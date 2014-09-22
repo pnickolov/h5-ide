@@ -22,6 +22,18 @@ define [
             @renderHmlist()
             @
 
+        getModelJson: ->
+            appJson = @appModel?.toJSON() or {}
+            appJson = $.extend( true, {}, appJson )
+
+            PortClass = Design.modelClassForType constant.RESTYPE.OSPORT
+            _.each appJson.members, ( m ) ->
+                osport = PortClass.find ( port ) -> port.get( 'ip' ) is m.address
+                m.name = osport.get( 'name' )
+                null
+
+            appJson
+
         renderHmlist: -> @$( '.pool-details' ).after @hmlistView.render().el
 
 

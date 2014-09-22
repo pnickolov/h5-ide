@@ -13,7 +13,6 @@ define [
         initialize: ->
             @memConn = @model.connections 'OsPoolMembership'
             @hmlistView = @reg new HmlistView targetModel: @model
-            @selectTpl = @hmlistView.selectTpl
 
         render: ->
             data = @model.toJSON()

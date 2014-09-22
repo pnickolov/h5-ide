@@ -101,7 +101,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSKP       : "OS::Nova::KeyPair"
         OSIMAGE    : "OS::Image"
         OSSNAP     : "OS::Snapshot"
-        OSMEMBER   : "OS::Neutron::Member"
 
 
     RESNAME =

@@ -343,7 +343,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       for camelKey, value of obj
         if not (obj.hasOwnProperty camelKey) then continue
 
-        if not _.isArray( obj )  and camelKey not in exceptionList
+        if not _.isArray( obj )  and camelKey not in exceptionList and ':' not in camelKey
           underscoreKey = _.map camelKey, ( char, index ) ->
             if index is 0 then return char
             if 65 <= char.charCodeAt() <= 90 then return "_#{char.toLowerCase()}"

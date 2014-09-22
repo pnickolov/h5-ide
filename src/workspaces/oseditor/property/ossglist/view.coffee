@@ -69,6 +69,8 @@ define [
         refreshList: () ->
 
             currentMode = Design.instance().mode()
+            if not @targetModel.get('appId')
+                currentMode = 'stack'
 
             if currentMode in ['stack', 'appedit']
 

@@ -80,6 +80,9 @@ define [
                 }
 
             currentMode = Design.instance().mode()
+            if not @sgModel.get('appId')
+                currentMode = 'stack'
+
             modeIsAppEdit = currentMode is 'appedit'
             modeIsApp = currentMode is 'app'
 

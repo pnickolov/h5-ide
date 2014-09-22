@@ -22,6 +22,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       if owner
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )
         new VolumeUsage( @, owner )
+        owner.trigger 'attachVolume'
 
       return
 

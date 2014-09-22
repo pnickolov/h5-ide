@@ -5,7 +5,8 @@ define [
   "CanvasManager"
   "i18n!/nls/lang.js"
   "CloudResources"
-], ( CanvasElement, constant, CanvasManager, lang, CloudResources )->
+  "./CpVolume"
+], ( CanvasElement, constant, CanvasManager, lang, CloudResources, VolumePopup )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -23,6 +24,7 @@ define [
 
     events :
       "mousedown .fip-status"          : "toggleFip"
+      "click .volume-image"            : "showVolume"
 
     iconUrl : ()->
       image = @model.getImage() || @model.get("cachedAmi")
@@ -82,7 +84,8 @@ define [
         svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
         # FIP
         svg.image( "", 12, 14).move(50, 55).classes('fip-status tooltip')
-
+        svg.image( MC.IMG_URL+ "ide/icon/icn-vol.png", 29, 24 ).move(22, 52).classes('volume-image')
+        svg.text( "" ).move(36, 42).classes('volume-number')
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'
@@ -97,6 +100,7 @@ define [
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
+      @listenTo @model, 'attachVolume', @updateVolume
       svgEl
 
     render : ()->
@@ -107,6 +111,29 @@ define [
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
       # Update FIP
       CanvasManager.updateFip @$el.children(".fip-status"), m
+
+      @updateVolume()
       null
+
+    updateVolume: ->
+      m = @model
+      volumes = m.volumes()
+      @$el.children('.volume-number').find('tspan').text(volumes.length || 0)
+
+    showVolume : ()->
+      owner = @model
+
+      v = owner.volumes()[0]
+      attachment = @$el[0]
+      canvas = @canvas
+
+      new VolumePopup {
+        attachment    : attachment
+        host          : owner
+        models        : owner.volumes()
+        canvas        : canvas
+        selectAtBegin : v
+      }
+      return
   }
 

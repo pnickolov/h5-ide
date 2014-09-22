@@ -84,7 +84,7 @@ define [
     reloadAppData : ()->
       @view.showUpdateStatus("", true)
       self = @
-      @loadVpcResource().then ()->
+      @loadVpcResource()?.then ()->
         self.__onReloadDone()
       , ()->
         self.view.toggleProcessing()
@@ -152,7 +152,7 @@ define [
 
       self = @
       @view.showUpdateStatus( "", true )
-      @loadVpcResource().then ()-> self.__onAppEditDidDone()
+      @loadVpcResource()?.then ()-> self.__onAppEditDidDone()
       return
 
     __onAppEditDidDone : ()->
@@ -183,7 +183,7 @@ define [
       else if not @__applyingUpdate
         self = @
         @view.showUpdateStatus( "", true )
-        @loadVpcResource().then ()-> self.__onVpcResLoaded()
+        @loadVpcResource()?.then ()-> self.__onVpcResLoaded()
       return
 
     __onVpcResLoaded : ()->

@@ -2,11 +2,12 @@
 {{#if modeIsAppEdit}}
 <section class="group">
     <dl class="horizontal">
-        <dt>ID</dt><dd>{{id}}</dd>
+        <dt>ID</dt><dd>{{appId}}</dd>
     </dl>
     <dl class="horizontal">
         <dt>Status</dt><dd>{{status}}</dd>
     </dl>
+    <!-- <i class="status status-green icon-label"></i> -->
     <dl class="horizontal">
         <dt>Mac Address</dt><dd>{{mac_address}}</dd>
     </dl>

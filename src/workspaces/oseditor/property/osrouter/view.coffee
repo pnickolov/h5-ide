@@ -23,9 +23,8 @@ define [
 
                 if @mode is 'appedit'
                     resData = @getRenderData()
-                    if resData and resData.app
-                        json.id = resData.app.id
-                        json.status = resData.app.status
+                    _.extend(json, resData) if resData
+                    json.status = resData?.app?.status
 
                 @$el.html template.stackTemplate json
             else

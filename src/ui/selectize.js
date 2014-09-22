@@ -3766,13 +3766,16 @@ $(function() {
                             status = 'on';
                         }
                         self.$input.before(
-                            '<label class="switcher ' + status + '">' +
+                            '<label class="switcher ' + status + ' disabled">' +
                                 '<span class="switch-label" data-on="" data-off=""></span>' +
                                 '<span class="switch-handle"></span>' +
                             '</label>'
                         );
                         var $switcher = self.$input.prevAll('.switcher');
                         $switcher.on('click', function() {
+                            if ($(this).hasClass('disabled')) {
+                                return;
+                            }
                             if ($(this).hasClass('on')) {
                                 $(this).removeClass('on');
                                 self.setValue(false);
@@ -3781,6 +3784,12 @@ $(function() {
                                 self.setValue(true);
                             }
                         });
+                    }
+                    $switcher = self.$input.prevAll('.switcher');
+                    if (self.$input.attr('disabled')) {
+                        $switcher.addClass('disabled');
+                    } else {
+                        $switcher.removeClass('disabled');
                     }
                 }
                 return result;

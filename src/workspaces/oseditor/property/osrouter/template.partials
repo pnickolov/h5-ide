@@ -2,7 +2,7 @@
 {{#if modeIsAppEdit}}
 <section class="group">
     <dl class="vertical">
-        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>ID</dt><dd>{{emptyStr appId}}</dd>
     </dl>
     <dl class="vertical">
         <dt>Status</dt><dd>{{emptyStr status}}</dd>

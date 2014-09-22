@@ -54,7 +54,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         if not cln
           console.warn "Cannot find cloud resource collection for type:", type
           continue
-        cln.__parseExternalData d, extraAttr, @__region
+        cln.__parseExternalData d, extraAttr, @__region, data
 
       # 2. Fix buggy generated json.
       @generatedJson = @fixGeneratedJson( app_json )

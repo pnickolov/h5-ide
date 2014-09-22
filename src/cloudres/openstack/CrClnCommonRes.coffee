@@ -36,8 +36,20 @@ define [
     doFetch : ()-> ApiRequest("os_pool_List", {region:@region()})
 
     parseFetchData    : ( data )-> data.pools
-    parseExternalData : ( data )->
+    parseExternalData : ( data, category, dataCollection )->
+      members = {}
+      for m in dataCollection["OS::Neutron::Member"] || []
+        members[ m.id ] = m
+
       res = $.extend(true, [], data)
+      for r in res
+        newmembers = []
+        for m in r.members || []
+          m = members[m]
+          if m then newmembers.push m
+
+        r.members = newmembers
+
       @camelToUnderscore res
 
   }

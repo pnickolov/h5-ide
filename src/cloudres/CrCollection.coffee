@@ -198,10 +198,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
     # This method is used by CloudResources to provide an external api to parse data coming from aws.
     # It parse data and the cached them in this collection and returns parsed models.
-    __parseExternalData : ( awsData, extraAttr, category )->
+    __parseExternalData : ( awsData, extraAttr, category, dataCollection )->
       try
         if @parseExternalData
-          awsData = @parseExternalData( awsData, category )
+          awsData = @parseExternalData( awsData, category, dataCollection )
         else if @parseFetchData
           awsData = @parseFetchData( awsData )
       catch e

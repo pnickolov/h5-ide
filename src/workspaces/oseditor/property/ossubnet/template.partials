@@ -1,15 +1,17 @@
 <!-- {{stack}} -->
+{{#if modeIsAppEdit}}
 <section class="group">
     <dl class="vertical">
-        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>ID</dt><dd>{{emptyStr app.id}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
+        <dt>Gateway IP</dt><dd>{{emptyStr app.gateway_ip}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>DNS Name Server</dt><dd>{{emptyStr dns_nameservers.[0]}}</dd>
+        <dt>DNS Name Server</dt><dd>{{emptyStr app.dns_nameservers.[0]}}</dd>
     </dl>
 </section>
+{{/if}}
 <section class="group required">
     <label class="name">Subnet Name</label>
     <input class="selection string" value="{{name}}" data-target="name" />

@@ -15,7 +15,7 @@ define [
                 json = @model.toJSON()
                 if @mode is 'appedit'
                     json = _.extend(json, @getRenderData())
-                @$el.html template.stack()
+                @$el.html template.stack(json)
             else
                 @$el.html template.app @getRenderData()
             @

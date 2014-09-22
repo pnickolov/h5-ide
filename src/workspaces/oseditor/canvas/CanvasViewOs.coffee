@@ -52,6 +52,7 @@ define [
 
     selectVolume : ( volumeId )->
       @deselectItem( true )
+      @triggerSelected( constant.RESTYPE.OSVOL, volumeId )
       @__selectedVolume = volumeId
       false
 

@@ -52,7 +52,7 @@ define [
 
     selectVolume : ( volumeId )->
       @deselectItem( true )
-      @triggerSelected( constant.RESTYPE.OSVOL, volumeId )
+      @triggerSelected( constant.RESTYPE.OSVOL, volumeId ) if volumeId
       @__selectedVolume = volumeId
       false
 

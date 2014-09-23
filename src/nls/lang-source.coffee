@@ -1141,6 +1141,10 @@ module.exports =
       en: "Save stack %s failed, please check and save it again."
       zh: "保存模块 %s 失败，请您检查并重新保存。"
 
+    TOOL_MSG_ERR_SAVE_FAILED_NAME:
+      en: "The name of the stack has already been used, please change to a new one."
+      zh: "已存在相同名字的模块，请输入一个新的名字后重新保存。"
+
     TOOL_MSG_ERR_SAVE_SUCCESS:
       en: "Save stack %s successfully."
       zh: "保存 %s 成功。"

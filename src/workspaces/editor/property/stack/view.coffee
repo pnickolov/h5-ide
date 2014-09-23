@@ -57,8 +57,8 @@ define [ '../base/view',
             description = stackDescTextarea.val()
 
             if stackDescTextarea.parsley 'validate'
-                @trigger 'STACK_DESC_CHANGED', description
-                #@setDescription description
+                @model.updateDescription description
+
         stackNameChanged : () ->
             stackNameInput = $ '#property-stack-name'
             stackId = @model.get( 'id' )
@@ -70,12 +70,16 @@ define [ '../base/view',
                 if not MC.validate 'awsName',  val
                     return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
 
+                if val is Design.instance().__opsModel.get("name")
+                    # HACK, will remove after we re-write the whole property shit.
+                    return
+
                 if not App.model.stackList().isNameAvailable( val )
                     return sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'
-                @trigger 'STACK_NAME_CHANGED', name
                 @setTitle "Stack - " + name
+                @model.updateStackName name
             null
 
         refreshACLList : () ->

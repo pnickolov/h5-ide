@@ -23,8 +23,11 @@ define [
     }
 
     events :
-      "mousedown .fip-status"          : "toggleFip"
-      "click .volume-image"            : "showVolume"
+      "mousedown .fip-status"   : "toggleFip"
+      "mousedown .volume-image" : "showVolume"
+      "click .volume-image"     : "suppressEvent"
+
+    suppressEvent : ()-> false
 
     iconUrl : ()->
       image = @model.getImage() || @model.get("cachedAmi")

@@ -2,7 +2,8 @@
 #  View(UI logic) for component/stateeditor
 #############################
 
-define [ 'event',
+define [ './model',
+         'event',
          'i18n!/nls/lang.js',
          './template',
          './validate',
@@ -11,7 +12,7 @@ define [ 'event',
          './lib/markdown',
          'UI.errortip'
 
-], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
+], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
     StateClipboard = []
 
@@ -100,8 +101,11 @@ define [ 'event',
 
         editorShow: false
 
-        initialize: () ->
-            # this.compileTpl()
+        initialize: (options) ->
+
+            @model = new Model({
+                resUID: options.uid
+            })
 
         initState: () ->
 
@@ -111,7 +115,6 @@ define [ 'event',
             $(document)
                 .off('keydown.stateEditor', this.keyEvent)
                 .on('keydown.stateEditor', {target: this}, this.keyEvent)
-
 
         closedPopup: () ->
 
@@ -130,7 +133,7 @@ define [ 'event',
                 return that
 
             if Design.instance().get('agent').enabled
-                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
+                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC, constant.RESTYPE.OSSERVER]
                     @__renderState()
                 else
                     @__renderEmpty()

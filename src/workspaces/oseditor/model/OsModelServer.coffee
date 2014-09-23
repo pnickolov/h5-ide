@@ -72,6 +72,14 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       else
         null
 
+    getStateData : () ->
+
+      @get("state")
+
+    setStateData : (stateAryData) ->
+
+      @set("state", stateAryData)
+
     serialize : ()->
       component =
         name : @get("name")

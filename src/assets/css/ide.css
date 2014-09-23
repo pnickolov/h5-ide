@@ -9151,6 +9151,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .openstack .OEPanelRight {
   width: 280px; }
+  .openstack .OEPanelRight.state {
+    width: 655px; }
   .openstack .OEPanelRight.hidden .panel-float {
     display: none; }
   .openstack .OEPanelRight .panel-float {

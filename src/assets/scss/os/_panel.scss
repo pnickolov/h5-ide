@@ -3,6 +3,10 @@
 
     width: 280px;
 
+    &.state {
+        width: 655px;
+    }
+
     &.hidden .panel-float { display: none; }
 
     .panel-float {

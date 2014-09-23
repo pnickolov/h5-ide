@@ -38,7 +38,10 @@ define [
       @propertyPanel.openCurrent()
       return
 
-    showProperty: () -> @panel.openProperty()
+    showProperty: () -> @panel.openProperty(); false
+    showResource: () -> @panel.openResource(); false
+    showGlobal  : () -> @panel.openConfig(); false
+    showStateEditor : ()-> @panel.openState(); false
     onCanvasDoubleClick: () -> @panel.show().openCurrent()
 
     onItemSelected: ( type, id ) ->
@@ -48,5 +51,4 @@ define [
 
       @panel.openProperty { uid: id, type: type }
 
-    showStateEditor : ()-> return
   }

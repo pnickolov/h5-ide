@@ -36,16 +36,24 @@ define [
         ### Arrows ###
         type = "MoveSelectItem"
 
+      when 65
+        ### A ###
+        type = "ShowGlobal"
+
+      when 80
+        ### P ###
+        type = "ShowProperty"
+
+      when 82
+        ### R ###
+        type = "ShowResource"
+
       when 83
         ### S ###
         if evt.ctrlKey || evt.metaKey
           type = "Save"
         else
           type = "ShowStateEditor"
-
-      when 80
-        ### P ###
-        type = "ShowProperty"
 
       when 187
         ### + ###
@@ -79,6 +87,9 @@ define [
       "ZoomOut"         : "zoomOut"
       "ShowProperty"    : "showProperty"
       "ShowStateEditor" : "showStateEditor"
+      "ShowGlobal"      : "ShowGlobalConfig"
+      "ShowResource"    : "ShowResource"
+
 
       "click .HideOEPanelLeft"  : "toggleLeftPanel"
       "click .HideOEPanelRight" : "toggleRightPanel"
@@ -106,8 +117,10 @@ define [
       @initialize()
       return
 
-    showProperty        : ()->
     onItemSelected      : ( type, id )->
+    showProperty        : ()->
+    showResource        : ()->
+    showGlobal          : ()->
     showStateEditor     : ()->
     onCanvasDoubleClick : ()->
 

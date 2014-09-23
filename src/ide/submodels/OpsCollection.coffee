@@ -48,7 +48,7 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       newName
 
     # Returns true if name is OK to be used.
-    isNameAvailable : ( name )-> !@.findWhere({name:name})
+    isNameAvailable : ( name )-> name and !@findWhere({name:name})
 
     # Returns a sorted array.
     groupByRegion : ( includeEmptyRegion = false, toJSON = true, includeEveryOps = false )->
@@ -100,4 +100,10 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       if @indexOf( model ) != -1 and not model.isExisting() then return
       @__debounceUpdate()
       return
+
+    add : ( model )->
+      if not @isNameAvailable( model.get("name") )
+        model.attributes.name = @getNewName()
+
+      Backbone.Collection.prototype.add.apply this, arguments
   }

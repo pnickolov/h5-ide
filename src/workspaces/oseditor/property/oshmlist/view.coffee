@@ -43,7 +43,6 @@ define [
                 json = model.toJSON()
                 oshm = HmClass.find ( hm ) -> hm.get( 'appId' ) is json.id
                 json.name = oshm?.get 'name'
-                json.url_path = oshm?.get 'urlPath'
                 json
 
         getSingleAppData: ( id ) -> _.findWhere @getAppData(), id: id

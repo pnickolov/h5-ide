@@ -1,0 +1,54 @@
+<!-- {{frame}} -->
+<div>
+
+<header class="dash-header">
+  <button class="icon-refresh" id="OsReloadResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
+  <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}</button>
+</header>
+
+<div class="dash-body nano"> <div class="nano-content">
+
+  <section class="dash-ops-list">
+    <nav>
+      <button class="on stack ops-list-switcher"><span class="count"></span> <small>{{i18n "DASH_LBL_STACK"}}</small></button>
+      <button class="ops-list-switcher"><span class="count">0</span> <small>{{i18n "DASH_LBL_APP"}}</small></button>
+    </nav>
+    <ul></ul>
+  </section>
+
+</div></div>
+
+</div>
+
+<!-- {{appList}} -->
+{{#each this}}<li data-id="{{id}}">{{#if progressing}}
+  <div class="thumbnail app-thumbnail"></div>
+  <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
+  <div class="region-resource-info truncate">
+      <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
+  </div>
+{{else}}
+  {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+  <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+  <div class="region-resource-info">
+    <i class="icon-terminate terminate-app"></i>
+    {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+  </div>
+{{/if}}</li>
+{{else}}
+  <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
+{{/each}}
+
+<!-- {{stackList}} -->
+{{#each this}}<li data-id="{{id}}">
+    <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+    <div class="region-resource-info">
+      <i class="icon-delete delete-stack"></i>
+      <i class="icon-duplicate duplicate-stack"></i>
+      <span class="truncate">{{name}}</span>
+    </div>
+  </li>
+{{else}}
+  <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
+{{/each}}

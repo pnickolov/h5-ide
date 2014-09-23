@@ -347,7 +347,7 @@ requirejs.onError = ( err )->
 require [
   'ide/Application'
   "cloudres/CrBundle"
-  "workspaces/Dashboard"
+  "workspaces/DashboardOs"
   "ide/Router"
   "MC"
   "MC.canvas"

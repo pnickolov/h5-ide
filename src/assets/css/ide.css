@@ -9533,3 +9533,51 @@ g.shadow {
   display: block;
   width: 100%;
   padding: 10px; }
+
+.dash-header {
+  padding: 10px 0;
+  position: absolute;
+  z-index: 5;
+  background: #2a2e31;
+  width: 100%;
+  height: 38px; }
+  .dash-header > .btn {
+    margin-left: 15px; }
+
+#OsReloadResource {
+  font-size: 12px;
+  position: absolute;
+  right: 25px;
+  top: 18px;
+  color: #aaa;
+  display: block;
+  cursor: pointer;
+  -webkit-transform-origin: 12px 12px;
+  -moz-transform-origin: 12px 12px;
+  transform-origin: 12px 12px; }
+  #OsReloadResource:hover {
+    color: #148BE6; }
+  #OsReloadResource:before {
+    margin-right: 4px;
+    font-size: 12px;
+    line-height: 18px; }
+
+.icon-refresh.reloading {
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear; }
+  .icon-refresh.reloading:before {
+    margin: 0; }
+
+.dash-ops-list {
+  margin: 68px auto 40px;
+  max-width: 1280px;
+  padding: 15px 0 40px;
+  width: 95%;
+  background: #fff; }
+  .dash-ops-list > nav {
+    height: 30px;
+    border-bottom: 1px solid #000; }
+    .dash-ops-list > nav > button {
+      border-right: 1px solid #000; }

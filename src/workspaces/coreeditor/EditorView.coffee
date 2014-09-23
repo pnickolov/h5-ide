@@ -45,8 +45,9 @@ define [
         type = "ShowProperty"
 
       when 82
-        ### R ###
-        type = "ShowResource"
+        if not ( evt.ctrlKey or evt.metaKey )
+          ### R ###
+          type = "ShowResource"
 
       when 83
         ### S ###
@@ -87,8 +88,8 @@ define [
       "ZoomOut"         : "zoomOut"
       "ShowProperty"    : "showProperty"
       "ShowStateEditor" : "showStateEditor"
-      "ShowGlobal"      : "ShowGlobalConfig"
-      "ShowResource"    : "ShowResource"
+      "ShowGlobal"      : "showGlobal"
+      "ShowResource"    : "showResource"
 
 
       "click .HideOEPanelLeft"  : "toggleLeftPanel"

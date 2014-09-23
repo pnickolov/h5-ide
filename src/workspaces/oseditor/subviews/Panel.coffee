@@ -103,7 +103,7 @@ define [
     shown: -> not @$el.hasClass( 'hidden' )
     hidden: -> not @shown()
 
-    openResource: ( args ) -> @open 'property', args
+    openResource: ( args ) -> @open 'resource', args
     openState   : ( args ) -> @open 'state', args
     openCurrent : ( args ) -> @open __currentPanel, args
     openProperty: ( args ) -> @open 'property', args

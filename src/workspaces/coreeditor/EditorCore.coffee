@@ -97,9 +97,13 @@ define [
 
       # Load Datas
       s = @
-      @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
+      @fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
 
       Workspace.apply @, arguments
+
+    fetchJsonData : ()->
+      opsModel = @opsModel
+      opsModel.fetchJsonData().then ()-> if not opsModel.isPersisted() then return opsModel.save()
 
     jsonLoadFailed : ( err )->
       if @isRemoved() then return

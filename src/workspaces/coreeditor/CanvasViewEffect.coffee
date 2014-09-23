@@ -253,4 +253,21 @@ define [
     @__highLightRect = @__highLightCliper = null
     return
 
+  trackMMoveForHint = ( evt )->
+    type = if evt.offsetY > evt.data.height then "top" else "bottom"
+    $hint = $( evt.currentTarget ).find(".canvas-message")
+    if $hint.attr("data-type") isnt type
+      $hint.attr("data-type", type )
+    return
+
+  CanvasViewProto.showHintMessage = ( message )->
+    height = @$el.find(".canvas-message").html( message ).outerHeight() + 20
+    @$el.on { "mousemove.canvashint" : trackMMoveForHint }, { height : height }
+    return
+
+  CanvasViewProto.hideHintMessage = ()->
+    @$el.find(".canvas-message").empty()
+    @$el.off "mousemove.canvashint"
+    return
+
   return

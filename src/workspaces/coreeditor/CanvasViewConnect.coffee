@@ -17,6 +17,7 @@ define [
     data.context.__clearDragScroll()
 
     data.context.removeHightLight()
+    data.context.hideHintMessage()
 
     if data.marker
       data.marker.remove()
@@ -85,6 +86,7 @@ define [
       y2 : co.top  + @$el.outerHeight()
 
     @hightLightItems( targetItems )
+    @showHintMessage( $port.attr("data-tooltip") )
 
     $.extend d, {
       marker        : marker

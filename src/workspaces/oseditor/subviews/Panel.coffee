@@ -74,11 +74,22 @@ define [
         $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
         @renderSubPanel targetPanel, args
 
+    floatPanelShowCount: 0
+
     showFloatPanel: ( dom ) ->
+        @floatPanelShowCount++
         @$( '.panel-float' ).html dom if dom
         @$( '.panel-float' ).removeClass 'hidden'
 
-    hideFloatPanel: () -> @$( '.panel-float' ).addClass 'hidden'
+        _.defer () =>
+            @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
+
+    __hideFloatPanel: ( showCount ) ->
+        that = @
+        () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel()
+
+    hideFloatPanel: () ->
+        @$( '.panel-float' ).addClass 'hidden'
 
     show: ->
         @$el.removeClass 'hidden'

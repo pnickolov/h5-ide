@@ -47,9 +47,16 @@
 <!-- {{BtnReloadStates}} -->
 <button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
 
-<!-- {{PanelHeader}} -->
+<!-- {{PanelHeaderStack}} -->
 <header class="sidebar-title resource">
     <a class="resource">R</a>
+    <a class="config">A</a>
+    <a class="property">P</a>
+    <a class="state">S</a>
+</header>
+
+<!-- {{PanelHeaderApp}} -->
+<header class="sidebar-title resource" data-mode="app">
     <a class="config">A</a>
     <a class="property">P</a>
     <a class="state">S</a>

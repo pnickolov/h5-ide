@@ -51,9 +51,9 @@ define [
 
       # Toolbar
       if opsModel.isStack()
-        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "PanelHeader", "BtnSwitchStates"]
+        btns = [ "BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "PanelHeaderStack", "BtnSwitchStates" ]
       else
-        btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnReloadRes", "PanelHeader"]
+        btns = [ "BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnReloadRes", "PanelHeaderApp" ]
 
       tpl = ""
       for btn in btns

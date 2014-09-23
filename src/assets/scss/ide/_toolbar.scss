@@ -245,9 +245,12 @@
 
     &::selection { background: transparent; }
   }
+
   a:hover {
     color: #eee;
   }
+
+  &[data-mode="app"] a { width: 33%; }
 
 }
 

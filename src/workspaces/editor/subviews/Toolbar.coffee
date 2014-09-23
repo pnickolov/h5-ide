@@ -164,10 +164,15 @@ define [
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
           notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
-        , ( )->
+        , ( err )->
           self.__saving = false
           $( evt.currentTarget ).removeAttr("disabled")
-          notification "error", sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
+
+          if err.error is 252
+            message = lang.NOTIFY.ERR_SAVE_FAILED_NAME
+          else
+            message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
+          notification "error", message
         return
 
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )

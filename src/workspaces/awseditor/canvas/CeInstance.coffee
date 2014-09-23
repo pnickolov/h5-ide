@@ -200,11 +200,12 @@ define [
       if @volPopup then return false
       self = @
       @volPopup = new VolumePopup {
-        attachment : @$el[0]
-        host       : @model
-        models     : @model.get("volumeList")
-        canvas     : @canvas
-        onRemove   : ()-> _.defer ()-> self.volPopup = null; return
+        attachment    : @$el[0]
+        host          : @model
+        models        : @model.get("volumeList")
+        selectAtBegin : @model.get("volumeList")[0]
+        canvas        : @canvas
+        onRemove      : ()-> _.defer ()-> self.volPopup = null; return
       }
       false
 

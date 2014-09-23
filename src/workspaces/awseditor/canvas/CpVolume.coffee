@@ -61,6 +61,8 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
       TplPopup.volume data
 
     clickVolume : ( evt )->
+      if @selected is evt.currentTarget then return
+
       $vol = $( evt.currentTarget ).addClass("selected")
       volId = $vol.attr("data-id")
       @canvas.selectVolume( volId )

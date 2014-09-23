@@ -6,6 +6,9 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
     type : constant.RESTYPE.OSVOL
     newNameTmpl : "Volume-"
 
+    defaults :
+      size : 1
+
     constructor : ( attr, option )->
       if attr.owner
         owner = attr.owner

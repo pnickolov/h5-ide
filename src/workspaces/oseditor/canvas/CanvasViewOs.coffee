@@ -152,7 +152,6 @@ define [
         else if doable
           volume.attachTo( owner )
           @selectItem( data.hoverItem.el )
-          oldServer.trigger 'change:volume'
         return
 
       attr.owner = owner

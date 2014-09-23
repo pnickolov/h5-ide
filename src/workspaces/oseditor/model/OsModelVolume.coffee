@@ -13,8 +13,6 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
       if attr.owner
         owner = attr.owner
         delete attr.owner
-        @on 'change', -> owner.trigger 'change:volume'
-        @on 'destroy', -> owner.trigger 'change:volume'
 
       ComplexResModel.call this, attr, option
 
@@ -30,7 +28,6 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
         @.set("mountPoint", mountPoint)
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )
         new VolumeUsage( @, owner )
-        owner.trigger 'change:volume'
 
       return
 

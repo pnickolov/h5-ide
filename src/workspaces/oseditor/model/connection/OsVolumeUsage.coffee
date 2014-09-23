@@ -10,6 +10,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
         if usage isnt @
           usage.remove()
 
+      @getTarget( constant.RESTYPE.OSSERVER ).trigger 'change:volume'
       return
 
     remove : ( option )->
@@ -17,6 +18,8 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
 
       if @getTarget( constant.RESTYPE.OSSERVER ).isRemoved()
         @getTarget( constant.RESTYPE.OSVOL ).remove()
+      else
+        @getTarget( constant.RESTYPE.OSSERVER ).trigger 'change:volume'
 
       return
   }

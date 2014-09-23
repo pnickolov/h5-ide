@@ -42,8 +42,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			else
 				that.set('isWindowsPlatform', false)
 
-			currentCompData = that.get('compData')
-			resModel = that.get('resModel')
 			# osType = (resModel.getAmi() || resModel.get("cachedAmi")).osType
 			# if osType is 'windows'
 			if osPlatformDistro is 'windows'
@@ -139,7 +137,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			that.genStateRefList(allCompData)
 
-			resAttrDataAry = MC.aws.aws.genAttrRefList(currentCompData, allCompData)
+			resAttrDataAry = MC.aws.aws.genAttrRefList(compData, allCompData)
 			that.set('resAttrDataAry', resAttrDataAry)
 
 			that.genAttrRefRegexList()
@@ -189,7 +187,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			amiExist = true
 
 			layoutOSType = ''
-			cachedAmi = Design.instance().component(resModel.id).get('cachedAmi')
+			cachedAmi = resModel.get('cachedAmi')
 			layoutOSType = cachedAmi.osType if cachedAmi
 
 			if imageObj
@@ -271,19 +269,17 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 		setStateData: (stateData) ->
 
 			that = this
-			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
 
 		getStateData: () ->
 
 			that = this
-			compData = that.get('compData')
 			resModel = that.get('resModel')
-			if compData
-				stateData = resModel.getStateData()
-				if _.isArray(stateData)
-					return stateData
+
+			stateData = resModel.getStateData()
+			if _.isArray(stateData)
+				return stateData
 
 			return null
 
@@ -485,8 +481,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			that = this
 
-			currentCompData = that.get('compData')
-			currentCompUID = currentCompData.uid
+			currentCompUID = that.get('compData').uid
 
 			allCompData = that.get('allCompData')
 
@@ -546,8 +541,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 		getUIDByResName: (resName) ->
 
 			that = this
-			currentCompData = that.get('compData')
-			currentCompUID = currentCompData.uid
+			currentCompUID = that.get('compData').uid
 			allCompData = that.get('allCompData')
 
 			# if resName is 'self'
@@ -583,7 +577,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			that = this
 
-			appId = Design.instance().get("id")
+			appId = Design.instance().get('id')
 
 			if not (appId and resId)
 

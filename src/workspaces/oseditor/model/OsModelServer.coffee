@@ -15,6 +15,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       availabilityZone : ""
       imageId          : ""
       credential       : "keypair"
+      state            : []
 
     initialize : ( attr, option )->
       option = option || {}
@@ -85,6 +86,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         name : @get("name")
         type : @type
         uid  : @id
+        state : @get("state")
         resource :
           id        : @get("appId")
           name      : @get("name")
@@ -98,7 +100,9 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
 
       if @get('credential') is "keypair"
         component.resource.key_name = @get("keypair")
+        component.resource.adminPass = ""
       else
+        component.resource.key_name = ""
         component.resource.adminPass = @get("adminPass")
 
       { component : component, layout : @generateLayout() }
@@ -116,6 +120,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         imageId   : data.resource.image
         adminPass : data.resource.adminPass
         keypair   : data.resource.key_name
+        state     : data.state
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

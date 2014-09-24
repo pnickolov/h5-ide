@@ -41,8 +41,8 @@ define [
       @updateResList()
       @updateRegionResources()
 
-      window.CloudResources = CloudResources
-      window.constant = constant
+      #window.CloudResources = CloudResources
+      #window.constant = constant
 
       self = @
       setInterval ()->

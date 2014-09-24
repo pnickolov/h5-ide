@@ -15,8 +15,8 @@ define [
       'click #OsReloadResource' : 'reloadResource'
       'click .icon-new-stack'   : 'createStack'
 
-      'click .ops-list-switcher'       : 'switchAppStack'
-      "click .dash-ops-list > li" : "openItem"
+      'click .ops-list-switcher'              : 'switchAppStack'
+      "click .dash-ops-list > li"             : "openItem"
       "click .dash-ops-list .delete-stack"    : "deleteStack"
       'click .dash-ops-list .duplicate-stack' : 'duplicateStack'
       "click .dash-ops-list .start-app"       : "startApp"
@@ -51,7 +51,7 @@ define [
       rendering
     ###
     updateOpsList : ()->
-      $opsListView = @$el.find(".dash-ops-list")
+      $opsListView = @$el.find(".dash-ops-list-wrapper")
 
       tojson = {thumbnail:true}
       filter = (m)-> m.isExisting()
@@ -78,7 +78,7 @@ define [
 
         console.log "Dashboard Updated due to app progress changes."
 
-        $li = $("#region-resource-app-wrap").children("[data-id='#{model.id}']")
+        $li = $el.find(".dash-ops-list").children("[data-id='#{model.id}']")
         if not $li.length then return
         $li.children(".region-resource-progess").show().css({width:model.get("progress")+"%"})
         return

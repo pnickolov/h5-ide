@@ -8,12 +8,12 @@
 
 <div class="dash-body nano"> <div class="nano-content">
 
-  <section class="dash-ops-list">
+  <section class="dash-ops-list-wrapper">
     <nav>
       <button class="on stack ops-list-switcher"><span class="count"></span> <small>{{i18n "DASH_LBL_STACK"}}</small></button>
       <button class="ops-list-switcher"><span class="count">0</span> <small>{{i18n "DASH_LBL_APP"}}</small></button>
     </nav>
-    <ul class="clearfix"></ul>
+    <ul class="clearfix dash-ops-list"></ul>
   </section>
 
 </div></div>

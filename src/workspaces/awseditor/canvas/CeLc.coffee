@@ -35,7 +35,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       @listenTo @model, "change:expandedList", ()->
         self = @
         setTimeout ()->
-          self.render()
+          if not self.model.isRemoved() then self.render()
         , 0
       return
 

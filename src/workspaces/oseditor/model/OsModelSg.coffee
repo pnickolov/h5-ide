@@ -89,19 +89,23 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
       RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
 
-      new Model({
+      sgModel = new Model({
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
         description : data.resource.description
-        rules : data.resource.rules.map ( rule )->
-          if rule.remote_group_id
-            rule.remote_group_id = resolve( MC.extractID( rule.remote_group_id ) )
-
-          rModel = new RuleModel()
-          rModel.fromJSON( rule )
-          rModel
       })
+
+      rules = data.resource.rules.map ( rule )->
+
+        if rule.remote_group_id
+          rule.remote_group_id = resolve( MC.extractID( rule.remote_group_id ) )
+        rModel = new RuleModel()
+        rModel.fromJSON( rule )
+        rModel
+
+      sgModel.set('rules', rules)
+
       return
 
     getDefaultSg : ()->

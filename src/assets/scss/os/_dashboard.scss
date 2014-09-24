@@ -256,6 +256,11 @@
     width     : 95%;
     background : #edf1f3;
 
+    .os-status::before {
+      margin-left: -14px;
+      margin-top: 6px;
+    }
+
     .resource-count {
       padding-left : 60px;
       font-size    : 40px;

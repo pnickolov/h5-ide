@@ -8,6 +8,7 @@ define [
   'appAction'
   "backbone"
   "UI.tooltip"
+  "UI.table"
   "UI.nanoscroller"
 ], ( Template, TemplateData, constant, lang, CloudResources, appAction )->
 

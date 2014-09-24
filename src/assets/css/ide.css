@@ -9733,6 +9733,9 @@ g.shadow {
   padding: 15px 0 40px;
   width: 95%;
   background: #edf1f3; }
+  .dash-ops-resource-list .os-status::before {
+    margin-left: -14px;
+    margin-top: 6px; }
   .dash-ops-resource-list .resource-count {
     padding-left: 60px;
     font-size: 40px;

@@ -1,6 +1,7 @@
 
 define [
   './DashboardTpl'
+  './DashboardTplData'
   "constant"
   "i18n!/nls/lang.js"
   "CloudResources"
@@ -8,7 +9,7 @@ define [
   "backbone"
   "UI.tooltip"
   "UI.nanoscroller"
-], ( Template, constant, lang, CloudResources, appAction )->
+], ( Template, TemplateData, constant, lang, CloudResources, appAction )->
 
   Backbone.View.extend {
 
@@ -24,6 +25,10 @@ define [
       'click .dash-ops-list .stop-app'        : 'stopApp'
       'click .dash-ops-list .terminate-app'   : 'terminateApp'
 
+      'click .resource-tab'                   : 'switchResource'
+
+    resourcesTab: 'OSSERVER'
+
     initialize : ()->
       @opsListTab = "stack"
       @region     = "guangzhou"
@@ -32,6 +37,8 @@ define [
       @setElement( $(Template.frame()).eq(0).appendTo("#main") )
 
       @updateOpsList()
+      @updateResList()
+      @updateRegionResources()
 
       self = @
       setInterval ()->
@@ -74,6 +81,9 @@ define [
       $opsListView.children("ul").html html
       return
 
+    updateResList: () ->
+      @$('.dash-ops-resource-list').html Template.resourceList {}
+
     updateAppProgress : ( model )->
       if model.get("region") is @region and @regionOpsTab is "app"
 
@@ -95,6 +105,30 @@ define [
       @opsListTab = if $target.hasClass("stack") then "stack" else "app"
       @updateOpsList()
       return
+
+    switchResource : ( evt )->
+      @$(".resource-list-nav").children().removeClass("on")
+      @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
+      @updateRegionResources()
+      return
+
+    updateResourceCount : ()->
+      resourceCount = @model.getResourcesCount( @region )
+      $nav = $(".resource-list-nav")
+      for r, count of resourceCount
+        $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
+      return
+
+    updateRegionResources : ()->
+      @updateResourceCount()
+
+      type = constant.RESTYPE[ @resourcesTab ]
+      if not @model.isOsResReady( @region, type )
+        tpl = '<div class="dashboard-loading"><div class="loading-spinner"></div></div>'
+      else
+        tpl = TemplateData["resource_#{@resourcesTab}"]( @model.getOsResData( @region, type ) )
+
+      $(".resource-list-body").html( tpl )
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )-> App.createOps( "guangzhou", "openstack", "awcloud" )

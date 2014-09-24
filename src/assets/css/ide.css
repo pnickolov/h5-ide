@@ -9719,3 +9719,126 @@ g.shadow {
     background: url('/assets/images/ide/icon-app-running-16x16.png') left center no-repeat; }
   .dash-ops-list .region-resource-info > .stopped {
     background-image: url('/assets/images/ide/icon-app-stopped-16x16.png'); }
+
+/* Resource List */
+.dash-ops-resource-list {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 15px 0 40px;
+  width: 95%;
+  background: #edf1f3; }
+  .dash-ops-resource-list .resource-count {
+    padding-left: 60px;
+    font-size: 40px;
+    background: url('/assets/images/ide/global-region-icon2.png') left top no-repeat; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+      .dash-ops-resource-list .resource-count {
+        background: url('/assets/images/ide/global-region-icon2@2x.png') left top no-repeat;
+        background-size: 55px; } }
+  .dash-ops-resource-list .servers .resource-count {
+    background-position: left -2px; }
+  .dash-ops-resource-list .volumes .resource-count {
+    background-position: left -112px; }
+  .dash-ops-resource-list .snaps .resource-count {
+    background-position: left -497px; }
+  .dash-ops-resource-list .fips .resource-count {
+    background-position: left -57px; }
+  .dash-ops-resource-list .rts .resource-count {
+    background-position: left -167px; }
+  .dash-ops-resource-list .elbs .resource-count {
+    background-position: left -332px; }
+  .dash-ops-resource-list .resource-list-nav {
+    border-bottom: 1px solid #323E49;
+    margin-bottom: -1px;
+    background: #fcfcfc; }
+    .dash-ops-resource-list .resource-list-nav > .resource-tab {
+      float: left;
+      position: relative;
+      width: 9.95%;
+      padding: 1.3% 0;
+      cursor: pointer; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab .resource-count {
+        padding-left: 0;
+        padding-top: 55px;
+        height: 5px;
+        font-size: 12px;
+        display: block;
+        text-align: center;
+        margin: 0 auto 10px;
+        color: #999;
+        background-position-x: center; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab:first-child {
+        margin-left: 0.5%; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab::after {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        display: none;
+        margin-left: -8px;
+        border: 8px solid transparent;
+        content: ''; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab:hover::after {
+        display: block;
+        border-bottom-color: #92a4b5; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab.on::after {
+        display: block;
+        border-bottom-color: #323E49; }
+      .dash-ops-resource-list .resource-list-nav > .resource-tab .count-bubble {
+        border-radius: 4px;
+        padding: 2px 6px;
+        background: #F0F0F0;
+        color: #148BE6;
+        top: 8px;
+        left: 50%;
+        margin-left: 15px;
+        position: absolute;
+        font-size: 14px;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3), inset 0 1px 0px rgba(255, 255, 255, 0.8);
+        border: 1px solid #ccc;
+        text-shadow: 0 1px 0 #fff; }
+  .dash-ops-resource-list .resource-list-body {
+    min-height: 460px; }
+    .dash-ops-resource-list .resource-list-body .table-app-link {
+      cursor: pointer;
+      color: #148BE6;
+      max-width: 200px;
+      float: left; }
+      .dash-ops-resource-list .resource-list-body .table-app-link:hover {
+        text-decoration: underline; }
+    .dash-ops-resource-list .resource-list-body .table-app-link-wrap:after {
+      content: " ";
+      clear: both;
+      display: block; }
+    .dash-ops-resource-list .resource-list-body .icon-detail {
+      color: #666;
+      cursor: pointer; }
+      .dash-ops-resource-list .resource-list-body .icon-detail:hover {
+        color: #148BE6; }
+    .dash-ops-resource-list .resource-list-body .bubble {
+      text-decoration: underline;
+      cursor: default; }
+    .dash-ops-resource-list .resource-list-body .scroll-wrap {
+      height: 420px; }
+    .dash-ops-resource-list .resource-list-body .table {
+      background: #edf1f3; }
+    .dash-ops-resource-list .resource-list-body .table td {
+      vertical-align: middle; }
+    .dash-ops-resource-list .resource-list-body .table-head th {
+      padding: 10px 15px;
+      font-size: 12px;
+      background: #323e49;
+      font-weight: 500;
+      border: none; }
+    .dash-ops-resource-list .resource-list-body th:hover {
+      background: #55626e; }
+    .dash-ops-resource-list .resource-list-body td {
+      padding: 15px;
+      background-color: #edf1f3 !important;
+      border: none;
+      color: #676767; }
+    .dash-ops-resource-list .resource-list-body tr:nth-child(odd) > td {
+      background-color: #e8ebed !important; }
+    .dash-ops-resource-list .resource-list-body .dashboard-eip {
+      background: url('/assets/images/ide/icon/icn-eipon.png') left center no-repeat;
+      padding-left: 16px;
+      color: #148BE6; }

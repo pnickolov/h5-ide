@@ -202,6 +202,7 @@ define [ './model',
             # hide autocomplete when click document
             docMouseDownFunc = jQuery.proxy(that.onDocumentMouseDown, that)
             $(document).off('mousedown', docMouseDownFunc).on('mousedown', docMouseDownFunc)
+            $(document).off('click', docMouseDownFunc).on('click', docMouseDownFunc)
 
             onPasteGistData = jQuery.proxy(that.onPasteGistData, that)
             $(document).off('paste', onPasteGistData).on('paste', onPasteGistData)

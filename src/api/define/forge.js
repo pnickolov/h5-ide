@@ -31,7 +31,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'request_update'          : { type:'forge', url:'/request/',	method:'update',	params:['username', 'session_id', 'region_name', 'timestamp']   },
 		'resource_change_detail'  : { type:'forge', url:'/resource/',	method:'change_detail',	params:['username', 'session_id', 'region_name', 'app_id']   },
 		'resource_vpc_resource'   : { type:'forge', url:'/resource/',	method:'vpc_resource',	params:['username', 'session_id', 'region_name', 'vpc_id']   },
-		'resource_get_resource'   : { type:'forge', url:'/resource/',	method:'get_resource',	params:['username', 'session_id', 'region_name', 'provider', 'res_id']   },
+		'resource_get_resource'   : { type:'forge', url:'/resource/',	method:'get_resource',	params:['username', 'session_id', 'region_name', 'provider', 'res_id', 'resource']   },
 		'resource_check_change'   : { type:'forge', url:'/resource/',	method:'check_change',	params:['username', 'session_id', 'region_name', 'app_id']   },
 		'resource_generate_json'  : { type:'forge', url:'/resource/',	method:'generate_json',	params:['username', 'session_id', 'app_id']   },
 		'stack_create'            : { type:'forge', url:'/stack/',	method:'create',	params:['username', 'session_id', 'region_name', 'spec']   },

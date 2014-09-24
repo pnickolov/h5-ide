@@ -103,7 +103,7 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
         bootable    : data.resource.bootable
         owner       : resolve( MC.extractID(data.resource.server_id) )
 
-        description : data.resource.description
+        description : data.resource.display_description
       })
       return
   }

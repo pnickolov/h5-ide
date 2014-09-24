@@ -161,7 +161,7 @@ define [
   getNonOverlapRects = ( items )->
     rects = []
     groupRects = []
-    rects = items.map ( it )->
+    for it in items
       if it.isGroup()
         groupRects.push it.effectiveRect()
       else

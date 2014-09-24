@@ -1,0 +1,58 @@
+.OEPanelRight.resource {
+    nav {
+        padding: 14px 20px;
+
+        ul {
+            li {
+                float: left;
+                text-align: center;
+                cursor: pointer;
+                width: 30px;
+                height: 24px;
+                line-height: 24px;
+
+                &:first-child {
+                    border-left: 1px solid $dark-p-1;
+                    border-top-left-radius: 15%;
+                    border-bottom-left-radius: 15%;
+                }
+                &:last-child {
+                    border-top-right-radius: 15%;
+                    border-bottom-right-radius: 15%;
+                }
+            }
+
+            &.anchor {
+                float: left;
+                li {
+                    line-height: 24px;
+                    color: #ccc;
+                    background: #51568e;
+                    border-right: 1px solid $dark-p-1;
+                    &:hover { color: #eee }
+                }
+            }
+
+            &.action {
+                float: right;
+                color: white;
+                li {
+                    background: $base-b;
+                    &:hover { background: $dark-b; }
+                }
+            }
+
+        }
+    }
+
+    .resource-item {
+        &:hover    { background-color: rgba(255, 255, 255, 0.2); }
+        &.ossubnet { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osrt     { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osport   { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.oselb    { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+        &.osvol    { background-image: url('/assets/images/ide/icon/res-vol.png'); }
+    }
+
+    .ebs-size { margin-top: -1.8em; }
+}

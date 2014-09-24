@@ -1,0 +1,39 @@
+<h1>{{name}}</h1>
+<section class="group required">
+    <label class="name">Name</label>
+    <input data-id="hm-name" data-target="name" class="selection string" value="{{name}}"/>
+</section>
+<section class="group required">
+    <label class="name">Type</label>
+    <select class="selection option" value="{{type}}" data-target="type" data-id="hm-method" {{#if modeIsAppEdit}}disabled{{/if}}>
+        <option value='PING'>PING</option>
+        <option value='HTTP'>HTTP</option>
+        <option value='HTTPS'>HTTPS</option>
+        <option value='TCP'>TCP</option>
+    </select>
+</section>
+
+<section class="group required">
+    <label class="name">Delay</label>
+    <input data-id="hm-delay" data-target="delay" class="selection string" value="{{delay}}"/>
+</section>
+
+<section class="group required">
+    <label class="name">Timeout</label>
+    <input data-id="hm-timeout" data-target="delay" class="selection string" value="{{timeout}}"/>
+</section>
+
+<section class="group required">
+    <label class="name">Max Retries</label>
+    <input data-id="hm-maxretries" data-target="maxRetries" class="selection string" value="{{maxRetries}}"/>
+</section>
+
+<section class="group required">
+    <label class="name">URL Path</label>
+    <input data-id="hm-urlpath" data-target="urlPath" class="selection string" value="{{urlPath}}"/>
+</section>
+
+<section class="group required">
+    <label class="name">Expected Codes</label>
+    <input data-id="hm-expectedcodes" data-target="expectedCodes" class="selection string" value="{{expectedCodes}}"/>
+</section>

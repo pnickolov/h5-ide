@@ -185,7 +185,7 @@ define [
                 that.cancel()
                 if success.length is 1
                     console.debug success
-                    sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
                 else if success.length > 1
                     notification 'info', sprintf lang.NOTIFY.SELECTED_KEYPAIRS_ARE_DELETED, success.length
 

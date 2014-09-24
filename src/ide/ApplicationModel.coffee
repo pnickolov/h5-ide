@@ -45,7 +45,7 @@ define [
       m = @attributes.appList.findWhere({importMsrId:vpcId})
       if m then return m
       m = new OpsModel({
-        name        : ""
+        name        : "ImportedVpc"
         importMsrId : vpcId
         region      : region
         state       : OpsModel.State.Running
@@ -66,7 +66,6 @@ define [
     createStack : ( region, cloudType = "aws", provider = "amazon" )->
       # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
-        name      : @stackList().getNewName()
         region    : region
         cloudType : cloudType
         provider  : provider

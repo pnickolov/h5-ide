@@ -1,18 +1,72 @@
-@charset "UTF-8";
-/* Rectangle 5: */
-/* Rectangle 6: */
-/* Rectangle 9: */
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/Lato-regular.woff") format("woff"); }
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
-  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/Lato-Bold.woff") format("woff"); }
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
+.mg20 {
+  margin: 20px; }
+
+.bd3 {
+  border-radius: 3px; }
 
 .font-mono {
   font-family: "Monaco","Consolas", monospace;
@@ -54,8 +108,7 @@ select,
 textarea {
   margin: 0;
   font-size: 100%;
-  vertical-align: middle;
-  font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+  vertical-align: middle; }
 
 button,
 input {
@@ -3076,7 +3129,6 @@ div.modal-text-highlight {
   height: 100%; }
 
 .OEPanelRight .state-empty {
-  background: #313131;
   height: 100%;
   text-align: center;
   padding-top: 30%; }
@@ -3332,8 +3384,7 @@ div.modal-text-highlight {
   font-size: 12px; }
 
 .manager-content-main {
-  color: #dadada;
-  line-height: 1; }
+  color: #dadada; }
 
 .modal-toolbar .slidebox .combo-dd.selectbox .combo-dd-filter {
   width: 232px; }
@@ -3420,7 +3471,7 @@ div.modal-text-highlight {
 .highlight-status {
   color: #f8b42d; }
   .highlight-status.in-sync {
-    color: #00d38f; }
+    color: #11c568; }
 
 #tabbar-wrapper {
   padding: 10px 0 0 45px;
@@ -5081,10 +5132,6 @@ button#property-app-keypair {
   -moz-transition-property: opacity background;
   -o-transition-property: opacity background;
   transition-property: opacity background; }
-  #modal-option-group .switcher .switch-input {
-    position: absolute;
-    top: 0;
-    left: 0; }
   #modal-option-group .switcher .switch-label {
     position: relative;
     display: block;
@@ -5119,8 +5166,6 @@ button#property-app-keypair {
     transition: left 0.15s ease-out; }
 #modal-option-group .switcher.disabled {
   opacity: 0.2; }
-#modal-option-group .remove-btn {
-  cursor: pointer; }
 #modal-option-group .switcher.on {
   border-color: #0E8F38;
   background: #4fb845; }
@@ -5130,6 +5175,8 @@ button#property-app-keypair {
     opacity: 1; }
   #modal-option-group .switcher.on .switch-handle {
     left: 34px; }
+#modal-option-group .remove-btn {
+  cursor: pointer; }
 #modal-option-group .option-list-head {
   margin-top: 20px;
   margin-bottom: 20px; }
@@ -5405,14 +5452,12 @@ button#property-app-keypair {
   #property-db-instance-choose .dropdown .scroll-wrap {
     width: 318px; }
 
-/* Rectangle 5: */
-/* Rectangle 6: */
-/* Rectangle 9: */
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
-  height: 100%;
   z-index: 3;
-  background: #202027; }
+  background: #202027;
+  top: 0;
+  bottom: 0; }
 
 .OEPanelLeft {
   width: 246px;
@@ -5471,7 +5516,11 @@ button#property-app-keypair {
   height: 40px;
   width: 100%;
   min-width: 610px;
-  background: #2b2b35; }
+  background: #2b2b35;
+  position: absolute;
+  z-index: 3; }
+  .OEPanelTop + .OEPanelRight {
+    top: 40px; }
 
 .OEPanelBottom {
   position: absolute;
@@ -5522,7 +5571,6 @@ button#property-app-keypair {
   font-size: 16px;
   line-height: 39px;
   color: #b0b0b0;
-  text-shadow: 0 1px #333;
   background-color: #2b2b35;
   border-bottom: 1px solid #151519;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
@@ -5584,7 +5632,7 @@ button#property-app-keypair {
 .canvas-view {
   position: relative;
   font-size: 0;
-  /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  /* A hack to make sure #canvas_body.scrollHeight is correct. */
   background: white url('/assets/images/ide/grid_x1.png'); }
   .canvas-view[data-scale="1.2"] {
     background-image: url('/assets/images/ide/grid_x1.2.png'); }
@@ -6184,6 +6232,59 @@ g.shadow {
   .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full {
     fill: #ec3c38;
     background: #ec3c38; }
+
+.OS--Neutron--Network .group {
+  stroke: #dcdcdc;
+  stroke-linejoin: round;
+  stroke-dasharray: none;
+  stroke-width: 4; }
+.OS--Neutron--Network:hover .group {
+  stroke: #C6C4C4; }
+.OS--Neutron--Network .group-label {
+  fill: #aaa; }
+.canvas-view .OS--Neutron--Network.selected .group {
+  stroke: #C6C4C4;
+  fill: rgba(255, 255, 255, 0);
+  stroke-width: 5; }
+
+.OS--Neutron--Subnet .group {
+  fill: rgba(252, 190, 23, 0.02);
+  stroke: #f9be76;
+  stroke-linejoin: round;
+  stroke-dasharray: 16, 6;
+  stroke-width: 2; }
+.OS--Neutron--Subnet:hover .group {
+  stroke: #F69722; }
+.OS--Neutron--Subnet .group-label {
+  fill: #F69722; }
+
+.OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
+  stroke: #12CD4F; }
+
+#hlArea {
+  fill-opacity: 0.5; }
+
+.canvas-message {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  background: #111;
+  padding: 5px 8px;
+  border-radius: 4px;
+  color: #ccc;
+  max-width: 400px;
+  font-size: 12px;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  transform: translateX(-50%); }
+  .canvas-message:empty {
+    display: none; }
+  .canvas-message:before, .canvas-message:after {
+    content: ""; }
+  .canvas-message[data-type="bottom"] {
+    top: auto;
+    bottom: 8px; }
 
 .resources-dropdown-wrapper {
   position: absolute;
@@ -7032,7 +7133,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7331,6 +7433,37 @@ g.shadow {
 .toolbar-visual-ops-switch .switch-handle {
   width: 21px;
   height: 21px; }
+
+.openstack .OEPanelTop .sidebar-title {
+  width: 280px;
+  padding-left: 0;
+  float: right;
+  box-sizing: border-box; }
+  .openstack .OEPanelTop .sidebar-title.resource .resource {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.property .property {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.state .state {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.config .config {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title a {
+    width: 25%;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    height: 100%;
+    box-sizing: border-box; }
+    .openstack .OEPanelTop .sidebar-title a::selection {
+      background: transparent; }
+  .openstack .OEPanelTop .sidebar-title a:hover {
+    color: #eee; }
+  .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
+    width: 33%; }
 
 .ops-process {
   width: 100%;
@@ -8887,11 +9020,6 @@ g.shadow {
   vertical-align: middle;
   line-height: 1; }
 
-.switch-input {
-  position: absolute;
-  top: 0;
-  left: 0; }
-
 .switch-label {
   position: relative;
   display: block;
@@ -8988,9 +9116,6 @@ g.shadow {
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
 
-/* Rectangle 5: */
-/* Rectangle 6: */
-/* Rectangle 9: */
 /* Edit Subnet Group Modal */
 .dbsgppp-subnet-list {
   position: relative;
@@ -9024,3 +9149,569 @@ g.shadow {
   margin: 0 20px; }
   .modal-db-replica-promote-confirm a:hover {
     text-decoration: underline; }
+
+.openstack .OEPanelRight {
+  width: 280px; }
+  .openstack .OEPanelRight.state {
+    width: 655px; }
+  .openstack .OEPanelRight.hidden .panel-float {
+    display: none; }
+  .openstack .OEPanelRight .panel-float {
+    position: absolute;
+    top: 0;
+    right: 280px;
+    background: #202027; }
+    .openstack .OEPanelRight .panel-float > div {
+      width: 280px; }
+    .openstack .OEPanelRight .panel-float.hidden {
+      display: none; }
+  .openstack .OEPanelRight .panel-body {
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 100%; }
+  .openstack .OEPanelRight .panel-body section.system-image .selectbox {
+    width: 108px; }
+  .openstack .OEPanelRight .panel-body section header {
+    background: #2c2f4d;
+    color: white;
+    height: 28px;
+    line-height: 28px;
+    position: relative;
+    padding: 0 8px; }
+    .openstack .OEPanelRight .panel-body section header aside {
+      position: absolute;
+      top: 0;
+      right: 0; }
+      .openstack .OEPanelRight .panel-body section header aside .selection {
+        background: #2c2f4d;
+        color: #F3F3F3;
+        height: 28px;
+        padding: 0 20px 0 8px;
+        border: none;
+        border-left: 1px solid #1d1e29;
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box; }
+        .openstack .OEPanelRight .panel-body section header aside .selection::after {
+          border-top-color: white; }
+      .openstack .OEPanelRight .panel-body section header aside .dropdown {
+        right: 0;
+        min-width: 0; }
+  .openstack .OEPanelRight .panel-body section article {
+    padding: 10px; }
+    .openstack .OEPanelRight .panel-body section article .resource-item {
+      cursor: pointer; }
+    .openstack .OEPanelRight .panel-body section article > ul::after {
+      content: "";
+      display: block;
+      height: 0;
+      clear: both; }
+  .openstack .OEPanelRight .panel-body section .full-width {
+    width: 100%; }
+
+.OEPanelRight.resource nav {
+  padding: 14px 20px; }
+  .OEPanelRight.resource nav ul li {
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    line-height: 24px; }
+    .OEPanelRight.resource nav ul li:first-child {
+      border-left: 1px solid #2c2f4d;
+      border-top-left-radius: 15%;
+      border-bottom-left-radius: 15%; }
+    .OEPanelRight.resource nav ul li:last-child {
+      border-top-right-radius: 15%;
+      border-bottom-right-radius: 15%; }
+  .OEPanelRight.resource nav ul.anchor {
+    float: left; }
+    .OEPanelRight.resource nav ul.anchor li {
+      line-height: 24px;
+      color: #ccc;
+      background: #51568e;
+      border-right: 1px solid #2c2f4d; }
+      .OEPanelRight.resource nav ul.anchor li:hover {
+        color: #eeeeee; }
+  .OEPanelRight.resource nav ul.action {
+    float: right;
+    color: white; }
+    .OEPanelRight.resource nav ul.action li {
+      background: #4a90e2; }
+      .OEPanelRight.resource nav ul.action li:hover {
+        background: #3970af; }
+.OEPanelRight.resource .resource-item:hover {
+  background-color: rgba(255, 255, 255, 0.2); }
+.OEPanelRight.resource .resource-item.ossubnet {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osrt {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osport {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.oselb {
+  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
+.OEPanelRight.resource .resource-item.osvol {
+  background-image: url("/assets/images/ide/icon/res-vol.png"); }
+.OEPanelRight.resource .ebs-size {
+  margin-top: -1.8em; }
+
+#OpsEditor .OEPanelRight.property, #OpsEditor .OEPanelRight.config {
+  color: #ccc;
+  /* property component style */ }
+  #OpsEditor .OEPanelRight.property .panel-body, #OpsEditor .OEPanelRight.config .panel-body {
+    font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+    #OpsEditor .OEPanelRight.property .panel-body h1, #OpsEditor .OEPanelRight.config .panel-body h1 {
+      font-size: 20px;
+      padding: 5px;
+      text-align: center; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
+      position: relative; }
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
+        float: none; }
+      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
+        position: absolute;
+        top: 16px;
+        right: 20px; }
+    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list {
+      padding: 6px 8px 3px; }
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li {
+        padding: 5px 10px;
+        width: 92%;
+        margin-bottom: 5px;
+        background: #32324d;
+        border: 1px solid #222;
+        border-radius: 3px;
+        color: #fff; }
+        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li > div {
+          padding: 2px; }
+        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li:hover {
+          cursor: pointer; }
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
+        background: #2a608d; }
+  #OpsEditor .OEPanelRight.property .panel-float h1, #OpsEditor .OEPanelRight.config .panel-float h1 {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center; }
+  #OpsEditor .OEPanelRight.property dl.horizontal, #OpsEditor .OEPanelRight.config dl.horizontal {
+    margin: 8px 9px;
+    padding: 0; }
+    #OpsEditor .OEPanelRight.property dl.horizontal::after, #OpsEditor .OEPanelRight.config dl.horizontal::after {
+      content: "";
+      height: 0;
+      display: block;
+      clear: both; }
+    #OpsEditor .OEPanelRight.property dl.horizontal dt, #OpsEditor .OEPanelRight.config dl.horizontal dt {
+      min-width: 80px;
+      float: left;
+      padding: 0;
+      margin: 0; }
+    #OpsEditor .OEPanelRight.property dl.horizontal dd, #OpsEditor .OEPanelRight.config dl.horizontal dd {
+      float: left;
+      padding: 0;
+      margin: 0; }
+  #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
+    margin: 8px 9px; }
+    #OpsEditor .OEPanelRight.property dl:first-child, #OpsEditor .OEPanelRight.config dl:first-child {
+      margin-top: 0;
+      padding-top: 8px; }
+    #OpsEditor .OEPanelRight.property dl:last-child, #OpsEditor .OEPanelRight.config dl:last-child {
+      margin-bottom: 0;
+      padding-bottom: 8px; }
+    #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
+      content: "";
+      height: 0;
+      display: block;
+      clear: both; }
+    #OpsEditor .OEPanelRight.property dl dt, #OpsEditor .OEPanelRight.config dl dt {
+      min-width: 80px;
+      margin: 0;
+      padding: 5px 0 5px 0; }
+    #OpsEditor .OEPanelRight.property dl dd, #OpsEditor .OEPanelRight.config dl dd {
+      margin: 0;
+      padding: 5px 0 5px 8px; }
+  #OpsEditor .OEPanelRight.property .os-property-default, #OpsEditor .OEPanelRight.config .os-property-default {
+    padding: 20px 0 0 26px; }
+  #OpsEditor .OEPanelRight.property .os-property-message, #OpsEditor .OEPanelRight.config .os-property-message {
+    padding: 20px 0 0 26px; }
+  #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
+    display: inline-block;
+    vertical-align: baseline;
+    background: #FFF;
+    padding: 5px 0;
+    border-radius: 3px;
+    margin: 0px 2px -4px -2px; }
+  #OpsEditor .OEPanelRight.property img.property-os-image-value, #OpsEditor .OEPanelRight.config img.property-os-image-value {
+    vertical-align: middle;
+    margin: -2px 2px -2px 2px; }
+  #OpsEditor .OEPanelRight.property p.property-os-image-text, #OpsEditor .OEPanelRight.config p.property-os-image-text {
+    display: inline-block;
+    color: #DEDEDE;
+    margin: -5px 0;
+    max-width: 220px;
+    white-space: nowrap;
+    margin-right: -20px; }
+    #OpsEditor .OEPanelRight.property p.property-os-image-text span.uid, #OpsEditor .OEPanelRight.config p.property-os-image-text span.uid {
+      display: block;
+      font-size: 12px;
+      color: #8D8D8D; }
+  #OpsEditor .OEPanelRight.property .option-group-head, #OpsEditor .OEPanelRight.config .option-group-head {
+    width: 100%;
+    height: 32px;
+    line-height: 34px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+    #OpsEditor .OEPanelRight.property .option-group-head:first-child, #OpsEditor .OEPanelRight.config .option-group-head:first-child {
+      border-top: 1px solid #000000; }
+  #OpsEditor .OEPanelRight.property .option-group header, #OpsEditor .OEPanelRight.config .option-group header {
+    padding: 8px 10px;
+    background: #1d1e29; }
+  #OpsEditor .OEPanelRight.property .group, #OpsEditor .OEPanelRight.config .group {
+    background-color: #27272b;
+    font-size: 12px;
+    position: relative;
+    border-bottom: 1px #000 solid;
+    margin-bottom: 0; }
+    #OpsEditor .OEPanelRight.property .group ::selection, #OpsEditor .OEPanelRight.config .group ::selection {
+      background: transparent; }
+    #OpsEditor .OEPanelRight.property .group::selection, #OpsEditor .OEPanelRight.config .group::selection {
+      background: transparent; }
+    #OpsEditor .OEPanelRight.property .group:last-child, #OpsEditor .OEPanelRight.config .group:last-child {
+      border-bottom: none; }
+    #OpsEditor .OEPanelRight.property .group.required:after, #OpsEditor .OEPanelRight.config .group.required:after {
+      position: absolute;
+      z-index: 1;
+      content: "";
+      color: #fff;
+      text-align: right;
+      right: 0;
+      top: 0;
+      width: 0;
+      height: 0;
+      line-height: 24px;
+      border-style: solid;
+      border-width: 0 20px 20px 0;
+      margin-left: -20px;
+      border-color: transparent #11c568 transparent transparent; }
+    #OpsEditor .OEPanelRight.property .group.required:before, #OpsEditor .OEPanelRight.config .group.required:before {
+      position: absolute;
+      z-index: 2;
+      content: "*";
+      color: #fff;
+      text-align: right;
+      right: 0;
+      top: 0;
+      margin-top: 3px;
+      margin-right: 3px; }
+  #OpsEditor .OEPanelRight.property .name, #OpsEditor .OEPanelRight.config .name {
+    width: 100%;
+    padding: 8px 10px 2px 9px;
+    display: table-cell;
+    vertical-align: middle;
+    color: #777;
+    line-height: 14px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+  #OpsEditor .OEPanelRight.property .main, #OpsEditor .OEPanelRight.config .main {
+    padding: 10px 0 0 10px; }
+  #OpsEditor .OEPanelRight.property .sub, #OpsEditor .OEPanelRight.config .sub {
+    padding: 5px 10px;
+    color: #888; }
+  #OpsEditor .OEPanelRight.property .ipgroup, #OpsEditor .OEPanelRight.config .ipgroup {
+    display: inline-block; }
+    #OpsEditor .OEPanelRight.property .ipgroup select.selection, #OpsEditor .OEPanelRight.config .ipgroup select.selection {
+      float: left;
+      width: 72px;
+      font-size: 12px;
+      display: inline-block; }
+    #OpsEditor .OEPanelRight.property .ipgroup .selectize-control, #OpsEditor .OEPanelRight.config .ipgroup .selectize-control {
+      float: left;
+      width: 62px;
+      font-size: 12px;
+      display: inline-block;
+      text-align: center; }
+      #OpsEditor .OEPanelRight.property .ipgroup .selectize-control .selectize-input:after, #OpsEditor .OEPanelRight.config .ipgroup .selectize-control .selectize-input:after {
+        display: none; }
+    #OpsEditor .OEPanelRight.property .ipgroup span, #OpsEditor .OEPanelRight.config .ipgroup span {
+      width: 10px;
+      text-align: center;
+      padding-top: 20px;
+      float: left; }
+  #OpsEditor .OEPanelRight.property .btn-group button, #OpsEditor .OEPanelRight.config .btn-group button {
+    font-size: 12px;
+    width: 50%;
+    cursor: pointer;
+    color: #999;
+    border-right: 1px solid #131313;
+    float: left;
+    display: inline-block;
+    padding: 8px;
+    position: relative; }
+    #OpsEditor .OEPanelRight.property .btn-group button:before, #OpsEditor .OEPanelRight.config .btn-group button:before {
+      margin-right: 5px;
+      float: left;
+      display: inline-block;
+      margin-top: 1px; }
+    #OpsEditor .OEPanelRight.property .btn-group button.active, #OpsEditor .OEPanelRight.config .btn-group button.active {
+      background: #2c2f46;
+      color: #fff !important; }
+      #OpsEditor .OEPanelRight.property .btn-group button.active:after, #OpsEditor .OEPanelRight.config .btn-group button.active:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0px;
+        content: '';
+        border-bottom: 2px solid #0D49CA;
+        width: 100%;
+        z-index: 1; }
+    #OpsEditor .OEPanelRight.property .btn-group button:hover, #OpsEditor .OEPanelRight.config .btn-group button:hover {
+      color: #ccc;
+      background: #161616;
+      color: #9C6DC0; }
+    #OpsEditor .OEPanelRight.property .btn-group button.active:hover, #OpsEditor .OEPanelRight.config .btn-group button.active:hover {
+      background: #2c2f46;
+      color: #fff !important; }
+    #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
+      pointer-events: none;
+      color: #555; }
+  #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
+    float: right;
+    margin: 5px;
+    cursor: pointer; }
+  #OpsEditor .OEPanelRight.property .os-sg-rule-list-container, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container {
+    font-size: 12px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list li {
+      float: left;
+      text-align: center;
+      width: 33%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      padding: 15px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
+      float: left;
+      width: 31%; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .rule-item-remove, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .rule-item-remove {
+      margin-top: 5px;
+      float: left;
+      margin-left: 8px;
+      cursor: pointer; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list input.selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list input.selection {
+      height: 32px; }
+  #OpsEditor .OEPanelRight.property .os-sg-member-list li, #OpsEditor .OEPanelRight.config .os-sg-member-list li {
+    padding: 10px;
+    width: 100%;
+    border-bottom: 1px #000 solid;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; }
+  #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
+    width: 450px; }
+  #OpsEditor .OEPanelRight.property .os-status, #OpsEditor .OEPanelRight.config .os-status {
+    padding-left: 20px !important; }
+    #OpsEditor .OEPanelRight.property .os-status:before, #OpsEditor .OEPanelRight.config .os-status:before {
+      content: " ";
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      background-color: yellow;
+      position: absolute;
+      margin-left: -12px;
+      margin-top: 2px; }
+  #OpsEditor .OEPanelRight.property .os-status-ACTIVE:before, #OpsEditor .OEPanelRight.config .os-status-ACTIVE:before {
+    background-color: green; }
+  #OpsEditor .OEPanelRight.property .os-status-Running:before, #OpsEditor .OEPanelRight.config .os-status-Running:before {
+    background-color: green; }
+  #OpsEditor .OEPanelRight.property .os-status-INACTIVE:before, #OpsEditor .OEPanelRight.config .os-status-INACTIVE:before {
+    background-color: yellow; }
+  #OpsEditor .OEPanelRight.property .os-status-DOWN:before, #OpsEditor .OEPanelRight.config .os-status-DOWN:before {
+    background-color: yellow; }
+  #OpsEditor .OEPanelRight.property .os-status-:before, #OpsEditor .OEPanelRight.config .os-status-:before {
+    background-color: yellow; }
+
+.dropdown-list-btn {
+  display: block;
+  width: 100%;
+  padding: 10px; }
+
+.dash-header {
+  padding: 10px 0;
+  position: absolute;
+  z-index: 5;
+  background: #2a2e31;
+  width: 100%;
+  height: 38px; }
+  .dash-header > .btn {
+    margin-left: 15px; }
+
+#OsReloadResource {
+  font-size: 12px;
+  position: absolute;
+  right: 25px;
+  top: 18px;
+  color: #aaa;
+  display: block;
+  cursor: pointer;
+  -webkit-transform-origin: 12px 12px;
+  -moz-transform-origin: 12px 12px;
+  transform-origin: 12px 12px; }
+  #OsReloadResource:hover {
+    color: #148BE6; }
+  #OsReloadResource:before {
+    margin-right: 4px;
+    font-size: 12px;
+    line-height: 18px; }
+
+.icon-refresh.reloading {
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear; }
+  .icon-refresh.reloading:before {
+    margin: 0; }
+
+.dash-ops-list-wrapper {
+  margin: 68px auto 40px;
+  max-width: 1280px;
+  padding: 15px 0 40px;
+  width: 95%;
+  background: #fff; }
+  .dash-ops-list-wrapper > nav {
+    height: 30px;
+    border-bottom: 1px solid #000; }
+    .dash-ops-list-wrapper > nav > button {
+      border-right: 1px solid #000; }
+
+.dash-ops-list > li {
+  float: left;
+  margin-left: 1.6%;
+  margin-top: 15px;
+  display: block;
+  width: 18%;
+  position: relative;
+  cursor: pointer;
+  background: #323e49;
+  border-radius: 5px; }
+  .dash-ops-list > li:hover {
+    background: #28313a; }
+  .dash-ops-list > li.disabled {
+    cursor: default;
+    opacity: .8; }
+    .dash-ops-list > li.disabled:hover {
+      background: #323e49; }
+  .dash-ops-list > li:last-child {
+    margin-bottom: 15px; }
+.dash-ops-list .loading-spinner {
+  width: 12px;
+  height: 12px;
+  position: static;
+  float: left;
+  margin: 5px 5px 0 0; }
+.dash-ops-list .thumbnail {
+  height: 0;
+  padding-bottom: 65%;
+  background: #55626f url('/assets/images/ide/thumbnail-stack-placehoder@2x.png') center center no-repeat;
+  background-size: 100% auto;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0; }
+  .dash-ops-list .thumbnail.app-thumbnail {
+    background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
+    background-size: 100% auto; }
+  .dash-ops-list .thumbnail img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #55626e;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+.dash-ops-list [class^="icon-app-type-"], .dash-ops-list [class*=" icon-app-type-"] {
+  position: absolute;
+  top: 5px;
+  right: 5px; }
+@media (max-width: 1030px) {
+  .dash-ops-list > li {
+    width: 22.5%;
+    margin-left: 2%; }
+  .dash-ops-list .blank-widget {
+    padding: 14.55% 0 27px 0; } }
+.dash-ops-list .blank-widget {
+  margin: 15px 1.6%;
+  padding: 11.7% 0 27px 0;
+  position: relative; }
+  .dash-ops-list .blank-widget > div {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    transform: translate(0, -50%); }
+.dash-ops-list .region-resource-progess {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 27px;
+  z-index: 1;
+  border-radius: 0 0 0 5px;
+  background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
+  background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
+  background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);
+  background-image: linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
+  -webkit-background-size: 40px 40px;
+  -moz-background-size: 40px 40px;
+  -o-background-size: 40px 40px;
+  background-size: 40px 40px;
+  -webkit-transition: width 0.3s;
+  -moz-transition: width 0.3s;
+  -o-transition: width 0.3s;
+  transition: width 0.3s;
+  -webkit-animation: progress-bar 2s linear infinite;
+  -moz-animation: progress-bar 2s linear infinite;
+  animation: progress-bar 2s linear infinite; }
+  .dash-ops-list .region-resource-progess + .region-resource-info {
+    position: relative;
+    z-index: 2; }
+.dash-ops-list .region-resource-info {
+  padding-left: 12px;
+  position: relative;
+  height: 27px;
+  line-height: 27px;
+  color: #eee;
+  font-size: 12px;
+  display: block; }
+  .dash-ops-list .region-resource-info:before {
+    font-size: 12px;
+    margin-right: 2px; }
+  .dash-ops-list .region-resource-info > i {
+    float: right;
+    border-left: 1px solid #2d2d2d;
+    width: 30px;
+    height: 27px;
+    line-height: 30px;
+    text-align: center;
+    color: #ddd; }
+    .dash-ops-list .region-resource-info > i:hover {
+      background: #2d2d2d;
+      color: #fefefe; }
+    .dash-ops-list .region-resource-info > i:first-child {
+      border-radius: 0 0 5px 0; }
+  .dash-ops-list .region-resource-info i.icon-terminate:hover, .dash-ops-list .region-resource-info i.icon-forget-app:hover, .dash-ops-list .region-resource-info i.icon-delete:hover {
+    color: #ec3c38; }
+  .dash-ops-list .region-resource-info > span {
+    max-width: 110px; }
+  .dash-ops-list .region-resource-info > .icon-pending:before {
+    font-size: 10px;
+    line-height: 10px;
+    height: 10px;
+    color: #999;
+    margin-right: 4px; }
+  .dash-ops-list .region-resource-info > .running, .dash-ops-list .region-resource-info > .stopped {
+    padding-left: 14px;
+    background: url('/assets/images/ide/icon-app-running-16x16.png') left center no-repeat; }
+  .dash-ops-list .region-resource-info > .stopped {
+    background-image: url('/assets/images/ide/icon-app-stopped-16x16.png'); }

@@ -243,6 +243,31 @@
 	</dl>
 </div>
 
+<!-- {{bubbleOsAmiInfo}} -->
+<div class="bubble-head">{{name}}</div>
+<div class="bubble-content">
+    <dl class="dl-horizontal">
+        <dt>Distro</dt><dd>{{name}}</dd>
+        <dt>Version</dt><dd>{{os_version}}</dd>
+        <dt>{{i18n "DASH_BUB_ARCHITECTURE"}}</dt><dd>{{architecture}}</dd>
+        <dt>Volume Size</dt><dd>{{vol_size}}GB</dd>
+        <dt>id</dt><dd>{{id}}</dd>
+        <dt>Created</dt><dd>{{timeStr created_at}}</dd>
+    </dl>
+</div>
+
+<!-- {{bubbleOsSnapshotInfo}} -->
+<div class="bubble-head">{{name}}</div>
+<div class="bubble-content">
+    <dl class="dl-horizontal">
+        <dt>Status</dt><dd>{{status}}</dd>
+        <dt>UUID</dt><dd>{{id}}</dd>
+        <dt>Parent Volume</dt><dd>{{volume_id}}</dd>
+        <dt>Volume Size</dt><dd>{{vol_size}}GB</dd>
+        <dt>Created</dt><dd>{{timeStr created_at}}</dd>
+    </dl>
+</div>
+
 <!-- {{createNewStackClassic}} -->
 <div style="width:660px">
 	<div class="modal-header">
@@ -933,20 +958,30 @@ Additional Notes and Questions
 		<div class="scroll-content res_diff_tree" id="app-update-summary-table">
 		</div>
 	</div>
-    {{#if removeList.length}}
-        <section class="check-final-snapshot checkbox-wrap">
-            <div class="checkbox">
-                <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
-                <label for="take-rds-snapshot"></label>
-            </div>
-            <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
-        </section>
-        {{#if notReadyDB.length}}
-            <p class="cant-snapshot">DB Instance
-                {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                cannot take final snapshot.</p>
+    {{#if notification}}
+        <ul class="error-message-wrapper">
+        {{#each notification}}
+            <li class="error-message">{{this}}</li>
+        {{/each}}
+        </ul>
+    {{/if}}
+    {{#if removeList}}
+        {{#if removeList.length}}
+            <section class="check-final-snapshot checkbox-wrap">
+                <div class="checkbox">
+                    <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
+                    <label for="take-rds-snapshot"></label>
+                </div>
+                <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+            </section>
+            {{#if notReadyDB.length}}
+                <p class="cant-snapshot">DB Instance
+                    {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                    cannot take final snapshot.</p>
+            {{/if}}
         {{/if}}
     {{/if}}
+
 	<div class="stack-validation">
 		<details open style="display:none;">
 			<summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>

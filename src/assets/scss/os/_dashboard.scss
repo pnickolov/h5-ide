@@ -1,0 +1,244 @@
+@import "compass";
+
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
+      & { @content; }
+  }
+}
+
+.dash-header {
+  padding    : 10px 0;
+  position   : absolute;
+  z-index    : 5;
+  background : rgb(42, 46, 49);
+  width      : 100%;
+  height     : 38px;
+
+  > .btn {
+    margin-left : 15px;
+  }
+}
+
+#OsReloadResource {
+  font-size : 12px;
+  position  : absolute;
+  right     : 25px;
+  top       : 18px;
+  color     : #aaa;
+  display   : block;
+  cursor    : pointer;
+  -webkit-transform-origin : 12px 12px;
+     -moz-transform-origin : 12px 12px;
+          transform-origin : 12px 12px;
+
+  &:hover  { color: #148BE6; }
+  &:before {
+    margin-right: 4px;
+    font-size   : 12px;
+    line-height : 18px;
+  }
+}
+
+.icon-refresh.reloading {
+  &:before { margin : 0; }
+  -webkit-animation: rotation .6s infinite linear;
+     -moz-animation: rotation .6s infinite linear;
+       -o-animation: rotation .6s infinite linear;
+          animation: rotation .6s infinite linear;
+}
+
+
+.dash-ops-list-wrapper {
+  margin    : 68px auto 40px;
+  max-width : 1280px;
+  padding   : 15px 0 40px;
+  width     : 95%;
+  background : #fff;
+
+  > nav {
+    height : 30px;
+    border-bottom : 1px solid #000;
+
+    > button {
+      border-right : 1px solid #000;
+    }
+  }
+}
+
+.dash-ops-list {
+
+  > li {
+    float         : left;
+    margin-left   : 1.6%;
+    margin-top    : 15px;
+    display       : block;
+    width         : 18%;
+    position      : relative;
+    cursor        : pointer;
+    background    : #323e49;
+    border-radius : 5px;
+
+    &:hover { background: darken(#323e49, 5%); }
+
+    &.disabled {
+      cursor  : default;
+      opacity : .8;
+      &:hover { background: #323e49; }
+    }
+
+    &:last-child { margin-bottom : 15px; }
+  }
+
+  .loading-spinner {
+    width    : 12px;
+    height   : 12px;
+    position : static;
+    float    : left;
+    margin   : 5px 5px 0 0;
+  }
+
+
+  .thumbnail {
+    height          : 0;
+    padding-bottom  : 65%;
+    background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+    background-size : 100% auto;
+    overflow        : hidden;
+    border-radius   : 5px 5px 0 0;
+
+    &.app-thumbnail {
+      background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
+      background-size  : 100% auto;
+    }
+
+    img {
+      width  : 100%;
+      height : auto;
+
+      border        : 1px solid #55626e;
+      border-bottom : none;
+      border-radius : 5px 5px 0 0;
+      background    : #fff;
+
+      -webkit-box-sizing : border-box;
+         -moz-box-sizing : border-box;
+              box-sizing : border-box;
+    }
+  }
+
+
+  [class^="icon-app-type-"], [class*=" icon-app-type-"] {
+    position : absolute;
+    top      : 5px;
+    right    : 5px;
+  }
+
+  @media (max-width: 1030px) {
+    > li {
+      width : 22.5%;
+      margin-left : 2%;
+    }
+
+    .blank-widget {
+      padding  : 14.55% 0 27px 0;
+    }
+  }
+
+  .blank-widget {
+    margin   : 15px 1.6%;
+    padding  : 11.7% 0 27px 0;
+    position : relative;
+
+    > div {
+      position   : absolute;
+      top        : 50%;
+      left       : 0;
+      width      : 100%;
+      text-align : center;
+
+      -webkit-transform : translate(0, -50%);
+         -moz-transform : translate(0, -50%);
+              transform : translate(0, -50%);
+    }
+  }
+
+  .region-resource-progess {
+    position : absolute;
+    left     : 0;
+    bottom   : 0;
+    height   : 27px;
+    z-index  : 1;
+    border-radius : 0 0 0 5px;
+
+    $stripeColor1 : #ad77d7;
+    $stripeColor2 : #9e62d4;
+
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, $stripeColor1), color-stop(0.25, $stripeColor2), color-stop(0.5, $stripeColor2), color-stop(0.5, $stripeColor1), color-stop(0.75, $stripeColor1), color-stop(0.75, $stripeColor2), to($stripeColor2));
+    background-image: -webkit-linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+    background-image: -moz-linear-gradient(135deg, $stripeColor1 25%, transparent 25%, transparent 50%, $stripeColor1 50%, $stripeColor1 75%, transparent 75%, transparent);
+    background-image: linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+
+    @include background-size( 40px 40px );
+    @include transition( width .3s );
+
+    -webkit-animation: progress-bar 2s linear infinite;
+       -moz-animation: progress-bar 2s linear infinite;
+            animation: progress-bar 2s linear infinite;
+
+    + .region-resource-info {
+      position : relative;
+      z-index  : 2;
+    }
+  }
+
+  .region-resource-info {
+    padding-left  : 12px;
+    position      : relative;
+    height        : 27px;
+    line-height   : 27px;
+    color         : #eee;
+    font-size     : 12px;
+    display       : block;
+
+    &:before { font-size : 12px; margin-right : 2px; }
+
+    > i {
+      float       : right;
+      border-left : 1px solid #2d2d2d;
+      width       : 30px;
+      height      : 27px;
+      line-height : 30px;
+
+      text-align  : center;
+      color: #ddd;
+
+      &:hover {
+        background : #2d2d2d;
+        color      : #fefefe;
+      }
+
+      &:first-child { border-radius : 0 0 5px 0; }
+    }
+
+    i.icon-terminate, i.icon-forget-app, i.icon-delete { &:hover { color: #ec3c38; } }
+
+    > span {
+      max-width : 110px;
+    }
+
+    > .icon-pending:before {
+      font-size    : 10px;
+      line-height  : 10px;
+      height       : 10px;
+      color        : #999;
+      margin-right : 4px;
+    }
+
+    > .running, > .stopped {
+      padding-left : 14px;
+      background   : image-url('ide/icon-app-running-16x16.png') left center no-repeat; }
+    > .stopped {
+      background-image : image-url('ide/icon-app-stopped-16x16.png');
+    }
+  }
+}

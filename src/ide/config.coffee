@@ -114,6 +114,8 @@ require.config {
     'jqtimepicker'       : 'ui/jquery.timepicker'
     'jqdatetimepicker'   : 'ui/jquery.datetimepicker'
     'UI.modalplus'       : 'ui/UI.modalplus'
+    'selectize'          : 'ui/selectize'
+    'UI.selection'       : 'ui/UI.selection'
 
     #############################################
     # cloud resources           # Merge in deploy
@@ -124,6 +126,7 @@ require.config {
     # api                       # Merge in deploy
     #############################################
     'ApiRequest'      : 'api/ApiRequest'
+    'ApiRequestOs'    : 'api/ApiRequestOs'
     'ApiRequestDefs'  : 'api/ApiRequestDefs'
     "ApiRequestR"     : "api/ApiRequestR"
     "ApiRequestRDefs" : "api/ApiRequestRDefs"
@@ -137,21 +140,23 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"        : "workspaces/OpsEditor"
-    'Design'           : 'workspaces/coreeditor/Design'
-    "ResourceModel"    : "workspaces/coreeditor/ModelResource"
-    "ComplexResModel"  : "workspaces/coreeditor/ModelComplex"
-    "ConnectionModel"  : "workspaces/coreeditor/ModelConnection"
-    "GroupModel"       : "workspaces/coreeditor/ModelGroup"
-    "CoreEditor"       : "workspaces/coreeditor/EditorCore"
-    "CoreEditorView"   : "workspaces/coreeditor/EditorView"
-    "ProgressViewer"   : "workspaces/coreeditor/ProgressViewer"
-    "CanvasElement"    : "workspaces/coreeditor/CanvasElement"
-    "CanvasLine"       : "workspaces/coreeditor/CanvasLine"
-    "CanvasView"       : "workspaces/coreeditor/CanvasView"
-    "CanvasViewLayout" : "workspaces/coreeditor/CanvasViewLayout"
-    "CanvasManager"    : "workspaces/coreeditor/CanvasManager"
-    "CanvasPopup"      : "workspaces/coreeditor/CanvasPopup"
+    "OpsEditor"         : "workspaces/OpsEditor"
+    'Design'            : 'workspaces/coreeditor/Design'
+    "ResourceModel"     : "workspaces/coreeditor/ModelResource"
+    "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
+    "ConnectionModel"   : "workspaces/coreeditor/ModelConnection"
+    "GroupModel"        : "workspaces/coreeditor/ModelGroup"
+    "CoreEditor"        : "workspaces/coreeditor/EditorCore"
+    "CoreEditorView"    : "workspaces/coreeditor/EditorView"
+    "CoreEditorApp"     : "workspaces/coreeditor/EditorCoreApp"
+    "CoreEditorViewApp" : "workspaces/coreeditor/EditorViewApp"
+    "ProgressViewer"    : "workspaces/coreeditor/ProgressViewer"
+    "CanvasElement"     : "workspaces/coreeditor/CanvasElement"
+    "CanvasLine"        : "workspaces/coreeditor/CanvasLine"
+    "CanvasView"        : "workspaces/coreeditor/CanvasView"
+    "CanvasViewLayout"  : "workspaces/coreeditor/CanvasViewLayout"
+    "CanvasManager"     : "workspaces/coreeditor/CanvasManager"
+    "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
 
     #############################################
     # deprecated service        # Merge in deploy
@@ -197,6 +202,9 @@ require.config {
     'og_manage'        : 'component/optiongroup/ogManage'
     'og_manage_app'    : 'component/optiongroup/ogManageApp'
     'og_dropdown'      : 'component/optiongroup/ogDropDown'
+
+    'OsKp'             : 'component/os_kp/kpDropdown'
+    'OsSnapshot'       : 'component/os_snapshot/snapshot'
 
   ### env:dev:end ###
   shim :
@@ -254,8 +262,10 @@ require.config {
       "jqdatetimepicker"
       "UI.modalplus"
       "UI.nanoscroller"
+      "selectize"
+      "UI.selection"
     ]
-    "api/api" : ["ApiRequest"]
+    "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
     "service/service" : [
       'base_model'
       'state_model'
@@ -335,7 +345,7 @@ requirejs.onError = ( err )->
 require [
   'ide/Application'
   "cloudres/CrBundle"
-  "workspaces/Dashboard"
+  "workspaces/DashboardOs"
   "ide/Router"
   "MC"
   'lib/aws'

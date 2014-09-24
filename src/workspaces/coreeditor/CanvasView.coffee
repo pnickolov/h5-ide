@@ -42,6 +42,8 @@ define [
 
       "mousedown svg" : "__dragCanvasMouseDown"
 
+      "dblclick" : "onDblClick"
+
     initialize : ( options )->
       @workspace = options.workspace
       @design    = @workspace.design
@@ -74,6 +76,8 @@ define [
       return
 
     isReadOnly : ()-> false
+
+    onDblClick : ( evt )-> @trigger "doubleclick"
 
     remove : ()->
       for type, popup of @__popupCache
@@ -240,7 +244,11 @@ define [
         @__selected = null
 
       if silent isnt true
-        ide_event.trigger ide_event.OPEN_PROPERTY
+        @triggerSelected()
+      return
+
+    triggerSelected : ( type, id )->
+      @trigger "itemSelected", type, id
       return
 
     clearItems : ()->
@@ -565,6 +573,12 @@ define [
     __addItemDrop : ( evt )->
     __bestFitRect : ()->
     __moveItemMouseDown : ( evt )->
+    ###
+
+    ###
+    # Highlight some items ( Implemented in CavasViewEffect )
+    hightLightItems  : ( items )->
+    removeHightLight : ()->
     ###
 
   }, {

@@ -1,23 +1,24 @@
 
-define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
+define [ "GroupModel", "constant" ], ( GroupModel, constant )->
 
-  Model = ComplexResModel.extend {
+  Model = GroupModel.extend {
 
     type : constant.RESTYPE.OSNETWORK
     newNameTmpl : "Network-"
 
-    serialize : ()->
-      component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
-          id             : @get("appId")
-          name           : @get("name")
-          admin_state_up : ""
-          shared         : ""
+    isRemovable : ()-> false
 
-      { component : component }
+    serialize : ()->
+      {
+        layout : @generateLayout()
+        component :
+          name : @get("name")
+          type : @type
+          uid  : @id
+          resource :
+            id     : @get("appId")
+            name   : @get("name")
+      }
 
   }, {
 
@@ -26,8 +27,13 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     deserialize : ( data, layout_data, resolve )->
       new Model({
         id    : data.uid
-        name  : data.name
+        name  : data.resource.name
         appId : data.resource.id
+
+        x      : layout_data.coordinate[0]
+        y      : layout_data.coordinate[1]
+        width  : layout_data.size[0]
+        height : layout_data.size[1]
       })
       return
   }

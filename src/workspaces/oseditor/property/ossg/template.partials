@@ -1,0 +1,108 @@
+<!-- {{stack}} -->
+<h1>{{name}}</h1>
+{{#unless defaultSG}}<div class="os-sg-remove icon-delete"></div>{{/unless}}
+<div class="option-group-head expand">
+    Security Group
+</div>
+<div class="option-group">
+    {{#if modeIsApp}}
+    <section class="group">
+        <dl class="vertical">
+            <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Description</dt><dd>{{emptyStr description}}</dd>
+        </dl>
+    </section>
+    {{else}}
+    <section class="group required">
+        <label class="name">Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Description</label>
+        <input data-target="description" class="selection string" value="{{description}}"/>
+    </section>
+    {{/if}}
+</div>
+<div class="option-group-head expand">Rule (<span class="sg-rule-count"></span>)</div>
+<div class="direction-switch btn-group">
+    <button class="icon-unknown t-m-btn ingress active">Ingress (<span class="sg-ingress-count"></span>)</button>
+    <button class="icon-unknown t-m-btn egress">Egress (<span class="sg-egress-count"></span>)</button>
+</div>
+<div class="os-sg-rule-list-container">
+    <div class="rule-container ingress">
+        <ul class="head-list">
+            <li class="head">Protocol</li>
+            <li class="head">Port/Code</li>
+            <li class="head">Source</li>
+        </ul>
+        <div class="rule-list ingress">
+            {{#each ingressRules}}
+            <div class="rule-item" data-id="{{id}}">
+                <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
+                    <option value="tcp">TCP</option>
+                    <option value="udp">UDP</option>
+                    <option value="icmp">ICMP</option>
+                    <option value="all">All</option>
+                </select>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." {{#if ../modeIsApp}}disabled{{/if}}/>
+                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
+                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
+                </select>
+                {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="rule-container egress hide">
+        <ul class="head-list">
+            <li class="head">Protocol</li>
+            <li class="head">Port/Code</li>
+            <li class="head">Target</li>
+        </ul>
+        <div class="rule-list egress">
+            {{#each egressRules}}
+            <div class="rule-item" data-id="{{id}}">
+                <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
+                    <option value="tcp">TCP</option>
+                    <option value="udp">UDP</option>
+                    <option value="icmp">ICMP</option>
+                    <option value="all">All</option>
+                </select>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." {{#if ../modeIsApp}}disabled{{/if}}/>
+                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
+                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
+                </select>
+                {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+<div class="option-group-head expand">
+    Member (<span class="sg-member-count"></span>)
+</div>
+<div class="option-group">
+    <ul class="os-sg-member-list">
+        {{#each memberList}}
+        <li class="member-item">{{name}}</li>
+        {{/each}}
+    </ul>
+</div>
+
+<!-- {{newItem}} -->
+<div class="rule-item">
+    <select data-target="protocol" class="selection option" value="" >
+        <option value="tcp">TCP</option>
+        <option value="udp">UDP</option>
+        <option value="icmp">ICMP</option>
+        <option value="all">All</option>
+    </select>
+    <input class="selection" data-target="port" value="" />
+    <select data-target="ip" class="selection option" value="" data-valid-handle="ipValid" ></select>
+    <div class="rule-item-remove icon-delete hide"></div>
+</div>

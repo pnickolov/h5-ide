@@ -136,6 +136,7 @@ define [ './template', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lan
           lineId = @model.get("lineId")
           comp = Design.instance().component( lineId )
           if comp
+            # Refresh property panel.
             ide_event.trigger ide_event.OPEN_PROPERTY, comp.type, lineId
 
           return false

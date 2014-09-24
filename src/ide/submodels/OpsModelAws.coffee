@@ -14,8 +14,15 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
     type : "AwsOps"
 
+    initialize : ( attr, opts )->
+      OpsModel.prototype.initialize.apply this, arguments
+      @attributes.cloudType = "aws"
+      if not @get("provider")
+        @attributes.provider = "global"
+      return
+
     getMsrId : ()->
-      msrId = OpsModel.getMsrId()
+      msrId = OpsModel.prototype.getMsrId.call this
       if msrId then return msrId
       if not @__jsonData then return undefined
       for uid, comp of @__jsonData.component

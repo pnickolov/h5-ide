@@ -5,7 +5,8 @@ define [
   "i18n!/nls/lang.js"
   "CanvasManager"
   "Design"
-], ( CanvasView, constant, lang, CanvasManager, Design )->
+  "./CpVolume"
+], ( CanvasView, constant, lang, CanvasManager, Design, VolumePopup )->
 
   isPointInRect = ( point, rect )->
     rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y
@@ -22,37 +23,17 @@ define [
 
     recreateStructure : ()->
       @svg.clear().add([
-        @svg.group().classes("layer_vpc")
-        @svg.group().classes("layer_az")
+        @svg.group().classes("layer_network")
         @svg.group().classes("layer_subnet")
-        @svg.group().classes("layer_asg")
         @svg.group().classes("layer_line")
-        @svg.group().classes("layer_sgline")
         @svg.group().classes("layer_node")
       ])
       return
 
-    appendVpc    : ( svgEl )-> @__appendSvg(svgEl, ".layer_vpc")
-    appendAz     : ( svgEl )-> @__appendSvg(svgEl, ".layer_az")
-    appendSubnet : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
-    appendAsg    : ( svgEl )-> @__appendSvg(svgEl, ".layer_asg")
-    appendSgline : ( svgEl )-> @__appendSvg(svgEl, ".layer_sgline")
+    appendNetwork : ( svgEl )-> @__appendSvg(svgEl, ".layer_network")
+    appendSubnet  : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
 
     fixConnection : ( coord, initiator, target )->
-      if target.type is constant.RESTYPE.ELB and ( initiator.type is constant.RESTYPE.INSTANCE or initiator.type is constant.RESTYPE.LC )
-        if coord.x > target.pos().x + target.size().width / 2
-          toPort = "elb-sg-out"
-        else
-          toPort = "elb-sg-in"
-
-      else if target.type is constant.RESTYPE.ASG or target.type is "ExpandedAsg"
-        target = target.getLc()
-        if target then target = @getItem( target.id )
-
-      {
-        toPort : toPort
-        target : target
-      }
 
     errorMessageForDrop : ( type )->
       switch type
@@ -71,6 +52,7 @@ define [
 
     selectVolume : ( volumeId )->
       @deselectItem( true )
+      @triggerSelected( constant.RESTYPE.OSVOL, volumeId ) if volumeId
       @__selectedVolume = volumeId
       false
 
@@ -103,13 +85,9 @@ define [
 
       if not data.volDropTargets
         data.hoverItem = null
-
-        RTP     = constant.RESTYPE
-        targets = @design.componentsOfType( RTP.INSTANCE ).concat( @design.componentsOfType(RTP.LC) )
-
         data.volDropTargets = dropzones = []
 
-        for tgt in targets
+        for tgt in @design.componentsOfType( constant.RESTYPE.OSSERVER )
           tgt = @getItem( tgt.id )
 
           for el in tgt.$el
@@ -140,7 +118,7 @@ define [
           data.popup = new VolumePopup {
             attachment : hoverItem.el
             host       : model
-            models     : model.get("volumeList")
+            models     : model.volumes()
             canvas     : @
           }
 
@@ -167,6 +145,7 @@ define [
       if attr.id
         # Moving volume
         volume = @design.component( attr.id )
+        oldServer = volume.getOwner()
         doable = volume.isReparentable( owner )
         if _.isString( doable )
           return notification "error", doable
@@ -175,22 +154,15 @@ define [
           @selectItem( data.hoverItem.el )
         return
 
-      # Avoid adding volume for existing LC.
-      if owner.type is constant.RESTYPE.LC and owner.get("appId")
-        notification "error", lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
-        return
-
       attr.owner = owner
-      if _.isString( attr.encrypted )
-        attr.encrypted = attr.encrypted is 'true'
 
-      VolumeModel = Design.modelClassForType( constant.RESTYPE.VOL )
+      VolumeModel = Design.modelClassForType( constant.RESTYPE.OSVOL )
       v = new VolumeModel( attr )
 
       new VolumePopup {
         attachment    : data.hoverItem.el
         host          : owner
-        models        : owner.get("volumeList")
+        models        : owner.volumes()
         canvas        : @
         selectAtBegin : v
       }

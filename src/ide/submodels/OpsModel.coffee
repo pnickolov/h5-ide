@@ -74,6 +74,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
 
+      cloudType  : ""
+      provider   : ""
+
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
@@ -201,7 +204,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       CloudResources( "OpsResource", @getMsrId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+    generateJsonFromRes : ()->
+      json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+      if not json.agent.module.repo
+        json.agent.module =
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
+      json
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()
@@ -677,8 +686,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state       : "Enabled"
       version     : "2014-02-17"
       component   : {}
-      cloud_type  : "aws"
-      provider    : "amazon"
+      cloud_type  : @get("cloudType")
+      provider    : @get("provider")
       layout      : { size : [240, 240] }
       agent       :
         enabled : true
@@ -688,7 +697,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       property :
         stoppable : true
 
-    __initJsonData : ()-> @__jsonData = @__createRawJson()
+    __initJsonData : ()-> @__jsonData = @__createRawJson(); return
   }, {
     extend : ( protoProps, staticProps ) ->
       # Create subclass

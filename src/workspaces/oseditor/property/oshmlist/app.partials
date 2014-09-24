@@ -1,0 +1,14 @@
+<!-- {{stack}} -->
+<div class="option-group-head expand">
+    Health Monitor({{list.length}})
+</div>
+<div class="option-group">
+    <ul class="item-readable-list">
+    {{#each list}}
+    <li class="item hm-item" data-id="{{id}}">
+        <div class="item-name">{{name}}</div>
+        <div class="item-info">{{type}} | {{url_path}}</div>
+    </li>
+    {{/each}}
+    </ul>
+</div>

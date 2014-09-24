@@ -1,0 +1,18 @@
+.mg20 {
+	margin: 20px;
+}
+
+.bd3 {
+	border-radius: 3px;
+}
+
+
+@mixin no-selection-bg {
+	::selection {
+		background: transparent;
+	}
+
+	&::selection {
+		background: transparent;
+	}
+}

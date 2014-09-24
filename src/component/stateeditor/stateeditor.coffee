@@ -20,7 +20,7 @@ define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], 
         else
             model = new Backbone.Model()
 
-        view  = new View({
+        view = new View({
             model: model
         })
 

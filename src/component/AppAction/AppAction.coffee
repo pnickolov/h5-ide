@@ -13,8 +13,114 @@ define [
   'constant'
   'UI.modalplus'
   'ApiRequest'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest )->
+  'kp_dropdown'
+  'component/trustedadvisor/gui/main'
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, TA )->
   AppAction = Backbone.View.extend
+
+    runStack: (event, workspace)->
+      @workspace = workspace
+      cloudType = @workspace.opsModel.get('cloudType')
+      that = @
+      if $(event.currentTarget).attr('disabled')
+        return false
+      @modal = new modalPlus
+        title: lang.IDE.RUN_STACK_MODAL_TITLE
+        template: MC.template.modalRunStack
+        disableClose: true
+        width: '450px'
+        confirm:
+          text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+          disabled: true
+      @renderKpDropdown(@modal, cloudType)
+      cost = Design.instance().getCost()
+      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
+      @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+
+      # load TA
+      TA.loadModule('stack').then ()=>
+        @modal.resize()
+        @modal?.toggleConfirm false
+
+      appNameDom = @modal.tpl.find('#app-name')
+      checkAppNameRepeat = @checkAppNameRepeat.bind @
+      appNameDom.keyup ->
+        checkAppNameRepeat(appNameDom.val())
+
+      self = @
+      @modal.on 'confirm', ()=>
+        @hideError()
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+        # setUsage
+        appNameRepeated = @checkAppNameRepeat(appNameDom.val())
+        if not @defaultKpIsSet() or appNameRepeated
+          return false
+
+        @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
+        @json = @workspace.design.serialize usage: 'runStack'
+        @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        @json.name = appNameDom.val()
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+          self.modal.close()
+          App.openOps( ops )
+        , (err)->
+          self.modal.close()
+          error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
+          notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
+      App.user.on 'change:credential', ->
+        console.log 'We got it.'
+        if App.user.hasCredential() and that.modal.isOpen()
+          that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
+      @modal.on 'close', ->
+        console.log 'We gave up.'
+        App.user.off 'change:credential'
+
+    renderKpDropdown: (modal, cloudType)->
+      if cloudType is 'openstack'
+        return false
+      if kpDropdown.hasResourceWithDefaultKp()
+        keyPairDropdown = new kpDropdown()
+        if modal then modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el else return false
+        hideKpError = @hideError.bind @
+        keyPairDropdown.dropdown.on 'change', ->
+          hideKpError('kp')
+        modal.tpl.find('.default-kp-group').show()
+        if @modal then @modal.on 'close', ->
+          keyPairDropdown.remove()
+        if @updateModal then @updateModal.on 'close', ->
+          keyPairDropdown.remove()
+      null
+
+    hideError: (type)->
+      selector = if type then $("#runtime-error-#{type}") else $(".runtime-error")
+      selector.hide()
+
+    defaultKpIsSet: ->
+      if not kpDropdown.hasResourceWithDefaultKp()
+        return true
+      kpModal = Design.modelClassForType( constant.RESTYPE.KP )
+      defaultKP = kpModal.getDefaultKP()
+      if not defaultKP.get('isSet') or not ((@modal||@updateModal) and (@modal || @updateModal).tpl.find("#kp-runtime-placeholder .item.selected").size())
+        @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
+        return false
+      true
+
+    checkAppNameRepeat: (nameVal)->
+      if App.model.appList().findWhere(name: nameVal)
+        @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
+        return true
+      else if not nameVal
+        @showError('appname', lang.PROP.MSG_WARN_NO_APP_NAME)
+        return true
+      else
+        @hideError('appname')
+        return false
+
+    showError: (id, msg)->
+        $("#runtime-error-#{id}").text(msg).show()
+
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
 
@@ -90,12 +196,22 @@ define [
             return
           return
 
+    checkNotReadyRDS: ()->
+      cloudType = Design.instance().get('cloud_type')
+      if cloudType is "openstack"
+        console.log "CloudType is OpenStack"
+        defer = new Q.defer()
+        defer.resolve()
+        return defer.promise
+      else
+        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList.fetchForce()
+
     stopApp : ( id )->
       app  = App.model.appList().get( id )
       name = app.get("name")
       that = this
-
-      AppTpl.cantStop {}
+      cloudType = Design.instance().get('cloud_type')
       isProduction = app.get('usage') is "production"
       appName = app.get('name')
       canStop = new modalPlus {
@@ -108,18 +224,30 @@ define [
         disableClose: true
       }
       canStop.tpl.find(".modal-footer").hide()
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
       awsError = null
 
-      resourceList.fetchForce()
+      @checkNotReadyRDS()
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
+        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
         if awsError and awsError isnt 403
           canStop.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
+
+        if cloudType is 'openstack'
+          canStop.tpl.find(".modal-footer").show()
+          canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName}
+          canStop.resize()
+          $("#appNameConfirmIpt").on "keyup change", ()->
+            if $("#appNameConfirmIpt").val() is name
+              canStop.tpl.find('.modal-confirm').removeAttr "disabled"
+            else
+              canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
+          return false
+
         app.fetchJsonData().then ()->
           comp = app.getJsonData().component
           toFetch = {}
@@ -158,22 +286,18 @@ define [
               canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, hasInstanceStore}
             canStop.resize()
 
-            canStop.on "confirm", ()->
-              canStop.close()
-              app.stop().fail ( err )->
-                console.log err
-                error = if err.awsError then err.error + "." + err.awsError else err.error
-                notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
-                return
-              return
-
             $("#appNameConfirmIpt").on "keyup change", ()->
               if $("#appNameConfirmIpt").val() is name
                 canStop.tpl.find('.modal-confirm').removeAttr "disabled"
               else
                 canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
-              return
-            return
+
+        canStop.on "confirm", ()->
+          canStop.close()
+          app.stop().fail ( err )->
+            console.log err
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
 
     terminateApp : ( id )->
       self = @
@@ -190,6 +314,11 @@ define [
         }
         disableClose: true
       )
+      cloudType = Design.instance().get('cloud_type')
+      if cloudType is 'openstack'
+        @__terminateApp(id, null, terminateConfirm)
+        return false
+
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
       resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
@@ -201,20 +330,34 @@ define [
           terminateConfirm.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
+
     __terminateApp: (id, resourceList, terminateConfirm)->
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
+      cloudType = Design.instance().get('cloud_type')
       # renderLoading
 
-      app.fetchJsonData().then ->
-        comp = app.getJsonData().component
-        hasDBInstance = _.filter comp, (e)->
-          e.type == constant.RESTYPE.DBINSTANCE
-        dbInstanceName = _.map hasDBInstance, (e)->
-          return e.resource.DBInstanceIdentifier
-        notReadyDB = resourceList.filter (e)->
-          (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+      fetchJsonData = ->
+        if cloudType is 'openstack'
+          defer = new Q.defer()
+          defer.resolve()
+          defer.promise
+        else
+          app.fetchJsonData()
+
+      fetchJsonData().then ->
+        if cloudType is 'openstack'
+          hasDBInstance = null
+          notReadyDB = []
+        else
+          comp = app.getJsonData().component
+          hasDBInstance = _.filter comp, (e)->
+            e.type == constant.RESTYPE.DBINSTANCE
+          dbInstanceName = _.map hasDBInstance, (e)->
+            return e.resource.DBInstanceIdentifier
+          notReadyDB = resourceList.filter (e)->
+            (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
         # Render Terminate Confirm
         terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}

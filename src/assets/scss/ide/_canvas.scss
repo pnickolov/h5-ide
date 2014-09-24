@@ -1,7 +1,7 @@
 
 .canvas-view {
   position   : relative;
-  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
   background : #fff image-url('ide/grid_x1.png');
 
   &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }
@@ -746,3 +746,74 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 
 }
 
+
+// OpenStack
+.OS--Neutron--Network {
+  .group {
+    stroke: #dcdcdc;
+    stroke-linejoin: round;
+    stroke-dasharray: none;
+    stroke-width: 4;
+  }
+
+  &:hover .group { stroke: #C6C4C4; }
+
+  .group-label {
+    fill:#aaa;
+  }
+
+  .canvas-view &.selected .group {
+    stroke: #C6C4C4;
+    fill: rgba(255, 255, 255, 0);
+    stroke-width: 5;
+  }
+}
+
+.OS--Neutron--Subnet {
+  .group {
+    fill: rgba(252, 190, 23, 0.02);
+    stroke: #f9be76;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    .group { stroke: #F69722; }
+  }
+
+  .group-label {
+    fill: #F69722;
+  }
+}
+
+.OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
+  stroke: #12CD4F;
+}
+
+#hlArea {
+  fill-opacity:0.5;
+}
+
+.canvas-message {
+  position      : absolute;
+  left          : 50%;
+  top           : 8px;
+  background    : #111;
+  padding       : 5px 8px;
+  border-radius : 4px;
+  color         : #ccc;
+  max-width     : 400px;
+  font-size     : 12px;
+
+  -webkit-transform : translateX(-50%);
+     -moz-transform : translateX(-50%);
+       -o-transform : translateX(-50%);
+          transform : translateX(-50%);
+
+  &:empty { display : none; }
+
+  &:before, &:after { content : ""; }
+
+  &[data-type="bottom"] { top : auto; bottom : 8px; }
+}

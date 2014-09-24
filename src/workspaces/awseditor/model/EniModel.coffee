@@ -744,4 +744,3 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
   }
 
   Model
-

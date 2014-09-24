@@ -70,6 +70,4 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
         @view[method].apply(@view, args)
       return
 
-    isDashboard : ()-> true
-
   Dashboard

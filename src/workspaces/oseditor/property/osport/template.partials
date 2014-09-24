@@ -1,0 +1,58 @@
+<!-- {{stack}} -->
+{{#if modeIsAppEdit}}
+<section class="group">
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{appId}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Mac Address</dt><dd>{{app.mac_address}}</dd>
+    </dl>
+</section>
+{{/if}}
+<div class="option-group-head expand">
+    Port Details
+</div>
+<div class="option-group">
+    {{#if isPurePort}}
+    <section class="group required">
+        <label class="name">Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    {{/if}}
+    <section class="group required">
+        <label class="name">Fixed IP</label>
+        <input data-target="ip" class="selection string ipv4" data-tip="blablablabla..." value="{{ip}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Associate Floating IP</label>
+        <select data-target="float_ip" class="selection bool" value="{{#if hasFloatIP}}true{{else}}false{{/if}}" ></select>
+    </section>
+</div>
+
+<!-- {{unattached}} -->
+Attach the port to a server
+
+<!-- {{app}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Mac Address</dt><dd>{{emptyStr mac_address}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Fixed IP</dt><dd>{{emptyStr fixed_ips.[0].ip_address}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Floating IP</dt><dd>{{emptyStr float_ip}}</dd>
+    </dl>
+</section>

@@ -1,0 +1,16 @@
+<!-- {{volume}} -->
+{{#if this.length}}
+<header class="volume-pph">{{i18n "CANVAS.CVS_POP_ATTACHED_VOLUMES"}} <span>({{this.length}})</span></header>
+<ul class="popup-content popup-volume">
+
+    {{#each this}}
+    <li data-id="{{id}}" class="{{#if snapshot}}vpp-snapshot{{else}}vpp-volume{{/if}}">
+        <div class="vpp-name">{{name}}</div>
+        <div class="vpp-size">{{size}}GB</div>
+        {{#if appId}}<i class="status res-state tooltip {{state}}" data-tooltip="{{state}}"></i>{{/if}}
+    </li>
+{{/each}}
+</ul>
+{{else}}
+<div class="volume-pp-empty">{{i18n "CANVAS.CVS_POP_NO_ATTACHED_VOLUME"}}</div>
+{{/if}}

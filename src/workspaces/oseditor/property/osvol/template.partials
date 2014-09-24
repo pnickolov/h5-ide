@@ -1,0 +1,52 @@
+<!-- {{stackTemplate}} -->
+<div class="option-group-head expand">
+    Volume Details
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Volume Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label class="name">Volume Size</label>
+        <input data-target="size" class="selection string" value="{{size}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
+    </section>
+    <section class="group required">
+        <label class="name">Mount Point</label>
+        <input data-target="mountPoint" class="selection string" value="{{mountPoint}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
+    </section>
+    <section class="group">
+        <label class="name">Description</label>
+        <input data-target="description" class="selection string" value="{{description}}"/>
+    </section>
+    <section class="group">
+        <label class="name">Bootable</label>
+        <select class="selection bool" data-target="bootable" value="{{#if bootable}}true{{else}}false{{/if}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}></select>
+    </section>
+</div>
+
+
+<!-- {{appTemplate}} -->
+<section class="group">
+    <dl class="vertical">
+        <dt>Name</dt><dd>{{emptyStr display_name}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Description</dt><dd>{{emptyStr display_description}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Created at</dt><dd>{{emptyStr created_at}}</dd>
+    </dl>
+</section>

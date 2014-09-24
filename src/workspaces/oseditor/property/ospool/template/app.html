@@ -1,0 +1,43 @@
+<div class="option-group-head expand">
+    Pool Details
+</div>
+<div class="option-group pool-details">
+    <dl>
+        <dt>Name</dt><dd>{{name}}</dd>
+    </dl>
+    <dl>
+        <dt>ID</dt><dd>{{id}}</dd>
+    </dl>
+    <dl>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{status}}</dd>
+    </dl>
+    <dl>
+        <dt>Subnet ID</dt><dd>{{subnet_id}}</dd>
+    </dl>
+    <dl>
+        <dt>Protocol</dt><dd>{{protocol}}</dd>
+    </dl>
+    <dl>
+        <dt>LB Method</dt><dd>{{lb_method}}</dd>
+    </dl>
+    <dl>
+        <dt>Provider</dt><dd>{{provider}}</dd>
+    </dl>
+</div>
+
+<div class="option-group-head expand">
+    Member({{members.length}})
+</div>
+<div class="option-group ">
+{{#each members}}
+    <header>{{name}} ({{address}})</header>
+    <section class="group">
+        <dl>
+            <dt>Status</dt><dd class="os-status os-status-{{status}}">{{status}}</dd>
+        </dl>
+        <dl>
+            <dt>Weight</dt><dd>{{weight}}</dd>
+        </dl>
+    </section>
+{{/each}}
+</div>

@@ -2,9 +2,6 @@
 define [ "Design" ], ( Design )->
 
   Design.debug = ()->
-    componentMap = Design.instance().__componentMap
-    canvasNodes  = Design.instance().__canvasNodes
-    canvasGroups = Design.instance().__canvasGroups
     checkedMap   = {
       "line"            : {}
       "node"            : {}
@@ -12,22 +9,19 @@ define [ "Design" ], ( Design )->
       "otherResource"   : {}
       "otherConnection" : {}
     }
-    checked = {}
-    for id, a of canvasNodes
-      checked[ id ] = true
-      checkedMap.node[ a.id ] = a
-    for id, a of canvasGroups
-      checked[ id ] = true
-      checkedMap.group[ a.id] = a
-    for id, a of componentMap
-      if checked[ id ] then continue
-      if a.node_line
+    for id, a of Design.instance().__componentMap
+      if a.node_group
+        checkedMap.group[ a.id ] = a
+      else if a.node_line
         if a.isVisual()
           checkedMap.line[ a.id ] = a
         else
           checkedMap.otherConnection[ a.id ] = a
       else
-        checkedMap.otherResource[ a.id ] = a
+        if a.isVisual()
+          checkedMap.node[ a.id ] = a
+        else
+          checkedMap.otherResource[ a.id ] = a
 
     checkedMap
 
@@ -87,6 +81,13 @@ define [ "Design" ], ( Design )->
 
   Design.debug.autoLayout = ()->
     App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+
+
+  Design.debug.getDataFromLocal = ( app_id ) ->
+    JSON.parse(localStorage.getItem("get_resource/" + app_id))
+
+  Design.debug.setDataToLocal = ( data ) ->
+    localStorage.setItem("get_resource/" + data.app_json.id, JSON.stringify(data) )
 
 
   window.d    = ()-> Design.instance()

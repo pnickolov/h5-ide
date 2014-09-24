@@ -1,0 +1,33 @@
+{{#if modeIsAppEdit}}
+    <dl><dt>ID</dt><dd>{{appId}}</dd></dl>
+    <dl><dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd></dl>
+    <dl><dt>Subnet ID</dt><dd>{{app.subnet_id}}</dd></dl>
+{{/if}}
+<div class="option-group-head expand">
+    Listener Details
+</div>
+<div class="option-group" data-model="listener">
+    <section class="group required">
+        <label class="name">Name</label>
+        <input data-id="listener-name" data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+
+    <section class="group required">
+        <label class="name">Connection Limit</label>
+        <input data-id="listener-limit" data-target="limit" class="selection string" value="{{limit}}"/>
+    </section>
+
+    <section class="group required">
+        <label class="name">Protocol</label>
+        <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="listener-protocol" {{#if modeIsAppEdit}}disabled{{/if}}>
+            <option value='HTTP'>HTTP</option>
+            <option value='HTTPS'>HTTPS</option>
+            <option value='TCP'>TCP</option>
+        </select>
+    </section>
+
+    <section class="group required">
+        <label class="name">Protocol Port</label>
+        <input data-id="listener-port" data-target="port" class="selection string" value="{{port}}"  {{#if modeIsAppEdit}}disabled{{/if}}/>
+    </section>
+</div>

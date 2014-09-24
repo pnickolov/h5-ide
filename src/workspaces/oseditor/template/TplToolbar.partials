@@ -1,0 +1,141 @@
+<!-- {{BtnZoom}} -->
+<button class="btn-toolbar icon-zoom-in tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_OUT" }}'></button>
+
+<!-- {{BtnRunStack}} -->
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
+
+<!-- {{BtnStackOps}} -->
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
+
+<!-- {{BtnExport}} -->
+<div class="selectbox btn-toolbar seperator">
+  <button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOLBAR.EXPORT" }}'></button>
+  <ul class="dropdown">
+    <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}</li>
+    <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOLBAR.EXPORT_AS_JSON" }}</li>
+  </ul>
+</div>
+
+<!-- {{BtnEditApp}} -->
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
+
+<!-- {{BtnAppOps}} -->
+<button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOLBAR.TIP_START_APP' }}"><span style="display: none">{{i18n "TOOLBAR.START_APP"}}</span></button>
+<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_APP_TO_STACK" }}'></button>
+
+<!-- {{BtnPng}} -->
+<button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
+
+<!-- {{BtnReloadRes}} -->
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
+
+
+<!-- {{BtnSwitchStates}} -->
+<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOLBAR.TIP_CUSTOM_USER_DATA'}}">
+    <span class="switch-label" data-on="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_OFF'}}"></span>
+    <span class="switch-handle"></span>
+</label>
+
+<!-- {{BtnReloadStates}} -->
+<button class="icon-reload tooltip btn btn-blue reload-states" data-original="Reload States" data-disabled="Initiating…"  data-tooltip="Instantly rerun all states in this app.">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
+
+<!-- {{PanelHeaderStack}} -->
+<header class="sidebar-title resource">
+    <a class="resource">R</a>
+    <a class="config">A</a>
+    <a class="property">P</a>
+    <a class="state">S</a>
+</header>
+
+<!-- {{PanelHeaderApp}} -->
+<header class="sidebar-title resource" data-mode="app">
+    <a class="config">A</a>
+    <a class="property">P</a>
+    <a class="state">S</a>
+</header>
+
+<!-- {{confirm.enableState}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_ENABLE_STATE"}}</div>
+    </div>
+</div>
+
+<!-- {{modal.cancelUpdate}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CANCEL_UPDATE_CONFIRM"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.DISCARD_UPDATE_CHANGE"}}</div>
+    </div>
+</div>
+
+<!-- {{export.JSON}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper" style="padding:40px 20px;">
+        <div class="modal-text-major"></div>
+        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_BODY_EXPORT_AS_JSON"}}</div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOLBAR.POP_BTN_DOWNLOAD"}}</a>
+    <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.PNG}} -->
+<div class="loading-spinner"></div>
+<section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
+<div class="modal-footer">
+    <a class="btn btn-blue" style="display: inline-block;">{{i18n "TOOLBAR.LBL_DOWNLOAD"}}</a>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.LBL_CANCEL"}}</button>
+</div>
+
+
+<!-- {{saveAppToStack}} -->
+<p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_1' }}</p>
+<p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_2' }}</p>
+<div class="modal-center-align-helper">
+    <div class="modal-control-group">
+        {{#if originStackExist}}
+            <div id="replace_stack" style="padding: 10px 0">
+                <div class="radio">
+                    <input id="radio-replace-stack" type="radio" name="save-stack-type" value="replace" checked>
+                    <label for="radio-replace-stack"></label>
+                </div>
+                <label class="modal-text-minor" for="radio-replace-stack">{{ i18n 'TOOLBAR.POP_REPLACE_STACK'}}</label>
+                <div style="padding: 10px 22px" class="radio-instruction">
+                    {{ i18n 'TOOLBAR.POP_REPLACE_STACK_INTRO'}} "{{input}}" {{i18n "TOOLBAR.POP_REPLACE_STACK_INTRO_END"}}
+                </div>
+            </div>
+            <div id="save_new_stack">
+                <div class="radio">
+                    <input id="radio-new-stack" type="radio" name="save-stack-type">
+                    <label for="radio-new-stack"></label>
+                </div>
+                <label class="modal-text-minor" for="radio-new-stack">{{ i18n "TOOLBAR.POP_SAVE_NEW_STACK" }}</label>
+                <div style="padding: 10px 22px" class="radio-instruction hide">
+                    <p>{{ i18n "TOOLBAR.POP_SAVE_STACK_INSTRUCTION" }}</p>
+                    <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                    <div id="stack-name-exist" class="hide" style="color: #ec3c38">
+                        {{i18n "TOOLBAR.POP_STACK_NAME_ERROR"}}</div>
+                </div>
+            </div>
+        {{else}}
+            <div id="name_new_stack">
+                <input id="radio-new-stack" type="hidden" name="save-stack-type" checked>
+                <div style="padding: 10px 22px" class="radio-instruction">
+                    <p>{{ i18n "TOOLBAR.POP_SAVE_STACK_INSTRUCTION" }}</p>
+                    <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
+                    <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOLBAR.POP_STACK_NAME_ERROR"}}</div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>

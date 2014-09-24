@@ -1,0 +1,54 @@
+{{#if modeIsAppEdit}}
+<dl>ID<dt></dt><dd>{{app.id}}</dd></dl>
+<dl>Status<dt></dt><dd class="os-status {{app.status}}">{{app.status}}</dd></dl>
+<dl>Subnet ID<dt></dt><dd>{{app.subnet_id}}</dd></dl>
+{{/if}}
+
+<div class="option-group-head expand">
+    Pool
+</div>
+<div class="option-group pool-details">
+    <section class="group required">
+        <label class="name">Pool</label>
+        <input data-id="pool-name" data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+
+    <section class="group required">
+        <label class="name">Protocol</label>
+        <select class="selection option" value="{{protocol}}" data-target="protocol" data-id="pool-protocol">
+            <option value='HTTP'>HTTP</option>
+            <option value='HTTPS'>HTTPS</option>
+            <option value='TCP'>TCP</option>
+        </select>
+    </section>
+
+    <section class="group required">
+        <label class="name">Load Balancing Method</label>
+        <select class="selection option" value="{{method}}" data-target="method" data-id="listener-method">
+            <option value='Round_Robin'>Round Robin</option>
+            <option value='Least_Connections'>Least Connections</option>
+            <option value='Source_IP'>Source IP</option>
+        </select>
+    </section>
+</div>
+
+<div class="option-group-head expand">
+    Member({{mems.length}})
+</div>
+<div class="option-group" data-model="mem">
+    {{#each mems}}
+    <header>{{osport.name}}</header>
+    <section class="group required">
+        <label class="name">Weight</label>
+        <input data-id="mem-weight" data-index="{{@index}}" data-target="weight" class="selection string" value="{{weight}}"/>
+    </section>
+
+    <section class="group required">
+        <label class="name">Protocol Port</label>
+        <input data-id="mem-port" data-target="port" data-index="{{@index}}" class="selection string" value="{{port}}"/>
+    </section>
+    {{/each}}
+</div>
+
+
+

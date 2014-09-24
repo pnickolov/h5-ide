@@ -89,13 +89,18 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSSUBNET   : "OS::Neutron::Subnet"
         OSPORT     : "OS::Neutron::Port"
         OSSG       : "OS::Neutron::SecurityGroup"
+        OSSGRULE   : "OS::Neutron::SecurityGroupRule"
         OSRT       : "OS::Neutron::Router"
         OSFIP      : "OS::Neutron::FloatingIP"
-        OSELB      : "OS::Neutron::LoadBalancer"
-        OSLISTENER : "OS::Neutron::Listener"
+        OSLISTENER : "OS::Neutron::VIP"
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"
         OSVOL      : "OS::Cinder::Volume"
+        OSEXTNET   : "OS::ExternalNetwork"
+        OSFLAVOR   : "OS::Nova::Flavor"
+        OSKP       : "OS::Nova::KeyPair"
+        OSIMAGE    : "OS::Image"
+        OSSNAP     : "OS::Snapshot"
 
 
     RESNAME =
@@ -377,6 +382,309 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
             Address          : true
             Port             : true
 
+    FLAVOR_INFO =
+        24:
+          name: "8C16G0G"
+          ram: 16384
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "24"
+
+        25:
+          name: "8C24G0G"
+          ram: 24576
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "25"
+
+        26:
+          name: "8C32G0G"
+          ram: 32768
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "26"
+
+        20:
+          name: "8C4G0G"
+          ram: 4096
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "20"
+
+        21:
+          name: "8C6G0G"
+          ram: 6144
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "21"
+
+        22:
+          name: "8C8G0G"
+          ram: 8192
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "22"
+
+        23:
+          name: "8C12G0G"
+          ram: 12288
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "23"
+
+        7:
+          name: "1C2G0G"
+          ram: 2048
+          "disabled": false
+          vcpus: 1
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "7"
+
+        6:
+          name: "1C1G0G"
+          ram: 1024
+          "disabled": false
+          vcpus: 1
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "6"
+
+        9:
+          name: "2C1G0G"
+          ram: 1024
+          "disabled": false
+          vcpus: 2
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "9"
+
+        8:
+          name: "1C4G0G"
+          ram: 4096
+          "disabled": false
+          vcpus: 1
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "8"
+
+        "de8ce82a-60d4-4c37-aabf-2d43660c2c8e":
+          name: "v1.small"
+          ram: 2048
+          "disabled": false
+          vcpus: 1
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 20
+          disk: 20
+          id: "de8ce82a-60d4-4c37-aabf-2d43660c2c8e"
+
+        14:
+          name: "4C2G0G"
+          ram: 2048
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "14"
+
+        11:
+          name: "2C4G0G"
+          ram: 4096
+          "disabled": false
+          vcpus: 2
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "11"
+
+        10:
+          name: "2C2G0G"
+          ram: 2048
+          "disabled": false
+          vcpus: 2
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "10"
+
+        13:
+          name: "2C8G0G"
+          ram: 8192
+          "disabled": false
+          vcpus: 2
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "13"
+
+        12:
+          name: "2C6G0G"
+          ram: 6144
+          "disabled": false
+          vcpus: 2
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "12"
+
+        15:
+          name: "4C4G0G"
+          ram: 4096
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "15"
+
+        "54a282be-5410-455b-a621-8e97eeb97f8c":
+          name: "v1.micro"
+          ram: 512
+          "disabled": false
+          vcpus: 1
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 20
+          disk: 20
+          id: "54a282be-5410-455b-a621-8e97eeb97f8c"
+
+        17:
+          name: "4C8G0G"
+          ram: 8192
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "17"
+
+        "c55712bb-0492-450f-a3e5-8608a25cf711":
+          name: "v1.compile"
+          ram: 4096
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 20
+          disk: 20
+          id: "c55712bb-0492-450f-a3e5-8608a25cf711"
+
+        19:
+          name: "4C16G0G"
+          ram: 16384
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "19"
+
+        18:
+          name: "4C12G0G"
+          ram: 12288
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "18"
+
+        16:
+          name: "4C6G0G"
+          ram: 6144
+          "disabled": false
+          vcpus: 4
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "16"
+
+        "cc87e08a-5e6c-4270-8e2b-512fa44ccc47":
+          name: "8C128G0G"
+          ram: 131072
+          "disabled": false
+          vcpus: 8
+          swap: ""
+          "is_public": true
+          rxtx_factor: 1.0
+          "ephemeral": 0
+          disk: 0
+          id: "cc87e08a-5e6c-4270-8e2b-512fa44ccc47"
+
+
+
     #public
     AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
     INSTANCE_STATES         : INSTANCE_STATES
@@ -407,3 +715,4 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
 
+    FLAVOR_INFO             : FLAVOR_INFO

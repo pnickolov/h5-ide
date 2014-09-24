@@ -404,6 +404,8 @@ define [ "Design",
           elb.__elbSg = sg
           sg.setAsElbSg()
           return
+
+      return
   }
 
   Model

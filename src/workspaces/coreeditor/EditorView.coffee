@@ -36,16 +36,25 @@ define [
         ### Arrows ###
         type = "MoveSelectItem"
 
+      when 65
+        ### A ###
+        type = "ShowGlobal"
+
+      when 80
+        ### P ###
+        type = "ShowProperty"
+
+      when 82
+        if not ( evt.ctrlKey or evt.metaKey )
+          ### R ###
+          type = "ShowResource"
+
       when 83
         ### S ###
         if evt.ctrlKey || evt.metaKey
           type = "Save"
         else
           type = "ShowStateEditor"
-
-      when 80
-        ### P ###
-        type = "ShowProperty"
 
       when 187
         ### + ###
@@ -79,14 +88,19 @@ define [
       "ZoomOut"         : "zoomOut"
       "ShowProperty"    : "showProperty"
       "ShowStateEditor" : "showStateEditor"
+      "ShowGlobal"      : "showGlobal"
+      "ShowResource"    : "showResource"
+
 
       "click .HideOEPanelLeft"  : "toggleLeftPanel"
       "click .HideOEPanelRight" : "toggleRightPanel"
 
+    template : OpsEditorTpl.frame
+
     constructor : ( options )->
       _.extend this, options
 
-      @setElement $( OpsEditorTpl.frame() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
+      @setElement $( @template() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
 
       opt =
         workspace : @workspace
@@ -98,8 +112,18 @@ define [
       @statusbar     = new (options.BottomPanel || Backbone.View)(opt)
       @canvas        = new options.CanvasView(opt)
 
+      @listenTo @canvas, "itemSelected", @onItemSelected
+      @listenTo @canvas, "doubleclick",  @onCanvasDoubleClick
+
       @initialize()
       return
+
+    onItemSelected      : ( type, id )->
+    showProperty        : ()->
+    showResource        : ()->
+    showGlobal          : ()->
+    showStateEditor     : ()->
+    onCanvasDoubleClick : ()->
 
     toggleLeftPanel  : ()->
       @resourcePanel.toggleLeftPanel()
@@ -132,24 +156,28 @@ define [
       ###
       Revoke all the IDs of every dom.
       ###
-      @propertyPanel.backup()
+      if @propertyPanel and @propertyPanel.backup
+        @propertyPanel.backup()
 
       @$el.attr("id", "")
       return
 
     recover : ()->
       @$el.show().attr("id", "OpsEditor")
-      @resourcePanel.recalcAccordion()
 
-      @propertyPanel.recover()
+      if @resourcePanel and @resourcePanel.recalcAccordion
+        @resourcePanel.recalcAccordion()
+
+      if @propertyPanel and @propertyPanel.recover
+        @propertyPanel.recover()
       return
 
     remove : ()->
-      @toolbar.remove()
-      @propertyPanel.remove()
-      @resourcePanel.remove()
-      @statusbar.remove()
-      @canvas.remove()
+      if @toolbar       then @toolbar.remove()
+      if @propertyPanel then @propertyPanel.remove()
+      if @resourcePanel then @resourcePanel.remove()
+      if @statusbar     then @statusbar.remove()
+      if @canvas        then @canvas.remove()
 
       Backbone.View.prototype.remove.call this
 
@@ -166,14 +194,6 @@ define [
           self.workspace.remove()
           return
       }
-      return
-
-    showProperty : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
-
-    showStateEditor : ()->
-      com = @workspace.getSelectedComponent()
-      if com
-        ide_event.trigger ide_event.SHOW_STATE_EDITOR, com.id
       return
 
     getSvgElement : ()->

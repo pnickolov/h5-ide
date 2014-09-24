@@ -50,8 +50,6 @@ define [
         @fetchRdsData( false )
       ]
 
-      if not @opsModel.isPersisted() then jobs.unshift( @opsModel.save() )
-
       Q.all(jobs)
 
     hasAmiData : ()->

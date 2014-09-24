@@ -1,0 +1,71 @@
+<!-- {{frame}} -->
+<nav class="clearfix">
+    <ul class="anchor clearfix">
+        <li data-scroll-to="system-image">S</li>
+        <li data-scroll-to="block-storage">B</li>
+        <li data-scroll-to="network">N</li>
+    </ul>
+    <ul class="action clearfix">
+        <li class="btn-refresh-panel icon-refresh"></li>
+        <li class="btn-open-shareres icon-resources"></li>
+    </ul>
+</nav>
+<section class="system-image">
+    <header>
+        Server
+        <aside class="selectbox ami-type-select">
+            <div class="selection">System Image</div>
+            <ul class="dropdown">
+                <li class="item selected" data-id="public">System Image</li>
+                <li class="item" data-id="private">Image Snapshot</li>
+            </ul>
+        </aside>
+    </header>
+    <article>
+        <ul class="nano-content resource-list-ami"></ul>
+    </article>
+</section>
+
+<section class="block-storage">
+    <header>Block Storage</header>
+    <article>
+        <ul class="resource-list-volume clearfix"></ul>
+    </article>
+    <button class="btn btn-primary full-width manage-snapshot">Manage Snapshots</button>
+</section>
+
+<section class="network">
+    <header>Network</header>
+    <article>
+        <ul class="resource-list-network clearfix">
+            <li class="tooltip resource-item ossubnet" data-tooltip='{{i18n "DRAG_AND_DROP_IN_NETOWRK_TO_CREATE_SUBNET"}}' data-type="OSSUBNET">{{i18n "LBL_OSSUBNET"}}</li>
+
+            <li class="tooltip resource-item osrt" data-tooltip='{{i18n "DRAG_AND_DROP_OUTSIDE_NETOWRK_TO_CREATE_ROUTER"}}' data-type="OSRT">{{i18n "LBL_OSRT"}}</li>
+
+            <li class="tooltip resource-item osport" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT"}}' data-type="OSPORT">{{i18n "LBL_OSPORT"}}</li>
+
+            <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSPOOL">{{ i18n "LBL_OSELB" }}</li>
+
+        </ul>
+    </article>
+
+</section>
+
+<!-- {{ami}} -->
+{{#each this}}
+<li class="bubble resource-item instance" data-bubble-template="resPanelOsAmiInfo" data-bubble-data='{"region":"{{region}}","imageId":"{{id}}"}' data-type="OSSERVER" data-option='{"imageId":"{{id}}"}'>
+    <div class="resource-icon-instance"><img src="/assets/images/ide/ami/openstack/{{os_type}}.{{architecture}}.png" width="39" height="27"></div>
+    {{name}}
+</li>
+{{/each}}
+
+<!-- {{snapshot}} -->
+<li class="tooltip resource-item osvol" data-tooltip='{{i18n "DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME"}}' data-type="OSVOL">{{i18n "LBL_OSVOL"}}</li>
+{{#each this}}
+<li class="resource-item bubble snapshot" data-date="{{created_at}}" data-storge="{{size}}" data-bubble-template="resPanelOsSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{region}}"}' data-type="OSVOL" data-option='{"size":{{size}}, "snapshot": "{{id}}"}'>
+  <div class="ebs-size">{{size}} GB</div>{{name}}
+</li>
+{{/each}}
+
+
+

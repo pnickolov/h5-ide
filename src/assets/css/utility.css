@@ -1,0 +1,69 @@
+/* Light Purple */
+/* Base Purple */
+/* Dark Purple */
+/* Background Purple */
+/* Base Blue */
+/* Light Blue: */
+/* Dark Blue: */
+/* Base Green: */
+/* Orange */
+/* Yellow */
+/* Red */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
+
+body {
+  font-family: Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  color: #acacc6;
+  font-size: 14px; }
+
+a {
+  color: #4a90e2;
+  text-decoration: none; }
+  a:hover {
+    color: #a2d3f0; }
+
+h1 {
+  font-size: 1.6em; }
+
+h2 {
+  font-size: 1.4em; }
+
+h3 {
+  font-size: 1.2em; }
+
+h4 {
+  font-size: 1.1em; }
+
+p {
+  font-size: 1em; }
+
+code {
+  background: #000;
+  color: #059e4f;
+  font-size: 14px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+
+pre {
+  background: #000; }
+
+.mg20 {
+  margin: 20px; }
+
+.bd3 {
+  border-radius: 3px; }

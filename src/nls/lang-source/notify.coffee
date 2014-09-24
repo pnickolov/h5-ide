@@ -138,7 +138,7 @@ module.exports =
       zh: ""
 
     XXX_IS_DELETED:
-      en: "%s is deleted."
+      en: "Keypair %s is deleted successfully"
       zh: ""
 
     SELECTED_KEYPAIRS_ARE_DELETED:
@@ -146,7 +146,7 @@ module.exports =
       zh: ""
 
     XXX_IS_IMPORTED:
-      en: "%s is imported."
+      en: "Keypair %s is imported successfully"
       zh: ""
 
     PARAMETER_GROUP_UPDATED_FAILED:

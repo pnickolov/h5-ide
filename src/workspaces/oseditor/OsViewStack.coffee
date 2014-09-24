@@ -2,14 +2,18 @@
 define [
   "CoreEditorView"
 
-  "./subviews/RightPanel"
+  "./template/TplOsEditor"
+
+  "./subviews/Panel"
   "./subviews/Toolbar"
   "./subviews/Statusbar"
   "./canvas/CanvasViewOs"
 
-], ( CoreEditorView, RightPanel, Toolbar, Statusbar, CanvasView )->
+], ( CoreEditorView, TplOsEditor, RightPanel, Toolbar, Statusbar, CanvasView )->
 
   CoreEditorView.extend {
+    template : TplOsEditor
+
     constructor : ( options )->
       _.extend options, {
         TopPanel    : Toolbar
@@ -20,7 +24,22 @@ define [
       CoreEditorView.apply this, arguments
 
     initialize : ()->
+      @panel = @propertyPanel
+
       @$el.addClass("openstack").find(".OEPanelLeft").addClass("force-hidden")
       return
+
+    showProperty: () -> @panel.openProperty(); false
+    showResource: () -> @panel.openResource(); false
+    showGlobal  : () -> @panel.openConfig(); false
+    showStateEditor : ()-> @panel.openState(); false
+    onCanvasDoubleClick: () -> @panel.show().openCurrent()
+
+    onItemSelected: ( type, id ) ->
+      if not id and not type
+        @panel.openConfig()
+        return
+
+      @panel.openProperty { uid: id, type: type }
 
   }

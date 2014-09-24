@@ -28,7 +28,7 @@ define [ "CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "CloudR
 
       @$el.find(".selected").removeClass("selected")
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.INSTANCE, $( evt.currentTarget ).addClass("selected").attr("data-id")
+      @canvas.triggerSelected constant.RESTYPE.INSTANCE, $( evt.currentTarget ).addClass("selected").attr("data-id")
       false
 
     remove : ()->

@@ -1,5 +1,5 @@
 
-define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2", "UI.modal" ], ( ApiRequest, ApiRequestDefs, Modal )->
+define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2", "UI.modal" ], ( ApiRequest, ApiRequestOs, ApiRequestDefs, Modal )->
 
   tmpl = """
 <div id="DebugTool" class="debugToolBg"><ul>
@@ -114,12 +114,29 @@ define [ "ApiRequest", "ApiRequestDefs", "UI.modalplus", "vender/select2/select2
       $("#ApiDebugSend").attr("disabled", "disabled")
       $("#ApiResult").text("Loading...").attr("finish","false")
 
-      ApiRequest( api, params ).then ( result )->
+      (if apiDef.type is "openstack" then ApiRequestOs else ApiRequest)( api, params ).then ( result )->
+
         if apiDef.url.indexOf("/aws/") is 0 and apiDef.url.length > 5 and (typeof result[1] is "string")
           #return is xml
           try
             result[1] = $.xml2json ($.parseXML result[1])
           catch
+        else if apiDef.url.indexOf("/os/") is 0
+          if apiDef.method is "Info"
+            for item,idx in result
+              try
+                if $.type(result) is 'array'
+                  for c,i in item
+                    result[idx][i] = JSON.parse(c)
+                else
+                  result[idx] = JSON.parse(item)
+              catch
+          else
+            #return is json
+            try
+              result[1] = JSON.parse(result[1])
+            catch
+
 
         $("#ApiResult").text JSON.stringify( result, undefined, 4 )
         $("#ApiDebugSend").removeAttr("disabled")

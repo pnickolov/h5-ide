@@ -53,7 +53,7 @@ define [ "Design", "ComplexResModel" ], ( Design, ComplexResModel )->
       child.once "destroy", @removeChild, @
 
       # Trigger child's callback
-      if child.onParentChanged then child.onParentChanged()
+      if child.onParentChanged then child.onParentChanged(oldParent)
       null
 
     removeChild : ( child )->
@@ -77,6 +77,7 @@ define [ "Design", "ComplexResModel" ], ( Design, ComplexResModel )->
       @set("__children", children)
 
       child.off "destroy", @removeChild, @
+      child.attributes.__parent = null
       null
 
     children : ()-> this.get("__children") || []
@@ -88,4 +89,3 @@ define [ "Design", "ComplexResModel" ], ( Design, ComplexResModel )->
   }
 
   GroupModel
-

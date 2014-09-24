@@ -1,0 +1,92 @@
+
+.openstack .OEPanelRight {
+
+    width: 280px;
+
+    &.state {
+        width: 655px;
+    }
+
+    &.hidden .panel-float { display: none; }
+
+    .panel-float {
+        position: absolute;
+        top: 0;
+        right: 280px;
+        background: $bg-p;
+
+        // Rewrite below values to customise floating-panel
+        & > div { width: 280px; }
+
+        &.hidden { display: none; }
+    }
+
+    .panel-body {
+        overflow: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: auto;
+        width: 100%;
+    }
+
+    .panel-body section {
+        &.system-image .selectbox {
+            width: 108px;
+        }
+
+        header {
+            background: $dark-p-1;
+            color: white;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            padding: 0 8px;
+            aside {
+                position: absolute;
+                top: 0;
+                right: 0;
+                .selection {
+                    background: $dark-p-1;
+                    color: #F3F3F3;
+                    height: 28px;
+                    padding: 0 20px 0 8px;
+                    border: none;
+                    border-left: 1px solid $dark-p-2;
+                    border-radius: 0;
+                    box-shadow: none;
+                    box-sizing: border-box;
+
+                    &::after {
+                        border-top-color: white;
+                    }
+                }
+                .dropdown { right: 0; min-width: 0; }
+            }
+
+        }
+
+        article {
+            padding: 10px;
+
+            .resource-item {
+                cursor: pointer;
+            }
+
+            & > ul::after {
+                content : "";
+                display : block;
+                height  : 0;
+                clear   : both;
+            }
+        }
+
+        .full-width{
+          width: 100%;
+        }
+    }
+}
+
+@import "panels/resource-panel";
+@import "panels/property-panel";
+@import "panels/state-panel";

@@ -1,5 +1,3 @@
-@import "color";
-
 /* Modal */
 #modal-box {
 	position     : absolute;
@@ -254,6 +252,19 @@
 	::selection {
 		background: transparent;
 	}
+}
+
+.error-message-wrapper{
+  padding: 15px 10px;
+  margin: 0;
+}
+.error-message{
+  color: #ff4444;
+  margin: 0;
+}
+li.error-message{
+  list-style-position: inside;
+  list-style-type: disc;
 }
 
 #parameter-table{

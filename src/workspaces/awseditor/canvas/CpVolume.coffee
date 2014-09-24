@@ -1,5 +1,5 @@
 
-define [ "CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ], ( CanvasPopup, TplPopup, ide_event, constant, CloudResources )->
+define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPopup, TplPopup, constant, CloudResources )->
 
   CanvasPopup.extend {
 
@@ -61,6 +61,8 @@ define [ "CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ], (
       TplPopup.volume data
 
     clickVolume : ( evt )->
+      if @selected is evt.currentTarget then return
+
       $vol = $( evt.currentTarget ).addClass("selected")
       volId = $vol.attr("data-id")
       @canvas.selectVolume( volId )
@@ -69,8 +71,6 @@ define [ "CanvasPopup", "./TplPopup", "event", "constant", "CloudResources" ], (
         $( @selected ).removeClass("selected")
 
       @selected = evt.currentTarget
-
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.VOL, volId
 
       if not @canvas.design.modeIsApp() and evt.which is 1
         $vol.dnd( evt, {

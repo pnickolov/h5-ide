@@ -1,0 +1,43 @@
+<!-- {{stack}} -->
+<div class="option-group-head expand">
+    Security Group
+</div>
+<div class="option-group">
+    <select class="selection option mutil show-input item-list" value="{{attachedSGList}}" data-button-tpl="button" data-select-tpl="sgOption" data-item-tpl="sgItem">
+        {{#each sgList}}
+        <option value="{{uid}}">{{name}}</option>
+        {{/each}}
+    </select>
+</div>
+
+<!-- {{item}} -->
+<div class="item">
+    <span class="item-name">{{name}}</span>
+    <div class="item-remove icon-delete"></div>
+</div>
+
+<!-- {{option}} -->
+<div class="option">
+    <div class="name">{{name}}</div>
+    <div class="info">
+        {{ruleCount}} Rules, {{memberCount}} Members, {{description}}
+    </div>
+</div>
+
+<!-- {{addButton}} -->
+<div>Create New Security Group...</div>
+
+<!-- {{app}} -->
+<div class="option-group-head expand">
+    Security Group ({{attachedSGList.length}})
+</div>
+<div class="option-group">
+    <ul class="item-readable-list">
+        {{#each attachedSGList}}
+        <li class="item" data-id="{{id}}">
+            <div class="item-name">{{name}}</div>
+            <span class="item-info">{{ruleCount}} Rules, {{memberCount}} Members, {{description}}</span>
+        </li>
+        {{/each}}
+    </ul>
+</div>

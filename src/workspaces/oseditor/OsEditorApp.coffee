@@ -24,6 +24,7 @@ define [
         CloudResources( constant.RESTYPE.OSKP,      region ).fetch()
         CloudResources( constant.RESTYPE.OSIMAGE,   region ).fetch()
         CloudResources( constant.RESTYPE.OSNETWORK, region ).fetch()
+        CloudResources( constant.RESTYPE.OSVOL, region ).fetch()
         @loadVpcResource()
       ])
 

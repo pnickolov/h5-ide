@@ -19,25 +19,14 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
     onRegionResChanged : ()-> @trigger "change:regionResources"
 
     ### Cloud Resources ###
-    fetchAwsResources : ( region )->
-      if not region
-        CloudResources( constant.RESTYPE.INSTANCE ).fetch()
-        CloudResources( constant.RESTYPE.EIP ).fetch()
-        CloudResources( constant.RESTYPE.VOL ).fetch()
-        CloudResources( constant.RESTYPE.ELB ).fetch()
-        CloudResources( constant.RESTYPE.VPN ).fetch()
-        _.each constant.REGION_KEYS, (e)->
-          CloudResources( constant.RESTYPE.DBINSTANCE, e).fetch()
-        return
-
-      CloudResources( constant.RESTYPE.SUBSCRIPTION, region ).fetch()
-      CloudResources( constant.RESTYPE.VPC ).fetch()
-      CloudResources( constant.RESTYPE.DHCP, region ).fetch()
-      CloudResources( constant.RESTYPE.ASG ).fetch()
-      CloudResources( constant.RESTYPE.CW ).fetch()
-      CloudResources( constant.RESTYPE.ENI, region ).fetch()
-      CloudResources( constant.RESTYPE.CGW, region ).fetch()
-      CloudResources( constant.RESTYPE.VGW, region ).fetch()
+    fetchOsResources : ( region )->
+      CloudResources( constant.RESTYPE.OSSERVER, region ).fetch()
+      CloudResources( constant.RESTYPE.OSVOL, region ).fetch()
+      CloudResources( constant.RESTYPE.OSSNAP, region ).fetch()
+      CloudResources( constant.RESTYPE.OSFIP, region ).fetch()
+      CloudResources( constant.RESTYPE.OSRT, region ).fetch()
+      CloudResources( constant.RESTYPE.OSPOOL, region ).fetch()
+      CloudResources( constant.RESTYPE.OSLISTENER, region ).fetch()
       return
 
     isOsResReady : ( region, type )->

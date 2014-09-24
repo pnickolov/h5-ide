@@ -27,7 +27,7 @@ define ["Workspace", "workspaces/osdashboard/DashboardView", "workspaces/osdashb
 
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
-      @model.fetchAwsResources()
+      @model.fetchOsResources()
 
       @__renderControlMap = {}
       return

@@ -25,6 +25,10 @@ define ["Workspace", "workspaces/osdashboard/DashboardView", "workspaces/osdashb
       @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateOpsList", arguments
       @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateOpsList", arguments
 
+      @listenTo @model, "change:regionResources", ( type ) ->
+        self.view.markUpdated()
+        self.__renderControl "updateRegionResources", arguments
+
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
       @model.fetchOsResources()

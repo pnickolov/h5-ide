@@ -40,6 +40,9 @@ define [
       @updateResList()
       @updateRegionResources()
 
+      window.CloudResources = CloudResources
+      window.constant = constant
+
       self = @
       setInterval ()->
         if not $("#OsReloadResource").hasClass("reloading")
@@ -119,8 +122,9 @@ define [
         $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
       return
 
-    updateRegionResources : ()->
+    updateRegionResources : ( type )->
       @updateResourceCount()
+      if type and type isnt @resourcesTab then return
 
       type = constant.RESTYPE[ @resourcesTab ]
       if not @model.isOsResReady( @region, type )

@@ -8,18 +8,19 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
   Backbone.Model.extend {
 
     initialize : ()->
-      @listenTo CloudResources( constant.RESTYPE.OSSERVER ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSVOL ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSSNAP ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSFIP ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSRT ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSPOOL ), "update", @onRegionResChanged
-      @listenTo CloudResources( constant.RESTYPE.OSLISTENER ), "update", @onRegionResChanged
+      region = 'guangzhou'
+      @listenTo CloudResources( constant.RESTYPE.OSSERVER, region ), "update", @onRegionResChanged 'OSSERVER'
+      @listenTo CloudResources( constant.RESTYPE.OSVOL, region ), "update", @onRegionResChanged 'OSVOL'
+      @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), "update", @onRegionResChanged 'OSSNAP'
+      @listenTo CloudResources( constant.RESTYPE.OSFIP, region ), "update", @onRegionResChanged 'OSFIP'
+      @listenTo CloudResources( constant.RESTYPE.OSRT, region ), "update", @onRegionResChanged 'OSRT'
+      @listenTo CloudResources( constant.RESTYPE.OSPOOL, region ), "update", @onRegionResChanged 'OSPOOL'
+      @listenTo CloudResources( constant.RESTYPE.OSLISTENER, region ), "update", @onRegionResChanged 'OSLISTENER'
 
-    onRegionResChanged : ()-> @trigger "change:regionResources"
+    onRegionResChanged : ( type )-> () -> @trigger "change:regionResources", type
 
     ### Cloud Resources ###
-    fetchOsResources : ( region )->
+    fetchOsResources : ( region = 'guangzhou')->
       CloudResources( constant.RESTYPE.OSSERVER, region ).fetch()
       CloudResources( constant.RESTYPE.OSVOL, region ).fetch()
       CloudResources( constant.RESTYPE.OSSNAP, region ).fetch()
@@ -41,12 +42,12 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
     getOsResData : ( region, type )->
         return {
-          instances : CloudResources( constant.RESTYPE.INSTANCE ).groupByCategory(undefined, filter)
-          eips      : CloudResources( constant.RESTYPE.EIP ).groupByCategory()
-          volumes   : CloudResources( constant.RESTYPE.VOL ).groupByCategory()
-          elbs      : CloudResources( constant.RESTYPE.ELB ).groupByCategory()
-          vpns      : CloudResources( constant.RESTYPE.VPN ).groupByCategory()
-          rds       : DBInstances
+          servers : CloudResources( constant.RESTYPE.OSSERVER, region )?.toJSON()
+          volumes : CloudResources( constant.RESTYPE.OSVOL, region )?.toJSON()
+          snaps   : CloudResources( constant.RESTYPE.OSSNAP, region )?.toJSON()
+          fips    : CloudResources( constant.RESTYPE.OSFIP, region )?.toJSON()
+          rts     : CloudResources( constant.RESTYPE.OSRT, region )?.toJSON()
+          elbs    : CloudResources( constant.RESTYPE.OSLISTENER, region )?.toJSON()
         }
 
     getResourcesCount : ( region )->
@@ -61,7 +62,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       }
       d = {}
       for key, type of data
-        collection = CloudResources( constant.RESTYPE[type] )
+        collection = CloudResources( constant.RESTYPE[type], region )
         if collection.isReady()
           d[ key ] = collection.where(filter).length
         else

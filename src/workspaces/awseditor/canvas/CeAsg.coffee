@@ -113,8 +113,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
     ### env:dev:end ###
     type : "ExpandedAsg"
 
-    render : ()->
-      CanvasManager.update @$el.children("text"), @model.get("originalAsg").get("name")
+    listenModelEvents : ()->
+      @listenTo @model.get("originalAsg"), "change:name", @render
+      return
+
+    label  : ()-> (@model.get("originalAsg") || @model).get("name")
+    render : ()-> CanvasManager.setLabel @, @$el.children("text")
   }
 
   CeAsg

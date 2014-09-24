@@ -27,10 +27,6 @@ define ["Workspace", "workspaces/osdashboard/DashboardView", "workspaces/osdashb
 
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
-      # Watch changes in aws resources
-      @listenTo @model, "change:globalResources", ()-> self.view.markUpdated()
-      @listenTo @model, "change:regionResources", ()-> self.view.markUpdated()
-
       @model.fetchAwsResources()
 
       @__renderControlMap = {}

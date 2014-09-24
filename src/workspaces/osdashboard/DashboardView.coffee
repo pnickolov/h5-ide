@@ -114,6 +114,4 @@ define [
     startApp       : (event)-> appAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
     stopApp        : (event)-> appAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
     terminateApp   : (event)-> appAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
-
-    showCredential : ()-> App.showSettings App.showSettings.TAB.Credential
   }

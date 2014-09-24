@@ -30,13 +30,7 @@ define [
 
       json = @model.toJSON()
       @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
-      flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
-      currentFlavor = @flavorList.get(@model.get('flavorId')) || _.first @flavorList.models
-      json.flavorGroup = flavorGroup
-      json.avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024, value: e}
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
-      json.ram = currentFlavor.get('ram')
-      json.vcpus = currentFlavor.get('vcpus')
       json.floatingIp = !!@model.embedPort().getFloatingIp()
       json.fixedIp = @model.embedPort().get('ip')
       json.isAppEdit = @modeIsAppEdit()
@@ -52,10 +46,21 @@ define [
 
     bindSelectizeEvent: ()->
       that = @
+      flavorGroup = _.groupBy that.flavorList.toJSON(), 'vcpus'
+      currentFlavor = that.flavorList.get(that.model.get('flavorId'))
+      avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024 + " G", value: e}
       @$el.find("#property-os-server-image").on 'select_initialize', ()->
-        that.$el.find("#property-os-server-image")[0].selectize.setValue(that.model.get('imageId'))
+        @.selectize.setValue(that.model.get('imageId'))
       @$el.find("#property-os-server-credential").on 'select_initialize', ()->
         that.checkWindowsDistro that.model.get("imageId")
+      @$el.find('#property-os-server-RAM').on 'select_initialize', ()->
+        @.selectize.addOption avaliableRams
+        @.selectize.setValue currentFlavor.get('ram')
+      @$el.find('#property-os-server-CPU').on 'select_initialize', ()->
+        avaliableCPUs = _.map flavorGroup, (e,index)->
+          {text: index + " Core", value: index}
+        @.selectize.addOption avaliableCPUs
+        @.selectize.setValue currentFlavor.get('vcpus')
 
     onChangeCredential: (event, value)->
       result = if event then $(event.currentTarget).getValue() else value
@@ -93,9 +98,9 @@ define [
       if attr is 'CPU'
         flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
         availableRams = flavorGroup[target.val()]
-        console.log availableRams
         if availableRams?.length
           ramSelectize = @$el.find("#property-os-server-RAM")[0].selectize
+          if not ramSelectize then return false
           ramValue = ramSelectize.getValue()
           availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (e/1024 + " G"), value: e}
           currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
@@ -104,7 +109,6 @@ define [
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
           @model.set("flavorId", currentRamFlavor.get('id'))
           @updateRamOptions(availableRamsValue, ramValue)
-          console.log currentRamFlavor.get('id')
         else
           return false
         return false
@@ -133,7 +137,6 @@ define [
       ramSelection = @$el.find("#property-os-server-RAM")[0].selectize
       ramSelection.clearOptions()
       ramSelection.load (callback)->
-        console.log currentRam
         callback availableRams
         ramSelection.refreshOptions(false)
         ramSelection.setValue(currentRam)

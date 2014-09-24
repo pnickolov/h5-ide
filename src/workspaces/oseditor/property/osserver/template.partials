@@ -17,19 +17,11 @@
     </section>
     <section class="group required">
         <label class="name">CPU</label>
-        <select class="selection option"  data-target="CPU" id="property-os-server-CPU">
-            {{#each flavorGroup}}
-                <option value='{{@key}}' {{#ifCond @key ../vcpus}}selected="selected"{{/ifCond}}>{{@key}} Core</option>
-            {{/each}}
-        </select>
+        <select class="selection option"  data-target="CPU" id="property-os-server-CPU"></select>
     </section>
     <section class="group required">
         <label class="name">RAM</label>
-        <select class="selection option required" data-target="RAM" id="property-os-server-RAM">
-            {{#each avaliableRams}}
-                <option value='{{value}}' {{#ifCond value ../ram}}selected="selected"{{/ifCond}}>{{text}} G</option>
-            {{/each}}
-        </select>
+        <select class="selection option required" data-target="RAM" id="property-os-server-RAM"></select>
     </section>
     <section class="group">
         <label class="name">Credential</label>

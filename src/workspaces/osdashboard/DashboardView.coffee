@@ -121,7 +121,58 @@ define [
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
+        @animateResourceCount(r)
       return
+
+    animateResourceCount: (r)->
+      nav = $(".resource-list-nav").children(".#{r}").append("""
+      <svg class="rotate" viewbox="0 0 250 250">
+        <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
+        <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
+      </svg>""")
+      console.log nav
+      @animateUsage.bind(nav).call(nav,17, 23)
+
+
+    animateUsage: (active, quota)->
+      seconds = 40
+      loaderBg = @find('.usage-quota')
+      loader = @find('.usage-active')
+      countUsage = @find ".count-usage"
+      @a = 0
+      pi = Math.PI
+      t = (seconds / 360 * 1000)
+      num = 0
+      maxAngle = 270
+      if @chartTimeOut then window.clearTimeout(@chartTimeOut)
+      @chartTimeOut = null
+      draw = (element,angle,direct)->
+        #if element then a = 0
+        @a++
+        num += ((active) / maxAngle)
+        tempAngle = (if direct then angle else @a)
+        r = tempAngle * pi / 180
+        x = Math.sin(r) * 125
+        y = Math.cos(r) * - 125
+        mid = if (tempAngle > 180) then 1 else 0
+        anim = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z" #Magic, don't touch.
+        element.attr( 'd' , anim)
+        if not direct then countUsage.text Math.round(if num > quota then quota else num)
+        if(@a < angle and not direct)
+          @chartTimeOut = window.setTimeout ->
+            draw(element, angle)
+          , t
+      draw = _.bind draw, @
+      if active
+        loaderBg.attr( 'fill' , "#4b4f8c")
+        loader.attr( 'fill' , "#30bc00")
+        draw(loaderBg, 270, true)
+        draw(loader, (active/quota) * 270)
+      else
+        loaderBg.attr( 'fill' , "#5f5f5f")
+        draw(loaderBg, 270, true)
+      return
+
 
     updateRegionResources : ( type )->
       @updateResourceCount()

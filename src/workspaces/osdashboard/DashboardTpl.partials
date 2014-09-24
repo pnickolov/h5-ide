@@ -57,7 +57,8 @@
 <!-- {{resourceList}} -->
 <nav class="clearfix resource-list-nav">
   <div class="resource-tab servers on" data-type="OSSERVER">
-    <span class="resource-count">Server</span><span class="count-bubble">1</span>
+    <span class="resource-count">Server</span>
+    <span class="count-usage">13</span><span class="count-quota">22</span>
   </div>
   <div class="resource-tab volumes" data-type="OSVOL">
     <span class="resource-count">Volume</span><span class="count-bubble">1</span>

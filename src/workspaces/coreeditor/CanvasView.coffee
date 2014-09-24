@@ -144,14 +144,12 @@ define [
       if item.parent()
         parentRect = item.parent().rect()
         children   = item.parent().children()
-      else
-        parentRect = @canvasRect()
-        children   = @__itemTopLevel
 
-      parentRect.x1 += 1
-      parentRect.y1 += 1
-      parentRect.x2 -= 1
-      parentRect.y2 -= 1
+      if not item.isTopLevel()
+        parentRect.x1 += 1
+        parentRect.y1 += 1
+        parentRect.x2 -= 1
+        parentRect.y2 -= 1
 
       if parentRect.x1 > subRect.x1 or parentRect.y1 > subRect.y1 or parentRect.x2 < subRect.x2 or parentRect.y2 < subRect.y2
         return false
@@ -252,7 +250,12 @@ define [
       return
 
     clearItems : ()->
-      item.remove() for id, item of @__itemMap
+      cleared = {}
+      for id, item of @__itemMap
+        if not cleared[ item.cid ]
+          item.remove()
+          cleared[ item.cid ] = true
+
       @__itemMap = {}
       return
 
@@ -341,6 +344,8 @@ define [
       @clearPopups()
       @clearItems()
 
+      @addSvgItem()
+
       @initializing = true
 
       @recreateStructure()
@@ -378,6 +383,14 @@ define [
           console.error e
       @__toAddLines = null
       return
+
+    addSvgItem : ()->
+      SvgItemClass = CanvasElement.getClassByType( "SVG" )
+      item = new SvgItemClass({canvas:@})
+      @svgItem = @__itemMap[ item.cid ] = item
+      return
+
+    getSvgItem : ()-> @svgItem
 
     addItem : ( resourceModel, isScheduled )->
       ItemClass = CanvasElement.getClassByType( resourceModel.type )

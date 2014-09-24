@@ -46,20 +46,12 @@ define [ "CanvasView" ], ( CanvasView )->
 
     target = item.rect()
 
-    parent = item.parent()
-    if parent
-      parent = parent.rect()
+    parent = item.parent().rect()
+    if not item.isTopLevel()
       parent.x1 += 1
       parent.y1 += 1
       parent.x2 -= 1
       parent.y2 -= 1
-    else
-      size = @size()
-      parent =
-        x1 : 4
-        y1 : 2
-        x2 : size[0] - 4
-        y2 : size[1] - 2
 
     left = direction.indexOf("left") >= 0
     top  = direction.indexOf("top")  >= 0

@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSHM
-    newNameTmpl : "Pool-"
+    newNameTmpl : "health-monitor"
 
     defaults: ()->
       type            : 'PING'

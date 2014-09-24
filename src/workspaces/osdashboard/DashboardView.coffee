@@ -4,10 +4,11 @@ define [
   "constant"
   "i18n!/nls/lang.js"
   "CloudResources"
+  'appAction'
   "backbone"
   "UI.tooltip"
   "UI.nanoscroller"
-], ( Template, constant, lang, CloudResources )->
+], ( Template, constant, lang, CloudResources, appAction )->
 
   Backbone.View.extend {
 

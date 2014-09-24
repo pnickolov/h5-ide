@@ -51,253 +51,348 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
     genAttrRefList = (currentCompData, allCompData) ->
 
-        _getSelectedASGModelByLC = () ->
+        cloudType = Design.instance().get('cloud_type')
 
-            $asgDom = $('#OpsEditor g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
-            asgViewId = $asgDom.data('id')
-            return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
-            return null
+        resAttrDataAry = []
 
-        if currentCompData.type is constant.RESTYPE.ASG
+        if cloudType is 'aws'
 
-            lcUIDRef = currentCompData.resource.LaunchConfigurationName
-            if lcUIDRef
-                lcUID = MC.extractID(lcUIDRef)
-                currentCompData = allCompData[lcUID]
-                return null if not currentCompData
+            _getSelectedASGModelByLC = () ->
 
-        currentCompUID = currentCompData.uid
-        currentCompType = currentCompData.type
+                $asgDom = $('#OpsEditor g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
+                asgViewId = $asgDom.data('id')
+                return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
+                return null
 
-        currentIsASG = false
-        currentASGName = null
-        if currentCompType is constant.RESTYPE.LC
-            currentIsASG = true
+            if currentCompData.type is constant.RESTYPE.ASG
 
-        currentIsISG = false
-        currentIsInstance = false
-        currentInstanceName = null
-        currentISGName = null
-        if currentCompData.number
-            if currentCompData.number > 1
-                currentIsISG = true
-                currentISGName = currentCompData.serverGroupName
-            else
-                currentIsInstance = true
-                currentInstanceName = currentCompData.serverGroupName
-
-        allCompData = allCompData or @get('allCompData')
-
-        autoCompList = []
-
-        awsPropertyData = constant.STATE_REF_DICT
-
-        _.each allCompData, (compData, uid) ->
-
-            compName = compData.name
-            compUID = compData.uid
-            compType = compData.type
-
-            checkASGPublicIP = false
-
-            if compUID is currentCompUID
-                compName = 'self'
-
-            if compType is constant.RESTYPE.ASG
-                lcUIDRef = compData.resource.LaunchConfigurationName
+                lcUIDRef = currentCompData.resource.LaunchConfigurationName
                 if lcUIDRef
                     lcUID = MC.extractID(lcUIDRef)
-                    lcCompData = allCompData[lcUID]
-                    if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
-                        asgModel = _getSelectedASGModelByLC()
-                        if asgModel and asgModel.get('id') is compUID
-                            currentASGName = compName
-                            compName = 'self'
+                    currentCompData = allCompData[lcUID]
+                    return null if not currentCompData
 
-                    if lcCompData.resource.AssociatePublicIpAddress
-                        asgHavePublicIP = true
+            currentCompUID = currentCompData.uid
+            currentCompType = currentCompData.type
 
-            if compType is constant.RESTYPE.INSTANCE
-                return
+            currentIsASG = false
+            currentASGName = null
+            if currentCompType is constant.RESTYPE.LC
+                currentIsASG = true
 
-            # replace instance default eni name to instance name
-            if compType is constant.RESTYPE.ENI
-                if compData.index isnt 0
+            currentIsISG = false
+            currentIsInstance = false
+            currentInstanceName = null
+            currentISGName = null
+            if currentCompData.number
+                if currentCompData.number > 1
+                    currentIsISG = true
+                    currentISGName = currentCompData.serverGroupName
+                else
+                    currentIsInstance = true
+                    currentInstanceName = currentCompData.serverGroupName
+
+            allCompData = allCompData or @get('allCompData')
+
+            autoCompList = []
+
+            awsPropertyData = constant.STATE_REF_DICT
+
+            _.each allCompData, (compData, uid) ->
+
+                compName = compData.name
+                compUID = compData.uid
+                compType = compData.type
+
+                checkASGPublicIP = false
+
+                if compUID is currentCompUID
+                    compName = 'self'
+
+                if compType is constant.RESTYPE.ASG
+                    lcUIDRef = compData.resource.LaunchConfigurationName
+                    if lcUIDRef
+                        lcUID = MC.extractID(lcUIDRef)
+                        lcCompData = allCompData[lcUID]
+                        if currentCompType is constant.RESTYPE.LC and currentCompUID is lcUID
+                            asgModel = _getSelectedASGModelByLC()
+                            if asgModel and asgModel.get('id') is compUID
+                                currentASGName = compName
+                                compName = 'self'
+
+                        if lcCompData.resource.AssociatePublicIpAddress
+                            asgHavePublicIP = true
+
+                if compType is constant.RESTYPE.INSTANCE
                     return
-                if compData.serverGroupUid isnt compUID
-                    return
-                instanceRef = compData.resource.Attachment.InstanceId
-                if not instanceRef
-                    return
-                if compData.resource.Attachment.DeviceIndex in ['0', 0]
-                    instanceUID = MC.extractID(instanceRef)
-                    if instanceUID
-                        compName = allCompData[instanceUID].serverGroupName
-                        compUID = instanceUID
-                        if instanceUID is currentCompUID
-                            compName = 'self'
 
-            supportType = compType.replace(/\./ig, '_')
-
-            # found supported type
-            attrList = awsPropertyData[supportType]
-            if attrList
-
-                _.each attrList, (isArray, attrName) ->
-
-                    autoCompStr = (compName + '.') # host1.
-                    autoCompRefStr = (compUID + '.') # uid.
-
-                    if attrName is '__array'
+                # replace instance default eni name to instance name
+                if compType is constant.RESTYPE.ENI
+                    if compData.index isnt 0
                         return
-                    else
-                        autoCompStr += attrName
-                        autoCompRefStr += attrName
+                    if compData.serverGroupUid isnt compUID
+                        return
+                    instanceRef = compData.resource.Attachment.InstanceId
+                    if not instanceRef
+                        return
+                    if compData.resource.Attachment.DeviceIndex in ['0', 0]
+                        instanceUID = MC.extractID(instanceRef)
+                        if instanceUID
+                            compName = allCompData[instanceUID].serverGroupName
+                            compUID = instanceUID
+                            if instanceUID is currentCompUID
+                                compName = 'self'
 
-                    instanceNoMainPublicIP = false
+                supportType = compType.replace(/\./ig, '_')
 
-                    if attrName in ['PublicIp']
+                # found supported type
+                attrList = awsPropertyData[supportType]
+                if attrList
 
-                        if compType is constant.RESTYPE.ASG
-                            if not asgHavePublicIP
-                                return
+                    _.each attrList, (isArray, attrName) ->
 
-                        if compType is constant.RESTYPE.ENI
-                            if (not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, 0)) and
-                            (not compData.resource.AssociatePublicIpAddress)
-                                instanceNoMainPublicIP = true
+                        autoCompStr = (compName + '.') # host1.
+                        autoCompRefStr = (compUID + '.') # uid.
 
-                    if not instanceNoMainPublicIP
+                        if attrName is '__array'
+                            return
+                        else
+                            autoCompStr += attrName
+                            autoCompRefStr += attrName
 
-                        autoCompList.push({
-                            name: autoCompStr,
-                            value: autoCompRefStr,
-                            uid: compUID
+                        instanceNoMainPublicIP = false
+
+                        if attrName in ['PublicIp']
+
+                            if compType is constant.RESTYPE.ASG
+                                if not asgHavePublicIP
+                                    return
+
+                            if compType is constant.RESTYPE.ENI
+                                if (not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, 0)) and
+                                (not compData.resource.AssociatePublicIpAddress)
+                                    instanceNoMainPublicIP = true
+
+                        if not instanceNoMainPublicIP
+
+                            autoCompList.push({
+                                name: autoCompStr,
+                                value: autoCompRefStr,
+                                uid: compUID
+                            })
+
+                        if isArray
+
+                            if supportType is 'AWS_AutoScaling_Group'
+                                if attrName in ['AvailabilityZones']
+                                    azAry = compData.resource.AvailabilityZones
+                                    if azAry.length > 1
+                                        _.each azAry, (azName, idx) ->
+                                            # if idx is 0 then return
+                                            autoCompList.push({
+                                                name: autoCompStr + '[' + idx + ']',
+                                                value: autoCompRefStr + '[' + idx + ']',
+                                                uid: compUID
+                                            })
+                                            null
+
+                            if supportType is 'AWS_VPC_NetworkInterface'
+                                if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
+                                    ipObjAry = compData.resource.PrivateIpAddressSet
+                                    if compData.index isnt 0
+                                        return
+                                    if ipObjAry.length > 1
+                                        _.each ipObjAry, (ipObj, idx) ->
+                                            # if idx is 0 then return
+                                            if attrName in ['PublicIp']
+                                                if not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, idx)
+                                                    return
+                                            autoCompList.push({
+                                                name: autoCompStr + '[' + idx + ']',
+                                                value: autoCompRefStr + '[' + idx + ']',
+                                                uid: compUID
+                                            })
+                                            null
+
+                            if supportType is 'AWS_ELB'
+                                if attrName in ['AvailabilityZones']
+                                    azAry = compData.resource.AvailabilityZones
+                                    if azAry.length > 1
+                                        _.each azAry, (azName, idx) ->
+                                            # if idx is 0 then return
+                                            autoCompList.push({
+                                                name: autoCompStr + '[' + idx + ']',
+                                                value: autoCompRefStr + '[' + idx + ']',
+                                                uid: compUID
+                                            })
+                                            null
+
+                        null
+
+                null
+
+            # append asg/isg ref
+            groupAutoCompList = []
+            instanceAutoCompList = []
+            _.each autoCompList, (autoCompObj) ->
+                if autoCompObj.name.indexOf('self.') is 0
+
+                    if currentIsInstance
+                        instanceCompNameStr = autoCompObj.name.replace('self', currentInstanceName)
+                        instanceCompUIDStr = autoCompObj.value.replace('self', currentInstanceName)
+                        instanceAutoCompList.push({
+                            name: instanceCompNameStr,
+                            value: instanceCompUIDStr,
+                            uid: autoCompObj.uid
                         })
 
-                    if isArray
+                    if currentIsASG or currentIsISG
+                        groupCompNameStr = null
+                        groupCompUIDStr = null
+                        if currentIsASG
+                            groupCompNameStr = autoCompObj.name.replace('self', currentASGName)
+                            groupCompUIDStr = autoCompObj.value.replace('self', currentASGName)
+                        else if currentIsISG
+                            groupCompNameStr = autoCompObj.name.replace('self', currentISGName)
+                            groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
+                        groupAutoCompList.push({
+                            name: groupCompNameStr,
+                            value: groupCompUIDStr,
+                            uid: autoCompObj.uid
+                        })
 
-                        if supportType is 'AWS_AutoScaling_Group'
-                            if attrName in ['AvailabilityZones']
-                                azAry = compData.resource.AvailabilityZones
-                                if azAry.length > 1
-                                    _.each azAry, (azName, idx) ->
-                                        # if idx is 0 then return
-                                        autoCompList.push({
-                                            name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']',
-                                            uid: compUID
-                                        })
-                                        null
+            autoCompList = autoCompList.concat(groupAutoCompList)
+            autoCompList = autoCompList.concat(instanceAutoCompList)
 
-                        if supportType is 'AWS_VPC_NetworkInterface'
-                            if attrName in ['PublicDnsName', 'PublicIp', 'PrivateDnsName', 'PrivateIpAddress']
-                                ipObjAry = compData.resource.PrivateIpAddressSet
-                                if compData.index isnt 0
-                                    return
-                                if ipObjAry.length > 1
-                                    _.each ipObjAry, (ipObj, idx) ->
-                                        # if idx is 0 then return
-                                        if attrName in ['PublicIp']
-                                            if not MC.aws.aws.checkPrivateIPIfHaveEIP(allCompData, compData.uid, idx)
-                                                return
-                                        autoCompList.push({
-                                            name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']',
-                                            uid: compUID
-                                        })
-                                        null
+            resAttrDataAry = _.map autoCompList, (autoCompObj) ->
 
-                        if supportType is 'AWS_ELB'
-                            if attrName in ['AvailabilityZones']
-                                azAry = compData.resource.AvailabilityZones
-                                if azAry.length > 1
-                                    _.each azAry, (azName, idx) ->
-                                        # if idx is 0 then return
-                                        autoCompList.push({
-                                            name: autoCompStr + '[' + idx + ']',
-                                            value: autoCompRefStr + '[' + idx + ']',
-                                            uid: compUID
-                                        })
-                                        null
-
-                    null
-
-            null
-
-        # append asg/isg ref
-        groupAutoCompList = []
-        instanceAutoCompList = []
-        _.each autoCompList, (autoCompObj) ->
-            if autoCompObj.name.indexOf('self.') is 0
-
-                if currentIsInstance
-                    instanceCompNameStr = autoCompObj.name.replace('self', currentInstanceName)
-                    instanceCompUIDStr = autoCompObj.value.replace('self', currentInstanceName)
-                    instanceAutoCompList.push({
-                        name: instanceCompNameStr,
-                        value: instanceCompUIDStr,
-                        uid: autoCompObj.uid
-                    })
-
-                if currentIsASG or currentIsISG
-                    groupCompNameStr = null
-                    groupCompUIDStr = null
-                    if currentIsASG
-                        groupCompNameStr = autoCompObj.name.replace('self', currentASGName)
-                        groupCompUIDStr = autoCompObj.value.replace('self', currentASGName)
-                    else if currentIsISG
-                        groupCompNameStr = autoCompObj.name.replace('self', currentISGName)
-                        groupCompUIDStr = autoCompObj.value.replace('self', currentISGName)
-                    groupAutoCompList.push({
-                        name: groupCompNameStr,
-                        value: groupCompUIDStr,
-                        uid: autoCompObj.uid
-                    })
-
-        autoCompList = autoCompList.concat(groupAutoCompList)
-        autoCompList = autoCompList.concat(instanceAutoCompList)
-
-        resAttrDataAry = _.map autoCompList, (autoCompObj) ->
-
-            if autoCompObj.name.indexOf('self.') is 0
-                autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
-                autoCompObj.uid = 'self'
-            return {
-                name: "#{autoCompObj.name}",
-                value: "#{autoCompObj.name}",
-                ref: "#{autoCompObj.value}",
-                uid: "#{autoCompObj.uid}"
-            }
-
-        # add self refrence for temp
-        allAttrStrAry = _.map resAttrDataAry, (refObj) ->
-            return refObj.name
-        _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
-            if attr not in allAttrStrAry
-                resAttrDataAry.push {
-                    name: "#{attr}",
-                    value: "#{attr}",
-                    ref: "#{attr}",
-                    uid: "self"
+                if autoCompObj.name.indexOf('self.') is 0
+                    autoCompObj.value = autoCompObj.value.replace(autoCompObj.uid, 'self')
+                    autoCompObj.uid = 'self'
+                return {
+                    name: "#{autoCompObj.name}",
+                    value: "#{autoCompObj.name}",
+                    ref: "#{autoCompObj.value}",
+                    uid: "#{autoCompObj.uid}"
                 }
 
-        # filter all self's AZ ref
-        resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
+            # add self refrence for temp
+            allAttrStrAry = _.map resAttrDataAry, (refObj) ->
+                return refObj.name
+            _.each ['self.PrivateIpAddress', 'self.MacAddress', 'self.PublicIp'], (attr) ->
+                if attr not in allAttrStrAry
+                    resAttrDataAry.push {
+                        name: "#{attr}",
+                        value: "#{attr}",
+                        ref: "#{attr}",
+                        uid: "self"
+                    }
 
-            if autoCompObj.name.indexOf('self.') is 0
-                if autoCompObj.name.indexOf('.AvailabilityZones') isnt -1
-                    return false
-                else
-                    return true
+            # filter all self's AZ ref
+            resAttrDataAry = _.filter resAttrDataAry, (autoCompObj) ->
 
-            return true
+                if autoCompObj.name.indexOf('self.') is 0
+                    if autoCompObj.name.indexOf('.AvailabilityZones') isnt -1
+                        return false
+                    else
+                        return true
 
-        # sort autoCompList
-        resAttrDataAry = resAttrDataAry.sort((obj1, obj2) ->
-            if obj1.name < obj2.name then return -1
-            if obj1.name > obj2.name then return 1
-        )
+                return true
+
+            # sort autoCompList
+            resAttrDataAry = resAttrDataAry.sort((obj1, obj2) ->
+                if obj1.name < obj2.name then return -1
+                if obj1.name > obj2.name then return 1
+            )
+
+        else # for openstack
+
+            # # for host
+            # xxx.ip_address
+            # xxx.mac_address
+            # xxx.public_ip
+            #
+            # # for port
+            # xxx.ip_address
+            # xxx.mac_address
+            # xxx.public_ip
+            #
+            # # for listener
+            # xxx.ip_address
+            # xxx.protocol
+            # xxx.port
+            #
+            # # for subnet
+            # xxx.cidr
+            # xxx.gateway_ip
+            #
+            # # for state
+            # xxx.state.n
+
+            currentCompUID = currentCompData.uid
+            currentResModel = Design.instance().component(currentCompUID)
+
+            _genRefObj = (name, uid, attr) ->
+
+                return {
+                    name: "#{name}.#{attr}",
+                    ref: "#{uid}.#{attr}",
+                    uid: "#{uid}.#{attr}",
+                    value: "#{name}.#{attr}"
+                }
+
+            # for port
+            allPortModels = Design.modelClassForType(constant.RESTYPE.OSPORT).allObjects()
+            _.each allPortModels, (portModel) ->
+
+                name = portModel.get('name')
+                if portModel.isEmbedded()
+                    name = portModel.owner()?.get('name')
+
+                uid = portModel.id
+
+                return if not (name and uid)
+
+                # for ip_address, mac_address
+                resAttrDataAry = resAttrDataAry.concat([
+                    _genRefObj(name, uid, 'ip_address'),
+                    _genRefObj(name, uid, 'mac_address')
+                ])
+
+                # for public_ip
+                floatIPModel = portModel.getFloatingIp()
+                if floatIPModel
+                    uid = floatIPModel.id
+                    resAttrDataAry = resAttrDataAry.concat([
+                        _genRefObj(name, uid, 'public_ip')
+                    ])
+
+            # for listener
+            allListenerModels = Design.modelClassForType(constant.RESTYPE.OSLISTENER).allObjects()
+            _.each allListenerModels, (listenerModel) ->
+
+                name = listenerModel.get('name')
+                uid = listenerModel.id
+
+                # for ip_address, protocol, port
+                resAttrDataAry = resAttrDataAry.concat([
+                    _genRefObj(name, uid, 'cidr'),
+                    _genRefObj(name, uid, 'protocol'),
+                    _genRefObj(name, uid, 'port')
+                ])
+
+            # for subnet
+            allSubnetModels = Design.modelClassForType(constant.RESTYPE.OSSUBNET).allObjects()
+            _.each allSubnetModels, (subnetModel) ->
+
+                name = subnetModel.get('name')
+                uid = subnetModel.id
+
+                # for ip_address, protocol, port
+                resAttrDataAry = resAttrDataAry.concat([
+                    _genRefObj(name, uid, 'ip_address'),
+                    _genRefObj(name, uid, 'gateway_ip')
+                ])
 
         return resAttrDataAry
 

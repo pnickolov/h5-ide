@@ -140,6 +140,8 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			resAttrDataAry = MC.aws.aws.genAttrRefList(compData, allCompData)
 			that.set('resAttrDataAry', resAttrDataAry)
 
+			that.genResAttrDataMap()
+
 			that.genAttrRefRegexList()
 
 			groupResSelectData = that.getGroupResSelectData()
@@ -147,6 +149,17 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			# Diffrent view
 			that.set('currentState', Design.instance().mode())
+
+		genResAttrDataMap: () ->
+
+			nameToUIDRefMap = {}
+			uidToNameRefMap = {}
+			resAttrDataAry = @get('resAttrDataAry')
+			_.each resAttrDataAry, (data) ->
+				nameToUIDRefMap["@{#{data.name}}"] = "@{#{data.uid}}"
+				uidToNameRefMap["@{#{data.uid}}"] = "@{#{data.name}}"
+			@set('nameToUIDRefMap', nameToUIDRefMap)
+			@set('uidToNameRefMap', uidToNameRefMap)
 
 		sortParaList: (cmdAllParaAry, paraName) ->
 
@@ -493,27 +506,46 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			newParaValue = paraValue
 
-			_.each refMatchAry, (refMatchStr) ->
+			cloudType = Design.instance().get('cloud_type')
 
-				uidMatchAry = refMatchStr.match(uidRegex)
-				resUID = uidMatchAry[0]
+			if cloudType is 'aws'
 
-				# if resUID is currentCompUID
-				# 	resName = 'self'
-				# else
-				compData = allCompData[resUID]
-				if compData
-					resName = compData.name
-					if compData.type is constant.RESTYPE.INSTANCE
-						if compData.number and compData.number > 1
-							resName = compData.serverGroupName
-				else
-					resName = 'unknown'
+				# for aws
+				_.each refMatchAry, (refMatchStr) ->
 
-				newRefStr = refMatchStr.replace(resUID, resName)
-				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+					uidMatchAry = refMatchStr.match(uidRegex)
+					resUID = uidMatchAry[0]
 
-				null
+					# if resUID is currentCompUID
+					# 	resName = 'self'
+					# else
+					compData = allCompData[resUID]
+					if compData
+						resName = compData.name
+						if compData.type is constant.RESTYPE.INSTANCE
+							if compData.number and compData.number > 1
+								resName = compData.serverGroupName
+					else
+						resName = 'unknown'
+
+					newRefStr = refMatchStr.replace(resUID, resName)
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
+					null
+
+			else
+
+				# openstack
+				_.each refMatchAry, (refMatchStr) ->
+
+					uidMatchAry = refMatchStr.match(uidRegex)
+					resUID = uidMatchAry[0]
+
+					uidToNameRefMap = that.get('uidToNameRefMap')
+					newRefStr = uidToNameRefMap[refMatchStr]
+					if not newRefStr
+						newRefStr = refMatchStr.replace(resUID, 'unknown')
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
 
 			return newParaValue
 
@@ -528,15 +560,32 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			newParaValue = paraValue
 
-			_.each refMatchAry, (refMatchStr) ->
+			cloudType = Design.instance().get('cloud_type')
 
-				resName = refMatchStr.replace('@{', '').split('.')[0]
-				if resName isnt 'self'
-					resUID = that.getUIDByResName(resName)
-					if resUID
-						newUIDStr = refMatchStr.replace(resName, resUID)
+			if cloudType is 'aws'
+
+				# for aws
+				_.each refMatchAry, (refMatchStr) ->
+
+					resName = refMatchStr.replace('@{', '').split('.')[0]
+					if resName isnt 'self'
+						resUID = that.getUIDByResName(resName)
+						if resUID
+							newUIDStr = refMatchStr.replace(resName, resUID)
+							newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+					null
+
+			else
+
+				# for open stack
+				_.each refMatchAry, (refMatchStr) ->
+
+					resName = refMatchStr.replace('@{', '').split('.')[0]
+					if resName isnt 'self'
+						nameToUIDRefMap = that.get('nameToUIDRefMap')
+						newUIDStr = nameToUIDRefMap[refMatchStr]
 						newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
-				null
+					null
 
 			return newParaValue
 

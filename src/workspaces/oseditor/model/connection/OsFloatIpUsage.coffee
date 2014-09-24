@@ -8,7 +8,7 @@ define [ "ConnectionModel", "constant", "Design" ], ( ConnectionModel, constant,
 
       if not p2comp and p1comp.type isnt constant.RESTYPE.OSFIP
         FloatIpModel = Design.modelClassForType( constant.RESTYPE.OSFIP )
-        p2Comp = new FloatIpModel()
+        p2comp = new FloatIpModel()
 
-      ConnectionModel.call this, p1comp, p2Comp, attr, options
+      ConnectionModel.call this, p1comp, p2comp, attr, options
   }

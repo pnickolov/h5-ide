@@ -16,7 +16,12 @@ define [
       'click .icon-new-stack'   : 'createStack'
 
       'click .ops-list-switcher'       : 'switchAppStack'
-      "click .dash-ops-list > ul > li" : "openItem"
+      "click .dash-ops-list > li" : "openItem"
+      "click .dash-ops-list .delete-stack"    : "deleteStack"
+      'click .dash-ops-list .duplicate-stack' : 'duplicateStack'
+      "click .dash-ops-list .start-app"       : "startApp"
+      'click .dash-ops-list .stop-app'        : 'stopApp'
+      'click .dash-ops-list .terminate-app'   : 'terminateApp'
 
     initialize : ()->
       @opsListTab = "stack"

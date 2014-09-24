@@ -34,39 +34,39 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
       json = @__createRawJson()
       json.layout    =
         size : [ 240, 240 ]
-        "extnetwork0001" :
+        "83F25207-4AC4-4B88-A320-D951AC4DF5DC" :
           coordinate : [ 5, 5 ]
-        "router0001" :
+        "23B00CA6-74C3-4A25-A3A8-274A33BD9D87" :
           coordinate : [ 20, 5 ]
-        "network0001" :
+        "2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1" :
           coordinate : [ 34, 3 ]
           size       : [ 60, 60 ]
-        "subnet0001" :
+        "CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6" :
           coordinate : [ 36, 6 ]
           size       : [ 20, 50 ]
-        "subnet0002" :
+        "2B278175-83AF-4C65-9F1C-3D0570F86DA4" :
           coordinate : [ 60, 6 ]
           size       : [ 20, 50 ]
-        "server0001" :
+        "3DF9EDE3-41C6-4DB7-93B7-E0FBBB59B142" :
           coordinate : [ 42, 10 ]
         # "port0002" :
         #   coordinate : [ 65, 11 ]
-        "pool0001" :
+        "B7BE7F97-7C59-42CD-ACE5-4EC09F2D88A3" :
           coordinate : [ 65, 40 ]
-        "listener0001" :
+        "4627F42F-8DB9-436A-8272-EFE26816DDB1" :
           coordinate : [ 42, 40 ]
 
       json.component =
-        "extnetwork0001" :
+        "83F25207-4AC4-4B88-A320-D951AC4DF5DC" :
           type : "OS::ExternalNetwork"
-          uid  : "extnetwork0001"
+          uid  : "83F25207-4AC4-4B88-A320-D951AC4DF5DC"
           resource :
             name : "ExternalNetwork"
             id   : ""
 
-        "server0001":
+        "3DF9EDE3-41C6-4DB7-93B7-E0FBBB59B142":
           type: "OS::Nova::Server"
-          uid: "server0001"
+          uid: "3DF9EDE3-41C6-4DB7-93B7-E0FBBB59B142"
           resource:
             name: "webserver"
             flavor: "6"
@@ -77,27 +77,27 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             blockDeviceMapping: []
             key_name: "testkp"
             NICS: [
-              {"port-id": "@{port0001.resource.id}"}
+              {"port-id": "@{92C407D2-7B62-449F-83E7-E88D2A9B8369.resource.id}"}
               # {"port-id": "@{port0002.resource.id}"}
             ]
             adminPass: "12345678"
             id: ""
 
-        "network0001":
+        "2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1":
           type: "OS::Neutron::Network"
-          uid: "network0001"
+          uid: "2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1"
           resource:
             name           : "network1"
             admin_state_up : ""
             shared         : ""
             id             : ""
 
-        "subnet0001":
+        "CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6":
           type: "OS::Neutron::Subnet"
-          uid: "subnet0001"
+          uid: "CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6"
           resource:
             name: "subnet1"
-            network_id       : "@{network0001.resource.id}"
+            network_id       : "@{2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1.resource.id}"
             allocation_pools : [
               start : "10.0.0.10"
               end   : "10.0.0.250"
@@ -108,12 +108,12 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             enable_dhcp      : true
             id               : ""
 
-        "subnet0002" :
+        "2B278175-83AF-4C65-9F1C-3D0570F86DA4" :
           type : "OS::Neutron::Subnet"
-          uid  : "subnet0002"
+          uid  : "2B278175-83AF-4C65-9F1C-3D0570F86DA4"
           resource :
             name             : "subnet2"
-            network_id       : "@{network0001.resource.id}"
+            network_id       : "@{2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1.resource.id}"
             allocation_pools : [
               start : "10.0.1.10"
               end   : "10.0.1.250"
@@ -124,19 +124,19 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             enable_dhcp      : true
             id               : ""
 
-        "port0001":
+        "92C407D2-7B62-449F-83E7-E88D2A9B8369":
           type: "OS::Neutron::Port"
-          uid: "port0001"
+          uid: "92C407D2-7B62-449F-83E7-E88D2A9B8369"
           resource:
             name: "port-1"
             admin_state_up: ""
             mac_address: ""
             fixed_ips: [
-              subnet_id: "@{subnet0001.resource.id}"
+              subnet_id: "@{CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6.resource.id}"
               ip_address: "10.0.0.12"
             ]
-            security_groups: ["@{sg0001.resource.id}"]
-            network_id: "@{network0001.resource.id}"
+            security_groups: ["@{E8B4645B-2713-42BF-B8C6-80C83A272D70.resource.id}"]
+            network_id: "@{2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1.resource.id}"
             id: ""
 
         # "port0002" :
@@ -145,15 +145,15 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
         #   resource :
         #     name : "port-2"
         #     fixed_ips: [{
-        #       "subnet_id"  : "@{subnet0002.resource.id}"
+        #       "subnet_id"  : "@{2B278175-83AF-4C65-9F1C-3D0570F86DA4.resource.id}"
         #       "ip_address" : "10.0.1.12"
         #     }]
-        #     security_groups : [ "@{sg0001.resource.id}"]
-        #     network_id      : "@{network0001.resource.id}"
+        #     security_groups : [ "@{E8B4645B-2713-42BF-B8C6-80C83A272D70.resource.id}"]
+        #     network_id      : "@{2A6EB27F-9D7B-4324-A998-F4C87C2ED6A1.resource.id}"
 
-        "sg0001":
+        "E8B4645B-2713-42BF-B8C6-80C83A272D70":
           type: "OS::Neutron::SecurityGroup"
-          uid: "sg0001"
+          uid: "E8B4645B-2713-42BF-B8C6-80C83A272D70"
           resource:
             name: "DefaultSG"
             description: "default security group"
@@ -169,63 +169,63 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             ]
             id: ""
 
-        "router0001":
+        "23B00CA6-74C3-4A25-A3A8-274A33BD9D87":
           type: "OS::Neutron::Router"
-          uid: "router0001"
+          uid: "23B00CA6-74C3-4A25-A3A8-274A33BD9D87"
           resource:
             name: "router1"
             external_gateway_info :
-              network_id : "@{extnetwork0001.resource.id}"
+              network_id : "@{83F25207-4AC4-4B88-A320-D951AC4DF5DC.resource.id}"
             admin_state_up: true
             id: ""
-            router_interface: [subnet_id: "@{subnet0001.resource.id}"]
+            router_interface: [subnet_id: "@{CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6.resource.id}"]
 
         # "floating-ip-id":
         #   type: "OS::Neutron::FloatingIP"
         #   uid: "floating-ip-id"
         #   resource:
         #     floating_network_id: "1f0fd926-9c82-4536-b498-0c00a4133914"
-        #     fixed_ip_address: "@{port0001.resource.fixed_ips.0.ip_address}"
+        #     fixed_ip_address: "@{92C407D2-7B62-449F-83E7-E88D2A9B8369.resource.fixed_ips.0.ip_address}"
         #     floating_ip_address: ""
-        #     port_id: "@{port0001.resource.id}"
+        #     port_id: "@{92C407D2-7B62-449F-83E7-E88D2A9B8369.resource.id}"
         #     id: ""
 
-        "pool0001":
+        "B7BE7F97-7C59-42CD-ACE5-4EC09F2D88A3":
           type: "OS::Neutron::Pool"
-          uid: "pool0001"
+          uid: "B7BE7F97-7C59-42CD-ACE5-4EC09F2D88A3"
           resource:
             name: "pool1"
             protocol: "HTTP"
             lb_method: "ROUND_ROBIN"
-            subnet_id: "@{subnet0002.resource.id}"
-            healthmonitors : ["@{healthmonitor0001.resource.id}"]
+            subnet_id: "@{2B278175-83AF-4C65-9F1C-3D0570F86DA4.resource.id}"
+            healthmonitors : ["@{1A63B8E1-0470-4BA7-84CC-E956F63C9F81.resource.id}"]
             member: [
               protocol_port: 80
-              address: "@{port0001.resource.fixed_ips.0.ip_address}"
+              address: "@{92C407D2-7B62-449F-83E7-E88D2A9B8369.resource.fixed_ips.0.ip_address}"
               weight: 1
               id: ""
             ]
             id: ""
 
-        "listener0001":
+        "4627F42F-8DB9-436A-8272-EFE26816DDB1":
           type: "OS::Neutron::VIP"
-          uid: "listener0001"
+          uid: "4627F42F-8DB9-436A-8272-EFE26816DDB1"
           resource:
             name: "listener1"
-            pool_id: "@{pool0001.resource.id}"
-            subnet_id: "@{subnet0001.resource.id}"
+            pool_id: "@{B7BE7F97-7C59-42CD-ACE5-4EC09F2D88A3.resource.id}"
+            subnet_id: "@{CC7676DB-BDB9-4F05-8AD1-DAA0DA3B3EF6.resource.id}"
             connection_limit: "1000"
             protocol: "HTTP"
             protocol_port: "80"
             admin_state_up: ""
             address: "10.0.0.20"
             port_id: ""
-            security_groups : [ "@{sg0001.resource.id}"]
+            security_groups : [ "@{E8B4645B-2713-42BF-B8C6-80C83A272D70.resource.id}"]
             id: ""
 
-        "healthmonitor0001":
+        "1A63B8E1-0470-4BA7-84CC-E956F63C9F81":
           type: "OS::Neutron::HealthMonitor"
-          uid: "healthmonitor0001"
+          uid: "1A63B8E1-0470-4BA7-84CC-E956F63C9F81"
           resource:
             type: "HTTP"
             delay: 30
@@ -235,9 +235,9 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             expected_codes: "200-299"
             id: ""
 
-        "volume0001":
+        "A54DA416-3BE1-40C7-9A44-B7616924D0C6":
           type: "OS::Cinder::Volume"
-          uid: "volume0001"
+          uid: "A54DA416-3BE1-40C7-9A44-B7616924D0C6"
           resource:
             availability_zone: ""
             source_volid: ""
@@ -248,7 +248,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             imageRef: ""
             volume_type: ""
             bootable: ""
-            server_id: "@{server0001.resource.id}"
+            server_id: "@{3DF9EDE3-41C6-4DB7-93B7-E0FBBB59B142.resource.id}"
             mount_point: "/dev/sdf"
             id: ""
 

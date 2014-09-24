@@ -277,6 +277,8 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			that = this
 			resModel = that.get('resModel')
 
+			return null if not (resModel and resModel.getStateData)
+
 			stateData = resModel.getStateData()
 			if _.isArray(stateData)
 				return stateData

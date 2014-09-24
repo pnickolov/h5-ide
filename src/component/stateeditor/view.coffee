@@ -124,16 +124,16 @@ define [ './model',
         render: () ->
 
             that = this
-            compData = @model.get 'compData'
+            resModel = @model.get 'resModel'
 
-            that.initState()
+            that.initState() if resModel
 
             if that.isWindowsPlatform
                 @__renderEmpty('is_windows')
                 return that
 
             if Design.instance().get('agent').enabled
-                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC, constant.RESTYPE.OSSERVER]
+                if resModel and resModel.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC, constant.RESTYPE.OSSERVER]
                     @__renderState()
                 else
                     @__renderEmpty()

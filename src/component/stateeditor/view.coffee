@@ -446,7 +446,7 @@ define [ 'event',
             if not that.readOnlyMode
 
                 # create new dict input box
-                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
+                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item .key')
                 _.each $lastDictInputList, (lastDictInput) ->
                     that.onDictInputChange({
                         currentTarget: lastDictInput
@@ -1018,6 +1018,11 @@ define [ 'event',
                     editor.setValue(content)
 
                 editor.clearSelection()
+
+                $paraItem = $currentInput.parents('.parameter-item')
+                if $paraItem.hasClass('dict') and $currentInput.hasClass('value')
+                    editor.getSelection().selectFileStart()
+                    editor.clearSelection()
 
         onParaNameClick: (event) ->
 
@@ -1848,7 +1853,8 @@ define [ 'event',
                     singleLine: editorSingleLine,
                     enableTab: enableTab,
                     useSoftTabs: false,
-                    tabSize: 4
+                    tabSize: 4,
+                    lineHeight: 90
                 })
 
                 # move cursor to last
@@ -3506,7 +3512,7 @@ define [ 'event',
                         originEditor.getSelection().selectFileStart()
 
                     originEditor.clearSelection()
-                
+
                     originEditor.focus()
 
                     modal.close()

@@ -1,5 +1,5 @@
 
-define [ "constant", "ConnectionModel", "ResourceModel" ], ( constant, ConnectionModel, ResourceModel )->
+define [ "constant", "ConnectionModel", "ResourceModel", "i18n!/nls/lang.js" ], ( constant, ConnectionModel, ResourceModel, lang )->
 
   # SgRuleLine is used to draw lines in canvas
   SgRuleLine = ConnectionModel.extend {

@@ -409,7 +409,7 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
         else
           autoAssign = ipObj.autoAssign
 
-        if ipObj.fixedIpInApp
+        if ipObj.fixedIpInApp and ipObj.ip.indexOf('x') is -1
           autoAssign = false
 
         ips.push {
@@ -744,4 +744,3 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
   }
 
   Model
-

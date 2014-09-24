@@ -250,7 +250,10 @@
     color: #eee;
   }
 
-  &[data-mode="app"] a { width: 33%; }
+  &[data-mode="app"] a {
+    width: 33%;
+    .resource { display: none; }
+  }
 
 }
 

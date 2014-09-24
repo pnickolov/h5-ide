@@ -7133,8 +7133,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7464,6 +7463,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     color: #eee; }
   .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
     width: 33%; }
+    .openstack .OEPanelTop .sidebar-title[data-mode="app"] a .resource {
+      display: none; }
 
 .ops-process {
   width: 100%;
@@ -9544,6 +9545,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   height: 38px; }
   .dash-header > .btn {
     margin-left: 15px; }
+
+.ops-list-switcher {
+  cursor: pointer; }
 
 #OsReloadResource {
   font-size: 12px;

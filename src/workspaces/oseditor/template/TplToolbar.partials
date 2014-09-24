@@ -57,6 +57,7 @@
 
 <!-- {{PanelHeaderApp}} -->
 <header class="sidebar-title resource" data-mode="app">
+    <a class="resource">R</a>
     <a class="config">A</a>
     <a class="property">P</a>
     <a class="state">S</a>

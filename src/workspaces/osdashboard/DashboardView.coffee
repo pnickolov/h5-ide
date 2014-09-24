@@ -35,8 +35,8 @@ define [
 
       self = @
       setInterval ()->
-        if not $("#RefreshResource").hasClass("reloading")
-          $("#RefreshResource").text( MC.intervalDate(self.lastUpdate/1000) )
+        if not $("#OsReloadResource").hasClass("reloading")
+          $("#OsReloadResource").text( MC.intervalDate(self.lastUpdate/1000) )
         return
       , 1000 * 60
 

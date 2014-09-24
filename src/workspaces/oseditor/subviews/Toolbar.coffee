@@ -83,10 +83,11 @@ define [
         if isAppEdit
           @$el.children(".icon-terminate, .icon-forget-app, .icon-stop, .icon-play, .icon-refresh, .icon-save-app, .icon-reload").hide()
           @$el.find(".icon-refresh").hide()
+          @$( '.sidebar-title' ).attr( 'data-mode', 'stack' )
         else
           running = opsModel.testState(OpsModel.State.Running)
           stopped = opsModel.testState(OpsModel.State.Stopped)
-
+          @$( '.sidebar-title' ).attr( 'data-mode', 'app' )
           @$el.children(".icon-terminate, .icon-forget-app, .icon-refresh, .icon-save-app, .icon-reload").show()
 
           # @$el.children(".icon-stop").toggle( Design.instance().get("property").stoppable and opsModel.testState(OpsModel.State.Running) )

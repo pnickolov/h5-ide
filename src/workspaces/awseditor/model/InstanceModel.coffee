@@ -8,7 +8,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     type        : constant.RESTYPE.INSTANCE
     newNameTmpl : "host-"
 
-    defaults :
+    defaults : ()->
       #servergroup
       count  : 1
 
@@ -18,6 +18,8 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       instanceType : "m1.small"
       monitoring   : false
       userData     : ""
+
+      volumeList : []
 
       # RootDevice
       rdSize : 0

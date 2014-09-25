@@ -138,12 +138,10 @@ define [
       return
 
     updateResourceCount : ()->
-      console.log("================")
       resourceCount = @model.getResourcesCount( @region )
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        #child.children(".count-bubble").text( if count is "" then "-" else count )
         @animateResourceCount(child)
       return
 

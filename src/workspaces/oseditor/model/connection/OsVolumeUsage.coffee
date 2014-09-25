@@ -10,7 +10,10 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
         if usage isnt @
           usage.remove()
 
-      @getTarget( constant.RESTYPE.OSSERVER ).trigger 'change:volume'
+      server = @getTarget( constant.RESTYPE.OSSERVER )
+      _.defer ()->
+        if not server.isRemoved()
+          server.trigger "change:volume"
       return
 
     remove : ( option )->

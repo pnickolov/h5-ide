@@ -29,7 +29,7 @@
 <!-- {{appTemplate}} -->
 <section class="group">
     <dl class="vertical">
-        <dt>Name</dt><dd>{{emptyStr display_name}}</dd>
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
     </dl>
     <dl class="vertical">
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
@@ -41,7 +41,7 @@
         <dt>Size</dt><dd>{{emptyStr size}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Description</dt><dd>{{emptyStr display_description}}</dd>
+        <dt>Description</dt><dd>{{emptyStr description}}</dd>
     </dl>
     <dl class="vertical">
         <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>

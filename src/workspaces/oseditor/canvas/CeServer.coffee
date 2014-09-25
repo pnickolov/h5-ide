@@ -49,6 +49,7 @@ define [
 
     listenModelEvents : ()->
       @listenTo @model, "change:imageId", @render
+      @listenTo @model, 'change:fip', @render
       return
 
     toggleFip : ()->

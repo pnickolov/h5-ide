@@ -46,6 +46,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         if not oldUsage
           Usage = Design.modelClassForType("OsFloatIpUsage")
           new Usage( this )
+      @owner().trigger 'change:fip'
       return
 
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]

@@ -5053,6 +5053,11 @@ div.modal-text-highlight {
   top: 0;
   left: 0; }
 
+.resource-list-nav .rotate .cover {
+  position: absolute;
+  top: 0;
+  left: 0; }
+
 /* Styles for Manage KP and Decrypt PW */
 .password-hint::selection {
   background: transparent; }

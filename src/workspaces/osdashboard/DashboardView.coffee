@@ -138,62 +138,67 @@ define [
       return
 
     updateResourceCount : ()->
+      console.log("================")
       resourceCount = @model.getResourcesCount( @region )
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
-        $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
-        @animateResourceCount(r)
+        child = $nav.children(".#{r}")
+        child.children(".count-bubble").text( if count is "" then "-" else count )
+        @animateResourceCount(child)
       return
 
-    animateResourceCount: (r)->
-      nav = $(".resource-list-nav").children(".#{r}").append("""
+    animateResourceCount: (element)->
+      if element.find("svg").size() > 0 then return false
+      element.append("""
       <svg class="rotate" viewbox="0 0 250 250">
         <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
         <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
+        <circle class="cover" cx="50%" cy="50%" r="112" fill="#fcfcfc"></circle>
+        <circle class="blue-dot" cx="6.5" cy="50%" r="6.5" fill="#e6e6e6"></circle>
+        <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
+        <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
       </svg>""")
-      console.log nav
-      @animateUsage.bind(nav).call(nav,17, 23)
+      console.log element
+      @animateUsage(element, Math.round(Math.random()*100), 100)
 
 
-    animateUsage: (active, quota)->
-      seconds = 40
-      loaderBg = @find('.usage-quota')
-      loader = @find('.usage-active')
-      countUsage = @find ".count-usage"
-      @a = 0
-      pi = Math.PI
-      t = (seconds / 360 * 1000)
-      num = 0
-      maxAngle = 270
-      if @chartTimeOut then window.clearTimeout(@chartTimeOut)
-      @chartTimeOut = null
-      draw = (element,angle,direct)->
-        #if element then a = 0
-        @a++
-        num += ((active) / maxAngle)
-        tempAngle = (if direct then angle else @a)
-        r = tempAngle * pi / 180
-        x = Math.sin(r) * 125
-        y = Math.cos(r) * - 125
-        mid = if (tempAngle > 180) then 1 else 0
-        anim = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z" #Magic, don't touch.
-        element.attr( 'd' , anim)
-        if not direct then countUsage.text Math.round(if num > quota then quota else num)
-        if(@a < angle and not direct)
-          @chartTimeOut = window.setTimeout ->
-            draw(element, angle)
-          , t
-      draw = _.bind draw, @
-      if active
-        loaderBg.attr( 'fill' , "#4b4f8c")
-        loader.attr( 'fill' , "#30bc00")
-        draw(loaderBg, 270, true)
-        draw(loader, (active/quota) * 270)
-      else
-        loaderBg.attr( 'fill' , "#5f5f5f")
-        draw(loaderBg, 270, true)
-      return
+    animateUsage: (elem, active, quota)->
+      seconds = 10
+      circleRadius = 125
+      circleRadiusForDot = 125 - 6.5
+      PI = Math.PI
+      quotaCircle = elem.find('.usage-quota')
+      activeCircle = elem.find('.usage-active')
+      usageCount = elem.find('.count-usage')
+      activeDot = elem.find('.active-dot')
+      quotaAngle = 270
+      maxAngle = quotaAngle / quota * active
+      t = seconds * 1000 / 360
+      if activeCircle.timeout then window.clearTimeout activeCircle.timeout; activeCircle.timeout = undefined
+      animate = (element, currentAngle, noAnimate)->
+        radius = currentAngle * PI / 180
+        x = Math.sin(radius) * circleRadius
+        y = Math.cos(radius) * - circleRadius
+        mid = if currentAngle > 180 then 1 else 0
+        usage = currentAngle * maxAngle / quotaAngle
+        dotX = Math.sin(radius)* circleRadiusForDot + 125
+        dotY = Math.cos(radius) * - circleRadiusForDot + 125
+        svgAttr = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z"
+        element.attr('d', svgAttr)
+        activeDot.attr('cx', dotX).attr('cy', dotY)
+        unless noAnimate
+          usage = if usage ? quota then quota else usage
+          usageCount.text Math.round( usage )
+          currentAngle+= 1
+          if currentAngle <= maxAngle
+            activeCircle.timeout = window.setTimeout ->
+              animate(element, currentAngle)
+            , t
 
+      quotaCircle.attr( 'fill' , "#e6e6e6")
+      activeCircle.attr( 'fill' , "#4c92e5")
+      animate(quotaCircle, 270, true)
+      animate(activeCircle, 0)
 
     updateRegionResources : ( type )->
       @updateResourceCount()

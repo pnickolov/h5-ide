@@ -53,16 +53,12 @@ define [
 
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
-
-      #toggle = !@model.hasPrimaryEip()
-      #@model.setPrimaryEip( toggle )
-
-      # if toggle
-      #   Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+      embedPort = @model.embedPort()
+      hasFloatingIp = !!embedPort.getFloatingIp()
+      embedPort.setFloatingIp(!hasFloatingIp)
 
       CanvasManager.updateFip @$el.children(".fip-status"), @model
 
-      # ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
 
 

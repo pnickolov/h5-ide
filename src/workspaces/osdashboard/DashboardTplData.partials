@@ -3,6 +3,7 @@
 <div class="bubble-content">
 <dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 </div>
+
 <!-- {{resource_OSSERVER}} -->
 <table class="table-head">
     <thead>
@@ -15,33 +16,228 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-  <table class="table">
-      <thead>
-          <tr>
-              <th></th>
-              <th style="width: 10%"></th>
-              <th style="width: 32%"></th>
-              <th style="width: 12%"></th>
-              <th style="width: 18%"></th>
-          </tr>
-      </thead>
-    <tbody>
-        {{#each servers}}
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                  <div>{{name}}</div>
-                </td>
-                <td class="os-status os-status-{{status}}">{{status}}</td>
-                <td><img src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png">
-          <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_id }}</span></td>
-                <td>{{accessIPv4}}</td>
-                <td>{{timeStr OS-SRV-USG:launched_at}}</td>
+                <th></th>
+                <th style="width: 10%"></th>
+                <th style="width: 32%"></th>
+                <th style="width: 12%"></th>
+                <th style="width: 18%"></th>
             </tr>
-        {{else}}
-            <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-        {{/each}}
-    </tbody>
-  </table>
-</div></div>
+        </thead>
+      <tbody>
+          {{#each servers}}
+              <tr>
+                  <td>
+                    <div>{{name}}</div>
+                  </td>
+                  <td class="os-status os-status-{{status}}">{{status}}</td>
+                  <td><img src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png">
+            <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_id }}</span></td>
+                  <td>{{accessIPv4}}</td>
+                  <td>{{timeStr OS-SRV-USG:launched_at}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Server{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- {{resource_OSVOL}} -->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable">Name</th>
+        <th class="sortable" style="width:20%">Status</th>
+        <th class="sortable" style="width:10%">Volume Size</th>
+        <th class="sortable" style="width:12%">Device Name</th>
+        <th class="sortable" style="width:30%" data-row-type="datetime">Created Time</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="width: 20%"></th>
+                <th style="width: 10%"></th>
+                <th style="width: 12%"></th>
+                <th style="width: 30%"></th>
+            </tr>
+        </thead>
+      <tbody>
+          {{#each volumes}}
+              <tr>
+                  <td>
+                    <div>{{name}}</div>
+                  </td>
+                  <td class="os-status os-status-{{status}}">{{status}}</td>
+                  <td>{{size}} GiB</td>
+                  <td>{{#each attachments}}{{device}} {{/each}}</td>
+                  <td>{{timeStr created_at}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Volume{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- {{resource_OSSNAP}} -->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable">Name</th>
+        <th class="sortable" style="width:10%">Status</th>
+        <th class="sortable" style="width:10%">Snapshot Size</th>
+        <th class="sortable" style="width:29%">Source Volume</th>
+        <th class="sortable" style="width:28%" data-row-type="datetime">Created Time</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="width: 10%"></th>
+                <th style="width: 10%"></th>
+                <th style="width: 29%"></th>
+                <th style="width: 28%"></th>
+            </tr>
+        </thead>
+      <tbody>
+          {{#each snaps}}
+              <tr>
+                  <td>
+                    <div>{{name}}</div>
+                  </td>
+                  <td class="os-status os-status-{{status}}">{{status}}</td>
+                  <td>{{size}} GiB</td>
+                  <td>{{volume_id}}</td>
+                  <td>{{timeStr created_at}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Snapshot{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- {{resource_OSFIP}} -->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable">IP Address</th>
+        <th class="sortable" style="width:60%">Associated Server</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="width: 60%"></th>
+            </tr>
+        </thead>
+      <tbody>
+          {{#each fips}}
+              <tr>
+                  <td>{{floating_ip_address}}</td>
+                  <td>{{serverName}}{{#if portName}}({{portName}}){{/if}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}FIP{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- {{resource_OSRT}} -->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable">Name</th>
+        <th class="sortable" style="width:20%">Status</th>
+        <th class="sortable" style="width:30%">External Network</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="width: 20%"></th>
+                <th style="width: 30%"></th>
+            </tr>
+        </thead>
+      <tbody>
+          {{#each rts}}
+              <tr>
+                  <td>{{name}}</td>
+                  <td class="os-status os-status-{{status}}">{{status}}</td>
+                  <td>{{external_gateway_info.network_id}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Router{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- {{resource_OSLISTENER}} -->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable">Pool Name</th>
+        <th class="sortable" style="width:20%">Status</th>
+        <th class="sortable" style="width:30%">Listener Name</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap">
+  <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+  <div class="scroll-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th style="width: 20%"></th>
+                <th style="width: 30%"></th>
+            </tr>
+        </thead>
+      <tbody>
+          {{#each elbs}}
+              <tr>
+                  <td>{{poolName}}</td>
+                  <td class="os-status os-status-{{status}}">{{status}}</td>
+                  <td>{{name}}</td>
+              </tr>
+          {{else}}
+              <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Load Balancer{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+          {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

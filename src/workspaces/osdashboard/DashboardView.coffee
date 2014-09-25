@@ -202,7 +202,7 @@ define [
 
     updateRegionResources : ( type )->
       @updateResourceCount()
-      if type and type isnt @resourcesTab then return
+      if type and @resourcesTab not in type then return
 
       type = constant.RESTYPE[ @resourcesTab ]
       if not @model.isOsResReady( @region, type )

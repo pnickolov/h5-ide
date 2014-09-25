@@ -10,6 +10,7 @@ define [
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
+  "UI.scrollbar"
   "UI.nanoscroller"
 ], ( Template, TemplateData, constant, lang, CloudResources, appAction )->
 
@@ -156,12 +157,11 @@ define [
         <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
         <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
       </svg>""")
-      console.log element
       @animateUsage(element, Math.round(Math.random()*100), 100)
 
 
     animateUsage: (elem, active, quota)->
-      seconds = 5
+      seconds = 2
       circleRadius = 125
       circleRadiusForDot = circleRadius - 6.5
       PI = Math.PI

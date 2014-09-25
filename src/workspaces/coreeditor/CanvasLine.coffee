@@ -632,7 +632,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       current  = lineData.result[ lineData.result.length - 1 ]
 
       if end.angle is CanvasElement.constant.PORT_UP_ANGLE or end.angle is CanvasElement.constant.PORT_DOWN_ANGLE
-        if Math.abs( target.y - lastArea.y1 ) < Math.abs( target.y - lastArea.y2 )
+        if Math.abs( end.y - lastArea.y1 ) < Math.abs( end.y - lastArea.y2 )
           toY = lastArea.y1
           otherSide = lastArea.y2
         else
@@ -653,7 +653,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         lineData.addResult( toX, toY, lastArea )
         lineData.addResult( lineData.end.x, toY, lastArea )
       else
-        if Math.abs( target.x - lastArea.x1 ) < Math.abs( target.x - lastArea.x2 )
+        if Math.abs( end.x - lastArea.x1 ) < Math.abs( end.x - lastArea.x2 )
           toX = lastArea.x1
           otherSide = lastArea.x2
         else

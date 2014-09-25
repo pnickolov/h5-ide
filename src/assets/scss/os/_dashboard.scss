@@ -293,8 +293,9 @@
       > .resource-tab {
         float    : left;
         position : relative;
-        width    : 9.95%;
+        width    : 16.5%;
         padding  : 1.3% 0;
+        text-align: center;
         cursor   : pointer;
 
         .resource-count {
@@ -306,8 +307,22 @@
           text-align   : center;
           margin       : 0 auto 10px;
           color        : #999;
-
+          position: absolute;
+          top: 40px;
+          width: 100%;
           background-position-x : center;
+        }
+
+        p.count{
+          display: inline-block;
+          font-size: 27px;
+          color: #6065a0;
+          margin: 0;
+          margin-top: -10px;
+          span.count-quota{
+            font-size: 14px;
+            color: #b1b2c3
+          }
         }
 
         &:first-child { margin-left : 0.5%; }
@@ -345,6 +360,28 @@
           border        : 1px solid #ccc;
           text-shadow   : 0 1px 0 #fff;
         }
+      }
+      .rotate {
+        width: 125px;
+        height: 125px;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        -webkit-transform: rotate(225deg);
+        -moz-transform: rotateZ(225deg);
+        -ms-transform: rotateZ(225deg);
+        -o-transform: rotateZ(225deg);
+        transform: rotateZ(225deg);
+      }
+      .rotate .loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .rotate .cover{
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     }
 

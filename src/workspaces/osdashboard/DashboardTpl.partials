@@ -58,22 +58,30 @@
 <nav class="clearfix resource-list-nav">
   <div class="resource-tab servers on" data-type="OSSERVER">
     <span class="resource-count">Server</span>
-    <span class="count-usage">13</span><span class="count-quota">22</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab volumes" data-type="OSVOL">
-    <span class="resource-count">Volume</span><span class="count-bubble">1</span>
+    <span class="resource-count">Volume</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+
   </div>
   <div class="resource-tab snaps" data-type="OSSNAP">
-    <span class="resource-count">Snapshot</span><span class="count-bubble">1</span>
+    <span class="resource-count">Snapshot</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab fips" data-type="OSFIP">
-    <span class="resource-count">Floating IP</span><span class="count-bubble">1</span>
+    <span class="resource-count">Floating IP</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab rts" data-type="OSRT">
-    <span class="resource-count">Router</span><span class="count-bubble">2</span>
+    <span class="resource-count">Router</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+
   </div>
   <div class="resource-tab elbs" data-type="OSLISTENER">
-    <span class="resource-count">Load Balancer</span><span class="count-bubble">3</span>
+    <span class="resource-count">Load Balancer</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+
   </div>
 </nav>
 <div class="resource-list-body table-head-fix"></div>

@@ -143,13 +143,13 @@ define [
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        child.children(".count-bubble").text( if count is "" then "-" else count )
+        #child.children(".count-bubble").text( if count is "" then "-" else count )
         @animateResourceCount(child)
       return
 
     animateResourceCount: (element)->
       if element.find("svg").size() > 0 then return false
-      element.append("""
+      element.prepend("""
       <svg class="rotate" viewbox="0 0 250 250">
         <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
         <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
@@ -163,31 +163,32 @@ define [
 
 
     animateUsage: (elem, active, quota)->
-      seconds = 10
+      seconds = 5
       circleRadius = 125
-      circleRadiusForDot = 125 - 6.5
+      circleRadiusForDot = circleRadius - 6.5
       PI = Math.PI
       quotaCircle = elem.find('.usage-quota')
       activeCircle = elem.find('.usage-active')
       usageCount = elem.find('.count-usage')
+      quotaCount = elem.find('.count-quota')
       activeDot = elem.find('.active-dot')
       quotaAngle = 270
       maxAngle = quotaAngle / quota * active
-      t = seconds * 1000 / 360
+      t = seconds * 1000 / 360 * quota / active
       if activeCircle.timeout then window.clearTimeout activeCircle.timeout; activeCircle.timeout = undefined
       animate = (element, currentAngle, noAnimate)->
         radius = currentAngle * PI / 180
         x = Math.sin(radius) * circleRadius
         y = Math.cos(radius) * - circleRadius
         mid = if currentAngle > 180 then 1 else 0
-        usage = currentAngle * maxAngle / quotaAngle
+        usage = currentAngle / maxAngle * active
         dotX = Math.sin(radius)* circleRadiusForDot + 125
         dotY = Math.cos(radius) * - circleRadiusForDot + 125
         svgAttr = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z"
         element.attr('d', svgAttr)
         activeDot.attr('cx', dotX).attr('cy', dotY)
         unless noAnimate
-          usage = if usage ? quota then quota else usage
+          usage = if usage > quota then quota else usage
           usageCount.text Math.round( usage )
           currentAngle+= 1
           if currentAngle <= maxAngle
@@ -197,6 +198,7 @@ define [
 
       quotaCircle.attr( 'fill' , "#e6e6e6")
       activeCircle.attr( 'fill' , "#4c92e5")
+      quotaCount.text "/"+quota
       animate(quotaCircle, 270, true)
       animate(activeCircle, 0)
 

@@ -14,6 +14,8 @@
         top: 0;
         right: 280px;
         background: $bg-p;
+        
+        min-width: 270px;
 
         // Rewrite below values to customise floating-panel
         & > div { width: 280px; }

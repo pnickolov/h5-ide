@@ -20,6 +20,19 @@ define [
                 @$el.html template.app @getRenderData()
             @
 
+        updateAttribute: (event)->
+
+            $target = $(event.currentTarget)
+
+            attr = $target.data 'target'
+            value = $target.getValue()
+
+            @model.set(attr, value)
+            if attr is 'cidr'
+                @model.resetAllChildIP()
+
+            @setTitle(value) if attr is 'name'
+
     }, {
         handleTypes: [ constant.RESTYPE.OSSUBNET ]
         handleModes: [ 'stack', 'app', 'appedit' ]

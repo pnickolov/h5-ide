@@ -19,7 +19,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     assignIP : () ->
 
-      availableIP = Model.getAvailableIP(@parent())
+      parent = @parent()
+      if @isEmbedded()
+        parent = @owner().parent()
+      availableIP = Model.getAvailableIP(parent)
       @set('ip', availableIP) if availableIP
 
     onParentChanged : (oldParent) ->

@@ -9162,7 +9162,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     position: absolute;
     top: 0;
     right: 280px;
-    background: #202027; }
+    background: #202027;
+    min-width: 270px; }
     .openstack .OEPanelRight .panel-float > div {
       width: 280px; }
     .openstack .OEPanelRight .panel-float.hidden {

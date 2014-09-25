@@ -46,6 +46,15 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
       vpcCIDRIPStrAry[1] = String(resultSubnetNum)
       vpcCIDRIPStrAry.join('.') + '/16'
 
+    resetAllChildIP : () ->
+
+        allPortModels = Design.modelClassForType(constant.RESTYPE.OSPORT).allObjects()
+        allListenerModels = Design.modelClassForType(constant.RESTYPE.OSLISTENER).allObjects()
+        models = allPortModels.concat(allListenerModels)
+        _.each models, (model) ->
+            model.assignIP()
+            null
+
     serialize : ()->
       {
         layout : @generateLayout()

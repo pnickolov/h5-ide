@@ -10,9 +10,8 @@ define [ './model',
          'constant',
          'instance_model',
          './lib/markdown',
-         'ApiRequest',
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown, ApiRequest) ->
+], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
     StateClipboard = []
 

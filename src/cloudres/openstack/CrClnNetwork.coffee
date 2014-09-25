@@ -8,7 +8,7 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
 
     type : constant.RESTYPE.OSNETWORK
 
-    getExtNetworks : ()-> @where {"router:external":true}
+    getExtNetworks : ()-> @where {"external":true}
 
     doFetch        : ()-> ApiRequest("os_network_List", {region : @region()})
     parseFetchData : (data)->

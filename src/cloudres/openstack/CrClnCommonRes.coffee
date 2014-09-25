@@ -125,7 +125,27 @@ define [
           ids    : _.pluck( res.servers, "id" )
         })
 
-    parseFetchData    : ( data )-> _.values(data)
+    parseFetchData    : ( data )->
+      data = _.values(data)
+      for server in data
+        server['diskConfig'] = server['OS-DCF:diskConfig']
+        server['availability_zone'] = server['OS-EXT-AZ:availability_zone']
+        server['power_state'] = server['OS-EXT-STS:power_state']
+        server['task_state'] = server['OS-EXT-STS:task_state']
+        server['vm_state'] = server['OS-EXT-STS:vm_state']
+        server['launched_at'] = server['OS-SRV-USG:launched_at']
+        server['terminated_at'] = server['OS-SRV-USG:terminated_at']
+        server['volumes_attached'] = server['os-extended-volumes:volumes_attached']
+        delete server['OS-DCF:diskConfig']
+        delete server['OS-EXT-AZ:availability_zone']
+        delete server['OS-EXT-STS:power_state']
+        delete server['OS-EXT-STS:task_state']
+        delete server['OS-EXT-STS:vm_state']
+        delete server['OS-SRV-USG:launched_at']
+        delete server['OS-SRV-USG:terminated_at']
+        delete server['os-extended-volumes:volumes_attached']
+      data
+
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res
@@ -203,7 +223,20 @@ define [
 
     doFetch : ()-> ApiRequest("os_port_List", {region : @region()})
 
-    parseFetchData    : ( data )-> data.ports
+    parseFetchData    : ( data )->
+      for port in data.ports
+        port['vif_details'] = port['binding:vif_details']
+        port['vif_type']    = port['binding:vif_type']
+        port['profile']     = port['binding:profile']
+        port['vnic_type']   = port['binding:vnic_type']
+        port['host_id']     = port['binding:host_id']
+        delete port['binding:vif_details']
+        delete port['binding:vif_type']
+        delete port['binding:profile']
+        delete port['binding:vnic_type']
+        delete port['binding:host_id']
+      data.ports
+
     parseExternalData : ( data )->
       res = $.extend(true, [], data)
       @camelToUnderscore res

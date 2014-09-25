@@ -1413,6 +1413,8 @@ define [ './model',
 
             that = this
 
+            return null if not that.$stateList
+
             $stateItemList = that.$stateList.find('.state-item')
 
             stateObjAry = []
@@ -1597,7 +1599,7 @@ define [ './model',
 
             stateData = that.saveStateData()
 
-            that.model.setStateData(stateData)
+            that.model.setStateData(stateData) if stateData
 
             if stateData
 

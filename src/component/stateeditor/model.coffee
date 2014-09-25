@@ -648,14 +648,16 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 				}
 			agentStatus = 'pending'
 
-			state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
+			# state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
 
-			that.off('STATE_LOG_RETURN')
-			that.on 'STATE_LOG_RETURN', ( result ) ->
+			ApiRequest('state_log', {
+				app_id: appId,
+				res_id: resId
+			}).then (data) ->
 
-				if !result.is_error
+				if data
 
-					statusDataAry = result.resolved_data
+					statusDataAry = data
 
 					if statusDataAry and statusDataAry[0]
 
@@ -681,7 +683,11 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 					that.set('stateLogDataAry', originStatusDataAry)
 					that.set('agentStatus', agentStatus)
 
-					if callback then callback()
+				if callback then callback()
+
+			, (err) ->
+
+				if callback then callback()
 
 		getCurrentResUID: () ->
 

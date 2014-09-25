@@ -9,14 +9,16 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
     initialize : ()->
       region = 'guangzhou'
+
       @listenTo CloudResources( constant.RESTYPE.OSSERVER, region ), "update", @onRegionResChanged [ 'OSSERVER', 'FIP' ]
       @listenTo CloudResources( constant.RESTYPE.OSPORT, region ), "update", @onRegionResChanged [ 'FIP' ]
-      @listenTo CloudResources( constant.RESTYPE.OSVOL, region ), "update", @onRegionResChanged [ 'OSVOL' ]
+      @listenTo CloudResources( constant.RESTYPE.OSVOL, region ), "update", @onRegionResChanged [ 'OSVOL', 'OSSNAP' ]
       @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), "update", @onRegionResChanged [ 'OSSNAP' ]
       @listenTo CloudResources( constant.RESTYPE.OSFIP, region ), "update", @onRegionResChanged [ 'OSFIP' ]
       @listenTo CloudResources( constant.RESTYPE.OSRT, region ), "update", @onRegionResChanged [ 'OSRT' ]
-      @listenTo CloudResources( constant.RESTYPE.OSPOOL, region ), "update", @onRegionResChanged [ 'OSPOOL' ]
+      @listenTo CloudResources( constant.RESTYPE.OSPOOL, region ), "update", @onRegionResChanged [ 'OSPOOL', 'OSLISTENER' ]
       @listenTo CloudResources( constant.RESTYPE.OSLISTENER, region ), "update", @onRegionResChanged [ 'OSLISTENER' ]
+      @listenTo CloudResources( constant.RESTYPE.OSNETWORK, region ), "update", @onRegionResChanged [ 'OSRT' ]
 
     onRegionResChanged : ( type )-> () -> @trigger "change:regionResources", type
 
@@ -30,6 +32,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       CloudResources( constant.RESTYPE.OSRT, region ).fetch()
       CloudResources( constant.RESTYPE.OSPOOL, region ).fetch()
       CloudResources( constant.RESTYPE.OSLISTENER, region ).fetch()
+      CloudResources( constant.RESTYPE.OSNETWORK, region ).fetch()
       return
 
     isOsResReady : ( region, type )->
@@ -57,18 +60,28 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           portId = fip.port_id
           port = CloudResources( constant.RESTYPE.OSPORT, region )?.get( portId )?.toJSON()
           if port
-            serverId = port.device_id
-            server = CloudResources( constant.RESTYPE.OSSERVER, region )?.get( serverId )?.toJSON()
+            server = CloudResources( constant.RESTYPE.OSSERVER, region )?.get( port.device_id )?.toJSON()
 
-          if port and server
-            fip.serverName = server.name
-            fip.portName = port.name
+          fip.serverName = server?.name
+          fip.portName = port?.name
+
+        # Join snapshot, volume
+        _.each data.snaps, ( snap ) ->
+          volume = CloudResources( constant.RESTYPE.OSVOL, region )?.get( snap.volume_id )?.toJSON()
+          snap.volumeName = volume?.name
+
 
         # Join listener, pool
         _.each data.elbs, ( listener ) ->
-          poolId = listener.pool_id
-          pool = CloudResources( constant.RESTYPE.OSPOOL, region )?.get( poolId )?.toJSON()
-          if pool then listener.poolName = pool.name
+          pool = CloudResources( constant.RESTYPE.OSPOOL, region )?.get( listener.pool_id )?.toJSON()
+          listener.poolName = pool?.name
+
+        # Join router, extnetwork
+        extNetworks = _.map CloudResources( constant.RESTYPE.OSNETWORK, region ).getExtNetworks(), (m) -> m.toJSON()
+        _.each data.rts, ( rt ) ->
+          extNetwork = _.findWhere extNetworks, { id: rt.external_gateway_info.network_id }
+          rt.externalNetworkName = extNetwork.name
+
 
         data
 

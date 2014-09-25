@@ -37,7 +37,7 @@
                   </td>
                   <td class="os-status os-status-{{status}}">{{status}}</td>
                   <td><img src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png">
-            <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_id }}</span></td>
+            <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_name }}</span></td>
                   <td>{{accessIPv4}}</td>
                   <td>{{timeStr OS-SRV-USG:launched_at}}</td>
               </tr>
@@ -126,7 +126,7 @@
                   </td>
                   <td class="os-status os-status-{{status}}">{{status}}</td>
                   <td>{{size}} GiB</td>
-                  <td>{{volume_id}}</td>
+                  <td>{{#if volumeName}}{{volumeName}}{{else}}{{volume_id}}{{/if}}</td>
                   <td>{{timeStr created_at}}</td>
               </tr>
           {{else}}
@@ -196,7 +196,7 @@
               <tr>
                   <td>{{name}}</td>
                   <td class="os-status os-status-{{status}}">{{status}}</td>
-                  <td>{{external_gateway_info.network_id}}</td>
+                  <td>{{#if externalNetworkName}}{{externalNetworkName}}{{else}}{{external_gateway_info.network_id}}{{/if}}</td>
               </tr>
           {{else}}
               <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Router{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>

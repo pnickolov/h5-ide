@@ -41,10 +41,10 @@ define [
     renderSubPanel: ( subPanel, args ) ->
         args = _.extend { workspace: @workspace, panel: @ }, args
 
+        $(document.activeElement).filter("input, textarea").blur()
+
         @subPanel?.remove()
         @subPanel = new subPanel( args )
-
-        $(document.activeElement).filter("input, textarea").blur()
 
         @$( '.panel-body' ).html @subPanel.render().el
 

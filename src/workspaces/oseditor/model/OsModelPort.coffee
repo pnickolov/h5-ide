@@ -114,12 +114,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         models = allPortModels.concat(allListenerModels)
 
         _.each models, (model) ->
-            isAttachedPort = false
-            attachedServerAry = model.connectionTargets(constant.OSSERVER)
-            if attachedServerAry and attachedServerAry[0]
-                attachedServer = attachedServerAry[0]
-                isAttachedPort = (attachedServer.parent() is subnetModel)
-            if (model.parent() is subnetModel) or isAttachedPort
+
+            if model.isEmbedded and model.isEmbedded()
+                currentSubnetModel = model.owner().parent()
+            else
+                currentSubnetModel = model.parent()
+            if currentSubnetModel is subnetModel
                 filterList.push(model.get('ip'))
             null
 

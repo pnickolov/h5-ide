@@ -63,7 +63,7 @@ define [ './model',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
-            'click .state-log-refresh': 'onLogRefreshClick'
+            'click .state-log-refresh': 'refreshStateLog'
             'click .state-sys-log-btn': 'openSysLogModal'
 
             'click .state-item-add': 'onStateItemAddClick'
@@ -75,8 +75,6 @@ define [ './model',
             'click .state-log-item-header': 'onStateLogItemHeaderClick'
 
             'click .state-log-item .state-log-item-view-detail': 'onStateLogDetailBtnClick'
-
-            'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
 
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
             'paste .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
@@ -227,7 +225,7 @@ define [ './model',
             # that.initResSelect()
 
             # refresh state log
-            that.onLogRefreshClick()
+            that.refreshStateLog()
 
             if that.isShowLogPanel
                 that.showLogPanel()
@@ -402,18 +400,40 @@ define [ './model',
             #     $el: that.$el
             # })
 
-        onLogRefreshClick: (event) ->
+        refreshStateLog: (event) ->
 
             that = this
-            # $resSelectElem = that.$editorModal.find('.state-editor-res-select')
-            # if that.currentState is 'stack'
-            #     $resSelectElem.hide()
-            # else
-            #     that.onResSelectChange({
-            #         target: $resSelectElem[0]
-            #     })
 
-            that.onResSelectChange()
+            selectedResId = that.currentResId
+            # $(event.target).find('.selected').attr('data-id')
+
+            # refresh state log
+            that.showLogListLoading(true)
+
+            that.model.getResState(selectedResId)
+
+            if not that.isLoadingLogList
+
+                $logPanel = $('#state-log')
+                $loadText = $logPanel.find('.state-log-loading')
+
+                $loadText.text('Refresh...')
+
+                that.isLoadingLogList = true
+
+                that.model.genStateLogData(selectedResId, () ->
+                    that.refreshStateLogList()
+                    that.showLogListLoading(false)
+                    that.isLoadingLogList = false
+                )
+
+                if that.logRefreshTimer
+                    clearTimeout(that.logRefreshTimer)
+
+                that.logRefreshTimer = setTimeout(() ->
+                    if that.isLoadingLogList
+                        $loadText.text('Request log info timeout, please try again')
+                , 5000)
 
         refreshStateList: (stateListObj) ->
 
@@ -2315,41 +2335,6 @@ define [ './model',
                 else
                     $logInfo.hide()
 
-        onResSelectChange: () ->
-
-            that = this
-
-            selectedResId = that.currentResId
-            # $(event.target).find('.selected').attr('data-id')
-
-            # refresh state log
-            that.showLogListLoading(true)
-
-            that.model.getResState(selectedResId)
-
-            if not that.isLoadingLogList
-
-                $logPanel = $('#state-log')
-                $loadText = $logPanel.find('.state-log-loading')
-
-                $loadText.text('Refresh...')
-
-                that.isLoadingLogList = true
-
-                that.model.genStateLogData(selectedResId, () ->
-                    that.refreshStateLogList()
-                    that.showLogListLoading(false)
-                    that.isLoadingLogList = false
-                )
-
-                if that.logRefreshTimer
-                    clearTimeout(that.logRefreshTimer)
-
-                that.logRefreshTimer = setTimeout(() ->
-                    if that.isLoadingLogList
-                        $loadText.text('Request log info timeout, please try again')
-                , 5000)
-
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
 
             that = this
@@ -2359,11 +2344,11 @@ define [ './model',
             if newStateUpdateResIdAry
                 if newStateUpdateResIdAry.length
                     if selectedResId and selectedResId in newStateUpdateResIdAry
-                        that.onLogRefreshClick()
+                        that.refreshStateLog()
                 else
-                    that.onLogRefreshClick()
+                    that.refreshStateLog()
             else
-                that.onLogRefreshClick()
+                that.refreshStateLog()
 
         onOptionalParaItemChange: (event) ->
 

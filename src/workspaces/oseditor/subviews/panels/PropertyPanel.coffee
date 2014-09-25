@@ -25,10 +25,10 @@ define [
         @model   = Design.instance().component @uid
 
         @mode    = options.workspace.design.mode()
-        @mode    = 'stack' if @mode is 'appedit' and not @model.get( 'appId' )
+        @mode    = 'stack' if @mode is 'appedit' and not @model?.get( 'appId' )
 
-        if @model and @mode in [ 'app', 'appedit' ] and @model.get( 'appId' )
-            @appModel = CloudResources( @type, region )?.get @model.get( 'appId' )
+        if @model and @mode in [ 'app', 'appedit' ] and @model?.get( 'appId' )
+            @appModel = CloudResources( @type, region )?.get @model?.get( 'appId' )
 
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
@@ -111,5 +111,3 @@ define [
                         continue
                         delete @__optionStates[ uid ]
                         return
-
-

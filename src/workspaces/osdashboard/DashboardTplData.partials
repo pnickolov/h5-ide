@@ -1,3 +1,8 @@
+<!-- {{bubbleResourceInfo}} -->
+<div class="bubble-head">{{id}}</div>
+<div class="bubble-content">
+<dl class="dl-horizontal">{{#each data}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
+</div>
 <!-- {{resource_OSSERVER}} -->
 <table class="table-head">
     <thead>
@@ -30,7 +35,7 @@
                 </td>
                 <td class="os-status os-status-{{status}}">{{status}}</td>
                 <td><img src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png">
-          <span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{system_metadata.imageId}}&quot;}">{{ system_metadata.image_image_id }}</span></td>
+          <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_id }}</span></td>
                 <td>{{accessIPv4}}</td>
                 <td>{{timeStr OS-SRV-USG:launched_at}}</td>
             </tr>

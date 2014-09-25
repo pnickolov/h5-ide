@@ -70,6 +70,8 @@
 }
 
 .dash-ops-list {
+  height: 380px;
+  overflow: auto;
 
   > li {
     float         : left;

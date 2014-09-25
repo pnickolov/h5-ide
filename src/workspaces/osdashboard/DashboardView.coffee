@@ -9,6 +9,7 @@ define [
   "backbone"
   "UI.tooltip"
   "UI.table"
+  "UI.bubble"
   "UI.nanoscroller"
 ], ( Template, TemplateData, constant, lang, CloudResources, appAction )->
 
@@ -41,8 +42,8 @@ define [
       @updateResList()
       @updateRegionResources()
 
-      #window.CloudResources = CloudResources
-      #window.constant = constant
+      window.CloudResources = CloudResources
+      window.constant = constant
 
       self = @
       setInterval ()->
@@ -52,12 +53,32 @@ define [
       , 1000 * 60
 
       # Add a custom template to the MC.template, so that the UI.bubble can use it to render.
-      # MC.template.dashboardBubble = _.bind @dashboardBubble, @
-      # MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
+      MC.template.osDashboardBubble = _.bind @osDashboardBubble, @
       return
 
     awake : ()-> @$el.show().children(".nano").nanoScroller(); return
     sleep : ()-> @$el.hide()
+
+    osDashboardBubble : ( data )->
+      # get Resource Data
+      d = {
+        id   : data.id
+        data : @model.getOsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+      }
+      d.data = d.data.system_metadata
+
+      # Make Boolean to String to show in handlebarsjs
+      _.each d.data, (e,key)->
+          if _.isBoolean e
+              d.data[key] = e.toString()
+          if e == ""
+              d.data[key] = "None"
+          if (_.isArray e) and e.length is 0
+              d.data[key] = ['None']
+          if (_.isObject e) and (not _.isArray e)
+              delete d.data[key]
+
+      return TemplateData.bubbleResourceInfo  d
 
     ###
       rendering

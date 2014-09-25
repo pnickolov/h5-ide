@@ -50,6 +50,8 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
           elbs    : CloudResources( constant.RESTYPE.OSLISTENER, region )?.toJSON()
         }
 
+    getOsResDataById : ( region, type, id )-> CloudResources( type, region ).get(id)
+
     getResourcesCount : ( region )->
       filter = { category : region }
       data = {

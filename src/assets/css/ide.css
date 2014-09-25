@@ -3136,7 +3136,7 @@ div.modal-text-highlight {
 #state-editor-model {
   border-left: 1px solid #999;
   position: absolute;
-  top: 41px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -7133,7 +7133,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9167,7 +9168,6 @@ g.shadow {
     .openstack .OEPanelRight .panel-float.hidden {
       display: none; }
   .openstack .OEPanelRight .panel-body {
-    overflow: auto;
     position: absolute;
     top: 0;
     bottom: 0;

@@ -31,7 +31,14 @@ define [
 
             else
 
-                @$el.html template.app @getRenderData()
+                # get float ip
+                extendData = {}
+                floatIPModel = @model.getFloatingIp()
+                if floatIPModel
+                    floatIPData = CloudResources(constant.RESTYPE.OSFIP, Design.instance().region()).get(floatIPModel.get('appId'))
+                    float_ip = floatIPData.get('floating_ip_address') if floatIPData
+                    extendData.float_ip = float_ip
+                @$el.html template.app _.extend(@getRenderData(), extendData)
 
             # append sglist
             @$el.append @sgListView.render().el

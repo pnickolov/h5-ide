@@ -16,6 +16,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
 
     listenModelEvents : ()->
       @listenTo @model, "change:public", @render
+      @listenTo @model, "change:cidr", @render
       return
 
     portPosition : ( portName, isAtomic )->

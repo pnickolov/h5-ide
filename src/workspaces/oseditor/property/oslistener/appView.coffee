@@ -3,9 +3,10 @@ define [
     '../OsPropertyView'
     '../osport/view'
     './template/app'
+    'CloudResources'
 
 
-], ( constant, OsPropertyView, portView, template ) ->
+], ( constant, OsPropertyView, portView, template, CloudResources ) ->
 
     OsPropertyView.extend {
 
@@ -15,20 +16,11 @@ define [
             @
 
         genModelForPort: ->
-            appJson = @appModel.toJSON()
+            region = Design.instance().region()
+            portId = @appModel.get 'port_id'
 
-            json = _.pick appJson,
-                'status'
-                'subnet_id'
-                'address'
-                'connection_limit'
-                'protocol'
-                'protocol_port'
-                'pool_id'
+            CloudResources( constant.RESTYPE.OSPORT, region ).get portId
 
-            json.id = appJson.port_id
-
-            new Backbone.Model json
 
 
 

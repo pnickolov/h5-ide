@@ -34,10 +34,7 @@ define [
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
       @statusbar.update()
-      if mode is 'app'
-        @propertyPanel.openConfig()
-      else
-        @propertyPanel.openResource()
+      @propertyPanel.openCurrent()
       return
 
     showProperty: () -> @panel.openProperty(); false

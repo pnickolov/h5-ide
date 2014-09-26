@@ -29,8 +29,9 @@ define [
 
         initialize: ( options ) ->
             _.extend @, options
-            mode = options.workspace.design.mode()
-            if mode is 'app' then @__currentPanel = 'config'
+
+            if @workspace.design.mode() is 'app'
+                @__currentPanel = 'config'
 
             @render()
 
@@ -109,11 +110,16 @@ define [
 
         openResource: ( args ) -> @open 'resource', args
         openState   : ( args ) -> @open 'state', args
-        openCurrent : ( args ) -> @open @__currentPanel, args
         openProperty: ( args ) -> @open 'property', args
         openConfig  : ( args ) ->
             @open 'config', args
             @__openArgs = @__defaultArgs
+
+        openCurrent : ( args ) ->
+            if @workspace.design.mode() is 'app' and @__currentPanel is 'resource'
+                @__currentPanel = 'config'
+
+            @open @__currentPanel, args
 
 
         __openOrHidePanel: ( e ) ->

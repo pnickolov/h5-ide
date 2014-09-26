@@ -174,7 +174,7 @@ define [
           e.type is constant.RESTYPE.ASG).length
         dbInstance = _.filter comp, (e)->
           e.type is constant.RESTYPE.DBINSTANCE
-        snapshots = CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region())
+        snapshots = CloudResources(constant.RESTYPE.DBSNAP, opsModel.get("region"))
         awsError = null
         snapshots.fetchForce().fail (error)->
           awsError = error.awsError
@@ -196,8 +196,8 @@ define [
             return
           return
 
-    checkNotReadyRDS: ()->
-      cloudType = Design.instance().get('cloud_type')
+    checkNotReadyRDS: (app)->
+      cloudType = app.get('cloudType')
       if cloudType is "openstack"
         console.log "CloudType is OpenStack"
         defer = new Q.defer()
@@ -211,7 +211,7 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
       that = this
-      cloudType = Design.instance().get('cloud_type')
+      cloudType = app.get('cloudType')
       isProduction = app.get('usage') is "production"
       appName = app.get('name')
       canStop = new modalPlus {
@@ -226,7 +226,7 @@ define [
       canStop.tpl.find(".modal-footer").hide()
       awsError = null
 
-      @checkNotReadyRDS()
+      @checkNotReadyRDS(app)
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
@@ -314,7 +314,7 @@ define [
         }
         disableClose: true
       )
-      cloudType = Design.instance().get('cloud_type')
+      cloudType = app.get('cloudType')
       if cloudType is 'openstack'
         @__terminateApp(id, null, terminateConfirm)
         return false
@@ -335,7 +335,7 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
-      cloudType = Design.instance().get('cloud_type')
+      cloudType = app.get('cloudType')
       # renderLoading
 
       fetchJsonData = ->

@@ -24,7 +24,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           resource :
             id : @get("appId")
             fixed_ip_address    : port.createRef("fixed_ips.0.ip_address")
-            floating_ip_address : @get("address")
+            floating_ip_address : @get("address") or ''
             port_id             : port_id
             floating_network_id : extNetworkId
       }

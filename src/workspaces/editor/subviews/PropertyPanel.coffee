@@ -318,7 +318,11 @@ define [
 
       allCompData = design.serialize().component
       compData    = allCompData[uid]
-      stateeditor.loadModule(allCompData, uid)
+
+      if comp and comp.id.indexOf('i-') is 0
+          resId = comp.id
+
+      stateeditor.loadModule(allCompData, uid, resId)
 
       @forceShow()
       return

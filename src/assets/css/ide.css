@@ -9154,8 +9154,17 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .openstack .OEPanelRight {
   width: 280px; }
+  .openstack .OEPanelRight .panel-body {
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 100%; }
   .openstack .OEPanelRight.state {
     width: 655px; }
+    .openstack .OEPanelRight.state .panel-body {
+      overflow: visible; }
   .openstack .OEPanelRight.hidden .panel-float {
     display: none; }
   .openstack .OEPanelRight .panel-float {
@@ -9168,12 +9177,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       width: 280px; }
     .openstack .OEPanelRight .panel-float.hidden {
       display: none; }
-  .openstack .OEPanelRight .panel-body {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    height: auto;
-    width: 100%; }
   .openstack .OEPanelRight .panel-body section.system-image .selectbox {
     width: 108px; }
   .openstack .OEPanelRight .panel-body section header {

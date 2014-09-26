@@ -3,8 +3,20 @@
 
     width: 280px;
 
+    .panel-body {
+        overflow: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: auto;
+        width: 100%;
+    }
+
     &.state {
         width: 655px;
+        .panel-body {
+            overflow: visible;
+        }
     }
 
     &.hidden .panel-float { display: none; }
@@ -14,22 +26,13 @@
         top: 0;
         right: 280px;
         background: $bg-p;
-        
+
         min-width: 270px;
 
         // Rewrite below values to customise floating-panel
         & > div { width: 280px; }
 
         &.hidden { display: none; }
-    }
-
-    .panel-body {
-        // overflow: auto;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        height: auto;
-        width: 100%;
     }
 
     .panel-body section {

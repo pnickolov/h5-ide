@@ -14,8 +14,9 @@ define [
   'UI.modalplus'
   'ApiRequest'
   'kp_dropdown'
+  'OsKp'
   'component/trustedadvisor/gui/main'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, TA )->
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, OsKp, TA )->
   AppAction = Backbone.View.extend
 
     runStack: (event, workspace)->
@@ -79,6 +80,11 @@ define [
 
     renderKpDropdown: (modal, cloudType)->
       if cloudType is 'openstack'
+        unless OsKp.hasResourceWithDefaultKp()
+          return false
+        osKeypair = new OsKp()
+        if modal.isOpen() then modal.find("#kp-runtime-placeholder").html(osKeypair.render().$el)
+        modal.tpl.find('.default-kp-group').show()
         return false
       if kpDropdown.hasResourceWithDefaultKp()
         keyPairDropdown = new kpDropdown()

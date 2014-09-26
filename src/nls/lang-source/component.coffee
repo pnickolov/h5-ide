@@ -15,6 +15,10 @@ module.exports =
       en: "Delete"
       zh: ""
 
+    COMPONENT_SELECT_KEYPAIR:
+      en: "Select Key Pair as $DefaultKeyPair"
+      zh: ""
+
     COMPONENT_KEY_PAIR_COL_NAME:
       en: "Name"
       zh: ""

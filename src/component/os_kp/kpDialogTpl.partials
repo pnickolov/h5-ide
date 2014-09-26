@@ -80,4 +80,6 @@
 <!-- {{safari_download}} -->
 <textarea autofocus spellcheck="false" class="safari-download-textarea input">{{keypair}}</textarea>
 
+<!--{{kpButton}}-->
+<button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>
 

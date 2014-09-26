@@ -5079,11 +5079,12 @@ button#property-app-keypair {
   display: block;
   padding: 8px 10px; }
 
-#kp-runtime-placeholder .selection {
+#kp-runtime-placeholder .combo-dd .selection {
   padding-right: 19px; }
 
 #kp-runtime-placeholder {
-  display: inline-block; }
+  display: inline-block;
+  width: 65%; }
 
 .default-kp-info {
   color: #4a90e2;

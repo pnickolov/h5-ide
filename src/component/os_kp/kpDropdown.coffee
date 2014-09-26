@@ -1,5 +1,5 @@
-define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constant', 'toolbar_modal', 'UI.modalplus', 'component/os_kp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter'],
-( Design, CloudResources, Backbone, _, $, constant, toolbar_modal, modalplus, template, upload, lang, JsonExporter )->
+define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus', 'component/os_kp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter', 'UI.selection'],
+( Design, CloudResources, constant, toolbar_modal, modalplus, template, upload, lang, JsonExporter, bindSelection )->
   download = JsonExporter.download
   Backbone.View.extend {
     __needDownload: false
@@ -13,15 +13,18 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
       @
     render: ->
       dropdown = $("<div/>")
+      @template ||= $("<select class='selection option' name='kpDropdown' data-button-tpl='kpButton'></select>")
+      $(@template).attr('placeholder', lang.IDE.COMPONENT_SELECT_KEYPAIR)
       dropdown.append @template
       dropdownSelect = dropdown.find("select.selection.option")
+      bindSelection(dropdown, @selectionTemplate)
       dropdownSelect.on 'select_initialize', =>
         @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
         @listenTo @collection, 'update', @updateOption.bind(@)
         @selectize = dropdownSelect[0].selectize
         @updateOption()
       @$input = dropdownSelect
-      @$input.change => @resModel.set('keypair', @$input.val())
+      if @resModel then @$input.change => @resModel.set('keypair', @$input.val())
       dropdownSelect.on 'select_dropdown_button_click', =>
         console.log 'manage'
         @trigger 'manage'
@@ -32,11 +35,12 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
     updateOption: ->
       optionList = _.map @collection.toJSON(), (e)->
         {text: e.name, value: e.name}
-      optionList = [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}].concat(optionList)
+      defaultKp = if @resModel then [{text: "$DefaultKeyPair", value: "$DefaultKeyPair"}] else []
+      optionList = defaultKp.concat(optionList)
       if not @selectize then return false
       @selectize.clearOptions()
       @selectize.addOption optionList
-      @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
+      if @resModel then @selectize.setValue(@resModel.get('keypair')||optionList[0].value)
 
     setValue: (value)->
       if not @selectize
@@ -66,6 +70,10 @@ define ['Design', "CloudResources", "backbone", 'underscore', 'jquery', 'constan
     getRegion: ->
       region = Design.instance().get('region')
       constant.REGION_SHORT_LABEL[ region ]
+
+    selectionTemplate:
+      kpButton: ()->
+        template.kpButton()
 
     getModalOptions: ->
       that = @

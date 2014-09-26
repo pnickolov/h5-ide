@@ -53,12 +53,13 @@ button#property-app-keypair {
   padding: 8px 10px;
 }
 
-#kp-runtime-placeholder .selection {
+#kp-runtime-placeholder .combo-dd .selection {
   padding-right: 19px;
 }
 
 #kp-runtime-placeholder {
   display: inline-block;
+  width: 65%;
 }
 
 .default-kp-info {

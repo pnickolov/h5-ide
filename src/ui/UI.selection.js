@@ -132,10 +132,10 @@
       return $parent.off('DOMNodeInserted').on('DOMNodeInserted', function(event) {
         var $target;
         $target = $(event.target);
-        $target.find('select.selection').each(function() {
+        $target.find('select.selection, input').each(function() {
           return initSelection($(this), selectTpl);
         });
-        if ($target[0].nodeName === 'SELECT' && $target.hasClass('.selection')) {
+        if (($target[0].nodeName === 'SELECT' || $target[0].nodeName === 'INPUT') && $target.hasClass('.selection')) {
           return initSelection($target, selectTpl);
         }
       });

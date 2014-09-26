@@ -105,9 +105,9 @@ define ['selectize'], () ->
         $parent.off('DOMNodeInserted').on 'DOMNodeInserted', (event) ->
 
             $target = $(event.target)
-            $target.find('select.selection').each () ->
+            $target.find('select.selection, input').each () ->
                 initSelection($(@), selectTpl)
-            if $target[0].nodeName is 'SELECT' and $target.hasClass('.selection')
+            if ($target[0].nodeName is 'SELECT' or $target[0].nodeName is 'INPUT') and $target.hasClass('.selection')
                 initSelection($target, selectTpl)
 
     return listenSelectionInserted

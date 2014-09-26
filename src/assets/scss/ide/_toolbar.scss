@@ -244,7 +244,8 @@
     height     : 100%;
     box-sizing : border-box;
 
-    color: $light-p-1;
+    color      : $light-p-1;
+    text-align : center;
 
     &::selection { background: transparent; }
   }

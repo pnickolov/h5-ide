@@ -375,38 +375,39 @@
 .os-status {
     padding-left: 20px !important;
     &:before {
-        content: " ";
-        width: 8px;
-        height: 8px;
-        border-radius: 8px;
-        background-color: yellow;
-        position: absolute;
-        margin-left: -12px;
-        margin-top: 2px;
+        content          : " ";
+        width            : 10x;
+        height           : 10px;
+        border-radius    : 50%;
+        background-color : yellow;
+        position         : absolute;
+        margin-left      : -12px;
+        margin-top       : 2px;
+        box-shadow       : inset 0 1px 0 rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0, .2);
     }
 }
 .os-status-ACTIVE {
     &:before {
-        background-color: green;
+        @include bgg-g;
     }
 }
 .os-status-Running {
     &:before {
-        background-color: green;
+        @include bgg-g;
     }
 }
 .os-status-INACTIVE {
     &:before {
-        background-color: yellow;
+        @include bgg-y;
     }
 }
 .os-status-DOWN {
     &:before {
-        background-color: yellow;
+        @include bgg-y;
     }
 }
 .os-status- {
     &:before {
-        background-color: yellow;
+        @include bgg-y;
     }
 }

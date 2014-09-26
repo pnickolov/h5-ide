@@ -1,6 +1,6 @@
 <!-- {{frame}} -->
 <nav class="clearfix">
-    <h1>Resource</h1>
+    <h1 class="title">Resource</h1>
     <ul class="action clearfix">
         <li class="btn-refresh-panel icon-refresh tooltip" data-tooltip="Refresh Resources"></li>
         <li class="btn-open-shareres js-toggle-dropdown icon-resources tooltip" data-target=".resources-dropdown-wrapper" data-tooltip="Manage Other Resources"></li>

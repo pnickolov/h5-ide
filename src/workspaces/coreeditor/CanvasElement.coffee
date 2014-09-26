@@ -4,10 +4,9 @@ define [
   "CanvasManager"
   "i18n!/nls/lang.js"
   "UI.modalplus"
-  "event"
   "backbone"
   "svg"
-], ( Design, CanvasManager, lang, Modal, ide_event )->
+], ( Design, CanvasManager, lang, Modal )->
 
   CanvasView = null
 
@@ -300,6 +299,7 @@ define [
 
     isGroup : ()-> !!@model.node_group
 
+    # If true, it means the item is a children of the CeSvg
     isTopLevel : ()->
       if not @model.parent then return false
       if @model.parent() then return false
@@ -311,7 +311,7 @@ define [
       if p
         @canvas.getItem( p.id )
       else
-        null
+        @canvas.getSvgItem()
 
     children : ( includeStickyChildren )->
       if not @model.node_group
@@ -328,12 +328,6 @@ define [
       items
 
     siblings : ( includeStickyChildren )->
-
-      if not @parent()
-        # TopLevel items.
-        self = @
-        return _.reject @canvas.__itemTopLevel, ( i )-> i is self
-
       s = @parent().children( includeStickyChildren )
       idx = s.indexOf( this )
       if idx >= 0
@@ -445,7 +439,7 @@ define [
 
     changeParent : ( newParent, x, y )->
 
-      if (@parent() or null) is newParent
+      if newParent is @parent() or newParent is null
         if @model.x() is x and @model.y() is y then return
         @moveBy( x - @model.x(), y - @model.y() )
         return

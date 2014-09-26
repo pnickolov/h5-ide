@@ -30,6 +30,7 @@ define [
   "CanvasElement"
   "CanvasPopup"
   "CanvasViewLayout"
+  "workspaces/coreeditor/CeSvg"
   "workspaces/coreeditor/CanvasViewConnect"
   "workspaces/coreeditor/CanvasViewDnd"
   "workspaces/coreeditor/CanvasViewGResizer"

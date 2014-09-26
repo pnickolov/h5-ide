@@ -85,7 +85,6 @@ require.config {
     #############################################
     'MC'                 : 'js/MC.core'
     'MC.validate'        : 'js/MC.validate'
-    'MC.canvas'          : 'js/MC.canvas'
     'constant'           : 'lib/constant'
     'event'              : 'lib/ide_event'
 
@@ -235,7 +234,6 @@ require.config {
     "lib/lib" : [
       "MC"
       "constant"
-      "MC.canvas"
       'MC.validate'
       "lib/handlebarhelpers"
       "event"
@@ -350,7 +348,6 @@ require [
   "workspaces/DashboardOs"
   "ide/Router"
   "MC"
-  "MC.canvas"
   'lib/aws'
 
   # Extra Workspaces

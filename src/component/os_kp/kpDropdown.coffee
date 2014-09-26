@@ -32,6 +32,9 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       @setElement(dropdown)
       @
 
+    hasResourceWithDefaultKp: ()->
+      return false
+
     updateOption: ->
       optionList = _.map @collection.toJSON(), (e)->
         {text: e.name, value: e.name}

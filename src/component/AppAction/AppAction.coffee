@@ -80,11 +80,13 @@ define [
 
     renderKpDropdown: (modal, cloudType)->
       if cloudType is 'openstack'
-        unless OsKp.hasResourceWithDefaultKp()
+        unless OsKp::hasResourceWithDefaultKp()
           return false
         osKeypair = new OsKp()
         if modal.isOpen() then modal.find("#kp-runtime-placeholder").html(osKeypair.render().$el)
         modal.tpl.find('.default-kp-group').show()
+        osKeypair.$input.on 'change', ()->
+          console.log $(@).val()
         return false
       if kpDropdown.hasResourceWithDefaultKp()
         keyPairDropdown = new kpDropdown()

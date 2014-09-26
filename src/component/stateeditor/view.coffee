@@ -3496,6 +3496,7 @@ define [ './model',
         remove: () ->
 
             @onStateSaveClick()
+            @model.remove() if @model
             Backbone.View.prototype.remove.call @
     }
 

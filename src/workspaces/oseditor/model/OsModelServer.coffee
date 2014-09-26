@@ -4,10 +4,10 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSSERVER
-    newNameTmpl : "Server-"
+    newNameTmpl : "host-"
 
     defaults : ()->
-      userData         : "User Data Sample"
+      userData         : ""
       meta             : ""
       adminPass        : "12345678"
       keypair          : "$DefaultKeyPair"

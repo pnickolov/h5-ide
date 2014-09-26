@@ -19,6 +19,9 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", "ApiReques
 			resUID = options.resUID
 
 			resModel = Design.instance().component(resUID)
+
+			return if not resModel
+
 			resId = resModel.get('appId')
 			compData = resModel.serialize().component
 			allCompData = Design.instance().serialize().component

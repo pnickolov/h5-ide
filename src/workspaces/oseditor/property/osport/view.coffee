@@ -41,7 +41,8 @@ define [
                 @$el.html template.app _.extend(@getRenderData(), extendData)
 
             # append sglist
-            @$el.append @sgListView.render().el
+            if @model.isAttached()
+                @$el.append @sgListView.render().el
 
             @
 

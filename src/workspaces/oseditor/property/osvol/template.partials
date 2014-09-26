@@ -9,7 +9,7 @@
     </section>
     <section class="group required">
         <label class="name">Volume Size</label>
-        <input data-target="size" class="selection string" value="{{size}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
+        <input data-target="size" class="selection string" id="property-os-volume-size" value="{{size}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
     </section>
     <section class="group required">
         <label class="name">Mount Point</label>
@@ -18,7 +18,7 @@
     {{#if snapshot}}
         <section class="group">
             <label class="name">Snapshot ID</label>
-            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption"></select>
+            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}></select>
         </section>
     {{/if}}
     <section class="group">

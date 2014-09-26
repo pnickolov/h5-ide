@@ -34,7 +34,7 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
     updateVolume : ( volume )->
       $vol = @$el.find('[data-id=' + volume.id + ']')
       $vol.children(".vpp-name").text( volume.get("name") )
-      $vol.children(".vpp-size").text( volume.get("volumeSize") + "GB" )
+      $vol.children(".vpp-size").text( volume.get("size") + "GB" )
       return
 
     content : ()->

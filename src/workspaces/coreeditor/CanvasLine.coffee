@@ -377,6 +377,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       # 1. Find out the area we want our line to fit in.
       lineData = @getElbowBounds( start, end )
 
+      ###
+
       # 2. Find out all the area that we might go through
       lineData.areas = @getElbowAreas( start, end )
 
@@ -410,9 +412,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           console.info "Failed to search elbow path", @type, start, end
           break
 
+
       # 3.1 If it fails, fallback to old strategy to generate the line
       if lineData.failure
         @getElbowFallback( lineData )
+      ###
+      @getElbowFallback( lineData )
 
       lineData.result.unshift( { x:lineData.start.x, y:lineData.start.y } )
       lineData.result.unshift( { x:start.x, y:start.y } )

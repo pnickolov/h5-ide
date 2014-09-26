@@ -168,7 +168,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             'create':(tpl)->
                 data =
                     volumes : {}
-                bindSelection @manager.$el, @selectionTemplate.bind(@)()
+                bindSelection @manager.$el, @selectionTemplate.call(@)
                 @bindVolumeSelection()
                 @manager.setSlide tpl data
 

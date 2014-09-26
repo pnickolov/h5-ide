@@ -29,7 +29,7 @@ define [
             PortClass = Design.modelClassForType constant.RESTYPE.OSPORT
             _.each appJson.members, ( m ) ->
                 osport = PortClass.find ( port ) -> port.get( 'ip' ) is m.address
-                m.name = osport.get( 'name' )
+                m.name = osport?.get( 'name' )
                 null
 
             appJson

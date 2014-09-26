@@ -50,9 +50,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       @initNode node, m.x(), m.y()
       node
 
-    labelWidth : (width)-> CanvasElement.prototype.labelWidth.call(this, width) - 20
     # Update the svg element
-    render : ()->
-      CanvasManager.setLabel @, @$el.children(".node-label")
+    render : ()-> CanvasManager.setLabel @, @$el.children(".node-label")
 
   }

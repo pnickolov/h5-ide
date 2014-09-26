@@ -38,14 +38,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
           'data-alias'   : 'route-top'
-          'data-tooltip' : lang.IDE.PORT_TIP_L
+          'data-tooltip' : lang.IDE.PORT_TIP_T
         })
 
         @createPortElement().attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
           'data-alias'   : 'route-bottom'
-          'data-tooltip' : lang.IDE.PORT_TIP_L
+          'data-tooltip' : lang.IDE.PORT_TIP_T
         })
 
         svg.image( MC.IMG_URL + "ide/icon-os/cvs-subnet.png", 12, 12 ).move(5, 5).classes("public tooltip").attr('data-tooltip':"Public subnet")

@@ -38,14 +38,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
           'data-alias'   : 'route-left'
-          'data-tooltip' : lang.IDE.PORT_TIP_B
+          'data-tooltip' : lang.IDE.PORT_TIP_S
         })
 
         @createPortElement().attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
           'data-alias'   : 'route-right'
-          'data-tooltip' : lang.IDE.PORT_TIP_B
+          'data-tooltip' : lang.IDE.PORT_TIP_S
         })
       ])
 

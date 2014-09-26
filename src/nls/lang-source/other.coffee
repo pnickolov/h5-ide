@@ -1021,6 +1021,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Connect to Server"
       zh: ""
 
+    PORT_TIP_S:
+      en: "Connect to Subnet"
+      zh: ""
+
+    PORT_TIP_T:
+      en: "Connect to Router"
+      zh: ""
+
 
 
   ##### Modal Confirm Stop/Terminate App

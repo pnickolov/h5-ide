@@ -29,8 +29,11 @@ define [
         @.selectize.setValue(that.model.get('snapshot'))
 
     selectTpl:
-      volumeOption: (item)->
-        console.log (item)
+      snapshotOption: (item)->
+        snapshots = CloudResources(constant.RESTYPE.OSSNAP, Design.instance().region())
+        snapModel = snapshots.get(item.value)
+        template.snapshotOption snapModel?.toJSON()
+
         
 
   }, {

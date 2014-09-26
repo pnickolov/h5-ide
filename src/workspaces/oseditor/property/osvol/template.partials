@@ -18,7 +18,7 @@
     {{#if snapshot}}
         <section class="group">
             <label class="name">Snapshot ID</label>
-            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option"></select>
+            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption"></select>
         </section>
     {{/if}}
     <section class="group">
@@ -31,6 +31,11 @@
     </section>
 </div>
 
+<!--{{snapshotOption}}-->
+<div>
+    <div class="manager-content-main">{{name}}</div>
+    <div class="manager-content-sub" title="{{id}}">{{size}}G | {{id}}</div>
+</div>
 
 <!-- {{appTemplate}} -->
 <section class="group">

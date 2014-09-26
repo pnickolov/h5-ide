@@ -4047,6 +4047,9 @@ div.modal-text-highlight{
 .manager-content-sub{
     color: #999999;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .manager-content-main{
     color: #dadada;

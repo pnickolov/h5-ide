@@ -41,6 +41,13 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
             false
       has
 
+    setDefaultKeyPair: ()->
+      that = @
+      Design.instance().eachComponent ( comp ) ->
+        if comp.type is constant.RESTYPE.OSSERVER
+          if comp.get('keypair') is "$DefaultKeyPair"
+            comp.set('keypair', that.$input.val())
+
     updateOption: ->
       optionList = _.map @collection.toJSON(), (e)->
         {text: e.name, value: e.name}

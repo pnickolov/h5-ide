@@ -46,7 +46,11 @@ define [
         bindSelection(@$el, propertyView.selectTpl)
 
         @setTitle()
-        @$el.append propertyView.render().el
+
+        if @mode in [ 'app', 'appedit' ] and not @appModel and @model.type isnt constant.RESTYPE.OSEXTNET
+            @$el.append 'The resource may be not exist.'
+        else
+            @$el.append propertyView.render().el
 
         @restoreAccordion(@model?.type, @uid)
         @

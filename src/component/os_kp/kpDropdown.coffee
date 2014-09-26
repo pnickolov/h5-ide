@@ -33,7 +33,13 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       @
 
     hasResourceWithDefaultKp: ()->
-      return false
+      has = false
+      Design.instance().eachComponent ( comp ) ->
+        if comp.type is constant.RESTYPE.OSSERVER
+          if comp.get('keypair') is "$DefaultKeyPair"
+            has = true
+            false
+      has
 
     updateOption: ->
       optionList = _.map @collection.toJSON(), (e)->

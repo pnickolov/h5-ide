@@ -15,7 +15,23 @@ define [
       json = @model.toJSON()
       json.mode = mode
       @$el.html template.stackTemplate json
+      if @model.get('snapshot') then @bindSelectizeEvent()
       @
+    bindSelectizeEvent: ()->
+      that = @
+      snapshots = CloudResources(constant.RESTYPE.OSSNAP, Design.instance().region())
+      snapshotOptions = _.map snapshots.models, (e)->
+        text = e.get('name')
+        value = e.get('id')
+        {text, value}
+      @$el.find("#property-os-volume-snapshot").on 'select_initialize', ()->
+        @.selectize.addOption(snapshotOptions)
+        @.selectize.setValue(that.model.get('snapshot'))
+
+    selectTpl:
+      volumeOption: (item)->
+        console.log (item)
+        
 
   }, {
     handleTypes: [ constant.RESTYPE.OSVOL ]

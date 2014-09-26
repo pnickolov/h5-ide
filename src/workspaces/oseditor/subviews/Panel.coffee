@@ -76,7 +76,7 @@ define [
             @hideFloatPanel() unless lastPanel is @__currentPanel and _.isEqual( lastArgs, args )
 
             @$el.prop 'class', "OEPanelRight #{panelName}"
-            $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
+            @$el.closest( '#OpsEditor' ).find( '.sidebar-title' ).prop 'class', "sidebar-title #{panelName}"
             @renderSubPanel targetPanel, args
 
         floatPanelShowCount: 0

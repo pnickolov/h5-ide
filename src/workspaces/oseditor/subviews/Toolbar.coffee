@@ -549,7 +549,7 @@ define [
         return
 
     opsOptionChanged: ->
-        $switcher = $(".toolbar-visual-ops-switch").toggleClass('on')
+        $switcher = @$(".toolbar-visual-ops-switch").toggleClass('on')
         stateEnabled = $switcher.hasClass("on")
         agent = @workspace.design.get('agent')
         if stateEnabled

@@ -8,7 +8,9 @@ define [
     OsPropertyView.extend {
 
         render: ->
-            @$el.html template @model.toJSON()
+            @$el.html template {
+                appId: @model.getResourceId()
+            }
             @
 
     }, {

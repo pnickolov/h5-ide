@@ -56,7 +56,7 @@ define [
           return false
         # setUsage
         appNameRepeated = @checkAppNameRepeat(appNameDom.val())
-        if not @defaultKpIsSet() or appNameRepeated
+        if not @defaultKpIsSet(cloudType) or appNameRepeated
           return false
 
         @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
@@ -105,7 +105,11 @@ define [
       selector = if type then $("#runtime-error-#{type}") else $(".runtime-error")
       selector.hide()
 
-    defaultKpIsSet: ->
+    defaultKpIsSet: (cloudType)->
+      if cloudType is 'openstack'
+        if OsKp::hasResourceWithDefaultKp()
+          @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
+        return not OsKp::hasResourceWithDefaultKp()
       if not kpDropdown.hasResourceWithDefaultKp()
         return true
       kpModal = Design.modelClassForType( constant.RESTYPE.KP )

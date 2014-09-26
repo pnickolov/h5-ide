@@ -7564,14 +7564,14 @@ marker.server, marker.elb {
   .openstack .OEPanelTop .sidebar-title a {
     width: 25%;
     float: left;
-    text-align: center;
     cursor: pointer;
     height: 100%;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    color: #75789d; }
     .openstack .OEPanelTop .sidebar-title a::selection {
       background: transparent; }
   .openstack .OEPanelTop .sidebar-title a:hover {
-    color: #eee; }
+    color: #fff; }
   .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
     width: 33%; }
     .openstack .OEPanelTop .sidebar-title[data-mode="app"] a.resource {
@@ -9474,6 +9474,15 @@ marker.server, marker.elb {
       right: 20px; }
   #OpsEditor .OEPanelRight.property .panel-body .item-readable-list, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list {
     padding: 6px 8px 3px; }
+    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item-name, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item-name {
+      display: inline-block;
+      max-width: 228px;
+      word-break: break-all;
+      font-size: 14px; }
+    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item-info, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item-info {
+      color: #898dbc;
+      font-size: 12px;
+      display: block; }
     #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li {
       padding: 5px 10px;
       width: 92%;

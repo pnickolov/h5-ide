@@ -90,7 +90,10 @@
 .icon-dhcp,
 .icon-pg,
 .icon-rds-snap,
-.icon-rds-restore {
+.icon-rds-restore,
+.icon-resource,
+.icon-config,
+.icon-property {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
@@ -98,15 +101,15 @@
 	}
 }
 
-.icon-resource,
-.icon-config,
-.icon-property {
-	&:before{
-		font : 32px/1em "MCIcon";
-		font-weight : normal;
-		-webkit-font-smoothing: antialiased;
-	}
-}
+// .icon-resource,
+// .icon-config,
+// .icon-property {
+// 	&:before{
+// 		font : 24px/1em "MCIcon";
+// 		font-weight : normal;
+// 		-webkit-font-smoothing: antialiased;
+// 	}
+// }
 
 .icon-play:before  { content : "\F110"; }
 .icon-stop:before  { content : "\F111"; }

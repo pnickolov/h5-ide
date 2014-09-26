@@ -20,6 +20,19 @@
             .item-readable-list {
                 padding: 6px 8px 3px;
 
+                .item-name {
+                    display    : inline-block;
+                    max-width  : 228px;
+                    word-break : break-all;
+                    font-size  : 14px;
+                }
+
+                .item-info {
+                  color     : $dark-grey;
+                  font-size : 12px;
+                  display   : block;
+                }
+
                 & > li {
                     padding: 5px 10px;
                     width: 92%;

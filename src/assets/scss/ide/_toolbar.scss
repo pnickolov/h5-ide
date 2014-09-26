@@ -238,18 +238,19 @@
   &.config   .config   { @include activedPanelTab; }
 
   a {
-    width: 25%;
-    float: left;
-    text-align: center;
-    cursor: pointer;
-    height: 100%;
-    box-sizing: border-box;
+    width      : 25%;
+    float      : left;
+    cursor     : pointer;
+    height     : 100%;
+    box-sizing : border-box;
+
+    color: $light-p-1;
 
     &::selection { background: transparent; }
   }
 
   a:hover {
-    color: #eee;
+    color: #fff;
   }
 
   &[data-mode="app"] a {

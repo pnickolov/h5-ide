@@ -7466,7 +7466,7 @@ g.shadow {
     color: #eee; }
   .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
     width: 33%; }
-    .openstack .OEPanelTop .sidebar-title[data-mode="app"] a .resource {
+    .openstack .OEPanelTop .sidebar-title[data-mode="app"] a.resource {
       display: none; }
 
 .ops-process {

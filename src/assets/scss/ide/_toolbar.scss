@@ -252,7 +252,7 @@
 
   &[data-mode="app"] a {
     width: 33%;
-    .resource { display: none; }
+    &.resource { display: none; }
   }
 
 }

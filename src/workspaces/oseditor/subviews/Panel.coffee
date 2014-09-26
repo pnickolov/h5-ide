@@ -10,116 +10,120 @@ define [
 
 ], ( Backbone, constant, PanelTpl, ResourcePanel, ConfigPanel, PropertyPanel, StatePanel )->
 
-  Panels = {
-    resource : ResourcePanel
-    config   : ConfigPanel
-    property : PropertyPanel
-    state    : StatePanel
-  }
+    Panels = {
+        resource : ResourcePanel
+        config   : ConfigPanel
+        property : PropertyPanel
+        state    : StatePanel
+    }
 
-  __defaultArgs = { uid: '', type: 'default' }
-  __openArgs = __defaultArgs
-  __currentPanel = 'resource'
+    __defaultArgs = { uid: '', type: 'default' }
 
-  Backbone.View.extend
+    Backbone.View.extend
 
-    events:
-        'click .anchor li'       : '__scrollTo'
+        events:
+            'click .anchor li'       : '__scrollTo'
 
-    initialize: ( options ) ->
-        _.extend @, options
-        @render()
+        __openArgs: __defaultArgs
+        __currentPanel: 'resource'
 
-    render: () ->
-        @setElement @parent.$el.find(".OEPanelRight")
+        initialize: ( options ) ->
+            _.extend @, options
+            mode = options.workspace.design.mode()
+            if mode is 'app' then @__currentPanel = 'config'
 
-        @$el.html PanelTpl {}
-        @open 'resource'
+            @render()
 
-        @
+        render: () ->
+            @setElement @parent.$el.find(".OEPanelRight")
 
-    renderSubPanel: ( subPanel, args ) ->
-        args = _.extend { workspace: @workspace, panel: @ }, args
+            @$el.html PanelTpl {}
+            @open @__currentPanel
 
-        $(document.activeElement).filter("input, textarea").blur()
+            @
 
-        @subPanel?.remove()
-        @subPanel = new subPanel( args )
+        renderSubPanel: ( subPanel, args ) ->
+            args = _.extend { workspace: @workspace, panel: @ }, args
 
-        @$( '.panel-body' ).html @subPanel.render().el
+            $(document.activeElement).filter("input, textarea").blur()
 
-    scrollTo: ( className ) ->
-        $container = @$ '.panel-body'
-        $target = $( "section.#{className}" )
+            @subPanel?.remove()
+            @subPanel = new subPanel( args )
 
-        top = $container.offset().top
-        newTop = $target.offset().top - top + $container.scrollTop()
+            @$( '.panel-body' ).html @subPanel.render().el
 
-        $container.animate scrollTop: newTop
+        scrollTo: ( className ) ->
+            $container = @$ '.panel-body'
+            $target = $( "section.#{className}" )
 
-    open: ( panelName, args = __openArgs ) ->
-        lastPanel = __currentPanel
-        lastArgs = _.extend {}, __openArgs
-        __openArgs = args
-        __currentPanel = panelName
+            top = $container.offset().top
+            newTop = $target.offset().top - top + $container.scrollTop()
 
-        targetPanel = Panels[ panelName ]
-        unless targetPanel then return
-        if @hidden() then return
+            $container.animate scrollTop: newTop
 
-        @$el.removeClass( 'hide' )
-        @hideFloatPanel() unless lastPanel is __currentPanel and _.isEqual( lastArgs, args )
+        open: ( panelName, args = @__openArgs ) ->
+            lastPanel = @__currentPanel
+            lastArgs = _.extend {}, @__openArgs
+            @__openArgs = args
+            @__currentPanel = panelName
 
-        @$el.prop 'class', "OEPanelRight #{panelName}"
-        $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
-        @renderSubPanel targetPanel, args
+            targetPanel = Panels[ panelName ]
+            unless targetPanel then return
+            if @hidden() then return
 
-    floatPanelShowCount: 0
+            @$el.removeClass( 'hide' )
+            @hideFloatPanel() unless lastPanel is @__currentPanel and _.isEqual( lastArgs, args )
 
-    showFloatPanel: ( dom ) ->
-        @floatPanelShowCount++
-        @$( '.panel-float' ).html dom if dom
-        @$( '.panel-float' ).removeClass 'hidden'
+            @$el.prop 'class', "OEPanelRight #{panelName}"
+            $('.sidebar-title').prop 'class', "sidebar-title #{panelName}"
+            @renderSubPanel targetPanel, args
 
-        _.defer () =>
-            @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
+        floatPanelShowCount: 0
 
-    __hideFloatPanel: ( showCount ) ->
-        that = @
-        () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel()
+        showFloatPanel: ( dom ) ->
+            @floatPanelShowCount++
+            @$( '.panel-float' ).html dom if dom
+            @$( '.panel-float' ).removeClass 'hidden'
 
-    hideFloatPanel: () ->
-        @$( '.panel-float' ).addClass 'hidden'
+            _.defer () =>
+                @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
 
-    show: ->
-        @$el.removeClass 'hidden'
-        @
+        __hideFloatPanel: ( showCount ) ->
+            that = @
+            () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel()
 
-    hide: ->
-        @$el.addClass 'hidden'
-        $('.sidebar-title').prop 'class', 'sidebar-title'
-        @
+        hideFloatPanel: () ->
+            @$( '.panel-float' ).addClass 'hidden'
 
-    shown: -> not @$el.hasClass( 'hidden' )
-    hidden: -> not @shown()
+        show: ->
+            @$el.removeClass 'hidden'
+            @
 
-    openResource: ( args ) -> @open 'resource', args
-    openState   : ( args ) -> @open 'state', args
-    openCurrent : ( args ) -> @open __currentPanel, args
-    openProperty: ( args ) -> @open 'property', args
-    openConfig  : ( args ) ->
-        @open 'config', args
-        __openArgs = __defaultArgs
+        hide: ->
+            @$el.addClass 'hidden'
+            $('.sidebar-title').prop 'class', 'sidebar-title'
+            @
+
+        shown: -> not @$el.hasClass( 'hidden' )
+        hidden: -> not @shown()
+
+        openResource: ( args ) -> @open 'resource', args
+        openState   : ( args ) -> @open 'state', args
+        openCurrent : ( args ) -> @open @__currentPanel, args
+        openProperty: ( args ) -> @open 'property', args
+        openConfig  : ( args ) ->
+            @open 'config', args
+            @__openArgs = @__defaultArgs
 
 
-    __openOrHidePanel: ( e ) ->
-        targetPanelName = $( e.currentTarget ).prop 'class'
-        if __currentPanel is targetPanelName and @shown()
-            @hide()
-        else
-            @show()
-            @open targetPanelName, __openArgs
+        __openOrHidePanel: ( e ) ->
+            targetPanelName = $( e.currentTarget ).prop 'class'
+            if @__currentPanel is targetPanelName and @shown()
+                @hide()
+            else
+                @show()
+                @open targetPanelName, @__openArgs
 
-    __scrollTo: ( e ) ->
-        targetClassName = $( e.currentTarget ).data 'scrollTo'
-        @scrollTo targetClassName
+        __scrollTo: ( e ) ->
+            targetClassName = $( e.currentTarget ).data 'scrollTo'
+            @scrollTo targetClassName

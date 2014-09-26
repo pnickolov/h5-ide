@@ -371,6 +371,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           state         : OpsModelState.Initializing
           progress      : 0
           region        : region
+          cloudType     : toRunJson.cloud_type
+          provider      : toRunJson.provider
           usage         : toRunJson.usage
           updateTime    : +(new Date())
           stoppable     : toRunJson.property.stoppable
@@ -387,6 +389,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       attr       = $.extend true, {}, @attributes, {
         name       : name
         updateTime : +(new Date())
+        cloudType  : @get("cloudType")
+        provider   : @get("provider")
       }
       collection = @collection
 

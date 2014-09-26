@@ -43,9 +43,6 @@ define [
       @updateResList()
       @updateRegionResources()
 
-      window.CloudResources = CloudResources
-      window.constant = constant
-
       self = @
       setInterval ()->
         if not $("#OsReloadResource").hasClass("reloading")

@@ -242,3 +242,40 @@ define [
       @camelToUnderscore res
 
   }
+
+
+
+  ### Neutron Quota ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrNeutronQuotaCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSNQ
+
+    doFetch : ()-> ApiRequest("os_neutron_quota_List", {region : @region()})
+
+    parseFetchData    : ( data )->
+      if data?.quota
+        data.quota.id = "neutron_quota"
+      [data?.quota]
+
+  }
+
+
+  ### Cinder Quota ###
+  CrCollection.extend {
+    ### env:dev ###
+    ClassName : "CrCinderQuotaCollection"
+    ### env:dev:end ###
+
+    type  : constant.RESTYPE.OSCQ
+
+    doFetch : ()-> ApiRequest("os_cinder_quota_List", {region : @region()})
+
+    parseFetchData    : ( data )->
+      if data?.quota_set
+        data.quota_set.id = "cinder_quota"
+      [data?.quota_set]
+
+  }

@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design" ], ( template, lang, Modal, constant, Design ) ->
+define [ 'component/awscomps/DbSubnetGPopupTpl', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design" ], ( template, lang, Modal, constant, Design ) ->
 
   Backbone.View.extend {
 

@@ -6,7 +6,7 @@ define [
   "UI.modalplus"
   "constant"
   "i18n!/nls/lang.js"
-  'appAction'
+  'AppAction'
   "CloudResources"
   "backbone"
   "UI.scrollbar"

@@ -15,7 +15,7 @@ define [
   'ApiRequest'
   'kp_dropdown'
   'OsKp'
-  'component/trustedadvisor/gui/main'
+  'TaGui'
 ], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, OsKp, TA )->
   AppAction = Backbone.View.extend
 

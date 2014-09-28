@@ -7,7 +7,7 @@ define [ '../base/view'
          'i18n!/nls/lang.js'
          'constant'
          'Design'
-         "component/dbsbgroup/DbSubnetGPopup"
+         "DbSubnetGPopup"
 ], ( PropertyView, template, lang, constant, Design, DbSubnetGPopup ) ->
 
     SubnetGroupView = PropertyView.extend {

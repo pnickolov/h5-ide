@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', './component/optiongroup/ogTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, OgManage, template, lang ) ->
+define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component/awscomps/OgTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, OgManage, template, lang ) ->
 
     Backbone.View.extend
 

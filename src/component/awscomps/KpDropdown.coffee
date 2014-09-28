@@ -1,4 +1,4 @@
-define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/kp/kpTpl', 'backbone', 'jquery', 'constant',  'i18n!/nls/lang.js', 'CloudResources' ], ( Design, kpManage, comboDropdown, template, Backbone, $, constant, lang, CloudResources ) ->
+define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'backbone', 'jquery', 'constant',  'i18n!/nls/lang.js', 'CloudResources' ], ( Design, kpManage, comboDropdown, template, Backbone, $, constant, lang, CloudResources ) ->
 
     regions = {}
 

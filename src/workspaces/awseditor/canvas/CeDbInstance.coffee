@@ -7,7 +7,7 @@ define [
   "./CpInstance"
   "i18n!/nls/lang.js"
   "CloudResources"
-  "component/dbsbgroup/DbSubnetGPopup"
+  "DbSubnetGPopup"
 ], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, DbSubnetGPopup )->
 
   CanvasElement.extend {
@@ -77,7 +77,7 @@ define [
           backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
         if @model.autobackup() and @model.get('appId') and not backup
           return false
-        
+
         @canvas.dragItem( evt, { onDrop : @onDropReplicate } )
 
       false

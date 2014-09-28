@@ -5,7 +5,7 @@ define [
   "constant"
   "i18n!/nls/lang.js"
   "CloudResources"
-  'appAction'
+  'AppAction'
   "backbone"
   "UI.tooltip"
   "UI.table"

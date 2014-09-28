@@ -1,4 +1,4 @@
-define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus', 'component/os_kp/kpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter', 'UI.selection'],
+define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus', 'component/oscomps/KpDialogTpl', 'kp_upload', 'i18n!/nls/lang.js', 'JsonExporter', 'UI.selection'],
 ( Design, CloudResources, constant, toolbar_modal, modalplus, template, upload, lang, JsonExporter, bindSelection )->
   download = JsonExporter.download
   Backbone.View.extend {

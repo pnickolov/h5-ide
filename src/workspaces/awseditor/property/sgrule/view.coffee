@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sgrule
 #############################
 
-define [ '../base/view', './template/stack', "component/sgrule/SGRulePopup"
+define [ '../base/view', './template/stack', "SGRulePopup"
 ], ( PropertyView, template, SGRulePopup ) ->
 
     SgRuleView = PropertyView.extend {

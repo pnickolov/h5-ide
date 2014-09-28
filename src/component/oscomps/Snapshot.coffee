@@ -1,12 +1,12 @@
-define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/rds_snapshot/template'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template)->
+define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalplus", 'toolbar_modal', "i18n!/nls/lang.js", 'component/oscomps/SnapshotTpl', 'UI.selection'], (CloudResources, ApiRequest , constant, combo_dropdown, modalPlus, toolbar_modal, lang, template, bindSelection)->
     fetched = false
     deleteCount = 0
     deleteErrorCount = 0
     fetching = false
     regionsMark = {}
-    snapshotRes = Backbone.View.extend
+    Backbone.View.extend
         constructor: ()->
-            @collection = CloudResources constant.RESTYPE.DBSNAP, Design.instance().region()
+            @collection = CloudResources constant.RESTYPE.OSSNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
             @
@@ -22,27 +22,31 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         render: ()->
             @renderManager()
 
-        renderDropdown: ()->
-            option =
-                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_VOLUME
-            @dropdown = new combo_dropdown(option)
-            @instances = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
-            selection = lang.NOTIFY.INSTANCE_SNAPSHOT_SELECT
-            @dropdown.setSelection selection
+        bindVolumeSelection: ()->
+            that = @
+            @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
+            @manager.$el.on 'select_change', "#snapshot-volume-choose", ->
+              that.selectSnapshot()
+            @manager.$el.on 'select_initialize', "#snapshot-volume-choose",->
+              that.selectize = @selectize
+              @selectize.setLoading true
+              that.manager.$el.find("#snapshot-volume-choose").on 'select_dropdown_open', ->
+                that.selectize.load (cb)->
+                  that.volumes.fetch().then ->
+                    volData = _.map that.volumes.toJSON(), (e)->
+                      {text: e.name, value: e.id}
+                    that.selectize.setLoading false
+                    cb(volData)
+#            @dropdown.on 'open', @openDropdown, @
+#            @dropdown.on 'change', @selectSnapshot, @
+#            @dropdown
 
-            @dropdown.on 'open', @openDropdown, @
-            @dropdown.on 'filter', @filterDropdown, @
-            @dropdown.on 'change', @selectSnapshot, @
-            @dropdown
-
-        renderRegionDropdown: (exceptRegion)->
+        renderRegionDropdown: ()->
             option =
-                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_REGION
+                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
-            if exceptRegion
-              @regions = _.without @regions, exceptRegion
-            selection = lang.NOTIFY.VOLUME_SNAPSHOT_SELECT_REGION
+            selection = lang.PROP.VOLUME_SNAPSHOT_SELECT_REGION
             @regionsDropdown.setSelection selection
             @regionsDropdown.on 'open', @openRegionDropdown, @
             @regionsDropdown.on 'filter', @filterRegionDropdown, @
@@ -65,11 +69,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @regionsDropdown.setContent content
 
         openDropdown: (keySet)->
-            @instances.fetch().then =>
-                data = @instances.toJSON()
-                if data.length < 1
-                  @dropdown.setContent template.noinstance()
-                  return false
+            @volumes.fetch().then =>
+                data = @volumes.toJSON()
                 dataSet =
                     isRuntime: false
                     data: data
@@ -81,13 +82,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @dropdown.toggleControls true, 'filter'
                 @dropdown.setContent content
 
-        filterDropdown: (keyword)->
-            hitKeys = _.filter @instances.toJSON(), ( data ) ->
-                data.id.toLowerCase().indexOf( keyword.toLowerCase() ) isnt -1
-            if keyword
-                @openDropdown hitKeys
-            else
-                @openDropdown()
 
 
         filterRegionDropdown: (keyword)->
@@ -100,7 +94,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
 
         selectSnapshot: (e)->
-            $("#property-db-instance-choose .selection .manager-content-sub").remove()
             @manager.$el.find('[data-action="create"]').prop 'disabled', false
 
         selectRegion: (e)->
@@ -110,12 +103,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager = new toolbar_modal @getModalOptions()
             @manager.on 'refresh', @refresh, @
             @manager.on "slidedown", @renderSlides, @
-            @manager.on "slideup", @resetSlide, @
             @manager.on 'action', @doAction, @
-            @manager.on 'detail', @detail, @
             @manager.on 'close', =>
                 @manager.remove()
-                @collection.remove()
             @manager.on 'checked', @processDuplicate, @
 
             @manager.render()
@@ -123,9 +113,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 @manager?.render 'nocredential'
                 return false
             @initManager()
-
-        resetSlide: ->
-          @manager.$el.find(".slidebox").removeAttr('style')
 
         processDuplicate: ( event, checked ) ->
             if checked.length is 1
@@ -141,12 +128,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             fetching = false
             fetched = true
             data = @collection.toJSON()
-            _.each data, (e,f)->
-                if e.PercentProgress is 100
+            data = _.map data, (e,f)->
+                if e.status is "available"
                     e.completed = true
-                if e.SnapshotCreateTime
-                    e.started = (new Date(e.SnapshotCreateTime)).toString()
-                null
+                if e.created_at
+                    e.started = (new Date(e.created_at)).toString()
+                e
             dataSet =
                 items: data
             content = template.content dataSet
@@ -154,8 +141,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         initManager: ()->
             setContent = @setContent.bind @
-            currentRegion = Design.instance().get('region')
-            if (not fetched and not fetching) or (not regionsMark[currentRegion])
+            currentRegion = Design.instance()?.get('region')
+            if currentRegion and ((not fetched and not fetching) or (not regionsMark[currentRegion]))
                 fetching = true
                 regionsMark[currentRegion] = true
                 @collection.fetchForce().then setContent, setContent
@@ -181,41 +168,36 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             'create':(tpl)->
                 data =
                     volumes : {}
+                bindSelection @manager.$el, @selectionTemplate.call(@)
+                @bindVolumeSelection()
                 @manager.setSlide tpl data
-                @dropdown = @renderDropdown()
-                @manager.$el.find('#property-db-instance-choose').html(@dropdown.$el)
-                @manager.$el.find(".slidebox").css('overflow',"visible")
-            'duplicate': (tpl, checked)->
-                data = {}
-                data.originSnapshot = checked[0]
-                data.region = Design.instance().get('region')
-                if not checked
-                    return
-                data.newCopyName = checked[0].id.split(':').pop()+ "-copy"
-                snapshot = @collection.get checked[0].id
-                console.log(snapshot)
-                @manager.setSlide tpl data
-                if snapshot.isAutomated()
-                  @regionsDropdown = @renderRegionDropdown()
-                else
-                  @regionsDropdown = @renderRegionDropdown(snapshot.collection.region())
-                @regionsDropdown.on 'change', =>
-                    @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
-                @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
-                @manager.$el.find(".slidebox").css('overflow',"visible")
+
+#            'duplicate': (tpl, checked)->
+#                data = {}
+#                data.originSnapshot = checked[0]
+#                data.region = Design.instance().get('region')
+#                if not checked
+#                    return
+#                @manager.setSlide tpl data
+#                @regionsDropdown = @renderRegionDropdown()
+#                @regionsDropdown.on 'change', =>
+#                    @manager.$el.find('[data-action="duplicate"]').prop 'disabled', false
+#
+#                @manager.$el.find('#property-region-choose').html(@regionsDropdown.$el)
 
         doAction: (action, checked)->
             @["do_"+action] and @["do_"+action]('do_'+action,checked)
 
         do_create: (validate, checked)->
-            if not $('#property-snapshot-name-create').parsley 'validate'
-              return false
-            dbInstance = @instances.findWhere('id': $('#property-db-instance-choose').find('.selectbox .selection .manager-content-main').data('id'))
-            if not dbInstance
+            volumeId = @selectize.getValue()
+            if not volumeId then return false
+            volume = @volumes.findWhere('id': @selectize.getValue())
+            if not volume
                 return false
             data =
-                "DBSnapshotIdentifier": $("#property-snapshot-name-create").val()
-                'DBInstanceIdentifier': dbInstance.id
+                "name": $("#property-snapshot-name-create").val()
+                'volume_id': volume.get('id')
+                'description': $('#property-snapshot-desc-create').val()
             @switchAction 'processing'
             afterCreated = @afterCreated.bind @
             @collection.create(data).save().then afterCreated, afterCreated
@@ -235,18 +217,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 return false
             @switchAction 'processing'
             newName = @manager.$el.find('#property-snapshot-name').val()
+            description =  @manager.$el.find('#property-snapshot-desc').val()
             afterDuplicate = @afterDuplicate.bind @
-            accountNumber = App.user.attributes.account
-            if not /^\d+$/.test accountNumber.split('-').join('')
-              notification('error', lang.NOTIFY.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
-              return false
-            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
+            @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName, description).then afterDuplicate, afterDuplicate
 
 
         afterCreated: (result,newSnapshot)->
             @manager.cancel()
             if result.error
-                notification 'error', sprintf lang.NOTIFY.DB_SNAPSHOT_CREATE_FAILED, result.msg
+                notification 'error', sprintf lang.NOTIFY.CREATE_FAILED_BECAUSE_OF_XXX, result.msg
                 return false
             notification 'info', lang.NOTIFY.NEW_SNAPSHOT_IS_CREATED_SUCCESSFULLY
             #@collection.add newSnapshot
@@ -255,15 +234,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             currentRegion = Design.instance().get('region')
             @manager.cancel()
             if result.error
-                notification 'error', sprintf lang.NOTIFY.DUPLICATE_FAILED_BECAUSE_OF_XXX, ( result.awsResult or result.msg )
+                notification 'error', sprintf, lang.NOTIFY.DUPLICATE_FAILED_BECAUSE_OF_XXX, result.msg
                 return false
             #cancelselect && fetch
             if result.attributes.region is currentRegion
                 @collection.add result
-                notification 'info', lang.NOTIFY.DB_SNAPSHOT_DUPLICATE_SUCCESS
+                notification 'info', lang.NOTIFY.INFO_DUPLICATE_SNAPSHOT_SUCCESS
             else
                 @initManager()
-                notification 'info', lang.NOTIFY.DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION
+                notification 'info', lang.NOTIFY.INFO_ANOTHER_REGION_DUPLICATE_SNAPSHOT_SUCCESS
 
         afterDeleted: (result)->
             deleteCount--
@@ -273,7 +252,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 if deleteErrorCount > 0
                     notification 'error', sprintf lang.NOTIFY.XXX_SNAPSHOT_FAILED_TO_DELETE, deleteErrorCount
                 else
-                    notification 'info',  lang.NOTIFY.DB_SNAPSHOT_DELETE_SUCCESS
+                    notification 'info', lang.NOTIFY.INFO_DELETE_SNAPSHOT_SUCCESSFULLY
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
@@ -287,18 +266,21 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 else
                     $(@).hide()
 
-        detail: (event, data, $tr) ->
-          snapshotId = data.id
-          snapshotData = @collection.get(snapshotId).toJSON()
-          detailTpl = template.detail snapshotData
-          @manager.setDetail($tr, detailTpl)
+        selectionTemplate: ->
+          that = @
+          {
+            option: (result)->
+              volume = that.volumes.get(result.value)
+              template.option volume.toJSON()
+            item: template.item
+          }
 
         getModalOptions: ->
             that = @
             region = Design.instance().get('region')
-            regionName = constant.REGION_SHORT_LABEL[ region ]
+            regionName = constant.REGION_SHORT_LABEL[ region ] || region
 
-            title: "Manage DB Snapshots in #{regionName}"
+            title: "Manage Snapshots in #{regionName}"
             slideable: true
             context: that
             buttons: [
@@ -306,12 +288,6 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     icon: 'new-stack'
                     type: 'create'
                     name: 'Create Snapshot'
-                }
-                {
-                    icon: 'duplicate'
-                    type: 'duplicate'
-                    disabled: true
-                    name: 'Duplicate'
                 }
                 {
                     icon: 'del'
@@ -328,13 +304,13 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             columns: [
                 {
                     sortable: true
-                    width: "30%" # or 40%
+                    width: "20%" # or 40%
                     name: 'Name'
                 }
                 {
                     sortable: true
                     rowType: 'number'
-                    width: "20%" # or 40%
+                    width: "10%" # or 40%
                     name: 'Capicity'
                 }
                 {
@@ -345,9 +321,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 }
                 {
                     sortable: false
-                    width: "10%" # or 40%
-                    name: 'Detail'
+                    width: "30%" # or 40%
+                    name: 'Description'
                 }
             ]
 
-    snapshotRes

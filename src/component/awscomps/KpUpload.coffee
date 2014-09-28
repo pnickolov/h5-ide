@@ -1,4 +1,4 @@
-define [ './component/kp/kpDialogTpl', 'backbone', 'jquery' ], ( template_modal, Backbone, $ ) ->
+define [ 'component/awscomps/KpDialogTpl', 'backbone', 'jquery' ], ( template_modal, Backbone, $ ) ->
 
     Backbone.View.extend
 

@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, toolbar_modal, template, lang ) ->
+define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, toolbar_modal, template, lang ) ->
 
     Backbone.View.extend
 

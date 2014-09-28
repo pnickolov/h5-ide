@@ -1,7 +1,7 @@
 define [
     'toolbar_modal'
     'UI.modalplus'
-    'component/kp/kpDialogTpl'
+    'component/awscomps/KpDialogTpl'
     'kp_upload'
     'backbone'
     'jquery'

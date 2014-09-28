@@ -1,5 +1,5 @@
 
-define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CanvasView", "component/dbsbgroup/DbSubnetGPopup" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView, DbSubnetGPopup )->
+define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CanvasView", "DbSubnetGPopup" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView, DbSubnetGPopup )->
 
   CanvasElement.extend {
     ### env:dev ###

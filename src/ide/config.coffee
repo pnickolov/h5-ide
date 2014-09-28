@@ -177,34 +177,42 @@ require.config {
     #############################################
     # component                 # Merge in deploy
     #############################################
+    'AppAction'        : 'component/appaction/AppAction'
 
-    'validation'       : 'component/trustedadvisor/exposure'
-    'TaHelper'       : 'component/trustedadvisor/lib/TA.Helper'
-    'kp_dropdown'      : 'component/kp/kpDropdown'
-    'kp_manage'        : 'component/kp/kpManage'
-    'kp_upload'        : 'component/kp/kpUpload'
-    'sns_dropdown'     : 'component/sns/snsDropdown'
-    'sns_manage'       : 'component/sns/snsManage'
-    'combo_dropdown'   : 'component/common/comboDropdown'
-    'toolbar_modal'    : 'component/common/toolbarModal'
-    'dhcp'             : 'component/dhcp/dhcp'
-    'appAction'        : 'component/AppAction/AppAction'
-    'snapshotManager'  : 'component/snapshot/snapshot'
-    'rds_pg'           : 'component/rds_pg/rds_pg'
-    'rds_snapshot'     : 'component/rds_snapshot/rds_snapshot'
-    'sslcert_manage'   : 'component/sslcert/sslCertManage'
-    'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
-    'state_status'     : 'component/statestatus/main'
+    "ResDiff"          : "component/resdiff/ResDiff"
+    "DiffTree"         : "component/resdiff/DiffTree"
+
     "ThumbnailUtil"    : "component/exporter/Thumbnail"
     "JsonExporter"     : "component/exporter/JsonExporter"
-    "ResDiff"          : "component/common/diff/ResDiff"
-    "DiffTree"         : "component/common/diff/DiffTree"
-    'og_manage'        : 'component/optiongroup/ogManage'
-    'og_manage_app'    : 'component/optiongroup/ogManageApp'
-    'og_dropdown'      : 'component/optiongroup/ogDropDown'
 
-    'OsKp'             : 'component/os_kp/kpDropdown'
-    'OsSnapshot'       : 'component/os_snapshot/snapshot'
+    'validation'       : 'component/trustedadvisor/exposure'
+    'TaHelper'         : 'component/trustedadvisor/lib/TA.Helper'
+    "TaGui"            : 'component/trustedadvisor/gui/main'
+
+    'state_status'     : 'component/statestatus/main'
+
+    'combo_dropdown'   : 'component/common/comboDropdown'
+    'toolbar_modal'    : 'component/common/toolbarModal'
+
+    'dhcp'             : 'component/awscomps/Dhcp'
+    'kp_dropdown'      : 'component/awscomps/KpDropdown'
+    'kp_manage'        : 'component/awscomps/KpManage'
+    'kp_upload'        : 'component/awscomps/KpUpload'
+    'sns_dropdown'     : 'component/awscomps/SnsDropdown'
+    'sns_manage'       : 'component/awscomps/SnsManage'
+    'snapshotManager'  : 'component/awscomps/Snapshot'
+    'rds_pg'           : 'component/awscomps/RdsPg'
+    'rds_snapshot'     : 'component/awscomps/RdsSnapshot'
+    'sslcert_manage'   : 'component/awscomps/SslCertManage'
+    'sslcert_dropdown' : 'component/awscomps/SslCertDropdown'
+    'og_manage'        : 'component/awscomps/OgManage'
+    'og_manage_app'    : 'component/awscomps/OgManageApp'
+    'og_dropdown'      : 'component/awscomps/OgDropDown'
+    'SGRulePopup'      : "component/awscomps/SGRulePopup"
+    'DbSubnetGPopup'   : "component/awscomps/DbSubnetGPopup"
+
+    'OsKp'             : 'component/oscomps/KpDropdown'
+    'OsSnapshot'       : 'component/oscomps/Snapshot'
 
   ### env:dev:end ###
   shim :
@@ -282,37 +290,48 @@ require.config {
     ]
 
     "component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
-    "component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
+    "component/Validation"              : [ "validation", "TaHelper", "TaGui" ]
     "component/StateStatus"             : [ "state_status" ]
-    "component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup", "appAction", 'og_manage', 'og_manage_app', 'og_dropdown' ]
     "component/stateeditor/stateeditor" : []
 
-    "component/sharedrescomp" : [
+    "component/AppAction" : [ "AppAction" ]
+    "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
+    "component/Common"    : [ "combo_dropdown", "toolbar_modal" ]
+
+    "component/AwsComps" : [
+      'dhcp'
       'kp_dropdown'
       'kp_manage'
       'kp_upload'
       'sns_dropdown'
       'sns_manage'
-      'combo_dropdown'
-      'toolbar_modal'
-      'dhcp'
       'snapshotManager'
+      'rds_pg'
+      'rds_snapshot'
       'sslcert_manage'
       'sslcert_dropdown'
-      'ResDiff'
-      'DiffTree'
-      "rds_pg"
-      "rds_snapshot"
+      'og_manage'
+      'og_manage_app'
+      'og_dropdown'
+      'SGRulePopup'
+      'DbSubnetGPopup'
+    ]
+
+    "component/oscomps" : [
+      'OsKp'
+      'OsSnapshot'
     ]
 
     "cloudres/CrBundle"  : [ "CloudResources" ]
     "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
     "workspaces/Dashboard" : []
+    "workspaces/DashboardOs" : []
 
-    "workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
-    "workspaces/editor/framework/DesignBundle" : [ "Design" ]
     "workspaces/OpsEditor" : []
+    "workspaces/EditorAws" : []
+    "workspaces/EditorOs"  : []
+
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
     "component/AwsDialog" : [ "Design" ]

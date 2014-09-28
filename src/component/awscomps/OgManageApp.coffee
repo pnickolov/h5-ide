@@ -1,7 +1,7 @@
 define [
     'constant'
     'CloudResources'
-    './component/optiongroup/ogTpl'
+    'component/awscomps/OgTpl'
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'

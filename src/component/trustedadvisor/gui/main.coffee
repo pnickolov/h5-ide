@@ -2,7 +2,7 @@
 #  pop-up for component/trustedadvisor module
 ####################################
 
-define [ 'jquery', 'event', './view', './model' ], ( $, ide_event, View, Model ) ->
+define [ 'jquery', 'event', 'component/trustedadvisor/gui/view', 'component/trustedadvisor/gui/model' ], ( $, ide_event, View, Model ) ->
 
     #private
     loadModule = ( type, status ) ->

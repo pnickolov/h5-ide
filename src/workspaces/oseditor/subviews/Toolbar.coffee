@@ -11,9 +11,9 @@ define [
   "ResDiff"
   'constant'
   'event'
-  'component/trustedadvisor/gui/main'
+  'TaGui'
   "CloudResources"
-  "appAction"
+  "AppAction"
   "UI.notification"
   "backbone"
 ], ( OpsModel, ToolbarTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->

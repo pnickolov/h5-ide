@@ -141,7 +141,7 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"         : "workspaces/OpsEditor"
+    "OpsEditor"         : "workspaces/coreeditor/OpsEditor"
     'Design'            : 'workspaces/coreeditor/Design'
     "ResourceModel"     : "workspaces/coreeditor/ModelResource"
     "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
@@ -191,6 +191,7 @@ require.config {
     "TaGui"            : 'component/trustedadvisor/gui/main'
 
     "StateEditor"      : "component/stateeditor/stateeditor"
+    "StateEditorView"  : "component/stateeditor/view"
 
     'state_status'     : 'component/statestatus/main'
 
@@ -298,9 +299,8 @@ require.config {
     "component/Exporter"    : [ "ThumbnailUtil", "JsonExporter" ]
     "component/Validation"  : [ "validation", "TaHelper", "TaGui" ]
     "component/StateStatus" : [ "state_status" ]
-    "component/StateEditor" : [ "StateEditor" ]
+    "component/StateEditor" : [ "StateEditor", "StateEditorView" ]
 
-    "component/AppAction" : [ "AppAction" ]
     "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
     "component/Common"    : [ "combo_dropdown", "toolbar_modal" ]
 
@@ -323,27 +323,51 @@ require.config {
       'DbSubnetGPopup'
     ]
 
-    "component/oscomps" : [
+    "component/OsComps" : [
       'OsKp'
       'OsSnapshot'
     ]
 
+    "component/AppAction" : [ "AppAction" ]
+
     "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
-    "workspaces/Dashboard" : []
-    "workspaces/DashboardOs" : []
+    "workspaces/dashboard/Dashboard"     : []
+    "workspaces/osdashboard/DashboardOs" : []
 
-    "workspaces/OpsEditor" : []
-    "workspaces/EditorAws" : []
-    "workspaces/EditorOs"  : []
+    "workspaces/coreeditor/CoreEditorBundle" : [
+      "OpsEditor"
+      "Design"
+      "ResourceModel"
+      "ComplexResModel"
+      "ConnectionModel"
+      "GroupModel"
+      "CoreEditor"
+      "CoreEditorView"
+      "CoreEditorApp"
+      "CoreEditorViewApp"
+      "ProgressViewer"
+      "CanvasElement"
+      "CanvasLine"
+      "CanvasView"
+      "CanvasViewLayout"
+      "CanvasManager"
+      "CanvasPopup"
+    ]
+
+    "workspaces/awseditor/EditorAws" : []
+    "workspaces/oseditor/EditorOs"  : []
 
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-    "component/stateeditor/stateeditor" : ["Design"]
-    "component/sharedrescomp"  : [ "Design" ]
-    "component/Validation" : ["Design"]
+    "component/StateEditor" : [ "Design", "OpsModel" ]
+    "component/Validation"  : [ "Design" ]
+    "component/AwsComps"    : [ "Design", "OpsModel" ]
+    "component/OsComps"     : [ "Design", "OpsModel" ]
 
-    "component/AppAction" : ["Design"]
+    "component/AppAction"                : [ "Design" ] # Workaround for messy deps
+    "workspaces/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
+    "workspaces/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
 
   ### env:prod:end ###
 }
@@ -366,20 +390,22 @@ requirejs.onError = ( err )->
 require [
   'ide/Application'
   "cloudres/CrBundle"
-  "workspaces/DashboardOs"
+  "workspaces/osdashboard/DashboardOs"
+  "OpsEditor"
   "ide/Router"
   "MC"
   'lib/aws'
 
   # Extra Workspaces
-  "workspaces/EditorAws"
-  "workspaces/EditorOs"
-], ( Application, CrBundle, Dashboard, Router ) ->
+  "workspaces/awseditor/EditorAws"
+  "workspaces/oseditor/EditorOs"
+], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 
   ###########
   # IDE Init
   ###########
-  # There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
+  window.OpsEditor = OpsEditor
+
   window.Router    = new Router()
   (new Application()).initialize().then ()->
     window.Router.start()

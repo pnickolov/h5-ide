@@ -2,14 +2,14 @@
 #  View(UI logic) for component/stateeditor
 #############################
 
-define [ './model',
+define [ 'component/stateeditor/model',
          'event',
          'i18n!/nls/lang.js',
-         './template',
-         './validate',
+         'component/stateeditor/template',
+         'component/stateeditor/validate',
          'constant',
          'instance_model',
-         './lib/markdown',
+         'component/stateeditor/lib/markdown',
          'UI.errortip'
 ], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 

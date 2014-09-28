@@ -6,7 +6,7 @@ define [
     './panels/ResourcePanel'
     './panels/ConfigPanel'
     './panels/PropertyPanel'
-    'component/stateeditor/view'
+    "StateEditorView"
 
 ], ( Backbone, constant, PanelTpl, ResourcePanel, ConfigPanel, PropertyPanel, StatePanel )->
 

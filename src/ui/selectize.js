@@ -1,3 +1,6 @@
+
+define(["jquery"],function(){
+
 // for data-tip
 $(function() {
     $(document.body).on('focus blur', 'input.selection[data-tip]', function(event) {
@@ -106,6 +109,7 @@ $(function() {
     };
 })(jQuery);
 
+});
 /**
  * sifter.js
  * Copyright (c) 2013 Brian Reavis & contributors

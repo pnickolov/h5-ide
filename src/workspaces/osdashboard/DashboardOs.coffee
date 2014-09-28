@@ -1,5 +1,5 @@
 
-define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard/DashboardModel", 'i18n!/nls/lang.js'], ( Workspace, DashboardView, DashboardModel, lang )->
+define ["Workspace", "./DashboardView", "./DashboardModel", 'i18n!/nls/lang.js'], ( Workspace, DashboardView, DashboardModel, lang )->
 
   class Dashboard extends Workspace
 
@@ -22,31 +22,16 @@ define ["Workspace", "workspaces/dashboard/DashboardView", "workspaces/dashboard
       @listenTo App.model.stackList(), "update", ()-> self.__renderControl "updateOpsList"
       @listenTo App.model.appList(),   "update", ()-> self.__renderControl "updateOpsList"
 
-      @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateRegionList", arguments
-      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateRegionList", arguments
-      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateOpsList"
+      @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateOpsList", arguments
+      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateOpsList", arguments
+
+      @listenTo @model, "change:regionResources", ( type ) ->
+        self.view.markUpdated()
+        self.__renderControl "updateRegionResources", arguments
 
       @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
 
-      # Watch changes in aws resources
-      @listenTo @model, "change:globalResources", ()->
-        self.view.markUpdated()
-        self.__renderControl "updateGlobalResources"
-
-      @listenTo @model, "change:regionResources", ()->
-        self.view.markUpdated()
-        self.__renderControl "updateRegionResources"
-
-      # Watch updates of visualize unmanaged vpc
-      @listenTo @model, "change:visualizeData", ()-> self.__renderControl "updateVisModel"
-
-      # Watch changes in user
-      @listenTo App.user, "change:credential", ()->
-        self.model.clearVisualizeData()
-        self.model.fetchAwsResources()
-        self.view.updateDemoView()
-
-      @model.fetchAwsResources()
+      @model.fetchOsResources()
 
       @__renderControlMap = {}
       return

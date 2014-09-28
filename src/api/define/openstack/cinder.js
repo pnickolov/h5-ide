@@ -15,7 +15,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_qos_GetAssociations'               : { type:'openstack', url:'/os/cinder/v2_0/qos/',	method:'GetAssociations',	params:['username', 'session_id', 'region', 'qos_id']   },
 		'os_qos_Associate'                     : { type:'openstack', url:'/os/cinder/v2_0/qos/',	method:'Associate',	params:['username', 'session_id', 'region', 'qos_id', 'volume_type_id']   },
 		'os_qos_Disassociate'                  : { type:'openstack', url:'/os/cinder/v2_0/qos/',	method:'Disassociate',	params:['username', 'session_id', 'region', 'volume_type_id']   },
-		'os_cinder_quota_Info'                 : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'Info',	params:['username', 'session_id', 'region', 'quota_tenant_id']   },
+		'os_cinder_quota_List'                 : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'List',	params:['username', 'session_id', 'region', 'quota_tenant_id']   },
 		'os_cinder_quota_Update'               : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'Update',	params:['username', 'session_id', 'region', 'quota_tenant_id', 'quota']   },
 		'os_cinder_quota_Delete'               : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'Delete',	params:['username', 'session_id', 'region', 'quota_tenant_id']   },
 		'os_cinder_quota_GetUserQuota'         : { type:'openstack', url:'/os/cinder/v2_0/quota/',	method:'GetUserQuota',	params:['uesrname', 'session_id', 'region', 'quota_tenant_id', 'user_id', 'is_detail']   },

@@ -1324,12 +1324,18 @@ $(function() {
             autoGrow($control_input);
 
             $control.on({
-                mousedown : function() { return self.onMouseDown.apply(self, arguments); },
+                mousedown : function(event) {
+                    return self.onMouseDown.apply(self, arguments);
+                },
                 click     : function() { return self.onClick.apply(self, arguments); }
             });
 
             $control_input.on({
-                mousedown : function(e) { e.stopPropagation(); },
+                mousedown : function(e) {
+                    if (self.isOpen) {
+                        e.stopPropagation();
+                    }
+                },
                 keydown   : function() { return self.onKeyDown.apply(self, arguments); },
                 keyup     : function() { return self.onKeyUp.apply(self, arguments); },
                 keypress  : function() { return self.onKeyPress.apply(self, arguments); },

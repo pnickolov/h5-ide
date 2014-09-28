@@ -9488,7 +9488,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       pointer-events: none;
       color: #555; }
   #OpsEditor .OEPanelRight.property .os-property-res-inexist, #OpsEditor .OEPanelRight.config .os-property-res-inexist {
-    text-align: center; }
+    text-align: center;
+    margin-top: 40px; }
   #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
     float: right;
     margin: 5px;

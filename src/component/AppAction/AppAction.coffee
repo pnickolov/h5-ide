@@ -16,7 +16,7 @@ define [
   'kp_dropdown'
   'OsKp'
   'TaGui'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, kpDropdown, OsKp, TA )->
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA )->
   AppAction = Backbone.View.extend
 
     runStack: (event, workspace)->
@@ -88,8 +88,8 @@ define [
         osKeypair.$input.on 'change', ()->
           osKeypair.setDefaultKeyPair()
         return false
-      if kpDropdown.hasResourceWithDefaultKp()
-        keyPairDropdown = new kpDropdown()
+      if AwsKp.hasResourceWithDefaultKp()
+        keyPairDropdown = new AwsKp()
         if modal then modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el else return false
         hideKpError = @hideError.bind @
         keyPairDropdown.dropdown.on 'change', ->
@@ -110,7 +110,7 @@ define [
         if OsKp::hasResourceWithDefaultKp()
           @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
         return not OsKp::hasResourceWithDefaultKp()
-      if not kpDropdown.hasResourceWithDefaultKp()
+      if not AwsKp.hasResourceWithDefaultKp()
         return true
       kpModal = Design.modelClassForType( constant.RESTYPE.KP )
       defaultKP = kpModal.getDefaultKP()

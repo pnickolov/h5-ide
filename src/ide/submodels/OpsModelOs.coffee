@@ -57,6 +57,13 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           coordinate : [ 42, 40 ]
 
       json.component =
+        # DefaultKP Component
+        "60973E93-4180-4B27-B0B2-9440094D9F26":
+          type : "OS::Nova::KeyPair"
+          uid  : "60973E93-4180-4B27-B0B2-9440094D9F26"
+          resource:
+            name: "DefaultKP"
+
         "83F25207-4AC4-4B88-A320-D951AC4DF5DC" :
           type : "OS::ExternalNetwork"
           uid  : "83F25207-4AC4-4B88-A320-D951AC4DF5DC"

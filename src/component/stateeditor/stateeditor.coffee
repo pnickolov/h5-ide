@@ -2,7 +2,7 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], ( ide_event, View, Model ) ->
+define [ 'event', 'component/stateeditor/view', 'component/stateeditor/model', 'component/stateeditor/lib/ace', 'UI.modal', 'jquerysort' ], ( ide_event, View, Model ) ->
 
     #private
     loadModule = ( allCompData, uid, resId, force ) ->

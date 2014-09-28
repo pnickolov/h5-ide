@@ -189,6 +189,8 @@ require.config {
     'TaHelper'         : 'component/trustedadvisor/lib/TA.Helper'
     "TaGui"            : 'component/trustedadvisor/gui/main'
 
+    "StateEditor"      : "component/stateeditor/stateeditor"
+
     'state_status'     : 'component/statestatus/main'
 
     'combo_dropdown'   : 'component/common/comboDropdown'
@@ -289,10 +291,12 @@ require.config {
       'customergateway_service'
     ]
 
-    "component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
-    "component/Validation"              : [ "validation", "TaHelper", "TaGui" ]
-    "component/StateStatus"             : [ "state_status" ]
-    "component/stateeditor/stateeditor" : []
+    "cloudres/CrBundle"  : [ "CloudResources" ]
+
+    "component/Exporter"    : [ "ThumbnailUtil", "JsonExporter" ]
+    "component/Validation"  : [ "validation", "TaHelper", "TaGui" ]
+    "component/StateStatus" : [ "state_status" ]
+    "component/StateEditor" : [ "StateEditor" ]
 
     "component/AppAction" : [ "AppAction" ]
     "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
@@ -322,7 +326,6 @@ require.config {
       'OsSnapshot'
     ]
 
-    "cloudres/CrBundle"  : [ "CloudResources" ]
     "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
     "workspaces/Dashboard" : []
@@ -334,14 +337,11 @@ require.config {
 
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-    "component/AwsDialog" : [ "Design" ]
     "component/stateeditor/stateeditor" : ["Design"]
     "component/sharedrescomp"  : [ "Design" ]
     "component/Validation" : ["Design"]
 
-    "workspaces/editor/PropertyPanel" : [ "Design" ]
-    "workspaces/editor/framework/DesignBundle" : []
-    "workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
+    "component/AppAction" : ["Design"]
 
   ### env:prod:end ###
 }

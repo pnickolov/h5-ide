@@ -2,7 +2,7 @@
 define [
   "../template/TplRightPanel"
   "../property/base/main"
-  'component/stateeditor/stateeditor'
+  'StateEditor'
   "constant"
   "Design"
   "OpsModel"

@@ -13,6 +13,7 @@ define [
   "./oseditor/model/OsModelPool"
   "./oseditor/model/OsModelPort"
   "./oseditor/model/OsModelRt"
+  "./oseditor/model/OsModelKeypair"
   "./oseditor/model/OsModelServer"
   "./oseditor/model/OsModelSg"
   "./oseditor/model/OsModelSgRule"

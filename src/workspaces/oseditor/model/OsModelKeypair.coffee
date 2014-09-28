@@ -90,8 +90,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
         type : @type
         uid  : @id
         resource :
-          KeyFingerprint : @get("fingerprint") or ''
-          KeyName        : @get("appId")
+          fingerprint : @get("fingerprint") or ''
+          keyName        : @get("keyName") or ''
       }
 
   }, {
@@ -111,9 +111,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
       new KeypairModel({
         id          : data.uid
         name        : data.name
-      #appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
-        appId       : data.resource.KeyName
-        fingerprint : data.resource.KeyFingerprint
+        keyName     : data.resource.keyName
+        fingerprint : data.resource.fingerprint
       })
       null
   }

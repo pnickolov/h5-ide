@@ -36,7 +36,6 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       has = false
       Design.instance().eachComponent ( comp ) ->
         if comp.type is constant.RESTYPE.OSSERVER
-          console.log comp
           if comp.get('keypair') is "$DefaultKeyPair" and comp.get('credential') is 'keypair'
             has = true
             return
@@ -53,7 +52,6 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
             defaultKp = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
             defaultKp.set('keyName', targetKeypair.get('name'))
             defaultKp.set('fingerprint', targetKeypair.get('fingerprint'))
-            defaultKp
 
     updateOption: ->
       optionList = _.map @collection.toJSON(), (e)->

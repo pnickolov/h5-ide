@@ -48,7 +48,7 @@ define [
         @setTitle()
 
         if @mode in [ 'app', 'appedit' ] and not @appModel and @model.type isnt constant.RESTYPE.OSEXTNET
-            @$el.append 'The resource may be not exist.'
+            @$el.append PropertyPanelTpl.empty()
         else
             @$el.append propertyView.render().el
 

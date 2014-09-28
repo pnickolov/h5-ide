@@ -7137,7 +7137,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9156,7 +9157,8 @@ g.shadow {
     text-decoration: underline; }
 
 .openstack .OEPanelRight {
-  width: 280px; }
+  width: 280px;
+  font-size: 12px; }
   .openstack .OEPanelRight .panel-body {
     overflow: auto;
     position: absolute;
@@ -9485,6 +9487,8 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }
+  #OpsEditor .OEPanelRight.property .os-property-res-inexist, #OpsEditor .OEPanelRight.config .os-property-res-inexist {
+    text-align: center; }
   #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
     float: right;
     margin: 5px;

@@ -2321,6 +2321,55 @@ select.select3.disabled {
   border-left-color: #fff;
   border-right-width: 0; }
 
+.bubble-top .arrow {
+  border-width: 11px;
+  top: 50%;
+  left: -11px;
+  margin-top: -11px;
+  border-right-color: #ccc;
+  border-left-width: 0; }
+
+.bubble-top .arrow:after {
+  border-width: 10px;
+  content: "";
+  bottom: -10px;
+  left: 1px;
+  border-right-color: #fff;
+  border-left-width: 0; }
+
+.bubble-bottom .arrow {
+  border-width: 11px;
+  margin-top: -8px;
+  z-index: -1;
+  left: 50%;
+  margin-left: -21px;
+  border-left-color: #ccc;
+  border-right-width: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 20px;
+  border-color: transparent transparent #ffffff transparent; }
+
+#bubble-box.bubble-popup #bubble-content {
+  padding: 20px; }
+  #bubble-box.bubble-popup #bubble-content .info {
+    text-align: center; }
+  #bubble-box.bubble-popup #bubble-content .operate {
+    float: right;
+    margin: 20px 0 20px 0; }
+    #bubble-box.bubble-popup #bubble-content .operate li {
+      float: right;
+      text-align: right;
+      width: 50px;
+      margin-left: 20px;
+      padding: 3px 7px;
+      cursor: pointer; }
+    #bubble-box.bubble-popup #bubble-content .operate .confirm {
+      background-color: red;
+      color: #fff;
+      border-radius: 3px; }
+
 /* Selectbox V2 */
 .selectbox {
   position: relative;

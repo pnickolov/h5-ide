@@ -4,7 +4,8 @@ define [
     './template'
     'CloudResources'
     'UI.selection'
-], ( constant, OsPropertyView, template, CloudResources, bindSelection ) ->
+    'UI.bubblepopup'
+], ( constant, OsPropertyView, template, CloudResources, bindSelection, bubblePopup ) ->
 
     OsPropertyView.extend {
 
@@ -364,9 +365,13 @@ define [
 
         removeSG: (event) ->
 
-            @sgModel.remove()
-            @listView.refreshList()
-            @listView.hideFloatPanel()
+            that = @
+            bubblePopup $(event.currentTarget), template.sgRemovePopup(), {
+                '.confirm': () ->
+                    that.sgModel.remove()
+                    that.listView.refreshList()
+                    that.listView.hideFloatPanel()
+            }
 
         updateCount: () ->
 

@@ -116,6 +116,7 @@ require.config {
     'UI.modalplus'       : 'ui/UI.modalplus'
     'selectize'          : 'ui/selectize'
     'UI.selection'       : 'ui/UI.selection'
+    'UI.bubblepopup'     : 'ui/UI.bubblepopup'
 
     #############################################
     # cloud resources           # Merge in deploy
@@ -274,6 +275,7 @@ require.config {
       "UI.nanoscroller"
       "selectize"
       "UI.selection"
+      "UI.bubblepopup"
     ]
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
     "service/service" : [

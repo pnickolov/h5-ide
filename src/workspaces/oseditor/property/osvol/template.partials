@@ -51,6 +51,11 @@
     <dl class="vertical">
         <dt>Size</dt><dd>{{emptyStr size}}</dd>
     </dl>
+    {{#if snapshot_id}}
+        <dl class="vertical">
+            <dt>Snapshot ID</dt><dd>{{emptyStr snapshot_id}}</dd>
+        </dl>
+    {{/if}}
     <dl class="vertical">
         <dt>Description</dt><dd>{{emptyStr description}}</dd>
     </dl>

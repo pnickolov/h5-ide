@@ -42,12 +42,25 @@ gulp.task("dev",     function(){ return developTask.compileDev(); });
 gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
 gulp.task("release", function(){ return releaseTask.build( "release" ); });
 
-gulp.task("public", function(){ return releaseTask.build( "public" ); });
+gulp.task("public", function(){ console.log("Deprecated, use `gulp build -b public` instead."); });
 
 gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
 gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
 
 gulp.task("trace", function(){ return traceTask(); });
+
+gulp.task("build", function(){
+  var index = process.argv.indexOf("build");
+  if ( index < 0 ) { return console.error("Fail to parse cmd"); }
+  var argv = process.argv.splice( index + 1 );
+  if ( !argv.length ) {
+    console.log( "Usage: (Make sure the 'testBranch' is created in the origin) " )
+    console.log( "  gulp build -testBranch" );
+    console.log( "  gulp build -b testBranch\n\n" );
+    return
+  }
+  releaseTask.build( "release", argv.length >= 2 ? argv[1].replace(/^-./,"") : argv[0] );
+});
 
 // Help
 gulp.task("help", function(){
@@ -59,6 +72,7 @@ gulp.task("help", function(){
   console.log( "\n\n ===== For Delpoyment =====")
   console.log( "\n * gulp debug    - Compile IDE in release mode, and push to remote develop" );
   console.log( "\n * gulp release  - Like `gulp debug`, except: minification applied and push to master" );
+  console.log( "\n * gulp build -b ** - Build the IDE in release mode, and push to remote ** branch")
   console.log( "\n * gulp public   - Like `gulp release`, except: the ide won't redirect to https" );
   console.log( "\n * gulp qa       - Like `gulp debug`, except: serve files @127.0.0.1:3002 instead of pushing code." );
   console.log("");

@@ -423,16 +423,19 @@ Tasks =
   #*** Final Git commit
   #*** Push to remote
 module.exports =
-  build : ( mode )->
+  build : ( mode, branchName )->
 
     TasksEnvironment.isDebug    = mode is "qa" or mode is "debug"
-    TasksEnvironment.isRelease  = mode is "release" or mode is "public"
+    TasksEnvironment.isRelease  = mode is "release"
     TasksEnvironment.isQa       = mode is "qa"
-    TasksEnvironment.isPublic   = mode is "public"
+    TasksEnvironment.isPublic   = branchName is "public"
     TasksEnvironment.outputPath = if mode is "qa" then "./qa" else undefined
-    TasksEnvironment.repoBranch = "master"
-    if TasksEnvironment.isDebug  then TasksEnvironment.repoBranch = "develop"
-    if TasksEnvironment.isPublic then TasksEnvironment.repoBranch = "public"
+
+    if branchName
+      TasksEnvironment.repoBranch = branchName
+    else
+      TasksEnvironment.repoBranch = "master"
+      if TasksEnvironment.isDebug then TasksEnvironment.repoBranch = "develop"
 
     ideversion.read()
 

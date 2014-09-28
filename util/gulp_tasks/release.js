@@ -424,19 +424,20 @@
   };
 
   module.exports = {
-    build: function(mode) {
+    build: function(mode, branchName) {
       var tasks;
       TasksEnvironment.isDebug = mode === "qa" || mode === "debug";
-      TasksEnvironment.isRelease = mode === "release" || mode === "public";
+      TasksEnvironment.isRelease = mode === "release";
       TasksEnvironment.isQa = mode === "qa";
-      TasksEnvironment.isPublic = mode === "public";
+      TasksEnvironment.isPublic = branchName === "public";
       TasksEnvironment.outputPath = mode === "qa" ? "./qa" : void 0;
-      TasksEnvironment.repoBranch = "master";
-      if (TasksEnvironment.isDebug) {
-        TasksEnvironment.repoBranch = "develop";
-      }
-      if (TasksEnvironment.isPublic) {
-        TasksEnvironment.repoBranch = "public";
+      if (branchName) {
+        TasksEnvironment.repoBranch = branchName;
+      } else {
+        TasksEnvironment.repoBranch = "master";
+        if (TasksEnvironment.isDebug) {
+          TasksEnvironment.repoBranch = "develop";
+        }
       }
       ideversion.read();
       tasks = [Tasks.correctReleaseVersion, Tasks.checkGitVersion, Tasks.cleanRepo, Tasks.copyAssets, Tasks.copyJs, Tasks.compileLangSrc, Tasks.compileCoffee, Tasks.removeRedirectForPublic, Tasks.compileTemplate, Tasks.processHtml, Tasks.concatJS, Tasks.removeBuildFolder, Tasks.test];

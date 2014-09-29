@@ -12,13 +12,14 @@ define [
   "./submodels/OpsCollection"
   "OpsModel"
   "ApiRequest"
+  "ApiRequestOs"
   "backbone"
   "constant"
   "ThumbnailUtil"
 
   "./submodels/OpsModelOs"
   "./submodels/OpsModelAws"
-], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
+], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -88,18 +89,23 @@ define [
       @attributes.stackList.add m
       m
 
-    getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
-    getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
-    getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
-    getRdsData: ( awsRegion ) -> (@__appdata[ awsRegion ] || {}).rds
+    getPriceData : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).price
+    getOsFamilyConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).osFamilyConfig
+    getInstanceTypeConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).instanceTypeConfig
+    getRdsData: ( awsRegion ) -> (@__awsdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
+
+
+    getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
+    getOpenstackImages  : ( provider, region )-> @__osdata[ provider ][ region ].images
 
 
     ###
       Internal methods
     ###
     initialize : ()->
-      @__appdata = {}
+      @__awsdata = {}
+      @__osdata  = {}
       @__stateModuleData = {}
       @__initializeNotification()
       return
@@ -111,48 +117,69 @@ define [
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # Load Application Data.
-      appdata = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )->
+      awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-        for i in res
-          instanceTypeConfig = {}
 
-          self.__appdata[ i.region ] = {
-            price              : i.price
-            osFamilyConfig     : i.instance_types.sort
-            instanceTypeConfig : instanceTypeConfig
-            rds                : i.rds
-          }
-
-          # Format instance type info.
-          for typeInfo in i.instance_types.info || []
-            if not typeInfo then continue
-            cpu = typeInfo.cpu || {}
-            typeInfo.name = typeInfo.description
-
-            typeInfo.formated_desc = [
-              typeInfo.name || ""
-              cpu.units + " ECUs"
-              cpu.cores + " vCPUs"
-              typeInfo.memory + " GiB memory"
-            ]
-            typeInfo.description = typeInfo.formated_desc.join(", ")
-
-            storage = typeInfo.storage
-            if storage and storage.ssd is true
-              typeInfo.description += ", #{storage.count} x #{storage.size} GiB SSD Storage Capacity"
-
-            instanceTypeConfig[ typeInfo.typeName ] = typeInfo
-
-        return
+      osData = ApiRequestOs("os_os",{provider:"awcloud",regions:[]}).then (res)-> self.__parseOsData( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
-      Q.all([ sp, ap, appdata ]).then ()->
+      Q.all([ sp, ap, awsData, osData ]).then ()->
         try
           ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
         catch e
 
         return
+
+    __parseAwsData : ( res )->
+      for i in res
+        instanceTypeConfig = {}
+
+        @__awsdata[ i.region ] = {
+          price              : i.price
+          osFamilyConfig     : i.instance_types.sort
+          instanceTypeConfig : instanceTypeConfig
+          rds                : i.rds
+        }
+
+        # Format instance type info.
+        for typeInfo in i.instance_types.info || []
+          if not typeInfo then continue
+          cpu = typeInfo.cpu || {}
+          typeInfo.name = typeInfo.description
+
+          typeInfo.formated_desc = [
+            typeInfo.name || ""
+            cpu.units + " ECUs"
+            cpu.cores + " vCPUs"
+            typeInfo.memory + " GiB memory"
+          ]
+          typeInfo.description = typeInfo.formated_desc.join(", ")
+
+          storage = typeInfo.storage
+          if storage and storage.ssd is true
+            typeInfo.description += ", #{storage.count} x #{storage.size} GiB SSD Storage Capacity"
+
+          instanceTypeConfig[ typeInfo.typeName ] = typeInfo
+
+        return
+
+    __parseOsData : ( res )->
+      for provider, dataset of res
+        for data in dataset
+          providerData = @__osdata[ provider ] || (@__osdata[ provider ]={})
+
+          for image in data.image
+            if (image.architecture is "i686" or image.architecture is "x86_64") and "centos|debian|fedora|gentoo|opensuse|redhat|suse|ubuntu|windows|cirros".indexOf( image.os_distro )
+              image.os_type = image.os_distro
+            else
+              image.os_type = "unknown"
+
+          providerData[ data.region ] =
+            flavors : new Backbone.Collection( _.values(data.flavor) )
+            images  : new Backbone.Collection( _.values(data.image)  )
+
+      return
 
     fetchStateModule : ( repo, tag )->
       data = @getStateModule( repo, tag )

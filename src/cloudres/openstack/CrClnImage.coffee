@@ -37,7 +37,7 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
 
       #cache(temp)
       tempDefer = Q.defer()
-      tempDefer.resolve constant.FLAVOR_INFO
+      tempDefer.resolve()
       tempDefer.promise
 
     parseFetchData : (res)-> _.values(res)

@@ -97,7 +97,6 @@ define [
 
 
     getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
-    getOpenstackImages  : ( provider, region )-> @__osdata[ provider ][ region ].images
 
 
     ###
@@ -120,7 +119,7 @@ define [
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
 
-      osData = ApiRequestOs("os_os",{provider:"awcloud",regions:[]}).then (res)-> self.__parseOsData( res )
+      osData = ApiRequestOs("os_os",{provider:"awcloud",regions:["flavor"]}).then (res)-> self.__parseOsData( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
@@ -168,16 +167,8 @@ define [
       for provider, dataset of res
         for data in dataset
           providerData = @__osdata[ provider ] || (@__osdata[ provider ]={})
-
-          for image in data.image
-            if (image.architecture is "i686" or image.architecture is "x86_64") and "centos|debian|fedora|gentoo|opensuse|redhat|suse|ubuntu|windows|cirros".indexOf( image.os_distro )
-              image.os_type = image.os_distro
-            else
-              image.os_type = "unknown"
-
           providerData[ data.region ] =
             flavors : new Backbone.Collection( _.values(data.flavor) )
-            images  : new Backbone.Collection( _.values(data.image)  )
 
       return
 

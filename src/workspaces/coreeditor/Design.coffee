@@ -239,7 +239,7 @@ define [
 
       @use()
 
-      DesignImpl.call this, @__opsModel
+      @initialize()
       json = @__opsModel.getJsonData()
       @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
 

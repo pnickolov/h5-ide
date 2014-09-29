@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ './SGRulepppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lang, Design, ide_event ) ->
+define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lang, Design, ide_event ) ->
 
     SGRulePopupView = Backbone.View.extend {
 

@@ -140,13 +140,15 @@ define [
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        @animateUsage(child, Math.random())
+        @animateUsage(child, Math.round(Math.random()*100), 100)
       return
 
-    animateUsage: (elem, usage)->
+    animateUsage: (elem, usage, quota)->
       $path = elem.find(".quota-path.usage")
-      length = $path[0].getTotalLength() * (1-usage)
+      length = $path[0].getTotalLength() * (1-usage/quota)
       $path.attr("stroke-dashoffset", length)
+      elem.find('.count-usage').text( usage )
+      elem.find('.count-quota').text( "/" + quota )
 
     updateRegionResources : ( type )->
       @updateResourceCount(type)

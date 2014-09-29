@@ -25,6 +25,8 @@
     .panel-float {
         position: absolute;
         top: 0;
+        bottom: 0;
+        overflow: auto;
         right: 280px;
         background: $bg-p;
 

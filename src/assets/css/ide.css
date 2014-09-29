@@ -7137,8 +7137,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9175,6 +9174,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   .openstack .OEPanelRight .panel-float {
     position: absolute;
     top: 0;
+    bottom: 0;
+    overflow: auto;
     right: 280px;
     background: #202027;
     min-width: 270px; }

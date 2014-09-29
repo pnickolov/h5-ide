@@ -7,7 +7,7 @@
 
 define [
   "backbone"
-  "component/AppAction/template"
+  "component/appactions/template"
   'i18n!/nls/lang.js'
   'CloudResources'
   'constant'

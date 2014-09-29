@@ -178,7 +178,7 @@ require.config {
     #############################################
     # component                 # Merge in deploy
     #############################################
-    'AppAction'        : 'component/appaction/AppAction'
+    'AppAction'        : 'component/appactions/AppAction'
 
     "ResDiff"          : "component/resdiff/ResDiff"
     "DiffTree"         : "component/resdiff/DiffTree"

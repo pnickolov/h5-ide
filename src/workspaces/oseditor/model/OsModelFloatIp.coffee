@@ -15,6 +15,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         extNetworkId = extNetworkAry[0].getResourceId()
 
       port_id = port.createRef( if port.type is constant.RESTYPE.OSLISTENER then "port_id" else "id" )
+      fixed_ip_address = port.createRef(if port.type is constant.RESTYPE.OSLISTENER then "address" else "fixed_ips.0.ip_address")
 
       {
         component :
@@ -23,7 +24,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           uid  : @id
           resource :
             id : @get("appId")
-            fixed_ip_address    : port.createRef("fixed_ips.0.ip_address")
+            fixed_ip_address    : fixed_ip_address
             floating_ip_address : @get("address") or ''
             port_id             : port_id
             floating_network_id : extNetworkId

@@ -1262,6 +1262,18 @@ var MicroPlugin = (function() {
             $dropdown         = $('<div>').addClass(settings.dropdownClass).addClass(classes).addClass(inputMode).hide().appendTo($dropdown_parent);
             $dropdown_content = $('<div>').addClass(settings.dropdownContentClass).appendTo($dropdown);
 
+            if (self.settings.render.button) {
+                var domStr = self.settings.render.button.apply(self);
+                if (domStr) {
+                    var $dropdown_button = $(domStr).addClass('selectize-dropdown-button');
+                    $dropdown.append($dropdown_button);
+                    $dropdown_button.on('click', function(event) {
+                        self.close();
+                        self.$input.trigger('select_dropdown_button_click');
+                    });
+                }
+            }
+
             $wrapper.css({
                 width: $input[0].style.width
             });
@@ -3723,19 +3735,6 @@ var MicroPlugin = (function() {
             var original = self.render;
             return function() {
                 var result = original.apply(self, arguments);
-                if (self.settings.render.button) {
-                    var domStr = self.settings.render.button.apply(self);
-                    if (domStr) {
-                        var $dropdown_button = $(domStr).addClass('selectize-dropdown-button');
-                        if (!self.$dropdown_content.nextAll('.selectize-dropdown-button').length) {
-                            self.$dropdown.append($dropdown_button);
-                            $dropdown_button.on('click', function(event) {
-                                self.close();
-                                self.$input.trigger('select_dropdown_button_click');
-                            });
-                        }
-                    }
-                }
                 if (self.$input.hasClass('bool')) {
                     var $switcher = self.$input.prevAll('.switcher');
                     if (!$switcher.length) {

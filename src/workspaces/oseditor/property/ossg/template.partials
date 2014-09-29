@@ -49,7 +49,7 @@
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." {{#if ../modeIsApp}}disabled{{/if}}/>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
                 <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
                     <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                 </select>
@@ -73,7 +73,7 @@
                     <option value="icmp">ICMP</option>
                     <option value="all">All</option>
                 </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="blablablabla..." {{#if ../modeIsApp}}disabled{{/if}}/>
+                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
                 <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
                     <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                 </select>
@@ -102,7 +102,7 @@
         <option value="icmp">ICMP</option>
         <option value="all">All</option>
     </select>
-    <input class="selection" data-target="port" value="" />
+    <input class="selection" data-target="port" value="" data-tip="Input single port port range or a common protocol" />
     <select data-target="ip" class="selection option" value="" data-valid-handle="ipValid" ></select>
     <div class="rule-item-remove icon-delete hide"></div>
 </div>

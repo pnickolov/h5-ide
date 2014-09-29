@@ -135,26 +135,34 @@ define [
       @updateRegionResources()
       return
 
-    updateResourceCount : ()->
+    updateResourceCount : (type)->
       resourceCount = @model.getResourcesCount( @region )
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        @animateResourceCount(child)
+        @animateResourceCount(child, count, 100)
       return
 
-    animateResourceCount: (element)->
-      if element.find("svg").size() > 0 then return false
-      element.prepend("""
-      <svg class="rotate" viewbox="0 0 250 250">
-        <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
-        <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
-        <circle class="cover" cx="50%" cy="50%" r="112" fill="#fcfcfc"></circle>
-        <circle class="blue-dot" cx="6.5" cy="50%" r="6.5" fill="#e6e6e6"></circle>
-        <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
-        <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
-      </svg>""")
-      @animateUsage(element, Math.round(Math.random()*100), 100)
+    animateResourceCount: (element, count, quota)->
+      console.log ('Called')
+      if count
+        if element.data('init') is 'active' then return false
+        element.data('init', 'active')
+      else
+        if element.data('init') is 'quota' then return false
+        element.data('init', 'quota')
+        count = 0
+        element.prepend("""
+        <svg class="rotate" viewbox="0 0 250 250">
+          <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
+          <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
+          <circle class="cover" cx="50%" cy="50%" r="112" fill="#fcfcfc"></circle>
+          <circle class="blue-dot" cx="6.5" cy="50%" r="6.5" fill="#e6e6e6"></circle>
+          <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
+          <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
+        </svg>""")
+      console.log("Execed")
+      @animateUsage(element, count, quota)
 
 
     animateUsage: (elem, active, quota)->
@@ -184,8 +192,8 @@ define [
         activeDot.attr('cx', dotX).attr('cy', dotY)
         unless noAnimate
           usage = if usage > quota then quota else usage
-          usageCount.text Math.round( usage )
-          currentAngle+= 1
+          usageCount.text( Math.round( usage ) || "..." )
+          currentAngle += 1
           if currentAngle <= maxAngle
             activeCircle.timeout = window.setTimeout ->
               animate(element, currentAngle)
@@ -198,7 +206,7 @@ define [
       animate(activeCircle, 0)
 
     updateRegionResources : ( type )->
-      @updateResourceCount()
+      @updateResourceCount(type)
       if type and @resourcesTab not in type then return
 
       type = constant.RESTYPE[ @resourcesTab ]

@@ -88,10 +88,6 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
     denySlide: () ->
       not @needDownload()
 
-    getRegion: ->
-      region = Design.instance().get('region')
-      constant.REGION_SHORT_LABEL[ region ]
-
     selectionTemplate:
       kpButton: ()->
         template.kpButton()

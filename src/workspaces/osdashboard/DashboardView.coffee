@@ -144,10 +144,10 @@ define [
       return
 
     animateResourceCount: (element, count, quota)->
-      console.log ('Called')
       if count
         if element.data('init') is 'active' then return false
         element.data('init', 'active')
+
       else
         if element.data('init') is 'quota' then return false
         element.data('init', 'quota')
@@ -161,7 +161,7 @@ define [
           <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
           <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
         </svg>""")
-      console.log("Execed")
+
       @animateUsage(element, count, quota)
 
 

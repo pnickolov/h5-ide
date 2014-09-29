@@ -71,11 +71,9 @@ define [
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
       App.user.on 'change:credential', ->
-        console.log 'We got it.'
         if App.user.hasCredential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->
-        console.log 'We gave up.'
         App.user.off 'change:credential'
 
     renderKpDropdown: (modal, cloudType)->

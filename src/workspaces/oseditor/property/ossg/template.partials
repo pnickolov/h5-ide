@@ -32,54 +32,55 @@
 <div class="direction-switch btn-group">
     <button class="icon-unknown t-m-btn ingress active">Ingress (<span class="sg-ingress-count"></span>)</button>
     <button class="icon-unknown t-m-btn egress">Egress (<span class="sg-egress-count"></span>)</button>
-</div>
-<div class="os-sg-rule-list-container">
-    <div class="rule-container ingress">
-        <ul class="head-list">
-            <li class="head">Protocol</li>
-            <li class="head">Port/Code</li>
-            <li class="head">Source</li>
-        </ul>
-        <div class="rule-list ingress">
-            {{#each ingressRules}}
-            <div class="rule-item" data-id="{{id}}">
-                <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
-                    <option value="tcp">TCP</option>
-                    <option value="udp">UDP</option>
-                    <option value="icmp">ICMP</option>
-                    <option value="all">All</option>
-                </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
-                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
-                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
-                </select>
-                {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+
+    <div class="os-sg-rule-list-container">
+        <div class="rule-container ingress">
+            <ul class="head-list">
+                <li class="head">Protocol</li>
+                <li class="head">Port/Code</li>
+                <li class="head">Source</li>
+            </ul>
+            <div class="rule-list ingress">
+                {{#each ingressRules}}
+                <div class="rule-item" data-id="{{id}}">
+                    <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
+                        <option value="tcp">TCP</option>
+                        <option value="udp">UDP</option>
+                        <option value="icmp">ICMP</option>
+                        <option value="all">All</option>
+                    </select>
+                    <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
+                    <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
+                        <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
+                    </select>
+                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-    </div>
-    <div class="rule-container egress hide">
-        <ul class="head-list">
-            <li class="head">Protocol</li>
-            <li class="head">Port/Code</li>
-            <li class="head">Target</li>
-        </ul>
-        <div class="rule-list egress">
-            {{#each egressRules}}
-            <div class="rule-item" data-id="{{id}}">
-                <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
-                    <option value="tcp">TCP</option>
-                    <option value="udp">UDP</option>
-                    <option value="icmp">ICMP</option>
-                    <option value="all">All</option>
-                </select>
-                <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
-                <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
-                    <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
-                </select>
-                {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+        <div class="rule-container egress hide">
+            <ul class="head-list">
+                <li class="head">Protocol</li>
+                <li class="head">Port/Code</li>
+                <li class="head">Target</li>
+            </ul>
+            <div class="rule-list egress">
+                {{#each egressRules}}
+                <div class="rule-item" data-id="{{id}}">
+                    <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
+                        <option value="tcp">TCP</option>
+                        <option value="udp">UDP</option>
+                        <option value="icmp">ICMP</option>
+                        <option value="all">All</option>
+                    </select>
+                    <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
+                    <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
+                        <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
+                    </select>
+                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
     </div>
 </div>

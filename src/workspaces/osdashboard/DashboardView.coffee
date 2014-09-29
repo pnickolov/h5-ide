@@ -145,8 +145,7 @@ define [
 
     animateUsage: (elem, usage, quota)->
       $path = elem.find(".quota-path.usage")
-      length = $path[0].getTotalLength() * (1-usage/quota)
-      $path.attr("stroke-dashoffset", length)
+      $path.attr("stroke-dashoffset", ($path[0].getTotalLength() * (1-usage/quota)).toFixed(2) )
       elem.find('.count-usage').text( usage )
       elem.find('.count-quota').text( "/" + quota )
 

@@ -22,7 +22,8 @@ define [
     Backbone.View.extend
 
         events:
-            'click .anchor li'       : '__scrollTo'
+            'click .anchor li'          : '__scrollTo'
+            'click .option-group-head'  : '__updateRightPanelOption'
 
         __openArgs: __defaultArgs
         __currentPanel: 'resource'
@@ -133,3 +134,32 @@ define [
         __scrollTo: ( e ) ->
             targetClassName = $( e.currentTarget ).data 'scrollTo'
             @scrollTo targetClassName
+
+        __updateRightPanelOption : ( event ) ->
+            $toggle = $(event.currentTarget)
+
+            if $toggle.is("button") or $toggle.is("a") then return
+
+            hide    = $toggle.hasClass("expand")
+            $target = $toggle.next()
+
+            if hide
+                $target.css("display", "block").slideUp(200)
+            else
+                $target.slideDown(200)
+
+            $toggle.toggleClass("expand")
+
+            if not $toggle.parents(".panel-body").length then return
+
+            @__optionStates = @__optionStates || {}
+
+            # record head state
+            comp = @__openArgs.uid || "Stack"
+            status = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+            @__optionStates[ comp ] = status
+
+            comp = Design.instance().component( comp )
+            if comp then @__optionStates[ comp.type ] = status
+
+            false

@@ -37,6 +37,13 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
       $vol.children(".vpp-size").text( volume.get("size") + "GB" )
       return
 
+    render : ()->
+      CanvasPopup.prototype.render.apply this, arguments
+      if @selected
+        id = @selected.getAttribute("data-id")
+        @clickVolume { currentTarget : @$el.find("[data-id=#{id}]")[0] }
+      return
+
     content : ()->
       data = @models || []
 

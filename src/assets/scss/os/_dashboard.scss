@@ -361,27 +361,24 @@
           text-shadow   : 0 1px 0 #fff;
         }
       }
-      .rotate {
-        width: 125px;
-        height: 125px;
-        display: block;
-        margin: 0 auto;
-        position: relative;
-        -webkit-transform: rotate(225deg);
-        -moz-transform: rotateZ(225deg);
-        -ms-transform: rotateZ(225deg);
-        -o-transform: rotateZ(225deg);
-        transform: rotateZ(225deg);
+      .quota-chart {
+        width    : 141px;
+        height   : 141px;
+        margin   : 10px 32px;
+        position : relative;
       }
-      .rotate .loader {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .quota-path {
+        stroke:#E6E6E6;
+        stroke-width:16;
+        fill:none;
+        stroke-linecap:round;
       }
-      .rotate .cover{
-        position: absolute;
-        top: 0;
-        left: 0;
+      .usage {
+        stroke:#4C92E5;
+        stroke-dasharray:589.1 589.1;
+        -webkit-transition:stroke-dashoffset .5s ease-in-out;
+           -moz-transition:stroke-dashoffset .5s ease-in-out;
+                transition:stroke-dashoffset .5s ease-in-out;
       }
     }
 

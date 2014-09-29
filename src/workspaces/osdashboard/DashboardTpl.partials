@@ -57,31 +57,52 @@
 <!-- {{resourceList}} -->
 <nav class="clearfix resource-list-nav">
   <div class="resource-tab servers on" data-type="OSSERVER">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Server</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab volumes" data-type="OSVOL">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Volume</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
-
   </div>
   <div class="resource-tab snaps" data-type="OSSNAP">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Snapshot</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab fips" data-type="OSFIP">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Floating IP</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
   </div>
   <div class="resource-tab rts" data-type="OSRT">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Router</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
-
   </div>
   <div class="resource-tab elbs" data-type="OSLISTENER">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
     <span class="resource-count">Load Balancer</span>
     <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
-
   </div>
 </nav>
 <div class="resource-list-body table-head-fix"></div>

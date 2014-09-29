@@ -140,70 +140,13 @@ define [
       $nav = $(".resource-list-nav")
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        @animateResourceCount(child, count, 100)
+        @animateUsage(child, Math.random())
       return
 
-    animateResourceCount: (element, count, quota)->
-      if count
-        if element.data('init') is 'active' then return false
-        element.data('init', 'active')
-
-      else
-        if element.data('init') is 'quota' then return false
-        element.data('init', 'quota')
-        count = 0
-        element.prepend("""
-        <svg class="rotate" viewbox="0 0 250 250">
-          <path class="loader usage-quota" fill="#0099ff" transform="translate(125, 125)"/>
-          <path class="loader usage-active" fill="#0099ff" transform="translate(125, 125)"/>
-          <circle class="cover" cx="50%" cy="50%" r="112" fill="#fcfcfc"></circle>
-          <circle class="blue-dot" cx="6.5" cy="50%" r="6.5" fill="#e6e6e6"></circle>
-          <circle class="gray-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
-          <circle class="active-dot" cx="50%" cy="6.5" r="6.5" fill="#4c92e5"></circle>
-        </svg>""")
-
-      @animateUsage(element, count, quota)
-
-
-    animateUsage: (elem, active, quota)->
-      seconds = 2
-      circleRadius = 125
-      circleRadiusForDot = circleRadius - 6.5
-      PI = Math.PI
-      quotaCircle = elem.find('.usage-quota')
-      activeCircle = elem.find('.usage-active')
-      usageCount = elem.find('.count-usage')
-      quotaCount = elem.find('.count-quota')
-      activeDot = elem.find('.active-dot')
-      quotaAngle = 270
-      maxAngle = quotaAngle / quota * active
-      t = seconds * 1000 / 360 * quota / active
-      if activeCircle.timeout then window.clearTimeout activeCircle.timeout; activeCircle.timeout = undefined
-      animate = (element, currentAngle, noAnimate)->
-        radius = currentAngle * PI / 180
-        x = Math.sin(radius) * circleRadius
-        y = Math.cos(radius) * - circleRadius
-        mid = if currentAngle > 180 then 1 else 0
-        usage = currentAngle / maxAngle * active
-        dotX = Math.sin(radius)* circleRadiusForDot + 125
-        dotY = Math.cos(radius) * - circleRadiusForDot + 125
-        svgAttr = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z"
-        element.attr('d', svgAttr)
-        activeDot.attr('cx', dotX).attr('cy', dotY)
-        unless noAnimate
-          usage = if usage > quota then quota else usage
-          usageCount.text( Math.round( usage ) || "..." )
-          currentAngle += 1
-          if currentAngle <= maxAngle
-            activeCircle.timeout = window.setTimeout ->
-              animate(element, currentAngle)
-            , t
-
-      quotaCircle.attr( 'fill' , "#e6e6e6")
-      activeCircle.attr( 'fill' , "#4c92e5")
-      quotaCount.text "/"+quota
-      animate(quotaCircle, 270, true)
-      animate(activeCircle, 0)
+    animateUsage: (elem, usage)->
+      $path = elem.find(".quota-path.usage")
+      length = $path[0].getTotalLength() * (1-usage)
+      $path.attr("stroke-dashoffset", length)
 
     updateRegionResources : ( type )->
       @updateResourceCount(type)

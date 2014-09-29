@@ -1,4 +1,4 @@
-define ['selectize'], () ->
+define ['UI.selectize'], () ->
 
     initSelection = ($valueDom, selectTpl) ->
 

@@ -1,5 +1,4 @@
-
-define(["jquery"],function(){
+define(['jquery'], function($) {
 
 // for data-tip
 $(function() {
@@ -109,7 +108,6 @@ $(function() {
     };
 })(jQuery);
 
-});
 /**
  * sifter.js
  * Copyright (c) 2013 Brian Reavis & contributors
@@ -126,15 +124,7 @@ $(function() {
  * @author Brian Reavis <brian@thirdroute.com>
  */
 
-(function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('sifter', factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory();
-    } else {
-        root.Sifter = factory();
-    }
-}(this, function() {
+var Sifter = (function() {
 
     /**
      * Textually searches arrays and hashes of objects
@@ -556,9 +546,8 @@ $(function() {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     return Sifter;
-}));
 
-
+})();
 
 /**
  * microplugin.js
@@ -576,15 +565,8 @@ $(function() {
  * @author Brian Reavis <brian@thirdroute.com>
  */
 
-(function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('microplugin', factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory();
-    } else {
-        root.MicroPlugin = factory();
-    }
-}(this, function() {
+var MicroPlugin = (function() {
+
     var MicroPlugin = {};
 
     MicroPlugin.mixin = function(Interface) {
@@ -694,7 +676,8 @@ $(function() {
     };
 
     return MicroPlugin;
-}));
+
+})();
 
 /**
  * selectize.js (v0.11.0)
@@ -714,18 +697,7 @@ $(function() {
 
 /*jshint curly:false */
 /*jshint browser:true */
-
-(function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('selectize', ['jquery','sifter','microplugin'], factory);
-    } else if (typeof exports === 'object') {
-        module.exports = factory(require('jquery'), require('sifter'), require('microplugin'));
-    } else {
-        root.Selectize = factory(root.jQuery, root.Sifter, root.MicroPlugin);
-    }
-}(this, function($, Sifter, MicroPlugin) {
-    'use strict';
-
+(function() {
     var highlight = function($element, pattern) {
         if (typeof pattern === 'string' && !pattern.length) return;
         var regex = (typeof pattern === 'string') ? new RegExp(pattern, 'i') : pattern;
@@ -3823,4 +3795,6 @@ $(function() {
     });
 
     return Selectize;
-}));
+})();
+
+});

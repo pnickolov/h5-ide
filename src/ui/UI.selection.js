@@ -1,5 +1,5 @@
 (function() {
-  define(['selectize'], function() {
+  define(['UI.selectize'], function() {
     var initSelection, listenSelectionInserted;
     initSelection = function($valueDom, selectTpl) {
       var create, maxItems, mutil, validHandle, validHandleName;

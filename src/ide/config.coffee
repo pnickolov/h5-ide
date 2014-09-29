@@ -114,7 +114,7 @@ require.config {
     'jqtimepicker'       : 'ui/jquery.timepicker'
     'jqdatetimepicker'   : 'ui/jquery.datetimepicker'
     'UI.modalplus'       : 'ui/UI.modalplus'
-    'selectize'          : 'ui/selectize'
+    'UI.selectize'       : 'ui/UI.selectize'
     'UI.selection'       : 'ui/UI.selection'
     'UI.bubblepopup'     : 'ui/UI.bubblepopup'
 
@@ -274,7 +274,7 @@ require.config {
       "jqdatetimepicker"
       "UI.modalplus"
       "UI.nanoscroller"
-      "selectize"
+      "UI.selectize"
       "UI.selection"
       "UI.bubblepopup"
     ]

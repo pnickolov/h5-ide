@@ -173,6 +173,7 @@ define [
 
             if attr is 'name'
                 @sgModel.set('name', value)
+                @setTitle(value)
                 @listView.refreshList()
 
             if attr is 'description'

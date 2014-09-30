@@ -119,7 +119,7 @@ define [
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
 
-      osData = ApiRequestOs("os_os",{provider:"awcloud",regions:[],fields:["flavor"]}).then (res)-> self.__parseOsData( res )
+      osData = ApiRequestOs("os_os",{provider:"awcloud",regions:[]}).then (res)-> self.__parseOsData( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.

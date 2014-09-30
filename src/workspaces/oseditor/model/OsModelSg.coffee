@@ -8,6 +8,17 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     initialize : () ->
 
+        RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
+        rule = new RuleModel({
+          direction: 'egress'
+          protocol: null
+          portMax: null
+          portMin: null
+          sg: null
+          ip: null
+        })
+        @get("rules").push(rule)
+
     defaults : ()->
       description : "custom security group"
       rules       : []

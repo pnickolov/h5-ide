@@ -92,8 +92,6 @@ define [
             _.defer () =>
                 @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
 
-            @__restoreAccordion()
-
         __hideFloatPanel: ( showCount ) ->
             that = @
             () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel()
@@ -155,7 +153,9 @@ define [
             $toggle.toggleClass("expand")
             @__optionStates ?= {}
 
-            # record head state
+            # Record panel body only
+            unless $toggle.closest( '.panel-body' ).size() then return
+            # Record head state
             key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
             states = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
             @__optionStates[ key ] = states

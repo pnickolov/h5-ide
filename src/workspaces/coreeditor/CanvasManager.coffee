@@ -99,6 +99,8 @@ define ["constant"], (constant)->
 
       if targetModel.type is constant.RESTYPE.OSSERVER
         toggle = !!targetModel.embedPort().getFloatingIp()
+      else
+        toggle = !!targetModel.getFloatingIp()
 
       if toggle
         tootipStr = 'Detach Floating IP'

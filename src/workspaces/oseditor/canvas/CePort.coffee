@@ -18,18 +18,18 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     events :
       "mousedown .fip-status"          : "toggleFip"
 
+    listenModelEvents : ()->
+      @listenTo @model, 'change:fip', @render
+      return
+
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
 
-      #toggle = !@model.hasPrimaryEip()
-      #@model.setPrimaryEip( toggle )
-
-      # if toggle
-      #   Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+      hasFloatingIp = !!@model.getFloatingIp()
+      @model.setFloatingIp(!hasFloatingIp)
 
       CanvasManager.updateFip @$el.children(".fip-status"), @model
 
-      # ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
 
     # Creates a svg element

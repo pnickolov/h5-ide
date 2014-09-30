@@ -17,8 +17,15 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     events :
       "mousedown .fip-status"          : "toggleFip"
 
+    listenModelEvents : ()->
+      @listenTo @model, 'change:fip', @render
+      return
+
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
+
+      hasFloatingIp = !!@model.getFloatingIp()
+      @model.setFloatingIp(!hasFloatingIp)
 
       CanvasManager.updateFip @$el.children(".fip-status"), @model
       false

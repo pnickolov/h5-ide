@@ -1271,6 +1271,7 @@ var MicroPlugin = (function() {
                         self.close();
                         self.$input.trigger('select_dropdown_button_click');
                     });
+                    self.$dropdown_button = $dropdown_button;
                 }
             }
 
@@ -2259,6 +2260,19 @@ var MicroPlugin = (function() {
             } else {
                 self.setActiveOption(null);
                 if (triggerDropdown && self.isOpen) { self.close(); }
+            }
+
+            // highlight create name
+            if (self.settings.render.button && self.$dropdown_button && self.$dropdown_button.find('span.new').length) {
+                var inputVal = self.$control_input.val();
+                if (!groups_order.length && inputVal) {
+                    self.$dropdown_button.find('span.default').text('');
+                    self.$dropdown_button.find('span.new').text(inputVal);
+                    self.open()
+                } else {
+                    var domStr = self.settings.render.button.apply(self);
+                    self.$dropdown_button.replaceWith(domStr).addClass('selectize-dropdown-button');
+                }
             }
         },
 

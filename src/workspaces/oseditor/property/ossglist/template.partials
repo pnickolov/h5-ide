@@ -25,7 +25,7 @@
 </div>
 
 <!-- {{addButton}} -->
-<div>Create New Security Group...</div>
+<div>Create <span class="default">New Security Group...</span><span class="new"></span></div>
 
 <!-- {{app}} -->
 <div class="option-group-head expand">

@@ -29,7 +29,7 @@ define [
     render: ->
 
       json = @model.toJSON()
-      @flavorList = CloudResources(constant.RESTYPE.OSFLAVOR, Design.instance().region())
+      @flavorList = App.model.getOpenstackFlavors( Design.instance().get("provider"), Design.instance().region() )
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       json.floatingIp = !!@model.embedPort().getFloatingIp()
       json.fixedIp = @model.embedPort().get('ip')

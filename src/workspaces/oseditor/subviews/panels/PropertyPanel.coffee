@@ -13,6 +13,7 @@ define [
   Backbone.View.extend
 
     initialize: ( options ) ->
+
         region = options.workspace.design.region()
         @options = options
         @uid     = options.uid
@@ -28,8 +29,8 @@ define [
 
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
-
     render: () ->
+
         design = @options.workspace.design
 
         propertyView = @propertyView = new @viewClass({
@@ -48,6 +49,8 @@ define [
         else
             @$el.append propertyView.render().el
 
+        @panel.parent?.$el.attr('data-mode', @mode)
+
         @
 
     setTitle: ( title = @propertyView.getTitle() ) ->
@@ -64,5 +67,3 @@ define [
     remove: ->
         @propertyView.remove()
         Backbone.View.prototype.remove.apply @, arguments
-
-

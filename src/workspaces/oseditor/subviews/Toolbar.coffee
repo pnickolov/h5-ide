@@ -400,15 +400,17 @@ define [
       changedServers = []
       # if  changed server flaver
       _.each differ.modifiedComps, (comp, id)->
-        if newJson.component[id]?.type is constant.RESTYPE.OSSERVER and comp.resource.flavor
+        if (newJson.component[id]?.type is constant.RESTYPE.OSSERVER) and comp.resource.flavor
           changedServers.push newJson.component[id].name
 
       if changedServers.length
         notification.push "Server #{changedServers.join(", ")} will be restarted to change flavor."
 
+      hasRemovedComps = false
       _.each differ.removedComps, (comp, id)->
         if oldJson.component[id]
-          notification.push "Note: deleted resources cannot be restored."
+          hasRemovedComps = true
+      notification.push "Note: deleted resources cannot be restored." unless not hasRemovedComps
 
       @updateModal = new Modal
         title: lang.IDE.UPDATE_APP_MODAL_TITLE

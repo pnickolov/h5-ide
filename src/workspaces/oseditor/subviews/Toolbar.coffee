@@ -422,14 +422,17 @@ define [
         hasScroll: true
         maxHeight: "450px"
         cancel: "Close"
+      cloudType = that.workspace.opsModel.get('cloudType')
       that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+      appAction.renderKpDropdown(that.updateModal, cloudType)
       that.updateModal.on 'confirm', ->
         if not App.user.hasCredential()
           App.showSettings App.showSettings.TAB.Credential
           return false
 
-        if not that.defaultKpIsSet()
+        if not appAction.defaultKpIsSet(cloudType)
           return false
+
         newJson = that.workspace.design.serialize usage: 'updateApp'
         that.workspace.applyAppEdit( newJson, not result.compChange )
         that.updateModal?.close()

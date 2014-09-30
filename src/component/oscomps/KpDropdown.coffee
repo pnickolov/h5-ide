@@ -34,11 +34,14 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
 
     hasResourceWithDefaultKp: ()->
       has = false
-      Design.instance().eachComponent ( comp ) ->
-        if comp.type is constant.RESTYPE.OSSERVER
-          if comp.get('keypair') is "$DefaultKeyPair" and comp.get('credential') is 'keypair'
-            has = true
-            return
+      KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
+      defaultKp = _.find KeypairModel.allObjects(), (obj) -> obj.get('name') is 'DefaultKP'
+      unless (defaultKp.get('keyName') and defaultKp.get('fingerprint'))
+        Design.instance().eachComponent ( comp ) ->
+          if comp.type is constant.RESTYPE.OSSERVER
+            if comp.get('keypair') is "$DefaultKeyPair" and comp.get('credential') is 'keypair'
+              has = true
+              return
       has
 
     setDefaultKeyPair: ()->

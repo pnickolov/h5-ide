@@ -321,6 +321,12 @@
             -moz-box-sizing: border-box;
         }
     }
+    .os-sg-new-input {
+        width: 100%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border: 0;
+    }
     div.float-panel-sg {
         width: 450px;
     }

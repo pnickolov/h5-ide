@@ -20,7 +20,7 @@
     {{else}}
     <section class="group required">
         <label class="name">Name</label>
-        <input data-target="name" class="selection string" value="{{name}}"/>
+        <input data-target="name" class="selection string" value="{{name}}" {{#if defaultSG}}disabled{{/if}}/>
     </section>
     <section class="group required">
         <label class="name">Description</label>
@@ -114,3 +114,6 @@
     <li class="confirm">Remove</li>
     <li class="cancel">Cancel</li>
 </ul>
+
+<!-- {{sgNewInput}} -->
+<input class="input os-sg-new-input" placeholder="Add new rule..." />

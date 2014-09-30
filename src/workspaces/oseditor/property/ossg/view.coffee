@@ -15,6 +15,7 @@ define [
             "click .direction-switch .t-m-btn": "switchDirection"
             "click .rule-item-remove": "removeRule"
             "click .os-sg-remove": "removeSG"
+            "focus .os-sg-new-input": "focusNewInput"
 
         className: 'float-panel-sg'
 
@@ -193,11 +194,9 @@ define [
 
             that = @
             if $lastItem.hasClass('rule-item')
-                $newItem = $(template.newItem()).insertAfter($lastItem)
+                $newItem = $(template.sgNewInput()).insertAfter($lastItem)
             else
-                $newItem = $(template.newItem()).appendTo($lastItem)
-            _.delay () ->
-                that.initSGList($newItem) if $newItem
+                $newItem = $(template.sgNewInput()).appendTo($lastItem)
 
         removeRule: (event) ->
 
@@ -384,6 +383,18 @@ define [
             @$el.find('.sg-ingress-count').text(ingressRules.length)
             @$el.find('.sg-egress-count').text(sgRules.length - ingressRules.length)
             @$el.find('.sg-member-count').text(@sgModel.getMemberList().length)
+
+        focusNewInput: (event) ->
+
+            that = @
+            $lastItem = $(event.currentTarget)
+            $newItem = $(template.newItem()).insertAfter($lastItem)
+
+            that.initSGList($newItem) if $newItem
+
+            $newItem.find('.selection[data-target="port"]').focus()
+
+            $lastItem.remove()
 
     }, {
         handleTypes: [ 'ossg' ]

@@ -156,14 +156,14 @@ define [
             # Record panel body only
             unless $toggle.closest( '.panel-body' ).size() then return
             # Record head state
-            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
+            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs?.uid}"
             states = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
             @__optionStates[ key ] = states
 
             false
 
         __restoreAccordion : ->
-            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
+            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs?.uid}"
             unless states = @__optionStates?[ key ] then return
 
             @$('.option-group-head').each ( index ) ->

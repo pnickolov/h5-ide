@@ -77,6 +77,8 @@ define [
             memberModelList = @sgModel.getMemberList()
 
             memberList = _.map memberModelList, (member) ->
+                if member.isEmbedded and member.isEmbedded()
+                    member = member.owner()
                 return {
                     name: member.get('name')
                 }
@@ -392,7 +394,8 @@ define [
 
             that.initSGList($newItem) if $newItem
 
-            $newItem.find('.selection[data-target="port"]').focus()
+            _.delay () ->
+                $newItem.find('.selection[data-target="port"]').focus()
 
             $lastItem.remove()
 

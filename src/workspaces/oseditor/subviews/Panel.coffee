@@ -164,8 +164,7 @@ define [
 
         __restoreAccordion : ->
             key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
-            states = @__optionStates?[ key ]
-            unless states then return
+            unless states = @__optionStates?[ key ] then return
 
             @$('.option-group-head').each ( index ) ->
                 $(@).toggleClass 'expand', states[ index ]

@@ -54,6 +54,8 @@ define [
 
             @$( '.panel-body' ).html @subPanel.render().el
 
+            @__restoreAccordion()
+
         scrollTo: ( className ) ->
             $container = @$ '.panel-body'
             $target = $( "section.#{className}" )
@@ -89,6 +91,8 @@ define [
 
             _.defer () =>
                 @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
+
+            @__restoreAccordion()
 
         __hideFloatPanel: ( showCount ) ->
             that = @
@@ -136,7 +140,7 @@ define [
             @scrollTo targetClassName
 
         __updateRightPanelOption : ( event ) ->
-            $toggle = $(event.currentTarget)
+            $toggle = $ event.currentTarget
 
             if $toggle.is("button") or $toggle.is("a") then return
 
@@ -149,17 +153,20 @@ define [
                 $target.slideDown(200)
 
             $toggle.toggleClass("expand")
-
-            if not $toggle.parents(".panel-body").length then return
-
-            @__optionStates = @__optionStates || {}
+            @__optionStates ?= {}
 
             # record head state
-            comp = @__openArgs.uid || "Stack"
-            status = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
-            @__optionStates[ comp ] = status
-
-            comp = Design.instance().component( comp )
-            if comp then @__optionStates[ comp.type ] = status
+            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
+            states = _.map @$el.find('.panel-body').find('.option-group-head'), ( el )-> $(el).hasClass("expand")
+            @__optionStates[ key ] = states
 
             false
+
+        __restoreAccordion : ->
+            key = "#{@__currentPanel}_#{@workspace.design.mode()}_#{@__openArgs.uid}"
+            states = @__optionStates?[ key ]
+            unless states then return
+
+            @$('.option-group-head').each ( index ) ->
+                $(@).toggleClass 'expand', states[ index ]
+

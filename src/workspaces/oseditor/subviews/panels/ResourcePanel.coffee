@@ -30,7 +30,7 @@ define [
             'mousedown .resource-item'          : 'startDrag'
             'OPTION_CHANGE .ami-type-select'    : 'changeAmiType'
             'click .btn-refresh-panel'          : 'refreshPanelData'
-            'click .manage-snapshot'                : "manageSnapshot"
+            'click .manage-snapshot'            : 'manageSnapshot'
 
         initialize: ( options ) ->
             _.extend @, options

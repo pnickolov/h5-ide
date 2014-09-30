@@ -48,7 +48,6 @@ define [
         else
             @$el.append propertyView.render().el
 
-        @restoreAccordion(@model?.type, @uid)
         @
 
     setTitle: ( title = @propertyView.getTitle() ) ->
@@ -67,16 +66,3 @@ define [
         Backbone.View.prototype.remove.apply @, arguments
 
 
-    restoreAccordion : ( type, uid )->
-        if not @__optionStates then return
-        states = @__optionStates[ uid ]
-        if not states then states = @__optionStates[ type ]
-        if states
-            for el, idx in @$el.find('.panel-body').find('.option-group-head')
-                $(el).toggleClass("expand", states[idx])
-
-                for uid, states of @__optionStates
-                    if not uid or Design.instance().component( uid ) or uid.indexOf("i-") is 0 or uid is "Stack"
-                        continue
-                        delete @__optionStates[ uid ]
-                        return

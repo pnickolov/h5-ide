@@ -2268,10 +2268,13 @@ var MicroPlugin = (function() {
                 if (!groups_order.length && inputVal) {
                     self.$dropdown_button.find('span.default').text('');
                     self.$dropdown_button.find('span.new').text(inputVal);
-                    self.open()
+                    self.open();
                 } else {
                     var domStr = self.settings.render.button.apply(self);
-                    self.$dropdown_button.replaceWith(domStr).addClass('selectize-dropdown-button');
+                    var defaultText = $(domStr).find('span.default').text();
+                    self.$dropdown_button.find('span.default').text(defaultText);
+                    self.$dropdown_button.find('span.new').text('');
+                    self.open();
                 }
             }
         },

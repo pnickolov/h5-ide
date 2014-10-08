@@ -140,10 +140,15 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-        addItem: (event) ->
+        addItem: (event, value) ->
 
             OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
-            oSSGModel = new OSSGModel({})
+
+            if value
+                oSSGModel = new OSSGModel({name: value})
+            else
+                oSSGModel = new OSSGModel({})
+
             sgUID = oSSGModel.get('id')
             @attachItem(null, sgUID)
             @refreshList()

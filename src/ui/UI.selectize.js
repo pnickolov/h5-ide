@@ -1267,10 +1267,6 @@ var MicroPlugin = (function() {
                 if (domStr) {
                     var $dropdown_button = $(domStr).addClass('selectize-dropdown-button');
                     $dropdown.append($dropdown_button);
-                    $dropdown_button.on('click', function(event) {
-                        self.close();
-                        self.$input.trigger('select_dropdown_button_click');
-                    });
                     self.$dropdown_button = $dropdown_button;
                 }
             }
@@ -2263,19 +2259,25 @@ var MicroPlugin = (function() {
             }
 
             // highlight create name
-            if (self.settings.render.button && self.$dropdown_button && self.$dropdown_button.find('span.new').length) {
-                var inputVal = self.$control_input.val();
-                if (!groups_order.length && inputVal) {
-                    self.$dropdown_button.find('span.default').text('');
-                    self.$dropdown_button.find('span.new').text(inputVal);
-                    self.open();
-                } else {
-                    var domStr = self.settings.render.button.apply(self);
-                    var defaultText = $(domStr).find('span.default').text();
-                    self.$dropdown_button.find('span.default').text(defaultText);
-                    self.$dropdown_button.find('span.new').text('');
-                    self.open();
+            if (self.settings.render.button && self.$dropdown_button) {
+                if (self.$dropdown_button.find('span.new').length) {
+                    var inputVal = self.$control_input.val();
+                    if (!groups_order.length && inputVal) {
+                        self.$dropdown_button.find('span.default').text('');
+                        self.$dropdown_button.find('span.new').text(inputVal);
+                        self.open();
+                    } else {
+                        var domStr = self.settings.render.button.apply(self);
+                        var defaultText = $(domStr).find('span.default').text();
+                        self.$dropdown_button.find('span.default').text(defaultText);
+                        self.$dropdown_button.find('span.new').text('');
+                        // self.open();
+                    }
                 }
+                self.$dropdown_button.off('click').on('click', function(event) {
+                    self.$input.trigger('select_dropdown_button_click', self.$control_input.val());
+                    self.close();
+                });
             }
         },
 

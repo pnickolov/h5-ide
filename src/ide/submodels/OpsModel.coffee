@@ -254,18 +254,17 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           name       : newJson.name
           version    : newJson.version
           updateTime : +(new Date())
-          stoppable  : newJson.property.stoppable
+          stoppable  : res.property.stoppable
           state      : OpsModelState.UnRun
         }
 
         if not self.get("id")
-          attr.id    = res
-          newJson.id = res # In newly created stack, the newJSON won't have id when saving.
+          attr.id = res.id
 
-        if thumbnail then ThumbUtil.save( self.id || attr.id, thumbnail )
+        if thumbnail then ThumbUtil.save( self.get("id") || attr.id, thumbnail )
 
         self.set attr
-        self.__jsonData = newJson
+        self.__jsonData = res
         self.trigger "jsonDataSaved", self
 
         # The stack is a newly created stack. We would like to trigger "update" in the collection

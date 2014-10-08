@@ -40,7 +40,7 @@ define [ '../base/view',
         checkAppName: ( val )->
             repeatApp = App.model.appList().findWhere(name: val)
             if repeatApp and repeatApp.id isnt Design.instance().get('id')
-                return lang.ide.PROP_MSG_WARN_REPEATED_APP_NAME
+                return lang.PROP.MSG_WARN_REPEATED_APP_NAME
 
             null
 
@@ -57,8 +57,8 @@ define [ '../base/view',
             description = stackDescTextarea.val()
 
             if stackDescTextarea.parsley 'validate'
-                @trigger 'STACK_DESC_CHANGED', description
-                #@setDescription description
+                @model.updateDescription description
+
         stackNameChanged : () ->
             stackNameInput = $ '#property-stack-name'
             stackId = @model.get( 'id' )
@@ -68,14 +68,18 @@ define [ '../base/view',
 
             stackNameInput.parsley 'custom', ( val ) ->
                 if not MC.validate 'awsName',  val
-                    return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+                    return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
+
+                if val is Design.instance().__opsModel.get("name")
+                    # HACK, will remove after we re-write the whole property shit.
+                    return
 
                 if not App.model.stackList().isNameAvailable( val )
-                    return sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'Stack', name
+                    return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'
-                @trigger 'STACK_NAME_CHANGED', name
                 @setTitle "Stack - " + name
+                @model.updateStackName name
             null
 
         refreshACLList : () ->
@@ -101,9 +105,9 @@ define [ '../base/view',
                 aclName = $target.attr('data-name')
 
                 dialog_template = MC.template.modalDeleteSGOrACL {
-                    title : 'Delete Network ACL'
-                    main_content : "Are you sure you want to delete #{aclName}?"
-                    desc_content : "Subnets associated with #{aclName} will use DefaultACL."
+                    title : lang.PROP.STACK_DELETE_NETWORK_ACL_TITLE
+                    main_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_CONTENT, aclName
+                    desc_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_DESC, aclName
                 }
                 modal dialog_template, false, () ->
                     $('#modal-confirm-delete').click () ->

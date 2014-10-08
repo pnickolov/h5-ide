@@ -170,7 +170,8 @@
       var d;
       logTask("Compiling lang-source");
       d = Q.defer();
-      gulp.src(["./src/nls/lang-source.coffee"], SrcOption).pipe(langsrc("./build", false, GLOBAL.gulpConfig.verbose, true)).on("end", end(d));
+      langsrc.compileImmediately();
+      gulp.src(["./src/nls/lang-source/**/*.coffee"], SrcOption).pipe(langsrc.langCache("./build", false, GLOBAL.gulpConfig.verbose, true)).on("end", end(d));
       return d.promise;
     },
     compileCoffee: function() {
@@ -367,11 +368,7 @@
       }
       logTask("Commit IdeVersion in h5-ide");
       ideversion.read(true);
-      if (TasksEnvironment.isRelease) {
-        return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
-      } else {
-        return true;
-      }
+      return util.runCommand("git", ["commit", "-m", '"Deploy ' + ideversion.version() + '"', "package.json"]);
     },
     finalCommit: function() {
       var devRepoV, option, task;

@@ -298,7 +298,7 @@ define [ 'event',
 
             that.markdownConvert = new Markdown.Converter()
 
-            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
+            that.generalTip = lang.IDE.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
@@ -446,7 +446,7 @@ define [ 'event',
             if not that.readOnlyMode
 
                 # create new dict input box
-                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
+                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item .key')
                 _.each $lastDictInputList, (lastDictInput) ->
                     that.onDictInputChange({
                         currentTarget: lastDictInput
@@ -1018,6 +1018,11 @@ define [ 'event',
                     editor.setValue(content)
 
                 editor.clearSelection()
+
+                $paraItem = $currentInput.parents('.parameter-item')
+                if $paraItem.hasClass('dict') and $currentInput.hasClass('value')
+                    editor.getSelection().selectFileStart()
+                    editor.clearSelection()
 
         onParaNameClick: (event) ->
 
@@ -1848,7 +1853,8 @@ define [ 'event',
                     singleLine: editorSingleLine,
                     enableTab: enableTab,
                     useSoftTabs: false,
-                    tabSize: 4
+                    tabSize: 4,
+                    lineHeight: 90
                 })
 
                 # move cursor to last
@@ -2697,9 +2703,9 @@ define [ 'event',
             parseErrList = stateListObj.err_list
             if parseErrList.length
                 if 'command' in parseErrList or 'parameter' in parseErrList
-                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED
+                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_COMMAND_FAILED
                 if 'reference' in parseErrList
-                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
+                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_REFRENCE_FAILED
 
             newStateItems = $.trim(template.stateListTpl(stateListObj))
             $currentStateItems = that.$stateList.find('.state-item')
@@ -2906,7 +2912,7 @@ define [ 'event',
 
                 StateClipboard = stack
                 that.updateToolbar()
-                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+                notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2923,7 +2929,7 @@ define [ 'event',
 
             that.updateToolbar()
 
-            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
+            notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -3506,7 +3512,7 @@ define [ 'event',
                         originEditor.getSelection().selectFileStart()
 
                     originEditor.clearSelection()
-                
+
                     originEditor.focus()
 
                     modal.close()

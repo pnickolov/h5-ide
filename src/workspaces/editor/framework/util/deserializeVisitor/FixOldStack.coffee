@@ -1,5 +1,5 @@
 
-define [ "Design", "constant" ], ( Design, constant )->
+define [ "Design", "constant","i18n!/nls/lang.js" ], ( Design, constant, lang )->
 
   # FixOldStack is used to insert DefaultKP and DefaultSG if they're missing
 
@@ -46,7 +46,7 @@ define [ "Design", "constant" ], ( Design, constant )->
           IpPermissionsEgress : [],
           Default             : "true",
           GroupName           : "DefaultSG",
-          GroupDescription    : 'default VPC security group'
+          GroupDescription    : lang.IDE.DESERIALIZE_VISITOR_GROUP_DESCRIPTION
         }
       }
 

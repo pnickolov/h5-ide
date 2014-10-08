@@ -10,17 +10,6 @@ define [ '../base/main',
          "Design"
 ], ( PropertyModule, model, view, sglist_main, ide_event, Design ) ->
 
-    # Listen shared view events here
-    view.on 'STACK_NAME_CHANGED', ( name ) ->
-        design = Design.instance()
-        design.set("name", name)
-        null
-
-    view.on 'STACK_DESC_CHANGED', (description) ->
-        design = Design.instance()
-        design.set('description', description)
-        null
-
     view.on 'OPEN_ACL', ( uid ) ->
         PropertyModule.loadSubPanel( "ACL", uid )
         null

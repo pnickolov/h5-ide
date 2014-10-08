@@ -188,12 +188,12 @@ define [ 'Design', 'constant', 'i18n!/nls/lang.js', 'jquery', 'underscore', 'MC'
             error = []
             for name, param of cmd.parameter
                 if param.required is true and not Validator.required( state.parameter[ name ] )
-                    tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
+                    tip = sprintf lang.TA.ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER, data.name, data.stateId, name
                     type = 'requiredParameter'
                     error.push Helper.buildError tip, data.stateId, type
 
                 else if cmd.module is 'meta.wait' and name is 'state' and not Validator.isRef( state.parameter[ name ] )
-                    tip = sprintf lang.ide.TA_MSG_ERROR_STATE_EDITOR_INVALID_FORMAT, data.name, data.stateId, 'wait'
+                    tip = sprintf lang.TA.ERROR_STATE_EDITOR_INVALID_FORMAT, data.name, data.stateId, 'wait'
                     type = 'invalidFormat'
                     error.push Helper.buildError tip, data.stateId, type
 

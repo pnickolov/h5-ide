@@ -8299,6 +8299,12 @@ g.shadow {
   /*width: 80px;*/
   width: 114px; }
 
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line {
+  display: none; }
+
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line:first-child {
+  display: block; }
+
 #state-editor .command-value,
 #state-editor .command-view-value {
   color: #999; }

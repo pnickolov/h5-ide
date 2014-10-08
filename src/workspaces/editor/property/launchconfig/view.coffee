@@ -99,15 +99,15 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return sprintf lang.ide.PARSLEY_VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
                 if val > 4000 || val < 100
-                    return lang.ide.PARSLEY_IOPS_MUST_BETWEEN_100_4000
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
-                    return lang.ide.PARSLEY_IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             # currentStateData = @model.getStateData()
 
@@ -156,7 +156,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
         addKP : ( event, id ) ->
             result = @model.addKP id
             if not result
-                notification "error", lang.ide.NOTIFY_MSG_WARN_KEYPAIR_NAME_ALREADY_EXISTS
+                notification "error", lang.NOTIFY.WARN_KEYPAIR_NAME_ALREADY_EXISTS
                 return result
 
         updateKPSelect : () ->
@@ -190,7 +190,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
                     title   : "Delete Key Pair"
                     confirm : "Delete"
                     color   : "red"
-                    body    : "<p class='modal-text-major'>Are you sure to delete #{$li.text()}?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
+                    body    : sprintf(lang.PROP.LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())
                 # Ask for confirm
                 modal MC.template.modalApp data
                 $("#btn-confirm").one "click", ()->
@@ -207,7 +207,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
 
             if flag is true
                 $userDataInput.attr('disabled', 'disabled')
-                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.ide.PROP_INSTANCE_USER_DATA_DISABLE)
+                $userDataInput.addClass('tooltip').attr('data-tooltip', lang.PROP.INSTANCE_USER_DATA_DISABLE)
                 # $userDataInput.val('')
                 # @userdataChange({
                 #     target: {

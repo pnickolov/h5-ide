@@ -1,28 +1,28 @@
 <article class="property-app">
 
   <dl class="dl-vertical">
-    <dt>{{ i18n "PROP_ACL_APP_ID" }}</dt>
+    <dt>{{ i18n "PROP.ACL_APP_ID" }}</dt>
     <dd>{{component.networkAclId}}</dd>
 
-    <dt>{{ i18n "PROP_ACL_APP_IS_DEFAULT" }}</dt>
+    <dt>{{ i18n "PROP.ACL_APP_IS_DEFAULT" }}</dt>
     <dd>{{component.default}}</dd>
 
-    <dt>{{ i18n "PROP_ACL_APP_VPC_ID" }}</dt>
+    <dt>{{ i18n "PROP.ACL_APP_VPC_ID" }}</dt>
     <dd>{{component.vpcId}}</dd>
   </dl>
 
 
-  <header class="option-group-head">{{ i18n "PROP_ACL_TIT_RULE" }}<span class="property-head-num-wrap">({{component.rule_number}})</span></header>
+  <header class="option-group-head">{{ i18n "PROP.ACL_TIT_RULE" }}<span class="property-head-num-wrap">({{component.rule_number}})</span></header>
   <article class="option-group">
     <div class="rule-list-sort property-control-group">
-      <h5>{{ i18n "PROP_ACL_RULE_SORT_BY" }}</h5>
+      <h5>{{ i18n "PROP.ACL_RULE_SORT_BY" }}</h5>
       <div class="selectbox" id="acl-sort-rule-select">
-        <div class="selection">{{ i18n "PROP_ACL_RULE_SORT_BY_NUMBER" }}</div>
+        <div class="selection">{{ i18n "PROP.ACL_RULE_SORT_BY_NUMBER" }}</div>
         <ul class="dropdown" tabindex="-1">
-          <li data-id="number" class="item selected">{{ i18n "PROP_ACL_RULE_SORT_BY_NUMBER" }}</li>
-          <li data-id="action" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_ACTION" }}</li>
-          <li data-id="direction" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_DIRECTION" }}</li>
-          <li data-id="source/destination" class="item">{{ i18n "PROP_ACL_RULE_SORT_BY_SRC_DEST" }}</li>
+          <li data-id="number" class="item selected">{{ i18n "PROP.ACL_RULE_SORT_BY_NUMBER" }}</li>
+          <li data-id="action" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_ACTION" }}</li>
+          <li data-id="direction" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_DIRECTION" }}</li>
+          <li data-id="source/destination" class="item">{{ i18n "PROP.ACL_RULE_SORT_BY_SRC_DEST" }}</li>
         </ul>
       </div>
     </div>
@@ -30,20 +30,20 @@
     <ul class="property-list acl-rule-list" id="acl-rule-list" >
       {{#each component.entrySet.item}}
       <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
-        <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
+        <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
 
         <div class="acl-rule-details">
           <div class="rule-list-row">
-            <div class="acl-rule-allow-cb tooltip acl-rule-action icon-{{ruleAction}}" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP_ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP_ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
+            <div class="acl-rule-allow-cb tooltip acl-rule-action icon-{{ruleAction}}" data-id="{{ruleAction}}" data-tooltip='{{#ifCond ruleAction "deny"}}{{{ i18n "PROP.ACL_TIP_ACTION_DENY" }}}{{else}}{{{ i18n "PROP.ACL_TIP_ACTION_ALLOW" }}}{{/ifCond}}'></div>
 
-            {{#if egress}}<span class="acl-rule-direction acl-rule-outbound icon-outbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_OUTBOUND" }}}' data-id="{{egress}}"></span>
-            {{else}}<span class="acl-rule-direction acl-rule-inbound icon-inbound tooltip" data-tooltip='{{{ i18n "PROP_ACL_TIP_INBOUND" }}}' data-id="{{egress}}"></span>
+            {{#if egress}}<span class="acl-rule-direction acl-rule-outbound icon-outbound tooltip" data-tooltip='{{{ i18n "PROP.ACL_TIP_OUTBOUND" }}}' data-id="{{egress}}"></span>
+            {{else}}<span class="acl-rule-direction acl-rule-inbound icon-inbound tooltip" data-tooltip='{{{ i18n "PROP.ACL_TIP_INBOUND" }}}' data-id="{{egress}}"></span>
             {{/if}}
-            <span class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_CIDR_BLOCK" }}' data-id="{{cidrBlock}}">{{cidrBlock}}</span>
+            <span class="acl-rule-reference tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_CIDR_BLOCK" }}' data-id="{{cidrBlock}}">{{cidrBlock}}</span>
           </div>
           <div class="rule-list-row">
-            <div><span class="rule-protocol acl-rule-protocol tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PROTOCOL" }}' data-id="{{protocol}}">{{protocolName}}({{protocol}})</span></div>
-            <div class="acl-rule-port tooltip" data-tooltip='{{ i18n "PROP_ACL_TIP_PORT" }}'>{{dispPort}}</div>
+            <div><span class="rule-protocol acl-rule-protocol tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_PROTOCOL" }}' data-id="{{protocol}}">{{protocolName}}({{protocol}})</span></div>
+            <div class="acl-rule-port tooltip" data-tooltip='{{ i18n "PROP.PORT" }}'>{{dispPort}}</div>
           </div>
         </div>
       </li>
@@ -52,7 +52,7 @@
   </article>
 
 
-  <header class="option-group-head expand">{{ i18n "PROP_ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">({{component.asso_number}})</span></header>
+  <header class="option-group-head expand">{{ i18n "PROP.ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">({{component.asso_number}})</span></header>
   <ul class="option-group property-list">
     {{#each component.associationSet.item}}
       <li>{{subnetDisplay}}</li>

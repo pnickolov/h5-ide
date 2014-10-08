@@ -26,11 +26,11 @@
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}} RDS Parameter{{else}}selected {{selectedCount}} RDS Parameter Groups{{/if}}?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
     </div>
 </div>
 
@@ -41,7 +41,7 @@
         <section data-bind="true">
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-volume-choose">{{ i18n "PROP_DBPG_SET_FAMILY"}}</label>
+                <label for="property-volume-choose">{{ i18n "PROP.DBPG_SET_FAMILY"}}</label>
                 <div>
                     <div id="property-family-choose">
                         <div class="selectbox selectbox-mega" id="property-family">
@@ -64,7 +64,7 @@
 
 
             <div class="control-group clearfix">
-                <label for="property-dbpg-name-create">{{ i18n "PROP_DBPG_SET_NAME" }}</label>
+                <label for="property-dbpg-name-create">{{ i18n "PROP.DBPG_SET_NAME" }}</label>
                 <div>
                     <input id="property-dbpg-name-create" class="input" type="text" maxlength="255" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true" data-type="database" data-ignore="true" placeholder="Begin with a letter; must contain only ASCII letters, digits, and hyphens; and must not end with a hyphen or contain two consecutive hyphens">
                 </div>
@@ -72,7 +72,7 @@
 
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-dbpg-desc-create">{{ i18n "PROP_DBPG_SET_DESC"}}</label>
+                <label for="property-dbpg-desc-create">{{ i18n "PROP.DBPG_SET_DESC"}}</label>
                 <div>
                     <input id='property-dbpg-desc-create' class="input" placeholder="Up to 255 characters" data-required="true" type="text"/>
                 </div>
@@ -80,11 +80,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP.LBL_CREATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CREATE"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Creating...</button>
+            <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>
         </div>
     </div>
 </div>
@@ -92,13 +92,13 @@
 <!-- {{slide_reset}} -->
 <div class="slide-reset" data-bind="true">
     <div class="formart_toolbar_modal" data-type="true">
-        <div class="modal-text-major">Do you confirm to reset all parameters for {{name}} to their defaults?</div>
+        <div class="modal-text-major">{{i18n "PROP.DBPG_CONFIRM_RESET_1"}}{{name}}{{i18n "PROP.DBPG_CONFIRM_RESET_2"}}</div>
         <div class="init action">
-            <button class="btn btn-red do-action" data-action="reset">Reset</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-red do-action" data-action="reset">{{i18n "PROP.LBL_RESET"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Resetting...</button>
+            <button class="btn" disabled>{{i18n "PROP.LBL_RESETTING"}}</button>
         </div>
     </div>
 </div>
@@ -107,17 +107,17 @@
 <!-- {{slide_edit}} -->
 <div class="clearfix" id="pg-sort-filter">
     <div class="pull-left">
-        Filter: <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+        {{i18n "PROP.LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
     </div>
     <div class="pull-right">
-        Sort by:
+        {{i18n "PROP.LBL_SORT_BY"}}
         <div class="selectbox" id="sort-parameter-name">
-            <div class="selection">Parameter Name</div>
+            <div class="selection">{{i18n "PROP.LBL_PARAMETER_NAME"}}</div>
             <ul class="dropdown" tabindex="-1">
-                <li class="item selected" data-id="ParameterName">Parameter Name</li>
-                <li class="item" data-id="IsModifiable">Is Modifiable</li>
-                <li class="item" data-id="ApplyType">Apply Method</li>
-                <li class="item" data-id="Source">Source</li>
+                <li class="item selected" data-id="ParameterName">{{i18n "PROP.LBL_PARAMETER_NAME"}}</li>
+                <li class="item" data-id="IsModifiable">{{i18n "PROP.LBL_ISMODIFIABLE"}}</li>
+                <li class="item" data-id="ApplyType">{{i18n "PROP.LBL_APPLY_METHOD"}}</li>
+                <li class="item" data-id="Source">{{i18n "PROP.LBL_SOURCE"}}</li>
             </ul>
         </div>
     </div>
@@ -127,12 +127,12 @@
         <thead>
         <tr>
             {{#if preview}}
-                <th width="40%">Parameter Name</th>
-                <th width="20%">Origin Value</th>
-                <th width="40%">Edit Value</th>
+                <th width="40%">{{i18n "PROP.LBL_PARAMETER_NAME"}}</th>
+                <th width="20%">{{i18n "PROP.LBL_ORIGINAL_VALUE"}}</th>
+                <th width="40%">{{i18n "PROP.LBL_EDIT_VALUE"}}</th>
             {{else}}
-                <th width="50%">Parameter Name</th>
-                <th width="50%">Edit Value</th>
+                <th width="50%">{{i18n "PROP.LBL_PARAMETER_NAME"}}</th>
+                <th width="50%">{{i18n "PROP.LBL_EDIT_VALUE"}}</th>
             {{/if}}
 
         </tr>
@@ -173,7 +173,7 @@
                         {{/ifCond}}
                     </div>
                     <div class="prop_main">
-                        <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                        <div class="prop_sub">{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_1"}}{{#ifCond ApplyType "dynamic"}}{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_2"}}{{else}}{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_3"}}{{/ifCond}}</div>
                     </div>
                 </td>
             </tr>
@@ -182,19 +182,19 @@
     </table>
 </div>
 <div class="pg-edit-footer clearfix">
-    <a target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html"> Parameter Value Reference</a>
+    <a target="_blank" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ParamValuesRef.html">{{i18n "PROP.LBL_PARAMETER_VALUE_REFERENCE"}}</a>
     <div class="init action" style="padding: 10px 0">
         {{#if preview}}
-            <button class="btn do-action" id="pg-back-to-edit">Back to Editing</button>
-            <button class="btn btn-blue" id="rds-pg-save">Apply Changes</button>
+            <button class="btn do-action" id="pg-back-to-edit">{{i18n "PROP.LBL_BACK_TO_EDITING"}}</button>
+            <button class="btn btn-blue" id="rds-pg-save">{{i18n "PROP.LBL_APPLY_CHANGES"}}</button>
         {{else}}
-            <button class="btn btn-blue do-action" data-action="preview" disabled>Review Changes & Save</button>
+            <button class="btn btn-blue do-action" data-action="preview" disabled>{{i18n "PROP.LBL_REVIEW_CHANGES_SAVE"}}</button>
         {{/if}}
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="padding: 10px 0;display: none">
-        <button class="btn btn-blue" id="rds-pg-save" disabled>Applying</button>
-        <button class="btn btn-silver cancel" disabled>Cancel</button>
+        <button class="btn btn-blue" id="rds-pg-save" disabled>{{i18n "PROP.LBL_APPLYING"}}</button>
+        <button class="btn btn-silver cancel" disabled>{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
 </div>
 
@@ -204,12 +204,12 @@
     <thead>
     <tr>
         {{#if preview}}
-            <th width="40%">Parameter Name</th>
-            <th width="20%">Origin Value</th>
-            <th width="40%">Edit Value</th>
+            <th width="40%">{{i18n "PROP.LBL_PARAMETER_NAME"}}</th>
+            <th width="20%">{{i18n "PROP.LBL_ORIGINAL_VALUE"}}</th>
+            <th width="40%">{{i18n "PROP.LBL_EDIT_VALUE"}}</th>
         {{else}}
-            <th width="50%">Parameter Name</th>
-            <th width="50%">Edit Value</th>
+            <th width="50%">{{i18n "PROP.LBL_PARAMETER_NAME"}}</th>
+            <th width="50%">{{i18n "PROP.LBL_EDIT_VALUE"}}</th>
         {{/if}}
 
     </tr>
@@ -250,7 +250,7 @@
                     {{/ifCond}}
                 </div>
                 <div class="prop_main">
-                    <div class="prop_sub">Changes will apply {{#ifCond ApplyType "dynamic"}}immediately{{else}}after rebooting{{/ifCond}}</div>
+                    <div class="prop_sub">{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_1"}}{{#ifCond ApplyType "dynamic"}}{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_2"}}{{else}}{{i18n "PROP.DBPG_APPLY_IMMEDIATELY_3"}}{{/ifCond}}</div>
                 </div>
             </td>
         </tr>

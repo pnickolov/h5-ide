@@ -407,19 +407,19 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
         if not type then type = name
 
         if name && !MC.validate( 'awsName',  name )
-            error = sprintf lang.ide.PARSLEY_THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
+            error = sprintf lang.PARSLEY.THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME, type
 
         if not error and isNameDup( uid, name )
-            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+            error = sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, type, name
 
         if not error and isOldName( uid, name )
-            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+            error = sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, type, name
 
         if not error and isReservedName( name )
-            error = sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, type, name
+            error = sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, type, name
 
         if name.indexOf("elbsg-") is 0
-            error = lang.ide.PARSLEY_RESOURCE_NAME_ELBSG_RESERVED
+            error = lang.PARSLEY.RESOURCE_NAME_ELBSG_RESERVED
 
         $input.parsley 'custom', ()-> error
         $input.parsley 'validate'

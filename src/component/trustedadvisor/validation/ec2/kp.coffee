@@ -37,10 +37,10 @@ define [
 			message += 'Launch Configuration' + lcStr
 
 		message = message.slice 0, - 2
-		Helper.message.error uid, i18n.TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR, message, kp.get('name')
+		Helper.message.error uid, i18n.ERROR_INSTANCE_REF_OLD_KEYPAIR, message, kp.get('name')
 
 	longLiveNotice = () ->
-		Helper.message.notice null, i18n.TA_MSG_NOTICE_KEYPAIR_LONE_LIVE
+		Helper.message.notice null, i18n.NOTICE_KEYPAIR_LONE_LIVE
 
 	isKeyPairExistInAws = ( callback ) ->
 		allInstances = Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
@@ -99,7 +99,7 @@ define [
 						message += 'Launch Configuration' + err.lc
 
 					message = message.slice 0, - 2
-					results.push Helper.message.error keyName, i18n.TA_MSG_ERROR_INSTANCE_REF_OLD_KEYPAIR, message, keyName
+					results.push Helper.message.error keyName, i18n.ERROR_INSTANCE_REF_OLD_KEYPAIR, message, keyName
 
 				callback results
 			, () ->

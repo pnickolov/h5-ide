@@ -96,6 +96,16 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       @getNetworkACL()
       null
 
+    updateStackName : ( name )->
+      @set "name", name
+      Design.instance().set("name", name)
+      return
+
+    updateDescription : ( description )->
+      @set "description", description
+      Design.instance().set('description', description)
+      return
+
   }
 
   new StackModel()

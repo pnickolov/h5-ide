@@ -1,37 +1,37 @@
 <article class="property-app">
 
-  <div class="option-group-head expand">{{ i18n "PROP_SUBNET_TIT_DETAIL" }}</div>
+  <div class="option-group-head expand">{{ i18n "PROP.SUBNET_TIT_DETAIL" }}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>{{ i18n "PROP_SUBNET_APP_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_ID" }}</dt>
       <dd>{{subnetId}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_STATE" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_STATE" }}</dt>
       <dd><i class="status status-{{state}}"></i>{{state}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_CIDR" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_CIDR" }}</dt>
       <dd>{{cidrBlock}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_AVAILABLE_IP" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_AVAILABLE_IP" }}</dt>
       <dd>{{availableIpAddressCount}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_VPC_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_VPC_ID" }}</dt>
       <dd>{{vpcId}}</dd>
 
-      <dt>{{ i18n "PROP_SUBNET_APP_RT_ID" }}</dt>
+      <dt>{{ i18n "PROP.SUBNET_APP_RT_ID" }}</dt>
       <dd>{{routeTable}}</dd>
     </dl>
   </div>
 
   {{#if acl}}
-  <div class="option-group-head expand">{{ i18n "PROP_SUBNET_TIT_ASSOC_ACL" }}</div>
+  <div class="option-group-head expand">{{ i18n "PROP.SUBNET_TIT_ASSOC_ACL" }}</div>
   <div class="option-group">
     <ul class="acl-sg-info-list property-list acl-info-list">
       <li>
-        <div class="col3 tooltip icon-btn-details" data-uid="{{acl.id}}" data-tooltip='{{ i18n "PROP_SUBNET_ACL_TIP_DETAIL" }}'></div>
+        <div class="col3 tooltip icon-btn-details" data-uid="{{acl.id}}" data-tooltip='{{ i18n "PROP.SUBNET_ACL_TIP_DETAIL" }}'></div>
         <div class="col2">
           <div class="col2-1 truncate">{{acl.name}}</div>
-          <div class="col2-2 truncate">{{acl.rule}} {{ i18n "PROP_SUBNET_ACL_LBL_RULE" }}, {{acl.association}} {{ i18n "PROP_SUBNET_ACL_LBL_ASSOC" }}</div>
+          <div class="col2-2 truncate">{{acl.rule}} {{ i18n "PROP.SUBNET_ACL_LBL_RULE" }}, {{acl.association}} {{ i18n "PROP.SUBNET_ACL_LBL_ASSOC" }}</div>
         </div>
       </li>
     </ul>

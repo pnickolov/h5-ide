@@ -49,13 +49,13 @@ define [ "constant",
 
           for attach in child.connectionTargets( "EniAttachment" )
             if attach.parent() isnt this
-              return lang.ide.CVS_MSG_ERR_MOVE_ATTACHED_ENI
+              return lang.CANVAS.ERR_MOVE_ATTACHED_ENI
 
         if child.type is constant.RESTYPE.ASG or child.type is "ExpandedAsg"
           if child.type is "ExpandedAsg"
             child = child.get("originalAsg")
           if child.getExpandAzs().indexOf( newParent ) != -1
-            return sprintf lang.ide.CVS_MSG_ERR_DROP_ASG, child.get("name"), newParent.get("name")
+            return sprintf lang.CANVAS.ERR_DROP_ASG, child.get("name"), newParent.get("name")
       true
 
     isRemovable : ()->
@@ -64,7 +64,7 @@ define [ "constant",
 
       SBGAsso = @connectionTargets("SubnetgAsso")
       if SBGAsso.length > 0
-        return { error : sprintf( lang.ide.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG, @get("name"), SBGAsso[0].get("name") ) }
+        return { error : sprintf( lang.IDE.RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG, @get("name"), SBGAsso[0].get("name") ) }
 
       # The subnet is only un-removable if it connects to elb and the ElbAsso is not removable
       for cn in @connections("ElbSubnetAsso")
@@ -73,7 +73,7 @@ define [ "constant",
           # In stack mode, we allow the subnet to be deleted, if the Elb only connects
           # to resource that are children of this subnet
           if not @design().modeIsStack()
-            return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
+            return { error : lang.CANVAS.ERR_DEL_LINKED_ELB }
 
           for ami in cn.getOtherTarget( @ ).connectionTargets("ElbAmiAsso")
             if ami.parent() is @ or ami.parent().parent() is @
@@ -85,7 +85,7 @@ define [ "constant",
             childAZ = ami.parent()
             while childAZ
               if childAZ is az
-                return { error : lang.ide.CVS_MSG_ERR_DEL_LINKED_ELB }
+                return { error : lang.CANVAS.ERR_DEL_LINKED_ELB }
               childAZ = childAZ.parent()
 
       true

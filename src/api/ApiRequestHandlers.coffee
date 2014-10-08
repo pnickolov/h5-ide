@@ -10,7 +10,13 @@ define [ "./ApiRequestErrors" ], ( Errors )->
     AwsHandlers : AwsHandlers
   }
 
-  # Handlers[ Errors.InvalidSession ] = ( res )->
+  Handlers[ Errors.GlobalErrorSession ] = ( error )->
+    # We cannot recover the api request, if the server asks us to provide new session.
+    # All we can do is ask the user to re-valid the session.
+    App.acquireSession()
+    # Need to re-throw the error, since we still need to the api request-er to know
+    # the api has failed.
+    throw error
 
   AwsHandlers[ 401 ] = ( error )->
     # 401 means the credential is not correct

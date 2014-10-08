@@ -124,23 +124,23 @@ define [
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'instance-sg'
           'data-alias'   : 'instance-sg-left'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_right").attr({
           'class'        : 'port port-green tooltip'
           'data-name'    : 'instance-attach'
-          'data-tooltip' : lang.ide.PORT_TIP_E
+          'data-tooltip' : lang.IDE.PORT_TIP_E
         })
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'instance-sg'
           'data-alias'   : 'instance-sg-right'
-          'data-tooltip' : lang.ide.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_D
         })
         svg.use("port_bottom").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'instance-rtb'
-          'data-tooltip' : lang.ide.PORT_TIP_C
+          'data-tooltip' : lang.IDE.PORT_TIP_C
         })
 
         # Servergroup

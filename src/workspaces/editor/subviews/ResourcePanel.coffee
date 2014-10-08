@@ -342,11 +342,11 @@ define [
         @sbg.toggleClass("disabled", true).attr("data-tooltip", )
       else
         disabled = false
-        tooltip = lang.ide.RES_TIP_DRAG_NEW_SUBNET_GROUP
+        tooltip = lang.IDE.RES_TIP_DRAG_NEW_SUBNET_GROUP
 
       if @workspace.isRdsDisabled()
         disabled = true
-        tooltip = lang.ide.RES_MSG_RDS_DISABLED
+        tooltip = lang.IDE.RES_MSG_RDS_DISABLED
 
       @sbg.toggleClass("disabled", disabled).attr("data-tooltip", tooltip)
       return

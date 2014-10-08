@@ -9,7 +9,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js'], ( constant, MC, lang ) ->
 			return null
 		else
 			eniName = eniComp.name
-			tipInfo = sprintf lang.ide.TA_MSG_ERROR_ENI_NOT_ATTACH_TO_INSTANCE, eniName
+			tipInfo = sprintf lang.TA.ERROR_ENI_NOT_ATTACH_TO_INSTANCE, eniName
 			# return
 			level: constant.TA.ERROR
 			info: tipInfo

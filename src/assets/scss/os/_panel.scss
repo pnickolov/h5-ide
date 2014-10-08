@@ -23,6 +23,7 @@
     &.hidden .panel-float { display: none; }
 
     .panel-float {
+        border-right: 1px #101010 solid;
         position: absolute;
         top: 0;
         bottom: 0;
@@ -36,6 +37,12 @@
         & > div { width: 280px; }
 
         &.hidden { display: none; }
+
+        h1 {
+          font-size: 20px;
+          padding: 5px;
+          text-align: center;
+        }
     }
 
     .panel-body section {

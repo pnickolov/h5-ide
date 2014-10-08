@@ -9174,6 +9174,7 @@ g.shadow {
   .openstack .OEPanelRight.hidden .panel-float {
     display: none; }
   .openstack .OEPanelRight .panel-float {
+    border-right: 1px #101010 solid;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -9185,6 +9186,10 @@ g.shadow {
       width: 280px; }
     .openstack .OEPanelRight .panel-float.hidden {
       display: none; }
+    .openstack .OEPanelRight .panel-float h1 {
+      font-size: 20px;
+      padding: 5px;
+      text-align: center; }
   .openstack .OEPanelRight .panel-body section.system-image .selectbox {
     width: 108px; }
   .openstack .OEPanelRight .panel-body section header {
@@ -9305,10 +9310,6 @@ g.shadow {
           cursor: pointer; }
       #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
         background: #2a608d; }
-  #OpsEditor .OEPanelRight.property .panel-float h1, #OpsEditor .OEPanelRight.config .panel-float h1 {
-    font-size: 20px;
-    padding: 5px;
-    text-align: center; }
   #OpsEditor .OEPanelRight.property dl.horizontal, #OpsEditor .OEPanelRight.config dl.horizontal {
     margin: 8px 9px;
     padding: 0; }

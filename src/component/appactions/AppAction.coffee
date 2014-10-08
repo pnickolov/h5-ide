@@ -156,7 +156,7 @@ define [
       return
 
     startApp : ( id )->
-      opsModel = App.model.appList().get(id)
+      app = App.model.appList().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.TOOLBAR.TIP_START_APP
@@ -167,44 +167,56 @@ define [
         disableClose: true
       }
       startAppModal.tpl.find('.modal-footer').hide()
-      comp = null
-      ApiRequest("app_info", {
-        region_name : opsModel.get("region")
-        app_ids     : [opsModel.get("id")]
-      }).then (ds)->  comp = ds[0].component
-      .then ->
-        name = App.model.appList().get( id ).get("name")
-        hasEC2Instance =( _.filter comp, (e)->
-          e.type is constant.RESTYPE.INSTANCE).length
-        hasDBInstance = (_.filter comp, (e)->
-          e.type is constant.RESTYPE.DBINSTANCE).length
-        hasASG = (_.filter comp, (e)->
-          e.type is constant.RESTYPE.ASG).length
-        dbInstance = _.filter comp, (e)->
-          e.type is constant.RESTYPE.DBINSTANCE
-        snapshots = CloudResources(constant.RESTYPE.DBSNAP, opsModel.get("region"))
-        awsError = null
-        snapshots.fetchForce().fail (error)->
-          awsError = error.awsError
-        .finally ->
-          if awsError and awsError isnt 403
-            startAppModal.close()
-            notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
-            return false
-          lostDBSnapshot = _.filter dbInstance, (e)->
-            e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
-          startAppModal.tpl.find('.modal-footer').show()
-          startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
-          startAppModal.on 'confirm', ->
-            startAppModal.close()
-            App.model.appList().get( id ).start().fail ( err )->
-              error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
-              return
+      @checkBeforeStart(app).then (result)->
+        {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot, awsError} = result
+        if awsError and awsError isnt 403
+          startAppModal.close()
+          notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
+          return false
+        startAppModal.tpl.find('.modal-footer').show()
+        startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
+        startAppModal.on 'confirm', ->
+          startAppModal.close()
+          App.model.appList().get( id ).start().fail ( err )->
+            error = if err.awsError then err.error + "." + err.awsError else err.error
+            notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
             return
           return
+        return
 
-    checkNotReadyRDS: (app)->
+    checkBeforeStart: (app)->
+      comp = null
+      cloudType = app.get("cloudType")
+      defer = new Q.defer()
+      if cloudType is "openstack"
+        console.log "CloudType is OpenStack"
+        defer.resolve({})
+      else
+        ApiRequest("app_info", {
+          region_name : app.get("region")
+          app_ids     : [app.get("id")]
+        }).then (ds)->  comp = ds[0].component
+        .then ->
+          name = App.model.appList().get( id ).get("name")
+          hasEC2Instance =!!( _.filter comp, (e)->
+            e.type is constant.RESTYPE.INSTANCE).length
+          hasDBInstance = !!(_.filter comp, (e)->
+            e.type is constant.RESTYPE.DBINSTANCE).length
+          hasASG = !!(_.filter comp, (e)->
+            e.type is constant.RESTYPE.ASG).length
+          dbInstance = _.filter comp, (e)->
+            e.type is constant.RESTYPE.DBINSTANCE
+          snapshots = CloudResources(constant.RESTYPE.DBSNAP, app.get("region"))
+          awsError = null
+          snapshots.fetchForce().fail (error)->
+            awsError = error.awsError
+          .finally ->
+            lostDBSnapshot = _.filter dbInstance, (e)->
+              e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
+            defer.resolve {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot, awsError}
+      defer.promise
+
+    checkBeforeStop: (app)->
       cloudType = app.get('cloudType')
       if cloudType is "openstack"
         console.log "CloudType is OpenStack"
@@ -234,7 +246,7 @@ define [
       stopModal.tpl.find(".modal-footer").hide()
       awsError = null
 
-      @checkNotReadyRDS(app)
+      @checkBeforeStop(app)
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError

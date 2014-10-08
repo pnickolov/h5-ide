@@ -137,7 +137,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           type: "OS::Neutron::Port"
           uid: "92C407D2-7B62-449F-83E7-E88D2A9B8369"
           resource:
-            name: "port-1"
+            name: "port-0"
             admin_state_up: ""
             mac_address: ""
             fixed_ips: [

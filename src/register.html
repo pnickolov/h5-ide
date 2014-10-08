@@ -33,7 +33,20 @@
                     </div>
                 </div>
                 <form id="register-form" method="post" action="" class="box-body">
-                    <div id="register-status" class="error-msg" style="display:block"></div>
+                    <div id="register-status" class="error-msg" style="display:none"></div>
+                    <div class="control-group fullname">
+                        <div class="half-group">
+                            <label for="register-firstname" class="account-label">{{ i18n "register-firstname" }}</label>
+                            <input autocomplete="off" id="register-firstname" class="account-input" type="text"/>
+                        </div>
+                        <div class="half-group">
+                            <label for="register-lastname" class="account-label">{{ i18n "register-lastname" }}</label>
+                            <input autocomplete="off" id="register-lastname" class="account-input" type="text"/>
+                        </div>
+                        <div id="fullname-verification-status" class=""></div>
+                    </div>
+
+                    <!--Can't be blank -->
                     <div class="control-group">
                         <label for="register-username" class="account-label">{{ i18n "register-username" }}</label>
                         <input autocomplete="off" id="register-username" class="account-input" type="text"/>

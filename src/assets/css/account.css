@@ -383,6 +383,25 @@ header {
 	position: relative;
 }
 
+.control-group.fullname{
+    margin-bottom: 20px;
+}
+
+.half-group{
+    display: inline-block;
+    width: 47%;
+    margin-right: 10px;
+}
+
+.half-group:nth-child(even) {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.half-group .account-input{
+    width: 88%;
+}
+
 .account-label {
 	color: #999;
 }
@@ -426,7 +445,7 @@ header {
 }
 
 .control-group {
-	margin: 10px 0 40px 0;
+	margin: 10px 0 30px 0;
 }
 
 .control-group.error label {

@@ -34,6 +34,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     hasCredential : ()-> !!@get("account")
     isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
+    fullnameNotSet: ()-> true  # Todo: Mark as todo.
 
     getPaymentInfo: ()->
       ApiRequestR("payment_purchase")

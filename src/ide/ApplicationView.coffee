@@ -13,11 +13,12 @@ define [
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
   "./subviews/AppTpl"
+  "./subviews/FullnameSetup"
   'i18n!/nls/lang.js'
   'CloudResources'
   'constant'
   'UI.modalplus'
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang, CloudResources, constant, modalPlus )->
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, FullnameSetup, lang, CloudResources, constant, modalPlus )->
 
   Backbone.View.extend {
 
@@ -91,6 +92,8 @@ define [
     toggleWelcome : ()->
       if App.user.isFirstVisit()
         new WelcomeDialog()
+      else if App.user.fullnameNotSet()
+        new FullnameSetup()
       return
 
     askForAwsCredential : ()-> new WelcomeDialog({ askForCredential : true })

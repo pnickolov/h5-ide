@@ -608,6 +608,22 @@ VisualOps API. You cannot UNDO this action.'
       en: "Forget password?"
       zh: "是否重置密码?"
 
+    COMPLETE_YOUR_PROFILE:
+      en: "Complete your profile"
+      zh: "完善您的资料"
+
+    PROFILE_UPDATED_SUCCESSFULLY:
+      en: "Your profile updated successfully!"
+      zh: ""
+
+    FIRST_NAME:
+      en: "First Name"
+      zh: "名"
+
+    LAST_NAME:
+      en: "Last Name"
+      zh: "姓"
+
     WELCOME_DIALOG_TIT:
       en: "Welcome to VisualOps"
       zh: "欢迎使用 VisualOps"

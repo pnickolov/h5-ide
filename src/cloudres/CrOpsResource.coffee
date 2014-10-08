@@ -57,8 +57,8 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
     parseFetchData : ( data )->
       ### env:dev ###
       #store resource data for develop
-      data.app_json = App.workspaces.getAwakeSpace().opsModel.getJsonData()
-      dd.setDataToLocal data
+    #   data.app_json = App.workspaces.getAwakeSpace().opsModel.getJsonData()
+    #   dd.setDataToLocal data
       ### env:dev:end ###
 
       app_json = data.app_json

@@ -269,6 +269,7 @@ init = ->
                     return false
                 else
                   status.removeClass('verification-status').removeClass('error-status').text ""
+                  return true
 
             # username validation
             checkUsername = (e,cb)->
@@ -380,9 +381,9 @@ init = ->
                     resetRegForm() unless a
                     return a
             $firstName.on 'keyup blur change', ->
-                checkFullname ()
+                checkFullname()
             $lastName.on 'keyup blur change', ->
-                checkFullname ()
+                checkFullname()
             $email.on 'keyup blur change', (e)->
                 checkEmail e, (a)->
                     resetRegForm() unless a
@@ -397,10 +398,11 @@ init = ->
                 if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
                     #console.log "Error Message Exist"
                     return false
+                fullnameResult = checkFullname()
                 userResult = checkUsername()
                 emailResult = checkEmail()
                 passwordResult = checkPassword()
-                if !(userResult && emailResult && passwordResult)
+                if !(userResult && emailResult && passwordResult && fullnameResult)
                     return false
                 $('#register-btn').attr('disabled',true).val(langsrc.REGISTER.reginster_waiting)
                 #console.log('check user input here.')

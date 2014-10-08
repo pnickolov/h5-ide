@@ -337,6 +337,10 @@ module.exports =
       en: "Log Out"
       zh: "登出"
 
+    HEAD_LABEL_MENUITEM_BILLING:
+      en: "Billings"
+      zh: "账单"
+
     HEAD_LABEL_SETTING:
       en: "Settings"
       zh: "用户设置"

@@ -1179,6 +1179,10 @@ input.selection, textarea.selection {
   cursor: pointer; }
   .selection.item-list .selectize-dropdown .selectize-dropdown-button:hover {
     background-color: #4e4e5f; }
+  .selection.item-list .selectize-dropdown .selectize-dropdown-button .new {
+    color: #21aeff;
+    font-style: italic;
+    text-decoration: underline; }
 .selection.item-list .selectize-dropdown .selectize-dropdown-content {
   margin-top: 40px; }
 

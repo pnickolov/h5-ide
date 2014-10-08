@@ -580,6 +580,11 @@ input.selection, textarea.selection {
             &:hover {
                 background-color: #4e4e5f;
             }
+            .new {
+                color: #21aeff;
+                font-style: italic;
+                text-decoration: underline;
+            }
         }
         .selectize-dropdown-content {
             margin-top: 40px;

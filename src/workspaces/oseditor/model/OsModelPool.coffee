@@ -25,9 +25,12 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           ports.push p
       ports
 
-    addNewHm : ()->
+    addNewHm : (name)->
       MonitorModel = Design.modelClassForType( constant.RESTYPE.OSHM )
-      monitor = new MonitorModel()
+      if name
+        monitor = new MonitorModel({name: name})
+      else
+        monitor = new MonitorModel()
       @get("healthMonitors").push( monitor )
 
       monitor

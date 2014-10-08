@@ -84,8 +84,8 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-        addItem: (event) ->
-            @targetModel.addNewHm()
+        addItem: (event, value) ->
+            @targetModel.addNewHm(value)
             @refreshList()
 
         editItem: (event) ->

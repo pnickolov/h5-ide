@@ -1345,7 +1345,7 @@ var MicroPlugin = (function() {
             $document.on('mousedown' + eventNS, function(e) {
                 if (self.isFocused) {
                     // prevent events on the dropdown scrollbar from causing the control to blur
-                    if (e.target === self.$dropdown[0] || e.target.parentNode === self.$dropdown[0]) {
+                    if (e.target === self.$dropdown[0] || $(e.target).parents('.selectize-dropdown.selection').length) {
                         return false;
                     }
                     // blur on click outside
@@ -1623,6 +1623,8 @@ var MicroPlugin = (function() {
                 case KEY_RETURN:
                     if (self.isOpen && self.$activeOption) {
                         self.onOptionSelect({currentTarget: self.$activeOption});
+                    } else {
+                        self.newItemClick();
                     }
                     e.preventDefault();
                     return;
@@ -2275,9 +2277,16 @@ var MicroPlugin = (function() {
                     }
                 }
                 self.$dropdown_button.off('click').on('click', function(event) {
-                    self.$input.trigger('select_dropdown_button_click', self.$control_input.val());
-                    self.close();
+                    self.newItemClick();
                 });
+            }
+        },
+
+        newItemClick: function() {
+            var self = this;
+            if (self.settings.render.button && self.$dropdown_button) {
+                self.$input.trigger('select_dropdown_button_click', self.$control_input.val());
+                self.close();
             }
         },
 

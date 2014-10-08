@@ -13,7 +13,7 @@
 <!-- {{item}} -->
 <div class="item">
     <span class="item-name">{{name}}</span>
-    <div class="item-remove icon-delete"></div>
+    <div class="item-remove icon-del"></div>
 </div>
 
 <!-- {{option}} -->

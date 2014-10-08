@@ -16,9 +16,8 @@
 <div class="item hm-item">
     <div class="item-name">{{name}}</div>
     <div class="item-info">{{type}} | {{urlPath}}</div>
-
-    <div class="item-remove icon-delete"></div>
+    <div class="item-remove icon-del"></div>
 </div>
 
 <!-- {{addButton}} -->
-<div>Create New Health Monitor...</div>
+<div>Create <span class="default">New Health Monitor...</span><span class="new"></span></div>

@@ -222,7 +222,7 @@ define [
       cloudType = app.get('cloudType')
       isProduction = app.get('usage') is "production"
       appName = app.get('name')
-      canStop = new modalPlus {
+      stopModal = new modalPlus {
         template: AppTpl.loading()
         title:  if isProduction then lang.TOOLBAR.POP_TIT_STOP_PRD_APP else lang.TOOLBAR.POP_TIT_STOP_APP
         confirm:
@@ -231,7 +231,7 @@ define [
           disabled: isProduction
         disableClose: true
       }
-      canStop.tpl.find(".modal-footer").hide()
+      stopModal.tpl.find(".modal-footer").hide()
       awsError = null
 
       @checkNotReadyRDS(app)
@@ -241,67 +241,66 @@ define [
       .finally ()->
         resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
         if awsError and awsError isnt 403
-          canStop.close()
+          stopModal.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
 
         if cloudType is 'openstack'
-          canStop.tpl.find(".modal-footer").show()
-          canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName}
-          canStop.resize()
+          stopModal.tpl.find(".modal-footer").show()
+          stopModal.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName}
+          stopModal.resize()
           $("#appNameConfirmIpt").on "keyup change", ()->
             if $("#appNameConfirmIpt").val() is name
-              canStop.tpl.find('.modal-confirm').removeAttr "disabled"
+              stopModal.tpl.find('.modal-confirm').removeAttr "disabled"
             else
-              canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
-          return false
+              stopModal.tpl.find('.modal-confirm').attr "disabled", "disabled"
+        else
+          app.fetchJsonData().then ()->
+            comp = app.getJsonData().component
+            toFetch = {}
+            for uid, com of comp
+              if com.type is constant.RESTYPE.INSTANCE or com.type is constant.RESTYPE.LC
+                imageId = com.resource.ImageId
+                if imageId then toFetch[ imageId ] = true
+            toFetchArray  = _.keys toFetch
+            amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
+            amiRes.fetchAmis( _.keys toFetch ).then ->
+              hasInstanceStore = false
+              amiRes.each (e)->
+                if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
+                  return hasInstanceStore = true
 
-        app.fetchJsonData().then ()->
-          comp = app.getJsonData().component
-          toFetch = {}
-          for uid, com of comp
-            if com.type is constant.RESTYPE.INSTANCE or com.type is constant.RESTYPE.LC
-              imageId = com.resource.ImageId
-              if imageId then toFetch[ imageId ] = true
-          toFetchArray  = _.keys toFetch
-          amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
-          amiRes.fetchAmis( _.keys toFetch ).then ->
-            hasInstanceStore = false
-            amiRes.each (e)->
-              if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-                return hasInstanceStore = true
+              hasEC2Instance = (_.filter comp, (e)->
+                e.type == constant.RESTYPE.INSTANCE)?.length
 
-            hasEC2Instance = (_.filter comp, (e)->
-              e.type == constant.RESTYPE.INSTANCE)?.length
+              hasDBInstance = _.filter comp, (e)->
+                e.type == constant.RESTYPE.DBINSTANCE
 
-            hasDBInstance = _.filter comp, (e)->
-              e.type == constant.RESTYPE.DBINSTANCE
+              dbInstanceName = _.map hasDBInstance, (e)->
+                return e.resource.DBInstanceIdentifier
+              hasNotReadyDB = resourceList.filter (e)->
+                (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
-            dbInstanceName = _.map hasDBInstance, (e)->
-              return e.resource.DBInstanceIdentifier
-            hasNotReadyDB = resourceList.filter (e)->
-              (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
+              hasAsg = (_.filter comp, (e)->
+                e.type == constant.RESTYPE.ASG)?.length
 
-            hasAsg = (_.filter comp, (e)->
-              e.type == constant.RESTYPE.ASG)?.length
-
-            canStop.tpl.find(".modal-footer").show()
-            if hasNotReadyDB and hasNotReadyDB.length
-              canStop.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
-              canStop.tpl.find('.modal-confirm').remove()
-            else
-              hasDBInstance = hasDBInstance?.length
-              canStop.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, hasInstanceStore}
-            canStop.resize()
-
-            $("#appNameConfirmIpt").on "keyup change", ()->
-              if $("#appNameConfirmIpt").val() is name
-                canStop.tpl.find('.modal-confirm').removeAttr "disabled"
+              stopModal.tpl.find(".modal-footer").show()
+              if hasNotReadyDB and hasNotReadyDB.length
+                stopModal.tpl.find('.modal-body').html AppTpl.cantStop {cantStop : hasNotReadyDB}
+                stopModal.tpl.find('.modal-confirm').remove()
               else
-                canStop.tpl.find('.modal-confirm').attr "disabled", "disabled"
+                hasDBInstance = hasDBInstance?.length
+                stopModal.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName, hasEC2Instance, hasDBInstance, hasAsg, hasInstanceStore}
+              stopModal.resize()
 
-        canStop.on "confirm", ()->
-          canStop.close()
+              $("#appNameConfirmIpt").on "keyup change", ()->
+                if $("#appNameConfirmIpt").val() is name
+                  stopModal.tpl.find('.modal-confirm').removeAttr "disabled"
+                else
+                  stopModal.tpl.find('.modal-confirm').attr "disabled", "disabled"
+
+        stopModal.on "confirm", ()->
+          stopModal.close()
           app.stop().fail ( err )->
             console.log err
             error = if err.awsError then err.error + "." + err.awsError else err.error

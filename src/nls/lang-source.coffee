@@ -1387,7 +1387,7 @@ module.exports =
       zh: "默认"
 
     PROP_INSTANCE_TENANCY_DELICATED:
-      en: "Delicated"
+      en: "Dedicated"
       zh: "专用"
 
     PROP_INSTANCE_ROOT_DEVICE_TYPE:

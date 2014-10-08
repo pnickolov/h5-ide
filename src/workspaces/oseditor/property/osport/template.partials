@@ -33,7 +33,7 @@
 </div>
 
 <!-- {{unattached}} -->
-Attach the port to a server
+<div class="text-center">Attach the port to a server</div>
 
 <!-- {{app}} -->
 <section class="group">

@@ -188,6 +188,7 @@ define [
             sgModel = @getSelectItemModel($sgItem)
             sgModel.unAttachSG(@targetModel)
             @refreshList()
+            return false
 
     }, {
         handleTypes: [ 'ossglist' ]

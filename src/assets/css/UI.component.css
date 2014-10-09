@@ -1145,8 +1145,12 @@ input.selection, textarea.selection {
   display: none;
   background-color: #000;
   color: #fff;
-  padding: 10px;
-  z-index: 999; }
+  padding: 5px;
+  z-index: 999;
+  font-size: 12px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 .selection.ipv4, .selection.cidrv4, .selection.ipcidrv4 {
   letter-spacing: 1px; }

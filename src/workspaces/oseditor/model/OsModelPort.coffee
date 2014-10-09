@@ -128,7 +128,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             null
 
         # get available ip
-        availableIPAry = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPInCIDR(subnetCIDR, filterList, 0)
+        availableIPAry = Design.modelClassForType(constant.RESTYPE.ENI).getAvailableIPInCIDR(subnetCIDR, filterList, 0, [0, 1])
         if availableIPAry and availableIPAry[availableIPAry.length - 1]
             ipObj = availableIPAry[availableIPAry.length - 1]
             return ipObj.ip if ipObj.available

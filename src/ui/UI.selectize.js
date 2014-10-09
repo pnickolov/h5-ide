@@ -7,7 +7,7 @@ $(function() {
         var tip = $target.data('tip');
         if (event.type === 'focusin' && tip) {
             if (!$('#selection-tip').length) {
-                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i>' + tip + '</div>');
+                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i><span>' + tip + '</span></div>');
             }
             var width = $target.outerWidth() + 'px';
             var posX = $target.offset().left + 'px';

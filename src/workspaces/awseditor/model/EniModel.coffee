@@ -524,7 +524,9 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
     # EniModel does not handle EIP's deserialize.
     handleTypes : [ constant.RESTYPE.ENI, constant.RESTYPE.EIP ]
 
-    getAvailableIPInCIDR : (ipCidr, filter, maxNeedIPCount) ->
+    getAvailableIPInCIDR : (ipCidr, filter, maxNeedIPCount, reserveIPs) ->
+
+      reserveIPs = [0, 1, 2, 3] if not reserveIPs
 
       cutAry = ipCidr.split('/')
       ipAddr = cutAry[0]
@@ -550,7 +552,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
       $.each readyAssignAry, (idx, value) ->
         newIPBinStr = ipAddrBinPrefixStr + MC.leftPadString(value.toString(2), prefix, "0")
         isAvailableIP = true
-        if idx in [0, 1, 2, 3]
+        if idx in reserveIPs
           isAvailableIP = false
         if idx is readyAssignAryLength - 1
           isAvailableIP = false

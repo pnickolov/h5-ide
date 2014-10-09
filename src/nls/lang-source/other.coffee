@@ -728,9 +728,6 @@ VisualOps API. You cannot UNDO this action.'
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
 
-
-
-
     AMI_LBL_COMMUNITY_AMIS:
       en: "Community AMIs"
       zh: "社区映像"
@@ -1354,3 +1351,18 @@ VisualOps API. You cannot UNDO this action.'
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
       zh: ""
+
+    PAYMENT_PAYMENT_NEEDED:
+      en: "Upgrade your account"
+      zh: ""
+
+    PAYMENT_INVALID_BILLING:
+      en: "Your Billing Information is Invalid"
+      zh: ""
+
+    PAYMENT_LOADING:
+      en: "Loading..."
+      zh: "加载中..."
+
+    PAYMENT_LOADING_BILLING:
+      en: "Getting Billing Information ..."

@@ -69,14 +69,14 @@ define [ "./NavigationTpl", 'backbone' ], ( NavPartsTpl ) ->
 
         showNavApp : ()->
             $("#nav-app-region").show()
-            $("#nav-stack").hide()
+            $("#nav-stack-region").hide()
             $("#off-canvas-app").toggleClass("selected", true)
             $("#off-canvas-stack").toggleClass("selected", false)
             return
 
         showNavStack : ()->
             $("#nav-app-region").hide()
-            $("#nav-stack").show()
+            $("#nav-stack-region").show()
             $("#off-canvas-app").toggleClass("selected", false)
             $("#off-canvas-stack").toggleClass("selected", true)
             return

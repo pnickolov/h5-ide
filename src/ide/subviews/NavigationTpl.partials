@@ -4,8 +4,10 @@
     <button class="off-canvas-tab" id="off-canvas-app">{{ i18n "NAV_TIT_APPS" }}</button>
     <button class="off-canvas-tab selected" id="off-canvas-stack">{{ i18n "NAV_TIT_STACKS" }}</button>
   </nav>
+  <ul id="nav-app-region" class="hide"></ul>
+  <ul id="nav-stack-region"></ul>
 
-  <section class="scroll-wrap">
+<!--   <section class="scroll-wrap">
     <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
     <div class="scroll-content">
       <ul class="scroll-content hide" id="nav-app-region"></ul>
@@ -15,7 +17,7 @@
         <ul id="nav-region-empty-list" class="hide"></ul>
       </div>
     </div>
-  </section>
+  </section> -->
 </aside>
 <button id="off-canvas-menu" class="icon-menu"></button>
 <div id="off-canvas-overlay"></div>

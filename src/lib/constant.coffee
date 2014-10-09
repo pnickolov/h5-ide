@@ -251,10 +251,23 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     #private
-    REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
+    REGION_KEYS = [
+        # aws
+        'us-east-1'
+        'us-west-1'
+        'us-west-2'
+        'eu-west-1'
+        'ap-southeast-1'
+        'ap-southeast-2'
+        'ap-northeast-1'
+        'sa-east-1'
+        # openstack - awcloud
+        'guangzhou'
+    ]
 
     #private
     REGION_LABEL =
+        # aws
         'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
         'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
         'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
@@ -263,8 +276,11 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
         'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
         'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
+        # openstack - awcloud
+        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_guangzhou']
 
     REGION_SHORT_LABEL =
+        # aws
         'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
         'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
         'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
@@ -273,6 +289,8 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
         'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
         'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+        # openstack - awcloud
+        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_guangzhou']
 
     #private
     RETURN_CODE =

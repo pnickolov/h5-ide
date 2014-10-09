@@ -79,7 +79,8 @@ define [
       catch e
         console.error e
 
-      @opsModel.saveApp( @design.serialize() )
+    #   @opsModel.saveApp( @design.serialize() )
+      @opsModel.saveApp( newJson )
 
     reloadAppData : ()->
       @view.showUpdateStatus("", true)

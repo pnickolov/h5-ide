@@ -287,7 +287,7 @@ define [
             port = $port.getValue()
             ip = $ip.getValue()
 
-            ip = null if ip is '0.0.0.0/0'
+            ip = null if ip is '0.0.0.0/0' or not ip
             sg = null
 
             sgModel = Design.instance().component(ip)

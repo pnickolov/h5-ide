@@ -1367,3 +1367,7 @@ VisualOps API. You cannot UNDO this action.'
     PAYMENT_LOADING_BILLING:
       en: "Getting Billing Information ..."
       zh: ""
+
+    PROFILE_UPDATED_FAILED:
+      en: "Your Profile failed to update."
+      zh: ""

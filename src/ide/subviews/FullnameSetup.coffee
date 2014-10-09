@@ -1,4 +1,4 @@
-define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( FullnameTpl, Modal, lang ) ->
+define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "backbone" ], ( FullnameTpl, Modal, lang, ApiRequest ) ->
 
   Backbone.View.extend {
 
@@ -19,10 +19,20 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( F
       @setElement @modal.tpl
 
     submit: ()->
+      that = @
+      $firstname = that.modal.$("#complete-firstname")
+      $lastname  = that.modal.$("#complete-lastname")
+      if not ($firstname.val() and $lastname.val())
+        return false
       @modal.find(".modal-confirm").attr('disabled', true)
       @modal.setContent MC.template.loadingSpiner()
-      window.setTimeout ->
+      ApiRequest("account_update_account", { attributes : {
+        first_name : $firstname.val()
+        last_name  : $lastname.val()
+      }}).then  ->
         @modal.close()
         notification "info", lang.IDE.PROFILE_UPDATED_SUCCESSFULLY
-      , 1000
+      , ->
+        @modal.close()
+        notification 'error', lang.IDE.PROFILE_UPDATED_FAILED
   }

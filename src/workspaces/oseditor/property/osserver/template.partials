@@ -90,6 +90,15 @@
         </dd>
     </dl>
     <dl class="vertical">
+        <dt>Fixed IP</dt><dd>{{emptyStr fixedIp}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>MAC Address</dt><dd>{{emptyStr macAddress}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Floating IP</dt><dd>{{emptyStr floatingIp}}</dd>
+    </dl>
+    <dl class="vertical">
         <dt>Flavor</dt><dd>{{emptyStr flavor.id}}</dd>
     </dl>
     <dl class="vertical">

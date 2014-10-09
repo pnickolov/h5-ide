@@ -2853,16 +2853,6 @@ define [ 'component/stateeditor/model',
                 target.onSwitchState.call target
                 return false
 
-            # Switch to property panel [P]
-            if metaKey is false and shiftKey is false and keyCode is 80 and is_input is false
-                ide_event.trigger ide_event.FORCE_OPEN_PROPERTY, 'property'
-                return false
-
-            # Switch to state editor [S]
-            if metaKey is false and shiftKey is false and keyCode is 83 and is_input is false
-                ide_event.trigger ide_event.SHOW_STATE_EDITOR
-                return false
-
             # Disable default delete event [delete/backspace]
             # if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
             #     return false

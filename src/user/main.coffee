@@ -420,7 +420,7 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 #console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val(), $firstName.val(), $lastName.val()],(statusCode)-> # params needs to be confirmed.
+                                ajaxRegister([$username.val(), $password.val(), $email.val(), {first_name: $firstName.val(), last_name: $lastName.val()}],(statusCode)-> # params needs to be confirmed.
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.SERVICE['ERROR_CODE_'+statusCode+'_MESSAGE']
                                     return false

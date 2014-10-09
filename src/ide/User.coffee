@@ -34,7 +34,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     hasCredential : ()-> !!@get("account")
     isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
-    fullnameNotSet: ()-> true  # Todo: Mark as todo.
+    fullnameNotSet: ()-> return !(@get("first_name") && @get("last_name"))
 
     getPaymentInfo: ()->
       ApiRequestR("payment_purchase")
@@ -52,6 +52,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     userInfoAccuired : ( result )->
       res =
         email        : MC.base64Decode result.email
+        first_name   : if result.first_name then MC.base64Decode result.first_name else undefined
+        last_name    : if result.last_name then MC.base64Decode result.last_name else undefined 
         repo         : result.mod_repo
         tag          : result.mod_tag
         state        : parseInt result.state, 10

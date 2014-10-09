@@ -357,6 +357,10 @@ module.exports =
       en: "Username"
       zh: "用户名"
 
+    HEAD_LABEL_ACCOUNT_FULLNAME:
+      en: "Full Name"
+      zh: ""
+
     HEAD_LABEL_ACCOUNT_EMAIL:
       en: "Email Address"
       zh: "电子邮件地址"
@@ -1370,4 +1374,20 @@ VisualOps API. You cannot UNDO this action.'
 
     PROFILE_UPDATED_FAILED:
       en: "Your Profile failed to update."
+      zh: ""
+
+    PAYMENT_USAGE_TAB:
+      en: "Usage"
+      zh: ""
+
+    PAYMENT_BILLING_TAB:
+      en: "Payment & Billing"
+      zh: ""
+
+    PAYMENT_SETTING_TITLE:
+      en: "Billing & Usage"
+      zh: ""
+
+    HEAD_LABEL_ACCOUNT_FULLNAME:
+      en: "Full Name"
       zh: ""

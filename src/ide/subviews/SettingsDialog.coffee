@@ -35,12 +35,15 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         "click #AccountUpdateEmail"                 : "changeEmail"
         "change #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
         "keyup  #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+        'click #AccountFullName'                    : "showFullName"
 
 
       initialize : ( options )->
 
         attributes =
           username     : App.user.get("username")
+          first_name   : App.user.get("first_name") || ""
+          last_name    : App.user.get("last_name")  || ""
           email        : App.user.get("email")
           account      : App.user.get("account")
           awsAccessKey : App.user.get("awsAccessKey")
@@ -161,6 +164,18 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         $("#AccountNewEmail, #AccountEmailPwd").val("")
         $("#AccountEmailInfo").empty()
         return
+
+      showFullName: ()->
+        $(".accountFullNameRO").hide()
+        $("#AccountFullNameWrap").show()
+        $("#AccountFirstName").focus()
+        return
+
+      hideEmail: ()->
+        $(".accountFullNameRO").show()
+        $("#AccountFullNameWrap").hide()
+        $("#AccountFirstName").val("")
+        $("#AccountLastName").val("")
 
       updateEmailBtn : ()->
         old_pwd = $("#AccountNewEmail").val() || ""

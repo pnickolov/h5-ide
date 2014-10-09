@@ -614,7 +614,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROFILE_UPDATED_SUCCESSFULLY:
       en: "Your profile updated successfully!"
-      zh: ""
+      zh: "您的资料已经成功更新!"
 
     FIRST_NAME:
       en: "First Name"
@@ -1366,3 +1366,4 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_LOADING_BILLING:
       en: "Getting Billing Information ..."
+      zh: ""

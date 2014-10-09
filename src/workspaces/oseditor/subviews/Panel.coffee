@@ -76,7 +76,7 @@ define [
             if @hidden() then return
 
             @$el.removeClass( 'hide' )
-            @hideFloatPanel() unless lastPanel is @__currentPanel and _.isEqual( lastArgs, args )
+            @hideFloatPanel()
 
             @$el.prop 'class', "OEPanelRight #{panelName}"
             @$el.closest( '#OpsEditor' ).find( '.sidebar-title' ).prop 'class', "sidebar-title #{panelName}"

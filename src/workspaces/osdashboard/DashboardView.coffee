@@ -138,7 +138,6 @@ define [
     updateResourceCount : (init)->
       that = @
       quotaMap = App.model.getOpenstackQuotas("awcloud")
-      console.log quotaMap
       $nav = $(".resource-list-nav")
       resourceMap = {
         elbs: "Neutron::port"
@@ -148,7 +147,6 @@ define [
         snaps: "Cinder::snapshots"
         volumes: "Cinder::volumes"
       }
-      console.log init
       if init is true and quotaMap
         _.each resourceMap, (value, key)->
           dom = $nav.children(".#{key}")
@@ -157,11 +155,9 @@ define [
           dom.find('.count-usage').text( "-" )
 
       resourceCount = @model.getResourcesCount( @region )
-      console.log resourceCount
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        console.log r, count, "Animate"
-        if count then @animateUsage(child, count , quotaMap[resourceMap[r]])
+        if count and quotaMap then @animateUsage(child, count , quotaMap[resourceMap[r]])
       return
 
     animateUsage: (elem, usage, quota)->

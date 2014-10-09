@@ -65,5 +65,5 @@ define [
     hideFloatPanel: -> @panel.hideFloatPanel.apply @panel, arguments
 
     remove: ->
-        @propertyView.remove()
+        @propertyView?.remove()
         Backbone.View.prototype.remove.apply @, arguments

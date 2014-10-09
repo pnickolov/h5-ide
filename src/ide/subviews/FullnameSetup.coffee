@@ -5,7 +5,7 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( F
     events:
       "click #submitFullName": "submit"
 
-    initialize: (options)->
+    initialize: ()->
       @modal = new Modal {
         title        : lang.IDE.COMPLETE_YOUR_PROFILE
         template     : FullnameTpl()
@@ -19,6 +19,7 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( F
       @setElement @modal.tpl
 
     submit: ()->
+      @modal.find(".modal-confirm").attr('disabled', true)
       @modal.setContent MC.template.loadingSpiner()
       window.setTimeout ->
         @modal.close()

@@ -303,11 +303,11 @@ define [
         $(elem).html MC.template.loadingSpiner
       else
         paymentModal = new modalPlus
-          title: lang.ide.PAYMENT_LOADING
+          title: lang.IDE.PAYMENT_LOADING
           template: MC.template.loadingSpiner
           disableClose: true
           confirm:
-            text: if App.user.hasCredential() then lang.ide.RUN_STACK_MODAL_CONFIRM_BTN else lang.ide.RUN_STACK_MODAL_NEED_CREDENTIAL
+            text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
         paymentModal.find('.modal-footer').hide()
       showPaymentDefer = Q.defer()
@@ -323,7 +323,7 @@ define [
             showPaymentDefer.resolve({result: result})
           else
             if paymentModal.isClosed then return false
-            paymentModal.setTitle lang.ide.PAYMENT_PAYMENT_NEEDED
+            paymentModal.setTitle lang.IDE.PAYMENT_PAYMENT_NEEDED
             paymentModal.setContent(subscribeDom)
             paymentModal.trigger 'paymentRendered'
             showPaymentDefer.resolve({result:result, modal: paymentModal})
@@ -349,7 +349,7 @@ define [
             showPaymentDefer.resolve({result: result})
           else
             if paymentModal.isClosed then return false
-            paymentModal.setTitle lang.ide.PAYMENT_INVALID_BILLING
+            paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
             paymentModal.setContent updateDom
             paymentModal.trigger 'paymentRendered'
             showPaymentDefer.resolve({result:result, modal:paymentModal})

@@ -17,12 +17,12 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         if modal
           @modal = modal
           @modal.setWidth "650px"
-          .setTitle lang.ide.PAYMENT_SETTING_TITLE
+          .setTitle lang.IDE.PAYMENT_SETTING_TITLE
           .setContent MC.template.loadingSpiner
           .find('.modal-confirm').hide()
         else
           @modal = new Modal
-            title: lang.ide.PAYMENT_SETTING_TITLE
+            title: lang.IDE.PAYMENT_SETTING_TITLE
             width: "650px"
             template: MC.template.loadingSpiner
             confirm: hide: true

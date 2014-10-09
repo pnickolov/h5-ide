@@ -349,7 +349,7 @@ define [
       paymentState = App.user.get('paymentState')
       if paymentModal
         @modal = paymentModal
-        @modal.setTitle lang.ide.RUN_STACK_MODAL_TITLE
+        @modal.setTitle lang.IDE.RUN_STACK_MODAL_TITLE
         .setWidth('665px')
         .setContent MC.template.modalRunStack {paymentState, paymentUpdate}
         .compact()

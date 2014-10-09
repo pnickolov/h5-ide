@@ -41,7 +41,7 @@ define [
 
       @updateOpsList()
       @updateResList()
-      @updateRegionResources()
+      @updateRegionResources(true)
 
       self = @
       setInterval ()->
@@ -135,12 +135,33 @@ define [
       @updateRegionResources()
       return
 
-    updateResourceCount : (type)->
-      resourceCount = @model.getResourcesCount( @region )
+    updateResourceCount : (init)->
+      that = @
+      quotaMap = App.model.getOpenstackQuotas("awcloud")
+      console.log quotaMap
       $nav = $(".resource-list-nav")
+      resourceMap = {
+        elbs: "Neutron::port"
+        fips: "Neutron::floatingip"
+        rts: "Neutron::router"
+        servers: "Nova::instances"
+        snaps: "Cinder::snapshots"
+        volumes: "Cinder::volumes"
+      }
+      console.log init
+      if init is true and quotaMap
+        _.each resourceMap, (value, key)->
+          dom = $nav.children(".#{key}")
+          quota = quotaMap[value]
+          that.animateUsage(dom, 0, quota)
+          dom.find('.count-usage').text( "-" )
+
+      resourceCount = @model.getResourcesCount( @region )
+      console.log resourceCount
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        @animateUsage(child, Math.round(Math.random()*100), 100)
+        console.log r, count, "Animate"
+        if count then @animateUsage(child, count , quotaMap[resourceMap[r]])
       return
 
     animateUsage: (elem, usage, quota)->

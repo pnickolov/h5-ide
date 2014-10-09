@@ -55,7 +55,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'os_server_UpdateServerMetadata'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'UpdateServerMetadata',	params:['username', 'session_id', 'region', 'server_id', 'metadata']   },
 		'os_server_DeleteServerMetadata'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'DeleteServerMetadata',	params:['username', 'session_id', 'region', 'server_id', 'metadata_key']   },
 		'os_server_GetConsoleOutput'           : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetConsoleOutput',	params:['username', 'session_id', 'region', 'server_id', 'length']   },
-		'os_server_GetVNCConsole'              : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetVNCConsole',	params:['username', 'session_id', 'region', 'server_id', 'length']   },
+		'os_server_GetVNCConsole'              : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetVNCConsole',	params:['username', 'session_id', 'region', 'server_id']   },
 		'os_server_GetServerPassword'          : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetServerPassword',	params:['username', 'session_id', 'region', 'server_id']   },
 		'os_server_DeleteServerPassword'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'DeleteServerPassword',	params:['username', 'session_id', 'region', 'server_id']   },
 		'os_server_GetServerDiagnostics'       : { type:'openstack', url:'/os/nova/v2_0/server/',	method:'GetServerDiagnostics',	params:['username', 'session_id', 'region', 'server_id']   },

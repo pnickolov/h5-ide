@@ -25,6 +25,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             title: lang.IDE.PAYMENT_SETTING_TITLE
             width: "650px"
             template: MC.template.loadingSpiner
+            disableClose: true
             confirm: hide: true
         @modal.find('.modal-body').css({background: "#252525"})
         if not paymentState

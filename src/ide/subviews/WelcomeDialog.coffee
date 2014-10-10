@@ -4,6 +4,8 @@
 
 define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( WelcomeTpl, Modal, lang ) ->
 
+    SingletonWelcome = null
+
     WelcomeDialog = Backbone.View.extend {
 
       events :
@@ -15,15 +17,23 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
 
         "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
 
+      constructor : ()->
+        if SingletonWelcome
+          return SingletonWelcome
+
+        SingletonWelcome = this
+
+        Backbone.View.apply this, arguments
+
       initialize : ( options )->
         attributes =
           username : App.user.get("username")
 
         if options and options.askForCredential
-          title = lang.ide.WELCOME_PROVIDE_CRED_TIT
+          title = lang.IDE.WELCOME_PROVIDE_CRED_TIT
           attributes.noWelcome = true
         else
-          title = lang.ide.WELCOME_DIALOG_TIT
+          title = lang.IDE.WELCOME_DIALOG_TIT
 
         @modal = new Modal {
           title         : title
@@ -73,7 +83,9 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           $("#WelcomeDoneTitDemo").show()
           $("#WelcomeDoneTit").hide()
 
-      close : ()-> @modal.close()
+      close : ()->
+        SingletonWelcome = null
+        @modal.close()
 
       updateSubmitBtn : ()->
         account    = $("#CredSetupAccount").val()
@@ -100,7 +112,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           self.setCred()
           return
         , ()->
-          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
+          $("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_VALIDATE
           self.showCredSetup()
           return
 
@@ -120,7 +132,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           self.done()
           return
         , ( err )->
-          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
+          $("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_UPDATE
           self.showCredSetup()
           return
 

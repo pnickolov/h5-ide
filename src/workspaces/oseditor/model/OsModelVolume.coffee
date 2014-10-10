@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSVOL
-    newNameTmpl : "Volume-"
+    newNameTmpl : "volume-"
 
     defaults :
       size : 1

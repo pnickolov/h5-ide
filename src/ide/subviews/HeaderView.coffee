@@ -11,6 +11,7 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.s
             'click #HeaderSettings'              : 'settings'
             'click #HeaderShortcuts'             : 'shortcuts'
             'click #HeaderBilling'               : 'billingSettings'
+            'click .voquota'                     : "billingSettings"
             'DROPDOWN_CLOSE #HeaderNotification' : 'dropdownClosed'
 
         initialize : ()->

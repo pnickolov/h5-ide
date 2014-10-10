@@ -21,7 +21,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
   Model = Backbone.Model.extend {
 
     defaults :
-      paymentState : "" # "" || "pastdue" || "unpaid" || "active"
+      paymentState    : "" # "" || "pastdue" || "unpaid" || "active"
+      voQuotaPerMonth : 1000
+      currentVoQuota  : 0
 
     initialize : ()->
       @set {
@@ -48,21 +50,20 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     userInfoAccuired : ( result )->
       res =
-        email        : MC.base64Decode result.email
-        first_name   : if result.first_name then MC.base64Decode result.first_name else undefined
-        last_name    : if result.last_name then MC.base64Decode result.last_name else undefined
-        repo         : result.mod_repo
-        tag          : result.mod_tag
-        state        : parseInt result.state, 10
-        intercomHash : result.intercom_secret
-        account      : result.account_id
-        firstName    : result.first_name
-        lastName     : result.last_name
-        awsAccessKey : result.access_key
-        awsSecretKey : result.secret_key
-        tokens       : result.tokens || []
-        defaultToken : ""
-        paymentState : result.payment_state || ""
+        email          : MC.base64Decode result.email
+        repo           : result.mod_repo
+        tag            : result.mod_tag
+        state          : parseInt result.state, 10
+        intercomHash   : result.intercom_secret
+        account        : result.account_id
+        firstName      : result.first_name
+        lastName       : result.last_name
+        currentVoQuota : result.free_credit
+        awsAccessKey   : result.access_key
+        awsSecretKey   : result.secret_key
+        tokens         : result.tokens || []
+        defaultToken   : ""
+        paymentState   : result.payment_state || ""
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""

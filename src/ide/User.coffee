@@ -34,7 +34,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     hasCredential : ()-> !!@get("account")
     isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
-    fullnameNotSet: ()-> return !(@get("first_name") && @get("last_name"))
+    fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
+    isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
 
     getPaymentInfo: ()->
       ApiRequestR("payment_purchase")
@@ -44,10 +45,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequestR("payment_statement")
     getPaymentUsage: ->
       ApiRequestR("payment_usage")
-
-
-    isUnpaid : ()-> @get("paymentState") is PaymentState.Unpaid
-
 
     userInfoAccuired : ( result )->
       res =
@@ -59,6 +56,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         state        : parseInt result.state, 10
         intercomHash : result.intercom_secret
         account      : result.account_id
+        firstName    : result.first_name
+        lastName     : result.last_name
         awsAccessKey : result.access_key
         awsSecretKey : result.secret_key
         tokens       : result.tokens || []
@@ -187,6 +186,13 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         password : oldPwd
         email    : email
       }}).then ()-> self.set("email", email)
+
+    changeName : ( firstName, lastName )->
+      self = @
+      ApiRequest("account_update_account", { attributes : {
+        first_name : firstName
+        last_name  : lastName
+      }}).then ()-> self.set { firstName : firstName, lastName  : lastName }
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

@@ -3833,7 +3833,7 @@ div.modal-text-highlight {
     color: #148BE6;
     padding: 3px 0;
     margin-left: 0; }
-  #SettingsBody #AccountEmail {
+  #SettingsBody #AccountEmail, #SettingsBody #AccountFullName {
     color: #148BE6; }
 
 .accountEditWrap {
@@ -3857,12 +3857,12 @@ div.modal-text-highlight {
 .accountPwdBtns {
   padding-left: 130px; }
 
-#AccountUpdatePwd, #AccountUpdateEmail {
+#AccountUpdatePwd, #AccountUpdateEmail, #AccountUpdateFullName {
   padding: 5px;
   min-width: 80px;
   font-size: 12px; }
 
-#AccountCancelPwd, #AccountCancelEmail {
+#AccountCancelPwd, #AccountCancelEmail, #AccountCancelFullName {
   font-size: 12px;
   color: #999;
   padding: 3px;

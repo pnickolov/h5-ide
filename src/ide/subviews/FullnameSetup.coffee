@@ -30,6 +30,8 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
         first_name : $firstname.val()
         last_name  : $lastname.val()
       }}).then  ->
+        App.user.set("first_name", $firstname.val())
+        App.user.set("last_name" , $lastname.val() )
         @modal.close()
         notification "info", lang.IDE.PROFILE_UPDATED_SUCCESSFULLY
       , ->

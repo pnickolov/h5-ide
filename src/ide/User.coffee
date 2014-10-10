@@ -200,9 +200,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         access_key : accessKey
         secret_key : secretKey
       })
-      d = Q.defer()
-      d.resolve()
-      d.promise
 
     changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
       self = this

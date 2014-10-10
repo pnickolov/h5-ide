@@ -81,7 +81,9 @@ define [
         unless OsKp::hasResourceWithDefaultKp()
           return false
         osKeypair = new OsKp()
-        if modal.isOpen() then modal.find("#kp-runtime-placeholder").html(osKeypair.render().$el)
+        KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
+        defaultKp = _.find KeypairModel.allObjects(), (obj) -> obj.get('name') is 'DefaultKP'
+        if modal.isOpen() then modal.find("#kp-runtime-placeholder").html(osKeypair.render(defaultKp.get("keyName")).$el)
         modal.tpl.find('.default-kp-group').show()
         osKeypair.$input.on 'change', ()->
           osKeypair.setDefaultKeyPair()

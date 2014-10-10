@@ -11,7 +11,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       @template = selectTemplate
       @resModel = resModel
       @
-    render: ->
+    render: (name)->
       dropdown = $("<div/>")
       @template ||= $("<select class='selection option' name='kpDropdown' data-button-tpl='kpButton'></select>")
       $(@template).attr('placeholder', lang.IDE.COMPONENT_SELECT_KEYPAIR)
@@ -23,6 +23,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
         @listenTo @collection, 'update', @updateOption.bind(@)
         @selectize = dropdownSelect[0].selectize
         @updateOption()
+        if name then @setValue(name)
       @$input = dropdownSelect
       if @resModel then @$input.change => @resModel.set('keypair', @$input.val())
       dropdownSelect.on 'select_dropdown_button_click', =>
@@ -34,14 +35,11 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
 
     hasResourceWithDefaultKp: ()->
       has = false
-      KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
-      defaultKp = _.find KeypairModel.allObjects(), (obj) -> obj.get('name') is 'DefaultKP'
-      unless (defaultKp.get('keyName') and defaultKp.get('fingerprint'))
-        Design.instance().eachComponent ( comp ) ->
-          if comp.type is constant.RESTYPE.OSSERVER
-            if comp.get('keypair') is "$DefaultKeyPair" and comp.get('credential') is 'keypair'
-              has = true
-              return
+      Design.instance().eachComponent ( comp ) ->
+        if comp.type is constant.RESTYPE.OSSERVER
+          if comp.get('keypair') is "$DefaultKeyPair" and comp.get('credential') is 'keypair'
+            has = true
+            return
       has
 
     setDefaultKeyPair: ()->

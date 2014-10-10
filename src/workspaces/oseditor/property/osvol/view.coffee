@@ -12,9 +12,7 @@ define [
 
     render: ->
 
-      json = @model.toJSON()
-      json.mode = @mode()
-      @$el.html template.stackTemplate json
+      @$el.html template.stackTemplate @getRenderData()
       if @model.get('snapshot') then @bindSelectizeEvent()
       @
 

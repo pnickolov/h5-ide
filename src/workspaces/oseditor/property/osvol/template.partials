@@ -1,4 +1,14 @@
 <!-- {{stackTemplate}} -->
+{{#if modeIsAppEdit}}
+<section class="group">
+    <dl class="vertical">
+        <dt>ID</dt><dd>{{emptyStr app.id}}</dd>
+    </dl>
+    <dl class="vertical">
+        <dt>Status</dt><dd>{{emptyStr app.status}}</dd>
+    </dl>
+</section>
+{{/if}}
 <div class="option-group-head expand">
     Volume Details
 </div>
@@ -13,21 +23,21 @@
     </section>
     <section class="group required">
         <label class="name">Mount Point</label>
-        <input data-target="mountPoint" class="selection string" value="{{mountPoint}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
+        <input data-target="mountPoint" class="selection string" value="{{mountPoint}}" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}/>
     </section>
     <section class="group required">
         <label class="name">Volume Size</label>
-        <input data-target="size" class="selection string" id="property-os-volume-size" value="{{size}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}/>
+        <input data-target="size" class="selection string" id="property-os-volume-size" value="{{size}}" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}/>
     </section>
     {{#if snapshot}}
         <section class="group">
             <label class="name">Snapshot ID</label>
-            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}></select>
+            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}></select>
         </section>
     {{/if}}
     <section class="group">
         <label class="name">Bootable</label>
-        <select class="selection bool" data-target="bootable" value="{{#if bootable}}true{{else}}false{{/if}}" {{#ifCond mode 'appedit'}}disabled="disabled"{{/ifCond}}></select>
+        <select class="selection bool" data-target="bootable" value="{{#if bootable}}true{{else}}false{{/if}}" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}></select>
     </section>
 </div>
 

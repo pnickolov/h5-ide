@@ -11,9 +11,9 @@ define [
       "change [data-target]": "updateAttribute"
 
     render: ->
-      mode = Design.instance().mode()
+
       json = @model.toJSON()
-      json.mode = mode
+      json.mode = @mode()
       @$el.html template.stackTemplate json
       if @model.get('snapshot') then @bindSelectizeEvent()
       @

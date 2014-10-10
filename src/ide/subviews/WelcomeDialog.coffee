@@ -4,6 +4,8 @@
 
 define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( WelcomeTpl, Modal, lang ) ->
 
+    SingletonWelcome = null
+
     WelcomeDialog = Backbone.View.extend {
 
       events :
@@ -14,6 +16,14 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
         "click #CredSetupSubmit" : "submitCred"
 
         "keyup #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey" : "updateSubmitBtn"
+
+      constructor : ()->
+        if SingletonWelcome
+          return SingletonWelcome
+
+        SingletonWelcome = this
+
+        Backbone.View.apply this, arguments
 
       initialize : ( options )->
         attributes =
@@ -73,7 +83,9 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           $("#WelcomeDoneTitDemo").show()
           $("#WelcomeDoneTit").hide()
 
-      close : ()-> @modal.close()
+      close : ()->
+        SingletonWelcome = null
+        @modal.close()
 
       updateSubmitBtn : ()->
         account    = $("#CredSetupAccount").val()

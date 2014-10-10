@@ -10,6 +10,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     defaults: ()->
       ip : ""
       macAddress : ""
+      deviceIndex: 0
 
     initialize : ( attributes, option ) ->
 
@@ -58,6 +59,16 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       else
         subnet = @parent()
 
+      # generate device index
+      that = @
+      deviceIndex = 0
+      if @owner() and not @isEmbedded()
+        ports = @owner().connectionTargets("OsPortUsage")
+        _.each ports, (port, idx) ->
+          if that is port
+            deviceIndex = idx
+          null
+
       {
         layout : @generateLayout()
         component :
@@ -72,6 +83,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             security_groups : @connectionTargets("OsSgAsso").map ( sg )-> sg.createRef("id")
             network_id      : subnet.parent().createRef("id")
             device_id       : if @owner() then @owner().createRef("id") else ""
+            device_index    : deviceIndex
             fixed_ips       : [{
               subnet_id  : subnet.createRef("id")
               ip_address : @get("ip")

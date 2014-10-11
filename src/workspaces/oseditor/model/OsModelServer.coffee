@@ -98,8 +98,11 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
           availabilityZone   : @get('availabilityZone')
           blockDeviceMapping : []
 
+      KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
+      defaultKp = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+
       if @get('credential') is "keypair"
-        component.resource.key_name = @get("keypair")
+        component.resource.key_name = if @get("keypair") is "$DefaultKeyPair" then MC.genResRef(defaultKp.id, "resource.KeyName") else @get("keypair")
         component.resource.adminPass = ""
       else
         component.resource.key_name = ""
@@ -119,7 +122,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         flavorId  : data.resource.flavor
         imageId   : data.resource.image
         adminPass : data.resource.adminPass
-        keypair   : data.resource.key_name
+        keypair   : if data.resource.key_name.split("{")[0] is "@" then "$DefaultKeyPair" else data.resource.key_name
         state     : data.state
 
         x : layout_data.coordinate[0]

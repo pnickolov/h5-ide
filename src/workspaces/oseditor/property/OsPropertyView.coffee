@@ -27,7 +27,7 @@ define [
             if subView is @ then return subView
 
             @__subViews.push subView
-            _.extend subView, _.pick @, 'propertyPanel', 'panel'
+            _.extend subView, _.pick @, 'propertyPanel', 'panel', 'workspace'
             subView.__superView = @
 
             subView

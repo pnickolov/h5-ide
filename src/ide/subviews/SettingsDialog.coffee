@@ -46,8 +46,8 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
 
         attributes =
           username     : App.user.get("username")
-          first_name   : App.user.get("first_name") || ""
-          last_name    : App.user.get("last_name")  || ""
+          firstName    : App.user.get("firstName") || ""
+          lastName     : App.user.get("lastName")  || ""
           email        : App.user.get("email")
           account      : App.user.get("account")
           awsAccessKey : App.user.get("awsAccessKey")
@@ -208,12 +208,8 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         first_name = $("#AccountFirstName").val() || ""
         last_name  = $("#AccountLastName").val()  || ""
 
-        if first_name.length and last_name.length
-          ApiRequest("account_update_account", {attributes : {first_name, last_name}})
-          .then (result)->
-            App.user.set("first_name", first_name)
-            App.user.set("last_name", last_name)
-            console.log(result)
+        if first_name and last_name
+          App.user.changeName( first_name, last_name ).then (result)->
             that.hideFullName()
             $(".fullNameText").text(first_name + " " + last_name)
 

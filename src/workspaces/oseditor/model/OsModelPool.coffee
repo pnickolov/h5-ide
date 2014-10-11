@@ -46,6 +46,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       for h, idx in @get("healthMonitors")
         if h is idOrModel or h.id is idOrModel
           @get("healthMonitors").splice( idx, 1 )
+          h.remove()
           break
 
       return

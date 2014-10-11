@@ -6,5 +6,10 @@
     <dl><dt>Delay</dt><dd>{{delay}}</dd></dl>
     <dl><dt>Timeout</dt><dd>{{timeout}}</dd></dl>
     <dl><dt>Max Retries</dt><dd>{{max_retries}}</dd></dl>
+    {{#if url_path}}
+    <dl><dt>URL Path</dt><dd>{{url_path}}</dd></dl>
+    {{/if}}
+    {{#if expected_codes}}
     <dl><dt>Expected Codes</dt><dd>{{expected_codes}}</dd></dl>
+    {{/if}}
 </section>

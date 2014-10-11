@@ -18,6 +18,19 @@ define [
 
         setTitle: ( title ) -> @$( 'h1' ).text title
 
+        toggleUrlAndCodes: ( visible ) ->
+            @$('[data-id="hm-urlpath"]').closest('section').toggle visible
+            @$('[data-id="hm-expectedcodes"]').closest('section').toggle visible
+
+        updateAttribute: ( e ) ->
+            $target = $ e.currentTarget
+
+            target = $target.data('target')
+            val = $target.val()
+
+            @toggleUrlAndCodes if ( target is 'type' ) and ( val in [ 'PING', 'TCP' ] ) then false else true
+            OsPropertyView.call @, e
+
         render: ->
             if @isApp
                 @$el.html TplApp @modelData

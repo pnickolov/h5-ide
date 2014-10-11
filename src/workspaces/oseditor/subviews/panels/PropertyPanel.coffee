@@ -38,6 +38,7 @@ define [
             appModel        : @appModel or null
             propertyPanel   : @
             panel           : @panel
+            workspace       : @options.workspace
         })
 
         bindSelection(@$el, propertyView.selectTpl)

@@ -81,7 +81,9 @@ define [
         labelBg : true
       }).add([
         # Image Icon
-        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image")
+        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image tooltip")
+        .attr('data-tooltip': @model.getImage().name)
+
         # FIP
         svg.image( "", 12, 14).move(50, 55).classes('fip-status tooltip')
         svg.image( MC.IMG_URL+ "ide/icon/icn-vol.png", 29, 24 ).move(22, 52).classes('volume-image')
@@ -89,12 +91,12 @@ define [
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'
-          'data-tooltip' : lang.IDE.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_O
         })
         svg.use("port_right").attr({
           'class'        : 'port port-green tooltip'
           'data-name'    : 'server'
-          'data-tooltip' : lang.IDE.PORT_TIP_E
+          'data-tooltip' : lang.IDE.PORT_TIP_N
         })
       ])
 

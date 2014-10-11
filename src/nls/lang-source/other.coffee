@@ -993,6 +993,14 @@ VisualOps API. You cannot UNDO this action.'
       en: 'Connect to route table to assoicate'
       zh: ''
 
+    PORT_TIP_N:
+      en: "Connect to Port"
+      zh: ""
+
+    PORT_TIP_O:
+      en: "Connect to Load Balancer to regeister as member"
+      zh: ""
+
   ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:

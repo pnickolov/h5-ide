@@ -56,6 +56,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       attr.portMax   = json.port_range_max
       attr.protocol  = json.protocol
       attr.id        = json.id
+      attr.appId     = json.id
 
       attr.sg = if json.remote_group_id  then json.remote_group_id else null
       attr.ip = if json.remote_ip_prefix then json.remote_ip_prefix else null

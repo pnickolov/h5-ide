@@ -56,8 +56,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         state          : parseInt result.state, 10
         intercomHash   : result.intercom_secret
         account        : result.account_id
-        firstName      : result.first_name
-        lastName       : result.last_name
+        firstName      : MC.base64Decode result.first_name
+        lastName       : MC.base64Decode result.last_name
         voQuotaCurrent : result.free_credit
         awsAccessKey   : result.access_key
         awsSecretKey   : result.secret_key

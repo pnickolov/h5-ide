@@ -23,7 +23,7 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
 
     attachTo : ( owner )->
       if owner
-        mountPoint = @get('mountPoint') || @getMountPoint(owner)
+        mountPoint = @getMountPoint(owner)
         if not mountPoint then return false
         @.set("mountPoint", mountPoint)
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )

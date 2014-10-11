@@ -79,7 +79,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       # Set user to already used IDE, so that next time we don't show welcome
       if @isFirstVisit()
         ApiRequest("account_update_account", { attributes : {
-          state : @get("state")|UserState.NotFirstTime
+          state : "" + (@get("state")|UserState.NotFirstTime)
         } })
 
       return

@@ -14,6 +14,17 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       urlPath         : '/index.html'
       expectedCodes   : '200-299'
 
+    get: ( attr ) ->
+      if attr in [ 'urlPath', 'expectedCodes' ] and @attributes.type not in [ 'HTTP', 'HTTPS' ]
+        undefined
+      else
+        @attributes[attr]
+
+    toJSON: ->
+      if @get( 'type' ) not in [ 'HTTP', 'HTTPS' ]
+        _.extend _.clone(@attributes), { urlPath: undefined, expectedCodes: undefined }
+      else
+        _.clone(@attributes)
 
     serialize : ()->
       component =
@@ -27,8 +38,14 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           delay           : @get 'delay'
           timeout         : @get 'timeout'
           max_retries     : @get 'maxRetries'
-          url_path        : @get 'urlPath'
-          expected_codes  : @get 'expectedCodes'
+          url_path: @get( 'urlPath' ) or ""
+          expected_codes: @get( 'expectedCodes' ) or ""
+
+      # if @get( 'type' ) in [ 'HTTP', 'HTTPS' ]
+      #   _.extend component.resource, {
+          # url_path: @get 'urlPath'
+          # expected_codes: @get 'expectedCodes'
+      #   }
 
       { component : component }
 

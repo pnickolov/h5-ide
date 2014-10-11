@@ -15,7 +15,7 @@
 <!-- {{item}} -->
 <div class="item hm-item">
     <div class="item-name">{{name}}</div>
-    <div class="item-info">{{type}} |{{#if urlPath}} {{urlPath}}{{/if}}</div>
+    <div class="item-info">{{type}}{{#if urlPath}} | {{urlPath}}{{/if}}</div>
     <div class="item-remove icon-del"></div>
 </div>
 

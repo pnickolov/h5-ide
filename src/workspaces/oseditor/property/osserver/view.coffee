@@ -27,7 +27,6 @@ define [
         @sgListView = @reg new SgListView targetModel: @model.embedPort()
 
     render: ->
-
       json = @model.toJSON()
       @flavorList = App.model.getOpenstackFlavors( Design.instance().get("provider"), Design.instance().region() )
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
@@ -38,7 +37,8 @@ define [
       @$el.html template.stackTemplate json
       kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: @modeIsAppEdit()})
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
-      @listenTo @workspace, "change:agent" , @render
+      @stopListening @workspace.design
+      @listenTo @workspace.design, "change:agent" , @render
       @bindSelectizeEvent()
 
       # append sglist

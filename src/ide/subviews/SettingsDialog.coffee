@@ -174,8 +174,8 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         @hideEmail()
         $(".accountFullNameRO").hide()
         $("#AccountFullNameWrap").show()
-        $("#AccountFirstName").val(App.user.get("first_name") || "").focus()
-        $("#AccountLastName").val(App.user.get("last_name") || "")
+        $("#AccountFirstName").val(App.user.get("firstName") || "").focus()
+        $("#AccountLastName").val(App.user.get("lastName") || "")
         return
 
       hideFullName: ()->

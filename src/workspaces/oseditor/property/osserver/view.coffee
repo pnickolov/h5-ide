@@ -34,9 +34,11 @@ define [
       json.floatingIp = !!@model.embedPort().getFloatingIp()
       json.fixedIp = @model.embedPort().get('ip')
       json.isAppEdit = @modeIsAppEdit()
+      json.agentEnabled = Design.instance().get('agent').enabled
       @$el.html template.stackTemplate json
       kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: @modeIsAppEdit()})
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
+      @listenTo @workspace, "change:agent" , @render
       @bindSelectizeEvent()
 
       # append sglist

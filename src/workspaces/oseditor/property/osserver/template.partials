@@ -41,7 +41,7 @@
     </section>
     <section class="group">
         <label class="name">User Data</label>
-        <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string" {{#if isAppEdit}}disabled="disabled"{{/if}}>{{userData}}</textarea>
+        <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string" {{#if isAppEdit}}disabled="disabled"{{/if}} {{#if agentEnabled}}disabled="disabled"{{/if}}>{{userData}}</textarea>
     </section>
 </div>
 <div class="option-group-head expand">

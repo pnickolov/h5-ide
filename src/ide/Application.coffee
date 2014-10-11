@@ -168,13 +168,13 @@ define [
           @__view?.notifyUnpay()
           @workspaces?.removeAllSpaces ( space )->
             opsModel = space.opsModel
-            opsModel and opsModel.isPMRestricted() and opsModel.isApp()
+            opsModel and opsModel.isPMRestricted()
 
       when User.PaymentState.Active
         if oldPaymentState is User.PaymentState.Unpaid
           for space, idx in @workspaces.spaces()
             opsModel = space.opsModel
-            if opsModel and opsModel.isPMRestricted() and opsModel.isApp()
+            if opsModel and opsModel.isPMRestricted()
               # Re-open all the restricted apps.
               space.remove()
               @workspaces.setIndex( new OpsEditor( opsModel ), idx )

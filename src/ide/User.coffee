@@ -23,7 +23,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     defaults :
       paymentState    : "" # "" || "pastdue" || "unpaid" || "active"
       voQuotaPerMonth : 1000
-      currentVoQuota  : 0
+      voQuotaCurrent  : 0
 
     initialize : ()->
       @set {
@@ -58,7 +58,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         account        : result.account_id
         firstName      : result.first_name
         lastName       : result.last_name
-        currentVoQuota : result.free_credit
+        voQuotaCurrent : result.free_credit
         awsAccessKey   : result.access_key
         awsSecretKey   : result.secret_key
         tokens         : result.tokens || []

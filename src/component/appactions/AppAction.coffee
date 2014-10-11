@@ -105,9 +105,11 @@ define [
 
     defaultKpIsSet: (cloudType)->
       if cloudType is 'openstack'
-        if OsKp::hasResourceWithDefaultKp()
+        if OsKp::hasResourceWithDefaultKp() and OsKp::defaultKpNotSet()
           @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
-        return not OsKp::hasResourceWithDefaultKp()
+          return false
+        else
+          return true
       if not AwsKp.hasResourceWithDefaultKp()
         return true
       kpModal = Design.modelClassForType( constant.RESTYPE.KP )

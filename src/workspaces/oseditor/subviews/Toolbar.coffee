@@ -248,7 +248,6 @@ define [
 
 
     runStack: (event)->
-        console.log Design.instance(), @workspace.opsModel, (Design.instance() is @workspace.opsModel)
         appAction.runStack(event, @workspace)
         return false
 

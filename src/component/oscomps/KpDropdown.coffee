@@ -42,6 +42,11 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
             return
       has
 
+    defaultKpNotSet: ()->
+      KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
+      defaultKp = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+      not (defaultKp.get('keyName') and defaultKp.get("fingerprint"))
+
     setDefaultKeyPair: ()->
       that = @
       Design.instance().eachComponent ( comp ) ->

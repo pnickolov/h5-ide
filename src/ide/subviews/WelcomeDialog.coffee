@@ -30,10 +30,10 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           username : App.user.get("username")
 
         if options and options.askForCredential
-          title = lang.IDE.WELCOME_PROVIDE_CRED_TIT
+          title = lang.ide.WELCOME_PROVIDE_CRED_TIT
           attributes.noWelcome = true
         else
-          title = lang.IDE.WELCOME_DIALOG_TIT
+          title = lang.ide.WELCOME_DIALOG_TIT
 
         @modal = new Modal {
           title         : title
@@ -112,7 +112,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           self.setCred()
           return
         , ()->
-          $("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_VALIDATE
+          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_VALIDATE
           self.showCredSetup()
           return
 
@@ -132,7 +132,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
           self.done()
           return
         , ( err )->
-          $("#CredSetupMsg").text lang.IDE.SETTINGS_ERR_CRED_UPDATE
+          $("#CredSetupMsg").text lang.ide.SETTINGS_ERR_CRED_UPDATE
           self.showCredSetup()
           return
 

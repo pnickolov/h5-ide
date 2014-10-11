@@ -18,7 +18,9 @@ define [
 
         setTitle: ( title ) -> @$( 'h1' ).text title
 
-        toggleUrlAndCodes: ( visible ) ->
+        toggleUrlAndCodes: ->
+            visible = if @model.get( 'type' ) in [ 'PING', 'TCP' ] then false else true
+
             @$('[data-id="hm-urlpath"]').closest('section').toggle visible
             @$('[data-id="hm-expectedcodes"]').closest('section').toggle visible
 
@@ -26,10 +28,9 @@ define [
             $target = $ e.currentTarget
 
             target = $target.data('target')
-            val = $target.val()
 
-            @toggleUrlAndCodes if ( target is 'type' ) and ( val in [ 'PING', 'TCP' ] ) then false else true
             OsPropertyView.call @, e
+            @toggleUrlAndCodes() if target is 'type'
 
         render: ->
             if @isApp
@@ -38,6 +39,7 @@ define [
                 bindSelection(@$el, @selectTpl)
                 @$el.html TplStack @getRenderData()
 
+            @toggleUrlAndCodes()
             @
 
 

@@ -14,7 +14,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       sg        : null
       ip        : null
       appId     : ""
-      id        : ""
       ruleId    : ""
 
     initialize : () ->
@@ -55,7 +54,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       attr.portMin   = json.port_range_min
       attr.portMax   = json.port_range_max
       attr.protocol  = json.protocol
-      attr.id        = json.id
       attr.appId     = json.id
 
       attr.sg = if json.remote_group_id  then json.remote_group_id else null

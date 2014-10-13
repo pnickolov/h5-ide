@@ -255,12 +255,12 @@ define [
         getICMPRange: (icmpStr) ->
 
             icmpAry = icmpStr.split('/')
-            if icmpAry and icmpAry.length and icmpAry.length is 2
+            if icmpAry and icmpAry.length is 2
                 icmpType = Number(icmpAry[0])
                 icmpCode = Number(icmpAry[1])
                 if _.isNumber(icmpType) and _.isNumber(icmpCode)
-                    icmpAry[0] = null if icmpType is -1
-                    icmpAry[1] = null if icmpCode is -1
+                    icmpAry[0] = icmpType
+                    icmpAry[1] = icmpCode
                     return icmpAry
             return null
 

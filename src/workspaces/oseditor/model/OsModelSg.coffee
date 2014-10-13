@@ -54,6 +54,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
         for rule in @get("rules")
           if rule.get('ruleId') is ruleId
+            ruleData.appId = ''
             rule.set(ruleData)
             return
 

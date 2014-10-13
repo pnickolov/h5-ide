@@ -28,26 +28,32 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             disableClose: true
             confirm: hide: true
         @modal.find('.modal-body').css({background: "#252525"})
-        if not paymentState
-          App.user.getPaymentInfo().then (result)=>
-            @modal.setContent BillingDialogTpl.noPaymentCard result
-          , ()->
-            notification 'error', "Error while getting user payment info, please try again later."
-        else
-          Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
-            that.modal.find(".modal-body").css 'padding', "0"
-            hasPaymentHistory = (_.keys paymentHistory).length
-            tempArray = []
-            _.each paymentHistory, (e)->
-              e.ending_balance = e.ending_balance_in_cents/100
-              tempArray.push(e)
-            tempArray.reverse()
-            paymentHistory = tempArray
-            that.paymentHistory = tempArray
-            that.paymentUsage = _.clone paymentUsage
-            that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
-          , ()->
-            notification 'error', "Error while getting user payment info, please try again later."
+        #Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
+        App.user.getPaymentStatement().then (paymentHistory)->
+          console.log paymentHistory
+          paymentUpdate = {
+            first_name: App.user.get("firstName")
+            last_name: App.user.get("lastName")
+            url: App.user.get("paymentUrl")
+            card: App.user.get("creditCard")
+          }
+          paymentUsage = {
+            current_quota: App.user.get("voQuotaCurrent")
+            max_quota:  App.user.get("voQuotaPerMonth")
+          }
+          that.modal.find(".modal-body").css 'padding', "0"
+          hasPaymentHistory = (_.keys paymentHistory).length
+          tempArray = []
+          _.each paymentHistory, (e)->
+            e.ending_balance = e.ending_balance_in_cents/100
+            tempArray.push(e)
+          tempArray.reverse()
+          paymentHistory = tempArray
+          that.paymentHistory = tempArray
+          that.paymentUsage = _.clone paymentUsage
+          that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
+        , ()->
+          notification 'error', "Error while getting user payment info, please try again later."
         @setElement @modal.tpl
       switchTab: (event)->
         target = $(event.currentTarget)

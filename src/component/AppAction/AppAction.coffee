@@ -312,54 +312,30 @@ define [
         paymentModal.find('.modal-footer').hide()
       showPaymentDefer = Q.defer()
       paymentState = App.user.get("paymentState")
-      if not paymentState
-        App.user.getPaymentInfo().then (result)->
-          data = _.clone result
-          data.usage = usage
-          subscribeDom = MC.template.paymentSubscribe data
-          if elem
-            $(elem).html subscribeDom
-            $(elem).trigger 'paymentRendered'
-            showPaymentDefer.resolve({result: result})
-          else
-            if paymentModal.isClosed then return false
-            paymentModal.setTitle lang.IDE.PAYMENT_PAYMENT_NEEDED
-            paymentModal.setContent(subscribeDom)
-            paymentModal.trigger 'paymentRendered'
-            showPaymentDefer.resolve({result:result, modal: paymentModal})
-        , (err)->
-          if elem then elem.html ""
-          else
-            if paymentModal.isClosed then return false
-            paymentModal.close()
-          notification 'error', "Error while getting user payment info. please try again later."
-          showPaymentDefer.reject({error: err})
+      result = {
+        first_name: App.user.get("firstName")
+        last_name: App.user.get("lastName")
+        url: App.user.get("paymentUrl")
+        card: App.user.get("creditCard")
+      }
+      console.log result
+      data = _.clone result
+      data.usage = usage
+      updateDom = MC.template.paymentUpdate  data
+      if paymentState is 'pastdue'
+        if elem
+          paymentModal = elem
+        showPaymentDefer.resolve({result: result, modal: paymentModal})
+      if elem
+        $(elem).html updateDom
+        $(elem).trigger 'paymentRendered'
+        showPaymentDefer.resolve({result: result})
       else
-        App.user.getPaymentUpdate().then (result)->
-          data = _.clone result
-          data.usage = usage
-          updateDom = MC.template.paymentUpdate  data
-          if paymentState is 'pastdue'
-            if elem
-              paymentModal = elem
-            showPaymentDefer.resolve({result: result, modal: paymentModal})
-          if elem
-            $(elem).html updateDom
-            $(elem).trigger 'paymentRendered'
-            showPaymentDefer.resolve({result: result})
-          else
-            if paymentModal.isClosed then return false
-            paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
-            paymentModal.setContent updateDom
-            paymentModal.trigger 'paymentRendered'
-            showPaymentDefer.resolve({result:result, modal:paymentModal})
-        , (err)->
-          if elem then elem.html ""
-          else
-            if paymentModal.isClosed then return false
-            paymentModal.close()
-          notification 'error', "Error while getting user payment info. please try again later."
-          showPaymentDefer.reject({error: err})
+        if paymentModal.isClosed then return false
+        paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
+        paymentModal.setContent updateDom
+        paymentModal.trigger 'paymentRendered'
+        showPaymentDefer.resolve({result:result, modal:paymentModal})
 
       showPaymentDefer.promise
 

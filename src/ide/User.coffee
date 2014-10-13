@@ -39,14 +39,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
     isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
 
-    getPaymentInfo: ()->
-      ApiRequestR("payment_purchase")
-    getPaymentUpdate: ()->
-      ApiRequestR("payment_self")
     getPaymentStatement : ->
       ApiRequestR("payment_statement")
-    getPaymentUsage: ->
-      ApiRequestR("payment_usage")
 
     userInfoAccuired : ( result )->
       creditInfo = result.self_page || {}

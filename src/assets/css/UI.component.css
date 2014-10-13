@@ -1953,6 +1953,8 @@ select.select3.disabled {
 .status-in-use,
 .status-attached,
 .status-xgw-available,
+.status-IN_USE,
+.status-available,
 .status-xgw-attached {
   background-color: #17c249;
   background-image: -webkit-linear-gradient(bottom, #17a03a, #17c249);
@@ -1973,6 +1975,8 @@ select.select3.disabled {
 .status-xgw-deleting,
 .status-xgw-deleted,
 .status-xgw-detaching,
+.status-error_deleting,
+.status-error,
 .status-xgw-detached {
   background-color: #ec3c38;
   background-image: -webkit-linear-gradient(bottom, #c5312d, #ec3c38);

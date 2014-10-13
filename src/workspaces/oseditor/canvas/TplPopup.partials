@@ -7,7 +7,7 @@
     <li data-id="{{id}}" class="{{#if snapshot}}vpp-snapshot{{else}}vpp-volume{{/if}}">
         <div class="vpp-name">{{name}}</div>
         <div class="vpp-size">{{size}}GB</div>
-        {{#if appId}}<i class="status res-state tooltip {{state}}" data-tooltip="{{state}}"></i>{{/if}}
+        {{#if appId}}<i class="status res-state tooltip status-{{state}}" data-tooltip="{{state}}"></i>{{/if}}
     </li>
 {{/each}}
 </ul>

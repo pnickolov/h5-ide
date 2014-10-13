@@ -258,7 +258,7 @@ define [
             if icmpAry and icmpAry.length is 2
                 icmpType = Number(icmpAry[0])
                 icmpCode = Number(icmpAry[1])
-                if _.isNumber(icmpType) and _.isNumber(icmpCode)
+                if not isNaN(icmpType) and not isNaN(icmpCode) and _.isNumber(icmpType) and _.isNumber(icmpCode)
                     icmpType = null if icmpType is -1
                     icmpCode = null if icmpCode is -1
                     icmpAry[0] = icmpType

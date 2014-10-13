@@ -11,6 +11,7 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       port     : 80
       limit    : 1000
       ip       : "" # The same as OsModelPort's `ip`
+      portId   : ""
 
     initialize : ( attr, options )->
       console.assert options.pool, "Pool must be specified when creating a listener"

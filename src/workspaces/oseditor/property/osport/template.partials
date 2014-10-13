@@ -1,21 +1,21 @@
 <!-- {{stack}} -->
-{{#if modeIsAppEdit}}
-<section class="group">
-    <dl class="vertical">
-        <dt>ID</dt><dd>{{appId}}</dd>
-    </dl>
-    <dl class="vertical">
-        <dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd>
-    </dl>
-    <dl class="vertical">
-        <dt>Mac Address</dt><dd>{{app.mac_address}}</dd>
-    </dl>
-</section>
-{{/if}}
 <div class="option-group-head expand">
     Port Details
 </div>
 <div class="option-group">
+    {{#if modeIsAppEdit}}
+    <section class="group">
+        <dl class="vertical">
+            <dt>ID</dt><dd>{{appId}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd>
+        </dl>
+        <dl class="vertical">
+            <dt>Mac Address</dt><dd>{{app.mac_address}}</dd>
+        </dl>
+    </section>
+    {{/if}}
     {{#if isPurePort}}
     <section class="group required">
         <label class="name">Name</label>

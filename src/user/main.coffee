@@ -227,7 +227,12 @@ init = ->
                     $(".control-group").removeClass('error')
                     submitBtn.attr('disabled',true).val langsrc.RESET.reset_waiting
                     ajaxLogin [$user.val(),$password.val()] , (statusCode)->
-                        $('#error-msg-1').show()
+                        if statusCode is 100
+                          $('#error-msg-1').hide()
+                          $('#error-msg-3').show().text langsrc.SERVICE['ERROR_CODE_100_MESSAGE']
+                        else
+                          $('#error-msg-1').show()
+                          $('#error-msg-3').hide()
                         submitBtn.attr('disabled',false).val langsrc.LOGIN['login-btn']
                 else
                     $("#error-msg-2").show()

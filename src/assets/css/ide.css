@@ -6226,16 +6226,16 @@ g.shadow {
 
 .res-state {
   opacity: 0.8; }
-  .res-state.unknown {
+  .res-state.unknown, .res-state.SHUTOFF {
     fill: #a0a0a0;
     background: #a0a0a0; }
-  .res-state.running, .res-state.ok, .res-state.attached, .res-state.available {
+  .res-state.running, .res-state.ok, .res-state.attached, .res-state.available, .res-state.ACTIVE {
     fill: #17c249;
     background: #17c249; }
   .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting, .res-state.resetting-master-credentials {
     fill: #ffa740;
     background: #ffa740; }
-  .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full {
+  .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full, .res-state.ERROR {
     fill: #ec3c38;
     background: #ec3c38; }
 
@@ -7139,8 +7139,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

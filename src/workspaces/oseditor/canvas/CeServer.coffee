@@ -50,7 +50,17 @@ define [
     listenModelEvents : ()->
       @listenTo @model, "change:imageId", @render
       @listenTo @model, 'change:fip', @render
+      @listenTo @canvas, "change:externalData", @updateState
       return
+
+    updateState: ->
+      m = @model
+      stateIcon  = @$el.children(".res-state")
+
+      if stateIcon
+        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        state    = appData?.get("status") || "unknown"
+        stateIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
@@ -99,7 +109,8 @@ define [
           'data-tooltip' : lang.IDE.PORT_TIP_N
         })
       ])
-
+      if not m.design().modeIsStack() and m.get("appId")
+        svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       @listenTo @model, 'change:volume', @updateVolume
@@ -115,6 +126,7 @@ define [
       CanvasManager.updateFip @$el.children(".fip-status"), m
 
       @updateVolume()
+      @updateState()
       null
 
     updateVolume: ->

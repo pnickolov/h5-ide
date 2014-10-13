@@ -731,10 +731,10 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 .res-state {
   opacity : 0.8;
 
-  &.unknown
+  &.unknown,&.SHUTOFF
   { fill: #a0a0a0; background: #a0a0a0; }
   // green
-  &.running, &.ok, &.attached, &.available
+  &.running, &.ok, &.attached, &.available,&.ACTIVE
   { fill: #17c249; background: #17c249; }
   // yellow
   &.shuttingdown, &.stopping, &.pending, &.insufficient-data, &.attaching, &.detaching,
@@ -742,7 +742,7 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   &.modifying, &.rebooting, &.resetting-master-credentials
   { fill: #ffa740; background: #ffa740; }
   // red
-  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full
+  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full,&.ERROR
   { fill: #ec3c38; background: #ec3c38; }
 
 }

@@ -50,20 +50,23 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     userInfoAccuired : ( result )->
       res =
-        email          : MC.base64Decode result.email
-        repo           : result.mod_repo
-        tag            : result.mod_tag
-        state          : parseInt result.state, 10
-        intercomHash   : result.intercom_secret
-        account        : result.account_id
-        firstName      : MC.base64Decode result.first_name
-        lastName       : MC.base64Decode result.last_name
-        voQuotaCurrent : result.free_credit
-        awsAccessKey   : result.access_key
-        awsSecretKey   : result.secret_key
-        tokens         : result.tokens || []
-        defaultToken   : ""
-        paymentState   : result.payment_state || ""
+        email           : MC.base64Decode result.email
+        repo            : result.mod_repo
+        tag             : result.mod_tag
+        state           : parseInt result.state, 10
+        intercomHash    : result.intercom_secret
+        account         : result.account_id
+        firstName       : MC.base64Decode result.first_name
+        lastName        : MC.base64Decode result.last_name
+        voQuotaCurrent  : result.currrent_quota
+        voQuotaPerMonth : result.max_quota
+        paymentUrl      : result.self_page
+        creditCard      : result.has_card
+        awsAccessKey    : result.access_key
+        awsSecretKey    : result.secret_key
+        tokens          : result.tokens || []
+        defaultToken    : ""
+        paymentState    : result.payment_state || ""
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""

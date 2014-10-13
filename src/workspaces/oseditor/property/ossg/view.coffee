@@ -217,7 +217,7 @@ define [
 
             $port.removeAttr('disabled')
             if rule.protocol in ['tcp', 'udp']
-                $port.val('0-65535')
+                $port.val('1-65535')
             else if rule.protocol is 'icmp'
                 $port.val('-1/-1')
             else if rule.protocol is null
@@ -227,7 +227,7 @@ define [
         getPortStr: (min, max) ->
 
             if min is null or max is null
-                return '0-65535'
+                return '1-65535'
 
             if min is max
                 return min + ''
@@ -242,7 +242,7 @@ define [
 
         getPortRange: (portStr) ->
 
-            return [null, null] if portStr is '0-65535'
+            return [null, null] if portStr is '1-65535'
 
             portRange = MC.validate.portRange(portStr)
             if portRange and MC.validate.portValidRange(portRange)
@@ -259,6 +259,8 @@ define [
                 icmpType = Number(icmpAry[0])
                 icmpCode = Number(icmpAry[1])
                 if _.isNumber(icmpType) and _.isNumber(icmpCode)
+                    icmpType = null if icmpType is -1
+                    icmpCode = null if icmpCode is -1
                     icmpAry[0] = icmpType
                     icmpAry[1] = icmpCode
                     return icmpAry

@@ -36,6 +36,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             last_name: App.user.get("lastName")
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
+            period_end_at: App.user.get("period_end_at")
           }
           paymentUsage = {
             current_quota: App.user.get("voQuotaCurrent")
@@ -197,9 +198,9 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         pi = Math.PI
         t = (seconds / 360 * 1000)
         num = 0
-        freeNum = that.paymentUsage.free_credit
-        numMax = that.paymentUsage.charge_credit
-        totalNum = (freeNum + that.paymentUsage.charge_credit)
+        freeNum = that.paymentUsage.current_quota
+        numMax = that.paymentUsage.max_quota
+        totalNum = (freeNum + that.paymentUsage.max_quota)
         @modal.find(".usage-num-free span.num").text(freeNum)
         @modal.find(".usage-num-total span.num").text(totalNum)
         tempElement = null

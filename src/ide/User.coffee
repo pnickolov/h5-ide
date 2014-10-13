@@ -56,7 +56,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         lastName        : MC.base64Decode result.last_name
         voQuotaCurrent  : result.current_quota
         voQuotaPerMonth : result.max_quota
-        creditCard      : result.has_card
+        creditCard      : creditInfo.has_card
         billingCircle   : new Date( creditInfo.period_end_at || null )
         paymentUrl      : creditInfo.url || ""
         awsAccessKey    : result.access_key

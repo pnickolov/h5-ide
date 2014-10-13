@@ -63,8 +63,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         voQuotaCurrent  : result.currrent_quota
         voQuotaPerMonth : result.max_quota
         creditCard      : result.has_card
-        billingCircle   : creditInfo.period_end_at
-        paymentUrl      : creditInfo.url
+        billingCircle   : new Date( creditInfo.period_end_at || null )
+        paymentUrl      : creditInfo.url || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
@@ -225,8 +225,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
           self.set {
             firstName     : firstName
             lastName      : lastName
-            billingCircle : res.period_end_at
-            paymentUrl    : res.url
+            billingCircle : new Date( res.period_end_at || null )
+            paymentUrl    : res.url || ""
           }
           return
 

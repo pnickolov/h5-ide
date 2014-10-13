@@ -87,6 +87,27 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
       return
 
+    onWsUserStateChange : ( changes )->
+      if not changes then return
+
+      attr =
+        currrent_quota : "voQuotaCurrent"
+        max_quota      : "voQuotaPerMont"
+        self_page      : "paymentUrl"
+        has_card       : "creditCard"
+
+      changed = false
+      toChange = {}
+      for key, value in attr
+        if changes.hasOwnProperty( key )
+          changed = true
+          toChange[ value ] = changes[ key ]
+
+      if changed
+        @set toChange
+
+      return
+
 
     bootIntercom : ()->
       if not window.Intercom

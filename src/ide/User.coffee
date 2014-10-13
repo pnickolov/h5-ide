@@ -49,6 +49,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequestR("payment_usage")
 
     userInfoAccuired : ( result )->
+      creditInfo = result.self_page || {}
+
       res =
         email           : MC.base64Decode result.email
         repo            : result.mod_repo
@@ -60,8 +62,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         lastName        : MC.base64Decode result.last_name
         voQuotaCurrent  : result.currrent_quota
         voQuotaPerMonth : result.max_quota
-        paymentUrl      : result.self_page
         creditCard      : result.has_card
+        billingCircle   : creditInfo.period_end_at
+        paymentUrl      : creditInfo.url
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
@@ -93,7 +96,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       attr =
         currrent_quota : "voQuotaCurrent"
         max_quota      : "voQuotaPerMont"
-        self_page      : "paymentUrl"
         has_card       : "creditCard"
 
       changed = false
@@ -217,7 +219,16 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequest("account_update_account", { attributes : {
         first_name : firstName
         last_name  : lastName
-      }}).then ()-> self.set { firstName : firstName, lastName  : lastName }
+      }}).then ()->
+        ApiRequestR("payment_self").then ( res )->
+          console.log "PaymentSelf, result", res
+          self.set {
+            firstName     : firstName
+            lastName      : lastName
+            billingCircle : res.period_end_at
+            paymentUrl    : res.url
+          }
+          return
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

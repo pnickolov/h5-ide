@@ -7139,8 +7139,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9351,7 +9350,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   #OpsEditor .OEPanelRight.property .os-property-default, #OpsEditor .OEPanelRight.config .os-property-default {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .os-property-message, #OpsEditor .OEPanelRight.config .os-property-message {
-    padding: 20px 0 0 26px; }
+    padding: 20px 0 20px 26px; }
+    #OpsEditor .OEPanelRight.property .os-property-message h5, #OpsEditor .OEPanelRight.config .os-property-message h5 {
+      text-align: center;
+      margin-left: -20px; }
   #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
     display: inline-block;
     vertical-align: baseline;

@@ -52,5 +52,10 @@
         <label class="name">Protocol Port</label>
         <input data-id="mem-port" data-target="port" data-index="{{@index}}" class="selection string" value="{{port}}"/>
     </section>
+    {{else}}
+    <div class="os-property-message">
+        <h5>No Member</h5>
+        Connect Pool with Port or Server to register as Member
+    </div>
     {{/each}}
 </div>

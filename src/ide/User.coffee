@@ -91,6 +91,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         currrent_quota : "voQuotaCurrent"
         max_quota      : "voQuotaPerMont"
         has_card       : "creditCard"
+        payment_state  : "paymentState"
 
       changed = false
       toChange = {}

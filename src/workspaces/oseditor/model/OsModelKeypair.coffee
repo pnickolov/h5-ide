@@ -15,14 +15,14 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
 
         if not otherTargetComp then return
 
-        ref = kp.createRef( "KeyName" )
+        ref = kp.createRef( "keyName" )
 
-        otherTargetComp.resource.KeyName = ref
+        otherTargetComp.resource.keyName = ref
 
         groupMembers = if otherTarget.groupMembers then otherTarget.groupMembers() else []
 
         for member in groupMembers
-          if components[ member.id ] then components[ member.id ].resource.KeyName = ref
+          if components[ member.id ] then components[ member.id ].resource.keyName = ref
 
 
       null
@@ -90,8 +90,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
         type : @type
         uid  : @id
         resource :
-          Fingerprint : @get("fingerprint") or ''
-          KeyName        : @get("keyName") or ''
+          fingerprint : @get("fingerprint") or ''
+          keyName        : @get("keyName") or ''
       }
 
   }, {
@@ -111,8 +111,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        keyName     : data.resource.KeyName
-        fingerprint : data.resource.Fingerprint
+        keyName     : data.resource.keyName
+        fingerprint : data.resource.fingerprint
       })
       null
   }

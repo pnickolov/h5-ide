@@ -102,7 +102,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       defaultKp = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
 
       if @get('credential') is "keypair"
-        component.resource.key_name = if @get("keypair") is "$DefaultKeyPair" then MC.genResRef(defaultKp.id, "resource.KeyName") else @get("keypair")
+        component.resource.key_name = if @get("keypair") is "$DefaultKeyPair" then MC.genResRef(defaultKp.id, "resource.keyName") else @get("keypair")
         component.resource.adminPass = ""
       else
         component.resource.key_name = ""

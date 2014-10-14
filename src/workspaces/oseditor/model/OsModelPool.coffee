@@ -77,6 +77,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           resource :
             id             : @get 'appId'
             name           : @get 'name'
+            description    : @get 'description'
             protocol       : @get 'protocol'
             lb_method      : @get 'method'
             subnet_id      : @parent().createRef 'id'
@@ -92,6 +93,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       new Model({
         id        : data.uid
         name      : data.resource.name
+        description : data.resource.description
         appId     : data.resource.id
 
         protocol  : data.resource.protocol

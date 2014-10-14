@@ -40,6 +40,21 @@ define [
                 when 'mem' then return @memConn[ $target.data( 'index' ) ]
                 else return @model
 
+        updateAttribute: (event)->
+
+            model = @getModelForUpdateAttr(event)
+
+            $target = $(event.currentTarget)
+
+            attr = $target.data 'target'
+            value = $target.getValue()
+
+            if attr in ['weight', 'port']
+                model.set('appId', '')
+
+            model.set(attr, value)
+
+            @setTitle(value) if attr is 'name'
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

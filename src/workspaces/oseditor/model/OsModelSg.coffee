@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSSG
-    newNameTmpl : "SecurityGroup-"
+    newNameTmpl : "security-group"
 
     initialize : () ->
 

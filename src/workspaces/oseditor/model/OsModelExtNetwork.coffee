@@ -6,7 +6,7 @@ define [ "ComplexResModel", "constant", "CloudResources" ], ( ComplexResModel, c
     type : constant.RESTYPE.OSEXTNET
 
     defaults: ()->
-      name : "ExtNetwork"
+      name : "ext-network"
 
     isRemovable : ()-> false
 

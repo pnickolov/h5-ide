@@ -4,7 +4,7 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
   Model = OsModelPort.extend {
 
     type : constant.RESTYPE.OSLISTENER
-    newNameTmpl : "Listener-"
+    newNameTmpl : "listener"
 
     defaults: ()->
       protocol : 'HTTP'

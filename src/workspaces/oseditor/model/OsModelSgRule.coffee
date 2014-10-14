@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
   ComplexResModel.extend {
 
     type : constant.RESTYPE.OSSGRULE
-    newNameTmpl : "SgRule-"
+    newNameTmpl : "sg-rule"
 
     defaults :
       direction : ""

@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSRT
-    newNameTmpl : "Router-"
+    newNameTmpl : "router"
 
     connect : ( cn )->
       if cn.type is 'OsExtRouterAttach'

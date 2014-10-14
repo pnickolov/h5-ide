@@ -4,7 +4,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
   Model = GroupModel.extend {
 
     type : constant.RESTYPE.OSSUBNET
-    newNameTmpl : "Subnet-"
+    newNameTmpl : "subnet"
 
     defaults: ()->
       public : false

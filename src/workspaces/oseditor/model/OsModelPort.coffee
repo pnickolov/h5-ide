@@ -4,7 +4,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.OSPORT
-    newNameTmpl : "port-"
+    newNameTmpl : "port"
 
 
     defaults: ()->

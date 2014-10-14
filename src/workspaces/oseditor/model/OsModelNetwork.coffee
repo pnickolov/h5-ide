@@ -4,7 +4,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
   Model = GroupModel.extend {
 
     type : constant.RESTYPE.OSNETWORK
-    newNameTmpl : "Network-"
+    newNameTmpl : "network"
 
     isRemovable : ()-> false
 

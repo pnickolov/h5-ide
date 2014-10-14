@@ -23,8 +23,12 @@ define [
         getModelJson: ->
             data = OsPropertyView.prototype.getModelJson.call @
             data.mems = _.map @memConn, ( mc ) ->
+                port = mc.getPort()
+
                 json = mc.toJSON()
                 json.osport = mc.getPort().toJSON()
+                json.osport.name = port.owner().get( 'name' ) if port.isEmbedded()
+
                 json
             data
 

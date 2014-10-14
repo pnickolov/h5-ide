@@ -29,7 +29,9 @@ define [
             PortClass = Design.modelClassForType constant.RESTYPE.OSPORT
             _.each appJson.members, ( m ) ->
                 osport = PortClass.find ( port ) -> port.get( 'ip' ) is m.address
-                m.name = osport?.get( 'name' )
+                unless osport then return
+
+                m.name = if osport.isEmbedded() then osport.owner().get('name') else osport.get( 'name' )
                 null
 
             appJson

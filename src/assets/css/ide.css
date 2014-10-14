@@ -9233,7 +9233,7 @@ g.shadow {
   .usage-block .billable-usage {
     background: #4d508e;
     width: 250px; }
-  .usage-block.error .billable-points {
+  .usage-block.error .billable-usage {
     background: #851512; }
   .usage-block.error .current-usage {
     background: #fd0d00; }

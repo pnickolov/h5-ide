@@ -94,10 +94,12 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-            {{#ifCond paymentUpdate.paymentState ""}}
-            <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Provide Billing Information</a> as soon as possible</p>
-            {{/ifCond}}
+            {{#if paymentUsage.outOfQuota}}
+                {{#unless paymentUpdate.card}}
+                    <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
+                        <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Provide Billing Information</a> as soon as possible</p>
+                {{/unless}}
+            {{/if}}
             {{#ifCond paymentUpdate.paymentState "unpaid"}}
                 <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
                     <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>

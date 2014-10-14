@@ -8,7 +8,9 @@ define [
     '../../property/OsPropertyBundle'
     './template/TplPropertyPanel'
     'UI.selection'
-], ( Backbone, constant, Design, CloudResources, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection )->
+    'ConnectionModel'
+
+], ( Backbone, constant, Design, CloudResources, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection, ConnectionModel )->
 
   Backbone.View.extend
 
@@ -29,6 +31,14 @@ define [
 
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
 
+    resourceInexist: ->
+        if @mode is 'stack' then return false
+        if @appModel then return false
+        if @model?.type is constant.RESTYPE.OSEXTNET then return false
+        if @model instanceof ConnectionModel then return false
+
+        true
+
     render: () ->
 
         design = @options.workspace.design
@@ -45,7 +55,7 @@ define [
 
         @setTitle()
 
-        if @mode in [ 'app', 'appedit' ] and not @appModel and @model?.type isnt constant.RESTYPE.OSEXTNET
+        if @resourceInexist()
             @$el.append PropertyPanelTpl.empty()
         else
             @$el.append propertyView.render().el

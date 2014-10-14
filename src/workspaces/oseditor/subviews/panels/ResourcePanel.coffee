@@ -22,8 +22,6 @@ define [
 
         MC.template.bubbleOsSnapshotInfo( snapshot?.toJSON() or {} )
 
-    amiType = 'public' # public | private
-
     Backbone.View.extend
 
         events:
@@ -31,6 +29,8 @@ define [
             'OPTION_CHANGE .ami-type-select'    : 'changeAmiType'
             'click .btn-refresh-panel'          : 'refreshPanelData'
             'click .manage-snapshot'            : 'manageSnapshot'
+
+        amiType: 'public' # public | private
 
         initialize: ( options ) ->
             _.extend @, options
@@ -40,7 +40,7 @@ define [
             @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
 
         changeAmiType: ( event, type ) ->
-            amiType = type
+            @amiType = type
             @renderAmi()
 
         render: () ->
@@ -65,10 +65,11 @@ define [
           snapshotManager.render()
 
         renderAmi: ->
+            that = @
             region = @workspace.opsModel.get("region")
 
             amis = CloudResources( constant.RESTYPE.OSIMAGE,  region ).toJSON()
-            currentTypeAmis = _.filter amis, ( ami ) -> ami.visibility is amiType
+            currentTypeAmis = _.filter amis, ( ami ) -> ami.visibility is that.amiType
 
             data = _.map currentTypeAmis, ( ami ) -> _.extend { region: region }, ami
 

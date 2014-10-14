@@ -117,9 +117,9 @@
                     </div>
                 </div>
                 <div class="usage-block">
-                    <div class="billable-usage"></div>
-                    <div class="free-usage"></div>
-                    <div class="current-usage"></div>
+                    <div class="billable-usage tooltip"></div>
+                    <div class="free-usage tooltip"></div>
+                    <div class="current-usage tooltip"></div>
                 </div>
                 <p class="renew-points">2000 free points renewed in {{paymentUsage.renew_days}} days</p>
             </div>

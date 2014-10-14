@@ -9220,14 +9220,19 @@ g.shadow {
     width: 250px;
     background: #32bc00;
     left: 20px;
-    top: 20px; }
+    top: 20px;
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    -ms-transition: width 0.3s;
+    -o-transition: width 0.3s;
+    transition: width 0.3s; }
   .usage-block .free-usage {
     background: #597557; }
   .usage-block .current-usage {
-    width: 30px; }
+    width: 0px; }
   .usage-block .billable-usage {
     background: #4d508e;
-    width: 300px; }
+    width: 250px; }
   .usage-block.error .billable-points {
     background: #851512; }
   .usage-block.error .current-usage {

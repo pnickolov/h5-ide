@@ -155,16 +155,21 @@ $navHeight : 38px;
     background: #32bc00;
     left: 20px;
     top: 20px;
+    -webkit-transition: width 0.3s;
+    -moz-transition: width 0.3s;
+    -ms-transition: width 0.3s;
+    -o-transition: width 0.3s;
+    transition: width 0.3s;
   }
   .free-usage{
     background: #597557;
   }
   .current-usage{
-    width: 30px;
+    width: 0px;
   }
   .billable-usage{
     background: #4d508e;
-    width: 300px;
+    width: 250px;
   }
   &.error .billable-points{
     background: #851512;

@@ -88,14 +88,14 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if not changes then return
 
       attr =
-        currrent_quota : "voQuotaCurrent"
-        max_quota      : "voQuotaPerMont"
-        has_card       : "creditCard"
-        payment_state  : "paymentState"
+        current_quota : "voQuotaCurrent"
+        max_quota     : "voQuotaPerMont"
+        has_card      : "creditCard"
+        payment_state : "paymentState"
 
       changed = false
       toChange = {}
-      for key, value in attr
+      for key, value of attr
         if changes.hasOwnProperty( key )
           changed = true
           toChange[ value ] = changes[ key ]

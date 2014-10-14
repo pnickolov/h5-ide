@@ -27,7 +27,15 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.s
 
         settings : ()-> new SettingsDialog()
 
-        update : ()-> $("#HeaderUser").data("tooltip", App.user.get("email")).children("span").text( App.user.get("username"))
+        update : ()->
+            user = App.user
+
+            $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
+            $quota = $("#header").children(".voquota")
+            $quota.find(".currquota").css({"width":Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)+"%"})
+            $quota.find(".current").text(user.get("voQuotaCurrent"))
+            $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))
+            return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 

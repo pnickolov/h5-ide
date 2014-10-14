@@ -20,12 +20,6 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       else
         @attributes[attr]
 
-    toJSON: ->
-      if @get( 'type' ) not in [ 'HTTP', 'HTTPS' ]
-        _.extend _.clone(@attributes), { urlPath: undefined, expectedCodes: undefined }
-      else
-        _.clone(@attributes)
-
     serialize : ()->
       component =
         name : @get 'name'

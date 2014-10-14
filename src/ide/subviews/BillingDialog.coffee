@@ -27,8 +27,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             template: MC.template.loadingSpiner
             disableClose: true
             confirm: hide: true
-        @modal.find('.modal-body').css({background: "#252525"})
-        #Q.all([App.user.getPaymentUpdate(),App.user.getPaymentStatement(), App.user.getPaymentUsage()]).spread (paymentUpdate, paymentHistory, paymentUsage)->
         App.user.getPaymentStatement().then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {

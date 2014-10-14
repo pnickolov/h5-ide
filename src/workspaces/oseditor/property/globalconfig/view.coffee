@@ -12,7 +12,7 @@ define [
 
         render: ->
             template = switch
-                when @mode is 'app' then TplApp
+                when @mode() is 'app' then TplApp
                 else TplStack
 
             @$el.html template @getRenderData()

@@ -79,9 +79,12 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
         # Join router, extnetwork
         extNetworks = _.map CloudResources( constant.RESTYPE.OSNETWORK, region ).getExtNetworks(), (m) -> m.toJSON()
         _.each data.rts, ( rt ) ->
-          extNetwork = _.findWhere extNetworks, { id: rt.external_gateway_info?.network_id }
-          rt.externalNetworkName = extNetwork?.name
+          name = ""
+          if rt.external_gateway_info
+            extNetwork = _.findWhere extNetworks, { id: rt.external_gateway_info.network_id }
+            if extNetwork then name = extNetwork.name
 
+          rt.externalNetworkName = name
 
         data
 

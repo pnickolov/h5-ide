@@ -1001,6 +1001,20 @@ VisualOps API. You cannot UNDO this action.'
       en: "Connect to Load Balancer to regeister as member"
       zh: ""
 
+    PORT_TIP_P:
+      en: "Connect to Pool"
+      zh: ""
+
+    PORT_TIP_Q:
+      en: "Connect to Listener"
+      zh: ""
+
+    PORT_TIP_R:
+      en: "Connect to Server"
+      zh: ""
+
+
+
   ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:

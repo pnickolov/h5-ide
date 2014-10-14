@@ -114,9 +114,7 @@ define [
         openResource: ( args ) -> @open 'resource', args
         openState   : ( args ) -> @open 'state', args
         openProperty: ( args ) -> @open 'property', args
-        openConfig  : ( args ) ->
-            @open 'config', args
-            @__openArgs = @__defaultArgs
+        openConfig  : ( args ) -> @open 'config', args
 
         openCurrent : ( args ) ->
             if @workspace.design.mode() is 'app' and @__currentPanel is 'resource'

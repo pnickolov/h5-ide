@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <a class="btn btn-blue" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
+                    <a class="btn btn-blue update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>
             <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.billingCircle "MMMM d, yyyy"}}</span></h5>
@@ -94,6 +94,10 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
+            {{#ifCond paymentUpdate.paymentState "unpaid"}}
+            <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
+                <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
+            {{/ifCond}}
             <p>Current Usage</p>
             <div class="usage-wrapper">
                 <svg class="rotate" viewbox="0 0 250 250">

@@ -9,7 +9,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       events :
         "click #PaymentNav span"              : "switchTab"
         'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
-        "click .btn.btn-xlarge"               : "_bindPaymentEvent"
+        'click .update-payment'               : "_bindPaymentEvent"
 
       initialize : (modal)->
         that = @
@@ -32,6 +32,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         App.user.getPaymentStatement().then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {
+            paymentState: App.user.get("paymentState")
             first_name: App.user.get("firstName")
             last_name: App.user.get("lastName")
             url: App.user.get("paymentUrl")
@@ -182,9 +183,10 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.listenTo App.user, 'change:paymentState', ->
           paymentState = App.user.get 'paymentState'
           if that.modal.isClosed then return false
-          if paymentState isnt ''
+          if paymentState is 'active'
             that._renderBillingDialog(that.modal)
         @modal.on 'close', ()->that.modal.stopListening App.user
+        return false
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 

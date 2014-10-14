@@ -96,7 +96,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         if free_quota > current_quota
           _.defer ->
             $current_usage.width(current_quota_length).attr("data-tooltip", current_quota + " used points")
-            $free_usage.attr('data-tooltip', "2000 free points")
+            $free_usage.attr('data-tooltip', "#{free_quota} free points")
         else
           _.defer ->
             console.log current_quota_length, $billable_usage

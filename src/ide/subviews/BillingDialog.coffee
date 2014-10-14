@@ -57,6 +57,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
         @setElement @modal.tpl
+
       switchTab: (event)->
         target = $(event.currentTarget)
         console.log "Switching Tabs"
@@ -64,6 +65,24 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
         @animateUsage()
+
+
+      _bindPaymentEvent: (event)->
+        that = @
+        event.preventDefault()
+        window.open $(event.currentTarget).attr("href"), ""
+        @modal.listenTo App.user, 'change:paymentState', ->
+          paymentState = App.user.get 'paymentState'
+          if that.modal.isClosed then return false
+          if paymentState is 'active'
+            that._renderBillingDialog(that.modal)
+        @modal.on 'close', ()->that.modal.stopListening App.user
+        return false
+
+      _renderBillingDialog: (modal)->
+        new BillingDialog(modal)
+
+      animateUsage: ()->
 
       viewPaymentReceipt: (event)->
         $target = $(event.currentTarget)
@@ -176,66 +195,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           newWindow.document.close()
         makeNewWindow()
 
-      _bindPaymentEvent: (event)->
-        that = @
-        event.preventDefault()
-        window.open $(event.currentTarget).attr("href"), ""
-        @modal.listenTo App.user, 'change:paymentState', ->
-          paymentState = App.user.get 'paymentState'
-          if that.modal.isClosed then return false
-          if paymentState is 'active'
-            that._renderBillingDialog(that.modal)
-        @modal.on 'close', ()->that.modal.stopListening App.user
-        return false
-      _renderBillingDialog: (modal)->
-        new BillingDialog(modal)
-
-      animateUsage: ()->
-        that = @
-        seconds = 2
-        loaderBg = document.getElementById('usage_all')
-        loader = document.getElementById('usage_free')
-        numElem = document.getElementById('usage_num')
-        a = 0
-        pi = Math.PI
-        t = (seconds / 360 * 1000)
-        num = 0
-        freeNum = that.paymentUsage.current_quota
-        numMax = that.paymentUsage.max_quota
-        totalNum = (freeNum + that.paymentUsage.max_quota)
-        @modal.find(".usage-num-free span.num").text(freeNum)
-        @modal.find(".usage-num-total span.num").text(totalNum)
-        tempElement = null
-        tempAngle = 270
-        if that.chartTimeOut then window.clearTimeout(that.chartTimeOut)
-        that.chartTimeOut = null
-        draw = (element,angle,direct)->
-          if element then a = 0
-          a = if direct then angle else a
-          a++
-          num += ((numMax) / tempAngle)
-          r = a * pi / 180
-          x = Math.sin(r) * 125
-          y = Math.cos(r) * - 125
-          mid = if (a > 180) then 1 else 0
-          anim = "M 0 0 v -125 A 125 125 1 #{mid} 1 #{x} #{y} z" #Magic, don't touch.
-          tempElement = element || tempElement
-          tempAngle = angle || tempAngle
-          tempElement.setAttribute( 'd' , anim)
-          if not direct then numElem.innerText = Math.round(if num > numMax then numMax else num)
-          if(a < tempAngle and not direct)
-            that.chartTimeOut = window.setTimeout draw, t
-        if freeNum
-          console.log freeNum, totalNum
-          loaderBg.setAttribute( 'fill' , "#4b4f8c")
-          loader.setAttribute( 'fill' , "#30bc00")
-          draw(loaderBg, 270, true)
-          draw(loader, (freeNum/totalNum) * 270)
-          return false
-        loaderBg.setAttribute( 'fill' , "#5f5f5f")
-        draw(loaderBg, 270, true)
-        console.log @paymentUsage
-        return
   }
 
 

@@ -7089,8 +7089,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9188,80 +9187,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   overflow: visible;
   margin: 0 auto;
   position: relative; }
-
-.usage-wrapper .rotate {
-  width: 100%;
-  height: 100%;
-  display: block;
-  position: relative;
-  z-index: 10;
-  -webkit-transform: rotate(225deg);
-  -moz-transform: rotateZ(225deg);
-  -ms-transform: rotateZ(225deg);
-  -o-transform: rotateZ(225deg);
-  transform: rotateZ(225deg); }
-
-.usage-wrapper .rotate .loader {
-  position: absolute;
-  top: 0;
-  left: 0; }
-
-.usage-wrapper .dots {
-  width: 240px;
-  height: 240px;
-  position: absolute;
-  z-index: 15;
-  top: 30px;
-  left: 30px;
-  background: #252525;
-  border-radius: 50%; }
-
-#usage_num {
-  font-size: 60px;
-  position: absolute;
-  top: 100px;
-  left: 0;
-  display: block;
-  width: 100%;
-  text-align: center;
-  color: #4b4f8c; }
-
-.usage-num-label {
-  position: absolute;
-  top: 70px;
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 16px;
-  color: #CCCCCC; }
-
-.usage-num-free, .usage-num-total {
-  display: block;
-  position: absolute;
-  top: 240px;
-  font-size: 13px; }
-
-.usage-num-free span, .usage-num-total span {
-  color: #CCCCCC;
-  font-size: 14px; }
-
-.usage-num-free span.num, .usage-num-total span.num {
-  display: block;
-  font-size: 20px; }
-
-.usage-num-free span.num {
-  color: #30bc00; }
-
-.usage-num-total span.num {
-  color: #4b4f8c; }
-
-.usage-num-free {
-  text-align: right;
-  left: -160px; }
-
-.usage-num-total {
-  text-align: left;
-  right: -160px; }
 
 .table.payment-table {
   color: #a3a7d5; }

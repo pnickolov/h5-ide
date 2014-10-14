@@ -55,8 +55,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         new Asso( router, resolve(MC.extractID( subnet.subnet_id )) )
 
       # ExtNetwork <=> Router
-      Attach = Design.modelClassForType( "OsExtRouterAttach" )
-      new Attach( router, resolve(MC.extractID( data.resource.external_gateway_info.network_id )) )
+      externalNetwork = data.resource.external_gateway_info
+      if externalNetwork and externalNetwork.network_id
+        Attach = Design.modelClassForType( "OsExtRouterAttach" )
+        new Attach( router, resolve(MC.extractID( externalNetwork.network_id )) )
       return
   }
 

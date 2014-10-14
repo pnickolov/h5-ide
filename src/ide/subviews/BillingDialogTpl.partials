@@ -104,7 +104,24 @@
             {{/ifCond}}
             <p>Current Usage</p>
             <div class="usage-wrapper">
-
+                <div class="used-points">
+                    <p>Used Points</p>
+                    <div class="usage-number">
+                        {{paymentUsage.current_quota}}
+                    </div>
+                </div>
+                <div class="billable-points">
+                    <p>Billable Points</p>
+                    <div class="usage-number">
+                        {{paymentUsage.billable_quota}}
+                    </div>
+                </div>
+                <div class="usage-block">
+                    <div class="billable-usage"></div>
+                    <div class="free-usage"></div>
+                    <div class="current-usage"></div>
+                </div>
+                <p class="renew-points">2000 free points renewed in {{paymentUsage.renew_days}} days</p>
             </div>
         </section>
     </div>

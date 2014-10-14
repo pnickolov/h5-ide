@@ -111,11 +111,67 @@ $navHeight : 38px;
 }
 
 .usage-wrapper {
-  width: 300px;
   height: 300px;
   overflow: visible;
   margin: 0 auto;
   position: relative;
+  background: #0c0c0c;
+}
+
+.used-points, .billable-points{
+  display: inline-block;
+  width: 120px;
+  margin-top: 20px;
+  margin-left: 20px;
+  .usage-number{
+    font-size: 27px;
+    color: #6065A0;
+  }
+}
+.used-points .usage-number{
+  color: #33c317;
+}
+
+.used-points.error .usage-number{
+  color: #fd0d00;
+}
+
+.renew-points{
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.usage-block{
+  position: relative;
+  height: 55px;
+  div{
+    display: block;
+    position: absolute;
+    height: 12px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    width: 250px;
+    background: #32bc00;
+    left: 20px;
+    top: 20px;
+  }
+  .free-usage{
+    background: #597557;
+  }
+  .current-usage{
+    width: 30px;
+  }
+  .billable-usage{
+    background: #4d508e;
+    width: 300px;
+  }
+  &.error .billable-points{
+    background: #851512;
+  }
+  &.error .current-usage {
+    background: #fd0d00;
+  }
 }
 
 .table.payment-table {

@@ -40,6 +40,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           paymentUsage = {
             current_quota: App.user.get("voQuotaCurrent")
             max_quota:  App.user.get("voQuotaPerMonth")
+            billable_quota: App.user.get("voQuotaPerMonth") - App.user.get("voQuotaCurrent")
           }
           that.modal.find(".modal-body").css 'padding', "0"
           hasPaymentHistory = (_.keys paymentHistory).length

@@ -15,7 +15,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
       }
     ]
 
-    isRemovable : ()-> false
+    isRemovable : ()-> error: 'Listener must keep connected to Pool'
 
     remove : ()->
       ConnectionModel.prototype.remove.apply this, arguments

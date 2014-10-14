@@ -30,7 +30,7 @@ define [
 
             target = $target.data('target')
 
-            OsPropertyView.call @, e
+            OsPropertyView.prototype.updateAttribute.call @, e
             @toggleUrlAndCodes() if target is 'type'
 
         render: ->

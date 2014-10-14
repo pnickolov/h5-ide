@@ -39,7 +39,7 @@
                     <a class="btn btn-blue" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
                 </div>
             </div>
-            <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.period_end_at "MMMM d, yyyy"}}</span></h5>
+            <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.billingCircle "MMMM d, yyyy"}}</span></h5>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">

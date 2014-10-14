@@ -36,7 +36,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             last_name: App.user.get("lastName")
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
-            period_end_at: App.user.get("period_end_at")
+            billingCircle: App.user.get("billingCircle")
           }
           paymentUsage = {
             current_quota: App.user.get("voQuotaCurrent")

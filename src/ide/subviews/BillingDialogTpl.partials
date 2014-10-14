@@ -94,9 +94,13 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-            {{#ifCond paymentUpdate.paymentState "unpaid"}}
+            {{#ifCond paymentUpdate.paymentState ""}}
             <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
+                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Provide Billing Information</a> as soon as possible</p>
+            {{/ifCond}}
+            {{#ifCond paymentUpdate.paymentState "unpaid"}}
+                <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
+                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
             {{/ifCond}}
             <p>Current Usage</p>
             <div class="usage-wrapper">

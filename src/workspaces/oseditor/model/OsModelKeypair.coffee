@@ -90,8 +90,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
         type : @type
         uid  : @id
         resource :
-          fingerprint : @get("fingerprint") or ''
-          keyName        : @get("keyName") or ''
+          Fingerprint : @get("fingerprint") or ''
+          KeyName        : @get("keyName") or ''
       }
 
   }, {
@@ -111,8 +111,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        keyName     : data.resource.keyName
-        fingerprint : data.resource.fingerprint
+        keyName     : data.resource.KeyName
+        fingerprint : data.resource.Fingerprint
       })
       null
   }

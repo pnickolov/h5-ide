@@ -85,23 +85,30 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
 
       animateUsage: ()->
         free_quota_length = 250
+        max_length = 580
         $current_usage = @modal.find(".usage-block .current-usage").width(0)
         $billable_usage = @modal.find(".usage-block .billable-usage").width(free_quota_length)
-        $free_usage    = @modal.find(".usage-block .free-usage")
+        $free_usage    = @modal.find(".usage-block .free-usage").width(free_quota_length)
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
 
         current_quota_length = current_quota* free_quota_length / free_quota
         if free_quota > current_quota
           _.defer ->
-            $current_usage.width(current_quota_length).data("tooltip", current_quota + " used points")
-            $free_usage.data('tooltip', "2000 free points")
+            $current_usage.width(current_quota_length).attr("data-tooltip", current_quota + " used points")
+            $free_usage.attr('data-tooltip', "2000 free points")
         else
           _.defer ->
             console.log current_quota_length, $billable_usage
-
-            $current_usage.width(free_quota_length).data("tooltip", current_quota + " free points")
-            $billable_usage.width(current_quota_length).data("tooltip", (current_quota - free_quota) + " free points")
+            if current_quota_length < max_length
+              $current_usage.width(free_quota_length)
+              $billable_usage.width(current_quota_length)
+            else
+              $billable_usage.width(max_length)
+              $free_usage.width(0)
+              $current_usage.width(free_quota_length * max_length / current_quota_length )
+            $current_usage.attr('data-tooltip', free_quota + " free points")
+            $billable_usage.attr("data-tooltip", (current_quota - free_quota) + " billable points")
 
       viewPaymentReceipt: (event)->
         $target = $(event.currentTarget)

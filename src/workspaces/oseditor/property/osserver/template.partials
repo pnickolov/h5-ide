@@ -99,7 +99,7 @@
         <dt>Floating IP</dt><dd>{{emptyStr floatingIp}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Flavor</dt><dd>{{emptyStr flavor.id}}</dd>
+        <dt>Flavor</dt><dd>{{emptyStr flavor_id}}</dd>
     </dl>
     <dl class="vertical">
         <dt>Availability Zone</dt><dd>{{emptyStr availability_zone}}</dd>
@@ -108,7 +108,7 @@
         <dt>Key Name</dt><dd>{{emptyStr key_name}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Launched at</dt><dd>{{emptyStr launched_at}}</dd>
+        <dt>Launched at</dt><dd>{{timeStr launch_at}}</dd>
     </dl>
 </section>
 

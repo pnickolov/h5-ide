@@ -24,6 +24,9 @@ define [
     render: ->
 
         appData = @getRenderData()
+
+        # if appData and appData.launch_at
+        #     appData.launch_at = new Date(appData.launch_at)
         addrData = {}
 
         # get address info

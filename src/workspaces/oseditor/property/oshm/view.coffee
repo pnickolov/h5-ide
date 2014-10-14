@@ -19,7 +19,8 @@ define [
         setTitle: ( title ) -> @$( 'h1' ).text title
 
         toggleUrlAndCodes: ->
-            visible = if @model.get( 'type' ) in [ 'PING', 'TCP' ] then false else true
+            type = @model?.get( 'type' )
+            visible = if type in [ 'PING', 'TCP' ] then false else true
 
             @$('[data-id="hm-urlpath"]').closest('section').toggle visible
             @$('[data-id="hm-expectedcodes"]').closest('section').toggle visible
@@ -39,7 +40,7 @@ define [
                 bindSelection(@$el, @selectTpl)
                 @$el.html TplStack @getRenderData()
 
-            @toggleUrlAndCodes()
+            @toggleUrlAndCodes() unless @isApp
             @
 
 

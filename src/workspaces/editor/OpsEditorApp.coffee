@@ -63,7 +63,7 @@ define [
         @view.confirmImport()
         return
 
-      if App.user.isUnpaid() and @opsModel.isPMRestricted()
+      if App.user.shouldPay() and @opsModel.isPMRestricted()
         @view.showUnpayUI()
       else
         @diff()

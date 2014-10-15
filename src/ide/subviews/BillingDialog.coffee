@@ -97,7 +97,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
         current_quota_length = current_quota* free_quota_length / free_quota
-        if (current_quota >= free_quota and noCard) or (userState is 'unpaid')
+        if (current_quota >= free_quota and noCard) or (userState is 'unpaid' and free_quota < current_quota)
           @modal.find(".usage-block").addClass("error")
           @modal.find(".used-points").addClass("error")
         if free_quota > current_quota

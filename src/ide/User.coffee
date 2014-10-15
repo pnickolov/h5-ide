@@ -54,7 +54,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         account         : result.account_id
         firstName       : MC.base64Decode( result.first_name || "" )
         lastName        : MC.base64Decode( result.last_name || "")
-        voQuotaCurrent  : result.current_quota
+        voQuotaCurrent  : result.current_quota || 0
         voQuotaPerMonth : result.max_quota
         creditCard      : creditInfo.has_card
         billingCircle   : new Date( creditInfo.period_end_at || null )

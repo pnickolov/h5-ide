@@ -23,10 +23,7 @@ define [ "backbone" ], ()->
 
       if @closeOnBlur
         self = @
-        ac = ( evt )->
-          if self.autoclose( evt )
-            self.canvas.$el[0].removeEventListener "mousedown", ac, true
-          return
+        @ac = ac = ( evt )-> self.autoclose( evt )
 
         @canvas.$el[0].addEventListener "mousedown", ac, true
 
@@ -101,6 +98,9 @@ define [ "backbone" ], ()->
       oldPoup = (ceItem.__popupCache || {})[ @type ]
       if oldPoup is @
         delete ceItem.__popupCache[ @type ]
+
+      if @autoclose
+        @canvas.$el[0].removeEventListener "mousedown", @ac, true
 
       if @onRemove then @onRemove()
       Backbone.View.prototype.remove.call this

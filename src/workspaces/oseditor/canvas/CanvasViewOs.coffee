@@ -159,6 +159,7 @@ define [
       VolumeModel = Design.modelClassForType( constant.RESTYPE.OSVOL )
       v = new VolumeModel( attr )
 
+      if data.popup then data.popup.remove()
       new VolumePopup {
         attachment    : data.hoverItem.el
         host          : owner

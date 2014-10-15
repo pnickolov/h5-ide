@@ -334,6 +334,10 @@ module.exports =
       en: "Subnet %s should be connected to a router associated with External Gateway, so that Floating IP would work. "
       zh: ""
 
+    ERROR_ROUTER_ENABLING_NAT_MUST_CONNECT_EXT:
+      en: "Router enabling NAT must be connected to external network."
+      zh: ""
+
 
 
     ##### Trust Advisor

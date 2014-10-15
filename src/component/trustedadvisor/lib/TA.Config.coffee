@@ -27,6 +27,7 @@ define({
         openstack:
             'OS::Neutron::Port'                     : [ 'osport' ]
             'OS::Neutron::Subnet'                   : [ 'ossubnet' ]
+            'OS::Neutron::Router'                   : [ 'osrouter' ]
 
     globalList:
         aws:

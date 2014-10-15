@@ -57,7 +57,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         lastName        : MC.base64Decode( result.last_name || "")
         voQuotaCurrent  : result.current_quota || 0
         voQuotaPerMonth : result.max_quota
-        creditCard      : creditInfo.has_card
+        creditCard      : creditInfo.card
         billingCircle   : new Date( creditInfo.period_end_at || null )
         paym  entUrl      : creditInfo.url || ""
         awsAccessKey    : result.access_key
@@ -114,7 +114,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
           }
           that.set paymentInfo
           that.trigger "paymentUpdate"
-          
+
       return
 
 

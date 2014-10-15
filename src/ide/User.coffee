@@ -41,7 +41,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     getPaymentStatement : ->
       ApiRequestR("payment_statement")
-
+    getPaymentInfo: ->
+      ApiRequestR("payment_self")
     userInfoAccuired : ( result )->
       creditInfo = result.self_page || {}
 
@@ -58,7 +59,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         voQuotaPerMonth : result.max_quota
         creditCard      : creditInfo.has_card
         billingCircle   : new Date( creditInfo.period_end_at || null )
-        paymentUrl      : creditInfo.url || ""
+        paym  entUrl      : creditInfo.url || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
@@ -85,6 +86,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       return
 
     onWsUserStateChange : ( changes )->
+      that = @
       if not changes then return
 
       attr =
@@ -103,6 +105,16 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if changed
         @set toChange
 
+        @getPaymentInfo().then (result)->
+          console.log result
+          paymentInfo = {
+            creditCard: result.card
+            billingCircle: result.period_end_at
+            paymentUrl: result.url
+          }
+          that.set paymentInfo
+          that.trigger "paymentUpdate"
+          
       return
 
 

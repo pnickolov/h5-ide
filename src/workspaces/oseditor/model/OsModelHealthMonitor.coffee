@@ -54,7 +54,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         appId         : data.resource.id
 
         type          : data.resource.type
-        deley         : data.resource.deley
+        delay         : data.resource.delay
         timeout       : data.resource.timeout
         maxRetries    : data.resource.max_retries
         urlPath       : data.resource.url_path

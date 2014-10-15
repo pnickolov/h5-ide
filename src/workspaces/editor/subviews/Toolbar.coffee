@@ -326,23 +326,11 @@ define [
       that = @
       if $(event.currentTarget).attr 'disabled'
         return false
-      paymentState = App.user.get('paymentState')
-      if paymentState and paymentState is "active"
-        @__runStack()
-      else
-        appAction.showPayment().then (result)->
-          paymentUpdate = result.result
-          paymentModal = result.modal
-          paymentState = App.user.get('paymentState')
-          if paymentState is 'pastdue'
 
-            that.__runStack(paymentUpdate,paymentModal)
-          paymentModal.listenTo App.user, 'change:paymentState', ->
-            if paymentModal.isClosed then return false
-            paymentState = App.user.get("paymentState")
-            if paymentState is 'active'
-              paymentModal.stopListening()
-              that.__runStack(paymentUpdate,paymentModal)
+      appAction.showPayment().then (result)->
+        paymentUpdate = result.result
+        paymentModal = result.modal
+        that.__runStack(paymentUpdate,paymentModal)
 
     __runStack: (paymentUpdate,paymentModal)->
       that = @

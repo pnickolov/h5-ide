@@ -57,7 +57,10 @@ define [
       ApiRequest("app_info", {
         region_name : opsModel.get("region")
         app_ids     : [opsModel.get("id")]
-      }).then (ds)->  comp = ds[0].component
+      })
+      .then (ds)->
+        comp = ds[0].component
+        null
       .then ->
         name = App.model.appList().get( id ).get("name")
         hasEC2Instance =( _.filter comp, (e)->
@@ -72,6 +75,7 @@ define [
         awsError = null
         snapshots.fetchForce().fail (error)->
           awsError = error.awsError
+          null
         .finally ->
           if awsError and awsError isnt 403
             startAppModal.close()
@@ -115,6 +119,7 @@ define [
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
+        null
       .finally ()->
         if awsError and awsError isnt 403
           canStop.close()
@@ -133,8 +138,8 @@ define [
             hasInstanceStore = false
             amiRes.each (e)->
               if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-                return hasInstanceStore = true
-
+                hasInstanceStore = true
+                null
             hasEC2Instance = (_.filter comp, (e)->
               e.type == constant.RESTYPE.INSTANCE)?.length
 
@@ -298,45 +303,43 @@ define [
         return
 
 
-    showPayment: (elem, usage)->
-      if elem
-        $(elem).html MC.template.loadingSpiner
-      else
-        paymentModal = new modalPlus
-          title: lang.IDE.PAYMENT_LOADING
-          template: MC.template.loadingSpiner
-          disableClose: true
-          confirm:
-            text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
-            disabled: true
-        paymentModal.find('.modal-footer').hide()
+    showPayment: (elem)->
       showPaymentDefer = Q.defer()
-      paymentState = App.user.get("paymentState")
-      result = {
-        first_name: App.user.get("firstName")
-        last_name: App.user.get("lastName")
-        url: App.user.get("paymentUrl")
-        card: App.user.get("creditCard")
-      }
-      console.log result
-      data = _.clone result
-      data.usage = usage
-      updateDom = MC.template.paymentUpdate  data
-      if paymentState is 'pastdue'
-        if elem
-          paymentModal = elem
-        showPaymentDefer.resolve({result: result, modal: paymentModal})
-      if elem
-        $(elem).html updateDom
-        $(elem).trigger 'paymentRendered'
-        showPaymentDefer.resolve({result: result})
-      else
-        if paymentModal.isClosed then return false
-        paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
-        paymentModal.setContent updateDom
-        paymentModal.trigger 'paymentRendered'
-        showPaymentDefer.resolve({result:result, modal:paymentModal})
 
+      # check should Show.
+      paymentState = App.user.get("paymentState")
+      current_quota = App.user.get("voQuotaCurrent")
+      free_quota = App.user.get("voQuotaPerMonth")
+      creditCard = App.user.get('creditCard')
+      shouldPay = (current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
+      console.log shouldPay, "ShouldShowModal?"
+      if not shouldPay
+        showPaymentDefer.resolve({})
+      else
+        result = {
+          first_name: App.user.get("firstName")
+          last_name: App.user.get("lastName")
+          url: App.user.get("paymentUrl")
+          card: App.user.get("creditCard")
+        }
+        updateDom = MC.template.paymentUpdate  result
+        if elem
+          $(elem).html updateDom
+          $(elem).trigger 'paymentRendered'
+        else
+          paymentModal = new modalPlus(
+            title: lang.IDE.PAYMENT_INVALID_BILLING
+            template: updateDom
+            disableClose: true
+            confirm:
+              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              disabled: true
+          )
+          paymentModal.find('.modal-footer').hide()
+
+          paymentModal.listenTo App.user, "change:paymentState", ()->
+            if true
+              showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 
 

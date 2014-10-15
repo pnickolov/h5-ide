@@ -57,9 +57,10 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         lastName        : MC.base64Decode( result.last_name || "")
         voQuotaCurrent  : result.current_quota || 0
         voQuotaPerMonth : result.max_quota
+        has_card        : result.has_card
         creditCard      : creditInfo.card
         billingCircle   : new Date( creditInfo.period_end_at || null )
-        paym  entUrl      : creditInfo.url || ""
+        paymentUrl      : creditInfo.url || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
@@ -88,7 +89,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     onWsUserStateChange : ( changes )->
       that = @
       if not changes then return
-
       attr =
         current_quota : "voQuotaCurrent"
         max_quota     : "voQuotaPerMont"
@@ -105,15 +105,14 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if changed
         @set toChange
 
-        @getPaymentInfo().then (result)->
-          console.log result
-          paymentInfo = {
-            creditCard: result.card
-            billingCircle: result.period_end_at
-            paymentUrl: result.url
-          }
-          that.set paymentInfo
-          that.trigger "paymentUpdate"
+      @getPaymentInfo().then (result)->
+        paymentInfo = {
+          creditCard: result.card
+          billingCircle: result.period_end_at
+          paymentUrl: result.url
+        }
+        that.set paymentInfo
+        that.trigger "paymentUpdate"
 
       return
 

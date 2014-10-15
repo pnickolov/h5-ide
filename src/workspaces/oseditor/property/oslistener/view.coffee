@@ -3,9 +3,9 @@ define [
     '../OsPropertyView'
     '../osport/view'
     './template/stack'
+    'CloudResources'
 
-
-], ( constant, OsPropertyView, portView, template ) ->
+], ( constant, OsPropertyView, portView, template, CloudResources ) ->
 
     OsPropertyView.extend {
 
@@ -14,7 +14,12 @@ define [
 
         render: ->
             @$el.html template @getRenderData()
-            @$el.append @reg( new portView model: @model ).render().el
+            region = Design.instance().region()
+
+            @$el.append @reg( new portView {
+                model: @model,
+                appModel: CloudResources( constant.RESTYPE.OSPORT, region ).get( @model.get 'portId' )
+            } ).render().el
             @
 
         getModelForUpdateAttr: ( e ) ->

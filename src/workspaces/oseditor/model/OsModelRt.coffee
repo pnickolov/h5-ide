@@ -6,6 +6,9 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     type : constant.RESTYPE.OSRT
     newNameTmpl : "router"
 
+    defaults:
+      nat: true
+
     connect : ( cn )->
       if cn.type is 'OsExtRouterAttach'
         @set "public", true
@@ -30,6 +33,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           resource :
             id                    : @get("appId")
             name                  : @get("name")
+            nat                   : @get("nat")
             external_gateway_info : extNetwork || {}
             router_interface : @connectionTargets("OsRouterAsso").map ( subnet )->
               { subnet_id : subnet.createRef("id") }
@@ -44,6 +48,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         id    : data.uid
         name  : data.resource.name
         appId : data.resource.id
+        nat   : data.resource.nat
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

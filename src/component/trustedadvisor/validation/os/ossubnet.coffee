@@ -30,8 +30,15 @@ define [
 
             for sb in subnets
                 for child in sb.children()
-                    if child.type is constant.RESTYPE.OSPORT and child.getFloatingIp() and not __isSbConnectOut( sb )
+                    port = null
+                    if child.type in [ constant.RESTYPE.OSPORT, constant.RESTYPE.OSLISTENER ]
+                        port = child
+                    else if child.type is constant.RESTYPE.OSSERVER
+                        port = child.embedPort()
+
+                    if port and port.getFloatingIp() and not __isSbConnectOut( sb )
                         badSbs.push sb
+
 
             sbNames = _.map badSbs, ( sb ) ->
                 "<span class='validation-tag tag-ossubnet'>#{sb.get( 'name' )}</span>"

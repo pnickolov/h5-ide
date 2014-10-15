@@ -39,6 +39,14 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
     isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
 
+    shouldPay      : ()->
+      paymentState = App.user.get("paymentState")
+      current_quota = App.user.get("voQuotaCurrent")
+      free_quota = App.user.get("voQuotaPerMonth")
+      creditCard = App.user.get("creditCard")
+      shouldPay = current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
+      return shouldPay
+
     getPaymentStatement : ->
       ApiRequestR("payment_statement")
     getPaymentInfo: ->
@@ -108,7 +116,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       @getPaymentInfo().then (result)->
         paymentInfo = {
           creditCard: result.card
-          billingCircle: result.period_end_at
+          billingCircle: new Date(result.period_end_at)
           paymentUrl: result.url
         }
         that.set paymentInfo

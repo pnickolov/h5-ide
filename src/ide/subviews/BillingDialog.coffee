@@ -41,6 +41,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             current_quota: App.user.get("voQuotaCurrent")
             max_quota:  App.user.get("voQuotaPerMonth")
             outOfQuota: App.user.get("voQuotaCurrent") > App.user.get("voQuotaPerMonth")
+            billingDate: (App.user.get("billingCircle") - ( new Date() ))/(1000*60*60*24)
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
           paymentUsage.billable_quota = if billable_quota > 0 then billable_quota else 0
@@ -87,8 +88,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       animateUsage: ()->
         free_quota_length = 250
         max_length = 580
-        userState = App.user.get("paymentState")
-        noCard = !App.user.get('creditCard')
         @modal.$(".usage-block").removeClass("error")
         @modal.$(".used-points").removeClass("error")
         $current_usage = @modal.find(".usage-block .current-usage").width(0)
@@ -97,7 +96,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
         current_quota_length = current_quota* free_quota_length / free_quota
-        if (current_quota >= free_quota and noCard) or (userState is 'unpaid' and free_quota < current_quota)
+        if App.user.shouldPay()
           @modal.find(".usage-block").addClass("error")
           @modal.find(".used-points").addClass("error")
         if free_quota > current_quota

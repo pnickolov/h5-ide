@@ -308,12 +308,9 @@ define [
 
       # check should Show.
       paymentState = App.user.get("paymentState")
-      current_quota = App.user.get("voQuotaCurrent")
-      free_quota = App.user.get("voQuotaPerMonth")
-      creditCard = App.user.get('creditCard')
-      shouldPay = (current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
+
       console.log shouldPay, "ShouldShowModal?"
-      if not shouldPay
+      if not App.user.shouldPay()
         showPaymentDefer.resolve({})
       else
         result = {
@@ -339,12 +336,7 @@ define [
 
           paymentModal.listenTo App.user, "paymentUpdate", ()->
             if paymentModal.isClosed then return false
-            paymentState = App.user.get("paymentState")
-            current_quota = App.user.get("voQuotaCurrent")
-            free_quota = App.user.get("voQuotaPerMonth")
-            creditCard = App.user.get('creditCard')
-            shouldPay = (current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
-            if not shouldPay
+            if not App.user.shouldPay()
               showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 

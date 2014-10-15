@@ -69,8 +69,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             deviceIndex = idx
           null
 
-      {
-        layout : @generateLayout()
+      json =
         component :
           name : @get("name")
           type : @type
@@ -88,7 +87,11 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
               subnet_id  : subnet.createRef("id")
               ip_address : @get("ip")
             }]
-      }
+
+      if @isEmbedded()
+        json.layout = @generateLayout()
+
+      json
 
     setIp: (ip)->
       @set "ip", ip

@@ -1,6 +1,6 @@
 <!-- {{stack}} -->
 <h1>{{name}}</h1>
-{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup"></div>{{/unless}}
+{{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup"></div>{{/unless}}{{/unless}}
 <div class="option-group-head expand">
     Security Group
 </div>

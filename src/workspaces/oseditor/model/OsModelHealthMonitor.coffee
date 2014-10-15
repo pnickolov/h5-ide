@@ -29,9 +29,9 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
           id   : @get 'appId'
           name : @get 'name'
           type            : @get 'type'
-          delay           : @get 'delay'
-          timeout         : @get 'timeout'
-          max_retries     : @get 'maxRetries'
+          delay           : Number(@get('delay'))
+          timeout         : Number(@get('timeout'))
+          max_retries     : Number(@get('maxRetries'))
           url_path: @get( 'urlPath' ) or ""
           expected_codes: @get( 'expectedCodes' ) or ""
 
@@ -54,9 +54,9 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         appId         : data.resource.id
 
         type          : data.resource.type
-        delay         : data.resource.delay
-        timeout       : data.resource.timeout
-        maxRetries    : data.resource.max_retries
+        delay         : Number(data.resource.delay)
+        timeout       : Number(data.resource.timeout)
+        maxRetries    : Number(data.resource.max_retries)
         urlPath       : data.resource.url_path
         expectedCodes : data.resource.expected_codes
 

@@ -19,7 +19,7 @@
     </section>
     <section class="group required">
         <label class="name">Enable NAT</label>
-        <select class="selection bool" id="property-os-router-nat" data-target="nat" value="{{#if nat}}true{{else}}false{{/if}}" {{#if modeIsAppEdit}}disabled{{/if}}></select>
+        <select class="selection bool" id="property-os-router-nat" data-target="nat" value="{{#if nat}}true{{else}}false{{/if}}" disabled></select>
     </section>
 </div>
 <div class="option-group-head expand">

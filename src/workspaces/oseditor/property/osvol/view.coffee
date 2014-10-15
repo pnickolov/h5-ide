@@ -13,7 +13,7 @@ define [
     render: ->
 
       @$el.html template.stackTemplate @getRenderData()
-      if @model.get('snapshot') then @bindSelectizeEvent()
+      if @model?.get('snapshot') then @bindSelectizeEvent()
       @
 
     bindSelectizeEvent: ()->

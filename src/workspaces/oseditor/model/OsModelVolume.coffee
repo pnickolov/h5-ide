@@ -8,6 +8,7 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
 
     defaults :
       size : 1
+      bootable : false
 
     constructor : ( attr, option )->
       if attr.owner

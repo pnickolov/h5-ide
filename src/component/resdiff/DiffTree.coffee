@@ -38,10 +38,13 @@ define ['constant'], (constant) ->
                 'ASG.resource.AutoScalingGroupARN': true
                 'ASG.resource.PolicyARN': true
                 # 'VOL.resource.AttachmentSet.Device': true
+
+                # for openstack
+                '*.resource.adminPass': true
             }
 
         if not option.noDiffArrayAttrMap
-            
+
             option.noDiffArrayAttrMap = {
                 '*.state': true
                 # '*.resource.RouteSet': true

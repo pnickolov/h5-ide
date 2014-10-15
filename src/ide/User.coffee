@@ -40,11 +40,11 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
 
     shouldPay      : ()->
-      paymentState = App.user.get("paymentState")
-      current_quota = App.user.get("voQuotaCurrent")
-      free_quota = App.user.get("voQuotaPerMonth")
-      creditCard = App.user.get("creditCard")
-      shouldPay = current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
+      paymentState = @get("paymentState")
+      current_quota = @get("voQuotaCurrent")
+      free_quota = @get("voQuotaPerMonth")
+      creditCard = @get("creditCard")
+      shouldPay = (current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
       return shouldPay
 
     getPaymentStatement : ->

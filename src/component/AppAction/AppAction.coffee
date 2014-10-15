@@ -309,7 +309,6 @@ define [
       # check should Show.
       paymentState = App.user.get("paymentState")
 
-      console.log shouldPay, "ShouldShowModal?"
       if not App.user.shouldPay()
         showPaymentDefer.resolve({})
       else

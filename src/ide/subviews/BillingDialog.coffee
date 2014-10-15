@@ -42,6 +42,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             max_quota:  App.user.get("voQuotaPerMonth")
             outOfQuota: App.user.get("voQuotaCurrent") >= App.user.get("voQuotaPerMonth")
             billingDate: Math.round( (App.user.get("billingCircle") - ( new Date() ))/(1000*60*60*24) )
+            last_billing_time: new Date( (new Date(App.user.get("billingCircle"))) - 30*24*60*60*1000 )
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
           paymentUsage.billable_quota = if billable_quota > 0 then billable_quota else 0

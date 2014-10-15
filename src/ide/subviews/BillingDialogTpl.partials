@@ -114,7 +114,7 @@
                 <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
                     <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
             {{/ifCond}}
-            <p>Current Usage</p>
+            <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUsage.last_billing_time "d MMM yyyy"}}</span></h5>
             <div class="usage-wrapper">
                 <div class="used-points">
                     <p>Used Points</p>

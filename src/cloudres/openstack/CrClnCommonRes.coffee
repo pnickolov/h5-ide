@@ -120,9 +120,11 @@ define [
     doFetch : ()->
       region = @region()
       ApiRequest("os_server_List", {region : region}).then (res)->
+        servers = _.pluck( res.servers, "id" )
+        return if not servers.length
         ApiRequest("os_server_Info", {
           region : region
-          ids    : _.pluck( res.servers, "id" )
+          ids    : servers
         })
 
     parseFetchData    : ( data )->
@@ -164,9 +166,11 @@ define [
     doFetch : ()->
       region = @region()
       ApiRequest("os_volume_List", {region : region}).then (res)->
+        volumes = _.pluck( res.volumes, "id" )
+        return if not volumes.length
         ApiRequest("os_volume_Info", {
           region : region
-          ids    : _.pluck( res.volumes, "id" )
+          ids    : volumes
         })
 
     parseFetchData    : ( data )-> _.values(data)

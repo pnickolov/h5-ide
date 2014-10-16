@@ -23,7 +23,7 @@ define [ "../DesignOs", "constant" ], ( Design, constant )->
             when constant.RESTYPE.OSLISTENER
               comp.resource.port_id = ""
 
-        break
+        # break
 
 
     return

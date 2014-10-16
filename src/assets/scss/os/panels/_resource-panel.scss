@@ -2,6 +2,8 @@
     nav {
         padding: 14px 20px;
 
+        h1 { font-size: 20px; color: #ccc; line-height: 20px; float: left; }
+
         ul {
             li {
                 float: left;
@@ -19,17 +21,6 @@
                 &:last-child {
                     border-top-right-radius: 15%;
                     border-bottom-right-radius: 15%;
-                }
-            }
-
-            &.anchor {
-                float: left;
-                li {
-                    line-height: 24px;
-                    color: #ccc;
-                    background: #51568e;
-                    border-right: 1px solid $dark-p-1;
-                    &:hover { color: #eee }
                 }
             }
 

@@ -9232,6 +9232,11 @@ g.shadow {
 
 .OEPanelRight.resource nav {
   padding: 14px 20px; }
+  .OEPanelRight.resource nav h1 {
+    font-size: 20px;
+    color: #ccc;
+    line-height: 20px;
+    float: left; }
   .OEPanelRight.resource nav ul li {
     float: left;
     text-align: center;
@@ -9246,15 +9251,6 @@ g.shadow {
     .OEPanelRight.resource nav ul li:last-child {
       border-top-right-radius: 15%;
       border-bottom-right-radius: 15%; }
-  .OEPanelRight.resource nav ul.anchor {
-    float: left; }
-    .OEPanelRight.resource nav ul.anchor li {
-      line-height: 24px;
-      color: #ccc;
-      background: #51568e;
-      border-right: 1px solid #2c2f4d; }
-      .OEPanelRight.resource nav ul.anchor li:hover {
-        color: #eeeeee; }
   .OEPanelRight.resource nav ul.action {
     float: right;
     color: white; }

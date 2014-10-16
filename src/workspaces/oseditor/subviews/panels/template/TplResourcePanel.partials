@@ -1,10 +1,6 @@
 <!-- {{frame}} -->
 <nav class="clearfix">
-    <ul class="anchor clearfix">
-        <li data-scroll-to="system-image">S</li>
-        <li data-scroll-to="block-storage">B</li>
-        <li data-scroll-to="network">N</li>
-    </ul>
+    <h1>Resource</h1>
     <ul class="action clearfix">
         <li class="btn-refresh-panel icon-refresh"></li>
         <li class="btn-open-shareres icon-resources"></li>

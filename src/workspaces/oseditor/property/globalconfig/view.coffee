@@ -18,7 +18,11 @@ define [
             @$el.html template @getRenderData()
             @
 
-        getTitle: -> null
+        getTitle: ->
+            if @mode() is 'app'
+                'App Property'
+            else
+                'Stack Property'
 
     }, {
         handleTypes: [ 'globalconfig' ]

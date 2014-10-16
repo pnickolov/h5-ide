@@ -42,7 +42,7 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
             $quota.find(".currquota").css({"width":currentWidth + "%"})
             $quota.find(".current").text(user.get("voQuotaCurrent"))
             $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))
-            $quota.find(".percentage").toggleClass("error", user.shouldPay()).toggleClass("full", user.get('voQuotaCurrent') > user.get("voQuotaPerMonth"))
+            $quota.find(".percentage").toggleClass("error", user.shouldPay()).toggleClass("full", (user.get('voQuotaCurrent') > user.get("voQuotaPerMonth")) && !user.shouldPay())
             return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )

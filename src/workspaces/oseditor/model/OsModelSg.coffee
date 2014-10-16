@@ -80,18 +80,21 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       ComplexResModel.prototype.remove.apply this, arguments
 
     serialize : ()->
-      {
-        component :
-          name : @get("name")
-          type : @type
-          uid  : @id
-          resource :
-            id   : @get("appId")
-            name : @get("name")
+      if @getMemberList().length
+          return {
+            component :
+              name : @get("name")
+              type : @type
+              uid  : @id
+              resource :
+                id   : @get("appId")
+                name : @get("name")
 
-            description : @get("description")
-            rules       : @get("rules")?.map ( rule )-> rule.toJSON()
-      }
+                description : @get("description")
+                rules       : @get("rules")?.map ( rule )-> rule.toJSON()
+          }
+      else
+        return {}
 
   }, {
 

@@ -71,7 +71,10 @@
 <select class="selection option" name="kpDropdown" data-button-tpl="kpButton" {{#if isAppEdit}}disabled="disabled"{{/if}}></select>
 
 <!-- {{appTemplate}} -->
-<section class="group">
+<div class="option-group-head expand">
+    Server Details<a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="Get System Log"></a>
+</div>
+<div class="option-group">
     <dl class="vertical">
         <dt>Name</dt><dd>{{emptyStr name}}</dd>
     </dl>
@@ -110,7 +113,7 @@
     <dl class="vertical">
         <dt>Launched at</dt><dd>{{timeStr launch_at}}</dd>
     </dl>
-</section>
+</div>
 
 <!-- {{imageTemplate}} -->
 <section class="group">

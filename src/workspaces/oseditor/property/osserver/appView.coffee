@@ -6,13 +6,16 @@ define [
     'underscore'
     'OsKp'
     '../ossglist/view'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView ) ->
+    'ApiRequestOs'
+
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest ) ->
 
   OsPropertyView.extend {
 
     events:
 
-        'click .os-server-image-info': 'openImageInfoPanel'
+        'click .os-server-image-info'        : 'openImageInfoPanel'
+        'click .property-btn-get-system-log' : 'openSysLogModal'
 
     initialize: ->
 
@@ -46,6 +49,49 @@ define [
         # append sglist
         @$el.append @sgListView.render().el
         @
+
+    openSysLogModal : () ->
+        serverId = @model.get('appId')
+
+        that = this
+        region = Design.instance().region()
+
+        ApiRequest("os_server_GetConsoleOutput", {
+            region : region
+            server_id    : serverId
+        }).then (result) ->
+            console.log(result)
+            that.refreshSysLog(result)
+
+        modal MC.template.modalInstanceSysLog {
+            instance_id: serverId,
+            log_content: ''
+        }, true
+
+        # that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
+
+        #     if !result.is_error
+        #         console.log(result.resolved_data)
+        #     that.refreshSysLog(result.resolved_data)
+
+        false
+
+    refreshSysLog : (result) ->
+        $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+
+        if result and result.output
+
+            logContent = result.output
+            $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+
+            $contentElem.html MC.template.convertBreaklines({content:logContent})
+            $contentElem.show()
+
+        else
+
+            $('#modal-instance-sys-log .instance-sys-log-info').show()
+
+        modal.position()
 
     openImageInfoPanel: ->
 

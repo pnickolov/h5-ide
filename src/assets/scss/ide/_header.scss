@@ -168,6 +168,7 @@
         position: relative;
         &.error{
           border-color: #f00;
+          background: #930000;
           .payment-exclamation{
             display: block;
           }

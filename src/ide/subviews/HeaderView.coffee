@@ -33,7 +33,8 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.s
             $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
             $quota = $("#header").children(".voquota")
             currentWidth = Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)
-            if currentWidth > 100  then currentWidth = 100
+            if currentWidth > 100
+              currentWidth = Math.round( user.get("voQuotaPerMonth") / user.get("voQuotaCurrent") * 100 )
             $quota.find(".currquota").css({"width":currentWidth + "%"})
             $quota.find(".current").text(user.get("voQuotaCurrent"))
             $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))

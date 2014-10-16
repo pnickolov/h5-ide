@@ -34,7 +34,7 @@ define [
 
     initialize : ()->
       @opsListTab = "stack"
-      @region     = "guangzhou"
+      @region     = "beijing"
       @lastUpdate = +(new Date())
 
       @setElement( $(Template.frame()).eq(0).appendTo("#main") )
@@ -179,7 +179,7 @@ define [
       $(".resource-list-body").html( tpl )
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )-> App.createOps( "guangzhou", "openstack", "awcloud" )
+    createStack : ( event )-> App.createOps( "beijing", "openstack", "awcloud" )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 

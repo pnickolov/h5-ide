@@ -263,6 +263,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'sa-east-1'
         # openstack - awcloud
         'guangzhou'
+        'beijing'
     ]
 
     #private
@@ -278,6 +279,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
         # openstack - awcloud
         'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_guangzhou']
+        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_beijing']
 
     REGION_SHORT_LABEL =
         # aws
@@ -291,6 +293,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
         # openstack - awcloud
         'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_guangzhou']
+        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_beijing']
 
     #private
     RETURN_CODE =

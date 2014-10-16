@@ -35,7 +35,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     if text in [ '', undefined, null ]
       return '-'
 
-    lang.ide[ "PROP.VOLUME_TYPE_#{text.toUpperCase()}" ]
+    lang.IDE[ "PROP.VOLUME_TYPE_#{text.toUpperCase()}" ]
 
   Handlebars.registerHelper 'UTC', ( text ) ->
     new Handlebars.SafeString new Date( +text ).toUTCString()

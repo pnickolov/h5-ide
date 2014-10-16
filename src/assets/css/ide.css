@@ -3574,7 +3574,8 @@ div.modal-text-highlight {
         #header .voquota .percentage.error .currquota {
           background: #f00; }
       #header .voquota .percentage.full {
-        background: #170; }
+        background: #4D508E;
+        border-color: #232226; }
     #header .voquota .payment-exclamation {
       display: none;
       position: absolute;

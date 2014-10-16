@@ -835,6 +835,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Guangzhou"
       zh: "广州"
 
+    "IDE_LBL_REGION_NAME_beijing":
+      en: "BeiJing"
+      zh: "北京"
+
     "IDE_LBL_REGION_NAME_SHORT_us-east-1":
       en: "Virginia"
       zh: "弗吉尼亚"
@@ -870,6 +874,10 @@ VisualOps API. You cannot UNDO this action.'
     "IDE_LBL_REGION_NAME_SHORT_guangzhou":
       en: "Guangzhou"
       zh: "广州"
+
+    "IDE_LBL_REGION_NAME_SHORT_beijing":
+      en: "BeiJing"
+      zh: "北京"
 
     IDE_LBL_LAST_STATUS_CHANGE:
       en: "Last Changed"

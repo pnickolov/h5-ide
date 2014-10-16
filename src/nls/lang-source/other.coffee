@@ -1391,3 +1391,7 @@ VisualOps API. You cannot UNDO this action.'
     HEAD_LABEL_ACCOUNT_FULLNAME:
       en: "Full Name"
       zh: ""
+
+    PAYMENT_HEADER_TOOLTIP:
+      en: "<div class=\"payment-header-tooltip\">Using <strong>%s</strong> points of <strong>%s</strong> free points. <span> Free points will renew in %s days.</span></div>"
+      zh: ""

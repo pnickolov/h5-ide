@@ -33,7 +33,11 @@ define(["jquery"], function(){
 				tooltip_box = $('#tooltip_box');
 			}
 
-			tooltip_box.text(content).show();
+            if (target.data('tooltip-type') === "html"){
+                tooltip_box.html(content).show();
+            }else{
+                tooltip_box.text(content).show();
+            }
 
 			if (target.prop('namespaceURI') === 'http://www.w3.org/2000/svg')
 			{

@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -32,13 +32,17 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.s
 
             $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
             $quota = $("#header").children(".voquota")
+            paymentRenewDays = Math.round((App.user.attributes.billingCircle - new Date()) / (1000 * 3600 * 24))
+            if App.user.get('billingCircle')
+              $quota.attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, user.get("voQuotaCurrent"), user.get("voQuotaPerMonth"), paymentRenewDays) )
             currentWidth = Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)
             if currentWidth > 100
               currentWidth = Math.round( user.get("voQuotaPerMonth") / user.get("voQuotaCurrent") * 100 )
+
             $quota.find(".currquota").css({"width":currentWidth + "%"})
             $quota.find(".current").text(user.get("voQuotaCurrent"))
             $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))
-            $quota.find(".percentage").toggleClass("error", user.shouldPay())
+            $quota.find(".percentage").toggleClass("error", user.shouldPay()).toggleClass("full", user.get('voQuotaCurrent') > user.get("voQuotaPerMonth"))
             return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )

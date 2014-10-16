@@ -176,6 +176,9 @@
             background: #f00;
           }
         }
+        &.full{
+          background: #170;
+        }
     }
 
     .payment-exclamation{
@@ -205,6 +208,23 @@
       color: #999cc2;
     }
   }
+}
+
+.payment-header-tooltip {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.payment-header-tooltip strong {
+  color:  #fff;
+}
+
+.payment-header-tooltip span {
+  display: block;
+  font-size: 12px;
+  text-align: center;
+  margin: 5px 0;
+  color: #b0b0b0;
 }
 
 #HeaderUser + .dropdown-menu > li {

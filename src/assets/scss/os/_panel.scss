@@ -5,12 +5,14 @@
     font-size: 12px;
 
     .panel-body {
-        overflow: auto;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        height: auto;
-        width: 100%;
+        & > div > div {
+            position: absolute;
+            top: 50px;
+            bottom: 0;
+            height: auto;
+            width: 100%;
+            overflow: auto;
+        }
     }
 
     &.state {

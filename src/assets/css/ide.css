@@ -9160,13 +9160,13 @@ g.shadow {
 .openstack .OEPanelRight {
   width: 280px;
   font-size: 12px; }
-  .openstack .OEPanelRight .panel-body {
-    overflow: auto;
+  .openstack .OEPanelRight .panel-body > div > div {
     position: absolute;
-    top: 0;
+    top: 50px;
     bottom: 0;
     height: auto;
-    width: 100%; }
+    width: 100%;
+    overflow: auto; }
   .openstack .OEPanelRight.state {
     width: 655px; }
     .openstack .OEPanelRight.state .panel-body {

@@ -17,14 +17,17 @@ define [ "ComplexResModel", "constant", "Design","i18n!/nls/lang.js" ], ( Comple
 
       ComplexResModel.call this, attr, option
 
-      @attachTo( owner )
+      @attachTo( owner, attr.mountPoint )
       return
 
     getOwner : ()-> @connectionTargets( "OsVolumeUsage" )[0]
 
-    attachTo : ( owner )->
+    attachTo : ( owner, originMountPoint )->
       if owner
-        mountPoint = @getMountPoint(owner)
+        if not originMountPoint
+          mountPoint = @getMountPoint(owner)
+        else
+          mountPoint = originMountPoint
         if not mountPoint then return false
         @.set("mountPoint", mountPoint)
         VolumeUsage = Design.modelClassForType( "OsVolumeUsage" )

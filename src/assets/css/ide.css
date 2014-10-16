@@ -3552,23 +3552,48 @@ div.modal-text-highlight {
       color: #9C6DC0; }
   #header .voquota {
     float: left;
-    width: 120px;
-    height: 41px;
-    padding-top: 9px;
-    text-align: center; }
+    text-align: center;
+    vertical-align: top;
+    padding: 16px 10px; }
     #header .voquota:hover {
-      background: rgba(0, 0, 0, 0.2); }
+      background: rgba(0, 0, 0, 0.2);
+      cursor: pointer; }
     #header .voquota .percentage {
       width: 100px;
       height: 10px;
       border-radius: 6px;
-      border: 2px solid #fff;
+      border: 1px solid #29920A;
       display: inline-block;
-      overflow: hidden; }
+      margin-right: 3px;
+      position: relative; }
+      #header .voquota .percentage.error {
+        border-color: #f00; }
+        #header .voquota .percentage.error .payment-exclamation {
+          display: block; }
+        #header .voquota .percentage.error .currquota {
+          background: #f00; }
+    #header .voquota .payment-exclamation {
+      display: none;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #F00;
+      top: -5px;
+      left: -5px;
+      border-radius: 50%;
+      line-height: 18px;
+      text-align: center;
+      color: #ffffff;
+      border: 1px solid #000000; }
     #header .voquota .currquota {
       width: 30%;
       height: 100%;
-      background: #fff; }
+      background: #29920A;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px; }
+    #header .voquota .current, #header .voquota .limit {
+      color: #999cc2; }
 
 #HeaderUser + .dropdown-menu > li {
   width: 140px;

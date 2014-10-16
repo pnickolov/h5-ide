@@ -32,9 +32,12 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'backbone', "UI.s
 
             $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
             $quota = $("#header").children(".voquota")
-            $quota.find(".currquota").css({"width":Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)+"%"})
+            currentWidth = Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)
+            if currentWidth > 100  then currentWidth = 100
+            $quota.find(".currquota").css({"width":currentWidth + "%"})
             $quota.find(".current").text(user.get("voQuotaCurrent"))
             $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))
+            $quota.find(".percentage").toggleClass("error", user.shouldPay())
             return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )

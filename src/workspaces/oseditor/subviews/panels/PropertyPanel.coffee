@@ -33,6 +33,7 @@ define [
             @appModel = CloudResources( @type, region )?.get @model?.get( 'appId' )
 
         @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
+        @validationClass = ValidationBase.getClass( @type )
 
     resourceInexist: ->
         if @mode is 'stack' then return false
@@ -45,17 +46,21 @@ define [
     render: () ->
 
         design = @options.workspace.design
-
-        propertyView = @propertyView = new @viewClass({
+        classOptions =
             model           : @model
             appModel        : @appModel or null
             propertyPanel   : @
             panel           : @panel
             workspace       : @options.workspace
-        })
 
-        bindSelection(@$el, propertyView.selectTpl, ValidationBase.getClass( @type ))
+        propertyView = @propertyView = new @viewClass classOptions
 
+        if @validationClass
+            validationInstance = new @validationClass classOptions
+        else
+            validationInstance = null
+
+        bindSelection @$el, propertyView.selectTpl, validationInstance
         @setTitle()
 
         if @resourceInexist()

@@ -7,6 +7,22 @@ define [
 
     Backbone.Model.extend {
         initialize: ( options ) ->
+            _.extend @, options
+
+        # Consumer will call this method first to initialize validation.
+        init: () ->
+
+        # Method name is the name of attribute need to validate.
+        name: () ->
+            # TODO
+            # Prevent duplicate name
+
+            # Return null means evething is ok, it passes the validation
+            null
+
+            # Or return a error message means the attribute data is invalid, the message will present to user.
+            # e.g.
+            # "The name is duplicate."
 
     }, {
         extend : ( protoProps, staticProps ) ->

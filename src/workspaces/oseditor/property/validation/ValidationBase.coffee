@@ -12,7 +12,7 @@ define [
         # Consumer will call this method first to initialize validation.
         init: () ->
 
-        limit:
+        limits:
             name: /[a-zA-Z0-9]/
 
         # Method name is the name of attribute need to validate.
@@ -37,6 +37,9 @@ define [
             if staticProps
                 handleTypes  = staticProps.handleTypes
                 @register handleTypes, childClass
+
+            if protoProps.limits
+                childClass.prototype.limits = _.extend protoProps.limits, @prototype.limits
 
             childClass
 

@@ -67,16 +67,27 @@ $(function() {
 // selection valid
 (function($){
 
-    $.fn.selectionValid = function(inputLimit, validFunc) {
+    $.fn.selectionValid = function(validationInstance) {
 
-        if (inputLimit) {
-            $(this).attr('data-ignore-regexp', inputLimit);
+        $dom = $(this)
+
+        var targetName = $dom.data('target');
+
+        var inputLimit, validFunc;
+
+        if (targetName) {
+            var limitMap = validationInstance.limit;
+            var inputLimit = limitMap[targetName];
+            var validFunc = validationInstance[targetName];
         }
 
-        $(this).attr('data-ignore', 'true').attr('data-required', 'true');
-        $(this).parent().attr('data-bind', 'true');
+        if (inputLimit) {
+            $dom.attr('data-ignore-regexp', inputLimit);
+            $dom.attr('data-ignore', 'true').attr('data-required', 'true');
+            $dom.parent().attr('data-bind', 'true');
+        }
 
-        $(this).on('focus', function() {
+        $dom.on('focus', function() {
 
             $(this).data('selection-origin-value', $(this).val());
 
@@ -84,7 +95,7 @@ $(function() {
 
             var value = $(this).val();
 
-            if (!validFunc(value)) {
+            if (validFunc && validFunc(value)) {
                 var originVal = $(this).data('selection-origin-value');
                 $(this).val(originVal);
             }

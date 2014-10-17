@@ -4,8 +4,14 @@ define [
 ], ( constant, ValidationBase ) ->
 
     ValidationBase.extend {
-        limits:
-            'abc': /123/
+
+        limit:
+            port: '^[0-9]*$'
+
+        port: (value) ->
+
+            return 'error'
+
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]
     }

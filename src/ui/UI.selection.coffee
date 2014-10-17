@@ -1,6 +1,6 @@
 define ['UI.selectize'], () ->
 
-    initSelection = ($valueDom, selectTpl, validMap) ->
+    initSelection = ($valueDom, selectTpl, validationInstance) ->
 
         return if (not $valueDom or not $valueDom.length)
 
@@ -88,24 +88,18 @@ define ['UI.selectize'], () ->
                         return false
                 })
 
-            if validMap
+            if validationInstance
+                
+                $valueDom.selectionValid(validationInstance)
 
-                targetName = $valueDom.data('target')
-                if targetName and validMap[targetName]
-
-                    inputLimit = validMap[targetName].limit
-                    validFunc = validMap[targetName].valid
-
-                    $valueDom.selectionValid(inputLimit, validFunc) if validFunc
-
-    listenSelectionInserted = ($parent, selectTpl, validMap) ->
+    listenSelectionInserted = ($parent, selectTpl, validationInstance) ->
 
         $parent.off('DOMNodeInserted').on 'DOMNodeInserted', (event) ->
 
             $target = $(event.target)
             $target.find('select.selection, input').each () ->
-                initSelection($(@), selectTpl, validMap)
+                initSelection($(@), selectTpl, validationInstance)
             if ($target[0].nodeName is 'SELECT' or $target[0].nodeName is 'INPUT') and $target.hasClass('.selection')
-                initSelection($target, selectTpl, validMap)
+                initSelection($target, selectTpl, validationInstance)
 
     return listenSelectionInserted

@@ -12,20 +12,20 @@ define [
         # Consumer will call this method first to initialize validation.
         init: () ->
 
-        limits:
-            name: /[a-zA-Z0-9]/
-
-        # Method name is the name of attribute need to validate.
-        name: () ->
-            # TODO
-            # Prevent duplicate name
-
-            # Return null means evething is ok, it passes the validation
-            null
-
-            # Or return a error message means the attribute data is invalid, the message will present to user.
-            # e.g.
-            # "The name is duplicate."
+        # limit:
+        #     name: '/[a-zA-Z0-9]/'
+        #
+        # # Method name is the name of attribute need to validate.
+        # name: () ->
+        #     # TODO
+        #     # Prevent duplicate name
+        #
+        #     # Return null means evething is ok, it passes the validation
+        #     null
+        #
+        #     # Or return a error message means the attribute data is invalid, the message will present to user.
+        #     # e.g.
+        #     # "The name is duplicate."
 
     }, {
         extend : ( protoProps, staticProps ) ->
@@ -52,6 +52,3 @@ define [
         getClass: ( type ) -> __handleTypes[ type ]
 
     }
-
-
-

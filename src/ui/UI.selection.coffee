@@ -1,6 +1,6 @@
 define ['UI.selectize'], () ->
 
-    initSelection = ($valueDom, selectTpl) ->
+    initSelection = ($valueDom, selectTpl, validMap) ->
 
         return if (not $valueDom or not $valueDom.length)
 
@@ -88,26 +88,24 @@ define ['UI.selectize'], () ->
                         return false
                 })
 
-            if $valueDom.hasClass('ipv4')
+            if validMap
 
-                $valueDom.ipAddress('ipv4')
+                targetName = $valueDom.data('target')
+                if targetName and validMap[targetName]
 
-            if $valueDom.hasClass('cidrv4')
+                    inputLimit = validMap[targetName].limit
+                    validFunc = validMap[targetName].valid
 
-                $valueDom.ipAddress('cidrv4')
+                    $valueDom.selectionValid(inputLimit, validFunc) if validFunc
 
-            if $valueDom.hasClass('ipcidrv4')
-
-                $valueDom.ipAddress('ipcidrv4')
-
-    listenSelectionInserted = ($parent, selectTpl) ->
+    listenSelectionInserted = ($parent, selectTpl, validMap) ->
 
         $parent.off('DOMNodeInserted').on 'DOMNodeInserted', (event) ->
 
             $target = $(event.target)
             $target.find('select.selection, input').each () ->
-                initSelection($(@), selectTpl)
+                initSelection($(@), selectTpl, validMap)
             if ($target[0].nodeName is 'SELECT' or $target[0].nodeName is 'INPUT') and $target.hasClass('.selection')
-                initSelection($target, selectTpl)
+                initSelection($target, selectTpl, validMap)
 
     return listenSelectionInserted

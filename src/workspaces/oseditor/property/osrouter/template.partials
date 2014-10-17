@@ -18,12 +18,16 @@
         <input id="property-os-router-name" data-target="name" class="selection string" value="{{name}}"/>
     </section>
     <section class="group required">
+        <label class="name">Enable Public Gateway</label>
+        <select class="selection bool" data-target="gateway" value="{{#if gateway}}true{{else}}false{{/if}}"></select>
+    </section>
+    <section class="group required">
         <label class="name">Enable NAT</label>
-        <select class="selection bool" id="property-os-router-nat" data-target="nat" value="{{#if nat}}true{{else}}false{{/if}}" disabled></select>
+        <select class="selection bool" id="property-os-router-nat" data-target="nat" value="{{#if nat}}true{{else}}false{{/if}}"></select>
     </section>
 </div>
 <div class="option-group-head expand">
-    Router Detail
+    Connected Subnet
 </div>
 <div class="option-group">
     {{#each subnets}}

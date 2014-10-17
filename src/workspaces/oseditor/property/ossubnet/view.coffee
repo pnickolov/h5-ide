@@ -9,6 +9,20 @@ define [
         events:
             "change [data-target]" : "updateAttribute"
 
+        initialize: () ->
+
+            @validMap =
+
+                cidr:
+
+                    limit: '^[0-9./]*$'
+
+                    valid: (value) ->
+
+                        cidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/
+                        return false if not cidrRegx.test(value)
+                        return true
+
         render: ->
 
             if @mode() in ['stack', 'appedit']

@@ -1,8 +1,8 @@
 (function() {
   define(['UI.selectize'], function() {
     var initSelection, listenSelectionInserted;
-    initSelection = function($valueDom, selectTpl) {
-      var create, maxItems, mutil, validHandle, validHandleName;
+    initSelection = function($valueDom, selectTpl, validMap) {
+      var create, inputLimit, maxItems, mutil, targetName, validFunc, validHandle, validHandleName;
       if (!$valueDom || !$valueDom.length) {
         return;
       }
@@ -117,26 +117,27 @@
             }
           });
         }
-        if ($valueDom.hasClass('ipv4')) {
-          $valueDom.ipAddress('ipv4');
-        }
-        if ($valueDom.hasClass('cidrv4')) {
-          $valueDom.ipAddress('cidrv4');
-        }
-        if ($valueDom.hasClass('ipcidrv4')) {
-          return $valueDom.ipAddress('ipcidrv4');
+        if (validMap) {
+          targetName = $valueDom.data('target');
+          if (targetName && validMap[targetName]) {
+            inputLimit = validMap[targetName].limit;
+            validFunc = validMap[targetName].valid;
+            if (validFunc) {
+              return $valueDom.selectionValid(inputLimit, validFunc);
+            }
+          }
         }
       }
     };
-    listenSelectionInserted = function($parent, selectTpl) {
+    listenSelectionInserted = function($parent, selectTpl, validMap) {
       return $parent.off('DOMNodeInserted').on('DOMNodeInserted', function(event) {
         var $target;
         $target = $(event.target);
         $target.find('select.selection, input').each(function() {
-          return initSelection($(this), selectTpl);
+          return initSelection($(this), selectTpl, validMap);
         });
         if (($target[0].nodeName === 'SELECT' || $target[0].nodeName === 'INPUT') && $target.hasClass('.selection')) {
-          return initSelection($target, selectTpl);
+          return initSelection($target, selectTpl, validMap);
         }
       });
     };

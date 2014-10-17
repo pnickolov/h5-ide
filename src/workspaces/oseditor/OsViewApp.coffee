@@ -38,7 +38,7 @@ define [
       return
 
     showProperty: () -> @panel.openProperty(); false
-    showResource: () ->
+    showResource: () -> @panel.openResource(); false
     showGlobal  : () -> @panel.openConfig(); false
     showStateEditor : ()-> @panel.openState(); false
     onCanvasDoubleClick: () -> @panel.show().openCurrent()

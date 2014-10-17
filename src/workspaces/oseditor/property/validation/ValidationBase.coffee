@@ -12,6 +12,9 @@ define [
         # Consumer will call this method first to initialize validation.
         init: () ->
 
+        limit:
+            name: /[a-zA-Z0-9]/
+
         # Method name is the name of attribute need to validate.
         name: () ->
             # TODO

@@ -553,38 +553,43 @@ define [
         return
 
     opsOptionChanged: ->
-        $switcher = @$(".toolbar-visual-ops-switch").toggleClass('on')
-        stateEnabled = $switcher.hasClass("on")
-        agent = @workspace.design.get('agent')
-        if stateEnabled
-            instancesNoUserData = @workspace.design.instancesNoUserData()
-            workspace = @workspace
-            if not instancesNoUserData
-                $switcher.removeClass 'on'
-                confirmModal = new Modal(
-                    title: "Confirm to Enable VisualOps"
-                    width: "420px"
-                    template: ToolbarTpl.confirm.enableState()
-                    confirm: text: "Enable VisualOps"
-                    onConfirm: ->
-                        agent.enabled = true
-                        confirmModal.close()
-                        $switcher.addClass 'on'
-                        workspace.design.set('agent', agent)
-                        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
-
-                )
-                null
-            else
-                agent.enabled = true
-                @workspace.design.set("agent",agent)
-                ide_event.trigger ide_event.REFRESH_PROPERTY
+      that = @
+      $switcher = @$(".toolbar-visual-ops-switch").toggleClass('on')
+      stateEnabled = $switcher.hasClass("on")
+      agent = @workspace.design.get('agent')
+      if stateEnabled
+        instancesNoUserData = @workspace.design.instancesNoUserData()
+        workspace = @workspace
+        if not instancesNoUserData
+          $switcher.removeClass 'on'
+          confirmModal = new Modal(
+            title    : "Confirm to Enable VisualOps"
+            width    : "420px"
+            template : ToolbarTpl.confirm.enableState()
+            confirm  :
+              text: "Enable VisualOps"
+            onConfirm: ->
+              that.clearUserData()
+              agent.enabled = true
+              confirmModal.close()
+              $switcher.addClass 'on'
+              workspace.design.set('agent', agent)
+              ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+          )
+          null
         else
-            agent.enabled = false
-            @workspace.design.set('agent', agent)
-            ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
+          agent.enabled = true
+          @workspace.design.set("agent", agent)
+          ide_event.trigger ide_event.REFRESH_PROPERTY
+      else
+        agent.enabled = false
+        @workspace.design.set('agent', agent)
+        ide_event.trigger ide_event.FORCE_OPEN_PROPERTY
 
-
+    clearUserData: ()->
+      serverModel = Design.modelClassForType(constant.RESTYPE.OSSERVER)
+      _.each serverModel.allObjects(), ( obj )->
+        obj.set("userData", undefined )
 
     cancelAppEdit : ()->
       if not @workspace.cancelEditMode()

@@ -99,8 +99,8 @@
     <tr>
         <th class="sortable">Name</th>
         <th class="sortable" style="width:10%">Status</th>
-        <th class="sortable" style="width:10%">Snapshot Size</th>
-        <th class="sortable" style="width:29%">Source Volume</th>
+        <th class="sortable" style="width:12%">Snapshot Size</th>
+        <th class="sortable" style="width:27%">Source Volume</th>
         <th class="sortable" style="width:28%" data-row-type="datetime">Created Time</th>
     </tr>
     </thead>

@@ -6,11 +6,14 @@ define [
     'CloudResources'
     '../../property/OsPropertyView'
     '../../property/OsPropertyBundle'
+    '../../property/validation/ValidationBase'
+    '../../property/validation/ValidationBundle'
     './template/TplPropertyPanel'
     'UI.selection'
     'ConnectionModel'
 
-], ( Backbone, constant, Design, CloudResources, OsPropertyView, OsPropertyBundle, PropertyPanelTpl, bindSelection, ConnectionModel )->
+
+], ( Backbone, constant, Design, CloudResources, OsPropertyView, OsPropertyBundle, ValidationBase, ValidationBundle, PropertyPanelTpl, bindSelection, ConnectionModel )->
 
   Backbone.View.extend
 
@@ -51,7 +54,7 @@ define [
             workspace       : @options.workspace
         })
 
-        bindSelection(@$el, propertyView.selectTpl)
+        bindSelection(@$el, propertyView.selectTpl, ValidationBase.getClass( @type ))
 
         @setTitle()
 

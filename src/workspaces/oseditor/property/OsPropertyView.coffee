@@ -97,7 +97,7 @@ define [
 
     }, {
         extend : ( protoProps, staticProps ) ->
-            childClass = Backbone.Model.extend.apply @, arguments
+            childClass = Backbone.View.extend.apply @, arguments
 
             delete childClass.register
             delete childClass.getClass

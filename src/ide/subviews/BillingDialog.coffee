@@ -60,6 +60,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
+        @listenTo App.user, "paymentUpdate", @animateUsage
         @setElement @modal.tpl
 
       switchTab: (event)->
@@ -91,11 +92,14 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         max_length = 580
         @modal.$(".usage-block").removeClass("error")
         @modal.$(".used-points").removeClass("error")
-        $current_usage = @modal.find(".usage-block .current-usage").width(0)
+        $current_usage = @modal.find(".usage-block .current-usage")
         $billable_usage = @modal.find(".usage-block .billable-usage").width(free_quota_length)
         $free_usage    = @modal.find(".usage-block .free-usage").width(free_quota_length)
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
+        billable_quota = if current_quota > free_quota then current_quota - free_quota else 0
+        @modal.find(".used-points .usage-number").text(current_quota)
+        @modal.find(".billable-points .usage-number").text(billable_quota)
         current_quota_length = current_quota* free_quota_length / free_quota
         if App.user.shouldPay()
           @modal.find(".usage-block").addClass("error")

@@ -6,11 +6,13 @@ define [
     ValidationBase.extend {
 
         limit:
-            port: '^[0-9]*$'
+
+            port: ValidationBase.limit.port
 
         port: (value) ->
 
-            return 'pool have some port valid error.'
+            if value is '8080'
+                return 'pool have some port valid error.'
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

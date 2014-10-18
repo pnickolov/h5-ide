@@ -1,3 +1,4 @@
 define [
-    './ospool'
+    './ospool',
+    './ossg'
 ], ->

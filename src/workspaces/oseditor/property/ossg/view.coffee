@@ -5,7 +5,8 @@ define [
     'CloudResources'
     'UI.selection'
     'UI.bubblepopup'
-], ( constant, OsPropertyView, template, CloudResources, bindSelection, bubblePopup ) ->
+    '../validation/ValidationBase'
+], ( constant, OsPropertyView, template, CloudResources, bindSelection, bubblePopup, ValidationBase ) ->
 
     OsPropertyView.extend {
 
@@ -59,7 +60,10 @@ define [
 
             that = @
 
-            bindSelection(@$el, @selectTpl)
+            SGValid = ValidationBase.getClass(constant.RESTYPE.OSSG)
+            bindSelection(@$el, @selectTpl, new SGValid({
+                model: that.sgModel
+            }))
 
             ingressRules = []
             egressRules = []

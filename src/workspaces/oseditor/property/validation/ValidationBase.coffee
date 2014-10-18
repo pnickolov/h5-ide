@@ -51,4 +51,12 @@ define [
 
         getClass: ( type ) -> __handleTypes[ type ]
 
+        limit:
+
+            port: '^[0-9]*$'
+
+            portRange: '^[0-9-]*$'
+
+            portCodeRange: '^[0-9/-]*$'
+
     }

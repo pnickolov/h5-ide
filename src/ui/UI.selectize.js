@@ -87,8 +87,10 @@ $(function() {
 
         if (targetName) {
             var limitMap = validationInstance.limit;
-            var inputLimit = limitMap[targetName];
-            var validFunc = validationInstance[targetName];
+            if (limitMap) {
+                inputLimit = limitMap[targetName];
+            }
+            validFunc = validationInstance[targetName];
         }
 
         if (inputLimit) {
@@ -107,9 +109,11 @@ $(function() {
 
             if (validFunc) {
                 var validRet = validFunc(value);
-                var originVal = $(this).data('selection-origin-value');
-                showTip($(this), validRet);
-                return false;
+                if (validRet) {
+                    var originVal = $(this).data('selection-origin-value');
+                    showTip($(this), validRet);
+                    return false;
+                }
             }
 
         });

@@ -19,6 +19,18 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         @set "public", false
       return
 
+    unattachToExt : () ->
+
+        @connections('OsExtRouterAttach')[0]?.remove()
+
+    attachToExt : () ->
+
+        # get ext network in stack
+        extNetworks = Design.modelClassForType(constant.RESTYPE.OSEXTNET).allObjects()
+        if extNetworks and extNetworks[0]
+            Attach = Design.modelClassForType( "OsExtRouterAttach" )
+            new Attach( @, extNetworks[0] )
+
     serialize : ()->
       extNetwork = @connectionTargets( "OsExtRouterAttach" )[0]
       if extNetwork

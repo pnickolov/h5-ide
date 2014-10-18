@@ -48,9 +48,11 @@ define [
                 if value is true
                     @$el.find('.os-property-router-extnetwork').removeClass('hide')
                     @$el.find('.os-property-router-nat').removeClass('hide')
+                    @model.attachToExt()
                 else
                     @$el.find('.os-property-router-extnetwork').addClass('hide')
                     @$el.find('.os-property-router-nat').addClass('hide')
+                    @model.unattachToExt()
 
                     # set nat to false
                     @$el.find('.selection[data-target="nat"]').setValue(false)

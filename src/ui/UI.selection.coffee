@@ -88,8 +88,8 @@ define ['UI.selectize'], () ->
                         return false
                 })
 
-            if validationInstance
-                
+            if validationInstance and $valueDom.is('input, textarea')
+
                 $valueDom.selectionValid(validationInstance)
 
     listenSelectionInserted = ($parent, selectTpl, validationInstance) ->

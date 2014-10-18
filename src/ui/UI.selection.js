@@ -117,7 +117,7 @@
             }
           });
         }
-        if (validationInstance) {
+        if (validationInstance && $valueDom.is('input, textarea')) {
           return $valueDom.selectionValid(validationInstance);
         }
       }

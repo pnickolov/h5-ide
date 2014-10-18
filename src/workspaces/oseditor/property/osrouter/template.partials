@@ -15,15 +15,21 @@
 <div class="option-group">
     <section class="group required">
         <label class="name">Router Name</label>
-        <input id="property-os-router-name" data-target="name" class="selection string" value="{{name}}"/>
+        <input data-target="name" class="selection string" value="{{name}}"/>
     </section>
     <section class="group required">
         <label class="name">Enable Public Gateway</label>
-        <select class="selection bool" data-target="gateway" value="{{#if gateway}}true{{else}}false{{/if}}"></select>
+        <select data-target="gateway" class="selection bool" value="{{#if extnetwork_id}}true{{else}}false{{/if}}"></select>
     </section>
-    <section class="group required">
+    <section class="group required os-property-router-extnetwork {{#unless extnetwork_id}}hide{{/unless}}">
+        <label class="name">External Network</label>
+        <select data-target="extnetwork" class="selection option" value="{{extnetwork_id}}">
+            <option value="extnetwork_id">{{extnetwork_name}}</option>
+        </select>
+    </section>
+    <section class="group required os-property-router-nat {{#unless extnetwork_id}}hide{{/unless}}">
         <label class="name">Enable NAT</label>
-        <select class="selection bool" id="property-os-router-nat" data-target="nat" value="{{#if nat}}true{{else}}false{{/if}}"></select>
+        <select data-target="nat" class="selection bool" value="{{#if nat}}true{{else}}false{{/if}}"></select>
     </section>
 </div>
 <div class="option-group-head expand">

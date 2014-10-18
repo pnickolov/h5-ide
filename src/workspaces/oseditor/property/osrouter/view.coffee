@@ -26,10 +26,40 @@ define [
                     _.extend(json, resData) if resData
                     json.status = resData?.app?.status
 
+                extNetwork = @model.connectionTargets( "OsExtRouterAttach" )[0]
+                if extNetwork
+                    json.extnetwork_name = extNetwork.get('name')
+                    json.extnetwork_id = extNetwork.id
+
                 @$el.html template.stackTemplate json
             else
                 @$el.html template.appTemplate @getRenderData()
             @
+
+        updateAttribute: (event)->
+
+            $target = $(event.currentTarget)
+
+            attr = $target.data 'target'
+            value = $target.getValue()
+
+            if attr is 'gateway'
+
+                if value is true
+                    @$el.find('.os-property-router-extnetwork').removeClass('hide')
+                    @$el.find('.os-property-router-nat').removeClass('hide')
+                else
+                    @$el.find('.os-property-router-extnetwork').addClass('hide')
+                    @$el.find('.os-property-router-nat').addClass('hide')
+
+                    # set nat to false
+                    @$el.find('.selection[data-target="nat"]').setValue(false)
+                    @model.set('nat', false)
+
+            if attr in ['name', 'nat']
+                @model.set(attr, value)
+
+            @setTitle(value) if attr is 'name'
 
     }, {
         handleTypes: [ constant.RESTYPE.OSRT ]

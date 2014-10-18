@@ -96,20 +96,23 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       return
 
     onWsUserStateChange : ( changes )->
+      console.log changes
       that = @
-      if not changes then return
+      paymentInfo = changes.payment
+      if not paymentInfo then return
       attr =
-        current_quota : "voQuotaCurrent"
-        max_quota     : "voQuotaPerMont"
-        has_card      : "creditCard"
-        payment_state : "paymentState"
+        current_quota   : "voQuotaCurrent"
+        max_quota       : "voQuotaPerMont"
+        has_card        : "creditCard"
+        state           : "paymentState"
+        next_reset_time : "billingCircle"
 
       changed = false
       toChange = {}
       for key, value of attr
-        if changes.hasOwnProperty( key )
+        if paymentInfo.hasOwnProperty( key )
           changed = true
-          toChange[ value ] = changes[ key ]
+          toChange[ value ] = paymentInfo[ key ]
 
       if changed
         @set toChange

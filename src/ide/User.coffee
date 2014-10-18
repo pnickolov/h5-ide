@@ -52,7 +52,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     getPaymentInfo: ->
       ApiRequestR("payment_self")
     userInfoAccuired : ( result )->
-      creditInfo = result.self_page || {}
+      paymentInfo = result.payment || {}
 
       res =
         email           : MC.base64Decode result.email
@@ -63,17 +63,18 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         account         : result.account_id
         firstName       : MC.base64Decode( result.first_name || "" )
         lastName        : MC.base64Decode( result.last_name || "")
-        voQuotaCurrent  : result.current_quota || 0
-        voQuotaPerMonth : result.max_quota || 1000
-        has_card        : result.has_card
-        creditCard      : creditInfo.card
-        billingCircle   : new Date( creditInfo.period_end_at || null )
-        paymentUrl      : creditInfo.url || ""
+        voQuotaCurrent  : paymentInfo.current_quota || 0
+        voQuotaPerMonth : paymentInfo.max_quota || 1000
+        has_card        : paymentInfo.has_card
+        paymentUrl      : paymentInfo.self_page.url || ""
+        creditCard      : paymentInfo.self_page.card
+        billingCircle   : new Date( paymentInfo.self_page?.current_period_ends_at || null )
+        billingCircleStart: new Date(paymentInfo.self_page?.current_period_started_at || null)
+        paymentState    : paymentInfo.payment_state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
         defaultToken    : ""
-        paymentState    : result.payment_state || ""
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""
@@ -116,7 +117,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       @getPaymentInfo().then (result)->
         paymentInfo = {
           creditCard: result.card
-          billingCircle: new Date(result.period_end_at)
+          billingCircle: new Date(result.current_period_ends_at || null)
+          billingCircleStart: new Date(result.current_period_started_at || null)
           paymentUrl: result.url
         }
         that.set paymentInfo
@@ -239,7 +241,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
           self.set {
             firstName     : firstName
             lastName      : lastName
-            billingCircle : new Date( res.period_end_at || null )
+            billingCircle : new Date( res.current_period_ends_at || null )
+            billingCircleStart: new Date(res.current_period_started_at || null)
             paymentUrl    : res.url || ""
           }
           return

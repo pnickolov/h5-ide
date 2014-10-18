@@ -65,9 +65,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         lastName        : MC.base64Decode( result.last_name || "")
         voQuotaCurrent  : paymentInfo.current_quota || 0
         voQuotaPerMonth : paymentInfo.max_quota || 1000
-        has_card        : paymentInfo.has_card
-        paymentUrl      : paymentInfo.self_page.url || ""
-        creditCard      : paymentInfo.self_page.card
+        has_card        : !!paymentInfo.has_card
+        paymentUrl      : paymentInfo.self_page?.url
+        creditCard      : paymentInfo.self_page?.card
         billingCircle   : new Date( paymentInfo.self_page?.current_period_ends_at || null )
         billingCircleStart: new Date(paymentInfo.self_page?.current_period_started_at || null)
         paymentState    : paymentInfo.state || ""
@@ -239,9 +239,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         first_name : firstName
         last_name  : lastName
       }}).then ()->
-        self.updateUserPaymentStatus()
+        self.updateUserPaymentStatus(firstName, lastName)
 
-    updateUserPaymentStatus: ()->
+    updateUserPaymentStatus: (firstName, lastName)->
       self = @
       ApiRequestR("payment_self").then ( res )->
         self.set {

@@ -69,7 +69,17 @@ $(function() {
 
     $.fn.selectionValid = function(validationInstance) {
 
-        $dom = $(this)
+        var showTip = function($target, tip) {
+            if (!$('#selection-tip').length) {
+                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i><span>' + tip + '</span></div>');
+            }
+            var width = $target.outerWidth() + 'px';
+            var posX = $target.offset().left + 'px';
+            var posY = $target.outerHeight() + $target.offset().top + 'px';
+            $('#selection-tip').css({width: width, left: posX, top: posY}).show();
+        };
+
+        var $dom = $(this);
 
         var targetName = $dom.data('target');
 
@@ -95,9 +105,11 @@ $(function() {
 
             var value = $(this).val();
 
-            if (validFunc && validFunc(value)) {
+            if (validFunc) {
+                var validRet = validFunc(value);
                 var originVal = $(this).data('selection-origin-value');
-                $(this).val(originVal);
+                showTip($(this), validRet);
+                return false;
             }
 
         });

@@ -10,7 +10,7 @@ define [
 
         port: (value) ->
 
-            return 'error'
+            return 'pool have some port valid error.'
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

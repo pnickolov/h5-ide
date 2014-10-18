@@ -29,7 +29,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         extNetwork = @getDefaultExt()
         if extNetwork
             Attach = Design.modelClassForType( "OsExtRouterAttach" )
-            new Attach( @, extNetworks[0] )
+            new Attach( @, extNetwork )
 
     getDefaultExt : () ->
 

@@ -70,7 +70,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         creditCard      : paymentInfo.self_page.card
         billingCircle   : new Date( paymentInfo.self_page?.current_period_ends_at || null )
         billingCircleStart: new Date(paymentInfo.self_page?.current_period_started_at || null)
-        paymentState    : paymentInfo.payment_state || ""
+        paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
         tokens          : result.tokens || []
@@ -239,16 +239,23 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         first_name : firstName
         last_name  : lastName
       }}).then ()->
-        ApiRequestR("payment_self").then ( res )->
-          console.log "PaymentSelf, result", res
-          self.set {
-            firstName     : firstName
-            lastName      : lastName
-            billingCircle : new Date( res.current_period_ends_at || null )
-            billingCircleStart: new Date(res.current_period_started_at || null)
-            paymentUrl    : res.url || ""
-          }
-          return
+        self.updateUserPaymentStatus()
+
+    updateUserPaymentStatus: ()->
+      self = @
+      ApiRequestR("payment_self").then ( res )->
+        self.set {
+          firstName     : firstName
+          lastName      : lastName
+          voQuotaCurrent  : res.current_quota || 0
+          voQuotaPerMonth : res.max_quota || 1000
+          has_card        : !!res.card
+          paymentUrl      : res.url || ""
+          creditCard      : res.card
+          billingCircle   : new Date( res.current_period_ends_at || null )
+          billingCircleStart: new Date(res.current_period_started_at || null)
+          paymentState    : res.state || ""
+        }
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

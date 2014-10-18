@@ -26,10 +26,18 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     attachToExt : () ->
 
         # get ext network in stack
-        extNetworks = Design.modelClassForType(constant.RESTYPE.OSEXTNET).allObjects()
-        if extNetworks and extNetworks[0]
+        extNetwork = @getDefaultExt()
+        if extNetwork
             Attach = Design.modelClassForType( "OsExtRouterAttach" )
             new Attach( @, extNetworks[0] )
+
+    getDefaultExt : () ->
+
+        # get ext network in stack
+        extNetworks = Design.modelClassForType(constant.RESTYPE.OSEXTNET).allObjects()
+        if extNetworks and extNetworks[0]
+            return extNetworks[0]
+        return null
 
     serialize : ()->
       extNetwork = @connectionTargets( "OsExtRouterAttach" )[0]

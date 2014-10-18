@@ -26,7 +26,7 @@ define [
                     _.extend(json, resData) if resData
                     json.status = resData?.app?.status
 
-                extNetwork = @model.connectionTargets( "OsExtRouterAttach" )[0]
+                extNetwork = @model.getDefaultExt()
                 if extNetwork
                     json.extnetwork_name = extNetwork.get('name')
                     json.extnetwork_id = extNetwork.id

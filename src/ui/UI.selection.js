@@ -135,6 +135,9 @@
         }
       });
     };
+    listenSelectionInserted.unbind = function($parent, selectTpl) {
+      return $parent.unbindSelection();
+    };
     return listenSelectionInserted;
   });
 

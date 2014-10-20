@@ -103,4 +103,7 @@ define ['UI.selectize'], () ->
             if ($target[0].nodeName is 'SELECT' or $target[0].nodeName is 'INPUT') and $target.hasClass('.selection')
                 initSelection($target, selectTpl, validationInstance)
 
+    listenSelectionInserted.unbind = ($parent, selectTpl) ->
+        $parent.unbindSelection()
+
     return listenSelectionInserted

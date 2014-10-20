@@ -23,6 +23,11 @@ var getId = function(id) {
     return 'selection-tip-' + id;
 };
 
+var getTip = function(id) {
+    var selector = '#' + getId(id);
+    return $(selector);
+}
+
 var positionTip = function($target, $tipDom) {
     var width = $target.outerWidth() + 'px';
     var posX = $target.offset().left + 'px';
@@ -34,10 +39,9 @@ var positionTip = function($target, $tipDom) {
 
 var renderTip = function($target, tip, id) {
     var tipId = getId(id);
-    var selectorTip = '#' + tipId;
-    var $tipDom;
+    var $tipDom = getTip(id);
 
-    if (!($tipDom = $(selectorTip)).length) {
+    if (!$tipDom.length) {
         $tipDom = $('<div class="selection-tip" id="' + tipId + '"><i class="icon-info"></i><span></span></div>');
         $(document.body).append($tipDom);
         $target
@@ -57,32 +61,28 @@ var renderTip = function($target, tip, id) {
     }, 2000);
 };
 
-var removeTip = function(id, $target) {
+var removeTip = function(id) {
     var tipId, selector;
     if (id) {
         selector = '#' + getId(id);
-    } else {
-        selector = '.selection-tip';
-    }
-
-    if ($target) {
+        $target = getTarget(id);
         $target.off('mouseenter').off('mouseleave');
         $target.removeClass('error');
+    } else {
+        selector = '.selection-tip';
     }
 
     $(selector).remove();
 };
 
 var showTip = function(id) {
-    var selector = '#' + getId(id);
-    $tipDom = $(selector);
+    $tipDom = getTip(id);
     $target = getTarget(id);
     positionTip($target, $tipDom);
 };
 
 var hideTip = function(id) {
-    var selector = '#' + getId(id);
-    $(selector).slideUp(50);
+    getTip(id).slideUp(50);
 };
 
 var getTarget = function(id) {
@@ -90,20 +90,19 @@ var getTarget = function(id) {
     return $(selector).eq(0);
 };
 
+var unbindValidation = function($parent) {
+    $parent.find('.selection.error').each(function() {
+        var id = $(this).data('selectionId');
+        removeTip(id);
+    });
+};
 
 // selection valid
 (function($){
 
     $.fn.selectionValid = function(validationInstance) {
-
-
-
-
-
         var $dom = $(this);
-
         var targetName = $dom.data('target');
-
         var inputLimit, validFunc;
 
         if (targetName) {
@@ -130,20 +129,23 @@ var getTarget = function(id) {
 
             if (validFunc) {
                 var validRet = validFunc(value);
-                if (!validRet) return
-
 
                 var originVal = $(this).data('selection-origin-value');
                 var targetId = $(this).data('selectionId');
                 if (validRet)
                     renderTip($(this), validRet, targetId);
                 else
-                    removeTip(targetId, $(this));
+                    removeTip(targetId);
                 return false;
             }
 
         });
     };
+
+
+    $.fn.unbindSelection = function() {
+        unbindValidation(this);
+    }
 
 })(jQuery);
 

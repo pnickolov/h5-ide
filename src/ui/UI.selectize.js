@@ -49,6 +49,7 @@ var renderTip = function($target, tip, id) {
         .find('span')
         .html(tip)
 
+    $target.addClass('error');
     positionTip($target, $tipDom);
 
     setTimeout(function() {
@@ -66,6 +67,7 @@ var removeTip = function(id, $target) {
 
     if ($target) {
         $target.off('mouseenter').off('mouseleave');
+        $target.removeClass('error');
     }
 
     $(selector).remove();
@@ -133,8 +135,10 @@ var getTarget = function(id) {
 
                 var originVal = $(this).data('selection-origin-value');
                 var targetId = $(this).data('selectionId');
-
-                renderTip($(this), validRet, targetId);
+                if (validRet)
+                    renderTip($(this), validRet, targetId);
+                else
+                    removeTip(targetId, $(this));
                 return false;
             }
 

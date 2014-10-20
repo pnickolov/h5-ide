@@ -85,4 +85,6 @@ define [
 
     remove: ->
         @propertyView?.remove()
+        bindSelection.unbind()
         Backbone.View.prototype.remove.apply @, arguments
+

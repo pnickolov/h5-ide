@@ -70,6 +70,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         creditCard      : paymentInfo.self_page?.card
         billingCircle   : new Date( paymentInfo.self_page?.current_period_ends_at || null )
         billingCircleStart: new Date(paymentInfo.self_page?.current_period_started_at || null)
+        renewDate        : if paymentInfo.next_reset_time then new Date(paymentInfo.next_reset_time * 1000) else new Date()
         paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key
@@ -105,7 +106,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         max_quota       : "voQuotaPerMonth"
         has_card        : "creditCard"
         state           : "paymentState"
-        next_reset_time : "billingCircle"
 
       changed = false
       toChange = {}
@@ -117,6 +117,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if changed
         @set toChange
 
+      if paymentInfo.next_reset_time and new Date(paymentInfo.next_reset_time * 1000) isnt App.user.get("renewDate")
+        App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
       @getPaymentInfo().then (result)->
         paymentInfo = {
           creditCard: result.card

@@ -133,7 +133,7 @@
                     <div class="free-usage tooltip"></div>
                     <div class="current-usage tooltip"></div>
                 </div>
-                <p class="renew-points">{{paymentUsage.max_quota}} free points renew in {{paymentUsage.billingDate}} days</p>
+                <p class="renew-points">{{paymentUsage.max_quota}} free points renew in {{paymentUsage.renewRemainDays}} days</p>
             </div>
         </section>
     </div>

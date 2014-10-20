@@ -34,7 +34,7 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
             quota_current = user.get("voQuotaCurrent")
             $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
             $quota = $("#header").children(".voquota")
-            paymentRenewDays = Math.round((App.user.attributes.billingCircle - new Date()) / (1000 * 3600 * 24))
+            paymentRenewDays = Math.round((App.user.get("renewDate") - new Date()) / (1000 * 3600 * 24))
             if App.user.get('billingCircle')
               $quota.attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, quota_current, quota_month, paymentRenewDays) )
             currentWidth = Math.round(quota_current / quota_month * 100)

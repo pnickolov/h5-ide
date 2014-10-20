@@ -19,80 +19,82 @@ $(function() {
     });
 });
 
+var getId = function(id) {
+    return 'selection-tip-' + id;
+};
+
+var positionTip = function($target, $tipDom) {
+    var width = $target.outerWidth() + 'px';
+    var posX = $target.offset().left + 'px';
+    var posY = $target.outerHeight() + $target.offset().top + 'px';
+    $tipDom
+        .css({width: width, left: posX, top: posY})
+        .slideDown(50);
+};
+
+var renderTip = function($target, tip, id) {
+    var tipId = getId(id);
+    var selectorTip = '#' + tipId;
+    var $tipDom;
+
+    if (!($tipDom = $(selectorTip)).length) {
+        $tipDom = $('<div class="selection-tip" id="' + tipId + '"><i class="icon-info"></i><span></span></div>');
+        $(document.body).append($tipDom);
+        $target
+            .on('mouseenter', function() { showTip(id) })
+            .on('mouseleave', function() { hideTip(id) })
+    }
+
+    $tipDom
+        .find('span')
+        .html(tip)
+
+    positionTip($target, $tipDom);
+
+    setTimeout(function() {
+        hideTip(id);
+    }, 2000);
+};
+
+var removeTip = function(id, $target) {
+    var tipId, selector;
+    if (id) {
+        selector = '#' + getId(id);
+    } else {
+        selector = '.selection-tip';
+    }
+
+    if ($target) {
+        $target.off('mouseenter').off('mouseleave');
+    }
+
+    $(selector).remove();
+};
+
+var showTip = function(id) {
+    var selector = '#' + getId(id);
+    $tipDom = $(selector);
+    $target = getTarget(id);
+    positionTip($target, $tipDom);
+};
+
+var hideTip = function(id) {
+    var selector = '#' + getId(id);
+    $(selector).slideUp(50);
+};
+
+var getTarget = function(id) {
+    var selector = '[data-selection-id="' + id + '"]'
+    return $(selector).eq(0);
+};
+
 
 // selection valid
 (function($){
 
     $.fn.selectionValid = function(validationInstance) {
 
-        var getId = function(id) {
-            return 'selection-tip-' + id;
-        };
 
-        var positionTip = function($target, $tipDom) {
-            var width = $target.outerWidth() + 'px';
-            var posX = $target.offset().left + 'px';
-            var posY = $target.outerHeight() + $target.offset().top + 'px';
-            $tipDom
-                .css({width: width, left: posX, top: posY})
-                .slideDown(50);
-        };
-
-        var renderTip = function($target, tip, id) {
-            var tipId = getId(id);
-            var selectorTip = '#' + tipId;
-            var $tipDom;
-
-            if (!($tipDom = $(selectorTip)).length) {
-                $tipDom = $('<div class="selection-tip" id="' + tipId + '"><i class="icon-info"></i><span></span></div>');
-                $(document.body).append($tipDom);
-                $target
-                    .on('mouseenter', function() { showTip(id) })
-                    .on('mouseleave', function() { hideTip(id) })
-            }
-
-            $tipDom
-                .find('span')
-                .html(tip)
-
-            positionTip($target, $tipDom);
-
-            setTimeout(function() {
-                hideTip(id);
-            }, 2000);
-        };
-
-        var removeTip = function(id, $target) {
-            var tipId, selector;
-            if (id) {
-                selector = '#' + getId(id);
-            } else {
-                selector = '.selection-tip';
-            }
-
-            if ($target) {
-                $target.off('mouseenter').off('mouseleave');
-            }
-
-            $(selector).remove();
-        }
-
-        var showTip = function(id) {
-            var selector = '#' + getId(id);
-            $tipDom = $(selector);
-            $target = getTarget(id);
-            positionTip($target, $tipDom);
-        }
-
-        var hideTip = function(id) {
-            var selector = '#' + getId(id);
-            $(selector).slideUp(50);
-        }
-
-        var getTarget = function(id) {
-            var selector = '[data-target=' + id + ']'
-            return $(selector).eq(0);
-        }
 
 
 
@@ -128,8 +130,11 @@ $(function() {
                 var validRet = validFunc(value);
                 if (!validRet) return
 
+
                 var originVal = $(this).data('selection-origin-value');
-                renderTip($(this), validRet, targetName);
+                var targetId = $(this).data('selectionId');
+
+                renderTip($(this), validRet, targetId);
                 return false;
             }
 

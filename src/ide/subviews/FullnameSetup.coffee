@@ -20,18 +20,18 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
 
     submit: ()->
       that = @
-      $firstname = that.modal.$("#complete-firstname")
-      $lastname  = that.modal.$("#complete-lastname")
-      if not ($firstname.val() and $lastname.val())
+      firstname = that.modal.$("#complete-firstname").val()
+      lastname  = that.modal.$("#complete-lastname").val()
+      if not (firstname and lastname)
         return false
       @modal.find(".modal-confirm").attr('disabled', true)
       @modal.setContent MC.template.loadingSpiner()
       ApiRequest("account_update_account", { attributes : {
-        first_name : $firstname.val()
-        last_name  : $lastname.val()
+        first_name : firstname
+        last_name  : lastname
       }}).then  ->
-        App.user.set("first_name", $firstname.val())
-        App.user.set("last_name" , $lastname.val() )
+        App.user.set("first_name", firstname)
+        App.user.set("last_name" , lastname )
         @modal.close()
         notification "info", lang.IDE.PROFILE_UPDATED_SUCCESSFULLY
       , ->

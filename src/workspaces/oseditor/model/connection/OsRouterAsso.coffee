@@ -19,9 +19,9 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
 
     initialize : ()->
       rt = @getTarget( constant.RESTYPE.OSRT )
-      @listenTo rt, "change:public", @onRtPublicityChanged
+      @listenTo rt, "change:extNetworkId", @onRtPublicityChanged
 
-      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", rt.get("public")
+      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", rt.isPublic()
       return
 
     remove : ()->
@@ -33,24 +33,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
       return res
 
     onRtPublicityChanged : ()->
-      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", @getTarget(constant.RESTYPE.OSRT).get("public")
+      @getTarget( constant.RESTYPE.OSSUBNET ).set "public", @getTarget(constant.RESTYPE.OSRT).isPublic()
       return
 
-  }
-
-
-  ### ExtNetwork <=> Router ###
-  ConnectionModel.extend {
-    type : "OsExtRouterAttach"
-
-    portDefs : [
-      {
-        port1 :
-          name : "router"
-          type : constant.RESTYPE.OSEXTNET
-        port2 :
-          name : "external"
-          type : constant.RESTYPE.OSRT
-      }
-    ]
   }

@@ -96,7 +96,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"
         OSVOL      : "OS::Cinder::Volume"
-        OSEXTNET   : "OS::ExternalNetwork"
         OSFLAVOR   : "OS::Nova::Flavor"
         OSKP       : "OS::Nova::KeyPair"
         OSIMAGE    : "OS::Image"

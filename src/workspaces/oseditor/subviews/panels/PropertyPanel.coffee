@@ -38,7 +38,6 @@ define [
     resourceInexist: ->
         if @mode is 'stack' then return false
         if @appModel then return false
-        if @model?.type is constant.RESTYPE.OSEXTNET then return false
         if @model instanceof ConnectionModel then return false
 
         true

@@ -8,31 +8,11 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     defaults:
       nat: true
+      extNetworkId : ""
 
-    connect : ( cn )->
-      if cn.type is 'OsExtRouterAttach'
-        @set "public", true
-      return
-
-    disconnect : ( cn )->
-      if cn.type is 'OsExtRouterAttach'
-        @set "public", false
-      return
-
-    unattachToExt : () ->
-
-        @connections('OsExtRouterAttach')[0]?.remove()
-
-    attachToExt : () ->
-
-        # get ext network in stack
-        extNetwork = @getDefaultExt()
-        if extNetwork
-            Attach = Design.modelClassForType( "OsExtRouterAttach" )
-            new Attach( @, extNetwork )
+    isPublic : ()-> !!@get("extNetworkId")
 
     getDefaultExt : () ->
-
         # get ext network in stack
         extNetworks = Design.modelClassForType(constant.RESTYPE.OSEXTNET).allObjects()
         if extNetworks and extNetworks[0]
@@ -40,9 +20,10 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         return null
 
     serialize : ()->
-      extNetwork = @connectionTargets( "OsExtRouterAttach" )[0]
-      if extNetwork
-        extNetwork = { network_id : extNetwork.createRef("id") }
+      if @get("extNetworkId")
+        extNetwork = { network_id : @get("extNetworkId") }
+      else
+        extNetwork = {}
 
       {
         layout    : @generateLayout()
@@ -54,7 +35,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             id                    : @get("appId")
             name                  : @get("name")
             nat                   : @get("nat")
-            external_gateway_info : extNetwork || {}
+            external_gateway_info : extNetwork
             router_interface : @connectionTargets("OsRouterAsso").map ( subnet )->
               { subnet_id : subnet.createRef("id") }
       }
@@ -69,6 +50,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         name  : data.resource.name
         appId : data.resource.id
         nat   : data.resource.nat
+        extNetworkId : data.resource.external_gateway_info.network_id || ""
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
@@ -79,11 +61,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       for subnet in data.resource.router_interface
         new Asso( router, resolve(MC.extractID( subnet.subnet_id )) )
 
-      # ExtNetwork <=> Router
-      externalNetwork = data.resource.external_gateway_info
-      if externalNetwork and externalNetwork.network_id
-        Attach = Design.modelClassForType( "OsExtRouterAttach" )
-        new Attach( router, resolve(MC.extractID( externalNetwork.network_id )) )
       return
   }
 

@@ -3,9 +3,7 @@ define [
     '../OsPropertyView'
     './template'
     'CloudResources'
-    'underscore'
-    'OsKp'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp ) ->
+], ( constant, OsPropertyView, template, CloudResources ) ->
 
     OsPropertyView.extend {
 
@@ -26,10 +24,9 @@ define [
                     _.extend(json, resData) if resData
                     json.status = resData?.app?.status
 
-                extNetwork = @model.getDefaultExt()
-                if extNetwork
-                    json.extnetwork_name = extNetwork.get('name')
-                    json.extnetwork_id = extNetwork.id
+                console.log CloudResources( constant.RESTYPE.OSNETWORK, Design.instance().region() )
+
+                json.extnetworks = CloudResources( constant.RESTYPE.OSNETWORK, Design.instance().region() ).getExtNetworks().map ( nt )-> nt.id
 
                 @$el.html template.stackTemplate json
             else
@@ -43,24 +40,22 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            if attr is 'gateway'
+            if attr is 'extNetworkId'
+                if value is "none"
+                    value = ""
 
-                if value is true
-                    @$el.find('.os-property-router-extnetwork').removeClass('hide')
-                    @$el.find('.os-property-router-nat').removeClass('hide')
-                    @model.attachToExt()
+                natSelection = @$el.find('.selection[data-target="nat"]')
+
+                if value
+                    if not @model.get( attr )
+                        # set nat to true when toggle to public network
+                        natSelection.val( true )
                 else
-                    @$el.find('.os-property-router-extnetwork').addClass('hide')
-                    @$el.find('.os-property-router-nat').addClass('hide')
-                    @model.unattachToExt()
+                    natSelection.val( false )
 
-                    # set nat to false
-                    @$el.find('.selection[data-target="nat"]').setValue(false)
-                    @model.set('nat', false)
+                @$el.find('.os-property-router-nat').toggleClass('hide', !value)
 
-            if attr in ['name', 'nat']
-                @model.set(attr, value)
-
+            @model.set(attr, value)
             @setTitle(value) if attr is 'name'
 
     }, {

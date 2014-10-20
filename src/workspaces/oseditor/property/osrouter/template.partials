@@ -17,17 +17,14 @@
         <label class="name">Router Name</label>
         <input data-target="name" class="selection string" value="{{name}}"/>
     </section>
-    <section class="group required">
-        <label class="name">Enable Public Gateway</label>
-        <select data-target="gateway" class="selection bool" value="{{#if extnetwork_id}}true{{else}}false{{/if}}"></select>
-    </section>
-    <section class="group required os-property-router-extnetwork {{#unless extnetwork_id}}hide{{/unless}}">
+    <section class="group required os-property-router-extnetwork">
         <label class="name">External Network</label>
-        <select data-target="extnetwork" class="selection option" value="{{extnetwork_id}}">
-            <option value="extnetwork_id">{{extnetwork_name}}</option>
+        <select data-target="extNetworkId" class="selection option" value="{{extNetworkId}}">
+            <option value="none">Disable Public Network</option>
+            {{#each extnetworks}}<option value="{{this}}">{{this}}</option>{{/each}}
         </select>
     </section>
-    <section class="group required os-property-router-nat {{#unless extnetwork_id}}hide{{/unless}}">
+    <section class="group required os-property-router-nat {{#unless extNetworkId}}hide{{/unless}}">
         <label class="name">Enable NAT</label>
         <select data-target="nat" class="selection bool" value="{{#if nat}}true{{else}}false{{/if}}"></select>
     </section>

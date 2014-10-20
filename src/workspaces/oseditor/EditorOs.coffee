@@ -19,7 +19,6 @@ define [
   "./model/OsModelSgRule"
   "./model/OsModelSubnet"
   "./model/OsModelVolume"
-  "./model/OsModelExtNetwork"
 
   "./model/connection/OsFloatIpUsage"
   "./model/connection/OsListenerAsso"
@@ -36,7 +35,6 @@ define [
   "./canvas/CeRt"
   "./canvas/CePool"
   "./canvas/CeListener"
-  "./canvas/CeExtNetwork"
   "./canvas/CeServer"
   "./canvas/CePort"
   "./canvas/CeOsLine"

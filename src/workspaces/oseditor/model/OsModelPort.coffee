@@ -52,6 +52,14 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     getFloatingIp : ()-> @connectionTargets("OsFloatIpUsage")[0]
 
+    getRouter : ()->
+      context = @owner() || @
+      parent  = context.parent()
+      if parent
+        rt = parent.connectionTargets("OsRouterAsso")[0]
+
+      rt || null
+
     serialize : ()->
 
       if @isEmbedded()

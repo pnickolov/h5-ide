@@ -10,9 +10,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       port = @connectionTargets("OsFloatIpUsage")[0]
       if not port then return
 
-      extNetworkAry = @design().componentsOfType(constant.RESTYPE.OSEXTNET)
-      if extNetworkAry and extNetworkAry.length
-        extNetworkId = extNetworkAry[0].getResourceId()
+      rt = port.getRouter()
+      extNetworkId = if rt then rt.get("extNetworkId") else ""
 
       port_id = port.createRef( if port.type is constant.RESTYPE.OSLISTENER then "port_id" else "id" )
       fixed_ip_address = port.createRef(if port.type is constant.RESTYPE.OSLISTENER then "address" else "fixed_ips.0.ip_address")

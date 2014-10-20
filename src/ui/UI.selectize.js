@@ -73,8 +73,7 @@ var removeTip = function(id) {
     if (id) {
         selector = '#' + getId(id);
         $target = getTarget(id);
-        $target.off('mouseenter').off('mouseleave');
-        $target.removeClass('error');
+        $target.off('mouseenter').off('mouseleave').removeClass('error');
     } else {
         selector = '.selection-tip';
     }

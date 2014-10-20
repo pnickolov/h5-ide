@@ -338,17 +338,8 @@ define [
 
     visualizeVPC: ()->
       that = @
-      paymentState = App.user.get 'paymentState'
-      console.log paymentState
-      if paymentState and paymentState isnt 'unpaid'
-        @__visualizeVPC()
-      else
-        appAction.showPayment().then (data)->
-          data.modal.listenTo App.user, 'change:paymentState', ->
-            if data.modal.isClosed then return false
-            paymentState = App.user.get('paymentState')
-            if paymentState and paymentState isnt 'unpaid'
-              that.__visualizeVPC(data.modal)
+      appAction.showPayment().then (data)->
+        that.__visualizeVPC(data.modal)
 
 
     __visualizeVPC : (modal)->

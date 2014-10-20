@@ -12,13 +12,6 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
 
     isPublic : ()-> !!@get("extNetworkId")
 
-    getDefaultExt : () ->
-        # get ext network in stack
-        extNetworks = Design.modelClassForType(constant.RESTYPE.OSEXTNET).allObjects()
-        if extNetworks and extNetworks[0]
-            return extNetworks[0]
-        return null
-
     serialize : ()->
       if @get("extNetworkId")
         extNetwork = { network_id : @get("extNetworkId") }

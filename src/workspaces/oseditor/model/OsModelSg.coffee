@@ -109,8 +109,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     attachDefaultSG : (targetModel) ->
       defaultSg = Model.getDefaultSg()
-      SgAsso = Design.modelClassForType('OsSgAsso')
-      new SgAsso(defaultSg, targetModel)
+      if defaultSg
+        SgAsso = Design.modelClassForType('OsSgAsso')
+        new SgAsso(defaultSg, targetModel)
+      return
 
   }
 

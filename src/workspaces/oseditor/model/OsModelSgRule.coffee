@@ -7,18 +7,13 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     newNameTmpl : "sg-rule"
 
     defaults :
-      direction : ""
-      portMin   : ""
-      portMax   : ""
-      protocol  : ""
+      direction : "egress"
+      portMin   : null
+      portMax   : null
+      protocol  : null
       sg        : null
       ip        : null
       appId     : ""
-      ruleId    : ""
-
-    initialize : () ->
-
-      @set('ruleId', MC.guid())
 
     setTarget : ( ipOrSgModel )->
       if typeof ip is "string"
@@ -50,13 +45,13 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     fromJSON : ( json )->
       attr = @attributes
 
-      attr.direction = json.direction
-      attr.portMin   = json.port_range_min
-      attr.portMax   = json.port_range_max
-      attr.protocol  = json.protocol
-      attr.appId     = json.id
+      attr.direction = json.direction or "egress"
+      attr.portMin   = json.port_range_min or null
+      attr.portMax   = json.port_range_max or null
+      attr.protocol  = json.protocol  or null
+      attr.appId     = json.id or ""
 
-      attr.sg = if json.remote_group_id  then json.remote_group_id else null
+      attr.sg = if json.remote_group_id  then json.remote_group_id  else null
       attr.ip = if json.remote_ip_prefix then json.remote_ip_prefix else null
 
       return

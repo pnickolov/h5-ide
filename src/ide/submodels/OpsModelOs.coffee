@@ -55,15 +55,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           resource:
             name: "DefaultSG"
             description: "default security group"
-            rules: [
-              direction        : "egress"
-              ethertype        : "IPv4"
-              port_range_min   : null
-              port_range_max   : null
-              protocol         : null
-              remote_group_id  : null
-              remote_ip_prefix : null
-            ]
+            rules: []
 
       for id, comp of component
         comp.uid = MC.guid()

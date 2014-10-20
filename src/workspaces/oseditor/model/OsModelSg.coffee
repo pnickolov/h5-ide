@@ -7,31 +7,21 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
     newNameTmpl : "security-group"
 
     initialize : () ->
-
-        RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
-        rule = new RuleModel({
-          direction: 'egress'
-          protocol: null
-          portMax: null
-          portMin: null
-          sg: null
-          ip: null
-        })
-        @get("rules").push(rule)
+      RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
+      @get("rules").push( new RuleModel() )
+      return
 
     defaults : ()->
       description : "custom security group"
       rules       : []
 
     attachSG : (targetModel) ->
-
-        SgAsso = Design.modelClassForType( "OsSgAsso" )
-        new SgAsso( targetModel, @ )
+      SgAsso = Design.modelClassForType( "OsSgAsso" )
+      new SgAsso( targetModel, @ )
 
     unAttachSG : (targetModel) ->
-
-        SgAsso = Design.modelClassForType( "OsSgAsso" )
-        (new SgAsso( targetModel, @ )).remove()
+      SgAsso = Design.modelClassForType( "OsSgAsso" )
+      (new SgAsso( targetModel, @ )).remove()
 
     addRule : ( ruleData )->
       for rule in @get("rules")
@@ -41,27 +31,17 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       RuleModel = Design.modelClassForType( constant.RESTYPE.OSSGRULE )
       rule = new RuleModel(ruleData)
       @get("rules").push(rule)
-      return rule.get('ruleId')
+      return rule.id
 
-    getRule : ( ruleId )->
-
+    getRule : ( id )->
       for rule in @get("rules")
-        if rule.get('ruleId') is ruleId
+        if rule.id is id
           return rule
       null
 
-    updateRule : (ruleId, ruleData) ->
-
-        for rule in @get("rules")
-          if rule.get('ruleId') is ruleId
-            ruleData.appId = ''
-            rule.set(ruleData)
-            return
-
     removeRule : ( idOrModel )->
-
       for r, idx in @get("rules")
-        if r is idOrModel or r.get('ruleId') is idOrModel
+        if r is idOrModel or r.id is idOrModel
           @get("rules").splice( idx, 1 )
           break
       return
@@ -70,9 +50,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       return _.filter @connectionTargets('OsSgAsso'), (tgt) ->
         return true
 
-    isDefault : () ->
-
-      return (@get('name') is 'DefaultSG')
+    isDefault : () -> @get('name') is 'DefaultSG'
 
     remove : ()->
       for rule in @get("rules")
@@ -81,20 +59,20 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     serialize : ()->
       if @getMemberList().length
-          return {
-            component :
+        {
+          component :
+            name : @get("name")
+            type : @type
+            uid  : @id
+            resource :
+              id   : @get("appId")
               name : @get("name")
-              type : @type
-              uid  : @id
-              resource :
-                id   : @get("appId")
-                name : @get("name")
 
-                description : @get("description")
-                rules       : @get("rules")?.map ( rule )-> rule.toJSON()
-          }
+              description : @get("description")
+              rules       : @get("rules")?.map ( rule )-> rule.toJSON()
+        }
       else
-        return {}
+        null
 
   }, {
 

@@ -157,21 +157,20 @@ define [
             attr = $target.data 'target'
             value = $target.getValue()
 
-            if attr in ['protocol', 'port', 'ip']
+            if "protocol|port|ip".indexOf( attr ) >= 0
 
                 rule = @getRuleValue($target)
-
-                return if not rule
+                if not rule then return
 
                 if attr is 'protocol'
                     @setDefaultPort(rule, $target)
 
                 $ruleItem = $target.parents('.rule-item')
-                ruleId = $ruleItem.data('id')
-                ruleModel = @sgModel.getRule(ruleId)
+                ruleModel = @sgModel.getRule( $ruleItem.data('id') )
 
                 if ruleModel
-                    @sgModel.updateRule(ruleId, rule) if rule
+                    rule.appId = ""
+                    ruleModel.set( rule )
                 else
                     newRuleId = @sgModel.addRule(rule) if rule
                     @addNewItem($ruleItem)
@@ -366,7 +365,7 @@ define [
                 port = @nullStr
 
             ruleData = {
-                id: ruleModel.get('ruleId'),
+                id: ruleModel.id,
                 direction: direction,
                 protocol: protocol,
                 port: port,

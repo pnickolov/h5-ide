@@ -16,7 +16,7 @@ define [
 
             extNets = []
             for rt in rts
-                extNets = extNets.concat rt.connectionTargets( 'OsExtRouterAttach' )
+                extNets = extNets.concat rt.get('extNetworkId')
 
             if not extNets or not extNets.length then return false
 
@@ -52,4 +52,3 @@ define [
 
 
         subnetHasPortShouldConncectedOut: subnetHasPortShouldConncectedOut
-

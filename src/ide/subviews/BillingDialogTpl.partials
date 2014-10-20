@@ -87,7 +87,7 @@
                             {{#each paymentHistory}}
                                 <tr class="item" data-id="{{@index}}">
                                     <td>{{formatTime updated_at "MMMM d, yyyy"}}</td>
-                                    <td>$ {{ending_balance}}</td>
+                                    <td>$ {{or ending_balance total_balance}}</td>
                                     <td>{{#if success}}Paid{{else}}<span class="link-red">Failed</span>{{/if}}</td>
                                     <td>
                                         <a class="payment-receipt link-blue" href="#">View Receipt</a></td>

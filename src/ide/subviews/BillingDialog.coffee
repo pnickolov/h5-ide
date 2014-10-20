@@ -52,6 +52,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           tempArray = []
           _.each paymentHistory, (e)->
             e.ending_balance = e.ending_balance_in_cents/100
+            e.total_balance = e.total_in_cents / 100
+            e.start_balance = e.starting_balance_in_cents / 100
             tempArray.push(e)
           tempArray.reverse()
           paymentHistory = tempArray

@@ -1,4 +1,5 @@
 define [
     './ospool',
-    './ossg'
+    './ossg',
+    './osport'
 ], ->

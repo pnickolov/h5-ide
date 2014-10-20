@@ -140,6 +140,8 @@ var unbindValidation = function($parent) {
                 if (_.isString(validRet)) {
                     if (validRet !== '') {
                         renderTip($(this), validRet, targetId);
+                    } else {
+                        $(this).val(originVal);
                     }
                     return false;
                 }

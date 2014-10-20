@@ -24,7 +24,7 @@
     {{/if}}
     <section class="group required">
         <label class="name">Fixed IP</label>
-        <input data-target="ip" class="selection string ipv4" data-tip="blablablabla..." value="{{ip}}" {{#unless isPurePort}}{{#if modeIsAppEdit}}disabled{{/if}}{{/unless}}/>
+        <input data-target="ip" class="selection string ipv4" value="{{ip}}" {{#unless isPurePort}}{{#if modeIsAppEdit}}disabled{{/if}}{{/unless}}/>
     </section>
     <section class="group required">
         <label class="name">Associate Floating IP</label>

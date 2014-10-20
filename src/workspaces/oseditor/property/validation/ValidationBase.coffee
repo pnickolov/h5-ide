@@ -23,6 +23,9 @@ define [
             oldName = resModel.get('name')
             newName = value
 
+            # empty valid
+            return '' if newName is ''
+
             # duplication valid
             nameDup = false
             if oldName isnt newName
@@ -32,9 +35,6 @@ define [
                     null
             if nameDup is true
                 return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
-
-            # empty valid
-            return '' if newName is ''
 
             # reserved valid
             if newName in ['self', 'this', 'global', 'meta', 'madeira']
@@ -87,6 +87,10 @@ define [
 
             portRange: '^[0-9-]*$'
 
-            portCodeRange: '^[0-9/-]*$'
+            portICMPRange: '^[0-9/-]*$'
+
+            ipv4: '^[0-9.]*$'
+
+            cidrv4: '^[0-9/.]*$'
 
     }

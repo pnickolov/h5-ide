@@ -19,6 +19,13 @@ $(function() {
     });
 });
 
+
+/*
+    Selection ErrorTip
+*/
+
+var enterId = false;
+
 var getId = function(id) {
     return 'selection-tip-' + id;
 };
@@ -45,8 +52,8 @@ var renderTip = function($target, tip, id) {
         $tipDom = $('<div class="selection-tip" id="' + tipId + '"><i class="icon-info"></i><span></span></div>');
         $(document.body).append($tipDom);
         $target
-            .on('mouseenter', function() { showTip(id) })
-            .on('mouseleave', function() { hideTip(id) })
+            .on('mouseenter', function() { enterId = id; showTip(id); })
+            .on('mouseleave', function() { enterId = false; hideTip(id) })
     }
 
     $tipDom
@@ -82,7 +89,7 @@ var showTip = function(id) {
 };
 
 var hideTip = function(id) {
-    getTip(id).slideUp(50);
+    if (enterId != id) getTip(id).slideUp(50);
 };
 
 var getTarget = function(id) {

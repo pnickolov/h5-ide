@@ -97,7 +97,10 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         rModel.fromJSON( rule )
         rModel
 
-      sgModel.set('rules', rules)
+      if rules.length
+        for rule in sgModel.get("rules")
+          rule.remove()
+        sgModel.set('rules', rules)
 
       return
 

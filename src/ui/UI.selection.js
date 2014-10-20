@@ -118,6 +118,7 @@
           });
         }
         if (validationInstance && $valueDom.is('input, textarea')) {
+          $valueDom.attr('data-selection-id', MC.guid());
           return $valueDom.selectionValid(validationInstance);
         }
       }

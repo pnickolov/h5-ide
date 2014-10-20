@@ -90,6 +90,7 @@ define ['UI.selectize'], () ->
 
             if validationInstance and $valueDom.is('input, textarea')
 
+                $valueDom.attr('data-selection-id', MC.guid())
                 $valueDom.selectionValid(validationInstance)
 
     listenSelectionInserted = ($parent, selectTpl, validationInstance) ->

@@ -102,7 +102,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if not paymentInfo then return
       attr =
         current_quota   : "voQuotaCurrent"
-        max_quota       : "voQuotaPerMont"
+        max_quota       : "voQuotaPerMonth"
         has_card        : "creditCard"
         state           : "paymentState"
         next_reset_time : "billingCircle"

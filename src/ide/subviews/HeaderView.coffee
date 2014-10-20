@@ -30,19 +30,21 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
         update : ()->
             user = App.user
 
+            quota_month = user.get("voQuotaPerMonth")
+            quota_current = user.get("voQuotaCurrent")
             $("#HeaderUser").data("tooltip", user.get("email")).children("span").text( user.get("username"))
             $quota = $("#header").children(".voquota")
             paymentRenewDays = Math.round((App.user.attributes.billingCircle - new Date()) / (1000 * 3600 * 24))
             if App.user.get('billingCircle')
-              $quota.attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, user.get("voQuotaCurrent"), user.get("voQuotaPerMonth"), paymentRenewDays) )
-            currentWidth = Math.round(user.get("voQuotaCurrent") / user.get("voQuotaPerMonth") * 100)
+              $quota.attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, quota_current, quota_month, paymentRenewDays) )
+            currentWidth = Math.round(quota_current / quota_month * 100)
             if currentWidth > 100
-              currentWidth = Math.round( user.get("voQuotaPerMonth") / user.get("voQuotaCurrent") * 100 )
+              currentWidth = Math.round( quota_month / quota_current * 100 )
 
             $quota.find(".currquota").css({"width":currentWidth + "%"})
-            $quota.find(".current").text(user.get("voQuotaCurrent"))
-            $quota.find(".limit"  ).text(user.get("voQuotaPerMonth"))
-            $quota.find(".percentage").toggleClass("error", user.shouldPay()).toggleClass("full", (user.get('voQuotaCurrent') > user.get("voQuotaPerMonth")) && !user.shouldPay())
+            $quota.find(".current").text(quota_current)
+            $quota.find(".limit"  ).text(quota_month)
+            $quota.find(".percentage").toggleClass("error", user.shouldPay()).toggleClass("full", (quota_current > quota_month) && !user.shouldPay())
             return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )

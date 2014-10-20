@@ -9166,7 +9166,8 @@ g.shadow {
     bottom: 0;
     height: auto;
     width: 100%;
-    overflow: auto; }
+    overflow: auto;
+    padding-bottom: 30px; }
   .openstack .OEPanelRight.state {
     width: 655px; }
     .openstack .OEPanelRight.state .panel-body {

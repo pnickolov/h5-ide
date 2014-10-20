@@ -530,7 +530,7 @@ input.selection, textarea.selection {
     }
 }
 
-#selection-tip {
+#selection-tip, .selection-tip {
     position: absolute;
     display: none;
     background-color: #000;

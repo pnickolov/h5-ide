@@ -19,65 +19,82 @@ $(function() {
     });
 });
 
-// for ip address
-// (function($){
-//     $.fn.ipAddress = function(type) {
-//
-//         $(this).attr('data-ignore', 'true');
-//         $(this).attr('data-required', 'true');
-//         if (type === 'cidrv4') {
-//             $(this).attr('data-ignore-regexp', '^[0-9./]*$');
-//         } else if (type === 'ipcidrv4') {
-//             $(this).attr('data-ignore-regexp', '^[0-9./]*$');
-//         } else if (type === 'ipv4') {
-//             $(this).attr('data-ignore-regexp', '^[0-9.]*$');
-//         }
-//         $(this).parent().attr('data-bind', 'true');
-//
-//         $(this).on('focus', function() {
-//
-//             $(this).data('origin-value', $(this).val());
-//
-//         }).on('change', function() {
-//
-//             var val = $(this).val();
-//             var originVal = $(this).data('origin-value');
-//
-//             ipcidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))?$/;
-//             ipRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
-//             cidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/;
-//
-//             if (type === 'ipv4' && !ipRegx.test(val)) {
-//                 $(this).val(originVal);
-//             }
-//
-//             if (type === 'ipcidrv4' && !ipcidrRegx.test(val)) {
-//                 $(this).val(originVal);
-//             }
-//
-//             if (type === 'cidrv4' && !cidrRegx.test(val)) {
-//                 $(this).val(originVal);
-//             }
-//
-//         });
-//
-//     };
-// })(jQuery);
 
 // selection valid
 (function($){
 
     $.fn.selectionValid = function(validationInstance) {
 
-        var showTip = function($target, tip) {
-            if (!$('#selection-tip').length) {
-                $(document.body).append('<div id="selection-tip"><i class="icon-info"></i><span>' + tip + '</span></div>');
-            }
+        var getId = function(id) {
+            return 'selection-tip-' + id;
+        };
+
+        var positionTip = function($target, $tipDom) {
             var width = $target.outerWidth() + 'px';
             var posX = $target.offset().left + 'px';
             var posY = $target.outerHeight() + $target.offset().top + 'px';
-            $('#selection-tip').css({width: width, left: posX, top: posY}).show();
+            $tipDom
+                .css({width: width, left: posX, top: posY})
+                .slideDown(50);
         };
+
+        var renderTip = function($target, tip, id) {
+            var tipId = getId(id);
+            var selectorTip = '#' + tipId;
+            var $tipDom;
+
+            if (!($tipDom = $(selectorTip)).length) {
+                $tipDom = $('<div class="selection-tip" id="' + tipId + '"><i class="icon-info"></i><span></span></div>');
+                $(document.body).append($tipDom);
+                $target
+                    .on('mouseenter', function() { showTip(id) })
+                    .on('mouseleave', function() { hideTip(id) })
+            }
+
+            $tipDom
+                .find('span')
+                .html(tip)
+
+            positionTip($target, $tipDom);
+
+            setTimeout(function() {
+                hideTip(id);
+            }, 2000);
+        };
+
+        var removeTip = function(id, $target) {
+            var tipId, selector;
+            if (id) {
+                selector = '#' + getId(id);
+            } else {
+                selector = '.selection-tip';
+            }
+
+            if ($target) {
+                $target.off('mouseenter').off('mouseleave');
+            }
+
+            $(selector).remove();
+        }
+
+        var showTip = function(id) {
+            var selector = '#' + getId(id);
+            $tipDom = $(selector);
+            $target = getTarget(id);
+            positionTip($target, $tipDom);
+        }
+
+        var hideTip = function(id) {
+            var selector = '#' + getId(id);
+            $(selector).slideUp(50);
+        }
+
+        var getTarget = function(id) {
+            var selector = '[data-target=' + id + ']'
+            return $(selector).eq(0);
+        }
+
+
 
         var $dom = $(this);
 
@@ -109,11 +126,11 @@ $(function() {
 
             if (validFunc) {
                 var validRet = validFunc(value);
-                if (validRet) {
-                    var originVal = $(this).data('selection-origin-value');
-                    showTip($(this), validRet);
-                    return false;
-                }
+                if (!validRet) return
+
+                var originVal = $(this).data('selection-origin-value');
+                renderTip($(this), validRet, targetName);
+                return false;
             }
 
         });

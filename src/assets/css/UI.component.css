@@ -1140,7 +1140,7 @@ input.selection, textarea.selection {
   .switcher.on .switch-handle {
     left: 23px; }
 
-#selection-tip {
+#selection-tip, .selection-tip {
   position: absolute;
   display: none;
   background-color: #000;

@@ -52,8 +52,10 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   # if equal
   Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
-    return options.fn this if v1 is v2
+    if v1 is v2
+      return options.fn(this)
     return options.inverse this
+
 
 
   Handlebars.registerHelper 'timeStr', ( v1 ) ->
@@ -103,8 +105,8 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   Handlebars.registerHelper 'formatTime', (timeStr, formatStr)->
 
-     `function formatDate (date, format, utc){
-        date = new Date(date)
+     `function formatDate (dateStr, format, utc){
+        var date = new Date(dateStr);
         var MMMM = ["\x00", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var MMM = ["\x01", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var dddd = ["\x02", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -180,8 +182,11 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
         format = format.replace(/\\(.)/g, "$1");
 
         return format;
-     };`
+     }`
      formatDate(timeStr, formatStr)
+
+
+
 
 
   Handlebars.registerHelper "lastChar", ( string )->

@@ -60,6 +60,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
+          that.modal?.close()
         @listenTo App.user, "paymentUpdate", @animateUsage
         @setElement @modal.tpl
 

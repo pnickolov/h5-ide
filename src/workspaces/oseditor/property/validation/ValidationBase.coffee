@@ -1,16 +1,46 @@
 define [
   'constant'
   'backbone'
-], ( constant, Backbone ) ->
+  'i18n!/nls/lang.js'
+], ( constant, Backbone, lang ) ->
 
     __handleTypes = {}
 
     Backbone.Model.extend {
+
         initialize: ( options ) ->
             _.extend @, options
 
         # Consumer will call this method first to initialize validation.
         init: () ->
+
+        name: (value) ->
+
+            resModel = @model
+
+            return if not resModel
+
+            oldName = resModel.get('name')
+            newName = value
+
+            # duplication valid
+            nameDup = false
+            if oldName isnt newName
+                Design.instance().eachComponent (comp) ->
+                    if comp isnt resModel and comp.get('name') is newName
+                        nameDup = true
+                    null
+            if nameDup is true
+                return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
+
+            # empty valid
+            return '' if newName is ''
+
+            # reserved valid
+            if newName in ['self', 'this', 'global', 'meta', 'madeira']
+                return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
+
+            return null
 
         # limit:
         #     name: '/[a-zA-Z0-9]/'

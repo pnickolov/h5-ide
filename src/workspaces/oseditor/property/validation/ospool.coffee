@@ -10,7 +10,8 @@ define [
             port: ValidationBase.limit.port
 
         port: (value) ->
-            return 'pool have some port valid error.'
+            return 'pool have some port valid error.' if value is '8080'
+            return null
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

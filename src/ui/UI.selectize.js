@@ -109,14 +109,13 @@ var unbindValidation = function($parent) {
     $.fn.selectionValid = function(validationInstance) {
         var $dom = $(this);
         var targetName = $dom.data('target');
-        var inputLimit, validFunc;
+        var inputLimit;
 
         if (targetName) {
             var limitMap = validationInstance.limit;
             if (limitMap) {
                 inputLimit = limitMap[targetName];
             }
-            validFunc = validationInstance[targetName];
         }
 
         if (inputLimit) {
@@ -133,16 +132,20 @@ var unbindValidation = function($parent) {
 
             var value = $(this).val();
 
-            if (validFunc) {
-                var validRet = validFunc(value);
+            if (validationInstance[targetName]) {
+                var validRet = validationInstance[targetName](value);
 
                 var originVal = $(this).data('selection-origin-value');
                 var targetId = $(this).data('selectionId');
-                if (validRet)
-                    renderTip($(this), validRet, targetId);
-                else
+                if (_.isString(validRet)) {
+                    if (validRet !== '') {
+                        renderTip($(this), validRet, targetId);
+                    }
+                    return false;
+                }
+                else {
                     removeTip(targetId);
-                return false;
+                }
             }
 
         });

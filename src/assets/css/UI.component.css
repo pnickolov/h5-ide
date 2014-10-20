@@ -1069,6 +1069,8 @@ input.selection, textarea.selection {
     color: #fff; }
   input.selection[disabled], textarea.selection[disabled] {
     color: #555; }
+  input.selection.error, textarea.selection.error {
+    border-left: 4px red solid; }
 
 /* boolean switcher component */
 .switcher {

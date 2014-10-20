@@ -451,6 +451,9 @@ input.selection, textarea.selection {
     &[disabled] {
         color: #555;
     }
+    &.error {
+        border-left: 4px red solid;
+    }
 }
 
 /* boolean switcher component */

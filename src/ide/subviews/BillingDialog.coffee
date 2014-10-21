@@ -106,7 +106,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".billable-points .usage-number").text(billable_quota)
         current_quota_length = current_quota* free_quota_length / free_quota
         if App.user.shouldPay()
-          @modal.find(".warning-red").show().text sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditC")(if App.user.get("card") then "Update" else "Provide")
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditCard"), (if App.user.get("card") then "Update" else "Provide")
           @modal.find(".usage-block").addClass("error")
           @modal.find(".used-points").addClass("error")
         else

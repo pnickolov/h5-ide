@@ -146,4 +146,11 @@ define [
 
       AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
       return
+
+#    reopenApp: ()->
+#      appId = Design.instance().get("id")
+#      @workspace.remove()
+#      App.openOps(appId)
+#      notification "info", "App reloaded successfully!"
+
   }

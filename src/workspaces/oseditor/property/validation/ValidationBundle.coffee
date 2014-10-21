@@ -1,5 +1,6 @@
 define [
     './oselb',
     './ossg',
-    './osport'
+    './osport',
+    './osserver'
 ], ->

@@ -42,20 +42,11 @@ define [
 
             return null
 
-        # limit:
-        #     name: '/[a-zA-Z0-9]/'
-        #
-        # # Method name is the name of attribute need to validate.
-        # name: () ->
-        #     # TODO
-        #     # Prevent duplicate name
-        #
-        #     # Return null means evething is ok, it passes the validation
-        #     null
-        #
-        #     # Or return a error message means the attribute data is invalid, the message will present to user.
-        #     # e.g.
-        #     # "The name is duplicate."
+        port: ( v ) ->
+            if 0 <= +v <= 65535
+                return null
+
+            return ValidationBase.commonTip 'port'
 
     }, {
         extend : ( protoProps, staticProps ) ->

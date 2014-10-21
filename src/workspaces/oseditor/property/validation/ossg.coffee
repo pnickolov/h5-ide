@@ -5,7 +5,7 @@ define [
 
     ValidationBase.extend {
 
-        limit:
+        limits:
 
             port: ValidationBase.limit.portICMPRange
 

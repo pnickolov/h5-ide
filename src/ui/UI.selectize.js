@@ -112,7 +112,7 @@ var unbindValidation = function($parent) {
         var inputLimit;
 
         if (targetName) {
-            var limitMap = validationInstance.limit;
+            var limitMap = validationInstance.limits;
             if (limitMap) {
                 inputLimit = limitMap[targetName];
             }

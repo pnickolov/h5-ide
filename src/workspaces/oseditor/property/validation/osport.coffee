@@ -5,7 +5,7 @@ define [
 
     ValidationBase.extend {
 
-        limit:
+        limits:
 
             ip: ValidationBase.limit.ipv4
 

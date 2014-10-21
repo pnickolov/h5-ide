@@ -44,3 +44,15 @@ define [
     }, {
         handleTypes: [ constant.RESTYPE.OSHM ]
     }
+
+    # Listener
+    ValidationBase.extend {
+        limit:
+            ip: ValidationBase.limit.ipv4
+            port: ValidationBase.limit.positive
+            limit: ValidationBase.limit.positive
+
+
+    }, {
+        handleTypes: [ constant.RESTYPE.OSLISTENER ]
+    }

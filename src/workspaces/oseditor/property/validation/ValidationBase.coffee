@@ -91,6 +91,8 @@ define [
 
             positive: '^[1-9]+[0-9]*$'
 
+            nonnegative: '^[0-9]*$'
+
             portRange: '^[0-9-]*$'
 
             portICMPRange: '^[0-9/-]*$'

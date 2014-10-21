@@ -76,6 +76,10 @@ module.exports =
       en: "Desired Capacity must be >= Minimal Size and <= Maximum Size"
       zh: ""
 
+    THIS_VALUE_SHOULD_BE_A_VALID_XXX:
+      en: "This value should be a valid %s."
+      zh: ""
+
     THIS_VALUE_SHOULD_BE_A_VALID_TYPE_NAME:
       en: "This value should be a valid %s name."
       zh: ""

@@ -6,12 +6,16 @@ define [
     ValidationBase.extend {
 
         limit:
-
-            port: ValidationBase.limit.port
+            weight: ValidationBase.limit.positive
+            port: ValidationBase.limit.positive
 
         port: (value) ->
-            return 'pool have some port valid error.' if value is '8080'
-            return null
+            if 0 <= +value <= 65535
+                return null
+
+            return ValidationBase.commonTip 'port'
+
+
 
     }, {
         handleTypes: [ constant.RESTYPE.OSPOOL ]

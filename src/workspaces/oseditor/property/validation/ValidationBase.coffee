@@ -81,9 +81,11 @@ define [
 
         getClass: ( type ) -> __handleTypes[ type ]
 
+        commonTip: (xxx) -> sprintf lang.parsley.THIS_VALUE_SHOULD_BE_A_VALID_XXX xxx
+
         limit:
 
-            port: '^[0-9]*$'
+            positive: '^[0-9]*$'
 
             portRange: '^[0-9-]*$'
 
@@ -92,5 +94,7 @@ define [
             ipv4: '^[0-9.]*$'
 
             cidrv4: '^[0-9/.]*$'
+
+            number: '^-?[0-9]*$|^-?[0-9]+\\.[0-9]*$'
 
     }

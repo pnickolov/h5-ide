@@ -9167,7 +9167,7 @@ g.shadow {
       width: 100%; }
 
 #PaymentBody {
-  padding: 20px 15px 30px;
+  padding: 20px 15px 0px;
   min-height: 150px; }
   #PaymentBody .dl-horizontal {
     margin: 0;

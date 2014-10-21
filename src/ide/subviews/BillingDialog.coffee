@@ -43,6 +43,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             outOfQuota: App.user.get("voQuotaCurrent") >= App.user.get("voQuotaPerMonth")
             renewRemainDays: Math.round( (App.user.get("renewDate") - ( new Date() ))/(1000*60*60*24) )
             last_billing_time: App.user.get("billingCircleStart")
+            shouldPay: App.user.shouldPay()
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
           paymentUsage.billable_quota = if billable_quota > 0 then billable_quota else 0
@@ -105,8 +106,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".billable-points .usage-number").text(billable_quota)
         current_quota_length = current_quota* free_quota_length / free_quota
         if App.user.shouldPay()
+          @modal.find(".warning-red").show().text sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditC")(if App.user.get("card") then "Update" else "Provide")
           @modal.find(".usage-block").addClass("error")
           @modal.find(".used-points").addClass("error")
+        else
+          @modal.find(".warning-red").hide()
         if free_quota > current_quota
           _.defer ->
             $current_usage.width(current_quota_length).attr("data-tooltip", current_quota + " used points")

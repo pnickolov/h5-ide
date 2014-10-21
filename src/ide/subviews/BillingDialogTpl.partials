@@ -24,17 +24,15 @@
     </nav>
     <div class="tabContent" id="PaymentBody">
         <section id="PaymentBillingTab">
-            {{#ifCond paymentUpdate.paymentState "unpaid"}}
-                <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
+            {{#if paymentUsage.shouldPay}}
+                <p class="warning-red">
+                    Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
+                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">{{#if paymentUpdate.card}}Update Billing Information{{else}}Provide Billing Information{{/if}}</a>
+                    as soon as possible.
+                </p>
             {{else}}
-                {{#if paymentUsage.outOfQuota}}
-                    {{#unless paymentUpdate.card}}
-                        <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                            <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Provide Billing Information</a> as soon as possible</p>
-                    {{/unless}}
-                {{/if}}
-            {{/ifCond}}
+                <p class="warning-red" style="display: none"></p>
+            {{/if}}
             <h5>Credit Card Infomation</h5>
             <div class="clearfix">
                 <div class="left clearfix">
@@ -105,18 +103,15 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-
-            {{#ifCond paymentUpdate.paymentState "unpaid"}}
-                <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information</a> as soon as possible</p>
+            {{#if paymentUsage.shouldPay}}
+                <p class="warning-red">
+                    Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
+                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">{{#if paymentUpdate.card}}Update Billing Information{{else}}Provide Billing Information{{/if}}</a>
+                    as soon as possible.
+                </p>
             {{else}}
-                {{#if paymentUsage.outOfQuota}}
-                    {{#unless paymentUpdate.card}}
-                        <p class="warning-red"> Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                            <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">Provide Billing Information</a> as soon as possible</p>
-                    {{/unless}}
-                {{/if}}
-            {{/ifCond}}
+                <p class="warning-red" style="display: none"></p>
+            {{/if}}
             <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUsage.last_billing_time "d MMM yyyy"}}</span></h5>
             <div class="usage-wrapper">
                 <div class="used-points">

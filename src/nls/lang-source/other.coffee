@@ -1395,3 +1395,7 @@ VisualOps API. You cannot UNDO this action.'
     PAYMENT_HEADER_TOOLTIP:
       en: "<div class=\"payment-header-tooltip\">Using <strong>%s</strong> points of <strong>%s</strong> free points. <span> Free points will renew in %s days.</span></div>"
       zh: ""
+
+    PAYMENT_PROVIDE_UPDATE_CREDITCARD:
+      en: "Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.<a class='update-payment' href='%s' target='_blank'>%s</a>as soon as possible."
+      zh: ""

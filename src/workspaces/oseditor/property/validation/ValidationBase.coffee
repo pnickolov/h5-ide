@@ -6,7 +6,7 @@ define [
 
     __handleTypes = {}
 
-    Backbone.Model.extend {
+    ValidationBase = Backbone.Model.extend {
 
         initialize: ( options ) ->
             _.extend @, options
@@ -78,6 +78,12 @@ define [
         geTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_GREATER_THAN_OR_EQUAL_TO_XXX, xxx
         leTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_LOWER_THAN_OR_EQUAL_TO_XXX, xxx
 
+        validation:
+            range4G: ( v ) ->
+                if v > 2147483647
+                    return ValidationBase.lowerTip 2147483648
+                null
+
         limit:
 
             positive: '^[1-9]+[0-9]*$'
@@ -95,3 +101,5 @@ define [
             number: '^-?[0-9]*$|^-?[0-9]+\\.[0-9]*$'
 
     }
+
+    ValidationBase

@@ -20,15 +20,8 @@ define [
             timeout: ValidationBase.limit.positive
             maxRetries: ValidationBase.limit.positive
 
-        delay: ( v ) ->
-            if v > 2147483647
-                return ValidationBase.lowerTip 2147483648
-            null
-
-        timeout: ( v ) ->
-            if v > 2147483647
-                return ValidationBase.lowerTip 2147483648
-            null
+        delay: ValidationBase.validation.range4G
+        timeout: ValidationBase.validation.range4G
 
         maxRetries: ( v ) ->
             if v > 3
@@ -46,6 +39,7 @@ define [
             port: ValidationBase.limit.positive
             limit: ValidationBase.limit.positive
 
+        limit: ValidationBase.validation.range4G
 
     }, {
         handleTypes: [ constant.RESTYPE.OSLISTENER ]

@@ -253,6 +253,7 @@ define [
 
             portRange = MC.validate.portRange(portStr)
             if portRange and MC.validate.portValidRange(portRange)
+                return null if portRange[0] is 0
                 if portRange.length is 1
                     portRange[1] = portRange[0]
                 return portRange

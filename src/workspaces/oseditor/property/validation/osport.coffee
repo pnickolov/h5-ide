@@ -11,6 +11,8 @@ define [
 
         ip: (value) ->
 
+            if not MC.validate('ipv4', value)
+                return 'Invalid IP Address'
             return null
 
     }, {

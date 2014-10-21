@@ -43,7 +43,7 @@ define [
             return null
 
         port: ( v ) ->
-            if 0 <= +v <= 65535
+            if 1 <= +v <= 65535
                 return null
 
             return ValidationBase.commonTip 'port'

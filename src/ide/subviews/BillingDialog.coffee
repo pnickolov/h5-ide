@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus" ,"backbone" ], ( BillingDialogTpl, lang, ApiRequest, Modal ) ->
+define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus", "ApiRequestR", "backbone" ], ( BillingDialogTpl, lang, ApiRequest, Modal, ApiRequestR ) ->
 
     BillingDialog = Backbone.View.extend {
 
@@ -27,7 +27,9 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             template: MC.template.loadingSpiner
             disableClose: true
             confirm: hide: true
-        App.user.getPaymentStatement().then (paymentHistory)->
+
+
+        ApiRequestR("payment_statement").then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {
             paymentState: App.user.get("paymentState")

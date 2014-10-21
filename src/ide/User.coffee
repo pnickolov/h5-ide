@@ -39,18 +39,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
     isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
 
-    shouldPay      : ()->
-      paymentState = @get("paymentState")
-      current_quota = @get("voQuotaCurrent")
-      free_quota = @get("voQuotaPerMonth")
-      creditCard = @get("creditCard")
-      shouldPay = (current_quota >= free_quota and not creditCard) or (paymentState is 'unpaid' and free_quota < current_quota)
-      return shouldPay
+    shouldPay      : ()-> ( @get("voQuotaCurrent") >= @get("voQuotaPerMonth") ) and ( not @get("creditCard") or @isUnpaid() )
 
-    getPaymentStatement : ->
-      ApiRequestR("payment_statement")
-    getPaymentInfo: ->
-      ApiRequestR("payment_self")
     userInfoAccuired : ( result )->
       paymentInfo = result.payment || {}
 
@@ -119,7 +109,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
       if paymentInfo.next_reset_time and new Date(paymentInfo.next_reset_time * 1000) isnt App.user.get("renewDate")
         App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
-      @getPaymentInfo().then (result)->
+
+      ApiRequestR("payment_self").then (result)->
         paymentInfo = {
           creditCard: result.card
           billingCircle: new Date(result.current_period_ends_at || null)

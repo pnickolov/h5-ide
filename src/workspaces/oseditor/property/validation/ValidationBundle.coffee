@@ -1,5 +1,5 @@
 define [
-    './ospool',
+    './oselb',
     './ossg',
     './osport'
 ], ->

@@ -7139,8 +7139,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9167,10 +9166,11 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     bottom: 0;
     height: auto;
     width: 100%;
+    overflow: auto;
     padding-bottom: 30px; }
   .openstack .OEPanelRight.state {
     width: 655px; }
-    .openstack .OEPanelRight.state .panel-body {
+    .openstack .OEPanelRight.state .panel-body > div > div {
       overflow: visible; }
   .openstack .OEPanelRight.hidden .panel-float {
     display: none; }

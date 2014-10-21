@@ -11,7 +11,7 @@
             bottom: 0;
             height: auto;
             width: 100%;
-            // overflow: auto;
+            overflow: auto;
             padding-bottom: 30px;
         }
     }
@@ -19,7 +19,9 @@
     &.state {
         width: 655px;
         .panel-body {
-            overflow: visible;
+            & > div > div {
+                overflow: visible;
+            }
         }
     }
 

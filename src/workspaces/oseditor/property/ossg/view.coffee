@@ -62,6 +62,7 @@ define [
 
             SGValid = ValidationBase.getClass(constant.RESTYPE.OSSG)
             bindSelection(@$el, @selectTpl, new SGValid({
+                view: @,
                 model: that.sgModel
             }))
 
@@ -265,6 +266,8 @@ define [
                 icmpType = Number(icmpAry[0])
                 icmpCode = Number(icmpAry[1])
                 if not isNaN(icmpType) and not isNaN(icmpCode) and _.isNumber(icmpType) and _.isNumber(icmpCode)
+                    return null if icmpType < -1 or icmpType > 255
+                    return null if icmpCode < -1 or icmpCode > 255
                     icmpType = null if icmpType is -1
                     icmpCode = null if icmpCode is -1
                     icmpAry[0] = icmpType

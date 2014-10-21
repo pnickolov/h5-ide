@@ -133,7 +133,7 @@ var unbindValidation = function($parent) {
             var value = $(this).val();
 
             if (validationInstance[targetName]) {
-                var validRet = validationInstance[targetName](value);
+                var validRet = validationInstance[targetName](value, $(this));
 
                 var originVal = $(this).data('selection-origin-value');
                 var targetId = $(this).data('selectionId');

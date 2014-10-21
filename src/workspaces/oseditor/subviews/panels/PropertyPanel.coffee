@@ -59,7 +59,7 @@ define [
         else
             validationInstance = null
 
-        bindSelection @$el, propertyView.selectTpl, validationInstance
+        bindSelection @$el, propertyView.selectTpl, _.extend view: propertyView, validationInstance
         @setTitle()
 
         if @resourceInexist()

@@ -2,7 +2,7 @@ define [
   'constant'
   'backbone'
   'i18n!/nls/lang.js'
-], ( constant, Backbone, lang ) ->
+], ( constant, Backbone, LANG ) ->
 
     __handleTypes = {}
 
@@ -34,11 +34,11 @@ define [
                         nameDup = true
                     null
             if nameDup is true
-                return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
+                return sprintf LANG.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
 
             # reserved valid
             if newName in ['self', 'this', 'global', 'meta', 'madeira']
-                return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
+                return sprintf LANG.PARSLEY.TYPE_NAME_CONFLICT, 'The', newName
 
             return null
 
@@ -81,11 +81,15 @@ define [
 
         getClass: ( type ) -> __handleTypes[ type ]
 
-        commonTip: (xxx) -> sprintf lang.parsley.THIS_VALUE_SHOULD_BE_A_VALID_XXX xxx
+        commonTip   : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_A_VALID_XXX, xxx
+        greaterTip  : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_GREATER_THAN_XXX, xxx
+        lowerTip    : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_LOWER_THAN_XXX, xxx
+        geTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_GREATER_THAN_OR_EQUAL_TO_XXX, xxx
+        leTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_LOWER_THAN_OR_EQUAL_TO_XXX, xxx
 
         limit:
 
-            positive: '^[0-9]*$'
+            positive: '^[1-9]+[0-9]*$'
 
             portRange: '^[0-9-]*$'
 

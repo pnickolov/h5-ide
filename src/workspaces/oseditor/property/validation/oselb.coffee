@@ -26,6 +26,21 @@ define [
             timeout: ValidationBase.limit.positive
             maxRetries: ValidationBase.limit.positive
 
+        delay: (v) ->
+            if v > 2147483647
+                return ValidationBase.lowerTip 2147483648
+            null
+
+        timeout: (v) ->
+            if v > 2147483647
+                return ValidationBase.lowerTip 2147483648
+            null
+
+        maxRetries: (v) ->
+            if v > 3
+                return ValidationBase.lowerTip 4
+            null
+
     }, {
         handleTypes: [ constant.RESTYPE.OSHM ]
     }

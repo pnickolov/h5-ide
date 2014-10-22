@@ -66,7 +66,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
-        @listenTo App.user, "paymentUpdate", @animateUsage
+        @listenTo App.user, "paymentUpdate", => @animateUsage()
         @setElement @modal.tpl
 
       switchTab: (event)->
@@ -75,7 +75,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find("#PaymentNav").find("span").removeClass("selected")
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
-        @animateUsage()
+        @animateUsage(event)
 
 
       _bindPaymentEvent: (event)->
@@ -93,39 +93,50 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 
-      animateUsage: ()->
+      animateUsage: (event)->
         if @modal.isClosed
           return false
         free_quota_length = 250
         max_length = 580
-        @modal.$(".usage-block").removeClass("error")
-        @modal.$(".used-points").removeClass("error")
+        shouldPay = App.user.shouldPay()
+        @modal.$(".usage-block").toggleClass("error", shouldPay)
+        @modal.$(".used-points").toggleClass("error", shouldPay)
+
         $current_usage = @modal.find(".usage-block .current-usage")
-        $billable_usage = @modal.find(".usage-block .billable-usage").width(free_quota_length)
-        $free_usage    = @modal.find(".usage-block .free-usage").width(free_quota_length)
+        $billable_usage = @modal.find(".usage-block .billable-usage")
+        $free_usage    = @modal.find(".usage-block .free-usage")
+
+        if event
+          @modal.$(".usage-block .current-usage").addClass("freeze").width(0)
+          _.defer => @modal.$(".usage-block .current-usage").removeClass("freeze")
+          @modal.$(".usage-block").find(".billable-usage, .free-usage").addClass("freeze").width(free_quota_length)
+          _.defer => @modal.$(".usage-block").find(".billable-usage, .free-usage").removeClass("freeze")
+
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
-        @modal.find(".payment-number").text(App.user.get("creditCard") || "No Card")
         billable_quota = if current_quota > free_quota then current_quota - free_quota else 0
+
+        @modal.find(".payment-number").text(App.user.get("creditCard") || "No Card")
         @modal.find(".used-points .usage-number").text(current_quota)
         @modal.find(".billable-points .usage-number").text(billable_quota)
-        current_quota_length = current_quota* free_quota_length / free_quota
+
         if App.user.shouldPay() or App.user.isUnpaid()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditCard"), (if App.user.get("card") then "Update" else "Provide")
-        if App.user.shouldPay()
-          @modal.find(".usage-block").addClass("error")
-          @modal.find(".used-points").addClass("error")
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditCard"), (if App.user.get("creditCard") then "Update" else "Provide")
         else
           @modal.find(".warning-red").hide()
+
+        current_quota_length = current_quota* free_quota_length / free_quota
         if free_quota > current_quota
           _.defer ->
             $current_usage.width(current_quota_length).attr("data-tooltip", current_quota + " used points")
-            $free_usage.attr('data-tooltip', "#{free_quota} free points")
+            $free_usage.attr('data-tooltip', "#{free_quota} free points").width(free_quota_length)
+            $billable_usage.width(0)
         else
           _.defer ->
             if current_quota_length < max_length
               $current_usage.width(free_quota_length)
               $billable_usage.width(current_quota_length)
+              $free_usage.width(free_quota_length)
             else
               $billable_usage.width(max_length)
               $free_usage.width(0)

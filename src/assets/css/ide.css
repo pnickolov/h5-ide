@@ -9282,6 +9282,12 @@ h5.billing_usage_title {
     -ms-transition: width 0.3s;
     -o-transition: width 0.3s;
     transition: width 0.3s; }
+    .usage-block div.freeze {
+      -webkit-transition: all 0s;
+      -moz-transition: all 0s;
+      -ms-transition: all 0s;
+      -o-transition: all 0s;
+      transition: all 0s; }
   .usage-block .free-usage {
     background: #597557; }
   .usage-block .current-usage {

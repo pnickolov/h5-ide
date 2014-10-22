@@ -114,9 +114,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         has_card        : "creditCard"
         state           : "paymentState"
 
-      changed = false
-      if changes.time_update
-        changed = true
+      changed = !!changes.time_update
       toChange = {}
       for key, value of attr
         if paymentInfo?.hasOwnProperty( key )
@@ -126,7 +124,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if changed
         @set toChange
 
-      if paymentInfo?.next_reset_time and new Date(paymentInfo.next_reset_time * 1000) isnt App.user.get("renewDate")
+      if paymentInfo?.next_reset_time
         App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
 
       ApiRequestR("payment_self").then (result)->

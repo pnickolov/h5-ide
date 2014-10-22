@@ -75,7 +75,7 @@ define [
 
     @user.on "change:credential", ()=> @discardAwsCache()
 
-    @user.on "change:paymentState", ()=> @onPaymentStateChange()
+    #@user.on "change:paymentState", ()=> @onPaymentStateChange()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session

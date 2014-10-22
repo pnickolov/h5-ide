@@ -84,20 +84,20 @@ define [
                 ValidationBase.validation.range null, 2147483647
 
             range: ( min, max ) ->
-                if min and max
+                if _.isNumber(min) and _.isNumber(max)
                     ( v ) ->
                         if v < min or v > max
                             return ValidationBase.rangeTip min, max
                         null
 
-                else if min
+                else if _.isNumber(min)
                     ( v ) ->
                         if v < min
                             return ValidationBase.greaterTip min - 1
 
                         null
 
-                else if max
+                else if _.isNumber(max)
                     ( v ) ->
                         if v > max
                             return ValidationBase.lowerTip max + 1

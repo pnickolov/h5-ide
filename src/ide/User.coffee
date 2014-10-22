@@ -90,7 +90,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       console.log changes
       that = @
       paymentInfo = changes.payment
-      if not paymentInfo then return
+      if not changes then return
       attr =
         current_quota   : "voQuotaCurrent"
         max_quota       : "voQuotaPerMonth"
@@ -98,16 +98,18 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         state           : "paymentState"
 
       changed = false
+      if changes.time_update
+        changed = true
       toChange = {}
       for key, value of attr
-        if paymentInfo.hasOwnProperty( key )
+        if paymentInfo?.hasOwnProperty( key )
           changed = true
           toChange[ value ] = paymentInfo[ key ]
 
       if changed
         @set toChange
 
-      if paymentInfo.next_reset_time and new Date(paymentInfo.next_reset_time * 1000) isnt App.user.get("renewDate")
+      if paymentInfo?.next_reset_time and new Date(paymentInfo.next_reset_time * 1000) isnt App.user.get("renewDate")
         App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
 
       ApiRequestR("payment_self").then (result)->

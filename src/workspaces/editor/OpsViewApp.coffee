@@ -151,7 +151,7 @@ define [
     listenToPayment: ()->
       self = @
       @workspace.listenTo App.user, "paymentUpdate", ->
-        if not @(".ops-apppm-wrapper").size()
+        if not $(".ops-apppm-wrapper").size()
           if App.user.shouldPay()
             self.showUnpayUI()
         else
@@ -161,7 +161,8 @@ define [
     reopenApp: ()->
       appId = Design.instance().get("id")
       @workspace.remove()
-      App.openOps(appId)
-      notification "info", "App reloaded successfully!"
+      _.defer ->
+        App.openOps(appId)
+        notification "info", "User payment status change detected, reloading app resource."
 
   }

@@ -94,6 +94,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         new BillingDialog(modal)
 
       animateUsage: ()->
+        if @modal.isClosed
+          return false
         free_quota_length = 250
         max_length = 580
         @modal.$(".usage-block").removeClass("error")
@@ -121,7 +123,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             $free_usage.attr('data-tooltip', "#{free_quota} free points")
         else
           _.defer ->
-            console.log current_quota_length, $billable_usage
             if current_quota_length < max_length
               $current_usage.width(free_quota_length)
               $billable_usage.width(current_quota_length)

@@ -75,7 +75,6 @@ define [
 
     @user.on "change:credential", ()=> @discardAwsCache()
 
-    #@user.on "change:paymentState", ()=> @onPaymentStateChange()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
@@ -158,24 +157,6 @@ define [
     editor.activate()
     editor
 
-  VisualOps.prototype.onPaymentStateChange = ()->
-    oldPaymentState = @user.previous("paymentState")
-    switch @user.get("paymentState")
-      when User.PaymentState.Unpaid
-        if oldPaymentState isnt User.PaymentState.NoInfo
-          @__view?.notifyUnpay()
-          @workspaces?.removeAllSpaces ( space )->
-            opsModel = space.opsModel
-            opsModel and opsModel.isPMRestricted()
-
-      when User.PaymentState.Active
-        if oldPaymentState is User.PaymentState.Unpaid
-          for space, idx in @workspaces.spaces()
-            opsModel = space.opsModel
-            if opsModel and opsModel.isPMRestricted()
-              # Re-open all the restricted apps.
-              space.remove()
-              @workspaces.setIndex( new OpsEditor( opsModel ), idx )
 
     return
 

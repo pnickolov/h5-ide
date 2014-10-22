@@ -233,24 +233,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequest("account_update_account", { attributes : {
         first_name : firstName
         last_name  : lastName
-      }}).then ()->
-        self.updateUserPaymentStatus(firstName, lastName)
-
-    updateUserPaymentStatus: (firstName, lastName)->
-      self = @
-      ApiRequestR("payment_self").then ( res )->
-        self.set {
-          firstName     : firstName
-          lastName      : lastName
-          voQuotaCurrent  : res.current_quota || 0
-          voQuotaPerMonth : res.max_quota || 1000
-          has_card        : !!res.card
-          paymentUrl      : res.url || ""
-          creditCard      : res.card
-          billingCircle   : new Date( res.current_period_ends_at || null )
-          billingCircleStart: new Date(res.current_period_started_at || null)
-          paymentState    : res.state || ""
-        }
+      }}).then ( res )-> @userInfoAccuired( res )
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

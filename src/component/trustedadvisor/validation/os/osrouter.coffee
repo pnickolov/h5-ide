@@ -7,14 +7,3 @@ define [
     ], ( constant, MC, lang, Helper, CloudResources ) ->
 
         i18n = Helper.i18n.short()
-
-        isNatRouterConnectedExt = ( uid ) ->
-            router = Design.instance().component uid
-
-            unless router.get 'nat' then return null
-            if router.get('extNetworkId') then return null
-
-            Helper.message.error uid, i18n.ERROR_ROUTER_ENABLING_NAT_MUST_CONNECT_EXT
-
-
-        isNatRouterConnectedExt: isNatRouterConnectedExt

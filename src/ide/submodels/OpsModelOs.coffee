@@ -35,8 +35,13 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
       layout =
         "NETWORK" :
-          coordinate : [ 34, 3 ]
+          coordinate : [ 27, 3 ]
           size       : [ 60, 60 ]
+        "SUBNET" :
+          coordinate : [ 30, 6 ]
+          size       : [ 25, 54 ]
+        "RT" :
+          coordinate : [ 10, 3 ]
 
       component =
         # DefaultKP Component
@@ -57,6 +62,18 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
             description: "default security group"
             rules: []
 
+        "RT":
+          type : "OS::Neutron::Router"
+          resource :
+            external_gateway_info : {}
+
+        "SUBNET" : {
+            type : "OS::Neutron::Subnet"
+            resource :
+              cidr        : "10.0.0.0/16"
+              enable_dhcp : true
+        }
+
       for id, comp of component
         comp.uid = MC.guid()
         json.component[ comp.uid ] = comp
@@ -65,6 +82,17 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           l = layout[id]
           l.uid = comp.uid
           json.layout[ l.uid ] = l
+
+        if comp.type is "OS::Neutron::Subnet"
+          subnetId = comp.uid
+        else if comp.type is "OS::Neutron::Network"
+          networkId = comp.uid
+
+      for id, comp of component
+        if comp.type is "OS::Neutron::Subnet"
+          comp.resource.network_id = "@{#{networkId}.resource.id}"
+        else if comp.type is "OS::Neutron::Router"
+          comp.resource.router_interface = [{ subnet_id : "@{#{subnetId}.resource.id}"}]
 
       @__jsonData = json
       return

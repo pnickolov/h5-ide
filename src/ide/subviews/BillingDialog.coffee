@@ -107,8 +107,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         $free_usage    = @modal.find(".usage-block .free-usage")
 
         if event
-          @modal.$(".usage-block .current-usage").addClass("freeze").width(0)
-          _.defer => @modal.$(".usage-block .current-usage").removeClass("freeze")
+          $current_usage.addClass("freeze").width(0)
+          _.defer => $current_usage.removeClass("freeze")
           @modal.$(".usage-block").find(".billable-usage, .free-usage").addClass("freeze").width(free_quota_length)
           _.defer => @modal.$(".usage-block").find(".billable-usage, .free-usage").removeClass("freeze")
 

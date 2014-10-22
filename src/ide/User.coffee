@@ -42,7 +42,6 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     shouldPay      : ()-> ( @get("voQuotaCurrent") >= @get("voQuotaPerMonth") ) and ( not @get("creditCard") or @isUnpaid() )
 
     getBillingOverview : ()->
-      quota = Math.max( @get("voQuotaPerMonth") - @get("voQuotaCurrent"), 0 )
 
       ov =
         quotaTotal   : @get("voQuotaPerMonth")
@@ -79,6 +78,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         creditCard      : selfpage.card
         billingEnd      : new Date( selfpage.current_period_ends_at    || null )
         billingStart    : new Date( selfpage.current_period_started_at || null )
+        renewDate       : if paymentInfo then new Date(paymentInfo.next_reset_time * 1000) else new Date()
         paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key

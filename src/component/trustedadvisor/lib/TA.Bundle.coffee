@@ -27,13 +27,14 @@ define ['MC'
         '../validation/os/ossubnet'
         '../validation/os/osrouter'
         '../validation/os/ospool'
+        '../validation/os/oslistener'
 
 ], ( MC,
      stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn,igw, acl,
      cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og, sbg,
 
      # Open Stack
-     osport, ossubnet, osrouter, ospool
+     osport, ossubnet, osrouter, ospool, oslistener
    ) ->
 
         # AWS
@@ -67,5 +68,6 @@ define ['MC'
         ossubnet        : ossubnet
         osrouter        : osrouter
         ospool          : ospool
+        oslistener      : oslistener
 
 

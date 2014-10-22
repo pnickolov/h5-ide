@@ -343,19 +343,19 @@ module.exports =
       zh: ""
 
     ERROR_ROUTER_XXX_MUST_CONNECT_TO_AT_LEAST_ONE_SUBNET:
-      en: "Router %s must connect to at least one subnet."
+      en: "Router <span class='validation-tag tag-osrt'>%s</span> must connect to at least one subnet."
       zh: ""
 
     ERROR_POOL_XXX_MUST_BE_CONNECTED_TO_A_LISTENER:
-      en: "Pool %s must be connected to a listener"
+      en: "Pool <span class='validation-tag tag-pool'>%s</span> must be connected to a listener"
       zh: ""
 
     ERROR_LISTENER_XXX_MUST_BE_CONNECTED_TO_A_POOL:
-      en: "Listener %s must be connected to a pool"
+      en: "Listener <span class='validation-tag tag-oslistener'>%s</span> must be connected to a pool"
       zh: ""
 
     ERROR_POOL_AND_MEMBER_SUBNET_NOT_CONNECTED:
-      en: "Load Balancer's Pool %s and Member %s must belong to subnets interconnected by the same router. "
+      en: "Load Balancer's Pool <span class='validation-tag tag-ospool'>%s</span> and Member <span class='validation-tag tag-ospoolmember'>%s</span> must belong to subnets interconnected by the same router. "
       zh: ""
 
 

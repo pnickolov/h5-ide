@@ -103,6 +103,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         $free_usage    = @modal.find(".usage-block .free-usage").width(free_quota_length)
         current_quota = App.user.get("voQuotaCurrent")
         free_quota = App.user.get("voQuotaPerMonth")
+        @modal.find(".payment-number").text(App.user.get("creditCard"))
         billable_quota = if current_quota > free_quota then current_quota - free_quota else 0
         @modal.find(".used-points .usage-number").text(current_quota)
         @modal.find(".billable-points .usage-number").text(billable_quota)

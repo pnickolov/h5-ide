@@ -11,7 +11,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [17,8]
 
     portPosMap : {
-      "listener" : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+      "elb" : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
       "pool"     : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
     }
 
@@ -33,7 +33,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       }).add([
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
-          'data-name'    : 'listener'
+          'data-name'    : 'elb'
           'data-tooltip' : lang.IDE.PORT_TIP_Q
         })
         svg.use("port_right").attr({

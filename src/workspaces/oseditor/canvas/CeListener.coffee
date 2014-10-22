@@ -11,7 +11,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [8,8]
 
     portPosMap : {
-      "listener" : [ 72, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 35 ]
+      "elb" : [ 72, 35, CanvasElement.constant.PORT_RIGHT_ANGLE, 80, 35 ]
     }
 
     events :
@@ -47,7 +47,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         svg.image( "", 12, 14).move(36, 36).classes('fip-status tooltip')
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
-          'data-name'    : 'listener'
+          'data-name'    : 'elb'
           'data-tooltip' : lang.IDE.PORT_TIP_P
         })
       ])

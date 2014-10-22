@@ -7,10 +7,10 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
     portDefs : [
       {
         port1 :
-          name : "listener"
+          name : "elb"
           type : constant.RESTYPE.OSLISTENER
         port2 :
-          name : "listener"
+          name : "elb"
           type : constant.RESTYPE.OSPOOL
       }
     ]

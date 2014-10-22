@@ -222,6 +222,9 @@ define [ "constant",
 
     isIPInSubnet : (ipAddr, subnetCIDR, reservedRange) ->
 
+      if not reservedRange
+        reservedRange = [0, 1, 2, 3]
+
       isValid = true
 
       subnetIPAry = subnetCIDR.split('/')
@@ -251,10 +254,9 @@ define [ "constant",
       filterAry = []
       _.each readyAssignAry, (value, idx) ->
         newIPBinStr = MC.leftPadString(value.toString(2), suffixLength, "0")
-        if not reservedRange
-          reservedRange = [0, 1, 2, 3]
-        reservedRange = reservedRange.push(readyAssignAryLength - 1)
-        if idx in reservedRange
+
+        filterRange = reservedRange.concat([readyAssignAryLength - 1])
+        if idx in filterRange
           filterAry.push(newIPBinStr)
         null
 

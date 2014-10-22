@@ -26,7 +26,7 @@
     </section>
     <section class="group required os-property-router-nat {{#unless extNetworkId}}hide{{/unless}}">
         <label class="name">Enable NAT</label>
-        <select data-target="nat" class="selection bool" value="{{#if nat}}true{{else}}false{{/if}}"></select>
+        <select data-target="nat" class="selection bool" value="true" disabled></select>
     </section>
 </div>
 <div class="option-group-head expand">

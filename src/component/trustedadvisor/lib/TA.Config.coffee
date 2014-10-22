@@ -43,6 +43,7 @@ define({
 
         openstack:
             ossubnet: [ 'subnetHasPortShouldConncectedOut', 'isSubnetCIDRConflict' ]
+            osstack: [ 'isResExtendQuotaLimit' ]
 
     asyncList:
         aws:

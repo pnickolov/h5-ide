@@ -28,13 +28,14 @@ define ['MC'
         '../validation/os/osrouter'
         '../validation/os/ospool'
         '../validation/os/oslistener'
+        '../validation/os/osstack'
 
 ], ( MC,
      stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn,igw, acl,
      cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og, sbg,
 
      # Open Stack
-     osport, ossubnet, osrouter, ospool, oslistener
+     osport, ossubnet, osrouter, ospool, oslistener, osstack
    ) ->
 
         # AWS
@@ -67,7 +68,11 @@ define ['MC'
         osport          : osport
         ossubnet        : ossubnet
         osrouter        : osrouter
+<<<<<<< HEAD
         ospool          : ospool
         oslistener      : oslistener
 
 
+=======
+        osstack         : osstack
+>>>>>>> add qupta TA for stack

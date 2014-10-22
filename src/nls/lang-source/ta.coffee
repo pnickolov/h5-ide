@@ -358,7 +358,8 @@ module.exports =
       en: "Load Balancer's Pool <span class='validation-tag tag-ospool'>%s</span> and Member %s must belong to the same subnet or subnets interconnected by the same router. "
       zh: ""
 
-
-
+    ERROR_STACK_RESOURCE_EXCCED_LIMIT:
+      en: "Resource %s does not have enough quota. %s/%s used."
+      zh: ""
 
     ##### Trust Advisor

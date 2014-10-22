@@ -49,9 +49,9 @@ define [
                 if value
                     if not @model.get( attr )
                         # set nat to true when toggle to public network
-                        natSelection.val( true )
+                        natSelection.setValue( true )
                 else
-                    natSelection.val( false )
+                    natSelection.setValue( false )
 
                 @$el.find('.os-property-router-nat').toggleClass('hide', !value)
 

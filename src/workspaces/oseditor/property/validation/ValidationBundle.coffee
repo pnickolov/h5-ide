@@ -3,4 +3,5 @@ define [
     './ossg',
     './osport',
     './osserver'
+    './ossubnet'
 ], ->

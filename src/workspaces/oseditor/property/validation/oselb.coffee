@@ -10,7 +10,9 @@ define [
             weight: ValidationBase.limit.positive
             port: ValidationBase.limit.positive
 
+        weight: ValidationBase.validation.range null, 256
     }, {
+
         handleTypes: [ constant.RESTYPE.OSPOOL ]
     }
 
@@ -21,8 +23,8 @@ define [
             timeout: ValidationBase.limit.positive
             maxRetries: ValidationBase.limit.positive
 
-        delay: ValidationBase.validation.range4G
-        timeout: ValidationBase.validation.range4G
+        delay: ValidationBase.validation.range4G()
+        timeout: ValidationBase.validation.range4G()
 
         maxRetries: ( v ) ->
             if v > 3
@@ -41,7 +43,7 @@ define [
             port: ValidationBase.limit.positive
             limit: ValidationBase.limit.positive
 
-        limit: ValidationBase.validation.range4G
+        limit: ValidationBase.validation.range4G()
 
         ip: (new PortValidation()).ip
 

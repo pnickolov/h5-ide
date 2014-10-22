@@ -77,12 +77,34 @@ define [
         lowerTip    : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_LOWER_THAN_XXX, xxx
         geTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_GREATER_THAN_OR_EQUAL_TO_XXX, xxx
         leTip       : ( xxx ) -> sprintf LANG.PARSLEY.THIS_VALUE_SHOULD_BE_LOWER_THAN_OR_EQUAL_TO_XXX, xxx
+        rangeTip    : ( min, max ) -> sprintf LANG.PARSLEY.THIS_VALUE_MUST_BETWEEN_XXX_XXX min, max
 
         validation:
-            range4G: ( v ) ->
-                if v > 2147483647
-                    return ValidationBase.lowerTip 2147483648
-                null
+            range4G: ->
+                ValidationBase.validation.range null, 2147483647
+
+            range: ( min, max ) ->
+                if min and max
+                    ( v ) ->
+                        if v < min or v > max
+                            return ValidationBase.rangeTip min, max
+                        null
+
+                else if min
+                    ( v ) ->
+                        if v < min
+                            return ValidationBase.greaterTip min - 1
+
+                        null
+
+                else if max
+                    ( v ) ->
+                        if v > max
+                            return ValidationBase.lowerTip max + 1
+
+                        null
+
+
 
         limit:
 

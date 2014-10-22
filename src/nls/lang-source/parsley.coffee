@@ -156,6 +156,10 @@ module.exports =
       en: "This value must be >= 1 and <= 99"
       zh: ""
 
+    THIS_VALUE_MUST_BETWEEN_XXX_XXX:
+      en: "This value should be between %s and %s."
+      zh: ""
+
     SHOULD_BE_A_VALID_STACK_NAME:
       en: "This value should be a valid Stack name"
       zh: ""

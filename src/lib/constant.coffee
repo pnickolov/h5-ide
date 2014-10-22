@@ -92,6 +92,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSSGRULE   : "OS::Neutron::SecurityGroupRule"
         OSRT       : "OS::Neutron::Router"
         OSFIP      : "OS::Neutron::FloatingIP"
+        OSELB      : "OS::Elb"  # Custom type, there's no such type in openstack
         OSLISTENER : "OS::Neutron::VIP"
         OSPOOL     : "OS::Neutron::Pool"
         OSHM       : "OS::Neutron::HealthMonitor"

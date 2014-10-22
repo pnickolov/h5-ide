@@ -7,7 +7,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
     portDefs : [
       {
         port1 :
-          name : "elb"
+          name : "pool"
           type : constant.RESTYPE.OSLISTENER
         port2 :
           name : "elb"
@@ -15,10 +15,21 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
       }
     ]
 
+    constructor : ( p1Comp, p2Comp )->
+      reason = {reason:@}
+      asso = p1Comp.connections( "OsListenerAsso" )[0]
+      if asso then asso.remove( reason )
+      asso = p2Comp.connections( "OsListenerAsso" )[0]
+      if asso then asso.remove( reason )
+      ConnectionModel.apply this, arguments
+
     isRemovable : ()-> error: 'Listener must keep connected to Pool'
 
-    remove : ()->
+    remove : ( reason )->
       ConnectionModel.prototype.remove.apply this, arguments
+
+      if reason and reason.reason and reason.reason.type is "OsListenerAsso"
+        return
 
       listener = @getTarget( constant.RESTYPE.OSLISTENER )
       pool     = @getTarget( constant.RESTYPE.OSPOOL )

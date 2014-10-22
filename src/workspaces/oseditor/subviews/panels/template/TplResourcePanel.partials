@@ -40,12 +40,23 @@
                 <li class="tooltip resource-item osrt" data-tooltip='{{i18n "DRAG_AND_DROP_OUTSIDE_NETOWRK_TO_CREATE_ROUTER"}}' data-type="OSRT">{{i18n "LBL_OSRT"}}</li>
 
                 <li class="tooltip resource-item osport" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT"}}' data-type="OSPORT">{{i18n "LBL_OSPORT"}}</li>
-
-                <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSPOOL">{{ i18n "LBL_OSELB" }}</li>
-
             </ul>
         </article>
 
+    </section>
+
+    <section class="network">
+        <header>Load Balancing</header>
+        <article>
+            <ul class="resource-list-network clearfix">
+                <li class="tooltip resource-item oselb" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE"}}' data-type="OSELB">{{ i18n "LBL_OSELB" }}</li>
+
+                <li class="tooltip resource-item oslistener" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LISTENER"}}' data-type="OSLISTENER">{{ i18n "LBL_OSLISTENER" }}</li>
+
+                <li class="tooltip resource-item ospool" data-tooltip='{{i18n "DRAG_AND_DROP_IN_SUBNET_TO_CREATE_POOL"}}' data-type="OSPOOL">{{ i18n "LBL_OSPOOL" }}</li>
+
+            </ul>
+        </article>
     </section>
 </div>
 

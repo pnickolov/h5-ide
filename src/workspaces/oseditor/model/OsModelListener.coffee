@@ -14,9 +14,9 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
       portId   : ""
 
     initialize : ( attr, options )->
-      console.assert options.pool, "Pool must be specified when creating a listener"
-      Asso = Design.modelClassForType( "OsListenerAsso" )
-      new Asso( @, options.pool )
+      if options.pool
+        Asso = Design.modelClassForType( "OsListenerAsso" )
+        new Asso( @, options.pool )
 
       if options.createByUser
         Design.modelClassForType(constant.RESTYPE.OSSG).attachDefaultSG(@)

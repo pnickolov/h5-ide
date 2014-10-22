@@ -1389,6 +1389,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Drag and drop in subnet to create Load Balance"
       zh: ""
 
+    DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LISTENER:
+      en: "Drag and drop in subnet to create listener"
+      zh: ""
+
+    DRAG_AND_DROP_IN_SUBNET_TO_CREATE_POOL:
+      en: "Drag and drop in subnet to create pool"
+      zh: ""
+
     DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME:
       en: "Drag and drop on server to attach volume"
       zh: ""
@@ -1407,6 +1415,14 @@ VisualOps API. You cannot UNDO this action.'
 
     LBL_OSELB:
       en: "Load Balancer"
+      zh: ""
+
+    LBL_OSLISTENER:
+      en: "Listener"
+      zh: ""
+
+    LBL_OSPOOL:
+      en: "Pool"
       zh: ""
 
     LBL_OSVOL:

@@ -8,14 +8,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     type : constant.RESTYPE.OSPOOL
 
     parentType  : [ constant.RESTYPE.OSSUBNET ]
-    defaultSize : [17,8]
+    defaultSize : [ 8, 8 ]
 
     portPosMap : {
       "elb" : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
       "pool"     : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
     }
-
-    size : ()-> { width : 8, height : 8 }
 
     # Creates a svg element
     create : ()->
@@ -51,13 +49,4 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     render : ()->
       # Update label
       CanvasManager.setLabel @, @$el.children(".node-label")
-  }, {
-    createResource : ( type, attributes, options )->
-      attributes.width = 8
-      PoolModel = Design.modelClassForType constant.RESTYPE.OSPOOL
-      pool = new PoolModel( $.extend({}, attributes, { x : attributes.x + 9 }), options )
-
-      ListenerModel = Design.modelClassForType constant.RESTYPE.OSLISTENER
-      listener = new ListenerModel( attributes, $.extend({ pool : pool }, options) )
-      return
   }

@@ -40,13 +40,13 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
             $quota = $("#header").children(".voquota").attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, overview.quotaRemain, overview.billingRemain) )
 
             $quota.find(".currquota").css({"width":overview.quotaPercent + "%"})
-            $quota.find(".current").text(overview.quotaRemain)
+            $quota.find(".current").text(overview.quotaCurrent)
             $quota.find(".limit"  ).text(overview.quotaTotal)
 
             $percent = $quota.find(".percentage").removeClass("error full")
             if user.shouldPay()
                 $percent.addClass("error")
-            else if overview.quotaRemain >= overview.quotaTotal
+            else if overview.quotaCurrent >= overview.quotaTotal
                 $percent.addClass("full")
             return
 

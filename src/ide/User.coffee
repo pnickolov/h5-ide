@@ -46,15 +46,16 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
       ov =
         quotaTotal   : @get("voQuotaPerMonth")
-        quotaRemain  : quota
-        quotaPercent : Math.round( quota / @get("voQuotaPerMonth") * 100 )
+        quotaCurrent  : @get("voQuotaCurrent")
 
         billingStart  : @get("billingStart")
         billingEnd    : @get("billingEnd")
         billingRemain : Math.round( (@get("billingEnd") - new Date()) / 24 / 3600000 )
 
+      ov.quotaRemain = Math.max((ov.quotaTotal - ov.quotaCurrent), 0)
       ov.billingRemain = Math.min( ov.billingRemain, 31 )
       ov.billingRemain = Math.max( ov.billingRemain, 0 )
+      ov.quotaPercent = Math.round(Math.min(ov.quotaCurrent, ov.quotaTotal)/Math.max(ov.quotaCurrent, ov.quotaTotal) * 100)
 
       ov
 

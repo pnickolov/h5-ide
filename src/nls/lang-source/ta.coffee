@@ -334,6 +334,10 @@ module.exports =
       en: "Subnet %s should be connected to a router associated with External Gateway, so that Floating IP would work. "
       zh: ""
 
+    ERROR_SUBNET_HAS_CONFLICT_CIDR_WITH_OTHERS:
+      en: "Subnet <span class='validation-tag tag-ossubnet'>%s</span>'s CIDR block(%s) conflicts with  Subnet <span class='validation-tag tag-ossubnet'>%s</span>'s CIDR block(%s)."
+      zh: ""
+
     ERROR_ROUTER_ENABLING_NAT_MUST_CONNECT_EXT:
       en: "Router enabling NAT must be connected to external network."
       zh: ""

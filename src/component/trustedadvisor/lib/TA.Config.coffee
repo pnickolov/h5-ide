@@ -40,7 +40,7 @@ define({
             dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]
 
         openstack:
-            ossubnet: [ 'subnetHasPortShouldConncectedOut' ]
+            ossubnet: [ 'subnetHasPortShouldConncectedOut', 'isSubnetCIDRConflict' ]
 
     asyncList:
         aws:

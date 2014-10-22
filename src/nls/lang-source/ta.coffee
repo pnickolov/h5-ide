@@ -355,8 +355,10 @@ module.exports =
       zh: ""
 
     ERROR_POOL_AND_MEMBER_SUBNET_NOT_CONNECTED:
-      en: "Load Balancer's Pool <span class='validation-tag tag-ospool'>%s</span> and Member <span class='validation-tag tag-ospoolmember'>%s</span> must belong to subnets interconnected by the same router. "
+      en: "Load Balancer's Pool <span class='validation-tag tag-ospool'>%s</span> and Member %s must belong to the same subnet or subnets interconnected by the same router. "
       zh: ""
+
+
 
 
     ##### Trust Advisor

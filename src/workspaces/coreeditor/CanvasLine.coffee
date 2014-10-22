@@ -360,6 +360,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       [{x:c1x,y:-c1y},{x:end.x,y:end.y/2}]
 
     generateElbowPath : ( start, end )->
+      return @getElbowPathFromPoints( @getElbowPoints(start, end).result )
+
       s1 = @getElbowPoints( start, end )
       s2 = @getElbowPoints( end, start )
 

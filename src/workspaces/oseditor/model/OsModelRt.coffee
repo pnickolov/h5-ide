@@ -7,7 +7,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     newNameTmpl : "router"
 
     defaults:
-      nat: true
+      nat: false
       extNetworkId : ""
 
     isPublic : ()-> !!@get("extNetworkId")
@@ -27,7 +27,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
           resource :
             id                    : @get("appId")
             name                  : @get("name")
-            nat                   : @get("nat")
+            nat                   : if @get("extNetworkId") then @get("nat") else false
             external_gateway_info : extNetwork
             router_interface : @connectionTargets("OsRouterAsso").map ( subnet )->
               { subnet_id : subnet.createRef("id") }

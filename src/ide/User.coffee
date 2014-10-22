@@ -41,6 +41,23 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     shouldPay      : ()-> ( @get("voQuotaCurrent") >= @get("voQuotaPerMonth") ) and ( not @get("creditCard") or @isUnpaid() )
 
+    getBillingOverview : ()->
+      quota = Math.max( @get("voQuotaPerMonth") - @get("voQuotaCurrent"), 0 )
+
+      ov =
+        quotaTotal   : @get("voQuotaPerMonth")
+        quotaRemain  : quota
+        quotaPercent : Math.round( quota / @get("voQuotaPerMonth") * 100 )
+
+        billingStart  : @get("billingCircleStart")
+        billingEnd    : @get("billingCircle")
+        billingRemain : Math.round( (@get("billingCircle") - new Date()) / 24 / 3600000 )
+
+      ov.billingRemain = Math.min( ov.billingRemain, 31 )
+      ov.billingRemain = Math.max( ov.billingRemain, 0 )
+
+      ov
+
     userInfoAccuired : ( result )->
       paymentInfo = result.payment || {}
 

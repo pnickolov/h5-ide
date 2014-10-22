@@ -1393,7 +1393,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     PAYMENT_HEADER_TOOLTIP:
-      en: "<div class=\"payment-header-tooltip\">Using <strong>%s</strong> points of <strong>%s</strong> free points. <span> Free points will renew in %s days.</span></div>"
+      en: "<div class=\"payment-header-tooltip\"><strong>%s</strong> free points remaining. <span> Free points will renew in %s days.</span></div>"
       zh: ""
 
     PAYMENT_PROVIDE_UPDATE_CREDITCARD:

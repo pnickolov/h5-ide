@@ -1,7 +1,8 @@
 define [
   'constant'
   './ValidationBase'
-], ( constant, ValidationBase ) ->
+  './osport'
+], ( constant, ValidationBase, PortValidation ) ->
 
     # POOL
     ValidationBase.extend {
@@ -34,12 +35,15 @@ define [
 
     # Listener
     ValidationBase.extend {
+
         limits:
             ip: ValidationBase.limit.ipv4
             port: ValidationBase.limit.positive
             limit: ValidationBase.limit.positive
 
         limit: ValidationBase.validation.range4G
+
+        ip: (new PortValidation()).ip
 
     }, {
         handleTypes: [ constant.RESTYPE.OSLISTENER ]

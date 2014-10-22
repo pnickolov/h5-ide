@@ -67,6 +67,7 @@ define [
         @view.showUnpayUI()
       else
         @diff()
+      @view.listenToPayment()
       return
 
     diff : ()->

@@ -145,12 +145,23 @@ define [
       @canvas.updateSize()
 
       AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
+      notification "error", "Your account is limited now."
       return
 
-#    reopenApp: ()->
-#      appId = Design.instance().get("id")
-#      @workspace.remove()
-#      App.openOps(appId)
-#      notification "info", "App reloaded successfully!"
+    listenToPayment: ()->
+      self = @
+      @workspace.listenTo App.user, "paymentUpdate", ->
+        if not @(".ops-apppm-wrapper").size()
+          if App.user.shouldPay()
+            self.showUnpayUI()
+        else
+          unless App.user.shouldPay()
+            self.reopenApp()
+
+    reopenApp: ()->
+      appId = Design.instance().get("id")
+      @workspace.remove()
+      App.openOps(appId)
+      notification "info", "App reloaded successfully!"
 
   }

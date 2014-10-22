@@ -1,7 +1,8 @@
 define [
   'constant'
   './ValidationBase'
-], ( constant, ValidationBase ) ->
+  './osport'
+], ( constant, ValidationBase, portValidation ) ->
 
   ValidationBase.extend {
 
@@ -9,8 +10,7 @@ define [
 
       fixedIp: ValidationBase.limit.ipv4
 
-    fixedIp: (value) ->
-      return 'pool have some port valid error.'
+    fixedIp: (new portValidation()).ip
 
   }, {
     handleTypes: [ constant.RESTYPE.OSSERVER ]

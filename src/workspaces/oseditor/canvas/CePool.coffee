@@ -11,8 +11,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "elb" : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "pool"     : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
+      "elb"  : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+      "pool" : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
     }
 
     # Creates a svg element

@@ -327,7 +327,7 @@ module.exports =
     # Open Stack
 
     ERROR_PORT_MUST_CONNECT_WITH_SERVER:
-      en: "Port <span class='validation-tag tag-osport'>%s</span> must connect with server."
+      en: "Port <span class='validation-tag tag-osport'>%s</span> must connect with a server."
       zh: ""
 
     ERROR_SUBNET_HAS_PORT_SHOULD_CONNECTED_OUT:
@@ -342,6 +342,21 @@ module.exports =
       en: "Router enabling NAT must be connected to external network."
       zh: ""
 
+    ERROR_ROUTER_XXX_MUST_CONNECT_TO_AT_LEAST_ONE_SUBNET:
+      en: "Router %s must connect to at least one subnet."
+      zh: ""
+
+    ERROR_POOL_XXX_MUST_BE_CONNECTED_TO_A_LISTENER:
+      en: "Pool %s must be connected to a listener"
+      zh: ""
+
+    ERROR_LISTENER_XXX_MUST_BE_CONNECTED_TO_A_POOL:
+      en: "Listener %s must be connected to a pool"
+      zh: ""
+
+    ERROR_POOL_AND_MEMBER_SUBNET_NOT_CONNECTED:
+      en: "Load Balancer's Pool %s and Member %s must belong to subnets interconnected by the same router. "
+      zh: ""
 
 
     ##### Trust Advisor

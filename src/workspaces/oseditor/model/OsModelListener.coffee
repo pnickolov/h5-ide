@@ -47,7 +47,7 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
           resource :
             id                : @get 'appId'
             name              : @get 'name'
-            pool_id           : @connectionTargets( 'OsListenerAsso' )[ 0 ].createRef 'id'
+            pool_id           : @connectionTargets( 'OsListenerAsso' )[ 0 ]?.createRef( 'id' ) or ''
             subnet_id         : @parent().createRef( 'id' )
             connection_limit  : @get 'limit'
             protocol          : @get 'protocol'

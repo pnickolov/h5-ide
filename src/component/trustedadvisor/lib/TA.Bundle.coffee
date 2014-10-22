@@ -1,18 +1,18 @@
-define ['MC',
-        '../validation/aws/stack/stack',
-        '../validation/aws/ec2/instance',
-        '../validation/aws/vpc/subnet',
-        '../validation/aws/vpc/vpc',
-        '../validation/aws/elb/elb',
-        '../validation/aws/ec2/securitygroup',
-        '../validation/aws/asg/asg',
-        '../validation/aws/ec2/eip',
-        '../validation/aws/ec2/az',
-        '../validation/aws/vpc/vgw',
-        '../validation/aws/vpc/vpn',
-        '../validation/aws/vpc/igw',
-        '../validation/aws/vpc/networkacl',
-        '../validation/aws/vpc/cgw',
+define ['MC'
+        '../validation/aws/stack/stack'
+        '../validation/aws/ec2/instance'
+        '../validation/aws/vpc/subnet'
+        '../validation/aws/vpc/vpc'
+        '../validation/aws/elb/elb'
+        '../validation/aws/ec2/securitygroup'
+        '../validation/aws/asg/asg'
+        '../validation/aws/ec2/eip'
+        '../validation/aws/ec2/az'
+        '../validation/aws/vpc/vgw'
+        '../validation/aws/vpc/vpn'
+        '../validation/aws/vpc/igw'
+        '../validation/aws/vpc/networkacl'
+        '../validation/aws/vpc/cgw'
         '../validation/aws/vpc/eni'
         '../validation/aws/vpc/rtb'
         '../validation/aws/stateeditor/main'
@@ -26,13 +26,14 @@ define ['MC',
         '../validation/os/osport'
         '../validation/os/ossubnet'
         '../validation/os/osrouter'
+        '../validation/os/ospool'
 
 ], ( MC,
      stack, instance, subnet, vpc, elb, sg, asg, eip, az, vgw, vpn,igw, acl,
      cgw, eni, rtb, stateEditor, state, ebs, kp, dbinstance, og, sbg,
 
      # Open Stack
-     osport, ossubnet, osrouter
+     osport, ossubnet, osrouter, ospool
    ) ->
 
         # AWS
@@ -65,5 +66,6 @@ define ['MC',
         osport          : osport
         ossubnet        : ossubnet
         osrouter        : osrouter
+        ospool          : ospool
 
 

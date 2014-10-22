@@ -28,6 +28,8 @@ define({
             'OS::Neutron::Port'                     : [ 'osport' ]
             'OS::Neutron::Subnet'                   : [ 'ossubnet' ]
             'OS::Neutron::Router'                   : [ 'osrouter' ]
+            'OS::Neutron::Pool'                     : [ 'ospool' ]
+            'OS::Neutron::VIP'                      : [ 'oslistener' ]
 
     globalList:
         aws:

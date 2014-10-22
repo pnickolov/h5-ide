@@ -43,11 +43,11 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
             $quota.find(".current").text(overview.quotaRemain)
             $quota.find(".limit"  ).text(overview.quotaTotal)
 
-            $quota.find(".percentage").removeClass("error full")
+            $percent = $quota.find(".percentage").removeClass("error full")
             if user.shouldPay()
-                $quota.addClass("error")
+                $percent.addClass("error")
             else if overview.quotaRemain >= overview.quotaTotal
-                $quota.addClass("full")
+                $percent.addClass("full")
             return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )

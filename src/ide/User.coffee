@@ -49,9 +49,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         quotaRemain  : quota
         quotaPercent : Math.round( quota / @get("voQuotaPerMonth") * 100 )
 
-        billingStart  : @get("billingCircleStart")
-        billingEnd    : @get("billingCircle")
-        billingRemain : Math.round( (@get("billingCircle") - new Date()) / 24 / 3600000 )
+        billingStart  : @get("billingStart")
+        billingEnd    : @get("billingEnd")
+        billingRemain : Math.round( (@get("billingEnd") - new Date()) / 24 / 3600000 )
 
       ov.billingRemain = Math.min( ov.billingRemain, 31 )
       ov.billingRemain = Math.max( ov.billingRemain, 0 )
@@ -60,6 +60,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     userInfoAccuired : ( result )->
       paymentInfo = result.payment || {}
+      selfpage    = paymentInfo.self_page || {}
 
       res =
         email           : MC.base64Decode result.email
@@ -73,11 +74,10 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         voQuotaCurrent  : paymentInfo.current_quota || 0
         voQuotaPerMonth : paymentInfo.max_quota || 1000
         has_card        : !!paymentInfo.has_card
-        paymentUrl      : paymentInfo.self_page?.url
-        creditCard      : paymentInfo.self_page?.card
-        billingCircle   : new Date( paymentInfo.self_page?.current_period_ends_at || null )
-        billingCircleStart: new Date(paymentInfo.self_page?.current_period_started_at || null)
-        renewDate        : if paymentInfo.next_reset_time then new Date(paymentInfo.next_reset_time * 1000) else new Date()
+        paymentUrl      : selfpage.url
+        creditCard      : selfpage.card
+        billingEnd      : new Date( selfpage.current_period_ends_at    || null )
+        billingStart    : new Date( selfpage.current_period_started_at || null )
         paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key

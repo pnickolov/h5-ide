@@ -13,6 +13,7 @@ define [
 
             if not MC.validate('cidr', value)
                 return 'Invalid CIDR Address'
+
             return null
 
     }, {

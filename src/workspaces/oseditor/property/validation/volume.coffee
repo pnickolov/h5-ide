@@ -12,6 +12,11 @@ define [
       else
         return sprintf lang.PARSLEY.THIS_VALUE_SHOULD_BE_A_VALID_XXX, "mount point"
 
+    size: (value)->
+      if value and new RegExp(ValidationBase.limit.positive).test value
+        return null
+      else
+        return sprintf lang.PARSLEY.THIS_VALUE_SHOULD_BE_A_VALID_XXX, "number"
   }, {
     handleTypes: [ constant.RESTYPE.OSVOL ]
   }

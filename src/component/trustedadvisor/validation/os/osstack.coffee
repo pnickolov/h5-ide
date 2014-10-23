@@ -88,8 +88,10 @@ define [
                 usedCount = existMap[type] + newMap[type]
                 limitCount = limitMap[type]
 
-                if usedCount > limitCount
-                    validAry.push(Helper.message.error null, i18n.ERROR_STACK_RESOURCE_EXCCED_LIMIT, type, usedCount, limitCount)
+                typeName = constant.RESNAME[type]
+
+                if usedCount > limitCount and typeName
+                    validAry.push(Helper.message.error null, i18n.ERROR_STACK_RESOURCE_EXCCED_LIMIT, typeName, usedCount, limitCount)
 
                 null
 

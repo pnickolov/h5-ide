@@ -106,6 +106,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     RESNAME =
+
         AZ           : "Availability Zone"
         INSTANCE     : "Instance"
         KP           : "Key Pair"
@@ -134,6 +135,24 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         CW           : 'Cloud Watch'
         SUBSCRIPTION : 'Subscription'
         TOPIC        : 'Topic'
+
+        "OS::Nova::Server"                  : "Server"
+        "OS::Neutron::Network"              : "Network"
+        "OS::Neutron::Subnet"               : "Subnet"
+        "OS::Neutron::Port"                 : "Port"
+        "OS::Neutron::SecurityGroup"        : "Security Group"
+        "OS::Neutron::SecurityGroupRule"    : "Security Group Rule"
+        "OS::Neutron::Router"               : "Router"
+        "OS::Neutron::FloatingIP"           : "Floating IP"
+        "OS::Elb"                           : "Load Balancer"
+        "OS::Neutron::VIP"                  : "Listener"
+        "OS::Neutron::Pool"                 : "Pool"
+        "OS::Neutron::HealthMonitor"        : "Health Monitor"
+        "OS::Cinder::Volume"                : "Volume"
+        "OS::Nova::Flavor"                  : "Flavor"
+        "OS::Nova::KeyPair"                 : "Key Pair"
+        "OS::Image"                         : "Image"
+        "OS::Snapshot"                      : "Snapshot"
 
 
     #private

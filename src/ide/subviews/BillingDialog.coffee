@@ -63,10 +63,10 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.paymentHistory = tempArray
           that.paymentUsage = _.clone paymentUsage
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
+          that.animateUsage()
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
-        @animateUsage()
         @listenTo App.user, "paymentUpdate", => @animateUsage()
         @setElement @modal.tpl
 
@@ -122,7 +122,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
 
         if App.user.shouldPay()
           @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("url"), (if App.user.get("creditCard") then "Update" else "Provide")
-        else if  App.user.isUnpaid()
+        else if App.user.isUnpaid()
           @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("url")
         else
           @modal.find(".warning-red").hide()

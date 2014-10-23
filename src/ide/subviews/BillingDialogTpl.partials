@@ -24,15 +24,7 @@
     </nav>
     <div class="tabContent" id="PaymentBody">
         <section id="PaymentBillingTab">
-            {{#if paymentUsage.shouldPay}}
-                <p class="warning-red">
-                    Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">{{#if paymentUpdate.card}}Update Billing Information{{else}}Provide Billing Information{{/if}}</a>
-                    as soon as possible.
-                </p>
-            {{else}}
-                <p class="warning-red" style="display: none"></p>
-            {{/if}}
+            <p class="warning-red" {{#unless paymentUsage.shouldPay}}style="display: none"{{/unless}}></p>
             <h5>Credit Card Infomation</h5>
             <div class="clearfix">
                 <div class="left clearfix">
@@ -103,15 +95,7 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-            {{#if paymentUsage.shouldPay}}
-                <p class="warning-red">
-                    Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.
-                    <a class="update-payment" href="{{paymentUpdate.url}}" target="_blank">{{#if paymentUpdate.card}}Update Billing Information{{else}}Provide Billing Information{{/if}}</a>
-                    as soon as possible.
-                </p>
-            {{else}}
-                <p class="warning-red" style="display: none"></p>
-            {{/if}}
+            <p class="warning-red" {{#unless paymentUsage.shouldPay}}style="display: none"{{/unless}}></p>
             <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUsage.last_billing_time "d MMM yyyy"}}</span></h5>
             <div class="usage-wrapper">
                 <div class="used-points">

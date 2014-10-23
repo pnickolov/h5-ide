@@ -68,11 +68,6 @@ define ['MC'
         osport          : osport
         ossubnet        : ossubnet
         osrouter        : osrouter
-<<<<<<< HEAD
         ospool          : ospool
         oslistener      : oslistener
-
-
-=======
         osstack         : osstack
->>>>>>> add qupta TA for stack

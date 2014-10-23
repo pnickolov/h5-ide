@@ -547,9 +547,13 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
 
       allIPAry = []
       availableIPCount = 0
-      readyAssignAry = [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
-      readyAssignAryLength = readyAssignAry.length
-      $.each readyAssignAry, (idx, value) ->
+
+      # $.each readyAssignAry, (idx, value) ->
+      readyAssignAryLength = ipAddrNumSuffixMax - ipAddrNumSuffixMin + 1
+
+      idx = -1
+      for value in [ipAddrNumSuffixMin...ipAddrNumSuffixMax + 1]
+        idx++
         newIPBinStr = ipAddrBinPrefixStr + MC.leftPadString(value.toString(2), prefix, "0")
         isAvailableIP = true
         if idx in reserveIPs
@@ -570,7 +574,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
 
         allIPAry.push(newIPObj)
         if isAvailableIP then availableIPCount++
-        if availableIPCount > maxNeedIPCount then return false
+        if availableIPCount > maxNeedIPCount then break
 
         null
 

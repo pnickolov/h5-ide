@@ -18,7 +18,7 @@
 </section>
 <section class="group required">
     <label class="name">Cidr</label>
-    <input class="selection cidrv4" value="{{cidr}}" data-target="cidr" {{#if modeIsAppEdit}}disabled{{/if}}/>
+    <input class="selection string" value="{{cidr}}" data-target="cidr" {{#if modeIsAppEdit}}disabled{{/if}}/>
 </section>
 
 <!-- {{app}} -->

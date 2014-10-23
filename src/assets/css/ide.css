@@ -9312,6 +9312,10 @@ h5.billing_usage_title {
   .link-blue:hover {
     text-decoration: underline; }
 
+.payment-no-card-wrapper {
+  width: 450px;
+  margin: 0 auto; }
+
 .payment-modal-wrap, .provide-payment-info {
   text-align: center;
   padding-top: 30px; }

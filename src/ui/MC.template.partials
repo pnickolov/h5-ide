@@ -1371,12 +1371,13 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
-<div class="payment-credit-card">
-</div>
-<p class="modal-text-minor payment-text">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
-<p class="modal-text-major">Pricing:</p>
-<table class="table payment-table">
-    <tbody>
+<div class="payment-no-card-wrapper">
+    <div class="payment-credit-card">
+    </div>
+    <p class="modal-text-minor payment-text">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
+    <p class="modal-text-major">Pricing:</p>
+    <table class="table payment-table">
+        <tbody>
         <tr>
             <td>Up to 10 managed instances</td>
             <td class="align-right">Free</td>
@@ -1385,15 +1386,16 @@ Additional Notes and Questions
             <td>10 or more managed instances</td>
             <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
         </tr>
-    </tbody>
-</table>
-<a href="#" class="link-blue">Pricing in detail</a>
-<div class="payment-modal-wrap">
-    <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
-    <p>
-        This will open a new window with Chargify.<br>
-Meanwhile please keep this page open.
-    </p>
+        </tbody>
+    </table>
+    <a href="#" class="link-blue">Pricing in detail</a>
+    <div class="payment-modal-wrap">
+        <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
+        <p>
+            This will open a new window with Chargify.<br>
+            Meanwhile please keep this page open.
+        </p>
+    </div>
 </div>
 
 

@@ -28,7 +28,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             disableClose: true
             confirm: hide: true
 
-
+        unless App.user.get("creditCard")
+          @modal.setContent(MC.template.paymentSubscribe)
+          @modal.listenTo App.user, "paymentUpdate", ->
+            that.initialize(that.modal)
+          return false
         ApiRequestR("payment_statement").then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {

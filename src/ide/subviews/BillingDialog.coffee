@@ -32,23 +32,16 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         ApiRequestR("payment_statement").then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {
-            paymentState: App.user.get("paymentState")
-            first_name: App.user.get("cardFirstName")
-            last_name: App.user.get("cardLastName")
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
             billingCircle: App.user.get("billingCircle")
-          }
-          paymentUsage = {
             current_quota: App.user.get("voQuotaCurrent")
             max_quota:  App.user.get("voQuotaPerMonth")
-            outOfQuota: App.user.get("voQuotaCurrent") >= App.user.get("voQuotaPerMonth")
             renewRemainDays: Math.round( (App.user.get("renewDate") - ( new Date() ))/(1000*60*60*24) )
             last_billing_time: App.user.get("billingCircleStart")
-            shouldPay: App.user.shouldPay() or App.user.isUnpaid()
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
-          paymentUsage.billable_quota = if billable_quota > 0 then billable_quota else 0
+          paymentUpdate.billable_quota = if billable_quota > 0 then billable_quota else 0
 
           that.modal.find(".modal-body").css 'padding', "0"
           hasPaymentHistory = (_.keys paymentHistory).length
@@ -61,8 +54,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           tempArray.reverse()
           paymentHistory = tempArray
           that.paymentHistory = tempArray
-          that.paymentUsage = _.clone paymentUsage
-          that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, paymentUsage, hasPaymentHistory}
+          that.paymentUpdate = _.clone paymentUpdate
+          that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
           that.animateUsage()
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
@@ -117,6 +110,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         billable_quota = if current_quota > free_quota then current_quota - free_quota else 0
 
         @modal.find(".payment-number").text(App.user.get("creditCard") || "No Card")
+        @modal.find(".payment-username").text("#{App.user.get("cardFirstName")} #{App.user.get("cardLastName")}")
         @modal.find(".used-points .usage-number").text(current_quota)
         @modal.find(".billable-points .usage-number").text(billable_quota)
 

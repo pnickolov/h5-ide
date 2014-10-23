@@ -24,7 +24,7 @@
     </nav>
     <div class="tabContent" id="PaymentBody">
         <section id="PaymentBillingTab">
-            <p class="warning-red" {{#unless paymentUsage.shouldPay}}style="display: none"{{/unless}}></p>
+            <p class="warning-red"></p>
             <h5>Credit Card Infomation</h5>
             <div class="clearfix">
                 <div class="left clearfix">
@@ -95,19 +95,19 @@
             </div>
         </section>
         <section id="UsageTab" class="hide">
-            <p class="warning-red" {{#unless paymentUsage.shouldPay}}style="display: none"{{/unless}}></p>
-            <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUsage.last_billing_time "d MMM yyyy"}}</span></h5>
+            <p class="warning-red"></p>
+            <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}</span></h5>
             <div class="usage-wrapper">
                 <div class="used-points">
                     <p>Used Points</p>
                     <div class="usage-number">
-                        {{paymentUsage.current_quota}}
+                        {{paymentUpdate.current_quota}}
                     </div>
                 </div>
                 <div class="billable-points">
                     <p>Billable Points</p>
                     <div class="usage-number">
-                        {{paymentUsage.billable_quota}}
+                        {{paymentUpdate.billable_quota}}
                     </div>
                 </div>
                 <div class="usage-block">
@@ -115,7 +115,7 @@
                     <div class="free-usage tooltip"></div>
                     <div class="current-usage tooltip"></div>
                 </div>
-                <p class="renew-points">{{paymentUsage.max_quota}} free points renew in {{paymentUsage.renewRemainDays}} days</p>
+                <p class="renew-points">{{paymentUpdate.max_quota}} free points renew in {{paymentUpdate.renewRemainDays}} days</p>
             </div>
         </section>
     </div>

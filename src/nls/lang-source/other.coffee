@@ -1399,3 +1399,7 @@ VisualOps API. You cannot UNDO this action.'
     PAYMENT_PROVIDE_UPDATE_CREDITCARD:
       en: "Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. <a class='update-payment' href='%s' target='_blank'> %s Billing Information</a> as soon as possible."
       zh: ""
+
+    PAYMENT_UNPAID_BUT_IN_FREE_QUOTA:
+      en: "You have unpaid bill. You can still use the free quota before getting into limited status.<a class='update-payment' href='%s' target='_blank'> Update Billing Information</a> as soon as possible."
+      zh: ""

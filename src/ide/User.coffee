@@ -71,6 +71,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         account         : result.account_id
         firstName       : MC.base64Decode( result.first_name || "" )
         lastName        : MC.base64Decode( result.last_name || "")
+        cardFirstName   : ""
+        cardLastName    : ""
         voQuotaCurrent  : paymentInfo.current_quota || 0
         voQuotaPerMonth : paymentInfo.max_quota || 1000
         has_card        : !!paymentInfo.has_card
@@ -134,6 +136,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
           billingCircle: new Date(result.current_period_ends_at || null)
           billingCircleStart: new Date(result.current_period_started_at || null)
           paymentUrl: result.url
+          cardFirstName: if result.card then result.first_name else ""
+          cardLastName: if result.card then result.last_name else ""
         }
         that.set paymentInfo
         that.trigger "paymentUpdate"
@@ -249,7 +253,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       ApiRequest("account_update_account", { attributes : {
         first_name : firstName
         last_name  : lastName
-      }}).then ( res )-> @userInfoAccuired( res )
+      }}).then ( res )-> self.userInfoAccuired( res )
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

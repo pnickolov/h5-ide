@@ -33,8 +33,8 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           console.log paymentHistory
           paymentUpdate = {
             paymentState: App.user.get("paymentState")
-            first_name: App.user.get("firstName")
-            last_name: App.user.get("lastName")
+            first_name: App.user.get("cardFirstName")
+            last_name: App.user.get("cardLastName")
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
             billingCircle: App.user.get("billingCircle")
@@ -66,6 +66,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
+        @animateUsage()
         @listenTo App.user, "paymentUpdate", => @animateUsage()
         @setElement @modal.tpl
 
@@ -76,7 +77,6 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
         @animateUsage(event)
-
 
       _bindPaymentEvent: (event)->
         that = @
@@ -120,8 +120,10 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".used-points .usage-number").text(current_quota)
         @modal.find(".billable-points .usage-number").text(billable_quota)
 
-        if App.user.shouldPay() or App.user.isUnpaid()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("creditCard"), (if App.user.get("creditCard") then "Update" else "Provide")
+        if App.user.shouldPay()
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("url"), (if App.user.get("creditCard") then "Update" else "Provide")
+        else if  App.user.isUnpaid()
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("url")
         else
           @modal.find(".warning-red").hide()
 

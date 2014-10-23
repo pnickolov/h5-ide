@@ -121,9 +121,9 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".billable-points .usage-number").text(billable_quota)
 
         if App.user.shouldPay()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("url"), (if App.user.get("creditCard") then "Update" else "Provide")
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
         else if App.user.isUnpaid()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("url")
+          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
         else
           @modal.find(".warning-red").hide()
 

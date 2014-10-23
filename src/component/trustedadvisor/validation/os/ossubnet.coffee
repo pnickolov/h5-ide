@@ -12,13 +12,8 @@ define [
             rts = _.filter sb.connectionTargets( 'OsRouterAsso' ), ( obj ) ->
                 obj.type is constant.RESTYPE.OSRT
 
-            if not rts or not rts.length then return false
-
-            extNets = []
-            for rt in rts
-                extNets = extNets.concat rt.get('extNetworkId')
-
-            if not extNets or not extNets.length then return false
+            rt = rts[0]
+            if !rt or !rt.get('extNetworkId') then return false
 
             true
 

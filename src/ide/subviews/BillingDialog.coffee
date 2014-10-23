@@ -32,6 +32,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           @modal.setContent(MC.template.paymentSubscribe)
           @modal.listenTo App.user, "paymentUpdate", ->
             that.initialize(that.modal)
+            that.modal.stopListening()
           return false
         ApiRequestR("payment_statement").then (paymentHistory)->
           console.log paymentHistory

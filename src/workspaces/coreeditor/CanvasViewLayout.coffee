@@ -23,7 +23,10 @@ define [ "CanvasView", "constant" ], ( CanvasView, constant )->
         block = blocks[n]
         w = block.w + @px
         h = block.h + @px
-        if node = @findNode(@root, w, h)
+
+        node = @findNode(@root, w, h)
+
+        if node
           block.fit = @splitNode(node, w, h)
         else
           block.fit = @growNode(w, h)
@@ -84,7 +87,9 @@ define [ "CanvasView", "constant" ], ( CanvasView, constant )->
           w: w
           h: @root.h
 
-      if node = @findNode(@root, w, h)
+      node = @findNode(@root, w, h)
+
+      if node
         @splitNode node, w, h
       else
         null
@@ -104,7 +109,9 @@ define [ "CanvasView", "constant" ], ( CanvasView, constant )->
 
         right: @root
 
-      if node = @findNode(@root, w, h)
+      node = @findNode(@root, w, h)
+
+      if node
         @splitNode node, w, h
       else
         null

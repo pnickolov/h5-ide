@@ -230,3 +230,5 @@ define [ "CanvasView" ], ( CanvasView )->
     data.overlay.remove()
     $( document ).off( ".resizegroup" )
     false
+
+  return

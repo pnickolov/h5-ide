@@ -245,7 +245,7 @@ define [
 
     @__highLightCliper = @svg.clip().attr("id", "hlClipper").add( @svg.path(filler+path).attr("clip-rule","evenodd") )
     @__highLightRect   = @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"}).clipWith( @__highLightCliper )
-
+    return
 
   CanvasViewProto.removeHightLight = ( items )->
     if @__highLightRect then @__highLightRect.remove()

@@ -113,6 +113,7 @@ define [
     if @__dragHoverGroup
       CanvasManager.removeClass @__dragHoverGroup.$el, "droppable"
       @__dragHoverGroup = null
+    return
 
   CanvasViewProto.__handleDropData = ( data, excludeChild, parentMustBeDirect )->
 

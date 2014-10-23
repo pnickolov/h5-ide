@@ -66,6 +66,7 @@ define [ "./NavigationTpl", 'backbone' ], ( NavPartsTpl ) ->
         hideOffCanvas : ()->
             $("#wrapper").removeClass("off-canvas")
             @showing = false
+            return
 
         showNavApp : ()->
             $("#nav-app-region").show()

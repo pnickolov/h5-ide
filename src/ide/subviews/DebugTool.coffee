@@ -54,6 +54,7 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "vender
         App.model.stackList().models.slice(0).forEach ( m )-> m.remove()
         m.close()
     }
+    return
 
   clearApp = ()->
     m = new Modal {
@@ -63,6 +64,7 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "vender
         App.model.appList().models.slice(0).forEach ( m )-> m.terminate()
         m.close()
     }
+    return
 
   debugApi = ()->
     modal ApiDialog

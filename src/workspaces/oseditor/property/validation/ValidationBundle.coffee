@@ -4,4 +4,6 @@ define [
     './osport',
     './osserver'
     './ossubnet'
+    './osrouter'
+    './osnetwork'
 ], ->

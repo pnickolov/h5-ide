@@ -6,4 +6,5 @@ define [
     './ossubnet'
     './osrouter'
     './osnetwork'
+    './volume'
 ], ->

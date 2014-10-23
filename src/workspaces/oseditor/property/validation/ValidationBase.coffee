@@ -80,29 +80,30 @@ define [
         rangeTip    : ( min, max ) -> sprintf LANG.PARSLEY.THIS_VALUE_MUST_BETWEEN_XXX_XXX min, max
 
         validation:
-            range4G: ->
-                ValidationBase.validation.range null, 2147483647
+            range4G: (nullable) ->
+                ValidationBase.validation.range null, 2147483647, nullable
 
-            range: ( min, max ) ->
+            range: ( min, max, nullable ) ->
                 if _.isNumber(min) and _.isNumber(max)
                     ( v ) ->
                         if v < min or v > max
                             return ValidationBase.rangeTip min, max
-                        null
+
+                        if !nullable and v is '' then return '' else null
 
                 else if _.isNumber(min)
                     ( v ) ->
                         if v < min
                             return ValidationBase.greaterTip min - 1
 
-                        null
+                        if !nullable and v is '' then return '' else null
 
                 else if _.isNumber(max)
                     ( v ) ->
                         if v > max
                             return ValidationBase.lowerTip max + 1
 
-                        null
+                        if !nullable and v is '' then return '' else null
 
 
 

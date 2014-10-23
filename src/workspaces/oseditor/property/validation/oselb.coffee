@@ -25,11 +25,7 @@ define [
 
         delay: ValidationBase.validation.range4G()
         timeout: ValidationBase.validation.range4G()
-
-        maxRetries: ( v ) ->
-            if v > 3
-                return ValidationBase.lowerTip 4
-            null
+        maxRetries: ValidationBase.validation.range(null, 3)
 
     }, {
         handleTypes: [ constant.RESTYPE.OSHM ]

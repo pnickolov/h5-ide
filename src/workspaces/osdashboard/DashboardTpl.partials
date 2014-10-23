@@ -4,6 +4,11 @@
 <header class="dash-header">
   <button class="icon-refresh" id="OsReloadResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
   <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}</button>
+
+  <button id="ImportStack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
+
+  <button id="VisualizeApp" class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_APP"}}
+  </button>
 </header>
 
 <div class="dash-body nano"> <div class="nano-content">
@@ -53,6 +58,10 @@
 {{else}}
   <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
 {{/each}}
+
+<!-- {{importJSON}} -->
+<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
+<div id="import-json-error"></div>
 
 <!-- {{resourceList}} -->
 <nav class="clearfix resource-list-nav">

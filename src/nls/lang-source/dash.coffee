@@ -15,6 +15,9 @@ module.exports =
       en: "Import VPC"
       zh: "可视化VPC"
 
+    DASH_VISUALIZE_APP:
+      en: "Import app"
+      zh: "可视化App"
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"

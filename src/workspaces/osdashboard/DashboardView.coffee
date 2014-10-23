@@ -5,6 +5,7 @@ define [
   "constant"
   "i18n!/nls/lang.js"
   "CloudResources"
+  "UI.modalplus"
   'AppAction'
   "backbone"
   "UI.tooltip"
@@ -12,7 +13,7 @@ define [
   "UI.bubble"
   "UI.scrollbar"
   "UI.nanoscroller"
-], ( Template, TemplateData, constant, lang, CloudResources, appAction )->
+], ( Template, TemplateData, constant, lang, CloudResources, Modal, appAction )->
 
   Backbone.View.extend {
 
@@ -29,6 +30,9 @@ define [
       'click .dash-ops-list .terminate-app'   : 'terminateApp'
 
       'click .resource-tab'                   : 'switchResource'
+
+      "click #ImportStack"  : "importStack"
+      "click #VisualizeApp" : "visualizeApp"
 
     resourcesTab: 'OSSERVER'
 
@@ -157,7 +161,8 @@ define [
       resourceCount = @model.getResourcesCount( @region )
       for r, count of resourceCount
         child = $nav.children(".#{r}")
-        if count and quotaMap then @animateUsage(child, count , quotaMap[resourceMap[r]])
+        if typeof count == "number" and quotaMap
+          @animateUsage(child, count , quotaMap[resourceMap[r]])
       return
 
     animateUsage: (elem, usage, quota)->
@@ -197,4 +202,54 @@ define [
     startApp       : (event)-> appAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
     stopApp        : (event)-> appAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
     terminateApp   : (event)-> appAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
+
+    importStack : ()->
+      modal = new Modal {
+        title         : lang.IDE.POP_IMPORT_JSON_TIT
+        template      : Template.importJSON()
+        width         : "470"
+        disableFooter : true
+      }
+
+      reader = new FileReader()
+      reader.onload = ( evt )->
+        error = App.importJson( reader.result )
+        if _.isString error
+          $("#import-json-error").html error
+        else
+          modal.close()
+          reader = null
+        null
+
+      reader.onerror = ()->
+        $("#import-json-error").html lang.IDE.POP_IMPORT_ERROR
+        null
+
+      hanldeFile = ( evt )->
+        evt.stopPropagation()
+        evt.preventDefault()
+
+        $("#modal-import-json-dropzone").removeClass("dragover")
+        $("#import-json-error").html("")
+
+        evt = evt.originalEvent
+        files = (evt.dataTransfer || evt.target).files
+        if not files or not files.length then return
+        reader.readAsText( files[0] )
+        null
+
+      $("#modal-import-json-file").on "change", hanldeFile
+      zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
+      zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
+      zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
+      zone.on "dragover", ( evt )->
+        dt = evt.originalEvent.dataTransfer
+        if dt then dt.dropEffect = "copy"
+        evt.stopPropagation()
+        evt.preventDefault()
+        null
+      null
+
+    visualizeApp : ()->
+
   }

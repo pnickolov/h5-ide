@@ -68,13 +68,6 @@ pre {
 .bd3 {
   border-radius: 3px; }
 
-.font-mono {
-  font-family: "Monaco","Consolas", monospace;
-  /*font-family: "Lucida Console", "Monaco", monospace;*/ }
-
-.font-normal {
-  font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
-
 /* CSS reset */
 article,
 footer,
@@ -243,9 +236,7 @@ abbr {
   border-bottom: 1px dotted #999; }
 
 body {
-  margin: 0;
-  font-size: 14px;
-  font-family: Arial, sans-serif; }
+  margin: 0; }
 
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
@@ -9259,20 +9250,50 @@ g.shadow {
       background: #4a90e2; }
       .OEPanelRight.resource nav ul.action li:hover {
         background: #3970af; }
-.OEPanelRight.resource .resource-item:hover {
-  background-color: rgba(255, 255, 255, 0.2); }
-.OEPanelRight.resource .resource-item.ossubnet {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
-.OEPanelRight.resource .resource-item.osrt {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
-.OEPanelRight.resource .resource-item.osport {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
-.OEPanelRight.resource .resource-item.oselb {
-  background-image: url("/assets/images/ide/icon/res-subnet.png"); }
-.OEPanelRight.resource .resource-item.osvol {
-  background-image: url("/assets/images/ide/icon/res-vol.png"); }
+.OEPanelRight.resource .resource-item {
+  background-size: 50px 50px;
+  height: 30px;
+  width: 70px;
+  margin: 0 0 5px 0;
+  padding: 60px 5px 2px 5px;
+  border: 1px solid transparent; }
+  .OEPanelRight.resource .resource-item:hover {
+    border-radius: 4px;
+    border: 1px solid #1d1e29;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 5px rgba(0, 0, 0, 0.8);
+    background-color: #323447;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+  .OEPanelRight.resource .resource-item:active {
+    top: -2px;
+    left: -2px; }
+  .OEPanelRight.resource .resource-item.osserver {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-server@2x.png"); }
+    .OEPanelRight.resource .resource-item.osserver img {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: 10px;
+      left: 24px; }
+  .OEPanelRight.resource .resource-item.ossubnet {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-subnet@2x.png"); }
+  .OEPanelRight.resource .resource-item.osrt {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-router@2x.png"); }
+  .OEPanelRight.resource .resource-item.osport {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-port@2x.png"); }
+  .OEPanelRight.resource .resource-item.oselb {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-lb@2x.png"); }
+  .OEPanelRight.resource .resource-item.osvol {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-vol@2x.png"); }
+  .OEPanelRight.resource .resource-item.ossnapshot {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-snapshot@2x.png"); }
+  .OEPanelRight.resource .resource-item.oslistener {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-listener@2x.png"); }
+  .OEPanelRight.resource .resource-item.ospool {
+    background-image: url("/assets/images/ide/icon/openstack/os-res-pool@2x.png"); }
 .OEPanelRight.resource .ebs-size {
-  margin-top: -1.8em; }
+  top: -2em; }
 
 #OpsEditor .OEPanelRight.property, #OpsEditor .OEPanelRight.config {
   color: #ccc;
@@ -9351,16 +9372,10 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .os-property-message h5, #OpsEditor .OEPanelRight.config .os-property-message h5 {
       text-align: center;
       margin-left: -20px; }
-  #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
-    display: inline-block;
-    vertical-align: baseline;
-    background: #FFF;
-    padding: 5px 0;
-    border-radius: 3px;
-    margin: 0px 2px -4px -2px; }
   #OpsEditor .OEPanelRight.property img.property-os-image-value, #OpsEditor .OEPanelRight.config img.property-os-image-value {
     vertical-align: middle;
-    margin: -2px 2px -2px 2px; }
+    margin: -2px 2px -2px 2px;
+    background-size: 30px 30px; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text, #OpsEditor .OEPanelRight.config p.property-os-image-text {
     display: inline-block;
     color: #DEDEDE;

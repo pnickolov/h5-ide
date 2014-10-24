@@ -62,7 +62,7 @@
 <div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
 
 <!--{{imageValue}}-->
-<div><img class="property-os-image-icon property-os-image-value" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/>{{name}}</div>
+<div><img class="property-os-image-value" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/>{{name}}</div>
 
 <!--{{kpButton}}-->
 <button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>

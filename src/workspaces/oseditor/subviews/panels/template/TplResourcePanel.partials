@@ -62,8 +62,8 @@
 
 <!-- {{ami}} -->
 {{#each this}}
-<li class="bubble resource-item instance" data-bubble-template="resPanelOsAmiInfo" data-bubble-data='{"region":"{{region}}","imageId":"{{id}}"}' data-type="OSSERVER" data-option='{"imageId":"{{id}}"}'>
-    <div class="resource-icon-instance"><img src="/assets/images/ide/ami/openstack/{{os_type}}.{{architecture}}.png" width="39" height="27"></div>
+<li class="bubble resource-item osserver" data-bubble-template="resPanelOsAmiInfo" data-bubble-data='{"region":"{{region}}","imageId":"{{id}}"}' data-type="OSSERVER" data-option='{"imageId":"{{id}}"}'>
+    <img src="/assets/images/ide/ami/openstack/{{os_type}}.{{architecture}}.png">
     {{name}}
 </li>
 {{/each}}
@@ -71,7 +71,7 @@
 <!-- {{snapshot}} -->
 <li class="tooltip resource-item osvol" data-tooltip='{{i18n "DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME"}}' data-type="OSVOL">{{i18n "LBL_OSVOL"}}</li>
 {{#each this}}
-<li class="resource-item bubble snapshot" data-date="{{created_at}}" data-storge="{{size}}" data-bubble-template="resPanelOsSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{region}}"}' data-type="OSVOL" data-option='{"size":{{size}}, "snapshot": "{{id}}"}'>
+<li class="resource-item bubble ossnapshot" data-date="{{created_at}}" data-storge="{{size}}" data-bubble-template="resPanelOsSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{region}}"}' data-type="OSVOL" data-option='{"size":{{size}}, "snapshot": "{{id}}"}'>
   <div class="ebs-size">{{size}} GB</div>{{name}}
 </li>
 {{/each}}

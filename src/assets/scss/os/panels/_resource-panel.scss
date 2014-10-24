@@ -36,14 +36,58 @@
         }
     }
 
+    // article ul {
+    //     display         : flex;
+    //     flex-direction  : row;
+    //     flex-wrap       : wrap;
+    //     align-items     : flex-start;
+    //     justify-content : space-around;
+    // }
+
     .resource-item {
-        &:hover    { background-color: rgba(255, 255, 255, 0.2); }
-        &.ossubnet { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
-        &.osrt     { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
-        &.osport   { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
-        &.oselb    { background-image: url('/assets/images/ide/icon/res-subnet.png'); }
-        &.osvol    { background-image: url('/assets/images/ide/icon/res-vol.png'); }
+        background-size : 50px 50px;
+        height          : 30px;
+        width           : 70px;
+        margin          : 0 0 5px 0;
+        padding         : 60px 5px 2px 5px;
+        border          : 1px solid transparent;
+
+        &:hover {
+            border-radius    : 4px;
+            border           : 1px solid $dark-p-2;
+            box-shadow       : inset 0 1px 0 rgba(255,255,255,.05), 0 0 5px rgba(0,0,0,.8);
+            background-color : desaturate($dark-p-1,10%);
+
+            @include transit($method: all, $dur:.2s);
+        }
+
+        &:active {
+            top  : -2px;
+            left : -2px;
+        }
+
+        &.osserver { 
+            background-image: url('/assets/images/ide/icon/openstack/os-res-server@2x.png');
+            img {
+                width    : 30px;
+                height   : 30px;
+
+                position : absolute;
+                top      : 10px;
+                left     : 24px;
+            }
+        }
+
+
+        &.ossubnet { background-image: url('/assets/images/ide/icon/openstack/os-res-subnet@2x.png'); }
+        &.osrt     { background-image: url('/assets/images/ide/icon/openstack/os-res-router@2x.png'); }
+        &.osport   { background-image: url('/assets/images/ide/icon/openstack/os-res-port@2x.png'); }
+        &.oselb    { background-image: url('/assets/images/ide/icon/openstack/os-res-lb@2x.png'); }
+        &.osvol    { background-image: url('/assets/images/ide/icon/openstack/os-res-vol@2x.png'); }
+        &.ossnapshot    { background-image: url('/assets/images/ide/icon/openstack/os-res-snapshot@2x.png'); }
+        &.oslistener    { background-image: url('/assets/images/ide/icon/openstack/os-res-listener@2x.png'); }
+        &.ospool        { background-image: url('/assets/images/ide/icon/openstack/os-res-pool@2x.png'); }
     }
 
-    .ebs-size { margin-top: -1.8em; }
+    .ebs-size { top: -2em; }
 }

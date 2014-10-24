@@ -1,16 +1,6 @@
 @import "utility";
 
 
-.font-mono {
-	font-family: "Monaco","Consolas", monospace;
-	/*font-family: "Lucida Console", "Monaco", monospace;*/
-}
-
-.font-normal {
-	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
-}
-
-
 /* CSS reset */
 article,
 footer,
@@ -215,8 +205,6 @@ abbr {
 
 body {
 	margin: 0;
-	font-size: 14px;
-	font-family: Arial, sans-serif;
 }
 
 /* Hack custom fonts loading */

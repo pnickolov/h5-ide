@@ -10,6 +10,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
       public : false
       cidr   : ""
       dhcp   : true
+      nameservers : []
 
     initialize: (attributes, option) ->
 
@@ -68,6 +69,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
 
             cidr        : @get("cidr")
             enable_dhcp : @get("dhcp")
+            dns_nameservers : @get('nameservers')
             network_id  : @parent().createRef("id")
             gateway_ip  : ""
             ip_version  : "4"
@@ -96,6 +98,7 @@ define [ "GroupModel", "constant" ], ( GroupModel, constant )->
         y      : layout_data.coordinate[1]
         width  : layout_data.size[0]
         height : layout_data.size[1]
+        nameservers : if _.isArray(data.resource.dns_nameservers) then data.resource.dns_nameservers else []
       })
       return
   }

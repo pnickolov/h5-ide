@@ -48,9 +48,13 @@
         background-size : 50px 50px;
         height          : 30px;
         width           : 70px;
-        margin          : 0 0 5px 0;
-        padding         : 60px 5px 2px 5px;
+        margin          : 0 1px 5px 0;
+        padding         : 60px 7px 2px 7px;
         border          : 1px solid transparent;
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
 
         &:hover {
             border-radius    : 4px;
@@ -74,7 +78,7 @@
 
                 position : absolute;
                 top      : 10px;
-                left     : 24px;
+                left     : 26px;
             }
         }
 

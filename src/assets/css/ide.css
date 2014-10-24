@@ -9254,9 +9254,11 @@ g.shadow {
   background-size: 50px 50px;
   height: 30px;
   width: 70px;
-  margin: 0 0 5px 0;
-  padding: 60px 5px 2px 5px;
+  margin: 0 1px 5px 0;
+  padding: 60px 7px 2px 7px;
   border: 1px solid transparent; }
+  .OEPanelRight.resource .resource-item:nth-child(3n) {
+    margin-right: 0; }
   .OEPanelRight.resource .resource-item:hover {
     border-radius: 4px;
     border: 1px solid #1d1e29;
@@ -9275,7 +9277,7 @@ g.shadow {
       height: 30px;
       position: absolute;
       top: 10px;
-      left: 24px; }
+      left: 26px; }
   .OEPanelRight.resource .resource-item.ossubnet {
     background-image: url("/assets/images/ide/icon/openstack/os-res-subnet@2x.png"); }
   .OEPanelRight.resource .resource-item.osrt {
@@ -9372,7 +9374,7 @@ g.shadow {
     #OpsEditor .OEPanelRight.property .os-property-message h5, #OpsEditor .OEPanelRight.config .os-property-message h5 {
       text-align: center;
       margin-left: -20px; }
-  #OpsEditor .OEPanelRight.property img.property-os-image-value, #OpsEditor .OEPanelRight.config img.property-os-image-value {
+  #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
     vertical-align: middle;
     margin: -2px 2px -2px 2px;
     background-size: 30px 30px; }

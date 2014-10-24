@@ -83,7 +83,7 @@
             render: {
               option: function(item) {
                 var tplName;
-                tplName = this.$input.data('select-tpl');
+                tplName = this.$input.data('option-tpl');
                 if (tplName && selectTpl && selectTpl[tplName]) {
                   return selectTpl[tplName].call(this.$input, item);
                 } else {

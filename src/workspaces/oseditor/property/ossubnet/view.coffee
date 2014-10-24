@@ -8,31 +8,67 @@ define [
 
         events:
             "change [data-target]" : "updateAttribute"
+            "select_dropdown_button_click .item-list": "addItem"
+            "click .item-list .item .item-remove": "removeItemClicked"
+            "select_item_remove .item-list": "removeItem"
 
         initialize: () ->
 
-            @validMap =
+            # that = @
 
-                cidr:
+            @selectTpl =
 
-                    limit: '^[0-9./]*$'
+                button: () ->
+                    return template.addButton()
 
-                    valid: (value) ->
+                sgItem: (item) ->
+                    template.item({
+                        value: item.text
+                    })
 
-                        cidrRegx = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(\d|[1-2]\d|3[0-2]))$/
-                        return false if not cidrRegx.test(value)
-                        return true
+                sgOption: (item) ->
+                    template.option({
+                        value: item.text
+                    })
 
         render: ->
 
             if @mode() in ['stack', 'appedit']
                 json = @model.toJSON()
+
+                # add name servers list
+                nameServerList = []
+                nameServers = []
+                _.each @model.get('nameservers'), (value) ->
+                    nameServers.push(value)
+                    nameServerList.push(value)
+                nameServerList = nameServerList.join(',')
+                json = _.extend(json, {
+                    nameServerList: nameServerList,
+                    nameServers: nameServers
+                })
+
                 if @mode() is 'appedit'
                     json = _.extend(json, @getRenderData())
                 @$el.html template.stack(json)
             else
                 @$el.html template.app @getRenderData()
             @
+
+        addItem: (event, value) ->
+            @model.get('nameservers').push(value) if $.trim(value)
+            @render()
+
+        removeItemClicked: (event) ->
+            $target = $(event.currentTarget)
+            value = $target.parents('.item').find('.item-name').attr('data-value')
+            idx = @model.get('nameservers').indexOf(value)
+            @model.get('nameservers').splice(idx, 1) if idx > -1
+            @render()
+
+        removeItem: (event, value) ->
+            idx = @model.get('nameservers').indexOf(value)
+            @model.get('nameservers').splice(idx, 1) if idx > -1
 
         updateAttribute: (event)->
 

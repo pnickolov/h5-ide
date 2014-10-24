@@ -64,7 +64,7 @@ define ['UI.selectize'], () ->
                     validHandle: validHandle
                     render: {
                         option: (item) ->
-                            tplName = @$input.data('select-tpl')
+                            tplName = @$input.data('option-tpl')
                             if tplName and selectTpl and selectTpl[tplName]
                                 return selectTpl[tplName].call(@$input, item)
                             else

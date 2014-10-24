@@ -12,9 +12,9 @@
     </dl>
 </section>
 {{/if}}
-<section class="group required">
+<section class="group required" data-bind="true">
     <label class="name">Subnet Name</label>
-    <input class="selection string" value="{{name}}" data-target="name" />
+    <input class="selection string" value="{{name}}" data-target="name" data-required-rollback="true" data-ignore="true" />
 </section>
 <section class="group required">
     <label class="name">Cidr</label>
@@ -22,29 +22,26 @@
 </section>
 <section class="group">
     <label class="name">DNS Nameservers</label>
-    <select class="selection option mutil show-input item-list" value="{{attachedSGList}}" data-button-tpl="button" data-select-tpl="sgOption" data-item-tpl="sgItem">
-        {{#each sgList}}
-        <option value="{{uid}}">{{name}}</option>
+    <select placeholder="add IP Address of DNS nameservers" class="selection option mutil show-input item-list" value="{{nameServerList}}" data-button-tpl="button" data-option-tpl="sgOption" data-item-tpl="sgItem">
+        {{#each nameServers}}
+        <option value="{{this}}">{{this}}</option>
         {{/each}}
     </select>
 </section>
 
 <!-- {{item}} -->
 <div class="item">
-    <span class="item-name">{{name}}</span>
+    <span class="item-name" data-value="{{value}}">{{value}}</span>
     <div class="item-remove icon-del"></div>
 </div>
 
 <!-- {{option}} -->
 <div class="option">
-    <div class="name">{{name}}</div>
-    <div class="info">
-        {{ruleCount}} Rules, {{memberCount}} Members, {{description}}
-    </div>
+    <div class="name">{{value}}</div>
 </div>
 
 <!-- {{addButton}} -->
-<div>Create <span class="default">New Security Group...</span><span class="new"></span></div>
+<div>Add <span class="default">by inputing IP Address...</span><span class="new"></span></div>
 
 <!-- {{app}} -->
 <section class="group">

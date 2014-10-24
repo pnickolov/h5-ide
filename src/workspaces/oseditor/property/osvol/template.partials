@@ -32,7 +32,7 @@
     {{#if snapshot}}
         <section class="group">
             <label class="name">Snapshot ID</label>
-            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-select-tpl="snapshotOption" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}></select>
+            <select id="property-os-volume-snapshot" data-target="snapshot" class="selection option" data-option-tpl="snapshotOption" {{#if modeIsAppEdit}}disabled="disabled"{{/if}}></select>
         </section>
     {{/if}}
     <section class="group">

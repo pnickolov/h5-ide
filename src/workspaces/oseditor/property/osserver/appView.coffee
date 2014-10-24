@@ -45,6 +45,10 @@ define [
                     null
                 null
 
+        @flavorList = App.model.getOpenstackFlavors( Design.instance().get("provider"), Design.instance().region() )
+        flavorObj = @flavorList.get(appData.flavor_id)
+        appData.vcpus = flavorObj.get("vcpus")
+        appData.ram = Math.round(flavorObj.get("ram") / 1024)
         @$el.html template.appTemplate _.extend(appData, addrData)
         # append sglist
         @$el.append @sgListView.render().el

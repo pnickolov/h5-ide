@@ -102,7 +102,7 @@
         <dt>Floating IP</dt><dd>{{emptyStr floatingIp}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>Flavor</dt><dd>{{emptyStr flavor_id}}</dd>
+        <dt>Flavor</dt><dd>{{emptyStr flavor_id}} (CPU: {{emptyStr vcpus}}, RAM: {{emptyStr ram}}G)</dd>
     </dl>
     <dl class="vertical">
         <dt>Availability Zone</dt><dd>{{emptyStr availability_zone}}</dd>

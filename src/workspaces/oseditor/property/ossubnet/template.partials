@@ -8,7 +8,10 @@
         <dt>Gateway IP</dt><dd>{{emptyStr app.gateway_ip}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>DNS Name Server</dt><dd>{{emptyStr app.dns_nameservers.[0]}}</dd>
+        <dt>DNS Name Server</dt>
+        {{#each app.dns_nameservers}}
+        <dd>{{emptyStr this}}</dd>
+        {{/each}}
     </dl>
 </section>
 {{/if}}
@@ -20,6 +23,7 @@
     <label class="name">Cidr</label>
     <input class="selection string" value="{{cidr}}" data-target="cidr" {{#if modeIsAppEdit}}disabled{{/if}}/>
 </section>
+{{#if modeIsStack}}
 <section class="group">
     <label class="name">DNS Nameservers</label>
     <select placeholder="add IP Address of DNS nameservers" class="selection option mutil show-input item-list" value="{{nameServerList}}" data-button-tpl="button" data-option-tpl="sgOption" data-item-tpl="sgItem">
@@ -28,6 +32,7 @@
         {{/each}}
     </select>
 </section>
+{{/if}}
 
 <!-- {{item}} -->
 <div class="item">
@@ -61,6 +66,9 @@
         <dt>Enable DHCP</dt><dd>{{#if enable_dhcp}}true{{else}}false{{/if}}</dd>
     </dl>
     <dl class="vertical">
-        <dt>DNS Name Server</dt><dd>{{emptyStr dns_nameservers.[0]}}</dd>
+        <dt>DNS Name Server</dt>
+        {{#each dns_nameservers}}
+        <dd>{{emptyStr this}}</dd>
+        {{/each}}
     </dl>
 </section>

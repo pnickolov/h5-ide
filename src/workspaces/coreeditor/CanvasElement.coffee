@@ -95,6 +95,8 @@ define [
         return [ p[3], p[4], p[2] ]
       p
 
+    isPortSignificant : ( portName )-> false
+
     hover    : ( evt )-> CanvasManager.addClass(cn.$el, "hover") for cn in @connections(); return
     hoverOut : ( evt )-> CanvasManager.removeClass(cn.$el, "hover") for cn in @connections(); return
 

@@ -15,6 +15,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       "route"    : [ 70, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 30 ]
     }
 
+    isPortSignificant : ()-> true
+
     iconUrl : ()-> "ide/icon/openstack/cvs-router.png"
 
     # Creates a svg element

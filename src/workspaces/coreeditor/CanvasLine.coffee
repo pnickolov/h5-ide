@@ -16,6 +16,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     point.y = -y
     return
 
+  offsetRect = ( rect, origin )->
+    rect.x1 -= origin.x
+    rect.y1 -= origin.y
+    rect.x2 -= origin.x
+    rect.y2 -= origin.y
+    return
+
   rotateRect = ( rect, angle )->
     tmp = {}
     if angle is 90
@@ -210,6 +217,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           itemCX   : pos_from.x + size_from.width  / 2 * 10
           itemCY   : pos_from.y + size_from.height / 2 * 10
           item     : item_from
+          closer   : item_from.isPortSignificant( port_from.name )
           itemRect :
             x1 : pos_from.x
             x2 : pos_from.x + size_from.width * 10
@@ -225,6 +233,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
           itemCX : pos_to.x + size_to.width  / 2 * 10
           itemCY : pos_to.y + size_to.height / 2 * 10
           item   : item_to
+          closer : item_to.isPortSignificant( port_to.name )
           itemRect :
             x1 : pos_to.x
             x2 : pos_to.x + size_to.width * 10
@@ -265,14 +274,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       start.x = start.y = 0
       end.x -= origin.x
       end.y -= origin.y
-      start.itemRect.x1 -= origin.x
-      start.itemRect.y1 -= origin.y
-      start.itemRect.x2 -= origin.x
-      start.itemRect.y2 -= origin.y
-      end.itemRect.x1   -= origin.x
-      end.itemRect.y1   -= origin.y
-      end.itemRect.x2   -= origin.x
-      end.itemRect.y2   -= origin.y
+      offsetRect( start.itemRect, origin )
+      offsetRect( end.itemRect,   origin )
 
       # 3. Rotate to make start.angle to be 0
       if start.angle isnt 0

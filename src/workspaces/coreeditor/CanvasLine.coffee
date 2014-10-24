@@ -16,6 +16,29 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     point.y = -y
     return
 
+  rotateRect = ( rect, angle )->
+    tmp = {}
+    if angle is 90
+      r = {x1:"y1", y1:"x2", x2:"y2", y2:"x1"}
+    else if angle is 180
+      r = {x1:"x2", y1:"y2", x2:"x1", y2:"y1"}
+    else
+      r = {x1:"y2", y1:"x1", x2:"y1", y2:"x2"}
+
+    for k, v of r
+      tmp[v] = rect[k]
+
+    for k, v of tmp
+      rect[k] = v
+
+    return
+
+  flipRect = ( rect )->
+    t = rect.y1
+    rect.y1 = -rect.y2
+    rect.y2 = -t
+    return
+
   __determineAngle = ( target, endpoint )->
     a = target[2]
     if a is CanvasElement.constant.PORT_4D_ANGLE
@@ -230,7 +253,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
     lineStyle : ()-> 4
 
-    generateCurvePath : ( start, end )->
+    genericGenerate : ( start, end, algorithms )->
       # 1. Origin
       origin =
         x : start.x
@@ -242,12 +265,23 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       start.x = start.y = 0
       end.x -= origin.x
       end.y -= origin.y
+      start.itemRect.x1 -= origin.x
+      start.itemRect.y1 -= origin.y
+      start.itemRect.x2 -= origin.x
+      start.itemRect.y2 -= origin.y
+      end.itemRect.x1   -= origin.x
+      end.itemRect.y1   -= origin.y
+      end.itemRect.x2   -= origin.x
+      end.itemRect.y2   -= origin.y
 
       # 3. Rotate to make start.angle to be 0
       if start.angle isnt 0
         rotate(end, -start.angle)
         end.angle -= start.angle
         if end.angle < 0 then end.angle += 360
+
+        rotateRect( start.itemRect, start.angle )
+        rotateRect( end.itemRect,   start.angle )
 
       # 4. Flip end, if end is in Quadrant 3 or Quadrant 4
       fliped = false
@@ -257,8 +291,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         if end.angle is 90 then end.angle = 270
         else if end.angle is 270 then end.angle = 90
 
+        flipRect( start.itemRect )
+        flipRect( end.itemRect )
+
       # 5. Pick the curve algorithm we want
-      result = @["generateCurvePath" + end.angle ]( start, end )
+      result = algorithms[ "" + end.angle ]( start, end )
 
       # 6. Flip and rotate back.
       result.push end
@@ -270,98 +307,126 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         point.x += origin.x
         point.y += origin.y
 
-      # offset = ( dir, match )->
-      #   for point in result
-      #     if point[dir] is match
-      #       point[dir] += 0.5
-      #   return
+      result.unshift origin
+      result
 
-      # endX = result[result.length - 1].x
-      # endY = result[result.length - 1].y
-      # if start.angle % 180 is 0
-      #   offset( "y", origin.y )
-      #   origin.y += 0.5
-      # else
-      #   offset( "x", origin.x )
-      #   origin.x += 0.5
+    generateCurvePath : ( start, end )->
+      result = @genericGenerate( start, end, @curveAlgorithms )
+      origin = result.shift()
 
-      # if originalEndAngle % 180 is 0
-      #   offset( "y", endY )
-      # else
-      #   offset( "x", endX )
-
-      # 7. Generate SVG Path
+      # Generate SVG Path
       if result.length is 3
         "M#{origin.x} #{origin.y}C#{result[0].x} #{result[0].y} #{result[1].x} #{result[1].y} #{result[2].x} #{result[2].y}"
       else
         "M#{origin.x} #{origin.y}L#{result[0].x} #{result[0].y}C#{result[1].x} #{result[1].y} #{result[2].x} #{result[2].y} #{result[3].x} #{result[3].y}L#{result[4].x} #{result[4].y}"
 
-    generateCurvePath0  : ( start, end )->
-      x   = end.x
-      y   = Math.abs(end.y)
-      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
-      rad = Math.PI / 180 * 30
-      cos = dis * Math.cos( rad )
-      sin = dis * Math.sin( rad )
-      if x > 0
-        [{x:cos,y:-sin},{x:end.x+sin,y:end.y+cos}]
-      else if x is 0
-        [{x:cos,y:-sin},{x:end.x+cos,y:end.y+sin}]
-      else
-        [{x:sin,y:-cos},{x:end.x+cos,y:end.y+sin}]
-
-    generateCurvePath90 : ( start, end )->
-      x   = end.x
-      y   = Math.abs(end.y)
-      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) )
-      rad = Math.PI / 180 * 30
-      dis /= if x > 0 then 4 else 2
-      c2x = dis * Math.cos( rad )
-      c2y = dis * Math.sin( rad )
-      if x > 0
-        [{x:end.x/2,y:0},{x:end.x-c2x,y:end.y-c2y}]
-      else
-        [{x:sin,y:-cos},{x:end.x+cos,y:end.y-sin}]
-
-    generateCurvePath180 : ( start, end )->
-      if end.x > 0
-        return [{x:end.x/2,y:0},{x:end.x/2,y:end.y}]
-
-      x   = end.x
-      y   = Math.abs(end.y)
-      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 3
-      rad = Math.PI / 180 * 40
-      sin = dis * Math.sin( rad )
-      cos = dis * Math.cos( rad )
-      [{x:sin,y:-cos},{x:end.x-sin,y:end.y+cos}]
-
-    generateCurvePath270 : ( start, end )->
-      x = end.x
-      y = Math.abs(end.y)
-
-      if x > 0
-        if Math.abs(x - y) < 10
-          return [{x:x,y:0},{x:x,y:end.y}]
-
-        if x < 20
-          return [{x:0,y:0},{x:0,y:0},{x:x,y:0},{x:x,y:-x}]
-        else if y < 20
-          return [{x:x-y,y:0},{x:x-y,y:0},{x:x,y:0},{x:x,y:end.y}]
-
-        if x < y
-          return [{x:x,y:0},{x:x,y:end.y/2}]
+    curveAlgorithms :
+      "0" : ( start, end )->
+        x   = end.x
+        y   = Math.abs(end.y)
+        dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
+        rad = Math.PI / 180 * 30
+        cos = dis * Math.cos( rad )
+        sin = dis * Math.sin( rad )
+        if x > 0
+          [{x:cos,y:-sin},{x:end.x+sin,y:end.y+cos}]
+        else if x is 0
+          [{x:cos,y:-sin},{x:end.x+cos,y:end.y+sin}]
         else
-          return [{x:x/2,y:0},{x:x,y:0}]
+          [{x:sin,y:-cos},{x:end.x+cos,y:end.y+sin}]
 
-      dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
-      rad = Math.PI / 180 * 30
-      c1x = dis * Math.cos( rad )
-      c1y = dis * Math.sin( rad )
-      [{x:c1x,y:-c1y},{x:end.x,y:end.y/2}]
+      "90" : ( start, end )->
+        x   = end.x
+        y   = Math.abs(end.y)
+        dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) )
+        rad = Math.PI / 180 * 30
+        dis /= if x > 0 then 4 else 2
+        c2x = dis * Math.cos( rad )
+        c2y = dis * Math.sin( rad )
+        if x > 0
+          [{x:end.x/2,y:0},{x:end.x-c2x,y:end.y-c2y}]
+        else
+          [{x:sin,y:-cos},{x:end.x+cos,y:end.y-sin}]
+
+      "180" : ( start, end )->
+        if end.x > 0
+          return [{x:end.x/2,y:0},{x:end.x/2,y:end.y}]
+
+        x   = end.x
+        y   = Math.abs(end.y)
+        dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 3
+        rad = Math.PI / 180 * 40
+        sin = dis * Math.sin( rad )
+        cos = dis * Math.cos( rad )
+        [{x:sin,y:-cos},{x:end.x-sin,y:end.y+cos}]
+
+      "270" : ( start, end )->
+        x = end.x
+        y = Math.abs(end.y)
+
+        if x > 0
+          if Math.abs(x - y) < 10
+            return [{x:x,y:0},{x:x,y:end.y}]
+
+          if x < 20
+            return [{x:0,y:0},{x:0,y:0},{x:x,y:0},{x:x,y:-x}]
+          else if y < 20
+            return [{x:x-y,y:0},{x:x-y,y:0},{x:x,y:0},{x:x,y:end.y}]
+
+          if x < y
+            return [{x:x,y:0},{x:x,y:end.y/2}]
+          else
+            return [{x:x/2,y:0},{x:x,y:0}]
+
+        dis = Math.sqrt( Math.pow(x,2) + Math.pow(y,2) ) / 4
+        rad = Math.PI / 180 * 30
+        c1x = dis * Math.cos( rad )
+        c1y = dis * Math.sin( rad )
+        [{x:c1x,y:-c1y},{x:end.x,y:end.y/2}]
+
 
     generateElbowPath : ( start, end )->
-      return @getElbowPathFromPoints( @getElbowPoints(start, end).result )
+      result = @genericGenerate( start, end, @elbowAlgorithms )
+      @getElbowPathFromPoints( result )
 
+    elbowAlgorithms :
+      "0" : ( start, end )->
+        x = Math.max( start.itemRect.x2, end.itemRect.x2 ) + 20
+        [{x:x,y:start.y}, {x:x,y:end.y}]
+
+      "90" : ( start, end )->
+        x = Math.max( start.itemRect.x2, end.itemRect.x2 ) + 20
+        y = end.itemRect.y1 - 20
+        [{x:x,y:start.y}, {x:x,y:y}, {x:end.x,y:y}]
+
+      "180" : ( start, end )->
+        if end.x <= 0
+          x  = start.itemRect.x2 + 20
+          y  = end.itemRect.y2   + 20
+          x2 = end.itemRect.x1   - 20
+
+          [{x:x,y:start.y}, {x:x,y:y}, {x:x2, y:y},{x:x2,y:end.y}]
+        else
+          if start.closer
+            x = start.itemRect.x2 + 20
+          else if end.closer
+            x = end.itemRect.x1 - 20
+          else
+            x = Math.round( ( end.itemRect.x1 - start.itemRect.x2 ) / 2 ) + start.itemRect.x2
+
+          [{x:x,y:start.y}, {x:x,y:end.y}]
+
+      "270" : ( start, end )->
+        if end.x > 0
+          return [{x:end.x,y:start.y}]
+
+        x = start.itemRect.x + 20
+        y = end.itemRect.y + 20
+
+        [{x:x, y:start.y},{x:x,y:y},{x:end.x,y:y}]
+
+
+    generateElbowPathAdv : ( start, end )->
       s1 = @getElbowPoints( start, end )
       s2 = @getElbowPoints( end, start )
 
@@ -681,7 +746,6 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         lineData.addResult( toX, lineData.end.y, lastArea )
 
       return
-
 
     optimizeElbowPoints : ( lineData )->
       optPoints = []

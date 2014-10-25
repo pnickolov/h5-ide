@@ -4,8 +4,8 @@
 </div>
 <div class="option-group">
     <section class="group">
-        {{#if list}}
-        <select class="selection option mutil show-input item-list" data-target="hmlist" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
+        {{#ifLogic list 'or' mustShowList}}
+        <select placeholder="add health monitor..." class="selection option mutil show-input item-list" data-target="hmlist" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
             {{#each list}}
             <option value="{{id}}">{{name}}</option>
             {{/each}}
@@ -14,7 +14,7 @@
         <div class="os-property-message">
             No Health Monitor
         </div>
-        {{/if}}
+        {{/ifLogic}}
     </section>
 </div>
 

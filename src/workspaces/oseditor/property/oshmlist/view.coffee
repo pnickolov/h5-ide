@@ -70,9 +70,11 @@ define [
 
         refreshList: () ->
 
+            list = @targetModel.get("healthMonitors").map (hm)-> hm.toJSON()
             @$el.html @getTpl().stack({
                 activeList: @targetModel.get("healthMonitors").map( (hm) -> hm.id ).join ','
-                list: @targetModel.get("healthMonitors").map (hm)-> hm.toJSON()
+                list: list
+                mustShowList: (not @isApp)
             })
 
         renderApp: -> @$el.html @getTpl().stack list: @getAppData()

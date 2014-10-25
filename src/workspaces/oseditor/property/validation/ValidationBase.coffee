@@ -14,6 +14,10 @@ define [
         # Consumer will call this method first to initialize validation.
         init: () ->
 
+        limits:
+
+            name: '^[^\\s]*$'
+
         name: (value) ->
 
             resModel = @model

@@ -72,10 +72,16 @@
             openOnFocus: false,
             plugins: ['custom_selection'],
             onInitialize: function() {
-              var value;
+              var dataTarget, value;
               value = this.$input.attr('value');
               if (value) {
                 this.setValue(value.split(','), true);
+              }
+              dataTarget = this.$input.attr('data-target');
+              if (validationInstance && dataTarget) {
+                this.$control_input.attr('data-selection-id', MC.guid());
+                this.$control_input.attr('data-target', dataTarget);
+                this.$control_input.selectionValid(validationInstance);
               }
               return $valueDom.trigger('selectized', this);
             },

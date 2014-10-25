@@ -5,7 +5,8 @@ define [
     'CloudResources'
     '../ossg/view'
     'UI.selection'
-], ( constant, OsPropertyView, template, CloudResources, SgView, bindSelection ) ->
+    '../validation/ValidationBase'
+], ( constant, OsPropertyView, template, CloudResources, SgView, bindSelection, ValidationBase ) ->
 
     OsPropertyView.extend {
 
@@ -63,7 +64,10 @@ define [
 
         render: ->
 
-            bindSelection(@$el, @selectTpl)
+            SGValid = ValidationBase.getClass(constant.RESTYPE.OSSG)
+            bindSelection(@$el, @selectTpl, new SGValid({
+                view: @
+            }))
             @refreshList()
             @
 

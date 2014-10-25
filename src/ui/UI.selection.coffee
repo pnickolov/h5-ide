@@ -58,9 +58,20 @@ define ['UI.selectize'], () ->
                     openOnFocus: false,
                     plugins: ['custom_selection']
                     onInitialize: () ->
+
                         value = @$input.attr('value')
                         @setValue(value.split(','), true) if value
+
+                        # init valid
+                        dataTarget = @$input.attr('data-target')
+                        if validationInstance and dataTarget
+
+                            @$control_input.attr('data-selection-id', MC.guid())
+                            @$control_input.attr('data-target', dataTarget)
+                            @$control_input.selectionValid(validationInstance)
+
                         $valueDom.trigger 'selectized', @
+
                     validHandle: validHandle
                     render: {
                         option: (item) ->

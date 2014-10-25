@@ -8,6 +8,7 @@ define [
         limits:
 
             port: ValidationBase.limit.portICMPRange
+            sglist: '^[^\\s]*$'
 
         port: (value, $dom) ->
 

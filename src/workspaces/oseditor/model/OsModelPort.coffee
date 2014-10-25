@@ -96,7 +96,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
               ip_address : @get("ip")
             }]
 
-      if @isEmbedded()
+      if not @isEmbedded()
         json.layout = @generateLayout()
 
       json

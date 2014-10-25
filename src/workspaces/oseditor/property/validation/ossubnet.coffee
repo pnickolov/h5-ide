@@ -8,6 +8,7 @@ define [
         limits:
 
             cidr: ValidationBase.limit.cidrv4
+            iplist: ValidationBase.limit.ipv4
 
         cidr: (value) ->
 

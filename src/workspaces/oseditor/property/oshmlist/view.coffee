@@ -6,7 +6,8 @@ define [
     'CloudResources'
     '../oshm/view'
     'UI.selection'
-], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, HmView, bindSelection ) ->
+    '../validation/ValidationBase'
+], ( constant, OsPropertyView, TplStack, TplApp, CloudResources, HmView, bindSelection, ValidationBase ) ->
 
     OsPropertyView.extend {
 
@@ -55,7 +56,10 @@ define [
 
         render: ->
 
-            bindSelection(@$el, @selectTpl)
+            HMValid = ValidationBase.getClass(constant.RESTYPE.OSHM)
+            bindSelection(@$el, @selectTpl, new HMValid({
+                view: @
+            }))
 
             if @isApp
                 @renderApp()

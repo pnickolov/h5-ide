@@ -34,7 +34,7 @@ define [
                         badSbs.push sb
 
 
-            sbNames = _.map badSbs, ( sb ) ->
+            sbNames = _.map _.uniq(badSbs), ( sb ) ->
                 "<span class='validation-tag tag-ossubnet'>#{sb.get( 'name' )}</span>"
             .join( ', ' )
 

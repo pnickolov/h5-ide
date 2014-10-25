@@ -376,7 +376,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
                 # for ip_address, protocol, port
                 resAttrDataAry = resAttrDataAry.concat([
-                    _genRefObj(name, uid, 'cidr'),
+                    _genRefObj(name, uid, 'ip_address'),
                     _genRefObj(name, uid, 'protocol'),
                     _genRefObj(name, uid, 'port')
                 ])

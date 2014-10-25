@@ -48,8 +48,8 @@ define [
                     nameServers: nameServers
                 })
 
-                if @mode() is 'appedit'
-                    json = _.extend(json, @getRenderData())
+                # if @mode() is 'appedit'
+                json = _.extend(json, @getRenderData())
                 @$el.html template.stack(json)
             else
                 @$el.html template.app @getRenderData()

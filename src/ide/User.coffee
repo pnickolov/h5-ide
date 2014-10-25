@@ -130,7 +130,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if paymentInfo?.next_reset_time
         App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
 
-      ApiRequestR("payment_self").then (result)->
+      if App.user.get("firstName") and App.user.get("lastName") then ApiRequestR("payment_self").then (result)->
         paymentInfo = {
           creditCard: result.card
           billingCircle: new Date(result.current_period_ends_at || null)

@@ -209,10 +209,13 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         last_name  = $("#AccountLastName").val()  || ""
 
         if first_name and last_name
+          $("#AccountUpdateFullName").attr("disabled", true)
           App.user.changeName( first_name, last_name ).then (result)->
             that.hideFullName()
             $(".fullNameText").text(first_name + " " + last_name)
-
+          , (err)->
+            $("#AccountUpdateFullName").attr("disabled", false)
+            console.error("Change Full name Failed due to ->", err)
 
       changeEmail : ()->
         email = $("#AccountNewEmail").val() || ""

@@ -5,7 +5,7 @@
 <div class="option-group">
     <section class="group">
         {{#if list}}
-        <select class="selection option mutil show-input item-list" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
+        <select class="selection option mutil show-input item-list" data-target="hmlist" value="{{activeList}}" data-button-tpl="button" data-item-tpl="getItem" {{#if isApp}}disabled{{/if}}>
             {{#each list}}
             <option value="{{id}}">{{name}}</option>
             {{/each}}

@@ -16,7 +16,7 @@ define [
 
         limits:
 
-            name: '^[^\\s]*$'
+            name: '^[a-zA-Z0-9][a-zA-Z0-9-]*$'
 
         name: (value) ->
 
@@ -126,6 +126,8 @@ define [
             cidrv4: '^[0-9/.]*$'
 
             number: '^-?[0-9]*$|^-?[0-9]+\\.[0-9]*$'
+
+            osname: '^[a-zA-Z0-9][a-zA-Z0-9-]*$'
 
     }
 

@@ -22,6 +22,7 @@ define [
             delay: ValidationBase.limit.positive
             timeout: ValidationBase.limit.positive
             maxRetries: ValidationBase.limit.positive
+            hmlist: ValidationBase.limit.osname
 
         delay: ValidationBase.validation.range4G()
         timeout: ValidationBase.validation.range4G()

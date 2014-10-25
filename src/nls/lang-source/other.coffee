@@ -617,8 +617,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "完善您的资料"
 
     PROFILE_UPDATED_SUCCESSFULLY:
-      en: "Your profile updated successfully!"
-      zh: "您的资料已经成功更新!"
+      en: "Your profile updated successfully"
+      zh: "您的资料已经成功更新"
 
     FIRST_NAME:
       en: "First Name"

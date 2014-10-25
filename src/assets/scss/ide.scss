@@ -4162,6 +4162,9 @@ div.modal-text-highlight{
 }
 
 .complete-fullname{
+
+  margin-top: 30px;
+
   h3{
     text-align: center;
     margin-bottom: 40px;
@@ -4185,7 +4188,12 @@ div.modal-text-highlight{
     font-size: 18px;
   }
   p.information{
+	color: #acacc6;
+
     text-align: center;
+    em {
+		text-decoration: underline;
+    }
   }
 }
 

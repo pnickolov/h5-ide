@@ -9150,7 +9150,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     text-decoration: underline; }
 
 .openstack .OEPanelRight {
-  width: 280px;
+  width: 288px;
   font-size: 12px; }
   .openstack .OEPanelRight .panel-body > div > div {
     position: absolute;
@@ -9172,7 +9172,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     top: 0;
     bottom: 0;
     overflow: auto;
-    right: 280px;
+    right: 288px;
     background: #202027;
     min-width: 270px; }
     .openstack .OEPanelRight .panel-float > div {

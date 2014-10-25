@@ -182,6 +182,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         $(".accountFullNameRO").show()
         $("#AccountFullNameWrap").hide()
         $("#AccountFirstName, #AccountLastName").val("")
+        $("#AccountUpdateFullName").attr("disabled", false)
 
       updateEmailBtn : ()->
         old_pwd = $("#AccountNewEmail").val() || ""
@@ -213,7 +214,10 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           App.user.changeName( first_name, last_name ).then (result)->
             that.hideFullName()
             $(".fullNameText").text(first_name + " " + last_name)
+            if result
+              notification "info", lang.NOTIFY.UPDATED_FULLNAME_SUCCESS
           , (err)->
+            notification "error", lang.NOTIFY.UPDATED_FULLNAME_FAIL
             $("#AccountUpdateFullName").attr("disabled", false)
             console.error("Change Full name Failed due to ->", err)
 

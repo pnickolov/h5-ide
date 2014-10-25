@@ -250,10 +250,20 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     changeName : ( firstName, lastName )->
       self = @
+      defer = new Q.defer()
+      if firstName is self.get("firstName") and lastName is self.get("lastName")
+        defer.resolve()
       ApiRequest("account_update_account", { attributes : {
         first_name : firstName
         last_name  : lastName
-      }}).then ( res )-> self.userInfoAccuired( res )
+      }}).then ( res )->
+        self.userInfoAccuired( res )
+        defer.resolve(res)
+      , (err)->
+        defer.reject(err)
+
+      defer.promise
+
 
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {

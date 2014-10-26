@@ -8,7 +8,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
   Backbone.Model.extend {
 
     initialize : ()->
-      region = 'beijing'
+      region = App.user.get("default_region")
 
       @listenTo CloudResources( constant.RESTYPE.OSSERVER, region ), "update", @onRegionResChanged [ 'OSSERVER', 'FIP' ]
       @listenTo CloudResources( constant.RESTYPE.OSPORT, region ), "update", @onRegionResChanged [ 'FIP' ]
@@ -24,6 +24,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
 
     ### Cloud Resources ###
     fetchOsResources : ( region = 'beijing')->
+      region = App.user.get("default_region")
       CloudResources( constant.RESTYPE.OSSERVER, region ).fetch()
       CloudResources( constant.RESTYPE.OSPORT, region ).fetch()
       CloudResources( constant.RESTYPE.OSVOL, region ).fetch()

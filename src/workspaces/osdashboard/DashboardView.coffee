@@ -38,7 +38,7 @@ define [
 
     initialize : ()->
       @opsListTab = "stack"
-      @region     = "beijing"
+      @region     = App.user.get("default_region")
       @lastUpdate = +(new Date())
 
       @setElement( $(Template.frame()).eq(0).appendTo("#main") )
@@ -141,7 +141,8 @@ define [
 
     updateResourceCount : (init)->
       that = @
-      quotaMap = App.model.getOpenstackQuotas("awcloud")
+      provider = App.user.get("default_provider")
+      quotaMap = App.model.getOpenstackQuotas(provider)
       $nav = $(".resource-list-nav")
       resourceMap = {
         elbs: "Neutron::port"
@@ -184,7 +185,10 @@ define [
       $(".resource-list-body").html( tpl )
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )-> App.createOps( "beijing", "openstack", "awcloud" )
+    createStack : ( event )->
+      region = App.user.get("default_region")
+      provider = App.user.get("default_provider")
+      App.createOps( region, "openstack", provider )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 

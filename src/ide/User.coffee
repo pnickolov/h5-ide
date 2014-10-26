@@ -38,6 +38,8 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         tokens       : result.tokens || []
         defaultToken : ""
         paymentState : result.payment_state || "unpay"
+        default_provider: result.default_provider
+        default_region  : result.default_region
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""

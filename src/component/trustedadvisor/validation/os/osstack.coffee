@@ -40,7 +40,8 @@ define [
             # Nova::security_groups: 10
 
             region = Design.instance().region()
-            quotaMap = App.model.getOpenstackQuotas('awcloud')
+            provider = App.user.get("default_provider")
+            quotaMap = App.model.getOpenstackQuotas(provider)
 
             existMap = {}
             # existMap[constant.RESTYPE.OSSERVER]     = CloudResources( constant.RESTYPE.OSSERVER, region ).length

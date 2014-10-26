@@ -119,9 +119,10 @@ define [
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-
-      osData  = ApiRequestOs("os_os",   {provider:"awcloud"}).then (res)-> self.__parseOsData( res )
-      osQuota = ApiRequestOs("os_quota",{provider:"awcloud"}).then (res)-> self.__parseOsQuota( res, "awcloud" )
+      #provider = App.user.get("default_provider")
+      provider = "awcloud_gz"
+      osData  = ApiRequestOs("os_os",   {provider:provider}).then (res)-> self.__parseOsData( res )
+      osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res, provider )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.

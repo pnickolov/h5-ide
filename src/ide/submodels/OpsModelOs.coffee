@@ -18,7 +18,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
       @attributes.cloudType = "openstack"
       if not @get("provider")
-        @attributes.provider = if options.jsonData.provider then options.jsonData.provider else "awcloud"
+        @attributes.provider = if options.jsonData.provider then options.jsonData.provider else App.user.get("default_provider")
       return
 
     getMsrId : ()->

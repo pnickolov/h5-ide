@@ -411,6 +411,11 @@ define [
           hasRemovedComps = true
       notification.push "Note: deleted resources cannot be restored." unless not hasRemovedComps
 
+      hasNewServer = false
+      _.each differ.addedComps, (e)->
+        if e.type is constant.RESTYPE.OSSERVER
+          hasNewServer = true
+
       @updateModal = new Modal
         title: lang.IDE.UPDATE_APP_MODAL_TITLE
         template: MC.template.updateApp {
@@ -423,7 +428,7 @@ define [
         cancel: "Close"
       cloudType = that.workspace.opsModel.get('cloudType')
       that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
-      appAction.renderKpDropdown(that.updateModal, cloudType)
+      if hasNewServer then appAction.renderKpDropdown(that.updateModal, cloudType)
       that.updateModal.on 'confirm', ->
         if not App.user.hasCredential()
           App.showSettings App.showSettings.TAB.Credential

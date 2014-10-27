@@ -5464,7 +5464,7 @@ button#property-app-keypair {
 
 .OEPanelRight {
   right: 0;
-  width: 280px;
+  width: 288px;
   z-index: 8;
   -webkit-transition: right 0.1s ease-out;
   -moz-transition: right 0.1s ease-out;
@@ -5472,7 +5472,7 @@ button#property-app-keypair {
   -o-transition: right 0.1s ease-out;
   transition: right 0.1s ease-out; }
   .OEPanelRight.hidden {
-    right: -280px; }
+    right: -288px; }
     .OEPanelRight.hidden .HideOEPanelRight:before {
       content: "\F125"; }
   .OEPanelRight.state.hidden {
@@ -5536,7 +5536,7 @@ button#property-app-keypair {
     background: none; }
 
 .OEPanelRight:not(.hidden) ~ .OEMiddleWrap {
-  right: 280px; }
+  right: 288px; }
 
 .OEPanelRight:not(.hidden).state ~ .OEMiddleWrap {
   right: 654px; }
@@ -7149,7 +7149,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

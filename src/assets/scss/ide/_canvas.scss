@@ -43,9 +43,8 @@
     }
     .dbreplicate { display:none; }
     .dbrestore { display:none; }
-    .fip-status { cursor: default; }
 
-    .fip-status {
+    .cvs-hover {
       cursor : default;
       > .hover  { display : none; }
       > .normal { display : block; }
@@ -157,11 +156,12 @@
   fill: #74B1FD;
   pointer-events:none;
 }
-.volume-image, .eip-status, .fip-status {
+.volume-image, .eip-status {
   cursor: pointer;
 }
 
-.fip-status {
+.cvs-hover {
+  cursor: pointer;
   > .hover  { display : none; }
 
   &:hover > .normal { display : none; }

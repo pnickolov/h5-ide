@@ -29,9 +29,9 @@ define [
     }
 
     events :
-      "mousedown .fip-status"   : "toggleFip"
-      "mousedown .volume-image" : "showVolume"
-      "click .volume-image"     : "suppressEvent"
+      "mousedown .fip-status" : "toggleFip"
+      "mousedown .vol-image"  : "showVolume"
+      "click .vol-image"      : "suppressEvent"
 
     suppressEvent : ()-> false
 
@@ -96,13 +96,17 @@ define [
         .attr('data-tooltip': @model.getImage().name)
 
         # FIP
-        svg.group().move(43, 50).classes("fip-status tooltip").add([
+        svg.group().move(43, 50).classes("fip-status cvs-hover tooltip").add([
           svg.image("").size(26,21).classes("normal")
           svg.image("").size(26,21).classes("hover")
         ])
 
-        svg.image( MC.IMG_URL+ "ide/icon/icn-vol.png", 29, 24 ).move(22, 52).classes('volume-image')
-        svg.text( "" ).move(36, 42).classes('volume-number')
+        # Volume
+        svg.group().move(15, 46).classes("vol-image cvs-hover tooltip").add([
+          svg.image("").size(22,26).classes("normal")
+          svg.image("").size(22,26).classes("hover")
+        ])
+        svg.plain("").move(26, 60).classes('volume-number')
 
         @createPortElement().attr({
           'class'        : 'port port-blue tooltip'
@@ -155,7 +159,20 @@ define [
     updateVolume: ->
       m = @model
       volumes = m.volumes()
-      @$el.children('.volume-number').find('tspan').text(volumes.length || 0)
+      @$el.children('.volume-number').text(volumes.length || 0)
+
+      if volumes.length is 0
+        img1 = 'ide/icon-os/cvs-vol-e-n.png'
+        img2 = 'ide/icon-os/cvs-vol-e-h.png'
+      else
+        img1 = 'ide/icon-os/cvs-vol-ne-n.png'
+        img2 = 'ide/icon-os/cvs-vol-ne-h.png'
+
+      $vol = @$el.children(".vol-image")
+      CanvasManager.update( $vol.find(".normal"), img1, "href" )
+      CanvasManager.update( $vol.find(".hover"),  img2, "href" )
+      return
+
 
     showVolume : ()->
       owner = @model

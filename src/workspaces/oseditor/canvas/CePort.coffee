@@ -52,7 +52,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
         svg.use("os_port")
 
         # FIP
-        svg.group().move(33, 29).classes("fip-status tooltip").add([
+        svg.group().move(33, 29).classes("fip-status cvs-hover tooltip").add([
           svg.image("").size(26,21).classes("normal")
           svg.image("").size(26,21).classes("hover")
         ])

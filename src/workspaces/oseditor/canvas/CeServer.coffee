@@ -31,6 +31,7 @@ define [
     events :
       "mousedown .fip-status" : "toggleFip"
       "mousedown .vol-image"  : "showVolume"
+      "click .fip-status"     : "suppressEvent"
       "click .vol-image"      : "suppressEvent"
 
     suppressEvent : ()-> false

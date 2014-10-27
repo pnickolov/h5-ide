@@ -11,7 +11,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
     defaultSize : [ 13, 13 ]
 
     portDirMap : {
-      "route" : "horizontal"
+      "route" : "vertical"
     }
 
     listenModelEvents : ()->
@@ -21,14 +21,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
 
     portPosition : ( portName, isAtomic )->
       m = @model
-      portY = m.height() * CanvasView.GRID_HEIGHT / 2 - 5
+      portX = m.width() * CanvasView.GRID_WIDTH / 2
 
-      if portName is "route-left"
-        [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      if portName is "route-top"
+        [ portX, -5, CanvasElement.constant.PORT_UP_ANGLE ]
       else
-        x = m.width() * CanvasView.GRID_WIDTH + 4
-        if isAtomic then x += 8
-        [ x, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+        [ portX, m.height() * CanvasView.GRID_HEIGHT + 5, CanvasElement.constant.PORT_DOWN_ANGLE ]
 
     # Creates a svg element
     create : ()->
@@ -36,18 +34,20 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
 
       svgEl = @canvas.appendSubnet( @createGroup() )
       svgEl.add([
-        svg.use("port_right").attr({
+        @createPortElement().attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
-          'data-alias'   : 'route-left'
+          'data-alias'   : 'route-top'
           'data-tooltip' : lang.IDE.PORT_TIP_L
         })
-        svg.use("port_right").attr({
+
+        @createPortElement().attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
-          'data-alias'   : 'route-right'
-          'data-tooltip' : lang.IDE.PORT_TIP_M
+          'data-alias'   : 'route-bottom'
+          'data-tooltip' : lang.IDE.PORT_TIP_L
         })
+
         svg.circle(8).move(5, 6).classes('public').attr("fill","#009EFF")
       ])
       m = @model

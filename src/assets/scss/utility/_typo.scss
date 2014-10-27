@@ -26,6 +26,10 @@
 	font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
 }
 
+@mixin font-major {
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
 body {
 	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;;
 	color       : desaturate(lighten($light-p, 30%),10%);

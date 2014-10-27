@@ -107,6 +107,7 @@
  .node-background {
   fill-opacity : 0.2;
   fill         : #D8DAEB;
+  @include transit($method:fill-opacity, $dur:.3s);
 }
 
 .group-resizer {
@@ -186,7 +187,8 @@
 
 /* port style */
 .port {
-  stroke-width:0;
+  stroke-width : 0;
+  cursor       : pointer;
 }
 .port-blue {
   fill: #6DAEFE;

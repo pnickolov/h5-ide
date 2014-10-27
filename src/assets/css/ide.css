@@ -101,7 +101,8 @@ select,
 textarea {
   margin: 0;
   font-size: 100%;
-  vertical-align: middle; }
+  vertical-align: middle;
+  font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
 
 button,
 input {
@@ -5723,7 +5724,10 @@ button#property-app-keypair {
 
 .node-background {
   fill-opacity: 0.2;
-  fill: #D8DAEB; }
+  fill: #D8DAEB;
+  -webkit-transition: fill-opacity 0.3s ease-in-out;
+  -o-transition: fill-opacity 0.3s ease-in-out;
+  transition: fill-opacity 0.3s ease-in-out; }
 
 .group-resizer {
   fill: transparent; }
@@ -5792,7 +5796,8 @@ button#property-app-keypair {
 
 /* port style */
 .port {
-  stroke-width: 0; }
+  stroke-width: 0;
+  cursor: pointer; }
 
 .port-blue {
   fill: #6DAEFE;
@@ -7164,8 +7169,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9614,11 +9618,28 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   padding: 10px 0;
   position: absolute;
   z-index: 5;
-  background: #2a2e31;
+  background: #202027;
   width: 100%;
   height: 38px; }
   .dash-header > .btn {
-    margin-left: 15px; }
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    overflow: hidden;
+    text-align: left;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 16px 0 0;
+    margin-left: 10px; }
+    .dash-header > .btn:before {
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      float: left;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 3px 0 0 3px;
+      margin-right: 10px; }
 
 .ops-list-switcher {
   cursor: pointer; }

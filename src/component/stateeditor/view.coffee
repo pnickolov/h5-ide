@@ -142,8 +142,8 @@ define [ 'component/stateeditor/model',
         __renderEmpty: ( type ) ->
 
             tipSet =
-                disalbed : 'VisualOps is disabled.'
-                void     : "The component does'nt have state editor."
+                disalbed : 'Instance State is disabled.'
+                void     : "Edit Instance State by selecting."
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
                 group_in_app : 'View states and log by selecting individual instance.'

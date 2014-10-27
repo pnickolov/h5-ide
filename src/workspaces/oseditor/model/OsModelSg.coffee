@@ -65,7 +65,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
         ruleLength = rules.length
         rules = _.filter rules, (rule, idx) ->
             for i in [idx + 1...ruleLength]
-                return false if _.isEqual(rule, rules[idx])
+                return false if _.isEqual(rule.toJSON(), rules[i].toJSON())
             return true
 
         {

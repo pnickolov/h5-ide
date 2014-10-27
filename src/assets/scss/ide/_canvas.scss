@@ -100,8 +100,13 @@
   fill: none;
 }
 
-.group, .node-background {
-  fill:transparent;
+.group {
+  fill: transparent;
+}
+
+ .node-background {
+  fill-opacity : 0.2;
+  fill         : #D8DAEB;
 }
 
 .group-resizer {
@@ -121,7 +126,7 @@
 }
 
 .canvasel:hover > .node-background {
-  fill-opacity: 0.5;
+  fill-opacity: 0.4;
   fill: #D8DAEB;
 }
 
@@ -129,7 +134,7 @@
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
     > .node-background {
-      fill-opacity: 1;
+      fill-opacity: .8;
       fill : #D8DAEB;
     }
   }

@@ -5718,8 +5718,12 @@ button#property-app-keypair {
 .node-label-name-bg {
   fill: none; }
 
-.group, .node-background {
+.group {
   fill: transparent; }
+
+.node-background {
+  fill-opacity: 0.2;
+  fill: #D8DAEB; }
 
 .group-resizer {
   fill: transparent; }
@@ -5743,11 +5747,11 @@ button#property-app-keypair {
     cursor: nwse-resize; }
 
 .canvasel:hover > .node-background {
-  fill-opacity: 0.5;
+  fill-opacity: 0.4;
   fill: #D8DAEB; }
 
 .canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
-  fill-opacity: 1;
+  fill-opacity: .8;
   fill: #D8DAEB; }
 .canvas-view .canvasel.selected > .node-label-name-bg {
   fill: #659FFF; }
@@ -9390,7 +9394,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     #OpsEditor .OEPanelRight.property .os-property-message h5, #OpsEditor .OEPanelRight.config .os-property-message h5 {
       text-align: center;
       margin-left: -20px; }
-  #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
+  #OpsEditor .OEPanelRight.property .property-os-image-icon, #OpsEditor .OEPanelRight.config .property-os-image-icon {
     vertical-align: middle;
     margin: -2px 2px -2px 2px;
     width: 30px;

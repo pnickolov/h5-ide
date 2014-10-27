@@ -59,6 +59,15 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     serialize : ()->
       if @getMemberList().length
+        rules = @get("rules")
+
+        # uniq the rule
+        ruleLength = rules.length
+        rules = _.filter rules, (rule, idx) ->
+            for i in [idx + 1...ruleLength]
+                return false if _.isEqual(rule, rules[idx])
+            return true
+
         {
           component :
             name : @get("name")
@@ -69,7 +78,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
               name : @get("name")
 
               description : @get("description")
-              rules       : @get("rules")?.map ( rule )-> rule.toJSON()
+              rules       : rules?.map ( rule )-> rule.toJSON()
         }
       else
         null

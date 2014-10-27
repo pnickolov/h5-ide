@@ -200,12 +200,12 @@ define [
 
             that = @
 
-            # if not @$el.find('input.os-sg-new-input').length
+            if @$el.find('input.os-sg-new-input').length <= 1
 
-            if $lastItem.hasClass('rule-item')
-                $newItem = $(template.sgNewInput()).insertAfter($lastItem)
-            else
-                $newItem = $(template.sgNewInput()).appendTo($lastItem)
+                if $lastItem.hasClass('rule-item')
+                    $newItem = $(template.sgNewInput()).insertAfter($lastItem)
+                else
+                    $newItem = $(template.sgNewInput()).appendTo($lastItem)
 
         removeRule: (event) ->
 

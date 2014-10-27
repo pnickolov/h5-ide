@@ -82,7 +82,7 @@
         <dt>Image</dt><dd>
             <div class="os-server-image-info">
                 <img class="property-os-image-icon" src="/assets/images/ide/ami-os/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}@2x.png" alt=""/>
-                <p class="property-os-image-text">{{emptyStr system_metadata.image_image_name}}<span class="uid">{{emptyStr system_metadata.image_image_id}}</span></p>
+                <p class="property-os-image-text">{{emptyStr system_metadata.image_image_name}}<span class="uid">{{emptyStr system_metadata.image_base_image_ref}}</span></p>
             </div>
         </dd>
         <dt>Fixed IP</dt><dd>{{emptyStr fixedIp}}</dd>

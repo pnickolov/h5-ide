@@ -49,11 +49,10 @@
 <section class="group">
     <dl class="dl-vertical">
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>Name</dt><dd>{{emptyStr display_name}}</dd>
         <dt>Status</dt><dd>{{emptyStr status}}</dd>
         <dt>Size</dt><dd>{{emptyStr size}}</dd>
-    {{#if snapshot_id}}
         <dt>Snapshot ID</dt><dd>{{emptyStr snapshot_id}}</dd>
-    {{/if}}
         <dt>Description</dt><dd>{{emptyStr description}}</dd>
         <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
         <dt>Created at</dt><dd>{{emptyStr created_at}}</dd>

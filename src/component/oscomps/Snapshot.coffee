@@ -317,7 +317,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                     sortable: true
                     rowType: 'datetime'
                     width: "40%" # or 40%
-                    name: 'status'
+                    name: 'Status'
                 }
                 {
                     sortable: false

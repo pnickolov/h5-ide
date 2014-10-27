@@ -620,12 +620,24 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", "ApiReques
 		getResState: (resId) ->
 
 			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
-			resModel = CloudResources('AWS.EC2.Instance').get(resId)
-			resState = 'unknown'
-			if resModel
-				resState = resModel.get('instanceState')?.name
-			@set('resState', resState)
-			null
+
+			cloudType = Design.instance().get('cloud_type')
+
+			if cloudType is 'aws'
+
+				resModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(resId)
+				resState = 'unknown'
+				if resModel
+					resState = resModel.get('instanceState')?.name
+				@set('resState', resState)
+
+			else
+
+				resModel = CloudResources(constant.RESTYPE.OSSERVER, Design.instance().region()).get(resId)
+				resState = 'unknown'
+				if resModel
+					resState = resModel.get('status')
+				@set('resState', resState)
 
 		genStateLogData: (resId, callback) ->
 

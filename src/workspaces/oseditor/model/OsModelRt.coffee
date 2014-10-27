@@ -9,6 +9,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
     defaults:
       nat: false
       extNetworkId : ""
+      publicip : ""
 
     isPublic : ()-> !!@get("extNetworkId")
 
@@ -29,8 +30,8 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             name                  : @get("name")
             nat                   : if @get("extNetworkId") then @get("nat") else false
             external_gateway_info : extNetwork
-            router_interface : @connectionTargets("OsRouterAsso").map ( subnet )->
-              { subnet_id : subnet.createRef("id") }
+            router_interface      : @connectionTargets("OsRouterAsso").map (subnet) -> { subnet_id : subnet.createRef("id") }
+            public_ip             : @get("publicip")
       }
 
   }, {
@@ -44,7 +45,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         appId : data.resource.id
         nat   : data.resource.nat
         extNetworkId : data.resource.external_gateway_info.network_id || ""
-
+        publicip : data.resource.public_ip
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
       })

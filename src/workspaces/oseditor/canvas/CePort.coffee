@@ -26,6 +26,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
 
     listenModelEvents : ()->
       @listenTo @model, 'change:fip', @render
+      @listenTo @model, "change:connections", @render
       return
 
     toggleFip : ()->
@@ -33,9 +34,6 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
 
       hasFloatingIp = !!@model.getFloatingIp()
       @model.setFloatingIp(!hasFloatingIp)
-
-      CanvasManager.updateFip @$el.children(".fip-status"), @model
-
       false
 
     # Creates a svg element
@@ -93,8 +91,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     render : ()->
       m = @model
       CanvasManager.setLabel @, @$el.children(".node-label")
-      # Update FIP
-      CanvasManager.updateFip @$el.children(".fip-status"), m
+
+      fip = @$el.children(".fip-status")
+      if m.connections("OsPortUsage").length
+        # Update FIP
+        fip.show()
+        CanvasManager.updateFip fip, m
+      else
+        fip.hide()
       null
 
   }

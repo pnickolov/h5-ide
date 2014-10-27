@@ -48,7 +48,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
           'data-tooltip' : lang.IDE.PORT_TIP_L
         })
 
-        svg.circle(8).move(5, 6).classes('public').attr("fill","#009EFF")
+        svg.image( MC.IMG_URL + "ide/icon-os/cvs-subnet.png", 12, 12 ).move(5, 5).classes("public tooltip").attr('data-tooltip':"Public subnet")
       ])
       m = @model
       @initNode svgEl, m.x(), m.y()

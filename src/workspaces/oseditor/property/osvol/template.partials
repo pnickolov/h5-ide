@@ -1,10 +1,8 @@
 <!-- {{stackTemplate}} -->
 {{#if modeIsAppEdit}}
 <section class="group">
-    <dl class="vertical">
+    <dl class="dl-vertical">
         <dt>ID</dt><dd>{{emptyStr app.id}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Status</dt><dd>{{emptyStr app.status}}</dd>
     </dl>
 </section>
@@ -49,27 +47,15 @@
 
 <!-- {{appTemplate}} -->
 <section class="group">
-    <dl class="vertical">
+    <dl class="dl-vertical">
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Status</dt><dd>{{emptyStr status}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Size</dt><dd>{{emptyStr size}}</dd>
-    </dl>
     {{#if snapshot_id}}
-        <dl class="vertical">
-            <dt>Snapshot ID</dt><dd>{{emptyStr snapshot_id}}</dd>
-        </dl>
+        <dt>Snapshot ID</dt><dd>{{emptyStr snapshot_id}}</dd>
     {{/if}}
-    <dl class="vertical">
         <dt>Description</dt><dd>{{emptyStr description}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Created at</dt><dd>{{emptyStr created_at}}</dd>
     </dl>
 </section>

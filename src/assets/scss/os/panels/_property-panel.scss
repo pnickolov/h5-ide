@@ -47,24 +47,12 @@
         }
 
         /* property component style */
-        dl.horizontal {
+        .dl-horizontal {
             margin: 8px 9px;
-            padding: 0;
-            &::after { content: ""; height: 0; display: block; clear: both; }
 
-            dt { min-width: 80px; float: left; padding: 0; margin: 0; }
-            dd { float: left; padding: 0; margin: 0; }
-        }
-
-        dl {
-            margin: 8px 9px;
-            &:first-child { margin-top: 0; padding-top: 8px; }
-            &:last-child { margin-bottom: 0; padding-bottom: 8px; }
-
-            &::after { content: ""; height: 0; display: block; clear: both; }
-
-            dt { min-width: 80px; margin: 0; padding: 5px 0 5px 0; }
-            dd { margin: 0; padding: 5px 0 5px 8px;}
+            dd {
+                color: #eee;
+            }
         }
 
         .os-property-default {
@@ -81,9 +69,10 @@
         }
 
         img.property-os-image-icon{
-          vertical-align  : middle;
-          margin          : -2px 2px -2px 2px;
-          background-size : 30px 30px;
+          vertical-align : middle;
+          margin         : -2px 2px -2px 2px;
+          width          : 30px;
+          height         : 30px;
         }
 
         p.property-os-image-text {

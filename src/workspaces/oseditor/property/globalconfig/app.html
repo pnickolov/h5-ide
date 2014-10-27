@@ -1,26 +1,16 @@
 <section class="group">
-    <dl class="horizontal">
+    <dl class="dl-horizontal">
         <dt>Platform</dt><dd>{{emptyStr platform}}</dd>
-    </dl>
-    <dl class="horizontal">
         <dt>Region</dt><dd>{{emptyStr region}}</dd>
-    </dl>
-    <dl class="horizontal">
         <dt>App ID</dt><dd>{{emptyStr id}}</dd>
-    </dl>
-    <dl class="horizontal">
         <dt>Usage</dt><dd>{{emptyStr usage}}</dd>
     </dl>
 </section>
 
 <section class="group">
-    <dl>
+    <dl class="dl-vertical">
         <dt>Description</dt><dd>{{emptyStr description}}</dd>
-    </dl>
-    <dl>
-        <dt>Instance State</dt><dd class="os-status os-status-{{state}}">{{emptyStr agent.enabled}}</dd>
-    </dl>
-    <dl>
+        <dt>Instance State</dt><dd>{{emptyStr agent.enabled}}</dd>
         <dt>{{ i18n "PROP.APP_LBL_RESDIFF_VIEW"}}</dt>
         {{#if resource_diff}}
             <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>

@@ -7149,8 +7149,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9362,43 +9361,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
           cursor: pointer; }
       #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
         background: #2a608d; }
-  #OpsEditor .OEPanelRight.property dl.horizontal, #OpsEditor .OEPanelRight.config dl.horizontal {
-    margin: 8px 9px;
-    padding: 0; }
-    #OpsEditor .OEPanelRight.property dl.horizontal::after, #OpsEditor .OEPanelRight.config dl.horizontal::after {
-      content: "";
-      height: 0;
-      display: block;
-      clear: both; }
-    #OpsEditor .OEPanelRight.property dl.horizontal dt, #OpsEditor .OEPanelRight.config dl.horizontal dt {
-      min-width: 80px;
-      float: left;
-      padding: 0;
-      margin: 0; }
-    #OpsEditor .OEPanelRight.property dl.horizontal dd, #OpsEditor .OEPanelRight.config dl.horizontal dd {
-      float: left;
-      padding: 0;
-      margin: 0; }
-  #OpsEditor .OEPanelRight.property dl, #OpsEditor .OEPanelRight.config dl {
+  #OpsEditor .OEPanelRight.property .dl-horizontal, #OpsEditor .OEPanelRight.config .dl-horizontal {
     margin: 8px 9px; }
-    #OpsEditor .OEPanelRight.property dl:first-child, #OpsEditor .OEPanelRight.config dl:first-child {
-      margin-top: 0;
-      padding-top: 8px; }
-    #OpsEditor .OEPanelRight.property dl:last-child, #OpsEditor .OEPanelRight.config dl:last-child {
-      margin-bottom: 0;
-      padding-bottom: 8px; }
-    #OpsEditor .OEPanelRight.property dl::after, #OpsEditor .OEPanelRight.config dl::after {
-      content: "";
-      height: 0;
-      display: block;
-      clear: both; }
-    #OpsEditor .OEPanelRight.property dl dt, #OpsEditor .OEPanelRight.config dl dt {
-      min-width: 80px;
-      margin: 0;
-      padding: 5px 0 5px 0; }
-    #OpsEditor .OEPanelRight.property dl dd, #OpsEditor .OEPanelRight.config dl dd {
-      margin: 0;
-      padding: 5px 0 5px 8px; }
+    #OpsEditor .OEPanelRight.property .dl-horizontal dd, #OpsEditor .OEPanelRight.config .dl-horizontal dd {
+      color: #eee; }
   #OpsEditor .OEPanelRight.property .os-property-default, #OpsEditor .OEPanelRight.config .os-property-default {
     padding: 20px 0 0 26px; }
   #OpsEditor .OEPanelRight.property .os-property-message, #OpsEditor .OEPanelRight.config .os-property-message {
@@ -9409,7 +9375,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   #OpsEditor .OEPanelRight.property img.property-os-image-icon, #OpsEditor .OEPanelRight.config img.property-os-image-icon {
     vertical-align: middle;
     margin: -2px 2px -2px 2px;
-    background-size: 30px 30px; }
+    width: 30px;
+    height: 30px; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text, #OpsEditor .OEPanelRight.config p.property-os-image-text {
     display: inline-block;
     color: #DEDEDE;

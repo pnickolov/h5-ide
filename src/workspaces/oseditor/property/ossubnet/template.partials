@@ -1,13 +1,9 @@
 <!-- {{stack}} -->
 {{#if modeIsAppEdit}}
 <section class="group">
-    <dl class="vertical">
+    <dl class="dl-vertical">
         <dt>ID</dt><dd>{{emptyStr app.id}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Gateway IP</dt><dd>{{emptyStr app.gateway_ip}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>DNS Name Server</dt>
         {{#each app.dns_nameservers}}
         <dd>{{emptyStr this}}</dd>
@@ -50,22 +46,12 @@
 
 <!-- {{app}} -->
 <section class="group">
-    <dl class="vertical">
+    <dl class="dl-vertical">
         <dt>Name</dt><dd>{{emptyStr name}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>CIDR</dt><dd>{{emptyStr cidr}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>Enable DHCP</dt><dd>{{#if enable_dhcp}}true{{else}}false{{/if}}</dd>
-    </dl>
-    <dl class="vertical">
         <dt>DNS Name Server</dt>
         {{#each dns_nameservers}}
         <dd>{{emptyStr this}}</dd>

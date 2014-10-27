@@ -6255,7 +6255,7 @@ g.shadow {
   .res-state.running, .res-state.ok, .res-state.attached, .res-state.available, .res-state.ACTIVE {
     fill: #17c249;
     background: #17c249; }
-  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting, .res-state.resetting-master-credentials {
+  .res-state.shuttingdown, .res-state.stopping, .res-state.pending, .res-state.insufficient-data, .res-state.attaching, .res-state.detaching, .res-state.backing-up, .res-state.creating, .res-state.deleting, .res-state.incompatible-restore, .res-state.incompatible-parameters, .res-state.modifying, .res-state.rebooting, .res-state.resetting-master-credentials, .res-state.BUILD {
     fill: #ffa740;
     background: #ffa740; }
   .res-state.stopped, .res-state.terminated, .res-state.impaired, .res-state.detached, .res-state.deleted, .res-state.failed, .res-state.storage-full, .res-state.ERROR {

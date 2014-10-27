@@ -25,23 +25,26 @@
         }
     }
 
-    &.hidden .panel-float { display: none; }
+    &.hidden .panel-float { display: none }
 
     .panel-float {
-        border-right: 1px #101010 solid;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        overflow: auto;
-        right: 288px;
-        background: $bg-p;
+        border-right : 1px #101010 solid;
+        position     : absolute;
+        top          : 0;
+        bottom       : 0;
+        overflow     : auto;
+        right        : 288px;
+        background   : $bg-p;
+        z-index      : -1;
 
         min-width: 270px;
+
+        @include transit($method:right,$dur:.2s);
 
         // Rewrite below values to customise floating-panel
         & > div { width: 280px; }
 
-        &.hidden { display: none; }
+        &.hidden { right: -500px; }
 
         h1 {
           font-size: 20px;

@@ -24,6 +24,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     events :
       "mousedown .fip-status"          : "toggleFip"
 
+    labelWidth : ()-> 100
+
     listenModelEvents : ()->
       @listenTo @model, 'change:fip', @render
       @listenTo @model, "change:connections", @render

@@ -35,6 +35,7 @@ define [
       "click .vol-image"      : "suppressEvent"
 
     suppressEvent : ()-> false
+    labelWidth : ()-> 100
 
     iconUrl : ()->
       image = @model.getImage() || @model.get("cachedAmi")

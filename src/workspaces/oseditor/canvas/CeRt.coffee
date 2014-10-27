@@ -19,6 +19,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     }
 
     isPortSignificant : ()-> true
+    labelWidth : ()-> 100
 
     iconUrl : ()-> "ide/icon/openstack/cvs-router.png"
 

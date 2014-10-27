@@ -22,6 +22,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     }
 
     isPortSignificant : ()-> true
+    labelWidth : ()-> 100
 
     # Creates a svg element
     create : ()->

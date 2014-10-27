@@ -25,6 +25,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       @listenTo @model, 'change:fip', @render
       return
 
+    labelWidth : ()-> 100
+
     toggleFip : ()->
       if @canvas.design.modeIsApp() then return false
 

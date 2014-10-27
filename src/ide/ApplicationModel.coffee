@@ -119,10 +119,7 @@ define [
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-      #provider = App.user.get("default_provider")
-      provider = "awcloud_gz"
-      osData  = ApiRequestOs("os_os",   {provider:provider}).then (res)-> self.__parseOsData( res )
-      osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res, provider )
+      osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
@@ -167,22 +164,27 @@ define [
         return
 
     __parseOsData : ( res )->
+      self = this
       for provider, dataset of res
         for data in dataset
           providerData = @__osdata[ provider ] || (@__osdata[ provider ]={})
           providerData[ data.region ] =
             flavors : new Backbone.Collection( _.values(data.flavor) )
 
+        #quota is user-related, need optimized when backend support multiple provider indeed
+        osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
+
       return
 
-    __parseOsQuota : ( res, provider )->
+    __parseOsQuota : ( res )->
       quota = {}
-      for cate, data of res
-        for key, q of data
-          quota[ "#{cate}::#{key}" ] = q
+      for provider, dataset of res
+        for cate, data of dataset
+          for key, q of data
+            quota[ "#{cate}::#{key}" ] = q
 
-      pd = @__osdata[ provider ] || (@__osdata[ provider ]={})
-      pd.quota = quota
+        pd = @__osdata[ provider ] || (@__osdata[ provider ]={})
+        pd.quota = quota
       return
 
     fetchStateModule : ( repo, tag )->

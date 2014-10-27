@@ -53,8 +53,10 @@
         <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
         <dt>Enable DHCP</dt><dd>{{#if enable_dhcp}}true{{else}}false{{/if}}</dd>
         <dt>DNS Name Server</dt>
+        {{#if dns_nameservers.length}}
         {{#each dns_nameservers}}
         <dd>{{emptyStr this}}</dd>
         {{/each}}
+        {{else}}-{{/if}}
     </dl>
 </section>

@@ -58,7 +58,9 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
       ComplexResModel.prototype.remove.apply this, arguments
 
     serialize : ()->
-      if @getMemberList().length
+
+      if @getMemberList().length or @isDefault()
+
         rules = @get("rules")
 
         # uniq the rule
@@ -80,7 +82,9 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
               description : @get("description")
               rules       : rules?.map ( rule )-> rule.toJSON()
         }
+
       else
+
         null
 
   }, {

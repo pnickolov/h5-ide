@@ -67,10 +67,11 @@ define [
             limitMap[constant.RESTYPE.OSPORT]       = quotaMap['Neutron::port']
             limitMap[constant.RESTYPE.OSFIP]        = quotaMap['Neutron::floatingip']
             limitMap[constant.RESTYPE.OSRT]         = quotaMap['Neutron::router']
-            limitMap[constant.RESTYPE.OSSG]         = quotaMap['Neutron::security_group']
+            limitMap[constant.RESTYPE.OSSG]         = 10 #quotaMap['Neutron::security_group']
             limitMap[constant.RESTYPE.OSSUBNET]     = quotaMap['Neutron::subnet']
 
             validAry = []
+
             _.each existMap, (count, type) ->
 
                 usedCount = existMap[type] + newMap[type]

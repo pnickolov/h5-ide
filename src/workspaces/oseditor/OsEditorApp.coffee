@@ -2,14 +2,16 @@
 define [
   "CoreEditorApp"
   "./OsViewApp"
+  "./model/DesignOs"
   "OpsModel"
   "CloudResources"
   "constant"
-], ( CoreEditorApp, AppView, OpsModel, CloudResources, constant )->
+], ( CoreEditorApp, AppView, DesignOs, OpsModel, CloudResources, constant )->
 
   class AppEditor extends CoreEditorApp
 
     viewClass : AppView
+    designClass : DesignOs
 
     fetchAdditionalData : ()->
       self = @

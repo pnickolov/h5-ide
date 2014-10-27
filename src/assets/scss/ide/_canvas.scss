@@ -44,6 +44,12 @@
     .dbreplicate { display:none; }
     .dbrestore { display:none; }
     .fip-status { cursor: default; }
+
+    .fip-status {
+      cursor : default;
+      > .hover  { display : none; }
+      > .normal { display : block; }
+    }
   }
 }
 
@@ -117,17 +123,15 @@
 
 .canvasel:hover > .node-background {
   fill-opacity: 0.5;
-  fill: #F2F8FF;
+  fill: #D8DAEB;
 }
 
 .canvas-view {
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
     > .node-background {
-      fill-opacity : .5;
-      fill         : rgba(242, 248, 255, 1) !important;
-      stroke-width : 1 !important;
-      stroke       : #659FFF !important;
+      fill-opacity: 1;
+      fill : #D8DAEB;
     }
   }
   .canvasel.selected {
@@ -155,6 +159,13 @@
 }
 .volume-image, .eip-status, .fip-status {
   cursor: pointer;
+}
+
+.fip-status {
+  > .hover  { display : none; }
+
+  &:hover > .normal { display : none; }
+  &:hover > .hover  { display : block; }
 }
 
 .dbreplcate {

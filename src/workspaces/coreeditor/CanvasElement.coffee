@@ -228,6 +228,16 @@ define [
             child.move( pos[0], pos[1] )
       null
 
+    createRawNode : ()->
+      svg = @canvas.svg
+      svg.group()
+        .attr({ "data-id" : @cid })
+        .classes( 'canvasel ' + @type.replace(/\.|:/g, "-") )
+        .add([
+          svg.rect(80,80).radius(16,16).classes('node-background')
+          svg.text("").move(40, 90).classes('node-label')
+        ])
+
     createNode : ( option )->
       # A helper function to create a SVG Element to represent a group
       m = @model

@@ -95,7 +95,6 @@ define ["constant"], (constant)->
 
     updateFip : ( node, targetModel )->
       if not node.size() then return false
-      if node.length then node = node[0]
 
       if targetModel.type is constant.RESTYPE.OSSERVER
         toggle = !!targetModel.embedPort().getFloatingIp()
@@ -104,16 +103,19 @@ define ["constant"], (constant)->
 
       if toggle
         tootipStr = 'Detach Floating IP'
-        imgUrl    = 'ide/icon/openstack/icn-fipon.png'
+
+        img1 = 'ide/icon-os/cvs-fip-on-n.png'
+        img2 = 'ide/icon-os/cvs-fip-on-h.png'
       else
         tootipStr = 'Associate Floating IP'
-        imgUrl    = 'ide/icon/openstack/icn-fipoff.png'
 
-      node.setAttribute "data-tooltip", tootipStr
+        img1 = 'ide/icon-os/cvs-fip-of-n.png'
+        img2 = 'ide/icon-os/cvs-fip-of-h.png'
 
-      $( node ).data("tooltip", tootipStr)
+      node = $(node).data("tooltip", tootipStr)
 
-      this.update( node, imgUrl, "href" )
+      @update( node.find(".normal"), img1, "href" )
+      @update( node.find(".hover"),  img2, "href" )
 
       null
 

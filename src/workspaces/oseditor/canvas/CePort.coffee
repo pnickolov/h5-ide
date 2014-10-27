@@ -41,17 +41,16 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
       svg = @canvas.svg
 
       # Call parent's createNode to do basic creation
-      svgEl = @createNode({
-        image   : "ide/icon/openstack/cvs-port-att.png"
-        imageX  : 0
-        imageY  : 0
-        imageW  : 80
-        imageH  : 80
-        label   : true
-        labelBg : true
-      }).add([
+      svgEl = @createRawNode().add([
+
+        svg.use("os_port")
+
         # FIP
-        svg.image( "", 12, 14).move(40, 35).classes('fip-status tooltip')
+        svg.group().move(33, 29).classes("fip-status tooltip").add([
+          svg.image("").size(26,21).classes("normal")
+          svg.image("").size(26,21).classes("hover")
+        ])
+
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'

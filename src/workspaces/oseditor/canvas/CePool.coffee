@@ -21,14 +21,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       svg = @canvas.svg
 
       # Call parent's createNode to do basic creation
-      svgEl = @createNode({
-        image  : "ide/icon/openstack/cvs-pool.png"
-        imageX : 0
-        imageY : 0
-        imageW : 80
-        imageH : 80
-        label  : m.get "name"
-      }).add([
+      svgEl = @createRawNode().add([
+
+        svg.use("os_pool")
+
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'elb'

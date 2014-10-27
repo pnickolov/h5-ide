@@ -45,7 +45,6 @@
     // }
 
     .resource-item {
-        background-size : 50px 50px;
         height          : 30px;
         width           : 70px;
         margin          : 0 1px 5px 0;
@@ -70,9 +69,9 @@
             left : -2px;
         }
 
-        &.osserver { 
-            background-image: url('/assets/images/ide/icon/openstack/os-res-server@2x.png');
-            img {
+        &.osserver {
+            background-image: image-url('ide/icon-os/os-res-server.png');
+            > img {
                 width    : 30px;
                 height   : 30px;
 
@@ -83,14 +82,28 @@
         }
 
 
-        &.ossubnet { background-image: url('/assets/images/ide/icon/openstack/os-res-subnet@2x.png'); }
-        &.osrt     { background-image: url('/assets/images/ide/icon/openstack/os-res-router@2x.png'); }
-        &.osport   { background-image: url('/assets/images/ide/icon/openstack/os-res-port@2x.png'); }
-        &.oselb    { background-image: url('/assets/images/ide/icon/openstack/os-res-lb@2x.png'); }
-        &.osvol    { background-image: url('/assets/images/ide/icon/openstack/os-res-vol@2x.png'); }
-        &.ossnapshot    { background-image: url('/assets/images/ide/icon/openstack/os-res-snapshot@2x.png'); }
-        &.oslistener    { background-image: url('/assets/images/ide/icon/openstack/os-res-listener@2x.png'); }
-        &.ospool        { background-image: url('/assets/images/ide/icon/openstack/os-res-pool@2x.png'); }
+        &.ossubnet { background-image: image-url('ide/icon-os/os-res-subnet.png'); }
+        &.osrt     { background-image: image-url('ide/icon-os/os-res-router.png'); }
+        &.osport   { background-image: image-url('ide/icon-os/os-res-port.png'); }
+        &.oselb    { background-image: image-url('ide/icon-os/os-res-lb.png'); }
+        &.osvol    { background-image: image-url('ide/icon-os/os-res-vol.png'); }
+        &.ossnapshot    { background-image: image-url('ide/icon-os/os-res-snapshot.png'); }
+        &.oslistener    { background-image: image-url('ide/icon-os/os-res-listener.png'); }
+        &.ospool        { background-image: image-url('ide/icon-os/os-res-pool.png'); }
+
+        @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
+            & { background-size : 50px 50px; }
+
+            &.osserver { background-image: image-url('ide/icon-os/os-res-server@2x.png'); }
+            &.ossubnet { background-image: image-url('ide/icon-os/os-res-subnet@2x.png'); }
+            &.osrt     { background-image: image-url('ide/icon-os/os-res-router@2x.png'); }
+            &.osport   { background-image: image-url('ide/icon-os/os-res-port@2x.png'); }
+            &.oselb    { background-image: image-url('ide/icon-os/os-res-lb@2x.png'); }
+            &.osvol    { background-image: image-url('ide/icon-os/os-res-vol@2x.png'); }
+            &.ossnapshot    { background-image: image-url('ide/icon-os/os-res-snapshot@2x.png'); }
+            &.oslistener    { background-image: image-url('ide/icon-os/os-res-listener@2x.png'); }
+            &.ospool        { background-image: image-url('ide/icon-os/os-res-pool@2x.png'); }
+        }
     }
 
     .ebs-size { top: -2em; }

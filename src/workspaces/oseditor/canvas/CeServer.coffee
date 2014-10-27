@@ -15,7 +15,7 @@ define [
     type : constant.RESTYPE.OSSERVER
 
     parentType  : [ constant.RESTYPE.OSSUBNET ]
-    defaultSize : [ 9, 9 ]
+    defaultSize : [ 8, 8 ]
 
     portPosMap : {
       "pool"   : [ 5, 36, CanvasElement.constant.PORT_LEFT_ANGLE ]
@@ -38,13 +38,13 @@ define [
         if server
           server = server.attributes
           if server.platform and server.platform is "windows"
-            url = "ide/ami/openstack/windows.#{server.architecture}.png"
+            url = "ide/ami-os/windows.#{server.architecture}@2x.png"
           else
-            url = "ide/ami/openstack/linux-other.#{server.architecture}.png"
+            url = "ide/ami-os/linux.#{server.architecture}@2x.png"
         else
-          url = "ide/ami/openstack/image-not-available.png"
+          url = "ide/ami-os/image-not-available.png"
       else
-        url = "ide/ami/openstack/#{image.os_type}.#{image.architecture}.png"
+        url = "ide/ami-os/#{image.os_type}.#{image.architecture}@2x.png"
       url
 
     listenModelEvents : ()->
@@ -81,21 +81,20 @@ define [
       svg = @canvas.svg
 
       # Call parent's createNode to do basic creation
-      svgEl = @createNode({
-        image   : "ide/icon/openstack/cvs-server.png"
-        imageX  : 0
-        imageY  : 0
-        imageW  : 90
-        imageH  : 90
-        label   : true
-        labelBg : true
-      }).add([
+      svgEl = @createRawNode().add([
+
+        svg.use("os_server")
+
         # Image Icon
-        svg.image( MC.IMG_URL + @iconUrl(), 39, 27 ).move(27, 15).classes("ami-image tooltip")
+        svg.image( MC.IMG_URL + @iconUrl(), 30, 30 ).move(25, 10).classes("ami-image tooltip")
         .attr('data-tooltip': @model.getImage().name)
 
         # FIP
-        svg.image( "", 12, 14).move(50, 55).classes('fip-status tooltip')
+        svg.group().move(43, 50).classes("fip-status tooltip").add([
+          svg.image("").size(26,21).classes("normal")
+          svg.image("").size(26,21).classes("hover")
+        ])
+
         svg.image( MC.IMG_URL+ "ide/icon/icn-vol.png", 29, 24 ).move(22, 52).classes('volume-image')
         svg.text( "" ).move(36, 42).classes('volume-number')
         svg.use("port_diamond").attr({

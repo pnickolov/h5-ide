@@ -925,7 +925,7 @@ function RGBColor(color_string)
             return this.attributes[a];
           }
         }
-        return this.attributes.href || svg.EmptyProperty();
+        return this.attributes.href || svg.EmptyProperty;
       }
 
       // get or create style, crawls up node tree
@@ -2303,6 +2303,8 @@ function RGBColor(color_string)
         var width = this.attribute('width').toPixels('x');
         var height = this.attribute('height').toPixels('y');
         if (width == 0 || height == 0) return;
+        if (this.img.width == 0) return; // If the image fails to load, the image's width will be zero.
+        // If the image fails to load, the drawImage will fail.
 
         ctx.save();
         ctx.translate(x, y);

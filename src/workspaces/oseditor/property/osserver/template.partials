@@ -59,10 +59,10 @@
 </div>
 
 <!--{{imageListKey}}-->
-<div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
+<div><img class="property-os-image-icon" src="/assets/images/ide/ami-os/{{distro}}.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
 
 <!--{{imageValue}}-->
-<div><img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{distro}}.png" alt=""/>{{name}}</div>
+<div><img class="property-os-image-icon" src="/assets/images/ide/ami-os/{{distro}}.png" alt=""/>{{name}}</div>
 
 <!--{{kpButton}}-->
 <button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>
@@ -87,7 +87,7 @@
     <dl class="vertical">
         <dt>Image</dt><dd>
             <div class="os-server-image-info">
-                <img class="property-os-image-icon" src="/assets/images/ide/ami/openstack/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}@2x.png" alt=""/>
+                <img class="property-os-image-icon" src="/assets/images/ide/ami-os/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}@2x.png" alt=""/>
                 <p class="property-os-image-text">{{emptyStr system_metadata.image_image_name}}<span class="uid">{{emptyStr system_metadata.image_image_id}}</span></p>
             </div>
         </dd>

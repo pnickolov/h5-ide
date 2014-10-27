@@ -36,15 +36,16 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       svg = @canvas.svg
 
       # Call parent's createNode to do basic creation
-      svgEl = @createNode({
-        image  : "ide/icon/openstack/cvs-vip.png"
-        imageX : 0
-        imageY : 0
-        imageW : 80
-        imageH : 80
-        label  : m.get "name"
-      }).add([
-        svg.image( "", 12, 14).move(36, 36).classes('fip-status tooltip')
+      svgEl = @createRawNode().add([
+
+        svg.use("os_listener")
+
+        # FIP
+        svg.group().move(29, 42).classes("fip-status tooltip").add([
+          svg.image("").size(26,21).classes("normal")
+          svg.image("").size(26,21).classes("hover")
+        ])
+
         svg.use("port_right").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'elb'
@@ -61,6 +62,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       m = @model
       # Update label
       CanvasManager.setLabel @, @$el.children(".node-label")
+
       # Update FIP
       CanvasManager.updateFip @$el.children(".fip-status"), m
       null

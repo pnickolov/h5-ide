@@ -393,7 +393,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         [{x:x,y:start.y}, {x:x,y:end.y}]
 
       "90" : ( start, end )->
-        x = Math.max( start.itemRect.x2, end.itemRect.x2 ) + 20
+        if end.itemRect.x1 > 0
+          x = Math.max( start.itemRect.x2, end.itemRect.x2 ) + 20
+          if start.closer
+            x = start.itemRect.x2 + 20
+          else if end.closer
+            x = end.itemRect.x1 - 20
+          else
+            x = Math.round( ( end.itemRect.x1 - start.itemRect.x2 ) / 2 ) + start.itemRect.x2
+        else
+          x = Math.max( start.itemRect.x2, end.itemRect.x2 ) + 20
+
         y = end.itemRect.y1 - 20
         [{x:x,y:start.y}, {x:x,y:y}, {x:end.x,y:y}]
 

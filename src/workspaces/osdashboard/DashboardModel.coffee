@@ -47,8 +47,13 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
       return
 
     getOsResData : ( region, type )->
+        availableImageDistro = ["centos","debian","fedora","gentoo","opensuse","redhat","suse","ubuntu","windows","cirros"]
         data = {
-          servers : CloudResources( constant.RESTYPE.OSSERVER, region )?.toJSON()
+          servers : _.map CloudResources( constant.RESTYPE.OSSERVER, region )?.toJSON(), (e)->
+            console.log e
+            if e.system_metadata.image_os_distro not in availableImageDistro
+              e.system_metadata.image_os_distro = "unknown"
+            e
           volumes : CloudResources( constant.RESTYPE.OSVOL, region )?.toJSON()
           snaps   : CloudResources( constant.RESTYPE.OSSNAP, region )?.toJSON()
           fips    : CloudResources( constant.RESTYPE.OSFIP, region )?.toJSON()

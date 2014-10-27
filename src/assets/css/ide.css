@@ -5747,12 +5747,14 @@ button#property-app-keypair {
     cursor: nwse-resize; }
 
 .canvasel:hover > .node-background {
-  fill-opacity: 0.4;
+  fill-opacity: .6;
   fill: #D8DAEB; }
 
 .canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
-  fill-opacity: .8;
-  fill: #D8DAEB; }
+  fill-opacity: .6;
+  fill: #D8DAEB;
+  stroke: #4a90e2;
+  stroke-width: 2; }
 .canvas-view .canvasel.selected > .node-label-name-bg {
   fill: #659FFF; }
   .canvas-view .canvasel.selected > .node-label-name-bg ~ .node-label {
@@ -7837,11 +7839,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
           border-left: 1px #444 solid; }
 
 #state-editor {
-  /*font-family: "Lucida Console", "Monaco", monospace !important;*/
   font-size: 12px !important; }
 
 #state-editor .parameter-value {
-  /*font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;*/
   font-size: 12px !important;
   color: #ff6a38; }
 
@@ -7921,10 +7921,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   right: 0; }
 
 #state-editor, .ace_autocomplete {
-  font-family: "Monaco","Consolas","Ubuntu Mono", monospace !important; }
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 
 #modal-state-text-expand .editable-area {
-  font-family: "Monaco","Consolas","Ubuntu Mono", monospace !important; }
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 
 #state-editor.full {
   /*width: auto;*/

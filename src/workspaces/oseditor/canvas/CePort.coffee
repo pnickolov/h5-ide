@@ -8,11 +8,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
     type : constant.RESTYPE.OSPORT
 
     parentType  : [ constant.RESTYPE.OSSUBNET ]
-    defaultSize : [ 9, 9 ]
+    defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "pool"   : [ 10, 20, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "server" : [ 8,  50, CanvasElement.constant.PORT_LEFT_ANGLE  ]
+      "pool-left"    : [ 0,  40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "pool-right"   : [ 80, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "server-left"  : [ 0,  60, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "server-right" : [ 80, 60, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    }
+    portDirMap : {
+      "pool"   : "horizontal"
+      "server" : "horizontal"
     }
 
     events :
@@ -51,14 +57,31 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js"], ( C
           svg.image("").size(26,21).classes("hover")
         ])
 
-        svg.use("port_diamond").attr({
+        @createPortElement().attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'
+          'data-alias'   : 'pool-left'
           'data-tooltip' : lang.IDE.PORT_TIP_P
         })
-        svg.use("port_right").attr({
+
+        @createPortElement().attr({
+          'class'        : 'port port-blue tooltip'
+          'data-name'    : 'pool'
+          'data-alias'   : 'pool-right'
+          'data-tooltip' : lang.IDE.PORT_TIP_P
+        })
+
+        @createPortElement().attr({
           'class'        : 'port port-green tooltip'
           'data-name'    : 'server'
+          'data-alias'   : 'server-left'
+          'data-tooltip' : lang.IDE.PORT_TIP_R
+        })
+
+        @createPortElement().attr({
+          'class'        : 'port port-green tooltip'
+          'data-name'    : 'server'
+          'data-alias'   : 'server-right'
           'data-tooltip' : lang.IDE.PORT_TIP_R
         })
       ])

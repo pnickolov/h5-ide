@@ -5804,10 +5804,25 @@ button#property-app-keypair {
   fill: #d8d7d6;
   stroke: #bebebe; }
 
-.canvas-view[data-mode="stack"] .port:hover, .canvas-view[data-mode="stack"] .port.connectable, .canvas-view[data-mode="appedit"] .port:hover, .canvas-view[data-mode="appedit"] .port.connectable {
-  fill: #F2F8FF;
-  stroke-width: 2;
-  cursor: pointer; }
+.canvas-view[data-mode="stack"] .port:hover .port-fill, .canvas-view[data-mode="stack"] .port.connectable .port-fill, .canvas-view[data-mode="appedit"] .port:hover .port-fill, .canvas-view[data-mode="appedit"] .port.connectable .port-fill {
+  fill: #F2F8FF; }
+.canvas-view[data-mode="stack"] .port:hover .port-border, .canvas-view[data-mode="stack"] .port.connectable .port-border, .canvas-view[data-mode="appedit"] .port:hover .port-border, .canvas-view[data-mode="appedit"] .port.connectable .port-border {
+  stroke-width: 4; }
+
+.port-fill {
+  stroke-width: 8;
+  stroke-opacity: 0.01;
+  -webkit-transition: fill .3s ease-in-out;
+  -moz-transition: fill .3s ease-in-out;
+  -o-transition: fill .3s ease-in-out;
+  transition: fill .3s ease-in-out; }
+
+.port-border {
+  stroke-width: 0;
+  -webkit-transition: stroke-width .3s ease-in-out;
+  -moz-transition: stroke-width .3s ease-in-out;
+  -o-transition: stroke-width .3s ease-in-out;
+  transition: stroke-width .3s ease-in-out; }
 
 .AWS-VPC-VPC .group {
   stroke: #dcdcdc;
@@ -6025,6 +6040,8 @@ button#property-app-keypair {
   .draw-line.db-sg, .draw-line.igw-tgt, .draw-line.eni-sg, .draw-line.instance-sg, .draw-line.launchconfig-sg, .draw-line.rtb-tgt, .draw-line.elb-sg-in, .draw-line.vgw-tgt, .draw-line.eni-rtb, .draw-line.instance-rtb {
     stroke: #6DAEFE;
     stroke-dasharray: 10,5; }
+  .draw-line.server {
+    stroke: #000; }
 
 marker.subnet-assoc-in, marker.subnet-assoc-out, marker.rtb-src, marker.elb-assoc {
   fill: #d8d7d6; }

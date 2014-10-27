@@ -201,10 +201,31 @@
 
 .canvas-view[data-mode="stack"], .canvas-view[data-mode="appedit"] {
   .port:hover, .port.connectable {
-    fill: #F2F8FF;
-    stroke-width: 2;
-    cursor  : pointer;
+    .port-fill {
+      fill:#F2F8FF;
+    }
+    .port-border {
+      stroke-width:4;
+
+    }
   }
+}
+
+.port-fill {
+  stroke-width:8;
+  stroke-opacity:0.01;
+  -webkit-transition: fill .3s ease-in-out;
+     -moz-transition: fill .3s ease-in-out;
+       -o-transition: fill .3s ease-in-out;
+          transition: fill .3s ease-in-out;
+}
+
+.port-border {
+  stroke-width:0;
+  -webkit-transition: stroke-width .3s ease-in-out;
+     -moz-transition: stroke-width .3s ease-in-out;
+       -o-transition: stroke-width .3s ease-in-out;
+          transition: stroke-width .3s ease-in-out;
 }
 
 .AWS-VPC-VPC {
@@ -505,6 +526,8 @@
     stroke: #6DAEFE;
     stroke-dasharray: 10,5;
   }
+
+  &.server { stroke: #000; }
 }
 marker {
   &.subnet-assoc-in, &.subnet-assoc-out, &.rtb-src, &.elb-assoc { fill: #d8d7d6; }

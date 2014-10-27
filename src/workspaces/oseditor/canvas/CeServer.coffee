@@ -18,8 +18,14 @@ define [
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "pool"   : [ 5, 36, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "server" : [ 82, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 85,36 ]
+      "pool-left"    : [ 0,  40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "pool-right"   : [ 80, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "server-left"  : [ 0,  60, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "server-right" : [ 80, 60, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    }
+    portDirMap : {
+      "pool"   : "horizontal"
+      "server" : "horizontal"
     }
 
     events :
@@ -97,14 +103,32 @@ define [
 
         svg.image( MC.IMG_URL+ "ide/icon/icn-vol.png", 29, 24 ).move(22, 52).classes('volume-image')
         svg.text( "" ).move(36, 42).classes('volume-number')
-        svg.use("port_diamond").attr({
+
+        @createPortElement().attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'pool'
+          'data-alias'   : 'pool-left'
           'data-tooltip' : lang.IDE.PORT_TIP_O
         })
-        svg.use("port_right").attr({
+
+        @createPortElement().attr({
+          'class'        : 'port port-blue tooltip'
+          'data-name'    : 'pool'
+          'data-alias'   : 'pool-right'
+          'data-tooltip' : lang.IDE.PORT_TIP_O
+        })
+
+        @createPortElement().attr({
           'class'        : 'port port-green tooltip'
           'data-name'    : 'server'
+          'data-alias'   : 'server-left'
+          'data-tooltip' : lang.IDE.PORT_TIP_N
+        })
+
+        @createPortElement().attr({
+          'class'        : 'port port-green tooltip'
+          'data-name'    : 'server'
+          'data-alias'   : 'server-right'
           'data-tooltip' : lang.IDE.PORT_TIP_N
         })
       ])

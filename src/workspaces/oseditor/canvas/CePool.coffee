@@ -11,8 +11,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "elb"  : [ 2,  36, CanvasElement.constant.PORT_LEFT_ANGLE  ]
-      "pool" : [ 73, 36, CanvasElement.constant.PORT_RIGHT_ANGLE, 81, 36 ]
+      "pool-left"  : [ 0,  40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "pool-right" : [ 80, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+      "elb-left"   : [ 0,  60, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "elb-right"  : [ 80, 60, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    }
+    portDirMap : {
+      "elb"  : "horizontal"
+      "pool" : "horizontal"
     }
 
     # Creates a svg element
@@ -25,15 +31,32 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
         svg.use("os_pool")
 
-        svg.use("port_right").attr({
+        @createPortElement().attr({
           'class'        : 'port port-blue tooltip'
+          'data-name'    : 'pool'
+          'data-alias'   : 'pool-left'
+          'data-tooltip' : lang.IDE.PORT_TIP_R
+        })
+
+        @createPortElement().attr({
+          'class'        : 'port port-blue tooltip'
+          'data-name'    : 'pool'
+          'data-alias'   : 'pool-right'
+          'data-tooltip' : lang.IDE.PORT_TIP_R
+        })
+
+        @createPortElement().attr({
+          'class'        : 'port port-green tooltip'
           'data-name'    : 'elb'
+          'data-alias'   : 'elb-left'
           'data-tooltip' : lang.IDE.PORT_TIP_Q
         })
-        svg.use("port_right").attr({
-          'class'        : 'port port-gray tooltip'
-          'data-name'    : 'pool'
-          'data-tooltip' : lang.IDE.PORT_TIP_R
+
+        @createPortElement().attr({
+          'class'        : 'port port-green tooltip'
+          'data-name'    : 'elb'
+          'data-alias'   : 'elb-right'
+          'data-tooltip' : lang.IDE.PORT_TIP_Q
         })
       ])
 

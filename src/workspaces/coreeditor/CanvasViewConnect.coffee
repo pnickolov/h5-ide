@@ -49,7 +49,7 @@ define [
     # StartPos
     portName  = $port.attr("data-name")
     portAlias = $port.attr("data-alias")
-    pos       = item.pos( $port.closest("g")[0] )
+    pos       = item.pos( $port.closest(".canvasel")[0] )
     portPos   = item.portPosition( portAlias || portName )
     pos.x = pos.x * CanvasView.GRID_WIDTH  + portPos[0]
     pos.y = pos.y * CanvasView.GRID_HEIGHT + portPos[1]
@@ -123,7 +123,7 @@ define [
     if evt.which isnt 1 then return false
 
     $port = $( evt.currentTarget )
-    $tgt  = $port.closest("g")
+    $tgt  = $port.closest(".canvasel")
     item  = @getItem( $tgt.attr( "data-id" ) )
     if not item then return false
 

@@ -11,8 +11,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     defaultSize : [ 8, 8 ]
 
     portPosMap : {
-      "external" : [ 10, 30, CanvasElement.constant.PORT_LEFT_ANGLE,  8, 30]
-      "route"    : [ 70, 30, CanvasElement.constant.PORT_RIGHT_ANGLE, 72, 30 ]
+      "route-left"   : [ 0,  40, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      "route-right"  : [ 80, 40, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+    }
+    portDirMap : {
+      "route"  : "horizontal"
     }
 
     isPortSignificant : ()-> true
@@ -30,14 +33,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
 
         svg.use("os_router")
 
-        svg.use("port_left").attr({
-          'class'        : 'port port-blue tooltip'
-          'data-name'    : 'external'
+        @createPortElement().attr({
+          'class'        : 'port port-gray tooltip'
+          'data-name'    : 'route'
+          'data-alias'   : 'route-left'
           'data-tooltip' : lang.IDE.PORT_TIP_B
         })
-        svg.use("port_right").attr({
-          'class'        : 'port port-blue tooltip'
+
+        @createPortElement().attr({
+          'class'        : 'port port-gray tooltip'
           'data-name'    : 'route'
+          'data-alias'   : 'route-right'
           'data-tooltip' : lang.IDE.PORT_TIP_B
         })
       ])

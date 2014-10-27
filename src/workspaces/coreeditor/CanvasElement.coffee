@@ -218,8 +218,7 @@ define [
       node.move( x * CanvasView.GRID_WIDTH, y * CanvasView.GRID_HEIGHT )
 
       for child in node.children()
-        cc = child.node
-        if cc.tagName.toLowerCase() isnt "path" then continue
+        if (child.attr("class") || "").indexOf("port") < 0 then continue
 
         name = child.attr("data-alias") or child.attr("data-name")
         if name
@@ -237,6 +236,13 @@ define [
           svg.rect(80,80).radius(16,16).classes('node-background')
           svg.text("").move(40, 90).classes('node-label')
         ])
+
+    createPortElement : ()->
+      svg = @canvas.svg
+      svg.group().add([
+        svg.circle(6,6).cx(0).cy(0).classes("port-border")
+        svg.circle(6,6).cx(0).cy(0).classes("port-fill")
+      ])
 
     createNode : ( option )->
       # A helper function to create a SVG Element to represent a group

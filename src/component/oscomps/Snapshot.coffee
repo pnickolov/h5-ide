@@ -321,7 +321,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 }
                 {
                     sortable: false
-                    width: "30%" # or 40%
+                    width: "auto" # or 40%
                     name: 'Description'
                 }
             ]

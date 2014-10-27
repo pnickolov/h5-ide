@@ -21,6 +21,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
       "pool" : "horizontal"
     }
 
+    isPortSignificant : ()-> true
+
     # Creates a svg element
     create : ()->
       m = @model

@@ -43,43 +43,30 @@ define [
             provider = App.user.get("default_provider")
             quotaMap = App.model.getOpenstackQuotas(provider)
 
-            existMap = {}
-            # existMap[constant.RESTYPE.OSSERVER]     = CloudResources( constant.RESTYPE.OSSERVER, region ).length
-            existMap[constant.RESTYPE.OSPORT]       = CloudResources( constant.RESTYPE.OSPORT, region ).length
-            # existMap[constant.RESTYPE.OSVOL]        = CloudResources( constant.RESTYPE.OSVOL, region ).length
-            # existMap[constant.RESTYPE.OSSNAP]       = CloudResources( constant.RESTYPE.OSSNAP, region ).length
-            existMap[constant.RESTYPE.OSFIP]        = CloudResources( constant.RESTYPE.OSFIP, region ).length
-            existMap[constant.RESTYPE.OSRT]         = CloudResources( constant.RESTYPE.OSRT, region ).length
-            # existMap[constant.RESTYPE.OSPOOL]       = CloudResources( constant.RESTYPE.OSPOOL, region ).length
-            # existMap[constant.RESTYPE.OSLISTENER]   = CloudResources( constant.RESTYPE.OSLISTENER, region ).length
-            existMap[constant.RESTYPE.OSSG]         = CloudResources( constant.RESTYPE.OSNETWORK, region ).length
-            existMap[constant.RESTYPE.OSSUBNET]     = CloudResources( constant.RESTYPE.OSSUBNET, region ).length
-
-            newMap = {}
             getNewCount = (type) ->
                 return _.filter(Design.modelClassForType(type).allObjects(), (model) -> not model.get('appId')).length
 
-            # newMap[constant.RESTYPE.OSSERVER]       = getNewCount(constant.RESTYPE.OSSERVER)
-            newMap[constant.RESTYPE.OSPORT]         = getNewCount(constant.RESTYPE.OSPORT)
-            # newMap[constant.RESTYPE.OSVOL]          = getNewCount(constant.RESTYPE.OSVOL)
-            # newMap[constant.RESTYPE.OSSNAP]         = getNewCount(constant.RESTYPE.OSSNAP)
-            newMap[constant.RESTYPE.OSFIP]          = getNewCount(constant.RESTYPE.OSFIP)
-            newMap[constant.RESTYPE.OSRT]           = getNewCount(constant.RESTYPE.OSRT)
-            # newMap[constant.RESTYPE.OSPOOL]         = getNewCount(constant.RESTYPE.OSPOOL)
-            # newMap[constant.RESTYPE.OSLISTENER]     = getNewCount(constant.RESTYPE.OSLISTENER)
-            newMap[constant.RESTYPE.OSSG]           = getNewCount(constant.RESTYPE.OSSG)
-            newMap[constant.RESTYPE.OSSUBNET]       = getNewCount(constant.RESTYPE.OSSUBNET)
+            typeShortMap = {}
 
+            existMap = {}
+            newMap = {}
             limitMap = {}
-            # limitMap[constant.RESTYPE.OSSERVER]     = quotaMap['Nova::instances']
+
+            _.each [
+                constant.RESTYPE.OSPORT,
+                constant.RESTYPE.OSFIP,
+                constant.RESTYPE.OSRT,
+                constant.RESTYPE.OSSG,
+                constant.RESTYPE.OSSUBNET
+            ], (type) ->
+
+                typeShortMap[type] =
+                existMap[type] = CloudResources(type, region).length
+                newMap[type] = getNewCount(type)
+
             limitMap[constant.RESTYPE.OSPORT]       = quotaMap['Neutron::port']
-            # limitMap[constant.RESTYPE.OSVOL]        = quotaMap['Cinder::volumes']
-            # limitMap[constant.RESTYPE.OSSNAP]       = quotaMap['Cinder::snapshots']
             limitMap[constant.RESTYPE.OSFIP]        = quotaMap['Neutron::floatingip']
             limitMap[constant.RESTYPE.OSRT]         = quotaMap['Neutron::router']
-            # limitMap[constant.RESTYPE.OSPOOL]       = quotaMap['']
-            # limitMap[constant.RESTYPE.OSLISTENER]   = quotaMap['']
-            # limitMap[constant.RESTYPE.OSNETWORK]    = quotaMap['Neutron::network']
             limitMap[constant.RESTYPE.OSSG]         = quotaMap['Neutron::security_group']
             limitMap[constant.RESTYPE.OSSUBNET]     = quotaMap['Neutron::subnet']
 

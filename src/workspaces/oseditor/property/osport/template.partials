@@ -37,7 +37,7 @@
         <dt>Name</dt><dd>{{emptyStr name}}</dd>
         <dt>ID</dt><dd>{{emptyStr id}}</dd>
     </dl>
-    <dl class="vertical">
+    <dl class="dl-vertical">
         <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
         <dt>Mac Address</dt><dd>{{emptyStr mac_address}}</dd>
         <dt>Fixed IP</dt><dd>{{emptyStr fixed_ips.[0].ip_address}}</dd>

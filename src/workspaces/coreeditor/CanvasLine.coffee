@@ -24,20 +24,15 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     return
 
   rotateRect = ( rect, angle )->
-    tmp = {}
-    if angle is 90
-      r = {x1:"y1", y1:"x2", x2:"y2", y2:"x1"}
-    else if angle is 180
-      r = {x1:"x2", y1:"y2", x2:"x1", y2:"y1"}
-    else
-      r = {x1:"y2", y1:"x1", x2:"y1", y2:"x2"}
+    p1 = {x:rect.x1, y:rect.y1}
+    p2 = {x:rect.x2, y:rect.y2}
+    rotate( p1, angle )
+    rotate( p2, angle )
 
-    for k, v of r
-      tmp[v] = rect[k]
-
-    for k, v of tmp
-      rect[k] = v
-
+    rect.x1 = Math.min( p1.x, p2.x )
+    rect.x2 = Math.max( p1.x, p2.x )
+    rect.y1 = Math.min( p1.y, p2.y )
+    rect.y2 = Math.max( p1.y, p2.y )
     return
 
   flipRect = ( rect )->
@@ -283,8 +278,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         end.angle -= start.angle
         if end.angle < 0 then end.angle += 360
 
-        rotateRect( start.itemRect, start.angle )
-        rotateRect( end.itemRect,   start.angle )
+        rotateRect( start.itemRect, -start.angle )
+        rotateRect( end.itemRect,   -start.angle )
 
       # 4. Flip end, if end is in Quadrant 3 or Quadrant 4
       fliped = false

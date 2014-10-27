@@ -3,14 +3,14 @@
 </div>
 <div class="option-group pool-details">
     <dl class="dl-vertical">
-        <dt>Name</dt><dd>{{name}}</dd>
-        <dt>Description</dt><dd>{{description}}</dd>
-        <dt>ID</dt><dd>{{id}}</dd>
-        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{status}}</dd>
-        <dt>Subnet ID</dt><dd>{{subnet_id}}</dd>
-        <dt>Protocol</dt><dd>{{protocol}}</dd>
-        <dt>LB Method</dt><dd>{{lb_method}}</dd>
-        <dt>Provider</dt><dd>{{provider}}</dd>
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        <dt>Description</dt><dd>{{emptyStr description}}</dd>
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+        <dt>Subnet ID</dt><dd>{{emptyStr subnet_id}}</dd>
+        <dt>Protocol</dt><dd>{{emptyStr protocol}}</dd>
+        <dt>LB Method</dt><dd>{{emptyStr lb_method}}</dd>
+        <dt>Provider</dt><dd>{{emptyStr provider}}</dd>
     </dl>
 </div>
 
@@ -22,8 +22,8 @@
     <header>{{name}} ({{address}})</header>
     <section class="group">
         <dl class="dl-vertical">
-            <dt>Status</dt><dd class="os-status os-status-{{status}}">{{status}}</dd>
-            <dt>Weight</dt><dd>{{weight}}</dd>
+            <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+            <dt>Weight</dt><dd>{{emptyStr weight}}</dd>
         </dl>
     </section>
 {{else}}

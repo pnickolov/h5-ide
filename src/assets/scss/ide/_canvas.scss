@@ -50,6 +50,34 @@
       > .normal { display : block; }
     }
   }
+
+  .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
+    > .node-background {
+      fill-opacity: .6;
+      fill : #D8DAEB;
+      stroke: $base-b;
+      stroke-width: 2;
+    }
+  }
+  .canvasel.selected {
+    > .node-label-name-bg {
+      fill:#659FFF;
+      ~ .node-label {
+        fill:#fff;
+      }
+    }
+  }
+
+  &[data-mode="stack"], &[data-mode="appedit"] {
+    .port:hover, .port.connectable {
+      .port-fill {
+        fill:#F2F8FF;
+      }
+      .port-border {
+        stroke-width:4;
+      }
+    }
+  }
 }
 
 .svg_resizer {
@@ -131,29 +159,6 @@
   fill: #D8DAEB;
 }
 
-.canvas-view {
-
-  .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
-    > .node-background {
-      fill-opacity: .6;
-      fill : #D8DAEB;
-      // stroke: $light-p-2;
-      // #B4B8DF
-      stroke: $base-b;
-      stroke-width: 2;
-    }
-  }
-  .canvasel.selected {
-    > .node-label-name-bg {
-      fill:#659FFF;
-      ~ .node-label {
-        fill:#fff;
-      }
-    }
-  }
-
-}
-
 .server-number-bg {
   stroke-width: 0;
   fill: #439beb;
@@ -208,18 +213,6 @@
 .port-gray {
   fill: #d8d7d6;
   stroke: #bebebe;
-}
-
-.canvas-view[data-mode="stack"], .canvas-view[data-mode="appedit"] {
-  .port:hover, .port.connectable {
-    .port-fill {
-      fill:#F2F8FF;
-    }
-    .port-border {
-      stroke-width:4;
-
-    }
-  }
 }
 
 .port-fill {
@@ -537,8 +530,6 @@
     stroke: #6DAEFE;
     stroke-dasharray: 10,5;
   }
-
-  &.server { stroke: #000; }
 }
 marker {
   &.subnet-assoc-in, &.subnet-assoc-out, &.rtb-src, &.elb-assoc { fill: #d8d7d6; }
@@ -831,6 +822,17 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   .group-label {
     fill: #F69722;
   }
+}
+
+.draw-line {
+  &.route { stroke:#d8d7d6; }
+  &.pool  { stroke:#6DAEFE; }
+  &.server, &.elb { stroke:#12CD4F; }
+}
+marker {
+  &.route { fill:#d8d7d6; }
+  &.pool  { fill:#6DAEFE; }
+  &.server, &.elb { fill:#12CD4F; }
 }
 
 .OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {

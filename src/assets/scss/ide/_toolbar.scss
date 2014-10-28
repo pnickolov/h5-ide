@@ -228,7 +228,9 @@
   width        : 280px;
   padding-left : 0;
   float        : right;
+  border-bottom: none;
   box-sizing   : border-box;
+  box-shadow   : none;
 
   &.resource .resource { @include activedPanelTab; }
   &.property .property { @include activedPanelTab; }

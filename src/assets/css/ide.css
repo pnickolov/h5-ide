@@ -7473,7 +7473,9 @@ g.shadow {
   width: 280px;
   padding-left: 0;
   float: right;
-  box-sizing: border-box; }
+  border-bottom: none;
+  box-sizing: border-box;
+  box-shadow: none; }
   .openstack .OEPanelTop .sidebar-title.resource .resource {
     border-bottom: 2px solid #4a90e2;
     color: #4a90e2; }

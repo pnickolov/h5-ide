@@ -997,6 +997,7 @@ define [ 'ApiRequest'
 
                 if flag
                     _check('standard')
+                    $('.property-dbinstance-iops-value-section').hide()
                 else
                     _check('io1')
 

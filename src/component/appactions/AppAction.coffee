@@ -33,6 +33,9 @@ define [
         confirm:
           text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
           disabled: true
+      if cloudType is 'openstack'
+        @modal.find(".estimate").hide()
+        @modal.resize()
       @renderKpDropdown(@modal, cloudType)
       cost = Design.instance().getCost()
       @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")

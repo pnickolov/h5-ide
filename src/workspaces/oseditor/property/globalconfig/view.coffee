@@ -18,8 +18,12 @@ define [
             @$el.html template @getRenderData()
             @
 
+        mode: ->
+            mod = Design.instance().mode()
+            mod
+
         getTitle: ->
-            if @mode() is 'app'
+            if @mode() in [ 'app', 'appedit' ]
                 'App Property'
             else
                 'Stack Property'

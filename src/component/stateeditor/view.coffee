@@ -2292,7 +2292,7 @@ define [ 'component/stateeditor/model',
 
             resState = that.model.get('resState')
             instanceStateHTML = $.trim(template.stateLogInstanceItemTpl({
-                res_status: resState
+                res_status: (resState or "").toLowerCase()
             }))
 
             that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)

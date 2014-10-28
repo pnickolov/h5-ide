@@ -86,7 +86,7 @@
 
 #state-editor, .ace_autocomplete_tip {
 	overflow-y: auto;
-	width: 654px;
+	width: 656px;
 	background: #27292C;
 	font-size: 13px;
 	position: absolute;
@@ -120,7 +120,7 @@
 	max-height   : 96%;
 	width        : 400px;
 
-	box-shadow   : 0 0 20px rgba(0,0,0,.4);
+	// box-shadow   : 0 0 20px rgba(0,0,0,.4);
 	border       : 1px solid #222;
 	border-radius: 4px 0 0 4px;
 
@@ -479,7 +479,7 @@
 	left:          0;
 	right:         0;
 	top:           0;
-	height:        36px;
+	height:        39px;
 }
 
 .state-editor-toolbar a {

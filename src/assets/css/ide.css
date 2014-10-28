@@ -9611,10 +9611,12 @@ g.shadow {
 .os-status-:before {
   background-color: yellow; }
 
-.dropdown-list-btn {
+.openstack .dropdown-list-btn {
   display: block;
   width: 100%;
   padding: 10px; }
+.openstack .status-bar .icon-label {
+  margin: 0 5px 0 3px; }
 
 .dash-header {
   padding: 10px 0;

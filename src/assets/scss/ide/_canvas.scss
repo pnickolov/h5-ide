@@ -835,8 +835,14 @@ marker {
   &.server, &.elb { fill:#12CD4F; }
 }
 
-.OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
-  stroke: #12CD4F;
+.OsListenerAsso, .OsPortUsage {
+  stroke:#12CD4F;
+}
+.OsPoolMembership {
+  stroke:#6daefe;
+}
+.OsRouterAsso {
+  stroke:#d8d7d6;
 }
 
 #hlArea {

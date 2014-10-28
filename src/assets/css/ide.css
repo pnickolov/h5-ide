@@ -6295,8 +6295,14 @@ marker.pool {
 marker.server, marker.elb {
   fill: #12CD4F; }
 
-.OsListenerAsso, .OsPortUsage, .OsRouterAsso, .OsExtRouterAttach, .OsPoolMembership {
+.OsListenerAsso, .OsPortUsage {
   stroke: #12CD4F; }
+
+.OsPoolMembership {
+  stroke: #6daefe; }
+
+.OsRouterAsso {
+  stroke: #d8d7d6; }
 
 #hlArea {
   fill-opacity: 0.5; }

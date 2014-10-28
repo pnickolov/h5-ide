@@ -139,7 +139,7 @@ define [
         })
       ])
       if not m.design().modeIsStack() and m.get("appId")
-        svgEl.add( svg.circle(8).move(63, 15).classes('res-state unknown') )
+        svgEl.add( svg.circle(8).move(63, 11).classes('res-state unknown') )
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
       @listenTo @model, 'change:volume', @updateVolume

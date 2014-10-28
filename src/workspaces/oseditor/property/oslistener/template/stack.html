@@ -1,8 +1,8 @@
 {{#if modeIsAppEdit}}
 {{#if appId}}
-    <dl><dt>ID</dt><dd>{{appId}}</dd></dl>
-    <dl><dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd></dl>
-    <dl><dt>Subnet ID</dt><dd>{{app.subnet_id}}</dd></dl>
+    <dl class="dl-vertical"><dt>ID</dt><dd>{{appId}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{app.status}}">{{app.status}}</dd>
+        <dt>Subnet ID</dt><dd>{{app.subnet_id}}</dd></dl>
 {{/if}}
 {{/if}}
 <div class="option-group-head expand">

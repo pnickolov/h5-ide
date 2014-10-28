@@ -9418,6 +9418,9 @@ marker.server, marker.elb {
           cursor: pointer; }
       #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
         background: #2a608d; }
+  #OpsEditor .OEPanelRight.property .dl-horizontal:first-child, #OpsEditor .OEPanelRight.config .dl-horizontal:first-child {
+    margin-top: 0;
+    padding-top: 8px; }
   #OpsEditor .OEPanelRight.property .dl-horizontal, #OpsEditor .OEPanelRight.config .dl-horizontal {
     margin: 8px 9px; }
     #OpsEditor .OEPanelRight.property .dl-horizontal dd, #OpsEditor .OEPanelRight.config .dl-horizontal dd {

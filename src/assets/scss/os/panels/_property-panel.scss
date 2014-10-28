@@ -47,6 +47,8 @@
         }
 
         /* property component style */
+        .dl-horizontal:first-child { margin-top: 0; padding-top: 8px; }
+
         .dl-horizontal {
             margin: 8px 9px;
 

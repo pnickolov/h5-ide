@@ -256,6 +256,10 @@ define [
           multiAz         : !!attr.multiAz
         }
 
+        # IOPS
+        if attr.iops and Number(attr.iops) > 0
+            @set('storageType', 'io1')
+
         #set default optiongroup and parametergroup
         @setDefaultOptionGroup()
         @setDefaultParameterGroup()
@@ -708,6 +712,13 @@ define [
       that = @
       resource = data.resource
 
+      storageType = resource.StorageType
+      if not storageType
+            if resource.Iops and Number(resource.Iops) > 0
+                storageType = 'io1'
+            else
+                storageType = 'standard'
+
       model = new Model({
         id     : data.uid
         name   : data.name
@@ -739,7 +750,7 @@ define [
         accessible                : resource.PubliclyAccessible
         pgName                    : resource.DBParameterGroups?.DBParameterGroupName
         applyImmediately          : resource.ApplyImmediately
-        storageType               : resource.StorageType
+        storageType               : storageType
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

@@ -4102,7 +4102,8 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 
 /* custom scrollbar */
 *::-webkit-scrollbar {
-  width: 8px; }
+  width: 8px;
+  height: 8px; }
 *::-webkit-scrollbar-track {
   background: none; }
 *::-webkit-scrollbar-thumb {

@@ -22,6 +22,10 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
         Design.modelClassForType(constant.RESTYPE.OSSG).attachDefaultSG(@)
         @assignIP()
 
+      # Sync protocol with connected pool
+      @listenTo @, 'change:protocol', () ->
+        @connectionTargets( 'OsListenerAsso' )[ 0 ]?.set 'protocol', @get('protocol'), silent: true
+
       return
 
     assignIP : () ->

@@ -14,6 +14,11 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       if not attr.healthMonitors
         HmModel = Design.modelClassForType( constant.RESTYPE.OSHM )
         @attributes.healthMonitors = [ new HmModel() ]
+
+      # Sync protocol with connected listener
+      @listenTo @, 'change:protocol', () ->
+        @connectionTargets( 'OsListenerAsso' )[ 0 ]?.set 'protocol', @get('protocol'), silent: true
+
       return
 
     ports : ()->

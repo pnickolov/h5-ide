@@ -2656,7 +2656,9 @@ define([], function() {
       use: function(elementId, readOnly) {
         var element = document.getElementById(elementId);
         if ( readOnly || element.getAttribute("data-readonly") ) {
-          return this.put(new SVG.Use).element(elementId)
+          // As stated below, the browser not just doesn't send ui event, but also eat the event.
+          // So we declare the use as click-through element.
+          return this.put(new SVG.Use).element(elementId).attr("pointer-events", "none");
         } else {
           // Lower version of chrome doesn't fully support use element
           // those element won't have ui event, so we need to do a clone.

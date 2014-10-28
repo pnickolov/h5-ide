@@ -9,10 +9,10 @@
     <thead>
     <tr>
         <th class="sortable">Name</th>
-        <th class="sortable" style="width:10%">Status</th>
+        <th class="sortable" style="width:15%">Status</th>
         <th class="sortable" style="width:32%">{{i18n "DASH_LBL_AMI"}}</th>
-        <th class="sortable" style="width:12%">{{i18n "DASH_LBL_PUBLIC_IP"}}</th>
-        <th class="sortable" style="width:18%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
+        <!--<th class="sortable" style="width:12%">{{i18n "DASH_LBL_PUBLIC_IP"}}</th>-->
+        <th class="sortable" style="width:25%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>
     </tr>
     </thead>
 </table>
@@ -25,8 +25,7 @@
                 <th></th>
                 <th style="width: 10%"></th>
                 <th style="width: 32%"></th>
-                <th style="width: 12%"></th>
-                <th style="width: 18%"></th>
+                <th style="width: 25%"></th>
             </tr>
         </thead>
       <tbody>
@@ -38,8 +37,7 @@
                   <td class="os-status os-status-{{status}}">{{status}}</td>
                   <td><img src="/assets/images/ide/ami-os/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}.png">
             <span class="bubble" data-bubble-template="osDashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;OSSERVER&quot;,&quot;id&quot;:&quot;{{id}}&quot;}">{{ system_metadata.image_image_name }}</span></td>
-                  <td>{{accessIPv4}}</td>
-                  <td>{{timeStr OS-SRV-USG:launched_at}}</td>
+                  <td>{{timeStr launched_at}}</td>
               </tr>
           {{else}}
               <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}Server{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>

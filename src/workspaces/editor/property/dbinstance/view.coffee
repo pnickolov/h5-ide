@@ -27,7 +27,7 @@ define [ 'ApiRequest'
             'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
             'change #property-dbinstance-storage': 'changeAllocatedStorage'
             'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
-            'change #property-dbinstance-iops-check': 'changeProvisionedIOPSCheck'
+            'OPTION_CHANGE #property-dbinstance-storage-type': 'changeStorageType'
             'change #property-dbinstance-iops-value': 'changeProvisionedIOPS'
             'change #property-dbinstance-master-username': 'changeUserName'
             'change #property-dbinstance-master-password': 'changePassWord'
@@ -100,7 +100,7 @@ define [ 'ApiRequest'
 
             else
 
-                noRestore = true                
+                noRestore = true
 
             if noRestore
 
@@ -986,29 +986,47 @@ define [ 'ApiRequest'
 
         _disableIOPSCheck: (isDisable) ->
 
-            checkedDom = $('#property-dbinstance-iops-check')[0]
+            _check = (id) ->
 
-            if checkedDom
+                $('#property-dbinstance-storage-type').find('.item').removeClass('selected')
+                $selectedDom = $('#property-dbinstance-storage-type').find('.item[data-id="' + id + '"]')
+                $selectedDom.addClass('selected')
+                $('#property-dbinstance-storage-type').find('.selection').text($selectedDom.text())
 
-                if isDisable
+            _switch = (flag) ->
 
-                    $('#property-dbinstance-iops-check').attr('disabled', 'disabled')
-                    $('.property-dbinstance-iops-value-section').hide()
-                    $('#property-dbinstance-iops-value').val('')
-                    @resModel.setIops 0
-                    checkedDom.checked = false
-
+                if flag
+                    _check('standard')
                 else
+                    _check('io1')
 
-                    $('#property-dbinstance-iops-check').removeAttr('disabled')
-                    checked = checkedDom.checked
-                    if checked
-                        $('.property-dbinstance-iops-value-section').show()
-                        checkedDom.checked = true
-                    else
-                        $('.property-dbinstance-iops-value-section').hide()
-                        checkedDom.checked = false
-                    # @resModel.setIops ''
+            _hide = (flag) ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                if flag
+                    $dom.hide()
+                    _switch(true) if _checked()
+                else
+                    $dom.show()
+
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            # if _checked()
+
+            if isDisable
+
+                _switch(true) if _checked()
+                _hide(true)
+                $('#property-dbinstance-iops-value').val('')
+                @resModel.setIops 0
+
+            else
+
+                _hide(false)
+                # _switch(false)
 
         _getIOPSRange: (storage) ->
 
@@ -1057,11 +1075,21 @@ define [ 'ApiRequest'
             # if target.parsley('validate') and that.changeProvisionedIOPS()
             that.updateIOPSCheckStatus(value)
 
-        changeProvisionedIOPSCheck: (event) ->
+        changeStorageType: () ->
 
             that = this
 
-            value = event.target.checked
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            _value = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item.selected')
+                return $dom.attr('data-id')
+
+            value = _checked()
 
             fillValue = $('#property-dbinstance-storage').val()
             originValue = @resModel.get('allocatedStorage')
@@ -1088,11 +1116,18 @@ define [ 'ApiRequest'
                     $('#property-dbinstance-iops-value').val('')
                     @resModel.setIops 0
 
+            @resModel.set('storageType', _value())
+
         changeProvisionedIOPS: (event) ->
 
             that = this
 
-            if $('#property-dbinstance-iops-check')[0].checked
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            if _checked()
 
                 target = $('#property-dbinstance-iops-value')
                 value = target.val()
@@ -1280,7 +1315,7 @@ define [ 'ApiRequest'
 
                         oldSrcId = currentResModel.get('ReadReplicaSourceDBInstanceIdentifier')
                         newSrcId = dbData.ReadReplicaSourceDBInstanceIdentifier
-                        
+
                         if oldSrcId isnt newSrcId
 
                             currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)

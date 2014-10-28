@@ -40,11 +40,15 @@
 
         {{#if masterIops}}
         <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-iops-check" type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
-                <label for="property-dbinstance-iops-check"></label>
+            <label class="left">Storage Type</label>
+            <div class="selectbox" id="property-dbinstance-storage-type">
+                <div class="selection"></div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item {{#ifCond storageType "gp2"}}selected{{/ifCond}}" data-id="gp2">General Purpose (SSD)</li>
+                    <li class="item {{#ifCond storageType "io1"}}selected{{/ifCond}} {{#if iops}}selected{{/if}}" {{#if isAppEdit}}{{#if isSqlserver}}hide{{/if}}{{/if}} data-id="io1">Provisioned IOPS (SSD)</li>
+                    <li class="item {{#ifCond storageType "standard"}}selected{{/ifCond}}" data-id="standard">Magnetic</li>
+                </ul>
             </div>
-            <label for="property-dbinstance-iops-check">Use Provisioned IOPS</label>
         </section>
         {{/if}}
 

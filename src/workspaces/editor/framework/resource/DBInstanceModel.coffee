@@ -41,6 +41,7 @@ define [
       applyImmediately: false
       dbRestoreTime: ''
       isRestored: false
+      storageType: "standard"
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -127,7 +128,7 @@ define [
       @listenTo sourceDb, 'change', @syncAttrSourceDBForRestore
 
     getSourceDBForRestore: ->
-      
+
       @sourceDBForRestore
 
     syncMasterAttr: ( master ) ->
@@ -636,7 +637,7 @@ define [
       true
 
     serialize : () ->
-      
+
       master = @master()
 
       useLatestRestorableTime = ''
@@ -688,6 +689,7 @@ define [
           SourceDBInstanceIdentifierForPoint    : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
           UseLatestRestorableTime               : useLatestRestorableTime
           RestoreTime                           : restoreTime
+          StorageType                           : @get 'storageType'
 
       { component : component, layout : @generateLayout() }
 
@@ -737,6 +739,7 @@ define [
         accessible                : resource.PubliclyAccessible
         pgName                    : resource.DBParameterGroups?.DBParameterGroupName
         applyImmediately          : resource.ApplyImmediately
+        storageType               : resource.StorageType
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

@@ -24,14 +24,16 @@ define [
     recreateStructure : ()->
       @svg.clear().add([
         @svg.group().classes("layer_network")
+        @svg.group().classes("layer_groupLine")
         @svg.group().classes("layer_subnet")
         @svg.group().classes("layer_line")
         @svg.group().classes("layer_node")
       ])
       return
 
-    appendNetwork : ( svgEl )-> @__appendSvg(svgEl, ".layer_network")
-    appendSubnet  : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
+    appendNetwork   : ( svgEl )-> @__appendSvg(svgEl, ".layer_network")
+    appendSubnet    : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")
+    appendGroupLine : ( svgEl )-> @__appendSvg(svgEl, ".layer_groupLine")
 
     fixConnection : ( coord, initiator, target )->
 

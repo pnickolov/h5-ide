@@ -120,9 +120,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         svg.path(pd)
         svg.path(pd).classes("fill-line")
       ]).attr({"data-id":@cid}).classes("line " + @type.replace(/\./g, "-") )
-      @canvas.appendLine( svgEl )
+      @appendLineToCanvas( svgEl )
 
       svgEl
+
+    appendLineToCanvas : ( svgEl )-> @canvas.appendLine( svgEl )
 
     renderConnection : ( item_from, item_to, element1, element2, initiator )->
       path = @generatePath( item_from, item_to, element1, element2 )

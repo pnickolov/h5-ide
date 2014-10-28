@@ -20,13 +20,8 @@ define [ "CanvasLine", "constant" ], ( CeLine, constant )->
     ClassName : "CeRouterAsso"
     ### env:dev:end ###
     type : "OsRouterAsso"
-  }
 
-  CeLine.extend {
-    ### env:dev ###
-    ClassName : "CeExtRouterAttach"
-    ### env:dev:end ###
-    type : "OsExtRouterAttach"
+    appendLineToCanvas : ( svgEl )-> @canvas.appendGroupLine( svgEl )
   }
 
   CeLine.extend {

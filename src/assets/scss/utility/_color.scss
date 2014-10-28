@@ -51,3 +51,6 @@ $yellow: #FFBB0D;
 $base-r: #A42B2B;
 $light-r: desaturate(lighten($base-r, 10%), 10%);
 $dark-r: saturate(darken($base-r, 20%), 20%);
+
+/* Grey */
+$base-grey: desaturate(lighten($base-p, 60%), 30%);

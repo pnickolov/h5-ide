@@ -9,6 +9,7 @@
 /* Orange */
 /* Yellow */
 /* Red */
+/* Grey */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -3545,7 +3546,6 @@ div.modal-text-highlight {
   float: left;
   height: 50px;
   line-height: 49px;
-  border-left: 1px solid #222;
   -webkit-transition: background-color 0.2s;
   -moz-transition: background-color 0.2s;
   -ms-transition: background-color 0.2s;
@@ -6320,12 +6320,12 @@ marker.server, marker.elb {
   position: absolute;
   left: 50%;
   top: 8px;
-  background: #111;
+  background: rgba(0, 0, 0, 0.8);
   padding: 5px 8px;
   border-radius: 4px;
-  color: #ccc;
+  color: #eee;
   max-width: 400px;
-  font-size: 12px;
+  font-size: 16px;
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
   -o-transform: translateX(-50%);
@@ -9705,25 +9705,26 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin: 0; }
 
 .dash-ops-list-wrapper {
-  margin: 68px auto 40px;
+  margin: 68px auto 20px;
   max-width: 1280px;
-  padding: 15px 0 20px;
+  padding: 15px 0 0 0;
   width: 95%;
-  background: #fff; }
+  background: #fff;
+  border-radius: 2px; }
   .dash-ops-list-wrapper > nav {
     height: 30px;
-    border-bottom: 1px solid #000; }
+    border-bottom: 1px solid #eeeef0; }
     .dash-ops-list-wrapper > nav > button {
-      border-right: 1px solid #000; }
+      font-size: 24px;
+      color: #eeeef0; }
 
 .dash-ops-list {
   max-height: 395px;
   overflow: auto; }
   .dash-ops-list > li {
-    float: left;
     margin-left: 1.6%;
     margin-top: 15px;
-    display: block;
+    display: inline-block;
     width: 18%;
     position: relative;
     cursor: pointer;

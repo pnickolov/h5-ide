@@ -7233,7 +7233,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -8310,16 +8311,20 @@ marker.server, marker.elb {
   left: 0;
   right: 0;
   top: 0;
-  height: 39px; }
+  height: 36px; }
+  .state-editor-toolbar .icon-label {
+    float: left;
+    margin-top: -1px; }
 
 .state-editor-toolbar a {
   padding: 10px 8px 10px 9px;
   border-right: 1px solid #131313;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   color: #999;
   float: left;
   cursor: pointer;
+  height: 19px;
   -webkit-transition: background .2s;
   -moz-transition: background .2s;
   -ms-transition: background .2s;

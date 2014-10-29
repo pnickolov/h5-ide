@@ -8,7 +8,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "CanvasView", "i18n!/nls/
     type : constant.RESTYPE.OSSUBNET
 
     parentType  : [ constant.RESTYPE.OSNETWORK ]
-    defaultSize : [ 13, 13 ]
+    defaultSize : [ 19, 19 ]
 
     portDirMap : {
       "route" : "vertical"

@@ -314,6 +314,27 @@ $dndDuration : .2s;
       top      : 10px;
     }
   }
+  &.osvol      { background-image: image-url('ide/icon-os/res-dg-volume.png'); }
+  &.ossnapshot { background-image: image-url('ide/icon-os/res-dg-snapshot.png'); }
+
+  &.oselb {
+    width : 170px;
+    background-image: image-url("ide/icon-os/res-dg-listener.png");
+    background-position: left top;
+    position: relative;
+    &:after {
+      position : absolute;
+      right    : 0;
+      top      : 0;
+      content  : " ";
+      background : image-url("ide/icon-os/res-dg-pool.png");
+      width : 80px;
+      height : 80px;
+      -webkit-background-size : 80px;
+         -moz-background-size : 80px;
+              background-size : 80px;
+    }
+  }
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
   &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
@@ -331,7 +352,7 @@ $dndDuration : .2s;
     display : none;
   }
 
-  &.az, &.asg,  &.subnet, &.subnetgroup {
+  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet {
     background-image : none;
     color        : #eee;
     position     : relative;

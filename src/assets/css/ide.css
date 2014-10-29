@@ -6615,6 +6615,26 @@ marker.server, marker.elb {
       height: 30px;
       position: relative;
       top: 10px; }
+  #DndItem.osvol {
+    background-image: url('/assets/images/ide/icon-os/res-dg-volume.png'); }
+  #DndItem.ossnapshot {
+    background-image: url('/assets/images/ide/icon-os/res-dg-snapshot.png'); }
+  #DndItem.oselb {
+    width: 170px;
+    background-image: url('/assets/images/ide/icon-os/res-dg-listener.png');
+    background-position: left top;
+    position: relative; }
+    #DndItem.oselb:after {
+      position: absolute;
+      right: 0;
+      top: 0;
+      content: " ";
+      background: url('/assets/images/ide/icon-os/res-dg-pool.png');
+      width: 80px;
+      height: 80px;
+      -webkit-background-size: 80px;
+      -moz-background-size: 80px;
+      background-size: 80px; }
   #DndItem.rtb, #DndItem.igw, #DndItem.vgw {
     width: 80px;
     height: 80px; }
@@ -6629,7 +6649,7 @@ marker.server, marker.elb {
     background-position: 17px center; }
   #DndItem .resource-count {
     display: none; }
-  #DndItem.az, #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup {
+  #DndItem.az, #DndItem.asg, #DndItem.subnet, #DndItem.subnetgroup, #DndItem.ossubnet {
     background-image: none;
     color: #eee;
     position: relative;
@@ -6643,7 +6663,7 @@ marker.server, marker.elb {
     -webkit-transition-property: text-indent, padding-top, width, height, color;
     -moz-transition-property: text-indent, padding-top, width, height, color;
     transition-property: text-indent, padding-top, width, height, color; }
-    #DndItem.az:before, #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before {
+    #DndItem.az:before, #DndItem.asg:before, #DndItem.subnet:before, #DndItem.subnetgroup:before, #DndItem.ossubnet:before {
       content: " ";
       display: block;
       position: absolute;
@@ -6657,12 +6677,12 @@ marker.server, marker.elb {
       -webkit-transition: all ease-in 0.2s;
       -moz-transition: all ease-in 0.2s;
       transition: all ease-in 0.2s; }
-    #DndItem.az.dragOver, #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver {
+    #DndItem.az.dragOver, #DndItem.asg.dragOver, #DndItem.subnet.dragOver, #DndItem.subnetgroup.dragOver, #DndItem.ossubnet.dragOver {
       width: 190px;
       height: 176px;
       padding-top: 14px;
       text-indent: 16px; }
-      #DndItem.az.dragOver:before, #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before {
+      #DndItem.az.dragOver:before, #DndItem.asg.dragOver:before, #DndItem.subnet.dragOver:before, #DndItem.subnetgroup.dragOver:before, #DndItem.ossubnet.dragOver:before {
         width: 166px;
         height: 166px; }
   #DndItem.az {

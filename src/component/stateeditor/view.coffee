@@ -2,16 +2,16 @@
 #  View(UI logic) for component/stateeditor
 #############################
 
-define [ 'component/stateeditor/model',
-         'event',
+define [ 'event',
          'i18n!/nls/lang.js',
-         'component/stateeditor/template',
-         'component/stateeditor/validate',
+         './template',
+         './validate',
          'constant',
          'instance_model',
-         'component/stateeditor/lib/markdown',
+         './lib/markdown',
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown) ->
+
+], ( ide_event, lang, template , validate, constant, instance_model, Markdown) ->
 
     StateClipboard = []
 
@@ -62,7 +62,7 @@ define [ 'component/stateeditor/model',
             'click .parameter-item .parameter-remove': 'onParaRemoveClick'
             'click .state-desc-toggle': 'onDescToggleClick'
             'click .state-log-toggle': 'onLogToggleClick'
-            'click .state-log-refresh': 'refreshStateLog'
+            'click .state-log-refresh': 'onLogRefreshClick'
             'click .state-sys-log-btn': 'openSysLogModal'
 
             'click .state-item-add': 'onStateItemAddClick'
@@ -75,12 +75,14 @@ define [ 'component/stateeditor/model',
 
             'click .state-log-item .state-log-item-view-detail': 'onStateLogDetailBtnClick'
 
+            'OPTION_CHANGE .state-editor-res-select': 'onResSelectChange'
+
             'keyup .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
             'paste .parameter-item.optional .parameter-value': 'onOptionalParaItemChange'
 
             'click .parameter-item .parameter-name': 'onParaNameClick'
 
-            'click .parameter-item.text .parameter-text-expand': 'onTextParaExpandClick'
+            'click .parameter-item .parameter-text-expand': 'onTextParaExpandClick'
 
             'SWITCH_STATE': 'onSwitchState'
 
@@ -98,11 +100,8 @@ define [ 'component/stateeditor/model',
 
         editorShow: false
 
-        initialize: (options) ->
-
-            @model = new Model({
-                resUID: options.uid
-            })
+        initialize: () ->
+            # this.compileTpl()
 
         initState: () ->
 
@@ -110,8 +109,9 @@ define [ 'component/stateeditor/model',
             this.initUndoManager()
 
             $(document)
-                # .off('keydown.stateEditor', this.keyEvent)
+                .off('keydown.stateEditor', this.keyEvent)
                 .on('keydown.stateEditor', {target: this}, this.keyEvent)
+
 
         closedPopup: () ->
 
@@ -121,16 +121,16 @@ define [ 'component/stateeditor/model',
         render: () ->
 
             that = this
-            resModel = @model.get 'resModel'
+            compData = @model.get 'compData'
 
-            that.initState() if resModel
+            that.initState()
 
             if that.isWindowsPlatform
                 @__renderEmpty('is_windows')
                 return that
 
             if Design.instance().get('agent').enabled
-                if resModel and resModel.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC, constant.RESTYPE.OSSERVER]
+                if compData and compData.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
                     @__renderState()
                 else
                     @__renderEmpty()
@@ -142,8 +142,8 @@ define [ 'component/stateeditor/model',
         __renderEmpty: ( type ) ->
 
             tipSet =
-                disalbed : 'Instance State is disabled.'
-                void     : "Edit Instance State by selecting."
+                disalbed : 'VisualOps is disabled.'
+                void     : "The component does'nt have state editor."
                 group    : 'View states and log by selecting individual instance.'
                 default  : 'No state editor here.'
                 group_in_app : 'View states and log by selecting individual instance.'
@@ -199,7 +199,6 @@ define [ 'component/stateeditor/model',
             # hide autocomplete when click document
             docMouseDownFunc = jQuery.proxy(that.onDocumentMouseDown, that)
             $(document).off('mousedown', docMouseDownFunc).on('mousedown', docMouseDownFunc)
-            # $(document).off('click', docMouseDownFunc).on('click', docMouseDownFunc)
 
             onPasteGistData = jQuery.proxy(that.onPasteGistData, that)
             $(document).off('paste', onPasteGistData).on('paste', onPasteGistData)
@@ -224,7 +223,7 @@ define [ 'component/stateeditor/model',
             # that.initResSelect()
 
             # refresh state log
-            that.refreshStateLog()
+            that.onLogRefreshClick()
 
             if that.isShowLogPanel
                 that.showLogPanel()
@@ -232,7 +231,7 @@ define [ 'component/stateeditor/model',
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
             $logPanelRefresh = that.$editorModal.find('.state-log-refresh')
             $logSysBtn = that.$editorModal.find('.state-sys-log-btn')
-            $logPanel = $('#OpsEditor').find('#state-log')
+            $logPanel = $('#state-log')
 
             if that.currentState is 'stack'
                 $logPanelToggle.hide()
@@ -250,16 +249,16 @@ define [ 'component/stateeditor/model',
                 else
 
                     setTimeout(() ->
-                        # $('#OpsEditor').find('#OEPanelRight').addClass('state-wide')
+                        # $('#OEPanelRight').addClass('state-wide')
                         that.onLogToggleClick()
                     , 0)
 
                     # that.onLogToggleClick()
 
-            $aceAutocompleteTip = $('#OpsEditor').find('.ace_autocomplete_tip')
+            $aceAutocompleteTip = $('.ace_autocomplete_tip')
             if not $aceAutocompleteTip.length
-                $('#OpsEditor').find('body').append('<div class="ace_autocomplete_tip">No result matches the input</div>')
-            that.$aceAutocompleteTip = $('#OpsEditor').find('.ace_autocomplete_tip')
+                $('body').append('<div class="ace_autocomplete_tip">No result matches the input</div>')
+            that.$aceAutocompleteTip = $('.ace_autocomplete_tip')
 
             # , 1)
 
@@ -299,7 +298,7 @@ define [ 'component/stateeditor/model',
 
             that.markdownConvert = new Markdown.Converter()
 
-            that.generalTip = lang.IDE.STATE_HELP_INTRO_LBL
+            that.generalTip = lang.ide.STATE_HELP_INTRO_LBL
 
             that.resNoState = true
             if that.originCompStateData and _.isArray(that.originCompStateData) and that.originCompStateData.length
@@ -399,40 +398,18 @@ define [ 'component/stateeditor/model',
             #     $el: that.$el
             # })
 
-        refreshStateLog: (event) ->
+        onLogRefreshClick: (event) ->
 
             that = this
+            # $resSelectElem = that.$editorModal.find('.state-editor-res-select')
+            # if that.currentState is 'stack'
+            #     $resSelectElem.hide()
+            # else
+            #     that.onResSelectChange({
+            #         target: $resSelectElem[0]
+            #     })
 
-            selectedResId = that.currentResId
-            # $(event.target).find('.selected').attr('data-id')
-
-            # refresh state log
-            that.showLogListLoading(true)
-
-            that.model.getResState(selectedResId)
-
-            if not that.isLoadingLogList
-
-                $logPanel = $('#OpsEditor').find('#state-log')
-                $loadText = $logPanel.find('.state-log-loading')
-
-                $loadText.text('Refresh...')
-
-                that.isLoadingLogList = true
-
-                that.model.genStateLogData(selectedResId, () ->
-                    that.refreshStateLogList()
-                    that.showLogListLoading(false)
-                    that.isLoadingLogList = false
-                )
-
-                if that.logRefreshTimer
-                    clearTimeout(that.logRefreshTimer)
-
-                that.logRefreshTimer = setTimeout(() ->
-                    if that.isLoadingLogList
-                        $loadText.text('Request log info timeout, please try again')
-                , 5000)
+            that.onResSelectChange()
 
         refreshStateList: (stateListObj) ->
 
@@ -469,7 +446,7 @@ define [ 'component/stateeditor/model',
             if not that.readOnlyMode
 
                 # create new dict input box
-                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item:last .key')
+                $lastDictInputList = $stateItemList.find('.parameter-item.dict .parameter-dict-item .key')
                 _.each $lastDictInputList, (lastDictInput) ->
                     that.onDictInputChange({
                         currentTarget: lastDictInput
@@ -1042,6 +1019,11 @@ define [ 'component/stateeditor/model',
 
                 editor.clearSelection()
 
+                $paraItem = $currentInput.parents('.parameter-item')
+                if $paraItem.hasClass('dict') and $currentInput.hasClass('value')
+                    editor.getSelection().selectFileStart()
+                    editor.clearSelection()
+
         onParaNameClick: (event) ->
 
             that = this
@@ -1412,8 +1394,6 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            return null if not that.$stateList
-
             $stateItemList = that.$stateList.find('.state-item')
 
             stateObjAry = []
@@ -1592,13 +1572,13 @@ define [ 'component/stateeditor/model',
 
             return renderObj
 
-        onStateSaveClick: () ->
+        onStateSaveClick: (event) ->
 
             that = this
 
             stateData = that.saveStateData()
 
-            that.model.setStateData(stateData) if stateData
+            that.model.setStateData(stateData)
 
             if stateData
 
@@ -1658,14 +1638,14 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            $stateEditor = $('#OpsEditor').find('#state-editor')
-            $descPanel = $('#OpsEditor').find('#state-description')
-            $logPanel = $('#OpsEditor').find('#state-log')
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
 
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#OpsEditor').find('#OEPanelRight').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $descPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1674,7 +1654,7 @@ define [ 'component/stateeditor/model',
                 $logPanel.removeClass('show')
                 $descPanel.removeClass('show')
                 $descPanelToggle.removeClass('active')
-                $('#OpsEditor').find('#OEPanelRight').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1684,7 +1664,7 @@ define [ 'component/stateeditor/model',
                 $logPanel.removeClass('show')
                 $descPanel.addClass('show')
                 $descPanelToggle.addClass('active')
-                $('#OpsEditor').find('#OEPanelRight').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $logPanelToggle.removeClass('active')
 
@@ -1697,14 +1677,14 @@ define [ 'component/stateeditor/model',
                 if currentAppState is 'Stopped'
                     return
 
-            $stateEditor = $('#OpsEditor').find('#state-editor')
-            $descPanel = $('#OpsEditor').find('#state-description')
-            $logPanel = $('#OpsEditor').find('#state-log')
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
 
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
 
-            expandPanel = $('#OpsEditor').find('#OEPanelRight').hasClass('state-wide')
+            expandPanel = $('#OEPanelRight').hasClass('state-wide')
             if expandPanel and $logPanel.hasClass('show')
 
                 $stateEditor.addClass('full')
@@ -1713,7 +1693,7 @@ define [ 'component/stateeditor/model',
                 $descPanel.removeClass('show')
                 $logPanel.removeClass('show')
                 $logPanelToggle.removeClass('active')
-                $('#OpsEditor').find('#OEPanelRight').removeClass 'state-wide'
+                $('#OEPanelRight').removeClass 'state-wide'
 
             else
 
@@ -1723,16 +1703,16 @@ define [ 'component/stateeditor/model',
                 $descPanel.removeClass('show')
                 $logPanel.addClass('show')
                 $logPanelToggle.addClass('active')
-                $('#OpsEditor').find('#OEPanelRight').addClass 'state-wide'
+                $('#OEPanelRight').addClass 'state-wide'
 
             $descPanelToggle.removeClass('active')
 
         showLogPanel: () ->
 
             that = this
-            $stateEditor = $('#OpsEditor').find('#state-editor')
-            $descPanel = $('#OpsEditor').find('#state-description')
-            $logPanel = $('#OpsEditor').find('#state-log')
+            $stateEditor = $('#state-editor')
+            $descPanel = $('#state-description')
+            $logPanel = $('#state-log')
 
             $descPanelToggle = that.$editorModal.find('.state-desc-toggle')
             $logPanelToggle = that.$editorModal.find('.state-log-toggle')
@@ -1753,7 +1733,7 @@ define [ 'component/stateeditor/model',
             $parentElem = $currentElem.parents('.editable-area')
 
             if not $parentElem.length and not $currentElem.hasClass('editable-area') and not $currentElem.hasClass('ace_scrollbar')
-                $allEditableArea = $('#OpsEditor').find('.editable-area')
+                $allEditableArea = $('.editable-area')
                 _.each $allEditableArea, (editableArea) ->
                     $editableArea = $(editableArea)
                     editor = $editableArea.data('editor')
@@ -1772,11 +1752,11 @@ define [ 'component/stateeditor/model',
             that = this
             $currentElem = $(event.target)
             $parentElem = $currentElem.parents('.editable-area')
-            $stateEditorModel = $('#OpsEditor').find('#state-editor-model')
+            $stateEditorModel = $('#state-editor-model')
             $parentEditorModel = $currentElem.parents('#state-editor-model')
             if $stateEditorModel.length and (not $parentEditorModel.length)
                 # if $stateEditorModel.is(':visible')
-                $propertyPanel = $('#OpsEditor').find('#OEPanelRight')
+                $propertyPanel = $('#OEPanelRight')
                 if $stateEditorModel.length # and not $propertyPanel.hasClass('no-state')
                     that.onStateSaveClick()
                 else
@@ -1873,7 +1853,8 @@ define [ 'component/stateeditor/model',
                     singleLine: editorSingleLine,
                     enableTab: enableTab,
                     useSoftTabs: false,
-                    tabSize: 4
+                    tabSize: 4,
+                    lineHeight: 90
                 })
 
                 # move cursor to last
@@ -2075,7 +2056,7 @@ define [ 'component/stateeditor/model',
 
             that = this
             $targetStateItem = that.$stateLogList.find(".state-log-item[data-state-id='" + stateId + "']")
-            $stateLog = $('#OpsEditor').find('#state-log')
+            $stateLog = $('#state-log')
 
             try
                 if $targetStateItem[0]
@@ -2108,7 +2089,7 @@ define [ 'component/stateeditor/model',
 
                 $parent.scrollTop(scrollPos)
 
-                # scrollbar.scrollTo $('#OpsEditor').find('#state-list-wrap'), {top: 300}
+                # scrollbar.scrollTo $('#state-list-wrap'), {top: 300}
 
             catch err
 
@@ -2292,7 +2273,7 @@ define [ 'component/stateeditor/model',
 
             resState = that.model.get('resState')
             instanceStateHTML = $.trim(template.stateLogInstanceItemTpl({
-                res_status: (resState or "").toLowerCase()
+                res_status: resState
             }))
 
             that.$stateLogList.empty().append(instanceStateHTML).append(renderHTML)
@@ -2318,7 +2299,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            $logPanel = $('#OpsEditor').find('#state-log')
+            $logPanel = $('#state-log')
             $loadText = $logPanel.find('.state-log-loading')
             $logInfo = $logPanel.find('.state-log-info')
 
@@ -2336,6 +2317,41 @@ define [ 'component/stateeditor/model',
                 else
                     $logInfo.hide()
 
+        onResSelectChange: () ->
+
+            that = this
+
+            selectedResId = that.currentResId
+            # $(event.target).find('.selected').attr('data-id')
+
+            # refresh state log
+            that.showLogListLoading(true)
+
+            that.model.getResState(selectedResId)
+
+            if not that.isLoadingLogList
+
+                $logPanel = $('#state-log')
+                $loadText = $logPanel.find('.state-log-loading')
+
+                $loadText.text('Refresh...')
+
+                that.isLoadingLogList = true
+
+                that.model.genStateLogData(selectedResId, () ->
+                    that.refreshStateLogList()
+                    that.showLogListLoading(false)
+                    that.isLoadingLogList = false
+                )
+
+                if that.logRefreshTimer
+                    clearTimeout(that.logRefreshTimer)
+
+                that.logRefreshTimer = setTimeout(() ->
+                    if that.isLoadingLogList
+                        $loadText.text('Request log info timeout, please try again')
+                , 5000)
+
         onStateStatusUpdate: (newStateUpdateResIdAry) ->
 
             that = this
@@ -2345,11 +2361,11 @@ define [ 'component/stateeditor/model',
             if newStateUpdateResIdAry
                 if newStateUpdateResIdAry.length
                     if selectedResId and selectedResId in newStateUpdateResIdAry
-                        that.refreshStateLog()
+                        that.onLogRefreshClick()
                 else
-                    that.refreshStateLog()
+                    that.onLogRefreshClick()
             else
-                that.refreshStateLog()
+                that.onLogRefreshClick()
 
         onOptionalParaItemChange: (event) ->
 
@@ -2523,10 +2539,10 @@ define [ 'component/stateeditor/model',
             #     if editor then editor.destroy()
             #     null
 
-            # $aceAutoCompList = $('#OpsEditor').find('.ace_editor.ace_autocomplete')
+            # $aceAutoCompList = $('.ace_editor.ace_autocomplete')
             # $aceAutoCompList.remove()
 
-            $aceEditors = $('#OpsEditor').find('.ace_editor')
+            $aceEditors = $('.ace_editor')
             $aceEditors.remove()
 
         initUndoManager: () ->
@@ -2687,9 +2703,9 @@ define [ 'component/stateeditor/model',
             parseErrList = stateListObj.err_list
             if parseErrList.length
                 if 'command' in parseErrList or 'parameter' in parseErrList
-                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_COMMAND_FAILED
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_COMMAND_FAILED
                 if 'reference' in parseErrList
-                    notification 'warning', lang.NOTIFY.INFO_STATE_PARSE_REFRENCE_FAILED
+                    notification 'warning', lang.ide.NOTIFY_MSG_INFO_STATE_PARSE_REFRENCE_FAILED
 
             newStateItems = $.trim(template.stateListTpl(stateListObj))
             $currentStateItems = that.$stateList.find('.state-item')
@@ -2729,11 +2745,10 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            target = event.data.target
-
-            if not target.$el.parents('#OpsEditor').length
+            if $('.sub-stateeditor').css('display') is "none"
                 return true
 
+            target = event.data.target
             status = target.currentState
             is_editable = status is 'appedit' or status is 'stack'
             tagName = event.target.tagName.toLowerCase()
@@ -2791,8 +2806,8 @@ define [ 'component/stateeditor/model',
 
             # CollapseItem state item [Escape]
             if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
-                target.collapseItem.call target, $('#OpsEditor').find('.state-list .focused')
-                if $('#OpsEditor').find('#modal-state-text-expand').is(':visible')
+                target.collapseItem.call target, $('.state-list .focused')
+                if $('#modal-state-text-expand').is(':visible')
                     target.saveStateTextEditorContent()
                     return false
                 return false
@@ -2839,7 +2854,7 @@ define [ 'component/stateeditor/model',
 
             # Expand item [Enter]
             if metaKey is false and shiftKey is false and keyCode is 13
-                focused = $('#OpsEditor').find('#state-editor .state-item.focused')
+                focused = $('#state-editor .state-item.focused')
 
                 if focused[0] isnt null and focused.hasClass('view') is true
                     target.expandItem.call target, focused
@@ -2852,6 +2867,16 @@ define [ 'component/stateeditor/model',
             # Tab switch [Tab]
             if metaKey is false and shiftKey is false and keyCode is 9
                 target.onSwitchState.call target
+                return false
+
+            # Switch to property panel [P]
+            if metaKey is false and shiftKey is false and keyCode is 80 and is_input is false
+                ide_event.trigger ide_event.FORCE_OPEN_PROPERTY, 'property'
+                return false
+
+            # Switch to state editor [S]
+            if metaKey is false and shiftKey is false and keyCode is 83 and is_input is false
+                ide_event.trigger ide_event.SHOW_STATE_EDITOR
                 return false
 
             # Disable default delete event [delete/backspace]
@@ -2880,14 +2905,14 @@ define [ 'component/stateeditor/model',
 
             stack = []
 
-            $('#OpsEditor').find('.state-list .selected').each ->
+            $('.state-list .selected').each ->
                 stack.push(that.getStateItemByData($(this)))
 
             if stack.length
 
                 StateClipboard = stack
                 that.updateToolbar()
-                notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
+                notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2897,14 +2922,14 @@ define [ 'component/stateeditor/model',
 
             stack = []
 
-            $('#OpsEditor').find('.state-list .state-item').each ->
+            $('.state-list .state-item').each ->
                 stack.push(that.getStateItemByData($(this)))
 
             StateClipboard = stack
 
             that.updateToolbar()
 
-            notification 'info', lang.NOTIFY.INFO_STATE_COPY_TO_CLIPBOARD
+            notification 'info', lang.ide.NOTIFY_MSG_INFO_STATE_COPY_TO_CLIPBOARD
 
             return true
 
@@ -2912,9 +2937,9 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            item = $('#OpsEditor').find('#state-editor .state-item.focused')
+            item = $('#state-editor .state-item.focused')
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
             if direction is 'down'
 
@@ -2946,7 +2971,7 @@ define [ 'component/stateeditor/model',
 
                     item.parent().append item
 
-                    new_index = $('#OpsEditor').find('#state-editor .state-item').length
+                    new_index = $('#state-editor .state-item').length
 
             state_id = item.data('id')
 
@@ -2958,7 +2983,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
             if focused_index is -1
                 focused_index = null
@@ -2979,7 +3004,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            that.onRemoveState null, $('#OpsEditor').find('.state-list').find('.selected')
+            that.onRemoveState null, $('.state-list').find('.selected')
 
             return true
 
@@ -2987,7 +3012,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            item = $('#OpsEditor').find('#state-editor .state-item.focused')
+            item = $('#state-editor .state-item.focused')
 
             if item.hasClass('selected')
 
@@ -3010,11 +3035,11 @@ define [ 'component/stateeditor/model',
 
             focused_index = 0
 
-            stack = $('#OpsEditor').find('#state-editor .state-item')
+            stack = $('#state-editor .state-item')
 
             total = stack.length
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
             that.clearFocusedItem()
 
@@ -3048,11 +3073,11 @@ define [ 'component/stateeditor/model',
 
             focused_index = 0
 
-            stack = $('#OpsEditor').find('#state-editor .state-item')
+            stack = $('#state-editor .state-item')
 
             total = stack.length
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
             that.clearFocusedItem()
 
@@ -3137,9 +3162,9 @@ define [ 'component/stateeditor/model',
                 stack.eq(total - 1).find('.ace_text-input').focus()
 
                 return false
-                # focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+                # focused_index = $('#state-editor .state-item.focused').index('#state-editor .state-list > li')
 
-                # $('#OpsEditor').find('#state-editor .state-item.focused').removeClass('focused').addClass('view')
+                # $('#state-editor .state-item.focused').removeClass('focused').addClass('view')
 
                 # if focused_index > 0
                 #     stack.eq( focused_index - 1 ).addClass('focused').removeClass('view').find('.command-value .ace_text-input').focus()
@@ -3243,7 +3268,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            $('#OpsEditor').find('#state-editor .state-item').addClass('selected').find('.checkbox input').prop('checked', true)
+            $('#state-editor .state-item').addClass('selected').find('.checkbox input').prop('checked', true)
 
             that.updateToolbar()
 
@@ -3253,7 +3278,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            $('#OpsEditor').find('#state-editor .state-item').removeClass('selected').find('.checkbox input').prop('checked', false)
+            $('#state-editor .state-item').removeClass('selected').find('.checkbox input').prop('checked', false)
 
             that.updateToolbar()
 
@@ -3364,19 +3389,19 @@ define [ 'component/stateeditor/model',
 
         refreshSysLog : (result) ->
 
-            $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-loading').hide()
+            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
 
             if result and result.output
 
                 logContent = MC.base64Decode(result.output)
-                $contentElem = $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-content')
+                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
                 $contentElem.html  MC.template.convertBreaklines({content:logContent})
                 $contentElem.show()
 
             else
 
-                $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-info').show()
+                $('#modal-instance-sys-log .instance-sys-log-info').show()
 
             modal.position()
 
@@ -3398,14 +3423,17 @@ define [ 'component/stateeditor/model',
 
             that = this
             $focusElem = $(event.target)
-            $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
+            if $focusElem.parents('.parameter-dict-item').length
+                $paraValue = $focusElem.parents('.parameter-dict-item').find('.parameter-value.value')
+            else
+                $paraValue = $focusElem.parents('.parameter-container').find('.parameter-value')
             paraEditor = $paraValue.data('editor')
 
             if paraEditor
 
                 $paraItem = $paraValue.parents('.parameter-item')
 
-                if $paraItem.hasClass('text')
+                if $paraItem.hasClass('text') or $paraItem.hasClass('dict')
 
                     paraName = $paraItem.attr('data-para-name')
                     $stateItem = $paraItem.parents('.state-item')
@@ -3431,9 +3459,9 @@ define [ 'component/stateeditor/model',
                 read_only: that.readOnlyMode
             })), false
 
-            $('#OpsEditor').find('#modal-state-text-expand').data('origin-editor', originEditor)
+            $('#modal-state-text-expand').data('origin-editor', originEditor)
 
-            $codeArea = $('#OpsEditor').find('#modal-state-text-expand .editable-area')
+            $codeArea = $('#modal-state-text-expand .editable-area')
 
             # init editor
             that.initCodeEditor($codeArea[0], {
@@ -3450,7 +3478,7 @@ define [ 'component/stateeditor/model',
                 codeEditor.focus()
                 codeEditor.clearSelection()
 
-            $('#OpsEditor').find('#modal-state-text-expand-save').off('click').on 'click', () ->
+            $('#modal-state-text-expand-save').off('click').on 'click', () ->
                 that.saveStateTextEditorContent()
 
         saveStateTextEditorContent: () ->
@@ -3463,11 +3491,11 @@ define [ 'component/stateeditor/model',
 
             else
 
-                originEditor = $('#OpsEditor').find('#modal-state-text-expand').data('origin-editor')
+                originEditor = $('#modal-state-text-expand').data('origin-editor')
 
                 if originEditor
 
-                    $codeArea = $('#OpsEditor').find('#modal-state-text-expand .editable-area')
+                    $codeArea = $('#modal-state-text-expand .editable-area')
                     codeEditor = $codeArea.data('editor')
                     codeEditorValue = codeEditor.getValue()
 
@@ -3479,16 +3507,16 @@ define [ 'component/stateeditor/model',
                             $paraItem.addClass('disabled')
 
                     originEditor.setValue(codeEditorValue)
+
+                    if $paraItem.hasClass('dict')
+                        originEditor.getSelection().selectFileStart()
+
                     originEditor.clearSelection()
+
                     originEditor.focus()
 
                     modal.close()
 
-        remove: () ->
-
-            @onStateSaveClick()
-            # @model.remove() if @model
-            Backbone.View.prototype.remove.call @
     }
 
     return StateEditorView

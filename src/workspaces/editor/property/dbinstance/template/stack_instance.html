@@ -94,11 +94,15 @@
         {{#ifLogic isRestoreDB 'and' isSqlserver}}
         {{else}}
         <section class="property-control-group">
-            <div class="checkbox">
-                <input id="property-dbinstance-iops-check" class="tooltip" {{#if isAppEdit}}{{#if isSqlserver}}disabled="disabled"{{/if}}{{/if}} type="checkbox" {{#if iops}}checked="true"{{/if}} value="None" name="property-dbinstance-iops-check">
-                <label for="property-dbinstance-iops-check"></label>
+            <label class="left">Storage Type</label>
+            <div class="selectbox" id="property-dbinstance-storage-type">
+                <div class="selection"></div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item {{#ifCond storageType "gp2"}}selected{{/ifCond}}" data-id="gp2">General Purpose (SSD)</li>
+                    <li class="item {{#ifCond storageType "io1"}}selected{{/ifCond}} {{#if iops}}selected{{/if}}" {{#if isAppEdit}}{{#if isSqlserver}}hide{{/if}}{{/if}} data-id="io1">Provisioned IOPS (SSD)</li>
+                    <li class="item {{#ifCond storageType "standard"}}selected{{/ifCond}}" data-id="standard">Magnetic</li>
+                </ul>
             </div>
-            <label for="property-dbinstance-iops-check" class="property-dbinstance-iops-check-tooltip tooltip" data-tooltip="dsaasd">Use Provisioned IOPS</label>
         </section>
         <section class="property-control-group property-dbinstance-iops-value-section {{#unless iops}}hide{{/unless}}">
             <label class="left">Provisioned IOPS</label>
@@ -366,7 +370,7 @@
     </div>
     {{/unless}}
 
-    {{#unless isRestoreDB}}    
+    {{#unless isRestoreDB}}
     {{#if snapshotId}}
 
     {{#if isAppEdit}}
@@ -374,7 +378,7 @@
     <div class="option-group sg-group"></div>
     {{else}}
     {{/if}}
-    
+
     {{else}}
     <div class="option-group-head" id="sg-head">{{ i18n "PROP_INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>

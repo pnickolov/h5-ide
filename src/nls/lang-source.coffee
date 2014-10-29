@@ -3409,6 +3409,10 @@ module.exports =
       en: 'Storage'
       zh: ""
 
+    PROP_DBINSTANCE_STORAGE_TYPE:
+      en: 'Storage Type'
+      zh: ""
+
     PROP_DBINSTANCE_USERNAME:
       en: "Username"
       zh: ""

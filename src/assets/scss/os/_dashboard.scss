@@ -80,12 +80,15 @@
   border-radius : 2px;
 
   > nav {
-    height : 30px;
     border-bottom : 1px solid $base-grey;
 
     > button {
       font-size : 24px;
       color     : $base-grey;
+
+      &.on {
+        box-shadow: 0 2px $base-b;
+      }
     }
   }
 }

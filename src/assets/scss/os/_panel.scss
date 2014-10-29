@@ -40,6 +40,11 @@
         min-width: 270px;
 
         @include transit($method:right,$dur:.2s);
+        @include font-mono;
+
+        button, input, textarea {
+            @include font-mono;
+        }
 
         // Rewrite below values to customise floating-panel
         & > div { width: 280px; }

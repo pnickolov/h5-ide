@@ -208,6 +208,10 @@ module.exports =
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: ""
 
+    ERROR_STATE_EDITOR_INEXISTENT_OSSERVER:
+      en: "Server <span class='validation-osserver tag-osserver'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      zh: ""
+
     ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
       en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""

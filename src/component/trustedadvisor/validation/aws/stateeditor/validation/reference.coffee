@@ -10,6 +10,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
     __componentTipMap =
         'AWS.EC2.Instance': lang.TA.ERROR_STATE_EDITOR_INEXISTENT_INSTANCE
         'AWS.AutoScaling.Group': lang.TA.ERROR_STATE_EDITOR_INEXISTENT_ASG
+        'OS::Nova::Server': lang.TA.ERROR_STATE_EDITOR_INEXISTENT_OSSERVER
 
     __getCompTip = ( compType, str1, str2, str100 ) ->
         type = arguments[ 0 ]

@@ -18933,7 +18933,8 @@ var JavaScriptHighlightRules = function() {
     };
 
     if (ace.modeResRefRule)
-        this.$rules.no_regex = ace.modeResRefRule.concat(this.$rules.no_regex);
+        this.$rules.qstring = this.$rules.qstring.concat(ace.modeResRefRule);
+        this.$rules.qqstring = this.$rules.qqstring.concat(ace.modeResRefRule);
 
     this.embedRules(DocCommentHighlightRules, "doc-",
         [ DocCommentHighlightRules.getEndRule("no_regex") ]);
@@ -20550,3 +20551,4 @@ oop.inherits(FoldMode, BaseFoldMode);
 }).call(FoldMode.prototype);
 
 });
+

@@ -7919,24 +7919,24 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 #state-editor .parameter-item:hover .parameter-container {
   background: rgba(255, 255, 255, 0.05); }
 
-#state-editor .parameter-item.text .parameter-text-expand {
+#state-editor .parameter-item .parameter-text-expand {
   position: absolute;
   margin-left: -20px;
   cursor: pointer;
   color: #aaa;
   display: none;
-  background: rgba(0, 0, 0, 0.6);
   padding: 4px;
   z-index: 55;
-  right: 16px; }
+  right: 23px; }
 
-#state-editor .parameter-item.text .parameter-text-expand:before {
-  margin-right: 5px; }
+#state-editor .parameter-item .parameter-text-expand:before {
+  margin-right: 5px;
+  font-size: 12px; }
 
-#state-editor .parameter-item.text:hover .parameter-text-expand {
+#state-editor .parameter-item .parameter-container:hover .parameter-text-expand {
   display: block; }
 
-#state-editor .parameter-item.text .parameter-text-expand:hover {
+#state-editor .parameter-item .parameter-text-expand:hover {
   color: #fff; }
 
 #state-editor-wrap, #state-editor-body, #state-editor {
@@ -8407,6 +8407,15 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   padding: 4px 0 0 0;
   max-width: 440px; }
 
+#state-editor .parameter-dict-item .editable-area.text {
+  height: 14px !important;
+  overflow: hidden;
+  margin-top: -3px; }
+
+#state-editor .parameter-item.dict .parameter-text-expand {
+  margin-top: -4px;
+  right: 0px; }
+
 #state-editor .parameter-list .parameter-item.dict .parameter-value {
   width: 147px;
   margin-right: 5px;
@@ -8521,6 +8530,12 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   border: none;
   width: 8px;
   margin-right: 3px; }
+
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line {
+  display: none; }
+
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line:first-child {
+  display: block; }
 
 #state-editor .comment .command-view-value,
 #state-editor .comment .parameter-view-list .parameter-value {

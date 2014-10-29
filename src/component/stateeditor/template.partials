@@ -82,7 +82,7 @@
 				{{para_name}}
 			</div>
 			<div class="parameter-container">
-				<div class="parameter-text-expand icon-expand">{{i18n "EXPAND"}}</div>
+				<div class="parameter-text-expand icon-expand tooltip" data-tooltip="Expand"></div>
 				<div class="parameter-value editable-area text">{{para_value}}</div>
 			</div>
 		</div>
@@ -153,6 +153,7 @@
 	<div class="parameter-dict-item">
 		<div class="parameter-value editable-area line key">{{key}}</div>
 		<div class="parameter-value editable-area line value">{{value}}</div>
+		<div class="parameter-text-expand icon-expand tooltip" data-tooltip="Expand"></div>
 	</div>
 {{/each}}
 

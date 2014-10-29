@@ -82,6 +82,8 @@ define [
             @$el.closest( '#OpsEditor' ).find( '.sidebar-title' ).prop 'class', "sidebar-title #{panelName}"
             @renderSubPanel targetPanel, args
 
+            @
+
         floatPanelShowCount: 0
 
         showFloatPanel: ( dom ) ->

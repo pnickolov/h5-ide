@@ -37,11 +37,11 @@ define [
       @propertyPanel.openCurrent()
       return
 
-    showProperty: () -> @panel.openProperty(); false
-    showResource: () -> @panel.openResource() if @workspace.design.modeIsAppEdit(); false
-    showGlobal  : () -> @panel.openConfig(); false
-    showStateEditor : ()-> @panel.openState(); false
-    onCanvasDoubleClick: () -> @panel.show().openCurrent()
+    showProperty        : () -> @panel.show().openProperty(); false
+    showResource        : () -> @panel.show().openResource() if @workspace.design.modeIsAppEdit(); false
+    showGlobal          : () -> @panel.show().openConfig(); false
+    showStateEditor     : ()-> @panel.show().openState(); false
+    onCanvasDoubleClick : () -> @panel.show().openCurrent()
 
     onItemSelected: ( type, id ) ->
       if not id and not type

@@ -10,6 +10,10 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
     initialize: (resModel, selectTemplate)->
       @template = selectTemplate
       @resModel = resModel
+
+      @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
+      @listenTo @collection, 'update', @updateOption.bind(@)
+
       @
     render: (name)->
       dropdown = $("<div/>")
@@ -19,8 +23,6 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       dropdownSelect = dropdown.find("select.selection.option")
       bindSelection(dropdown, @selectionTemplate)
       dropdownSelect.on 'select_initialize', =>
-        @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
-        @listenTo @collection, 'update', @updateOption.bind(@)
         @selectize = dropdownSelect[0].selectize
         @updateOption()
         if name then @setValue(name)

@@ -5,7 +5,12 @@
         <li class="btn-refresh-panel icon-refresh"></li>
         <li class="btn-open-shareres icon-resources"></li>
     </ul>
+    <ul class="dropdown-menu resources-dropdown-wrapper">
+        <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
+        <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "PROP.VOLUME_SNAPSHOT"}}</span></li>
+    </ul>
 </nav>
+
 <div>
     <section class="system-image">
         <header>

@@ -4,7 +4,7 @@
 
         h1 { font-size: 20px; color: #ccc; line-height: 20px; float: left; }
 
-        ul {
+        ul.action {
             li {
                 float: left;
                 text-align: center;
@@ -43,6 +43,8 @@
     //     align-items     : flex-start;
     //     justify-content : space-around;
     // }
+
+    .dropdown-menu { top: 37px; right: 0; left: initial; width: auto;}
 
     .resource-item {
         height          : 30px;

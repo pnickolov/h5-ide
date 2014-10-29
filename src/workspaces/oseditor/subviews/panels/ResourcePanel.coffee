@@ -5,8 +5,9 @@ define [
     'CloudResources'
     './template/TplResourcePanel'
     'OsSnapshot'
+    'OsKp'
 
-], ( Backbone, constant, CloudResources, ResourcePanelTpl, OsSnapshot )->
+], ( Backbone, constant, CloudResources, ResourcePanelTpl, OsSnapshot, OsKp )->
 
     MC.template.resPanelOsAmiInfo = ( data ) ->
         if not data.region or not data.imageId then return
@@ -25,10 +26,12 @@ define [
     Backbone.View.extend
 
         events:
-            'mousedown .resource-item'          : 'startDrag'
-            'OPTION_CHANGE .ami-type-select'    : 'changeAmiType'
-            'click .btn-refresh-panel'          : 'refreshPanelData'
-            'click .manage-snapshot'            : 'manageSnapshot'
+            'mousedown .resource-item'              : 'startDrag'
+            'OPTION_CHANGE .ami-type-select'        : 'changeAmiType'
+            'click .btn-refresh-panel'              : 'refreshPanelData'
+            'click .btn-open-shareres'              : 'toggleShareResPanel'
+            'click .manage-snapshot'                : 'manageSnapshot'
+            'click .resources-dropdown-wrapper li'  : 'resourcesMenuClick'
 
         amiType: 'public' # public | private
 
@@ -38,6 +41,17 @@ define [
 
             @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), 'update', @renderSnapshot
             @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
+
+        toggleShareResPanel: -> @$( 'nav' ).toggleClass 'open'
+
+        resourcesMenuClick : (event) ->
+          $currentDom = $(event.currentTarget)
+          currentAction = $currentDom.data('action')
+          switch currentAction
+              when 'keypair'
+                  new OsKp().manage()
+              when 'snapshot'
+                  new OsSnapshot().render()
 
         changeAmiType: ( event, type ) ->
             @amiType = type

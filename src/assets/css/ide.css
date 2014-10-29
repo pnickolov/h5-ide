@@ -7233,8 +7233,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9358,27 +9357,32 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     color: #ccc;
     line-height: 20px;
     float: left; }
-  .OEPanelRight.resource nav ul li {
+  .OEPanelRight.resource nav ul.action li {
     float: left;
     text-align: center;
     cursor: pointer;
     width: 30px;
     height: 24px;
     line-height: 24px; }
-    .OEPanelRight.resource nav ul li:first-child {
+    .OEPanelRight.resource nav ul.action li:first-child {
       border-left: 1px solid #2c2f4d;
       border-top-left-radius: 15%;
       border-bottom-left-radius: 15%; }
-    .OEPanelRight.resource nav ul li:last-child {
+    .OEPanelRight.resource nav ul.action li:last-child {
       border-top-right-radius: 15%;
       border-bottom-right-radius: 15%; }
-  .OEPanelRight.resource nav ul.action {
+  .OEPanelRight.resource nav ul.action.action {
     float: right;
     color: white; }
-    .OEPanelRight.resource nav ul.action li {
+    .OEPanelRight.resource nav ul.action.action li {
       background: #4a90e2; }
-      .OEPanelRight.resource nav ul.action li:hover {
+      .OEPanelRight.resource nav ul.action.action li:hover {
         background: #3970af; }
+.OEPanelRight.resource .dropdown-menu {
+  top: 37px;
+  right: 0;
+  left: initial;
+  width: auto; }
 .OEPanelRight.resource .resource-item {
   height: 30px;
   width: 70px;

@@ -56,7 +56,11 @@ define [
             @
 
         addItem: (event, value) ->
-            @model.get('nameservers').push(value) if $.trim(value)
+            ipAddr = $.trim(value)
+            if MC.validate('ipv4', ipAddr)
+                nameservers = @model.get('nameservers')
+                nameservers.push(ipAddr)
+                @model.set('nameservers', _.uniq(nameservers))
             @render()
 
         removeItemClicked: (event) ->

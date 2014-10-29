@@ -2792,7 +2792,7 @@ define [ 'component/stateeditor/model',
             # CollapseItem state item [Escape]
             if metaKey is false and shiftKey is false and altKey is false and keyCode is 27
                 target.collapseItem.call target, $('#OpsEditor').find('.state-list .focused')
-                if $('#OpsEditor').find('#modal-state-text-expand').is(':visible')
+                if $('#modal-state-text-expand').is(':visible')
                     target.saveStateTextEditorContent()
                     return false
                 return false
@@ -3431,9 +3431,9 @@ define [ 'component/stateeditor/model',
                 read_only: that.readOnlyMode
             })), false
 
-            $('#OpsEditor').find('#modal-state-text-expand').data('origin-editor', originEditor)
+            $('#modal-state-text-expand').data('origin-editor', originEditor)
 
-            $codeArea = $('#OpsEditor').find('#modal-state-text-expand .editable-area')
+            $codeArea = $('#modal-state-text-expand .editable-area')
 
             # init editor
             that.initCodeEditor($codeArea[0], {
@@ -3450,7 +3450,7 @@ define [ 'component/stateeditor/model',
                 codeEditor.focus()
                 codeEditor.clearSelection()
 
-            $('#OpsEditor').find('#modal-state-text-expand-save').off('click').on 'click', () ->
+            $('#modal-state-text-expand-save').off('click').on 'click', () ->
                 that.saveStateTextEditorContent()
 
         saveStateTextEditorContent: () ->
@@ -3463,11 +3463,11 @@ define [ 'component/stateeditor/model',
 
             else
 
-                originEditor = $('#OpsEditor').find('#modal-state-text-expand').data('origin-editor')
+                originEditor = $('#modal-state-text-expand').data('origin-editor')
 
                 if originEditor
 
-                    $codeArea = $('#OpsEditor').find('#modal-state-text-expand .editable-area')
+                    $codeArea = $('#modal-state-text-expand .editable-area')
                     codeEditor = $codeArea.data('editor')
                     codeEditorValue = codeEditor.getValue()
 

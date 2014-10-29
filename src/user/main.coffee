@@ -209,7 +209,6 @@ init = ->
         'login': (pathArray, hashArray)->
             if checkAllCookie() then window.location = getRef()
             deepth = 'LOGIN'
-            #console.log pathArray, hashArray
             render "#login-template"
             $(".account-btn-wrap a").attr("href", "/reset/"+getSearch()) # pass ref url
             $("#login-register").find("a").attr("href", "/register/"+getSearch())
@@ -228,7 +227,12 @@ init = ->
                     $(".control-group").removeClass('error')
                     submitBtn.attr('disabled',true).val langsrc.RESET.reset_waiting
                     ajaxLogin [$user.val(),$password.val()] , (statusCode)->
-                        $('#error-msg-1').show()
+                        if statusCode is 100
+                          $('#error-msg-1').hide()
+                          $('#error-msg-3').show().text langsrc.SERVICE['ERROR_CODE_100_MESSAGE']
+                        else
+                          $('#error-msg-1').show()
+                          $('#error-msg-3').hide()
                         submitBtn.attr('disabled',false).val langsrc.LOGIN['login-btn']
                 else
                     $("#error-msg-2").show()
@@ -238,7 +242,7 @@ init = ->
 
         'register': (pathArray, hashArray)->
             deepth = 'REGISTER'
-            #console.log pathArray, hashArray
+
             if hashArray[0] == 'success'
                 render "#success-template"
                 $('#register-get-start').click ->
@@ -251,12 +255,26 @@ init = ->
             $(".title-link a").attr("href", "/login/"+ getSearch())
             $form = $("#register-form")
             $form.find('input').eq(0).focus()
+            $firstName = $("#register-firstname")
+            $lastName  = $("#register-lastname")
             $username = $('#register-username')
             $email = $('#register-email')
             $password = $('#register-password')
             usernameTimeout = undefined
             emailTimeout = undefined
             $('#register-btn').attr('disabled',false)
+
+
+            checkFullname = (e, cb)->
+                status = $("#fullname-verification-status")
+                firstName = $firstName.val()
+                lastName = $lastName.val()
+                if firstName.trim() is "" or lastName.trim() is ""
+                    status.removeClass("verification-status").addClass('error-status').text langsrc.REGISTER.firstname_and_lastname_required
+                    return false
+                else
+                  status.removeClass('verification-status').removeClass('error-status').text ""
+                  return true
 
             # username validation
             checkUsername = (e,cb)->
@@ -367,6 +385,10 @@ init = ->
                 checkUsername e, (a)->
                     resetRegForm() unless a
                     return a
+            $firstName.on 'keyup blur change', ->
+                checkFullname()
+            $lastName.on 'keyup blur change', ->
+                checkFullname()
             $email.on 'keyup blur change', (e)->
                 checkEmail e, (a)->
                     resetRegForm() unless a
@@ -381,10 +403,11 @@ init = ->
                 if $username.next().hasClass('error-status') or $email.next().hasClass('error-status')
                     #console.log "Error Message Exist"
                     return false
+                fullnameResult = checkFullname()
                 userResult = checkUsername()
                 emailResult = checkEmail()
                 passwordResult = checkPassword()
-                if !(userResult && emailResult && passwordResult)
+                if !(userResult && emailResult && passwordResult && fullnameResult)
                     return false
                 $('#register-btn').attr('disabled',true).val(langsrc.REGISTER.reginster_waiting)
                 #console.log('check user input here.')
@@ -402,7 +425,7 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 #console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val()],(statusCode)->
+                                ajaxRegister([$username.val(), $password.val(), $email.val(), {first_name: $firstName.val(), last_name: $lastName.val()}],(statusCode)-> # params needs to be confirmed.
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.SERVICE['ERROR_CODE_'+statusCode+'_MESSAGE']
                                     return false

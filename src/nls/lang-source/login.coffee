@@ -76,6 +76,14 @@ module.exports =
         en: "Log in"
         zh: "登录"
 
+      "register-firstname":
+        en: "First name"
+        zh: "名"
+
+      "register-lastname":
+        en: "Last name"
+        zh: "姓"
+
       "register-username":
         en: "Username"
         zh: "用户名"
@@ -119,6 +127,10 @@ module.exports =
       username_not_matched:
         en: "Username can only include alpha-number."
         zh: "用户名只能包含字母。"
+
+      firstname_and_lastname_required:
+        en: "Both first name and last name are required."
+        zh: "请输入您的姓和名。"
 
       username_maxlength:
         en: "User name cannot be more than 40 characters."

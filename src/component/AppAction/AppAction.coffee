@@ -57,7 +57,10 @@ define [
       ApiRequest("app_info", {
         region_name : opsModel.get("region")
         app_ids     : [opsModel.get("id")]
-      }).then (ds)->  comp = ds[0].component
+      })
+      .then (ds)->
+        comp = ds[0].component
+        null
       .then ->
         name = App.model.appList().get( id ).get("name")
         hasEC2Instance =( _.filter comp, (e)->
@@ -72,6 +75,7 @@ define [
         awsError = null
         snapshots.fetchForce().fail (error)->
           awsError = error.awsError
+          null
         .finally ->
           if awsError and awsError isnt 403
             startAppModal.close()
@@ -115,6 +119,7 @@ define [
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
+        null
       .finally ()->
         if awsError and awsError isnt 403
           canStop.close()
@@ -133,8 +138,8 @@ define [
             hasInstanceStore = false
             amiRes.each (e)->
               if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-                return hasInstanceStore = true
-
+                hasInstanceStore = true
+                null
             hasEC2Instance = (_.filter comp, (e)->
               e.type == constant.RESTYPE.INSTANCE)?.length
 
@@ -296,6 +301,43 @@ define [
             notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
+
+
+    showPayment: (elem)->
+      showPaymentDefer = Q.defer()
+
+      # check should Show.
+      paymentState = App.user.get("paymentState")
+
+      if not App.user.shouldPay()
+        showPaymentDefer.resolve({})
+      else
+        result = {
+          first_name: App.user.get("firstName")
+          last_name: App.user.get("lastName")
+          url: App.user.get("paymentUrl")
+          card: App.user.get("creditCard")
+        }
+        updateDom = MC.template.paymentUpdate  result
+        if elem
+          $(elem).html updateDom
+          $(elem).trigger 'paymentRendered'
+        else
+          paymentModal = new modalPlus(
+            title: lang.IDE.PAYMENT_INVALID_BILLING
+            template: updateDom
+            disableClose: true
+            confirm:
+              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              disabled: true
+          )
+          paymentModal.find('.modal-footer').hide()
+
+          paymentModal.listenTo App.user, "paymentUpdate", ()->
+            if paymentModal.isClosed then return false
+            if not App.user.shouldPay()
+              showPaymentDefer.resolve({result: result, modal: paymentModal})
+      showPaymentDefer.promise
 
 
   new AppAction()

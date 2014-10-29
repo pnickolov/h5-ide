@@ -95,7 +95,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 @trigger 'shown', @
             @show()
             @bindEvent()
-            return @
+            @
         close: ()->
             if @isMoving
                 return false
@@ -125,6 +125,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             else
                 @resize()
             @option.onShow?(@)
+            @
         bindEvent: ()->
             @tpl.find('.modal-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
@@ -263,12 +264,23 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
+            @
         setContent: (content)->
             if @option.hasScroll or @option.maxHeight
               selector = ".scroll-content"
             else
               selector = ".modal-body"
             @tpl.find(selector).html(content)
+            @resize()
+            @
+        setWidth: (width)->
+          body = @.tpl.find('.modal-body')
+          body.parent().css( width: width )
+          @.resize()
+          @
+        compact: ()->
+          @tpl.find('.modal-body').css(padding: 0)
+          @
         _fadeOut: ->
             if @option.mode is 'panel' then return false
             @tpl.animate
@@ -295,4 +307,5 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
           @tpl.find(selector)
         setTitle: (title)->
           @tpl.find(".modal-header h3").text(title)
+          @
     Modal

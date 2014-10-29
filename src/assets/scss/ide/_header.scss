@@ -101,36 +101,34 @@
   position   : absolute;
   right      : 0;
   top        : 0;
-  max-width      : 328px;
+  max-width  : 500px;
   background : #232226;
-}
 
-#header .dropdown, #support {
-  position:    relative;
-  float:       left;
-  height:      50px;
-  line-height: 49px;
+  .dropdown, #support {
+    position:    relative;
+    float:       left;
+    height:      50px;
+    line-height: 49px;
 
-  border-left        : 1px solid #222;
+    border-left        : 1px solid #222;
 
-  -webkit-transition : background-color 0.2s;
-  -moz-transition    : background-color 0.2s;
-  -ms-transition     : background-color 0.2s;
-  -o-transition      : background-color 0.2s;
-  transition         : background-color 0.2s;
-}
-
-#support {
-  padding  : 0 20px;
-
-  &:before { margin-right: 5px; }
-  &:hover {
-    color : #9C6DC0;
-    background : rgba(0,0,0,.2);
+    -webkit-transition : background-color 0.2s;
+    -moz-transition    : background-color 0.2s;
+    -ms-transition     : background-color 0.2s;
+    -o-transition      : background-color 0.2s;
+    transition         : background-color 0.2s;
   }
-}
 
-#header {
+  #support {
+    padding  : 0 20px;
+
+    &:before { margin-right: 5px; }
+    &:hover {
+      color : #9C6DC0;
+      background : rgba(0,0,0,.2);
+    }
+  }
+
   .dropdown {
     &:hover,
     &.open {
@@ -150,6 +148,84 @@
       }
     }
   }
+
+  .voquota {
+    float: left;
+    text-align: center;
+    vertical-align: top;
+    padding: 16px 10px;
+    &:hover {
+      background : rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+    .percentage {
+        width: 100px;
+        height: 10px;
+        border-radius: 6px;
+        border: 1px solid #29920A;
+        display: inline-block;
+        margin-right: 3px;
+        position: relative;
+        &.error{
+          border-color: #f00;
+          background: #930000;
+          .payment-exclamation{
+            display: block;
+          }
+          .currquota{
+            background: #f00;
+          }
+        }
+        &.full{
+          background: #4D508E;
+          border-color: #232226;
+        }
+    }
+
+    .payment-exclamation{
+      display: none;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #F00;
+      top: -5px;
+      left: -5px;
+      border-radius: 50%;
+      line-height: 18px;
+      text-align: center;
+      color: #ffffff;
+      border: 1px solid #000000;
+    }
+
+    .currquota {
+      width  : 30%;
+      height : 100%;
+      background : #29920A;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px;
+    }
+    .current, .limit{
+      color: #999cc2;
+    }
+  }
+}
+
+.payment-header-tooltip {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.payment-header-tooltip strong {
+  color:  #fff;
+}
+
+.payment-header-tooltip span {
+  display: block;
+  font-size: 12px;
+  text-align: center;
+  margin: 5px 0;
+  color: #b0b0b0;
 }
 
 #HeaderUser + .dropdown-menu > li {

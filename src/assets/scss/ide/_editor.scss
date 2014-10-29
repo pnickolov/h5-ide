@@ -100,6 +100,10 @@ $BottomPanelHeight    : 24px;
   width      : 100%;
   min-width  : 610px;
   background : lighten($bg-p, 5%);
+
+  ~ .OEPanelCenter {
+    top : $TopPanelHeight;
+  }
 }
 
 .OEPanelBottom {
@@ -127,7 +131,7 @@ $BottomPanelHeight    : 24px;
 .OEPanelCenter {
   position : absolute !important;
   width    : 100%;
-  top      : $TopPanelHeight;
+  top      : 0;
   bottom   : 0;
   height   : auto;
 
@@ -234,5 +238,23 @@ $BottomPanelHeight    : 24px;
 #OpsEditor {
   .disabled-event-layout {
     z-index : 6;
+  }
+}
+
+.ops-apppm-wrapper {
+  position      : absolute;
+  width         : 300px;
+  min-height    : 300px;
+  right         : 20px;
+  background    : rgb(28, 28, 31);
+  z-index       : 9;
+  top           : 20px;
+  border-radius : 4px;
+  padding       : 20px;
+  box-shadow    : 0 3px 10px rgba(22, 21, 27, 0.2);
+
+  &:hover {
+    top: 22px;
+    box-shadow: 0 0 5px rgba(22, 21, 27, 0.6);
   }
 }

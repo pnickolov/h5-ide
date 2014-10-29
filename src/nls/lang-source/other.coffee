@@ -337,6 +337,10 @@ module.exports =
       en: "Log Out"
       zh: "登出"
 
+    HEAD_LABEL_MENUITEM_BILLING:
+      en: "Billings"
+      zh: "账单"
+
     HEAD_LABEL_SETTING:
       en: "Settings"
       zh: "用户设置"
@@ -352,6 +356,10 @@ module.exports =
     HEAD_LABEL_ACCOUNT_USERNAME:
       en: "Username"
       zh: "用户名"
+
+    HEAD_LABEL_ACCOUNT_FULLNAME:
+      en: "Full Name"
+      zh: ""
 
     HEAD_LABEL_ACCOUNT_EMAIL:
       en: "Email Address"
@@ -604,6 +612,22 @@ VisualOps API. You cannot UNDO this action.'
       en: "Forget password?"
       zh: "是否重置密码?"
 
+    COMPLETE_YOUR_PROFILE:
+      en: "Complete your profile"
+      zh: "完善您的资料"
+
+    PROFILE_UPDATED_SUCCESSFULLY:
+      en: "Your profile updated successfully"
+      zh: "您的资料已经成功更新"
+
+    FIRST_NAME:
+      en: "First Name"
+      zh: "名"
+
+    LAST_NAME:
+      en: "Last Name"
+      zh: "姓"
+
     WELCOME_DIALOG_TIT:
       en: "Welcome to VisualOps"
       zh: "欢迎使用 VisualOps"
@@ -707,9 +731,6 @@ VisualOps API. You cannot UNDO this action.'
     BEFOREUNLOAD_MESSAGE:
       en: "You have unsaved changes."
       zh: "您有未保存的更改。"
-
-
-
 
     AMI_LBL_COMMUNITY_AMIS:
       en: "Community AMIs"
@@ -1333,4 +1354,52 @@ VisualOps API. You cannot UNDO this action.'
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
+      zh: ""
+
+    PAYMENT_PAYMENT_NEEDED:
+      en: "Upgrade your account"
+      zh: ""
+
+    PAYMENT_INVALID_BILLING:
+      en: "Your Billing Information is Invalid"
+      zh: ""
+
+    PAYMENT_LOADING:
+      en: "Loading..."
+      zh: "加载中..."
+
+    PAYMENT_LOADING_BILLING:
+      en: "Getting Billing Information ..."
+      zh: ""
+
+    PROFILE_UPDATED_FAILED:
+      en: "Your Profile failed to update."
+      zh: ""
+
+    PAYMENT_USAGE_TAB:
+      en: "Usage"
+      zh: ""
+
+    PAYMENT_BILLING_TAB:
+      en: "Payment & Billing"
+      zh: ""
+
+    PAYMENT_SETTING_TITLE:
+      en: "Billing & Usage"
+      zh: ""
+
+    HEAD_LABEL_ACCOUNT_FULLNAME:
+      en: "Full Name"
+      zh: ""
+
+    PAYMENT_HEADER_TOOLTIP:
+      en: "<div class=\"payment-header-tooltip\"><strong>%s</strong> free points remaining. <span> Free points will renew in %s days.</span></div>"
+      zh: ""
+
+    PAYMENT_PROVIDE_UPDATE_CREDITCARD:
+      en: "Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. <a class='update-payment' href='%s' target='_blank'> %s Billing Information</a> as soon as possible."
+      zh: ""
+
+    PAYMENT_UNPAID_BUT_IN_FREE_QUOTA:
+      en: "You have unpaid bill. You can still use the free quota before getting into limited status. <a class='update-payment' href='%s' target='_blank'>Update Billing Information</a> as soon as possible."
       zh: ""

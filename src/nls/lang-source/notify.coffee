@@ -325,3 +325,10 @@ module.exports =
       en: "Failed to run your stack %s because of %s"
       zh: ""
 
+    UPDATED_FULLNAME_SUCCESS:
+      en: "Full name Updated successfully"
+      zh: ""
+
+    UPDATED_FULLNAME_FAIL:
+      en: "Failed to update full name, please try again later."
+      zh: ""

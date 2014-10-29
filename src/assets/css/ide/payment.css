@@ -1,0 +1,262 @@
+/* Rectangle 5: */
+/* Rectangle 6: */
+/* Rectangle 9: */
+#PaymentNav {
+  background: #0c0c0c;
+  height: 38px;
+  border-bottom: 1px solid #000; }
+  #PaymentNav > span {
+    float: left;
+    min-width: 100px;
+    text-align: center;
+    color: #148BE6;
+    height: 38px;
+    line-height: 38px;
+    cursor: pointer;
+    position: relative;
+    padding: 0 10px;
+    font-size: 12px; }
+    #PaymentNav > span.selected:before {
+      position: absolute;
+      left: 0;
+      bottom: 0px;
+      content: '';
+      border-bottom: 2px solid #148BE6;
+      width: 100%; }
+
+#PaymentBody {
+  padding: 20px 15px 30px;
+  min-height: 150px; }
+  #PaymentBody .dl-horizontal {
+    margin: 0;
+    line-height: 30px; }
+    #PaymentBody .dl-horizontal dt, #PaymentBody .dl-horizontal dd {
+      margin-top: 0; }
+  #PaymentBody .link-style {
+    color: #999;
+    line-height: 30px;
+    margin-left: 10px; }
+  #PaymentBody .table-head {
+    width: 100%;
+    background: #363636; }
+    #PaymentBody .table-head tr th {
+      position: relative;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500; }
+  #PaymentBody .sortable {
+    cursor: pointer; }
+  #PaymentBody .t-m-content a.link-blue {
+    margin: 0 10px; }
+  #PaymentBody .t-m-content tr.item {
+    font-size: 12px; }
+  #PaymentBody .table-head-fix {
+    height: 234px;
+    background: #131313; }
+    #PaymentBody .table-head-fix .full-space {
+      height: 234px;
+      display: inline-block;
+      line-height: 234px;
+      text-align: center;
+      width: 100%; }
+
+.no-payment-card-info {
+  width: 400px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto; }
+
+.payment-hint {
+  margin-top: 20px; }
+
+.payment-card {
+  height: 100px;
+  width: 100%; }
+
+.payment-credit-middle {
+  width: 80px;
+  height: 44px;
+  background: url("../images/ide/creditcard-normal.png") left center no-repeat;
+  background-size: 60px auto; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .payment-credit-middle {
+      background-image: url("../images/ide/creditcard-normal@2x.png"); } }
+
+.usage-wrapper {
+  width: 300px;
+  height: 300px;
+  overflow: visible;
+  margin: 0 auto;
+  position: relative; }
+
+.usage-wrapper .rotate {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  z-index: 10;
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotateZ(225deg);
+  -ms-transform: rotateZ(225deg);
+  -o-transform: rotateZ(225deg);
+  transform: rotateZ(225deg); }
+
+.usage-wrapper .rotate .loader {
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.usage-wrapper .dots {
+  width: 240px;
+  height: 240px;
+  position: absolute;
+  z-index: 15;
+  top: 30px;
+  left: 30px;
+  background: #252525;
+  border-radius: 50%; }
+
+#usage_num {
+  font-size: 60px;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #4b4f8c; }
+
+.usage-num-label {
+  position: absolute;
+  top: 70px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  color: #CCCCCC; }
+
+.usage-num-free, .usage-num-total {
+  display: block;
+  position: absolute;
+  top: 240px;
+  font-size: 13px; }
+
+.usage-num-free span, .usage-num-total span {
+  color: #CCCCCC;
+  font-size: 14px; }
+
+.usage-num-free span.num, .usage-num-total span.num {
+  display: block;
+  font-size: 20px; }
+
+.usage-num-free span.num {
+  color: #30bc00; }
+
+.usage-num-total span.num {
+  color: #4b4f8c; }
+
+.usage-num-free {
+  text-align: right;
+  left: -160px; }
+
+.usage-num-total {
+  text-align: left;
+  right: -160px; }
+
+.table.payment-table {
+  color: #a3a7d5; }
+  .table.payment-table tbody tr td.align-right {
+    text-align: right;
+    color: #cee1f7; }
+
+.link-blue {
+  font-size: 12px;
+  color: #4a90e2; }
+  .link-blue:hover {
+    text-decoration: underline; }
+
+.payment-modal-wrap, .provide-payment-info {
+  text-align: center;
+  padding-top: 30px; }
+  .payment-modal-wrap .btn-xlarge, .provide-payment-info .btn-xlarge {
+    padding: 10px 20px;
+    font-size: 17px;
+    margin-bottom: 10px; }
+  .payment-modal-wrap p, .provide-payment-info p {
+    font-size: 12px;
+    color: #888; }
+
+.payment-credit-card {
+  width: 100%;
+  height: 100px;
+  background: url("../images/ide/creditcard-normal.png") center center no-repeat; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .payment-credit-card {
+      background-image: url("../images/ide/creditcard-normal@2x.png");
+      -webkit-background-size: 110px auto;
+      -moz-background-size: 110px auto;
+      -o-background-size: 110px auto;
+      background-size: 110px auto; } }
+  .payment-credit-card.payment-failed {
+    background: url("../images/ide/creditcard-failed.png") center center no-repeat; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+      .payment-credit-card.payment-failed {
+        background-image: url("../images/ide/creditcard-failed@2x.png");
+        -webkit-background-size: 121px auto;
+        -moz-background-size: 121px auto;
+        -o-background-size: 121px auto;
+        background-size: 121px auto; } }
+
+.payment-wrapper {
+  width: 454px;
+  float: left; }
+
+.payment-text {
+  letter-spacing: .4px;
+  line-height: 20px;
+  margin: 10px 0;
+  color: #eee; }
+
+.payment-wrapper > .scroll-wrap > .scroll-content {
+  padding: 12px 15px; }
+
+.payment-wrapper-right {
+  width: 210px;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  border-left: 1px solid #000000;
+  background-color: #212121; }
+
+.payment-warning {
+  display: block;
+  border: 1px solid #f9b42d;
+  color: #f9b42d;
+  font-size: 12px;
+  padding: 3px;
+  margin: 0 10px;
+  background-color: #393939;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px; }
+
+.payment-warning a {
+  color: #f9b42d;
+  text-decoration: underline; }
+
+/* Billing Modal */
+#PaymentBillingTab h5 {
+  color: #eee;
+  line-height: 32px;
+  margin-bottom: 4px; }
+#PaymentBillingTab div + h5 {
+  margin-top: 8px; }
+#PaymentBillingTab .left p {
+  margin-bottom: 4px; }
+#PaymentBillingTab .payment-next-billing {
+  float: right;
+  margin-top: 5px;
+  font-size: 12px;
+  vertical-align: bottom;
+  line-height: 2em;
+  color: #99a; }

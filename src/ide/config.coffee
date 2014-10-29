@@ -244,7 +244,7 @@ require.config {
       "UI.modalplus"
       "UI.nanoscroller"
     ]
-    "api/api" : ["ApiRequest"]
+    "api/api" : ["ApiRequest", "ApiRequestR"]
     "service/service" : [
       'base_model'
       'state_model'

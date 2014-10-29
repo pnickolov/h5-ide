@@ -5,7 +5,8 @@ define [
   "./template/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
-], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang )->
+  "appAction"
+], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang, AppAction )->
 
   OpsViewBase.extend {
 
@@ -135,4 +136,34 @@ define [
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()
       return
+
+    showUnpayUI : ()->
+      @statusbar.remove()
+      @propertyPanel.remove()
+      @toolbar.remove()
+
+      @canvas.updateSize()
+
+      AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
+      notification "error", "Your account is limited now."
+      return
+
+    listenToPayment: ()->
+      self = @
+      @workspace.listenTo App.user, "paymentUpdate", ->
+        if not $(".ops-apppm-wrapper").size()
+          if App.user.shouldPay()
+            self.showUnpayUI()
+        else
+          unless App.user.shouldPay()
+            self.reopenApp()
+
+    reopenApp: ()->
+      appId = @workspace.opsModel.get("id")
+      index = @workspace.index()
+      @workspace.remove()
+      _.defer ->
+        App.openOps(appId).setIndex index
+        notification "info", "User payment status change detected, reloading app resource."
+
   }

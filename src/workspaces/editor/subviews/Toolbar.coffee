@@ -323,61 +323,80 @@ define [
 
 
     runStack: (event)->
-        that = @
-        if $(event.currentTarget).attr('disabled')
-            return false
+      that = @
+      if $(event.currentTarget).attr 'disabled'
+        return false
+
+      appAction.showPayment().then (result)->
+        paymentUpdate = result.result
+        paymentModal = result.modal
+        that.__runStack(paymentUpdate,paymentModal)
+
+    __runStack: (paymentUpdate,paymentModal)->
+      that = @
+      paymentState = App.user.get('paymentState')
+      if paymentModal
+        @modal = paymentModal
+        @modal.setTitle lang.IDE.RUN_STACK_MODAL_TITLE
+        .setWidth('665px')
+        .setContent MC.template.modalRunStack {paymentState, paymentUpdate}
+        .compact()
+        .find('.modal-footer').show()
+      else
         @modal = new Modal
-            title: lang.IDE.RUN_STACK_MODAL_TITLE
-            template: MC.template.modalRunStack
-            disableClose: true
-            width: '450px'
-            confirm:
-                text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
-                disabled: true
-        @renderKpDropdown(@modal)
-        cost = Design.instance().getCost()
-        @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-        @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+          title: lang.IDE.RUN_STACK_MODAL_TITLE
+          template: MC.template.modalRunStack {paymentState}
+          disableClose: true
+          width: '665px'
+          compact: true
+          confirm:
+            text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+            disabled: true
 
-        # load TA
-        TA.loadModule('stack').then ()=>
-            @modal.resize()
-            @modal?.toggleConfirm false
+      @renderKpDropdown(@modal)
+      cost = Design.instance().getCost()
+      @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
+      @modal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+      @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
-        appNameDom = @modal.tpl.find('#app-name')
-        checkAppNameRepeat = @checkAppNameRepeat.bind @
-        appNameDom.keyup ->
-            checkAppNameRepeat(appNameDom.val())
+      # load TA
+      TA.loadModule('stack').then ()=>
+        @modal.resize()
+        @modal?.toggleConfirm false
 
-        self = @
-        @modal.on 'confirm', ()=>
-            @hideError()
-            if not App.user.hasCredential()
-                App.showSettings App.showSettings.TAB.Credential
-                return false
-            # setUsage
-            appNameRepeated = @checkAppNameRepeat(appNameDom.val())
-            if not @defaultKpIsSet() or appNameRepeated
-                return false
+      appNameDom = @modal.tpl.find('#app-name')
+      checkAppNameRepeat = @checkAppNameRepeat.bind @
+      appNameDom.keyup ->
+        checkAppNameRepeat(appNameDom.val())
 
-            @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
-            @json = @workspace.design.serialize usage: 'runStack'
-            @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
-            @json.name = appNameDom.val()
-            @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
-                self.modal.close()
-                App.openOps( ops )
-            , (err)->
-                self.modal.close()
-                error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
-                notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
-        App.user.on 'change:credential', ->
-          console.log 'We got it.'
-          if App.user.hasCredential() and that.modal.isOpen()
-            that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
-        @modal.on 'close', ->
-          console.log 'We gave up.'
-          App.user.off 'change:credential'
+      self = @
+      @modal.on 'confirm', ()=>
+        @hideError()
+        if not App.user.hasCredential()
+          App.showSettings App.showSettings.TAB.Credential
+          return false
+        # setUsage
+        appNameRepeated = @checkAppNameRepeat(appNameDom.val())
+        if not @defaultKpIsSet() or appNameRepeated
+          return false
+
+        @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
+        @json = @workspace.design.serialize usage: 'runStack'
+        @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        @json.name = appNameDom.val()
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+          self.modal.close()
+          App.openOps( ops )
+        , (err)->
+          self.modal.close()
+          error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
+          notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
+      @modal.listenTo App.user, 'change:credential', ->
+        console.log 'We got it.'
+        if App.user.hasCredential() and that.modal.isOpen()
+          that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
+      @modal.on 'close', ->
+        that.modal.stopListening(App.user)
     appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
@@ -529,12 +548,11 @@ define [
       _.each components, (e)->
         dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
+      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.IDE.HEAD_INFO_LOADING
         template: MC.template.loadingSpiner
         disableClose: true
-        hasScroll: true
-        maxHeight: "450px"
         cancel: "Close"
 
       @updateModal.tpl.find(".modal-footer").hide()
@@ -564,6 +582,7 @@ define [
 
         that.updateModal.tpl.children().css 'width', "450px"
         .find(".modal-footer").show()
+        that.updateModal.find(".modal-wrapper-fix").width(665).find('.modal-body').css('padding', 0)
         that.updateModal.setContent( MC.template.updateApp {
           isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
           notReadyDB: removeListNotReady
@@ -572,6 +591,9 @@ define [
         that.updateModal.tpl.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
+        cost = Design.instance().getCost()
+        that.updateModal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+        that.updateModal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
         window.setTimeout ->
           that.updateModal.resize()
         ,100

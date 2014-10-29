@@ -1,0 +1,104 @@
+<!--{{billingTemplate}}-->
+<div id="billing-status">
+    <nav id="PaymentNav">
+        <span data-target="PaymentBillingTab" class="selected">{{ i18n "PAYMENT_BILLING_TAB" }}</span>
+        <span data-target="UsageTab">{{ i18n "PAYMENT_USAGE_TAB" }}</span>
+    </nav>
+    <div class="tabContent" id="PaymentBody">
+        <section id="PaymentBillingTab">
+            <p class="warning-red"></p>
+            <h5>Credit Card Infomation</h5>
+            <div class="clearfix">
+                <div class="left clearfix">
+                    <div class="payment-credit-middle left">
+
+                    </div>
+                    <div class="left">
+                        <p class="payment-number">{{or paymentUpdate.card "No Card"}}</p>
+                        <p class="payment-username">{{paymentUpdate.first_name}} {{paymentUpdate.last_name}}</p>
+                    </div>
+                </div>
+                <div class="right">
+                    <a class="btn btn-blue update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
+                </div>
+            </div>
+            <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.billingCircle "MMMM d, yyyy"}}</span></h5>
+            <div class="table-head-fix">
+                {{#if hasPaymentHistory}}
+                <table class="table-head">
+                    <thead>
+                    <tr>
+                        <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">Date</th>
+                        <th data-row-type="string" style="width:25%;">Amount</th>
+                        <th data-row-type="string" style="width:25%;">Status</th>
+                        <th data-row-type="string" style="width:25%;">Action</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="scroll-wrap" style="max-height:200px;">
+                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                    <div class="scroll-content">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th style="width: 25%">
+                                    <div class="th-inner"></div>
+                                </th>
+                                <th style="width: 25%">
+                                    <div class="th-inner"></div>
+                                </th>
+                                <th style="width: 25%">
+                                    <div class="th-inner"></div>
+                                </th>
+                                <th style="width: 25%">
+                                    <div class="th-inner"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="t-m-content">
+                            {{#each paymentHistory}}
+                                <tr class="item" data-id="{{@index}}">
+                                    <td>{{formatTime updated_at "MMMM d, yyyy"}}</td>
+                                    <td>$ {{or ending_balance total_balance}}</td>
+                                    <td>{{#if success}}Paid{{else}}<span class="link-red">Failed</span>{{/if}}</td>
+                                    <td>
+                                        <a class="payment-receipt link-blue" href="#">View Receipt</a></td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{else}}
+                    <div class="full-space">
+                        No billing event yet.
+                    </div>
+                {{/if}}
+            </div>
+        </section>
+        <section id="UsageTab" class="hide">
+            <p class="warning-red"></p>
+            <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}</span></h5>
+            <div class="usage-wrapper">
+                <div class="used-points">
+                    <p>Used Points</p>
+                    <div class="usage-number">
+                        {{paymentUpdate.current_quota}}
+                    </div>
+                </div>
+                <div class="billable-points">
+                    <p>Billable Points</p>
+                    <div class="usage-number">
+                        {{paymentUpdate.billable_quota}}
+                    </div>
+                </div>
+                <div class="usage-block">
+                    <div class="billable-usage tooltip"></div>
+                    <div class="free-usage tooltip"></div>
+                    <div class="current-usage tooltip"></div>
+                </div>
+                <p class="renew-points">{{paymentUpdate.max_quota}} free points renew in {{paymentUpdate.renewRemainDays}} days</p>
+            </div>
+        </section>
+    </div>
+</div>

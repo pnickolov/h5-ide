@@ -24,6 +24,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving"]
 
+  OpsModelLastestVersion = "2014-09-18"
+
   OpsModel = Backbone.Model.extend {
 
     defaults : ()->
@@ -32,7 +34,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       state      : OpsModelState.UnRun
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
-
+      version    : OpsModelLastestVersion
 
       # usage          : ""
       # terminateFail  : false
@@ -66,6 +68,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importVpcId
+
+    # Payment restricted
+    isPMRestricted : ()-> @get("version") >= "2014-09-18" and @isApp()
 
     testState : ( state )-> @attributes.state is state
     getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]
@@ -209,7 +214,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
-      if (json.version or "").split("-").length < 3 then json.version = "2013-09-13"
+      if (json.version or "").split("-").length < 3 then json.version = OpsModelLastestVersion
 
       @__jsonData = json
 
@@ -246,7 +251,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       }).then ( res )->
 
         attr = {
-          name       : res.name
+          name       : newJson.name
+          version    : newJson.version
           updateTime : +(new Date())
           stoppable  : res.property.stoppable
           state      : OpsModelState.UnRun
@@ -309,6 +315,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           progress      : 0
           region        : region
           usage         : toRunJson.usage
+          version       : toRunJson.version
           updateTime    : +(new Date())
           stoppable     : toRunJson.property.stoppable
           resource_diff : false
@@ -618,7 +625,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       region      : @get("region")
       platform    : "ec2-vpc"
       state       : "Enabled"
-      version     : "2014-02-17"
+      version     : @get("version")
+      resource_diff: true
       component   : {}
       layout      : { size : [240, 240] }
       agent :
@@ -764,5 +772,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     }
 
   OpsModel.State = OpsModelState
+  OpsModel.LatestVersion = OpsModelLastestVersion
 
   OpsModel

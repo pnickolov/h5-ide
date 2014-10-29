@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -10,6 +10,8 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
             'click #HeaderLogout'                : 'logout'
             'click #HeaderSettings'              : 'settings'
             'click #HeaderShortcuts'             : 'shortcuts'
+            'click #HeaderBilling'               : 'billingSettings'
+            'click .voquota'                     : "billingSettings"
             'DROPDOWN_CLOSE #HeaderNotification' : 'dropdownClosed'
 
         initialize : ()->
@@ -17,6 +19,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
             @listenTo App.model, "change:notification", @updateNotification
 
             @setElement $(tmpl( App.user.toJSON() )).prependTo("#wrapper")
+            @update()
             return
 
         logout : () -> App.logout()
@@ -25,7 +28,27 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
 
         settings : ()-> new SettingsDialog()
 
-        update : ()-> $("#HeaderUser").data("tooltip", App.user.get("email")).children("span").text( App.user.get("username"))
+        update : ()->
+            user     = App.user
+            overview = user.getBillingOverview()
+
+            $("#HeaderUser")
+                .data("tooltip", user.get("email"))
+                .children("span")
+                .text( user.get("username"))
+
+            $quota = $("#header").children(".voquota").attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, overview.quotaRemain, overview.billingRemain) )
+
+            $quota.find(".currquota").css({"width":overview.quotaPercent + "%"})
+            $quota.find(".current").text(overview.quotaCurrent)
+            $quota.find(".limit"  ).text(overview.quotaTotal)
+
+            $percent = $quota.find(".percentage").removeClass("error full")
+            if user.shouldPay()
+                $percent.addClass("error")
+            else if overview.quotaCurrent >= overview.quotaTotal
+                $percent.addClass("full")
+            return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 
@@ -54,6 +77,9 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
 
             App.model.markNotificationRead()
             null
+
+        billingSettings: ()-> new BillingDialog()
+
     }
 
     HeaderView

@@ -33,14 +33,21 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         "click #AccountEmail"                       : "showEmail"
         "click #AccountCancelEmail"                 : "hideEmail"
         "click #AccountUpdateEmail"                 : "changeEmail"
+        "click #AccountCancelFullName"              : "hideFullName"
         "change #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
         "keyup  #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+        "click #AccountUpdateFullName"              : "changeFullName"
+        "change #AccountFirstName, #AccountLastName": "updateFullNameBtn"
+        "keyup #AccountFirstName, #AccountLastName" : "updateFullNameBtn"
+        'click #AccountFullName'                    : "showFullName"
 
 
       initialize : ( options )->
 
         attributes =
           username     : App.user.get("username")
+          firstName    : App.user.get("firstName") || ""
+          lastName     : App.user.get("lastName")  || ""
           email        : App.user.get("email")
           account      : App.user.get("account")
           awsAccessKey : App.user.get("awsAccessKey")
@@ -150,6 +157,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         return
 
       showEmail : ()->
+        @hideFullName()
         $(".accountEmailRO").hide()
         $("#AccountEmailWrap").show()
         $("#AccountNewEmail").focus()
@@ -162,6 +170,20 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         $("#AccountEmailInfo").empty()
         return
 
+      showFullName: ()->
+        @hideEmail()
+        $(".accountFullNameRO").hide()
+        $("#AccountFullNameWrap").show()
+        $("#AccountFirstName").val(App.user.get("firstName") || "").focus()
+        $("#AccountLastName").val(App.user.get("lastName") || "")
+        return
+
+      hideFullName: ()->
+        $(".accountFullNameRO").show()
+        $("#AccountFullNameWrap").hide()
+        $("#AccountFirstName, #AccountLastName").val("")
+        $("#AccountUpdateFullName").attr("disabled", false)
+
       updateEmailBtn : ()->
         old_pwd = $("#AccountNewEmail").val() || ""
         new_pwd = $("#AccountEmailPwd").val() || ""
@@ -171,6 +193,33 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
         else
           $("#AccountUpdateEmail").attr "disabled", "disabled"
         return
+
+      updateFullNameBtn: ()->
+        first_name = $("#AccountFirstName").val() || ""
+        last_name  = $("#AccountLastName").val()  || ""
+
+        if first_name.length and last_name.length
+          $("#AccountUpdateFullName").removeAttr "disabled"
+        else
+          $("#AccountUpdateFullName").attr "disabled", "disabled"
+        return
+
+      changeFullName: ()->
+        that = @
+        first_name = $("#AccountFirstName").val() || ""
+        last_name  = $("#AccountLastName").val()  || ""
+
+        if first_name and last_name
+          $("#AccountUpdateFullName").attr("disabled", true)
+          App.user.changeName( first_name, last_name ).then (result)->
+            that.hideFullName()
+            $(".fullNameText").text(first_name + " " + last_name)
+            if result
+              notification "info", lang.NOTIFY.UPDATED_FULLNAME_SUCCESS
+          , (err)->
+            notification "error", lang.NOTIFY.UPDATED_FULLNAME_FAIL
+            $("#AccountUpdateFullName").attr("disabled", false)
+            console.error("Change Full name Failed due to ->", err)
 
       changeEmail : ()->
         email = $("#AccountNewEmail").val() || ""

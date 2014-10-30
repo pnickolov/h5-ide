@@ -41,6 +41,10 @@ define [ "./OsModelPort", "constant", "Design" ], ( OsModelPort, constant, Desig
     isVisual   : ()-> true
     isEmbedded : ()-> false
 
+    getFloatingIp : () ->
+
+        @connectionTargets("OsFloatIpUsage")[0]
+
     serialize : ()->
       {
         layout : @generateLayout()

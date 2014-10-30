@@ -10,8 +10,9 @@ define [ 'component/stateeditor/model',
          'constant',
          'instance_model',
          'component/stateeditor/lib/markdown',
+         'ApiRequestOs'
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown) ->
+], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown, ApiRequest) ->
 
     StateClipboard = []
 
@@ -103,6 +104,9 @@ define [ 'component/stateeditor/model',
             @model = new Model({
                 resUID: options.uid
             })
+
+            ide_event.offListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, @onStateStatusUpdate, @
+            ide_event.onLongListen ide_event.UPDATE_STATE_STATUS_DATA_TO_EDITOR, @onStateStatusUpdate, @
 
         initState: () ->
 
@@ -3349,39 +3353,38 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            instanceId = that.currentResId
+            serverId = that.currentResId
 
-            currentRegion = Design.instance().region()
-            instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
+            region = Design.instance().region()
+
+            ApiRequest("os_server_GetConsoleOutput", {
+                region: region
+                server_id: serverId
+            }).then (result) ->
+                that.refreshSysLog(result)
 
             modal MC.template.modalInstanceSysLog {
-                instance_id: instanceId,
+                instance_id: serverId,
                 log_content: ''
             }, true
 
-            that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
-
-                if !result.is_error
-                    console.log(result.resolved_data)
-                that.refreshSysLog(result.resolved_data)
-
-            return false
+            false
 
         refreshSysLog : (result) ->
 
-            $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-loading').hide()
+            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
 
             if result and result.output
 
-                logContent = MC.base64Decode(result.output)
-                $contentElem = $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-content')
+                logContent = result.output
+                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                $contentElem.html  MC.template.convertBreaklines({content:logContent})
+                $contentElem.html MC.template.convertBreaklines({content:logContent})
                 $contentElem.show()
 
             else
 
-                $('#OpsEditor').find('#modal-instance-sys-log .instance-sys-log-info').show()
+                $('#modal-instance-sys-log .instance-sys-log-info').show()
 
             modal.position()
 

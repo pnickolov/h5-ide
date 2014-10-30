@@ -377,9 +377,18 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
                 # for ip_address, protocol, port
                 resAttrDataAry = resAttrDataAry.concat([
                     _genRefObj(name, uid, 'ip_address'),
+                    _genRefObj(name, uid, 'mac_address'),
                     _genRefObj(name, uid, 'protocol'),
                     _genRefObj(name, uid, 'port')
                 ])
+
+                # for public_ip
+                floatIPModel = listenerModel.getFloatingIp()
+                if floatIPModel
+                    uid = floatIPModel.id
+                    resAttrDataAry = resAttrDataAry.concat([
+                        _genRefObj(name, uid, 'public_ip')
+                    ])
 
             # for subnet
             allSubnetModels = Design.modelClassForType(constant.RESTYPE.OSSUBNET).allObjects()
@@ -390,8 +399,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
                 # for ip_address, protocol, port
                 resAttrDataAry = resAttrDataAry.concat([
-                    _genRefObj(name, uid, 'ip_address'),
-                    _genRefObj(name, uid, 'gateway_ip')
+                    _genRefObj(name, uid, 'cidr')
                 ])
 
         return resAttrDataAry

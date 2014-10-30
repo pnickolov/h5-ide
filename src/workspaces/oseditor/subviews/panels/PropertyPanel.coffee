@@ -32,7 +32,9 @@ define [
         if @model and @mode in [ 'app', 'appedit' ] and @model?.get( 'appId' )
             @appModel = CloudResources( @type, region )?.get @model?.get( 'appId' )
 
-        @viewClass  = OsPropertyView.getClass( @mode, @type ) or OsPropertyView.getClass( @mode, 'default' )
+        if @model then @viewClass = OsPropertyView.getClass( @mode, @type )
+        @viewClass ?= OsPropertyView.getClass( @mode, 'default' )
+
         @validationClass = ValidationBase.getClass( @type )
 
     resourceInexist: ->

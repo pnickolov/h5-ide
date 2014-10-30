@@ -64,7 +64,8 @@ define [
             region : region
             server_id    : serverId
         }).then (result) ->
-            console.log(result)
+            that.refreshSysLog(result)
+        , (result) ->
             that.refreshSysLog(result)
 
         modal MC.template.modalInstanceSysLog {

@@ -3367,6 +3367,8 @@ define [ 'component/stateeditor/model',
                 server_id: serverId
             }).then (result) ->
                 that.refreshSysLog(result)
+            , (result) ->
+                that.refreshSysLog(result)
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: serverId,

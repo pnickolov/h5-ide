@@ -63,21 +63,12 @@ define [
         ApiRequest("os_server_GetConsoleOutput", {
             region : region
             server_id    : serverId
-        }).then (result) ->
-            that.refreshSysLog(result)
-        , (result) ->
-            that.refreshSysLog(result)
+        }).then @refreshSysLog, @refreshSysLog
 
         modal MC.template.modalInstanceSysLog {
             instance_id: serverId,
             log_content: ''
         }, true
-
-        # that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
-
-        #     if !result.is_error
-        #         console.log(result.resolved_data)
-        #     that.refreshSysLog(result.resolved_data)
 
         false
 

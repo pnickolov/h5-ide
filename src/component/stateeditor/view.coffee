@@ -3365,10 +3365,7 @@ define [ 'component/stateeditor/model',
             ApiRequest("os_server_GetConsoleOutput", {
                 region: region
                 server_id: serverId
-            }).then (result) ->
-                that.refreshSysLog(result)
-            , (result) ->
-                that.refreshSysLog(result)
+            }).then @refreshSysLog, @refreshSysLog
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: serverId,

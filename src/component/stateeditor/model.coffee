@@ -587,7 +587,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", "ApiReques
 					if resName isnt 'self'
 						nameToUIDRefMap = that.get('nameToUIDRefMap')
 						newUIDStr = nameToUIDRefMap[refMatchStr]
-						newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+						newParaValue = newParaValue.replace(refMatchStr, newUIDStr) if newUIDStr
 					null
 
 			return newParaValue

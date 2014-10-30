@@ -106,10 +106,14 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
     checkRefExist = ( obj, data ) ->
         ref = __getRef obj, data
         error = []
+        refNames = []
+
         if ref.length
             legalRef = MC.aws.aws.genAttrRefList data.comp, MC.canvas_data.component
 
         for r in ref
+            refName = ''
+
             if __refState r
                 if not __legalState r
                     refName = Message.state r
@@ -117,9 +121,12 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js' ], ( CONST, MC, lang ) ->
                 if not __legalExist( legalRef, r )
                     refName = Message.illegal r
 
-            if refName
-                tip = __getCompTip data.type, data.name, data.stateId, refName
-                error.push __genError tip, data.stateId
+            if refName then refNames.push "<span class='validation-tag tag-state-ref'>#{refName}</span>"
+
+        if refNames.length
+
+            tip = __getCompTip data.type, data.name, data.stateId, refNames.join(', ')
+            error.push __genError tip, data.stateId
 
         error
 

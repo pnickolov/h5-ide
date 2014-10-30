@@ -201,23 +201,23 @@ module.exports =
 
     # State Editor
     ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
       zh: ""
 
     ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
       zh: ""
 
     ERROR_STATE_EDITOR_INEXISTENT_OSSERVER:
-      en: "Server <span class='validation-osserver tag-osserver'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      en: "Server <span class='validation-tag tag-osserver'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
       zh: ""
 
     ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
       zh: ""
 
     ERROR_STATE_EDITOR_INVALID_FORMAT:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
+      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
       zh: ""
 
     # State

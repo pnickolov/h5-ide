@@ -6,6 +6,8 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
       "click #submitFullName": "submit"
       "change #complete-firstname": "changeInput"
       "change #complete-lastname" : "changeInput"
+      "keyup #complete-lastname" : "changeInput"
+      "keyup #complete-lastname" : "changeInput"
 
     initialize: ()->
       @modal = new Modal {
@@ -24,7 +26,9 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
 
     changeInput: ()->
       confirmBtn = @modal.find(".modal-confirm")
-      if @modal.find("#complete-firstname").val() and @modal.find("#complete-lastname").val()
+      $firstNameInput = @modal.find("#complete-firstname")
+      $lastNameInput  = @modal.find("#complete-lastname")
+      if !!$firstNameInput.val() and !!$lastNameInput.val()
         confirmBtn.attr("disabled", false)
       else
         confirmBtn.attr("disabled", true)

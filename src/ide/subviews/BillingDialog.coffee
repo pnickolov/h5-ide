@@ -27,14 +27,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             template: MC.template.loadingSpiner
             disableClose: true
             confirm: hide: true
-
-        unless App.user.get("creditCard")
-          @modal.setContent(MC.template.paymentSubscribe)
-          @modal.listenTo App.user, "paymentUpdate", ->
-            that.initialize(that.modal)
-            that.modal.stopListening()
-          return false
-        ApiRequestR("payment_statement").then (paymentHistory)->
+        @getPaymentHistory().then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {
             url: App.user.get("paymentUrl")
@@ -61,12 +54,28 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.paymentHistory = tempArray
           that.paymentUpdate = _.clone paymentUpdate
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+          unless App.user.get("creditCard")
+            that.modal.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl")})
+            that.modal.listenTo App.user, "paymentUpdate", ->
+              that.initialize(that.modal)
+              that.modal.stopListening()
           that.animateUsage()
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
         @listenTo App.user, "paymentUpdate", => @animateUsage()
         @setElement @modal.tpl
+
+      getPaymentHistory: ()->
+        historyDefer = new Q.defer()
+        unless App.user.get("creditCard")
+          historyDefer.resolve({})
+        else
+          ApiRequestR("payment_statement").then (paymentHistory)->
+            historyDefer.resolve(paymentHistory)
+          , (err)->
+            historyDefer.reject(err)
+        historyDefer.promise
 
       switchTab: (event)->
         target = $(event.currentTarget)

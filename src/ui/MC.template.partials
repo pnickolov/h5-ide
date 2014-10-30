@@ -1374,8 +1374,7 @@ Additional Notes and Questions
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
-    <p class="modal-text-major">Pricing:</p>
+    <p class="modal-text-minor payment-text">While enjoying your free 2,000 points each month, join the paid plan to make sure points not to run out of quota.</p>
     <table class="table payment-table">
         <tbody>
         <tr>

@@ -2737,8 +2737,7 @@ define [ 'component/stateeditor/model',
 
             target = event.data.target
 
-            if not target.$el.parents('#OpsEditor').length
-                return true
+            return true if not target.$el.parents('#OpsEditor').length
 
             status = target.currentState
             is_editable = status is 'appedit' or status is 'stack'

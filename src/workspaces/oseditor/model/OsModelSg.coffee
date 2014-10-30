@@ -59,7 +59,7 @@ define [ "ComplexResModel", "constant" ], ( ComplexResModel, constant )->
 
     serialize : ()->
 
-      if @getMemberList().length or @isDefault()
+      if @getMemberList().length
 
         rules = @get("rules")
 

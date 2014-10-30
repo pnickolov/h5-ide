@@ -83,7 +83,8 @@ define [
     hideFloatPanel: -> @panel.hideFloatPanel.apply @panel, arguments
 
     remove: ->
-        bindSelection.unbind @$el, @propertyView.selectTpl
+
+        if @propertyView and @propertyView.selectTpl
+            bindSelection.unbind @$el, @propertyView.selectTpl
         @propertyView?.remove()
         Backbone.View.prototype.remove.apply @, arguments
-

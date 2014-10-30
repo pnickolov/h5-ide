@@ -2741,7 +2741,12 @@ define [ 'component/stateeditor/model',
 
             target = event.data.target
 
-            return true if not target.$el.parents('#OpsEditor').length
+            isCurrentSE = target.$el.parents('#OpsEditor').length
+            isHaveSE = $('#OpsEditor .OEPanelRight').hasClass('state')
+
+            return if not isHaveSE
+
+            return if not isCurrentSE
 
             status = target.currentState
             is_editable = status is 'appedit' or status is 'stack'
@@ -2864,8 +2869,8 @@ define [ 'component/stateeditor/model',
                 return false
 
             # Disable default delete event [delete/backspace]
-            # if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
-            #     return false
+            if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
+                return false
 
         onUndo: () ->
 
@@ -2923,7 +2928,7 @@ define [ 'component/stateeditor/model',
 
             item = $('#OpsEditor').find('#state-editor .state-item.focused')
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
 
             if direction is 'down'
 
@@ -2967,7 +2972,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
 
             if focused_index is -1
                 focused_index = null
@@ -3023,7 +3028,7 @@ define [ 'component/stateeditor/model',
 
             total = stack.length
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
 
             that.clearFocusedItem()
 
@@ -3061,7 +3066,7 @@ define [ 'component/stateeditor/model',
 
             total = stack.length
 
-            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+            focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
 
             that.clearFocusedItem()
 
@@ -3146,7 +3151,7 @@ define [ 'component/stateeditor/model',
                 stack.eq(total - 1).find('.ace_text-input').focus()
 
                 return false
-                # focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#state-editor .state-list > li')
+                # focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
 
                 # $('#OpsEditor').find('#state-editor .state-item.focused').removeClass('focused').addClass('view')
 

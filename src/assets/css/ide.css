@@ -7233,7 +7233,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9671,6 +9672,8 @@ marker.server, marker.elb {
     border: 0; }
   #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
     width: 450px; }
+  #OpsEditor .OEPanelRight.property .selection .selectize-input.disabled .item-remove, #OpsEditor .OEPanelRight.config .selection .selectize-input.disabled .item-remove {
+    display: none; }
 
 #OpsEditor[data-mode="app"] .selection .selectize-input:after {
   display: none; }

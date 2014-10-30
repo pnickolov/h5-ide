@@ -310,6 +310,9 @@
         div.float-panel-sg {
             width: 450px;
         }
+        .selection .selectize-input.disabled .item-remove {
+            display: none;
+        }
     }
 }
 

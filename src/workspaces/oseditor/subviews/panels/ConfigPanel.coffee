@@ -11,7 +11,7 @@ define [
     PropertyPanel.extend
 
         initialize: ( options ) ->
-            PropertyPanel.prototype.initialize.apply @, arguments
+            PropertyPanel.prototype.initialize.call @, options
 
             @type = 'globalconfig'
             @model = @appModel = Design.instance()

@@ -45,7 +45,7 @@ define [
 
     onItemSelected: ( type, id ) ->
       if not id and not type
-        @panel.openConfig()
+        @panel.openConfig { uid: '', type: 'default' }
         return
 
       @panel.openProperty { uid: id, type: type }

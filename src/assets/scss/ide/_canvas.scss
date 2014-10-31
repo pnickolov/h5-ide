@@ -831,19 +831,23 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 
 .OS--Neutron--Subnet {
   .group {
-    fill: rgba(252, 190, 23, 0.02);
-    stroke: #f9be76;
+    fill: rgba(195, 198, 231, 0.2);
+    stroke: #C3C6E7;
     stroke-linejoin: round;
     stroke-dasharray: 16, 6;
     stroke-width: 2;
   }
 
   &:hover {
-    .group { stroke: #F69722; }
+    .group { stroke: #A3A6CA; }
+  }
+
+  &.selected {
+    .group { stroke: #A3A6CA; stroke-width: 3;}
   }
 
   .group-label {
-    fill: #F69722;
+    fill: #595974;
   }
 }
 

@@ -32,11 +32,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           paymentUpdate = {
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
-            billingCircle: App.user.get("billingCircle")
+            billingEnd: App.user.get("billingEnd")
             current_quota: App.user.get("voQuotaCurrent")
             max_quota:  App.user.get("voQuotaPerMonth")
             renewRemainDays: Math.round( (App.user.get("renewDate") - ( new Date() ))/(1000*60*60*24) )
-            last_billing_time: App.user.get("billingCircleStart") || new Date()
+            last_billing_time: App.user.get("billingStart") || new Date()
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
           paymentUpdate.billable_quota = if billable_quota > 0 then billable_quota else 0

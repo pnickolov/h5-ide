@@ -177,6 +177,7 @@ define [
                     @addNewItem($ruleItem)
                     $ruleItem.data('id', newRuleId)
                     @updateCount()
+                    @listView.refreshList()
 
             if attr is 'name'
                 @sgModel.set('name', value)
@@ -216,6 +217,7 @@ define [
                 @sgModel.removeRule(ruleId)
                 $ruleItem.remove()
                 @updateCount()
+                @listView.refreshList()
 
         setDefaultPort: (rule, $target) ->
 

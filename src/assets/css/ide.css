@@ -7236,7 +7236,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9484,8 +9485,10 @@ marker.server, marker.elb {
           padding: 2px; }
         #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li:hover {
           cursor: pointer; }
-      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.focus, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.focus {
-        background: #2a608d; }
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.active, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.active {
+        background-color: #2c2f4d;
+        border: 1px #363b76 solid;
+        color: #fff; }
   #OpsEditor .OEPanelRight.property .dl-horizontal:first-child, #OpsEditor .OEPanelRight.config .dl-horizontal:first-child {
     margin-top: 0;
     padding-top: 8px; }

@@ -193,7 +193,16 @@ define [
                 listView: @
             })
 
-            @showFloatPanel(sgView.render().el)
+            isReadable = $target.parents('.item-readable-list').length
+
+            if isReadable
+
+                $target.parents('.item-readable-list').find('.item').removeClass('active')
+                $target.addClass('active')
+
+            @showFloatPanel sgView.render().el, () ->
+                $target.removeClass('active') if isReadable
+
             return false
 
         attachItem: (event, sgUID) ->

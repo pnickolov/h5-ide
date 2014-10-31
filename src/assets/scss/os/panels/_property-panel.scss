@@ -41,7 +41,11 @@
                     &:hover { cursor: pointer; }
                 }
 
-                .item.focus { background: #2a608d; }
+                .item.active {
+                    background-color: $dark-p-1;
+                    border: 1px $base-p solid;
+                    color: #fff;
+                }
             }
 
         }

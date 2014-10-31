@@ -41,6 +41,7 @@ define [
       applyImmediately: false
       dbRestoreTime: ''
       isRestored: false
+      storageType: "standard"
 
     type : constant.RESTYPE.DBINSTANCE
     newNameTmpl : "db"
@@ -127,7 +128,7 @@ define [
       @listenTo sourceDb, 'change', @syncAttrSourceDBForRestore
 
     getSourceDBForRestore: ->
-      
+
       @sourceDBForRestore
 
     syncMasterAttr: ( master ) ->
@@ -254,6 +255,10 @@ define [
           snapshotId      : ""
           multiAz         : !!attr.multiAz
         }
+
+        # IOPS
+        if attr.iops and Number(attr.iops) > 0
+            @set('storageType', 'io1')
 
         #set default optiongroup and parametergroup
         @setDefaultOptionGroup()
@@ -636,7 +641,7 @@ define [
       true
 
     serialize : () ->
-      
+
       master = @master()
 
       useLatestRestorableTime = ''
@@ -688,6 +693,7 @@ define [
           SourceDBInstanceIdentifierForPoint    : @getSourceDBForRestore()?.createRef('DBInstanceIdentifier') or ''
           UseLatestRestorableTime               : useLatestRestorableTime
           RestoreTime                           : restoreTime
+          StorageType                           : @get 'storageType'
 
       { component : component, layout : @generateLayout() }
 
@@ -705,6 +711,13 @@ define [
     deserialize : ( data, layout_data, resolve ) ->
       that = @
       resource = data.resource
+
+      storageType = resource.StorageType
+      if not storageType
+            if resource.Iops and Number(resource.Iops) > 0
+                storageType = 'io1'
+            else
+                storageType = 'standard'
 
       model = new Model({
         id     : data.uid
@@ -737,6 +750,7 @@ define [
         accessible                : resource.PubliclyAccessible
         pgName                    : resource.DBParameterGroups?.DBParameterGroupName
         applyImmediately          : resource.ApplyImmediately
+        storageType               : storageType
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

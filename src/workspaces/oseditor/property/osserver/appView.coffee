@@ -49,6 +49,8 @@ define [
         flavorObj = @flavorList.get(appData.flavor_id)
         appData.vcpus = flavorObj.get("vcpus")
         appData.ram = Math.round(flavorObj.get("ram") / 1024)
+        appData.image_name = @model.getImage()?.name
+        appData.image_id = @model.getImage()?.id
         @$el.html template.appTemplate _.extend(appData, addrData)
         # append sglist
         @$el.append @sgListView.render().el
@@ -91,8 +93,10 @@ define [
 
     openImageInfoPanel: ->
 
-        serverData = @getRenderData()
-        @showFloatPanel(template.imageTemplate(serverData.system_metadata))
+        serverData = @getRenderData()?.system_metadata
+        serverData.image_name = @model.getImage()?.name
+        serverData.image_id = @model.getImage()?.id
+        @showFloatPanel(template.imageTemplate(serverData))
 
     }, {
         handleTypes: [ constant.RESTYPE.OSSERVER ]

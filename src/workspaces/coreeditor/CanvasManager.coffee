@@ -102,7 +102,7 @@ define ["constant"], (constant)->
         toggle = !!targetModel.getFloatingIp()
 
       if toggle
-        tootipStr = 'Detach Floating IP'
+        tootipStr = 'Deassociate Floating IP'
 
         img1 = 'ide/icon-os/cvs-fip-on-n.png'
         img2 = 'ide/icon-os/cvs-fip-on-h.png'
@@ -112,7 +112,7 @@ define ["constant"], (constant)->
         img1 = 'ide/icon-os/cvs-fip-of-n.png'
         img2 = 'ide/icon-os/cvs-fip-of-h.png'
 
-      node = $(node).data("tooltip", tootipStr)
+      node = $(node).data("tooltip", tootipStr).attr("data-tooltip", tootipStr)
 
       @update( node.find(".normal"), img1, "href" )
       @update( node.find(".hover"),  img2, "href" )

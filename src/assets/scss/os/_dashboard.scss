@@ -38,10 +38,6 @@
   }
 }
 
-.ops-list-switcher {
-    cursor: pointer;
-}
-
 #OsReloadResource {
   font-size : 12px;
   position  : absolute;
@@ -82,12 +78,23 @@
   > nav {
     border-bottom : 1px solid $base-grey;
 
-    > button {
+    .ops-list-switcher {
       font-size : 24px;
-      color     : $base-grey;
+      color     : #999;
+      padding   : 0 15px 10px 15px;
+      cursor    : pointer;
 
       &.on {
-        box-shadow: 0 2px $base-b;
+        color      : $base-b;
+        box-shadow : 0 2px $base-b;
+      }
+      
+      &:hover {
+        color: $light-b;
+      }
+
+      small {
+        font-size: 14px;
       }
     }
   }
@@ -388,7 +395,6 @@
       .quota-chart {
         width    : 100%;
         height   : 141px;
-        margin   : 10px 32px;
         position : relative;
       }
       .quota-path {

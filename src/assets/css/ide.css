@@ -9749,9 +9749,6 @@ marker.server, marker.elb {
       border-radius: 3px 0 0 3px;
       margin-right: 10px; }
 
-.ops-list-switcher {
-  cursor: pointer; }
-
 #OsReloadResource {
   font-size: 12px;
   position: absolute;
@@ -9787,11 +9784,18 @@ marker.server, marker.elb {
   border-radius: 2px; }
   .dash-ops-list-wrapper > nav {
     border-bottom: 1px solid #eeeef0; }
-    .dash-ops-list-wrapper > nav > button {
+    .dash-ops-list-wrapper > nav .ops-list-switcher {
       font-size: 24px;
-      color: #eeeef0; }
-      .dash-ops-list-wrapper > nav > button.on {
+      color: #999;
+      padding: 0 15px 10px 15px;
+      cursor: pointer; }
+      .dash-ops-list-wrapper > nav .ops-list-switcher.on {
+        color: #4a90e2;
         box-shadow: 0 2px #4a90e2; }
+      .dash-ops-list-wrapper > nav .ops-list-switcher:hover {
+        color: #7eace1; }
+      .dash-ops-list-wrapper > nav .ops-list-switcher small {
+        font-size: 14px; }
 
 .dash-ops-list {
   max-height: 395px;
@@ -10023,7 +10027,6 @@ marker.server, marker.elb {
     .dash-ops-resource-list .resource-list-nav .quota-chart {
       width: 100%;
       height: 141px;
-      margin: 10px 32px;
       position: relative; }
     .dash-ops-resource-list .resource-list-nav .quota-path {
       stroke: #E6E6E6;

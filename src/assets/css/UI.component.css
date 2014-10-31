@@ -1023,8 +1023,8 @@ li.error-message {
   color: #fff;
   padding: 1px 5px; }
   .selectize-control.multi .selectize-input > div.active {
-    background-color: #2a608d;
-    border: 1px #444 solid;
+    background-color: #2c2f4d;
+    border: 1px #363b76 solid;
     color: #fff; }
 
 .selection {

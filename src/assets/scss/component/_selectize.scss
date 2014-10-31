@@ -382,9 +382,10 @@
     border-radius: 3px;
     color: #fff;
     padding: 1px 5px;
+
     &.active {
-        background-color: #2a608d;
-        border: 1px #444 solid;
+        background-color: $dark-p-1;
+        border: 1px $base-p solid;
         color: #fff;
     }
 }

@@ -456,6 +456,8 @@ define [
       json.usage = ""
       delete json.history
       delete json.stack_id
+      delete json.owner
+      delete json.usage
       json
 
 

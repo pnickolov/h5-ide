@@ -86,17 +86,17 @@ define [
 
         floatPanelShowCount: 0
 
-        showFloatPanel: ( dom ) ->
+        showFloatPanel: ( dom, callback ) -> # callback when auto hideFloatPanel
             @floatPanelShowCount++
             @$( '.panel-float' ).html dom if dom
             @$( '.panel-float' ).removeClass 'hidden'
 
             _.defer () =>
-                @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount
+                @$( '.panel-body' ).one 'click', @__hideFloatPanel @floatPanelShowCount, callback
 
-        __hideFloatPanel: ( showCount ) ->
+        __hideFloatPanel: ( showCount, callback ) ->
             that = @
-            () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel()
+            () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel(); callback?()
 
         hideFloatPanel: () ->
             @$( '.panel-float' ).addClass 'hidden'

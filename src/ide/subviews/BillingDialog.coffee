@@ -59,11 +59,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             that.modal.listenTo App.user, "paymentUpdate", ->
               that.initialize(that.modal)
               that.modal.stopListening()
-          that.animateUsage()
+          that.updateUsage()
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
-        @listenTo App.user, "paymentUpdate", -> that.animateUsage()
+        @listenTo App.user, "paymentUpdate", -> that.updateUsage()
         @setElement @modal.tpl
 
       getPaymentHistory: ()->
@@ -83,7 +83,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find("#PaymentNav").find("span").removeClass("selected")
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
-        @animateUsage(event)
+        @updateUsage()
 
       _bindPaymentEvent: (event)->
         that = @
@@ -100,7 +100,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 
-      animateUsage: ()->
+      updateUsage: ()->
         if @modal.isClosed
           return false
         shouldPay = App.user.shouldPay()

@@ -50,17 +50,17 @@ define [
                         description: sgModel.get('description')
                     })
 
-        getAttachSGForApp: () ->
-
-            attachedSGModel = []
-            region = Design.instance().region()
-            targetAppModel = CloudResources(@targetModel.type, region)?.get @targetModel.get('appId')
-            if targetAppModel and targetAppModel.security_groups
-                _.each targetAppModel.security_groups, (sgId) ->
-                    sgAppModel = CloudResources(constant.RESTYPE.OSSG, region)?.get(sgId)
-                    attachedSGModel.push(sgAppModel) if sgAppModel
-                    null
-            return attachedSGModel
+        # getAttachSGForApp: () ->
+        #
+        #     attachedSGModel = []
+        #     region = Design.instance().region()
+        #     targetAppModel = CloudResources(@targetModel.type, region)?.get @targetModel.get('appId')
+        #     if targetAppModel and targetAppModel.security_groups
+        #         _.each targetAppModel.security_groups, (sgId) ->
+        #             sgAppModel = CloudResources(constant.RESTYPE.OSSG, region)?.get(sgId)
+        #             attachedSGModel.push(sgAppModel) if sgAppModel
+        #             null
+        #     return attachedSGModel
 
         render: ->
 
@@ -74,62 +74,85 @@ define [
         refreshList: () ->
 
             currentMode = Design.instance().mode()
-            if not @targetModel.get('appId')
+
+            if @targetModel and not @targetModel.get('appId')
                 currentMode = 'stack'
+
+            # all sg
+            OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+            allSGModels = OSSGModel.allObjects()
+            sgList = []
+            _.each allSGModels, (sgModel) ->
+                sgName = sgModel.get('name')
+                sgUID = sgModel.get('id')
+                sgList.push({
+                    name: sgName,
+                    uid: sgUID,
+                    id: sgModel.id,
+                    name: sgModel.get('name'),
+                    ruleCount: sgModel.get('rules').length,
+                    memberCount: sgModel.getMemberList().length,
+                    description: sgModel.get('description')
+                })
 
             if currentMode in ['stack', 'appedit']
 
-                OSSGModel = Design.modelClassForType(constant.RESTYPE.OSSG)
+                # attached sg
+                if @targetModel
 
-                # all sg
-                allSGModels = OSSGModel.allObjects()
-                sgList = []
-                _.each allSGModels, (sgModel) ->
-                    sgName = sgModel.get('name')
-                    sgUID = sgModel.get('id')
-                    sgList.push({
-                        name: sgName,
-                        uid: sgUID
+                    attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+                    attachedSGList = []
+                    _.each attachedSGModels, (sgModel) ->
+                        sgUID = sgModel.get('id')
+                        attachedSGList.push(sgUID)
+
+                    @$el.html template.stack({
+                        sgList: sgList,
+                        attachedSGList: attachedSGList.join(',')
                     })
 
-                # attached sg
-                attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
-                attachedSGList = []
-                _.each attachedSGModels, (sgModel) ->
-                    sgUID = sgModel.get('id')
-                    attachedSGList.push(sgUID)
+                else
 
-                @$el.html template.stack({
-                    sgList: sgList,
-                    attachedSGList: attachedSGList.join(',')
-                })
+                    @$el.html template.app({
+                        attachedSGList: sgList
+                    })
 
                 @refreshRemoveState()
 
             else
 
                 # attached sg
-                attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
-                attachedSGList = []
-                _.each attachedSGModels, (sgModel) ->
-                    attachedSGList.push({
-                        id: sgModel.id,
-                        name: sgModel.get('name'),
-                        ruleCount: sgModel.get('rules').length,
-                        memberCount: sgModel.getMemberList().length,
-                        description: sgModel.get('description')
+                if @targetModel
+
+                    attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+                    attachedSGList = []
+                    _.each attachedSGModels, (sgModel) ->
+                        attachedSGList.push({
+                            id: sgModel.id,
+                            name: sgModel.get('name'),
+                            ruleCount: sgModel.get('rules').length,
+                            memberCount: sgModel.getMemberList().length,
+                            description: sgModel.get('description')
+                        })
+                    @$el.html template.app({
+                        attachedSGList: attachedSGList
                     })
-                @$el.html template.app({
-                    attachedSGList: attachedSGList
-                })
+
+                else
+
+                    @$el.html template.app({
+                        attachedSGList: sgList
+                    })
 
         refreshRemoveState: () ->
 
-            attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
-            if attachedSGModels.length <= 1
-                @$el.find('.item-list .item-remove').addClass('hide')
-            else
-                @$el.find('.item-list .item-remove').removeClass('hide')
+            if @targetModel
+
+                attachedSGModels = @targetModel.connectionTargets("OsSgAsso")
+                if attachedSGModels.length <= 1
+                    @$el.find('.item-list .item-remove').addClass('hide')
+                else
+                    @$el.find('.item-list .item-remove').removeClass('hide')
 
         getSelectItemModel: ($sgItem) ->
 

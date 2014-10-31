@@ -3,12 +3,16 @@ define [
     '../OsPropertyView'
     './stack'
     './app'
-
-], ( constant, OsPropertyView, TplStack, TplApp ) ->
+    '../ossglist/view'
+], ( constant, OsPropertyView, TplStack, TplApp, SgListView ) ->
 
     OsPropertyView.extend {
+
         events:
             'change [data-target]': 'updateAttribute'
+
+        initialize: ->
+            @sgListView = @reg new SgListView targetModel: null
 
         render: ->
             template = switch
@@ -16,6 +20,7 @@ define [
                 else TplStack
 
             @$el.html template @getRenderData()
+            @$el.append @sgListView.render().el
             @
 
         mode: ->

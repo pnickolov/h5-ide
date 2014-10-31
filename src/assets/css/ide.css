@@ -9226,14 +9226,17 @@ h5.billing_usage_title {
   font-size: 12px;
   color: #99A; }
 
-.used-points, .billable-points {
+.used-points {
   display: inline-block;
-  width: 120px;
   margin-top: 20px;
   margin-left: 20px; }
-  .used-points .usage-number, .billable-points .usage-number {
-    font-size: 27px;
-    color: #6065A0; }
+  .used-points .usage-number {
+    font-size: 36px;
+    color: #6065A0;
+    display: inline-block; }
+  .used-points span {
+    margin-left: 10px;
+    display: inline-block; }
 
 .used-points .usage-number {
   color: #33c317; }
@@ -9242,7 +9245,7 @@ h5.billing_usage_title {
   color: #fd0d00; }
 
 .renew-points {
-  margin-left: 20px;
+  margin-top: 10px;
   font-size: 12px; }
 
 .usage-block {

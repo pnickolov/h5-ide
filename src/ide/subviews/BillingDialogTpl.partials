@@ -81,24 +81,13 @@
             <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}</span></h5>
             <div class="usage-wrapper">
                 <div class="used-points">
-                    <p>Used Points</p>
                     <div class="usage-number">
                         {{paymentUpdate.current_quota}}
                     </div>
+                    <span>Instance Hour</span>
                 </div>
-                <div class="billable-points">
-                    <p>Billable Points</p>
-                    <div class="usage-number">
-                        {{paymentUpdate.billable_quota}}
-                    </div>
-                </div>
-                <div class="usage-block">
-                    <div class="billable-usage tooltip"></div>
-                    <div class="free-usage tooltip"></div>
-                    <div class="current-usage tooltip"></div>
-                </div>
-                <p class="renew-points">{{paymentUpdate.max_quota}} free points renew in {{paymentUpdate.renewRemainDays}} days</p>
             </div>
+            <p class="renew-points">{{paymentUpdate.max_quota}} free points renew in {{paymentUpdate.renewRemainDays}} days</p>
         </section>
     </div>
 </div>

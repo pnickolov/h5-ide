@@ -132,14 +132,18 @@ h5.billing_usage_title{
   color: #99A;
 }
 
-.used-points, .billable-points{
+.used-points{
   display: inline-block;
-  width: 120px;
   margin-top: 20px;
   margin-left: 20px;
   .usage-number{
-    font-size: 27px;
+    font-size: 36px;
     color: #6065A0;
+    display: inline-block;
+  }
+  span{
+    margin-left: 10px;
+    display: inline-block;
   }
 }
 .used-points .usage-number{
@@ -151,7 +155,7 @@ h5.billing_usage_title{
 }
 
 .renew-points{
-  margin-left: 20px;
+  margin-top: 10px;
   font-size: 12px;
 }
 

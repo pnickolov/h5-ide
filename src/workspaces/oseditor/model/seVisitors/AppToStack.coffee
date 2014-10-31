@@ -23,5 +23,11 @@ define [ "../DesignOs", "constant" ], ( Design, constant )->
           when constant.RESTYPE.OSLISTENER
             comp.resource.port_id = ""
 
+          when constant.RESTYPE.OSFIP
+            comp.resource.floating_ip_address = ""
+
+          when constant.RESTYPE.OSRT
+            comp.resource.public_ip = ""
+
       return
     return

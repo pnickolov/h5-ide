@@ -41,6 +41,7 @@ define [
             value = $target.getValue()
 
             if attr is 'extNetworkId'
+
                 if value is "none"
                     value = ""
 
@@ -55,7 +56,14 @@ define [
 
                 @$el.find('.os-property-router-nat').toggleClass('hide', !value)
 
-            @model.set(attr, value)
+            else if attr is 'totalBandwidth'
+
+                @model.set('totalBandwidth', Number(value))
+
+            else
+
+                @model.set(attr, value)
+
             @setTitle(value) if attr is 'name'
 
     }, {

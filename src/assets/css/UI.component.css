@@ -3450,15 +3450,3 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .xdsoft_scroller_box {
   position: relative; }
 
-.warning-red {
-  display: block;
-  text-align: center;
-  color: #ffffff;
-  background: #ff0000;
-  padding: 5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px; }
-  .warning-red a {
-    color: #ffffff;
-    text-decoration: underline; }

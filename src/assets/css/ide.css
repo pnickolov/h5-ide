@@ -9290,9 +9290,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     height: 22px;
     line-height: 22px;
     background: #202027;
-    width: 260px;
     overflow: hidden;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    padding-right: 35px; }
   .openstack .OEPanelRight .panel-body > div > div {
     position: absolute;
     top: 32px;

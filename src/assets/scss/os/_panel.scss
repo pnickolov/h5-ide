@@ -13,9 +13,10 @@
         height      : 22px;
         line-height : 22px;
         background  : $bg-p;
-        width: 260px;
+        // width: 260px;
         overflow: hidden;
         text-overflow: ellipsis;
+        padding-right: 35px;
     }
 
     .panel-body {

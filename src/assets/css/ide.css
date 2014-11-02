@@ -3541,7 +3541,7 @@ div.modal-text-highlight {
   position: absolute;
   right: 0;
   top: 0;
-  max-width: 328px;
+  display: block;
   background: #36343C; }
 
 #header .dropdown, #support {
@@ -7236,7 +7236,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

@@ -126,7 +126,7 @@ define [
 
 
         __openOrHidePanel: ( e ) ->
-            targetPanelName = $( e.currentTarget ).prop 'class'
+            targetPanelName = $( e.currentTarget ).attr('data-target')
             if @__currentPanel is targetPanelName and @shown()
                 @hide()
             else
@@ -168,4 +168,3 @@ define [
 
             @$('.option-group-head').each ( index ) ->
                 $(@).toggleClass 'expand', states[ index ]
-

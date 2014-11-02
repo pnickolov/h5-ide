@@ -283,7 +283,7 @@
             .selection[data-target="ip"] + .selectize-control {
                 .selectize-input {
                     div {
-                        width: 86%;
+                        max-width: 86%;
                         overflow: hidden;
                         height: 12px;
                         text-overflow: ellipsis;

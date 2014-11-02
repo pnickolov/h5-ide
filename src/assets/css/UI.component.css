@@ -1432,9 +1432,7 @@ a.btn-primary {
   background: #1B7FCC; }
 
 .btn-red {
-  background: #ec3c38;
-  /*border     : 1px solid #9e2622;*/
-  /*box-shadow : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);*/ }
+  background: #ec3c38; }
 
 .btn-red:hover {
   background: #ed4642; }
@@ -2405,24 +2403,26 @@ select.select3.disabled {
   border-width: 0 20px 20px 20px;
   border-color: transparent transparent #ffffff transparent; }
 
-#bubble-box.bubble-popup #bubble-content {
-  padding: 20px; }
-  #bubble-box.bubble-popup #bubble-content .info {
-    text-align: center; }
-  #bubble-box.bubble-popup #bubble-content .operate {
-    float: right;
-    margin: 20px 0 20px 0; }
-    #bubble-box.bubble-popup #bubble-content .operate li {
-      float: right;
-      text-align: right;
-      width: 50px;
-      margin-left: 20px;
-      padding: 3px 7px;
-      cursor: pointer; }
-    #bubble-box.bubble-popup #bubble-content .operate .confirm {
-      background-color: red;
-      color: #fff;
-      border-radius: 3px; }
+#bubble-box.bubble-popup {
+  color: #eeeef0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  border: 1px solid #000;
+  background: #32323d;
+  font-size: 14px; }
+  #bubble-box.bubble-popup.bubble-bottom .arrow {
+    border-color: transparent transparent #32323d transparent; }
+  #bubble-box.bubble-popup.bubble-top .arrow {
+    border-right-color: #32323d; }
+  #bubble-box.bubble-popup #bubble-content {
+    padding: 20px; }
+    #bubble-box.bubble-popup #bubble-content .operate {
+      margin: 20px 0 10px 0;
+      float: right; }
+      #bubble-box.bubble-popup #bubble-content .operate .cancel {
+        background: none;
+        color: #999; }
+        #bubble-box.bubble-popup #bubble-content .operate .cancel:hover {
+          color: #fff; }
 
 /* Selectbox V2 */
 .selectbox {

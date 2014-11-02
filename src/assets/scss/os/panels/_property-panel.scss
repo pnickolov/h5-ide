@@ -69,9 +69,25 @@
 
         .property-os-image-icon {
           vertical-align : middle;
-          margin         : -37px 1px -2px -3px;
+          margin         : -37px 1px -2px -3px; 
           width          : 30px;
           height         : 30px;
+        }
+
+        .os-server-image-info {
+            cursor: pointer;
+
+            p.property-os-image-text {
+                color: $dark-b;
+
+                &:hover {
+                    color: $base-b;
+                }
+
+                span:hover {
+                    color: #aaa;
+                }
+            }
         }
 
         .selectize-input .property-os-image-icon {

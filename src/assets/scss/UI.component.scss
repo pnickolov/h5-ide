@@ -256,8 +256,6 @@ a.btn-primary {
 
 .btn-red {
 	background : #ec3c38;
-	/*border     : 1px solid #9e2622;*/
-	/*box-shadow : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(0, 0, 0, 0.1);*/
 }
 
 .btn-red:hover {
@@ -1397,28 +1395,39 @@ select.select3.disabled {
 }
 
 #bubble-box.bubble-popup {
+	color      : $base-grey;
+	box-shadow : 0 0 5px rgba(0,0,0,.8);
+	border     : 1px solid #000;
+	background : lighten($bg-p,8%);
+
+	font-size : 14px;
+
+	&.bubble-bottom .arrow {
+		border-color: transparent transparent lighten($bg-p,8%) transparent;
+	}
+
+	&.bubble-top .arrow {
+		border-right-color: lighten($bg-p,8%);
+	}
+
 	#bubble-content {
+
 		padding: 20px;
+
 		.info {
-			// width: 500px;
-			// margin: 20px;
-			text-align: center;
+
 		}
 		.operate {
+			margin: 20px 0 10px 0;
 			float: right;
-			margin: 20px 0 20px 0;
-			li {
-				float: right;
-				text-align: right;
-				width: 50px;
-				margin-left: 20px;
-				padding: 3px 7px;
-				cursor: pointer;
-			}
-			.confirm {
-				background-color: red;
-				color: #fff;
-				border-radius: 3px;
+
+			.cancel {
+				background : none;
+				color      : #999;
+
+				&:hover {
+					color: #fff;
+				}
 			}
 		}
 	}

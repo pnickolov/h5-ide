@@ -7242,8 +7242,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9512,6 +9511,14 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin: -37px 1px -2px -3px;
     width: 30px;
     height: 30px; }
+  #OpsEditor .OEPanelRight.property .os-server-image-info, #OpsEditor .OEPanelRight.config .os-server-image-info {
+    cursor: pointer; }
+    #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text {
+      color: #3970af; }
+      #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text:hover, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text:hover {
+        color: #4a90e2; }
+      #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text span:hover, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text span:hover {
+        color: #aaa; }
   #OpsEditor .OEPanelRight.property .selectize-input .property-os-image-icon, #OpsEditor .OEPanelRight.config .selectize-input .property-os-image-icon {
     margin: -2px 2px -2px 2px; }
   #OpsEditor .OEPanelRight.property p.property-os-image-text, #OpsEditor .OEPanelRight.config p.property-os-image-text {

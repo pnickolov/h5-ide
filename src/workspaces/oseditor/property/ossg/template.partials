@@ -1,6 +1,11 @@
 <!-- {{stack}} -->
+<<<<<<< HEAD
 <h1 class="title">{{name}}</h1>
 {{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup tooltip" data-tooltip="Delete Security Group"></div>{{/unless}}{{/unless}}
+=======
+<h1>{{name}}</h1>
+{{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete tooltip" data-tooltip="Delete Security Group"></div>{{/unless}}{{/unless}}
+>>>>>>> [feature/openstack] update style
 <div class="option-group-head expand">
     Security Group
 </div>
@@ -36,7 +41,7 @@
                 <li class="head">Port/Code</li>
                 <li class="head">Source</li>
             </ul>
-            <div class="rule-list ingress">
+            <div class="rule-list ingress clearfix">
                 {{#each ingressRules}}
                 <div class="rule-item" data-id="{{id}}">
                     <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
@@ -60,7 +65,7 @@
                 <li class="head">Port/Code</li>
                 <li class="head">Target</li>
             </ul>
-            <div class="rule-list egress">
+            <div class="rule-list egress clearfix">
                 {{#each egressRules}}
                 <div class="rule-item" data-id="{{id}}">
                     <select data-target="protocol" class="selection option" value="{{protocol}}" {{#if ../modeIsApp}}disabled{{/if}}>
@@ -106,8 +111,10 @@
 
 <!-- {{sgRemovePopup}} -->
 <div class="info">Confirm to delete this security group?</div>
-<button class="confirm btn btn-red">Delete</li>
-<button class="cancel btn btn-silver">Cancel</li>
+<div class="operate">
+    <button class="confirm btn btn-red">Delete</li>
+    <button class="cancel btn btn-silver">Cancel</li>
+</div>
 
 <!-- {{sgNewInput}} -->
 <input class="input os-sg-new-input" placeholder="Add new rule..." />

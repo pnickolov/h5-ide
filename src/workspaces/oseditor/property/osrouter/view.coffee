@@ -56,10 +56,10 @@ define [
 
                 @$el.find('.os-property-router-nat').toggleClass('hide', !value)
 
-            if attr is 'totalBandwidth'
-                @model.set('totalBandwidth', Number(value))
-            else
-                @model.set(attr, value)
+            # if attr is 'totalBandwidth'
+            #     @model.set('totalBandwidth', Number(value))
+            # else
+            @model.set(attr, value)
 
             @setTitle(value) if attr is 'name'
 

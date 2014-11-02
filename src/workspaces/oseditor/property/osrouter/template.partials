@@ -26,7 +26,7 @@
         <label class="name">Enable NAT</label>
         <select data-target="nat" class="selection bool" value="true" disabled></select>
     </section>
-    <section class="group required">
+    <!-- <section class="group required">
         <label class="name">Total Bandwidth</label>
         <select data-target="totalBandwidth" class="selection option" value="{{totalBandwidth}}">
             <option value="1">1</option>
@@ -40,7 +40,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
         </select>
-    </section>
+    </section> -->
 </div>
 <div class="option-group-head expand">
     Connected Subnet

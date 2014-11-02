@@ -10,7 +10,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
       nat: false
       extNetworkId : ""
       publicip : ""
-      totalBandwidth : 1
+    #   totalBandwidth : 1
 
     isPublic : ()-> !!@get("extNetworkId")
 
@@ -33,7 +33,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
             external_gateway_info : extNetwork
             router_interface      : @connectionTargets("OsRouterAsso").map (subnet) -> { subnet_id : subnet.createRef("id") }
             public_ip             : @get("publicip")
-            total_bandwidth       : @get("totalBandwidth")
+            # total_bandwidth       : @get("totalBandwidth")
       }
 
   }, {
@@ -50,7 +50,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         publicip : data.resource.public_ip
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
-        totalBandwidth : data.resource.total_bandwidth
+        # totalBandwidth : data.resource.total_bandwidth
       })
 
       # Router <=> Subnet

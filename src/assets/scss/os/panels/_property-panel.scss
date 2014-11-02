@@ -1,4 +1,4 @@
-#OpsEditor {
+     #OpsEditor {
     .OEPanelRight.property, .OEPanelRight.config {
         color: #ccc;
 
@@ -69,7 +69,7 @@
 
         .property-os-image-icon {
           vertical-align : middle;
-          margin         : -37px 2px -2px 2px;
+          margin         : -37px 1px -2px -3px;
           width          : 30px;
           height         : 30px;
         }
@@ -158,31 +158,23 @@
             padding              : 8px 10px 2px 9px;
             display              : table-cell;
             vertical-align       : middle;
-            color                : #777;
+            color                : $dark-grey;
             line-height          : 14px;
             box-sizing           : border-box;
             -moz-box-sizing      : border-box;
-            // &.tooltip         : after {
-            //     content       : " ";
-            //     width         : 103px;
-            //     height        : 8px;
-            //     position      : absolute;
-            //     left          : 12px;
-            //     margin-top    : 8px;
-            //     border-bottom : 1px #555 dashed;
-            // }
         }
 
-        .main{
+        .main {
             padding: 10px 0 0 10px;
         }
-        .sub{
+        .sub {
             padding: 5px 10px;
             color: #888;
         }
 
         .ipgroup {
             display: inline-block;
+
             select.selection {
                 float: left;
                 width: 72px;
@@ -252,7 +244,7 @@
             &:hover {
                 color      : #ccc;
                 background : #161616;
-                color      : #9C6DC0;
+                color      : $base-b;
             }
 
             &.disabled,&[disabled] {

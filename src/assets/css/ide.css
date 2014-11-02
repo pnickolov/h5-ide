@@ -9282,7 +9282,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     padding: 5px 9px;
     color: #898dbc;
     height: 22px;
-    line-height: 22px; }
+    line-height: 22px;
+    background: #202027; }
   .openstack .OEPanelRight .panel-body > div > div {
     position: absolute;
     top: 32px;
@@ -9382,7 +9383,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   .OEPanelRight.resource .ami-type-select .dropdown li {
     padding: 4px 8px; }
 .OEPanelRight.resource .dropdown-menu {
-  top: 37px;
+  top: 30px;
   right: 0;
   left: initial;
   width: auto; }
@@ -9499,7 +9500,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       margin-left: -20px; }
   #OpsEditor .OEPanelRight.property .property-os-image-icon, #OpsEditor .OEPanelRight.config .property-os-image-icon {
     vertical-align: middle;
-    margin: -37px 2px -2px 2px;
+    margin: -37px 1px -2px -3px;
     width: 30px;
     height: 30px; }
   #OpsEditor .OEPanelRight.property .selectize-input .property-os-image-icon, #OpsEditor .OEPanelRight.config .selectize-input .property-os-image-icon {
@@ -9571,7 +9572,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     padding: 8px 10px 2px 9px;
     display: table-cell;
     vertical-align: middle;
-    color: #777;
+    color: #898dbc;
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
@@ -9634,7 +9635,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     #OpsEditor .OEPanelRight.property .btn-group button:hover, #OpsEditor .OEPanelRight.config .btn-group button:hover {
       color: #ccc;
       background: #161616;
-      color: #9C6DC0; }
+      color: #4a90e2; }
     #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }

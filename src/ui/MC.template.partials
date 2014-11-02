@@ -1374,15 +1374,15 @@ Additional Notes and Questions
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">While enjoying your free 2,000 points each month, join the paid plan to make sure points not to run out of quota.</p>
+    <p class="modal-text-minor payment-text">While enjoying your free {{freePointsPerMonth}} points each month, join the paid plan to make sure points not to run out of quota.</p>
     <table class="table payment-table">
         <tbody>
         <tr>
-            <td>Up to 10 managed instances</td>
+            <td>{{freePointsPerMonth}} points per month</td>
             <td class="align-right">Free</td>
         </tr>
         <tr>
-            <td>10 or more managed instances</td>
+            <td>Points consumed over {{freePointsPerMonth}}</td>
             <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
         </tr>
         </tbody>

@@ -74,7 +74,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         cardFirstName   : MC.base64Decode( selfPage.first_name || "")
         cardLastName    : MC.base64Decode( selfPage.last_name || "")
         voQuotaCurrent  : paymentInfo.current_quota || 0
-        voQuotaPerMonth : paymentInfo.max_quota || 1000
+        voQuotaPerMonth : paymentInfo.max_quota || 3600
         has_card        : !!paymentInfo.has_card
         paymentUrl      : selfPage.url
         creditCard      : selfPage.card

@@ -989,7 +989,7 @@ Additional Notes and Questions
     </div>
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
-            <div class="title">Estimated Cost</div>
+            <div class="title">Estimated AWS Cost</div>
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
         </div>
         <div class="estimate-visualops clearfix hide">
@@ -1387,7 +1387,7 @@ Additional Notes and Questions
         </tr>
         </tbody>
     </table>
-    <a href="#" class="link-blue">Pricing in detail</a>
+    <a href="https://www.visualops.io/pricing" class="link-blue">Pricing in detail</a>
     <div class="payment-modal-wrap">
         <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
         <p>

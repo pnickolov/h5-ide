@@ -1138,16 +1138,20 @@ input.selection, textarea.selection {
     left: 23px; }
 
 #selection-tip, .selection-tip {
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
   position: absolute;
   display: none;
-  background-color: #000;
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ccc;
   padding: 5px;
   z-index: 999;
   font-size: 12px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
+  #selection-tip .icon-info, .selection-tip .icon-info {
+    color: #4a90e2;
+    margin-right: 2px; }
 
 .selection-tip {
   z-index: 998; }
@@ -1157,29 +1161,35 @@ input.selection, textarea.selection {
 
 .selection.item-list .selectize-input > div {
   padding: 5px 10px;
-  width: 92%;
+  width: 93%;
   margin-bottom: 5px;
   background-color: #32324d;
-  border: 1px solid #222; }
+  border: 1px solid #222;
+  position: relative; }
 .selection.item-list .item .item-remove {
-  float: right; }
+  color: #898dbc;
+  position: absolute;
+  right: 2px;
+  top: 3px; }
+  .selection.item-list .item .item-remove:hover {
+    color: #a42b2b; }
 .selection.item-list .item .item-name {
-  float: left; }
+  display: inline-block;
+  max-width: 228px;
+  word-break: break-all; }
 .selection.item-list .selectize-dropdown .selectize-dropdown-button {
   position: absolute;
   top: 0;
-  padding: 20px;
   right: 0;
   left: 0;
-  text-align: center;
+  padding: 20px;
   height: 30px;
-  background-color: #111;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   line-height: 4px;
-  background-color: #434351;
   color: #fff;
+  text-align: center;
   cursor: pointer; }
   .selection.item-list .selectize-dropdown .selectize-dropdown-button:hover {
     background-color: #4e4e5f; }
@@ -2509,15 +2519,18 @@ select.select3.disabled {
 .selectbox .dropdown li:hover,
 .selectbox .dropdown li:focus,
 .selectbox .dropdown li.focused {
-  background: rgba(255, 255, 255, 0.1);
+  background: #223;
   color: #F0F0F0;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1); }
+  box-shadow: inset 0 0 5px #202027; }
 
 .selectbox .dropdown .item.selected {
   position: relative;
-  background: #005394;
+  background: #4a90e2;
   color: #F5F5F5;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: none; }
+  .selectbox .dropdown .item.selected:hover {
+    background: #3970af; }
 
 .selectbox .dropdown .item.selected:last-child {
   border-bottom: none; }
@@ -4109,6 +4122,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 *::-webkit-scrollbar-track {
   background: none; }
 *::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 1px solid #444;
+  background: rgba(100, 100, 100, 0.3);
   border-radius: 8px; }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.5); }

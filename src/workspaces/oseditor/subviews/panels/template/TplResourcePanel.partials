@@ -2,8 +2,8 @@
 <nav class="clearfix">
     <h1>Resource</h1>
     <ul class="action clearfix">
-        <li class="btn-refresh-panel icon-refresh"></li>
-        <li class="btn-open-shareres icon-resources"></li>
+        <li class="btn-refresh-panel icon-refresh tooltip" data-tooltip="Refresh Resources"></li>
+        <li class="btn-open-shareres icon-resources tooltip" data-tooltip="Manage Other Resources"></li>
     </ul>
     <ul class="dropdown-menu resources-dropdown-wrapper">
         <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>

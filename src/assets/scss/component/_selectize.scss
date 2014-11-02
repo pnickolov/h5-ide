@@ -526,16 +526,22 @@ input.selection, textarea.selection {
 }
 
 #selection-tip, .selection-tip {
-    position: absolute;
-    display: none;
-    background-color: #000;
-    color: #fff;
-    padding: 5px;
-    z-index: 999;
-    font-size: 12px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    @include font-mono;
+    position           : absolute;
+    display            : none;
+    background-color   : rgba(0,0,0,.8);
+    color              : #ccc;
+    padding            : 5px;
+    z-index            : 999;
+    font-size          : 12px;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+
+    .icon-info {
+      color        : $base-b;
+      margin-right : 2px;
+    }
 }
 
 .selection-tip {
@@ -549,37 +555,53 @@ input.selection, textarea.selection {
 // sg list
 .selection.item-list {
     .selectize-input > div {
-        padding: 5px 10px;
-        width: 92%;
-        margin-bottom: 5px;
-        background-color: #32324d;
-        border: 1px solid #222;
+        padding          : 5px 10px;
+        width            : 93%;
+        margin-bottom    : 5px;
+        background-color : #32324d;
+        border           : 1px solid #222;
+        position         : relative;
     }
     .item {
         .item-remove {
-            float: right;
+            color    : $dark-grey;
+            position : absolute;
+            right    : 2px;
+            top      : 3px;
+
+            &:hover {
+              color: $base-r;
+            }
         }
         .item-name {
-            float: left;
+            display    : inline-block;
+            max-width  : 228px;
+            word-break : break-all;
         }
     }
     .selectize-dropdown {
         .selectize-dropdown-button {
-            position: absolute;
-            top: 0;
-            padding: 20px;
-            right: 0;
-            left: 0;
-            text-align: center;
-            height: 30px;
-            background-color: #111;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            line-height: 4px;
-            background-color: #434351;
-            color: #fff;
+            position : absolute;
+            top      : 0;
+            right    : 0;
+            left     : 0;
+            padding  : 20px;
+            height   : 30px;
+            
+            // background-color: #111;
+
+            -webkit-box-sizing : border-box;
+            -moz-box-sizing    : border-box;
+            box-sizing         : border-box;
+
+            line-height : 4px;
+            color       : #fff;
+            text-align  : center;
+
+            // background-color: #434351;
+
             cursor: pointer;
+
             &:hover {
                 background-color: #4e4e5f;
             }

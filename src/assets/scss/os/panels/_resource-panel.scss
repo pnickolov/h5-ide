@@ -1,57 +1,51 @@
 .OEPanelRight.resource {
     nav {
-        padding: 14px 20px;
+        box-shadow  : 0 5px 10px rgba(0,0,0,.5);
 
-        h1 { font-size: 20px; color: #ccc; line-height: 20px; float: left; }
-
+        h1 { float:left;    }
         ul.action {
+            position : absolute;
+            right    : -2px;
+            top      : 5px;
+
             li {
-                float: left;
-                text-align: center;
-                cursor: pointer;
-                width: 30px;
-                height: 24px;
-                line-height: 24px;
+                color       : #999;
+                float       : left;
+                text-align  : center;
+                cursor      : pointer;
+                width       : 30px;
+                height      : 24px;
+                line-height : 24px;
 
-                &:first-child {
-                    border-left: 1px solid $dark-p-1;
-                    border-top-left-radius: 15%;
-                    border-bottom-left-radius: 15%;
+                &:hover {
+                    color: $light-p-1;
                 }
-                &:last-child {
-                    border-top-right-radius: 15%;
-                    border-bottom-right-radius: 15%;
-                }
-            }
 
-            &.action {
-                float: right;
-                color: white;
-                li {
-                    background: $base-b;
-                    &:hover { background: $dark-b; }
+                &:before {
+                    font-size   : 12px !important;
                 }
             }
 
         }
     }
 
-    // article ul {
-    //     display         : flex;
-    //     flex-direction  : row;
-    //     flex-wrap       : wrap;
-    //     align-items     : flex-start;
-    //     justify-content : space-around;
-    // }
+    .ami-type-select {
+        width: 118px;
+
+        .dropdown li {
+            padding: 4px 8px;
+        }
+    }
 
     .dropdown-menu { top: 37px; right: 0; left: initial; width: auto;}
 
     .resource-item {
-        height          : 30px;
-        width           : 70px;
-        margin          : 0 1px 5px 0;
-        padding         : 60px 7px 2px 7px;
-        border          : 1px solid transparent;
+        height   : 30px;
+        width    : 70px;
+        margin   : 0 1px 5px 0;
+        padding  : 60px 7px 2px 7px;
+        border   : 1px solid transparent;
+        overflow : visible;
 
         &:nth-child(3n) {
             margin-right: 0;

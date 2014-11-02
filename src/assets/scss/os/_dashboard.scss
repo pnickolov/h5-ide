@@ -307,12 +307,12 @@
 
     }
 
-    .servers    .resource-count { background-position : left -55px * 0 - 2; }
-    .volumes    .resource-count { background-position : left -55px * 2 - 2; }
-    .snaps      .resource-count { background-position : left -55px * 9 - 2; }
-    .fips       .resource-count { background-position : left -55px * 1 - 2; }
-    .rts        .resource-count { background-position : left -55px * 3 - 2; }
-    .elbs       .resource-count { background-position : left -55px * 6 - 2; }
+    .servers    .resource-count { background-position : center -55px * 0 - 2; }
+    .volumes    .resource-count { background-position : center -55px * 2 - 2; }
+    .snaps      .resource-count { background-position : center -55px * 9 - 2; }
+    .fips       .resource-count { background-position : center -55px * 1 - 2; }
+    .rts        .resource-count { background-position : center -55px * 3 - 2; }
+    .elbs       .resource-count { background-position : center -55px * 6 - 2; }
 
 
     .resource-list-nav {

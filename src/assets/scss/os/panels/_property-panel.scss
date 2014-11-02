@@ -5,14 +5,7 @@
         // width: 500px;
 
         .panel-body {
-            @include font-mono;
-
-            h1 {
-              font-size  : 20px;
-              padding    : 5px;
-              text-align : center;
-            }
-
+            
 
             .selection.item-list .hm-item.item {
                 position: relative;
@@ -216,11 +209,12 @@
 
         .btn-group button {
 
-            font-size: 12px;
-            width: 50%;
-            cursor:       pointer;
-            color:        #999;
-            border-right: 1px solid #131313;
+            font-size    : 12px;
+            width        : 50%;
+            cursor       : pointer;
+            color        : #999;
+            border-right : 1px solid #131313;
+            border-bottom: 1px solid #000;
 
             float       : left;
             display     : inline-block;
@@ -244,9 +238,14 @@
                     left          : 0;
                     bottom        : 0px;
                     content       : '';
-                    border-bottom : 2px solid #0D49CA;
+                    border-bottom : 2px solid $base-b;
                     width         : 100%;
                     z-index       : 1;
+                }
+
+                &:hover {
+                    background : $dark-blue;
+                    color      : #fff !important;
                 }
             }
 
@@ -254,11 +253,6 @@
                 color      : #ccc;
                 background : #161616;
                 color      : #9C6DC0;
-            }
-
-            &.active:hover {
-                background : $dark-blue;
-                color      : #fff !important;
             }
 
             &.disabled,&[disabled] {
@@ -271,20 +265,27 @@
             margin-top: 40px;
         }
         .os-sg-remove {
-            float: right;
-            margin: 5px;
-            cursor: pointer;
+            color    : $base-r;
+            cursor   : pointer;
+            position : absolute;
+            right    : 9px;
+            top      : 7px;
+
+            &:hover {
+                color: $light-r;
+            }
         }
         .os-sg-rule-list-container {
             font-size: 12px;
             .head-list {
+                border-bottom: 1px solid #000;
+
                 li {
-                    float: left;
-                    text-align: center;
-                    width: 33%;
-                    box-sizing: border-box;
-                    -moz-box-sizing: border-box;
-                    padding: 15px;
+                    float           : left;
+                    width           : 33%;
+                    box-sizing      : border-box;
+                    -moz-box-sizing : border-box;
+                    padding         : 10px;
                 }
             }
             .rule-list {
@@ -293,10 +294,15 @@
                     width: 31%;
                 }
                 .rule-item-remove {
-                    margin-top: 5px;
-                    float: left;
-                    margin-left: 8px;
-                    cursor: pointer;
+                    margin-top  : 5px;
+                    float       : left;
+                    margin-left : 8px;
+                    cursor      : pointer;
+                    color       : #666;
+
+                    &:hover {
+                        color: $base-r;
+                    }
                 }
                 input.selection {
                     height: 32px;

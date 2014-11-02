@@ -6289,7 +6289,7 @@ g.shadow {
   stroke-width: 5; }
 
 .OS--Neutron--Subnet .group {
-  fill: rgba(195, 198, 231, 0.2);
+  fill: rgba(195, 198, 231, 0.1);
   stroke: #C3C6E7;
   stroke-linejoin: round;
   stroke-dasharray: 16, 6;
@@ -7236,8 +7236,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9275,10 +9274,17 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .openstack .OEPanelRight {
   width: 288px;
-  font-size: 12px; }
+  font-size: 12px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+  .openstack .OEPanelRight h1 {
+    font-size: 14px;
+    padding: 5px 9px;
+    color: #898dbc;
+    height: 22px;
+    line-height: 22px; }
   .openstack .OEPanelRight .panel-body > div > div {
     position: absolute;
-    top: 50px;
+    top: 32px;
     bottom: 0;
     height: auto;
     width: 100%;
@@ -9311,11 +9317,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     .openstack .OEPanelRight .panel-float.hidden {
       right: -500px; }
     .openstack .OEPanelRight .panel-float h1 {
-      font-size: 20px;
-      padding: 5px;
-      text-align: center; }
-  .openstack .OEPanelRight .panel-body section.system-image .selectbox {
-    width: 108px; }
+      border-bottom: 1px solid #000; }
   .openstack .OEPanelRight .panel-body section header {
     background: #2c2f4d;
     color: white;
@@ -9355,33 +9357,29 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     width: 100%; }
 
 .OEPanelRight.resource nav {
-  padding: 14px 20px; }
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5); }
   .OEPanelRight.resource nav h1 {
-    font-size: 20px;
-    color: #ccc;
-    line-height: 20px;
     float: left; }
-  .OEPanelRight.resource nav ul.action li {
-    float: left;
-    text-align: center;
-    cursor: pointer;
-    width: 30px;
-    height: 24px;
-    line-height: 24px; }
-    .OEPanelRight.resource nav ul.action li:first-child {
-      border-left: 1px solid #2c2f4d;
-      border-top-left-radius: 15%;
-      border-bottom-left-radius: 15%; }
-    .OEPanelRight.resource nav ul.action li:last-child {
-      border-top-right-radius: 15%;
-      border-bottom-right-radius: 15%; }
-  .OEPanelRight.resource nav ul.action.action {
-    float: right;
-    color: white; }
-    .OEPanelRight.resource nav ul.action.action li {
-      background: #4a90e2; }
-      .OEPanelRight.resource nav ul.action.action li:hover {
-        background: #3970af; }
+  .OEPanelRight.resource nav ul.action {
+    position: absolute;
+    right: -2px;
+    top: 5px; }
+    .OEPanelRight.resource nav ul.action li {
+      color: #999;
+      float: left;
+      text-align: center;
+      cursor: pointer;
+      width: 30px;
+      height: 24px;
+      line-height: 24px; }
+      .OEPanelRight.resource nav ul.action li:hover {
+        color: #75789d; }
+      .OEPanelRight.resource nav ul.action li:before {
+        font-size: 12px !important; }
+.OEPanelRight.resource .ami-type-select {
+  width: 118px; }
+  .OEPanelRight.resource .ami-type-select .dropdown li {
+    padding: 4px 8px; }
 .OEPanelRight.resource .dropdown-menu {
   top: 37px;
   right: 0;
@@ -9392,7 +9390,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 70px;
   margin: 0 1px 5px 0;
   padding: 60px 7px 2px 7px;
-  border: 1px solid transparent; }
+  border: 1px solid transparent;
+  overflow: visible; }
   .OEPanelRight.resource .resource-item:nth-child(3n) {
     margin-right: 0; }
   .OEPanelRight.resource .resource-item:hover {
@@ -9457,38 +9456,32 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 #OpsEditor .OEPanelRight.property, #OpsEditor .OEPanelRight.config {
   color: #ccc;
   /* property component style */ }
-  #OpsEditor .OEPanelRight.property .panel-body, #OpsEditor .OEPanelRight.config .panel-body {
-    font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
-    #OpsEditor .OEPanelRight.property .panel-body h1, #OpsEditor .OEPanelRight.config .panel-body h1 {
-      font-size: 20px;
-      padding: 5px;
-      text-align: center; }
-    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
-      position: relative; }
-      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
-        float: none; }
-      #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
-        position: absolute;
-        top: 16px;
-        right: 20px; }
-    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list {
-      padding: 6px 8px 3px; }
-      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li {
-        padding: 5px 10px;
-        width: 92%;
-        margin-bottom: 5px;
-        background: #32324d;
-        border: 1px solid #222;
-        border-radius: 3px;
-        color: #fff; }
-        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li > div {
-          padding: 2px; }
-        #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li:hover {
-          cursor: pointer; }
-      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.active, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.active {
-        background-color: #2c2f4d;
-        border: 1px #363b76 solid;
-        color: #fff; }
+  #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
+    position: relative; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
+      float: none; }
+    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
+      position: absolute;
+      top: 16px;
+      right: 20px; }
+  #OpsEditor .OEPanelRight.property .panel-body .item-readable-list, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list {
+    padding: 6px 8px 3px; }
+    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li {
+      padding: 5px 10px;
+      width: 92%;
+      margin-bottom: 5px;
+      background: #32324d;
+      border: 1px solid #222;
+      border-radius: 3px;
+      color: #fff; }
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li > div, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li > div {
+        padding: 2px; }
+      #OpsEditor .OEPanelRight.property .panel-body .item-readable-list > li:hover, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list > li:hover {
+        cursor: pointer; }
+    #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.active, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.active {
+      background-color: #2c2f4d;
+      border: 1px #363b76 solid;
+      color: #fff; }
   #OpsEditor .OEPanelRight.property .dl-horizontal:first-child, #OpsEditor .OEPanelRight.config .dl-horizontal:first-child {
     margin-top: 0;
     padding-top: 8px; }
@@ -9612,6 +9605,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     cursor: pointer;
     color: #999;
     border-right: 1px solid #131313;
+    border-bottom: 1px solid #000;
     float: left;
     display: inline-block;
     padding: 8px;
@@ -9630,16 +9624,16 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         left: 0;
         bottom: 0px;
         content: '';
-        border-bottom: 2px solid #0D49CA;
+        border-bottom: 2px solid #4a90e2;
         width: 100%;
         z-index: 1; }
+      #OpsEditor .OEPanelRight.property .btn-group button.active:hover, #OpsEditor .OEPanelRight.config .btn-group button.active:hover {
+        background: #2c2f46;
+        color: #fff !important; }
     #OpsEditor .OEPanelRight.property .btn-group button:hover, #OpsEditor .OEPanelRight.config .btn-group button:hover {
       color: #ccc;
       background: #161616;
       color: #9C6DC0; }
-    #OpsEditor .OEPanelRight.property .btn-group button.active:hover, #OpsEditor .OEPanelRight.config .btn-group button.active:hover {
-      background: #2c2f46;
-      color: #fff !important; }
     #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }
@@ -9647,18 +9641,23 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     text-align: center;
     margin-top: 40px; }
   #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
-    float: right;
-    margin: 5px;
-    cursor: pointer; }
+    color: #a42b2b;
+    cursor: pointer;
+    position: absolute;
+    right: 9px;
+    top: 7px; }
+    #OpsEditor .OEPanelRight.property .os-sg-remove:hover, #OpsEditor .OEPanelRight.config .os-sg-remove:hover {
+      color: #be4444; }
   #OpsEditor .OEPanelRight.property .os-sg-rule-list-container, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container {
     font-size: 12px; }
-    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list li {
-      float: left;
-      text-align: center;
-      width: 33%;
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      padding: 15px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list {
+      border-bottom: 1px solid #000; }
+      #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list li, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list li {
+        float: left;
+        width: 33%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        padding: 10px; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 31%; }
@@ -9666,7 +9665,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       margin-top: 5px;
       float: left;
       margin-left: 8px;
-      cursor: pointer; }
+      cursor: pointer;
+      color: #666; }
+      #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .rule-item-remove:hover, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .rule-item-remove:hover {
+        color: #a42b2b; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list input.selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list input.selection {
       height: 32px; }
   #OpsEditor .OEPanelRight.property .os-sg-member-list li, #OpsEditor .OEPanelRight.config .os-sg-member-list li {
@@ -9954,17 +9956,17 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         background: url('/assets/images/ide/global-region-icon2@2x.png') left top no-repeat;
         background-size: 55px; } }
   .dash-ops-resource-list .servers .resource-count {
-    background-position: left -2px; }
+    background-position: center -2px; }
   .dash-ops-resource-list .volumes .resource-count {
-    background-position: left -112px; }
+    background-position: center -112px; }
   .dash-ops-resource-list .snaps .resource-count {
-    background-position: left -497px; }
+    background-position: center -497px; }
   .dash-ops-resource-list .fips .resource-count {
-    background-position: left -57px; }
+    background-position: center -57px; }
   .dash-ops-resource-list .rts .resource-count {
-    background-position: left -167px; }
+    background-position: center -167px; }
   .dash-ops-resource-list .elbs .resource-count {
-    background-position: left -332px; }
+    background-position: center -332px; }
   .dash-ops-resource-list .resource-list-nav {
     margin-bottom: -1px;
     background: #FFFFFF;

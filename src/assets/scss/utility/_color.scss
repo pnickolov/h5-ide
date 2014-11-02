@@ -54,3 +54,4 @@ $dark-r: saturate(darken($base-r, 20%), 20%);
 
 /* Grey */
 $base-grey: desaturate(lighten($base-p, 60%), 30%);
+$dark-grey: desaturate(lighten($base-p, 30%), 10%);

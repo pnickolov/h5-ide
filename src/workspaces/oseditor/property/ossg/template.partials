@@ -1,6 +1,6 @@
 <!-- {{stack}} -->
 <h1>{{name}}</h1>
-{{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup"></div>{{/unless}}{{/unless}}
+{{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup tooltip" data-tooltip="Delete Security Group"></div>{{/unless}}{{/unless}}
 <div class="option-group-head expand">
     Security Group
 </div>
@@ -31,7 +31,7 @@
 
     <div class="os-sg-rule-list-container">
         <div class="rule-container ingress">
-            <ul class="head-list">
+            <ul class="head-list clearfix">
                 <li class="head">Protocol</li>
                 <li class="head">Port/Code</li>
                 <li class="head">Source</li>
@@ -45,17 +45,17 @@
                         <option value="icmp">ICMP</option>
                         <option value="all">All</option>
                     </select>
-                    <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port port range or a common protocol" {{#if ../modeIsApp}}disabled{{/if}}/>
+                    <input class="selection" data-target="port" value="{{port}}" {{#ifCond protocol "all"}}disabled{{/ifCond}} data-tip="Input single port or port range." {{#if ../modeIsApp}}disabled{{/if}}/>
                     <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
                         <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                     </select>
-                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete tooltip" data-tooltip="Delete Rule"></div>{{/unless}}
                 </div>
                 {{/each}}
             </div>
         </div>
         <div class="rule-container egress hide">
-            <ul class="head-list">
+            <ul class="head-list clearfix">
                 <li class="head">Protocol</li>
                 <li class="head">Port/Code</li>
                 <li class="head">Target</li>
@@ -73,7 +73,7 @@
                     <select data-target="ip" class="selection option" value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}" data-valid-handle="ipValid" {{#if ../modeIsApp}}disabled{{/if}}>
                         <option value="{{#if sgId}}{{sgId}}{{else}}{{ip}}{{/if}}">{{ip}}</option>
                     </select>
-                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete"></div>{{/unless}}
+                    {{#unless ../modeIsApp}}<div class="rule-item-remove icon-delete tooltip" data-tooltip="Delete Rule"></div>{{/unless}}
                 </div>
                 {{/each}}
             </div>
@@ -101,15 +101,13 @@
     </select>
     <input class="selection" data-target="port" value="" data-tip="Input single port port range or a common protocol" />
     <select data-target="ip" class="selection option" value="" data-valid-handle="ipValid" ></select>
-    <div class="rule-item-remove icon-delete hide"></div>
+    <div class="rule-item-remove icon-delete tooltip" data-tooltip="Delete Rule"></div>
 </div>
 
 <!-- {{sgRemovePopup}} -->
-<div class="info">Confirm to remove the Security Group ?</div>
-<ul class="operate">
-    <li class="confirm">Remove</li>
-    <li class="cancel">Cancel</li>
-</ul>
+<div class="info">Confirm to delete this security group?</div>
+<button class="confirm btn btn-red">Delete</li>
+<button class="cancel btn btn-silver">Cancel</li>
 
 <!-- {{sgNewInput}} -->
 <input class="input os-sg-new-input" placeholder="Add new rule..." />

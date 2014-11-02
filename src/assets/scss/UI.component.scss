@@ -1576,16 +1576,21 @@ select.select3.disabled {
 .selectbox .dropdown li:hover,
 .selectbox .dropdown li:focus,
 .selectbox .dropdown li.focused {
-	background: rgba(255, 255, 255, 0.1);
+	background: #223;
 	color: #F0F0F0;
-	box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+	box-shadow: inset 0 0 5px $bg-p;
 }
 
 .selectbox .dropdown .item.selected{
 	position      : relative;
-	background    : #005394;
+	background    : $base-b;
 	color         : #F5F5F5;
 	border-bottom : 1px solid rgba(0,0,0,.5);
+	box-shadow    : none;
+
+	&:hover {
+		background: $dark-b;
+	}
 }
 
 .selectbox .dropdown .item.selected:last-child {
@@ -3308,15 +3313,18 @@ position:relative;
 
 * {
 	&::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
+		width    : 8px;
+		height   : 8px;
 	}
 	&::-webkit-scrollbar-track {
 		background: none;
 	}
 	&::-webkit-scrollbar-thumb {
-		background: #000;
-		border: 1px solid #444;
+		background: rgba(100,100,100,.3);
 		border-radius: 8px;
+
+		&:hover {
+			background: rgba(100,100,100,.5);
+		}
 	}
 }

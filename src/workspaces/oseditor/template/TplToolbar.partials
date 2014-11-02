@@ -49,18 +49,18 @@
 
 <!-- {{PanelHeaderStack}} -->
 <header class="sidebar-title resource">
-    <a class="resource">R</a>
-    <a class="config">A</a>
-    <a class="property">P</a>
-    <a class="state">S</a>
+    <a class="resource tooltip" data-tooltip="Resource (R)">R</a>
+    <a class="config tooltip" data-tooltip="Stack Settings (A)">A</a>
+    <a class="property tooltip" data-tooltip="Property (P)">P</a>
+    <a class="state tooltip" data-tooltip="Instance State (S)">S</a>
 </header>
 
 <!-- {{PanelHeaderApp}} -->
 <header class="sidebar-title resource" data-mode="app">
-    <a class="resource">R</a>
-    <a class="config">A</a>
-    <a class="property">P</a>
-    <a class="state">S</a>
+    <a class="resource tooltip" data-tooltip="Resource (R)">R</a>
+    <a class="config tooltip" data-tooltip="App Settings (A)">A</a>
+    <a class="property tooltip" data-tooltip="Property (P)">P</a>
+    <a class="state tooltip" data-tooltip="Instance State (S)">S</a>
 </header>
 
 <!-- {{confirm.enableState}} -->

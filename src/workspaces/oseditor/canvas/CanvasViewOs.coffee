@@ -39,18 +39,14 @@ define [
 
     errorMessageForDrop : ( type )->
       switch type
-        when constant.RESTYPE.VOL       then return lang.CANVAS.WARN_NOTMATCH_VOLUME
-        when constant.RESTYPE.SUBNET    then return lang.CANVAS.WARN_NOTMATCH_SUBNET
-        when constant.RESTYPE.INSTANCE  then return lang.CANVAS.WARN_NOTMATCH_INSTANCE_SUBNET
-        when constant.RESTYPE.ENI       then return lang.CANVAS.WARN_NOTMATCH_ENI
-        when constant.RESTYPE.RT        then return lang.CANVAS.WARN_NOTMATCH_RTB
-        when constant.RESTYPE.ELB       then return lang.CANVAS.WARN_NOTMATCH_ELB
-        when constant.RESTYPE.CGW       then return lang.CANVAS.WARN_NOTMATCH_CGW
-        when constant.RESTYPE.ASG       then return lang.CANVAS.WARN_NOTMATCH_ASG
-        when constant.RESTYPE.IGW       then return lang.CANVAS.WARN_NOTMATCH_IGW
-        when constant.RESTYPE.VGW       then return lang.CANVAS.WARN_NOTMATCH_VGW
-        when constant.RESTYPE.DBSBG      then return lang.CANVAS.WARN_NOTMATCH_SGP_VPC
-        when constant.RESTYPE.DBINSTANCE then return lang.CANVAS.WARN_NOTMATCH_DBINSTANCE_SGP
+        when constant.RESTYPE.OSSUBNET   then return lang.CANVAS.WARN_NOTMATCH_OSSUBNET
+        when constant.RESTYPE.OSLISTENER then return lang.CANVAS.WARN_NOTMATCH_LISTENER
+        when constant.RESTYPE.OSPOOL     then return lang.CANVAS.WARN_NOTMATCH_POOL
+        when constant.RESTYPE.OSELB      then return lang.CANVAS.WARN_NOTMATCH_LB
+        when constant.RESTYPE.OSRT       then return lang.CANVAS.WARN_NOTMATCH_ROUTER
+        when constant.RESTYPE.OSRT       then return lang.CANVAS.WARN_NOTMATCH_ROUTER
+        when constant.RESTYPE.OSVOL      then return lang.CANVAS.WARN_NOTMATCH_OSVOL
+        when constant.RESTYPE.OSSERVER   then return lang.CANVAS.WARN_NOTMATCH_SERVER
 
     selectVolume : ( volumeId )->
       @deselectItem( true )

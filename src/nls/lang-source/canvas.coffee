@@ -68,6 +68,34 @@ module.exports =
       en: "No enough space."
       zh: "没有多余的空间。"
 
+    WARN_NOTMATCH_SERVER:
+      en: "Server must be dropped within subnet."
+      zh: "Server must be dropped within subnet."
+
+    WARN_NOTMATCH_OSVOL:
+      en: "Volume must be dropped on to server."
+      zh: "Volume must be dropped on to server."
+
+    WARN_NOTMATCH_ROUTER:
+      en: "Router must be dropped outside network."
+      zh: "Router must be dropped outside network."
+
+    WARN_NOTMATCH_LB:
+      en: "Load balancer must be dropped within subnet."
+      zh: "Load balancer must be dropped within subnet."
+
+    WARN_NOTMATCH_POOL:
+      en: "Pool must be dropped within subnet."
+      zh: "Pool must be dropped within subnet."
+
+    WARN_NOTMATCH_LISTENER:
+      en: "Listener must be dropped within subnet."
+      zh: "Listener must be dropped within subnet."
+
+    WARN_NOTMATCH_OSSUBNET:
+      en: "Subnet must be dropped within network."
+      zh: "Subnet must be dropped within network."
+
     CVS_WARN_EXCEED_ENI_LIMIT:
       en: "%s's type %s supports a maximum of %s network interfaces (including the primary)."
       zh: "%s 的 %s 最多支持%s个网络接口 (包括主要的)。"

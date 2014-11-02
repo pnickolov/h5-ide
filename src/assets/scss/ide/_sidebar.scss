@@ -402,6 +402,11 @@ $dndDuration : .2s;
     }
   }
 
+  &.ossubnet {
+    &:before { border-color: #A3A6CA; }
+    &.dragOver { color : #595974; }
+  }
+
   &.az {
     text-indent : 8px;
     &:before {

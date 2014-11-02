@@ -9669,6 +9669,11 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         padding: 10px; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .selection[data-target="ip"] + .selectize-control .selectize-input div, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .selection[data-target="ip"] + .selectize-control .selectize-input div {
+      width: 86%;
+      overflow: hidden;
+      height: 12px;
+      text-overflow: ellipsis; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 31%; }

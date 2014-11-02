@@ -5,7 +5,7 @@
         // width: 500px;
 
         .panel-body {
-            
+
 
             .selection.item-list .hm-item.item {
                 position: relative;
@@ -278,6 +278,16 @@
                     box-sizing      : border-box;
                     -moz-box-sizing : border-box;
                     padding         : 10px;
+                }
+            }
+            .selection[data-target="ip"] + .selectize-control {
+                .selectize-input {
+                    div {
+                        width: 86%;
+                        overflow: hidden;
+                        height: 12px;
+                        text-overflow: ellipsis;
+                    }
                 }
             }
             .rule-list {

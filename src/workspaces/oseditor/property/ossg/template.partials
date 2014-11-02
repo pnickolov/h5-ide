@@ -1,5 +1,5 @@
 <!-- {{stack}} -->
-<h1>{{name}}</h1>
+<h1 class="title">{{name}}</h1>
 {{#unless modeIsApp}}{{#unless defaultSG}}<div class="os-sg-remove icon-delete bubble-popup tooltip" data-tooltip="Delete Security Group"></div>{{/unless}}{{/unless}}
 <div class="option-group-head expand">
     Security Group

@@ -20,7 +20,7 @@
     </section>
     <section class="group required">
         <label class="name">Description</label>
-        <input data-target="description" class="selection string" value="{{description}}"/>
+        <input data-target="description" class="selection string" {{#if modeIsAppEdit}}disabled{{/if}} value="{{description}}"/>
     </section>
     {{/if}}
 </div>

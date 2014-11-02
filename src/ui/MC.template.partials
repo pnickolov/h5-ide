@@ -1387,7 +1387,7 @@ Additional Notes and Questions
         </tr>
         </tbody>
     </table>
-    <a href="https://www.visualops.io/pricing" class="link-blue">Pricing in detail</a>
+    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">Pricing in detail</a>
     <div class="payment-modal-wrap">
         <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
         <p>

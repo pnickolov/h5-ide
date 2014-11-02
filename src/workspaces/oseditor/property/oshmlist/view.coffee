@@ -91,8 +91,10 @@ define [
             value = $target.getValue()
 
         addItem: (event, value) ->
-            @targetModel.addNewHm(value)
+            monitor = @targetModel.addNewHm(value)
             @refreshList()
+            $newItem = @$el.find('.item-list .item[data-value="' + monitor.get('id') + '"]')
+            $newItem.click()
 
         editItem: (event) ->
             $target = $(event.currentTarget)

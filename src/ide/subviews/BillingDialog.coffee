@@ -114,11 +114,11 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find(".used-points .usage-number").text(current_quota)
 
         if App.user.shouldPay()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
+          @modal.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
         else if App.user.isUnpaid()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
+          @modal.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
         else
-          @modal.find(".warning-red").hide()
+          @modal.find(".warning-red").not(".no-change").hide()
 
 
       viewPaymentReceipt: (event)->

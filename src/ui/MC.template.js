@@ -1988,9 +1988,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">While enjoying your free "
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " points each month, join the paid plan to make sure points not to run out of quota.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
+  buffer += "<div class=\"warning-red no-change\">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">To make sure you enjoy the full feature of VisualOps, please join the paid plan as soon as possible.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
     + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " points per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Points consumed over "
     + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

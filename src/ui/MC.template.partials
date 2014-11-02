@@ -1371,10 +1371,11 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
+<div class="warning-red no-change">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">While enjoying your free {{freePointsPerMonth}} points each month, join the paid plan to make sure points not to run out of quota.</p>
+    <p class="modal-text-minor payment-text">To make sure you enjoy the full feature of VisualOps, please join the paid plan as soon as possible.</p>
     <table class="table payment-table">
         <tbody>
         <tr>

@@ -75,7 +75,7 @@ define [
 
     setTitle: ( title = @propertyView.getTitle() ) ->
         unless title then return
-        $title = @$ 'h1'
+        $title = @$ 'h1.title'
         if $title.size()
             $title.eq(0).text title
         else

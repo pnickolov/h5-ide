@@ -6,13 +6,16 @@
 
     @include font-mono;
 
-    h1 {
-          font-size   : 14px;
-          padding     : 5px 9px;
-          color       : $dark-grey;
-          height      : 22px;
-          line-height : 22px;
-          background  : $bg-p;
+    h1.title {
+        font-size   : 14px;
+        padding     : 5px 9px;
+        color       : $dark-grey;
+        height      : 22px;
+        line-height : 22px;
+        background  : $bg-p;
+        width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .panel-body {

@@ -1,4 +1,4 @@
 <!-- {{title}} -->
-<h1>{{title}}</h1>
+<h1 class="title">{{title}}</h1>
 <!-- {{empty}} -->
 <div class="os-property-res-inexist">The resource may be not exist.</div>

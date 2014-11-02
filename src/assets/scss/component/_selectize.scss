@@ -395,7 +395,24 @@
 // }
 
 // added for extend conponent
-
+@mixin placeholder-style() {
+    &::-webkit-input-placeholder { /* WebKit browsers */
+      color:    #555;
+      font-style: italic;
+    }
+    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color:    #555;
+      font-style: italic;
+    }
+    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color:    #555;
+      font-style: italic;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+      color:    #555;
+      font-style: italic;
+    }
+}
 .selection {
     width: 100%;
     background-color: $selection-bg;
@@ -403,6 +420,10 @@
     &::selection {
       background: $base-b !important;
     }
+    input {
+        @include placeholder-style();
+    }
+    @include placeholder-style();
 }
 .ip_container {
     .ip_octet {
@@ -587,7 +608,7 @@ input.selection, textarea.selection {
             left     : 0;
             padding  : 20px;
             height   : 30px;
-            
+
             // background-color: #111;
 
             -webkit-box-sizing : border-box;

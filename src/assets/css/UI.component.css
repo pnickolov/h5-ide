@@ -1033,6 +1033,38 @@ li.error-message {
   border: 0; }
   .selection::selection {
     background: #4a90e2 !important; }
+  .selection input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #555;
+    font-style: italic; }
+  .selection input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #555;
+    font-style: italic; }
+  .selection input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #555;
+    font-style: italic; }
+  .selection input:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #555;
+    font-style: italic; }
+  .selection::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #555;
+    font-style: italic; }
+  .selection:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #555;
+    font-style: italic; }
+  .selection::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #555;
+    font-style: italic; }
+  .selection:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #555;
+    font-style: italic; }
 
 .ip_container .ip_octet {
   width: 12%;

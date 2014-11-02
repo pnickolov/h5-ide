@@ -601,6 +601,11 @@ input.selection, textarea.selection {
             display    : inline-block;
             max-width  : 228px;
             word-break : break-all;
+            font-size  : 14px;
+        }
+        .item-info {
+          color     : $dark-grey;
+          font-size : 12px;
         }
     }
     .selectize-dropdown {

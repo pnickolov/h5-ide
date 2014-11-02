@@ -10,7 +10,6 @@
             .selection.item-list .hm-item.item {
                 position: relative;
 
-                .item-name { float: none; }
                 .item-remove {
                     position: absolute;
                     top: 16px;
@@ -174,7 +173,7 @@
             padding              : 8px 10px 2px 9px;
             display              : table-cell;
             vertical-align       : middle;
-            color                : $dark-grey;
+            color                : darken(desaturate($dark-grey,10%),10%);
             line-height          : 14px;
             box-sizing           : border-box;
             -moz-box-sizing      : border-box;

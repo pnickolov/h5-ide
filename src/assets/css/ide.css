@@ -9468,8 +9468,6 @@ marker.server, marker.elb {
   /* property component style */ }
   #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
     position: relative; }
-    #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-name, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-name {
-      float: none; }
     #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
       position: absolute;
       top: 16px;
@@ -9588,7 +9586,7 @@ marker.server, marker.elb {
     padding: 8px 10px 2px 9px;
     display: table-cell;
     vertical-align: middle;
-    color: #898dbc;
+    color: #75789d;
     line-height: 14px;
     box-sizing: border-box;
     -moz-box-sizing: border-box; }

@@ -87,7 +87,7 @@
                     <span>Instance Hour</span>
                 </div>
             </div>
-            <p class="renew-points">{{paymentUpdate.max_quota}} free points renew in {{paymentUpdate.renewRemainDays}} days</p>
+            <p class="renew-points">{{paymentUpdate.max_quota}} free instance hours will be renewed in {{paymentUpdate.renewRemainDays}} days</p>
         </section>
     </div>
 </div>

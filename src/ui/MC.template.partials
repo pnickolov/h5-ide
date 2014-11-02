@@ -1371,7 +1371,7 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
-<div class="warning-red no-change">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>
+{{#if shouldPay}}<div class="warning-red no-change">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>{{/if}}
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>

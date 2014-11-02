@@ -55,7 +55,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.paymentUpdate = _.clone paymentUpdate
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
           unless App.user.get("creditCard")
-            that.modal.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl"), freePointsPerMonth: App.user.get("voQuotaPerMonth")})
+            that.modal.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl"), freePointsPerMonth: App.user.get("voQuotaPerMonth"), shouldPay: App.user.shouldPay()})
             that.modal.listenTo App.user, "paymentUpdate", ->
               that.initialize(that.modal)
               that.modal.stopListening()

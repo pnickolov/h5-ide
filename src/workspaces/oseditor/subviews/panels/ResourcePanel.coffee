@@ -29,7 +29,7 @@ define [
             'mousedown .resource-item'              : 'startDrag'
             'OPTION_CHANGE .ami-type-select'        : 'changeAmiType'
             'click .btn-refresh-panel'              : 'refreshPanelData'
-            'click .btn-open-shareres'              : 'toggleShareResPanel'
+            # 'click .btn-open-shareres'              : 'toggleShareResPanel'
             'click .manage-snapshot'                : 'manageSnapshot'
             'click .resources-dropdown-wrapper li'  : 'resourcesMenuClick'
 
@@ -42,7 +42,7 @@ define [
             @listenTo CloudResources( constant.RESTYPE.OSSNAP, region ), 'update', @renderSnapshot
             @listenTo CloudResources( constant.RESTYPE.OSIMAGE, region ), 'update', @renderAmi
 
-        toggleShareResPanel: -> @$( 'nav' ).toggleClass 'open'
+        # toggleShareResPanel: -> @$( 'nav' ).toggleClass 'open'
 
         resourcesMenuClick : (event) ->
           $currentDom = $(event.currentTarget)
@@ -124,5 +124,3 @@ define [
                 eventPrefix  : if type is constant.RESTYPE.OSVOL then "addVol_" else "addItem_"
             })
             return false
-
-

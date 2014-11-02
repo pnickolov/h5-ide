@@ -6361,6 +6361,8 @@ marker.server, marker.elb {
   border: 1px solid #0f0f0f;
   color: #d0d0d0;
   background: #000; }
+  .resources-dropdown-wrapper.open {
+    display: block; }
   .resources-dropdown-wrapper > li {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding: 15px 5px;

@@ -16,6 +16,10 @@ $dndDuration : .2s;
   color         : #d0d0d0;
   background    : #000;
 
+  &.open {
+      display: block;
+  }
+
   > li {
     border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
     padding          : 15px 5px;

@@ -7242,8 +7242,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9742,7 +9741,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   padding-left: 20px !important; }
   .os-status:before {
     content: " ";
-    width: 10x;
+    width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: yellow;
@@ -10050,7 +10049,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       text-align: center;
       cursor: pointer; }
       .dash-ops-resource-list .resource-list-nav > .resource-tab .resource-count {
-        padding-left: 0;
+        padding-left: 0px;
         padding-top: 50px;
         height: 5px;
         font-size: 14px;
@@ -10059,8 +10058,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
         margin: 0 auto 10px;
         color: #6065a0;
         position: absolute;
-        top: 50px;
-        width: 100%;
+        top: 42px;
+        width: 99.5%;
         background-position-x: center; }
       .dash-ops-resource-list .resource-list-nav > .resource-tab p.count {
         display: inline-block;
@@ -10139,7 +10138,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     .dash-ops-resource-list .resource-list-body .scroll-wrap {
       height: 420px;
       border: 1px solid #ccc;
-      border-top: none; }
+      border-top: none;
+      background: #F4F8FC; }
     .dash-ops-resource-list .resource-list-body .table {
       background: #edf1f3; }
     .dash-ops-resource-list .resource-list-body .table td {

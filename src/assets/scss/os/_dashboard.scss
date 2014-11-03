@@ -330,17 +330,17 @@
         cursor   : pointer;
 
         .resource-count {
-          padding-left : 0;
-          padding-top  : 50px;
-          height       : 5px;
-          font-size    : 14px;
-          display      : block;
-          text-align   : center;
-          margin       : 0 auto 10px;
-          color        : #6065a0;
-          position: absolute;
-          top: 50px;
-          width: 100%;
+          padding-left          : 0px;
+          padding-top           : 50px;
+          height                : 5px;
+          font-size             : 14px;
+          display               : block;
+          text-align            : center;
+          margin                : 0 auto 10px;
+          color                 : #6065a0;
+          position              : absolute;
+          top                   : 42px;
+          width                 : 99.5%;
           background-position-x : center;
         }
 
@@ -432,9 +432,10 @@
       .bubble { text-decoration: underline; cursor : default; }
 
       .scroll-wrap { 
-        height: 420px; 
-        border: 1px solid #ccc;
-        border-top: none;
+        height     : 420px; 
+        border     : 1px solid #ccc;
+        border-top : none;
+        background : #F4F8FC;
       }
 
       .table { background : #edf1f3; }

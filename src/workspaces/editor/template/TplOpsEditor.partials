@@ -196,7 +196,7 @@
 </div>
 
 <!-- {{modal.confirmImport}} -->
-<p class="modal-text-major">{{i18n "IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
+<p class="modal-text-major">{{i18n "TOOLBAR.IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
 <p class="modal-text-major">{{i18n "TOOLBAR.NAME_IMPORTED_APP"}}</p>
 <div class="modal-control-group">
     <label for="ImportSaveAppName">{{i18n "TOOLBAR.APP_NAME"}}</label>

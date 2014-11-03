@@ -22,12 +22,16 @@ define [
       "change #property-os-server-userdata": "updateServerAttr"
       'change #property-os-server-fip': "updateServerAttr"
       'change #property-os-server-aip': "updateServerAttr"
+      'select_initialize #property-os-server-image': "initImage"
+      'select_initialize #property-os-server-credential': "initCredential"
+      'select_initialize #property-os-server-RAM': "initRAM"
+      'select_initialize #property-os-server-CPU': "initCPU"
 
     initialize: ->
-        @sgListView = @reg new SgListView targetModel: @model?.embedPort()
         @listenTo @model, 'change:fip', @render
 
     render: ->
+      @$el.empty()
       json = @model.toJSON()
       @flavorList = App.model.getOpenstackFlavors( Design.instance().get("provider"), Design.instance().region() )
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
@@ -40,30 +44,33 @@ define [
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
       @stopListening @workspace.design
       @listenTo @workspace.design, "change:agent" , @render
-      @bindSelectizeEvent()
 
       # append sglist
+      @sgListView = @reg new SgListView targetModel: @model?.embedPort()
       @$el.append @sgListView.render().el
 
       @
 
-    bindSelectizeEvent: ()->
-      that = @
-      flavorGroup = _.groupBy that.flavorList.toJSON(), 'vcpus'
-      currentFlavor = that.flavorList.get(that.model.get('flavorId'))
-      avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024 + " G", value: e}
-      @$el.find("#property-os-server-image").on 'select_initialize', ()->
-        @.selectize.setValue(that.model.get('imageId'))
-      @$el.find("#property-os-server-credential").on 'select_initialize', ()->
-        that.checkWindowsDistro that.model.get("imageId")
-      @$el.find('#property-os-server-RAM').on 'select_initialize', ()->
-        @.selectize.addOption avaliableRams
-        @.selectize.setValue currentFlavor.get('ram')
-      @$el.find('#property-os-server-CPU').on 'select_initialize', ()->
+    initImage: (event) ->
+        $(event.target)[0].selectize.setValue(@model.get('imageId'))
+
+    initCredential: (event) ->
+        @checkWindowsDistro @model.get("imageId")
+
+    initRAM: (event) ->
+        flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
+        currentFlavor = @flavorList.get(@model.get('flavorId'))
+        avaliableRams = _.map ( _.pluck flavorGroup[currentFlavor.get('vcpus')], 'ram'), (e)-> {text: e/1024 + " G", value: e}
+        $(event.target)[0].selectize.addOption avaliableRams
+        $(event.target)[0].selectize.setValue currentFlavor.get('ram')
+
+    initCPU: (event) ->
+        flavorGroup = _.groupBy @flavorList.toJSON(), 'vcpus'
+        currentFlavor = @flavorList.get(@model.get('flavorId'))
         avaliableCPUs = _.map flavorGroup, (e,index)->
           {text: index + " Core", value: index}
-        @.selectize.addOption avaliableCPUs
-        @.selectize.setValue currentFlavor.get('vcpus')
+        $(event.target)[0].selectize.addOption avaliableCPUs
+        $(event.target)[0].selectize.setValue currentFlavor.get('vcpus')
 
     onChangeCredential: (event, value)->
       result = if event then $(event.currentTarget).getValue() else value

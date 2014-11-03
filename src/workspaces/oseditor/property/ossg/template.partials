@@ -116,4 +116,4 @@
 <input class="input os-sg-new-input" placeholder="Add new rule..." />
 
 <!-- {{sgIPInputTip}} -->
-<div class="os-sg-rule-ip-tip">Input CIDR or Security Group</div>
+<div class="os-sg-rule-ip-tip"><i class="icon-info"></i>Input CIDR / Security Group</div>

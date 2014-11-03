@@ -318,8 +318,9 @@
                     }
                 }
                 .selectize-dropdown-content {
-                    margin-top: 42px;
+                    margin-top: 50px;
                 }
+
             }
             .rule-list {
                 .selection {
@@ -364,7 +365,11 @@
             top: 0;
             width: 100%;
             /* background-color: #ccc; */
-            padding: 5px;
+            box-sizing      : border-box;
+            -moz-box-sizing : border-box;
+            background-color: #222;
+            border-bottom: 1px #333 solid;
+            padding: 5px 8px;
         }
         div.float-panel-sg {
             width: 450px;

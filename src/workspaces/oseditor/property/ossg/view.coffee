@@ -56,6 +56,10 @@ define [
 
                     return false
 
+                ipTipTpl: () ->
+
+                    return template.sgIPInputTip()
+
         render: ->
 
             that = @

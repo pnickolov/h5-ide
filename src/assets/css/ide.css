@@ -7242,7 +7242,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9689,6 +9690,8 @@ marker.server, marker.elb {
       overflow: hidden;
       height: 12px;
       text-overflow: ellipsis; }
+    #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .selection[data-target="ip"] + .selectize-control .selectize-dropdown-content, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .selection[data-target="ip"] + .selectize-control .selectize-dropdown-content {
+      margin-top: 42px; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .selection {
       float: left;
       width: 31%; }
@@ -9713,6 +9716,14 @@ marker.server, marker.elb {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     border: 0; }
+  #OpsEditor .OEPanelRight.property .os-sg-rule-ip-tip, #OpsEditor .OEPanelRight.config .os-sg-rule-ip-tip {
+    /* position: absolute; */
+    float: left;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    /* background-color: #ccc; */
+    padding: 5px; }
   #OpsEditor .OEPanelRight.property div.float-panel-sg, #OpsEditor .OEPanelRight.config div.float-panel-sg {
     width: 450px; }
   #OpsEditor .OEPanelRight.property .selection .selectize-input.disabled .item-remove, #OpsEditor .OEPanelRight.config .selection .selectize-input.disabled .item-remove {

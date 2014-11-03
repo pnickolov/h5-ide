@@ -76,6 +76,7 @@ define [
             if @hidden() then return
 
             @$el.removeClass( 'hide' )
+            @hideFloatPanel()
 
             @$el.prop 'class', "OEPanelRight #{panelName}"
             @$el.closest( '#OpsEditor' ).find( '.sidebar-title' ).prop 'class', "sidebar-title #{panelName}"
@@ -97,8 +98,7 @@ define [
             that = @
             () -> if showCount is that.floatPanelShowCount then that.hideFloatPanel(); callback?()
 
-        hideFloatPanel: () ->
-            @$( '.panel-float' ).addClass 'hidden'
+        hideFloatPanel: () -> @$( '.panel-float' ).addClass 'hidden'
 
         show: ->
             @$el.removeClass 'hidden'

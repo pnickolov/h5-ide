@@ -1375,16 +1375,16 @@ Additional Notes and Questions
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">To continue to enjoy the full features of VisualOps, upgrade your account to the paid plan as soon as possible.</p>
+    <p class="modal-text-minor payment-text">While enjoying your free {{freePointsPerMonth}} instance hours each month, provide billing information in case of running out of quota.</p>
     <table class="table payment-table">
         <tbody>
         <tr>
-            <td>{{freePointsPerMonth}} points per month</td>
+            <td>{{freePointsPerMonth}} instance hours per month</td>
             <td class="align-right">Free</td>
         </tr>
         <tr>
-            <td>Points consumed over {{freePointsPerMonth}}</td>
-            <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
+            <td>Instance hours consumed over {{freePointsPerMonth}}</td>
+            <td class="align-right"><strong>$0.01</strong>/instance hour</td>
         </tr>
         </tbody>
     </table>

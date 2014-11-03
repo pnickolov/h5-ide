@@ -5893,6 +5893,8 @@ button#property-app-keypair {
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab; }
+  [data-mode="app"] .asg-dragger {
+    display: none; }
 
 .dbreplicate {
   fill: #6daefe;

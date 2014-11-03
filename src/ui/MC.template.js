@@ -1995,11 +1995,13 @@ function program1(depth0,data) {
 
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">To continue to enjoy the full features of VisualOps, upgrade your account to the paid plan as soon as possible.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
+  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">While enjoying your free "
     + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " points per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Points consumed over "
+    + " instance hours each month, provide billing information in case of running out of quota.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
     + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+    + " instance hours per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Instance hours consumed over "
+    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            This will open a new window with Chargify.<br>\n            Meanwhile please keep this page open.\n        </p>\n    </div>\n</div>";
   return buffer;

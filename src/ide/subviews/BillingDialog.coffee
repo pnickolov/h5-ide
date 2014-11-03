@@ -27,23 +27,16 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
             template: MC.template.loadingSpiner
             disableClose: true
             confirm: hide: true
-
-        unless App.user.get("creditCard")
-          @modal.setContent(MC.template.paymentSubscribe)
-          @modal.listenTo App.user, "paymentUpdate", ->
-            that.initialize(that.modal)
-            that.modal.stopListening()
-          return false
-        ApiRequestR("payment_statement").then (paymentHistory)->
+        @getPaymentHistory().then (paymentHistory)->
           console.log paymentHistory
           paymentUpdate = {
             url: App.user.get("paymentUrl")
             card: App.user.get("creditCard")
-            billingCircle: App.user.get("billingCircle")
+            billingEnd: App.user.get("billingEnd")
             current_quota: App.user.get("voQuotaCurrent")
             max_quota:  App.user.get("voQuotaPerMonth")
             renewRemainDays: Math.round( (App.user.get("renewDate") - ( new Date() ))/(1000*60*60*24) )
-            last_billing_time: App.user.get("billingCircleStart")
+            last_billing_time: App.user.get("billingStart") || new Date()
           }
           billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
           paymentUpdate.billable_quota = if billable_quota > 0 then billable_quota else 0
@@ -61,12 +54,28 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
           that.paymentHistory = tempArray
           that.paymentUpdate = _.clone paymentUpdate
           that.modal.setContent BillingDialogTpl.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-          that.animateUsage()
+          unless App.user.get("creditCard")
+            that.modal.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl"), freePointsPerMonth: App.user.get("voQuotaPerMonth"), shouldPay: App.user.shouldPay()})
+            that.modal.listenTo App.user, "paymentUpdate", ->
+              that.initialize(that.modal)
+              that.modal.stopListening()
+          that.updateUsage()
         , ()->
           notification 'error', "Error while getting user payment info, please try again later."
           that.modal?.close()
-        @listenTo App.user, "paymentUpdate", => @animateUsage()
+        @listenTo App.user, "paymentUpdate", -> that.updateUsage()
         @setElement @modal.tpl
+
+      getPaymentHistory: ()->
+        historyDefer = new Q.defer()
+        unless App.user.get("creditCard")
+          historyDefer.resolve({})
+        else
+          ApiRequestR("payment_statement").then (paymentHistory)->
+            historyDefer.resolve(paymentHistory)
+          , (err)->
+            historyDefer.reject(err)
+        historyDefer.promise
 
       switchTab: (event)->
         target = $(event.currentTarget)
@@ -74,7 +83,7 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
         @modal.find("#PaymentNav").find("span").removeClass("selected")
         @modal.find(".tabContent > section").addClass("hide")
         $("#"+ target.addClass("selected").data('target')).removeClass("hide")
-        @animateUsage(event)
+        @updateUsage()
 
       _bindPaymentEvent: (event)->
         that = @
@@ -91,59 +100,26 @@ define [ "./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus"
       _renderBillingDialog: (modal)->
         new BillingDialog(modal)
 
-      animateUsage: (event)->
+      updateUsage: ()->
         if @modal.isClosed
           return false
-        free_quota_length = 250
-        max_length = 580
         shouldPay = App.user.shouldPay()
         @modal.$(".usage-block").toggleClass("error", shouldPay)
         @modal.$(".used-points").toggleClass("error", shouldPay)
 
-        $current_usage = @modal.find(".usage-block .current-usage")
-        $billable_usage = @modal.find(".usage-block .billable-usage")
-        $free_usage    = @modal.find(".usage-block .free-usage")
-
-        if event
-          $current_usage.addClass("freeze").width(0)
-          _.defer => $current_usage.removeClass("freeze")
-          @modal.$(".usage-block").find(".billable-usage, .free-usage").addClass("freeze").width(free_quota_length)
-          _.defer => @modal.$(".usage-block").find(".billable-usage, .free-usage").removeClass("freeze")
-
         current_quota = App.user.get("voQuotaCurrent")
-        free_quota = App.user.get("voQuotaPerMonth")
-        billable_quota = if current_quota > free_quota then current_quota - free_quota else 0
 
         @modal.find(".payment-number").text(App.user.get("creditCard") || "No Card")
         @modal.find(".payment-username").text("#{App.user.get("cardFirstName")} #{App.user.get("cardLastName")}")
         @modal.find(".used-points .usage-number").text(current_quota)
-        @modal.find(".billable-points .usage-number").text(billable_quota)
 
         if App.user.shouldPay()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
+          @modal.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
         else if App.user.isUnpaid()
-          @modal.find(".warning-red").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
+          @modal.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
         else
-          @modal.find(".warning-red").hide()
+          @modal.find(".warning-red").not(".no-change").hide()
 
-        current_quota_length = current_quota* free_quota_length / free_quota
-        if free_quota > current_quota
-          _.defer ->
-            $current_usage.width(current_quota_length).attr("data-tooltip", current_quota + " used points")
-            $free_usage.attr('data-tooltip', "#{free_quota} free points").width(free_quota_length)
-            $billable_usage.width(0)
-        else
-          _.defer ->
-            if current_quota_length < max_length
-              $current_usage.width(free_quota_length)
-              $billable_usage.width(current_quota_length)
-              $free_usage.width(free_quota_length)
-            else
-              $billable_usage.width(max_length)
-              $free_usage.width(0)
-              $current_usage.width(free_quota_length * max_length / current_quota_length )
-            $current_usage.attr('data-tooltip', free_quota + " free points")
-            $billable_usage.attr("data-tooltip", (current_quota - free_quota) + " billable points")
 
       viewPaymentReceipt: (event)->
         $target = $(event.currentTarget)

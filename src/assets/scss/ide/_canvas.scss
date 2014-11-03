@@ -274,6 +274,10 @@
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
+
+  [data-mode="app"] & {
+    display : none;
+  }
 }
 
 .dbreplicate {

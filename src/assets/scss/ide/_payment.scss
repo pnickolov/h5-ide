@@ -34,6 +34,27 @@ $navHeight : 38px;
   }
 }
 
+.warning-red {
+  display       : block;
+  text-align    : center;
+  color         : #eee;
+  background    : #a42b2b;;
+  padding       : 5px;
+  line-height   : 24px;
+  border-radius : 3px;
+
+    a {
+      text-decoration : underline;
+      font-weight     : 700;
+      color           : #7eace1;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+
 #PaymentBody {
   padding: 20px 15px 0px;
   min-height: 150px;
@@ -132,14 +153,19 @@ h5.billing_usage_title{
   color: #99A;
 }
 
-.used-points, .billable-points{
+.used-points{
   display: inline-block;
-  width: 120px;
   margin-top: 20px;
   margin-left: 20px;
+
   .usage-number{
-    font-size: 27px;
-    color: #6065A0;
+    font-size : 36px;
+    color     : #be4444;
+    display   : inline-block;
+  }
+  span{
+    margin-left: 10px;
+    display: inline-block;
   }
 }
 .used-points .usage-number{
@@ -151,7 +177,7 @@ h5.billing_usage_title{
 }
 
 .renew-points{
-  margin-left: 20px;
+  margin-top: 10px;
   font-size: 12px;
 }
 

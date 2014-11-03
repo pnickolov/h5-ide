@@ -338,7 +338,7 @@ module.exports =
       zh: "登出"
 
     HEAD_LABEL_MENUITEM_BILLING:
-      en: "Billings"
+      en: "Billing"
       zh: "账单"
 
     HEAD_LABEL_SETTING:
@@ -1381,7 +1381,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: ""
 
     PAYMENT_BILLING_TAB:
-      en: "Payment & Billing"
+      en: "Billing"
       zh: ""
 
     PAYMENT_SETTING_TITLE:

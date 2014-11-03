@@ -60,7 +60,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
 
     userInfoAccuired : ( result )->
       paymentInfo = result.payment || {}
-      selfpage    = paymentInfo.self_page || {}
+      selfPage    = paymentInfo.self_page || {}
 
       res =
         email           : MC.base64Decode result.email
@@ -71,15 +71,15 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         account         : result.account_id
         firstName       : MC.base64Decode( result.first_name || "" )
         lastName        : MC.base64Decode( result.last_name || "")
-        cardFirstName   : ""
-        cardLastName    : ""
+        cardFirstName   : MC.base64Decode( selfPage.first_name || "")
+        cardLastName    : MC.base64Decode( selfPage.last_name || "")
         voQuotaCurrent  : paymentInfo.current_quota || 0
-        voQuotaPerMonth : paymentInfo.max_quota || 1000
+        voQuotaPerMonth : paymentInfo.max_quota || 3600
         has_card        : !!paymentInfo.has_card
-        paymentUrl      : selfpage.url
-        creditCard      : selfpage.card
-        billingEnd      : new Date( selfpage.current_period_ends_at    || null )
-        billingStart    : new Date( selfpage.current_period_started_at || null )
+        paymentUrl      : selfPage.url
+        creditCard      : selfPage.card
+        billingEnd      : new Date( selfPage.current_period_ends_at    || null )
+        billingStart    : new Date( selfPage.current_period_started_at || null )
         renewDate       : if paymentInfo then new Date(paymentInfo.next_reset_time * 1000) else new Date()
         paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
@@ -133,11 +133,11 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       if App.user.get("firstName") and App.user.get("lastName") then ApiRequestR("payment_self").then (result)->
         paymentInfo = {
           creditCard: result.card
-          billingCircle: new Date(result.current_period_ends_at || null)
-          billingCircleStart: new Date(result.current_period_started_at || null)
+          billingEnd: new Date(result.current_period_ends_at || null)
+          billingStart: new Date(result.current_period_started_at || null)
           paymentUrl: result.url
-          cardFirstName: if result.card then result.first_name else ""
-          cardLastName: if result.card then result.last_name else ""
+          cardFirstName: if result.card then MC.base64Decode( result.first_name || "")
+          cardLastName : if result.card then MC.base64Decode( result.last_name  || "" )
         }
         that.set paymentInfo
         that.trigger "paymentUpdate"

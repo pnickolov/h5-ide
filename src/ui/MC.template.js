@@ -1311,7 +1311,7 @@ function program10(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n                        <div id=\"stack-run-validation-container\"></div>\n                    </details>\n                    <div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n                    <div class=\"validating\">\n                        <div class=\"loading-spinner loading-spinner-small\"></div>\n                        <p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated AWS Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix hide\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1985,10 +1985,23 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  
+  return "<div class=\"warning-red no-change\">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>";
+  }
 
-  buffer += "<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>\n    <p class=\"modal-text-major\">Pricing:</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>Up to 10 managed instances</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>10 or more managed instances</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance/hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"#\" class=\"link-blue\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">While enjoying your free "
+    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " instance hours each month, provide billing information in case of running out of quota.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
+    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " instance hours per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Instance hours consumed over "
+    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            This will open a new window with Chargify.<br>\n            Meanwhile please keep this page open.\n        </p>\n    </div>\n</div>";
   return buffer;

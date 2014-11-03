@@ -3557,33 +3557,19 @@ div.modal-text-highlight {
       color: #9C6DC0; }
   #header .voquota {
     float: left;
+    display: none;
     text-align: center;
     vertical-align: top;
-    padding: 16px 10px; }
+    padding: 16px 10px;
+    width: 18px;
+    height: 18px; }
     #header .voquota:hover {
       background: rgba(0, 0, 0, 0.2);
       cursor: pointer; }
-    #header .voquota .percentage {
-      width: 100px;
-      height: 10px;
-      border-radius: 6px;
-      border: 1px solid #29920A;
-      display: inline-block;
-      margin-right: 3px;
-      position: relative; }
-      #header .voquota .percentage.error {
-        border-color: #f00;
-        background: #930000; }
-        #header .voquota .percentage.error .payment-exclamation {
-          display: block; }
-        #header .voquota .percentage.error .currquota {
-          background: #f00; }
-      #header .voquota .percentage.full {
-        background: #4D508E;
-        border-color: #232226; }
+    #header .voquota.show {
+      display: block; }
     #header .voquota .payment-exclamation {
-      display: none;
-      position: absolute;
+      display: block;
       width: 18px;
       height: 18px;
       background: #F00;
@@ -3594,15 +3580,6 @@ div.modal-text-highlight {
       text-align: center;
       color: #ffffff;
       border: 1px solid #000000; }
-    #header .voquota .currquota {
-      width: 30%;
-      height: 100%;
-      background: #29920A;
-      -webkit-border-radius: 6px;
-      -moz-border-radius: 6px;
-      border-radius: 6px; }
-    #header .voquota .current, #header .voquota .limit {
-      color: #999cc2; }
 
 .payment-header-tooltip {
   font-size: 14px;
@@ -5916,6 +5893,8 @@ button#property-app-keypair {
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab; }
+  [data-mode="app"] .asg-dragger {
+    display: none; }
 
 .dbreplicate {
   fill: #6daefe;
@@ -9171,6 +9150,21 @@ g.shadow {
       border-bottom: 2px solid #148BE6;
       width: 100%; }
 
+.warning-red {
+  display: block;
+  text-align: center;
+  color: #eee;
+  background: #a42b2b;
+  padding: 5px;
+  line-height: 24px;
+  border-radius: 3px; }
+  .warning-red a {
+    text-decoration: underline;
+    font-weight: 700;
+    color: #7eace1; }
+    .warning-red a:hover {
+      color: #fff; }
+
 #PaymentBody {
   padding: 20px 15px 0px;
   min-height: 150px; }
@@ -9249,14 +9243,17 @@ h5.billing_usage_title {
   font-size: 12px;
   color: #99A; }
 
-.used-points, .billable-points {
+.used-points {
   display: inline-block;
-  width: 120px;
   margin-top: 20px;
   margin-left: 20px; }
-  .used-points .usage-number, .billable-points .usage-number {
-    font-size: 27px;
-    color: #6065A0; }
+  .used-points .usage-number {
+    font-size: 36px;
+    color: #be4444;
+    display: inline-block; }
+  .used-points span {
+    margin-left: 10px;
+    display: inline-block; }
 
 .used-points .usage-number {
   color: #33c317; }
@@ -9265,7 +9262,7 @@ h5.billing_usage_title {
   color: #fd0d00; }
 
 .renew-points {
-  margin-left: 20px;
+  margin-top: 10px;
   font-size: 12px; }
 
 .usage-block {

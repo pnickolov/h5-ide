@@ -29,26 +29,13 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
         settings : ()-> new SettingsDialog()
 
         update : ()->
-            user     = App.user
-            overview = user.getBillingOverview()
+            $quota = $("#header").children(".voquota")
+            if App.user.shouldPay()
+                $quota.addClass("show")
+            else
+                $quota.removeClass("show")
 
-            $("#HeaderUser")
-                .data("tooltip", user.get("email"))
-                .children("span")
-                .text( user.get("username"))
 
-            $quota = $("#header").children(".voquota").attr("data-tooltip", sprintf(lang.IDE.PAYMENT_HEADER_TOOLTIP, overview.quotaRemain, overview.billingRemain) )
-
-            $quota.find(".currquota").css({"width":overview.quotaPercent + "%"})
-            $quota.find(".current").text(overview.quotaCurrent)
-            $quota.find(".limit"  ).text(overview.quotaTotal)
-
-            $percent = $quota.find(".percentage").removeClass("error full")
-            if user.shouldPay()
-                $percent.addClass("error")
-            else if overview.quotaCurrent >= overview.quotaTotal
-                $percent.addClass("full")
-            return
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 

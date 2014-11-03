@@ -989,7 +989,7 @@ Additional Notes and Questions
     </div>
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
-            <div class="title">Estimated Cost</div>
+            <div class="title">Estimated AWS Cost</div>
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
         </div>
         <div class="estimate-visualops clearfix hide">
@@ -1371,24 +1371,24 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
+{{#if shouldPay}}<div class="warning-red no-change">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>{{/if}}
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">Upgrade your VisualOps account to run the applications you’ve built and import existing VPCs.</p>
-    <p class="modal-text-major">Pricing:</p>
+    <p class="modal-text-minor payment-text">While enjoying your free {{freePointsPerMonth}} instance hours each month, provide billing information in case of running out of quota.</p>
     <table class="table payment-table">
         <tbody>
         <tr>
-            <td>Up to 10 managed instances</td>
+            <td>{{freePointsPerMonth}} instance hours per month</td>
             <td class="align-right">Free</td>
         </tr>
         <tr>
-            <td>10 or more managed instances</td>
-            <td class="align-right"><strong>$0.01</strong>/instance/hour</td>
+            <td>Instance hours consumed over {{freePointsPerMonth}}</td>
+            <td class="align-right"><strong>$0.01</strong>/instance hour</td>
         </tr>
         </tbody>
     </table>
-    <a href="#" class="link-blue">Pricing in detail</a>
+    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">Pricing in detail</a>
     <div class="payment-modal-wrap">
         <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
         <p>

@@ -5660,6 +5660,8 @@ button#property-app-keypair {
       display: none; }
     .canvas-view[data-mode="app"] .cvs-hover > .normal {
       display: block; }
+  .canvas-view[data-mode="app"] .fip-status {
+    pointer-events: none; }
   .canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
     fill-opacity: .6;
     fill: #D8DAEB;

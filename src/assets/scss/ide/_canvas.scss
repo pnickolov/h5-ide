@@ -49,6 +49,8 @@
       > .hover  { display : none; }
       > .normal { display : block; }
     }
+
+    .fip-status { pointer-events:none; }
   }
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {

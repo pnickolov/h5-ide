@@ -10012,10 +10012,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 /* Resource List */
 .dash-ops-resource-list {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 15px 0 40px;
-  width: 95%;
-  background: #edf1f3; }
+  margin: 0 auto 80px auto;
+  padding: 0;
+  width: 95%; }
   .dash-ops-resource-list .os-status::before {
     margin-left: -14px;
     margin-top: 6px; }
@@ -10138,7 +10137,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       text-decoration: underline;
       cursor: default; }
     .dash-ops-resource-list .resource-list-body .scroll-wrap {
-      height: 420px; }
+      height: 420px;
+      border: 1px solid #ccc;
+      border-top: none; }
     .dash-ops-resource-list .resource-list-body .table {
       background: #edf1f3; }
     .dash-ops-resource-list .resource-list-body .table td {

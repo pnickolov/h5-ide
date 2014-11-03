@@ -283,10 +283,10 @@
  /* Resource List */
   .dash-ops-resource-list {
     max-width : 1280px;
-    margin    : 0 auto;
-    padding   : 15px 0 40px;
+    margin    : 0 auto 80px auto;
+    padding   : 0;
     width     : 95%;
-    background : #edf1f3;
+    // background : #D0D0DA;
 
     .os-status::before {
       margin-left: -14px;
@@ -431,7 +431,11 @@
 
       .bubble { text-decoration: underline; cursor : default; }
 
-      .scroll-wrap { height: 420px; }
+      .scroll-wrap { 
+        height: 420px; 
+        border: 1px solid #ccc;
+        border-top: none;
+      }
 
       .table { background : #edf1f3; }
       .table td { vertical-align: middle; }

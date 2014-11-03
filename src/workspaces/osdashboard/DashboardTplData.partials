@@ -9,7 +9,7 @@
     <thead>
     <tr>
         <th class="sortable">Name</th>
-        <th class="sortable" style="width:15%">Status</th>
+        <th class="sortable" style="width:10%">Status</th>
         <th class="sortable" style="width:32%">{{i18n "DASH_LBL_AMI"}}</th>
         <!--<th class="sortable" style="width:12%">{{i18n "DASH_LBL_PUBLIC_IP"}}</th>-->
         <th class="sortable" style="width:25%" data-row-type="datetime">{{i18n "DASH_LBL_LAUNCH_TIME"}}</th>

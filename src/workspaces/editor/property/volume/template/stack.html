@@ -1,6 +1,6 @@
 <article id='property-panel-volume' data-bind="true" data-focus="none">
     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_DEVICE_NAME" }}</label>
+        <label>{{ i18n "PROP.VOLUME_DEVICE_NAME" }}</label>
         <div class="name">
             {{#if volume_detail.isWin}}
             <label for="volume-device">xvd</label>
@@ -12,7 +12,7 @@
         </div>
     </section>
     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_SIZE" }}</label>
+        <label>{{ i18n "PROP.VOLUME_SIZE" }}</label>
         <div class="ranged-number-input">
             <label for="volume-size-ranged"></label>
             <input id="volume-size-ranged" type="text" class="input" value="{{volume_detail.volume_size}}" name="volume-size-ranged" data-ignore="true" maxlength="4" data-required="true" data-required="true" data-type="number" {{#if isAppEdit}}disabled{{/if}}/>
@@ -22,16 +22,16 @@
 
     {{#if volume_detail.snapshot_id}}
     <section class="property-control-group">
-        <label>{{i18n "PROP_VOLUME_SNAPSHOT"}}</label>
+        <label>{{i18n "PROP.VOLUME_SNAPSHOT"}}</label>
         <div id="snapshot-info-group" class="clearfix property-block-wrap" data-uid='{{volume_detail.snapshot_id}}'>
-            <div>{{volume_detail.snapshot_id}} <span class="mgl5">{{volume_detail.snapshot_size}}GB</span> </div>
+            <div>{{volume_detail.snapshot_id}} <span class="mgl5">{{volume_detail.snapshot_size}}GB</span></div>
             <div><span>{{volume_detail.snapshot_desc}}</span></div>
         </div>
     </section>
     {{/if}}
 
     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_TYPE" }}</label>
+        <label>{{ i18n "PROP.VOLUME_TYPE" }}</label>
         <div class="context" id="volume-type-radios">
 
             <div>
@@ -39,7 +39,7 @@
                     <input id="radio-standard" type="radio" name="volume-type" {{#if volume_detail.isStandard}}checked="checked"{{/if}} value="standard" {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-standard"></label>
                 </div>
-                <label for="radio-standard">{{ i18n "PROP_VOLUME_TYPE_STANDARD" }}</label>
+                <label for="radio-standard">{{ i18n "PROP.VOLUME_TYPE_STANDARD" }}</label>
             </div>
 
             <div>
@@ -47,15 +47,15 @@
                     <input id="radio-gp2" type="radio" name="volume-type" {{#if volume_detail.isGp2}}checked="checked"{{/if}} value="gp2" {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-gp2"></label>
                 </div>
-                <label for="radio-gp2">{{ i18n "PROP_VOLUME_TYPE_GP2" }}</label>
+                <label for="radio-gp2">{{ i18n "PROP.VOLUME_TYPE_GP2" }}</label>
             </div>
 
-            <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP_VOLUME_MSG_WARN'}}"{{/if}}>
+            <div {{#if volume_detail.iopsDisabled}}class="tooltip" data-tooltip="{{ i18n 'PROP.VOLUME_MSG_WARN'}}"{{/if}}>
                 <div class="radio">
                     <input id="radio-io1" type="radio" name="volume-type" {{#if volume_detail.isIo1}}checked="checked"{{/if}} value="io1" {{#if volume_detail.iopsDisabled}}disabled{{/if}} {{#if isAppEdit}}disabled{{/if}}/>
                     <label for="radio-io1"></label>
                 </div>
-                <label for="radio-io1">{{ i18n "PROP_VOLUME_TYPE_IO1" }}</label>
+                <label for="radio-io1">{{ i18n "PROP.VOLUME_TYPE_IO1" }}</label>
             </div>
 
         </div>
@@ -76,13 +76,13 @@
 
     {{#if volume_detail.displayEncrypted}}
     <section class="property-control-group">
-        <label>{{ i18n "PROP_VOLUME_ENCRYPTED" }}</label>
+        <label>{{ i18n "PROP.VOLUME_ENCRYPTED" }}</label>
         <div>
             <div class="checkbox">
                 <input id="volume-property-encrypted-check" type="checkbox" {{#unless volume_detail.support_encrypted}}disabled="disabled"{{/unless}} {{#if volume_detail.encrypted}}checked="checked" {{/if}}  {{#if isAppEdit}}disabled{{/if}}/>
                 <label for="volume-property-encrypted-check"></label>
             </div>
-            <label for="volume-property-encrypted-check">{{ i18n "PROP_VOLUME_ENCRYPTED_LABEL" }}</label>
+            <label for="volume-property-encrypted-check">{{ i18n "PROP.VOLUME_ENCRYPTED_LABEL" }}</label>
         </div>
     </section>
     {{/if}}

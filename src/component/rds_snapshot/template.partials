@@ -33,20 +33,20 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}}{{else}}selected {{selectedCount}} Snapshot {{/if}}?</div>
+    <div class="modal-text-major">{{i18n "PROP.DB_SNAPSHOT_DELETE_1"}} {{#if selectedId}}{{selectedId}}{{else}}{{i18n "PROP.DB_SNAPSHOT_DELETE_2"}}{{selectedCount}}{{i18n "PROP.DB_SNAPSHOT_DELETE_3"}}{{/if}}?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">Delete</button>
-        <button class="btn btn-silver cancel">Cancel</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>Deleting...</button>
+        <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
     </div>
 </div>
 
 
 <!-- {{noinstance}} -->
 <div class="no-credential tac">
-    <p>There are no available instance here.</p>
+    <p>{{i18n "PROP.DB_SNAPSHOT_EMPTY"}}</p>
 </div>
 
 
@@ -55,14 +55,14 @@
     <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
-                <label for="property-snapshot-name-create">{{ i18n "PROP_SNAPSHOT_SET_NAME" }}</label>
+                <label for="property-snapshot-name-create">{{ i18n "PROP.SNAPSHOT_SET_NAME" }}</label>
                 <div>
                     <input id="property-snapshot-name-create" class="input" type="text" maxlength="255" data-type="database" data-ignore="true" data-ignore-regexp="^[a-zA-Z][a-zA-Z0-9-]*$" data-required="true"  placeholder="Allow alpha number, _ or - up to 255 characters.">
                 </div>
             </div>
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-volume-choose">{{ i18n "PROP_SNAPSHOT_SET_INSTANCE"}}</label>
+                <label for="property-volume-choose">{{ i18n "PROP.SNAPSHOT_SET_INSTANCE"}}</label>
                 <div>
                     <div id="property-db-instance-choose"></div>
                 </div>
@@ -70,11 +70,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="create" disabled>Create</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP.LBL_CREATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Creating...</button>
+            <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>
         </div>
     </div>
 </div>
@@ -84,21 +84,21 @@
     <div class="formart_toolbar_modal" data-type="true">
         <section data-bind="true">
             <div class="control-group clearfix">
-                <label for="property-snapshot-source">{{ i18n "PROP_SNAPSHOT_SOURCE_SNAPSHOT" }}</label>
+                <label for="property-snapshot-source">{{ i18n "PROP.SNAPSHOT_SOURCE_SNAPSHOT" }}</label>
                 <div>
                     <p id="property-snapshot-source">{{originSnapshot.id}}</p>
                 </div>
             </div>
 
             <div class="control-group clearfix property-content" style="background: none">
-                <label for="property-region-choose">{{ i18n "PROP_SNAPSHOT_DESTINATION_REGION"}}</label>
+                <label for="property-region-choose">{{ i18n "PROP.SNAPSHOT_DESTINATION_REGION"}}</label>
                 <div>
                     <div id="property-region-choose"></div>
                 </div>
             </div>
 
             <div class="control-group clearfix">
-                <label for="property-snapshot-name">{{ i18n "PROP_SNAPSHOT_SET_NEW_NAME" }}</label>
+                <label for="property-snapshot-name">{{ i18n "PROP.SNAPSHOT_SET_NEW_NAME" }}</label>
                 <div>
                     <input id="property-snapshot-name" class="input" type="text" maxlength="255" data-type="domain" value="{{newCopyName}}" data-ignore="true">
                 </div>
@@ -107,11 +107,11 @@
 
         </section>
         <div class="init action">
-            <button class="btn btn-blue do-action" data-action="duplicate" disabled>Duplicate</button>
-            <button class="btn btn-silver cancel">Cancel</button>
+            <button class="btn btn-blue do-action" data-action="duplicate" disabled>{{i18n "PROP.LBL_DUPLICATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
         </div>
         <div class="processing action" style="display:none;">
-            <button class="btn" disabled>Duplicating...</button>
+            <button class="btn" disabled>{{i18n "PROP.LBL_DUPLICATING"}}</button>
         </div>
     </div>
 </div>
@@ -121,65 +121,65 @@
 <div class="detail-info horizontal">
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>DB Snapshot ID</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_ID"}}</label>
             <div>{{id}}</div>
         </section>
         <section class="property-control-group">
-            <label>Vpc ID</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_VPC_ID"}}</label>
             <div>{{VpcId}}</div>
         </section>
         <section class="property-control-group">
-            <label>DB Engine</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_ENGINE"}}</label>
             <div>{{Engine}}</div>
         </section>
         <section class="property-control-group">
-            <label>License Model</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_LICENSE_MODEL"}}</label>
             <div>{{LicenseModel}}</div>
         </section>
         <section class="property-control-group">
-            <label>Status</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_STATUS"}}</label>
             <div>{{Status}}</div>
         </section>
         <section class="property-control-group">
-            <label>Db Storage</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_STORAGE"}}</label>
             <div>{{AllocatedStorage}}</div>
         </section>
         <section class="property-control-group">
-            <label>Snapshot Creation Time</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_CREATE_TIME"}}</label>
             <div>{{SnapshotCreateTime}}</div>
         </section>
         <section class="property-control-group">
-            <label>Source Region</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_SOURCE_REGION"}}</label>
             <div>{{AvailabilityZone}}</div>
         </section>
     </div>
     <div class="detail-info-row">
         <section class="property-control-group">
-            <label>DB Instance Name</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_INSTANCE_NAME"}}</label>
             <div>{{DBInstanceIdentifier}}</div>
         </section>
         <section class="property-control-group">
-            <label>Snapshot Type</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_TYPE"}}</label>
             <div>{{SnapshotType}}</div>
         </section>
         <section class="property-control-group">
-            <label>DB Engine Version</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_ENGINE_VERSION"}}</label>
             <div>{{EngineVersion}}</div>
         </section>
         <section class="property-control-group">
-            <label>Master Username</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_MASTER_USERNAME"}}</label>
             <div>{{MasterUsername}}</div>
         </section>
         <section class="property-control-group">
-            <label>Option Groupname</label>
+            <label>{{i18n "PROP.OPTION_GROUP_NAME"}}</label>
             <div>{{OptionGroupName}}</div>
         </section>
         <section class="property-control-group">
-            <label>Port</label>
+            <label>{{i18n "PROP.PORT"}}</label>
             <div>{{Port}}</div>
         </section>
         <section class="property-control-group">
-            <label>Instance Creation Time</label>
+            <label>{{i18n "PROP.DB_SNAPSHOT_INSTANCE_CREATE_TIME"}}</label>
             <div>{{InstanceCreateTime}}</div>
         </section>
 

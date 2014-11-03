@@ -518,7 +518,7 @@ define [
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
 
-    data.version = "2014-02-17"
+    data.version = OpsModel.LatestVersion
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")
 
@@ -585,7 +585,7 @@ define [
 
       costList = _.sortBy costList, "resource"
 
-    { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
+    { costList : costList, totalFee : Math.round(totalFee * 100) / 100, visualOpsFee: Math.round(0.01*24*30*100)/100 }
 
   DesignImpl.prototype.isStoppable = ()->
     # Previous version will set canvas_data.property.stoppable to false

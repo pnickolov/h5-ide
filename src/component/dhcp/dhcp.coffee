@@ -28,8 +28,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @listenTo @collection, 'change', -> @renderManager()
             @listenTo @collection, 'update', -> @renderManager()
             option =
-                manageBtnValue: lang.ide.PROP_VPC_MANAGE_DHCP
-                filterPlaceHolder: lang.ide.PROP_VPC_FILTER_DHCP
+                manageBtnValue: lang.PROP.VPC_MANAGE_DHCP
+                filterPlaceHolder: lang.PROP.VPC_FILTER_DHCP
             @dropdown = new comboDropdown option
             selection = template.selection
                 isDefault: false
@@ -175,7 +175,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
 
                 selectedType = 0
                 data.dhcp.netbiosTypes = [
-                    { id : "default" , value : lang.ide.PROP_VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
+                    { id : "default" , value : lang.PROP.VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED, selected : selectedType == 0 }
                 , { id : 1 , value : 1, selected : selectedType == 1 }
                 , { id : 2 , value : 2, selected : selectedType == 2 }
                 , { id : 4 , value : 4, selected : selectedType == 4 }
@@ -239,9 +239,9 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 deleteErrorCount++
             if deleteCount is 0
                 if deleteErrorCount > 0
-                    notification 'error', deleteErrorCount+" DhcpOptions failed to delete because of: \"#{result.awsResult}\""
+                    notification 'error', sprintf lang.NOTIFY.FAILED_TO_DELETE_DHCP, deleteErrorCount, result.awsResult
                 else
-                    notification 'info', "Delete Successfully"
+                    notification 'info', lang.NOTIFY.DELETE_SUCCESSFULLY
                 @manager.unCheckSelectAll()
                 deleteErrorCount = 0
                 @manager.cancel()
@@ -250,7 +250,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 @manager.error "Create failed because of: "+ (result.awsResult || result.msg)
                 @switchAction()
                 return false
-            notification 'info', "New DHCP Option is created successfully"
+            notification 'info', lang.NOTIFY.DHCP_CREATED_SUCCESSFULLY
             @manager.cancel()
         validate: (action)->
             switch action

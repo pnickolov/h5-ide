@@ -7,7 +7,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         if asg.resource.LaunchConfigurationName
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_ERROR_ASG_HAS_NO_LAUNCH_CONFIG, asg.name
+        tipInfo = sprintf lang.TA.ERROR_ASG_HAS_NO_LAUNCH_CONFIG, asg.name
 
         # return
         level   : constant.TA.ERROR
@@ -22,7 +22,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
             return null
 
-        tipInfo = sprintf lang.ide.TA_MSG_WARNING_ELB_HEALTH_NOT_CHECK, asg.name
+        tipInfo = sprintf lang.TA.WARNING_ELB_HEALTH_NOT_CHECK, asg.name
 
         # return
         level   : constant.TA.WARNING
@@ -39,7 +39,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         if topic and topic.get('appId')
             return null
 
-        Helper.message.error uid, i18n.TA_MSG_ERROR_ASG_NOTIFICATION_NO_TOPIC, asg.get 'name'
+        Helper.message.error uid, i18n.ERROR_ASG_NOTIFICATION_NO_TOPIC, asg.get 'name'
 
     isPolicyNotHasTopic = ( uid ) ->
         asg = Design.instance().component uid
@@ -49,7 +49,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         for p in policies
             if not p.isNotificate() or p.getTopic()
                 continue
-            result.push Helper.message.error p.id, i18n.TA_MSG_ERROR_ASG_POLICY_NO_TOPIC, asg.get('name'), p.get('name')
+            result.push Helper.message.error p.id, i18n.ERROR_ASG_POLICY_NO_TOPIC, asg.get('name'), p.get('name')
 
         result
 
@@ -101,10 +101,10 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
                 if not topicCol.get topic.get 'appId'
 
                     if obj.type is constant.RESTYPE.SP
-                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_POLICY_TOPIC_NONEXISTENT, asg.get('name'), obj.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.ERROR_ASG_POLICY_TOPIC_NONEXISTENT, asg.get('name'), obj.get('name'), topic.get('name')
 
                     else if obj.type is constant.RESTYPE.NC
-                        result.push Helper.message.error obj.id, i18n.TA_MSG_ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT, asg.get('name'), topic.get('name')
+                        result.push Helper.message.error obj.id, i18n.ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT, asg.get('name'), topic.get('name')
 
 
             callback result

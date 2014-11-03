@@ -1,39 +1,39 @@
 <article>
   {{#if emptyAsg}}
-  <div class="property-control-group">{{ i18n "PROP_ASG_MSG_DROP_LC" }}</div>
+  <div class="property-control-group">{{ i18n "PROP.ASG_MSG_DROP_LC" }}</div>
   {{else}}
-	<div class="option-group-head expand">{{ i18n "PROP_ASG_DETAILS"}}</div>
+	<div class="option-group-head expand">{{ i18n "PROP.ASG_DETAILS"}}</div>
 	<div class="option-group" data-bind="true">
 		<section class="property-control-group">
-			<label class="left" for="property-asg-name" >{{ i18n "PROP_ASG_NAME" }}</label>
-			<span class="required-input right">{{ i18n "PROP_ASG_REQUIRED" }}</span>
+			<label class="left" for="property-asg-name" >{{ i18n "PROP.ASG_NAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP.ASG_REQUIRED" }}</span>
 			<input class="input" type="text" value="{{name}}" id="property-asg-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</section>
 
 		<section class="property-control-group clearfix">
 			<div class="left property-asg-size">
-				<label class="left" for="property-asg-min">{{ i18n "PROP_ASG_MIN_SIZE" }}</label>
+				<label class="left" for="property-asg-min">{{ i18n "PROP.ASG_MIN_SIZE" }}</label>
 				<input class="input" type="text" id="property-asg-min" value="{{minSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
 			<div class="right property-asg-size">
-				<label class="left" for="property-asg-max">{{ i18n "PROP_ASG_MAX_SIZE" }}</label>
+				<label class="left" for="property-asg-max">{{ i18n "PROP.ASG_MAX_SIZE" }}</label>
 				<input class="input" type="text" id="property-asg-max" value="{{maxSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
 	  </section>
 
 		<section class="property-control-group property-asg-size">
-			<label class="left" for="property-asg-capacity">{{ i18n "PROP_ASG_DESIRE_CAPACITY" }}</label>
+			<label class="left" for="property-asg-capacity">{{ i18n "PROP.ASG_DESIRE_CAPACITY" }}</label>
 			<input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
 		</section>
 
 		<section class="property-control-group">
-			<label class="left" for="property-asg-cooldown">{{ i18n "PROP_ASG_COOL_DOWN" }}</label>
+			<label class="left" for="property-asg-cooldown">{{ i18n "PROP.ASG_COOL_DOWN" }}</label>
 			<input class="input input-short" type="text" id="property-asg-cooldown" value="{{cooldown}}" data-type="digits" max="86400">
-			<span>{{ i18n "PROP_ASG_UNIT_SECONDS"}}</span>
+			<span>{{ i18n "PROP.ASG_UNIT_SECONDS"}}</span>
 		</section>
 
 		<section class="property-control-group clearfix">
-			<label clas="left">{{i18n "PROP_ASG_HEALTH_CHECK_TYPE"}}</label>
+			<label clas="left">{{i18n "PROP.ASG_HEALTH_CHECK_TYPE"}}</label>
 			<div class="asg-radio-group">
 				<div class="radio">
 					<input id="property-asg-ec2" type="radio" value="ec2" {{#if isEC2HealthCheck}}checked="true"{{/if}} name="property-asg-hc-option" />
@@ -41,103 +41,103 @@
 				</div>
 				<label for="property-asg-ec2">EC2</label>
 			</div>
-			<div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP_ASG_HAS_ELB_WARN'}}" class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
+			<div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP.ASG_HAS_ELB_WARN'}}" class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
 				<div class="radio">
 					<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#unless isEC2HealthCheck}}checked="true"{{/unless}} name="property-asg-hc-option" />
 					<label for="property-asg-elb"></label>
 				</div>
 				<label for="property-asg-elb">ELB</label>
-                <p id="property-asg-elb-warn" class="hide property-info" {{#unless isEC2HealthCheck}} style="display: block"{{/unless}}>{{ i18n 'PROPERTY_ASG_ELB_WARN' }}</p>
+                <p id="property-asg-elb-warn" class="hide property-info" {{#unless isEC2HealthCheck}} style="display: block"{{/unless}}>{{ i18n 'PROP.ASG_ELB_WARN' }}</p>
 			</div>
 		</section>
 
 		<section class="property-control-group">
-			<label class="left" for="property-asg-healthcheck">{{ i18n "PROP_ASG_HEALTH_CHECK_CRACE_PERIOD"}}</label>
+			<label class="left" for="property-asg-healthcheck">{{ i18n "PROP.ASG_HEALTH_CHECK_CRACE_PERIOD"}}</label>
 			<input class="input input-short" type="text" id="property-asg-healthcheck" value="{{healthCheckGracePeriod}}" maxlength="255" data-type="digits" data-ignore="true">
-			<span>{{i18n "PROP_ASG_UNIT_SECONDS"}}</span>
+			<span>{{i18n "PROP.ASG_UNIT_SECONDS"}}</span>
 		</section>
 	</div>
 
-	<div class="option-group-head">{{ i18n "PROP_ASG_POLICY" }}</div>
+	<div class="option-group-head">{{ i18n "PROP.ASG_POLICY" }}</div>
 	<div class="option-group">
 		<section class="property-control-group pos-r property-term-p">
-			<h5>{{ i18n "PROP_ASG_TERMINATION_POLICY" }}</h5>
+			<h5>{{ i18n "PROP.ASG_TERMINATION_POLICY" }}</h5>
 			<div class="termination-policy-brief">{{term_policy_brief}}</div>
-			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_TERMINATION_EDIT'}}" id="property-asg-term-edit"></i></div>
+			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_TERMINATION_EDIT'}}" id="property-asg-term-edit"></i></div>
 		</section>
 
 		<ul id="property-asg-policies" class="property-list">
 			<li class="pos-r hide">
         <h5 class="property-asg-policy-name name"></h5>
-				<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}"></span>
-        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}"></span>
-        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}"></span>
-        <span class="asg-p-trigger asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}"></span>
-        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}"></span>
+				<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ALARM_METRIC'}}"></span>
+        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_THRESHOLD'}}"></span>
+        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_PERIOD'}}"></span>
+        <span class="asg-p-trigger asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ACTION'}}"></span>
+        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}"></span>
         <div class="asg-p-action">
-	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
+	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{#each policies}}
       <li class="pos-r" data-uid="{{id}}">
-        <h5 class="property-asg-policy-name name" title="{{i18n 'PROP_ASG_POLICY_TLT_NAME'}}">{{name}}</h5>
-      	<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ALARM_METRIC'}}">{{alarmData.metricName}}</span>
-        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_THRESHOLD'}}">{{alarmData.comparisonOperator}} {{alarmData.threshold}}{{unit}}</span>
-        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_PERIOD'}}">{{alarmData.evaluationPeriods}}x{{alarmData.period}}m</span>
-        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{state}}" title="{{i18n 'PROP_ASG_POLICY_TLT_ACTION'}}">{{state}}</span>
-        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP_ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
+        <h5 class="property-asg-policy-name name" title="{{i18n 'PROP.ASG_POLICY_TLT_NAME'}}">{{name}}</h5>
+      	<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ALARM_METRIC'}}">{{alarmData.metricName}}</span>
+        <span class="asg-p-eval asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_THRESHOLD'}}">{{alarmData.comparisonOperator}} {{alarmData.threshold}}{{unit}}</span>
+        <span class="asg-p-periods asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_PERIOD'}}">{{alarmData.evaluationPeriods}}x{{alarmData.period}}m</span>
+        <span class="asg-p-trigger asg-p-tag asg-p-trigger-{{state}}" title="{{i18n 'PROP.ASG_POLICY_TLT_ACTION'}}">{{state}}</span>
+        <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
         <div class="asg-p-action">
-	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP_ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
+	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{/each}}
 
 		</ul>
 		<div class="property-control-group tac">
-			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP_ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP_ASG_BTN_ADD_SCALING_POLICY"}}</button>
+			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP.ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP.ASG_BTN_ADD_SCALING_POLICY"}}</button>
 		</div>
 	</div>
 
-	<div class="option-group-head">{{ i18n "PROP_ASG_LBL_NOTIFICATION" }}</div>
+	<div class="option-group-head">{{ i18n "PROP.ASG_LBL_NOTIFICATION" }}</div>
 	<div class="option-group" id="property-asg-sns">
 		<div class="property-control-group property-asg-notification-wrap">
-			<p>{{ i18n "PROP_ASG_LBL_SEND_NOTIFICATION" }}</p>
+			<p>{{ i18n "PROP.ASG_LBL_SEND_NOTIFICATION" }}</p>
 			<div><div class="checkbox">
 				<input id="property-asg-sns1" type="checkbox" data-key="instanceLaunch" {{#if notification.instanceLaunch}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns1"></label>
 			</div>
-			<label for="property-asg-sns1">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_LAUNCH" }}</label></div>
+			<label for="property-asg-sns1">{{ i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_LAUNCH" }}</label></div>
 
 			<div><div class="checkbox">
 				<input id="property-asg-sns2" type="checkbox" data-key="instanceLaunchError" {{#if notification.instanceLaunchError}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns2"></label>
 			</div>
-			<label for="property-asg-sns2">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_LAUNCH" }}</label></div>
+			<label for="property-asg-sns2">{{ i18n "PROP.ASG_LBL_FAILED_INSTANCES_LAUNCH" }}</label></div>
 
 			<div><div class="checkbox">
 				<input id="property-asg-sns3" type="checkbox" data-key="instanceTerminate" {{#if notification.instanceTerminate}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns3"></label>
 			</div>
-			<label for="property-asg-sns3">{{ i18n "PROP_ASG_LBL_SUCCESS_INSTANCES_TERMINATE" }}</label></div>
+			<label for="property-asg-sns3">{{ i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_TERMINATE" }}</label></div>
 
 			<div><div class="checkbox">
 				<input id="property-asg-sns4" type="checkbox" data-key="instanceTerminateError" {{#if notification.instanceTerminateError}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns4"></label>
 			</div>
-			<label for="property-asg-sns4">{{ i18n "PROP_ASG_LBL_FAILED_INSTANCES_TERMINATE" }}</label></div>
+			<label for="property-asg-sns4">{{ i18n "PROP.ASG_LBL_FAILED_INSTANCES_TERMINATE" }}</label></div>
 
 			<div><div class="checkbox">
 				<input id="property-asg-sns5" type="checkbox" data-key="test" {{#if notification.test}}checked="checked"{{/if}}/>
 				<label for="property-asg-sns5"></label>
 			</div>
-			<label for="property-asg-sns5">{{ i18n "PROP_ASG_LBL_VALIDATE_SNS" }}</label></div>
+			<label for="property-asg-sns5">{{ i18n "PROP.ASG_LBL_VALIDATE_SNS" }}</label></div>
 
 		</div>
 
 		<div class="property-control-group sns-group" style="display:none;">
-			<label for="sns-placeholder">Select SNS Topic</label>
+			<label for="sns-placeholder">{{i18n "PROP.SELECT_SNS_TOPIC"}}</label>
 			<div id="sns-placeholder"></div>
 		</div>
 

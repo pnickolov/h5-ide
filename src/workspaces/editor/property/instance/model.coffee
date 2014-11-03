@@ -155,7 +155,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
 			if eni_number <= 2 or eni_number <= max_eni_num
 				return true
 
-			return sprintf lang.ide.PROP_WARN_EXCEED_ENI_LIMIT, value, max_eni_num
+			return sprintf lang.PROP.WARN_EXCEED_ENI_LIMIT, value, max_eni_num
 
 		setInstanceType  : ( value ) ->
 			instance = Design.instance().component( @get("uid") )

@@ -5,7 +5,8 @@ define [
   "./template/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
-], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang )->
+  "appAction"
+], ( OpsViewBase, OpsModel, OpsEditorTpl, Modal, lang, AppAction )->
 
   OpsViewBase.extend {
 
@@ -47,13 +48,13 @@ define [
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
-              return lang.ide.PARSLEY_SHOULD_BE_A_VALID_STACK_NAME
+              return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
 
             apps = App.model.appList().where({name:val})
             if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
               return
 
-            sprintf lang.ide.PARSLEY_TYPE_NAME_CONFLICT, 'App', val
+            sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'App', val
 
           if not $ipt.parsley 'validate'
             return
@@ -135,4 +136,34 @@ define [
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()
       return
+
+    showUnpayUI : ()->
+      @statusbar.remove()
+      @propertyPanel.remove()
+      @toolbar.remove()
+
+      @canvas.updateSize()
+
+      AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
+      notification "error", "Your account is limited now."
+      return
+
+    listenToPayment: ()->
+      self = @
+      @workspace.listenTo App.user, "paymentUpdate", ->
+        if not $(".ops-apppm-wrapper").size()
+          if App.user.shouldPay()
+            self.showUnpayUI()
+        else
+          unless App.user.shouldPay()
+            self.reopenApp()
+
+    reopenApp: ()->
+      appId = @workspace.opsModel.get("id")
+      index = @workspace.index()
+      @workspace.remove()
+      _.defer ->
+        App.openOps(appId).setIndex index
+        notification "info", "User payment status change detected, reloading app resource."
+
   }

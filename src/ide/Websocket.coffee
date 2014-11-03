@@ -114,11 +114,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @collection.user_state.find().fetch()
     @collection.user_state.find().observeChanges {
       added : ( idx, dag )->
-        console.log "user_state changes", idx, dag
         self.trigger "userStateChange", idx, dag
-
       changed : ( idx, dag )->
-        console.log "user_state changes", idx, dag
         self.trigger "userStateChange", idx, dag
     }
 

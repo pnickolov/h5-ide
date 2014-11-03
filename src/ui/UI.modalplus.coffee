@@ -52,7 +52,7 @@
 #           width: "600px"
 #
 modalGroup = []
-define ['backbone'], (Backbone)->
+define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
     class Modal
         constructor: (@option)->
             _.extend @, Backbone.Events
@@ -73,7 +73,7 @@ define ['backbone'], (Backbone)->
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
                     hide    : @option.confirm?.hide
-                cancel      : if _.isString @option.cancel then {text: @option.cancel|| "Cancel"} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
+                cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.IDE.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: "Cancel"}
                 hasFooter   : !@option.disableFooter
                 hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact
@@ -95,7 +95,7 @@ define ['backbone'], (Backbone)->
                 @trigger 'shown', @
             @show()
             @bindEvent()
-            return @
+            @
         close: ()->
             if @isMoving
                 return false
@@ -125,6 +125,7 @@ define ['backbone'], (Backbone)->
             else
                 @resize()
             @option.onShow?(@)
+            @
         bindEvent: ()->
             @tpl.find('.modal-confirm').click (e)=>
                 @option.onConfirm?(@tpl,e)
@@ -263,12 +264,23 @@ define ['backbone'], (Backbone)->
                 ,@option.delay || 300
         toggleConfirm: (disabled)->
             @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
+            @
         setContent: (content)->
             if @option.hasScroll or @option.maxHeight
               selector = ".scroll-content"
             else
               selector = ".modal-body"
             @tpl.find(selector).html(content)
+            @resize()
+            @
+        setWidth: (width)->
+          body = @.tpl.find('.modal-body')
+          body.parent().css( width: width )
+          @.resize()
+          @
+        compact: ()->
+          @tpl.find('.modal-body').css(padding: 0)
+          @
         _fadeOut: ->
             if @option.mode is 'panel' then return false
             @tpl.animate
@@ -295,4 +307,5 @@ define ['backbone'], (Backbone)->
           @tpl.find(selector)
         setTitle: (title)->
           @tpl.find(".modal-header h3").text(title)
+          @
     Modal

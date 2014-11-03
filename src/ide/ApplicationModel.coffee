@@ -172,6 +172,7 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
           region     : ops.region
           usage      : ops.usage
           name       : ops.name
+          version    : ops.version
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)
         }

@@ -603,11 +603,11 @@ define [
       if @slaves(true).length > 0
         if not @get("appId")
           # Return a warning, delete DBInstance will remove all ReadReplica together when DBInstance hasn't existed
-          result = sprintf lang.ide.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
+          result = sprintf lang.CANVAS.CVS_CFM_DEL_NONEXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         else
           # Return a warning, delete DBInstance will remove nonexistent ReadReplica together when DBInstance has existed
-          result = sprintf lang.ide.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
+          result = sprintf lang.CANVAS.CVS_CFM_DEL_EXISTENT_DBINSTANCE, @get("name")
           result = "<div class='modal-text-major'>#{result}</div>"
         return result
       allRestoreDB = @getAllRestoreDB()
@@ -615,7 +615,7 @@ define [
         dbNameAry = []
         _.each allRestoreDB, (dbModel) ->
           dbNameAry.push("<span class='resource-tag'>#{dbModel.get('name')}</span>")
-        result = sprintf lang.ide.CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE, @get("name"), dbNameAry.join(', ')
+        result = sprintf lang.CANVAS.CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE, @get("name"), dbNameAry.join(', ')
         result = "<div class='modal-text-major'>#{result}</div>"
         return result
       true

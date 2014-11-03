@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
+define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyView, template, lang ) ->
 
     RTBView = PropertyView.extend {
 
@@ -111,21 +111,21 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
             if !inputValue
                 if inputElem.closest('.multi-ipt-row').siblings().length == 0
-                    mainContent = 'CIDR block is required.'
-                    descContent = 'Please provide a IP ranges for this route.'
+                    mainContent = lang.PROP.RTB_CIDR_BLOCK_REQUIRED
+                    descContent = lang.PROP.RTB_CIDR_BLOCK_REQUIRED_DESC
             else if !MC.validate 'cidr', inputValue
-                mainContent = "#{inputValue} is not a valid form of CIDR block."
-                descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
+                mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_INVALID, inputValue
+                descContent = lang.PROP.RTB_CIDR_BLOCK_INVALID_DESC
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else
                 for cidr, idx in allCidrAry
                     if inputValue is cidr
-                        mainContent = "#{inputValue} conflicts with other route."
-                        descContent = 'Please choose a CIDR block not conflicting with existing route.'
+                        mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS, inputValue
+                        descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_DESC
                         break
                     if idx is 0 and cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr )
-                        mainContent = "#{inputValue} conflicts with local route."
-                        descContent = 'Please choose a CIDR block not conflicting with local route.'
+                        mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL, inputValue
+                        descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC
                         break
 
             if not mainContent

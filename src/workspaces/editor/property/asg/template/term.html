@@ -1,11 +1,11 @@
 <div style="width:420px">
    <div class="modal-header">
-      <h3>{{ i18n "PROP_ASG_TERMINATION_EDIT" }}</h3>
+      <h3>{{ i18n "PROP.ASG_TERMINATION_EDIT" }}</h3>
       <i class="modal-close">&times;</i>
    </div>
    <div class="modal-body" id="property-asg-term">
 
-      <p class="modal-text-minor">{{ i18n "PROP_ASG_TERMINATION_TEXT_WARN" }}</p>
+      <p class="modal-text-minor">{{ i18n "PROP.ASG_TERMINATION_TEXT_WARN" }}</p>
       <div class="drag-sort-list-wrap">
         <ul class="drag-sort-list" id="property-term-list">
           {{#each this}}
@@ -15,7 +15,7 @@
               <label for="property-asg-term{{@index}}"></label>
             </div>
             <label for="property-asg-term{{@index}}" class="list-name">{{name}}</label>
-            <span class="drag-handle tooltip icon-sort" data-tooltip="{{ i18n 'PROP_ASG_TERMINATION_MSG_DRAG' }}"></span>
+            <span class="drag-handle tooltip icon-sort" data-tooltip="{{ i18n 'PROP.ASG_TERMINATION_MSG_DRAG' }}"></span>
           </li>
           {{/each}}
         </ul>
@@ -26,13 +26,13 @@
               <input id="property-asg-term-def" type="checkbox" {{#if useDefault}}checked="checked"{{/if}}/>
               <label for="property-asg-term-def"></label>
             </div>
-            <span>Default</span>
+            <span>{{i18n "PROP.LBL_DEFAULT"}}</span>
           </li>
         </ul>
       </div>
    </div>
    <div class="modal-footer">
-      <button id="property-asg-term-done" class="btn btn-blue">Done</button>
-      <button class="btn modal-close btn-silver">Cancel</button>
+      <button id="property-asg-term-done" class="btn btn-blue">{{i18n "PROP.LBL_DONE"}}</button>
+      <button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
    </div>
 </div>

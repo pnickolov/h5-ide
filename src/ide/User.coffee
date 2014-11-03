@@ -7,12 +7,23 @@
 ----------------------------
 ###
 
-define [ "ApiRequest", "backbone" ], ( ApiRequest )->
+define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )->
 
   UserState =
     NotFirstTime : 2
 
-  Backbone.Model.extend {
+  PaymentState =
+    NoInfo  : ""
+    Pastdue : "pastdue"
+    Unpaid  : "unpaid"
+    Active  : "active"
+
+  Model = Backbone.Model.extend {
+
+    defaults :
+      paymentState    : "" # "" || "pastdue" || "unpaid" || "active"
+      voQuotaPerMonth : 1000
+      voQuotaCurrent  : 0
 
     initialize : ()->
       @set {
@@ -25,19 +36,56 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     hasCredential : ()-> !!@get("account")
     isFirstVisit  : ()-> !(UserState.NotFirstTime&@get("state"))
 
+    fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
+    isUnpaid       : ()-> @get("paymentState") is PaymentState.Unpaid
+
+    shouldPay      : ()-> ( @get("voQuotaCurrent") >= @get("voQuotaPerMonth") ) and ( not @get("creditCard") or @isUnpaid() )
+
+    getBillingOverview : ()->
+
+      ov =
+        quotaTotal   : @get("voQuotaPerMonth")
+        quotaCurrent  : @get("voQuotaCurrent")
+
+        billingStart  : @get("billingStart")
+        billingEnd    : @get("billingEnd")
+        billingRemain : Math.round( (@get("billingEnd") - new Date()) / 24 / 3600000 )
+
+      ov.quotaRemain = Math.max((ov.quotaTotal - ov.quotaCurrent), 0)
+      ov.billingRemain = Math.min( ov.billingRemain, 31 )
+      ov.billingRemain = Math.max( ov.billingRemain, 0 )
+      ov.quotaPercent = Math.round(Math.min(ov.quotaCurrent, ov.quotaTotal)/Math.max(ov.quotaCurrent, ov.quotaTotal) * 100)
+
+      ov
+
     userInfoAccuired : ( result )->
+      paymentInfo = result.payment || {}
+      selfPage    = paymentInfo.self_page || {}
+
       res =
-        email        : MC.base64Decode result.email
-        repo         : result.mod_repo
-        tag          : result.mod_tag
-        state        : parseInt result.state, 10
-        intercomHash : result.intercom_secret
-        account      : result.account_id
-        awsAccessKey : result.access_key
-        awsSecretKey : result.secret_key
-        tokens       : result.tokens || []
-        defaultToken : ""
-        paymentState : result.payment_state || "unpay"
+        email           : MC.base64Decode result.email
+        repo            : result.mod_repo
+        tag             : result.mod_tag
+        state           : parseInt result.state, 10
+        intercomHash    : result.intercom_secret
+        account         : result.account_id
+        firstName       : MC.base64Decode( result.first_name || "" )
+        lastName        : MC.base64Decode( result.last_name || "")
+        cardFirstName   : MC.base64Decode( selfPage.first_name || "")
+        cardLastName    : MC.base64Decode( selfPage.last_name || "")
+        voQuotaCurrent  : paymentInfo.current_quota || 0
+        voQuotaPerMonth : paymentInfo.max_quota || 3600
+        has_card        : !!paymentInfo.has_card
+        paymentUrl      : selfPage.url
+        creditCard      : selfPage.card
+        billingEnd      : new Date( selfPage.current_period_ends_at    || null )
+        billingStart    : new Date( selfPage.current_period_started_at || null )
+        renewDate       : if paymentInfo then new Date(paymentInfo.next_reset_time * 1000) else new Date()
+        paymentState    : paymentInfo.state || ""
+        awsAccessKey    : result.access_key
+        awsSecretKey    : result.secret_key
+        tokens          : result.tokens || []
+        defaultToken    : ""
 
       if result.account_id is "demo_account"
         res.account = res.awsAccessKey = res.awsSecretKey = ""
@@ -53,8 +101,46 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       # Set user to already used IDE, so that next time we don't show welcome
       if @isFirstVisit()
         ApiRequest("account_update_account", { attributes : {
-          state : @get("state")|UserState.NotFirstTime
+          state : "" + (@get("state")|UserState.NotFirstTime)
         } })
+
+      return
+
+    onWsUserStateChange : ( changes )->
+      console.log changes
+      that = @
+      paymentInfo = changes.payment
+      if not changes then return
+      attr =
+        current_quota   : "voQuotaCurrent"
+        max_quota       : "voQuotaPerMonth"
+        has_card        : "creditCard"
+        state           : "paymentState"
+
+      changed = !!changes.time_update
+      toChange = {}
+      for key, value of attr
+        if paymentInfo?.hasOwnProperty( key )
+          changed = true
+          toChange[ value ] = paymentInfo[ key ]
+
+      if changed
+        @set toChange
+
+      if paymentInfo?.next_reset_time
+        App.user.set("renewDate", new Date(paymentInfo.next_reset_time * 1000))
+
+      if App.user.get("firstName") and App.user.get("lastName") then ApiRequestR("payment_self").then (result)->
+        paymentInfo = {
+          creditCard: result.card
+          billingEnd: new Date(result.current_period_ends_at || null)
+          billingStart: new Date(result.current_period_started_at || null)
+          paymentUrl: result.url
+          cardFirstName: if result.card then MC.base64Decode( result.first_name || "")
+          cardLastName : if result.card then MC.base64Decode( result.last_name  || "" )
+        }
+        that.set paymentInfo
+        that.trigger "paymentUpdate"
 
       return
 
@@ -162,6 +248,23 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         email    : email
       }}).then ()-> self.set("email", email)
 
+    changeName : ( firstName, lastName )->
+      self = @
+      defer = new Q.defer()
+      if firstName is self.get("firstName") and lastName is self.get("lastName")
+        defer.resolve()
+      ApiRequest("account_update_account", { attributes : {
+        first_name : firstName
+        last_name  : lastName
+      }}).then ( res )->
+        self.userInfoAccuired( res )
+        defer.resolve(res)
+      , (err)->
+        defer.reject(err)
+
+      defer.promise
+
+
     validateCredential : ( accessKey, secretKey )->
       ApiRequest("account_validate_credential", {
         access_key : accessKey
@@ -234,3 +337,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
             break
         return
   }
+
+  Model.PaymentState = PaymentState
+
+  Model

@@ -3,7 +3,7 @@
 
   modalGroup = [];
 
-  define(['backbone'], function(Backbone) {
+  define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
     var Modal;
     Modal = (function() {
       function Modal(option) {
@@ -32,7 +32,7 @@
             hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0
           },
           cancel: _.isString(this.option.cancel) ? {
-            text: this.option.cancel || "Cancel"
+            text: this.option.cancel || lang.IDE.POP_LBL_CANCEL
           } : _.isObject(this.option.cancel) ? this.option.cancel : {
             text: "Cancel"
           },
@@ -67,7 +67,7 @@
         }
         this.show();
         this.bindEvent();
-        return this;
+        this;
       }
 
       Modal.prototype.close = function() {
@@ -109,7 +109,10 @@
         } else {
           this.resize();
         }
-        return typeof (_base = this.option).onShow === "function" ? _base.onShow(this) : void 0;
+        if (typeof (_base = this.option).onShow === "function") {
+          _base.onShow(this);
+        }
+        return this;
       };
 
       Modal.prototype.bindEvent = function() {
@@ -348,7 +351,8 @@
       };
 
       Modal.prototype.toggleConfirm = function(disabled) {
-        return this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
+        this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
+        return this;
       };
 
       Modal.prototype.setContent = function(content) {
@@ -358,7 +362,26 @@
         } else {
           selector = ".modal-body";
         }
-        return this.tpl.find(selector).html(content);
+        this.tpl.find(selector).html(content);
+        this.resize();
+        return this;
+      };
+
+      Modal.prototype.setWidth = function(width) {
+        var body;
+        body = this.tpl.find('.modal-body');
+        body.parent().css({
+          width: width
+        });
+        this.resize();
+        return this;
+      };
+
+      Modal.prototype.compact = function() {
+        this.tpl.find('.modal-body').css({
+          padding: 0
+        });
+        return this;
       };
 
       Modal.prototype._fadeOut = function() {
@@ -406,7 +429,8 @@
       };
 
       Modal.prototype.setTitle = function(title) {
-        return this.tpl.find(".modal-header h3").text(title);
+        this.tpl.find(".modal-header h3").text(title);
+        return this;
       };
 
       return Modal;

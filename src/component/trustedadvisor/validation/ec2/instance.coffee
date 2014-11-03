@@ -30,7 +30,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 			return null
 		else
 			instanceName = instanceComp.name
-			tipInfo = sprintf i18n.TA_MSG_NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
+			tipInfo = sprintf i18n.NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME, instanceName
 			# return
 			level: constant.TA.NOTICE
 			info: tipInfo
@@ -82,7 +82,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 			if totalSGRuleNum > 50
 				instanceName = instanceComp.name
-				tipInfo = sprintf i18n.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
+				tipInfo = sprintf i18n.WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 50
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo,
@@ -110,7 +110,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 			if totalSGRuleNum > 100
 				instanceName = instanceComp.name
-				tipInfo = sprintf i18n.TA_MSG_WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
+				tipInfo = sprintf i18n.WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM, instanceName, 100
 				return {
 					level: constant.TA.WARNING,
 					info: tipInfo,
@@ -140,7 +140,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
        		return null
 
 
-        tipInfo = sprintf i18n.TA_MSG_NOTICE_INSTANCE_HAS_RTB_NO_ELB, RTB.name, instance.name, instance.name
+        tipInfo = sprintf i18n.NOTICE_INSTANCE_HAS_RTB_NO_ELB, RTB.name, instance.name, instance.name
 
         # return
         level   : constant.TA.NOTICE
@@ -161,7 +161,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 			hasUncheck = _.some enis, ( eni ) ->
 				not eni.get 'sourceDestCheck'
 			if not hasUncheck
-				return Helper.message.error uid, i18n.TA_MSG_ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST, instance.get 'name'
+				return Helper.message.error uid, i18n.ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST, instance.get 'name'
 			null
 
 		null

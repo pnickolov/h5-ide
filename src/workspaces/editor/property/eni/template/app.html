@@ -2,49 +2,49 @@
   <div id="prop-appedit-eni-list" class="expand"></div>
 
   {{#unless isGroupMode}}
-  <div class="option-group-head expand">Network Interface Details</div>
+  <div class="option-group-head expand">{{i18n "PROP.ENI_NETWORK_INTERFACE_DETAIL"}}</div>
   <div class="option-group">
     <dl class="dl-vertical">
-      <dt>{{i18n "PROP_ENI_DEVICE_NAME"}}</dt>
+      <dt>{{i18n "PROP.ENI_DEVICE_NAME"}}</dt>
       <dd>{{name}}</dd>
-      <dt>{{i18n "PROP_ENI_ID"}}</dt>
+      <dt>{{i18n "PROP.ENI_ID"}}</dt>
       <dd>{{networkInterfaceId}}</dd>
-      <dt>{{i18n "PROP_ENI_STATE"}}</dt>
+      <dt>{{i18n "PROP.ENI_STATE"}}</dt>
       <dd><i class="status status-{{status}}"></i>{{status}}</dd>
       {{#if description}}
-      <dt>{{i18n "PROP_ENI_LBL_DESC"}}</dt>
+      <dt>{{i18n "PROP.DESCRIPTION"}}</dt>
       <dd>{{description}}</dd>
       {{/if}}
-      <dt>{{i18n "PROP_INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
+      <dt>{{i18n "PROP.INSTANCE_ENI_SOURCE_DEST_CHECK_DISP"}}</dt>
       <dd>{{sourceDestCheck}}</dd>
     </dl>
     <div class="hidden-details">
-      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP_ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP_ENI_HIDE_DETAIL" }}</span></a>
+      <a href="#" class="toggle-details js-toggle-dropdown" data-toggle="self-only"><span class="details-off">+ {{ i18n "PROP.ENI_SHOW_DETAIL" }}</span><span class="details-on">- {{ i18n "PROP.ENI_HIDE_DETAIL" }}</span></a>
       <dl class="dl-vertical">
-        <dt>{{ i18n "PROP_ENI_VPC_ID" }}</dt>
+        <dt>{{ i18n "PROP.ENI_VPC_ID" }}</dt>
         <dd>{{vpcId}}</dd>
-        <dt>{{ i18n "PROP_ENI_SUBNET_ID" }}</dt>
+        <dt>{{ i18n "PROP.ENI_SUBNET_ID" }}</dt>
         <dd>{{subnetId}}</dd>
         {{#if attachment}}
-        <dt>{{ i18n "PROP_ENI_ATTACHMENT_ID" }}</dt>
+        <dt>{{ i18n "PROP.ENI_ATTACHMENT_ID" }}</dt>
         <dd>{{attachment.attachmentId}}</dd>
-        <dt>{{ i18n "PROP_ENI_Attachment_OWNER" }}</dt>
+        <dt>{{ i18n "PROP.ENI_Attachment_OWNER" }}</dt>
         <dd>{{attachment.instanceOwnerId}}</dd>
-        <dt>{{ i18n "PROP_ENI_Attachment_STATE" }}</dt>
+        <dt>{{ i18n "PROP.ENI_Attachment_STATE" }}</dt>
         <dd>{{attachment.status}}</dd>
         {{/if}}
-        <dt>{{ i18n "PROP_ENI_MAC_ADDRESS" }}</dt>
+        <dt>{{ i18n "PROP.ENI_MAC_ADDRESS" }}</dt>
         <dd>{{macAddress}}</dd>
         {{#if association.publicDnsName}}
-        <dt>{{i18n "PROP_INSTANCE_PUBLIC_DNS"}}</dt>
+        <dt>{{i18n "PROP.INSTANCE_PUBLIC_DNS"}}</dt>
         <dd>{{association.publicDnsName}}</dd>
         {{/if}}
         {{#if privateDnsName}}
-        <dt>{{i18n "PROP_INSTANCE_PRIVATE_DNS"}}</dt>
+        <dt>{{i18n "PROP.INSTANCE_PRIVATE_DNS"}}</dt>
         <dd>{{privateDnsName}}</dd>
         {{/if}}
         {{#if ownerId}}
-        <dt>{{ i18n "PROP_ENI_IP_OWNER" }}</dt>
+        <dt>{{ i18n "PROP.ENI_IP_OWNER" }}</dt>
         <dd>{{ownerId}}</dd>
         {{/if}}
       </dl>
@@ -52,12 +52,12 @@
 
     <table class="table">
       <tr>
-        <th>{{i18n "PROP_INSTANCE_ENI_IP_ADDRESS"}}</th>
-        <th>{{i18n "PROP_INSTANCE_PUBLIC_IP"}}</th>
+        <th>{{i18n "PROP.INSTANCE_ENI_IP_ADDRESS"}}</th>
+        <th>{{i18n "PROP.INSTANCE_PUBLIC_IP"}}</th>
       </tr>
       {{#each privateIpAddressesSet}}
       <tr>
-        <td>{{privateIpAddress}}{{#if primary}}<span>(Primary)</span>{{/if}}</td>
+        <td>{{privateIpAddress}}{{#if primary}}<span>({{i18n "PROP.ENI_PRIMARY"}})</span>{{/if}}</td>
         <td>{{#if association.publicIp}}{{association.publicIp}}{{else}}-{{/if}}</td>
       </tr>
       {{/each}}
@@ -65,7 +65,7 @@
   </div>
 
 
-  <div class="option-group-head">{{i18n "PROP_ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group-head">{{i18n "PROP.ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
   <div class="option-group sg-group"></div>
 
   {{/unless}}

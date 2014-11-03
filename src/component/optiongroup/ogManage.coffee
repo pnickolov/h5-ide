@@ -13,7 +13,7 @@ define [
         ( val ) ->
             val = +val
             if val > end or val < start
-                return sprintf lang.ide.RDS_VALUE_IS_NOT_ALLOWED, val
+                return sprintf lang.PARSLEY.RDS_VALUE_IS_NOT_ALLOWED, val
             null
 
     capitalizeKey = ( arr ) ->
@@ -64,7 +64,7 @@ define [
         doNothing: -> false
 
         getModalOptions: ->
-            title: lang.ide.RDS_EDIT_OPTION_GROUP
+            title: lang.IDE.RDS_EDIT_OPTION_GROUP
             classList: 'option-group-manage'
             context: that
 
@@ -88,7 +88,7 @@ define [
 
             options =
                 template        : tpl
-                title           : lang.ide.RDS_EDIT_OPTION_GROUP
+                title           : lang.IDE.RDS_EDIT_OPTION_GROUP
                 disableFooter   : true
                 disableClose    : true
                 width           : '855px'
@@ -209,7 +209,7 @@ define [
 
             form = $ 'form'
             if not form.parsley 'validate'
-                @$('.error').html lang.ide.RDS_SOME_ERROR_OCCURED
+                @$('.error').html lang.IDE.RDS_SOME_ERROR_OCCURED
                 return
 
             data = {
@@ -348,7 +348,7 @@ define [
                     .prop('disabled', true)
                     .prop('checked', true)
                     .parent()
-                    .data('tooltip', lang.ide.RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY)
+                    .data('tooltip', lang.IDE.RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY)
 
             else
                 @$('#option-apply-immediately')
@@ -453,7 +453,7 @@ define [
             $ogName.val $ogName.val().toLowerCase()
 
             $ogName.parsley 'custom', ( val ) ->
-                errTip = 'Option group name invalid'
+                errTip = lang.PARSLEY.OPTION_GROUP_NAME_INVALID
                 if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
                     return errTip
                 if val.length < 1 or val.length > 255
@@ -465,7 +465,7 @@ define [
 
             $ogDesc.parsley 'custom', ( val ) ->
 
-                errTip = 'Option group description invalid'
+                errTip = lang.PARSLEY.OPTION_GROUP_DESCRIPTION_INVALID
                 if val.length < 1
                     return errTip
 

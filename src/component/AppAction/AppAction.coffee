@@ -19,7 +19,7 @@ define [
       name = name || App.model.stackList().get( id ).get( "name" )
 
       modal AppTpl.removeStackConfirm {
-        msg : sprintf lang.ide.TOOL_POP_BODY_DELETE_STACK, name
+        msg : sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name
       }
 
       $("#confirmRmStack").on "click", ()->
@@ -27,9 +27,9 @@ define [
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->
-            notification "info", sprintf(lang.ide.TOOL_MSG_ERR_DEL_STACK_SUCCESS, name)
+            notification "info", sprintf(lang.NOTIFY.ERR_DEL_STACK_SUCCESS, name)
           , ()->
-            notification "error", sprintf(lang.ide.TOOL_MSG_ERR_DEL_STACK_FAILED, name)
+            notification "error", sprintf(lang.NOTIFY.ERR_DEL_STACK_FAILED, name)
       return
 
     duplicateStack : (id) ->
@@ -38,16 +38,16 @@ define [
       opsModel.fetchJsonData().then ()->
         App.openOps( App.model.createStackByJson opsModel.getJsonData() )
       , ()->
-        notification "error", "Cannot duplicate the stack, please retry."
+        notification "error", lang.NOTIFY.ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
       opsModel = App.model.appList().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
-        title: lang.ide.TOOL_TIP_START_APP
+        title: lang.TOOLBAR.TIP_START_APP
         confirm:
-          text: lang.ide.TOOL_POP_BTN_START_APP
+          text: lang.TOOLBAR.POP_BTN_START_APP
           color: 'blue'
           disabled: false
         disableClose: true
@@ -57,7 +57,10 @@ define [
       ApiRequest("app_info", {
         region_name : opsModel.get("region")
         app_ids     : [opsModel.get("id")]
-      }).then (ds)->  comp = ds[0].component
+      })
+      .then (ds)->
+        comp = ds[0].component
+        null
       .then ->
         name = App.model.appList().get( id ).get("name")
         hasEC2Instance =( _.filter comp, (e)->
@@ -72,10 +75,11 @@ define [
         awsError = null
         snapshots.fetchForce().fail (error)->
           awsError = error.awsError
+          null
         .finally ->
           if awsError and awsError isnt 403
             startAppModal.close()
-            notification 'error', "Error while loading AWS data, please try again later."
+            notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
             return false
           lostDBSnapshot = _.filter dbInstance, (e)->
             e.resource.DBSnapshotIdentifier and not snapshots.findWhere({id: e.resource.DBSnapshotIdentifier})
@@ -85,7 +89,7 @@ define [
             startAppModal.close()
             App.model.appList().get( id ).start().fail ( err )->
               error = if err.awsError then err.error + "." + err.awsError else err.error
-              notification "Fail to start your app \"#{name}\". (ErrorCode: #{error})"
+              notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
               return
             return
           return
@@ -100,9 +104,9 @@ define [
       appName = app.get('name')
       canStop = new modalPlus {
         template: AppTpl.loading()
-        title:  if isProduction then lang.ide.TOOL_POP_TIT_STOP_PRD_APP else lang.ide.TOOL_POP_TIT_STOP_APP
+        title:  if isProduction then lang.TOOLBAR.POP_TIT_STOP_PRD_APP else lang.TOOLBAR.POP_TIT_STOP_APP
         confirm:
-          text: lang.ide.TOOL_POP_BTN_STOP_APP
+          text: lang.TOOLBAR.POP_BTN_STOP_APP
           color: 'red'
           disabled: isProduction
         disableClose: true
@@ -115,10 +119,11 @@ define [
       .fail (error)->
         console.log error
         if error.awsError then awsError = error.awsError
+        null
       .finally ()->
         if awsError and awsError isnt 403
           canStop.close()
-          notification 'error', "Error when loading AWS data, please try again later."
+          notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
         app.fetchJsonData().then ()->
           comp = app.getJsonData().component
@@ -133,8 +138,8 @@ define [
             hasInstanceStore = false
             amiRes.each (e)->
               if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-                return hasInstanceStore = true
-
+                hasInstanceStore = true
+                null
             hasEC2Instance = (_.filter comp, (e)->
               e.type == constant.RESTYPE.INSTANCE)?.length
 
@@ -163,7 +168,7 @@ define [
               app.stop().fail ( err )->
                 console.log err
                 error = if err.awsError then err.error + "." + err.awsError else err.error
-                notification "Fail to stop your app \"#{name}\". (ErrorCode: #{error})"
+                notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
                 return
               return
 
@@ -181,10 +186,10 @@ define [
       name = app.get("name")
       production = app.get("usage") is 'production'
       terminateConfirm = new modalPlus(
-        title: if production then lang.ide.TOOL_POP_TIT_TERMINATE_PRD_APP else lang.ide.TOOL_POP_TIT_TERMINATE_APP
+        title: if production then lang.TOOLBAR.POP_TIT_TERMINATE_PRD_APP else lang.TOOLBAR.POP_TIT_TERMINATE_APP
         template: AppTpl.loading()
         confirm: {
-          text: lang.ide.TOOL_POP_BTN_TERMINATE_APP
+          text: lang.TOOLBAR.POP_BTN_TERMINATE_APP
           color: "red"
           disabled: production
         }
@@ -199,7 +204,7 @@ define [
         if error.awsError is 403 then self.__terminateApp(id, resourceList, terminateConfirm)
         else
           terminateConfirm.close()
-          notification 'error', "Error while loading AWS data, please try again later."
+          notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
     __terminateApp: (id, resourceList, terminateConfirm)->
       app  = App.model.appList().get( id )
@@ -237,7 +242,7 @@ define [
           takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
           app.terminate(null, takeSnapshot).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+            notification sprintf(lang.NOTIFY.ERROR_FAILED_TERMINATE , name, error)
           return
         return
 
@@ -296,6 +301,43 @@ define [
             notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
+
+
+    showPayment: (elem)->
+      showPaymentDefer = Q.defer()
+
+      # check should Show.
+      paymentState = App.user.get("paymentState")
+
+      if not App.user.shouldPay()
+        showPaymentDefer.resolve({})
+      else
+        result = {
+          first_name: App.user.get("firstName")
+          last_name: App.user.get("lastName")
+          url: App.user.get("paymentUrl")
+          card: App.user.get("creditCard")
+        }
+        updateDom = MC.template.paymentUpdate  result
+        if elem
+          $(elem).html updateDom
+          $(elem).trigger 'paymentRendered'
+        else
+          paymentModal = new modalPlus(
+            title: lang.IDE.PAYMENT_INVALID_BILLING
+            template: updateDom
+            disableClose: true
+            confirm:
+              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              disabled: true
+          )
+          paymentModal.find('.modal-footer').hide()
+
+          paymentModal.listenTo App.user, "paymentUpdate", ()->
+            if paymentModal.isClosed then return false
+            if not App.user.shouldPay()
+              showPaymentDefer.resolve({result: result, modal: paymentModal})
+      showPaymentDefer.promise
 
 
   new AppAction()

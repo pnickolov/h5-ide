@@ -1,4 +1,4 @@
-
+@charset "UTF-8";
 .canvas-view {
   position   : relative;
   font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
@@ -274,6 +274,10 @@
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
+
+  [data-mode="app"] & {
+    display : none;
+  }
 }
 
 .dbreplicate {

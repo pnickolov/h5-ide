@@ -19,9 +19,10 @@ define [
   "./WorkspaceManager"
   "OpsModel"
   "JsonExporter"
-  "constant",
+  "constant"
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant )->
+  "i18n!/nls/lang.js"
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang )->
 
   VisualOps = ()->
     if window.App
@@ -45,21 +46,22 @@ define [
 
     # This function returns a promise
     fetchModel = @model.fetch().fail ( err )->
-      notification "Cannot load application data. Please reload your browser."
+      notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
       throw err
     Q.all [ @user.fetch(), fetchModel ]
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()
 
-    @WS.on "Disconnected", ()=> @acquireSession()
+    @WS.on "Disconnected", ()-> App.acquireSession()
 
-    @WS.on "StatusChanged", ( isConnected )=>
+    @WS.on "StatusChanged", ( isConnected )->
       console.info "Websocket Status changed, isConnected:", isConnected
-      if @__view then @__view.toggleWSStatus( isConnected )
+      if App.__view then App.__view.toggleWSStatus( isConnected )
+
+    @WS.on "userStateChange", ( idx, dag )-> App.user.onWsUserStateChange( dag )
 
     return
-
 
   VisualOps.prototype.__createUser = ()->
     @user = new User()
@@ -72,6 +74,7 @@ define [
       @WS.subscribe()
 
     @user.on "change:credential", ()=> @discardAwsCache()
+
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
@@ -153,5 +156,8 @@ define [
     editor = new OpsEditor( @model.createStack(region) )
     editor.activate()
     editor
+
+
+    return
 
   VisualOps

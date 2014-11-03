@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog ) ->
+define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -10,6 +10,8 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
             'click #HeaderLogout'                : 'logout'
             'click #HeaderSettings'              : 'settings'
             'click #HeaderShortcuts'             : 'shortcuts'
+            'click #HeaderBilling'               : 'billingSettings'
+            'click .voquota'                     : "billingSettings"
             'DROPDOWN_CLOSE #HeaderNotification' : 'dropdownClosed'
 
         initialize : ()->
@@ -17,6 +19,7 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
             @listenTo App.model, "change:notification", @updateNotification
 
             @setElement $(tmpl( App.user.toJSON() )).prependTo("#wrapper")
+            @update()
             return
 
         logout : () -> App.logout()
@@ -25,7 +28,14 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
 
         settings : ()-> new SettingsDialog()
 
-        update : ()-> $("#HeaderUser").data("tooltip", App.user.get("email")).children("span").text( App.user.get("username"))
+        update : ()->
+            $quota = $("#header").children(".voquota")
+            if App.user.shouldPay()
+                $quota.addClass("show")
+            else
+                $quota.removeClass("show")
+
+
 
         setAlertCount : ( count ) -> $('#NotificationCounter').text( count || "" )
 
@@ -54,6 +64,9 @@ define [ "./HeaderTpl", "./SettingsDialog", 'backbone', "UI.selectbox" ], ( tmpl
 
             App.model.markNotificationRead()
             null
+
+        billingSettings: ()-> new BillingDialog()
+
     }
 
     HeaderView

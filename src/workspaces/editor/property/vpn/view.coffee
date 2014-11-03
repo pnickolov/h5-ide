@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
+define [ '../base/view', './template/stack','i18n!/nls/lang.js' ], ( PropertyView, template, lang ) ->
 
     VPNView = PropertyView.extend {
         events   :
@@ -65,16 +65,16 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
             if !inputValue
                 if inputElem.parents('.multi-ipt-row').siblings().length == 0
-                    mainContent = 'CIDR block is required.'
-                    descContent = 'Please provide a IP ranges for this IP Prefix.'
+                    mainContent = lang.PROP.VPN_BLUR_CIDR_REQUIRED
+                    descContent = lang.PROP.VPN_BLUR_CIDR_REQUIRED_DESC
             else if !MC.validate 'cidr', inputValue
-                mainContent = "#{inputValue} is not a valid form of CIDR block."
-                descContent = 'Please provide a valid IP range. For example, 10.0.0.1/24.'
+                mainContent = sprintf lang.PROP.VPN_BLUR_CIDR_NOT_VALID_IP, inputValue
+                descContent = lang.PROP.VPN_BLUR_CIDR_NOT_VALID_IP_DESC
             else
                 for cidr in allCidrAry
                     if cidr isnt inputValue and @model.isCidrConflict( inputValue, cidr )
-                        mainContent = "#{inputValue} conflicts with other IP Prefix."
-                        descContent = 'Please choose a CIDR block not conflicting with existing IP Prefix.'
+                        mainContent = sprintf lang.PROP.VPN_BLUR_CIDR_CONFLICTS_IP, inputValue
+                        descContent = lang.PROP.VPN_BLUR_CIDR_CONFLICTS_IP_DESC
                         break
 
             if not mainContent
@@ -83,7 +83,7 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
                 return
 
             dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : 'Remove Connection'
+                remove_content : lang.PROP.VPN_REMOVE_CONNECTION
                 main_content : mainContent
                 desc_content : descContent
             }

@@ -13,11 +13,12 @@ define [
   "./subviews/SettingsDialog"
   "./subviews/Navigation"
   "./subviews/AppTpl"
+  "./subviews/FullnameSetup"
   'i18n!/nls/lang.js'
   'CloudResources'
   'constant'
   'UI.modalplus'
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, lang, CloudResources, constant, modalPlus )->
+], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, FullnameSetup, lang, CloudResources, constant, modalPlus )->
 
   Backbone.View.extend {
 
@@ -46,7 +47,7 @@ define [
       $(window).on 'keydown', @globalKeyEvent
       return
 
-    checkUnload : ()-> if App.canQuit() then undefined else lang.ide.BEFOREUNLOAD_MESSAGE
+    checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE
 
     globalKeyEvent: (event) ->
       nodeName = event.target.nodeName.toLowerCase()
@@ -91,6 +92,8 @@ define [
     toggleWelcome : ()->
       if App.user.isFirstVisit()
         new WelcomeDialog()
+      else if App.user.fullnameNotSet()
+        new FullnameSetup()
       return
 
     askForAwsCredential : ()-> new WelcomeDialog({ askForCredential : true })
@@ -124,7 +127,11 @@ define [
       $("#forceTerminateApp").on "click", ()->
         model.terminate( true ).fail (err)->
           error = if err.awsError then err.error + "." + err.awsError else err.error
-          notification "Fail to terminate your app \"#{name}\". (ErrorCode: #{error})"
+          notification sprintf lang.NOTIFY.ERROR_FAILED_TERMINATE, name, error
         return
+      return
+
+    notifyUnpay : ()->
+      notification "error", "Failed to charge your account. Please update your billing info."
       return
   }

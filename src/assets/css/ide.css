@@ -8807,8 +8807,8 @@ g.shadow {
   color: #5D5D5D;
   background-color: #FFED00;
   text-align: center;
-  padding-top: 5px;
-  height: 20px;
+  height: 22px;
+  line-height: 22px;
   cursor: pointer; }
 
 .modal-state-statusbar .no-item {

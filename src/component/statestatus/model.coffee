@@ -96,6 +96,9 @@ define [ 'constant', 'event', 'backbone', 'jquery', 'underscore', 'MC' ], ( cons
                 extend.name = component.self.get 'name'
                 extend.uid = component.self.id
 
+            else
+                extend.name = resId
+
             extend
 
         listenStateStatusUpdate: ( type, newDoc , oldDoc ) ->

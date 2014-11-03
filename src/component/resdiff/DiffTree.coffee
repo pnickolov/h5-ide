@@ -42,6 +42,7 @@ define ['constant'], (constant) ->
                 # for openstack
                 '*.resource.adminPass': true
                 '*.resource.key_name': true
+                '*.resource.bootable': true
             }
 
         if not option.noDiffArrayAttrMap

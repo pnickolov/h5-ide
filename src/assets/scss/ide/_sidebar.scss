@@ -325,7 +325,6 @@ $dndDuration : .2s;
     width : 170px;
     background-image: image-url("ide/icon-os/res-dg-listener.png");
     background-position: left top;
-    position: relative;
     &:after {
       position : absolute;
       right    : 0;
@@ -359,7 +358,6 @@ $dndDuration : .2s;
   &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet {
     background-image : none;
     color        : #eee;
-    position     : relative;
     line-height  : 1em;
     margin-top   : 0;
     width        : 70px;

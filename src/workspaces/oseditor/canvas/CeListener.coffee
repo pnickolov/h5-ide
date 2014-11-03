@@ -19,7 +19,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
     }
 
     events :
-      "mousedown .fip-status"          : "toggleFip"
+      "mousedown .fip-status" : "toggleFip"
+      "click .fip-status"     : "suppressEvent"
+
+    suppressEvent : ()-> false
 
     listenModelEvents : ()->
       @listenTo @model, 'change:fip', @render

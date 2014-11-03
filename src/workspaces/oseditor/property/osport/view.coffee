@@ -13,6 +13,7 @@ define [
 
         initialize: ->
             @sgListView = @reg new SgListView targetModel: @model
+            @listenTo @model, 'change:fip', @render
 
         render: ->
 

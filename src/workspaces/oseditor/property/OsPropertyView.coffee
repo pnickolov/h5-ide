@@ -92,6 +92,9 @@ define [
         showFloatPanel  : -> @getPanel()?.showFloatPanel.apply @getPanel(), arguments
         hideFloatPanel  : -> @getPanel()?.hideFloatPanel.apply @getPanel(), arguments
 
+        beforeRender: -> @getPanel()?.hideFloatPanel()
+        afterRender: ->
+
 
 
 
@@ -101,6 +104,14 @@ define [
 
             delete childClass.register
             delete childClass.getClass
+
+            if _.isFunction childClass.prototype.render
+                childClass.prototype.originalRender = childClass.prototype.render
+                childClass.prototype.render = ->
+                    @beforeRender()
+                    result = @originalRender()
+                    @afterRender()
+                    result
 
             if staticProps
                 handleTypes  = staticProps.handleTypes

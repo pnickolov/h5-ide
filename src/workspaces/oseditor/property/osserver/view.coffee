@@ -25,6 +25,7 @@ define [
 
     initialize: ->
         @sgListView = @reg new SgListView targetModel: @model?.embedPort()
+        @listenTo @model, 'change:fip', @render
 
     render: ->
       json = @model.toJSON()

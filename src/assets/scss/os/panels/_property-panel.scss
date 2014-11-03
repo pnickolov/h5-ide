@@ -398,8 +398,8 @@
         border-radius    : 50%;
         background-color : yellow;
         position         : absolute;
-        margin-left      : -12px;
-        margin-top       : 2px;
+        margin-left      : -20px;
+        margin-top       : 4px;
         box-shadow       : inset 0 1px 0 rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0, .2);
     }
 }
@@ -413,7 +413,7 @@
         @include bgg-g;
     }
 }
-.os-status-INACTIVE {
+.os-status-INACTIVE, .os-status-BUILD {
     &:before {
         @include bgg-y;
     }

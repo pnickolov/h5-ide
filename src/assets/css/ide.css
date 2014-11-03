@@ -9746,8 +9746,8 @@ marker.server, marker.elb {
     border-radius: 50%;
     background-color: yellow;
     position: absolute;
-    margin-left: -12px;
-    margin-top: 2px;
+    margin-left: -20px;
+    margin-top: 4px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 1px 1px 1px rgba(0, 0, 0, 0.2); }
 
 .os-status-ACTIVE:before {
@@ -9766,7 +9766,7 @@ marker.server, marker.elb {
   background-image: -ms-linear-gradient(bottom, #17a03a, #17c249);
   background-image: linear-gradient(to top, #17a03a, #17c249); }
 
-.os-status-INACTIVE:before {
+.os-status-INACTIVE:before, .os-status-BUILD:before {
   background-color: #ffa740;
   background-image: -webkit-linear-gradient(bottom, #ff8330, #ffa740);
   background-image: -moz-linear-gradient(bottom, #ff8330, #ffa740);

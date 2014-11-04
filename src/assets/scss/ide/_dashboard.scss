@@ -222,8 +222,14 @@
 
 #eu-west-1 {
   top  : 113px - 24px;
-  left : 392px - 48px;
-  &:before { top: 22px; left: -11px; }
+  left : 278px - 48px;
+  &:before { top: 22px; left: 103px; }
+}
+
+#eu-central-1 {
+  top  : 98px;
+  left : 380px;
+  &:before { top: 22px; left: -10px; }
 }
 
 #sa-east-1 {

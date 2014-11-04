@@ -376,7 +376,7 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
         # Confirmation
         self  = @
         modal = new Modal {
-          title     : sprintf lang.IDE.CVS_CFM_DEL, name
+          title     : sprintf lang.CANVAS.CVS_CFM_DEL, name
           template  : result
           confirm   : { text : lang.IDE.CFM_BTN_DELETE, color : "red" }
           onConfirm : ()->

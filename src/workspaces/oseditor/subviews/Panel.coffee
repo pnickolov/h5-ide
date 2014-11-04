@@ -54,7 +54,29 @@ define [
 
             @$( '.panel-body' ).html @subPanel.render().el
 
+            # render state count
+            @renderStateCount( args )
+
             @__restoreAccordion()
+
+        renderStateCount: ( args ) ->
+
+            $stateCount = @parent.$el.find('.sidebar-title a.state .state-count')
+
+            if args and args.type is constant.RESTYPE.OSSERVER
+
+                $stateCount.show()
+
+                serverModel = Design.instance().component(args.uid)
+                states = serverModel.get('state')
+                stateCount = 0
+                stateCount = states.length if states and _.isArray(states)
+
+                $stateCount.text(stateCount)
+
+            else
+
+                $stateCount.hide()
 
         scrollTo: ( className ) ->
             $container = @$ '.panel-body'

@@ -248,6 +248,27 @@
     text-align : center;
 
     &::selection { background: transparent; }
+
+    &.state span {
+        font-size: 12px;
+        display: inline-block;
+        color: #000;
+        position: absolute;
+        max-width: 22px;
+        min-width: 12px;
+        height: 14px;
+        line-height: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: rgba(255,255,255,.2);
+        top: 11px;
+        right: 6px;
+        padding: 2px;
+        border-radius: 4px;
+        letter-spacing: -1px;
+        text-align: center;
+    }
+
   }
 
   a:hover {
@@ -260,4 +281,3 @@
   }
 
 }
-

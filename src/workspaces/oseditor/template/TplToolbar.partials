@@ -52,7 +52,9 @@
     <a class="resource tooltip icon-resource" data-target="resource" data-tooltip="Resource (R)"></a>
     <a class="config tooltip icon-config" data-target="config" data-tooltip="Stack Property (A)"></a>
     <a class="property tooltip icon-property" data-target="property" data-tooltip="Property (P)"></a>
-    <a class="state tooltip icon-gear" data-target="state" data-tooltip="Instance State (S)"></a>
+    <a class="state tooltip icon-gear" data-target="state" data-tooltip="Instance State (S)">
+        <span class="state-count">99</span>
+    </a>
 </header>
 
 <!-- {{PanelHeaderApp}} -->
@@ -60,7 +62,9 @@
     <a class="resource tooltip icon-resource" data-target="resource" data-tooltip="Resource (R)"></a>
     <a class="config tooltip icon-config" data-target="config" data-tooltip="App Property (A)"></a>
     <a class="property tooltip icon-property" data-target="property" data-tooltip="Property (P)"></a>
-    <a class="state tooltip icon-gear" data-target="state" data-tooltip="Instance State (S)"></a>
+    <a class="state tooltip icon-gear" data-target="state" data-tooltip="Instance State (S)">
+        <span class="state-count">99</span>
+    </a>
 </header>
 
 <!-- {{confirm.enableState}} -->

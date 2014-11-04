@@ -160,8 +160,8 @@ define [ 'component/stateeditor/model',
             @
 
         renderStateCount: () ->
-            count = @$stateList.find( '.state-item' ).length
-            $( '#btn-switch-state b' ).text "(#{count})"
+            count = @$stateList.find('.state-item').length
+            $('#OpsEditor').find('.sidebar-title a.state .state-count').text(count)
 
         __renderState: () ->
 

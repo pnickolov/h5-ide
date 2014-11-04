@@ -1482,7 +1482,7 @@ define [ 'event',
 
                             if paraModelType in ['line', 'text']
                                 renderParaValue = that.model.replaceParaUIDToName(renderParaValue)
-                                if renderParaValue and renderParaValue.indexOf('unknown') isnt -1
+                                if renderParaValue and renderParaValue.indexOf('@{unknown') isnt -1
                                     renderObj.err_list.push('reference')
 
                         else if paraModelType is 'dict'
@@ -1494,7 +1494,7 @@ define [ 'event',
                                 _.each paraValue, (paraValueObj) ->
 
                                     paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
-                                    if paraValueObj.value and paraValueObj.value.indexOf('unknown') isnt -1
+                                    if paraValueObj.value and paraValueObj.value.indexOf('@{unknown') isnt -1
                                         renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
@@ -1511,7 +1511,7 @@ define [ 'event',
                                 _.each paraValue, (paraValueStr, paraKey) ->
 
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
-                                    if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                    if paraValueStr and paraValueStr.indexOf('@{unknown') isnt -1
                                         renderObj.err_list.push('reference')
 
                                     renderParaValue.push({
@@ -1543,7 +1543,7 @@ define [ 'event',
                                 else
                                     paraValueStr = that.model.replaceParaUIDToName(paraValueStr)
 
-                                if paraValueStr and paraValueStr.indexOf('unknown') isnt -1
+                                if paraValueStr and paraValueStr.indexOf('@{unknown') isnt -1
                                     renderObj.err_list.push('reference')
 
                                 renderParaValue.push(paraValueStr)

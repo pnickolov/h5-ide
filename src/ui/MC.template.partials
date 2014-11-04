@@ -940,7 +940,7 @@ Additional Notes and Questions
         <div class="scroll-wrap">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content" style="height: 400px">
-                <div class="default-kp-group clearfix" style="display: none;">
+                <div class="modal-control-group default-kp-group clearfix" style="display:none;">
                     <label for="kp-runtime-placeholder">$DefaultKeyPair</label>
                     <div id="kp-runtime-placeholder"></div>
                     <div class="runtime-error" id="runtime-error-kp"></div>

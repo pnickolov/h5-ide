@@ -5093,6 +5093,9 @@ button#property-app-keypair {
 #kp-runtime-placeholder .selection {
   padding-right: 19px; }
 
+.default-kp-group {
+  padding: 10px 0; }
+
 #kp-runtime-placeholder {
   display: inline-block; }
 

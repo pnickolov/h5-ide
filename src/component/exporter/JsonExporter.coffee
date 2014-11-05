@@ -25,7 +25,7 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
 
     if not blob
       return {
-        data : "data://text/plain;,#{j}"
+        data : "data:text/plain;,#{j}"
         name : name
       }
 
@@ -60,7 +60,7 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
     if ua.indexOf("Safari") > -1 and ua.indexOf("Chrome") is -1
       # Safari doesn't support blob download. We set the content to the link
       $(aTag).attr {
-        href     : "data://text/plain;,#{j}"
+        href     : "data:text/plain;,#{j}"
         target   : "_blank"
       }
 

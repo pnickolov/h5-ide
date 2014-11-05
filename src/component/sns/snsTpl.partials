@@ -1,5 +1,5 @@
 <!-- {{dropdown_no_selection}} -->
-<span>{{i18n "NONE"}}</span>
+<span>{{i18n "PROP.NONE"}}</span>
 
 
 <!-- {{dropdown_list}} -->
@@ -21,7 +21,7 @@
     </td>
     <td>{{Name}}</td>
     <td>{{id}}</td>
-    <td {{#if subCount}}class="show-detail"{{/if}}><b>{{subCount}}</b> {{i18n "SUBSCRIPTIONS"}}</td>
+    <td {{#if subCount}}class="show-detail"{{/if}}><b>{{subCount}}</b> {{i18n "PROP.SUBSCRIPTIONS"}}</td>
 </tr>
 {{/each}}
 
@@ -30,11 +30,11 @@
 <div class="slide-create" data-bind="true">
     <div class="before-create">
         <div>
-          <label>{{i18n "SELECT_TOPIC"}}</label>
+          <label>{{i18n "PROP.SELECT_TOPIC"}}</label>
             <div class="selectbox dd-topic-name">
-                <div class="selection">{{i18n "NEW_TOPIC"}}</div>
+                <div class="selection">{{i18n "PROP.NEW_TOPIC"}}</div>
                 <ul class="dropdown" tabindex="-1">
-                  <li class="item selected new-topic" data-id="@new">{{i18n "NEW_TOPIC"}}</li>
+                  <li class="item selected new-topic" data-id="@new">{{i18n "PROP.NEW_TOPIC"}}</li>
                   {{#each this}}
                     <li class="item" data-id="{{id}}" data-display-name="{{DisplayName}}">{{Name}}</li>
                   {{/each}}
@@ -43,15 +43,15 @@
 
         </div>
         <div class="create-sns-topic">
-            <label for="create-topic-name">{{i18n "TOPIC_NAME"}}</label>
+            <label for="create-topic-name">{{i18n "PROP.TOPIC_NAME"}}</label>
             <input class="input" type="text" id="create-topic-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="Required. Up to 256 characters" data-event-trigger="false">
         </div>
         <div>
-            <label for="create-display-name">{{i18n "DISPLAY_NAME"}}</label>
+            <label for="create-display-name">{{i18n "PROP.DISPLAY_NAME"}}</label>
             <input class="input" type="text" id="create-display-name" maxlength="255" placeholder="Required for SMS subscriptions (up to 10 characters)" data-event-trigger="false">
         </div>
         <div>
-            <label>{{i18n "ACL_TIP_PROTOCOL"}}</label>
+            <label>{{i18n "PROP.ACL_TIP_PROTOCOL"}}</label>
             <div class="selectbox dd-protocol">
                 <div class="selection">email</div>
                 <ul class="dropdown" tabindex="-1">
@@ -66,20 +66,20 @@
             </div>
         </div>
         <div>
-            <label for="create-endpoint">{{i18n "ENDPOINT"}}</label>
+            <label for="create-endpoint">{{i18n "PROP.ENDPOINT"}}</label>
             <input type="text" class="input" id="create-endpoint" max-length="255" data-required="true" placeholder="example@mail.com" data-event-trigger="false">
         </div>
     </div>
     <div class="init action">
-        <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "LBL_CREATE"}}</button>
-        <button class="btn btn-silver cancel">{{i18n "LBL_CANCEL"}}</button>
+        <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP.LBL_CREATE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>{{i18n "CREATING_3PERIOD"}}</button>
+        <button class="btn" disabled>{{i18n "PROP.CREATING_3PERIOD"}}</button>
     </div>
     <div class="download action" style="display:none;">
-        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">{{i18n "LBL_DOWNLOAD"}}</a>
-        <button class="btn btn-silver cancel" disabled>{{i18n "LBL_CLOSE"}}</button>
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">{{i18n "PROP.LBL_DOWNLOAD"}}</a>
+        <button class="btn btn-silver cancel" disabled>{{i18n "PROP.LBL_CLOSE"}}</button>
     </div>
 </div>
 
@@ -87,11 +87,11 @@
 <div class="slide-delete">
     <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SNS Topic {{selecteKeyName}}{{else}}selected {{selectedCount}} SNS Topics{{/if}} and all associated subscriptions?</div>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">{{i18n "LBL_DELETE"}}</button>
-        <button class="btn btn-silver cancel">{{i18n "LBL_CANCEL"}}</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">
-        <button class="btn" disabled>{{i18n "DELETING_3PERIOD"}}</button>
+        <button class="btn" disabled>{{i18n "PROP.DELETING_3PERIOD"}}</button>
     </div>
 </div>
 
@@ -100,9 +100,9 @@
 <table class="table sns-detail">
     <thead>
         <tr>
-            <th style="width: 48px;">{{i18n "ACL_TIP_PROTOCOL"}}</th>
-            <th>{{i18n "Endpoint"}}</th>
-            <th style="wdith: 30%;">{{i18n "SUBSCRIPTION_ARN"}}</th>
+            <th style="width: 48px;">{{i18n "PROP.ACL_TIP_PROTOCOL"}}</th>
+            <th>{{i18n "PROP.ENDPOINT"}}</th>
+            <th style="wdith: 30%;">{{i18n "PROP.SUBSCRIPTION_ARN"}}</th>
             <th style="width: 103px;"></th>
         </tr>
     </thead>
@@ -116,8 +116,8 @@
                 {{#if isRemovable}}
                     <a class="icon-delete remove"></a>
                     <div class="do-remove-panel">
-                        <button class="btn btn-blue btn-small do-remove" data-id="{{SubscriptionArn}}">{{i18n "LBL_DELETE"}}</button>
-                        <button class="btn btn-link btn-small cancel">{{i18n "LBL_CANCEL"}}</button>
+                        <button class="btn btn-blue btn-small do-remove" data-id="{{SubscriptionArn}}">{{i18n "PROP.LBL_DELETE"}}</button>
+                        <button class="btn btn-link btn-small cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
                     </div>
                 {{/if}}
             </td>
@@ -128,7 +128,7 @@
 
 <!-- {{nosns}} -->
 <div class="combo-dd-no-data">
-    <p>{{i18n "NO_SNS_TOPIC_IN_XXX" regionName}}</p>
+    <p>{{i18n "PROP.NO_SNS_TOPIC_IN_XXX" regionName}}</p>
 
-    <a class="create-one">{{i18n "CREATE_SNS_TOPIC"}}</a>
+    <a class="create-one">{{i18n "PROP.CREATE_SNS_TOPIC"}}</a>
 </div>

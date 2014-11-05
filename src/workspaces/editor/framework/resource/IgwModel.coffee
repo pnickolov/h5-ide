@@ -22,7 +22,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
         cannotDel = LcModel.allObjects().some ( lc )-> lc.get("publicIp")
 
       if cannotDel
-        return { error : lang.IDE.CVS_CFM_DEL_IGW }
+        return { error : lang.CANVAS.CVS_CFM_DEL_IGW }
 
       true
 
@@ -42,7 +42,7 @@ define [ "../ComplexResModel", "./VpcModel", "Design", "constant", "i18n!/nls/la
     tryCreateIgw : ()->
       if Model.allObjects().length > 0 then return
 
-      notification 'info', lang.IDE.CVS_CFM_ADD_IGW_MSG
+      notification 'info', lang.CANVAS.CVS_CFM_ADD_IGW_MSG
 
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
       new Model({

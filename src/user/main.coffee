@@ -36,12 +36,6 @@ goto500 = ()->
 # variable to record $.ajax
 xhr = null
 
-# base64Encode and base64Decode copied from MC.core.js
-base64Encode = (string)->
-    window.btoa unescape encodeURIComponent string
-base64Decode = (string)->
-    decodeURIComponent escape window.atob string
-
 checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 
 # language detect

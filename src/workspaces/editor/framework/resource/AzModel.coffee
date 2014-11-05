@@ -11,7 +11,7 @@ define [ "../GroupModel", "./VpcModel", "constant", "i18n!/nls/lang.js", "Design
 
       if @children().length > 0
         # Return a warning, so that AZ's children will not be checked. ( Otherwise, Subnet will be check if it's connected to an ELB )
-        return sprintf lang.IDE.CVS_CFM_DEL_GROUP, @get("name")
+        return sprintf lang.CANVAS.CVS_CFM_DEL_GROUP, @get("name")
       true
 
     createRef : ()-> Model.__super__.createRef( "ZoneName", true, @id )

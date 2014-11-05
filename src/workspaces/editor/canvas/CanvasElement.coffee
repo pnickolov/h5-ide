@@ -370,13 +370,13 @@ define [ "Design", "./CanvasManager", "i18n!/nls/lang.js", "UI.modalplus", "even
 
       # Ask user to confirm to delete an non-empty group
       if result is true and model.node_group and model.children().length > 0
-        result = sprintf lang.IDE.CVS_CFM_DEL_GROUP, name
+        result = sprintf lang.CANVAS.CVS_CFM_DEL_GROUP, name
 
       if _.isString( result )
         # Confirmation
         self  = @
         modal = new Modal {
-          title     : sprintf lang.IDE.CVS_CFM_DEL, name
+          title     : sprintf lang.CANVAS.CVS_CFM_DEL, name
           template  : result
           confirm   : { text : lang.IDE.CFM_BTN_DELETE, color : "red" }
           onConfirm : ()->

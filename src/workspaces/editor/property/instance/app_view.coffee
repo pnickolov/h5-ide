@@ -15,7 +15,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model'
 
             if not blob
               return {
-                data : "data://text/plain;,#{str}"
+                data : "data:text/plain;,#{str}"
                 name : name
               }
 

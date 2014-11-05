@@ -65,7 +65,7 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       for sb in m.connectionTargets("SubnetgAsso")
         tt.push(sb.get("name"))
 
-      CanvasManager.update @$el.children(".tooltip"), tt.join(", ") || lang.IDE.CVS_NO_SUBNET_ASSIGNED_TO_SG , "tooltip"
+      CanvasManager.update @$el.children(".tooltip"), tt.join(", ") || lang.CANVAS.CVS_NO_SUBNET_ASSIGNED_TO_SG , "tooltip"
       return
 
     doDestroyModel : ()->

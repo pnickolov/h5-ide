@@ -150,7 +150,7 @@ define [ "./SettingsDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus
           if err.error is 2
             that.modal.$('#AccountInfo').html "#{lang.IDE.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.IDE.SETTINGS_INFO_FORGET_PWD}</a>"
           else
-            that.modal.$('#AccountInfo').text lang.NOTIFY.SETTINGS_UPDATE_PWD_FAILURE
+            that.modal.$('#AccountInfo').text lang.IDE.SETTINGS_UPDATE_PWD_FAILURE
 
           that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 

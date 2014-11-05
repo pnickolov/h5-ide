@@ -24,10 +24,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderDropdown: ()->
             option =
-                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_VOLUME
+                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
             @dropdown = new combo_dropdown(option)
             @instances = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
-            selection = lang.NOTIFY.INSTANCE_SNAPSHOT_SELECT
+            selection = lang.PROP.INSTANCE_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
             @dropdown.on 'open', @openDropdown, @
@@ -37,12 +37,12 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         renderRegionDropdown: (exceptRegion)->
             option =
-                filterPlaceHolder: lang.NOTIFY.SNAPSHOT_FILTER_REGION
+                filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_REGION
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
             if exceptRegion
               @regions = _.without @regions, exceptRegion
-            selection = lang.NOTIFY.VOLUME_SNAPSHOT_SELECT_REGION
+            selection = lang.PROP.VOLUME_SNAPSHOT_SELECT_REGION
             @regionsDropdown.setSelection selection
             @regionsDropdown.on 'open', @openRegionDropdown, @
             @regionsDropdown.on 'filter', @filterRegionDropdown, @
@@ -238,7 +238,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             afterDuplicate = @afterDuplicate.bind @
             accountNumber = App.user.attributes.account
             if not /^\d+$/.test accountNumber.split('-').join('')
-              notification('error', lang.NOTIFY.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
+              notification('error', lang.PROP.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
               return false
             @collection.findWhere(id: sourceSnapshot.data.id).copyTo( targetRegion, newName).then afterDuplicate, afterDuplicate
 

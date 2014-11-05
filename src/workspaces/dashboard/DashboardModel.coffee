@@ -142,7 +142,7 @@ define ["ApiRequest", "CloudResources", "constant", "backbone"], ( ApiRequest, C
                 eni     : resourceMap resources["AWS|VPC|NetworkInterface"]
                 eip     : resourceMap resources["AWS|EC2|EIP"]
                 elb     : resourceMap resources["AWS|ELB"]
-                username: if resources['username'] then MC.base64Decode resources['username'] else undefined
+                username: if resources['username'] then window.atob(resources['username']) else undefined
 
               obj.disabled = obj.eni.length > 300
               vpcs.push obj

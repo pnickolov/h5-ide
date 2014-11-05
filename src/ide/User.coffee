@@ -28,7 +28,7 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
     initialize : ()->
       @set {
         usercode     : $.cookie "usercode"
-        username     : MC.base64Decode $.cookie "usercode"
+        username     : window.atob $.cookie "usercode"
         session      : $.cookie "session_id"
       }
       return
@@ -63,16 +63,16 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
       selfPage    = paymentInfo.self_page || {}
 
       res =
-        email           : MC.base64Decode result.email
+        email           : window.atob result.email
         repo            : result.mod_repo
         tag             : result.mod_tag
         state           : parseInt result.state, 10
         intercomHash    : result.intercom_secret
         account         : result.account_id
-        firstName       : MC.base64Decode( result.first_name || "" )
-        lastName        : MC.base64Decode( result.last_name || "")
-        cardFirstName   : MC.base64Decode( selfPage.first_name || "")
-        cardLastName    : MC.base64Decode( selfPage.last_name || "")
+        firstName       : window.atob( result.first_name || "" )
+        lastName        : window.atob( result.last_name || "")
+        cardFirstName   : window.atob( selfPage.first_name || "")
+        cardLastName    : window.atob( selfPage.last_name || "")
         voQuotaCurrent  : paymentInfo.current_quota || 0
         voQuotaPerMonth : paymentInfo.max_quota || 3600
         has_card        : !!paymentInfo.has_card
@@ -136,8 +136,8 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
           billingEnd: new Date(result.current_period_ends_at || null)
           billingStart: new Date(result.current_period_started_at || null)
           paymentUrl: result.url
-          cardFirstName: if result.card then MC.base64Decode( result.first_name || "")
-          cardLastName : if result.card then MC.base64Decode( result.last_name  || "" )
+          cardFirstName: if result.card then window.atob( result.first_name || "")
+          cardLastName : if result.card then window.atob( result.last_name  || "" )
         }
         that.set paymentInfo
         that.trigger "paymentUpdate"

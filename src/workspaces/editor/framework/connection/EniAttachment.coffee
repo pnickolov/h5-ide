@@ -109,7 +109,7 @@ define [ "constant", "../ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Co
       maxEniCount = instance.getMaxEniCount()
       # Instance have an embed eni
       if instance.connections( "EniAttachment" ).length + 1 >= maxEniCount
-        return sprintf lang.IDE.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
+        return sprintf lang.CANVAS.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
 
 
       if instance.getEmbedEni().get("assoPublicIp") is true

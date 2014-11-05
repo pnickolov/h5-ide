@@ -229,7 +229,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     #private
-    REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
+    REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
 
     #private
     REGION_LABEL =
@@ -237,6 +237,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
         'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
         'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
+        'eu-central-1'   : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-central-1' ]
         'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
         'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
         'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
@@ -247,6 +248,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
         'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
         'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+        'eu-central-1'   : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-central-1' ]
         'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
         'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
         'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']

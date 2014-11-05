@@ -444,16 +444,6 @@ var MC = {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	},
 
-	base64Encode: function (string)
-	{
-		return window.btoa(unescape(encodeURIComponent( string )));
-	},
-
-	base64Decode: function (string)
-	{
-		return decodeURIComponent(escape(window.atob( string )));
-	},
-
 	camelCase: function (string)
 	{
 		return string.replace(/-([a-z])/ig, function (match, letter)

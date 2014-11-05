@@ -15,7 +15,7 @@
       <dt>{{ i18n "PROP.CGW_LBL_ROUTING" }}</dt>
       <dd>{{#if options.staticRoutesOnly}}{{i18n "PROP.VPN_STACK_STATIC"}}{{else}}{{i18n "PROP.VPN_STACK_DYNAMIC"}}{{/if}}</dd>
 
-      <a class='btn btn-primary vpn-download' href="data://text/plain;base64,{{{vpncfg.filecontent}}}" download="{{{vpncfg.filename}}}.txt" style="padding:8px;">{{ i18n "PROP.CGW_APP_TIT_DOWNLOAD_CONF" }}</a>
+      <a class='btn btn-primary vpn-download' href="data:text/plain;base64,{{{vpncfg.filecontent}}}" download="{{{vpncfg.filename}}}.txt" style="padding:8px;">{{ i18n "PROP.CGW_APP_TIT_DOWNLOAD_CONF" }}</a>
 
     </dl>
   </div>

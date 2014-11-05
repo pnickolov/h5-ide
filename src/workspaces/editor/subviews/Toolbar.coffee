@@ -415,7 +415,7 @@ define [
                 appToStackModal.close()
                 newJson.name = stack.get("name")
                 stack.save(newJson).then ()->
-                    notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.IDE.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
+                    notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.TOOLBAR.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
                     App.openOps stack, true
                 ,()->

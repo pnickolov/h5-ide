@@ -45,7 +45,7 @@ define [
             # popup modal
             okText = 'OK, got it'
             options =
-                template: @el
+                template: template.frame()
                 title: 'App Changes'
                 disableClose: true
                 hideClose: true
@@ -79,10 +79,8 @@ define [
             , @
 
             #settle frame
-            @$el.html template.frame()
-
-            $containerDom = @$('article')
-            @_genResGroup($containerDom)
+            @modal.tpl.find('article').html(@$el)
+            @_genResGroup(@$el)
 
             @modal.resize()
 

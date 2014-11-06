@@ -12,7 +12,8 @@ $color_property: #ff8330;
 $dark_blue: #2C2F46;
 
 .res_diff_tree {
-	overflow: auto;
+	// overflow   : auto;
+	background : $bg_body;
 
 	// padding: 20px;
 
@@ -51,7 +52,7 @@ $dark_blue: #2C2F46;
 		padding-bottom : 6px;
 		width          : 100%;
 		text-align     : left;
-		background     : $bg_body;
+		
 		// border-left    : 1px #17c249 solid;
 
 		-webkit-transiti: all .2s;

@@ -945,10 +945,10 @@ Additional Notes and Questions
             <p class="modal-text-minor"
                style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
         {{/if}}
-        <div class="scroll-wrap" style="max-height:200px;">
+            
+        <div class="scroll-wrap res_diff_tree" id="app-update-summary-table" style="max-height:200px;">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="scroll-content res_diff_tree" id="app-update-summary-table">
-            </div>
+            <div class="scroll-content"></div>
         </div>
         {{#if removeList.length}}
             <section class="check-final-snapshot checkbox-wrap">

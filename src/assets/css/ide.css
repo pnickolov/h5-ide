@@ -2174,10 +2174,12 @@ a.action-link:hover {
 #modal-run-stack .modal-control-group {
   padding: 0 0 15px; }
 
-div.stack-validation {
-  padding    : 10px 15px 5px 15px;
-  margin     : 0 -10px;
-  border-top : 1px solid #1d1d1d; }
+.stack-validation {
+  margin-top: 10px;
+  border-top: 1px solid #1d1d1d;
+  position: relative; }
+  #modal-run-stack .stack-validation {
+    padding: 15px 0; }
 
 #modal-run-stack .btn-primary {
   padding: 8px 10px; }
@@ -7554,7 +7556,7 @@ g.shadow {
   text-align: center; }
 
 .res_diff_tree {
-  overflow: auto; }
+  background: #1a1c1d; }
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {
@@ -7578,7 +7580,6 @@ g.shadow {
     padding-bottom: 6px;
     width: 100%;
     text-align: left;
-    background: #1a1c1d;
     -webkit-transiti: all .2s;
     -moz-transiti: all .2s;
     -ms-transiti: all .2s;

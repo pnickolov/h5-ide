@@ -2237,7 +2237,6 @@ details[open] + .nutshell {
   height: 30px;
   border: 1px solid #131313;
   border-bottom: none;
-  width: 420px;
   border-radius: 2px 2px 0 0;
   overflow: hidden; }
 
@@ -2248,7 +2247,7 @@ details[open] + .nutshell {
 .validation-content .tab li {
   background: #1b1b21;
   color: #999;
-  width: 119px;
+  width: 123px;
   line-height: 30px;
   display: block;
   float: left;
@@ -2261,9 +2260,11 @@ details[open] + .nutshell {
   -ms-transition: background .2s;
   -o-transition: background .2s;
   transition: background .2s; }
+  #modal-validation-statusbar .validation-content .tab li {
+    width: 120px; }
 
 .validation-content .tab li:last-child {
-  width: 120px;
+  width: 124px;
   border-right: none; }
 
 .validation-content .tab li:hover {
@@ -2279,7 +2280,6 @@ details[open] + .nutshell {
   position: relative; }
 
 .validation-content .scroll-wrap-validation {
-  width: 420px;
   height: 250px;
   border: 1px solid #151519;
   border-top: none;

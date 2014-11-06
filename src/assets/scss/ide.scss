@@ -2731,7 +2731,7 @@ details[open] + .nutshell {
 	height        : 30px;
 	border        : 1px solid #131313;
 	border-bottom : none;
-	width         : 420px;
+	// width         : 420px;
 	border-radius : 2px 2px 0 0;
 	overflow      : hidden;
 }
@@ -2744,7 +2744,7 @@ details[open] + .nutshell {
 .validation-content .tab li {
 	background         : darken($bg-p, 2%);
 	color              : #999;
-	width              : 119px;
+	width              : 123px;
 	line-height        : 30px;
 	display            : block;
 	float              : left;
@@ -2757,10 +2757,19 @@ details[open] + .nutshell {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
+	
+	#modal-validation-statusbar & {
+		width: 120px;
+
+		// &:last-child {
+		// 	width: 121px;
+		// }
+	}
+
 }
 
 .validation-content .tab li:last-child {
-	width        : 120px;
+	width        : 124px;
 	border-right : none;
 }
 
@@ -2780,7 +2789,7 @@ details[open] + .nutshell {
 }
 
 .validation-content .scroll-wrap-validation {
-	width         : 420px;
+	// width         : 420px;
 	height        : 250px;
 	border        : 1px solid darken($bg-p, 5%);
 	border-top    : none;

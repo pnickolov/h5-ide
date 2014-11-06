@@ -1603,6 +1603,12 @@ var requirejs, require, define;
                     //Just a plain path, not module name lookup, so just return it.
                     //Add extension if it is included. This is a bit wonky, only non-.js things pass
                     //an extension, this method probably needs to be reworked.
+                    if ( moduleName[0] == "/" ) {
+                        var fmn = moduleName.substring(1);
+                    }
+                    if ( !ext && window.FileVersions ) {
+                        ext = "?v=" + window.FileVersions[ fmn || moduleName ];
+                    }
                     url = moduleName + (ext || '');
                 } else {
                     //A module that needs to be converted to a path.
@@ -1633,7 +1639,7 @@ var requirejs, require, define;
 
                     var args = "";
                     if ( window.FileVersions && window.FileVersions[url] ) {
-                        args = window.FileVersions[url];
+                        args = "v=" + window.FileVersions[url];
                     } else {
                         args = config.urlArgs;
                     }

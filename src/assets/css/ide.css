@@ -7556,7 +7556,8 @@ g.shadow {
   text-align: center; }
 
 .res_diff_tree {
-  background: #1a1c1d; }
+  background: #1a1c1d;
+  width: 422px; }
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree .scroll-wrap-res-diff {

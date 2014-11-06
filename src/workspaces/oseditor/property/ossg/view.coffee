@@ -12,7 +12,7 @@ define [
 
         events:
 
-            "change [data-target]": "updateAttribute"
+            "change .selection[data-target]": "updateAttribute"
             "click .direction-switch .t-m-btn": "switchDirection"
             "click .rule-item-remove": "removeRule"
             "click .os-sg-remove": "removeSG"

@@ -12,7 +12,7 @@ define [
 
         events:
 
-            "change [data-target]": "updateAttribute"
+            "change .selection[data-target]": "updateAttribute"
 
             "select_dropdown_button_click .item-list": "addItem"
             "click .item-list .item": "editItem"

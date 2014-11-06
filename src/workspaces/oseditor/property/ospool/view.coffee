@@ -8,7 +8,7 @@ define [
 
     OsPropertyView.extend {
         events:
-            'change [data-target]': 'updateAttribute'
+            'change .selection[data-target]': 'updateAttribute'
 
         initialize: ->
             @memConn = @model.connections 'OsPoolMembership'

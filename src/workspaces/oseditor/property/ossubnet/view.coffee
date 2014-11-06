@@ -7,7 +7,7 @@ define [
     OsPropertyView.extend {
 
         events:
-            "change [data-target]" : "updateAttribute"
+            "change .selection[data-target]" : "updateAttribute"
             "select_dropdown_button_click .item-list": "addItem"
             "click .item-list .item .item-remove": "removeItemClicked"
             "select_item_remove .item-list": "removeItem"

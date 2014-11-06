@@ -108,7 +108,7 @@ var unbindValidation = function($parent) {
 
     $.fn.selectionValid = function(validationInstance) {
         var $dom = $(this);
-        var targetName = $dom.data('target');
+        var targetName = $dom.attr('data-target');
         var inputLimit;
 
         if (targetName) {

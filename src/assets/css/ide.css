@@ -7567,8 +7567,7 @@ g.shadow {
   width: 100%; }
 
 .res_diff_tree {
-  background: #1a1c1d;
-  width: 422px; }
+  background: #1a1c1d; }
   .res_diff_tree ::selection {
     background: transparent; }
   .res_diff_tree ul {

@@ -50,7 +50,7 @@
 <div class="option-group">
     <section class="group required">
         <label class="name">Fixed IP</label>
-        <input class="selection ipv4" id="property-os-server-fip" data-target="fixedIp" value="{{fixedIp}}"/>
+        <input class="selection" id="property-os-server-fip" data-target="fixedIp" value="{{fixedIp}}"/>
     </section>
     <section class="group required">
         <label class="name tooltip">Associate Floating IP</label>

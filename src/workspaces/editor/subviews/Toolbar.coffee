@@ -615,7 +615,7 @@ define [
 
         if result.compChange
           $diffTree = differ.renderAppUpdateView()
-          $('#app-update-summary-table').html $diffTree
+          $('#app-update-summary-table .scroll-content').html $diffTree
 
         that.renderKpDropdown(that.updateModal)
         TA.loadModule('stack').then ->

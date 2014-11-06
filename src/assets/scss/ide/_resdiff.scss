@@ -11,19 +11,10 @@ $color_property: #ff8330;
 
 $dark_blue: #2C2F46;
 
-.res_diff_tree {
-	overflow: auto;
-
-	// padding: 20px;
-
-	::selection {
-		background: transparent;
-	}
-
+.modal-res-diff {
 	.scroll-wrap-res-diff {
 		max-height : 581px;
-		// padding    : 15px 15px 0 15px;
-		margin-top: 20px;
+		margin-top : 20px;
 
 		.scroll-content > p {
 			font-size : 16px;
@@ -35,6 +26,24 @@ $dark_blue: #2C2F46;
 		font-weight: bold;
 	}
 
+	.res_diff_tree {
+		width: 100%;
+	}
+
+}
+
+.res_diff_tree {
+	// overflow : auto;
+	background  : $bg_body;
+	// width       : 434px;
+
+	// padding: 20px;
+
+	::selection {
+		background: transparent;
+	}
+
+	
 	ul {
 		list-style: none;
 	}
@@ -51,7 +60,7 @@ $dark_blue: #2C2F46;
 		padding-bottom : 6px;
 		width          : 100%;
 		text-align     : left;
-		background     : $bg_body;
+		
 		// border-left    : 1px #17c249 solid;
 
 		-webkit-transiti: all .2s;

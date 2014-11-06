@@ -44,9 +44,9 @@
   }
 }
 
-#modal-run-stack .modal-control-group.default-kp-group {
-  padding-top: 0;
-}
+// #modal-run-stack .modal-control-group.default-kp-group {
+//   padding-top: 0;
+// }
 
 button#property-app-keypair {
   display: block;
@@ -58,7 +58,7 @@ button#property-app-keypair {
 }
 
 .default-kp-group{
-  padding: 10px 0;
+  padding: 0;
 }
 
 #kp-runtime-placeholder {

@@ -7555,19 +7555,22 @@ g.shadow {
   background: rgba(0, 0, 0, 0.8);
   text-align: center; }
 
+.modal-res-diff .scroll-wrap-res-diff {
+  max-height: 581px;
+  margin-top: 20px; }
+  .modal-res-diff .scroll-wrap-res-diff .scroll-content > p {
+    font-size: 16px;
+    color: #ccc; }
+.modal-res-diff p {
+  font-weight: bold; }
+.modal-res-diff .res_diff_tree {
+  width: 100%; }
+
 .res_diff_tree {
   background: #1a1c1d;
   width: 422px; }
   .res_diff_tree ::selection {
     background: transparent; }
-  .res_diff_tree .scroll-wrap-res-diff {
-    max-height: 581px;
-    margin-top: 20px; }
-    .res_diff_tree .scroll-wrap-res-diff .scroll-content > p {
-      font-size: 16px;
-      color: #ccc; }
-  .res_diff_tree p {
-    font-weight: bold; }
   .res_diff_tree ul {
     list-style: none; }
   .res_diff_tree .title {

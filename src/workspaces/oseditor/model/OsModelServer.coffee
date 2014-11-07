@@ -16,6 +16,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
       imageId          : ""
       credential       : "keypair"
       state            : []
+      volumeSize        : ""
 
     initialize : ( attr, option )->
       option = option || {}
@@ -91,12 +92,20 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
           id        : @get("appId")
           name      : @get("name")
           flavor    : @get('flavorId')
-          image     : @get('imageId')
+          image     : ""
           meta      : @get('meta')
           NICS      : @connectionTargets( "OsPortUsage" ).map ( port )-> { "port-id" : port.createRef("id") }
           userdata  : @get('userData')
           availabilityZone   : @get('availabilityZone')
-          blockDeviceMapping : []
+          blockDeviceMappingV2 : [
+            bootIndex: 0
+            sourceType: "image"
+            volumeSize: @get("volumeSize")
+            deviceName: ""
+            uuid: @get("imageId")
+            destinationType: "volume"
+            deleteOnTermination: true
+          ]
 
       KeypairModel = Design.modelClassForType(constant.RESTYPE.OSKP)
       defaultKp = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
@@ -120,8 +129,9 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
         name  : data.resource.name
         appId : data.resource.id
         flavorId  : data.resource.flavor
-        imageId   : data.resource.image
+        imageId   : data.resource.image || data.resource.blockDeviceMappingV2[0].uuid
         adminPass : data.resource.adminPass
+        volumeSize: data.resource.blockDeviceMappingV2?[0].volumeSize
         keypair   : if data.resource.key_name.split("{")[0] is "@" then "$DefaultKeyPair" else data.resource.key_name
         state     : data.state
 

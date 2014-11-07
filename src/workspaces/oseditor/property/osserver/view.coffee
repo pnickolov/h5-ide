@@ -22,6 +22,7 @@ define [
       "change #property-os-server-userdata": "updateServerAttr"
       'change #property-os-server-fip': "updateServerAttr"
       'change #property-os-server-aip': "updateServerAttr"
+      'change #property-os-server-volsize': "updateServerAttr"
       'select_initialize #property-os-server-image': "initImage"
       'select_initialize #property-os-server-credential': "initCredential"
       'select_initialize #property-os-server-RAM': "initRAM"
@@ -33,12 +34,14 @@ define [
     render: ->
       @$el.empty()
       json = @model.toJSON()
+      currentImage = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(@model.get('imageId'))
       @flavorList = App.model.getOpenstackFlavors( Design.instance().get("provider"), Design.instance().region() )
       json.imageList = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).toJSON()
       json.floatingIp = !!@model.embedPort().getFloatingIp()
       json.fixedIp = @model.embedPort().get('ip')
       json.isAppEdit = @modeIsAppEdit()
       json.agentEnabled = Design.instance().get('agent').enabled
+      json.volumeSize |= currentImage.get("vol_size")
       @$el.html template.stackTemplate json
       kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: @modeIsAppEdit()})
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
@@ -85,6 +88,10 @@ define [
     checkWindowsDistro: (imageId)->
       image = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
       distro = image.get("os_distro")
+      volumeSize = image.get("vol_size")
+      console.log volumeSize
+      @model.set('volumeSize', volumeSize)
+      $("#property-os-server-volsize").val(@model.get("volumeSize") || image.get("vol_size"))
       distroIsWindows = distro is 'windows'
       $serverCredential = @$el.find("#property-os-server-credential")
       $serverCredential.parents(".group").toggle(not distroIsWindows)
@@ -98,48 +105,51 @@ define [
       attr = target.data('target')
       selectize = target[0].selectize
 
-      if attr is 'imageId'
-        @model.setImage target.val()
-        @checkWindowsDistro(target.val())
+      switch attr
 
-      if attr is 'name'
-        @setTitle target.val()
+        when 'imageId'
+          @checkWindowsDistro(target.val())
+          @model.setImage target.val()
 
-      if attr is 'CPU'
-        flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
-        availableRams = flavorGroup[target.val()]
-        if availableRams?.length
-          ramSelectize = @$el.find("#property-os-server-RAM")[0].selectize
-          if not ramSelectize then return false
-          ramValue = ramSelectize.getValue()
-          availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (e/1024 + " G"), value: e}
-          currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
-          if not currentRamFlavor
-            ramValue = _.min(_.pluck availableRamsValue, 'value')
+        when 'name'
+          @setTitle target.val()
+
+        when 'CPU'
+          flavorGroup = _.groupBy @flavorList.models, (e)-> return e.get 'vcpus'
+          availableRams = flavorGroup[target.val()]
+          if availableRams?.length
+            ramSelectize = @$el.find("#property-os-server-RAM")[0].selectize
+            if not ramSelectize then return false
+            ramValue = ramSelectize.getValue()
+            availableRamsValue = _.map (_.pluck (_.map availableRams, (ram)-> ram.toJSON()), 'ram'), (e)-> {text: (e/1024 + " G"), value: e}
             currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
-          @model.set("flavorId", currentRamFlavor.get('id'))
-          @updateRamOptions(availableRamsValue, ramValue)
-        else
+            if not currentRamFlavor
+              ramValue = _.min(_.pluck availableRamsValue, 'value')
+              currentRamFlavor = _.find(availableRams, (e)-> return e.get('ram') is +ramValue)
+            @model.set("flavorId", currentRamFlavor.get('id'))
+            @updateRamOptions(availableRamsValue, ramValue)
+          else
+            return false
           return false
-        return false
 
-      if attr is 'RAM'
-        oldRamFlavor = @flavorList.get @model.get('flavorId')
-        flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
-        availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
-        targetFlavor = _.find availableRams, (e)->return e.get('ram') is +selectize.getValue()
-        @model.set('flavorId', targetFlavor.get('id'))
-        return false
+        when 'RAM'
+          oldRamFlavor = @flavorList.get @model.get('flavorId')
+          flavorGroup = _.groupBy @flavorList.models, (e)-> e.get 'vcpus'
+          availableRams = flavorGroup[oldRamFlavor.get('vcpus')]
+          targetFlavor = _.find availableRams, (e)->return e.get('ram') is +selectize.getValue()
+          @model.set('flavorId', targetFlavor.get('id'))
+          return false
 
-      if attr is "fixedIp"
-        serverPort = @model.embedPort()
-        serverPort.setIp(target.val())
-        return false
+        when "fixedIp"
+          serverPort = @model.embedPort()
+          serverPort.setIp(target.val())
+          return false
 
-      if attr is 'associateFip'
-        serverPort = @model.embedPort()
-        serverPort.setFloatingIp target.getValue() #bool type use jQuery $el.getValue()
-        return false
+        when 'associateFip'
+          serverPort = @model.embedPort()
+          serverPort.setFloatingIp target.getValue() #bool type use jQuery $el.getValue()
+          return false
+        else
 
       @model.set(attr, target.val()) if attr
 

@@ -572,7 +572,11 @@ define [
         if stopped and not (comp.type in [constant.RESTYPE.EIP, constant.RESTYPE.VOL, constant.RESTYPE.ELB, constant.RESTYPE.CW])
           continue
         if comp.getCost
-          cost = comp.getCost( priceMap, currency )
+          cost = null
+          try
+            cost = comp.getCost( priceMap, currency )
+          catch err
+            console.log("Price not found")
           if not cost then continue
 
           if cost.length

@@ -298,8 +298,8 @@ module.exports =
       zh: ""
 
     RELOAD_STATE_INVALID_REQUEST:
-        en: "Sorry, but the request is not valid."
-        zh: ""
+      en: "Sorry, but the request is not valid."
+      zh: ""
 
     RELOAD_STATE_NETWORKERROR:
       en: "Network error, please try again later."

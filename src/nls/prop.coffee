@@ -15,10 +15,6 @@ module.exports =
       en: "Done"
       zh: ""
 
-    LBL_CANCEL:
-      en: "Cancel"
-      zh: ""
-
     LBL_LOADING:
       en: "Loading..."
       zh: ""
@@ -128,7 +124,7 @@ module.exports =
       zh: ""
 
     INSTANCE_EBS_OPTIMIZED:
-      en: "EBS Optimization"
+      en: "EBS Optimized"
       zh: "EBS 优化"
 
     INSTANCE_TENANCY:
@@ -2027,7 +2023,7 @@ module.exports =
       en: "Database Config"
       zh: ""
 
-    DBINSTANCE_NAME:
+    DATABASE_NAME:
       en: "Database Name"
       zh: ""
 
@@ -2209,10 +2205,6 @@ module.exports =
       en: "(Pending Apply)"
       zh: ""
 
-    DBINSTANCE_NAME:
-      en: "DB Instance Name"
-      zh: ""
-
     DBINSTANCE_AUTO_MINOR_VERSION_UPDATE:
       en: "Auto Minor Version Update"
       zh: ""
@@ -2297,18 +2289,6 @@ module.exports =
       en: "day(s)"
       zh: ""
 
-    DBINSTANCE_BACKUP_WINDOW:
-      en: "Backup Window"
-      zh: ""
-
-    DBINSTANCE_NO_PREFERENCE:
-      en: "No Preference"
-      zh: ""
-
-    DBINSTANCE_SELECT_WINDOW:
-      en: "Select Window"
-      zh: ""
-
     DBINSTANCE_START_TIME:
       en: "Start Time:"
       zh: ""
@@ -2327,10 +2307,6 @@ module.exports =
 
     DBINSTANCE_MAINTENANCE_OPTION:
       en: "Maintenance Options"
-      zh: ""
-
-    DBINSTANCE_MAINTENANCE_WINDOW:
-      en: "Maintenance Window"
       zh: ""
 
     DBINSTANCE_MAINTENANCE_START_DAY:
@@ -2497,10 +2473,6 @@ module.exports =
       en: "Load Balancer Protocal"
       zh: ""
 
-    ELB_INSTANCE_PROTOCOL:
-      en: "Instance Protocol"
-      zh: ""
-
     ENI_NETWORK_INTERFACE_DETAIL:
       en: "Network Interface Details"
       zh: ""
@@ -2535,14 +2507,6 @@ module.exports =
 
     INSTANCE_VIEW_AGENT_USER_DATA_URL_TEXT:
       en: "View content"
-      zh: ""
-
-    INSTANCE_EBS_OPTIMIZED:
-      en: "EBS Optimized"
-      zh: ""
-
-    INSTANCE_IOPS:
-      en: "IOPS"
       zh: ""
 
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:

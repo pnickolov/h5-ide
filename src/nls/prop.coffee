@@ -2755,15 +2755,12 @@ module.exports =
 
 
 
-
-
-
     ###
     COMPONENT:
     ###
     SNAPSHOT_SET_NAME:
-        en: "Snapshot Name"
-        zh: ""
+      en: "Snapshot Name"
+      zh: ""
 
     SNAPSHOT_SET_NAME_TIP:
       en: "Enter the name of the snapshot that you will create."

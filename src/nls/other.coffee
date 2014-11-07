@@ -958,12 +958,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: ''
 
     PORT_TIP_C:
-        en: 'Connect to route table to create route'
-        zh: ''
+      en: 'Connect to route table to create route'
+      zh: ''
 
     PORT_TIP_D:
-        en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
-        zh: ''
+      en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+      zh: ''
 
     PORT_TIP_E:
       en: 'Connect to network interface to attach.'
@@ -1051,10 +1051,6 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
-      zh: ""
-
-    POP_CONFIRM_STOP_PROD_APP_MSG:
-      en: " Stopping it will make your service unavailable."
       zh: ""
 
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:

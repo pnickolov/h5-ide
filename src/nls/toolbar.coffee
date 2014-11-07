@@ -240,8 +240,8 @@ module.exports =
       zh: "复制"
 
     POP_BTN_SAVE_TO_STACK:
-        en: "Save"
-        zh: "保存"
+      en: "Save"
+      zh: "保存"
 
     TIP_CREATE_STACK:
       en: "Create New Stack"

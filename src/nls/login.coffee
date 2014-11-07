@@ -2,66 +2,65 @@
 
 module.exports =
   LOGIN:
+    login:
+      en: "Log In"
+      zh: "登录"
 
-      login:
-        en: "Log In"
-        zh: "登录"
+    "login-register":
+      en: "New to VisualOps? "
+      zh: "注册新用户？ "
 
-      "login-register":
-        en: "New to VisualOps? "
-        zh: "注册新用户？ "
+    "link-register":
+      en: "Register"
+      zh: "注册"
 
-      "link-register":
-        en: "Register"
-        zh: "注册"
+    "error-msg-1":
+      en: "Username or email does not match the password."
+      zh: "邮件地址或用户名不正确"
 
-      "error-msg-1":
-        en: "Username or email does not match the password."
-        zh: "邮件地址或用户名不正确"
+    "error-msg-2":
+      en: "Hey, you forgot to enter a username or email."
+      zh: "邮件地址错误"
 
-      "error-msg-2":
-        en: "Hey, you forgot to enter a username or email."
-        zh: "邮件地址错误"
+    "link-foget":
+      en: "Forgot your Password?"
+      zh: "忘记密码？"
 
-      "link-foget":
-        en: "Forgot your Password?"
-        zh: "忘记密码？"
+    "login-user":
+      en: "Username or email"
+      zh: "邮件地址或用户名"
 
-      "login-user":
-        en: "Username or email"
-        zh: "邮件地址或用户名"
+    "login-password":
+      en: "Password"
+      zh: "密码"
 
-      "login-password":
-        en: "Password"
-        zh: "密码"
+    "login-btn":
+      en: "Log In"
+      zh: "登录"
 
-      "login-btn":
-        en: "Log In"
-        zh: "登录"
+    "login-loading":
+      en: "Logging In"
+      zh: "正在登录"
 
-      "login-loading":
-        en: "Logging In"
-        zh: "正在登录"
+    login_waiting:
+      en: "Please wait..."
+      zh: "稍等..."
 
-      login_waiting:
-        en: "Please wait..."
-        zh: "稍等..."
+    "madeira-offered-in":
+      en: "&copy; VisualOps offered in"
+      zh: "&copy; VisualOps 还提供"
 
-      "madeira-offered-in":
-        en: "&copy; VisualOps offered in"
-        zh: "&copy; VisualOps 还提供"
+    "browser_not_support_1":
+      en: "VisualOps IDE does not support the browser you are using."
+      zh: "VisualOps IDE 不支持您正使用的浏览器。"
 
-      "browser_not_support_1":
-        en: "VisualOps IDE does not support the browser you are using."
-        zh: "VisualOps IDE 不支持您正使用的浏览器。"
+    "browser_not_support_2":
+      en: "For a better experience, we suggest you use the latest version of "
+      zh: "为了您有更好的体验， 我们建议您使用最新版本的 "
 
-      "browser_not_support_2":
-        en: "For a better experience, we suggest you use the latest version of "
-        zh: "为了您有更好的体验， 我们建议您使用最新版本的 "
-
-      "browser_not_support_3":
-        en: "."
-        zh: "等浏览器。"
+    "browser_not_support_3":
+      en: "."
+      zh: "等浏览器。"
 
     REGISTER:
       register:

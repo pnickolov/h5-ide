@@ -89,6 +89,7 @@
                 <p class="property-os-image-text">{{emptyStr image_name}}<span class="uid">{{emptyStr image_id}}</span></p>
             </div>
         </dd>
+        <dt>Volume Size</dt><dd>{{emptyStr volumeSize}}</dd>
         <dt>Fixed IP</dt><dd>{{emptyStr fixedIp}}</dd>
         <dt>MAC Address</dt><dd>{{emptyStr macAddress}}</dd>
         <dt>Floating IP</dt><dd>{{emptyStr floatingIp}}</dd>

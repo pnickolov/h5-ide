@@ -41,7 +41,7 @@ define [
       json.fixedIp = @model.embedPort().get('ip')
       json.isAppEdit = @modeIsAppEdit()
       json.agentEnabled = Design.instance().get('agent').enabled
-      json.volumeSize |= currentImage.get("vol_size")
+      json.volumeSize ||= currentImage.get("vol_size")
       @$el.html template.stackTemplate json
       kpDropdown = new OsKp(@model,template.kpSelection {isAppEdit: @modeIsAppEdit()})
       @$el.find("#property-os-server-keypair").html(kpDropdown.render().$el)
@@ -89,8 +89,8 @@ define [
       image = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
       distro = image.get("os_distro")
       volumeSize = image.get("vol_size")
-      console.log volumeSize
-      @model.set('volumeSize', volumeSize)
+      if (@model.get("volumeSize")||0) < volumeSize
+        @model.set("volumeSize", volumeSize)
       $("#property-os-server-volsize").val(@model.get("volumeSize") || image.get("vol_size"))
       distroIsWindows = distro is 'windows'
       $serverCredential = @$el.find("#property-os-server-credential")
@@ -151,6 +151,7 @@ define [
           return false
         else
 
+      console.log attr, target.val()
       @model.set(attr, target.val()) if attr
 
     updateRamOptions: (availableRams, currentRam)->

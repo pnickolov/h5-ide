@@ -92,7 +92,7 @@ define [ "ComplexResModel", "constant", "Design", "CloudResources" ], ( ComplexR
           id        : @get("appId")
           name      : @get("name")
           flavor    : @get('flavorId')
-          image     : ""
+          image     : @get("imageId")
           meta      : @get('meta')
           NICS      : @connectionTargets( "OsPortUsage" ).map ( port )-> { "port-id" : port.createRef("id") }
           userdata  : @get('userData')

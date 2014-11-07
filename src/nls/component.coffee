@@ -54,6 +54,10 @@ module.exports =
       en: "This IP address conflicts with other network interface's IP"
       zh: ""
 
+    VALIDATION_VOLUME_SIZE_LARGE_THAN_IMAGE_SIZE:
+      en: "Volume size must larger than image size."
+      zh: ""
+
     VALIDATION_CANNOT_MOVE_VOLUME_ACROSS_AZ:
       en: "Cannot move volume across availability zone."
       zh: ""

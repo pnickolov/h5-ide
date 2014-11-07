@@ -3,13 +3,13 @@ var gutil = require('gulp-util');
 var fs    = require('fs');
 var os    = require('os');
 
-var serverTask  = require('./util/gulp_tasks/server');
-var developTask = require('./util/gulp_tasks/develop');
-var releaseTask = require('./util/gulp_tasks/release');
-var traceTask   = require('./util/gulp_tasks/trace');
+var serverTask  = require('./gulptasks/server');
+var developTask = require('./gulptasks/develop');
+var deployTask  = require('./gulptasks/deploy');
+var traceTask   = require('./gulptasks/trace');
 
 // Load user-config
-GLOBAL.gulpConfig = require('./gulpconfig-default');
+GLOBAL.gulpConfig = require('./gulpconfig.default');
 if ( fs.existsSync("./gulpconfig.js") ) {
   gutil.log("Loaded Custom Config");
   var custom = require('./gulpconfig')
@@ -26,54 +26,77 @@ if ( GLOBAL.gulpConfig.pollingWatch === "auto" ) {
   }
 }
 
-gulp.task("default", ["dev"], function(){
-  serverTask.create(); // Create a static server
-  developTask.watch();   // Watch File Changes
+
+// Develop
+gulp.task("default", function(){
+  developTask.compile().then(function(){
+    serverTask();
+    developTask.watch();
+  });
 });
 
-// Create a server without compiling
 gulp.task("watch", function(){
-  serverTask.create(); // Create a static server
-  developTask.watch();   // Watch File Changes
+  serverTask();
+  developTask.watch();
 });
 
-// Build different version of ide
-gulp.task("dev",     function(){ return developTask.compileDev(); });
-gulp.task("debug",   function(){ return releaseTask.build( "debug" );   });
-gulp.task("release", function(){ return releaseTask.build( "release" ); });
 
-gulp.task("public", function(){ console.log("Deprecated, use `gulp build -b public` instead."); });
+// Deploy
+gulp.task("debug", function(){
+  var a = argv( "debug" );
+  if ( a === false ) { return; }
+  deployTask.debug( a );
+});
+gulp.task("release", function(){
+  var a = argv( "release" );
+  if ( a === false ) { return; }
+  deployTask.release( a );
+});
 
-gulp.task("qa_build", function(){ return releaseTask.build( "qa" ); })
-gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
+function argv( cmd ) {
+  var index = process.argv.indexOf( cmd );
+  if ( index < 0 ) {
+    console.error("Fail to parse cmd");
+    return false;
+  }
 
+  var argv = process.argv.splice( index + 1 );
+  if ( argv.length >= 2 ) {
+    return argv[1].replace(/^-./,"")
+  }
+
+  return argv[0] || "";
+}
+
+
+
+// Debug
 gulp.task("trace", function(){ return traceTask(); });
 
-gulp.task("build", function(){
-  var index = process.argv.indexOf("build");
-  if ( index < 0 ) { return console.error("Fail to parse cmd"); }
-  var argv = process.argv.splice( index + 1 );
-  if ( !argv.length ) {
-    console.log( "Usage: (Make sure the 'testBranch' is created in the origin) " )
-    console.log( "  gulp build -testBranch" );
-    console.log( "  gulp build -b testBranch\n\n" );
-    return
-  }
-  releaseTask.build( "release", argv.length >= 2 ? argv[1].replace(/^-./,"") : argv[0] );
-});
+
+
+// Deprecated
+gulp.task("build", function(){ console.log("Deprecated, read the help doc please."); });
+gulp.task("public",  function(){ console.log("Deprecated, use `gulp build -b public` instead."); });
+// gulp.task("qa_build", function(){ return deployTask.build( "qa" ); })
+// gulp.task("qa", ["qa_build"], function(){ return serverTask.create("./qa", 3002); });
+
+
 
 // Help
 gulp.task("help", function(){
-  console.log( "\n ===== For Daily Development =====")
-  console.log( "\n * gulp          - Compile IDE and start a server @127.0.0.1:3000. Aka `gulp dev;gulp watch`" );
-  console.log( "\n * gulp watch    - Start a server @127.0.0.1:3000." );
-  console.log( "\n * gulp dev      - Compile IDE, excluding src/model and src/service" );
+  console.log( "\n ===== Daily Development =====")
+  console.log( "+ gulp");
+  console.log( "      Compile IDE and start a local server @{staticFileServer:staticFileServerPort}\n" );
+  console.log( "+ gulp watch");
+  console.log( "      Start a local server @{staticFileServer:staticFileServerPort}\n" );
 
-  console.log( "\n\n ===== For Delpoyment =====")
-  console.log( "\n * gulp debug    - Compile IDE in release mode, and push to remote develop" );
-  console.log( "\n * gulp release  - Like `gulp debug`, except: minification applied and push to master" );
-  console.log( "\n * gulp build -b ** - Build the IDE in release mode, and push to remote ** branch")
-  console.log( "\n * gulp public   - Like `gulp release`, except: the ide won't redirect to https" );
-  console.log( "\n * gulp qa       - Like `gulp debug`, except: serve files @127.0.0.1:3002 instead of pushing code." );
-  console.log("");
+  console.log( "\n ===== Delpoyment =====")
+  console.log( "+ gulp debug [-b BranchName]");
+  console.log( "      Compile in debug mode. Push to remote repo, default branch is `develop`\n" );
+  console.log( "+ gulp release [-b BranchName]");
+  console.log( "      Compile in release mode. Push to remote repo, default branch is `master`\n" );
+
+  console.log( "\n ===== Debug =====")
+  console.log( "+ gulp trace\n");
 });

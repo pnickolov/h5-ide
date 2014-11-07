@@ -385,6 +385,13 @@ requirejs.onError = ( err )->
     console.error "[RequireJS Error]", err, err.stack
 
 
+# Define what locale we support.
+# This file will be read and processed by gulp. In that environment, `define` is undefined
+if window.define
+  define "/nls/lang.js", [], {
+    'en-us' : true
+    'zh-cn' : true
+  }
 
 
 require [

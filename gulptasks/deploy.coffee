@@ -21,7 +21,6 @@ rjsreporter = require("./plugins/rjsreporter")
 unittest    = require("./plugins/test")
 util        = require("./plugins/util")
 
-server = require("./server")
 
 
 SrcOption = {"base":"./src"}
@@ -60,51 +59,44 @@ stdRedirect = (d)-> process.stdout.write d; null
 confCompile = ()-> conditional( true, TasksEnvironment.isDebug )
 
 
+
 TasksEnvironment =
   isDebug   : false
   isRelease : false
-  isQa      : false
   isPublic  : false
 
 
-Tasks =
 
+Tasks =
   correctReleaseVersion : ()->
     if TasksEnvironment.isRelease
       releaseVersion = GLOBAL.gulpConfig.version.split(".")
       releaseVersion.length = 3
       GLOBAL.gulpConfig.version = releaseVersion.join(".")
-
     true
 
-  removeRedirectForPublic : ()->
-    if not TasksEnvironment.isPublic then return true
+  # removeRedirectForPublic : ()->
+  #   if not TasksEnvironment.isPublic then return true
 
-    logTask "Stripping https redirect", true
+  #   logTask "Stripping https redirect", true
 
-    stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g
+  #   stripHttpsRedirectRegex = /### AHACKFORRELEASINGPUBLICVERSION ###/g
 
-    d = Q.defer()
-    pipe = gulp.src( ["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption )
-      .pipe es.through (f)->
+  #   d = Q.defer()
+  #   pipe = gulp.src( ["./src/js/ide/config.coffee", "./src/user/main.coffee"], SrcOption )
+  #     .pipe es.through (f)->
 
-        newContent = f.contents.toString("utf8").replace stripHttpsRedirectRegex, "###"
+  #       newContent = f.contents.toString("utf8").replace stripHttpsRedirectRegex, "###"
 
-        f.contents = new Buffer( newContent )
-        @emit "data", f
-        null
-      .pipe( confCompile() ) # Remove ### env:dev ###
-      .pipe( coffee() ) # Compile coffee
-      .pipe( fileLogger() )
-      .pipe( stripdDebug() )
-      .pipe( dest() ).on( "end", end(d, true) )
-    d.promise
-
-
-  cleanRepo : ()->
-    logTask "Removing ignored files in src (git clean -xdf)"
-
-    util.runCommand "git", ["clean", "-xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
+  #       f.contents = new Buffer( newContent )
+  #       @emit "data", f
+  #       null
+  #     .pipe( confCompile() ) # Remove *** env:dev ***
+  #     .pipe( coffee() ) # Compile coffee
+  #     .pipe( fileLogger() )
+  #     .pipe( stripdDebug() )
+  #     .pipe( dest() ).on( "end", end(d, true) )
+  #   d.promise
 
   checkGitVersion : ()->
     logTask "Checking Git Version"
@@ -123,10 +115,14 @@ Tasks =
 
     d.promise
 
+  cleanRepo : ()->
+    logTask "Removing ignored files in src (git clean -xdf)"
+    util.runCommand "git", ["clean", "-xdf"], { cwd : process.cwd() + "/src" }, stdRedirect
+
   copyAssets : ()->
     logTask "Copying Assets & robots.txt"
 
-    p = ["./src/assets/**/*", "./src/robots.txt", "!**/*.glyphs", "!**/*.scss", "!./src/assets/config.rb"]
+    p = ['./src/assets/**/*', './src/robots.txt', '!*.glyphs', '!*.scss', '!./src/assets/config.rb']
 
     d = Q.defer()
     gulp.src( p, SrcOption ).pipe( dest() ).on( "end", end(d) )
@@ -135,26 +131,18 @@ Tasks =
   copyJs : ()->
     logTask "Copying Js & Templates"
 
-    p = ["./src/**/*.js", "!./src/test/**/*"]
-
     d = Q.defer()
-    gulp.src( p, SrcOption ).pipe( confCompile() ).pipe( dest() ).on( "end", end(d) )
+    gulp.src( ['./src/**/*.js'], SrcOption ).pipe( confCompile() ).pipe( dest() ).on( "end", end(d) )
     d.promise
 
   compileLangSrc : ()->
     logTask "Compiling lang-source"
-
-    d = Q.defer()
-    langsrc.compileImmediately()
-    gulp.src(["./src/nls/lang-source/**/*.coffee"], SrcOption )
-        .pipe( langsrc.langCache("./build",false,GLOBAL.gulpConfig.verbose,true) )
-        .on( "end", end(d) )
-    d.promise
+    langsrc.build("./build", false)
 
   compileCoffee : ()->
     logTask "Compiling coffees", true
 
-    p = ["./src/**/*.coffee", "!src/test/**/*", "!./src/nls/lang-source.coffee"]
+    p = ['./src/**/*.coffee', '!./src/nls/*.coffee']
 
     d = Q.defer()
     pipe = gulp.src( p, SrcOption )
@@ -170,7 +158,7 @@ Tasks =
   compileTemplate : ()->
     logTask "Compiling templates", true
 
-    p = ["./src/**/*.partials", "./src/**/*.html", "!src/test/**/*", "!src/*.html", "!src/include/*.html" ]
+    p = ['./src/**/*.partials', './src/**/*.html', '!src/*.html', '!src/include/*.html' ]
 
     d = Q.defer()
     gulp.src( p, SrcOption )
@@ -188,7 +176,7 @@ Tasks =
 
     d = Q.defer()
     gulp.src( p )
-      .pipe( confCompile( true ) )
+      .pipe( confCompile() )
       .pipe( include() ) # Include other templates or variables to the html
       .pipe( variable() )
       .pipe( dest() )
@@ -200,7 +188,7 @@ Tasks =
 
     d = Q.defer()
     requirejs.optimize(
-      rjsconfig( TasksEnvironment.isDebug, TasksEnvironment.outputPath )
+      rjsconfig( TasksEnvironment.isDebug )
     , (buildres)->
       if rjsreporter(buildres)
         d.resolve()
@@ -392,20 +380,21 @@ Tasks =
           console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "
       true
 
-  test : ()->
-    p = if TasksEnvironment.isQa then "./qa" else "./deploy"
-    # Create a server to serve the files for testing.
-    testserver = server.create p, 3010, false, false
+  # test : ()->
+  #   p = "./deploy"
+  #   # Create a server to serve the files for testing.
+  #   testserver = server.create p, 3010, false, false
 
-    # Start test with zombie
-    logTask "Starting automated test"
+  #   # Start test with zombie
+  #   logTask "Starting automated test"
 
-    result = unittest()
-    if result
-      return result.then ()-> testserver.close(); true
-    else
-      testserver.close()
-      return true
+  #   result = unittest()
+  #   if result
+  #     return result.then ()-> testserver.close(); true
+  #   else
+  #     testserver.close()
+  #     return true
+
 
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.
@@ -422,53 +411,52 @@ Tasks =
   #*** Generate version for JS files
   #*** Final Git commit
   #*** Push to remote
+
+BuildProcess = ( mode, branchName )->
+  TasksEnvironment.isDebug    = mode is "debug"
+  TasksEnvironment.isRelease  = mode is "release"
+
+  #TasksEnvironment.isPublic   = branchName is "public"
+
+  if branchName
+    TasksEnvironment.repoBranch = branchName
+  else if TasksEnvironment.isRelease
+    TasksEnvironment.repoBranch = "master"
+  else
+    TasksEnvironment.repoBranch = "develop"
+
+  ideversion.read()
+
+  [
+    Tasks.correctReleaseVersion
+    Tasks.checkGitVersion
+    Tasks.cleanRepo
+    Tasks.copyAssets
+    Tasks.copyJs
+    Tasks.compileLangSrc
+    Tasks.compileCoffee
+    #Tasks.removeRedirectForPublic
+    Tasks.compileTemplate
+    Tasks.processHtml
+    Tasks.concatJS
+    Tasks.removeBuildFolder
+    #Tasks.test
+    Tasks.fetchRepo
+    Tasks.preCommit
+    Tasks.fileVersion
+    Tasks.logDeployInDevRepo
+    Tasks.finalCommit
+
+  ].reduce( Q.when, true )
+   .then ()->
+      console.log gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n"
+      true
+    , (p)->
+      console.log "[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p
+      throw new Error("\n") # Use this method to tell gulp that our task are aborted.
+
+
 module.exports =
-  build : ( mode, branchName )->
+  debug   : ( bn )-> BuildProcess( "debug",   bn )
+  release : ( bn )-> BuildProcess( "release", bn )
 
-    TasksEnvironment.isDebug    = mode is "qa" or mode is "debug"
-    TasksEnvironment.isRelease  = mode is "release"
-    TasksEnvironment.isQa       = mode is "qa"
-    TasksEnvironment.isPublic   = branchName is "public"
-    TasksEnvironment.outputPath = if mode is "qa" then "./qa" else undefined
-
-    if branchName
-      TasksEnvironment.repoBranch = branchName
-    else
-      TasksEnvironment.repoBranch = "master"
-      if TasksEnvironment.isDebug then TasksEnvironment.repoBranch = "develop"
-
-    ideversion.read()
-
-    tasks = [
-      Tasks.correctReleaseVersion
-      Tasks.checkGitVersion
-      Tasks.cleanRepo
-      Tasks.copyAssets
-      Tasks.copyJs
-      Tasks.compileLangSrc
-      Tasks.compileCoffee
-      Tasks.removeRedirectForPublic
-      Tasks.compileTemplate
-      Tasks.processHtml
-      Tasks.concatJS
-      Tasks.removeBuildFolder
-      Tasks.test
-    ]
-
-    if not TasksEnvironment.isQa
-      tasks = tasks.concat [
-        Tasks.fetchRepo
-        Tasks.preCommit
-        Tasks.fileVersion
-        Tasks.logDeployInDevRepo
-        Tasks.finalCommit
-      ]
-
-    tasks
-      .reduce(Q.when, true)
-      .then ()->
-        console.log gutil.colors.bgBlue.white("\n [Build Succeed] ") + "\n"
-        true
-      , (p)->
-        console.log "[", gutil.colors.bgRed.white("Build Task Aborted"), "]", p
-        throw new Error("\n") # Use this method to tell gulp that our task are aborted.

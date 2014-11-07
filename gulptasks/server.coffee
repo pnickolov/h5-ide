@@ -4,7 +4,7 @@ nstatic = require("node-static")
 http    = require("http")
 open    = require("open")
 
-module.exports.create = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort, autoOpen = GLOBAL.gulpConfig.openUrlAfterCreateServer, logTask = true )->
+module.exports = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort, autoOpen = GLOBAL.gulpConfig.openUrlAfterCreateServer, logTask = true )->
 
   defaultHeader = { "Cache-Control" : "no-cache" }
 

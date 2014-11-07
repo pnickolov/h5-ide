@@ -33,13 +33,16 @@ coffeelintOptions =
   no_debugger     : { level : "ignore" }
 
 
-compileIgnorePath = /.src.(test|vender|ui)/
-compileCoffeeOnlyRegex = /.src.(service|model)/
+compileCoffeeOnlyRegex = /.src.(service)/
 
 
 
 Helper =
   shouldLintCoffee : (f)-> not f.path.match compileCoffeeOnlyRegex
+
+  compilei18n : ()->
+    gutil.log gutil.colors.bgBlue.white(" Compiling language... ")
+    langsrc.build()
 
   compileCompass : ()->
     compassSuccess = true
@@ -53,6 +56,15 @@ Helper =
       onData : (d)->
         if compassSuccess then process.stdout.write d
     }
+
+  isBufferEqual : (b1, b2)->
+    if b1.length != b2.length then return false
+    i = b1.length
+    while i >= 0
+      if b1[i] isnt b2[i]
+        return false
+      --i
+    true
 
   runCompass : ()->
     compassSuccess = false
@@ -110,7 +122,6 @@ Helper =
         "./src/**/*.coffee"
         "./src/**/*.html"
         "./src/**/*.partials"
-        "./util/gulp_tasks/**/*.coffee"
         "./src/assets/**/*"
         "!src/include/*.html"
       ], ( event )->
@@ -126,11 +137,11 @@ Helper =
     else
       gutil.log gutil.colors.bgBlue.white(" Watching file changes... ") + " [Native FSevent, vim might not trigger changes]"
 
-      watcher = chokidar.watch ["./src", "./util/gulp_tasks"], {
+      watcher = chokidar.watch ["./src"], {
         usePolling    : false
         useFsEvents   : true
         ignoreInitial : true
-        ignored       : /([\/\\]\.)|src.(test|vender)/
+        ignored       : /([\/\\]\.)|src.vender/
       }
 
       # Native file event doesn't report git action correctly.
@@ -219,18 +230,18 @@ StreamFuncs =
   createStreamObject : ()->
     # Create Work Stream
     if StreamFuncs.workStream then return
-
-    StreamFuncs.workStream    = es.through()
-    StreamFuncs.workEndStream = StreamFuncs.setupCompileStream StreamFuncs.workStream
+    StreamFuncs.workStream = es.through()
+    StreamFuncs.workEndStream = StreamFuncs.setupCompileStream()
     null
 
   setupCompileStream : ( stream )->
+    stream = StreamFuncs.workStream
 
     # Branch Used to handle asset files ( image / css / fonts / etc. )
     assetBranch = StreamFuncs.throughLiveReload()
 
     # Branch Used to handle lang-source.js
-    langSrcBranch = langsrc.langCache()
+    langSrcBranch = langsrc.pipeline()
 
     # Branch Used to handle coffee files
     coffeeBranch = StreamFuncs.throughCoffee()
@@ -239,7 +250,7 @@ StreamFuncs =
     templateBranch = StreamFuncs.throughHandlebars()
 
     # Setup compile branch
-    langeSrcBranchRegex   = /lang-source[\/\\].*\.coffee/
+    langeSrcBranchRegex   = /nls[\/].+coffee$/
     coffeeBranchRegex     = /\.coffee$/
     templateBranchRegex   = /(\.partials)|(\.html)$/
 
@@ -329,12 +340,12 @@ compileDev = ()->
     "src/**/*.coffee"
     "src/**/*.partials"
     "src/**/*.html"
+    "!src/nls/*.coffee"
     "!src/*.html"
     "!src/include/*.html"
-    "!src/test/**/*"
   ]
 
-  deferred = Q.defer()
+  d = Q.defer()
 
   StreamFuncs.createStreamObject()
 
@@ -344,12 +355,11 @@ compileDev = ()->
     null
 
   compileStream.once "end", ()->
-    langsrc.langWrite()
-    Helper.compileCompass().then ( value )-> deferred.resolve()
+    Q.all([ Helper.compilei18n(), Helper.compileCompass() ]).then ()-> d.resolve()
 
-  deferred.promise
+  d.promise
 
 
 module.exports =
-  watch      : watch
-  compileDev : compileDev
+  watch   : watch
+  compile : compileDev

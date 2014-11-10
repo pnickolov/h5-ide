@@ -25,6 +25,7 @@ define [ '../base/view',
 
         events   :
             'change #property-vpc-name'       : 'onChangeName'
+            'change #property-res-desc'       : 'onChangeDescription'
             'change #property-cidr-block'     : 'onChangeCidr'
             'change #property-dns-resolution' : 'onChangeDnsSupport'
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
@@ -75,6 +76,10 @@ define [ '../base/view',
                 @model.setName name
                 @setTitle name
             null
+
+        onChangeDescription : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         onChangeCidr : ( event ) ->
             target = $ event.currentTarget

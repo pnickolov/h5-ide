@@ -67,6 +67,9 @@ define [ "Design", "./ResourceModel", "constant" ], ( Design, ResourceModel, con
       @set "name", name
       null
 
+    setDesc : (description) ->
+      @set "description", description
+
     remove : ()->
       # Mark as removed first, so that connection knows why they're being removed.
       @markAsRemoved()
@@ -195,4 +198,3 @@ define [ "Design", "./ResourceModel", "constant" ], ( Design, ResourceModel, con
   }
 
   ComplexResModel
-

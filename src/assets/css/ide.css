@@ -742,6 +742,13 @@ td.table-action a.btn {
   height: 60px;
   overflow: auto; }
 
+.property-control-group #property-res-desc {
+  width: 242px;
+  height: 20px; }
+  .property-control-group #property-res-desc:focus {
+    width: 242px;
+    height: 62px; }
+
 .property-control-group textarea:focus {
   background-color: #000000;
   color: #eeeeee;
@@ -7125,7 +7132,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

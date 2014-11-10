@@ -15,6 +15,11 @@
             <input class="input"  type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>
 
+        <section class="property-control-group" data-bind="true">
+          <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+          <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+        </section>
+
         <section class="property-control-group">
             <label class="left">{{i18n "PROP.DBINSTANCE_CLASS"}}</label>
             <div class="selectbox selectbox-mega" id="property-dbinstance-class-select">

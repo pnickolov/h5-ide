@@ -12,6 +12,7 @@ define [ '../base/view',
 
         events   :
             'change .instance-name'                       : 'instanceNameChange'
+            'change #property-res-desc'                   : 'onChangeDesc'
             'change #property-instance-count'             : 'countChange'
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
@@ -145,6 +146,10 @@ define [ '../base/view',
                 @model.setName name
                 @setTitle name
             null
+
+        onChangeDesc : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         countChange : ( event ) ->
             target = $ event.currentTarget

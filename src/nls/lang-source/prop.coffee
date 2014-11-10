@@ -2714,11 +2714,11 @@ module.exports =
       zh: ""
 
     SUBNET_GROUP_NAME:
-      en: "Subnet Group Name"
+      en: "Name"
       zh: ""
 
     SUBNET_GROUP_DESCRIPTION:
-      en: "Subnet Group Description"
+      en: "Description"
       zh: ""
 
     SUBNET_GROUP_MEMBER:

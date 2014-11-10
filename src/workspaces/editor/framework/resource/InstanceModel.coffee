@@ -591,6 +591,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         type   : @type
         uid    : @id
         name   : name
+        description : @get("description") or ""
         index  : 0
         number : @get("count")
         serverGroupUid  : @id
@@ -822,6 +823,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       attr =
         id    : data.uid
         name  : data.serverGroupName or data.name
+        description : data.description or ""
         appId : data.resource.InstanceId
         count : data.number
 

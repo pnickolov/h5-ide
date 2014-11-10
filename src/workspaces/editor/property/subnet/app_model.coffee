@@ -16,6 +16,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
             subnet = _.clone subnet
             subnet.name = mySubnetComponent.get 'name'
+            subnet.description = mySubnetComponent.get 'description'
             subnet.acl  = this.getACL( uid )
             subnet.uid  = uid
 

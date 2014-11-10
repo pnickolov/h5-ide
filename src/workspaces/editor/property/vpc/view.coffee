@@ -20,12 +20,11 @@ define [ '../base/view',
 
         result
 
-
     VPCView = PropertyView.extend {
 
         events   :
             'change #property-vpc-name'       : 'onChangeName'
-            'change #property-res-desc'       : 'onChangeDescription'
+            'change #property-res-desc'       : 'onChangeDesc'
             'change #property-cidr-block'     : 'onChangeCidr'
             'change #property-dns-resolution' : 'onChangeDnsSupport'
             'change #property-dns-hostname'   : 'onChangeDnsHostname'
@@ -77,7 +76,7 @@ define [ '../base/view',
                 @setTitle name
             null
 
-        onChangeDescription : (event) ->
+        onChangeDesc : (event) ->
 
             @model.setDesc $(event.currentTarget).val()
 

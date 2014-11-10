@@ -12,6 +12,7 @@ define [ '../base/view',
     InstanceView = PropertyView.extend {
 
         events :
+            'change #property-res-desc'           : 'onChangeDesc'
             'change #property-instance-count'     : "countChange"
             'click #property-ami'                 : "openAmiPanel"
 
@@ -60,6 +61,10 @@ define [ '../base/view',
             @updateInstanceList()
             @setEditableIP( val is 1 )
             null
+
+        onChangeDesc : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         ebsOptimizedSelect : ( event )->
             @model.setEbsOptimized event.target.checked

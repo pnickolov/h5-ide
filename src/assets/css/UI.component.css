@@ -1008,10 +1008,12 @@ li.error-message {
         display: none !important; }
     .selectize-control .selectize-dropdown .selectize-dropdown-content .selected {
       color: #fff; }
+    .selectize-control .selectize-dropdown .selectize-dropdown-content div {
+      border: 1px solid transparent;
+      border-radius: 2px;
+      margin: 4px; }
     .selectize-control .selectize-dropdown .selectize-dropdown-content .active {
       border: 1px solid #51568e;
-      border-radius: 2px;
-      margin: 4px;
       background-color: #1d1e29;
       color: #fff; }
 

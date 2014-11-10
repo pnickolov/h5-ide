@@ -368,10 +368,13 @@
             .selected {
                 color: #fff;
             }
-            .active {
-                border           : 1px solid $light-p-2;
+            div {
+                border           : 1px solid transparent;
                 border-radius    : 2px;
                 margin           : 4px;
+            }
+            .active {
+                border           : 1px solid $light-p-2;
                 background-color : $dark-p-2;
                 color            : #fff;
             }

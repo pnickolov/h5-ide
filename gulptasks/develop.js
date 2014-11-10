@@ -210,6 +210,9 @@ StreamFuncs = {
       if (util.endsWith(file.path, ".scss")) {
         return;
       }
+      if (util.endsWith(file.path, ".css")) {
+        console.log(util.compileTitle(""), path.relative(util.cwd, file.path));
+      }
       if (Helper.lrServer) {
         Helper.lrServer.changed({
           body: {

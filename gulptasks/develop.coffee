@@ -174,6 +174,10 @@ StreamFuncs =
     es.through ( file )->
       if util.endsWith( file.path, ".scss" ) then return
 
+      # Don't know why the compass doesn't log anymore.
+      if util.endsWith( file.path, ".css" )
+        console.log util.compileTitle(""), path.relative( util.cwd, file.path )
+
       if Helper.lrServer
         Helper.lrServer.changed {
           body : { files : [ file.path ] }
@@ -279,7 +283,7 @@ changeHandler = ( path )->
 
   if path.match /src.assets/
     # No need to read file for assets folder
-    StreamFuncs.workStream.emit "data", { path : path }
+    StreamFuncs.workStream.emit "data", { path:path }
   else if path.match /src.[^\/]+\.html/
     # Drop the src/*.html here, because it seems like gulpif doesn't
     # handle globs well. Although it claims to support it.

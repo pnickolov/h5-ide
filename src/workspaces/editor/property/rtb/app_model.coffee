@@ -56,6 +56,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
 
           rtb = $.extend true, {}, rtb
           rtb.name = routeTable.get 'name'
+          rtb.description = routeTable.get 'description'
 
           has_main = false
 

@@ -58,6 +58,7 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
     serialize : ()->
       component =
         name : @get("name")
+        description : @get("description") or ""
         type : @type
         uid  : @id
         resource :
@@ -106,12 +107,13 @@ define [ "../ComplexResModel", "Design", "../connection/Route", "../connection/R
           asso_main = "" + data.resource.AssociationSet[0].Main is "true"
 
       rtb = new Model({
-        id   : data.uid
-        appId: data.resource.RouteTableId
-        name : data.name
-        main : !!asso_main
-        x    : layout_data.coordinate[0]
-        y    : layout_data.coordinate[1]
+        id          : data.uid
+        appId       : data.resource.RouteTableId
+        name        : data.name
+        description : data.description or ""
+        main        : !!asso_main
+        x           : layout_data.coordinate[0]
+        y           : layout_data.coordinate[1]
       })
       null
 

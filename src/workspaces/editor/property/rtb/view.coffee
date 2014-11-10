@@ -8,20 +8,23 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
 
         events   :
 
-            'REMOVE_ROW  .multi-input'        : 'removeIp'
-            'ADD_ROW     .multi-input'        : 'processParsley'
-            'BEFORE_REMOVE_ROW  .multi-input' : 'beforeRemoveIp'
-            'change #rt-name'                 : 'changeName'
-            'click #set-main-rt'              : 'setMainRT'
-            'change .propagation'             : 'changePropagation'
+            'REMOVE_ROW  .multi-input'          : 'removeIp'
+            'ADD_ROW     .multi-input'          : 'processParsley'
+            'BEFORE_REMOVE_ROW  .multi-input'   : 'beforeRemoveIp'
+            'change #rt-name'                   : 'changeName'
+            'click #set-main-rt'                : 'setMainRT'
+            'change .propagation'               : 'changePropagation'
 
-            "focus .ipt-wrapper .input"      : 'onFocusCIDR'
-            "keypress .ipt-wrapper .input"   : 'onPressCIDR'
-            "blur .ipt-wrapper .input"       : 'onBlurCIDR'
+            "focus .ipt-wrapper .input"         : 'onFocusCIDR'
+            "keypress .ipt-wrapper .input"      : 'onPressCIDR'
+            "blur .ipt-wrapper .input"          : 'onBlurCIDR'
+            'change #property-res-desc'         : 'onChangeDescription'
 
         render     : () ->
             @$el.html template @model.attributes
             @model.attributes.title
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         processParsley: ( event ) ->
             $( event.currentTarget )

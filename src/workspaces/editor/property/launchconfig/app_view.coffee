@@ -15,7 +15,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
         kpModalClosed: false
 
         render: () ->
-            data = _.extend modeIsAppEdit: Design.instance().modeIsAppEdit(), @model.toJSON()
+            data = _.extend isEditable: @model.isAppEdit, @model.toJSON()
             @$el.html template data
             data.name
 

@@ -2,16 +2,17 @@
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP.CGW_APP_CGW_LBL_ID" }}</dt>
     <dd>{{customerGatewayId}}</dd>
-    {{#if isEditable}}
-    <section class="property-control-group" data-bind="true">
-        <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
-        <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
-    </section>
-    {{else}}
+    {{#unless isEditable}}
     <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
     <dd>{{emptyStr description}}</dd>
-    {{/if}}
+    {{/unless}}
   </dl>
+  {{#if isEditable}}
+  <section class="property-control-group" data-bind="true">
+    <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+    <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+  </section>
+  {{/if}}
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP.CGW_APP_CGW_LBL_STATE" }}</dt>
     <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>

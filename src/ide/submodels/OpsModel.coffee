@@ -24,7 +24,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving"]
 
-  OpsModelLastestVersion = "2014-09-18"
+  OpsModelLastestVersion = "2014-11-11"
 
   OpsModel = Backbone.Model.extend {
 

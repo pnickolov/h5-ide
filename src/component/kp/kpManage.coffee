@@ -185,9 +185,11 @@ define [
                 that.cancel()
                 if success.length is 1
                     console.debug success
-                    sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
+                    notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
+                    return
                 else if success.length > 1
                     notification 'info', sprintf lang.NOTIFY.SELECTED_KEYPAIRS_ARE_DELETED, success.length
+                    return
 
                 if not that.collection.toJSON().length
                     that.M$( '#t-m-select-all' )
@@ -196,6 +198,8 @@ define [
 
                 _.each error, ( s ) ->
                     console.log(s)
+                if error.length > 0
+                    notification 'error', lang.NOTIFY.FAILED_TO_DELETE_KP
 
             ( res ) ->
                 console.debug res
@@ -251,7 +255,7 @@ define [
 
                 @collection.create( {keyName:keyName, keyData: keyContent}).save()
                     .then (res) ->
-                        notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED keyName
+                        notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED, keyName
                         that.cancel()
                     ,( err ) ->
                         if err.awsResult and err.awsResult.indexOf( 'Length exceeds maximum of 2048' ) >= 0

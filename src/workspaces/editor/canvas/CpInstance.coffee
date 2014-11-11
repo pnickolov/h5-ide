@@ -28,7 +28,11 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
       @$el.find(".selected").removeClass("selected")
 
-      ide_event.trigger ide_event.OPEN_PROPERTY, constant.RESTYPE.INSTANCE, $( evt.currentTarget ).addClass("selected").attr("data-id")
+      id = $(evt.currentTarget).addClass("selected").attr("data-id")
+      type = constant.RESTYPE.INSTANCE
+      if id.indexOf('eni-') == 0
+          type = constant.RESTYPE.ENI
+      ide_event.trigger ide_event.OPEN_PROPERTY, type, $( evt.currentTarget ).addClass("selected").attr("data-id")
       false
 
     remove : ()->

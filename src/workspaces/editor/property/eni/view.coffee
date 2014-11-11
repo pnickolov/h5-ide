@@ -13,9 +13,9 @@ define [ '../base/view',
     ENIView = PropertyView.extend {
 
         events   :
-            "change #property-eni-desc"             : "setEniDesc"
+            # "change #property-eni-desc"             : "setEniDesc"
+            'change #property-res-desc'             : 'onChangeDesc'
             "change #property-eni-source-check"     : "setEniSourceDestCheck"
-
             'click .toggle-eip'                     : 'setEip'
             'click #property-eni-ip-add'            : "addIp"
             'click #property-eni-list .icon-remove' : "removeIp"
@@ -34,6 +34,10 @@ define [ '../base/view',
         setEniDesc : ( event ) ->
             @model.setEniDesc event.target.value
             null
+
+        onChangeDesc : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         setEniSourceDestCheck : ( event ) ->
             @model.setSourceDestCheck event.target.checked

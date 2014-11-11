@@ -255,7 +255,7 @@ define [
 
                 @collection.create( {keyName:keyName, keyData: keyContent}).save()
                     .then (res) ->
-                        notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED keyName
+                        notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED, keyName
                         that.cancel()
                     ,( err ) ->
                         if err.awsResult and err.awsResult.indexOf( 'Length exceeds maximum of 2048' ) >= 0

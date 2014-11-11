@@ -177,7 +177,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model'
 
             if result and result.output
 
-                logContent = window.atob(result.output)
+                logContent = Base64.decode(result.output)
                 $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
                 $contentElem.html MC.template.convertBreaklines({content:logContent})

@@ -242,7 +242,7 @@ define [
                 keyName = @M$( '#import-kp-name' ).val()
                 @switchAction 'processing'
                 try
-                    keyContent = btoa that.__upload.getData()
+                    keyContent = (Base64.encode||window.btoa)(that.__upload.getData())
                 catch
                     @modal.error 'Key is not in valid OpenSSH public key format'
                     that.switchAction 'init'

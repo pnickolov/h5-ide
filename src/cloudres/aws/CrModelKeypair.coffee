@@ -39,6 +39,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Keypair created but aws returns invalid data." )
 
         self.set 'keyName', keyName
+        self.set 'id', keyName
         console.log "Created keypair resource", self
         self
 

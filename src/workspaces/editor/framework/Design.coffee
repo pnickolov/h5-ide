@@ -518,7 +518,7 @@ define [
     data.property = @attributes.property || {}
     data.property.stoppable = @isStoppable()
 
-    if options.toStack or options.duplicateStack
+    if options and options.toStack or @modeIsStack()
       data.version = OpsModel.LatestVersion
     data.state   = @__opsModel.getStateDesc() || "Enabled"
     data.id      = @__opsModel.get("id")

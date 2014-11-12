@@ -10,10 +10,11 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
             cgw = Design.instance().component( uid )
 
             @set {
-                uid     : uid
-                name    : cgw.get("name")
-                BGP     : cgw.get("bgpAsn")
-                ip      : cgw.get("ip")
+                uid          : uid
+                name         : cgw.get("name")
+                description  : cgw.get("description")
+                BGP          : cgw.get("bgpAsn")
+                ip           : cgw.get("ip")
             }
             null
 

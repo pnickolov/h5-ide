@@ -275,6 +275,7 @@ define [ "Design",
         type : @type
         uid  : @id
         name : @get("name")
+        description : @get("description") or ""
         resource :
           AvailabilityZones : [] # @getAvailabilityZones()
           Subnets : subnets
@@ -316,6 +317,7 @@ define [ "Design",
       attr =
         id     : data.uid
         name   : data.name
+        description : data.description or ""
         appId  : data.resource.DNSName
         parent : resolve( layout_data.groupUId )
 

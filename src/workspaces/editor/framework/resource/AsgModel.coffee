@@ -313,10 +313,11 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
           elbArray = _.map elbs, ( elb )-> elb.createRef( "LoadBalancerName" )
 
       component =
-        uid  : @id
-        name : @get("name")
-        type : @type
-        resource :
+        uid         : @id
+        name        : @get("name")
+        description : @get("description") or ""
+        type        : @type
+        resource    :
           AvailabilityZones       : azs
           VPCZoneIdentifier       : subnets.join(" , ")
           LoadBalancerNames       : elbArray or []
@@ -340,11 +341,12 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
     deserialize : ( data, layout_data, resolve )->
 
       asg = new Model({
-        id    : data.uid
-        name  : data.name
-        appId : data.resource.AutoScalingGroupARN
+        id          : data.uid
+        name        : data.name
+        description : data.description or ""
+        appId       : data.resource.AutoScalingGroupARN
 
-        parent : resolve( MC.extractID( layout_data.groupUId ) )
+        parent      : resolve( MC.extractID( layout_data.groupUId ) )
 
         cooldown               : String(data.resource.DefaultCooldown)
         capacity               : String(data.resource.DesiredCapacity)

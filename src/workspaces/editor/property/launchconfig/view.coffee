@@ -8,6 +8,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
 
         events   :
             'change .launch-configuration-name'           : 'lcNameChange'
+            'change #property-res-desc'                   : 'onChangeDescription'
             'change .instance-type-select'                : 'instanceTypeSelect'
             'change #property-instance-ebs-optimized'     : 'ebsOptimizedSelect'
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
@@ -23,6 +24,8 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             'click #volume-type-radios input' : 'changeVolumeType'
             'keyup #iops-ranged'              : 'changeIops'
             'keyup #volume-size-ranged'       : 'sizeChanged'
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         changeVolumeType : ( event ) ->
             $this = $( event.currentTarget )

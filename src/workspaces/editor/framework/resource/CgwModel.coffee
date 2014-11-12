@@ -14,10 +14,11 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
 
     serialize : ()->
       component =
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource :
+        name        : @get("name")
+        description : @get("description") or ""
+        type        : @type
+        uid         : @id
+        resource    :
           CustomerGatewayId : @get("appId")
           BgpAsn            : @get("bgpAsn")
           Type              : "ipsec.1"
@@ -32,12 +33,12 @@ define [ "../ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design
     deserialize : ( data, layout_data, resolve )->
 
       new Model({
-
-        id     : data.uid
-        name   : data.name
-        appId  : data.resource.CustomerGatewayId
-        bgpAsn : data.resource.BgpAsn
-        ip     : data.resource.IpAddress
+        id          : data.uid
+        name        : data.name
+        description : data.description or ""
+        appId       : data.resource.CustomerGatewayId
+        bgpAsn      : data.resource.BgpAsn
+        ip          : data.resource.IpAddress
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

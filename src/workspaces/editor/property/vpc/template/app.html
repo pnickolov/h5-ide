@@ -5,6 +5,8 @@
     <dl class="dl-vertical">
       <dt>{{ i18n "PROP.VPC_APP_VPC_ID" }}</dt>
       <dd>{{id}}</dd>
+      <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
+      <dd>{{emptyStr description}}</dd>
       <dt>{{ i18n "PROP.VPC_APP_STATE" }}</dt>
       <dd><i class="status status-{{state}}"></i>{{state}}</dd>
       <dt>{{ i18n "PROP.VPC_APP_CIDR" }}</dt>
@@ -71,5 +73,5 @@
   {{/unless}}
   </div>
 
-  
+
 </article>

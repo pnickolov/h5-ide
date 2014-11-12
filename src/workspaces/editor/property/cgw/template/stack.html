@@ -5,6 +5,12 @@
 		<input class="input" type="text" value="{{name}}" id="property-cgw-name" data-ignore="true"/>
 	</div>
 
+
+	<div class="property-control-group">
+        <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+        <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+	</div>
+
 	<div class="property-control-group clearfix">
 		<label class="left" for="property-cgw-ip">{{ i18n "PROP.CGW_LBL_IPADDR" }}</label>
 		<span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>

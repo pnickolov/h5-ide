@@ -13,6 +13,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         data =
           uid        : uid
           name       : asg_comp.get 'name'
+          description: asg_comp.get 'description'
           minSize    : asg_comp.get 'minSize'
           maxSize    : asg_comp.get 'maxSize'
           capacity   : asg_comp.get 'capacity'

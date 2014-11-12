@@ -9,14 +9,17 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
         events:
             'change #property-instance-enable-cloudwatch'   : 'cloudwatchSelect'
             'change #property-instance-user-data'           : 'userdataChange'
+            'change #property-res-desc'                     : 'onChangeDescription'
             'keyup #property-instance-name'                : 'checkInstanceName'
 
         kpModalClosed: false
 
         render: () ->
-            data = @model.toJSON()
+            data = _.extend isEditable: @model.isAppEdit, @model.toJSON()
             @$el.html template data
             data.name
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         cloudwatchSelect : ( event ) ->
             @model.setCloudWatch event.target.checked

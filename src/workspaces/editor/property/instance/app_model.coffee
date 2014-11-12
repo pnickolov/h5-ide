@@ -67,11 +67,11 @@ define [ '../base/model',
                 @set 'uid', effective.uid
                 @set 'mid', effective.mid
 
+            if myInstanceComponent
+                @set 'description', myInstanceComponent.get("description")
 
             if not myInstanceComponent
                 console.warn "instance.app_model.init(): can not find InstanceModel"
-
-
 
             app_data = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
 

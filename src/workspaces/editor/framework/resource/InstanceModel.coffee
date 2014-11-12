@@ -591,6 +591,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
         type   : @type
         uid    : @id
         name   : name
+        description : @get("description") or ""
         index  : 0
         number : @get("count")
         serverGroupUid  : @id
@@ -763,7 +764,10 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       # The instance_id might be component uid or aws id
       if design.component( instance_id ) then return {uid:instance_id, mid:null}
 
-      for instance in @allObjects()
+      insAndEniAry = Design.modelClassForType( constant.RESTYPE.INSTANCE ).allObjects()
+      insAndEniAry = insAndEniAry.concat(Design.modelClassForType( constant.RESTYPE.ENI ).allObjects())
+
+      for instance in insAndEniAry
         if instance.get("appId") is instance_id
           return { uid : instance.id, mid : "#{instance.id}_0" }
         else if instance.groupMembers
@@ -822,6 +826,7 @@ define [ "../ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'Cloud
       attr =
         id    : data.uid
         name  : data.serverGroupName or data.name
+        description : data.description or ""
         appId : data.resource.InstanceId
         count : data.number
 

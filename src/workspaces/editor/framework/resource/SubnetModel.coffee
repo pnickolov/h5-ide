@@ -187,6 +187,7 @@ define [ "constant",
 
       component =
         name : @get("name")
+        description : @get("description") or ""
         type : @type
         uid  : @id
         resource :
@@ -372,6 +373,7 @@ define [ "constant",
 
         id    : data.uid
         name  : data.name
+        description : data.description or ""
         appId : data.resource.SubnetId
         cidr  : data.resource.CidrBlock
 

@@ -9,7 +9,7 @@ define [ "constant", "../GroupModel", "../ConnectionModel" ], ( constant, GroupM
   Model = GroupModel.extend {
 
     type    : constant.RESTYPE.DBSBG
-    newNameTmpl : "subnet-group"
+    newNameTmpl : "subnetgroup"
 
     defaults :
       x      : 2

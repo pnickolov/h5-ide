@@ -21,11 +21,13 @@ define [ '../base/main',
 
         initApp : () ->
             @model = app_model
+            @model.isAppEdit = false
             @view  = app_view
             null
 
         initAppEdit : () ->
             @model = app_model
+            @model.isAppEdit = true
             @view  = app_view
             null
     }

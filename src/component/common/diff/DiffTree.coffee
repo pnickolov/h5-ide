@@ -29,6 +29,7 @@ define ['constant'], (constant) ->
                 # DBINSTANCE
                 # 'DBINSTANCE.resource.Iops': true
                 # 'DBINSTANCE.resource.MasterUserPassword': true
+                'DBINSTANCE.resource.DBName': true
                 'DBINSTANCE.resource.AvailabilityZone': true
                 'DBINSTANCE.resource.Endpoint.Address': true
                 'DBINSTANCE.resource.ApplyImmediately': true
@@ -41,7 +42,7 @@ define ['constant'], (constant) ->
             }
 
         if not option.noDiffArrayAttrMap
-            
+
             option.noDiffArrayAttrMap = {
                 '*.state': true
                 # '*.resource.RouteSet': true

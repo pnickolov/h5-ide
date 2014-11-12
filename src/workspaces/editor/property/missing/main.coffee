@@ -2,7 +2,7 @@
 #  Controller for design/property/cgw module
 ####################################
 
-define [ '../base/main', '../base/model', '../base/view', 'constant' ], ( PropertyModule, PropertyModel, PropertyView, constant ) ->
+define [ '../base/main', '../base/model', '../base/view', 'constant', 'i18n!/nls/lang.js' ], ( PropertyModule, PropertyModel, PropertyView, constant, lang ) ->
 
     MissingView = PropertyView.extend {
         render : () ->

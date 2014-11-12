@@ -29,6 +29,7 @@ define [ '../base/view',
 
         events   :
             'keyup #property-elb-name'  : 'elbNameChange'
+            'change #property-res-desc' : 'onChangeDesc'
             'change #elb-scheme-select1' : "schemeSelectChange"
             'change #elb-scheme-select2' : "schemeSelectChange"
 
@@ -108,6 +109,10 @@ define [ '../base/view',
                     if $name.text() is oldName
                         $name.text( newName )
                         return false
+
+        onChangeDesc : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         schemeSelectChange : ( event ) ->
             @model.setScheme event.currentTarget.value

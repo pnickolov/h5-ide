@@ -24,6 +24,7 @@ define [ 'ApiRequest'
 
         events:
             'change #property-dbinstance-name': 'changeInstanceName'
+            'change #property-res-desc'       : 'onChangeDesc'
             'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
             'change #property-dbinstance-storage': 'changeAllocatedStorage'
             'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
@@ -929,6 +930,10 @@ define [ 'ApiRequest'
                     # @resModel.set 'instanceId', value
 
             null
+
+        onChangeDesc: (event) ->
+
+            @resModel.setDesc $(event.currentTarget).val()
 
         changeMutilAZ: (event) ->
 

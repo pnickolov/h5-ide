@@ -63,7 +63,7 @@ define [ '../base/model', "Design", "constant", 'CloudResources' ], ( PropertyMo
             dc_filename = dc_data.vpnConnectionId || 'download_configuration'
             dc_data     = MC.template.configurationDownload(dc_data)
 
-            "{\"download\":true, \"filecontent\":\"#{window.btoa(dc_data)}\", \"filename\":\"#{dc_filename}\", \"btnname\":\"#{config.name}\"}"
+            "{\"download\":true, \"filecontent\":\"#{Base64.encode(dc_data)}\", \"filename\":\"#{dc_filename}\", \"btnname\":\"#{config.name}\"}"
 
         "[ #{parse_result.join(',')} ]"
 

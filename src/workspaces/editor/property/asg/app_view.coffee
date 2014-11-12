@@ -61,6 +61,9 @@ define [ '../base/view',
             "click #property-asg-policy-add"               : "addScalingPolicy"
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
+            'change #property-res-desc'                    : 'onChangeDescription'
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         setASGCoolDown : ( event ) ->
             $target = $ event.target

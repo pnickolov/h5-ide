@@ -22,6 +22,10 @@
       <dt>{{ i18n "PROP.SUBNET_APP_RT_ID" }}</dt>
       <dd>{{routeTable}}</dd>
     </dl>
+    <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+      <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+    </section>
   </div>
 
   {{else}}
@@ -31,7 +35,10 @@
       <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
       <input class="input" type="text" value="{{name}}" lastValue="{{name}}" id="property-subnet-name" maxlength="255" data-required-rollback="true" data-ignore="true"/>
     </section>
-
+    <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+      <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+    </section>
     <section class="property-control-group">
       <label class="left" for="property-cidr-block">{{ i18n "PROP.SUBNET_DETAIL_LBL_CIDR_BLOCK" }}</label>
       <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
@@ -49,4 +56,3 @@
     <a href="#" class="add-to-list action-link" id="networkacl-create">{{ i18n "PROP.SUBNET_BTN_CREATE_NEW_ACL" }}</a>
   </div>
 </article>
-

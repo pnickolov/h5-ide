@@ -178,7 +178,7 @@ define [
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
-      newOps = App.model.createStackByJson( @workspace.design.serialize() )
+      newOps = App.model.createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
       App.openOps newOps
       return
 

@@ -193,6 +193,13 @@ define [ "../ResourceModel", "../ComplexResModel", "Design", "constant", "i18n!/
 
       true
 
+    setName : ( name )->
+      ComplexResModel.prototype.setName.call @, name
+      for expand in @get("expandedList")
+        expand.trigger 'change:name'
+
+      null
+
     setLc : ( lc )->
       if @getLc() or not lc then return
       if _.isString( lc )

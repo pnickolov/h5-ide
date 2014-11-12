@@ -46,6 +46,7 @@ define [ '../base/model', 'constant', "Design", "CloudResources" ], ( PropertyMo
         name       : subnet_component.get("name")
         networkACL : networkACLs
         isAppEdit  : @isAppEdit
+        description : subnet_component.get("description")
       }
 
       if @isAppEdit

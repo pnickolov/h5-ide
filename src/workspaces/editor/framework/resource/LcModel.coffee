@@ -162,6 +162,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         type : @type
         uid  : @id
         name : @get("name")
+        description : @get("description") or ""
         state : @get("state")
         resource :
           UserData                 : @get("userData")
@@ -191,10 +192,11 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
         data.state = null
 
       attr = {
-        id    : data.uid
-        name  : data.name
-        state : data.state
-        appId : data.resource.LaunchConfigurationARN
+        id          : data.uid
+        name        : data.name
+        description : data.description or ""
+        state       : data.state
+        appId       : data.resource.LaunchConfigurationARN
 
         imageId      : data.resource.ImageId
         ebsOptimized : data.resource.EbsOptimized

@@ -16,11 +16,12 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             myElbComponent = Design.instance().component( uid )
 
-
             elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))
             if not elb then return false
 
             elb = elb.toJSON()
+
+            elb.description = myElbComponent.get("description")
 
             if elb.ConnectionDraining
                 if elb.ConnectionDraining.Enabled

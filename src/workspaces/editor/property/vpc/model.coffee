@@ -28,6 +28,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
                 cidr           : component.get("cidr")
                 dhcp           : dhcp
                 isAppEdit      : @isAppEdit
+                description    : component.get("description")
             }
 
             if @isAppEdit

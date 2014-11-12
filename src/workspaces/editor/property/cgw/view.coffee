@@ -14,10 +14,13 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             "focus #property-cgw-ip"                 : 'onFocusIP'
             "keypress #property-cgw-ip"              : 'onPressIP'
             "blur #property-cgw-ip"                  : 'onBlurIP'
+            'change #property-res-desc'              : 'onChangeDescription'
 
         render     : () ->
             @$el.html template @model.toJSON()
             @model.get 'name'
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         onChangeRouting : () ->
             $( '#property-cgw-bgp-wrapper' ).toggle $('#property-routing-dynamic').is(':checked')

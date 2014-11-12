@@ -14,7 +14,10 @@
 					<input class="input instance-name"  type="text" value="{{ name }}" id="property-instance-name" data-ignore="true" data-required-rollback="true"/>
 				</div>
 			</div>
-
+		</section>
+		<section class="property-control-group" data-bind="true">
+			<label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+			<textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
 		</section>
 		<section class="property-control-group" data-bind="true">
 			<label class="left" for="property-instance-count" >{{ i18n "PROP.INSTANCE_NUMBER" }}</label>

@@ -7,12 +7,16 @@
 
   <div class="option-group-head expand">{{ i18n "PROP.ENI_LBL_DETAIL" }}</div>
   <div class="option-group">
-{{#unless isAppEdit}}
+<!-- {{#unless isAppEdit}}
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
       <textarea id="property-eni-desc" data-type="ascii" data-ignore="true" class="input">{{desc}}</textarea>
     </section>
-{{/unless}}
+{{/unless}} -->
+    <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+      <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+    </section>
     <section class="property-control-group">
       <div class="checkbox">
         <input id="property-eni-source-check" type="checkbox" {{#if sourceDestCheck}}checked="checked"{{/if}} />

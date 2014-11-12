@@ -10,6 +10,11 @@
 			<input class="input" type="text" value="{{name}}" id="property-asg-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
 		</section>
 
+		<section class="property-control-group" data-bind="true">
+	        <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+	        <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+		</section>
+
 		<section class="property-control-group clearfix">
 			<div class="left property-asg-size">
 				<label class="left" for="property-asg-min">{{ i18n "PROP.ASG_MIN_SIZE" }}</label>

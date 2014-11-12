@@ -5,6 +5,18 @@
     <dl class="dl-vertical">
       <dt>{{i18n "PROP.ASG_NAME"}}</dt>
       <dd>{{awsResName}}</dd>
+      {{#unless isEditable}}
+      <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
+      <dd>{{emptyStr description}}</dd>
+      {{/unless}}
+    </dl>
+    {{#if isEditable}}
+    <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+      <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+    </section>
+    {{/if}}
+    <dl class="dl-vertical">
       <dt>{{i18n "PROP.ASG_ARN"}}</dt>
       <dd class="click-select tooltip" data-tooltip="{{i18n 'PROP.ASG_TIP_CLICK_TO_SELECT'}}">{{arn}}</dd>
       <dt>{{i18n "PROP.ASG_CREATE_TIME"}}</dt>

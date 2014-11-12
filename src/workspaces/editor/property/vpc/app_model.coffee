@@ -16,6 +16,7 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
 
           vpc = $.extend true, {}, vpc
           vpc.name = myVPCComponent.get 'name'
+          vpc.description = myVPCComponent.get 'description'
 
           TYPE_RTB = constant.RESTYPE.RT
           TYPE_ACL = constant.RESTYPE.ACL

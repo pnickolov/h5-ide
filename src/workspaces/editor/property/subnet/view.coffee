@@ -14,7 +14,7 @@ define [ '../base/view',
 
         events   :
             "change #property-subnet-name"  : 'onChangeName'
-
+            "change #property-res-desc"     : 'onChangeDesc'
             "focus #property-cidr-block"    : 'onFocusCIDR'
             "keypress #property-cidr-block" : 'onPressCIDR'
             "blur #property-cidr-block"     : 'onBlurCIDR'
@@ -37,6 +37,10 @@ define [ '../base/view',
             if MC.aws.aws.checkResName( @model.get('uid'), target, "Subnet" )
                 @model.setName name
                 @setTitle name
+
+        onChangeDesc : (event) ->
+
+            @model.setDesc $(event.currentTarget).val()
 
         onPressCIDR : ( event ) ->
             if (event.keyCode is 13)

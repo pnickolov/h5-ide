@@ -16,7 +16,9 @@ define [ '../base/model', 'Design', 'constant', 'CloudResources' ], ( PropertyMo
             return false
 
           cgw = $.extend true, {}, cgw
+          cgw.uid = uid
           cgw.name = myCGWComponent.get 'name'
+          cgw.description = myCGWComponent.get 'description'
 
           this.set cgw
           null

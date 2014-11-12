@@ -15,6 +15,7 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
             attr        = component?.toJSON()
             attr.uid    = uid
             attr.isVpc  = true
+            attr.description = component?.get("description")
 
             # Format ping
             pingArr  = component.getHealthCheckTarget()

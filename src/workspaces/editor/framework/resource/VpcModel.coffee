@@ -6,6 +6,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
     type : constant.RESTYPE.VPC
 
     defaults :
+      description  : ""
       dnsSupport   : true
       dnsHostnames : false
       tenancy      : "default"
@@ -80,6 +81,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
         dhcp = dhcpModel.getDhcp()
       component =
         name : @get("name")
+        description : @get("description") or ""
         type : @type
         uid  : @id
         resource :
@@ -106,6 +108,7 @@ define [ "constant", "../GroupModel", "./DhcpModel" ], ( constant, GroupModel, D
       new Model({
         id    : data.uid
         name  : data.name
+        description : data.description or ""
         appId : data.resource.VpcId
 
         cidr         : data.resource.CidrBlock

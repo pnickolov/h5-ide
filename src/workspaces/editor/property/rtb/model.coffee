@@ -47,6 +47,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
       routes = []
       data =
         uid         : component.id # The component is guarantee to be RTB at this point, and we assign the uid of the property to be the RTB id, because we might need to set attributes of the rtb.
+        description : component.get("description")
         title       : component.get("name")
         isMain      : component.get("main")
         local_route : VPCModel.theVPC().get("cidr")

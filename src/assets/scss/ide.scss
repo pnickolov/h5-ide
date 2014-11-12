@@ -862,7 +862,7 @@ td.table-action a.btn {
 	width: 230px;
 }
 
-.property-control-group textarea{
+.property-control-group textarea {
     width: 242px;
     padding: 7px;
     border: 1px solid #000000;
@@ -872,13 +872,22 @@ td.table-action a.btn {
     overflow: auto;
 }
 
-.property-control-group textarea:focus{
+.property-control-group #property-res-desc {
+	width: 242px;
+	height: 20px;
+	&:focus {
+		width: 242px;
+		height: 62px;
+	}
+}
+
+.property-control-group textarea:focus {
     background-color: #000000;
     color: #eeeeee;
     border: 1px solid #161616;
 }
 
-.property-control-group textarea:hover{
+.property-control-group textarea:hover {
     background: #101010;
 }
 
@@ -2757,7 +2766,7 @@ details[open] + .nutshell {
 	-ms-transition     : background .2s;
 	-o-transition      : background .2s;
 	transition         : background .2s;
-	
+
 	#modal-validation-statusbar & {
 		width: 120px;
 

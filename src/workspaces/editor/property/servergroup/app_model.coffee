@@ -55,6 +55,7 @@ define [ '../base/model',
 			@set 'number', myInstanceComponent.get 'count'
 			@set 'name',   myInstanceComponent.get 'name'
 			@set 'monitoring', myInstanceComponent.get 'monitoring'
+			@set 'description', myInstanceComponent.get 'description'
 
 			@getGroupList()
 			@getEni()

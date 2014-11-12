@@ -653,6 +653,7 @@ define [
 
       component =
         name : @get("name")
+        description : @get("description") or ""
         type : @type
         uid  : @id
         resource :
@@ -722,6 +723,7 @@ define [
       model = new Model({
         id     : data.uid
         name   : data.name
+        description : data.description or ""
 
         createdBy                 : resource.CreatedBy
         appId                     : resource.DBInstanceIdentifier

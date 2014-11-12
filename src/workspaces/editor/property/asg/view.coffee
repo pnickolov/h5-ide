@@ -61,6 +61,7 @@ define [ '../base/view',
             "click #property-asg-policy-add"               : "addScalingPolicy"
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
+            'change #property-res-desc'                    : 'onChangeDescription'
 
         render     : () ->
             selectTopicName = @model.getNotificationTopicName()
@@ -85,6 +86,8 @@ define [ '../base/view',
             @processNotiTopic null, true
 
             data.name
+
+        onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         wheatherHasNoti: ->
             n = @model.notiObject?.toJSON()

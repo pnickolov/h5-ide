@@ -25,6 +25,11 @@ define [ 'backbone', 'Design', "constant" ], ( Backbone, Design, constant )->
             Design.instance().component( id ).setName( name )
             @set "name", name
             null
+
+        setDesc : (description) ->
+          id = @get("uid")
+          console.assert( id, "This property model doesn't have an id" )
+          Design.instance().component( id ).setDesc( description )
     }
 
     PropertyModel

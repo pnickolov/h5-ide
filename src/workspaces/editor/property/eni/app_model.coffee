@@ -55,6 +55,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
 
             eni.id              = eni_comp.appId
             eni.name            = if eni_comp.name then "#{eni_comp.name}-0" else "#{myEniComponent.get 'name'}-#{memberIndex or index}"
+            eni.description     = myEniComponent.get('description')
             eni.idx             = memberIndex or index
             eni.sourceDestCheck = if eni.sourceDestCheck then 'enabled' else 'disabled'
 

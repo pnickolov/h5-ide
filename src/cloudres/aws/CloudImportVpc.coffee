@@ -1052,8 +1052,8 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "ApiRequest", "Di
         lcRes.LaunchConfigurationARN  = aws_lc.id
         lcRes.LaunchConfigurationName = aws_lc.Name
         lcRes.InstanceMonitoring      = aws_lc.InstanceMonitoring.Enabled
-        if aws_lc.UserData and atob
-          lcRes.UserData = atob(aws_lc.UserData)
+        if aws_lc.UserData and Base64?.decode
+          lcRes.UserData = Base64.decode(aws_lc.UserData)
 
         #convert SecurityGroups to REF
         sg = []

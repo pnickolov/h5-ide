@@ -35,7 +35,7 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">{{i18n "PROP.KP_CONFIRM_DELETE_1"}} {{#if selecteKeyName }}{{selecteKeyName}}{{else}}{{i18n "PROP.KP_CONFIRM_DELETE_2"}} {{selectedCount}} {{i18n "PROP.KP_CONFIRM_DELETE_3"}}{{/if}}?</div>
+    <div class="modal-text-major">{{i18n "PROP.KP_CONFIRM_DELETE_1"}} {{#if selecteKeyName }}{{i18n "PROP.KP_CONFIRM_DELETE_3" selecteKeyName}}{{else}}{{i18n "PROP.KP_CONFIRM_DELETE_2" selectedCount}}{{/if}}</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
         <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>

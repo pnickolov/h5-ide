@@ -9,55 +9,55 @@ module.exports =
 
     LBL_DEFAULT:
       en: "Default"
-      zh: ""
+      zh: "默认"
 
     LBL_DONE:
       en: "Done"
-      zh: ""
+      zh: "完成"
 
     LBL_CANCEL:
       en: "Cancel"
-      zh: ""
+      zh: "取消"
 
     LBL_LOADING:
       en: "Loading..."
-      zh: ""
+      zh: "加载中..."
 
     LBL_CAPACITY:
       en: "Capacity"
-      zh: ""
+      zh: "大小"
 
     LBL_VALIDATION:
       en: "Validation"
-      zh: ""
+      zh: "验证"
 
     LBL_PROPERTY:
       en: "Property"
-      zh: ""
+      zh: "属性"
 
     LBL_STATE:
       en: "States"
-      zh: ""
+      zh: "States"
 
     LBL_OWNER:
       en: "Owner"
-      zh: ""
+      zh: "所有者"
 
     LBL_ERROR:
       en: "Error"
-      zh: ""
+      zh: "错误"
 
     LBL_WARNING:
       en: "Warning"
-      zh: ""
+      zh: "警告"
 
     LBL_NOTICE:
       en: 'Notice'
-      zh: ""
+      zh: "通知"
 
     LBL_STARTED:
       en: "Started"
-      zh: ""
+      zh: "开始"
 
     INSTANCE_DETAIL:
       en: "Instance Details"
@@ -125,7 +125,7 @@ module.exports =
 
     INSTANCE_CLOUDWATCH_DETAILED_MONITORING:
       en: "CloudWatch Detailed Monitoring"
-      zh: ""
+      zh: "CloudWatch 详细监控"
 
     INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimization"
@@ -153,111 +153,104 @@ module.exports =
 
     INSTANCE_DEFAULT_KP:
       en: "$DefaultKeyPair"
-      zh: ""
+      zh: "$DefaultKeyPair"
 
     KP_NAME:
       en: "Key Pair Name"
-      zh: ""
+      zh: "密钥对名称"
 
     KP_CREATED_NEED_TO_DOWNLAOD:
       en: "Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created."
-      zh: ""
+      zh: "密钥对 <span></span> 创建完成, 您需要下载私钥(*.pem 文件)才能继续, 请将其保存于安全的位置, 创建完成之后您将无法再次下载."
 
     KP_CONFIRM_DELETE_1:
       en: "Confirm to delete "
-      zh: ""
+      zh: "确认删除"
 
     KP_CONFIRM_DELETE_2:
-      en: " selected"
-      zh: ""
+      en: "selected %s key paires?"
+      zh: "已选择的 %s 个密钥对吗?"
 
     KP_CONFIRM_DELETE_3:
-      en: " key pairs"
-      zh: ""
+      en: "key pair %s ?"
+      zh: "密钥对 %s 吗?"
 
     KP_SELECT_A_FILE:
       en: "Select a file"
-      zh: ""
+      zh: "选择一个文件"
 
     KP_OR_PASTE_KEY_CONTENT:
       en: "or paste the key content here."
-      zh: ""
+      zh: "或者将密钥的内容粘贴在这"
 
     KP_OR_PASTE_TO_UPDATE:
       en: "or paste the key content again to update."
-      zh: ""
+      zh: "或者再次粘贴密钥的内容以更新"
 
     AZ_AND_SUBNET:
       en: "AZ & subnet"
-      zh: ""
+      zh: "AZ 和 子网"
 
 
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
-      zh: ""
+      zh: "无选项组"
 
     OG_CREATE_OPTION_GROUP:
       en: "Create Option Group"
-      zh: ""
+      zh: "创建选项组"
 
     OG_PORT:
       en: "Port"
-      zh: ""
+      zh: "端口"
 
     KP_SECURITY_GROUP:
       en: "Security Group"
-      zh: ""
+      zh: "安全组"
 
     KP_OPTION_SETTING:
       en: "Option Setting"
-      zh: ""
-
-
-
-
-
-
-
+      zh: "选项设置"
 
     INSTANCE_NO_KP:
       en: "No Key Pair"
-      zh: ""
+      zh: "无密钥对"
 
     INSTANCE_NEW_KP:
       en: "Create New Key Pair"
-      zh: "新建秘钥"
+      zh: "新建密钥"
 
     INSTANCE_FILTER_KP:
       en: "Filter by key pair name"
-      zh: ""
+      zh: "过滤密钥名"
 
     INSTANCE_MANAGE_KP:
       en: "Manage Region Key Pairs ..."
-      zh: ""
+      zh: "管理区域密钥对"
 
     INSTANCE_FILTER_SNS:
       en: "Filter by SNS Topic name"
-      zh: ""
+      zh: "过滤 SNS 主题名称"
 
     INSTANCE_MANAGE_SNS:
       en: "Manage SNS Topic ..."
-      zh: ""
+      zh: "管理 SNS 主题"
 
     INSTANCE_FILTER_SSL_CERT:
       en: "Filter by SSL Certificate name"
-      zh: ""
+      zh: "过滤 SSL 认证名称"
 
     INSTANCE_MANAGE_SSL_CERT:
       en: "Manage SSL Certificate..."
-      zh: ""
+      zh: "管理 SSL 认证"
 
     INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
-      zh: ""
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥, 或者您也可以选择'无密钥'."
 
     INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
-      zh: ""
+      zh: "如果您选择了 '无密钥', 您将无法连接到实例或启动配置, 除非您已经知道烧录的 AMI 的密码."
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -273,7 +266,7 @@ module.exports =
 
     INSTANCE_USER_DATA_DISABLE:
       en: "Can't edit user data when instance state exist"
-      zh: ""
+      zh: "Instance State 存在的情况下无法编辑 user data"
 
     INSTANCE_CW_WARN:
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
@@ -381,87 +374,87 @@ module.exports =
 
     INSTANCE_TIP_GET_SYSTEM_LOG:
       en: "Get System Log"
-      zh: ""
+      zh: "获取系统日志"
 
     DB_INSTANCE_TIP_GET_LOG:
       en: "Get Logs & Events"
-      zh: ""
+      zh: "获取日志和事件"
 
     INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
       en: "If the quantity is more than 1, host name will be the string you provide plus number index."
-      zh: ""
+      zh: "如果数量大于1, 主机名将为您提供的字符加索引数字."
 
     INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER:
       en: "You cannot specify instance number, since the instance is connected to a route table."
-      zh: ""
+      zh: "您不能指定实例数量, 因为实例已经连接到路由表中."
 
     INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
-      zh: ""
+      zh: "当实例连接到的网络的数量多于一个时将无法指定公共 IP 地址"
 
     INSTANCE_GET_WINDOWS_PASSWORD:
       en: "Get Windows Password"
-      zh: ""
+      zh: "获取 Windows 密码"
 
     INSTANCE_IOPS:
       en: "IOPS"
-      zh: ""
+      zh: "IOPS"
 
     AMI_STACK_NOT_AVAILABLE:
       en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
-      zh: ""
+      zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享. </p><p>请选择其他的 AMI</p>"
 
     AMI_APP_NOT_AVAILABLE:
       en: "This AMI's infomation is unavailable."
-      zh: ""
+      zh: "此 AMI 的信息不可用."
 
     STACK_AMAZON_ARN:
       en: "Amazon ARN"
-      zh: ""
+      zh: "Amazon ARN"
 
     STACK_EXAMPLE_EMAIL:
       en: "example@acme.com"
-      zh: ""
+      zh: "example@acme.com"
 
     STACK_E_G_1_206_555_6423:
       en: "e.g. 1-206-555-6423"
-      zh: ""
+      zh: "例: 1-206-555-6423"
 
     STACK_HTTP_WWW_EXAMPLE_COM:
       en: "http://www.example.com"
-      zh: ""
+      zh: "http://www.example.com"
 
     STACK_HTTPS_WWW_EXAMPLE_COM:
       en: "https://www.example.com"
-      zh: ""
+      zh: "https://www.example.com"
 
     STACK_HTTPS:
       en: "https"
-      zh: ""
+      zh: "https"
 
     STACK_HTTP:
       en: "http"
-      zh: ""
+      zh: "http"
 
     STACK_USPHONE:
       en: "usPhone"
-      zh: ""
+      zh: "usPhone"
 
     STACK_EMAIL:
       en: "email"
-      zh: ""
+      zh: "email"
 
     STACK_ARN:
       en: "arn"
-      zh: ""
+      zh: "arn"
 
     STACK_SQS:
       en: "sqs"
-      zh: ""
+      zh: "sqs"
 
     STACK_PENDING_CONFIRM:
       en: "pendingConfirm"
-      zh: ""
+      zh: "pendingConfirm"
 
     STACK_LBL_NAME:
       en: "Stack Name"
@@ -493,19 +486,19 @@ module.exports =
 
     APP_LBL_INSTANCE_STATE:
       en: "Instance State"
-      zh: ""
+      zh: "Instance State"
 
     APP_LBL_RESDIFF:
       en: "Monitor and report external resource change of this app"
-      zh: ""
+      zh: "监控并报告此 App 的外部资源变化."
 
     APP_LBL_RESDIFF_VIEW:
       en: "Monitor and Report External Change"
-      zh: ""
+      zh: "监控并报告外部变化"
 
     APP_TIP_RESDIFF:
       en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
-      zh: ""
+      zh: "如果资源在 VisualOps 外发生变化, 将会给您发送一封通知邮件."
 
     STACK_LBL_USAGE:
       en: "Usage"
@@ -681,31 +674,31 @@ module.exports =
 
     VPC_MANAGE_DHCP:
       en: "Manage DHCP Options Set"
-      zh: ""
+      zh: "管理 DHCP 选项组"
 
     VPC_MANAGE_RDS_PG:
       en: "Manage Parameter Group"
-      zh: ""
+      zh: "管理参数组"
 
     VPC_FILTER_RDS_PG:
       en: "Filter by Parameter Group Name"
-      zh: ""
+      zh: "过滤参数组名称"
 
     VPC_FILTER_DHCP:
       en: "Filter by DHCP Options Set ID"
-      zh: ""
+      zh: "过滤 DHCP 选项 ID"
 
     VPC_TIP_AUTO_DHCP:
       en: "A DHCP Options set will be automatically assigned for the VPC by AWS."
-      zh: ""
+      zh: "AWS 将会给 VPC 自动分配一个 DHCP 选项组."
 
     VPC_TIP_DEFAULT_DHCP:
       en: "The VPC will use no DHCP options."
-      zh: "The VPC will use no DHCP options."
+      zh: "此 VPC 将不使用 DHCP 选项"
 
     VPC_AUTO_DHCP:
       en: "Auto-assigned Set"
-      zh: ""
+      zh: "自动分配"
 
     VPC_DEFAULT_DHCP:
       en: "Default"
@@ -713,7 +706,7 @@ module.exports =
 
     SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
-      zh: ""
+      zh: "例: 10.0.0.0/24. "
 
     SUBNET_TIT_DETAIL:
       en: "Subnet Details"

@@ -109,7 +109,7 @@ define [
   VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
 
   VisualOps.prototype.discardAwsCache = ()->
-    App.model.clearImportOps()
+    # App.model.clearImportOps()
     CloudResources.invalidate()
 
   # Creates a stack from the "json" and open it.

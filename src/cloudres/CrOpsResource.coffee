@@ -36,16 +36,6 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       self = @
       CloudResources.clearWhere ((m)-> m.RES_TAG is self.category), @__region
 
-      ### env:dev ###
-      #use cache data for develop
-      app_json = App.workspaces.getAwakeSpace().opsModel.getJsonData()
-      if app_json
-        data = dd.getDataFromLocal app_json.id
-      if data
-        @parseFetchData( data )
-        return
-      ### env:dev:end ###
-
       console.assert( @__region && @__provider, "CrOpsCollection's region is not set before fetching data. Need to call init() first" )
       ApiRequest("resource_get_resource", {
         region_name : @__region
@@ -53,14 +43,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
         res_id      : @category
       })
 
-
     parseFetchData : ( data )->
-      ### env:dev ###
-      #store resource data for develop
-    #   data.app_json = App.workspaces.getAwakeSpace().opsModel.getJsonData()
-    #   dd.setDataToLocal data
-      ### env:dev:end ###
-
       app_json = data.app_json
       delete data.app_json
 

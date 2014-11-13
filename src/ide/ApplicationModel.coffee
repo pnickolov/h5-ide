@@ -40,8 +40,6 @@ define [
 
     getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
 
-    clearImportOps : ()-> @attributes.appList.remove @attributes.appList.find ( m )-> m.isImported()
-
     createImportOps : ( region, vpcId )->
       m = @attributes.appList.findWhere({importMsrId:vpcId})
       if m then return m

@@ -820,6 +820,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Create new stack"
       zh: "创建模板"
 
+    "IDE_LBL_REGION_NAME_cn-north-1":
+      en: "CN North"
+      zh: "中国"
+
     "IDE_LBL_REGION_NAME_us-east-1":
       en: "US East"
       zh: "美国东部"
@@ -855,6 +859,10 @@ VisualOps API. You cannot UNDO this action.'
     "IDE_LBL_REGION_NAME_sa-east-1":
       en: "South America"
       zh: "南美洲"
+
+    "IDE_LBL_REGION_NAME_SHORT_cn-north-1":
+      en: "Beijing"
+      zh: "北京"
 
     "IDE_LBL_REGION_NAME_SHORT_us-east-1":
       en: "Virginia"

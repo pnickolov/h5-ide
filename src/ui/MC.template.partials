@@ -470,7 +470,7 @@ Additional Notes and Questions
                 <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell" style="display: none;">:<label></label></div>
+            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
@@ -970,7 +970,7 @@ Additional Notes and Questions
                 <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell" style="display: none;">:<label></label></div>
+            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>

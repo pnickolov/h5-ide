@@ -2090,121 +2090,119 @@ module.exports =
 
     DBINSTANCE_SUBNETGROUP_NOT_SETUP:
       en: "Subnet Group %s is not correctly set up yet. Assign %s to at lease 2 availability zones."
-      zh: ""
+      zh: "子网组设置不正确, 分配 %s 至少两个可用区域."
 
     DBINSTANCE_BACKUP_MAINTENANCE:
       en: "Backup & Maintenance"
-      zh: ""
+      zh: "备份与管理"
 
     DBINSTANCE_AUTOBACKUP:
       en: "Automated Backups"
-      zh: ""
+      zh: "自动备份"
 
     DBINSTANCE_LAST_RESTORE:
       en: "Lastest Restore Time"
-      zh: ""
+      zh: "最新重置时间"
 
     DBINSTANCE_BACKUP_WINDOW:
       en: "Backup Window"
-      zh: ""
+      zh: "备份窗口"
 
     DBINSTANCE_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
-      zh: ""
+      zh: "管理窗口"
 
     DBINSTANCE_SECURITY_GROUP:
       en: "Security Group"
-      zh: ""
+      zh: "安全组"
 
     DBINSTANCE_SUBNET_GROUP_NAME:
       en: "DB Subnet Group Name"
-      zh: ""
+      zh: "数据库子网组名称"
 
     DBINSTANCE_SUBNET_GROUP_DESC:
       en: "DB Subnet Group Description"
-      zh: ""
+      zh: "数据库子网组描述"
 
     DBINSTANCE_SUBNET_GROUP_STATUS:
       en: "Status"
-      zh: ""
+      zh: "状态"
 
     DBINSTANCE_SUBNET_GROUP_MEMBERS:
       en: "Members"
-      zh: ""
+      zh: "成员"
 
     DBINSTANCE_PROMOTE_CONFIRM_MAJOR:
       en: "The following steps show the general process for promoting a read replica to a Single-AZ DB instance."
-      zh: ""
+      zh: "以下几步展示了将一个制度副本提升为单 AZ 的数据库实例的一般过程."
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1:
       en: "Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica."
-      zh: ""
+      zh: "停止只读副本源数据库的所有写入操作, 并等待只读副本完成全部更新."
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2:
       en: "To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica."
-      zh: ""
+      zh: "要修改只读副本, 您必须在只读副本的参数组里将 read_only 参数设置为 0."
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3:
       en: "Perform all needed DDL operations, such as creating indexes, on the read replica."
-      zh: ""
+      zh: "然后进行所有的 DDL 操作, 比如在只读副本上创建索引."
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4:
       en: "Promote the read replica."
-      zh: ""
+      zh: "提升只读副本."
 
     DBINSTANCE_PROMOTE_NOTE:
       en: "Note"
-      zh: ""
+      zh: "注"
 
     DBINSTANCE_PROMOTE_NOTE_CONTENT:
       en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
-      zh: ""
+      zh: "提升的过程将会花费几分钟. 提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例."
 
     DBINSTANCE_PROMOTE_LINK_TEXT:
       en: "Read AWS Document"
-      zh: ""
+      zh: "查看 AWS 相关文档"
 
     DBINSTANCE_NOT_AVAILABLE:
       en: "This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."
-      zh: ""
+      zh: "此数据库不在可用状态. 请等待状态可用后应用改变. "
 
     DBINSTANCE_READ_REPLICA:
       en: "Promote Read Replica"
-      zh: ""
+      zh: "提升只读副本"
 
     DBINSTANCE_CANCEL_PROMOTE:
       en: "Cancel Promote"
-      zh: ''
+      zh: '取消提升'
 
     DBINSTANCE_APPLY_IMMEDIATELY:
       en: "Apply Immediately"
-      zh: ""
+      zh: "立即应用"
 
     DBINSTANCE_DETAILS:
       en: "DB Instance Details"
-      zh: ""
+      zh: "数据库详细"
 
     DBINSTANCE_APPLY_IMMEDIATELY_LINK_TOOLTIP:
       en: "Click to read AWS documentation on modifying DB instance using Apply Immediately."
-      zh: ""
+      zh: "点击阅读 AWS 关于立即应用数据库实例修改的文档."
 
     DBINSTANCE_MASTER_DB_INSTANCE:
       en: "Master DB Instance"
-      zh: ""
-
-
+      zh: "主要数据库实例"
 
     DBINSTANCE_DBSNAPSHOT_ID:
       en: "DB Snapshot ID"
-      zh: ""
+      zh: "数据库快照 ID"
 
     DBINSTANCE_DBSNAPSHOT_SIZE:
       en: "DB Snapshot Size"
-      zh: ""
+      zh: "数据库快照大小"
 
     DBINSTANCE_PENDING_APPLY:
       en: "(Pending Apply)"
-      zh: ""
+      zh: "(等待应用)"
 
     DBINSTANCE_NAME:
       en: "DB Instance Name"

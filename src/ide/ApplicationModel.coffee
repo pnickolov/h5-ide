@@ -40,13 +40,15 @@ define [
 
     getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
 
-    createImportOps : ( region, vpcId )->
-      m = @attributes.appList.findWhere({importMsrId:vpcId})
+    createImportOps : ( region, cloudType, provider, msrId )->
+      m = @attributes.appList.findWhere({importMsrId:msrId})
       if m then return m
       m = new OpsModel({
-        name        : "ImportedVpc"
-        importMsrId : vpcId
+        name        : "ImportedApp"
+        importMsrId : msrId
         region      : region
+        cloudType   : cloudType
+        provider    : provider
         state       : OpsModel.State.Running
       })
       @attributes.appList.add m

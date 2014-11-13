@@ -115,6 +115,26 @@ module.exports =
       en: "VPC"
       zh: "VPC"
 
+    DASH_LBL_OSROUTER:
+      en: "Router"
+      zh: ""
+
+    DASH_LBL_OSSERVER:
+      en: "Server"
+      zh: ""
+
+    DASH_LBL_OSFIP:
+      en: "FIP"
+      zh: ""
+
+    DASH_LBL_OSLISTENER:
+      en: "Listener"
+      zh: ""
+
+    DASH_LBL_OSPOOL:
+      en: "Pool"
+      zh: ""
+
     DASH_LBL_AUTO_SCALING_GROUP:
       en: "Auto Scaling Group"
       zh: "Auto Scaling 组"
@@ -684,6 +704,10 @@ module.exports =
       en: "Oops, loading VPC failed."
       zh: ""
 
+    DASH_TPL_LOADING_APP_FAILED:
+      en: "Oops, loading apps failed."
+      zh: ""
+
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
       zh: "已导入"
@@ -696,9 +720,17 @@ module.exports =
       en: "There is no VPC to import."
       zh: ""
 
+    DASH_TPL_NO_APP_TO_IMPORT:
+      en: "There is no app to import."
+      zh: ""
+
     DASH_IMPORT_VPC_AS_APP:
       en: "Import Existing VPC as App"
       zh: "将已存在 VPC 导入为 App"
+
+    DASH_IMPORT_APP:
+      en: "Import Existing App"
+      zh: "导入已存在的App"
 
     DASH_LBL_SUPPORT:
       en: "Support"

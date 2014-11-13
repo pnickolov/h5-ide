@@ -202,7 +202,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getMsrId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+      CloudResources( "OpsResource", @getMsrId() ).init( @get("region"), @get("provider") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
     generateJsonFromRes : ()->
       json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson

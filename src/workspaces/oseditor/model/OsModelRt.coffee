@@ -46,7 +46,7 @@ define [ "ComplexResModel", "constant", "Design" ], ( ComplexResModel, constant,
         name  : data.resource.name
         appId : data.resource.id
         nat   : data.resource.nat
-        extNetworkId : data.resource.external_gateway_info.network_id || ""
+        extNetworkId : (data.resource.external_gateway_info||{}).network_id || ""
         publicip : data.resource.public_ip
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

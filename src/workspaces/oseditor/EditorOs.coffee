@@ -40,6 +40,8 @@ define [
   "./canvas/CeServer"
   "./canvas/CePort"
   "./canvas/CeOsLine"
+  "./canvas/CanvasViewOs"
+  "./canvas/CanvasViewOsLayout"
 
 ], ( OpsEditor, StackEditor, AppEditor )->
 

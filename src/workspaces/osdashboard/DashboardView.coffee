@@ -2,6 +2,7 @@
 define [
   './DashboardTpl'
   './DashboardTplData'
+  "./ImportAppTpl"
   "constant"
   "i18n!/nls/lang.js"
   "CloudResources"
@@ -13,7 +14,7 @@ define [
   "UI.bubble"
   "UI.scrollbar"
   "UI.nanoscroller"
-], ( Template, TemplateData, constant, lang, CloudResources, Modal, appAction )->
+], ( Template, TemplateData, ImportAppTpl, constant, lang, CloudResources, Modal, appAction )->
 
   Backbone.View.extend {
 
@@ -32,13 +33,12 @@ define [
       'click .resource-tab'                   : 'switchResource'
 
       "click #ImportStack"  : "importStack"
-      "click #VisualizeApp" : "visualizeApp"
+      "click #VisualizeApp" : "importApp"
 
     resourcesTab: 'OSSERVER'
 
     initialize : ()->
       @opsListTab = "stack"
-      @region     = App.user.get("default_region")
       @lastUpdate = +(new Date())
 
       @setElement( $(Template.frame()).eq(0).appendTo("#main") )
@@ -65,7 +65,7 @@ define [
       # get Resource Data
       d = {
         id   : data.id
-        data : @model.getOsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+        data : @model.getOsResDataById( constant.RESTYPE[data.type], data.id )?.toJSON()
       }
       d.data = d.data.system_metadata
 
@@ -112,7 +112,7 @@ define [
       @$('.dash-ops-resource-list').html Template.resourceList {}
 
     updateAppProgress : ( model )->
-      if model.get("region") is @region and @regionOpsTab is "app"
+      if model.get("region") is @model.region and @regionOpsTab is "app"
 
         console.log "Dashboard Updated due to app progress changes."
 
@@ -159,7 +159,7 @@ define [
           that.animateUsage(dom, 0, quota)
           dom.find('.count-usage').text( "-" )
 
-      resourceCount = @model.getResourcesCount( @region )
+      resourceCount = @model.getResourcesCount()
       for r, count of resourceCount
         child = $nav.children(".#{r}")
         if typeof count == "number" and quotaMap
@@ -177,18 +177,15 @@ define [
       if type and @resourcesTab not in type then return
 
       type = constant.RESTYPE[ @resourcesTab ]
-      if not @model.isOsResReady( @region, type )
+      if not @model.isOsResReady( type )
         tpl = '<div class="dashboard-loading"><div class="loading-spinner"></div></div>'
       else
-        tpl = TemplateData["resource_#{@resourcesTab}"]( @model.getOsResData( @region, type ) )
+        tpl = TemplateData["resource_#{@resourcesTab}"]( @model.getOsResData( type ) )
 
       $(".resource-list-body").html( tpl )
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )->
-      region = App.user.get("default_region")
-      provider = App.user.get("default_provider")
-      App.createOps( region, "openstack", provider )
+    createStack : ( event )-> App.createOps( @model.region, "openstack", @model.provider )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 
@@ -254,6 +251,44 @@ define [
         null
       null
 
-    visualizeApp : ()->
+    importApp : ()->
+      self = @
+      if not @visModal
+        @visModal = new Modal {
+          title         : lang.IDE.DASH_IMPORT_APP
+          width         : "770"
+          template      : ImportAppTpl({})
+          disableFooter : true
+          compact       : true
+          onClose       : ()-> self.visModal = null; return
+        }
+
+        @visModal.tpl.on "click", "#VisualizeReload", ()->
+          self.importApp()
+          self.visModal.tpl.find(".unmanaged-vpc-empty").hide()
+          self.visModal.tpl.find(".loading-spinner").show()
+          false
+
+        @visModal.tpl.on "click", ".visualize-vpc-btn", (event)-> self.doImportApp(event)
+
+      @model.importApp().then ( data )->
+        self.visModal.tpl.find(".modal-body").html ImportAppTpl({
+          ready : true
+          data  : data
+        })
+      , ()->
+        self.visModal.tpl.find(".modal-body").html ImportAppTpl({fail:true})
+
+      return
+
+    doImportApp : ( evt )->
+      $tgt   = $(evt.currentTarget)
+      id     = $tgt.attr("data-id")
+      region = $tgt.closest("ul").attr("data-region")
+
+      @visModal.close()
+      App.openOps App.model.createImportOps( region, "openstack", @model.provider, id )
+      false
+
 
   }

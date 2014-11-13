@@ -7,7 +7,7 @@
 
   <button id="ImportStack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
 
-  <button class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_APP"}}
+  <button id="VisualizeApp" class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_APP"}}
   </button>
 
 </header>

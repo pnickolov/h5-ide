@@ -5,27 +5,27 @@ module.exports =
 
     LOADING_DATA:
       en: "Loading data..."
-      zh: ""
+      zh: "加载数据中..."
 
     ROLLING_BACK:
       en: "Rolling back..."
-      zh: ""
+      zh: "回滚中..."
 
     RELOADING_DATA:
       en: "Reloading data..."
-      zh: ""
+      zh: "刷新数据中..."
 
     APP_UPDATE_SUCCESSFULLY_TITLE:
       en: "App has updated successfully."
-      zh: ""
+      zh: "App 已成功更新."
 
     APP_UPDATE_FAILED_TITLE:
       en: "The app failed to update."
-      zh: ""
+      zh: "App 更新失败."
 
     APP_ROllBACK_DESC:
       en: "The state of your app has been rolled back, except for the already deleted resources."
-      zh: ""
+      zh: "您的 App 状态已回滚, 除了已经删除的资源."
 
     LBL_DONE:
       en: "Done"
@@ -33,23 +33,23 @@ module.exports =
 
     CONFIRM_ENABLE_STATE:
       en: "Enable VisualOps will override your custom User Data. Are you sure to continue?"
-      zh: ""
+      zh: "开启 VisualOps 将覆盖您的 User Data, 确定继续么?"
 
     EXPORT_CLOUDFORMATION_WARNNING:
       en: "DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be used instead."
-      zh: ""
+      zh: "数据库实例的自定义选项组在 CloudFormation 里不支持, 将使用默认的选项组."
 
     STACK_VALIDATION:
       en: "Stack Validation"
-      zh: ""
+      zh: "Stack"
 
     VALIDATING_STACK:
       en: "Validating your stack..."
-      zh: ""
+      zh: "校验模板"
 
     ESTIMATED_COST:
       en: "Estimated Cost"
-      zh: ""
+      zh: "估计花费"
 
     PER_MONTH:
       en: " / month"
@@ -57,111 +57,111 @@ module.exports =
 
     LBL_DOWNLOAD:
       en: "Download"
-      zh: ""
+      zh: "下载"
 
     LBL_CANCEL:
       en: "Cancel"
-      zh: ""
+      zh: "取消"
 
     HAS_UNSAVED_CHANGES:
       en: "has unsaved changes."
-      zh: ""
+      zh: "有未保存变更."
 
     CLOSE_CONFIRM:
       en: "Do you confirm to close it?"
-      zh: ""
+      zh: "您确认要关闭吗?"
 
     CANCEL_UPDATE_CONFIRM:
       en: "This app has been changed."
-      zh: ""
+      zh: "此 App 已经改变."
 
     DISCARD_UPDATE_CHANGE:
       en: "Do you confirm to discard the changes?"
-      zh: ""
+      zh: "您确认要丢弃修改吗?"
 
     IMPORT_SUCCESSFULLY_WELL_DONE:
       en: "Well done! Your VPC %s has been successfully imported as VisualOps app."
-      zh: ""
+      zh: "很好! 您的 VPC 已经成功导入为 VisualOps App."
 
     NAME_IMPORTED_APP:
       en: "Give this app an appropriate name."
-      zh: ""
+      zh: "给这个 App 起个合适的名字."
 
     APP_NAME:
       en: "App Name"
-      zh: ""
+      zh: "App 名称"
 
     APP_USAGE:
       en: "App Usage"
-      zh: ""
+      zh: "App 用途"
 
     IMPORT_SUCCESSFULLY_MANAGE_EASILY:
       en: "Now you can easily manage the resources and lifecycle of the app within VisualOps."
-      zh: ""
+      zh: "现在你可以用 VisualOps 轻松地管理 App 的资源和生命周期了."
 
     VPC_REMOVED_OUTSIDE_VISUALOPS:
       en: "VPC of this app has been deleted outside VisualOps."
-      zh: ""
+      zh: "此 App 的 VPC 在 VisualOps 外部被删除."
 
     CONFIRM_REMOVE_APP:
       en: "Do you want to remove the app?"
-      zh: ""
+      zh: "您确认要移除此 App 吗?"
 
     CLOUD_RESOURCE_KEY_PAIR:
       en: "Key Pair"
-      zh: ""
+      zh: "密钥组"
 
     CLOUD_RESOURCE_EBS_SNAPSHOT:
       en: "EBS Snapshot"
-      zh: ""
+      zh: "EBS 快照"
 
     CLOUD_RESOURCE_SNS_SUBSCRIPTION:
       en: "SNS Topic & Subscription"
-      zh: ""
+      zh: "SNS 主题和订阅"
 
     CLOUD_RESOURCE_SERVER_CERTIFICATE:
       en: "Server Certificate"
-      zh: ""
+      zh: "服务器证书"
 
     CLOUD_RESOURCE_DHCP_OPTION_SETS:
       en: "DHCP Option Sets"
-      zh: ""
+      zh: "DHCP 选项设定"
 
     CLOUD_RESOURCE_DB_PARAMETER_GROUPS:
       en: "DB Parameter Groups"
-      zh: ""
+      zh: "数据库参数组"
 
     CLOUD_RESOURCE_DB_SNAPSHOT:
       en: "DB Snapshot"
-      zh: ""
+      zh: "数据库快照"
 
     CLOUD_RESOURCE_SORT_BY_DATE:
       en: "By Date"
-      zh: ""
+      zh: "按日期"
 
     CLOUD_RESOURCE_SORT_BY_STORAGE:
       en: "By Storage"
-      zh: ""
+      zh: "按存储"
 
     CLOUD_RESOURCE_SORT_BY_ENGINE:
       en: "By Engine"
-      zh: ""
+      zh: "按引擎"
 
     CLOUD_RESOURCE_NO_EBS_SNAPSHOT:
       en: "No EBS Snapshot in %s."
-      zh: ""
+      zh: "%s 没有 EBS 快照"
 
     CLOUD_RESOURCE_NO_DB_SNAPSHOT:
       en: "No DB Snapshot in %s."
-      zh: ""
+      zh: "%s 没有数据库快照"
 
     CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI:
       en: "Use \"Browse Community AMI\" to add Favourite AMI."
-      zh: ""
+      zh: "用 \"浏览共享 AMI\" 收藏 AMI"
 
     CLOUD_RESOURCE_AUTO_SCALING_GROUP:
       en: "Auto Scaling Group "
-      zh: ""
+      zh: "自动收缩组"
 
     BTN_RUN_STACK:
       en: "Run Stack"
@@ -221,7 +221,7 @@ module.exports =
 
     TIT_CLOSE_TAB:
       en: "Close Tab"
-      zh: ""
+      zh: "关闭标签"
 
     POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
@@ -240,8 +240,8 @@ module.exports =
       zh: "复制"
 
     POP_BTN_SAVE_TO_STACK:
-        en: "Save"
-        zh: "保存"
+      en: "Save"
+      zh: "保存"
 
     TIP_CREATE_STACK:
       en: "Create New Stack"
@@ -277,39 +277,39 @@ module.exports =
 
     POP_INTRO_1:
       en: "Saving app as stack helps you to revert changes made during app editing back to stack."
-      zh: ""
+      zh: "将 App 保存为模板可以将编辑 App 时所作修改保存为模板."
 
     POP_INTRO_2:
       en: "Canvas design, resource properties and instance states will be saved."
-      zh: ""
+      zh: "画布设计, 资源属性和 instance states 都将被保存."
 
     POP_REPLACE_STACK:
       en: "Replace the original stack"
-      zh: ""
+      zh: "替换原始模板"
 
     POP_REPLACE_STACK_INTRO:
       en: "This app is launched from stack"
-      zh: ""
+      zh: "此 App 是从 stack"
 
     POP_REPLACE_STACK_INTRO_END:
       en: ". Entirely replace the stack with current app design."
-      zh: ""
+      zh: "启动的, 用当前配置完全替换该模板."
 
     POP_SAVE_NEW_STACK:
       en: "Save as new stack"
-      zh: ""
+      zh: "另存为新模板"
 
     POP_SAVE_STACK_INSTRUCTION:
       en: "Specify a name for new stack:"
-      zh: ""
+      zh: "指定新模板的名字"
 
     POP_STACK_NAME_ERROR:
       en: "The stack name is already in use. Please use another one."
-      zh: ""
+      zh: "此模板名字已被占用."
 
     POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
-      zh: "The stack is ready to export. Please click the Download button to save the file."
+      zh: "此模板已经可以导出, 请点击下载按钮保存文件."
 
     POP_BTN_DOWNLOAD:
       en: "Download"
@@ -345,7 +345,7 @@ module.exports =
 
     POP_BODY_STOP_APP_RIGHT:
       en: "?"
-      zh: " 吗"
+      zh: " 吗?"
 
     POP_TIT_STOP_PRD_APP:
       en: "Confirm to Stop App for Production"
@@ -369,47 +369,47 @@ module.exports =
 
     POP_START_CONFIRM_LIST_1:
       en: "EC2 instances will be started."
-      zh: ""
+      zh: "EC2 实例将启动."
 
     POP_START_CONFIRM_LIST_2:
       en: "DB instances will be restored from final snapshot."
-      zh: ""
+      zh: "数据库实例将从最终快照恢复."
 
     POP_START_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be recreated."
-      zh: ""
+      zh: "自动伸缩组将重新创建."
 
     POP_STOP_CONFIRM_LIST_1:
       en: "EC2 instances will be stopped."
-      zh: ""
+      zh: "EC2 实例将停止."
 
     POP_STOP_CONFIRM_LIST_1_SPAN:
       en: "Instance-stored instances will be deleted."
-      zh: ""
+      zh: "实例存储的实例将被删除."
 
     POP_STOP_CONFIRM_LIST_2:
       en: "DB instances will be deleted final snapshot will be taken."
-      zh: ""
+      zh: "将删除的数据库实例将创建快照."
 
     POP_STOP_CONFIRM_LIST_2_SPAN:
       en: "Snapshots will be restored when the app is started."
-      zh: ""
+      zh: "快照将会在 App 启动的时候恢复."
 
     POP_STOP_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be deleted."
-      zh: ""
+      zh: "自动伸缩组将被删除."
 
     POP_STOP_CONFIRM_LIST_3_SPAN:
       en: "Auto Scaling Group will be recreated when the app is started."
-      zh: ""
+      zh: "自动伸缩组将会在 App 启动的时候重新创建."
 
     POP_START_WARNNING:
       en: "Warning"
-      zh: ""
+      zh: "警告"
 
     POP_START_MISSING_SNAPSHOT_1:
       en: "DB Instance"
-      zh: "DB Instance"
+      zh: "数据库实例"
 
     POP_START_MISSING_SNAPSHOT_2:
       en: "'s final snapshot is missing. This DB instance cannot be restored."

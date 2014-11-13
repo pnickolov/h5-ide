@@ -2206,31 +2206,31 @@ module.exports =
 
     DBINSTANCE_NAME:
       en: "DB Instance Name"
-      zh: ""
+      zh: "数据库实例名称"
 
     DBINSTANCE_AUTO_MINOR_VERSION_UPDATE:
       en: "Auto Minor Version Update"
-      zh: ""
+      zh: "自动版本升级"
 
     DBINSTANCE_ALLOCATED_STORAGE:
       en: "Allocated Storage"
-      zh: ""
+      zh: "分配存储"
 
     DBINSTANCE_SCALLING_NOT_SUPPORT:
       en: "Scalling storage after launch a DB Instance is currently not supported for SQL Server."
-      zh: ""
+      zh: "启动数据库实例后伸缩存储目前不支持 SQL 数据库"
 
     DBINSTANCE_CURRENT_ALLOCATED_STORAGE:
       en: "Current Allocated Storage: "
-      zh: ""
+      zh: "目前分配的存储:"
 
     DBINSTANCE_USE_PROVISIONED_IOPS:
       en: "Use Provisioned IOPS"
-      zh: ""
+      zh: "使用规定的的 IOPS"
 
     DBINSTANCE_PROVISIONED_IOPS:
       en: "Provisioned IOPS"
-      zh: ""
+      zh: "规定的 IOPS"
 
     DBINSTANCE_IOPS_AVAILABILITY_IMPACT:
       en: "When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes."

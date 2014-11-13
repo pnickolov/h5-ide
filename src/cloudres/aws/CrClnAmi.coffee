@@ -241,8 +241,8 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       savedAmis = []
       amiIds  = []
       for id, ami of data
-        if ami.architecture is 'i386' or ( ami.name.indexOf('by VisualOps') is -1 and (ami.osType not in ['windows','suse']) )
-          continue
+        #if ami.architecture is 'i386' or ( ami.name.indexOf('by VisualOps') is -1 and (ami.osType not in ['windows','suse']) )
+        #  continue
         ami.id = id
         savedAmis.push ami
         amiIds.push id

@@ -706,7 +706,7 @@ module.exports =
 
     SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
-      zh: "例: 10.0.0.0/24. "
+      zh: "例: 10.0.0.0/24. 子网里的 IP 地址的区间必须在所在 VPC 的地址区间里. 区块大小必须在 /16 子网掩码 和 /28 子网掩码之间. 子网的大小可以等于 VPC 的大小."
 
     SUBNET_TIT_DETAIL:
       en: "Subnet Details"
@@ -770,31 +770,31 @@ module.exports =
 
     VPC_TIP_EG_10_0_0_0_16:
       en: "e.g. 10.0.0.0/16"
-      zh: ""
+      zh: "例:  10.0.0.0/16"
 
     VPC_TIP_ENTER_THE_DOMAIN_NAME:
       en: "Enter the domain name that should be used for your hosts"
-      zh: ""
+      zh: "输入主机将要使用的域名"
 
     VPC_TIP_ENTER_UP_TO_4_DNS:
       en: "Enter up to 4 DNS server IP addresses"
-      zh: ""
+      zh: "输入最多4个 DNS 服务器地址"
 
     VPC_TIP_ENTER_UP_TO_4_NTP:
       en: "Enter up to 4 NTP server IP addresses"
-      zh: ""
+      zh: "输入最多4个 NTP 服务器地址"
 
     VPC_TIP_ENTER_UP_TO_4_NETBIOS:
       en: "Enter up to 4 NetBIOS server IP addresses"
-      zh: ""
+      zh: "输入最多4个NetBIOS服务器地址"
 
     VPC_TIP_EG_172_16_16_16:
       en: "e.g. 172.16.16.16"
-      zh: ""
+      zh: "例:  172.16.16.16"
 
     VPC_TIP_SELECT_NETBIOS_NODE:
       en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
-      zh: ""
+      zh: "选择 NetBIOS 节点类型, 我们推荐选项2.( AWS 尚未支持广播和多播)"
 
     VPC_TIP_:
       en: ""
@@ -1010,11 +1010,11 @@ module.exports =
 
     VPN_TIP_EG_192_168_0_0_16:
       en: "e.g., 192.168.0.0/16"
-      zh: ""
+      zh: "例: 192.168.0.0/16"
 
     VPN_SUMMARY:
       en: "VPN Summary"
-      zh: ""
+      zh: "VPN 概要"
 
     IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."
@@ -1130,11 +1130,11 @@ module.exports =
 
     CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC:
       en: "This address must be static and not behind a NAT. e.g. 12.1.2.3"
-      zh: ""
+      zh: "此地址必须为静态并且不能在 NAT 网络中. 如: 12.1.2.3"
 
     CGW_TIP_1TO65534:
       en: "1 - 65534"
-      zh: ""
+      zh: "1 - 65534"
 
     MSG_ERR_RESOURCE_NOT_EXIST:
       en: "Sorry, the selected resource not exist."
@@ -1198,11 +1198,11 @@ module.exports =
 
     SNAPSHOT_FILTER_REGION:
       en: "Filter by region name"
-      zh: ""
+      zh: "按区域名过滤"
 
     SNAPSHOT_FILTER_VOLUME:
       en: "Filter by Volume ID"
-      zh: ""
+      zh: "按磁盘ID过滤"
 
     VOLUME_DEVICE_NAME:
       en: "Device Name"
@@ -1230,11 +1230,11 @@ module.exports =
 
     VOLUME_SNAPSHOT_SELECT:
       en: "Select volume from which to create snapshot"
-      zh: ""
+      zh: "选择要创建快照的磁盘"
 
     VOLUME_SNAPSHOT_SELECT_REGION:
       en: "Select Destination Region"
-      zh: ""
+      zh: "选择目标区域"
 
     VOLUME_SNAPSHOT:
       en: "Snapshot"
@@ -1262,7 +1262,7 @@ module.exports =
 
     VOLUME_ENCRYPTED:
       en: "Encrypted"
-      zh: ""
+      zh: "加密的"
 
     VOLUME_TYPE_STANDARD:
       en: "Magnetic"
@@ -1282,7 +1282,7 @@ module.exports =
 
     VOLUME_ENCRYPTED_LABEL:
       en: "Encrypt this volume"
-      zh: ""
+      zh: "加密该磁盘"
 
     ENI_LBL_ATTACH_WARN:
       en: "Attach the Network Interface to an instance within the same availability zone."
@@ -1362,11 +1362,11 @@ module.exports =
 
     ENI_TIP_ADD_IP_ADDRESS:
       en: "Add IP Address"
-      zh: ""
+      zh: "添加 IP 地址"
 
     ENI_PRIMARY:
       en: "Primary"
-      zh: ""
+      zh: "主要"
 
     ELB_DETAILS:
       en: "Load Balancer Details"
@@ -1410,7 +1410,7 @@ module.exports =
 
     ELB_LBL_LISTENER_CERT_NAME:
       en: "Certificate Name"
-      zh: ""
+      zh: "证书名称"
 
     ELB_LBL_LISTENER_PRIVATE_KEY:
       en: "Private Key"
@@ -1450,7 +1450,7 @@ module.exports =
 
     ELB_IDLE_TIMEOUT:
       en: "Idle Connection Timeout"
-      zh: ""
+      zh: "空闲连接超时"
 
     ELB_HEALTH_CHECK_INTERVAL_SECONDS:
       en: "Seconds"
@@ -1490,7 +1490,7 @@ module.exports =
 
     ELB_CONNECTION_DRAIN:
       en: "Connection Draining"
-      zh: ""
+      zh: "连接丢失"
 
     ELB_ELB_PROTOCOL:
       en: "Load Balancer Protocol"
@@ -1506,47 +1506,47 @@ module.exports =
 
     ELB_INSTANCES:
       en: "Instances"
-      zh: ""
+      zh: "实例"
 
     ELB_HEALTH_INTERVAL_VALID:
       en: "Response timeout must be less than the health check interval value"
-      zh: ""
+      zh: "响应超时必须小于健康检查周期."
 
     ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:
       en: "Timeout must be an integer between 1 and 3600"
-      zh: ""
+      zh: "超市必须为1到3600的整数"
 
     ELB_TIP_CLICK_TO_SELECT_ALL:
       en: "Click to select all"
-      zh: ""
+      zh: "单击全选"
 
     ELB_TIP_REMOVE_LISTENER:
       en: "Remove listener"
-      zh: ""
+      zh: "移除 Listener"
 
     ELB_TIP_25_80_443OR1024TO65535:
       en: "25, 80, 443 or 1024 - 65535"
-      zh: ""
+      zh: "25, 80, 443 or 1024 - 65535"
 
     ELB_TIP_1_65535:
       en: "1 - 65535"
-      zh: ""
+      zh: "1 - 65535"
 
     ELB_TIP_CLICK_TO_READ_RELATED_AWS_DOCUMENT:
       en: "Click to read related AWS document"
-      zh: ""
+      zh: "单击阅读相关 AWS 文档"
 
     ELB_CERT_REMOVE_CONFIRM_TITLE:
       en: "Confirm to Delete SSL Certificate"
-      zh: ""
+      zh: "确认删除 SSL 证书"
 
     ELB_CERT_REMOVE_CONFIRM_MAIN:
       en: "Do you confirm to delete "
-      zh: ""
+      zh: "您确认要删除"
 
     ELB_CERT_REMOVE_CONFIRM_SUB:
       en: "Load Balancer currently using this server certificate will have errors."
-      zh: ""
+      zh: "正在使用此证书的负载均衡将会出错."
 
     ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
@@ -1618,7 +1618,7 @@ module.exports =
 
     ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
-      zh: ""
+      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康. 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例."
 
     ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -1790,15 +1790,15 @@ module.exports =
 
     ASG_ADD_POLICY_ADJUSTMENT_CHANGE:
       en: "Change in Capacity"
-      zh: ""
+      zh: "数量改变"
 
     ASG_ADD_POLICY_ADJUSTMENT_EXACT:
       en: "Exact Capacity"
-      zh: ""
+      zh: "精确数量"
 
     ASG_ADD_POLICY_ADJUSTMENT_PERCENT:
       en: "Percent Change in Capacity"
-      zh: ""
+      zh: "数量百分比"
 
     ASG_ADD_POLICY_ADVANCED:
       en: "Advanced"
@@ -1854,15 +1854,15 @@ module.exports =
 
     ASG_TIP_CLICK_TO_SELECT:
       en: "Click to select"
-      zh: ""
+      zh: "单击选择"
 
     ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES:
       en: "You can only add 25 scaling policies"
-      zh: ""
+      zh: "您最多只能添加 25 条规则"
 
     ASG_ARN:
       en: "Auto Scaling Group ARN"
-      zh: ""
+      zh: "自动伸缩组 ARN"
 
     LC_TITLE:
       en: "Launch Configuation"
@@ -1922,171 +1922,171 @@ module.exports =
 
     RT_TIP_ACTIVE:
       en: "Active"
-      zh: ""
+      zh: "活跃的"
 
     RT_TIP_BLACKHOLE:
       en: "Blackhole"
-      zh: ""
+      zh: "黑洞"
 
     RT_TIP_PROPAGATED:
       en: "Propagated"
-      zh: ""
+      zh: "已传送"
 
     DBPG_RESMANAGER_FILTER:
       en: "Filter DB Engine by family name"
-      zh: ""
+      zh: "按家族名过滤数据库引擎"
 
     DBPG_SET_FAMILY:
       en: "Family"
-      zh: ""
+      zh: "家族"
 
     DBPG_SET_NAME:
       en: "Parameter Group Name"
-      zh: ""
+      zh: "参数组名"
 
     DBPG_CONFIRM_RESET_1:
       en: "Do you confirm to reset all parameters for "
-      zh: ""
+      zh: "您确定要重置"
 
     DBPG_CONFIRM_RESET_2:
       en: " to their defaults?"
-      zh: ""
+      zh: "的所有参数为默认吗?"
 
     DBPG_APPLY_IMMEDIATELY_1:
       en: "Changes will apply "
-      zh: ""
+      zh: "修改将"
 
     DBPG_APPLY_IMMEDIATELY_2:
       en: "immediately"
-      zh: ""
+      zh: "立即生效"
 
     DBPG_APPLY_IMMEDIATELY_3:
       en: "after rebooting"
-      zh: ""
+      zh: "在重启后生效"
 
     DBPG_SET_DESC:
       en: "Description"
-      zh: ""
+      zh: "描述"
 
     DBINSTANCE_TIT_DETAIL:
       en: "DB Instance Detail"
-      zh: ""
+      zh: "数据库实例详细"
 
     DBINSTANCE_APP_DBINSTANCE_ID:
       en: "DB Instance Identifier"
-      zh: ""
+      zh: "数据库实例标识"
 
     ENDPOINT:
       en: "Endpoint"
-      zh: ""
+      zh: "终点"
 
     DBINSTANCE_STATUS:
       en: "Status"
-      zh: ""
+      zh: "状态"
 
     ENGINE:
       en: "Engine"
-      zh: ""
+      zh: "引擎"
 
     DBINSTANCE_AUTO_UPGRADE:
       en: "Auto Minor Version Upgrade"
-      zh: ""
+      zh: "自动版本升级"
 
     DBINSTANCE_CLASS:
       en: "DB Instance Class"
-      zh: ""
+      zh: "数据库实例等级"
 
     DBINSTANCE_IOPS:
       en: "IOPS"
-      zh: ""
+      zh: "IOPS"
 
     DBINSTANCE_STORAGE:
       en: 'Storage'
-      zh: ""
+      zh: "存储"
 
     DBINSTANCE_STORAGE_TYPE:
       en: 'Storage Type'
-      zh: ""
+      zh: "存储类型"
 
     DBINSTANCE_USERNAME:
       en: "Username"
-      zh: ""
+      zh: "用户名"
 
     DBINSTANCE_READ_REPLICAS:
       en: "Read Replicas"
-      zh: ""
+      zh: "读取复制"
 
     DBINSTANCE_REPLICAS_SOURCE:
       en: "Read Replicas Source"
-      zh: ""
+      zh: "读取复制源"
 
     DBINSTANCE_DBCONFIG:
       en: "Database Config"
-      zh: ""
+      zh: "数据库配置"
 
     DBINSTANCE_NAME:
       en: "Database Name"
-      zh: ""
+      zh: "数据库名称"
 
     DBINSTANCE_PORT:
       en: "Database Port"
-      zh: ""
+      zh: "数据库端口"
 
     DBINSTANCE_OG:
       en: "Option Group"
-      zh: ""
+      zh: "选项组"
 
     DBINSTANCE_PG:
       en: "Parameter Group"
-      zh: ""
+      zh: "参数组"
 
     DBINSTANCE_NETWORK_AVAILABILITY:
       en: "Network & Availability"
-      zh: ""
+      zh: "网络与可用性"
 
     DBINSTANCE_SUBNETGROUP:
       en: "Subnet Group"
-      zh: ""
+      zh: "子网组"
 
     DBINSTANCE_PREFERRED_ZONE:
       en: "Preferred Availability Zone"
-      zh: ""
+      zh: "优先可用区域"
 
     DBINSTANCE_SECONDARY_ZONE:
       en: "Secondary Availability Zone"
-      zh: ""
+      zh: "第二可用区域"
 
     DBINSTANCE_PUBLIC_ACCESS:
       en: "Publicly Accessible"
-      zh: ""
+      zh: "公共可访问性"
 
     DBINSTANCE_LICENSE_MODEL:
       en: "License Model"
-      zh: ""
+      zh: "许可证样板"
 
     DBINSTANCE_DB_ENGINE_VERSION:
       en:"DB Engine Version"
-      zh: ""
+      zh: "数据库引擎版本"
 
     DBINSTANCE_DB_INSTANCE_CLASS:
       en: "DB Instance Class"
-      zh: ""
+      zh: "数据库实例等级"
 
     DBINSTANCE_SELECT_WINDOW:
       en: "Select Window"
-      zh: ""
+      zh: "选择窗口"
 
     DBINSTANCE_NO_PREFERENCE:
       en: "No Preference"
-      zh: ""
+      zh: "无偏好设置"
 
     DBINSTANCE_SOMETHING_ERROR:
       en: "Something Error."
-      zh: ""
+      zh: "出错了."
 
     DBINSTANCE_OPTION_GROUP:
       en: "Option Group"
-      zh: ""
+      zh: "选项组"
 
     DBINSTANCE_SUBNETGROUP_NOT_SETUP:
       en: "Subnet Group %s is not correctly set up yet. Assign %s to at lease 2 availability zones."

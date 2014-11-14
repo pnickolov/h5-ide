@@ -86,7 +86,7 @@ module.exports =
 
     RES_MSG_RDS_DISABLED:
       en: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
-      zh: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
+      zh: "您的 AWS 账号没有到此资源的权限, 请确定您有完整的 RDS 相关权限."
 
     RES_TIT_RDS:
       en: "RDS & Snapshot"
@@ -488,39 +488,39 @@ module.exports =
 
     SETTINGS_LABEL_ACCESSTOKEN:
       en: "Access Token"
-      zh: "Access Token"
+      zh: "访问令牌"
 
     SETTINGS_INFO_TOKEN:
       en: "Use token within API calls to initiate automatic states update. "
-      zh: "Use token within API calls to initiate automatic states update. "
+      zh: "使用 API 接口的访问令牌可用初始化自动 state 更新."
 
     SETTINGS_BTN_TOKEN_CREATE:
       en: "Generate Token"
-      zh: "Generate Token"
+      zh: "生成令牌"
 
     SETTINGS_BTN_TOKEN_REMOVE:
       en: "Delete Token"
-      zh: "Delete Toekn"
+      zh: "删除令牌"
 
     SETTINGS_INFO_TOKEN_LINK:
       en: "Read detailed documentation."
-      zh: "Read detailed documentation."
+      zh: "阅读详细文档"
 
     SETTINGS_INFO_TOKEN_EMPTY:
       en: "You currently have no token."
-      zh: "You currently have no token."
+      zh: "您当前没有令牌"
 
     SETTINGS_CONFIRM_TOKEN_RM_TIT:
       en: 'Do you confirm to delete the "%s"?'
-      zh: 'Do you confirm to delete the "%s"?'
+      zh: '您确定要删除 "%s" 吗?'
 
     SETTINGS_LABEL_TOKENTABLE_NAME:
       en: "Token Name"
-      zh: "Token Name"
+      zh: "令牌名称"
 
     SETTINGS_LABEL_TOKENTABLE_TOKEN:
       en: "Access Token"
-      zh: "Access Token"
+      zh: "访问令牌"
 
     SETTINGS_CONFIRM_TOKEN_RM:
       en: 'Any applications or scripts using this token will no longer be able to access the
@@ -626,47 +626,47 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_PROVIDE_CRED_TIT:
       en: "Please provide new AWS credentials"
-      zh: "Please provide new AWS credentials"
+      zh: "请提供新的 AWS 凭证"
 
     WELCOME_PROVIDE_CRED_DESC:
       en: "We cannot validate your AWS credentials, please provide new ones."
-      zh: "We cannot validate your AWS credentials, please provide new ones."
+      zh: "我们无法验证您的 AWS 凭证, 请提供一个新的."
 
     WELCOME_TIT:
       en: "Welcome to VisualOps, "
-      zh: "Welcome to VisualOps, "
+      zh: "欢迎来到 VisualOps, "
 
     WELCOME_DESC:
       en: "To start designing cloud architecture, please provide your AWS credentials"
-      zh: "To start designing cloud architecture, please provide your AWS credentials"
+      zh: "要开始设计云架构, 请先提供 AWS 凭证"
 
     WELCOME_SKIP_TIT:
       en: "Skip providing AWS Credentials now?"
-      zh: "Skip providing AWS Credentials now?"
+      zh: "跳过提供 AWS 凭证吗?"
 
     WELCOME_SKIP_SUBTIT:
       en: "You can design stack in the demo mode. Yet, with following drawbacks:"
-      zh: "You can design stack in the demo mode. Yet, with following drawbacks:"
+      zh: "您可以在测试账号下设计模板, 但是有以下不足:"
 
     WELCOME_SKIP_MSG:
       en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
-      zh: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
+      zh: "<ul><li>测试账号可能无法反映资源的实际可用性.</li> <li>如果您稍后提供凭证, 因为资源差异的关系, 之前在测试账号设计的 stack 可能会不可用.</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."
-      zh: "You can provide AWS Credentials later from Settings in the top-right drop down."
+      zh: "您可以同右上角的设置下拉菜单来提供 AWS 凭证."
 
     WELCOME_DONE_TIT:
       en: "Get started with VisualOps"
-      zh: "Get started with VisualOps"
+      zh: "开始使用 VisualOps"
 
     WELCOME_DONE_HINT:
       en: "You have connected to AWS account: "
-      zh: "You have connected to AWS account: "
+      zh: "您已连接到 AWS 账号: "
 
     WELCOME_DONE_HINT_DEMO:
       en: "You are using a demo AWS account."
-      zh: "You are using a demo AWS account."
+      zh: "您正在使用 demo 账号."
 
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>

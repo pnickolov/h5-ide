@@ -5,7 +5,7 @@ module.exports =
 
     DASH_CREATE_NEW_STACK:
       en: "Create new stack"
-      zh: "创建模板"
+      zh: "创建Stack"
 
     DASH_IMPORT_JSON:
       en: "Import stack"
@@ -54,15 +54,15 @@ module.exports =
 
     DASH_LBL_APP:
       en: "App"
-      zh: "应用"
+      zh: "App"
 
     DASH_LBL_STACK:
       en: "Stack"
-      zh: "模板"
+      zh: "Stack"
 
     DASH_LBL_RECENT_EDITED_STACK:
       en: "Recently Edited Stack"
-      zh: "最近修改的模板"
+      zh: "最近修改的Stack"
 
     DASH_LBL_RECENT_LAUNCHED_STACK:
       en: "Recently Launched App"
@@ -70,11 +70,11 @@ module.exports =
 
     DASH_LBL_NO_APP:
       en: "There is no app launched yet.<br />You can launch an app from a stack."
-      zh: "该地区没有应用<br />你可以通过模板创建应用"
+      zh: "该地区没有App<br />你可以通过Stack创建App"
 
     DASH_LBL_NO_STACK:
       en: "There is no stack in this region yet.<br />Create a new stack from here."
-      zh: "该地区还没有模板<br />点击这里创建新模板"
+      zh: "该地区还没有Stack<br />点击这里创建新Stack"
 
     DASH_LBL_RUNNING_INSTANCE:
       en: "Running Instance"
@@ -607,11 +607,11 @@ module.exports =
 
     DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN:
       en: "Create this stack in"
-      zh: "将模板创建为"
+      zh: "将Stack创建为"
 
     DASH_POP_CREATE_STACK_CREATE_STACK_ERROR:
       en: "Create stack error"
-      zh: "创建模板出错"
+      zh: "创建Stack出错"
 
     DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
       en: "Failed to load region information. Please try agian."

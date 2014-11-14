@@ -45,7 +45,7 @@ module.exports =
 
     VALIDATING_STACK:
       en: "Validating your stack..."
-      zh: "校验模板"
+      zh: "校验Stack"
 
     ESTIMATED_COST:
       en: "Estimated Cost"
@@ -169,7 +169,7 @@ module.exports =
 
     TIP_BTN_RUN_STACK:
       en: "Run this stack into an app"
-      zh: "运行当前模版为应用"
+      zh: "运行当前模版为App"
 
     POP_TIT_RUN_STACK:
       en: "Run Stack"
@@ -277,7 +277,7 @@ module.exports =
 
     POP_INTRO_1:
       en: "Saving app as stack helps you to revert changes made during app editing back to stack."
-      zh: "将 App 保存为模板可以将编辑 App 时所作修改保存为模板."
+      zh: "将 App 保存为Stack可以将编辑 App 时所作修改保存为Stack."
 
     POP_INTRO_2:
       en: "Canvas design, resource properties and instance states will be saved."
@@ -285,7 +285,7 @@ module.exports =
 
     POP_REPLACE_STACK:
       en: "Replace the original stack"
-      zh: "替换原始模板"
+      zh: "替换原始Stack"
 
     POP_REPLACE_STACK_INTRO:
       en: "This app is launched from stack"
@@ -293,23 +293,23 @@ module.exports =
 
     POP_REPLACE_STACK_INTRO_END:
       en: ". Entirely replace the stack with current app design."
-      zh: "启动的, 用当前配置完全替换该模板."
+      zh: "启动的, 用当前配置完全替换该Stack."
 
     POP_SAVE_NEW_STACK:
       en: "Save as new stack"
-      zh: "另存为新模板"
+      zh: "另存为新Stack"
 
     POP_SAVE_STACK_INSTRUCTION:
       en: "Specify a name for new stack:"
-      zh: "指定新模板的名字"
+      zh: "指定新Stack的名字"
 
     POP_STACK_NAME_ERROR:
       en: "The stack name is already in use. Please use another one."
-      zh: "此模板名字已被占用."
+      zh: "此Stack名字已被占用."
 
     POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
-      zh: "此模板已经可以导出, 请点击下载按钮保存文件."
+      zh: "此Stack已经可以导出, 请点击下载按钮保存文件."
 
     POP_BTN_DOWNLOAD:
       en: "Download"
@@ -321,7 +321,7 @@ module.exports =
 
     SAVE_AS_APP:
       en: "Save as App"
-      zh: "保存为应用"
+      zh: "保存为App"
 
     EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
@@ -329,11 +329,11 @@ module.exports =
 
     TIP_STOP_APP:
       en: "Stop This App's Resources."
-      zh: "暂停应用"
+      zh: "暂停App"
 
     TIP_CONTAINS_INSTANCE_STORED:
       en: "This app cannot be stopped since it contains instance-stored AMI."
-      zh: "不能暂停这个应用，因为它包含实例存储映像"
+      zh: "不能暂停这个App，因为它包含实例存储映像"
 
     POP_TIT_STOP_APP:
       en: "Confirm to Stop App"
@@ -341,7 +341,7 @@ module.exports =
 
     POP_BODY_STOP_APP_LEFT:
       en: "Do you confirm to stop app"
-      zh: "本操作将暂停应用中的相关资源，您确认暂停当前应用"
+      zh: "本操作将暂停App中的相关资源，您确认暂停当前App"
 
     POP_BODY_STOP_APP_RIGHT:
       en: "?"
@@ -349,7 +349,7 @@ module.exports =
 
     POP_TIT_STOP_PRD_APP:
       en: "Confirm to Stop App for Production"
-      zh: "确认暂停产品应用"
+      zh: "确认暂停生产环境App"
 
     POP_BTN_STOP_APP:
       en: "Stop"
@@ -357,7 +357,7 @@ module.exports =
 
     TIP_START_APP:
       en: "Start App"
-      zh: "恢复应用"
+      zh: "恢复App"
 
     POP_TIT_START_APP:
       en: "Confirm to Start App"
@@ -365,7 +365,7 @@ module.exports =
 
     POP_BODY_START_APP:
       en: "Do you confirm that you would like to start the app?"
-      zh: "本操作将恢复应用中的相关资源，您确认恢复当前应用吗?"
+      zh: "本操作将恢复App中的相关资源，您确认恢复当前App吗?"
 
     POP_START_CONFIRM_LIST_1:
       en: "EC2 instances will be started."
@@ -461,7 +461,7 @@ module.exports =
 
     TIP_UPDATE_APP:
       en: "Edit App"
-      zh: "更新应用"
+      zh: "编辑App"
 
     TIP_SAVE_UPDATE_APP:
       en: "Apply Updates"
@@ -473,7 +473,7 @@ module.exports =
 
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"
-      zh: "销毁应用"
+      zh: "销毁App"
 
     POP_TIT_TERMINATE_APP:
       en: "Confirm to Terminate App"
@@ -481,7 +481,7 @@ module.exports =
 
     POP_BODY_TERMINATE_APP_LEFT:
       en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
-      zh: "本操作将销毁应用中的相关资源，您确认销毁当前应用"
+      zh: "本操作将销毁App中的相关资源，您确认销毁当前App"
 
     POP_BODY_TERMINATE_APP_RIGHT:
       en: "?"
@@ -493,7 +493,7 @@ module.exports =
 
     POP_TIT_TERMINATE_PRD_APP:
       en: "Confirm to Terminate App for Production"
-      zh: "确认销毁产品应用"
+      zh: "确认销毁生产环境App"
 
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
@@ -517,15 +517,15 @@ module.exports =
 
     TOOLBAR_HANDLE_START_APP:
       en: "Start app"
-      zh: "恢复应用"
+      zh: "恢复App"
 
     TOOLBAR_HANDLE_STOP_APP:
       en: "Stop app"
-      zh: "暂停应用"
+      zh: "暂停App"
 
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
-      zh: "销毁应用"
+      zh: "销毁App"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
       en: "Convert to CloudFormation template"
@@ -557,11 +557,11 @@ module.exports =
 
     TIP_NO_CLASSIC_DATA_STACK:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建模板, 运行 App, 和修改 App 操作. 你可以将已存在的模板导出为 CloudFormation 模板或者是 PNG 文件. 点击此处阅读详细说明."
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作. 你可以将已存在的Stack导出为 CloudFormation 模板或者是 PNG 文件. 点击此处阅读详细说明."
 
     TIP_NO_CLASSIC_DATA_APP:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建模板, 运行 App, 和修改 App 操作. 您仍然可以管理已存在的 App. 点击此处阅读详细说明."
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作. 您仍然可以管理已存在的 App. 点击此处阅读详细说明."
 
     TIP_LINESTYLE:
       en: "Line Style"

@@ -462,11 +462,11 @@ module.exports =
 
     APP_LBL_NAME:
       en: "App Name"
-      zh: "应用名称"
+      zh: "App名称"
 
     STACK_LBL_DESCRIPTION:
       en: "Stack Description"
-      zh: "模板描述"
+      zh: "Stack描述"
 
     STACK_LBL_REGION:
       en: "Region"
@@ -478,11 +478,11 @@ module.exports =
 
     STACK_LBL_ID:
       en: "Stack ID"
-      zh: "模板标识"
+      zh: "Stack标识"
 
     APP_LBL_ID:
       en: "App ID"
-      zh: "应用标识"
+      zh: "App标识"
 
     APP_LBL_INSTANCE_STATE:
       en: "Instance State"
@@ -566,7 +566,7 @@ module.exports =
 
     APP_SNS_NONE:
       en: "This app has no SNS Subscription"
-      zh: "本应用不含SNS订阅"
+      zh: "本App不含SNS订阅"
 
     AZ_LBL_SWITCH:
       en: "Quick Switch Availability Zone"
@@ -1146,11 +1146,11 @@ module.exports =
 
     MSG_WARN_NO_STACK_NAME:
       en: "Stack name empty or missing."
-      zh: "模板名称不能为空。"
+      zh: "Stack名称不能为空。"
 
     MSG_WARN_REPEATED_STACK_NAME:
       en: "This stack name is already in use."
-      zh: "这个模板名称已被占用。"
+      zh: "这个Stack名称已被占用。"
 
     MSG_WARN_ENI_IP_EXTEND:
       en: "%s Instance's Network Interface can't exceed %s Private IP Addresses."
@@ -1158,15 +1158,15 @@ module.exports =
 
     MSG_WARN_NO_APP_NAME:
       en: "App name empty or missing."
-      zh: "应用名称不能为空。"
+      zh: "App名称不能为空。"
 
     MSG_WARN_REPEATED_APP_NAME:
       en: "This app name is already in use."
-      zh: "这个应用名称已被占用This app name is already in use."
+      zh: "这个App名称已被占用This app name is already in use."
 
     MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
-      zh: "无效的应用名称。"
+      zh: "无效的App名称。"
 
     WARN_EXCEED_ENI_LIMIT:
       en: "Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type."
@@ -1182,7 +1182,7 @@ module.exports =
 
     MSG_WARN_WHITE_SPACE:
       en: "Stack name contains white space"
-      zh: "模板名称不能包含空格"
+      zh: "Stack名称不能包含空格"
 
     MSG_SG_CREATE:
       en: "1 rule has been created in %s to allow %s %s %s."
@@ -1698,7 +1698,7 @@ module.exports =
 
     ASG_MSG_SNS_WARN:
       en: "There is no SNS subscription set up yet. Go to Stack Property to set up SNS subscription so that you will get the notification."
-      zh: "现在SNS还没有设置订阅信息，请去模板属性框设置，以便收到通知"
+      zh: "现在SNS还没有设置订阅信息，请去Stack属性框设置，以便收到通知"
 
     ASG_MSG_DROP_LC:
       en: "Drop AMI from Resrouce Panel to create Launch Configuration"

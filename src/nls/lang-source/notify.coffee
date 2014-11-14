@@ -58,15 +58,15 @@ module.exports =
 
     INFO_APP_REFRESH_FINISH:
       en: "Refresh resources for app( %s ) complete."
-      zh: "完成应用( %s )的资源刷新。"
+      zh: "完成App( %s )的资源刷新。"
 
     INFO_APP_REFRESH_FAILED:
       en: "Refresh resources for app( %s ) falied, please click refresh tool button to retry."
-      zh: "刷新应用( %s )的资源失败, 请点击刷新按钮来重试。"
+      zh: "刷新App( %s )的资源失败, 请点击刷新按钮来重试。"
 
     INFO_APP_REFRESH_START:
       en: "Refresh resources for app( %s ) start ..."
-      zh: "开始刷新应用( %s )的资源 ..."
+      zh: "开始刷新App( %s )的资源 ..."
 
     ERR_CONVERT_CLOUDFORMATION:
       en: "Convert to stack json to CloudFormation format error"

@@ -10,7 +10,7 @@ module.exports =
 
     NAV_TIT_APPS:
       en: "Apps"
-      zh: "应用"
+      zh: "Apps"
 
     NAV_TIT_STACKS:
       en: "Stacks"
@@ -22,11 +22,11 @@ module.exports =
 
     IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB:
       en: "Sorry, the stack/app is too old, unable to open"
-      zh: "抱歉，模板/应用的格式太旧了，无法打开."
+      zh: "抱歉，Stack/App的格式太旧了，无法打开."
 
     IDE_MSG_ERR_OPEN_TAB:
       en: "Unable to open the stack/app, please try again"
-      zh: "无法打开 模板/应用, 请重试"
+      zh: "无法打开 Stack/App, 请重试"
 
     IDE_MSG_ERR_CONNECTION:
       en: "Unable to load some parts of the IDE, please refresh the browser"
@@ -286,11 +286,11 @@ module.exports =
 
     PROC_FAILED_TITLE:
       en: "Oops! Starting app failed."
-      zh: "启动应用错误"
+      zh: "启动App错误"
 
     REG_MSG_WARN_APP_PENDING:
       en: "Your app is in Processing. Please wait a moment."
-      zh: "您的应用正在处理中，请稍等一会。"
+      zh: "您的App正在处理中，请稍等一会。"
 
 
     CFM_BTN_DELETE:
@@ -718,7 +718,7 @@ VisualOps API. You cannot UNDO this action.'
 
     HEAD_INFO_TOUR_DO_MORE:
       en: "Running stack into live resources, customize the visualization or exporting from the toolbar."
-      zh: "通过工具栏可以运行模板、自定义可视化数据以及导出数据和资源。"
+      zh: "通过工具栏可以运行Stack、自定义可视化数据以及导出数据和资源。"
 
     MODULE_RELOAD_MESSAGE:
       en: "Sorry, there is some connectivity issue, IDE is trying to reload"
@@ -818,7 +818,7 @@ VisualOps API. You cannot UNDO this action.'
 
     IDE_COM_CREATE_NEW_STACK:
       en: "Create new stack"
-      zh: "创建模板"
+      zh: "创建Stack"
 
     "IDE_LBL_REGION_NAME_cn-north-1":
       en: "CN North"
@@ -1334,7 +1334,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_TITLE:
       en: "Launching your app..."
-      zh: "启动您的应用..."
+      zh: "启动您的App..."
 
     PROC_RLT_DONE_TITLE:
       en: "Everything went smoothly!"
@@ -1342,15 +1342,15 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_RLT_DONE_SUB_TITLE:
       en: "Your app will automatically open soon."
-      zh: "您的应用将被自动打开。"
+      zh: "您的App将被自动打开。"
 
     PROC_STEP_PREPARE:
       en: "Preparing to start app..."
-      zh: "准备启动应用..."
+      zh: "准备启动App..."
 
     PROC_RLT_FAILED_TITLE:
       en: "Error Starting App."
-      zh: "启动应用错误。"
+      zh: "启动App错误。"
 
     PROC_RLT_FAILED_SUB_TITLE:
       en: "Please fix the following issues and try again:"

@@ -10,11 +10,11 @@ module.exports =
 
     ERR_SERVERGROUP_VOLUME:
       en: "Detach existing volume or snapshot of instance server group is not supported yet."
-      zh: "Detach existing volume or snapshot of instance server group is not supported yet."
+      zh: ""
 
     ERR_SERVERGROUP_VOLUME2:
       en: "Attach existing volume from single instance to instance server group is not supported yet."
-      zh: "Attach existing volume from single instance to instance server group is not supported yet."
+      zh: ""
 
     WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."

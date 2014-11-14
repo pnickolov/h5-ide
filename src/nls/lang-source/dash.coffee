@@ -18,7 +18,7 @@ module.exports =
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
-      zh: ""
+      zh: "查看资源详细内容"
 
     DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS:
       en: "Status of resources is up to date."
@@ -34,15 +34,15 @@ module.exports =
 
     DASH_TIP_NO_RESOURCE_RIGHT:
       en: " in this region"
-      zh: ""
+      zh: " 资源"
 
     DASH_TIP_APP_CREATED_BY:
       en: "App created by "
-      zh: ""
+      zh: "App 创建者:"
 
     DASH_TIP_APP_CREATED_BY_OTHER_USER:
       en: "App created by other user"
-      zh: ""
+      zh: "其他人创建的 App"
 
     DASH_BTN_GLOBAL:
       en: "Global"
@@ -298,87 +298,87 @@ module.exports =
 
     DASH_LBL_TITLE:
       en: "Title"
-      zh: ""
+      zh: "标题"
 
     DASH_LBL_DEFAULT_COOLDOWN:
       en: "Default Cooldown"
-      zh: ""
+      zh: "默认冷却"
 
     DASH_LBL_DESIRED_CAPACITY:
       en: "Desired Capacity"
-      zh: ""
+      zh: "期望数量"
 
     DASH_LBL_HEALTH_CHECK_GRACE_PERIOD:
       en: "HealthCheck Grace Period"
-      zh: ""
+      zh: "健康检查周期"
 
     DASH_LBL_HEALTH_CHECK_TYPE:
       en: "Health Check Type"
-      zh: ""
+      zh: "健康检查类型"
 
     DASH_LBL_HEALTH_CHECK:
       en: "Health Check"
-      zh: ""
+      zh: "健康检查"
 
     DASH_LBL_LISTENER_DESC:
       en: "Listener Descriptions"
-      zh: ""
+      zh: "监听器描述"
 
     DASH_LBL_SECURITY_GROUPS:
       en: "Security Groups"
-      zh: ""
+      zh: "安全组"
 
     DASH_LBL_TENANCY:
       en: "Tenancy"
-      zh: ""
+      zh: "租赁"
 
     DASH_LBL_VGW_ID:
       en: "VGW Id"
-      zh: ""
+      zh: "VGW Id"
 
     DASH_LBL_CGW_ID:
       en: "CGW Id"
-      zh: ""
+      zh: "CGW Id"
 
     DASH_LBL_TYPE:
       en: "Type"
-      zh: ""
+      zh: "类型"
 
     DASH_LBL_VOLUME_ID:
       en: "Volume ID"
-      zh: ""
+      zh: "磁盘 ID"
 
     DASH_LBL_SNAPSHOT_ID:
       en: "Snapshot ID"
-      zh: ""
+      zh: "快照 ID"
 
     DASH_LBL_DELETE_ON_TERM:
       en: "Delete on Termination"
-      zh: ""
+      zh: "终止时删除"
 
     DASH_LBL_VOLUME_TYPE:
       en: "Volume Type"
-      zh: ""
+      zh: "卷类型"
 
     DASH_LBL_ATTACH_TIME:
       en: "Attach Time"
-      zh: ""
+      zh: "连接时间"
 
     DASH_LBL_MONITORING:
       en: "Monitoring"
-      zh: ""
+      zh: "监控"
 
     DASH_LBL_PRIMARY_PRIVATE_IP:
       en: "Primary Private IP"
-      zh: ""
+      zh: "主私有IP"
 
     DASH_LBL_PRIVATE_DNS:
       en: "Private DNS"
-      zh: ""
+      zh: "私有 DNS"
 
     DASH_LBL_AMI_LAUNCH_INDEX:
       en: "AMI Launch Index"
-      zh: ""
+      zh: "镜像启动索引"
 
     DASH_LBL_BLOCK_DEVICE_TYPE:
       en: "Block Device Type"

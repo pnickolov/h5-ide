@@ -150,7 +150,7 @@ module.exports =
 
     CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE:
       en: "You are going to restore DB instance <span class='resource-tag'>%s</span> to a point in time. By deleting it, restored DB instance %s will be deleted too. Are you sure to continue?"
-      zh: ""
+      zh: "您将要恢复数据库实例 <span class='resource-tag'>%s</span> 到一个时间点，如果删除此数据库实例即将恢复的数据库实例也将被删除。要继续吗？"
 
     ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -174,11 +174,11 @@ module.exports =
 
     CVS_TIP_ASG_DRAGGER:
       en: "Expand the group by drag-and-drop in other availability zone."
-      zh: ""
+      zh: "拖放到其他可用区来扩展该Auto Scaling组。"
 
     CVS_NO_SUBNET_ASSIGNED_TO_SG:
       en: "No subnet is assigned to this subnet group yet"
-      zh: ""
+      zh: "无子网"
 
     CVS_POP_ATTACHED_VOLUMES:
       en: "Attached Volumes"

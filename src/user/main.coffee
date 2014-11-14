@@ -42,6 +42,8 @@ checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 langType = ->
     document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
 deepth = 'RESET'
+
+timezone = (new Date().getTimezoneOffset())/-60
 # route function
 userRoute = (routes)->
     hashArray = window.location.hash.split('#').pop().split('/')
@@ -220,10 +222,10 @@ init = ->
                     $(".error-msg").hide()
                     $(".control-group").removeClass('error')
                     submitBtn.attr('disabled',true).val langsrc.RESET.reset_waiting
-                    ajaxLogin [$user.val(),$password.val()] , (statusCode)->
+                    ajaxLogin [$user.val(),$password.val(), {timezone: timezone}] , (statusCode)->
                         if statusCode is 100
                           $('#error-msg-1').hide()
-                          $('#error-msg-3').show().text langsrc.SERVICE['ERROR_CODE_100_MESSAGE']
+                          $('#error-msg-3').show().text langsrc.SERVICE.ERROR_CODE_100_MESSAGE
                         else
                           $('#error-msg-1').show()
                           $('#error-msg-3').hide()
@@ -419,7 +421,7 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 #console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val(), {first_name: $firstName.val(), last_name: $lastName.val()}],(statusCode)-> # params needs to be confirmed.
+                                ajaxRegister([$username.val(), $password.val(), $email.val(), {first_name: $firstName.val(), last_name: $lastName.val(), timezone: timezone}],(statusCode)-> # params needs to be confirmed.
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.SERVICE['ERROR_CODE_'+statusCode+'_MESSAGE']
                                     return false

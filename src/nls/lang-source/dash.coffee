@@ -551,19 +551,19 @@ module.exports =
 
     DASH_LBL_DBINSTANCE_NAME:
       en: "Name"
-      zh: ""
+      zh: "名称"
 
     DASH_LBL_CLASS:
       en: "Class"
-      zh: ""
+      zh: "等级"
 
     DASH_LBL_FAMILY:
       en: "Family"
-      zh: ""
+      zh: "家族"
 
     DASH_LBL_STORAGE:
       en: "Storage"
-      zh: ""
+      zh: "存储"
 
     DASH_BUB_NAME:
       en: "Name"
@@ -654,16 +654,16 @@ module.exports =
       zh: "刚刚"
 
     DASH_TPL_SAMPLE_INSTRUCTION:
-      en: "This is only sample data of global resource sumary."
-      zh: ""
+      en: "This is only sample data of global resource summary."
+      zh: "这是全球资源汇总的示例数据."
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1:
       en: "Provide your AWS Credential"
-      zh: ""
+      zh: "提供您的 AWS 凭证"
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
       en: " to see real data"
-      zh: ""
+      zh: "已查看真实数据."
 
     DASH_TPL_NO_RECENT_APP:
       en: "No recently launched app in 30 days"
@@ -671,15 +671,15 @@ module.exports =
 
     DASH_TPL_NO_RECENT_STACK:
       en: "No recently edited stack in 30 days"
-      zh: ""
+      zh: "没有 30 天内编辑过的 Stack"
 
     DASH_TPL_PENDING_CONFIRMATION:
       en: "Pending Confirmation"
-      zh: ""
+      zh: "等待确认"
 
     DASH_TPL_LOADING_VPC_FAILED:
       en: "Oops, loading VPC failed."
-      zh: ""
+      zh: "加载VPC失败."
 
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
@@ -691,7 +691,7 @@ module.exports =
 
     DASH_TPL_NO_VPC_TO_IMPORT:
       en: "There is no VPC to import."
-      zh: ""
+      zh: "没有可导入的VPC."
 
     DASH_IMPORT_VPC_AS_APP:
       en: "Import Existing VPC as App"
@@ -703,36 +703,36 @@ module.exports =
 
     DASH_INVALID_SESSION:
       en: "Invalid Session"
-      zh: ""
+      zh: "登录信息已失效"
 
     DASH_INVALID_SESSION_ERROR:
       en: "Your account has signed in from other location or you last login has timed out."
-      zh: ""
+      zh: "您已在其他地方登录或者您的登录信息已失效."
 
     DASH_INVALID_SESSION_ACTION:
       en: "Would you like to reconnect this session or close it?"
-      zh: ""
+      zh: "您要重新登录还是关闭会话?"
 
     DASH_INVALID_SESSION_WARNING:
       en: "If you have unsaved changes, close this session will cause all your change to lose."
-      zh: ""
+      zh: "如果您有为保存的修改, 关闭会话将会导致所有修改丢失."
 
     DASH_LBL_RECONNECT:
       en: "Reconnect"
-      zh: ""
+      zh: "重连"
 
     DASH_LBL_CLOSE_SESSION:
       en: "Close Session"
-      zh: ""
+      zh: "关闭会话"
 
     DASH_RECONNECT_SESSION:
       en: "Reconnect Session"
-      zh: ""
+      zh: "重新登录"
 
     DASH_PROVIDE_PASSWORD_TO_RECONNECT:
       en: "Please provide your password to reconnect:"
-      zh: ""
+      zh: "请提供您的密码以重新登录:"
 
     DASH_LBL_CONNECT:
       en: "Connect"
-      zh: ""
+      zh: "连接"

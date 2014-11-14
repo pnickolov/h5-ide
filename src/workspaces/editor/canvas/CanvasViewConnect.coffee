@@ -1,5 +1,5 @@
 
-define [ "./CanvasView", "Design", "./CanvasManager",  "./CanvasElement", "i18n!/nls/lang.js" ], ( CanvasView, Design, CanvasManager, CanvasElement, lang )->
+define [ "./CanvasView", "Design", "./CanvasManager",  "./CanvasElement", "i18n!/nls/lang.js", "UI.modalplus" ], ( CanvasView, Design, CanvasManager, CanvasElement, lang, Modal )->
 
   CanvasViewProto = CanvasView.prototype
 

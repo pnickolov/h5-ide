@@ -359,7 +359,7 @@ module.exports =
 
     HEAD_LABEL_ACCOUNT_FULLNAME:
       en: "Full Name"
-      zh: ""
+      zh: "全名"
 
     HEAD_LABEL_ACCOUNT_EMAIL:
       en: "Email Address"
@@ -472,15 +472,15 @@ module.exports =
 
     SETTINGS_LABEL_ACCOUNTID:
       en: "Account Number"
-      zh: "账户编号"
+      zh: "账户 ID"
 
     SETTINGS_LABEL_ACCESSKEY:
       en: "Access Key ID"
-      zh: "访问码编号"
+      zh: "访问密钥 ID"
 
     SETTINGS_LABEL_SECRETKEY:
       en: "Secret Key"
-      zh: "密匙"
+      zh: "私有访问密钥"
 
     SETTINGS_LABEL_REMOVE_CREDENTIAL:
       en: "Remove Credential"
@@ -1402,10 +1402,6 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_SETTING_TITLE:
       en: "Billing & Usage"
-      zh: ""
-
-    HEAD_LABEL_ACCOUNT_FULLNAME:
-      en: "Full Name"
       zh: ""
 
     PAYMENT_HEADER_TOOLTIP:

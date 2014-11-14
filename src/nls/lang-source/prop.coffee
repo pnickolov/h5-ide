@@ -2605,123 +2605,123 @@ module.exports =
 
     SGLIST_DELETE_SG_TITLE:
       en: "Delete Security Group"
-      zh: ""
+      zh: "删除安全组"
 
     SGRULE_SELECTED_CONNECTION_REFLECTS_FOLLOWING_SGR:
       en: "The selected connection reflects following security group rule(s);"
-      zh: ""
+      zh: "选择的连接反映了下列安全组规则"
 
     STACK_SNS_SUBSCRIPTION:
       en: " SNS Subscription"
-      zh: ""
+      zh: " SNS 订阅"
 
     STACK_SNS_PROTOCOL:
       en: "Protocol"
-      zh: ""
+      zh: "协议"
 
     STACK_SNS_PROTOCOL_HTTPS:
       en: "HTTPS"
-      zh: ""
+      zh: "HTTPS"
 
     STACK_SNS_PROTOCOL_HTTP:
       en: "HTTP"
-      zh: ""
+      zh: "HTTP"
 
     STACK_SNS_PROTOCOL_EMAIL:
       en: "Email"
-      zh: ""
+      zh: "电子邮件"
 
     STACK_SNS_PROTOCOL_EMAIL_JSON:
       en: "Email - JSON"
-      zh: ""
+      zh: "电子邮件 - JSON"
 
     STACK_SNS_PROTOCOL_SMS:
       en: "SMS"
-      zh: ""
+      zh: "短信"
 
     STACK_SNS_PROTOCOL_APPLICATION:
       en: "Application"
-      zh: ""
+      zh: "应用程序"
 
     STACK_SNS_PROTOCOL_AMAZON_SQS:
       en: "Amazon SQS"
-      zh: ""
+      zh: "亚马逊 SQS"
 
     STACK_DELETE_NETWORK_ACL_TITLE:
       en: "Delete Network ACL"
-      zh: ""
+      zh: "删除网络 ACL"
 
     STACK_DELETE_NETWORK_ACL_CONTENT:
       en: "Are you sure you want to delete %s"
-      zh: ""
+      zh: "您确认要删除 %s"
 
     STACK_DELETE_NETWORK_ACL_DESC:
       en: "Subnets associated with %s will use DefaultACL."
-      zh: ""
+      zh: "关联 %s 的子网将使用 DefaultACL"
 
     STATICSUB_VALIDATION_AMI_INFO_MISSING:
       en: "Ami info is missing, please reopen stack and try again."
-      zh: ""
+      zh: "AMI 信息丢失，请重新打开 stack 重试"
 
     STATICSUB_VALIDATION_AMI_TYPE_NOT_SUPPORT:
       en: "Changing AMI platform is not supported. To use a %s AMI, please create a new instance instead."
-      zh: ""
+      zh: "替换的 AMI 平台不支持．要使用 %s AMI，请创建一个新的实例以替换"
 
     STATICSUB_VALIDATION_AMI_INSTANCETYPE_NOT_VALID:
       en: "%s does not support previousely used instance type %s. Please change another AMI."
-      zh: ""
+      zh: "%s 不支持之前使用的实例类型 %s．请更换其他 AMI"
 
     SUBNET_CIDR_VALIDATION_REQUIRED:
       en: "CIDR block is required."
-      zh: ""
+      zh: "CIDR 块必填"
 
     SUBNET_CIDR_VALIDATION_REQUIRED_DESC:
       en: "Please provide a subset of IP ranges of this VPC."
-      zh: ""
+      zh: "请提供在此 VPC 的 IP 范围的一个子集"
 
     SUBNET_CIDR_VALIDATION_INVALID:
       en: "%s is not a valid form of CIDR block."
-      zh: ""
+      zh: "%s 不是一个有效的 CIDR 块格式"
 
     SUBNET_CIDR_VALIDATION_INVALID_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
-      zh: ""
+      zh: "请提供一个有效的 IP 范围，例如，10.0.0.1/24"
 
     SUBNET_GROUP_DETAILS:
       en: "Subnet Groups Details"
-      zh: ""
+      zh: "子网组详细"
 
     SUBNET_GROUP_NAME:
       en: "Name"
-      zh: ""
+      zh: "名称"
 
     SUBNET_GROUP_DESCRIPTION:
       en: "Description"
-      zh: ""
+      zh: "描述"
 
     SUBNET_GROUP_MEMBER:
       en: "Member"
-      zh: ""
+      zh: "成员"
 
     VOLUME_DISABLE_IOPS_TOOLTIP:
       en: "Volume size must be at least 10 GB to use Provisioned IOPS volume type."
-      zh: ""
+      zh: "要使用预置IOPS存储类型，存储大小必须至少为10GB"
 
     VPC_SELECTING_DEDICATED_DESC:
       en: "Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware."
-      zh: ""
+      zh: "选择'专用'将强制所有在此 VPC 的实例运行在单租户硬件中"
 
     VPC_SELECTING_DEDICATED_LINK_TEXT:
       en: "Additional changes will apply."
-      zh: ""
+      zh: "附加更改将生效"
 
     VPN_STACK_STATIC:
       en: "Static"
-      zh: ""
+      zh: "静态"
 
     VPN_STACK_DYNAMIC:
       en: "Dynamic"
-      zh: ""
+      zh: "动态"
 
     VPN_GATEWAY_VPN_DYNAMIC:
       en: " Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary."
@@ -2729,47 +2729,47 @@ module.exports =
 
     VPN_BLUR_CIDR_REQUIRED:
       en: "CIDR block is required."
-      zh: ""
+      zh: "CIDR 块必填"
 
     VPN_BLUR_CIDR_REQUIRED_DESC:
       en: "Please provide a IP ranges for this IP Prefix. "
-      zh: ""
+      zh: "请为此 IP 前缀提供一个 IP 范围"
 
     VPN_BLUR_CIDR_NOT_VALID_IP:
       en: "%s is not a valid form of CIDR block."
-      zh: ""
+      zh: "%s 不是一个有效的 CIDR 块格式"
 
     VPN_BLUR_CIDR_NOT_VALID_IP_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
-      zh: ""
+      zh: "请提供一个有效的 IP 范围，例如，10.0.0.1/24"
 
     VPN_BLUR_CIDR_CONFLICTS_IP:
       en: "%s conflicts with other IP Prefix."
-      zh: ""
+      zh: "%s 与其他 IP 前缀冲突"
 
     VPN_BLUR_CIDR_CONFLICTS_IP_DESC:
       en: "Please choose a CIDR block not conflicting with existing IP Prefix."
-      zh: ""
+      zh: "请选择一个与其他 IP 前缀不冲突的 CIDR 块"
 
     VPN_REMOVE_CONNECTION:
       en: "Remove Connection"
-      zh: ""
+      zh: "删除连接"
 
     RDS_LBL_REFRESH:
       en: "Refresh"
-      zh: ""
+      zh: "刷新"
 
     RDS_LBL_CLOSE:
       en: "Close"
-      zh: ""
+      zh: "关闭"
 
     LBL_CLOSE:
       en: "Close"
-      zh: ""
+      zh: "关闭"
 
     RDS_NO_RECORDS_FOUND:
       en: "No records found."
-      zh: ""
+      zh: "未发现记录"
 
 
 
@@ -2781,139 +2781,139 @@ module.exports =
     ###
     SNAPSHOT_SET_NAME:
         en: "Snapshot Name"
-        zh: ""
+        zh: "快照名称"
 
     SNAPSHOT_SET_NAME_TIP:
       en: "Enter the name of the snapshot that you will create."
-      zh: ""
+      zh: "输入要创建的快照名称"
 
     SNAPSHOT_SOURCE_SNAPSHOT:
       en: "Source Snapshot"
-      zh: ""
+      zh: "源快照"
 
     SNAPSHOT_SET_NEW_NAME:
       en: "New Snapshot Name"
-      zh: ""
+      zh: "新快照名称"
 
     SNAPSHOT_DESTINATION_REGION:
       en: "Destination Region"
-      zh: ""
+      zh: "目的 Region"
 
     SNAPSHOT_SET_VOLUME:
       en: "Volume"
-      zh: ""
+      zh: "卷"
 
     SNAPSHOT_SET_INSTANCE:
       en: "Instance"
-      zh: ""
+      zh: "实例"
 
     INSTANCE_SNAPSHOT_SELECT:
       en: "Select DB instance from which to create snapshot"
-      zh: ""
+      zh: "选择要创建快照的数据库实例"
 
     SNAPSHOT_SET_DESC:
       en: "Description"
-      zh: ""
+      zh: "描述"
 
     VPC_TIP_ENTER_THE_NEW_SNAPSHOT_NAME:
       en: "Please fill with the name of the new snapshot you will create."
-      zh: ""
+      zh: "请填写要创建的快照名称"
 
     SNAPSHOT_SET_DESC_TIP:
       en: "Fill in the Description"
-      zh: ""
+      zh: "填写描述"
 
     DB_SNAPSHOT_DELETE_1:
       en: "Confirm to delete "
-      zh: ""
+      zh: "确认删除 "
 
     DB_SNAPSHOT_DELETE_2:
       en: " selected "
-      zh: ""
+      zh: " 选择的 "
 
     DB_SNAPSHOT_DELETE_3:
       en: " Snapshots"
-      zh: ""
+      zh: " 快照"
 
     DB_SNAPSHOT_EMPTY:
       en: "There are no available instance here."
-      zh: ""
+      zh: "尚无可用实例"
 
     DB_SNAPSHOT_ID:
       en: "DB Snapshot ID"
-      zh: ""
+      zh: "数据库快照 ID"
 
     DB_SNAPSHOT_VPC_ID:
       en: "Vpc ID"
-      zh: ""
+      zh: "VPC ID"
 
     DB_SNAPSHOT_ENGINE:
       en: "DB Engine"
-      zh: ""
+      zh: "数据库引擎"
 
     DB_SNAPSHOT_LICENSE_MODEL:
       en: "License Model"
-      zh: ""
+      zh: "许可模式"
 
     DB_SNAPSHOT_STATUS:
       en: "Status"
-      zh: ""
+      zh: "状态"
 
     DB_SNAPSHOT_STORAGE:
       en: "DB Storage"
-      zh: ""
+      zh: "数据库存储"
 
     DB_SNAPSHOT_CREATE_TIME:
       en: "Snapshot Creation Time"
-      zh: ""
+      zh: "快照创建时间"
 
     DB_SNAPSHOT_SOURCE_REGION:
       en: "Source Region"
-      zh: ""
+      zh: "源 Region"
 
     DB_SNAPSHOT_INSTANCE_NAME:
       en: "DB Instance Name"
-      zh: ""
+      zh: "数据库实例名称"
 
     DB_SNAPSHOT_TYPE:
       en: "Snapshot Type"
-      zh: ""
+      zh: "快照类型"
 
     DB_SNAPSHOT_ENGINE_VERSION:
       en: "DB Engine Version"
-      zh: ""
+      zh: "数据库引擎版本"
 
     DB_SNAPSHOT_MASTER_USERNAME:
       en: "Master Username"
-      zh: ""
+      zh: "主用户名"
 
     OPTION_GROUP_NAME:
       en: "Option Group Name"
-      zh: ""
+      zh: "选项组名称"
 
     DB_SNAPSHOT_INSTANCE_CREATE_TIME:
       en: "Instance Creation Name"
-      zh: ""
+      zh: "实例创建名称"
 
     DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID:
       en: "Please update your Account Number with number"
-      zh: ""
+      zh: "请更新您的 Account Number"
 
     LBL_DELETING:
       en: "Deleting..."
-      zh: ""
+      zh: "删除中..."
 
     LBL_DELETE:
       en: "Delete"
-      zh: ""
+      zh: "删除"
 
     LBL_FILTER:
       en: "Filter: "
-      zh: ""
+      zh: "过滤: "
 
     LBL_SORT_BY:
       en: "Sort by: "
-      zh: ""
+      zh: "排序: "
 
     LBL_CANCEL:
       en: "Cancel"
@@ -2921,99 +2921,99 @@ module.exports =
 
     LBL_CREATING:
       en: "Creating..."
-      zh: ""
+      zh: "创建中..."
 
     LBL_DOWNLOAD:
       en: "Download"
-      zh: ""
+      zh: "下载"
 
     LBL_DOWNLOADING:
       en: "Downloading..."
-      zh: ""
+      zh: "下载中..."
 
     LBL_VIEW:
       en: "View"
-      zh: ""
+      zh: "查看"
 
     LBL_DUPLICATE:
       en: "Duplicate"
-      zh: ""
+      zh: "复制"
 
     LBL_DUPLICATING:
       en: "Duplicating..."
-      zh: ""
+      zh: "复制中..."
 
     LBL_RESET:
       en: "Reset"
-      zh: ""
+      zh: "重置"
 
     LBL_RESETTING:
       en: "Resetting..."
-      zh: ""
+      zh: "重置中..."
 
     LBL_CREATE:
       en: "Create"
-      zh: ""
+      zh: "创建"
 
     LBL_IMPORT:
       en: "Import"
-      zh: ""
+      zh: "导入"
 
     LBL_SUCCESS:
       en: "Success"
-      zh: ""
+      zh: "成功"
 
     LBL_IMPORTING:
       en: "Importing..."
-      zh: ""
+      zh: "导入中..."
 
     LBL_DISABLED:
       en: "Disabled"
-      zh: ""
+      zh: "禁用"
 
     LBL_ENABLED:
       en: "Enabled"
-      zh: ""
+      zh: "启用"
 
     LBL_PARAMETER_NAME:
       en: "Parameter Name"
-      zh: ""
+      zh: "参数名称"
 
     LBL_ISMODIFIABLE:
       en: "Is Modifiable"
-      zh: ""
+      zh: "可修改"
 
     LBL_APPLY_METHOD:
       en: "Apply Method"
-      zh: ""
+      zh: "应用类型"
 
     LBL_SOURCE:
       en: "Source"
-      zh: ""
+      zh: "源"
 
     LBL_ORIGINAL_VALUE:
       en: "Original Value"
-      zh: ""
+      zh: "原始值"
 
     LBL_EDIT_VALUE:
       en: "Edit Value"
-      zh: ""
+      zh: "编辑值"
 
     LBL_PARAMETER_VALUE_REFERENCE:
       en: "Parameter Value Reference"
-      zh: ""
+      zh: "参数值"
 
     LBL_BACK_TO_EDITING:
       en: "Back to Editing"
-      zh: ""
+      zh: "返回编辑"
 
     LBL_APPLY_CHANGES:
       en: "Apply Changes"
-      zh: "应用"
+      zh: "应用更改"
 
     LBL_REVIEW_CHANGES_SAVE:
       en: "Review Changes & Save"
-      zh: ""
+      zh: "检查更改 & 保存"
 
     LBL_APPLYING:
       en: "Applying..."
@@ -3021,94 +3021,94 @@ module.exports =
 
     DELETE_SNAPSHOT_1:
       en: "Confirm to delete "
-      zh: ""
+      zh: "确认删除 "
 
     DELETE_SNAPSHOT_2:
       en: "selected "
-      zh: ""
+      zh: "选择的 "
 
     DELETE_SNAPSHOT_3:
       en: " Snapshot(s) "
-      zh: ""
+      zh: " 快照"
 
 
 
 
     OPTION_SETTING:
       en: "Option Setting"
-      zh: ""
+      zh: "选项设置"
 
     VALUE:
       en: "Value"
-      zh: ""
+      zh: "值"
 
     ALLOWED_VALUES:
       en: "Allowed Values"
-      zh: ""
+      zh: "允许的值"
 
     OPTION_GROUP_DESCRIPTION:
       en: "Option Group Description"
-      zh: ""
+      zh: "选项组描述"
 
     ENGINE_VERSION:
       en: "Engine Version"
-      zh: ""
+      zh: "引擎版本"
 
     PERSISTENT:
       en: "PERSISTENT"
-      zh: ""
+      zh: "持续的"
 
     PERMENANT:
       en: "PERMENANT"
-      zh: ""
+      zh: "永久的"
 
     OPTION:
       en: "Option"
-      zh: ""
+      zh: "选项"
 
     HIDE_DETAILS:
       en: "Hide details"
-      zh: ""
+      zh: "隐藏详细"
 
     PORT_COLON:
       en: "Port:"
-      zh: ""
+      zh: "端口:"
 
     SECURITY_GROUP_COLON:
       en: "Security Group:"
-      zh: ""
+      zh: "安全组:"
 
     SETTING:
       en: "Setting"
-      zh: ""
+      zh: "设置"
 
     NO_OPTION_GROUP_PERIOD:
       en: "No Option Group."
-      zh: ""
+      zh: "无选项组"
 
     CREATE_OPTION_GROUP:
       en: "Create Option Group"
-      zh: ""
+      zh: "创建选项组"
 
     SHOW_DETAILS:
       en: "Show details"
-      zh: ""
+      zh: "显示详细"
 
     SECURITY_GROUP:
       en: "Security Group"
-      zh: ""
+      zh: "安全组"
 
     SAVE_OPTION:
       en: "Save Option"
-      zh: ""
+      zh: "保存选项"
 
     NAME:
       en: "Name"
-      zh: ""
+      zh: "名称"
 
     SAVE:
       en: "Save"
-      zh: ""
+      zh: "保存"
 
     DESCRIPTION:
       en: "Description"
@@ -3116,177 +3116,177 @@ module.exports =
 
     CONFIRM_TO_DELETE_THIS_OPTION_GROUP_QUESTION:
       en: "Confirm to delete this option group?"
-      zh: ""
+      zh: "确认要删除此选项组?"
 
     STATIC_SUB_CHANGE_AMI:
       en: "Change AMI"
-      zh: ""
+      zh: "更换 AMI"
 
     DRAG_IMAGE_DROP_TO_CHANGE:
       en: "Drag image from Resource Panel and drop below to change AMI."
-      zh: ""
+      zh: "从资源面板拖拽镜像放到下面以更换 AMI"
 
     DRAG_IMAGE_DROP_HERE:
       en: "Drop AMI Here"
-      zh: ""
+      zh: "将 AMI 拖到这里"
 
     CONFIRM_CHANGE_AMI:
       en: "Confirm Change AMI"
-      zh: ""
+      zh: "确认更换　AMI"
 
     ROLLING_BACK:
       en: "Rolling back..."
-      zh: ""
+      zh: "回滚中..."
 
     ALLOW:
       en: "Allow"
-      zh: ""
+      zh: "允许"
 
     INITIATE_TRAFFIC_TO:
       en: "initiate traffic to"
-      zh: ""
+      zh: "允许流量到"
 
     ACCEPT_TRAFFIC_FROM:
       en: "accept traffic from"
-      zh: ""
+      zh: "接受流量从"
 
     HAVE_2WAY_TRAFFIC_WITH:
       en: "have 2-way traffic with"
-      zh: ""
+      zh: "互通流量与"
 
     DESTINATION_PROTOCOL:
       en: "Destination Protocol"
-      zh: ""
+      zh: "目的协议"
 
     PORT_RANGE_COLON:
       en: "Port Range: "
-      zh: ""
+      zh: "端口范围: "
 
     ADD_RULE:
       en: "Add Rule"
-      zh: ""
+      zh: "添加规则"
 
     RULE_REF_ITS_OWN_SG:
       en: "You have created a rule referencing its own security group. This rule will not be visualized as the blue connection lines."
-      zh: ""
+      zh: "你已经创建了一个引用安全组自己的规则．这条规则将不会体现在蓝色的连接线上．"
 
     CREATE_ANOTHER_RULE:
       en: "Create another rule"
-      zh: ""
+      zh: "创建其他规则"
 
     RELATED_RULE:
       en: "Related Rule"
-      zh: ""
+      zh: "相关的规则"
 
     CREATE_SECURITY_GROUP_RULE:
       en: "Create Security Group Rule"
-      zh: ""
+      zh: "创建安全组规则"
 
     NONE:
       en: "None"
-      zh: ""
+      zh: "无"
 
     SUBSCRIPTIONS:
       en: "Subscriptions"
-      zh: ""
+      zh: "订阅"
 
     SELECT_TOPIC:
       en: "Select Topic"
-      zh: ""
+      zh: "选择主题"
 
     NEW_TOPIC:
       en: "New Topic"
-      zh: ""
+      zh: "创建主题"
 
     TOPIC_NAME:
       en: "Topic Name"
-      zh: ""
+      zh: "主题名称"
 
     DISPLAY_NAME:
       en: "Display Name"
-      zh: ""
+      zh: "显示名称"
 
     CREATING_3PERIOD:
       en: "Creating..."
-      zh: ""
+      zh: "创建中..."
 
     DELETING_3PERIOD:
       en: "Deleting..."
-      zh: ""
+      zh: "删除中..."
 
     SUBSCRIPTION_ARN:
       en: "Subscription ARN"
-      zh: ""
+      zh: "订阅 ARN"
 
     CREATE_SNS_TOPIC:
       en: "Create SNS Topic"
-      zh: ""
+      zh: "创建 SNS 主题"
 
 
     NO_SNS_TOPIC_IN_XXX:
       en: "No SNS Topic in %s."
-      zh: ""
+      zh: "%s 中尚无 SNS 主题"
 
     UPLOAD:
       en: "Upload"
-      zh: ""
+      zh: "上传"
 
     UPLOAD_3PERIOD:
       en: "Upload..."
-      zh: ""
+      zh: "上传中..."
 
     UPDATE:
       en: "Update"
-      zh: ""
+      zh: "更新"
 
     UPDATING_3PERIOD:
       en: "Updating..."
-      zh: ""
+      zh: "更新中..."
 
     SERVER_CERTIFICATE_ID:
       en: "Server Certificate ID"
-      zh: ""
+      zh: "服务器证书 ID"
 
     SERVER_CERTIFICATE_ARN:
       en: "Server Certificate ARN"
-      zh: ""
+      zh: "服务器证书 ARN"
 
     EXPIRATION_DATE:
       en: "Expiration Date"
-      zh: ""
+      zh: "过期日期"
 
     PATH:
       en: "Path"
-      zh: ""
+      zh: "路径"
 
     NO_SSL_CERTIFICATE:
       en: "No SSL Certificate."
-      zh: ""
+      zh: "无 SSL 证书"
 
     CREATE_SSL_CERTIFICATE:
       en: "Create SSL Certificate"
-      zh: ""
+      zh: "创建 SSL 证书"
 
     NO_FAILED_ITEM_PERIOD:
       en: "No failed item."
-      zh: ""
+      zh: "无失败的项"
 
     ALL_STATES_ARE_PENDING_PERIOLD:
       en: "All states are pending."
-      zh: ""
+      zh: "所有 state 都在等待中"
 
     A_MESSAGE_WILL_SHOW_HERE:
       en: "A message will show here when a state succeeds or fails."
-      zh: ""
+      zh: "当 state 成功或失败时消息将显示在这里"
 
     XXX_STATES_HAS_UPDATED_STATUS:
       en: "%s states has updated status."
-      zh: ""
+      zh: "%s 条 state 有状态更新"
 
     FAILED_STATE:
       en: "Failed State"
-      zh: ""
+      zh: "失败的 state"
 
     EXPAND:
       en: "Expand"
-      zh: ""
+      zh: "展开"

@@ -417,11 +417,11 @@ module.exports =
 
     POP_ESTIMATED_COST_WHEN_STOP:
       en: "Estimated Cost When Stopped"
-      zh: ""
+      zh: "停止后的估计费用"
 
     POP_SAVING_COMPARED_TO_RUNNING:
       en: "Saving Compared to Running App"
-      zh: ""
+      zh: "相比运行时节省"
 
     POP_PER_MONTH:
       en: "/ month"
@@ -429,31 +429,31 @@ module.exports =
 
     POP_CANT_STOP_1:
       en: "cannot take final snapshot."
-      zh: ""
+      zh: "无法创建快照"
 
     POP_CANT_STOP_2:
       en: "Wait for the DB instance(s) to be available. Then try to stop the app again."
-      zh: ""
+      zh: "请等到数据库实例状态可用时, 再重试停止 App"
 
     POP_TAKE_DB_SNAPSHOT:
       en: "Take final snapshot for DB Instances."
-      zh: ""
+      zh: "为数据库实例创建最终快照"
 
     POP_CANT_TAKE_SNAPSHOT_1:
       en: "DB Instance"
-      zh: ""
+      zh: "数据库实例"
 
     POP_CANT_TAKE_SNAPSHOT_2:
       en: "cannot take final snapshot."
-      zh: ""
+      zh: "无法创建最终快照"
 
     POP_FORCE_TERMINATE:
       en: "Force to delete app"
-      zh: ""
+      zh: "强制删除 App"
 
     POP_FORCE_TERMINATE_CONTENT:
       en: "The app %s failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
-      zh: ""
+      zh: "App %s 种植失败, 您要强制删除它吗? 强制删除后, 您需要在 AWS 控制台里手动管理资源."
 
     POP_BTN_START_APP:
       en: "Start"
@@ -541,27 +541,27 @@ module.exports =
 
     TIP_REFRESH_REOURCES:
       en: "Refresh Reources"
-      zh: ""
+      zh: "刷新资源"
 
     TIP_JSON_DIFF:
       en: "JSON Diff"
-      zh: ""
+      zh: "JSON Diff"
 
     TIP_JSON_VIEW:
       en: "JSON View"
-      zh: ""
+      zh: "JSON 视图"
 
     TIP_CUSTOM_USER_DATA:
       en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
-      zh: ""
+      zh: "自定义 User Data 将被覆盖并禁止以安装 OpsAgent.(目前只支持 Linux 平台)"
 
     TIP_NO_CLASSIC_DATA_STACK:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
-      zh: ""
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建模板, 运行 App, 和修改 App 操作. 你可以将已存在的模板导出为 CloudFormation 模板或者是 PNG 文件. 点击此处阅读详细说明."
 
     TIP_NO_CLASSIC_DATA_APP:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
-      zh: ""
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建模板, 运行 App, 和修改 App 操作. 您仍然可以管理已存在的 App. 点击此处阅读详细说明."
 
     TIP_LINESTYLE:
       en: "Line Style"
@@ -593,44 +593,44 @@ module.exports =
 
     EXPERIMENT:
       en: "Experimental Feature!"
-      zh: ""
+      zh: "实验性功能"
 
     TOGGLE_VISUALOPS_ON:
       en: "instance state on"
-      zh: ""
+      zh: "instance state 开"
 
     TOGGLE_VISUALOPS_OFF:
       en: "instance state off"
-      zh: ""
+      zh: "instance state 关"
 
     LBL_NO_CLASSIC:
       en: "Where are the missing buttons?"
-      zh: ""
+      zh: "有些按钮不见了?"
 
     EDIT_APP:
       en: "Edit App"
-      zh: ""
+      zh: "修改 App"
 
     APPLY_EDIT:
       en: "Apply"
-      zh: ""
+      zh: "应用"
 
     START_APP:
       en: "Start App"
-      zh: ""
+      zh: "启动 App"
 
     CONNECTION_LOST_TO_RECONNECT:
       en: "Connection lost. Attempting to reconnect..."
-      zh: ""
+      zh: "连接丢失. 正在尝试重连..."
 
     CHANGES_MAY_NOT_BE_SAVED:
       en: "Changes made now may not be saved."
-      zh: ""
+      zh: "所作的修改将不会被保存."
 
     RELOAD_STATES:
       en: "Reload States"
-      zh: ""
+      zh: "刷新 States"
 
     SHOW_UNUSED_REGIONS:
       en: "Show unused regions"
-      zh: ""
+      zh: "显示未使用的地区"

@@ -14,7 +14,7 @@ module.exports =
 
     NAV_TIT_STACKS:
       en: "Stacks"
-      zh: "模版"
+      zh: "Stacks"
 
     NAV_LBL_GLOBAL:
       en: "Global"

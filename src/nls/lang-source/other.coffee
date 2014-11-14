@@ -74,7 +74,7 @@ module.exports =
 
     RES_TIT_AMI:
       en: "Images"
-      zh: "虚拟机映像"
+      zh: "AMI"
 
     RES_TIT_VOL:
       en: "Volume & Snapshot"
@@ -134,15 +134,15 @@ module.exports =
 
     RES_LBL_QUICK_START_AMI:
       en: "Quick Start Images"
-      zh: "推荐的映像"
+      zh: "推荐的AMI"
 
     RES_LBL_MY_AMI:
       en: "My Images"
-      zh: "我的映像"
+      zh: "我的AMI"
 
     RES_LBL_FAVORITE_AMI:
       en: "Favorite Images"
-      zh: "收藏的映像"
+      zh: "收藏的AMI"
 
     RES_LBL_NEW_VOL:
       en: "New Volume"
@@ -198,7 +198,7 @@ module.exports =
 
     RES_BTN_BROWSE_COMMUNITY_AMI:
       en: "Browse Community Images"
-      zh: "浏览映像"
+      zh: "浏览AMI"
 
     RES_TIP_TOGGLE_RESOURCE_PANEL:
       en: "Show/Hide Resource Panel"
@@ -258,19 +258,19 @@ module.exports =
 
     RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS:
       en: "AMI is added to Favorite AMI"
-      zh: "收藏映像成功"
+      zh: "收藏AMI成功"
 
     RES_MSG_ERR_ADD_FAVORITE_AMI_FAILED:
       en: "Failed to add AMI to Favorite"
-      zh: "收藏映像失败"
+      zh: "收藏AMI失败"
 
     RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS:
       en: "AMI is removed from Favorite AMI"
-      zh: "映像已从收藏列表中移除"
+      zh: "AMI 已从收藏列表中移除"
 
     RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED:
       en: "Failed to remove AMI from Favorite"
-      zh: "映像从收藏列表移除失败"
+      zh: "AMI 从收藏列表移除失败"
 
     RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
       en: "%s is a member of subnet group %s. To delete the subnet, remove the membership first."
@@ -734,11 +734,11 @@ VisualOps API. You cannot UNDO this action.'
 
     AMI_LBL_COMMUNITY_AMIS:
       en: "Community AMIs"
-      zh: "社区映像"
+      zh: "社区AMI"
 
     AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID:
       en: "Search AMI by name or ID"
-      zh: "根据名称或ID搜索映像"
+      zh: "根据名称或ID搜索AMI"
 
     AMI_LBL_ALL_PLATFORMS:
       en: "All Platforms"
@@ -794,11 +794,11 @@ VisualOps API. You cannot UNDO this action.'
 
     AMI_LBL_AMI_ID:
       en: "AMI ID"
-      zh: "映像 ID"
+      zh: "AMI ID"
 
     AMI_LBL_AMI_NAME:
       en: "AMI Name"
-      zh: "映像名称"
+      zh: "AMI 名称"
 
     AMI_LBL_ARCH:
       en: "Arch"

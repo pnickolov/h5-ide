@@ -333,7 +333,7 @@ module.exports =
 
     TIP_CONTAINS_INSTANCE_STORED:
       en: "This app cannot be stopped since it contains instance-stored AMI."
-      zh: "不能暂停这个App，因为它包含实例存储映像"
+      zh: "不能暂停这个App，因为它包含实例存储 AMI"
 
     POP_TIT_STOP_APP:
       en: "Confirm to Stop App"

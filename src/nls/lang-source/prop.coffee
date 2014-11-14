@@ -113,7 +113,7 @@ module.exports =
 
     INSTANCE_AMI:
       en: "AMI"
-      zh: "映像"
+      zh: "AMI"
 
     INSTANCE_TYPE:
       en: "Instance Type"
@@ -326,11 +326,11 @@ module.exports =
 
     INSTANCE_AMI_ID:
       en: "AMI ID"
-      zh: "映像ID"
+      zh: "AMI ID"
 
     INSTANCE_AMI_NAME:
       en: "Name"
-      zh: "映像名称"
+      zh: "AMI名称"
 
     INSTANCE_AMI_DESC:
       en: "Description"
@@ -1702,7 +1702,7 @@ module.exports =
 
     ASG_MSG_DROP_LC:
       en: "Drop AMI from Resrouce Panel to create Launch Configuration"
-      zh: "请拖拽映像来建立Launch Configuration"
+      zh: "请拖拽AMI来建立Launch Configuration"
 
     ASG_TERMINATION_EDIT:
       en: "Edit Termination Policy"

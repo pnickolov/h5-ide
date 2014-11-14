@@ -291,7 +291,7 @@ module.exports =
 
     ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."
-      zh: "无法获取选中的( %s )AMI的信息，请拖拽其他的AMI。"
+      zh: "无法获取选中的( %s ) AMI的信息，请拖拽其他的AMI。"
 
     THE_ADDING_RULE_ALREADY_EXIST:
       en: "The adding rule already exist."
@@ -299,7 +299,7 @@ module.exports =
 
     UNABLE_TO_LOAD_COMMUNITY_AMIS:
       en: "Unable to load community AMIs"
-      zh: "不能加载社区映像"
+      zh: "不能加载社区AMI"
 
     FAIL_TO_EXPORT_TO_CLOUDFORMATION:
       en: "Fail to export to AWS CloudFormation Template, Error code: %s"

@@ -121,26 +121,6 @@
     </div>
 </div>
 
-<!-- {{modal.confirmImport}} -->
-<p class="modal-text-major">{{i18n "IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
-<p class="modal-text-major">{{i18n "TOOLBAR.NAME_IMPORTED_APP"}}</p>
-<div class="modal-control-group">
-    <label for="ImportSaveAppName">{{i18n "TOOLBAR.APP_NAME"}}</label>
-    <input id="ImportSaveAppName" class="input" value="{{name}}" type="string" autofocus>
-</div>
-<div class="modal-control-group app-usage-group clearfix">
-    <label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
-    <div id="app-usage-selectbox" class="selectbox">
-        <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
-        <ul class="dropdown" tabindex="-1">
-            <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
-            <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
-            <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
-            <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
-        </ul>
-    </div>
-</div>
-
 <section style="margin:5px 5px 20px 8px;">
   <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
   <label for="MonitorImportApp">Monitor and report external resource change of this app</label>

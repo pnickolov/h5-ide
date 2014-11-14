@@ -382,71 +382,71 @@ module.exports =
 
     DASH_LBL_BLOCK_DEVICE_TYPE:
       en: "Block Device Type"
-      zh: ""
+      zh: "块储存设备类型"
 
     DASH_LBL_BLOCK_DEVICES:
       en: "Block Devices"
-      zh: ""
+      zh: "块储存设备"
 
     DASH_LBL_CATEGORY:
       en: "Category"
-      zh: ""
+      zh: "分类"
 
     DASH_LBL_STATE_REGION:
-      en: "State Reason"
-      zh: ""
+      en: "State Region"
+      zh: "状态区域"
 
     DASH_LBL_STATE_UPDATED_TIMESTAMP:
       en: "State Updated Timestamp"
-      zh: ""
+      zh: "状态更新时间戳"
 
     DASH_LBL_ENGINE:
       en: "Engine"
-      zh: ""
+      zh: "引擎"
 
     DASH_LBL_DB_NAME:
       en: "DB Name"
-      zh: ""
+      zh: "数据库名称"
 
     DASH_LBL_OPTION_GROUP:
       en: "Option Group"
-      zh: ""
+      zh: "选项组"
 
     DASH_LBL_PARAMETER_GROUP:
       en: "Parameter Group"
-      zh: ""
+      zh: "参数组"
 
     DASH_LBL_SUBNET_GROUP:
       en: "Subnet Group"
-      zh: ""
+      zh: "子网组"
 
     DASH_LBL_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"
-      zh: ""
+      zh: "公共访问性"
 
     DASH_LBL_IOPS:
       en: "IOPS"
-      zh: ""
+      zh: "IOPS"
 
     DASH_LBL_AUTOMATED_BACKUP:
       en: "Automated Backup"
-      zh: ""
+      zh: "自动备份"
 
     DASH_LBL_LATEST_RESTORE_TIME:
       en: "Latest Restore Time"
-      zh: ""
+      zh: "最新恢复时间"
 
     DASH_LBL_AUTO_MINOR_VERSION_UPGRADE:
       en: "Auto Minor Version Upgrade"
-      zh: ""
+      zh: "自动版本升级"
 
     DASH_LBL_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
-      zh: ""
+      zh: "管理窗口"
 
     DASH_LBL_BACKUP_WINDOW:
       en: "Backup Window"
-      zh: ""
+      zh: "备份窗口"
 
 
     DASH_LBL_MIN_SIZE:

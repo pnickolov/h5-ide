@@ -49,7 +49,12 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
         id = $( el ).attr("data-id")
         azs[ Design.instance().component(id).parent().get("name") ] = true
 
-      if _.keys(azs).length > 1
+      if Design.instance().region() in ['cn-north-1']
+          minAZCount = 1
+      else
+          minAZCount = 2
+
+      if _.keys(azs).length >= minAZCount
         btn.removeAttr("disabled")
       else
         btn.attr("disabled", "disabled")

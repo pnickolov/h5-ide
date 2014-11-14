@@ -27,7 +27,11 @@ define [ "constant", "../GroupModel", "../ConnectionModel" ], ( constant, GroupM
         for subnet in design.componentsOfType(constant.RESTYPE.SUBNET)
           az[ subnet.parent().get("name") ] = true
 
-        if _.keys( az ).length < 2
+        if Design.instance().region() in ['cn-north-1']
+            minAZCount = 1
+        else
+            minAZCount = 2
+        if _.keys( az ).length < minAZCount
           return this
 
       GroupModel.apply this, arguments

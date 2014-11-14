@@ -856,7 +856,12 @@ define [ 'ApiRequest'
                 azUsedMap[azName] = true
                 null
             usedAZCount = _.size(azUsedMap)
-            if usedAZCount < 2
+
+            if Design.instance().region() in ['cn-north-1']
+                minAZCount = 1
+            else
+                minAZCount = 2
+            if usedAZCount < minAZCount
                 sgData.azNotEnough = true
 
             if multiAZCapable

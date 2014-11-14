@@ -70,7 +70,7 @@ module.exports =
 
     RES_TIT_AZ:
       en: "AZ & Subnet"
-      zh: ""
+      zh: "AZ & 子网"
 
     RES_TIT_AMI:
       en: "Images"
@@ -90,7 +90,7 @@ module.exports =
 
     RES_TIT_RDS:
       en: "RDS & Snapshot"
-      zh: ""
+      zh: "RDS & 快照"
 
     RES_TIT_RDS_EMPTY:
       en: "No RDS Snapshot in"
@@ -126,11 +126,11 @@ module.exports =
 
     RES_TIT_TOGGLE_FAVORITE:
       en: "Toggle favorite"
-      zh: ""
+      zh: "收藏/取消收藏"
 
     RES_TIT_VPC:
       en: "Network"
-      zh: ""
+      zh: "网络"
 
     RES_LBL_QUICK_START_AMI:
       en: "Quick Start Images"

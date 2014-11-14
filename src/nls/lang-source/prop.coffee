@@ -270,7 +270,7 @@ module.exports =
 
     INSTANCE_CW_WARN:
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
-      zh: "数据在一分钟内可用需要额外的话费。 获取价格信息，请去 "
+      zh: "数据在一分钟内可用需要额外的花费．要获取价格信息，请访问 "
 
     AGENT_USER_DATA_URL:
       en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"
@@ -2000,6 +2000,14 @@ module.exports =
       en: "IOPS"
       zh: "IOPS"
 
+    DBINSTANCE_STORAGE_REQUIRE_10_RATIO:
+      en: "Requires a fixed ratio of 10 IOPS / GB storage"
+      zh: "IOPS要求为存储的10倍"
+
+    DBINSTANCE_STORAGE_IOPS_3_10_RATIO:
+      en: "Supports IOPS / GB ratios between 3 and 10"
+      zh: "IOPS要求为存储的3到10倍"
+
     DBINSTANCE_STORAGE:
       en: 'Storage'
       zh: "存储"
@@ -2048,6 +2056,14 @@ module.exports =
       en: "Subnet Group"
       zh: "子网组"
 
+    DBINSTANCE_SQLSERVER_MIRROR_TIP:
+      en: "SQL Server Mirroring(Multi-AZ) is controlled by Option Group. To make sure this DB instance has mirroring, please edit its Option Group."
+      zh: "SQL Server Mirroring(多 AZ)被选项组控制．要确保此数据库实例有Mirroring，请编辑它的选项组"
+
+    DBINSTANCE_MUTIL_AZ_DEPLOY:
+      en: "Multi-AZ Deployment"
+      zh: "多 AZ 部署"
+
     DBINSTANCE_PREFERRED_ZONE:
       en: "Preferred Availability Zone"
       zh: "优先可用区域"
@@ -2062,7 +2078,7 @@ module.exports =
 
     DBINSTANCE_LICENSE_MODEL:
       en: "License Model"
-      zh: "许可证样板"
+      zh: "许可模式"
 
     DBINSTANCE_DB_ENGINE_VERSION:
       en:"DB Engine Version"

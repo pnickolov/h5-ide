@@ -611,9 +611,9 @@ define [ 'ApiRequest'
 
             # iops info
             if @resModel.isSqlserver()
-                attr.iopsInfo = 'Requires a fixed ratio of 10 IOPS / GB storage'
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_REQUIRE_10_RATIO
             else
-                attr.iopsInfo = 'Supports IOPS / GB ratios between 3 and 10'
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_IOPS_3_10_RATIO
 
             # render
             @$el.html template attr

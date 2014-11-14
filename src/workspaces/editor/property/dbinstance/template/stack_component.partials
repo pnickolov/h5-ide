@@ -175,7 +175,7 @@
         <input id="property-dbinstance-mutil-az-check" {{#if disableMutilAZForMirror}}disabled="disabled"{{/if}} type="checkbox" {{#if multiAz}}checked="true"{{/if}} name="property-dbinstance-mutil-az-check">
         <label for="property-dbinstance-mutil-az-check"></label>
     </div>
-    <label for="property-dbinstance-mutil-az-check" class="tooltip" {{#if disableMutilAZForMirror}}data-tooltip="SQL Server Mirroring(Multi-AZ) is controlled by Option Group. To make sure this DB instance has mirroring, please edit its Option Group."{{/if}}>Multi-AZ Deployment</label>
+    <label for="property-dbinstance-mutil-az-check" class="tooltip" {{#if disableMutilAZForMirror}}data-tooltip="{{ i18n "PROP.DBINSTANCE_SQLSERVER_MIRROR_TIP" }}"{{/if}}>{{ i18n "PROP.DBINSTANCE_MUTIL_AZ_DEPLOY" }}</label>
 </section>
 
 {{#if isAppEdit}}

@@ -205,11 +205,11 @@ module.exports =
 
     POP_EXPORT_CF:
       en: "Export to AWS CloudFormation Template"
-      zh: "导出为亚马逊云编排模板"
+      zh: "导出为 AWS CloudFormation 模板"
 
     POP_EXPORT_CF_INFO:
       en: "Download the template file when it's ready, then you can upload it in AWS console to create CloudFormation Stack."
-      zh: "请在数据转换后下载这个云编排模板文件，并把它上传到亚马逊管理控制台来创建云编排模块。"
+      zh: "请在数据转换后下载这个云编排模板文件，并把它上传到亚马逊管理控制台来创建 CloudFormation 模块。"
 
     POP_BTN_EXPORT_CF:
       en: "Download Template File"
@@ -325,7 +325,7 @@ module.exports =
 
     EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
-      zh: "导出JSON文件"
+      zh: "导出 CloudFormation 文件"
 
     TIP_STOP_APP:
       en: "Stop This App's Resources."
@@ -529,7 +529,7 @@ module.exports =
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
       en: "Convert to CloudFormation template"
-      zh: "导出云编排模板"
+      zh: "导出 CloudFormation 模板"
 
     POP_BODY_APP_UPDATE_EC2:
       en: "The public and private addresses will be reassigned after the restart.",

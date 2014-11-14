@@ -70,7 +70,7 @@ module.exports =
 
     RES_TIT_AZ:
       en: "AZ & Subnet"
-      zh: "AZ & 子网"
+      zh: "可用区 & 子网"
 
     RES_TIT_AMI:
       en: "Images"

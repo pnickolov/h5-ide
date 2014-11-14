@@ -1198,7 +1198,7 @@ module.exports =
 
     SNAPSHOT_FILTER_REGION:
       en: "Filter by region name"
-      zh: "按区域名过滤"
+      zh: "按地区名过滤"
 
     SNAPSHOT_FILTER_VOLUME:
       en: "Filter by Volume ID"
@@ -1234,7 +1234,7 @@ module.exports =
 
     VOLUME_SNAPSHOT_SELECT_REGION:
       en: "Select Destination Region"
-      zh: "选择目标区域"
+      zh: "选择目标地区"
 
     VOLUME_SNAPSHOT:
       en: "Snapshot"
@@ -2441,7 +2441,7 @@ module.exports =
 
     CONNECTION_SUBNET_ASSO_PLACEMENT:
       en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."
-      zh: ""
+      zh: "一个为 %s 的虚拟网络接口被放到 %s ，允许流量被路由到此可用区域"
 
     ENI_ATTACHMENT_NAME:
       en: "Instance-ENI Attachment"
@@ -2601,7 +2601,7 @@ module.exports =
 
     SGLIST_DELETE_SG_CONFIRM_DESC:
       en: "The firewall settings of %s's member will be affected. Member only has this security group will be using DefaultSG."
-      zh: ""
+      zh: "%s 的成员的防火墙设置将受到影响．使用该安全组的成员将使用 DefaultSG."
 
     SGLIST_DELETE_SG_TITLE:
       en: "Delete Security Group"
@@ -2724,8 +2724,8 @@ module.exports =
       zh: "动态"
 
     VPN_GATEWAY_VPN_DYNAMIC:
-      en: " Since the Customer Gateway this VPN is connected to has dynamic routing enabled no configuration is necessary."
-      zh: ""
+      en: " Since this VPN is connected to a Customer Gateway with dynamic routing, no configuration is necessary here."
+      zh: " VPN 连接到使用动态路由的 CGW，因此无需配置"
 
     VPN_BLUR_CIDR_REQUIRED:
       en: "CIDR block is required."
@@ -2797,7 +2797,7 @@ module.exports =
 
     SNAPSHOT_DESTINATION_REGION:
       en: "Destination Region"
-      zh: "目的 Region"
+      zh: "目标地区"
 
     SNAPSHOT_SET_VOLUME:
       en: "Volume"
@@ -2869,7 +2869,7 @@ module.exports =
 
     DB_SNAPSHOT_SOURCE_REGION:
       en: "Source Region"
-      zh: "源 Region"
+      zh: "源地区"
 
     DB_SNAPSHOT_INSTANCE_NAME:
       en: "DB Instance Name"

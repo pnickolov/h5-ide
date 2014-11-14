@@ -603,10 +603,6 @@ module.exports =
       en: "instance state off"
       zh: "instance state 关"
 
-    LBL_NO_CLASSIC:
-      en: "Where are the missing buttons?"
-      zh: "有些按钮不见了?"
-
     EDIT_APP:
       en: "Edit App"
       zh: "修改 App"

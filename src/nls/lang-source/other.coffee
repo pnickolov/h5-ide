@@ -34,7 +34,7 @@ module.exports =
 
     IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
       en: "Currently we do not support to visualize system has more than 300 network interfaces. Contact us by the Feedback button for details."
-      zh: ""
+      zh: "我们目前尚不支持可视化超过300 个网络接口的系统, 如有需要请通过反馈按钮联系我们."
 
     RES_TIT_RESOURCES:
       en: "Resources"
@@ -46,27 +46,27 @@ module.exports =
 
     RES_TIP_REFRESH_RESOURCE_LIST:
       en: "Refresh resource list"
-      zh: ""
+      zh: "刷新资源列表"
 
     RES_TIT_RESOURCES_MENU_KEYPAIR:
       en: "Manage Key Pairs..."
-      zh: ""
+      zh: "管理密钥对"
 
     RES_TIT_RESOURCES_MENU_SNAPSHOT:
       en: "Manage EBS Snapshots..."
-      zh: ""
+      zh: "管理 EBS 快照"
 
     RES_TIT_RESOURCES_MENU_SNS:
       en: "Manage SNS Topic & Subscriptions..."
-      zh: ""
+      zh: "管理 SNS 主题和订阅"
 
     RES_TIT_RESOURCES_MENU_SSLCERT:
       en: "Manage Server Certificates..."
-      zh: ""
+      zh: "管理服务器证书"
 
     RES_TIT_RESOURCES_MENU_DHCP:
       en: "Manage DHCP Option Sets..."
-      zh: ""
+      zh: "管理 DHCP 选项组"
 
     RES_TIT_AZ:
       en: "AZ & Subnet"
@@ -92,25 +92,17 @@ module.exports =
       en: "RDS & Snapshot"
       zh: "RDS & 快照"
 
-    RES_TIT_RDS_EMPTY:
-      en: "No RDS Snapshot in"
-      zh: ""
-
     RES_LBL_NEW_RDS_INSTANCE:
       en: "New DB Instance"
-      zh: ""
+      zh: "新数据库实例"
 
     RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT:
       en: "New DB from Snapshot"
-      zh: ""
+      zh: "新的数据库实例快照"
 
     RES_TIT_RDS_SNAPSHOT_MANAGE:
       en: "Manage RDS Snapshot"
       zh: "管理 RDS 快照"
-
-    RES_TIT_RDS_SNAPSHOT_EMPTY:
-      en: "No RDS Snapshot in"
-      zh: ""
 
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
@@ -118,11 +110,11 @@ module.exports =
 
     RES_TIT_REMOVE_FROM_FAVORITE:
       en: "Remove from Favorite"
-      zh: ""
+      zh: "从收藏中移除"
 
     RES_TIT_ADD_TO_FAVORITE:
       en: "Add to Favorite"
-      zh: ""
+      zh: "添加到收藏"
 
     RES_TIT_TOGGLE_FAVORITE:
       en: "Toggle favorite"
@@ -150,11 +142,11 @@ module.exports =
 
     RES_LBL_NEW_BLANK_VOL:
       en: "New Blank Volume"
-      zh: ""
+      zh: "新的空白卷"
 
     RES_LBL_NEW_VOL_FROM_SNAPSHOT:
       en: "New Volume from Snapshot"
-      zh: ""
+      zh: "从快照创建的新卷"
 
     RES_LBL_NEW_ELB:
       en: "Load Balancer"
@@ -162,7 +154,7 @@ module.exports =
 
     RES_LBL_NEW_ASG:
       en: "Auto Scaling Group"
-      zh: "Auto Scaling 组"
+      zh: "自动伸缩组"
 
     RES_LBL_NEW_ASG_NO_CONFIG:
       en: "No Config"
@@ -174,7 +166,7 @@ module.exports =
 
     RES_LBL_NEW_SUBNET_GROUP:
       en: "Subnet Group"
-      zh: ""
+      zh: "子网组"
 
     RES_LBL_NEW_RTB:
       en: "Route Table"
@@ -226,7 +218,7 @@ module.exports =
 
     RES_TIP_DRAG_NEW_SUBNET_GROUP:
       en: "Drag to an availability zone to create a new subnet group."
-      zh: ""
+      zh: "拖拽到一个可用区域来创建一个新的子网组."
 
     RES_TIP_DRAG_NEW_RTB:
       en: "Drag to a VPC to create a new route table."
@@ -274,11 +266,11 @@ module.exports =
 
     RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
       en: "%s is a member of subnet group %s. To delete the subnet, remove the membership first."
-      zh: ""
+      zh: "%s 是子网组 %s 的成员, 要删除子网, 必须先删除成员."
 
     RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:
       en: "Cannot delete availability zone because some subnet in it is used by a subnet group."
-      zh: ""
+      zh: "无法删除可用区域, 因为里面有被子网组使用的子网."
 
     PROC_STEP_REQUEST:
       en: "Processing"
@@ -315,7 +307,7 @@ module.exports =
 
     HEAD_LABEL_BLANK_NOTIFICATION_DESC:
       en: "Results of running, stopping or terminating apps will show up here."
-      zh: ""
+      zh: "运行, 停止, 终止 App 的结果将显示在这里."
 
     HEAD_LABEL_MENUITEM_USER_TOUR:
       en: "User Tour"
@@ -323,7 +315,7 @@ module.exports =
 
     HEAD_LABEL_MENUITEM_KEY_SHORT:
       en: "Keyboard Shortcuts"
-      zh: ""
+      zh: "快捷键"
 
     HEAD_LABEL_MENUITEM_DOC:
       en: "Documentation"
@@ -448,11 +440,11 @@ module.exports =
 
     SETTINGS_CRED_DEMO_TIT:
       en : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
-      zh : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
+      zh : "您正在使用测试帐号, 设置您的 AWS 凭证以运行 Live 资源, 或者导入已有资源."
 
     SETTINGS_CRED_DEMO_TEXT:
       en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
-      zh : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
+      zh : "由于两种账号之间资源的差异, 当您设置了 AWS 凭证后, 一些您在测试账号时创建的 Stack 可能会报错."
 
     SETTINGS_CRED_DEMO_SETUP:
       en : "Set up AWS Credentials"
@@ -810,11 +802,11 @@ VisualOps API. You cannot UNDO this action.'
 
     AMI_TYPE_PUBLIC:
       en: "public"
-      zh: ""
+      zh: "公共"
 
     AMI_TYPE_PRIVATE:
       en: "private"
-      zh: ""
+      zh: "私有"
 
     IDE_COM_CREATE_NEW_STACK:
       en: "Create new stack"
@@ -915,7 +907,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_TIP_PEM_ENCODED:
       en: "PEM Encoded"
-      zh: ""
+      zh: "PEM 加密"
 
     RUN_STACK_MODAL_TITLE:
       en: "Run Stack"
@@ -927,7 +919,7 @@ VisualOps API. You cannot UNDO this action.'
 
     RUN_STACK_MODAL_KP_WARNNING:
       en: "Specify a key pair as $DefaultKeyPair for this app."
-      zh: ""
+      zh: "为此 $DefaultKeyPair 指定一个密钥对."
 
     RUN_STACK_MODAL_CONFIRM_BTN:
       en: "Run Stack"
@@ -939,11 +931,11 @@ VisualOps API. You cannot UNDO this action.'
 
     CANT_UPDATE_APP:
       en: "Cannot Update App Now"
-      zh: ""
+      zh: "现在无法更新 App"
 
     UPDATE_APP_CONFIRM_BTN:
       en: "Update App"
-      zh: ""
+      zh: "更新 App"
     RUN_STACK:
       en: "run stack"
       zh: "运行"
@@ -972,165 +964,165 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_A:
       en: 'Connect to subnet to make association'
-      zh: ''
+      zh: '连接到子网来添加关联.'
 
     PORT_TIP_B:
       en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
-      zh: ''
+      zh: '连接到互联网关, 虚拟私有网关, 实例或者网络接口来创建路由.'
 
     PORT_TIP_C:
-        en: 'Connect to route table to create route'
-        zh: ''
+      en: 'Connect to route table to create route'
+      zh: '连接到路由表来创建路由.'
 
     PORT_TIP_D:
-        en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
-        zh: ''
+      en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
+      zh: '连接到实例, 自动伸缩组, 网络接口或者负载均衡来创建安全组规则.'
 
     PORT_TIP_E:
       en: 'Connect to network interface to attach.'
-      zh: ''
+      zh: '连接到网络接口.'
 
     PORT_TIP_F:
       en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
-      zh: ''
+      zh: '连接到实例, 自动伸缩组或者网络接口来创建安全组规则.'
 
     PORT_TIP_G:
       en: 'Connect to instance to attach'
-      zh: ''
+      zh: '连接到实例.'
 
     PORT_TIP_H:
       en: 'Connect to Customer Gateway to create VPN'
-      zh: ''
+      zh: '连接到自定义网关来创建 VPN'
 
     PORT_TIP_I:
       en: 'Connect to Virtua Private Gateway to create VPN'
-      zh: ''
+      zh: '连接到虚拟私有网关创建 VPN.'
 
     PORT_TIP_J:
       en: 'Connect to instance or launch configuration to register it behind load balancer'
-      zh: ''
+      zh: '连接到实例或者启动配置来注册到负载均衡.'
 
     PORT_TIP_K:
       en: 'Connect to subnet to associate'
-      zh: ''
+      zh: '连接并关联到子网'
 
     PORT_TIP_L:
       en: 'Connect to load balancer to associate'
-      zh: ''
+      zh: '连接到负载均衡'
 
     PORT_TIP_M:
       en: 'Connect to route table to assoicate'
-      zh: ''
+      zh: '连接到路由表'
 
   ##### Modal Confirm Stop/Terminate App
 
     POP_CONFIRM_STOP_ASG:
       en: "Any auto scaling group will be deleted when application is stopped."
-      zh: ""
+      zh: "App 停止的时候所有的自动伸缩组都将被删除."
 
     POP_CONFIRM_PROD_APP_WARNING_MSG:
       en: " is for PRODUCTION."
-      zh: ""
+      zh: " 处于生产环境."
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
-      zh: ""
+      zh: " 停止此 App 将导致服务不可用."
 
     POP_CONFIRM_STOP_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm stopping it."
-      zh: ""
+      zh: "请输入此 App 的名字来确认停止."
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
-      zh: ""
+      zh: " 终止此 App 将导致服务不可用, 所有的自动伸缩组都将被删除."
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
-      zh: ""
+      zh: "停止此 App 将会导致您的服务不可用."
 
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
-      zh: ""
+      zh: "请输入此 APP 的名字来确认终止."
 
     ##### Modal Import JSON
 
     POP_IMPORT_JSON_TIT:
       en: "Import Stack from JSON file"
-      zh: ""
+      zh: "从 JSON 文件导入 Stack"
 
     POP_IMPORT_DROP_LBL:
       en: "Drop JSON file here or "
-      zh: ""
+      zh: "拖拽 JSON 文件到这里."
 
     POP_IMPORT_SELECT_LBL:
       en: " select a file."
-      zh: ""
+      zh: " 选择一个文件."
 
     POP_IMPORT_ERROR:
       en: "An error occured when reading the file. Please try again."
-      zh: ""
+      zh: "读取文件出错, 请重试."
 
     POP_IMPORT_FORMAT_ERROR:
       en: "The json file is malformed."
-      zh: ""
+      zh: "此 JSON 格式不正确."
 
     POP_IMPORT_MODIFIED_ERROR:
       en: "We do not support user modified json."
-      zh: ""
+      zh: "我们不支持用户修改过的文件."
 
     ##### Modal Confirm Update
 
     POP_CONFIRM_UPDATE_TIT:
       en: "Confirm to Update App"
-      zh: ""
+      zh: "确认更新 App"
 
     POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING:
       en: "Do you confirm to apply the changes?"
-      zh: ""
+      zh: "您确定要应用修改么?"
 
     POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED:
       en: "Do you confirm to apply the changes and start the app?"
-      zh: ""
+      zh: "您确定要应用修改并启动 App 吗?"
 
     POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED:
       en: "The app is currently stopped. To apply updates, the app will be started automatically."
-      zh: ""
+      zh: "这个 App 已经停止, 要应用更改, 此 App 将自动启动."
 
     POP_CONFIRM_UPDATE_TABLE_TYPE:
       en: "Type"
-      zh: ""
+      zh: "类型"
 
     POP_CONFIRM_UPDATE_TABLE_NAME:
       en: "Name"
-      zh: ""
+      zh: "名称"
 
     POP_CONFIRM_UPDATE_TABLE_CHANGE:
       en: "Change"
-      zh: ""
+      zh: "修改"
 
     POP_CONFIRM_UPDATE_VALIDATION:
       en: "Validation"
-      zh: ""
+      zh: "验证"
 
     POP_CONFIRM_UPDATE_VALIDATING:
       en: "Validating your app..."
-      zh: ""
+      zh: "正在验证您的 App"
 
     POP_CONFIRM_UPDATE_CONFIRM_BTN:
       en: "Continue to Update"
-      zh: ""
+      zh: "继续完成修改"
 
     POP_CONFIRM_UPDATE_CANCEL_BTN:
       en: "Cancel"
-      zh: ""
+      zh: "取消"
 
     POP_SELECT_SUBNET_FOR_SUBNET_GROUP_TITLE:
       en: "Select Subnet for Subnet Group"
-      zh: ""
+      zh: "为子网组选择子网"
 
     POP_SELECT_SUBNET_FOR_SUBNET_GROUP_CONTENT:
       en: "Add subnets from at least 2 different availability zones to this subnet group. "
-      zh: ""
+      zh: "至少从连个不同的可用区域里添加子网到这个子网组里."
 
     POP_LBL_DONE:
       en: "Done"
@@ -1145,21 +1137,21 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_TO_REMOVE:
       en: "Confirm to Remove"
-      zh: ""
+      zh: "确认移除"
 
     ##### RDS
 
     RDS_EDIT_OPTION_GROUP:
       en: "Edit Option Group"
-      zh: ""
+      zh: "编辑选项组"
 
     RDS_SOME_ERROR_OCCURED:
       en: "Some error occured"
-      zh: ""
+      zh: "出错了. "
 
     RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY:
       en: "Edits with port change requires changes to be applied immediately."
-      zh: ""
+      zh: "此端口的额修改需要被立即应用."
 
 
 
@@ -1169,7 +1161,7 @@ VisualOps API. You cannot UNDO this action.'
 
     TIP_KEYPAIR_USED_DEFAULT_KP:
       en: "One or more instance/launch configuration has used $DefaultKeyPair. You need to specify which key pair (or no key pair) should be used for $DefaultKeyPair."
-      zh: ""
+      zh: "一个或多个实例/启动配置使用了 $DefaultKeyPair. 你需要给 $DefaultKeyPair 指定一个密钥对."
 
 
     POP_SGRULE_TITLE_ADD:
@@ -1242,7 +1234,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_INSTANCE_KEYPAIR_INFO_TIP:
       en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
-      zh: ""
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 启动实例或者开始启动配置的时候,您将需要为 $DefaultKeyPair 指定一个存在的密钥."
 
     POP_ACLRULE_TITLE_ADD:
       en: "Add Network ACL Rule"
@@ -1366,19 +1358,19 @@ VisualOps API. You cannot UNDO this action.'
 
     COMBO_DROPDOWN_DEMO_AWS_ACCOUNT:
       en: "You are using a demo AWS account"
-      zh: ""
+      zh: "您正在使用测试账号."
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
-      zh: ""
+      zh: "提供 AWS 凭证来管理密钥对."
 
     PAYMENT_PAYMENT_NEEDED:
       en: "Upgrade your account"
-      zh: ""
+      zh: "升级账户"
 
     PAYMENT_INVALID_BILLING:
       en: "Your Billing Information is Invalid"
-      zh: ""
+      zh: "您的账单信息无效."
 
     PAYMENT_LOADING:
       en: "Loading..."
@@ -1386,32 +1378,32 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_LOADING_BILLING:
       en: "Getting Billing Information ..."
-      zh: ""
+      zh: "获取账单信息中..."
 
     PROFILE_UPDATED_FAILED:
       en: "Your Profile failed to update."
-      zh: ""
+      zh: "你的信息更新失败."
 
     PAYMENT_USAGE_TAB:
       en: "Usage"
-      zh: ""
+      zh: "使用率"
 
     PAYMENT_BILLING_TAB:
       en: "Billing"
-      zh: ""
+      zh: "账单"
 
     PAYMENT_SETTING_TITLE:
       en: "Billing & Usage"
-      zh: ""
+      zh: "账单与使用率"
 
     PAYMENT_HEADER_TOOLTIP:
       en: "<div class=\"payment-header-tooltip\"><strong>%s</strong> free points remaining. <span> Free points will renew in %s days.</span></div>"
-      zh: ""
+      zh: "<div class=\"payment-header-tooltip\">剩余 <strong>%s</strong> 个免费点. <span> 免费点将在 %s 天后恢复.</span></div>"
 
     PAYMENT_PROVIDE_UPDATE_CREDITCARD:
       en: "Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. <a class='update-payment' href='%s' target='_blank'> %s Billing Information</a> as soon as possible."
-      zh: ""
+      zh: "您的账户已经受限. 导入 VPC, App 操作, 资源监控和 state 已被禁用. 请尽快 <a class='update-payment' href='%s' target='_blank'> %s 账单信息</a>"
 
     PAYMENT_UNPAID_BUT_IN_FREE_QUOTA:
       en: "You have unpaid bill. You can still use the free quota before getting into limited status. <a class='update-payment' href='%s' target='_blank'>Update Billing Information</a> as soon as possible."
-      zh: ""
+      zh: "您有未支付账单, 在您的账号受限之前您仍然可用使用您的免费额度. 请尽快 <a class='update-payment' href='%s' target='_blank'>更新账单信息</a>"

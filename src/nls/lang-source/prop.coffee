@@ -2226,231 +2226,232 @@ module.exports =
 
     DBINSTANCE_USE_PROVISIONED_IOPS:
       en: "Use Provisioned IOPS"
-      zh: "使用规定的的 IOPS"
+      zh: "使用预配置 IOPS"
 
     DBINSTANCE_PROVISIONED_IOPS:
       en: "Provisioned IOPS"
-      zh: "规定的 IOPS"
+      zh: "预配置 IOPS"
 
     DBINSTANCE_IOPS_AVAILABILITY_IMPACT:
       en: "When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes."
-      zh: ""
+      zh: "当您进行 IOPS 与标准存储之间的类型转换时, 您的数据库实例将会有几分钟受影响."
 
     DBINSTANCE_MASTER_USERNAME:
       en: "Master Username"
-      zh: ""
+      zh: "主用户名"
 
     DBINSTANCE_MASTER_PASSWORD:
       en: "Master Password"
-      zh: ""
+      zh: "主密码"
 
     DBINSTANCE_DATABASE_CONFIG:
       en: "Database Config"
-      zh: ""
+      zh: "数据库配置"
 
     DBINSTANCE_NOT_READY:
       en: "Not Ready"
-      zh: ""
+      zh: "未就绪"
 
     DBINSTANCE_DATABASE_NAME:
       en: "Database Name"
-      zh: ""
+      zh: "数据库名称"
 
     DBINSTANCE_DATABASE_PORT:
       en: "Database Port"
-      zh: ""
+      zh: "数据库端口"
 
     DBINSTANCE_CHARACTER_SET_NAME:
       en: "Character Set Name"
-      zh: ""
+      zh: "字符集名称"
 
     DBINSTANCE_NETWORK_AZ_DEPLOYMENT:
       en: "Network & AZ Deployment"
-      zh: ""
+      zh: "网络与 AZ 部署"
 
     DBINSTANCE_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"
-      zh: ""
+      zh: "公共访问性"
 
     DBINSTANCE_BACKUP_OPTION:
       en: 'Backup Options'
-      zh: ""
+      zh: "备份选项"
 
     DBINSTANCE_REPLICA_MUST_ENABLE_AUTOMATIC_BACKUPS:
       en: "DB instance serving as replication source must enable automatic backups"
-      zh: ""
+      zh: "作为复制源的数据库实例必须开启自动备份."
 
     DBINSTANCE_ENABLE_AUTOMATIC_BACKUP:
       en: "Enable Automatic Backups"
-      zh: ""
+      zh: "开启数据备份"
 
     DBINSTANCE_BACKUP_RETENTION_PERIOD:
-      en: "Backup Retantion Period"
-      zh: ""
+      en: "Backup Retention Period"
+      zh: "数据库保留周期"
 
     DBINSTANCE_BACK_RETANTION_PERIOD_DAY:
       en: "day(s)"
-      zh: ""
+      zh: "天"
 
     DBINSTANCE_BACKUP_WINDOW:
       en: "Backup Window"
-      zh: ""
+      zh: "备份窗口"
 
     DBINSTANCE_NO_PREFERENCE:
       en: "No Preference"
-      zh: ""
+      zh: "无偏好设置"
 
     DBINSTANCE_SELECT_WINDOW:
       en: "Select Window"
-      zh: ""
+      zh: "选择窗口"
 
     DBINSTANCE_START_TIME:
       en: "Start Time:"
-      zh: ""
+      zh: "开始时间:"
 
     DBINSTANCE_DURATION:
       en: "Duration: "
-      zh: ""
+      zh: "周期:"
 
     DBINSTANCE_BACKUP_DURATION_HOUR:
       en: "hour(s)"
-      zh: ""
+      zh: "小时"
 
     DBINSTANCE_CURRENT_BACKUP_WINDOW:
       en: "Current Backup Window: "
-      zh: ""
+      zh: "当前备份窗口"
 
     DBINSTANCE_MAINTENANCE_OPTION:
       en: "Maintenance Options"
-      zh: ""
+      zh: "维护选项"
 
     DBINSTANCE_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
-      zh: ""
+      zh: "维护窗口"
 
     DBINSTANCE_MAINTENANCE_START_DAY:
       en: "Start Day"
-      zh: ""
+      zh: "开始日期"
 
 
     WEEKDAY_MONDAY:
       en: "Monday"
-      zh: ""
+      zh: "周一"
 
     WEEKDAY_TUESDAY:
       en: "Tuesday"
-      zh: ""
+      zh: "周二"
 
     WEEKDAY_WEDNESDAY:
       en: "Wednesday"
-      zh: ""
+      zh: "周三"
 
     WEEKDAY_THURSDAY:
       en: "Thursday"
-      zh: ""
+      zh: "周四"
 
     WEEKDAY_FRIDAY:
       en: "Friday"
-      zh: ""
+      zh: "周五"
+
     WEEKDAY_SATURDAY:
       en: "Saturday"
-      zh: ""
+      zh: "周六"
 
     WEEKDAY_SUNDAY:
       en: "Sunday"
-      zh: ""
+      zh: "周日"
 
     SELECT_SNS_TOPIC:
       en: "Select SNS Topic"
-      zh: ""
+      zh: "选择 SNS 主题"
 
     ASG_POLICY_CPU:
-      en: "CPU Utillization"
-      zh: ""
+      en: "CPU Utilization"
+      zh: "CPU 利用率"
 
     ASG_POLICY_DISC_READS:
       en: "Disk Reads"
-      zh: ""
+      zh: "磁盘读取"
 
     ASG_POLICY_DISK_READ_OPERATIONS:
       en: "Disk Read Operations"
-      zh: ""
+      zh: "磁盘读取操作"
 
     ASG_POLICY_DISK_WRITES:
       en: "Disk Writes"
-      zh: ""
+      zh: "磁盘写入"
 
     ASG_POLICY_DISK_WRITE_OPERATIONS:
       en: "Disk Write Operations"
-      zh: ""
+      zh: "磁盘写入操作"
 
     ASG_POLICY_NETWORK_IN:
       en: "Network In"
-      zh: ""
+      zh: "网络流入"
 
     ASG_POLICY_NETWORK_OUT:
       en: "Network Out"
-      zh: ""
+      zh: "网络流出"
 
     ASG_POLICY_STATUS_CHECK_FAILED_ANY:
       en: "Status Check Failed (Any)"
-      zh: ""
+      zh: "状态检查失败(所有)"
 
     ASG_POLICY_STATUS_CHECK_FAILED_INSTANCE:
       en: "Status Check Failed (Instance)"
-      zh: ""
+      zh: "状态检查失败(实例)"
 
     ASG_POLICY_STATUS_CHECK_FAILED_SYSTEM:
       en: "Status Check Failed (System)"
-      zh: ""
+      zh: "状态检查失败(系统)"
 
     ASG_ADJUST_TOOLTIP_CHANGE:
       en: "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-      zh: ""
+      zh: "根据您输入的数字增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减."
 
     ASG_ADJUST_TOOLTIP_EXACT:
       en: "Change the current capacity of your Auto Scaling group to the exact value specified."
-      zh: ""
+      zh: "修改自动伸缩组的当前值为您指定的值."
 
     ASG_ADJUST_TOOLTIP_PERCENT:
       en: "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
-      zh: ""
+      zh: "根据百分比来增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减."
 
     AZ_CANNOT_EDIT_EXISTING_AZ:
       en: "Cannot edit existing availability zone. However, newly created availability zone is editable."
-      zh: ""
+      zh: "无法编辑已存在的 AZ, 但新建的 AZ 可以编辑."
 
     CGW_IP_VALIDATE_REQUIRED:
       en: "IP Address is required."
-      zh: ""
+      zh: "IP 地址为必填."
 
     CGW_IP_VALIDATE_REQUIRED_DESC:
       en: "Please provide a IP Address of this Customer Gateway."
-      zh: ""
+      zh: "请提供一个此自定义网关的 IP 地址"
 
     CGW_IP_VALIDATE_INVALID:
       en: "%s  is not a valid IP Address."
-      zh: ""
+      zh: "%s 不是有效的 IP 地址."
 
     CGW_IP_VALIDATE_INVALID_DESC:
       en: "Please provide a valid IP Address. For example, 192.168.1.1."
-      zh: ""
+      zh: "请提供一个有效的 IP 地址, 比如: 192.168.1.1."
 
     CGW_IP_VALIDATE_INVALID_CUSTOM:
       en: "IP Address %s is invalid for customer gateway."
-      zh: ""
+      zh: "IP 地址 %s 相对此网关无效."
 
     CGW_IP_VALIDATE_INVALID_CUSTOM_DESC:
       en: "The address must be static and can't be behind a device performing network address translation (NAT)."
-      zh: ""
+      zh: "此地址必须为静态并且不能在 NAT 网络中"
 
     CGW_REMOVE_CUSTOM_GATEWAY:
       en: "Remove Customer Gateway"
-      zh: ""
+      zh: "移除自定义网关"
 
     CONNECTION_ATTACHMENT_OF:
       en: "This is an attachment of %s to %s"
-      zh: ""
+      zh: "这是个 %s 到 %s 的附件."
 
     CONNECTION_SUBNET_ASSO_PLACEMENT:
       en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."

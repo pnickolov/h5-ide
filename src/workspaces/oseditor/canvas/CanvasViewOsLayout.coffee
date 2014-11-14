@@ -1,14 +1,14 @@
 
 define [ "./CanvasViewOs", "CanvasViewLayout", "constant" ], ( OsCanvasView, CanvasViewLayoutHelpers, constant )->
 
+  SubnetPosCache = null
+
   GroupMForSubnet = ( children )->
     group = CanvasViewLayoutHelpers.DefaultGroupMethod.call this, children
 
     subnetChildren = []
 
     serverGroup = portGroup = vipGroup = poolGroup = []
-
-    console.log group
 
     for ch in group
       if ch.type is "OS::Nova::Server_group"
@@ -55,8 +55,31 @@ define [ "./CanvasViewOs", "CanvasViewLayout", "constant" ], ( OsCanvasView, Can
 
     return subnetChildren
 
+  SortForSvg = ( children )->
+    newChs = []
+    for ch in children
+      if ch.type is "OS::Neutron::Router"
+        newChs.push( ch )
+      else
+        newChs.unshift( ch )
+
+    newChs
+
+  ArrangeForSvg = ( children )->
+    newChs = []
+    for ch in children
+      if ch.type is "OS::Neutron::Router_group"
+        newChs.unshift( ch )
+      else
+        newChs.push( ch )
+
+    CanvasViewLayoutHelpers.DefaultArrangeMethod.call this, newChs
+
   ArrangeForSubnetGroup = ( children )->
     children.sort (a,b)-> b.children.length - a.children.length
+
+    # This is very ugly, but well, designer needs it.
+    SubnetPosCache = {}
 
     x1 = -2
     x2 = -2
@@ -80,17 +103,49 @@ define [ "./CanvasViewOs", "CanvasViewLayout", "constant" ], ( OsCanvasView, Can
           y2 = ch.height
 
     for ch in ch2
-      ch.y = y1 + 2
+      SubnetPosCache[ ch.component.id ] = ch.y = y1 + 2
+
+    SubnetPosCache.y = y1 + 2
 
     {
       width  : Math.max( x1, x2 )
       height : y1 + 2 + y2
     }
 
+  ArrangeForRtGroup = ( children )->
+
+    x1 = -2
+    x2 = -2
+
+    for rt in children
+      firstLine = false
+      for subnet in rt.component.connectionTargets("OsRouterAsso")
+        if not SubnetPosCache[ subnet.id ]
+          firstLine = true
+          break
+
+      if firstLine
+        x1 += 2
+        rt.x = x1
+        x1 += 8
+        rt.y = 0
+      else
+        x2 += 2
+        rt.x = x2
+        x2 += 8
+        rt.y = SubnetPosCache.y
+
+    {
+      width  : Math.max( x1, x2 )
+      height : SubnetPosCache.y + 8
+    }
+
   # Definations
   AutoLayoutConfig = OsCanvasView.prototype.autoLayoutConfig =
     "SVG" : {
-      space : 6
+      sortMethod    : SortForSvg
+      arrangeMethod : ArrangeForSvg
+      space         : 6
     }
     "OS::Neutron::Network" : {
       space      : 4
@@ -99,7 +154,7 @@ define [ "./CanvasViewOs", "CanvasViewLayout", "constant" ], ( OsCanvasView, Can
       height     : 60
     }
     "OS::Neutron::Router_group" : {
-      arrangeMethod : "ArrangeBinPack"
+      arrangeMethod : ArrangeForRtGroup
       space   : 4
     }
     "OS::Neutron::Router":{

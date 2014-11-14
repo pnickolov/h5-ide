@@ -2072,14 +2072,6 @@ module.exports =
       en: "DB Instance Class"
       zh: "数据库实例等级"
 
-    DBINSTANCE_SELECT_WINDOW:
-      en: "Select Window"
-      zh: "选择窗口"
-
-    DBINSTANCE_NO_PREFERENCE:
-      en: "No Preference"
-      zh: "无偏好设置"
-
     DBINSTANCE_SOMETHING_ERROR:
       en: "Something Error."
       zh: "出错了."
@@ -2102,11 +2094,7 @@ module.exports =
 
     DBINSTANCE_LAST_RESTORE:
       en: "Lastest Restore Time"
-      zh: "最新重置时间"
-
-    DBINSTANCE_BACKUP_WINDOW:
-      en: "Backup Window"
-      zh: "备份窗口"
+      zh: "最新恢复时间"
 
     DBINSTANCE_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
@@ -2266,11 +2254,11 @@ module.exports =
 
     DBINSTANCE_NETWORK_AZ_DEPLOYMENT:
       en: "Network & AZ Deployment"
-      zh: "网络与 AZ 部署"
+      zh: "网络 & AZ部署"
 
     DBINSTANCE_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"
-      zh: "公共访问性"
+      zh: "可公网访问"
 
     DBINSTANCE_BACKUP_OPTION:
       en: 'Backup Options'
@@ -2278,15 +2266,15 @@ module.exports =
 
     DBINSTANCE_REPLICA_MUST_ENABLE_AUTOMATIC_BACKUPS:
       en: "DB instance serving as replication source must enable automatic backups"
-      zh: "作为复制源的数据库实例必须开启自动备份."
+      zh: "作为复制源的数据库实例必须开启自动备份"
 
     DBINSTANCE_ENABLE_AUTOMATIC_BACKUP:
       en: "Enable Automatic Backups"
-      zh: "开启数据备份"
+      zh: "启用自动备份"
 
     DBINSTANCE_BACKUP_RETENTION_PERIOD:
-      en: "Backup Retention Period"
-      zh: "数据库保留周期"
+      en: "Backup Retantion Period"
+      zh: "备份保留周期"
 
     DBINSTANCE_BACK_RETANTION_PERIOD_DAY:
       en: "day(s)"
@@ -2310,7 +2298,7 @@ module.exports =
 
     DBINSTANCE_DURATION:
       en: "Duration: "
-      zh: "周期:"
+      zh: "持续:"
 
     DBINSTANCE_BACKUP_DURATION_HOUR:
       en: "hour(s)"
@@ -2318,7 +2306,7 @@ module.exports =
 
     DBINSTANCE_CURRENT_BACKUP_WINDOW:
       en: "Current Backup Window: "
-      zh: "当前备份窗口"
+      zh: "当前备份窗口:"
 
     DBINSTANCE_MAINTENANCE_OPTION:
       en: "Maintenance Options"
@@ -2330,44 +2318,42 @@ module.exports =
 
     DBINSTANCE_MAINTENANCE_START_DAY:
       en: "Start Day"
-      zh: "开始日期"
-
+      zh: "开始日"
 
     WEEKDAY_MONDAY:
       en: "Monday"
-      zh: "周一"
+      zh: "星期一"
 
     WEEKDAY_TUESDAY:
       en: "Tuesday"
-      zh: "周二"
+      zh: "星期二"
 
     WEEKDAY_WEDNESDAY:
       en: "Wednesday"
-      zh: "周三"
+      zh: "星期三"
 
     WEEKDAY_THURSDAY:
       en: "Thursday"
-      zh: "周四"
+      zh: "星期四"
 
     WEEKDAY_FRIDAY:
       en: "Friday"
-      zh: "周五"
-
+      zh: "星期五"
     WEEKDAY_SATURDAY:
       en: "Saturday"
-      zh: "周六"
+      zh: "星期六"
 
     WEEKDAY_SUNDAY:
       en: "Sunday"
-      zh: "周日"
+      zh: "星期日"
 
     SELECT_SNS_TOPIC:
       en: "Select SNS Topic"
       zh: "选择 SNS 主题"
 
     ASG_POLICY_CPU:
-      en: "CPU Utilization"
-      zh: "CPU 利用率"
+      en: "CPU Utillization"
+      zh: "CPU利用率"
 
     ASG_POLICY_DISC_READS:
       en: "Disk Reads"

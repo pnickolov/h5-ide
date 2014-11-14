@@ -1,6 +1,6 @@
 define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	var Apis = {
-		'session_login'           : { url:'/session/',	method:'login',	params:['username', 'password']   },
+		'session_login'           : { url:'/session/',	method:'login',	params:['username', 'password', 'option']   },
 		'session_logout'          : { url:'/session/',	method:'logout',	params:['username', 'session_id']   },
 		'session_set_credential'  : { url:'/session/',	method:'set_credential',	params:['username', 'session_id', 'access_key', 'secret_key', 'account_id']   },
 		'app_create'              : { url:'/app/',	method:'create',	params:['username', 'session_id', 'region_name', 'spec']   },
@@ -52,7 +52,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'token_update'            : { url:'/token/',	method:'update',	params:['username', 'session_id', 'token', 'new_token_name']   },
 		'token_remove'            : { url:'/token/',	method:'remove',	params:['username', 'session_id', 'token', 'token_name']   },
 		'token_list'              : { url:'/token/',	method:'list',	params:['username', 'session_id', 'token_names']   },
-		'account_register'        : { url:'/account/',	method:'register',	params:['username', 'password', 'email']   },
+		'account_register'        : { url:'/account/',	method:'register',	params:['username', 'password', 'email', 'attributes']   },
 		'account_update_account'  : { url:'/account/',	method:'update_account',	params:['username', 'session_id', 'attributes']   },
 		'account_reset_password'  : { url:'/account/',	method:'reset_password',	params:['username']   },
 		'account_update_password' : { url:'/account/',	method:'update_password',	params:['key', 'new_pwd']   },
@@ -64,7 +64,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_apply_trial'     : { url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
 		'account_set_credential'  : { url:'/account/',	method:'set_credential',	params:['username', 'session_id', 'access_key', 'secret_key', 'account_id', 'force_update']   },
 		'account_validate_credential' : { url:'/account/',	method:'validate_credential',	params:['username', 'session_id', 'access_key', 'secret_key']   },
-		'account_get_userinfo'    : { url:'/account/',	method:'get_userinfo',	params:['username']   },
 	}
 
 	for ( var i in Apis ) {

@@ -6,15 +6,15 @@ module.exports =
 
     WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
-      zh: "卷和快照必须拖放到实例或映像。"
+      zh: "卷和快照必须拖放到实例或AMI。"
 
     ERR_SERVERGROUP_VOLUME:
       en: "Detach existing volume or snapshot of instance server group is not supported yet."
-      zh: ""
+      zh: "目前尚不支持断开实例组上已存在的卷或快照"
 
     ERR_SERVERGROUP_VOLUME2:
       en: "Attach existing volume from single instance to instance server group is not supported yet."
-      zh: ""
+      zh: "目前尚不支持把单独实例上已存在的卷连接到实例组的操作"
 
     WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."
@@ -26,11 +26,11 @@ module.exports =
 
     WARN_NOTMATCH_SGP_VPC:
       en: "Subnet Group must be dragged to a vpc."
-      zh: ""
+      zh: "子网组必须拖放到vpc中"
 
     WARN_NOTMATCH_DBINSTANCE_SGP:
       en: "DB Instance must be dragged to a subnet group."
-      zh: ""
+      zh: "数据库实例必须拖放到子网组中"
 
     WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
@@ -74,7 +74,7 @@ module.exports =
 
     WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
       en: "This subnet cannot be attached with a Load Balancer. Its CIDR mask must be smaller than /27"
-      zh: ""
+      zh: "除非此子网的CIDR小于/27，否则该子网不能连接负载均衡器"
 
     ERR_CONNECT_ENI_AMI:
       en: "Network interfaces can only be attached to an instance in the same availability zone."
@@ -130,11 +130,7 @@ module.exports =
 
     CVS_CFM_DEL_LC:
       en: "Are you sure to delete launch configuration %s?"
-      zh: ""
-
-    CVS_CFM_DEL_ASG:
-      en: "Launch configuration %s is only used by %s. By deleting %s, %s will also be deleted.<br/>Are you sure to delete asg0?"
-      zh: ""
+      zh: "确定要删除启动配置 %s？"
 
     CVS_CFM_ADD_IGW:
       en: "An Internet Gateway is Required"
@@ -186,45 +182,45 @@ module.exports =
 
     CVS_POP_ATTACHED_VOLUMES:
       en: "Attached Volumes"
-      zh: ""
+      zh: "已连接的卷"
 
     CVS_POP_NO_ATTACHED_VOLUME:
       en: "No Attached Volumes"
-      zh: ""
+      zh: "没有被连接的卷"
 
     CVS_POP_NO_INSTANCES:
       en: "No instances"
-      zh: ""
+      zh: "没有实例"
 
     CVS_POP_NO_NETWORK_INTERFACE:
       en: "No network interface"
-      zh: ""
+      zh: "没有网络接口"
 
     CVS_ASG_DROP_LC_1:
       en: "Drop AMI from"
-      zh: ""
+      zh: "从资源面板拖放"
 
     CVS_ASG_DROP_LC_2:
       en: "resource panel to"
-      zh: ""
+      zh: "AMI来创建"
 
     CVS_ASG_DROP_LC_3:
       en: "create launch"
-      zh: ""
+      zh: "启动配置"
 
     CVS_ASG_DROP_LC_4:
       en: "configuration"
-      zh: ""
+      zh: " "
 
     ATTACH_NETWORK_INTERFACE_TO_INTERFACE:
       en: "Attach Network Interface to Instance"
-      zh: ""
+      zh: "连接网络接口到实例"
 
     ATTACH_AND_REMOVE_PUBLIC_IP:
       en: "Attach and Remove Public IP"
-      zh: ""
+      zh: "连接并且删除公有IP"
 
     NETWORK_INTERFACE_ATTACHED_INTERFACE_NO_NEED_FOR_SG_RULE:
       en: "The Network Interface is attached to the instance. No need to connect them by security group rule."
-      zh: ""
+      zh: "此网络接口已连接到实例，不必用安全组连接。"
 

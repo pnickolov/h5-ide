@@ -458,7 +458,7 @@ module.exports =
 
     STACK_LBL_NAME:
       en: "Stack Name"
-      zh: "模版名称"
+      zh: "Stack名称"
 
     APP_LBL_NAME:
       en: "App Name"

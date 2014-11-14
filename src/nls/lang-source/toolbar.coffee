@@ -169,7 +169,7 @@ module.exports =
 
     TIP_BTN_RUN_STACK:
       en: "Run this stack into an app"
-      zh: "运行当前模版为App"
+      zh: "运行当前Stack为App"
 
     POP_TIT_RUN_STACK:
       en: "Run Stack"
@@ -177,23 +177,23 @@ module.exports =
 
     TIP_SAVE_STACK:
       en: "Save Stack"
-      zh: "保存模版"
+      zh: "保存Stack"
 
     TIP_DELETE_STACK:
       en: "Delete Stack"
-      zh: "删除模版"
+      zh: "删除Stack"
 
     TIP_DELETE_NEW_STACK:
       en: "This stack is not saved yet."
-      zh: "当前模版未保存"
+      zh: "当前Stack未保存"
 
     POP_TIT_DELETE_STACK:
       en: "Delete Stack"
-      zh: "删除模版"
+      zh: "删除Stack"
 
     POP_BODY_DELETE_STACK:
       en: "Do you confirm to delete stack '%s'?"
-      zh: "确认删除模版'%s'吗?"
+      zh: "确认删除Stack '%s' 吗?"
 
     POP_BTN_DELETE_STACK:
       en: "Delete"
@@ -217,7 +217,7 @@ module.exports =
 
     TIP_DUPLICATE_STACK:
       en: "Duplicate Stack"
-      zh: "复制模版"
+      zh: "复制Stack"
 
     TIT_CLOSE_TAB:
       en: "Close Tab"
@@ -225,15 +225,15 @@ module.exports =
 
     POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
-      zh: "复制模版"
+      zh: "复制Stack"
 
     POP_BODY_DUPLICATE_STACK:
       en: "New Stack Name:"
-      zh: "模版名称:"
+      zh: "Stack名称:"
 
     POP_BODY_APP_To_STACK:
       en: "New Stack Name:"
-      zh: "模版名称:"
+      zh: "Stack名称:"
 
     POP_BTN_DUPLICATE_STACK:
       en: "Duplicate"
@@ -245,7 +245,7 @@ module.exports =
 
     TIP_CREATE_STACK:
       en: "Create New Stack"
-      zh: "创建新模版"
+      zh: "创建新Stack"
 
     TIP_ZOOM_IN:
       en: "Zoom In"

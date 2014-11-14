@@ -70,7 +70,10 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
             isPublic = null
 
           if $('#filter-ami-32bit-64bit').find('.active').length is 1
-            architecture = radiobuttons.data($('#filter-ami-32bit-64bit'))
+            if radiobuttons.data($('#filter-ami-32bit-64bit')).slice(0, 2) is '32'
+              architecture = '32-bit'
+            else
+              architecture = '64-bit'
           else if $('#filter-ami-32bit-64bit').find('.active').length is 2
             architecture = null
 

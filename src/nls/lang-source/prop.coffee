@@ -2451,7 +2451,7 @@ module.exports =
 
     CONNECTION_ATTACHMENT_OF:
       en: "This is an attachment of %s to %s"
-      zh: "这是个 %s 到 %s 的附件."
+      zh: "这是个 %s 到 %s 的连接."
 
     CONNECTION_SUBNET_ASSO_PLACEMENT:
       en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."
@@ -2459,159 +2459,159 @@ module.exports =
 
     ENI_ATTACHMENT_NAME:
       en: "Instance-ENI Attachment"
-      zh: ""
+      zh: "实例-网络接口连接"
 
     ELB_SUBNET_ASSO_NAME:
-      en: "Load Balencer-Subnet Association"
-      zh: ""
+      en: "Load Balancer-Subnet Association"
+      zh: "负载均衡-子网连接"
 
     ELB_INTERNET_FACING:
       en: "Internet Facing"
-      zh: ""
+      zh: "网络接口"
 
     ELB_INTERNAL:
       en: "Internal"
-      zh: ""
+      zh: "内部"
 
     ELB_ENABLE_CROSS_ZONE_BALANCING:
       en: "Enable cross-zone load balancing"
-      zh: ""
+      zh: "启用跨区域负载均衡"
 
     ELB_CONNECTION_DRAINING:
       en: "Enable Connection Draining"
-      zh: ""
+      zh: "启用连接丢弃"
 
     ELB_CONNECTION_TIMEOUT:
       en: "Timeout"
-      zh: ""
+      zh: "超时"
 
     ELB_CONNECTION_SECONDS:
       en: "Seconds"
-      zh: ""
+      zh: "秒"
 
     ELB_LOAD_BALENCER_PROTOCOL:
-      en: "Load Balancer Protocal"
-      zh: ""
+      en: "Load Balancer Protocol"
+      zh: "负载均衡协议"
 
     ELB_INSTANCE_PROTOCOL:
       en: "Instance Protocol"
-      zh: ""
+      zh: "实力协议"
 
     ENI_NETWORK_INTERFACE_DETAIL:
       en: "Network Interface Details"
-      zh: ""
+      zh: "网络接口详细"
 
     ENI_NETWORK_INTERFACE_SUMMARY:
       en: "Network Interface Summary"
-      zh: ""
+      zh: "网络接口概要"
 
     ENI_NETWORK_INTERFACE_GROUP_MEMBERS:
       en: "Network Interface Group Members"
-      zh: ""
+      zh: "网络接口群组成员"
 
     ENI_CREATE_AFTER_APPLYING_UPDATES:
       en: "Create after applying updates"
-      zh: ""
+      zh: "应用更新后创建"
 
     ENI_DELETE_AFTER_APPLYING_UPDATES:
       en: "Delete after applying updates"
-      zh: ""
+      zh: "应用更新后删除"
 
     INSTANCE_ROOT_DEVICE:
       en: "Root Device"
-      zh: ""
+      zh: "根设备"
 
     INSTANCE_WATCH_LINK_TEXT:
       en: "Amazon Cloud Watch Product Page"
-      zh: ""
+      zh: "亚马逊 Cloud Watch 产品页"
 
     INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS:
       en: "User Data is disabled to allow installing OpsAgent for VisualOps."
-      zh: ""
+      zh: "用户数据已禁用以安装 VisualOps 代理"
 
     INSTANCE_VIEW_AGENT_USER_DATA_URL_TEXT:
       en: "View content"
-      zh: ""
+      zh: "查看内容"
 
     INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimized"
-      zh: ""
+      zh: "EBS 优化的"
 
     INSTANCE_IOPS:
       en: "IOPS"
-      zh: ""
+      zh: "IOPS"
 
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
-      zh: ""
+      zh: "<p class='modal-text-major'>您确定要删除 %s 吗?</p><p class='modal-text-minor'>使用此密钥对的资源将自动改为使用默认密钥对.</p>"
 
     MISSING_RESOURCE_UNAVAILABLE:
       en: "Resource Unavailable"
-      zh: ""
+      zh: "资源不可用"
 
     RTB_ALLOW_PROPAGATION:
       en: "Allow Propagation"
-      zh: ""
+      zh: "允许传播"
 
     RTB_CIDR_BLOCK_REQUIRED:
       en: "CIDR Block is required"
-      zh: ""
+      zh: "CIDR 块为必填"
 
     RTB_CIDR_BLOCK_REQUIRED_DESC:
       en: "Please provide a IP ranges for this route."
-      zh: ""
+      zh: "请为此路由提供一个 IP 段."
 
     RTB_CIDR_BLOCK_INVALID:
       en: "%s is not a valid form of CIDR Block"
-      zh: ""
+      zh: "%s 不是有效的 CIDR 块"
 
     RTB_CIDR_BLOCK_INVALID_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
-      zh: ""
+      zh: "请提供有效的 IP 区间, 如: 10.0.0.1/24."
 
     RTB_CIDR_BLOCK_CONFLICTS:
       en: "%s conflicts with other route."
-      zh: ""
+      zh: "%s 同其他路由冲突."
 
     RTB_CIDR_BLOCK_CONFLICTS_DESC:
       en: "Please choose a CIDR block not conflicting with existing route."
-      zh: ""
+      zh: "请选择一个不与其他已存在路由冲突的 CIDR 区块."
 
     RTB_CIDR_BLOCK_CONFLICTS_LOCAL:
       en: "%s conflicts with local route."
-      zh: ""
+      zh: "%s 与本地路由冲突."
 
     RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC:
       en: "Please choose a CIDR block not conflicting with local route."
-      zh: ""
+      zh: "请选择一个不与本地路由冲突的 CIDR 区块."
 
     SG_INSTANCE_SUMMARY:
       en: "Instance Summary"
-      zh: ""
+      zh: "实例概要"
 
     SG_SERVER_GROUP_MEMBERS:
       en: "Server Group Members"
-      zh: ""
+      zh: "服务器群组成员"
 
     SG_LAUNCH_AFTER_APPLYING_UPDATES:
       en: "Launch after applying updates"
-      zh: ""
+      zh: "应用后启动"
 
     SG_TERMINATE_AFTER_APPLYING_UPDATE:
       en: "Terminate after applying updates"
-      zh: ""
+      zh: "应用后终止"
 
     SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE:
       en: "Updating instance type is disabled for instances using instance store for root device."
-      zh: ""
+      zh: "根设备使用实例存储的实例上的更新实例类型已被禁用."
 
     SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE:
       en: "Amazon Cloud Watch Product Page"
-      zh: ""
+      zh: "亚马逊 Cloud Watch 产品页"
 
     SGLIST_DELETE_SG_CONFIRM_TITLE:
       en: "Are you sure you want to delete %s ?"
-      zh: ""
+      zh: "您确定要删除 %s 吗?"
 
     SGLIST_DELETE_SG_CONFIRM_DESC:
       en: "The firewall settings of %s's member will be affected. Member only has this security group will be using DefaultSG."

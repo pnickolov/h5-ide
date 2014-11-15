@@ -1158,7 +1158,7 @@ module.exports =
 
     MSG_WARN_REPEATED_APP_NAME:
       en: "This app name is already in use."
-      zh: "这个App名称已被占用This app name is already in use."
+      zh: "这个App名称已被占用。"
 
     MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
@@ -1698,7 +1698,7 @@ module.exports =
 
     ASG_MSG_DROP_LC:
       en: "Drop AMI from Resrouce Panel to create Launch Configuration"
-      zh: "请拖拽AMI来建立Launch Configuration"
+      zh: "请拖拽AMI来建立启动配置"
 
     ASG_TERMINATION_EDIT:
       en: "Edit Termination Policy"

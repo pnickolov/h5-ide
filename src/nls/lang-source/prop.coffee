@@ -794,11 +794,7 @@ module.exports =
 
     VPC_TIP_SELECT_NETBIOS_NODE:
       en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
-      zh: "选择 NetBIOS 节点类型, 我们推荐选项2.( AWS 尚未支持广播和多播)"
-
-    VPC_TIP_:
-      en: ""
-      zh: ""
+      zh: "选择 NetBIOS 节点类型, 我们推荐选项2.(AWS 尚未支持广播和多播)"
 
     SG_TIT_DETAIL:
       en: "Security Group Details"

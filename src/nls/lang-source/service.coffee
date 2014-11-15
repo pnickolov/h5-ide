@@ -122,20 +122,20 @@ module.exports =
 
       CONSTANT_MSG_E_SESSION:
         en: "This session has expired, please log in again"
-        zh: ""
+        zh: "会话超时，请重新登陆"
 
       CONSTANT_MSG_E_EXTERNAL:
         en: "Sorry, there seems to be a problem with AWS"
-        zh: ""
+        zh: "对不起，AWS出现了一些技术问题"
 
       CONSTANT_MSG_E_ERROR:
         en: "Sorry, we're experiencing techincal difficulty"
-        zh: ""
+        zh: "对不起，我们出现了技术问题"
 
       CONSTANT_MSG_E_UNKNOW:
         en: "Something is wrong, Please contact support@visualops.io"
-        zh: ""
+        zh: "出错了，请联系 support@visualops.io"
 
       CONSTANT_MSG_E_PARAM:
         en: "Parameter Error!"
-        zh: ""
+        zh: "参数错误！"

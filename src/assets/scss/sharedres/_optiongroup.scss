@@ -1,4 +1,9 @@
 #modal-option-group {
+    .container.optiongroup {
+        position: absolute;
+        top: 111px;
+        bottom: 64px;
+    }
     .og-name {
         text-transform: lowercase;
     }

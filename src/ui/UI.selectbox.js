@@ -54,6 +54,12 @@ var selectbox = window.selectbox = {
         $dropdown.find(".selected")
                  .focus().addClass('focused');
 
+        if (!$dropdown.parents('.scroll-wrap').length && !$dropdown.hasClass('scroll-wrap') && $dropdown.outerHeight() > 300) {
+            $dropdown.wrap('<div class="dropdown scroll-wrap scrollbar-auto-hide context-wrap" style="height:300px;"></div>')
+            $dropdown.addClass('scroll-content');
+            $dropdown.parents('.scroll-wrap').prepend('<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>');
+            $dropdown.removeClass('dropdown');
+        }
 
         var removeOpen = function( event ){
             var needRemove = true;

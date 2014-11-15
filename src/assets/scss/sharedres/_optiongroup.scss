@@ -15,6 +15,7 @@
         background-color: #333;
     }
     .container {
+        overflow: auto;
         padding: 20px 30px;
     }
     .input-item {
@@ -337,5 +338,3 @@
 .modal-toolbar .table-head-fix .table tr .detail-info.horizontal .detail-info-row {
   width: 40% !important;
 }
-
-

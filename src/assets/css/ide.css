@@ -5134,6 +5134,7 @@ button#property-app-keypair {
   padding: 20px 30px;
   background-color: #333; }
 #modal-option-group .container {
+  overflow: auto;
   padding: 20px 30px; }
 #modal-option-group .input-item {
   margin-top: 10px; }
@@ -7133,7 +7134,8 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

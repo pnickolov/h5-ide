@@ -2,6 +2,10 @@
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
+  .modal-toolbar .container.optiongroup {
+    position: absolute;
+    top: 111px;
+    bottom: 64px; }
   .modal-toolbar .no-credential {
     color: #F5F5F5;
     margin: 55px auto; }
@@ -78,7 +82,7 @@
     transition: max-height .2s ease-out;
     background: #252A2E;
     max-height: 0;
-    overflow: hidden;
+    overflow: auto !important;
     position: absolute;
     width: 100%;
     z-index: 71; }
@@ -1165,7 +1169,7 @@ select.select3.disabled {
 .scrollbar-veritical-wrap,
 .scrollbar-horizontal-wrap {
   position: absolute;
-  z-index: 5;
+  z-index: 999999999999;
   background: rgba(100, 100, 100, 0.2);
   display: none;
   -webkit-user-select: none;

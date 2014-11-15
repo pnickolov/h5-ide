@@ -1630,3 +1630,23 @@ VisualOps API. You cannot UNDO this action.'
     BUBBLE_SNAPSHOTID:
       en: "Snapshot ID"
       zh: "快照 ID"
+
+    BUBBLE_IMAGE_SIZE:
+      en: "Image Size"
+      zh: "映像大小"
+
+    ESTIMATED_AWS_COST:
+      en: "Estimated AWS Cost"
+      zh: "估计 AWS 费用"
+
+    PAYMENT_WARNNING_IN_MODAL:
+      en: "There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\"%s\">payment information</a>"
+      zh: "您的账户付费遇到问题, 请更新您的 <a target=\"_blank\" href=\"%s\">付费信息</a>."
+
+    PER_MONTH:
+      en: "/ month"
+      zh: "/ 月"
+
+
+
+

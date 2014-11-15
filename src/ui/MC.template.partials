@@ -238,8 +238,8 @@
 		<dt>{{i18n "DASH_BUB_KERNELID"}}</dt>       <dd>{{kernelId}}</dd>
 		<dt>{{i18n "DASH_BUB_ROOTDEVICENAME"}}</dt> <dd>{{rootDeviceName}}</dd>
 		<dt>{{i18n "DASH_BUB_ROOTDEVICETYPE"}}</dt> <dd>{{rootDeviceType}}</dd>
-    <dt>Image Size</dt>    <dd>{{imageSize}}</dd>
-    <dt>Instance Type</dt> <dd>{{instanceType}}</dd>
+    <dt>{{i18n "BUBBLE_IMAGE_SIZE"}}</dt>    <dd>{{imageSize}}</dd>
+    <dt>{{i18n "BUBBLE_INSTANCETYPE"}}</dt> <dd>{{instanceType}}</dd>
 	</dl>
 </div>
 
@@ -479,16 +479,12 @@ Additional Notes and Questions
     </div>
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
-            <div class="title">Estimated AWS Cost</div>
-            <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
-        </div>
-        <div class="estimate-visualops clearfix hide">
-            <div class="title">Estimated VisualOps Cost</div>
-            <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
+            <div class="title">{{i18n "ESTIMATED_AWS_COST"}}</div>
+            <div class="price" id="label-total-fee"><b>${{total_fee}}</b> {{i18n "PER_MONTH"}}</div>
         </div>
         {{#ifCond paymentState "pastdue"}}
             <div class="payment-warning">
-                There was an issue to process payment in your account. Please update your <a target="_blank" href="{{paymentUpdate.url}}">payment information</a>.
+                {{i18n "PAYMENT_WARNNING_IN_MODAL" paymentUpdate.url}}
             </div>
         {{/ifCond}}
     </div>

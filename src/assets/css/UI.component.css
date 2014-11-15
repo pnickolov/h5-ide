@@ -78,7 +78,7 @@
     transition: max-height .2s ease-out;
     background: #252A2E;
     max-height: 0;
-    overflow: hidden;
+    overflow: auto !important;
     position: absolute;
     width: 100%;
     z-index: 71; }

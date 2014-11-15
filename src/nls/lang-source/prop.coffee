@@ -1002,7 +1002,7 @@ module.exports =
 
     VPN_LBL_IP_PREFIX:
       en: "Network IP Prefixes"
-      zh: "网络号前缀"
+      zh: "网络 IP 地址前缀"
 
     VPN_TIP_EG_192_168_0_0_16:
       en: "e.g., 192.168.0.0/16"

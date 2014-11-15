@@ -177,8 +177,8 @@ module.exports =
       zh: "因特网网关"
 
     RES_LBL_NEW_VGW:
-      en: "Virtual Gateway"
-      zh: "虚拟网关"
+      en: "Virtual Private Gateway"
+      zh: "虚拟专用网关"
 
     RES_LBL_NEW_CGW:
       en: "Customer Gateway"
@@ -229,8 +229,8 @@ module.exports =
       zh: "拖放到画板来创建一个新互联网网关。"
 
     RES_TIP_DRAG_NEW_VGW:
-      en: "Drag to the canvas to create a new virtual gateway."
-      zh: "拖放到画板来创建一个新虚拟网关。"
+      en: "Drag to the canvas to create a new Virtual Private Gateway."
+      zh: "拖放到画板来创建一个新虚拟专用网关。"
 
     RES_TIP_DRAG_NEW_CGW:
       en: "Drag to the canvas to create a new customer gateway."
@@ -245,8 +245,8 @@ module.exports =
       zh: "这个VPC已经有了一个互联网网关。"
 
     RES_TIP_DRAG_HAS_VGW:
-      en: "This VPC already has a virtual gateway."
-      zh: "这个VPC已经有了一个虚拟网关。"
+      en: "This VPC already has a Virtual Private Gateway."
+      zh: "这个VPC已经有了一个虚拟专用网关。"
 
     RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS:
       en: "AMI is added to Favorite AMI"

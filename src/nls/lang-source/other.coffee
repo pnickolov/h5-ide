@@ -1406,3 +1406,121 @@ VisualOps API. You cannot UNDO this action.'
     PAYMENT_UNPAID_BUT_IN_FREE_QUOTA:
       en: "You have unpaid bill. You can still use the free quota before getting into limited status. <a class='update-payment' href='%s' target='_blank'>Update Billing Information</a> as soon as possible."
       zh: "您有未支付账单, 在您的账号受限之前您仍然可用使用您的免费额度. 请尽快 <a class='update-payment' href='%s' target='_blank'>更新账单信息</a>"
+
+    DHCP_DELETE_CONFIRM_MULTY:
+      en: "Confirm to delete selected %s  DHCP Options set?"
+      zh: "您确定要删除选择的%s个 DHCP 选项设定吗?"
+
+    DHCP_DELETE_CONFIRM_ONE:
+      en: "Confirm to delete %s ?"
+      zh: "您确定要删除 %s 吗?"
+
+    OPTION_GROUP_USED_FOR:
+      en: "This Option Group is used for "
+      zh: "此选项组适用于 "
+
+    CONFIRM_DELETE_PARAMETER_GROUP:
+      en: "Confirm to delete  RDS Parameter Groups %s?"
+      zh: "您确认要删除 RDS 参数组 %s 吗?"
+
+    CONFIRM_DELETE_PARAMETER_GROUP_MULTY:
+      en: "Confirm to delete selected %s RDS Parameter Groups?"
+      zh: "您确认要删除选中的 %s 个 RDS Parameter Group 吗?"
+
+    DELETE_SNS_TOPIC_CONFIRM:
+      en: "Confirm to delete SNS Topics %s and all associated subscriptions?"
+      zh: "您确定要删除 SNS 主题 %s 及其相关订阅吗?"
+
+    DELETE_SNS_TOPIC_CONFIRM_M:
+      en: "Confirm to delete selected %s SNS Topics and all associated subscriptions?"
+      zh: "您确定要删除选中的 %s 个 SNS 主题及其相关订阅吗?"
+
+    DELETE_SSL_CERT_CONFIRM:
+      en: "Confirm to delete SSL Certificate %s ?"
+      zh: "您确定要删除 SSL 证书 %s 吗?"
+
+    DELETE_SSL_CERT_CONFIRM_M:
+      en: "Confirm to delete selected %s SSL Certificates?"
+      zh: "您确定要删除已选择的 %s 个SSL 证书吗?"
+
+    STATE_TEXT_VIEW:
+      en: "View"
+      zh: "查看"
+
+    STATE_TEXT_EDIT:
+      en: "Edit"
+      zh: "编辑"
+
+    STATE_LOG_UPDATE_AFTER_CHANGE:
+      en: "State log will update after change is applied."
+      zh: "State 日志将在应用更改后更新."
+
+    XXX_S_STATE:
+      en: "'s state"
+      zh: "的 State"
+
+    IS_UPDATED:
+      en: "is updated."
+      zh: "已经更新."
+
+    has_failed:
+      en: "has failed."
+      zh: "运行失败."
+
+    CREDIT_CARD_INFORMATION:
+      en: "Credit Card Information"
+      zh: "信用卡信息"
+
+    NO_CARD:
+      en: "No Card"
+      zh: "无信用卡"
+
+    UPDATE_BILLING_INFORMATION:
+      en: "Update Billing Information"
+      zh: "更新账单信息"
+
+    BILLING_HISTORY:
+      en: "Billing History"
+      zh: "账单历史"
+
+    NEXT_BILLING_ON:
+      en: "Next Billing on "
+      zh: "下次账单日期:"
+
+    DATE:
+      en: "Date"
+      zh: "日期"
+
+    AMOUNT:
+      en: "Amount"
+      zh: "数量"
+
+    STATUS:
+      en: "Status"
+      zh: "状态"
+
+    ACTION:
+      en: "Action"
+      zh: "操作"
+
+    PAYMENT_PAID:
+      en: "Paid"
+      zh: "已支付"
+
+    PAYMENT_FAILED:
+      en: "Failed"
+      zh: "支付失败"
+
+    PAYMENT_VIEW_RECEIPT:
+      en: "View Receipt"
+      zh: "查看收据"
+
+    PAYMENT_INSTANT_HOUR:
+      en: "Instance Hour"
+      zh: "实例*小时"
+
+    PAYMENT_RENEW_FREE_INFO:
+      en: "%s free instance hour will be renewed in %s days."
+      zh: "%s 个免费实例*小时将在 %s 天后刷新."
+
+

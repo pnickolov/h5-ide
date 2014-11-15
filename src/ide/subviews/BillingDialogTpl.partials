@@ -7,31 +7,31 @@
     <div class="tabContent" id="PaymentBody">
         <section id="PaymentBillingTab">
             <p class="warning-red"></p>
-            <h5>Credit Card Infomation</h5>
+            <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
             <div class="clearfix">
                 <div class="left clearfix">
                     <div class="payment-credit-middle left">
 
                     </div>
                     <div class="left">
-                        <p class="payment-number">{{or paymentUpdate.card "No Card"}}</p>
+                        <p class="payment-number">{{#if paymentUpdate.card}}{{paymentUpdate.card}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
                         <p class="payment-username">{{paymentUpdate.first_name}} {{paymentUpdate.last_name}}</p>
                     </div>
                 </div>
                 <div class="right">
-                    <a class="btn btn-blue update-payment" href="{{paymentUpdate.url}}" target="_blank">Update Billing Information <i class="icon-right"></i></a>
+                    <a class="btn btn-blue update-payment" href="{{paymentUpdate.url}}" target="_blank">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></a>
                 </div>
             </div>
-            <h5>Billing History <span class="payment-next-billing">Next Billing on {{formatTime paymentUpdate.billingEnd "MMMM d, yyyy"}}</span></h5>
+            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.billingEnd "MMMM d, yyyy"}}</span></h5>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">
                     <thead>
                     <tr>
-                        <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">Date</th>
-                        <th data-row-type="string" style="width:25%;">Amount</th>
-                        <th data-row-type="string" style="width:25%;">Status</th>
-                        <th data-row-type="string" style="width:25%;">Action</th>
+                        <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">{{i18n "DATE"}}</th>
+                        <th data-row-type="string" style="width:25%;">{{i18n "AMOUNT"}}</th>
+                        <th data-row-type="string" style="width:25%;">{{i18n "STATUS"}}</th>
+                        <th data-row-type="string" style="width:25%;">{{i18n "ACTION"}}</th>
                     </tr>
                     </thead>
                 </table>
@@ -60,9 +60,9 @@
                                 <tr class="item" data-id="{{@index}}">
                                     <td>{{formatTime updated_at "MMMM d, yyyy"}}</td>
                                     <td>$ {{or ending_balance total_balance}}</td>
-                                    <td>{{#if success}}Paid{{else}}<span class="link-red">Failed</span>{{/if}}</td>
+                                    <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
                                     <td>
-                                        <a class="payment-receipt link-blue" href="#">View Receipt</a></td>
+                                        <a class="payment-receipt link-blue" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -84,10 +84,10 @@
                     <div class="usage-number">
                         {{paymentUpdate.current_quota}}
                     </div>
-                    <span>Instance Hour</span>
+                    <span>{{i18n "PAYMENT_INSTANT_HOUR"}}</span>
                 </div>
             </div>
-            <p class="renew-points">{{paymentUpdate.max_quota}} free instance hours will be renewed in {{paymentUpdate.renewRemainDays}} days</p>
+            <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" paymentUpdate.max_quota paymentUpdate.renewRemainDays}}</p>
         </section>
     </div>
 </div>

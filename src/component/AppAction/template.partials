@@ -127,22 +127,22 @@
 <!-- {{forgetAppConfirm}} -->
 <div class="confirm-padding">
     {{#if hasState}}
-        <div class="modal-center-align-helper"> <div class="modal-text-major">This app is created by Visualops with state, do not support forget currently</div></div>
+        <div class="modal-center-align-helper"> <div class="modal-text-major">{{ i18n "TOOLBAR.FORGET_VISUALOPS_CANT"}}</div></div>
     {{else}}
         {{#if production}}
-            <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances.</p>
+            <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{i18n "TOOLBAR.FORGET_CONFIRM_INSTRUCTION"}}</p>
             <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
             <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
         {{else}}
-            <div class="modal-center-align-helper"> <div class="modal-text-major">Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?</div></div>
+            <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOLBAR.FORGET_APP_CONFIRM"}}</div></div>
         {{/if}}
     {{/if}}
 </div>
 
 <!-- {{disconnectedMsg}} -->
 <section class="disconnected-msg">
-    <div>Connection lost. Attempting to reconnect…</div>
-    <div>Changes made now may not be saved.</div>
+    <div>{{i18n "TOOLBAR.CONNECTION_LOST_TO_RECONNECT"}}</div>
+    <div>{{i18n "TOOLBAR.CHANGES_MAY_NOT_BE_SAVED"}}</div>
 </section>
 
 <!-- {{forceTerminateApp}} -->

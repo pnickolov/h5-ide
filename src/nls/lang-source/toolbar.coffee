@@ -630,3 +630,24 @@ module.exports =
     SHOW_UNUSED_REGIONS:
       en: "Show unused regions"
       zh: "显示未使用的地区"
+
+    FORGET_VISUALOPS_CANT:
+      en: "This app is created by Visualops with state, do not support forget currently"
+      zh: "此 App 是用 VisualOps 创建的, 里面有 State, 目前不支持释放."
+
+    FORGET_CONFIRM_INSTRUCTION:
+      en: "Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances."
+      zh: "释放 App 不会让您的停止, 但是 VisualOps 将不再对其进行资源监控."
+
+    FORGET_APP_CONFIRM:
+      en: "Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?"
+      zh: "仅在 VisualOps 里删除, 不会删除任何资源.<br/> 您确定要释放 App 吗?"
+
+    RESOURCES_APP_CHANGED:
+      en: "Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s)."
+      zh: "此App 的资源在外部已经变化, 并且已经同步到App, 图表也将重新渲染以适用更改."
+
+    WHAT_HAVE_BEEN_CHANGED:
+      en: "What have been changed:"
+      zh: "已发生的更改:"
+

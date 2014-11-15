@@ -8,7 +8,6 @@ module.exports =
     # VPC
     WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
       en: "No instance in VPC has Elastic IP or auto-assigned public IP, which means this VPC can only connect to outside via VPN."
-      # en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
       zh: "在VPC中没有实例有弹性 IP 或自动分配的公网 IP，这意味着此 VPC 只能通过 VPN 来连入。"
 
     # Subnet
@@ -20,9 +19,11 @@ module.exports =
     NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
       zh: "实例 <span class='validation-tag tag-instance'>%s</span> 被附加了一个预配置的 IOPS 卷，但该实例并不是 EBS优化的。"
+
     WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
       zh: "实例 <span class='validation-tag tag-instance'>%s</span> 有超过 %s 条的安全组规则，如果一个实例有大量安全组规则，性能会有所下降。"
+
     ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
       zh: "要允许路由工作正常，实例 <span class='validation-tag tag-instance'>%s</span> 应该在网卡设置中禁用源/目的检查。"
@@ -34,7 +35,6 @@ module.exports =
     NOTICE_KEYPAIR_LONE_LIVE:
       en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
       zh: "请确保分配到实例或启动配置的私钥能够正常使用，否则您将无法登录到实例。"
-
 
     # ENI
     ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
@@ -209,20 +209,20 @@ module.exports =
 
     # State Editor
     ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
-      zh: ""
+      en: "Instance <span class='validation-tag tag-instance'>%s</span> State <span class='validation-tag tag-state'>%s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      zh: "实例 <span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s</span> 使用了不存在的引用 <span class='validation-tag tag-state-ref'>%s</span>。"
 
     ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> <span class='validation-tag tag-state'>state %s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
-      zh: ""
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> State <span class='validation-tag tag-state'>%s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 的 State <span class='validation-tag tag-state'>%s</span> 使用了不存在的引用 <span class='validation-tag tag-state-ref'>%s</span>。"
 
     ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
-      zh: ""
+      en: "<span class='validation-tag tag-instance'>%s</span>'s State <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
+      zh: "<span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s</span> 未填写必填参数 <span class='validation-tag tag-parameter'>%s</span>。"
 
     ERROR_STATE_EDITOR_INVALID_FORMAT:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s <span class='validation-tag tag-state'>state %s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
-      zh: ""
+      en: "<span class='validation-tag tag-instance'>%s</span>'s State <span class='validation-tag tag-state'>%s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
+      zh: "<span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s [%s]</span> 必须使用正确格式来引用 State。例如，<span class='validation-tag'>@{host1.state.3}</span>。"
 
     # State
     ERROR_NOT_CONNECT_OUT:
@@ -248,91 +248,87 @@ module.exports =
     # Share Resource
     ERROR_ASG_NOTIFICATION_NO_TOPIC:
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has configured notification. Please select a SNS Topic for it."
-      zh: ""
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 配置了通知。请给它指定一个 SNS 主题。"
 
     ERROR_ASG_POLICY_NO_TOPIC:
-      en: "Auto Scaling Group %s's Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
-      zh: ""
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy <span class='validation-tag'>%s</span> has configured notification. Please select a SNS Topic for it."
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 的伸缩策略 <span class='validation-tag'>%s</span> 配置了通知。请给它指定一个 SNS 主题。"
 
     ERROR_ASG_NOTIFICITION_TOPIC_NONEXISTENT:
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
-      zh: ""
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 使用了不存在的 SNS 主题 <span class='validation-tag'>%s</span>，请更换成存在的主题。"
 
     ERROR_ASG_POLICY_TOPIC_NONEXISTENT:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy %s is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
-      zh: ""
+      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span>'s Scaling Policy <span class='validation-tag'>%s</span> is using a nonexistent SNS Topic <span class='validation-tag'>%s</span>. Please change to an existing SNS Topic to make notification work."
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 的伸缩策略 <span class='validation-tag'>%s</span> 使用了不存在的 SNS 主题 <span class='validation-tag'>%s</span>，请更换成存在的主题。"
 
     ERROR_VPC_DHCP_NONEXISTENT:
       en: "VPC is using a nonexistent DHCP option set. Please specify default, auto-assigned or an existing DHCP option set."
-      zh: ""
+      zh: "VPC 使用了不存在的 DHCP 选项集。应指定一个默认、自动分配、或者存在的选项集给它。"
 
     WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS:
-      en: "vpc can not use default(none) dhcpoptions when use visualops"
-      zh: ""
+      en: "VPC can not use default(none) dhcpoptions when use visualops"
+      zh: "使用 State 时，VPC 不能使用默认的 DHCP 选项。"
 
     ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:
-      en: " DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
-      zh: ""
+      en: "DB Instance %s has db.t1.micro instance class, which can only be members of the default option group."
+      zh: "数据库实例 %s 使用了 db.t1.micro 这个实例类，由于此实例类的限制，该数据库实例只能使用默认选项组。"
 
     ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
       en: "The CIDR blocks in each of your subnets must be large enough to accommodate spare IP addresses for Amazon RDS to use during maintenance activities, including failover and compute scaling. (For each DB instance that you run in a VPC, you should reserve at least one address in each subnet in the DB subnet group for use by Amazon RDS for recovery actions.)"
-      zh: ""
+      zh: "每个子网的 CIDR 块应当足够大，以备 Amazon RDS 维护时使用。（最少应该为每个数据库实例保留一个 IP 地址）"
 
     ERROR_RDS_TENANCY_MUST_DEFAULT:
       en: "To launch DB instance, instance tenancy attribute of the VPC must be set to default. "
-      zh: ""
+      zh: "要想创建数据库实例，VPC 的租赁属性必须设置成默认。"
 
     ERROR_RDS_SNAPSHOT_NOT_LARGE_ENOUGH:
       en: "Snapshot storage need large than original value."
-      zh: ""
+      zh: "快照存储不能小于原始值。"
 
     ERROR_RDS_AZ_NOT_CONSISTENT:
       en: "DB Instance <span class='validation-tag'>%s</span> is assigned to a Preferred AZ <span class='validation-tag'>%s</span> inconsistent with its subnet group."
-      zh: ""
+      zh: "数据库实例 <span class='validation-tag'>%s</span> 选择的首选 AZ <span class='validation-tag'>%s</span> 与子网组不一致。"
 
     ERROR_RDS_ACCESSIBLE_NOT_HAVE_IGW:
       en: "To allow DB instance to be publicly accessible, VPC must have an Internet Gateway."
-      zh: ""
+      zh: "要想使数据库实例被公开访问，VPC 必须拥有 Internet 网关。"
 
     ERROR_RDS_ACCESSIBLE_NOT_HAVE_DNS:
       en: "To allow DB instance to be publicly accessible, VPC must enable DNS hostnames and DNS resolution."
-      zh: ""
-
-    ERROR_RDS_OG_COMPATIBILITY:
-      en: "App Update: Option Group compatibility."
-      zh: ""
+      zh: "要想使数据库实例被公开访问，VPC 必须选中 “DNS 主机名”和“DNS解析”两个选项。"
 
     WARNING_RDS_UNUSED_OG_NOT_CREATE:
       en: "Unused Option Group %s will not be created in live app."
-      zh: ""
+      zh: "没被使用的选项组 %s 不会在 App 中创建。"
 
     ERROR_RDS_OG_EXCEED_20_LIMIT:
       en: "Region %s has reached the limit of 20 option groups."
-      zh: ""
+      zh: "选项组已经达到地区 %s 的20个上限。"
 
     ERROR_RDS_SQL_SERVER_MIRROR_MUST_HAVE3SUBNET:
       en: "DB Instance <span class='validation-tag tag-rds'>%s</span> is using SQL Server Mirroring (Multi-AZ). Its subnet group must have 3 subnets in distinct Availability Zones."
-      zh: ""
+      zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span> 正在使用 SQL Server Mirroring（多可用区域部署）。它的子网组必须同时拥有3个在不用可用区的子网。"
 
     ERROR_RDS_BACKUP_MAINTENANCE_OVERLAP:
       en: "DB Instance <span class='validation-tag tag-rds'>%s</span> Backup Window and Maintenance Window are overlapping. Please update to avoid overlapping."
-      zh: ""
+      zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span> 的备份窗口和维护窗口重叠了，请更正。"
 
     ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
       en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet <span class='validation-tag tag-subnet'>%s</span> should use a larger CIDR block."
-      zh: ""
+      zh: "为了给 Amazon RDS 维护期间保留 IP 地址，子网 <span class='validation-tag tag-subnet'>%s</span> 应该使用更大的 CIDR 地址块"
 
     ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
       en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
-      zh: ""
+      zh: "只读副本 <span class='validation-tag tag-rds'>%s</span> 的存储不能小于它的源数据库实例 <span class='validation-tag tag-rds'>%s</span> 的存储。"
 
     ERROR_MASTER_PASSWORD_INVALID:
       en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
-      zh: ""
+      zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span>的主密码长度应该在8到41之间。"
 
     ERROR_OG_DB_BOTH_MODIFIED:
-      en: "DB Instance %s cannot be modified in the same update with the Option Group %s it is using."
-      zh: ""
+      en: "DB Instance <span class='validation-tag tag-rds'>%s</span> cannot be modified in the same update with the Option Group <span class='validation-tag tag-og'>%s</span> it is using."
+      zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span> 不能与它正在使用的选项组 <span class='validation-tag tag-og'>%s</span> 同时更新。"
 
 
     ##### Trust Advisor

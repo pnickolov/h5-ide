@@ -2266,7 +2266,7 @@ module.exports =
 
     DBINSTANCE_NETWORK_AZ_DEPLOYMENT:
       en: "Network & AZ Deployment"
-      zh: "网络 & AZ部署"
+      zh: "网络 & 可用区部署"
 
     DBINSTANCE_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"

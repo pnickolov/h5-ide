@@ -24,9 +24,17 @@ define [ './template', 'i18n!/nls/lang.js', "UI.modalplus", "constant", "Design"
           checked : assos.indexOf( subnet ) >= 0
         }
 
+      if Design.instance().region() in ['cn-north-1']
+          minAZCount = 1
+      else
+          minAZCount = 2
+
       modal = new Modal({
         title        : lang.IDE.POP_SELECT_SUBNET_FOR_SUBNET_GROUP_TITLE
-        template     : template( _.groupBy(subnets, "az") )
+        template     : template({
+            minAZCount: minAZCount,
+            group: _.groupBy(subnets, "az")
+        })
         confirm      : { text : lang.IDE.POP_LBL_DONE }
         disableClose : true
         onCancel     : ()-> self.cancel()

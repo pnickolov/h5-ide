@@ -1120,8 +1120,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "为子网组选择子网"
 
     POP_SELECT_SUBNET_FOR_SUBNET_GROUP_CONTENT:
-      en: "Add subnets from at least 2 different availability zones to this subnet group. "
-      zh: "至少从连个不同的可用区域里添加子网到这个子网组里."
+      en: "Add subnets from at least %s different availability zones to this subnet group. "
+      zh: "至少从%s个不同的可用区域里添加子网到这个子网组里."
 
     POP_LBL_DONE:
       en: "Done"

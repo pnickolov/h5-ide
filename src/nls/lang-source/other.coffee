@@ -1523,4 +1523,87 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s free instance hour will be renewed in %s days."
       zh: "%s 个免费实例*小时将在 %s 天后刷新."
 
+    NO_BILLING_EVENT:
+      en: "No billing event yet."
+      zh: "无付费事件."
+
+    PAYMENT_CURRENT_USAGE:
+      en: "Current Usage <span class='billing_start_from'> Since"
+      zh: "当前用量<span class='billing_start_from'>自从"
+
+    PAYMENT_CURRENT_USAGE_SPAN:
+      en: "</span>"
+      zh: "</span>"
+
+    BUBBLE_DNSNAME:
+      en: "DNS Name"
+      zh: "DNS 名称"
+
+    BUBBLE_ARCHITECTURE:
+      en: "Architecture"
+      zh: "架构"
+
+    BUBBLE_EBSOPTIMIZED:
+      en: "EBS Optimized"
+      zh: "EBS 优化"
+
+    BUBBLE_GROUPSET:
+      en: "GroupSet"
+      zh: "群组"
+
+    BUBBLE_HYPERVISOR:
+      en: "Hypervisor"
+      zh: "虚拟监视器"
+
+    BUBBLE_IMAGEID:
+      en: "Image ID"
+      zh: "映像 ID"
+
+    BUBBLE_INSTANCESTATE:
+      en: "Instance State"
+      zh: "Instance State"
+
+    BUBBLE_INSTANCETYPE:
+      en: "Instance Type"
+      zh: "实例类型"
+
+    BUBBLE_IPADDRESS:
+      en: "Ip Address"
+      zh: "IP 地址"
+
+    BUBBLE_KERNELID:
+      en: "Kernel ID"
+      zh: "核心 ID"
+
+    BUBBLE_KEYNAME:
+      en: "Keyname"
+      zh: "键值"
+
+    BUBBLE_LAUNCHTIME:
+      en: "Launch Time"
+      zh: "启动时间"
+
+    BUBBLE_MONITORING:
+      en: "Monitoring"
+      zh: "监测"
+
+    BUBBLE_NETWORKINTERFACESET:
+      en: "Network Interface Set"
+      zh: "网络接口组"
+
+    BUBBLE_AVAILABILITYZONE:
+      en: "Availability Zone"
+      zh: "可用区域"
+
+    BUBBLE_PRIVATEDNSNAME:
+      en: "Private DNS Name"
+      zh: "私有 DNS 名称"
+
+    BUBBLE_ROOTDEVICENAME:
+      en: "Root Device Name"
+      zh: "根设备名称"
+
+    BUBBLE_ROOTDEVICETYPE:
+      en: "Root Device Type"
+      zh: "根设备类型"
 

@@ -71,14 +71,14 @@
                 </div>
                 {{else}}
                     <div class="full-space">
-                        No billing event yet.
+                        {{i18n "NO_BILLING_EVENT"}}
                     </div>
                 {{/if}}
             </div>
         </section>
         <section id="UsageTab" class="hide">
             <p class="warning-red"></p>
-            <h5 class="billing_usage_title">Current Usage <span class="billing_start_from">Since {{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}</span></h5>
+            <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}{{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}{{i18n "PAYMENT_CURRENT_USAGE_SPAN"}}</h5>
             <div class="usage-wrapper">
                 <div class="used-points">
                     <div class="usage-number">

@@ -120,41 +120,41 @@
 
 	<div class="modal-body">
 		<dl class="dl-horizontal">
-			<dt>DnsName</dt>
+			<dt>{{i18n "BUBBLE_DNSNAME"}}</dt>
 			<dd>{{dnsName}}</dd>
-			<dt>Architecture</dt>
+			<dt>{{i18n "BUBBLE_ARCHITECTURE"}}</dt>
 			<dd>{{architecture}}</dd>
-			<dt>EbsOptimized</dt>
+			<dt>{{i18n "BUBBLE_EBSOPTIMIZED"}}</dt>
 			<dd>{{ebsOptimized}}</dd>
-			<dt>GroupSet</dt>
+			<dt>{{i18n "BUBBLE_GROUPSET"}}</dt>
 			<dd>{{groupSet}}</dd>
-			<dt>Hypervisor</dt>
+			<dt>{{i18n "BUBBLE_HYPERVISOR"}}</dt>
 			<dd>{{hypervisor}}</dd>
-			<dt>ImageId</dt>
+			<dt>{{i18n "BUBBLE_IMAGEID"}}</dt>
 			<dd>{{imageId}}</dd>
-			<dt>InstanceState</dt>
+			<dt>{{i18n "BUBBLE_INSTANCESTATE"}}</dt>
 			<dd>{{instanceState}}</dd>
-			<dt>InstanceType</dt>
+			<dt>{{i18n "BUBBLE_INSTANCETYPE"}}</dt>
 			<dd>{{instanceType}}</dd>
-			<dt>IpAddress</dt>
+			<dt>{{i18n "BUBBLE_IPADDRESS"}}</dt>
 			<dd>{{ipAddress}}</dd>
-			<dt>KernelId</dt>
+			<dt>{{i18n "BUBBLE_KERNELID"}}</dt>
 			<dd>{{kernelId}}</dd>
-			<dt>KeyName</dt>
+			<dt>{{i18n "BUBBLE_KEYNAME"}}</dt>
 			<dd>{{keyName}}</dd>
-			<dt>LaunchTime</dt>
+			<dt>{{i18n "BUBBLE_LAUNCHTIME"}}</dt>
 			<dd>{{launchTime}}</dd>
-			<dt>Monitoring</dt>
+			<dt>{{i18n "BUBBLE_MONITORING"}}</dt>
 			<dd>{{monitoring}}</dd>
-			<dt>NetworkInterfaceSet</dt>
+			<dt>{{i18n "BUBBLE_NETWORKINTERFACESET"}}</dt>
 			<dd>{{networkInterfaceSet}}</dd>
-			<dt>AvailabilityZone</dt>
+			<dt>{{i18n "BUBBLE_AVAILABILITYZONE"}}</dt>
 			<dd>{{availabilityZone}}</dd>
-			<dt>PrivateDnsName</dt>
+			<dt>{{i18n "BUBBLE_PRIVATEDNSNAME"}}</dt>
 			<dd>{{privateDnsName}}</dd>
-			<dt>RootDeviceName</dt>
+			<dt>{{i18n "BUBBLE_ROOTDEVICENAME"}}</dt>
 			<dd>{{rootDeviceName}}</dd>
-			<dt>RootDeviceType</dt>
+			<dt>{{i18n "BUBBLE_ROOTDEVICETYPE"}}</dt>
 			<dd>{{rootDeviceType}}</dd>
 		</dl>
 	</div>

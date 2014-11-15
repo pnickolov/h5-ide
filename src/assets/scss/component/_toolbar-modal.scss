@@ -37,6 +37,12 @@ $dark-blue: #001324;
 .modal-toolbar {
 	width: 855px;
 
+	.container.optiongroup {
+		position: absolute;
+		top: 111px;
+		bottom: 64px;
+	}
+
 	.no-credential {
 		color: #F5F5F5;
 		margin: 55px auto;
@@ -148,7 +154,7 @@ $dark-blue: #001324;
 
 		background:                 #252A2E;
 		max-height:                 0;
-		overflow:                   hidden;
+		overflow:                   auto !important;
 		position:                   absolute;
 		width:                      100%;
 		z-index:                    71;
@@ -351,7 +357,3 @@ $dark-blue: #001324;
 	animation-fill-mode: both;
 	animation-iteration-count: 2;
 }
-
-
-
-

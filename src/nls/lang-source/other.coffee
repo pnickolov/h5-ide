@@ -1607,3 +1607,26 @@ VisualOps API. You cannot UNDO this action.'
       en: "Root Device Type"
       zh: "根设备类型"
 
+    BUBBLE_START_TIME:
+      en: "Start Time:"
+      zh: "开始时间:"
+
+    BUBBLE_STOP_TIME:
+      en: "Stop Time:"
+      zh: "停止时间:"
+
+    BUBBLE_ESTIMATED_COST:
+      en: "Estimated Cost:"
+      zh: "估计费用:"
+
+    BUBBLE_SIZE:
+      en: "Size"
+      zh: "大小"
+
+    BUBBLE_ENCRYPTED:
+      en: "Encrypted"
+      zh: "加密的"
+
+    BUBBLE_SNAPSHOTID:
+      en: "Snapshot ID"
+      zh: "快照 ID"

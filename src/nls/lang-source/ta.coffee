@@ -9,126 +9,126 @@ module.exports =
     WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:
       en: "No instance in VPC has Elastic IP or auto-assigned public IP, which means this VPC can only connect to outside via VPN."
       # en: "No instance in VPC has Elastic IP, which means this VPC can only connect to outside via VPN."
-      zh: ""
+      zh: "在VPC中没有实例有弹性 IP 或自动分配的公网 IP，这意味着此 VPC 只能通过 VPN 来连入。"
 
     # Subnet
     ERROR_CIDR_ERROR_CONNECT_TO_ELB:
       en: "Subnet <span class='validation-tag tag-subnet'>%s</span> is attached with a Load Balancer. Its mask must be smaller than /27."
-      zh: ""
+      zh: "子网 <span class='validation-tag tag-subnet'>%s</span> 被附加了一个负载均衡器．它的子网掩码必须小于 /27。"
 
     # Instance
     NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
-      zh: ""
+      zh: "实例 <span class='validation-tag tag-instance'>%s</span> 被附加了一个预配置的 IOPS 卷，但该实例并不是 EBS优化的。"
     WARNING_INSTANCE_SG_RULE_EXCEED_FIT_NUM:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has more than %s security group rules, If a Instance has a large number of security group rules, performance can be degraded."
-      zh: ""
+      zh: "实例 <span class='validation-tag tag-instance'>%s</span> 有超过 %s 条的安全组规则，如果一个实例有大量安全组规则，性能会有所下降。"
     ERROR_INSTANCE_NAT_CHECKED_SOURCE_DEST:
       en: "To allow routing to work properly, instance <span class='validation-tag tag-instance'>%s</span> should disabled Source/Destination Checking in \"Network Interface Details\""
-      zh: ""
+      zh: "要允许路由工作正常，实例 <span class='validation-tag tag-instance'>%s</span> 应该在网卡设置中禁用源/目的检查。"
 
     ERROR_INSTANCE_REF_OLD_KEYPAIR:
       en: "%s has associated with an nonexistent key pair <span class='validation-tag'>%s</span>. Make sure to use an existing key pair or creating a new one."
-      zh: ""
+      zh: "%s 分配的密钥对 <span class='validation-tag'>%s</span> 不存在，请确保使用现存的密钥对或创建一个新的密钥对。"
 
     NOTICE_KEYPAIR_LONE_LIVE:
       en: "Make sure you have access to all private key files associated with instances or launch configurations. Without them, you won't be able to log into your instances."
-      zh: ""
+      zh: "请确保分配到实例或启动配置的私钥能够正常使用，否则您将无法登录到实例。"
 
 
     # ENI
     ERROR_ENI_NOT_ATTACH_TO_INSTANCE:
       en: "Network Interface <span class='validation-tag tag-eni'>%s</span> is not attached to any Instance."
-      zh: ""
+      zh: "网络接口 <span class='validation-tag tag-eni'>%s</span> 没有被关联到任何实例上。"
 
     # ELB
     ERROR_VPC_HAVE_INTERNET_ELB_AND_NO_HAVE_IGW:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is internet-facing but VPC no have an Internet Gateway."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 是 Internet-facing 的，但 VPC 中没有 Internet 网关。"
 
     ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB:
       en: "Internet-facing Load Balancer <span class='validation-tag tag-elb'>%s</span> should attach to a public subnet."
-      zh: ""
+      zh: "Internet-facing 的负载均衡器 <span class='validation-tag tag-elb'>%s</span> 应该关联到一个公有子网上。"
 
     ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
-      zh: ""
+      zh: "没有实例或自动伸缩组被关联到负载均衡器 <span class='validation-tag tag-elb'>%s</span> 上。"
 
     WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 只关联到了一个可用区域上，若关联到多个可用区域上能够提升容错性。"
 
     NOTICE_ELB_REDIRECT_PORT_443_TO_443:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> redirects <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-port'>443</span>. Suggest to use load balancer to decrypt and redirect to port <span class='validation-tag tag-port'>80</span>."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 重定向 <span class='validation-tag tag-port'>443</span> 到 <span class='validation-tag tag-port'>443</span>，建议使用负载均衡解密并重定向到端口 <span class='validation-tag tag-port'>80</span>。"
 
     ERROR_ELB_HAVE_REPEAT_LISTENER_ITEM:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has duplicate load balancer ports."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 的侦听端口重复。"
 
     ERROR_ELB_HAVE_NO_SSL_CERT:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is using HTTPS/SSL protocol for Load Balancer Listener. Please add server certificate."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 正在使用 HTTPS/SSL 协议侦听，请添加服务器证书。"
 
     ERROR_ELB_RULE_NOT_INBOUND_TO_ELB_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards its Load Balancer Protocol: %s."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 应该允许流向侦听协议 %s 的流量。"
 
     WARNING_ELB_RULE_NOT_INBOUND_TO_ELB_PING_PORT:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span>'s security group rule should allow inbound traffic towards its ping port: <span class='validation-tag tag-port'>%s</span>."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 的安全组规则需要允许朝 Ping 端口 <span class='validation-tag tag-port'>%s</span> 进入的流量。"
 
     ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow outbound traffic towards its backend instance or auto-scaling group through Instance Protocol: %s."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 应该允许向关联的实例或自动伸缩组流向的协议 %s 的出口流量。"
 
     ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER:
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
-      zh: ""
+      zh: "%s <span class='validation-tag tag-elb'>%s</span> 应该依据 %s 的实例侦听协议，允许朝 %s 的进入流量。"
 
     ERROR_ELB_ATTACHED_SUBNET_CIDR_SUFFIX_GREATE_27:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has been associated with Subnet <span class='validation-tag tag-subnet'>%s</span>, whose CIDR mask must be smaller than /27."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 关联的子网 <span class='validation-tag tag-subnet'>%s</span>，其掩码必须小于 /27。"
 
     ERROR_ELB_SSL_CERT_NOT_EXIST_FROM_AWS:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span>'s Listener is configured with nonexistent Server Certificate <span class='validation-tag tag-cert'>%s</span>."
-      zh: ""
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 的监听器配置的服务器证书 <span class='validation-tag tag-cert'>%s</span> 不存在。"
 
     # SG
     WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."
-      zh: ""
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 的规则超过了 %s 条，若安全组有太多规则，性能会有所下降。"
     NOTICE_STACK_USING_ONLY_ONE_SG:
       en: "This stack is only using 1 security group."
-      zh: ""
+      zh: "该 Stack 只使用了一个安全组。"
     WARNING_SG_USING_ALL_PROTOCOL_RULE:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> is using 'ALL' protocol traffic."
-      zh: ""
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 允许了 'ALL' 协议。"
     WARNING_SG_RULE_FULL_ZERO_SOURCE_TARGET_TO_OTHER_PORT:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has inbound rule which traffic from <span class='validation-tag tag-ip'>0.0.0.0/0</span> is not targeting port <span class='validation-tag tag-port'>80</span> or <span class='validation-tag tag-port'>443</span>."
-      zh: ""
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有来自不是目标端口 <span class='validation-tag tag-port'>80</span> 或 <span class='validation-tag tag-port'>443</span> 的 <span class='validation-tag tag-ip'>0.0.0.0/0</span> 的入口流量规则。"
     NOTICE_SG_RULE_USING_PORT_22:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has rule which using port <span class='validation-tag tag-port'>22</span>. To enhance security, suggest to use other port than <span class='validation-tag tag-port'>22</span>."
-      zh: ""
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有规则正在使用端口 <span class='validation-tag tag-port'>22</span>，要确保安全，建议使用其它端口。"
     WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
-      zh: ""
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有朝 <span class='validation-tag tag-ip'>0.0.0.0/0</span> 的出口规则，建议更改到更明确的范围。"
     ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT:
       en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group exceed max %s limit."
-      zh: ""
+      zh: "%s <span class='validation-tag tag-%s'>%s</span> 分配的安全组超过最大 %s 条限制。"
 
     # ASG
     ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
       en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
-      zh:""
+      zh:"自动伸缩组 <span class='validation-tag tag-asg'>%s</span> 没有启动配置。"
 
     WARNING_ELB_HEALTH_NOT_CHECK:
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
-      zh: ""
+      zh: "自动伸缩组 <span class='validation-tag tag-asg'>%s</span> 连接到的负载均衡器的健康检查没有被启用。"
 
     ERROR_HAS_EIP_NOT_HAS_IGW:
       en: "VPC has instance with Elastic IP must have an Internet Gateway."
-      zh: ""
+      zh: "VPC 中有分配了弹性 IP 的实例，但 VPC 没有 Internet 网关。"
 
     # RT
     NOTICE_RT_ROUTE_NAT:
@@ -137,28 +137,28 @@ module.exports =
 
     NOTICE_INSTANCE_HAS_RTB_NO_ELB:
       en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
-      zh: ""
+      zh: "路由表 <span class='validation-tag tag-rtb'>%s</span> 连接到了实例 <span class='validation-tag tag-instance'>%s</span>, 如果 <span class='validation-tag tag-instance'>%s</span> 正作为 NAT 实例，那么它应该被分配一个弹性 IP。"
 
     WARNING_NO_RTB_CONNECT_IGW:
       en: "No Route Table is connected to Internet Gateway."
-      zh: ""
+      zh: "Internet 网关没有被连接到路由表。"
 
     WARNING_NO_RTB_CONNECT_VGW:
       en: "No Route Table is connected to VPN Gateway."
-      zh: ""
+      zh: "VPN 网关没有被连接到路由表。"
 
     NOTICE_ACL_HAS_NO_ALLOW_RULE:
       en: "Network ACL <span class='validation-tag tag-acl'>%s</span> has no ALLOW rule. The subnet(s) associate(s) with it cannot have traffic in or out."
-      zh: ""
+      zh: "网络 ACL <span class='validation-tag tag-acl'>%s</span> 没有任何允许规则，关联到的子网的流量不允许进或出。"
 
     ERROR_RT_HAVE_CONFLICT_DESTINATION:
       en:"Route Table <span class='validation-tag tag-rtb'>%s</span> has routes with conflicting CIDR blocks."
-      zh:""
+      zh:"路由表的路由规则中存在 CIDR 块冲突。"
 
     # AZ
     WARNING_SINGLE_AZ:
       en: "Only 1 Availability Zone is used. Multiple Availability Zone can improve fault tolerance."
-      zh: ""
+      zh: "该 VPC 中只有一个可用区域，使用多个可用区域能够提升容错性。"
 
     # CGW
     ERROR_CGW_CHECKING_IP_CONFLICT:

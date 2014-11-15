@@ -286,11 +286,11 @@ module.exports =
 
     INSTANCE_ENI_SOURCE_DEST_CHECK:
       en: "Enable Source/Destination Checking"
-      zh: "打开 Source/Destination 检查"
+      zh: "启用源/目的检查"
 
     INSTANCE_ENI_SOURCE_DEST_CHECK_DISP:
       en: "Source/Destination Checking"
-      zh: "Source/Destination 检查"
+      zh: "源/目的检查"
 
     INSTANCE_ENI_AUTO_PUBLIC_IP:
       en: "Automatically assign Public IP"

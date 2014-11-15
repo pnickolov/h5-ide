@@ -107,7 +107,7 @@
             <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
             {{/ifCond}}
         </div>
-        <div class="container">
+        <div class="container optiongroup">
             <div class="input-item">
                 <label class="left">{{i18n "PROP.NAME"}}</label>
                 <input class="input og-name" value="{{name}}" type="text" data-ignore="true" data-required-rollback="true"/>

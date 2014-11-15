@@ -37,6 +37,12 @@ $dark-blue: #001324;
 .modal-toolbar {
 	width: 855px;
 
+	.container.optiongroup {
+		position: absolute;
+		top: 111px;
+		bottom: 64px;
+	}
+
 	.no-credential {
 		color: #F5F5F5;
 		margin: 55px auto;

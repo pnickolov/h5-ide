@@ -525,8 +525,7 @@ module.exports =
     SETTINGS_CONFIRM_TOKEN_RM:
       en: 'Any applications or scripts using this token will no longer be able to access the
 VisualOps API. You cannot UNDO this action.'
-      zh: 'Any applications or scripts using this token will no longer be able to access the
-VisualOps API. You cannot UNDO this action.'
+      zh: '任何使用这个令牌的应用或脚本都将无法访问 VisualOps 的 API, 此操作无法撤销.'
 
     SETTINGS_CRED_CONNECTED_TIT:
       en: "You have connected with following AWS account:"
@@ -538,7 +537,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_REMOVE_TEXT:
       en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
-      zh: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
+      zh: "<p>移除凭证后, 您将处于 Demo 账号模式.</p><p>如果您想运行 App,您需要提供 AWS 凭证. </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行. </p><p>如果您有已存在的 App, 将无法管理而强制删除.</p>"
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
@@ -574,7 +573,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
-      zh: "Confirm to update"
+      zh: "确认更新"
 
     SETTINGS_ERR_INVALID_PWD:
       en: "New password must contain at least 6 characters."
@@ -672,9 +671,9 @@ VisualOps API. You cannot UNDO this action.'
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
 <li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
-      zh: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
-<li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+      zh: "<li>尝试一下在弗吉尼亚的这5个预制 Stack.</li>
+<li>或者阅读一下 <a href='http://docs.visualops.io/' target='_blank'>文档</a>.</li>
+<li>看下 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>. </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."

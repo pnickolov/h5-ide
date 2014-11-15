@@ -41,7 +41,7 @@ module.exports =
 
     STACK_VALIDATION:
       en: "Stack Validation"
-      zh: "Stack"
+      zh: "Stack 校验"
 
     VALIDATING_STACK:
       en: "Validating your stack..."

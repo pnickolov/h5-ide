@@ -162,42 +162,50 @@ module.exports =
 
     # CGW
     ERROR_CGW_CHECKING_IP_CONFLICT:
-      en:"Checking Customer Gateway IP Address confliction with existing resource..."
-      zh:""
+      en: "Checking Customer Gateway IP Address confliction with existing resource..."
+      zh: "正在检查客户网关 IP 地址与已存在的资源是否冲突。。。"
+
     ERROR_CGW_IP_CONFLICT:
-      en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
-      zh:""
+      en: "Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
+      zh: "客户网关 <span class='validation-tag tag-cgw'>%s</span> 的 IP <span class='validation-tag tag-ip'>%s</span> 与 <span class='validation-tag tag-cgw'>%s</span> 的 IP 地址冲突。"
+
     WARNING_CGW_IP_RANGE_ERROR:
-      en:"Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
-      zh:""
+      en: "Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP(%s) invalid."
+      zh: "客户网关 <span class='validation-tag tag-cgw'>%s</span> 的 IP 地址无效。"
+
     ERROR_CGW_MUST_ATTACH_VPN:
-      en:"Customer Gateway %s must be attached to a VPN Gateway via VPN connection."
-      zh:""
+      en: "Customer Gateway <span class='validation-tag tag-cgw'>%s</span> must be attached to a Virtual Private Gateway via VPN connection."
+      zh: "客户网关 <span class='validation-tag tag-cgw'>%s</span> 必须连接到虚拟专用网关。"
 
     # VPN
     ERROR_VPN_NO_IP_FOR_STATIC_CGW:
-      en:"VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
-      zh:""
+      en: "VPN Connection of <span class='validation-tag tag-cgw'>%s</span> and <span class='validation-tag tag-vgw'>%s</span> is missing IP prefix."
+      zh: "<span class='validation-tag tag-cgw'>%s</span> 和 <span class='validation-tag tag-vgw'>%s</span> 之间的 VPN 连接没有填写网络 IP 地址前缀。"
+
     ERROR_VPN_NOT_PUBLIC_IP:
-      en:"VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix <span class='validation-tag tag-ip'>%s</span> is invalid."
-      zh:""
+      en: "VPN Connection <span class='validation-tag tag-vpn'>%s</span>'s IP prefix <span class='validation-tag tag-ip'>%s</span> is invalid."
+      zh: "VPN 连接 <span class='validation-tag tag-vpn'>%s</span> 的网络 IP 地址前缀 <span class='validation-tag tag-ip'>%s</span> 无效。"
 
     # Stack
     ERROR_STACK_CHECKING_FORMAT_VALID:
-      en:"Checking Stack data format validity..."
-      zh:""
+      en: "Checking Stack data format validity..."
+      zh: "正在检查 Stack 数据格式。。。"
+
     ERROR_STACK_FORMAT_VALID_FAILED:
-      en:"Resource %s has format problem, %s."
-      zh:""
+      en: "Resource %s has format problem, %s."
+      zh: "资源 %s 存在格式错误，%s。"
+
     ERROR_STACK_HAVE_NOT_EXIST_AMI:
-      en:"%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please change another AMI."
-      zh:""
+      en: "%s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span> is not available any more. Please change another AMI."
+      zh: "%s 的 AMI <span class='validation-tag tag-%s'>%s</span> 已失效，请换成其他的AMI。"
+
     ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT:
-      en:"Snapshot <span class='validation-tag tag-snapshot'>%s</span> attached to %s <span class='validation-tag tag-instance'>%s</span> is not available or not accessible to your account. Please change another one."
-      zh:""
+      en: "Snapshot <span class='validation-tag tag-snapshot'>%s</span> attached to %s <span class='validation-tag tag-instance'>%s</span> is not available or not accessible to your account. Please change another one."
+      zh: "快照 <span class='validation-tag tag-snapshot'>%s</span> 连接到了 %s <span class='validation-tag tag-instance'>%s</span> 上，但是此快照不可用，请更换其他快照。"
+
     ERROR_STACK_HAVE_NOT_AUTHED_AMI:
-      en:"You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
-      zh:""
+      en: "You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
+      zh: "您没有 %s <span class='validation-tag tag-%s'>%s</span> 所使用的 AMI 的权限，请到 AWS 市场获取权限，或者更换AMI。"
 
     # State Editor
     ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
@@ -219,21 +227,23 @@ module.exports =
     # State
     ERROR_NOT_CONNECT_OUT:
       en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "
-      zh: ""
+      zh: "子网 <span class='validation-tag tag-subnet'>%s</span> 必须直接或通过 NAT 连接到互联网。"
 
     ERROR_NO_EIP_OR_PIP:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, <span class='validation-tag tag-instance'>%s</span> must have an elastic IP or public IP. If not, subnet <span class='validation-tag tag-subnet'>%s</span>'s outward traffic must be routed to a <a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT instance</a>."
-      zh: ""
+      zh: "<span class='validation-tag tag-instance'>%s</span> 配置了 State，为了确保 OpsAgent 正常工作，<span class='validation-tag tag-instance'>%s</span> 必须拥有弹性 IP 或者公有 IP，如果不然，子网 <span class='validation-tag tag-subnet'>%s</span> 必须能够路由到<a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT 实例</a>"
 
     ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
-      zh: ""
+      zh: "您为实例配置了 State，为了确保 OpsAgent 正常工作，必须为 VPC 添加一个 Internet 网关"
+
     ERROR_NO_OUTBOUND_RULES:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
-      zh: ""
+      zh: "<span class='validation-tag tag-instance'>%s</span> 配置了 State，它必须添加<span class='validation-tag tag-port'>80</span> 和 <span class='validation-tag tag-port'>443</span> 端口的出站规则，才能确保 OpsAgent 正常工作。"
+
     WARNING_OUTBOUND_NOT_TO_ALL:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. Suggest to set its outbound rule on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> to <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Otherwise, agent may not be able to work properly, install packages or check out source codes lacking route to VisualOps's monitoring systems or required repositories."
-      zh: ""
+      zh: "<span class='validation-tag tag-instance'>%s</span> 配置了 State。建议您设置<span class='validation-tag tag-port'>80</span> 和 <span class='validation-tag tag-port'>443</span> 端口的出站规则的来源为 <span class='validation-tag tag-ip'>0.0.0.0/0</span>，否则可能导致 Agent 无法安装软件和自动升级。"
 
     # Share Resource
     ERROR_ASG_NOTIFICATION_NO_TOPIC:

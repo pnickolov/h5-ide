@@ -72,13 +72,13 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 										instanceType = instanceObj.type
 										instanceName = instanceObj.name
 
-										infoObjType = 'Instance'
+										infoObjType = lang.PROP.ELB_INSTANCES
 										infoTagType = 'instance'
 
 										instanceId = null
 
 										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
+											infoObjType = lang.PROP.LC_TITLE
 											infoTagType = 'lc'
 											instanceId = instanceObj.resource.LaunchConfigurationARN
 										else

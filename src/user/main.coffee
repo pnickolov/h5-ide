@@ -40,7 +40,7 @@ checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 
 # language detect
 langType = ->
-    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "zh-cn"
 deepth = 'RESET'
 # route function
 userRoute = (routes)->

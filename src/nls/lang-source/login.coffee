@@ -166,7 +166,7 @@ module.exports =
 
       password_shorter:
         en: "Password should at least contain 6 characters."
-        zh: "密码至少包含6个字符、数字或者特殊字符。"
+        zh: "密码至少包含6个字符。"
 
       password_required:
         en: "Password is required."

@@ -15,7 +15,6 @@ module.exports =
       en: "Import VPC"
       zh: "可视化VPC"
 
-
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
       zh: "查看资源详细内容"
@@ -615,7 +614,7 @@ module.exports =
 
     DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
       en: "Failed to load region information. Please try agian."
-      zh: "加载地区资源失败。请重试。"
+      zh: "加载地区资源失败，请重试。"
 
     DASH_POP_BTN_RETRY:
       en: "Retry"
@@ -663,7 +662,7 @@ module.exports =
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
       en: " to see real data"
-      zh: "以查看真实数据."
+      zh: "以查看真实数据"
 
     DASH_TPL_NO_RECENT_APP:
       en: "No recently launched app in 30 days"
@@ -679,7 +678,7 @@ module.exports =
 
     DASH_TPL_LOADING_VPC_FAILED:
       en: "Oops, loading VPC failed."
-      zh: "加载VPC失败."
+      zh: "加载VPC失败。"
 
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
@@ -691,7 +690,7 @@ module.exports =
 
     DASH_TPL_NO_VPC_TO_IMPORT:
       en: "There is no VPC to import."
-      zh: "没有可导入的VPC."
+      zh: "没有可导入的VPC。"
 
     DASH_IMPORT_VPC_AS_APP:
       en: "Import Existing VPC as App"
@@ -715,7 +714,7 @@ module.exports =
 
     DASH_INVALID_SESSION_WARNING:
       en: "If you have unsaved changes, close this session will cause all your change to lose."
-      zh: "如果您有未保存的修改, 关闭会话将会导致所有修改丢失。"
+      zh: "如果您有未保存的修改，关闭会话将会导致所有修改丢失。"
 
     DASH_LBL_RECONNECT:
       en: "Reconnect"

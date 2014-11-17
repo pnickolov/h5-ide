@@ -142,7 +142,7 @@ module.exports =
 
     CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
       en: "Deleting <span class='resource-tag'>%s</span> will remove all read replica related to it. Are you sure to continue?"
-      zh: "%s 未创建,删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
+      zh: "%s 未创建，删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_CFM_DEL_EXISTENT_DBINSTANCE:
       en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"

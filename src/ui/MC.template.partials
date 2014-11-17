@@ -1351,29 +1351,28 @@ Additional Notes and Questions
 </div>
 
 <!--{{paymentSubscribe}}-->
-{{#if shouldPay}}<div class="warning-red no-change">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>{{/if}}
+{{#if shouldPay}}<div class="warning-red no-change">{{i18n "YOUR_ACCOUNT_IN_LIMITED_STATUS"}}</div>{{/if}}
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card">
     </div>
-    <p class="modal-text-minor payment-text">While enjoying your free {{freePointsPerMonth}} instance hours each month, provide billing information in case of running out of quota.</p>
+    <p class="modal-text-minor payment-text">{{i18n "WHILE_ENJOYING_PROVIDE_CARD" freePointsPerMonth}}</p>
     <table class="table payment-table">
         <tbody>
         <tr>
-            <td>{{freePointsPerMonth}} instance hours per month</td>
-            <td class="align-right">Free</td>
+            <td>{{i18n "INSTANCE_HOURS_PER_MONTH" freePointsPerMonth}}</td>
+            <td class="align-right">{{i18n "LALEL_FREE"}}</td>
         </tr>
         <tr>
-            <td>Instance hours consumed over {{freePointsPerMonth}}</td>
-            <td class="align-right"><strong>$0.01</strong>/instance hour</td>
+            <td>{{i18n "INSTANCE_HOURS_CONSUMED_OVER_XXX" freePointsPerMonth}}</td>
+            <td class="align-right"><strong>$0.01</strong>/{{i18n "PAYMENT_INSTANT_HOUR"}}</td>
         </tr>
         </tbody>
     </table>
-    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">Pricing in detail</a>
+    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
     <div class="payment-modal-wrap">
-        <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Provide Billing Information <i class="icon-caret-right"></i></a></div>
+        <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a></div>
         <p>
-            This will open a new window with Chargify.<br>
-            Meanwhile please keep this page open.
+            {{i18n "WILL_OPEN_CHARGIFY"}}
         </p>
     </div>
 </div>
@@ -1383,12 +1382,11 @@ Additional Notes and Questions
 <!--{{paymentUpdate}}-->
 <div class="payment-credit-card payment-failed">
 </div>
-<p class="modal-text-minor payment-text">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>
+<p class="modal-text-minor payment-text">{{i18n "FAILED_TO_CHARGE_YOUR_CREDIT_CARD"}}</p>
 
 <div class="payment-modal-wrap">
-    <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">Update Billing Information <i class="icon-caret-right"></i></a></div>
+    <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "UPDATE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a></div>
     <p>
-        This will open a new window with Chargify.<br/>
-Meanwhile please keep this page open.
+        {{i18n "WILL_OPEN_CHARGIFY"}}
     </p>
 </div>

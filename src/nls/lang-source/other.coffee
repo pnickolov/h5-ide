@@ -1802,3 +1802,43 @@ VisualOps API. You cannot UNDO this action.'
     SYSTEM_LOG_NOT_READY:
       en: "System log is not ready yet. Please try in a short while."
       zh: "系统日志还没有准备好， 请稍后重试。"
+
+    PROVIDE_BILLING_INFORMATION:
+      en: "Provide Billing Information"
+      zh: "提供账单信息"
+
+    UPDATE_BILLING_INFORMATION:
+      en: "Update Billing Information"
+      zh: "更新账单信息"
+
+    WHILE_ENJOYING_PROVIDE_CARD:
+      en: "While enjoying your free %s instance hours each month, provide billing information in case of running out of quota."
+      zh: "享受您的 %s 个免费实例*时的同时，请提供账单信息以防免费额度用尽。"
+
+    YOUR_ACCOUNT_IN_LIMITED_STATUS:
+      en: "Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled."
+      zh: "您的账户已经处于受限状态。 导入 App，App 操作，管理和资源监控已被禁用。"
+
+    INSTANCE_HOURS_PER_MONTH:
+      en: "%s instance hours per month"
+      zh: "每月 %s 个实例*小时"
+
+    LALEL_FREE:
+      en: "Free"
+      zh: "免费"
+
+    INSTANCE_HOURS_CONSUMED_OVER_XXX:
+      en: "Instance hours consumed over %s"
+      zh: "超过 %s 的实例*小时"
+
+    PRICING_IN_DETAIL:
+      en: "Pricing in detail"
+      zh: "详细价格"
+
+    FAILED_TO_CHARGE_YOUR_CREDIT_CARD:
+      en: "We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update your payment information to continue managing apps with VisualOps."
+      zh: "我们无法从您的信用卡扣费。 App 操作和 VPC 导入已经对您禁用， 请更新您的付费信息以继续使用 VisualOps 管理您的 App。"
+
+    WILL_OPEN_CHARGIFY:
+      en: "This will open a new window with Chargify.<br/>Meanwhile please keep this page open."
+      zh: "将在新窗口打开 Chargify。<br/> 同时，请保持此页面打开。"

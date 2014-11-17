@@ -2137,25 +2137,38 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
   
-  
-  return "<div class=\"warning-red no-change\">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>";
+  var buffer = "";
+  buffer += "<div class=\"warning-red no-change\">"
+    + escapeExpression(helpers.i18n.call(depth0, "YOUR_ACCOUNT_IN_LIMITED_STATUS", {hash:{},data:data}))
+    + "</div>";
+  return buffer;
   }
 
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">While enjoying your free "
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " instance hours each month, provide billing information in case of running out of quota.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " instance hours per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Instance hours consumed over "
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "WHILE_ENJOYING_PROVIDE_CARD", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_PER_MONTH", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</td>\n            <td class=\"align-right\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LALEL_FREE", {hash:{},data:data}))
+    + "</td>\n        </tr>\n        <tr>\n            <td>"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_CONSUMED_OVER_XXX", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/"
+    + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
+    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
+    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            This will open a new window with Chargify.<br>\n            Meanwhile please keep this page open.\n        </p>\n    </div>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROVIDE_BILLING_INFORMATION", {hash:{},data:data}))
+    + " <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            "
+    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
+    + "\n        </p>\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
@@ -2164,12 +2177,18 @@ TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
+    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open.\n    </p>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">"
+    + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
+    + " <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        "
+    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
+    + "\n    </p>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);

@@ -440,11 +440,11 @@ module.exports =
 
     SETTINGS_CRED_DEMO_TIT:
       en : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
-      zh : "您正在使用测试帐号， 设置您的 AWS 凭证以运行 Live 资源， 或者导入已有资源。"
+      zh : "您正在使用测试帐号， 设置您的 AWS 证书以运行 Live 资源， 或者导入已有资源。"
 
     SETTINGS_CRED_DEMO_TEXT:
       en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
-      zh : "由于两种账号之间资源的差异， 当您设置了 AWS 凭证后， 一些您在测试账号时创建的 Stack 可能会报错。"
+      zh : "由于两种账号之间资源的差异， 当您设置了 AWS 证书后， 一些您在测试账号时创建的 Stack 可能会报错。"
 
     SETTINGS_CRED_DEMO_SETUP:
       en : "Set up AWS Credentials"
@@ -537,7 +537,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_REMOVE_TEXT:
       en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
-      zh: "<p>移除凭证后， 您将处于 Demo 账号模式。</p><p>如果您想运行 App，您需要提供 AWS 凭证。 </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行。 </p><p>如果您有已存在的 App， 将无法管理而强制删除。</p>"
+      zh: "<p>移除证书后， 您将处于 Demo 账号模式。</p><p>如果您想运行 App，您需要提供 AWS 证书。 </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行。 </p><p>如果您有已存在的 App， 将无法管理而强制删除。</p>"
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
@@ -553,7 +553,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_ERR_CRED_VALIDATE:
       en : "Fail to validate your credential."
-      zh : "您的凭证验证失败。"
+      zh : "您的证书验证失败。"
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."
@@ -565,11 +565,11 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
-      zh : ""
+      zh : "<span>系统中存在正在运行或已经停止的 App。</span>确定要更新 AWS 证书吗？"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
       en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
-      zh : ""
+      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先终结掉这些存在的 App。"
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -625,11 +625,11 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_PROVIDE_CRED_TIT:
       en: "Please provide new AWS credentials"
-      zh: "请提供新的 AWS 凭证"
+      zh: "请提供新的 AWS 证书"
 
     WELCOME_PROVIDE_CRED_DESC:
       en: "We cannot validate your AWS credentials, please provide new ones."
-      zh: "我们无法验证您的 AWS 凭证， 请提供一个新的。"
+      zh: "我们无法验证您的 AWS 证书， 请提供一个新的。"
 
     WELCOME_TIT:
       en: "Welcome to VisualOps, "
@@ -637,11 +637,11 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_DESC:
       en: "To start designing cloud architecture, please provide your AWS credentials"
-      zh: "要开始设计云架构， 请先提供 AWS 凭证"
+      zh: "要开始设计云架构， 请先提供 AWS 证书"
 
     WELCOME_SKIP_TIT:
       en: "Skip providing AWS Credentials now?"
-      zh: "跳过提供 AWS 凭证吗？"
+      zh: "跳过提供 AWS 证书吗？"
 
     WELCOME_SKIP_SUBTIT:
       en: "You can design stack in the demo mode. Yet, with following drawbacks:"
@@ -649,11 +649,11 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_SKIP_MSG:
       en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
-      zh: "<ul><li>测试账号可能无法反映资源的实际可用性。</li> <li>如果您稍后提供凭证， 因为资源差异的关系， 之前在测试账号设计的 stack 可能会不可用。</li>"
+      zh: "<ul><li>测试账号可能无法反映资源的实际可用性。</li> <li>如果您稍后提供证书， 因为资源差异的关系， 之前在测试账号设计的 stack 可能会不可用。</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."
-      zh: "您可以同右上角的设置下拉菜单来提供 AWS 凭证。"
+      zh: "您可以同右上角的设置下拉菜单来提供 AWS 证书。"
 
     WELCOME_DONE_TIT:
       en: "Get started with VisualOps"
@@ -914,7 +914,7 @@ VisualOps API. You cannot UNDO this action.'
 
     RUN_STACK_MODAL_NEED_CREDENTIAL:
       en: "Set Up Credential First"
-      zh: "请先设置 AWS 凭证"
+      zh: "请先设置 AWS 证书"
 
     RUN_STACK_MODAL_KP_WARNNING:
       en: "Specify a key pair as $DefaultKeyPair for this app."
@@ -941,7 +941,7 @@ VisualOps API. You cannot UNDO this action.'
 
     UPDATE_APP_MODAL_NEED_CREDENTIAL:
       en: "Please set Up Credential First"
-      zh: "请先设置 AWS 凭证"
+      zh: "请先设置 AWS 证书"
 
     START_APP:
       en: "start app"
@@ -1361,7 +1361,7 @@ VisualOps API. You cannot UNDO this action.'
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
-      zh: "提供 AWS 凭证来管理密钥对。"
+      zh: "提供 AWS 证书来管理密钥对。"
 
     PAYMENT_PAYMENT_NEEDED:
       en: "Upgrade your account"

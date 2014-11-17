@@ -54,7 +54,7 @@ module.exports =
 
       ERROR_CODE_9_MESSAGE:
         en: "Sorry, your AWS credentials have not sufficient permissions."
-        zh: "对不起,您的AWS凭证没有足够的权限"
+        zh: "对不起,您的AWS证书没有足够的权限"
 
       ERROR_CODE_10_MESSAGE:
         en: ""

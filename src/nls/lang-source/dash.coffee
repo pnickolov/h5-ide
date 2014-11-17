@@ -659,7 +659,7 @@ module.exports =
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1:
       en: "Provide your AWS Credential"
-      zh: "提供您的 AWS 凭证"
+      zh: "提供您的 AWS 证书"
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
       en: " to see real data"

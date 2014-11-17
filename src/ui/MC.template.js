@@ -1552,14 +1552,14 @@ TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "'s configuration will be lost.</div>";
+  buffer += "<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_DELETE_XXX", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>\n<div class=\"modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ONCE_DELETE_STATE_CONF_LOST", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>";
   return buffer;
   };
 TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1568,14 +1568,14 @@ TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "?</div>\n<div class=\"modal-text-minor\">The security group "
-    + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " will also be deleted. Other load balancer using this security group will be affected.</div>";
+  buffer += "<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_DELETE_XXX", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>\n<div class=\"modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "THE_SG_WILL_BE_DELETED", (depth0 && depth0.sg), {hash:{},data:data}))
+    + "</div>";
   return buffer;
   };
 TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1584,10 +1584,15 @@ TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Confirm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_ENABLE_VISUALOPS", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS_OVERRIDE_USER_DATA", {hash:{},data:data}))
+    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  return buffer;
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
 
@@ -1825,10 +1830,15 @@ TEMPLATE.experimentalVisopsTrail=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div class=\"bubble-head\">A NAT instance must meet following requirements:</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>\n		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>\n		<li>Should disable Source/Destination Checking in \"Network Interface Details\".</li>\n		<li>Should have public IP or Elastic IP.</li>\n		<li>Should have outbound rule to the outside.</li>\n		<li>Should have inbound rule from within the VPC.</li>\n	</ul>\n</div>";
+  buffer += "<div class=\"bubble-head\">"
+    + escapeExpression(helpers.i18n.call(depth0, "NAT_INSTANCE_MEET_REQ", {hash:{},data:data}))
+    + "</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n        "
+    + escapeExpression(helpers.i18n.call(depth0, "NAT_INSTANCE_REQS", {hash:{},data:data}))
+    + "\n	</ul>\n</div>";
+  return buffer;
   };
 TEMPLATE.bubbleNATreq=Handlebars.template(__TEMPLATE__);
 

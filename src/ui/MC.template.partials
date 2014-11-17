@@ -1023,20 +1023,20 @@ Additional Notes and Questions
 </div>
 
 <!-- {{NodeStateRemoveConfirmation}} -->
-<div class="modal-text-major">Are you sure you want to delete {{name}}?</div>
-<div class="modal-text-minor">Once deleted, the states of {{name}}'s configuration will be lost.</div>
+<div class="modal-text-major">{{i18n "CONFIRM_TO_DELETE_XXX" name}}</div>
+<div class="modal-text-minor">{{i18n "ONCE_DELETE_STATE_CONF_LOST" name}}</div>
 
 <!-- {{ElbRemoveConfirmation}} -->
-<div class="modal-text-major">Are you sure you want to delete {{name}}?</div>
-<div class="modal-text-minor">The security group {{sg}} will also be deleted. Other load balancer using this security group will be affected.</div>
+<div class="modal-text-major">{{i18n "CONFIRM_TO_DELETE_XXX" name}}</div>
+<div class="modal-text-minor">{{i18n "THE_SG_WILL_BE_DELETED" sg}}</div>
 
 <!-- {{modalStackAgentEnable}} -->
 <div style="width:420px">
-	<div class="modal-header"><h3>Confirm to Enable VisualOps</h3><i class="modal-close">&times;</i></div>
+	<div class="modal-header"><h3>{{i18n "CONFIRM_TO_ENABLE_VISUALOPS"}}</h3><i class="modal-close">&times;</i></div>
 	<div class="modal-body">
 		<div class="modal-text-wraper">
 			<div class="modal-center-align-helper">
-				<div class="modal-text-major">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>
+				<div class="modal-text-major">{{i18n "ENABLE_VISUALOPS_OVERRIDE_USER_DATA"}}</div>
 			</div>
 		</div>
 	</div>
@@ -1249,15 +1249,10 @@ Additional Notes and Questions
 <div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
 
 <!-- {{bubbleNATreq}} -->
-<div class="bubble-head">A NAT instance must meet following requirements:</div>
+<div class="bubble-head">{{i18n "NAT_INSTANCE_MEET_REQ"}}</div>
 <div class="bubble-content">
 	<ul class="bubble-NAT-req-list">
-		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>
-		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
-		<li>Should disable Source/Destination Checking in "Network Interface Details".</li>
-		<li>Should have public IP or Elastic IP.</li>
-		<li>Should have outbound rule to the outside.</li>
-		<li>Should have inbound rule from within the VPC.</li>
+        {{i18n "NAT_INSTANCE_REQS"}}
 	</ul>
 </div>
 

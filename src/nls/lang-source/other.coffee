@@ -1755,6 +1755,46 @@ VisualOps API. You cannot UNDO this action.'
       en: "Validate"
       zh: "校验"
 
+    CONFIRM_TO_DELETE_XXX:
+      en: "Are you sure you want to delete %s?"
+      zh: "您确定要删除 %s 吗？"
+
+    ONCE_DELETE_STATE_CONF_LOST:
+      en: "Once deleted, the states of %s's configuration will be lost."
+      zh: "一旦删除， %s 的 state 配置将会丢失时。"
+
+    THE_SG_WILL_BE_DELETED:
+      en: "The security group %s will also be deleted. Other load banancer using this security group will be affected."
+      zh: "安全组 %s 也将会被删除，其他使用这个安全组的负载均衡也将受到影响。"
+
+    CONFIRM_TO_ENABLE_VISUALOPS:
+      en: "Confirm to Enable VisualOps"
+      zh: "确认开启 VisualOps"
+
+    ENABLE_VISUALOPS_OVERRIDE_USER_DATA:
+      en: "Enable VisualOps will override your custom User Data. Are you sure to continue?"
+      zh: "启用 VisualOps 将会覆盖用户自定义数据， 您确定要继续吗？"
+
+
+    NAT_INSTANCE_MEET_REQ:
+      en: "A NAT instance must meet following requirements:"
+      zh: "一个 NAT 实例必须满足以下条件："
+
+    NAT_INSTANCE_REQS:
+      en: "		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>
+              <li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>
+              <li>Should disable Source/Destination Checking in \"Network Interface Details\".</li>
+              <li>Should have public IP or Elastic IP.</li>
+              <li>Should have outbound rule to the outside.</li>
+              <li>Should have inbound rule from within the VPC.</li>"
+      zh: "<li>应当有一个路由将目标实例的目的地设为 0.0.0.0/0。</li>
+           <li>应当属于路由流量目标设为 0.0.0.0/0 连接到互联网关的子网内。</li>
+           <li>应当在网络接口详细里面禁止来源/目标检查。</li>
+           <li>应当有公共 IP 或者弹性 IP。</li>
+           <li>应当有通往外部的外流规则。</li>
+           <li>应当有来自 VPC 的内流规则。</li>"
+
+
     NEED_TO_RESTART_INSTANCE:
       en: "Need to Restart Instance"
       zh: "实例需要重新启动"

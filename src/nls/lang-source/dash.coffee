@@ -731,7 +731,7 @@ module.exports =
 
     DASH_PROVIDE_PASSWORD_TO_RECONNECT:
       en: "Please provide your password to reconnect:"
-      zh: "请提供您的密码以重新登录："
+      zh: "请重新输入密码："
 
     DASH_LBL_CONNECT:
       en: "Connect"

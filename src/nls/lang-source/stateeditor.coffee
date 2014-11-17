@@ -135,7 +135,7 @@ module.exports =
 
     INVITE_MOD_INTRO_MORE:
       en: "<b>Instance State</b> enables you to manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."
-      zh: "<b>实例 State</b> 以一种直接有效的方式，管理您的实例软件层，软件包，配置文件，服务，一切都非常容易．"
+      zh: "<b>实例 State</b> 以一种直接有效的方式，管理您的实例软件层，软件包，配置文件，服务，一切都非常容易"
 
     INVITE_MOD_REQUEST_TIT:
       en: "Request an Invite"

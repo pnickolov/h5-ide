@@ -246,11 +246,11 @@ module.exports =
 
     INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
-      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥, 或者您也可以选择'无密钥'."
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥, 或者您也可以选择'无密钥'"
 
     INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
-      zh: "如果您选择了 '无密钥', 您将无法连接到实例或启动配置, 除非您已经知道烧录的 AMI 的密码."
+      zh: "如果您选择了 '无密钥', 您将无法连接到实例或启动配置, 除非您已经知道烧录的 AMI 的密码"
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -382,11 +382,11 @@ module.exports =
 
     INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
       en: "If the quantity is more than 1, host name will be the string you provide plus number index."
-      zh: "如果数量大于1, 主机名将为您提供的字符加索引数字."
+      zh: "如果数量大于1, 主机名将为您提供的字符加索引数字"
 
     INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER:
       en: "You cannot specify instance number, since the instance is connected to a route table."
-      zh: "您不能指定实例数量, 因为实例已经连接到路由表中."
+      zh: "您不能指定实例数量, 因为实例已经连接到路由表中"
 
     INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
@@ -406,7 +406,7 @@ module.exports =
 
     AMI_APP_NOT_AVAILABLE:
       en: "This AMI's infomation is unavailable."
-      zh: "此 AMI 的信息不可用."
+      zh: "此 AMI 的信息不可用"
 
     STACK_AMAZON_ARN:
       en: "Amazon ARN"
@@ -490,7 +490,7 @@ module.exports =
 
     APP_LBL_RESDIFF:
       en: "Monitor and report external resource change of this app"
-      zh: "监控并报告此 App 的外部资源变化."
+      zh: "监控并报告此 App 的外部资源变化"
 
     APP_LBL_RESDIFF_VIEW:
       en: "Monitor and Report External Change"
@@ -498,7 +498,7 @@ module.exports =
 
     APP_TIP_RESDIFF:
       en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
-      zh: "如果资源在 VisualOps 外发生变化, 将会给您发送一封通知邮件."
+      zh: "如果资源在 VisualOps 外发生变化, 将会给您发送一封通知邮件"
 
     STACK_LBL_USAGE:
       en: "Usage"
@@ -690,7 +690,7 @@ module.exports =
 
     VPC_TIP_AUTO_DHCP:
       en: "A DHCP Options set will be automatically assigned for the VPC by AWS."
-      zh: "AWS 将会给 VPC 自动分配一个 DHCP 选项组."
+      zh: "AWS 将会给 VPC 自动分配一个 DHCP 选项组"
 
     VPC_TIP_DEFAULT_DHCP:
       en: "The VPC will use no DHCP options."
@@ -706,7 +706,7 @@ module.exports =
 
     SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
-      zh: "例: 10.0.0.0/24. 子网里的 IP 地址的区间必须在所在 VPC 的地址区间里. 区块大小必须在 /16 子网掩码 和 /28 子网掩码之间. 子网的大小可以等于 VPC 的大小."
+      zh: "例: 10.0.0.0/24. 子网里的 IP 地址的区间必须在所在 VPC 的地址区间里. 区块大小必须在 /16 子网掩码 和 /28 子网掩码之间. 子网的大小可以等于 VPC 的大小"
 
     SUBNET_TIT_DETAIL:
       en: "Subnet Details"
@@ -998,7 +998,7 @@ module.exports =
 
     VGW_TXT_DESCRIPTION:
       en: "The Virtual Private Gateway is the router on the Amazon side of the VPN tunnel."
-      zh: "虚拟私有网关是亚马逊一侧的VPN隧道的路由器."
+      zh: "虚拟私有网关是亚马逊一侧的VPN隧道的路由器"
 
     VPN_LBL_IP_PREFIX:
       en: "Network IP Prefixes"
@@ -1014,7 +1014,7 @@ module.exports =
 
     IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."
-      zh: "互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器."
+      zh: "互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器"
 
     CGW_LBL_NAME:
       en: "Name"
@@ -1134,39 +1134,39 @@ module.exports =
 
     MSG_ERR_RESOURCE_NOT_EXIST:
       en: "Sorry, the selected resource not exist."
-      zh: "抱歉，选定的资源不存在。"
+      zh: "抱歉，选定的资源不存在"
 
     MSG_ERR_DOWNLOAD_KP_FAILED:
       en: "Sorry, there was a problem downloading this key pair."
-      zh: "抱歉，下载密钥对时出现了问题。"
+      zh: "抱歉，下载密钥对时出现了问题"
 
     MSG_WARN_NO_STACK_NAME:
       en: "Stack name empty or missing."
-      zh: "Stack名称不能为空。"
+      zh: "Stack名称不能为空"
 
     MSG_WARN_REPEATED_STACK_NAME:
       en: "This stack name is already in use."
-      zh: "这个Stack名称已被占用。"
+      zh: "这个Stack名称已被占用"
 
     MSG_WARN_ENI_IP_EXTEND:
       en: "%s Instance's Network Interface can't exceed %s Private IP Addresses."
-      zh: "%s 实例的网络接口不能超过 %s 私有IP地址。"
+      zh: "%s 实例的网络接口不能超过 %s 私有IP地址"
 
     MSG_WARN_NO_APP_NAME:
       en: "App name empty or missing."
-      zh: "App名称不能为空。"
+      zh: "App名称不能为空"
 
     MSG_WARN_REPEATED_APP_NAME:
       en: "This app name is already in use."
-      zh: "这个App名称已被占用。"
+      zh: "这个App名称已被占用"
 
     MSG_WARN_INVALID_APP_NAME:
       en: "App name is invalid."
-      zh: "无效的App名称。"
+      zh: "无效的App名称"
 
     WARN_EXCEED_ENI_LIMIT:
       en: "Instance type %s supports a maximum of %s network interfaces (including the primary). Please detach additional network interfaces before changing instance type."
-      zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口。"
+      zh: "实例类型：%s 支持最多 %s 个网络接口（包括主要的）， 请在改变实例类型之前删除超出数量限制的网络接口"
 
     TEXT_DEFAULT_SG_DESC:
       en: "Default Security Group"
@@ -1182,15 +1182,15 @@ module.exports =
 
     MSG_SG_CREATE:
       en: "1 rule has been created in %s to allow %s %s %s."
-      zh: "1条规则被创建到 %s 来允许 %s %s %s。"
+      zh: "1条规则被创建到 %s 来允许 %s %s %s"
 
     MSG_SG_CREATE_MULTI:
       en: "%d rules have been created in %s and %s to allow %s %s %s."
-      zh: "%d条规则被创建到 %s 并且 %s 来允许 %s %s %s."
+      zh: "%d条规则被创建到 %s 并且 %s 来允许 %s %s %s"
 
     MSG_SG_CREATE_SELF:
       en: "%d rules have been created in %s to allow %s send and receive traffic within itself."
-      zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信."
+      zh: "%d条规则被创建到 %s 来允许 %s 它内部的收发通信"
 
     SNAPSHOT_FILTER_REGION:
       en: "Filter by region name"
@@ -1282,7 +1282,7 @@ module.exports =
 
     ENI_LBL_ATTACH_WARN:
       en: "Attach the Network Interface to an instance within the same availability zone."
-      zh: "在同一个可用区域里面附加网络接口。"
+      zh: "在同一个可用区域里面附加网络接口"
 
     ENI_LBL_DETAIL:
       en: "Network Interface Details"
@@ -1506,7 +1506,7 @@ module.exports =
 
     ELB_HEALTH_INTERVAL_VALID:
       en: "Response timeout must be less than the health check interval value"
-      zh: "响应超时必须小于健康检查周期."
+      zh: "响应超时必须小于健康检查周期"
 
     ELB_CONNECTION_DRAIN_TIMEOUT_INVALID:
       en: "Timeout must be an integer between 1 and 3600"
@@ -1542,7 +1542,7 @@ module.exports =
 
     ELB_CERT_REMOVE_CONFIRM_SUB:
       en: "Load Balancer currently using this server certificate will have errors."
-      zh: "正在使用此证书的负载均衡将会出错."
+      zh: "正在使用此证书的负载均衡将会出错"
 
     ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
@@ -1614,7 +1614,7 @@ module.exports =
 
     ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
-      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康. 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例."
+      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康. 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例"
 
     ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -2094,7 +2094,7 @@ module.exports =
 
     DBINSTANCE_SUBNETGROUP_NOT_SETUP:
       en: "Subnet Group %s is not correctly set up yet. Assign %s to at lease 2 availability zones."
-      zh: "子网组设置不正确, 分配 %s 至少两个可用区域."
+      zh: "子网组设置不正确, 分配 %s 至少两个可用区域"
 
     DBINSTANCE_BACKUP_MAINTENANCE:
       en: "Backup & Maintenance"
@@ -2134,23 +2134,23 @@ module.exports =
 
     DBINSTANCE_PROMOTE_CONFIRM_MAJOR:
       en: "The following steps show the general process for promoting a read replica to a Single-AZ DB instance."
-      zh: "以下几步展示了将一个制度副本提升为单 AZ 的数据库实例的一般过程."
+      zh: "以下几步展示了将一个制度副本提升为单 AZ 的数据库实例的一般过程"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1:
       en: "Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica."
-      zh: "停止只读副本源数据库的所有写入操作, 并等待只读副本完成全部更新."
+      zh: "停止只读副本源数据库的所有写入操作, 并等待只读副本完成全部更新"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2:
       en: "To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica."
-      zh: "要修改只读副本, 您必须在只读副本的参数组里将 read_only 参数设置为 0."
+      zh: "要修改只读副本, 您必须在只读副本的参数组里将 read_only 参数设置为 0"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3:
       en: "Perform all needed DDL operations, such as creating indexes, on the read replica."
-      zh: "然后进行所有的 DDL 操作, 比如在只读副本上创建索引."
+      zh: "然后进行所有的 DDL 操作, 比如在只读副本上创建索引"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4:
       en: "Promote the read replica."
-      zh: "提升只读副本."
+      zh: "提升只读副本"
 
     DBINSTANCE_PROMOTE_NOTE:
       en: "Note"
@@ -2158,7 +2158,7 @@ module.exports =
 
     DBINSTANCE_PROMOTE_NOTE_CONTENT:
       en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
-      zh: "提升的过程将会花费几分钟. 提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例."
+      zh: "提升的过程将会花费几分钟. 提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例"
 
     DBINSTANCE_PROMOTE_LINK_TEXT:
       en: "Read AWS Document"
@@ -2166,7 +2166,7 @@ module.exports =
 
     DBINSTANCE_NOT_AVAILABLE:
       en: "This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."
-      zh: "此数据库不在可用状态. 请等待状态可用后应用改变. "
+      zh: "此数据库不在可用状态. 请等待状态可用后应用改变"
 
     DBINSTANCE_READ_REPLICA:
       en: "Promote Read Replica"
@@ -2186,7 +2186,7 @@ module.exports =
 
     DBINSTANCE_APPLY_IMMEDIATELY_LINK_TOOLTIP:
       en: "Click to read AWS documentation on modifying DB instance using Apply Immediately."
-      zh: "点击阅读 AWS 关于立即应用数据库实例修改的文档."
+      zh: "点击阅读 AWS 关于立即应用数据库实例修改的文档"
 
     DBINSTANCE_MASTER_DB_INSTANCE:
       en: "Master DB Instance"
@@ -2234,7 +2234,7 @@ module.exports =
 
     DBINSTANCE_IOPS_AVAILABILITY_IMPACT:
       en: "When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes."
-      zh: "当您进行 IOPS 与标准存储之间的类型转换时, 您的数据库实例将会有几分钟受影响."
+      zh: "当您进行 IOPS 与标准存储之间的类型转换时, 您的数据库实例将会有几分钟受影响"
 
     DBINSTANCE_MASTER_USERNAME:
       en: "Master Username"
@@ -2405,23 +2405,23 @@ module.exports =
 
     ASG_ADJUST_TOOLTIP_CHANGE:
       en: "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-      zh: "根据您输入的数字增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减."
+      zh: "根据您输入的数字增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减"
 
     ASG_ADJUST_TOOLTIP_EXACT:
       en: "Change the current capacity of your Auto Scaling group to the exact value specified."
-      zh: "修改自动伸缩组的当前值为您指定的值."
+      zh: "修改自动伸缩组的当前值为您指定的值"
 
     ASG_ADJUST_TOOLTIP_PERCENT:
       en: "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
-      zh: "根据百分比来增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减."
+      zh: "根据百分比来增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减"
 
     AZ_CANNOT_EDIT_EXISTING_AZ:
       en: "Cannot edit existing availability zone. However, newly created availability zone is editable."
-      zh: "无法编辑已存在的 AZ, 但新建的 AZ 可以编辑."
+      zh: "无法编辑已存在的 AZ, 但新建的 AZ 可以编辑"
 
     CGW_IP_VALIDATE_REQUIRED:
       en: "IP Address is required."
-      zh: "IP 地址为必填."
+      zh: "IP 地址为必填"
 
     CGW_IP_VALIDATE_REQUIRED_DESC:
       en: "Please provide a IP Address of this Customer Gateway."
@@ -2429,15 +2429,15 @@ module.exports =
 
     CGW_IP_VALIDATE_INVALID:
       en: "%s  is not a valid IP Address."
-      zh: "%s 不是有效的 IP 地址."
+      zh: "%s 不是有效的 IP 地址"
 
     CGW_IP_VALIDATE_INVALID_DESC:
       en: "Please provide a valid IP Address. For example, 192.168.1.1."
-      zh: "请提供一个有效的 IP 地址, 比如: 192.168.1.1."
+      zh: "请提供一个有效的 IP 地址, 比如: 192.168.1.1"
 
     CGW_IP_VALIDATE_INVALID_CUSTOM:
       en: "IP Address %s is invalid for customer gateway."
-      zh: "IP 地址 %s 相对此网关无效."
+      zh: "IP 地址 %s 相对此网关无效"
 
     CGW_IP_VALIDATE_INVALID_CUSTOM_DESC:
       en: "The address must be static and can't be behind a device performing network address translation (NAT)."
@@ -2449,7 +2449,7 @@ module.exports =
 
     CONNECTION_ATTACHMENT_OF:
       en: "This is an attachment of %s to %s"
-      zh: "这是个 %s 到 %s 的连接."
+      zh: "这是个 %s 到 %s 的连接"
 
     CONNECTION_SUBNET_ASSO_PLACEMENT:
       en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."
@@ -2541,7 +2541,7 @@ module.exports =
 
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
-      zh: "<p class='modal-text-major'>您确定要删除 %s 吗?</p><p class='modal-text-minor'>使用此密钥对的资源将自动改为使用默认密钥对.</p>"
+      zh: "<p class='modal-text-major'>您确定要删除 %s 吗?</p><p class='modal-text-minor'>使用此密钥对的资源将自动改为使用默认密钥对</p>"
 
     MISSING_RESOURCE_UNAVAILABLE:
       en: "Resource Unavailable"
@@ -2557,7 +2557,7 @@ module.exports =
 
     RTB_CIDR_BLOCK_REQUIRED_DESC:
       en: "Please provide a IP ranges for this route."
-      zh: "请为此路由提供一个 IP 段."
+      zh: "请为此路由提供一个 IP 段"
 
     RTB_CIDR_BLOCK_INVALID:
       en: "%s is not a valid form of CIDR Block"
@@ -2565,23 +2565,23 @@ module.exports =
 
     RTB_CIDR_BLOCK_INVALID_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
-      zh: "请提供有效的 IP 区间, 如: 10.0.0.1/24."
+      zh: "请提供有效的 IP 区间, 如: 10.0.0.1/24"
 
     RTB_CIDR_BLOCK_CONFLICTS:
       en: "%s conflicts with other route."
-      zh: "%s 同其他路由冲突."
+      zh: "%s 同其他路由冲突"
 
     RTB_CIDR_BLOCK_CONFLICTS_DESC:
       en: "Please choose a CIDR block not conflicting with existing route."
-      zh: "请选择一个不与其他已存在路由冲突的 CIDR 区块."
+      zh: "请选择一个不与其他已存在路由冲突的 CIDR 区块"
 
     RTB_CIDR_BLOCK_CONFLICTS_LOCAL:
       en: "%s conflicts with local route."
-      zh: "%s 与本地路由冲突."
+      zh: "%s 与本地路由冲突"
 
     RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC:
       en: "Please choose a CIDR block not conflicting with local route."
-      zh: "请选择一个不与本地路由冲突的 CIDR 区块."
+      zh: "请选择一个不与本地路由冲突的 CIDR 区块"
 
     SG_INSTANCE_SUMMARY:
       en: "Instance Summary"
@@ -2601,7 +2601,7 @@ module.exports =
 
     SG_UPDATE_INSTANCE_TYPE_DISABLED_FOR_INSTANCE_STORE:
       en: "Updating instance type is disabled for instances using instance store for root device."
-      zh: "根设备使用实例存储的实例上的更新实例类型已被禁用."
+      zh: "根设备使用实例存储的实例上的更新实例类型已被禁用"
 
     SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE:
       en: "Amazon Cloud Watch Product Page"
@@ -2613,7 +2613,7 @@ module.exports =
 
     SGLIST_DELETE_SG_CONFIRM_DESC:
       en: "The firewall settings of %s's member will be affected. Member only has this security group will be using DefaultSG."
-      zh: "%s 的成员的防火墙设置将受到影响．使用该安全组的成员将使用 DefaultSG."
+      zh: "%s 的成员的防火墙设置将受到影响．使用该安全组的成员将使用 DefaultSG"
 
     SGLIST_DELETE_SG_TITLE:
       en: "Delete Security Group"
@@ -3180,7 +3180,7 @@ module.exports =
 
     RULE_REF_ITS_OWN_SG:
       en: "You have created a rule referencing its own security group. This rule will not be visualized as the blue connection lines."
-      zh: "你已经创建了一个引用安全组自己的规则．这条规则将不会体现在蓝色的连接线上．"
+      zh: "你已经创建了一个引用安全组自己的规则．这条规则将不会体现在蓝色的连接线上"
 
     CREATE_ANOTHER_RULE:
       en: "Create another rule"

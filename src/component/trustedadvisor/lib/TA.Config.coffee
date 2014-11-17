@@ -60,7 +60,7 @@ define({
         openstack: {}
 
     get: ( key, platform = Design.instance().get( 'cloud_type' ) ) ->
-        @[ key ]?[ platform ] or @[ key ]
+        @[ key ]?[ platform ] or @[ key ]['aws']
 
 
 })

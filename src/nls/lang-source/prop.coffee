@@ -121,7 +121,7 @@ module.exports =
 
     INSTANCE_KEY_PAIR:
       en: "Key Pair"
-      zh: "秘钥"
+      zh: "密钥"
 
     INSTANCE_CLOUDWATCH_DETAILED_MONITORING:
       en: "CloudWatch Detailed Monitoring"
@@ -318,11 +318,11 @@ module.exports =
 
     INSTANCE_IP_MSG_3:
       en: "Associate with Elastic IP"
-      zh: "和Elastic IP进行关联"
+      zh: "关联弹性 IP"
 
     INSTANCE_IP_MSG_4:
       en: "Detach Elastic IP"
-      zh: "取消关联Elastic IP"
+      zh: "取消关联弹性 IP"
 
     INSTANCE_AMI_ID:
       en: "AMI ID"
@@ -1014,7 +1014,7 @@ module.exports =
 
     IGW_TXT_DESCRIPTION:
       en: "The Internet gateway is the router on the AWS network that connects your VPC to the Internet."
-      zh: "互联网网关是将你位于AWS网络中的VPC网络连接到互联网的路由器"
+      zh: "互联网网关是将位于AWS网络中的VPC网络连接到互联网的路由器"
 
     CGW_LBL_NAME:
       en: "Name"
@@ -1258,7 +1258,15 @@ module.exports =
 
     VOLUME_ENCRYPTED:
       en: "Encrypted"
+      zh: "加密"
+
+    VOLUME_ENCRYPTED_STATE:
+      en: "Encrypted"
       zh: "加密的"
+
+    VOLUME_NOT_ENCRYPTED_STATE:
+      en: "Encrypted"
+      zh: "不加密的"
 
     VOLUME_TYPE_STANDARD:
       en: "Magnetic"
@@ -2449,7 +2457,7 @@ module.exports =
 
     CONNECTION_ATTACHMENT_OF:
       en: "This is an attachment of %s to %s"
-      zh: "这是个 %s 到 %s 的连接"
+      zh: "%s 到 %s 的连接"
 
     CONNECTION_SUBNET_ASSO_PLACEMENT:
       en: "A Virtual Network Interface is placed in %s for %s to allow traffic be routed to this availability zone."
@@ -2725,7 +2733,7 @@ module.exports =
 
     VPC_SELECTING_DEDICATED_LINK_TEXT:
       en: "Additional changes will apply."
-      zh: "附加更改将生效"
+      zh: "将应用额外更改"
 
     VPN_STACK_STATIC:
       en: "Static"

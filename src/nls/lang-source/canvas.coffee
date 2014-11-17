@@ -223,4 +223,3 @@ module.exports =
     NETWORK_INTERFACE_ATTACHED_INTERFACE_NO_NEED_FOR_SG_RULE:
       en: "The Network Interface is attached to the instance. No need to connect them by security group rule."
       zh: "此网络接口已连接到实例，不必用安全组连接。"
-

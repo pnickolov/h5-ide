@@ -3,7 +3,6 @@
 #############################
 
 define [ '../base/model',
-    'keypair_model',
     'keypair_service'
     'instance_model',
     'instance_service'
@@ -12,7 +11,7 @@ define [ '../base/model',
     'Design'
     'CloudResources'
 
-], ( PropertyModel, keypair_model, keypair_service, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
+], ( PropertyModel, keypair_service, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
 
     AppInstanceModel = PropertyModel.extend {
 

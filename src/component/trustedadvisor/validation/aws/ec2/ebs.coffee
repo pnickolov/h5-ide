@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( constant, $, MC, lang, ebsService ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', "CloudResources" ], ( constant, $, MC, lang, CloudResources ) ->
 
 	isSnapshotExist = (callback) ->
 
@@ -41,60 +41,50 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ebs_service' ], ( cons
 			# get ami info from aws
 			if snaphostAry.length
 
-				currentRegion = MC.canvas_data.region
-				ebsService.DescribeSnapshots {sender: this},
-					$.cookie( 'usercode' ),
-					$.cookie( 'session_id' ),
-					currentRegion, snaphostAry, null, null, null, (result) ->
+				cr = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() )
+				cr.fetch().then ()->
 
-						tipInfoAry = []
+					tipInfoAry = []
+					missingIds = []
 
-						if result.is_error and result.aws_error_code is 'InvalidSnapshot.NotFound'
+					for id in snaphostAry
+						if not cr.get(id)
+							missingIds.push id
 
-							# get current stack all aws ami
-							awsSnapshotIdAryStr = result.error_message
-							awsSnapshotIdAryStr = awsSnapshotIdAryStr.replace("The snapshot '", "").replace("' does not exist.", "")
+					if not missingIds.length
+						callback(null)
+						return
 
-							awsSnapshotIdAry = awsSnapshotIdAryStr.split(',')
-							awsSnapshotIdAry = _.map awsSnapshotIdAry, (awsSnapshotId) ->
-								return $.trim(awsSnapshotId)
+					for snapshotId in missingIds
 
-							if not awsSnapshotIdAry.length
-								callback(null)
-								return null
+						instanceUIDAry = snaphostMap[snapshotId]
+						_.each instanceUIDAry, (instanceUID) ->
+							instanceObj = MC.canvas_data.component[instanceUID]
+							instanceType = instanceObj.type
+							instanceName = instanceObj.name
 
-							_.each snaphostAry, (snapshotId) ->
-								if snapshotId in awsSnapshotIdAry
-									# not exist in stack
-									instanceUIDAry = snaphostMap[snapshotId]
-									_.each instanceUIDAry, (instanceUID) ->
-										instanceObj = MC.canvas_data.component[instanceUID]
-										instanceType = instanceObj.type
-										instanceName = instanceObj.name
+							infoObjType = 'Instance'
+							infoTagType = 'instance'
 
-										infoObjType = 'Instance'
-										infoTagType = 'instance'
+							instanceId = null
 
-										instanceId = null
+							if instanceType is constant.RESTYPE.LC
+								infoObjType = 'Launch Configuration'
+								infoTagType = 'lc'
+								instanceId = instanceObj.resource.LaunchConfigurationARN
+							else
+								instanceId = instanceObj.resource.InstanceId
 
-										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
-											infoTagType = 'lc'
-											instanceId = instanceObj.resource.LaunchConfigurationARN
-										else
-											instanceId = instanceObj.resource.InstanceId
+							if not instanceId
 
-										if not instanceId
+								tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
+								tipInfoAry.push({
+									level: constant.TA.ERROR,
+									info: tipInfo,
+									uid: instanceUID
+								})
 
-											tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
-											tipInfoAry.push({
-												level: constant.TA.ERROR,
-												info: tipInfo,
-												uid: instanceUID
-											})
-
-										null
-								null
+							null
 
 						# return error valid result
 						if tipInfoAry.length

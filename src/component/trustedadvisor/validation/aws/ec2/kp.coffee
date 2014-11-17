@@ -3,10 +3,9 @@ define [
 	'MC'
 	'Design'
 	'TaHelper'
-	'keypair_service'
 	'underscore'
 	'CloudResources'
-], ( constant, MC, Design, Helper, keypair_service, _, CloudResources ) ->
+], ( constant, MC, Design, Helper, _, CloudResources ) ->
 
 	i18n = Helper.i18n.short()
 

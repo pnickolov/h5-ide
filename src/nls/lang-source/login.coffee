@@ -195,15 +195,15 @@ module.exports =
 
       "email-label":
         en: "Provide the email address or username you registered with VisualOps. An email with link to reset password will be sent to you soon."
-        zh: "请提供您在VisualOps注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
+        zh: "请输入您的注册邮箱或用户名，我们会将重置链接发送到您的注册邮箱中。"
 
       "account-label":
         en: "Username or Email Address"
-        zh: "用户名 or 邮件地址"
+        zh: "用户名 / 邮件地址"
 
       "reset-btn":
         en: "Send Reset Password Email"
-        zh: "发送密码重置请求邮件"
+        zh: "发送密码重置邮件"
 
       "send-email-info":
         en: "An email with link to reset password has been sent to your registered email address."

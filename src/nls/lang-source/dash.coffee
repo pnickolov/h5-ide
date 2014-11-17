@@ -38,7 +38,7 @@ module.exports =
 
     DASH_TIP_APP_CREATED_BY:
       en: "App created by "
-      zh: "App 创建者:"
+      zh: "App 创建者："
 
     DASH_TIP_APP_CREATED_BY_OTHER_USER:
       en: "App created by other user"
@@ -655,7 +655,7 @@ module.exports =
 
     DASH_TPL_SAMPLE_INSTRUCTION:
       en: "This is only sample data of global resource summary."
-      zh: "这是全球资源汇总的示例数据."
+      zh: "这是全球资源汇总的示例数据。"
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1:
       en: "Provide your AWS Credential"
@@ -707,15 +707,15 @@ module.exports =
 
     DASH_INVALID_SESSION_ERROR:
       en: "Your account has signed in from other location or you last login has timed out."
-      zh: "您已在其他地方登录或者您的登录信息已失效."
+      zh: "您已在其他地方登录或者您的登录信息已失效。"
 
     DASH_INVALID_SESSION_ACTION:
       en: "Would you like to reconnect this session or close it?"
-      zh: "您要重新登录还是关闭会话?"
+      zh: "您要重新登录还是关闭会话？"
 
     DASH_INVALID_SESSION_WARNING:
       en: "If you have unsaved changes, close this session will cause all your change to lose."
-      zh: "如果您有为保存的修改, 关闭会话将会导致所有修改丢失."
+      zh: "如果您有未保存的修改, 关闭会话将会导致所有修改丢失。"
 
     DASH_LBL_RECONNECT:
       en: "Reconnect"
@@ -731,7 +731,7 @@ module.exports =
 
     DASH_PROVIDE_PASSWORD_TO_RECONNECT:
       en: "Please provide your password to reconnect:"
-      zh: "请提供您的密码以重新登录:"
+      zh: "请提供您的密码以重新登录："
 
     DASH_LBL_CONNECT:
       en: "Connect"

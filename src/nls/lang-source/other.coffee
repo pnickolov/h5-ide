@@ -22,7 +22,7 @@ module.exports =
 
     IDE_MSG_ERR_OPEN_OLD_STACK_APP_TAB:
       en: "Sorry, the stack/app is too old, unable to open"
-      zh: "抱歉，Stack/App的格式太旧了，无法打开."
+      zh: "抱歉，Stack/App的格式太旧了，无法打开。"
 
     IDE_MSG_ERR_OPEN_TAB:
       en: "Unable to open the stack/app, please try again"
@@ -34,7 +34,7 @@ module.exports =
 
     IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
       en: "Currently we do not support to visualize system has more than 300 network interfaces. Contact us by the Feedback button for details."
-      zh: "我们目前尚不支持可视化超过300 个网络接口的系统, 如有需要请通过反馈按钮联系我们."
+      zh: "我们目前尚不支持可视化超过300 个网络接口的系统, 如有需要请通过反馈按钮联系我们。"
 
     RES_TIT_RESOURCES:
       en: "Resources"
@@ -86,7 +86,7 @@ module.exports =
 
     RES_MSG_RDS_DISABLED:
       en: "Your AWS account does not have access to this resource. Please make sure you can access to all RDS-related resources. "
-      zh: "您的 AWS 账号没有到此资源的权限, 请确定您有完整的 RDS 相关权限."
+      zh: "您的 AWS 账号没有到此资源的权限， 请确定您有完整的 RDS 相关权限。"
 
     RES_TIT_RDS:
       en: "RDS & Snapshot"
@@ -218,7 +218,7 @@ module.exports =
 
     RES_TIP_DRAG_NEW_SUBNET_GROUP:
       en: "Drag to an availability zone to create a new subnet group."
-      zh: "拖拽到一个可用区域来创建一个新的子网组."
+      zh: "拖拽到一个可用区域来创建一个新的子网组。"
 
     RES_TIP_DRAG_NEW_RTB:
       en: "Drag to a VPC to create a new route table."
@@ -266,11 +266,11 @@ module.exports =
 
     RDS_MSG_ERR_REMOVE_SUBNET_FAILED_CAUSEDBY_USEDBY_SBG:
       en: "%s is a member of subnet group %s. To delete the subnet, remove the membership first."
-      zh: "%s 是子网组 %s 的成员, 要删除子网, 必须先删除成员."
+      zh: "%s 是子网组 %s 的成员， 要删除子网， 必须先删除成员。"
 
     RDS_MSG_ERR_REMOVE_AZ_FAILED_CAUSEDBY_CHILD_USEDBY_SBG:
       en: "Cannot delete availability zone because some subnet in it is used by a subnet group."
-      zh: "无法删除可用区域, 因为里面有被子网组使用的子网."
+      zh: "无法删除可用区域， 因为里面有被子网组使用的子网。"
 
     PROC_STEP_REQUEST:
       en: "Processing"
@@ -307,7 +307,7 @@ module.exports =
 
     HEAD_LABEL_BLANK_NOTIFICATION_DESC:
       en: "Results of running, stopping or terminating apps will show up here."
-      zh: "运行, 停止, 终止 App 的结果将显示在这里."
+      zh: "运行、 停止、 终止 App 的结果将显示在这里。"
 
     HEAD_LABEL_MENUITEM_USER_TOUR:
       en: "User Tour"
@@ -440,11 +440,11 @@ module.exports =
 
     SETTINGS_CRED_DEMO_TIT:
       en : "You are using a demo AWS account. Set up your own credential to run stack into live resources, or visualize your existing VPC."
-      zh : "您正在使用测试帐号, 设置您的 AWS 凭证以运行 Live 资源, 或者导入已有资源."
+      zh : "您正在使用测试帐号， 设置您的 AWS 凭证以运行 Live 资源， 或者导入已有资源。"
 
     SETTINGS_CRED_DEMO_TEXT:
       en : "Some stack you build in demo mode may report error after setting up credential due to resource inconsistency between different accounts."
-      zh : "由于两种账号之间资源的差异, 当您设置了 AWS 凭证后, 一些您在测试账号时创建的 Stack 可能会报错."
+      zh : "由于两种账号之间资源的差异， 当您设置了 AWS 凭证后， 一些您在测试账号时创建的 Stack 可能会报错。"
 
     SETTINGS_CRED_DEMO_SETUP:
       en : "Set up AWS Credentials"
@@ -525,11 +525,11 @@ module.exports =
     SETTINGS_CONFIRM_TOKEN_RM:
       en: 'Any applications or scripts using this token will no longer be able to access the
 VisualOps API. You cannot UNDO this action.'
-      zh: '任何使用这个令牌的应用或脚本都将无法访问 VisualOps 的 API, 此操作无法撤销.'
+      zh: '任何使用这个令牌的应用或脚本都将无法访问 VisualOps 的 API， 此操作无法撤销。'
 
     SETTINGS_CRED_CONNECTED_TIT:
       en: "You have connected with following AWS account:"
-      zh: "您已经使用如下AWS账号连接:"
+      zh: "您已经使用如下AWS账号连接："
 
     SETTINGS_CRED_REMOVE_TIT:
       en: "Do you confirm to remove AWS Credentials of account %s?"
@@ -537,7 +537,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_REMOVE_TEXT:
       en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
-      zh: "<p>移除凭证后, 您将处于 Demo 账号模式.</p><p>如果您想运行 App,您需要提供 AWS 凭证. </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行. </p><p>如果您有已存在的 App, 将无法管理而强制删除.</p>"
+      zh: "<p>移除凭证后， 您将处于 Demo 账号模式。</p><p>如果您想运行 App，您需要提供 AWS 凭证。 </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行。 </p><p>如果您有已存在的 App， 将无法管理而强制删除。</p>"
 
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
@@ -565,11 +565,11 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
-      zh : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
+      zh : ""
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
       en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
-      zh : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
+      zh : ""
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -601,7 +601,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_INFO_FORGET_PWD:
       en: "Forget password?"
-      zh: "是否重置密码?"
+      zh: "是否重置密码？"
 
     COMPLETE_YOUR_PROFILE:
       en: "Complete your profile"
@@ -629,31 +629,31 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_PROVIDE_CRED_DESC:
       en: "We cannot validate your AWS credentials, please provide new ones."
-      zh: "我们无法验证您的 AWS 凭证, 请提供一个新的."
+      zh: "我们无法验证您的 AWS 凭证， 请提供一个新的。"
 
     WELCOME_TIT:
       en: "Welcome to VisualOps, "
-      zh: "欢迎来到 VisualOps, "
+      zh: "欢迎来到 VisualOps， "
 
     WELCOME_DESC:
       en: "To start designing cloud architecture, please provide your AWS credentials"
-      zh: "要开始设计云架构, 请先提供 AWS 凭证"
+      zh: "要开始设计云架构， 请先提供 AWS 凭证"
 
     WELCOME_SKIP_TIT:
       en: "Skip providing AWS Credentials now?"
-      zh: "跳过提供 AWS 凭证吗?"
+      zh: "跳过提供 AWS 凭证吗？"
 
     WELCOME_SKIP_SUBTIT:
       en: "You can design stack in the demo mode. Yet, with following drawbacks:"
-      zh: "您可以在测试账号下设计模板, 但是有以下不足:"
+      zh: "您可以在测试账号下设计模板， 但是有以下不足："
 
     WELCOME_SKIP_MSG:
       en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
-      zh: "<ul><li>测试账号可能无法反映资源的实际可用性.</li> <li>如果您稍后提供凭证, 因为资源差异的关系, 之前在测试账号设计的 stack 可能会不可用.</li>"
+      zh: "<ul><li>测试账号可能无法反映资源的实际可用性。</li> <li>如果您稍后提供凭证， 因为资源差异的关系， 之前在测试账号设计的 stack 可能会不可用。</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."
-      zh: "您可以同右上角的设置下拉菜单来提供 AWS 凭证."
+      zh: "您可以同右上角的设置下拉菜单来提供 AWS 凭证。"
 
     WELCOME_DONE_TIT:
       en: "Get started with VisualOps"
@@ -661,19 +661,19 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_DONE_HINT:
       en: "You have connected to AWS account: "
-      zh: "您已连接到 AWS 账号: "
+      zh: "您已连接到 AWS 账号： "
 
     WELCOME_DONE_HINT_DEMO:
       en: "You are using a demo AWS account."
-      zh: "您正在使用 demo 账号."
+      zh: "您正在使用 demo 账号。"
 
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
 <li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
-      zh: "<li>尝试一下在弗吉尼亚的这5个预制 Stack.</li>
-<li>或者阅读一下 <a href='http://docs.visualops.io/' target='_blank'>文档</a>.</li>
-<li>看下 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>. </li>"
+      zh: "<li>尝试一下在弗吉尼亚的这5个预制 Stack。</li>
+<li>或者阅读一下 <a href='http://docs.visualops.io/' target='_blank'>文档</a>。</li>
+<li>看下 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>。 </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."
@@ -918,7 +918,7 @@ VisualOps API. You cannot UNDO this action.'
 
     RUN_STACK_MODAL_KP_WARNNING:
       en: "Specify a key pair as $DefaultKeyPair for this app."
-      zh: "为此 $DefaultKeyPair 指定一个密钥对."
+      zh: "为此 $DefaultKeyPair 指定一个密钥对。"
 
     RUN_STACK_MODAL_CONFIRM_BTN:
       en: "Run Stack"
@@ -963,31 +963,31 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_A:
       en: 'Connect to subnet to make association'
-      zh: '连接到子网来添加关联.'
+      zh: '连接到子网来添加关联。'
 
     PORT_TIP_B:
       en: 'Connect to Internet Gateway, Virtual Private Gateway, instance or network interface to create route.'
-      zh: '连接到互联网关, 虚拟私有网关, 实例或者网络接口来创建路由.'
+      zh: '连接到 Internet 网关、 虚拟专用网关、 实例或者网络接口来创建路由。'
 
     PORT_TIP_C:
       en: 'Connect to route table to create route'
-      zh: '连接到路由表来创建路由.'
+      zh: '连接到路由表来创建路由。'
 
     PORT_TIP_D:
       en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
-      zh: '连接到实例, 自动伸缩组, 网络接口或者负载均衡来创建安全组规则.'
+      zh: '连接到实例、 Auto Scaling 组、 网络接口或者负载均衡器来创建安全组规则。'
 
     PORT_TIP_E:
       en: 'Connect to network interface to attach.'
-      zh: '连接到网络接口.'
+      zh: '连接到网络接口。'
 
     PORT_TIP_F:
       en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
-      zh: '连接到实例, 自动伸缩组或者网络接口来创建安全组规则.'
+      zh: '连接到实例， 自动伸缩组或者网络接口来创建安全组规则。'
 
     PORT_TIP_G:
       en: 'Connect to instance to attach'
-      zh: '连接到实例.'
+      zh: '连接到实例。'
 
     PORT_TIP_H:
       en: 'Connect to Customer Gateway to create VPN'
@@ -995,11 +995,11 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_I:
       en: 'Connect to Virtua Private Gateway to create VPN'
-      zh: '连接到虚拟私有网关创建 VPN.'
+      zh: '连接到虚拟私有网关创建 VPN'
 
     PORT_TIP_J:
       en: 'Connect to instance or launch configuration to register it behind load balancer'
-      zh: '连接到实例或者启动配置来注册到负载均衡.'
+      zh: '连接到实例或者启动配置来注册到负载均衡。'
 
     PORT_TIP_K:
       en: 'Connect to subnet to associate'
@@ -1017,31 +1017,31 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_STOP_ASG:
       en: "Any auto scaling group will be deleted when application is stopped."
-      zh: "App 停止的时候所有的自动伸缩组都将被删除."
+      zh: "App 停止的时候所有的自动伸缩组都将被删除。"
 
     POP_CONFIRM_PROD_APP_WARNING_MSG:
       en: " is for PRODUCTION."
-      zh: " 处于生产环境."
+      zh: " 处于生产环境。"
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
-      zh: " 停止此 App 将导致服务不可用."
+      zh: " 停止此 App 将导致服务不可用。"
 
     POP_CONFIRM_STOP_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm stopping it."
-      zh: "请输入此 App 的名字来确认停止."
+      zh: "请输入此 App 的名字来确认停止。"
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
-      zh: " 终止此 App 将导致服务不可用, 所有的自动伸缩组都将被删除."
+      zh: " 终止此 App 将导致服务不可用， 所有的自动伸缩组都将被删除。"
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
-      zh: "停止此 App 将会导致您的服务不可用."
+      zh: "停止此 App 将会导致您的服务不可用。"
 
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
-      zh: "请输入此 APP 的名字来确认终止."
+      zh: "请输入此 APP 的名字来确认终止。"
 
     ##### Modal Import JSON
 
@@ -1051,23 +1051,23 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_IMPORT_DROP_LBL:
       en: "Drop JSON file here or "
-      zh: "拖拽 JSON 文件到这里."
+      zh: "拖拽 JSON 文件到这里。"
 
     POP_IMPORT_SELECT_LBL:
       en: " select a file."
-      zh: " 选择一个文件."
+      zh: " 选择一个文件。"
 
     POP_IMPORT_ERROR:
       en: "An error occured when reading the file. Please try again."
-      zh: "读取文件出错, 请重试."
+      zh: "读取文件出错，请重试。"
 
     POP_IMPORT_FORMAT_ERROR:
       en: "The json file is malformed."
-      zh: "此 JSON 格式不正确."
+      zh: "此 JSON 格式不正确。"
 
     POP_IMPORT_MODIFIED_ERROR:
       en: "We do not support user modified json."
-      zh: "我们不支持用户修改过的文件."
+      zh: "我们不支持用户修改过的文件。"
 
     ##### Modal Confirm Update
 
@@ -1077,15 +1077,15 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING:
       en: "Do you confirm to apply the changes?"
-      zh: "您确定要应用修改么?"
+      zh: "您确定要应用修改么？"
 
     POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED:
       en: "Do you confirm to apply the changes and start the app?"
-      zh: "您确定要应用修改并启动 App 吗?"
+      zh: "您确定要应用修改并启动 App 吗？"
 
     POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED:
       en: "The app is currently stopped. To apply updates, the app will be started automatically."
-      zh: "这个 App 已经停止, 要应用更改, 此 App 将自动启动."
+      zh: "这个 App 已经停止， 要应用更改， 此 App 将自动启动。"
 
     POP_CONFIRM_UPDATE_TABLE_TYPE:
       en: "Type"
@@ -1121,7 +1121,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_SELECT_SUBNET_FOR_SUBNET_GROUP_CONTENT:
       en: "Add subnets from at least %s different availability zones to this subnet group. "
-      zh: "至少从%s个不同的可用区域里添加子网到这个子网组里."
+      zh: "至少从%s个不同的可用区域里添加子网到这个子网组里。"
 
     POP_LBL_DONE:
       en: "Done"
@@ -1146,11 +1146,11 @@ VisualOps API. You cannot UNDO this action.'
 
     RDS_SOME_ERROR_OCCURED:
       en: "Some error occured"
-      zh: "出错了. "
+      zh: "出错了"
 
     RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY:
       en: "Edits with port change requires changes to be applied immediately."
-      zh: "此端口的额修改需要被立即应用."
+      zh: "此端口的额修改需要被立即应用。"
 
 
 
@@ -1160,7 +1160,7 @@ VisualOps API. You cannot UNDO this action.'
 
     TIP_KEYPAIR_USED_DEFAULT_KP:
       en: "One or more instance/launch configuration has used $DefaultKeyPair. You need to specify which key pair (or no key pair) should be used for $DefaultKeyPair."
-      zh: "一个或多个实例/启动配置使用了 $DefaultKeyPair. 你需要给 $DefaultKeyPair 指定一个密钥对."
+      zh: "一个或多个实例/启动配置使用了 $DefaultKeyPair。你需要给 $DefaultKeyPair 指定一个密钥对。"
 
 
     POP_SGRULE_TITLE_ADD:
@@ -1233,7 +1233,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_INSTANCE_KEYPAIR_INFO_TIP:
       en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
-      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 启动实例或者开始启动配置的时候,您将需要为 $DefaultKeyPair 指定一个存在的密钥."
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair，启动实例或者开始启动配置的时候，您将需要为 $DefaultKeyPair 指定一个存在的密钥。"
 
     POP_ACLRULE_TITLE_ADD:
       en: "Add Network ACL Rule"
@@ -1313,11 +1313,11 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_ACLRULE_PLACEHOLD_PORT_RANGE:
       en: "Port Range.eg.80 or 49152-65535"
-      zh: "端口范围,如80或49152-65535"
+      zh: "端口范围，如80或49152-65535"
 
     POP_ACLRULE_LBL_PORT_RANGE_ALL:
       en: "Port Range:0-65535"
-      zh: "端口范围:0-65535"
+      zh: "端口范围：0-65535"
 
     NAV_DESMOD_NOT_FINISH_LOAD:
       en: "Sorry, the designer module is loading now. Please try again after several seconds."
@@ -1329,7 +1329,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_RLT_DONE_TITLE:
       en: "Everything went smoothly!"
-      zh: "一切顺利!"
+      zh: "一切顺利！"
 
     PROC_RLT_DONE_SUB_TITLE:
       en: "Your app will automatically open soon."
@@ -1357,11 +1357,11 @@ VisualOps API. You cannot UNDO this action.'
 
     COMBO_DROPDOWN_DEMO_AWS_ACCOUNT:
       en: "You are using a demo AWS account"
-      zh: "您正在使用测试账号."
+      zh: "您正在使用测试账号。"
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
-      zh: "提供 AWS 凭证来管理密钥对."
+      zh: "提供 AWS 凭证来管理密钥对。"
 
     PAYMENT_PAYMENT_NEEDED:
       en: "Upgrade your account"
@@ -1369,7 +1369,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_INVALID_BILLING:
       en: "Your Billing Information is Invalid"
-      zh: "您的账单信息无效."
+      zh: "您的账单信息无效。"
 
     PAYMENT_LOADING:
       en: "Loading..."
@@ -1381,7 +1381,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROFILE_UPDATED_FAILED:
       en: "Your Profile failed to update."
-      zh: "你的信息更新失败."
+      zh: "你的信息更新失败。"
 
     PAYMENT_USAGE_TAB:
       en: "Usage"
@@ -1397,23 +1397,23 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_HEADER_TOOLTIP:
       en: "<div class=\"payment-header-tooltip\"><strong>%s</strong> free points remaining. <span> Free points will renew in %s days.</span></div>"
-      zh: "<div class=\"payment-header-tooltip\">剩余 <strong>%s</strong> 个免费点. <span> 免费点将在 %s 天后恢复.</span></div>"
+      zh: "<div class=\"payment-header-tooltip\">剩余 <strong>%s</strong> 个免费点。 <span> 免费点将在 %s 天后恢复。</span></div>"
 
     PAYMENT_PROVIDE_UPDATE_CREDITCARD:
       en: "Your account is limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. <a class='update-payment' href='%s' target='_blank'> %s Billing Information</a> as soon as possible."
-      zh: "您的账户已经受限. 导入 VPC, App 操作, 资源监控和 state 已被禁用. 请尽快 <a class='update-payment' href='%s' target='_blank'> %s 账单信息</a>"
+      zh: "您的账户已经受限。导入 VPC， App 操作，资源监控和 state 已被禁用。请尽快 <a class='update-payment' href='%s' target='_blank'> %s 账单信息</a>"
 
     PAYMENT_UNPAID_BUT_IN_FREE_QUOTA:
       en: "You have unpaid bill. You can still use the free quota before getting into limited status. <a class='update-payment' href='%s' target='_blank'>Update Billing Information</a> as soon as possible."
-      zh: "您有未支付账单, 在您的账号受限之前您仍然可用使用您的免费额度. 请尽快 <a class='update-payment' href='%s' target='_blank'>更新账单信息</a>"
+      zh: "您有未支付账单，在您的账号受限之前您仍然可用使用您的免费额度。请尽快 <a class='update-payment' href='%s' target='_blank'>更新账单信息</a>"
 
     DHCP_DELETE_CONFIRM_MULTY:
       en: "Confirm to delete selected %s  DHCP Options set?"
-      zh: "您确定要删除选择的%s个 DHCP 选项设定吗?"
+      zh: "您确定要删除选择的%s个 DHCP 选项设定吗？"
 
     DHCP_DELETE_CONFIRM_ONE:
       en: "Confirm to delete %s ?"
-      zh: "您确定要删除 %s 吗?"
+      zh: "您确定要删除 %s 吗？"
 
     OPTION_GROUP_USED_FOR:
       en: "This Option Group is used for "
@@ -1421,27 +1421,27 @@ VisualOps API. You cannot UNDO this action.'
 
     CONFIRM_DELETE_PARAMETER_GROUP:
       en: "Confirm to delete  RDS Parameter Groups %s?"
-      zh: "您确认要删除 RDS 参数组 %s 吗?"
+      zh: "您确认要删除 RDS 参数组 %s 吗？"
 
     CONFIRM_DELETE_PARAMETER_GROUP_MULTY:
       en: "Confirm to delete selected %s RDS Parameter Groups?"
-      zh: "您确认要删除选中的 %s 个 RDS Parameter Group 吗?"
+      zh: "您确认要删除选中的 %s 个 RDS Parameter Group 吗？"
 
     DELETE_SNS_TOPIC_CONFIRM:
       en: "Confirm to delete SNS Topics %s and all associated subscriptions?"
-      zh: "您确定要删除 SNS 主题 %s 及其相关订阅吗?"
+      zh: "您确定要删除 SNS 主题 %s 及其相关订阅吗？"
 
     DELETE_SNS_TOPIC_CONFIRM_M:
       en: "Confirm to delete selected %s SNS Topics and all associated subscriptions?"
-      zh: "您确定要删除选中的 %s 个 SNS 主题及其相关订阅吗?"
+      zh: "您确定要删除选中的 %s 个 SNS 主题及其相关订阅吗？"
 
     DELETE_SSL_CERT_CONFIRM:
       en: "Confirm to delete SSL Certificate %s ?"
-      zh: "您确定要删除 SSL 证书 %s 吗?"
+      zh: "您确定要删除 SSL 证书 %s 吗？"
 
     DELETE_SSL_CERT_CONFIRM_M:
       en: "Confirm to delete selected %s SSL Certificates?"
-      zh: "您确定要删除已选择的 %s 个SSL 证书吗?"
+      zh: "您确定要删除已选择的 %s 个SSL 证书吗？"
 
     STATE_TEXT_VIEW:
       en: "View"
@@ -1453,7 +1453,7 @@ VisualOps API. You cannot UNDO this action.'
 
     STATE_LOG_UPDATE_AFTER_CHANGE:
       en: "State log will update after change is applied."
-      zh: "State 日志将在应用更改后更新."
+      zh: "State 日志将在应用更改后更新。"
 
     XXX_S_STATE:
       en: "'s state"
@@ -1461,11 +1461,11 @@ VisualOps API. You cannot UNDO this action.'
 
     IS_UPDATED:
       en: "is updated."
-      zh: "已经更新."
+      zh: "已经更新。"
 
     has_failed:
       en: "has failed."
-      zh: "运行失败."
+      zh: "运行失败。"
 
     CREDIT_CARD_INFORMATION:
       en: "Credit Card Information"
@@ -1485,7 +1485,7 @@ VisualOps API. You cannot UNDO this action.'
 
     NEXT_BILLING_ON:
       en: "Next Billing on "
-      zh: "下次账单日期:"
+      zh: "下次账单日期："
 
     DATE:
       en: "Date"
@@ -1521,11 +1521,11 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_RENEW_FREE_INFO:
       en: "%s free instance hour will be renewed in %s days."
-      zh: "%s 个免费实例*小时将在 %s 天后刷新."
+      zh: "%s 个免费实例*小时将在 %s 天后刷新。"
 
     NO_BILLING_EVENT:
       en: "No billing event yet."
-      zh: "无付费事件."
+      zh: "无付费事件。"
 
     PAYMENT_CURRENT_USAGE:
       en: "Current Usage <span class='billing_start_from'> Since"
@@ -1609,15 +1609,15 @@ VisualOps API. You cannot UNDO this action.'
 
     BUBBLE_START_TIME:
       en: "Start Time:"
-      zh: "开始时间:"
+      zh: "开始时间："
 
     BUBBLE_STOP_TIME:
       en: "Stop Time:"
-      zh: "停止时间:"
+      zh: "停止时间："
 
     BUBBLE_ESTIMATED_COST:
       en: "Estimated Cost:"
-      zh: "估计费用:"
+      zh: "估计费用："
 
     BUBBLE_SIZE:
       en: "Size"
@@ -1641,7 +1641,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_WARNNING_IN_MODAL:
       en: "There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\"%s\">payment information</a>"
-      zh: "您的账户付费遇到问题, 请更新您的 <a target=\"_blank\" href=\"%s\">付费信息</a>."
+      zh: "您的账户付费遇到问题，请更新您的 <a target=\"_blank\" href=\"%s\">付费信息</a>。"
 
     PER_MONTH:
       en: "/ month"
@@ -1649,15 +1649,15 @@ VisualOps API. You cannot UNDO this action.'
 
     SG_RULE_WILL_BE_DELETED:
       en: "Following rule(s) will be deleted from its(their) security group:"
-      zh: "以下规则将从安全组中被删除:"
+      zh: "以下规则将从安全组中被删除："
 
     INSTANCE_ASSO_WITH_KEYPAIR:
       en: "This instance was associated with key pair:"
-      zh: "这个实例已被关联到密钥对:"
+      zh: "这个实例已被关联到密钥对："
 
     TO_ACCESS_THIS_INSTANCE_REMOTELY:
       en: "To access this instance remotely(e.g. Remote Desktop Connection), you will need your windows administration password. A default password was created when the instance was launched and is available encrypted in the system log."
-      zh: "要远程连接(比如远程桌面连接)这个实例, 你需要 Windows 管理员密码, 实例启动时创建了一个默认密码,你可以在系统日志里面得到加密过的。"
+      zh: "要远程连接(比如远程桌面连接)这个实例，你需要 Windows 管理员密码，实例启动时创建了一个默认密码，你可以在系统日志里面得到加密过的。"
 
     DECRYPT_PASSWORD:
       en: "Decrypt Password"
@@ -1685,7 +1685,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PASSWORD_OF_OWN_AMI:
       en: "If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings."
-      zh: "如果你从私有的 AMI 启动的实例， 密码将会与您创建 AMI 的实例的密码相同，除非此设置在 EC2Config 服务里被修改了。"
+      zh: "如果你从私有的 AMI 启动的实例，密码将会与您创建 AMI 的实例的密码相同，除非此设置在 EC2Config 服务里被修改了。"
 
     KEY_PAIR_DATA_IS_READY:
       en: "Key Pair data is ready"
@@ -1709,11 +1709,11 @@ VisualOps API. You cannot UNDO this action.'
 
     MISSING_PROPERTY_PANEL:
       en: "This resource is not available. It may have been deleted from other source or terminated in previous app editing."
-      zh: "此资源不可用， 可能已经在其他地方被删除或在上次修改的时候被终止了。"
+      zh: "此资源不可用，可能已经在其他地方被删除或在上次修改的时候被终止了。"
 
     ASG_DELETED_IN_STOPPED_APP:
       en: "is deleted in stopped app. The auto scaling group will be created when the app is started."
-      zh: "在 App 停止的时候被删除了， 自动伸缩组会在 App 启动的时候自动创建。"
+      zh: "在 App 停止的时候被删除了，自动伸缩组会在 App 启动的时候自动创建。"
 
     SET_UP_CIDR_BLOCK:
       en: "Set Up CIDR Block"
@@ -1749,7 +1749,7 @@ VisualOps API. You cannot UNDO this action.'
 
     LAST_SAVED:
       en: "Last saved:"
-      zh: "上次保存于:"
+      zh: "上次保存于："
 
     LBL_VALIDATE:
       en: "Validate"

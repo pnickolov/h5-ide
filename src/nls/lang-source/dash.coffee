@@ -74,7 +74,7 @@ module.exports =
 
     DASH_LBL_NO_STACK:
       en: "There is no stack in this region yet.<br />Create a new stack from here."
-      zh: "该地区还没有Stack<br />点击这里创建新Stack"
+      zh: "该地区还没有Stack<br />点击这里创建Stack"
 
     DASH_LBL_RUNNING_INSTANCE:
       en: "Running Instance"

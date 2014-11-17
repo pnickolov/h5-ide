@@ -245,7 +245,7 @@ module.exports =
 
     TIP_CREATE_STACK:
       en: "Create New Stack"
-      zh: "创建新Stack"
+      zh: "创建Stack"
 
     TIP_ZOOM_IN:
       en: "Zoom In"

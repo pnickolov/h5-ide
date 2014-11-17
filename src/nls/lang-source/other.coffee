@@ -1647,6 +1647,66 @@ VisualOps API. You cannot UNDO this action.'
       en: "/ month"
       zh: "/ 月"
 
+    SG_RULE_WILL_BE_DELETED:
+      en: "Following rule(s) will be deleted from its(their) security group:"
+      zh: "以下规则将从安全组中被删除:"
 
+    INSTANCE_ASSO_WITH_KEYPAIR:
+      en: "This instance was associated with key pair:"
+      zh: "这个实例已被关联到密钥对:"
 
+    TO_ACCESS_THIS_INSTANCE_REMOTELY:
+      en: "To access this instance remotely(e.g. Remote Desktop Connection), you will need your windows administration password. A default password was created when the instance was launched and is available encrypted in the system log."
+      zh: "要远程连接(比如远程桌面连接)这个实例, 你需要 Windows 管理员密码, 实例启动时创建了一个默认密码,你可以在系统日志里面得到加密过的。"
 
+    DECRYPT_PASSWORD:
+      en: "Decrypt Password"
+      zh: "加密密码"
+
+    DECRYPTED_PASSWORD_WILL_APPEAR_HERE:
+      en: "Decrypted password will appear here"
+      zh: "加密后的密码将显示在这里"
+
+    GET_WINDOWS_PASSWORD:
+      en: "Get Windows Password"
+      zh: "获取 Windows 密码"
+
+    RECOMMEND_CHANGE_PASSWORD:
+      en: "We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance."
+      zh: "建议您更改您的默认密码。注意：如果已更改默认密码，则无法通过此工具检索密码。请务必将您的密码更改为易记的密码。"
+
+    CHANGE_PASSWORD_RECOMMENDATION_FROM_AWS:
+      en: "Change password Recommendation form AWS"
+      zh: "来自 AWS 的修改密码建议"
+
+    YOUR_PASSWORD_IS_NOT_READY:
+      en: "Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password."
+      zh: "您的密码还没有准备好，有时生成密码会花费 30 分钟以上的时间，请在启动实例之后等待至少15分钟，然后重试取回密码。"
+
+    PASSWORD_OF_OWN_AMI:
+      en: "If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings."
+      zh: "如果你从私有的 AMI 启动的实例， 密码将会与您创建 AMI 的实例的密码相同，除非此设置在 EC2Config 服务里被修改了。"
+
+    KEY_PAIR_DATA_IS_READY:
+      en: "Key Pair data is ready"
+      zh: "密钥数据已经准备好"
+
+    INSTANCE_ASSO_WITH_KP:
+      en: "This instance was associated with key pair:"
+      zh: "此实例关联到的密钥："
+
+    LBL_REMOTE_ACCESS:
+      en: "Remote Access"
+      zh: "远程访问"
+
+    WINDOWS_LOGIN_PASSWORD:
+      en: "Windows Login Password"
+      zh: "Windows 登录密码"
+
+    SHOW_PASSWORD:
+      en: "Show Password"
+      zh: "显示密码"
+
+    MISSING_PROPERTY_PANEL:
+      en: "This resource is not available. It may have been deleted from other source or terminated in previous app editing."
+      zh: "此资源不可用， 可能已经在其他地方被删除或在上次修改的时候被终止了。"

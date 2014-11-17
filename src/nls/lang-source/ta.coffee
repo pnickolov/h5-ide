@@ -323,7 +323,7 @@ module.exports =
       zh: "只读副本 <span class='validation-tag tag-rds'>%s</span> 的存储不能小于它的源数据库实例 <span class='validation-tag tag-rds'>%s</span> 的存储。"
 
     ERROR_MASTER_PASSWORD_INVALID:
-      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters。"
+      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
       zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span>的主密码长度应该在8到41之间。"
 
     ERROR_OG_DB_BOTH_MODIFIED:

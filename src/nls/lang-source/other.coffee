@@ -553,15 +553,15 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_ERR_CRED_VALIDATE:
       en : "Fail to validate your credential."
-      zh : "Fail to validate your credential."
+      zh : "您的凭证验证失败。"
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."
-      zh : "Fail to update your credential, please retry."
+      zh : "更新凭据失败，请重试。"
 
     SETTINGS_ERR_CRED_REMOVE:
       en : "Fail to remove your credential, please retry."
-      zh : "Fail to remove your credential, please retry."
+      zh : "移除凭据失败，请重试。"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
@@ -1710,3 +1710,95 @@ VisualOps API. You cannot UNDO this action.'
     MISSING_PROPERTY_PANEL:
       en: "This resource is not available. It may have been deleted from other source or terminated in previous app editing."
       zh: "此资源不可用， 可能已经在其他地方被删除或在上次修改的时候被终止了。"
+
+    ASG_DELETED_IN_STOPPED_APP:
+      en: "is deleted in stopped app. The auto scaling group will be created when the app is started."
+      zh: "在 App 停止的时候被删除了， 自动伸缩组会在 App 启动的时候自动创建。"
+
+    SET_UP_CIDR_BLOCK:
+      en: "Set Up CIDR Block"
+      zh: "设置 CIDR 区块"
+
+    HOST_HAS_BEEN_ASSIGNED_PUBLIC_IP:
+      en: " has been automatically assigned Public IP. "
+      zh: " 已经自动分配公共 IP。"
+
+    PUBLIC_IP_MUST_BE_REMOVED:
+      en: "If you want to attach the external network interface to %s, the Public IP must be removed."
+      zh: "如果你想将外部网络接口连接到 %s 上，公共 IP 必须要被移除。"
+
+    CONFIRM_REMOVE_PUBLIC_IP:
+      en: "Do you still want to attach %s to %s and remove the Public IP?"
+      zh: "您仍然想要将 %s 连接到 %s 上，并且移除公共 IP 吗？"
+
+    STACK_NAME_ALREADY_IN_USE:
+      en: "Stack Name Already in Use"
+      zh: "Stack 名称已被占用"
+
+    PLEASE_CHOOSE_ANOTHER_STACK_NAME:
+      en: "Stack name <span class=\"resource-name-label\">%s</span> is already used by another stack. Please use a different name."
+      zh: "Stack 名称 %s 已经被另外一个 Stack 使用了，请选择一个其他名称。"
+
+    LABEL_STACK_NAME:
+      en: "Stack Name"
+      zh: "Stack 名称"
+
+    REFRESHING_RESOURCES:
+      en: "Refreshing Resources....."
+      zh: "刷新资源中..."
+
+    LAST_SAVED:
+      en: "Last saved:"
+      zh: "上次保存于:"
+
+    LBL_VALIDATE:
+      en: "Validate"
+      zh: "校验"
+
+    NEED_TO_RESTART_INSTANCE:
+      en: "Need to Restart Instance"
+      zh: "实例需要重新启动"
+
+    TO_UPDATE_THE_PROPERTIES_YOU_CHANGED:
+      en: "To update the properties you have changed, following instances need to restart:"
+      zh: "要更您更改的属性， 以下实例将会重启："
+
+    CONTINUE_TO_UPDATE:
+      en: "Continue to Update"
+      zh: "继续更新"
+
+    TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES:
+      en: "Take final snapshot for DB instances."
+      zh: "为数据库实例创建最终快照。"
+
+    DB_INSTANCE:
+      en: "DB Instance"
+      zh: "数据库实例"
+
+    CANNOT_TAKE_FINAL_SNAPSHOT:
+      en: "cannot take final snapshot."
+      zh: "无法创建最终快照。"
+
+    MONEY_SYMBOL:
+      en: "$"
+      zh: "￥"
+
+    CANNOT_BE_MODIFIED_NOW:
+      en: "cannot be modified now."
+      zh: "现在无法更改。"
+
+    WAIT_FOR_DB_THEN_UPDATE:
+      en: "Wait for the DB instance(s) to be available. Then try to apply updates again."
+      zh: "请等待数据库实例可用，然后再应用更改。"
+
+    EDIT_STATE:
+      en: "Edit State"
+      zh: "编辑 State"
+
+    SYSTEM_LOG:
+      en: "System Log:"
+      zh: "系统日志："
+
+    SYSTEM_LOG_NOT_READY:
+      en: "System log is not ready yet. Please try in a short while."
+      zh: "系统日志还没有准备好， 请稍后重试。"

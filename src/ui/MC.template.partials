@@ -805,12 +805,12 @@ Additional Notes and Questions
 
 <!-- {{missingAsgWhenStop}} -->
 <article>
-	<div class="property-control-group">{{asgName}} is deleted in stopped app. The auto scaling group will be created when the app is started.</div>
+	<div class="property-control-group">{{asgName}} {{i18n "ASG_DELETED_IN_STOPPED_APP"}}</div>
 </article>
 
 <!-- {{setupCIDRConfirm}} -->
 <div style="width:420px">
-	<div class="modal-header"> <h3>Set up CIDR Block</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"> <h3>{{i18n "SET_UP_CIDR_BLOCK"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
 			<div class="modal-text-major">{{main_content}}</div>
@@ -826,28 +826,28 @@ Additional Notes and Questions
 <!-- {{modalAttachingEni}} -->
 <div class="modal-body">
 	<div class="modal-center-align-helper">
-		<p>{{host}} has been automatically assigned Public IP.</p>
-		<p>If you want to attach the external network interface to {{host}}, the Public IP must be removed.</p>
-		<p>Do you still want to attach {{eni}} to {{host}} and remove the Public IP?</p>
+		<p>{{host}}{{i18n "HOST_HAS_BEEN_ASSIGNED_PUBLIC_IP"}}</p>
+		<p>{{i18n "PUBLIC_IP_MUST_BE_REMOVED" host}}</p>
+		<p>{{i18n "CONFIRM_REMOVE_PUBLIC_IP" eni host}}</p>
 	</div>
 </div>
 
 <!-- {{modalReinputStackName}} -->
 <div style="width:420px">
-	<div class="modal-header"> <h3>Stack Name Already in Use</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"> <h3>{{i18n "STACK_NAME_ALREADY_IN_USE"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="min-height:120px;">
 		<div class="modal-text-wraper">
 			<div class="modal-center-align-helper">
-				<div class="modal-text-major">Stack name <span class="resource-name-label">{{stack_name}}</span> is already used by another stack. Please use a different name.</div>
+				<div class="modal-text-major">{{i18n "PLEASE_CHOOSE_ANOTHER_STACK_NAME" stack_name}}</div>
 				<div class="modal-control-group" data-bind="true">
-					<label for="new-stack-name">Stack Name</label>
+					<label for="new-stack-name">{{i18n "LABEL_STACK_NAME"}}</label>
 					<input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="rename-confirm" class="btn btn-blue">Save</button>
+		<button id="rename-confirm" class="btn btn-blue">{{i18n "PROP.SAVE"}}</button>
 	</div>
 </div>
 
@@ -863,8 +863,8 @@ Additional Notes and Questions
 		 </div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<button id="modal-confirm-delete" class="btn btn-red">{{i18n "PROP.LBL_DELETE"}}</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -872,7 +872,7 @@ Additional Notes and Questions
 <div id="loading-modal-wrap">
 	<div class="loading-modal" id="modal-box">
 		<div class="loading-spinner loading-spinner-mid"></div>
-		<div>Refreshing resources...</div>
+		<div>{{i18n "REFRESHING_RESOURCES"}}</div>
 	</div>
 </div>
 
@@ -888,29 +888,29 @@ Additional Notes and Questions
 		 </div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-confirm-delete" class="btn btn-red">Delete</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<button id="modal-confirm-delete" class="btn btn-red">{{i18n "PROP.LBL_DELETE"}}</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
 	</div>
 </div>
 
 <!-- {{statusbar}} -->
 <div>
-	<div class="info">Last saved: <span class="stack-save-time">-<span></div>
+	<div class="info">{{i18n "LAST_SAVED"}} <span class="stack-save-time">-</span></div>
 	<ul class="statusbar-btn-list">
 		<li class="statusbar-btn btn-state">
 			<span class="state-success"><i class="status status-green icon-label"></i><b>0</b></span>
 			<span class="state-failed"><i class="status status-red icon-label"></i><b>0</b></span>
 		</li>
-		<li class="statusbar-btn btn-ta-valid">Validate</li>
+		<li class="statusbar-btn btn-ta-valid">{{i18n "LBL_VALIDATE"}}</li>
 	</ul>
 </div>
 
 <!-- {{restartInstance}} -->
 <div style="width:420px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">Need to Restart Instance</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{i18n "NEED_TO_RESTART_INSTANCE"}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body" style="height:150px;">
 		<div class="modal-text-wraper">
-			<div class="modal-text-major">To update the properties you have changed, following instances need to restart:</div>
+			<div class="modal-text-major">{{i18n "TO_UPDATE_THE_PROPERTIES_YOU_CHANGED"}}</div>
 			<ul class="clearfix">
 				{{#each instance_list}}
 				<li>{{ name }}( {{ instance_id }} )</li>
@@ -920,8 +920,8 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">Continue to Update</button>
-		<button class="btn modal-close btn-silver">Cancel</button>
+		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">{{i18n "CONTINUE_TO_UPDATE"}}</button>
+		<button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -952,13 +952,13 @@ Additional Notes and Questions
                     <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                     <label for="take-rds-snapshot"></label>
                 </div>
-                <label for="take-rds-snapshot">Take final snapshot for DB instances.</label>
+                <label for="take-rds-snapshot">{{i18n "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES"}}</label>
             </section>
             {{#if notReadyDB.length}}
-                <p class="cant-snapshot">DB Instance
+                <p class="cant-snapshot">{{i18n "DB_INSTANCE"}}
                     {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span
                             class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                    cannot take final snapshot.</p>
+                    {{i18n "CANNOT_TAKE_FINAL_SNAPSHOT"}}</p>
             {{/if}}
         {{/if}}
         <div class="stack-validation">
@@ -975,17 +975,12 @@ Additional Notes and Questions
     </div>
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
-            <div class="title">Estimated AWS Cost</div>
-            <div class="price" id="label-total-fee"><b>${{total_fee}}</b> / month</div>
-        </div>
-        <div class="estimate-visualops clearfix hide">
-            <div class="title">Estimated VisualOps Cost</div>
-            <div class="price" id="label-visualops-fee"><b>${{visualops_fee}}</b> / month</div>
+            <div class="title">{{i18n "ESTIMATED_AWS_COST"}}</div>
+            <div class="price" id="label-total-fee"><b>{{i18n "MONEY_SYMBOL"}}{{total_fee}}</b> / month</div>
         </div>
         {{#ifCond paymentState "past_due"}}
             <div class="payment-warning">
-                There was an issue to process payment in your account. Please update your <a href="{{payment-link}}">payment
-                information</a>.
+                {{i18n "PAYMENT_WARNNING_IN_MODAL" payment-link}}
             </div>
         {{/ifCond}}
     </div>
@@ -995,11 +990,10 @@ Additional Notes and Questions
 
 <!-- {{cantUpdateApp}} -->
 
-<p class="modal-text-major">DB Instance
+<p class="modal-text-major">{{i18n "DB_INSTANCE"}}
     {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>) {{/each}}
-    cannot be modified now.</p>
-<p>Wait for the DB instance(s) to be available. Then try to apply updates
-    again.</p>
+    {{i18n "CANNOT_BE_MODIFIED_NOW"}}</p>
+<p>{{i18n "WAIT_FOR_DB_THEN_UPDATE"}}</p>
 
 <!-- {{loadingSpiner}} -->
 <div class="loading-spinner"></div>
@@ -1011,17 +1005,17 @@ Additional Notes and Questions
 			<i id="node-state-icon"></i>
 			<span id="node-state-number">{{state_num}}</span>
 		</div>
-		<div class="node-action-tooltip">Edit State</div>
+		<div class="node-action-tooltip">{{i18n "EDIT_STATE"}}</div>
 	</div>
 </div>
 
 <!-- {{modalInstanceSysLog}} -->
 <div id="modal-instance-sys-log" style="width: 900px;">
-	<div class="modal-header"><h3>System Log: {{instance_id}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>{{i18n "SYSTEM_LOG"}}{{instance_id}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<section class="instance-sys-log-loading loading-spinner"></section>
 		<div class="instance-sys-log-content font-mono">{{log_content}}</div>
-		<div class="instance-sys-log-info modal-text-minor">System log is not ready yet. Please try in a short while.</div>
+		<div class="instance-sys-log-info modal-text-minor">{{i18n "SYSTEM_LOG_NOT_READY"}}</div>
 	</div>
 	<div class="modal-footer">
 		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">Close</button>

@@ -663,7 +663,7 @@ module.exports =
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
       en: " to see real data"
-      zh: "已查看真实数据."
+      zh: "以查看真实数据."
 
     DASH_TPL_NO_RECENT_APP:
       en: "No recently launched app in 30 days"

@@ -133,7 +133,7 @@ module.exports =
     # RT
     NOTICE_RT_ROUTE_NAT:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> is a target of Route Table <span class='validation-tag tag-rtb'>%s</span>. To make sure the routing works, <span class='validation-tag tag-instance'>%s</span> should have security group rule to allow traffic from subnets assciated with <span class='validation-tag tag-rtb'>%s</span>."
-      zh: ""
+      zh: "实例 <span class='validation-tag tag-instance'>%s</span> 是路由表 <span class='validation-tag tag-rtb'>%s</span> 中配置的一个目标，要确保该路由可用，<span class='validation-tag tag-instance'>%s</span> 应该有允许来自关联 <span class='validation-tag tag-rtb'>%s</span> 的子网的流量的安全组规则。"
 
     NOTICE_INSTANCE_HAS_RTB_NO_ELB:
       en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
@@ -163,7 +163,7 @@ module.exports =
     # CGW
     ERROR_CGW_CHECKING_IP_CONFLICT:
       en: "Checking Customer Gateway IP Address confliction with existing resource..."
-      zh: "正在检查客户网关 IP 地址与已存在的资源是否冲突。。。"
+      zh: "正在检查客户网关 IP 地址与已存在的资源是否冲突..."
 
     ERROR_CGW_IP_CONFLICT:
       en: "Customer Gateway <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span> conflicts with existing <span class='validation-tag tag-cgw'>%s</span>'s IP <span class='validation-tag tag-ip'>%s</span>."
@@ -189,7 +189,7 @@ module.exports =
     # Stack
     ERROR_STACK_CHECKING_FORMAT_VALID:
       en: "Checking Stack data format validity..."
-      zh: "正在检查 Stack 数据格式。。。"
+      zh: "正在检查 Stack 数据格式..."
 
     ERROR_STACK_FORMAT_VALID_FAILED:
       en: "Resource %s has format problem, %s."
@@ -231,11 +231,11 @@ module.exports =
 
     ERROR_NO_EIP_OR_PIP:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, <span class='validation-tag tag-instance'>%s</span> must have an elastic IP or public IP. If not, subnet <span class='validation-tag tag-subnet'>%s</span>'s outward traffic must be routed to a <a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT instance</a>."
-      zh: "<span class='validation-tag tag-instance'>%s</span> 配置了 State，为了确保 OpsAgent 正常工作，<span class='validation-tag tag-instance'>%s</span> 必须拥有弹性 IP 或者公有 IP，如果不然，子网 <span class='validation-tag tag-subnet'>%s</span> 必须能够路由到<a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT 实例</a>"
+      zh: "<span class='validation-tag tag-instance'>%s</span> 配置了 State，为了确保 OpsAgent 正常工作，<span class='validation-tag tag-instance'>%s</span> 必须拥有弹性 IP 或者公有 IP，如果不然，子网 <span class='validation-tag tag-subnet'>%s</span> 必须能够路由到<a href='javascript:void(0)' class='bubble bubble-NAT-instance' data-bubble-template='bubbleNATreq'>NAT 实例</a>。"
 
     ERROR_NO_CGW:
       en: "You have configured states for instance. To make sure OpsAgent to work, the VPC must have an internet gateway."
-      zh: "您为实例配置了 State，为了确保 OpsAgent 正常工作，必须为 VPC 添加一个 Internet 网关"
+      zh: "您为实例配置了 State，为了确保 OpsAgent 正常工作，必须为 VPC 添加一个 Internet 网关。"
 
     ERROR_NO_OUTBOUND_RULES:
       en: "<span class='validation-tag tag-instance'>%s</span> has configured states. To make sure OpsAgent to work, it should have outbound rules on <span class='validation-tag tag-port'>80</span> and <span class='validation-tag tag-port'>443</span> ports to the outside."
@@ -276,7 +276,7 @@ module.exports =
 
     ERROR_RDS_CIDR_NOT_LARGE_ENOUGH:
       en: "The CIDR blocks in each of your subnets must be large enough to accommodate spare IP addresses for Amazon RDS to use during maintenance activities, including failover and compute scaling. (For each DB instance that you run in a VPC, you should reserve at least one address in each subnet in the DB subnet group for use by Amazon RDS for recovery actions.)"
-      zh: "每个子网的 CIDR 块应当足够大，以备 Amazon RDS 维护时使用。（最少应该为每个数据库实例保留一个 IP 地址）"
+      zh: "每个子网的 CIDR 块应当足够大，以备 Amazon RDS 维护时使用。（最少应该为每个数据库实例保留一个 IP 地址）。"
 
     ERROR_RDS_TENANCY_MUST_DEFAULT:
       en: "To launch DB instance, instance tenancy attribute of the VPC must be set to default. "
@@ -316,14 +316,14 @@ module.exports =
 
     ERROR_HAVE_NOT_ENOUGH_IP_FOR_DB:
       en:"To accommodate spare IP address for Amazon RDS to use during maintenance activities, subnet <span class='validation-tag tag-subnet'>%s</span> should use a larger CIDR block."
-      zh: "为了给 Amazon RDS 维护期间保留 IP 地址，子网 <span class='validation-tag tag-subnet'>%s</span> 应该使用更大的 CIDR 地址块"
+      zh: "为了给 Amazon RDS 维护期间保留 IP 地址，子网 <span class='validation-tag tag-subnet'>%s</span> 应该使用更大的 CIDR 地址块。"
 
     ERROR_REPLICA_STORAGE_SMALL_THAN_ORIGIN:
       en: "Read Replica <span class='validation-tag tag-rds'>%s</span> should have same or larger storage than its source <span class='validation-tag tag-rds'>%s</span>."
       zh: "只读副本 <span class='validation-tag tag-rds'>%s</span> 的存储不能小于它的源数据库实例 <span class='validation-tag tag-rds'>%s</span> 的存储。"
 
     ERROR_MASTER_PASSWORD_INVALID:
-      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters."
+      en: "DB instance <span class='validation-tag tag-rds'>%s</span>'s Master Password must contain 8 to 41 characters。"
       zh: "数据库实例 <span class='validation-tag tag-rds'>%s</span>的主密码长度应该在8到41之间。"
 
     ERROR_OG_DB_BOTH_MODIFIED:

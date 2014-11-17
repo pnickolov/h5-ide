@@ -220,41 +220,77 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"modal-resource-instance-detail\" style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>DnsName</dt>\n			<dd>"
+    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_DNSNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.dnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Architecture</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ARCHITECTURE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>EbsOptimized</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_EBSOPTIMIZED", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.ebsOptimized)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>GroupSet</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_GROUPSET", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.groupSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Hypervisor</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_HYPERVISOR", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.hypervisor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>ImageId</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IMAGEID", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.imageId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>InstanceState</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCESTATE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceState)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>InstanceType</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>IpAddress</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IPADDRESS", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.ipAddress)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>KernelId</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KERNELID", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.kernelId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>KeyName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KEYNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.keyName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>LaunchTime</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_LAUNCHTIME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.launchTime)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Monitoring</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_MONITORING", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.monitoring)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>NetworkInterfaceSet</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_NETWORKINTERFACESET", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.networkInterfaceSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>AvailabilityZone</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_AVAILABILITYZONE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.availabilityZone)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>PrivateDnsName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_PRIVATEDNSNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.privateDnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>RootDeviceName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICENAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>RootDeviceType</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICETYPE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		</dl>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_BTN_CLOSE", {hash:{},data:data}))
@@ -272,11 +308,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"bubble-head\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Start Time:</dt>\n		<dd>"
+    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_START_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['start-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Stop Time:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_STOP_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['end-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Estimated Cost:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ESTIMATED_COST", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.cost)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -328,11 +370,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "-("
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ")</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Launch Time:</dt>\n		<dd>"
+    + ")</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_LAUNCHTIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['launch-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Availability Zone:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_AVAILABILITYZONE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.az)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Instance Type:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['instance-type'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -348,15 +396,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"bubble-head\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>SnapshotId</dt>\n		<dd>"
+    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_SNAPSHOTID", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>StartTime</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_START_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.startTime)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Status</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "STATUS", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Size</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_SIZE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Encrypted</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ENCRYPTED", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.encrypted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -428,9 +486,13 @@ function program3(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ROOTDEVICETYPE", {hash:{},data:data}))
     + "</dt> <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Image Size</dt>    <dd>"
+    + "</dd>\n    <dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IMAGE_SIZE", {hash:{},data:data}))
+    + "</dt>    <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.imageSize)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Instance Type</dt> <dd>"
+    + "</dd>\n    <dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt> <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -602,14 +664,14 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <div class=\"payment-warning\">\n                There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\""
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">payment information</a>.\n            </div>\n        ";
+  buffer += "\n            <div class=\"payment-warning\">\n                "
+    + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url), {hash:{},data:data}))
+    + "\n            </div>\n        ";
   return buffer;
   }
 
@@ -623,11 +685,13 @@ function program1(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.STACK_VALIDATION", {hash:{},data:data}))
     + "</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\" style=\"display: none;\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.VALIDATING_STACK", {hash:{},data:data}))
-    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated AWS Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
+    + "</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix hide\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
-    + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        ";
+    + "</b> "
+    + escapeExpression(helpers.i18n.call(depth0, "PER_MONTH", {hash:{},data:data}))
+    + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "pastdue", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</section>";

@@ -2791,10 +2791,21 @@ module.exports =
       en: "No records found."
       zh: "未发现记录"
 
+    RDS_PROMOTE_REPLICA_WARNING:
+      en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
+      zh: "提升过程需要花费几分钟完成，当提升一个只读副本时，复制会被停止，只读副本会重启。重启完成后，只读副本可用并独立成为一个单可用区域的数据库实例"
 
+    RDS_READ_AWS_DOC:
+      en: "Read AWS Document"
+      zh: "阅读 AWS 文档"
 
+    RDS_NO_BACKUP_TIP:
+      en: "There is no availabe backup to use yet. Please try later."
+      zh: "尚无可用备份，请稍后重试"
 
-
+    RDS_RESTORE_DB_TIP:
+      en: "You are creating a new DB Instance from a source DB Instance at a specified time. This new DB Instance will have the default DB Security Group and DB Parameter Groups."
+      zh: "您正在从一个源数据库实例的指定时间创建新的数据库实例，此新实例将关联默认数据库安全组和数据库参数组"
 
     ###
     COMPONENT:

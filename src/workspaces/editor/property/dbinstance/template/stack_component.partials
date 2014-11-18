@@ -219,17 +219,17 @@
         <li>{{i18n "PROP.DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4"}}</li>
     </ul>
     <h5 class="modal-text-major">Note</h5>
-    <p>The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance.</p>
-    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">Read AWS Document</a>
+    <p>{{i18n "PROP.RDS_PROMOTE_REPLICA_WARNING"}}</p>
+    <a href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank">{{i18n "PROP.RDS_READ_AWS_DOC"}}</a>
 </section>
 
 <!-- {{modalRestoreConfirm}} -->
 <section class="modal-db-instance-restore-config" data-bind="true">
 
     {{#if noRestore}}
-        <div class="modal-db-instance-restore-no-restore">There is no availabe backup to use yet. Please try later.</div>
+        <div class="modal-db-instance-restore-no-restore">{{i18n "PROP.RDS_NO_BACKUP_TIP"}}</div>
     {{else}}
-        <h5 class="modal-text-major">You are creating a new DB Instance from a source DB Instance at a specified time. This new DB Instance will have the default DB Security Group and DB Parameter Groups.</h5>
+        <h5 class="modal-text-major">{{i18n "PROP.RDS_RESTORE_DB_TIP"}}</h5>
 
         <div class="modal-db-instance-restore-option">
             <label class="title">Use Latest Restorable Time</label>

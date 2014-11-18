@@ -207,6 +207,10 @@ module.exports =
       en: "You are not authorized for %s <span class='validation-tag tag-%s'>%s</span>'s AMI <span class='validation-tag tag-ami'>%s</span>. Go to AWS Marketplace to get authorized or use another AMI by creating new instance."
       zh: "您没有 %s <span class='validation-tag tag-%s'>%s</span> 所使用的 AMI 的权限，请到 AWS 市场获取权限，或者更换AMI。"
 
+    ERROR_STACK_FORMAT_VALID_ERROR:
+      en: "Stack format validation error"
+      zh: "Stack 格式验证无效"
+
     # State Editor
     ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> State <span class='validation-tag tag-state'>%s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."

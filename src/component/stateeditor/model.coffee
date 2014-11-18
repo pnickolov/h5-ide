@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources, Design, ApiRequest) ->
+define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore' ], (MC, constant, CloudResources, Design, ApiRequest) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -662,8 +662,6 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", "ApiReques
 					result: 'pending'
 				}
 			agentStatus = 'pending'
-
-			# state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
 
 			ApiRequest('state_log', {
 				app_id: appId,

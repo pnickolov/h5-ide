@@ -1385,7 +1385,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_USAGE_TAB:
       en: "Usage"
-      zh: "使用率"
+      zh: "用量"
 
     PAYMENT_BILLING_TAB:
       en: "Billing"
@@ -1393,7 +1393,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_SETTING_TITLE:
       en: "Billing & Usage"
-      zh: "账单与使用率"
+      zh: "账单与用量"
 
     PAYMENT_HEADER_TOOLTIP:
       en: "<div class=\"payment-header-tooltip\"><strong>%s</strong> free points remaining. <span> Free points will renew in %s days.</span></div>"

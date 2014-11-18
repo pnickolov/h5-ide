@@ -1755,6 +1755,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Validate"
       zh: "校验"
 
+    VALIDATING_3DOT:
+      en: "Validating..."
+      zh: "校验中..."
+
     CONFIRM_TO_DELETE_XXX:
       en: "Are you sure you want to delete %s?"
       zh: "您确定要删除 %s 吗？"

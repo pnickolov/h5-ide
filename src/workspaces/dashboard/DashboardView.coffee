@@ -357,7 +357,7 @@ define [
 
       if modal
         @visModal = modal
-        @visModal.setTitle "Import Existing VPC as App"
+        @visModal.setTitle lang.IDE.DASH_IMPORT_VPC_AS_APP
         .setContent VisualizeVpcTpl attributes
         .setWidth('770px').compact().resize()
         .on 'close', ->
@@ -366,7 +366,7 @@ define [
           return
       else
         @visModal = new Modal {
-          title         : "Import Existing VPC as App"
+          title         : lang.IDE.DASH_IMPORT_VPC_AS_APP
           width         : "770"
           template      : VisualizeVpcTpl( attributes )
           disableFooter : true

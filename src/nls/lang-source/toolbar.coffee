@@ -83,9 +83,25 @@ module.exports =
       en: "Well done! Your VPC %s has been successfully imported as VisualOps app."
       zh: "很好! 您的 VPC 已经成功导入为 VisualOps App."
 
+    MONITOR_REPORT_EXTERNAL_RESOURCE:
+      en: "Monitor and report external resource change of this app"
+      zh: "监控并报告此App的资源变动"
+
+    YOU_CAN_MANAGE_RESOURCES_LIFECYCLE:
+      en: "Now you can easily manage the resources and lifecycle of the app within VisualOps."
+      zh: "现在您可以使用 VisualOps 轻松地管理这个 App 的所有资源和生命周期了。"
+
+    IF_RESOURCE_CHANGED_EMAIL_SENT:
+      en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
+      zh: "一旦资源变动，我们就会发送邮件通知给您。"
+
     NAME_IMPORTED_APP:
       en: "Give this app an appropriate name."
       zh: "给这个 App 起个合适的名字."
+
+    APP_IMPORTED:
+      en: "App Imported"
+      zh: "App 导入成功"
 
     APP_NAME:
       en: "App Name"

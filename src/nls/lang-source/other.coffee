@@ -492,7 +492,7 @@ module.exports =
 
     SETTINGS_INFO_TOKEN:
       en: "Use token within API calls to initiate automatic states update. "
-      zh: "使用 API 接口的访问令牌可用初始化自动 state 更新."
+      zh: "使用 API 接口的访问令牌可用初始化自动 state 更新。"
 
     SETTINGS_BTN_TOKEN_CREATE:
       en: "Generate Token"
@@ -1233,7 +1233,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_INSTANCE_KEYPAIR_INFO_TIP:
       en: "If any instance or launch configuration uses $DefaultKeyPair, you will need to specify which key pair (or no key pair) should be used for $DefaultKeyPair when launching the instance or creating the launch configuration."
-      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair，启动实例或者开始启动配置的时候，您将需要为 $DefaultKeyPair 指定一个存在的密钥。"
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair，启动实例或者开始启动配置的时候，您将需要为 $DefaultKeyPair 指定一个存在的密钥对。"
 
     POP_ACLRULE_TITLE_ADD:
       en: "Add Network ACL Rule"
@@ -1689,11 +1689,11 @@ VisualOps API. You cannot UNDO this action.'
 
     KEY_PAIR_DATA_IS_READY:
       en: "Key Pair data is ready"
-      zh: "密钥数据已经准备好"
+      zh: "密钥对数据已经准备好"
 
     INSTANCE_ASSO_WITH_KP:
       en: "This instance was associated with key pair:"
-      zh: "此实例关联到的密钥："
+      zh: "此实例关联到的密钥对："
 
     LBL_REMOTE_ACCESS:
       en: "Remote Access"

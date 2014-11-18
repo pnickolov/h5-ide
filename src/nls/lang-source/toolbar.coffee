@@ -17,15 +17,15 @@ module.exports =
 
     APP_UPDATE_SUCCESSFULLY_TITLE:
       en: "App has updated successfully."
-      zh: "App 已成功更新."
+      zh: "App 已成功更新。"
 
     APP_UPDATE_FAILED_TITLE:
       en: "The app failed to update."
-      zh: "App 更新失败."
+      zh: "App 更新失败。"
 
     APP_ROllBACK_DESC:
       en: "The state of your app has been rolled back, except for the already deleted resources."
-      zh: "您的 App 状态已回滚, 除了已经删除的资源."
+      zh: "您的 App 状态已回滚, 除了已经删除的资源。"
 
     LBL_DONE:
       en: "Done"
@@ -37,7 +37,7 @@ module.exports =
 
     EXPORT_CLOUDFORMATION_WARNNING:
       en: "DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be used instead."
-      zh: "数据库实例的自定义选项组在 CloudFormation 里不支持, 将使用默认的选项组."
+      zh: "数据库实例的自定义选项组在 CloudFormation 里不支持, 将使用默认的选项组。"
 
     STACK_VALIDATION:
       en: "Stack Validation"
@@ -65,7 +65,7 @@ module.exports =
 
     HAS_UNSAVED_CHANGES:
       en: "has unsaved changes."
-      zh: "有未保存变更."
+      zh: "有未保存变更。"
 
     CLOSE_CONFIRM:
       en: "Do you confirm to close it?"
@@ -73,7 +73,7 @@ module.exports =
 
     CANCEL_UPDATE_CONFIRM:
       en: "This app has been changed."
-      zh: "此 App 已经改变."
+      zh: "此 App 已经改变。"
 
     DISCARD_UPDATE_CHANGE:
       en: "Do you confirm to discard the changes?"
@@ -81,7 +81,7 @@ module.exports =
 
     IMPORT_SUCCESSFULLY_WELL_DONE:
       en: "Well done! Your VPC %s has been successfully imported as VisualOps app."
-      zh: "很好! 您的 VPC 已经成功导入为 VisualOps App."
+      zh: "很好! 您的 VPC 已经成功导入为 VisualOps App。"
 
     MONITOR_REPORT_EXTERNAL_RESOURCE:
       en: "Monitor and report external resource change of this app"
@@ -97,7 +97,7 @@ module.exports =
 
     NAME_IMPORTED_APP:
       en: "Give this app an appropriate name."
-      zh: "给这个 App 起个合适的名字."
+      zh: "给这个 App 起个合适的名字。"
 
     APP_IMPORTED:
       en: "App Imported"
@@ -113,11 +113,11 @@ module.exports =
 
     IMPORT_SUCCESSFULLY_MANAGE_EASILY:
       en: "Now you can easily manage the resources and lifecycle of the app within VisualOps."
-      zh: "现在你可以用 VisualOps 轻松地管理 App 的资源和生命周期了."
+      zh: "现在你可以用 VisualOps 轻松地管理 App 的资源和生命周期了。"
 
     VPC_REMOVED_OUTSIDE_VISUALOPS:
       en: "VPC of this app has been deleted outside VisualOps."
-      zh: "此 App 的 VPC 在 VisualOps 外部被删除."
+      zh: "此 App 的 VPC 在 VisualOps 外部被删除。"
 
     CONFIRM_REMOVE_APP:
       en: "Do you want to remove the app?"
@@ -125,7 +125,7 @@ module.exports =
 
     CLOUD_RESOURCE_KEY_PAIR:
       en: "Key Pair"
-      zh: "密钥组"
+      zh: "密钥对"
 
     CLOUD_RESOURCE_EBS_SNAPSHOT:
       en: "EBS Snapshot"
@@ -293,11 +293,11 @@ module.exports =
 
     POP_INTRO_1:
       en: "Saving app as stack helps you to revert changes made during app editing back to stack."
-      zh: "将 App 保存为Stack可以将编辑 App 时所作修改保存为Stack."
+      zh: "将 App 保存为Stack可以将编辑 App 时所作修改保存为Stack。"
 
     POP_INTRO_2:
       en: "Canvas design, resource properties and instance states will be saved."
-      zh: "画布设计, 资源属性和 instance states 都将被保存."
+      zh: "画布设计, 资源属性和 instance states 都将被保存。"
 
     POP_REPLACE_STACK:
       en: "Replace the original stack"
@@ -309,7 +309,7 @@ module.exports =
 
     POP_REPLACE_STACK_INTRO_END:
       en: ". Entirely replace the stack with current app design."
-      zh: "启动的, 用当前配置完全替换该Stack."
+      zh: "启动的, 用当前配置完全替换该Stack。"
 
     POP_SAVE_NEW_STACK:
       en: "Save as new stack"
@@ -321,11 +321,11 @@ module.exports =
 
     POP_STACK_NAME_ERROR:
       en: "The stack name is already in use. Please use another one."
-      zh: "此Stack名字已被占用."
+      zh: "此Stack名字已被占用。"
 
     POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
-      zh: "此Stack已经可以导出, 请点击下载按钮保存文件."
+      zh: "此Stack已经可以导出, 请点击下载按钮保存文件。"
 
     POP_BTN_DOWNLOAD:
       en: "Download"
@@ -385,39 +385,39 @@ module.exports =
 
     POP_START_CONFIRM_LIST_1:
       en: "EC2 instances will be started."
-      zh: "EC2 实例将启动."
+      zh: "EC2 实例将启动。"
 
     POP_START_CONFIRM_LIST_2:
       en: "DB instances will be restored from final snapshot."
-      zh: "数据库实例将从最终快照恢复."
+      zh: "数据库实例将从最终快照恢复。"
 
     POP_START_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be recreated."
-      zh: "自动伸缩组将重新创建."
+      zh: "自动伸缩组将重新创建。"
 
     POP_STOP_CONFIRM_LIST_1:
       en: "EC2 instances will be stopped."
-      zh: "EC2 实例将停止."
+      zh: "EC2 实例将停止。"
 
     POP_STOP_CONFIRM_LIST_1_SPAN:
       en: "Instance-stored instances will be deleted."
-      zh: "实例存储的实例将被删除."
+      zh: "实例存储的实例将被删除。"
 
     POP_STOP_CONFIRM_LIST_2:
       en: "DB instances will be deleted final snapshot will be taken."
-      zh: "将删除的数据库实例将创建快照."
+      zh: "将删除的数据库实例将创建快照。"
 
     POP_STOP_CONFIRM_LIST_2_SPAN:
       en: "Snapshots will be restored when the app is started."
-      zh: "快照将会在 App 启动的时候恢复."
+      zh: "快照将会在 App 启动的时候恢复。"
 
     POP_STOP_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be deleted."
-      zh: "自动伸缩组将被删除."
+      zh: "自动伸缩组将被删除。"
 
     POP_STOP_CONFIRM_LIST_3_SPAN:
       en: "Auto Scaling Group will be recreated when the app is started."
-      zh: "自动伸缩组将会在 App 启动的时候重新创建."
+      zh: "自动伸缩组将会在 App 启动的时候重新创建。"
 
     POP_START_WARNNING:
       en: "Warning"
@@ -469,7 +469,7 @@ module.exports =
 
     POP_FORCE_TERMINATE_CONTENT:
       en: "The app %s failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
-      zh: "App %s 种植失败, 您要强制删除它吗? 强制删除后, 您需要在 AWS 控制台里手动管理资源."
+      zh: "App %s 种植失败, 您要强制删除它吗? 强制删除后, 您需要在 AWS 控制台里手动管理资源。"
 
     POP_BTN_START_APP:
       en: "Start"
@@ -569,15 +569,15 @@ module.exports =
 
     TIP_CUSTOM_USER_DATA:
       en: "Custom User Data will be overridden and disabled to allow installing OpsAgent. (Currently only support Linux platform)"
-      zh: "自定义 User Data 将被覆盖并禁止以安装 OpsAgent.(目前只支持 Linux 平台)"
+      zh: "自定义 User Data 将被覆盖并禁止以安装 OpsAgent。(目前只支持 Linux 平台)"
 
     TIP_NO_CLASSIC_DATA_STACK:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作. 你可以将已存在的Stack导出为 CloudFormation 模板或者是 PNG 文件. 点击此处阅读详细说明."
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作。你可以将已存在的Stack导出为 CloudFormation 模板或者是 PNG 文件。点击此处阅读详细说明。"
 
     TIP_NO_CLASSIC_DATA_APP:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持. 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作. 您仍然可以管理已存在的 App. 点击此处阅读详细说明."
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作。 您仍然可以管理已存在的 App。 点击此处阅读详细说明。"
 
     TIP_LINESTYLE:
       en: "Line Style"
@@ -633,11 +633,11 @@ module.exports =
 
     CONNECTION_LOST_TO_RECONNECT:
       en: "Connection lost. Attempting to reconnect..."
-      zh: "连接丢失. 正在尝试重连..."
+      zh: "连接丢失。 正在尝试重连..."
 
     CHANGES_MAY_NOT_BE_SAVED:
       en: "Changes made now may not be saved."
-      zh: "所作的修改将不会被保存."
+      zh: "所作的修改将不会被保存。"
 
     RELOAD_STATES:
       en: "Reload States"
@@ -649,19 +649,19 @@ module.exports =
 
     FORGET_VISUALOPS_CANT:
       en: "This app is created by Visualops with state, do not support forget currently"
-      zh: "此 App 是用 VisualOps 创建的, 里面有 State, 目前不支持释放."
+      zh: "此 App 是用 VisualOps 创建的, 里面有 State, 目前不支持释放。"
 
     FORGET_CONFIRM_INSTRUCTION:
       en: "Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances."
-      zh: "释放 App 不会让您的停止, 但是 VisualOps 将不再对其进行资源监控."
+      zh: "释放 App 不会让您的停止, 但是 VisualOps 将不再对其进行资源监控。"
 
     FORGET_APP_CONFIRM:
       en: "Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?"
-      zh: "仅在 VisualOps 里删除, 不会删除任何资源.<br/> 您确定要释放 App 吗?"
+      zh: "仅在 VisualOps 里删除, 不会删除任何资源。<br/> 您确定要释放 App 吗?"
 
     RESOURCES_APP_CHANGED:
       en: "Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s)."
-      zh: "此App 的资源在外部已经变化, 并且已经同步到App, 图表也将重新渲染以适用更改."
+      zh: "此App 的资源在外部已经变化, 并且已经同步到App, 图表也将重新渲染以适用更改。"
 
     WHAT_HAVE_BEEN_CHANGED:
       en: "What have been changed:"

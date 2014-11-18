@@ -121,7 +121,7 @@ module.exports =
 
     INSTANCE_KEY_PAIR:
       en: "Key Pair"
-      zh: "密钥"
+      zh: "密钥对"
 
     INSTANCE_CLOUDWATCH_DETAILED_MONITORING:
       en: "CloudWatch Detailed Monitoring"
@@ -161,7 +161,7 @@ module.exports =
 
     KP_CREATED_NEED_TO_DOWNLAOD:
       en: "Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created."
-      zh: "密钥对 <span></span> 创建完成, 您需要下载私钥(*.pem 文件)才能继续, 请将其保存于安全的位置, 创建完成之后您将无法再次下载."
+      zh: "密钥对 <span></span> 创建完成, 您需要下载私钥(*.pem 文件)才能继续, 请将其保存于安全的位置, 创建完成之后您将无法再次下载。"
 
     KP_CONFIRM_DELETE_1:
       en: "Confirm to delete "
@@ -181,11 +181,11 @@ module.exports =
 
     KP_OR_PASTE_KEY_CONTENT:
       en: "or paste the key content here."
-      zh: "或者将密钥的内容粘贴在这"
+      zh: "或者将密钥对的内容粘贴在这"
 
     KP_OR_PASTE_TO_UPDATE:
       en: "or paste the key content again to update."
-      zh: "或者再次粘贴密钥的内容以更新"
+      zh: "或者再次粘贴密钥对的内容以更新"
 
     AZ_AND_SUBNET:
       en: "AZ & subnet"
@@ -246,11 +246,11 @@ module.exports =
 
     INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
-      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥, 或者您也可以选择'无密钥'"
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥对, 或者您也可以选择'无密钥对'"
 
     INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
-      zh: "如果您选择了 “无密钥对”, 您将无法连接到实例, 除非您已经知道烧录的 AMI 的密码"
+      zh: "如果您选择了 “无密钥对”, 您将无法连接到实例, 除非您已经知道烧录的 AMI 的密码。"
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -310,7 +310,7 @@ module.exports =
 
     INSTANCE_IP_MSG_1:
       en: "Specify an IP address or leave it as .x to automatically assign an IP."
-      zh: "请提供一个IP或者保留为.x来自动分配IP"
+      zh: "请提供一个IP或者保留为.x来自动分配IP。"
 
     INSTANCE_IP_MSG_2:
       en: "Automatically assigned IP."
@@ -402,11 +402,11 @@ module.exports =
 
     AMI_STACK_NOT_AVAILABLE:
       en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
-      zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享. </p><p>请选择其他的 AMI</p>"
+      zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享。 </p><p>请选择其他的 AMI。</p>"
 
     AMI_APP_NOT_AVAILABLE:
       en: "This AMI's infomation is unavailable."
-      zh: "此 AMI 的信息不可用"
+      zh: "此 AMI 的信息不可用。"
 
     STACK_AMAZON_ARN:
       en: "Amazon ARN"
@@ -706,7 +706,7 @@ module.exports =
 
     SUBNET_TIP_CIDR_BLOCK:
       en: "e.g. 10.0.0.0/24. The range of IP addresses in the subnet must be a subset of the IP address in the VPC. Block sizes must be between a /16 netmask and /28 netmask. The size of the subnet can equal the size of the VPC."
-      zh: "例: 10.0.0.0/24. 子网里的 IP 地址的区间必须在所在 VPC 的地址区间里. 区块大小必须在 /16 子网掩码 和 /28 子网掩码之间. 子网的大小可以等于 VPC 的大小"
+      zh: "例: 10.0.0.0/24. 子网里的 IP 地址的区间必须在所在 VPC 的地址区间里。区块大小必须在 /16 子网掩码 和 /28 子网掩码之间。子网的大小可以等于 VPC 的大小。"
 
     SUBNET_TIT_DETAIL:
       en: "Subnet Details"
@@ -794,7 +794,7 @@ module.exports =
 
     VPC_TIP_SELECT_NETBIOS_NODE:
       en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
-      zh: "选择 NetBIOS 节点类型, 我们推荐选项2.(AWS 尚未支持广播和多播)"
+      zh: "选择 NetBIOS 节点类型, 我们推荐选项2。(AWS 尚未支持广播和多播)"
 
     SG_TIT_DETAIL:
       en: "Security Group Details"
@@ -1126,7 +1126,7 @@ module.exports =
 
     CGW_TIP_THIS_ADDRESS_MUST_BE_STATIC:
       en: "This address must be static and not behind a NAT. e.g. 12.1.2.3"
-      zh: "此地址必须为静态并且不能在 NAT 网络中. 如: 12.1.2.3"
+      zh: "此地址必须为静态并且不能在 NAT 网络中。 如: 12.1.2.3"
 
     CGW_TIP_1TO65534:
       en: "1 - 65534"
@@ -1622,7 +1622,7 @@ module.exports =
 
     ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
-      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康. 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例"
+      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康。 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例。"
 
     ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -2094,7 +2094,7 @@ module.exports =
 
     DBINSTANCE_SOMETHING_ERROR:
       en: "Something Error."
-      zh: "出错了."
+      zh: "出错了。"
 
     DBINSTANCE_OPTION_GROUP:
       en: "Option Group"
@@ -2166,7 +2166,7 @@ module.exports =
 
     DBINSTANCE_PROMOTE_NOTE_CONTENT:
       en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
-      zh: "提升的过程将会花费几分钟. 提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例"
+      zh: "提升的过程将会花费几分钟。提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例。"
 
     DBINSTANCE_PROMOTE_LINK_TEXT:
       en: "Read AWS Document"
@@ -2174,7 +2174,7 @@ module.exports =
 
     DBINSTANCE_NOT_AVAILABLE:
       en: "This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."
-      zh: "此数据库不在可用状态. 请等待状态可用后应用改变"
+      zh: "此数据库不在可用状态，请等待状态可用后应用改变。"
 
     DBINSTANCE_READ_REPLICA:
       en: "Promote Read Replica"

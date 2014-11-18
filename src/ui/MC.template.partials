@@ -500,7 +500,7 @@ Additional Notes and Questions
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP.SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP.SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
-	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}Source{{else}}Destination{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
+	<div class='rule-reference tooltip truncate' data-tooltip='{{#ifCond direction "inbound"}}{{i18n "IDE.POP_SGRULE_LBL_SOURCE"}}{{else}}{{i18n "IDE.POP_SGRULE_LBL_DEST"}}{{/ifCond}}'>{{#if color}}<span class="sg-color" style="background-color:{{color}}"></span>{{/if}}{{relation}}</div>
 </div>
 <div class="rule-list-row">
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
@@ -941,7 +941,7 @@ Additional Notes and Questions
             <p class="modal-text-minor"
                style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
         {{/if}}
-            
+
         <div class="scroll-wrap res_diff_tree" id="app-update-summary-table" style="max-height:200px;">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content"></div>

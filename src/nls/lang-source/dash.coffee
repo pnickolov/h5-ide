@@ -321,7 +321,7 @@ module.exports =
 
     DASH_LBL_LISTENER_DESC:
       en: "Listener Descriptions"
-      zh: "监听器描述"
+      zh: "侦听器描述"
 
     DASH_LBL_SECURITY_GROUPS:
       en: "Security Groups"

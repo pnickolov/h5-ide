@@ -61,7 +61,7 @@ module.exports =
 
     INSTANCE_DETAIL:
       en: "Instance Details"
-      zh: "实例设置"
+      zh: "实例详情"
 
     INSTANCE_HOSTNAME:
       en: "Hostname"
@@ -254,7 +254,7 @@ module.exports =
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
-      zh: "打开CloudWatch监控"
+      zh: "启用 CloudWatch 详细监控"
 
     INSTANCE_ADVANCED_DETAIL:
       en: "Advanced Details"
@@ -278,7 +278,7 @@ module.exports =
 
     INSTANCE_ENI_DETAIL:
       en: "Network Interface Details"
-      zh: "网卡设置"
+      zh: "网卡详情"
 
     INSTANCE_ENI_DESC:
       en: "Description"
@@ -458,15 +458,15 @@ module.exports =
 
     STACK_LBL_NAME:
       en: "Stack Name"
-      zh: "Stack名称"
+      zh: "Stack 名称"
 
     APP_LBL_NAME:
       en: "App Name"
-      zh: "App名称"
+      zh: "App 名称"
 
     STACK_LBL_DESCRIPTION:
       en: "Stack Description"
-      zh: "Stack描述"
+      zh: "Stack 描述"
 
     STACK_LBL_REGION:
       en: "Region"
@@ -482,7 +482,7 @@ module.exports =
 
     APP_LBL_ID:
       en: "App ID"
-      zh: "App标识"
+      zh: "App ID"
 
     APP_LBL_INSTANCE_STATE:
       en: "Instance State"
@@ -558,7 +558,7 @@ module.exports =
 
     STACK_ACL_TIP_DETAIL:
       en: "Go to Network ACL Details"
-      zh: "查看访问控制表详细"
+      zh: "查看访问控制表详情"
 
     STACK_BTN_CREATE_NEW_ACL:
       en: "Create new Network ACL..."
@@ -574,7 +574,7 @@ module.exports =
 
     VPC_TIT_DETAIL:
       en: "VPC Details"
-      zh: "VPC详细"
+      zh: "VPC 详情"
 
     VPC_DETAIL_LBL_NAME:
       en: "Name"
@@ -598,11 +598,11 @@ module.exports =
 
     VPC_DETAIL_LBL_ENABLE_DNS_RESOLUTION:
       en: "Enable DNS resolution"
-      zh: "允许DNS解析"
+      zh: "允许 DNS 解析"
 
     VPC_DETAIL_LBL_ENABLE_DNS_HOSTNAME_SUPPORT:
       en: "Enable DNS hostname support"
-      zh: "允许DNS主机名解析"
+      zh: "允许 DNS 主机名解析"
 
     VPC_TIT_DHCP_OPTION:
       en: "DHCP Options"
@@ -618,7 +618,7 @@ module.exports =
 
     VPC_DHCP_LBL_SPECIFIED:
       en: "Specified DHCP Options Set"
-      zh: "指定的DHCP选项设置"
+      zh: "指定的 DHCP 选项设置"
 
     VPC_DHCP_SPECIFIED_LBL_DOMAIN_NAME:
       en: "Domain Name"
@@ -642,7 +642,7 @@ module.exports =
 
     VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE:
       en: "NetBIOS Node Type"
-      zh: "NetBIOS节点类型"
+      zh: "NetBIOS 节点类型"
 
     VPC_DHCP_SPECIFIED_LBL_NETBIOS_NODE_TYPE_NOT_SPECIFIED:
       en: "Not specified"
@@ -650,7 +650,7 @@ module.exports =
 
     VPC_APP_VPC_ID:
       en: "VPC ID"
-      zh: "VPC标识"
+      zh: "VPC ID"
 
     VPC_APP_STATE:
       en: "State"
@@ -670,7 +670,7 @@ module.exports =
 
     VPC_DHCP_OPTION_SET_ID:
       en: "DHCP Options Set ID"
-      zh: "DHCP选项标识"
+      zh: "DHCP 选项标识"
 
     VPC_MANAGE_DHCP:
       en: "Manage DHCP Options Set"
@@ -710,7 +710,7 @@ module.exports =
 
     SUBNET_TIT_DETAIL:
       en: "Subnet Details"
-      zh: "子网详细"
+      zh: "子网详情"
 
     SUBNET_DETAIL_LBL_NAME:
       en: "Name"
@@ -742,7 +742,7 @@ module.exports =
 
     SUBNET_ACL_TIP_DETAIL:
       en: "Go to Network ACL Details"
-      zh: "查看访问控制表详细"
+      zh: "查看访问控制表详情"
 
     SUBNET_APP_ID:
       en: "Subnet ID"
@@ -798,7 +798,7 @@ module.exports =
 
     SG_TIT_DETAIL:
       en: "Security Group Details"
-      zh: "安全组详细"
+      zh: "安全组详情"
 
     SG_DETAIL_LBL_NAME:
       en: "Name"
@@ -886,7 +886,7 @@ module.exports =
 
     SGLIST_TIP_VIEW_DETAIL:
       en: "View details"
-      zh: "查看详细"
+      zh: "查看详情"
 
     SGLIST_BTN_CREATE_NEW_SG:
       en: "Create new Security Group..."
@@ -1294,7 +1294,7 @@ module.exports =
 
     ENI_LBL_DETAIL:
       en: "Network Interface Details"
-      zh: "网卡设置"
+      zh: "网卡详情"
 
     ENI_SOURCE_DEST_CHECK:
       en: "Enable Source/Destination Checking"
@@ -1374,7 +1374,7 @@ module.exports =
 
     ELB_DETAILS:
       en: "Load Balancer Details"
-      zh: "负载均衡器设置"
+      zh: "负载均衡器详情"
 
     ELB_NAME:
       en: "Name"
@@ -1394,15 +1394,15 @@ module.exports =
 
     ELB_BTN_ADD_LISTENER:
       en: "+ Add Listener"
-      zh: "添加监听器"
+      zh: "添加侦听器"
 
     ELB_BTN_ADD_SERVER_CERTIFICATE:
       en: "Add SSL Certificate"
-      zh: "添加服务器认证"
+      zh: "添加 SSL 证书"
 
     ELB_SERVER_CERTIFICATE:
       en: "SSL Certificate"
-      zh: "服务器认证"
+      zh: "SSL 认证"
 
     ELB_LBL_LISTENER_NAME:
       en: "Name"
@@ -1410,7 +1410,7 @@ module.exports =
 
     ELB_LBL_LISTENER_DESCRIPTIONS:
       en: "Listener Descriptions"
-      zh: "监听器描述"
+      zh: "侦听器描述"
 
     ELB_LBL_LISTENER_CERT_NAME:
       en: "Certificate Name"
@@ -1526,7 +1526,7 @@ module.exports =
 
     ELB_TIP_REMOVE_LISTENER:
       en: "Remove listener"
-      zh: "移除 Listener"
+      zh: "移除侦听器"
 
     ELB_TIP_25_80_443OR1024TO65535:
       en: "25, 80, 443 or 1024 - 65535"
@@ -2190,7 +2190,7 @@ module.exports =
 
     DBINSTANCE_DETAILS:
       en: "DB Instance Details"
-      zh: "数据库详细"
+      zh: "数据库实例详细"
 
     DBINSTANCE_APPLY_IMMEDIATELY_LINK_TOOLTIP:
       en: "Click to read AWS documentation on modifying DB instance using Apply Immediately."
@@ -2505,7 +2505,7 @@ module.exports =
 
     ENI_NETWORK_INTERFACE_DETAIL:
       en: "Network Interface Details"
-      zh: "网络接口详细"
+      zh: "网络接口详情"
 
     ENI_NETWORK_INTERFACE_SUMMARY:
       en: "Network Interface Summary"
@@ -2709,7 +2709,7 @@ module.exports =
 
     SUBNET_GROUP_DETAILS:
       en: "Subnet Groups Details"
-      zh: "子网组详细"
+      zh: "子网组详情"
 
     SUBNET_GROUP_NAME:
       en: "Name"
@@ -3099,7 +3099,7 @@ module.exports =
 
     HIDE_DETAILS:
       en: "Hide details"
-      zh: "隐藏详细"
+      zh: "隐藏详情"
 
     PORT_COLON:
       en: "Port:"
@@ -3123,7 +3123,7 @@ module.exports =
 
     SHOW_DETAILS:
       en: "Show details"
-      zh: "显示详细"
+      zh: "显示详情"
 
     SECURITY_GROUP:
       en: "Security Group"

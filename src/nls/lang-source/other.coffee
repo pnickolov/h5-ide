@@ -645,15 +645,15 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_SKIP_SUBTIT:
       en: "You can design stack in the demo mode. Yet, with following drawbacks:"
-      zh: "您可以在测试账号下设计模板， 但是有以下不足："
+      zh: "您可以在测试账号下设计 Stack， 但是有以下不足："
 
     WELCOME_SKIP_MSG:
       en: "<ul><li>The demo mode may not reflect the real condition of resources available for your account.</li> <li>If you want to provide credentials later, design previously created in demo mode may not work due to resource inconsistency.</li>"
-      zh: "<ul><li>测试账号可能无法反映资源的实际可用性。</li> <li>如果您稍后提供证书， 因为资源差异的关系， 之前在测试账号设计的 stack 可能会不可用。</li>"
+      zh: "<ul><li>测试账号可能无法反映资源的实际可用性。</li> <li>如果您稍后提供证书， 因为资源差异的关系， 之前在测试账号设计的 Stack 可能会不可用。</li>"
 
     WELCOME_SKIP_MSG_EXTRA:
       en: "You can provide AWS Credentials later from Settings in the top-right drop down."
-      zh: "您可以同右上角的设置下拉菜单来提供 AWS 证书。"
+      zh: "您可以通过右上角下拉菜单中的设置来提供 AWS 证书。"
 
     WELCOME_DONE_TIT:
       en: "Get started with VisualOps"
@@ -671,9 +671,9 @@ VisualOps API. You cannot UNDO this action.'
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
 <li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
-      zh: "<li>尝试一下在弗吉尼亚的这5个预制 Stack。</li>
-<li>或者阅读一下 <a href='http://docs.visualops.io/' target='_blank'>文档</a>。</li>
-<li>看下 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>。 </li>"
+      zh: "<li>试用弗吉尼亚的5个示例 Stack。</li>
+<li>阅读我们的 <a href='http://docs.visualops.io/' target='_blank'>文档</a>。</li>
+<li>观看 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>。 </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."

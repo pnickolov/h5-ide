@@ -53,7 +53,7 @@ module.exports =
 
     LBL_NOTICE:
       en: 'Notice'
-      zh: "通知"
+      zh: "提示"
 
     LBL_STARTED:
       en: "Started"

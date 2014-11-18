@@ -1897,7 +1897,7 @@ VisualOps API. You cannot UNDO this action.'
 
     GOOD_JOB_NO_NOTICE_HERE:
       en: "Good job! No notice here."
-      zh: "真棒！没有通知。"
+      zh: "真棒！没有提示。"
 
     SOME_ERROR_VALIDATION_ONLY_HAPPENS_AT_THE_TIME_TO_RUN_STACK:
       en: "Some error validation only happens at the time to run stack."

@@ -252,3 +252,19 @@ module.exports =
       reset_error_state:
         en: "The username or email address is not registered with VisualOps."
         zh: "用户名或邮件地址还没有在VisualOps注册过。"
+
+      page_500_title:
+        en: "Oops! We have encountered some error."
+        zh: "抱歉， 我们的服务器遇到问题"
+
+      page_500_desc:
+        en: "Sorry. The service is temporarily down. Try visit us later."
+        zh: "很抱歉，服务暂时不可用， 请稍后重试。"
+
+      page_404_title:
+        en: "Oops! The page you have requested is not found."
+        zh: "抱歉， 您请求的页面未找到"
+
+      page_404_desc:
+        en: "Sorry for the inconvenience. Why not try to <a href=\"http://www.visualops.io/\">visit our homepage</a>?"
+        zh: "很抱歉给您带来的不便， <a href=\"http://www.visualops.io/\">点此返回首页</a>。"

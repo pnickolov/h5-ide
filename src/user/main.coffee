@@ -110,8 +110,13 @@ loadLang = (cb)->
             goto500()
             console.log error, "error"
     }).done ->
-        #console.log('Loaded!', langsrc)
+        templates = $("[type='text/x-language-template']")
+        if templates.size() then templates.each (index, element)->
+            element = $(element)
+            template = Handlebars.compile element.html()
+            $("#"+element.data('target')).html template(window.langsrc)
         cb()
+
 window.onhashchange = ->
     init()
 

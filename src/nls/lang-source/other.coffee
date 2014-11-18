@@ -1341,7 +1341,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_RLT_FAILED_TITLE:
       en: "Error Starting App."
-      zh: "启动App错误。"
+      zh: "启动 App 失败。"
 
     PROC_RLT_FAILED_SUB_TITLE:
       en: "Please fix the following issues and try again:"
@@ -1353,7 +1353,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_CLOSE_TAB:
       en: "Close"
-      zh: "关闭标签"
+      zh: "关闭"
 
     COMBO_DROPDOWN_DEMO_AWS_ACCOUNT:
       en: "You are using a demo AWS account"

@@ -45,7 +45,7 @@ module.exports =
 
     VALIDATING_STACK:
       en: "Validating your stack..."
-      zh: "校验Stack"
+      zh: "正在校验 Stack ……"
 
     ESTIMATED_COST:
       en: "Estimated Cost"
@@ -157,7 +157,7 @@ module.exports =
 
     CLOUD_RESOURCE_SORT_BY_STORAGE:
       en: "By Storage"
-      zh: "按存储"
+      zh: "按容量"
 
     CLOUD_RESOURCE_SORT_BY_ENGINE:
       en: "By Engine"

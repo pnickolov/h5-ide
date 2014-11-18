@@ -5,15 +5,15 @@ module.exports =
 
     DASH_CREATE_NEW_STACK:
       en: "Create new stack"
-      zh: "新建Stack"
+      zh: "创建 Stack"
 
     DASH_IMPORT_JSON:
       en: "Import stack"
-      zh: "导入Stack"
+      zh: "导入 Stack"
 
     DASH_VISUALIZE_VPC:
       en: "Import VPC"
-      zh: "可视化VPC"
+      zh: "导入 VPC"
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
@@ -25,7 +25,7 @@ module.exports =
 
     DASH_TIP_UNMANAGED_RESOURCE:
       en: "Unmanaged Resource"
-      zh: "非托管资源"
+      zh: "未管理资源"
 
     DASH_TIP_NO_RESOURCE_LEFT:
       en: "There is no "
@@ -49,7 +49,7 @@ module.exports =
 
     DASH_LBL_UNMANAGED:
       en: "Unmanaged"
-      zh: "非托管的"
+      zh: "未管理的"
 
     DASH_LBL_APP:
       en: "App"
@@ -61,7 +61,7 @@ module.exports =
 
     DASH_LBL_RECENT_EDITED_STACK:
       en: "Recently Edited Stack"
-      zh: "最近修改的Stack"
+      zh: "最近编辑的 Stack"
 
     DASH_LBL_RECENT_LAUNCHED_STACK:
       en: "Recently Launched App"
@@ -69,11 +69,11 @@ module.exports =
 
     DASH_LBL_NO_APP:
       en: "There is no app launched yet.<br />You can launch an app from a stack."
-      zh: "该地区没有App<br />你可以通过Stack创建App"
+      zh: "该地区没有 App<br />你可以通过 Stack 启动 App"
 
     DASH_LBL_NO_STACK:
       en: "There is no stack in this region yet.<br />Create a new stack from here."
-      zh: "该地区还没有Stack<br />点击这里新建Stack"
+      zh: "该地区还没有 Stack<br />点击这里创建 Stack"
 
     DASH_LBL_RUNNING_INSTANCE:
       en: "Running Instance"
@@ -89,7 +89,7 @@ module.exports =
 
     DASH_LBL_ELASTIC_IP:
       en: "Elastic IP"
-      zh: "弹性IP"
+      zh: "弹性 IP"
 
     DASH_LBL_VOLUME:
       en: "Volume"
@@ -129,7 +129,7 @@ module.exports =
 
     DASH_LBL_INSTANCE_ID:
       en: "Instance ID"
-      zh: "实例ID"
+      zh: "实例 ID"
 
     DASH_LBL_INSTANCE_NAME:
       en: "Instance Name"
@@ -161,7 +161,7 @@ module.exports =
 
     DASH_LBL_PUBLIC_IP:
       en: "Public IP"
-      zh: "IP地址"
+      zh: "IP 地址"
 
     DASH_LBL_AVAILABILITY_ZONE:
       en: "Availability Zone"
@@ -201,7 +201,7 @@ module.exports =
 
     DASH_LBL_DHCP_SETTINGS:
       en: "DHCP Settings"
-      zh: "DHCP设置"
+      zh: "DHCP 设置"
 
     DASH_LBL_VIRTUAL_PRIVATE_GATEWAY:
       en: "Virtual Private Gateway"
@@ -281,7 +281,7 @@ module.exports =
 
     DASH_LBL_AUTOSCALING_GROUP_ARN:
       en: "Auto Scaling Group ARN"
-      zh: "Auto Scaling组ARN"
+      zh: "Auto Scaling 组 ARN"
 
     DASH_LBL_ENABLED_METRICS:
       en: "Enabled Metrics"

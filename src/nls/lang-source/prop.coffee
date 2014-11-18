@@ -286,11 +286,11 @@ module.exports =
 
     INSTANCE_ENI_SOURCE_DEST_CHECK:
       en: "Enable Source/Destination Checking"
-      zh: "启用源/目的检查"
+      zh: "启用源/目标检查"
 
     INSTANCE_ENI_SOURCE_DEST_CHECK_DISP:
       en: "Source/Destination Checking"
-      zh: "源/目的检查"
+      zh: "源/目标检查"
 
     INSTANCE_ENI_AUTO_PUBLIC_IP:
       en: "Automatically assign Public IP"
@@ -818,7 +818,7 @@ module.exports =
 
     SG_RULE_SORT_BY_SRC_DEST:
       en: "Source/Destination"
-      zh: "按源/目的"
+      zh: "按源/目标"
 
     SG_RULE_SORT_BY_PROTOCOL:
       en: "Protocol"
@@ -946,7 +946,7 @@ module.exports =
 
     ACL_RULE_SORT_BY_SRC_DEST:
       en: "Source/Destination"
-      zh: "源/目的"
+      zh: "源/目标"
 
     ACL_TIP_ACTION_ALLOW:
       en: "allow"
@@ -1298,19 +1298,19 @@ module.exports =
 
     ENI_SOURCE_DEST_CHECK:
       en: "Enable Source/Destination Checking"
-      zh: "打开 Source/Destination 检查"
+      zh: "打开源/目标检查"
 
     ENI_AUTO_PUBLIC_IP:
       en: "Automatically assign Public IP"
-      zh: "自动分配公网IP"
+      zh: "自动分配公网 IP"
 
     ENI_IP_ADDRESS:
       en: "IP Address"
-      zh: "IP地址"
+      zh: "IP 地址"
 
     ENI_ADD_IP:
       en: "Add IP"
-      zh: "添加IP"
+      zh: "添加 IP"
 
     ENI_SG_DETAIL:
       en: "Security Groups"

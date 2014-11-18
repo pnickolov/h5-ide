@@ -172,7 +172,6 @@ require.config {
     'ami_service'            : 'service/ami_service'
     'instance_service'       : 'service/instance_service'
     'keypair_service'        : 'service/keypair_service'
-    'customergateway_service': 'service/customergateway_service'
 
     #############################################
     # component                 # Merge in deploy
@@ -289,7 +288,6 @@ require.config {
       'ami_service'
       'instance_service'
       'keypair_service'
-      'customergateway_service'
     ]
 
     "cloudres/CrBundle"  : [ "CloudResources" ]

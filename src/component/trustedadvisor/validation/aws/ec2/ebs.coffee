@@ -42,7 +42,8 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', "CloudResources" ], ( c
 			if snaphostAry.length
 
 				cr = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() )
-				cr.fetch().then ()->
+				failure = ()-> callback( null )
+				success = ()->
 
 					tipInfoAry = []
 					missingIds = []
@@ -93,6 +94,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', "CloudResources" ], ( c
 						else
 							callback(null)
 
+				cr.fetch().then success, failure
 				return null
 
 			else

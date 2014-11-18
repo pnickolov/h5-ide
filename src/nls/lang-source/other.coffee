@@ -1882,3 +1882,28 @@ VisualOps API. You cannot UNDO this action.'
     WILL_OPEN_CHARGIFY:
       en: "This will open a new window with Chargify.<br/>Meanwhile please keep this page open."
       zh: "将在新窗口打开 Chargify。<br/> 同时，请保持此页面打开。"
+
+    GOOD_JOB_NO_ERROR_HERE:
+      en: 'Good job! No error here.'
+      zh: "真棒！没有错误。"
+
+    GOOD_JOB_NO_WARNING_HERE:
+      en: "Good job! No warning here."
+      zh: "真棒！没有警告。"
+
+    GOOD_JOB_NO_NOTICE_HERE:
+      en: "Good job! No notice here."
+      zh: "真棒！没有通知。"
+
+    SOME_ERROR_VALIDATION_ONLY_HAPPENS_AT_THE_TIME_TO_RUN_STACK:
+      en: "Some error validation only happens at the time to run stack."
+      zh: "一些错误只在运行时产生。"
+
+
+
+
+
+
+
+
+

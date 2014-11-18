@@ -2,7 +2,7 @@
 #  View Mode for design/property/instance
 #############################
 
-define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, keypair_model, constant, Design, CloudResources ) ->
+define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyModel, constant, Design, CloudResources ) ->
 
   LaunchConfigModel = PropertyModel.extend {
 
@@ -26,15 +26,6 @@ define [ '../base/model', 'keypair_model', 'constant', 'Design', "CloudResources
         me.trigger "KP_DOWNLOADED", result.resolved_data
 
         null
-
-
-    downloadKP : ( keypairname ) ->
-        username = $.cookie "usercode"
-        session  = $.cookie "session_id"
-
-        keypair_model.download {sender:@}, username, session, Design.instance().region(), keypairname
-        null
-
 
     init  : ( uid ) ->
       @lc = Design.instance().component( uid )

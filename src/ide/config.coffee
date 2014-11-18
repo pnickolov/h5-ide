@@ -163,13 +163,11 @@ require.config {
     # deprecated service        # Merge in deploy
     #############################################
     'base_model'             : 'service/base_model'
-    'keypair_model'          : 'service/keypair_model'
     'instance_model'         : 'service/instance_model'
     'result_vo'              : 'service/result_vo'
     'stack_service'          : 'service/stack_service'
     'ami_service'            : 'service/ami_service'
     'instance_service'       : 'service/instance_service'
-    'keypair_service'        : 'service/keypair_service'
 
     #############################################
     # component                 # Merge in deploy
@@ -277,13 +275,11 @@ require.config {
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
     "service/service" : [
       'base_model'
-      'keypair_model'
       'instance_model'
       'result_vo'
       'stack_service'
       'ami_service'
       'instance_service'
-      'keypair_service'
     ]
 
     "cloudres/CrBundle"  : [ "CloudResources" ]

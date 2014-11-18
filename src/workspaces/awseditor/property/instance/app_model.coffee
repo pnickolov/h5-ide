@@ -3,7 +3,6 @@
 #############################
 
 define [ '../base/model',
-    'keypair_service'
     'instance_model',
     'instance_service'
     'constant',
@@ -11,7 +10,7 @@ define [ '../base/model',
     'Design'
     'CloudResources'
 
-], ( PropertyModel, keypair_service, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
+], ( PropertyModel, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -211,28 +210,6 @@ define [ '../base/model',
             instance_service.GetPasswordData( null, username, session, Design.instance().region(), instance_id, key_data ).then handler
 
             null
-
-        downloadKp: ( kpName ) ->
-            that = @
-            username = $.cookie "usercode"
-            session  = $.cookie "session_id"
-            region = Design.instance().region()
-
-            handler = @genPasswordHandler 'download'
-
-            keypair_service.download( null, username, session, region, kpName ).then ( res ) ->
-                if not res.is_error
-                    if that.get( 'osType' ) is 'windows'
-                        instance_id = that.get "instanceId"
-                        key_data = res.resolved_data
-                        instance_service.GetPasswordData( null, username, session, region, instance_id, key_data ).then handler
-                    else
-                        that.trigger 'KEYPAIR_DOWNLOAD', true, res.resolved_data
-                else
-                    that.trigger 'KEYPAIR_DOWNLOAD', false, res.resolved_data
-
-            null
-
 
         getEni : () ->
 

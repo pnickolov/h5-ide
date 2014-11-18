@@ -65,7 +65,7 @@ module.exports =
 
     DASH_LBL_RECENT_LAUNCHED_STACK:
       en: "Recently Launched App"
-      zh: "最近启动的实例"
+      zh: "最近启动的 App"
 
     DASH_LBL_NO_APP:
       en: "There is no app launched yet.<br />You can launch an app from a stack."

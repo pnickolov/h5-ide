@@ -16,7 +16,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage SSL Certificate"
+            title: sprintf lang.IDE.MANAGE_SSL_CERT_IN_AREA, regionName
             classList: 'sslcert-manage'
             #slideable: _.bind that.denySlide, that
             context: that

@@ -25,7 +25,7 @@ module.exports =
 
     COMPONENT_RDS_PG_MANAGER_TITLE:
       en: "Manage DB Parameter Group in %s"
-      zh: "管理在 %s 的 DB Parameter Group"
+      zh: "管理%s区的数据库参数组"
 
     CUSTOM_OPTION_GROUP_FOR_ENGINE:
       en: "custom option group for %s %s"

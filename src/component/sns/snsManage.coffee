@@ -31,7 +31,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage SNS in #{regionName}"
+            title: sprintf lang.IDE.MANAGE_SNS_IN_AREA, regionName
             classList: 'sns-manage'
             #slideable: _.bind that.denySlide, that
             context: that

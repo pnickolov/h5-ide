@@ -284,7 +284,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage DHCP Options in #{regionName}"
+            title: sprintf lang.IDE.MANAGE_DHCP_IN_AREA, regionName
             slideable: true
             context: that
             buttons: [

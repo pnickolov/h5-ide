@@ -1325,7 +1325,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_TITLE:
       en: "Launching your app..."
-      zh: "启动您的App..."
+      zh: "正在启动 App ..."
 
     PROC_RLT_DONE_TITLE:
       en: "Everything went smoothly!"
@@ -1903,10 +1903,29 @@ VisualOps API. You cannot UNDO this action.'
       en: "Some error validation only happens at the time to run stack."
       zh: "一些错误只在运行时产生。"
 
+    MANAGE_KP_IN_AREA:
+      en: "Manage Key Pairs in %s"
+      zh: "管理%s区的密钥对"
 
+    MANAGE_SNAPSHOT_IN_AREA:
+      en: "Manage Snapshots in %s"
+      zh: "管理%s区的快照"
 
+    MANAGE_SNS_IN_AREA:
+      en: "Manage SNS in %s"
+      zh: "管理%s区的 SNS"
 
+    MANAGE_DB_SNAPSHOT_IN_AREA:
+      en: "Manage DB Snapshot in %s"
+      zh: "管理%s区的数据库快照"
 
+    MANAGE_DHCP_IN_AREA:
+      en: "Manage DHCP Options in %s"
+      zh: "管理%s区的 DHCP 选项"
+
+    MANAGE_SSL_CERT_IN_AREA:
+      en: "Manage SSL Certificate in %s"
+      zh: "管理%s区的 SSL 证书"
 
 
 

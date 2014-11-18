@@ -273,7 +273,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage Snapshots in #{regionName}"
+            title: sprintf lang.IDE.MANAGE_SNAPSHOT_IN_AREA, regionName
             slideable: true
             context: that
             buttons: [

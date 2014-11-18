@@ -34,7 +34,7 @@
           cancel: _.isString(this.option.cancel) ? {
             text: this.option.cancel || lang.IDE.POP_LBL_CANCEL
           } : _.isObject(this.option.cancel) ? this.option.cancel : {
-            text: "Cancel"
+            text: lang.IDE.POP_LBL_CANCEL
           },
           hasFooter: !this.option.disableFooter,
           hasScroll: !!this.option.maxHeight || this.option.hasScroll,

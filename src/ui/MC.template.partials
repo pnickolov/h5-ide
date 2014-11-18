@@ -1042,7 +1042,7 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-footer">
 		<button id="modal-stack-agent-enable-confirm" style="width:145px;" class="btn modal-confirm btn-blue">Enable VisualOps</button>
-		<button id="modal-stack-agent-enable-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<button id="modal-stack-agent-enable-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -1219,7 +1219,7 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-footer">
 		<button id="elb-ssl-cert-confirm" class="btn btn-blue">Save</button>
-		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
 	</div>
 </div>
 
@@ -1275,7 +1275,7 @@ Additional Notes and Questions
 	</div>
 	<div class="modal-footer">
 		<button id="modal-confirm-elb-cert-delete" class="btn btn-red">Delete</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">Cancel</button>
+		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
 	</div>
 </div>
 

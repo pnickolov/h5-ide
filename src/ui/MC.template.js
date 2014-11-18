@@ -1591,7 +1591,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_ENABLE_VISUALOPS", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS_OVERRIDE_USER_DATA", {hash:{},data:data}))
-    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
@@ -1777,7 +1779,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" id=\"elb-ssl-cert-chain-input\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.chain)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSSLCertSetting=Handlebars.template(__TEMPLATE__);
@@ -1878,7 +1882,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);

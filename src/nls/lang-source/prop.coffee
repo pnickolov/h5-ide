@@ -218,11 +218,11 @@ module.exports =
 
     INSTANCE_NEW_KP:
       en: "Create New Key Pair"
-      zh: "新建密钥"
+      zh: "新建密钥对"
 
     INSTANCE_FILTER_KP:
       en: "Filter by key pair name"
-      zh: "过滤密钥名"
+      zh: "过滤密钥对名"
 
     INSTANCE_MANAGE_KP:
       en: "Manage Region Key Pairs ..."
@@ -250,7 +250,7 @@ module.exports =
 
     INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
-      zh: "如果您选择了 '无密钥', 您将无法连接到实例或启动配置, 除非您已经知道烧录的 AMI 的密码"
+      zh: "如果您选择了 “无密钥对”, 您将无法连接到实例, 除非您已经知道烧录的 AMI 的密码"
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"

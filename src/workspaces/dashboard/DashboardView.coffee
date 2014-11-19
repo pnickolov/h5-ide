@@ -101,9 +101,8 @@ define [
         renderData = {}
         formattedData = {}
         _.each data, (value, key)->
-          newKey = lang.IDE["BUBBLE_"+key.toUpperCase()] || key
+          newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
           formattedData[newKey] = value
-        console.log formattedData
         renderData.data = formattedData
         renderData.title = data.id || data.name || data._title
         delete renderData.data._title
@@ -114,7 +113,7 @@ define [
       resourceData = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
       formattedData = {}
       _.each resourceData, (value, key)->
-        newKey = lang.IDE["BUBBLE_"+key.toUpperCase()] || key
+        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
         formattedData[newKey] = value
       d = {
         id   : data.id

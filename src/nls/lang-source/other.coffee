@@ -1675,6 +1675,100 @@ VisualOps API. You cannot UNDO this action.'
       en: "ID"
       zh: "ID"
 
+    BUBBLE_MACADDRESS:
+      en: "MAC Address"
+      zh: "MAC 地址"
+
+    BUBBLE_NETWORKINTERFACEID:
+      en: "Netword Interface ID"
+      zh: "网络接口 ID"
+
+    BUBBLE_OWNERID:
+      en: "Owner ID"
+      zh: "所有者 ID"
+
+    BUBBLE_PRIVATEIPADDRESS:
+      en: "Private IP Address"
+      zh: "私有 IP 地址"
+
+    BUBBLE_SOURCEDESTCHECK:
+      en: "Source/Destination Check"
+      zh: "源/目标检查"
+
+    BUBBLE_STATUS:
+      en: "Status"
+      zh: "状态"
+
+    BUBBLE_SUBNETID:
+      en: "Subnet ID"
+      zh: "子网 ID"
+
+    BUBBLE_VPCID:
+      en: "VPC ID"
+      zh: "VPC ID"
+
+    BUBBLE_ATTACHTIME:
+      en: "Attach Time"
+      zh: "连接时间"
+
+    BUBBLE_DELETEONTERMINATION:
+      en: "Delete On Termination"
+      zh: "终止后删除"
+
+    BUBBLE_DEVICENAME:
+      en: "Device Name"
+      zh: "设备名称"
+
+    BUBBLE_VOLUMEID:
+      en: "Volume ID"
+      zh: "卷 ID"
+
+    BUBBLE_DHCPOPTIONSID:
+      en: "DHCP Options ID"
+      zh: "DHCP 选项 ID"
+
+    BUBBLE_DOMAIN_NAME:
+      en: "Domain Name"
+      zh: "域名"
+
+    BUBBLE_DOMAIN_NAME_SERVERS:
+      en: "Domain Name Server"
+      zh: "域名服务器"
+
+    BUBBLE_NTP_SERVERS:
+      en: "NTP Server"
+      zh: "NTP 服务器"
+
+    BUBBLE_NETBIOS_NAME_SERVERS:
+      en: "Netbios Name Server"
+      zh: "Netbios 服务器"
+
+    BUBBLE_NETBIOS_NODE_TYPE:
+      en: "Netbios Node Type"
+      zh: "Netbios 节点类型"
+
+    BUBBLE_INTERVAL:
+      en: "Interval"
+      zh: "周期"
+
+    BUBBLE_TARGET:
+      en: "Target"
+      zh: "目标"
+
+    BUBBLE_HEALTHYTHRESHOLD:
+      en: "Healthy Threshold"
+      zh: "健康度阈值"
+
+    BUBBLE_TIMEOUT:
+      en: "Timeout"
+      zh: "超时"
+
+    BUBBLE_UNHEALTHYTHRESHOLD:
+      en: "Unhealthy Threshold"
+      zh: "不健康阈值"
+
+
+
     BUBBLE_IMAGESIZE:
       en: "Image Size"
       zh: "镜像大小"

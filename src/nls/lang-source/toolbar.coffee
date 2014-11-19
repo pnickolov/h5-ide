@@ -185,7 +185,7 @@ module.exports =
 
     TIP_BTN_RUN_STACK:
       en: "Run this stack into an app"
-      zh: "运行当前Stack为App"
+      zh: "运行当前 Stack 为 App"
 
     POP_TIT_RUN_STACK:
       en: "Run Stack"
@@ -193,23 +193,23 @@ module.exports =
 
     TIP_SAVE_STACK:
       en: "Save Stack"
-      zh: "保存Stack"
+      zh: "保存 Stack"
 
     TIP_DELETE_STACK:
       en: "Delete Stack"
-      zh: "删除Stack"
+      zh: "删除 Stack"
 
     TIP_DELETE_NEW_STACK:
       en: "This stack is not saved yet."
-      zh: "当前Stack未保存"
+      zh: "当前 Stack 未保存"
 
     POP_TIT_DELETE_STACK:
       en: "Delete Stack"
-      zh: "删除Stack"
+      zh: "删除 Stack"
 
     POP_BODY_DELETE_STACK:
       en: "Do you confirm to delete stack '%s'?"
-      zh: "确认删除Stack '%s' 吗?"
+      zh: "确认删除 Stack '%s' 吗?"
 
     POP_BTN_DELETE_STACK:
       en: "Delete"
@@ -233,7 +233,7 @@ module.exports =
 
     TIP_DUPLICATE_STACK:
       en: "Duplicate Stack"
-      zh: "复制Stack"
+      zh: "复制 Stack"
 
     TIT_CLOSE_TAB:
       en: "Close Tab"
@@ -241,15 +241,15 @@ module.exports =
 
     POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
-      zh: "复制Stack"
+      zh: "复制 Stack"
 
     POP_BODY_DUPLICATE_STACK:
       en: "New Stack Name:"
-      zh: "Stack名称:"
+      zh: "Stack 名称:"
 
     POP_BODY_APP_To_STACK:
       en: "New Stack Name:"
-      zh: "Stack名称:"
+      zh: "Stack 名称:"
 
     POP_BTN_DUPLICATE_STACK:
       en: "Duplicate"
@@ -261,7 +261,7 @@ module.exports =
 
     TIP_CREATE_STACK:
       en: "Create New Stack"
-      zh: "创建Stack"
+      zh: "创建 Stack"
 
     TIP_ZOOM_IN:
       en: "Zoom In"
@@ -281,7 +281,7 @@ module.exports =
 
     EXPORT_AS_JSON:
       en: "Export to JSON"
-      zh: "导出JSON文件"
+      zh: "导出 JSON 文件"
 
     POP_TIT_EXPORT_AS_JSON:
       en: "Export"
@@ -293,15 +293,15 @@ module.exports =
 
     POP_INTRO_1:
       en: "Saving app as stack helps you to revert changes made during app editing back to stack."
-      zh: "将 App 保存为Stack可以将编辑 App 时所作修改保存为Stack。"
+      zh: "将 App 保存为 Stack 可以将编辑 App 时所作修改复原为 Stack。"
 
     POP_INTRO_2:
       en: "Canvas design, resource properties and instance states will be saved."
-      zh: "画布设计, 资源属性和 instance states 都将被保存。"
+      zh: "画布设计、 资源属性和 instance states 都将被保存。"
 
     POP_REPLACE_STACK:
       en: "Replace the original stack"
-      zh: "替换原始Stack"
+      zh: "替换原始 Stack"
 
     POP_REPLACE_STACK_INTRO:
       en: "This app is launched from stack"
@@ -309,23 +309,23 @@ module.exports =
 
     POP_REPLACE_STACK_INTRO_END:
       en: ". Entirely replace the stack with current app design."
-      zh: "启动的, 用当前配置完全替换该Stack。"
+      zh: "启动的,。用当前配置完全替换该 Stack。"
 
     POP_SAVE_NEW_STACK:
       en: "Save as new stack"
-      zh: "另存为新Stack"
+      zh: "另存为新 Stack"
 
     POP_SAVE_STACK_INSTRUCTION:
       en: "Specify a name for new stack:"
-      zh: "指定新Stack的名字"
+      zh: "指定新 Stack 的名字"
 
     POP_STACK_NAME_ERROR:
       en: "The stack name is already in use. Please use another one."
-      zh: "此Stack名字已被占用。"
+      zh: "此 Stack 名字已被占用。"
 
     POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
-      zh: "此Stack已经可以导出, 请点击下载按钮保存文件。"
+      zh: "此 Stack 已经可以导出, 请点击下载按钮保存文件。"
 
     POP_BTN_DOWNLOAD:
       en: "Download"
@@ -335,21 +335,17 @@ module.exports =
       en: "Export to PNG"
       zh: "导出图片"
 
-    SAVE_AS_APP:
-      en: "Save as App"
-      zh: "保存为App"
-
     EXPORT_AS_CF:
       en: "Convert to CloudFormation Format"
       zh: "导出 CloudFormation 文件"
 
     TIP_STOP_APP:
       en: "Stop This App's Resources."
-      zh: "暂停App"
+      zh: "暂停 App"
 
     TIP_CONTAINS_INSTANCE_STORED:
       en: "This app cannot be stopped since it contains instance-stored AMI."
-      zh: "不能暂停这个App，因为它包含实例存储 AMI"
+      zh: "不能暂停这个 App，因为它包含实例存储 AMI"
 
     POP_TIT_STOP_APP:
       en: "Confirm to Stop App"
@@ -357,7 +353,7 @@ module.exports =
 
     POP_BODY_STOP_APP_LEFT:
       en: "Do you confirm to stop app"
-      zh: "本操作将暂停App中的相关资源，您确认暂停当前App"
+      zh: "本操作将暂停 App 中的相关资源，您确认暂停当前App"
 
     POP_BODY_STOP_APP_RIGHT:
       en: "?"
@@ -365,7 +361,7 @@ module.exports =
 
     POP_TIT_STOP_PRD_APP:
       en: "Confirm to Stop App for Production"
-      zh: "确认暂停生产环境App"
+      zh: "确认暂停生产环境 App "
 
     POP_BTN_STOP_APP:
       en: "Stop"
@@ -373,7 +369,7 @@ module.exports =
 
     TIP_START_APP:
       en: "Start App"
-      zh: "恢复App"
+      zh: "恢复 App"
 
     POP_TIT_START_APP:
       en: "Confirm to Start App"
@@ -381,7 +377,7 @@ module.exports =
 
     POP_BODY_START_APP:
       en: "Do you confirm that you would like to start the app?"
-      zh: "本操作将恢复App中的相关资源，您确认恢复当前App吗?"
+      zh: "本操作将恢复 App 中的相关资源，您确认恢复当前 App 吗?"
 
     POP_START_CONFIRM_LIST_1:
       en: "EC2 instances will be started."
@@ -393,7 +389,7 @@ module.exports =
 
     POP_START_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be recreated."
-      zh: "自动伸缩组将重新创建。"
+      zh: "Auto Scaling 组将重新创建。"
 
     POP_STOP_CONFIRM_LIST_1:
       en: "EC2 instances will be stopped."
@@ -405,7 +401,7 @@ module.exports =
 
     POP_STOP_CONFIRM_LIST_2:
       en: "DB instances will be deleted final snapshot will be taken."
-      zh: "将删除的数据库实例将创建快照。"
+      zh: "为将删除的数据库实例创建快照。"
 
     POP_STOP_CONFIRM_LIST_2_SPAN:
       en: "Snapshots will be restored when the app is started."
@@ -413,11 +409,11 @@ module.exports =
 
     POP_STOP_CONFIRM_LIST_3:
       en: "Auto Scaling Group will be deleted."
-      zh: "自动伸缩组将被删除。"
+      zh: "Auto Scaling 组将被删除。"
 
     POP_STOP_CONFIRM_LIST_3_SPAN:
       en: "Auto Scaling Group will be recreated when the app is started."
-      zh: "自动伸缩组将会在 App 启动的时候重新创建。"
+      zh: "Auto Scaling 组将会在 App 启动的时候重新创建。"
 
     POP_START_WARNNING:
       en: "Warning"
@@ -429,7 +425,7 @@ module.exports =
 
     POP_START_MISSING_SNAPSHOT_2:
       en: "'s final snapshot is missing. This DB instance cannot be restored."
-      zh: "的最终 snapshot 不存在， 此 DBInstace 将无法恢复。"
+      zh: "的最终快照不存在， 此数据库实例将无法恢复。"
 
     POP_ESTIMATED_COST_WHEN_STOP:
       en: "Estimated Cost When Stopped"
@@ -604,12 +600,12 @@ module.exports =
       zh: "光滑的二次贝塞尔曲线"
 
     LBL_LINESTYLE_HIDE_SG:
-      en: "Hide SecurityGroup line"
-      zh: "隐藏SecurityGroup线"
+      en: "Hide Security Group line"
+      zh: "隐藏安全组连线"
 
     LBL_LINESTYLE_SHOW_SG:
-      en: "Show SecurityGroup line"
-      zh: "显示SecurityGroup线"
+      en: "Show Security Group line"
+      zh: "显示安全组连线"
 
     EXPERIMENT:
       en: "Experimental Feature!"

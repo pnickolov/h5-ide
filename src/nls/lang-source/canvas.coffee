@@ -6,7 +6,7 @@ module.exports =
 
     WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
-      zh: "卷和快照必须拖放到实例或AMI。"
+      zh: "卷和快照必须拖放到实例或 AMI。"
 
     ERR_SERVERGROUP_VOLUME:
       en: "Detach existing volume or snapshot of instance server group is not supported yet."
@@ -25,8 +25,8 @@ module.exports =
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
     WARN_NOTMATCH_SGP_VPC:
-      en: "Subnet Group must be dragged to a vpc."
-      zh: "子网组必须拖放到vpc中"
+      en: "Subnet Group must be dragged to a VPC."
+      zh: "子网组必须拖放到 VPC 中"
 
     WARN_NOTMATCH_DBINSTANCE_SGP:
       en: "DB Instance must be dragged to a subnet group."
@@ -34,7 +34,7 @@ module.exports =
 
     WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
-      zh: "Auto Scaling组必须拖放到子网。"
+      zh: "Auto Scaling 组必须拖放到子网。"
 
     WARN_NOTMATCH_ENI:
       en: "Network interfaces must be dragged to a subnet."
@@ -150,7 +150,7 @@ module.exports =
 
     CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE:
       en: "You are going to restore DB instance <span class='resource-tag'>%s</span> to a point in time. By deleting it, restored DB instance %s will be deleted too. Are you sure to continue?"
-      zh: "您将要恢复数据库实例 <span class='resource-tag'>%s</span> 到一个时间点，如果删除此数据库实例即将恢复的数据库实例也将被删除。要继续吗？"
+      zh: "您将要还原数据库实例 <span class='resource-tag'>%s</span> 到一个时间点，如果删除此数据库实例即将还原的数据库实例也将被删除。要继续吗？"
 
     ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -158,19 +158,19 @@ module.exports =
 
     CVS_TIP_EXPAND_W:
       en: "Increase Canvas Width"
-      zh: "增加画板宽度"
+      zh: "增加画布宽度"
 
     CVS_TIP_SHRINK_W:
       en: "Decrease Canvas Width"
-      zh: "减少画板宽度"
+      zh: "减少画布宽度"
 
     CVS_TIP_EXPAND_H:
       en: "Increase Canvas Height"
-      zh: "增加画板高度"
+      zh: "增加画布高度"
 
     CVS_TIP_SHRINK_H:
       en: "Decrease Canvas Height"
-      zh: "减少画板宽度"
+      zh: "减少画布宽度"
 
     CVS_TIP_ASG_DRAGGER:
       en: "Expand the group by drag-and-drop in other availability zone."

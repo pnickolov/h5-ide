@@ -70,7 +70,7 @@ module.exports =
 
     RES_TIT_AZ:
       en: "AZ & Subnet"
-      zh: "可用区 & 子网"
+      zh: "可用区和子网"
 
     RES_TIT_AMI:
       en: "Images"
@@ -90,7 +90,7 @@ module.exports =
 
     RES_TIT_RDS:
       en: "RDS & Snapshot"
-      zh: "RDS & 快照"
+      zh: "RDS和快照"
 
     RES_LBL_NEW_RDS_INSTANCE:
       en: "New DB Instance"
@@ -106,7 +106,7 @@ module.exports =
 
     RES_TIT_ELB_ASG:
       en: "Load Balancer and Auto Scaling"
-      zh: "负载均衡器和自动伸缩组"
+      zh: "负载均衡器和 Auto Scaling 组"
 
     RES_TIT_REMOVE_FROM_FAVORITE:
       en: "Remove from Favorite"
@@ -154,7 +154,7 @@ module.exports =
 
     RES_LBL_NEW_ASG:
       en: "Auto Scaling Group"
-      zh: "自动伸缩组"
+      zh: "Auto Scaling 组"
 
     RES_LBL_NEW_ASG_NO_CONFIG:
       en: "No Config"
@@ -198,7 +198,7 @@ module.exports =
 
     RES_TIP_DRAG_AZ:
       en: "Drag to the canvas to use this availability zone"
-      zh: "拖放到画板来使用这个可用区域"
+      zh: "拖放到画布来使用这个可用区域"
 
     RES_TIP_DRAG_NEW_VOLUME:
       en: "Drag onto an instance to attach a new volume."
@@ -206,11 +206,11 @@ module.exports =
 
     RES_TIP_DRAG_NEW_ELB:
       en: "Drag to the canvas to create a new load balancer."
-      zh: "拖放到画板来创建一个新负载均衡器。"
+      zh: "拖放到画布来创建一个新负载均衡器。"
 
     RES_TIP_DRAG_NEW_ASG:
       en: "Drag to the canvas to create a new auto scaling group."
-      zh: "拖放到画板来创建一个新Auto Scaling组。"
+      zh: "拖放到画布来创建一个新 Auto Scaling 组。"
 
     RES_TIP_DRAG_NEW_SUBNET:
       en: "Drag to an availability zone to create a new subnet."
@@ -226,15 +226,15 @@ module.exports =
 
     RES_TIP_DRAG_NEW_IGW:
       en: "Drag to the canvas to create a new internet gateway."
-      zh: "拖放到画板来创建一个新互联网网关。"
+      zh: "拖放到画布来创建一个新互联网网关。"
 
     RES_TIP_DRAG_NEW_VGW:
       en: "Drag to the canvas to create a new Virtual Private Gateway."
-      zh: "拖放到画板来创建一个新虚拟专用网关。"
+      zh: "拖放到画布来创建一个新虚拟专用网关。"
 
     RES_TIP_DRAG_NEW_CGW:
       en: "Drag to the canvas to create a new customer gateway."
-      zh: "拖放到画板来创建一个新客户网关。"
+      zh: "拖放到画布来创建一个新客户网关。"
 
     RES_TIP_DRAG_NEW_ENI:
       en: "Drag to a subnet to create a new network interface."
@@ -983,7 +983,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_F:
       en: 'Connect to instance, auto scaling group or network interface to create security group rule.'
-      zh: '连接到实例， 自动伸缩组或者网络接口来创建安全组规则。'
+      zh: '连接到实例， Auto Scaling 组或者网络接口来创建安全组规则。'
 
     PORT_TIP_G:
       en: 'Connect to instance to attach'
@@ -1017,7 +1017,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_STOP_ASG:
       en: "Any auto scaling group will be deleted when application is stopped."
-      zh: "App 停止的时候所有的自动伸缩组都将被删除。"
+      zh: "App 停止的时候所有的Auto Scaling 组都将被删除。"
 
     POP_CONFIRM_PROD_APP_WARNING_MSG:
       en: " is for PRODUCTION."
@@ -1033,7 +1033,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_CONFIRM_TERMINATE_PROD_APP_MSG:
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
-      zh: " 终止此 App 将导致服务不可用， 所有的自动伸缩组都将被删除。"
+      zh: " 终止此 App 将导致服务不可用， 所有的Auto Scaling 组都将被删除。"
 
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
@@ -1237,7 +1237,7 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_ACLRULE_TITLE_ADD:
       en: "Add Network ACL Rule"
-      zh: "添加访问控制表规则"
+      zh: "添加网络 ACL规则"
 
     POP_ACLRULE_LBL_RULE_NUMBER:
       en: "Rule Number"
@@ -1867,7 +1867,7 @@ VisualOps API. You cannot UNDO this action.'
 
     ASG_DELETED_IN_STOPPED_APP:
       en: "is deleted in stopped app. The auto scaling group will be created when the app is started."
-      zh: "在 App 停止的时候被删除了，自动伸缩组会在 App 启动的时候自动创建。"
+      zh: "在 App 停止的时候被删除了，Auto Scaling 组会在 App 启动的时候自动创建。"
 
     SET_UP_CIDR_BLOCK:
       en: "Set Up CIDR Block"

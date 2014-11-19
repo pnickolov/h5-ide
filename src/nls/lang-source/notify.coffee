@@ -18,7 +18,7 @@ module.exports =
 
     INFO_STATE_PARSE_REFRENCE_FAILED:
       en : "The states contains @references which cannot pass on. Validate to see details."
-      zh : "States 包含无效引用，点击验证查看详情"
+      zh : "States 包含无效引用，点击验证查看详情。"
 
     WARN_OPERATE_NOT_SUPPORT_YET:
       en : "This operation is not supported yet."
@@ -29,53 +29,53 @@ module.exports =
       zh : "Auto Scaling 组只能在初次运行时连接负载均衡器"
 
     WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
-      en : "The AMI(%s) is not exist now, try to use another AMI."
-      zh : "AMI（%s）不存在，请尝试使用其他AMI。"
+      en : "AMI %s is not available. Try to use another AMI."
+      zh : "AMI %s 不存在，请尝试使用其他 AMI。"
 
     WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT:
       en : "Attached volume has reached instance limit."
       zh : "此实例连接卷已达上限。"
 
     WARN_KEYPAIR_NAME_ALREADY_EXISTS:
-      en : "KeyPair with the same name already exists."
+      en : "Key pair with the same name already exists."
       zh : "密钥对名称已存在。"
 
     FAILED_TO_DELETE_KP:
-      en: "Failed to delete keypair, please try again later."
+      en: "Failed to delete key pair. Please try again later."
       zh: "删除密钥对失败，请稍后重试。"
 
     WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET:
-      en : "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
+      en : "Cannot auto assign CIDR block for subnets. Please manually update subnets' CIDR block before changing VPC's CIDR block."
       zh : "不能为子网自动分配 CIDR，在更改 VPC 的 CIDR 之前先请手动功能新子网的 CIDR "
 
     WARN_VPC_DOES_NOT_EXIST:
       en : "VPC does not exist."
-      zh : "VPC不存在。"
+      zh : "VPC 不存在。"
 
 
 
     INFO_APP_REFRESH_FINISH:
-      en: "Refresh resources for app( %s ) complete."
+      en: "Resources for app( %s ) are refreshed."
       zh: "完成App( %s )的资源刷新。"
 
     INFO_APP_REFRESH_FAILED:
-      en: "Refresh resources for app( %s ) falied, please click refresh tool button to retry."
+      en: "Refreshing resources for app( %s ) falied. Please try again."
       zh: "刷新App( %s )的资源失败, 请点击刷新按钮来重试。"
 
     INFO_APP_REFRESH_START:
-      en: "Refresh resources for app( %s ) start ..."
+      en: "Refreshing resources for app( %s )..."
       zh: "开始刷新App( %s )的资源 ..."
 
     ERR_CONVERT_CLOUDFORMATION:
-      en: "Convert to stack json to CloudFormation format error"
-      zh: "转换成CloudFormation出错"
+      en: "Fail to convert to CloudFormation format"
+      zh: "转换成 CloudFormation 出错"
 
     ERROR_CANT_DUPLICATE:
-      en: "Cannot duplicate the stack, please retry."
+      en: "Fail to duplicate stack. Please try again."
       zh: "复制 Stack 失败，请重试。"
 
     ERROR_FAILED_LOAD_AWS_DATA:
-      en: "Error while loading AWS data, please try again later."
+      en: "Fail to load AWS data. Please try again later."
       zh: "加载 AWS 数据失败，请稍后重试。"
 
     ERROR_FAILED_START:
@@ -107,11 +107,11 @@ module.exports =
       zh: "%s %s 失败。"
 
     ERR_SAVE_FAILED:
-      en: "Save stack %s failed, please check and save it again."
+      en: "Fail to save stack %s. Please try again."
       zh: "保存模块 %s 失败，请您检查并重新保存。"
 
     ERR_SAVE_FAILED_NAME:
-      en: "The name of the stack has already been used, please change to a new one."
+      en: "The stack name has already been used. Please change to a new one."
       zh: "已存在相同名字的模块，请输入一个新的名字后重新保存。"
 
     ERR_SAVE_SUCCESS:
@@ -123,12 +123,12 @@ module.exports =
       zh: "删除 %s 成功。"
 
     ERR_DEL_STACK_FAILED:
-      en: "Delete stack %s failed."
+      en: "Fail to delete stack %s."
       zh: "删除 %s 失败。"
 
 
     FAILED_TO_DELETE_DHCP:
-      en: "%s DhcpOptions failed to delete because of: %s"
+      en: "%s DHCP Options failed to delete because of: %s"
       zh: "DHCP 选项 %s 删除失败，失败原因：%s"
 
     DELETE_SUCCESSFULLY:
@@ -140,7 +140,7 @@ module.exports =
       zh: "DHCP 选项创建成功"
 
     YOU_MUST_DOWNLOAD_THE_KEYPAIR:
-      en: "You must download the keypair."
+      en: "Make sure you have downloaded the key pair."
       zh: "您必须下载密钥对。"
 
     XXX_IS_DELETED:
@@ -290,8 +290,8 @@ module.exports =
       zh: "无法获取选中的( %s ) AMI的信息，请拖拽其他的AMI。"
 
     THE_ADDING_RULE_ALREADY_EXIST:
-      en: "The adding rule already exist."
-      zh: "规则已存在。"
+      en: "The same rule already exists."
+      zh: "该规则已存在。"
 
     UNABLE_TO_LOAD_COMMUNITY_AMIS:
       en: "Unable to load community AMIs"
@@ -302,27 +302,27 @@ module.exports =
       zh: "导出 AWS CloudFormation 模板失败，（错误码：%s）"
 
     RELOAD_STATE_INVALID_REQUEST:
-        en: "Sorry, but the request is not valid."
+        en: "Sorry, but the request is invalid."
         zh: "非法请求。"
 
     RELOAD_STATE_NETWORKERROR:
-      en: "Network error, please try again later."
+      en: "Network error. Please try again later."
       zh: "网络错误，请稍后重试。"
 
     RELOAD_STATE_INTERNAL_SERVER_ERROR:
-      en: "Sorry, Internal server error, please try again later."
+      en: "Sorry, internal server error. Please try again later."
       zh: "内部服务器错误，请稍后重试。"
 
     RELOAD_STATE_SUCCESS:
-      en: "States reloaded successfully!"
-      zh: "States 重新加载成功！"
+      en: "States reloaded successfully."
+      zh: "States 重新加载成功。"
 
     RELOAD_STATE_NOT_READY:
-      en: "App Agent is not ready yet, Please try again later."
-      zh: "App Agent 还没准备好，请稍后重试。"
+      en: "OpsAgent is not ready yet. Please try again later."
+      zh: "OpsAgent 还没准备好，请稍后重试。"
 
     FAILA_TO_RUN_STACK_BECAUSE_OF_XXX:
-      en: "Failed to run your stack %s because of %s"
+      en: "Fail to run your stack %s because of %s"
       zh: "Stack %s 运行失败，失败原因：%s"
 
     UPDATED_FULLNAME_SUCCESS:
@@ -330,5 +330,5 @@ module.exports =
       zh: "全名更新成功"
 
     UPDATED_FULLNAME_FAIL:
-      en: "Failed to update full name, please try again later."
+      en: "Fail to update full name. Please try again later."
       zh: "全名更新失败，请稍后重试。"

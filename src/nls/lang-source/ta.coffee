@@ -52,7 +52,7 @@ module.exports =
 
     ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
-      zh: "没有实例或自动伸缩组被关联到负载均衡器 <span class='validation-tag tag-elb'>%s</span> 上。"
+      zh: "没有实例或Auto Scaling 组被关联到负载均衡器 <span class='validation-tag tag-elb'>%s</span> 上。"
 
     WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
@@ -80,7 +80,7 @@ module.exports =
 
     ERROR_ELB_RULE_NOT_OUTBOUND_TO_INSTANCE_LISTENER:
       en: "Load balancer <span class='validation-tag tag-elb'>%s</span> should allow outbound traffic towards its backend instance or auto-scaling group through Instance Protocol: %s."
-      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 应该允许向关联的实例或自动伸缩组流向的协议 %s 的出口流量。"
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 应该允许向关联的实例或Auto Scaling 组流向的协议 %s 的出口流量。"
 
     ERROR_ELB_RULE_INSTANCE_NOT_OUTBOUND_FOR_ELB_LISTENER:
       en: "%s <span class='validation-tag tag-elb'>%s</span> should allow inbound traffic towards %s according to %s's Instance Listener Protocol."
@@ -120,11 +120,11 @@ module.exports =
     # ASG
     ERROR_ASG_HAS_NO_LAUNCH_CONFIG:
       en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
-      zh:"自动伸缩组 <span class='validation-tag tag-asg'>%s</span> 没有启动配置。"
+      zh:"Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 没有启动配置。"
 
     WARNING_ELB_HEALTH_NOT_CHECK:
       en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
-      zh: "自动伸缩组 <span class='validation-tag tag-asg'>%s</span> 连接到的负载均衡器的健康检查没有被启用。"
+      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 连接到的负载均衡器的健康检查没有被启用。"
 
     ERROR_HAS_EIP_NOT_HAS_IGW:
       en: "VPC has instance with Elastic IP must have an Internet Gateway."

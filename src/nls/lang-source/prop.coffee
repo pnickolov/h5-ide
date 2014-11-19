@@ -133,7 +133,7 @@ module.exports =
 
     INSTANCE_TENANCY:
       en: "Tenancy"
-      zh: "租用"
+      zh: "硬件租赁"
 
     INSTANCE_TENANCY_DEFAULT:
       en: "Default"
@@ -189,7 +189,7 @@ module.exports =
 
     AZ_AND_SUBNET:
       en: "AZ & subnet"
-      zh: "AZ 和 子网"
+      zh: "可用区和子网"
 
 
     OG_NO_OPTION_GROUP:
@@ -510,7 +510,7 @@ module.exports =
 
     STACK_TIT_ACL:
       en: "Network ACL"
-      zh: "访问控制表"
+      zh: "网络 ACL"
 
     STACK_TIT_SNS:
       en: "SNS Topic Subscription"
@@ -558,11 +558,11 @@ module.exports =
 
     STACK_ACL_TIP_DETAIL:
       en: "Go to Network ACL Details"
-      zh: "查看访问控制表详情"
+      zh: "查看网络 ACL详情"
 
     STACK_BTN_CREATE_NEW_ACL:
       en: "Create new Network ACL..."
-      zh: "创建新的访问控制表..."
+      zh: "创建新的网络 ACL..."
 
     APP_SNS_NONE:
       en: "This app has no SNS Subscription"
@@ -586,11 +586,11 @@ module.exports =
 
     VPC_DETAIL_LBL_TENANCY:
       en: "Tenancy"
-      zh: "租用"
+      zh: "硬件租赁"
 
     VPC_DETAIL_TENANCY_LBL_DEFAULT:
       en: "Default"
-      zh: "缺省"
+      zh: "默认"
 
     VPC_DETAIL_TENANCY_LBL_DEDICATED:
       en: "Dedicated"
@@ -666,7 +666,7 @@ module.exports =
 
     VPC_APP_DEFAULT_ACL:
       en: "Default Network ACL"
-      zh: "缺省访问控制表"
+      zh: "缺省网络 ACL"
 
     VPC_DHCP_OPTION_SET_ID:
       en: "DHCP Options Set ID"
@@ -722,11 +722,11 @@ module.exports =
 
     SUBNET_TIT_ASSOC_ACL:
       en: "Associated Network ACL"
-      zh: "相关访问控制表"
+      zh: "相关网络 ACL"
 
     SUBNET_BTN_CREATE_NEW_ACL:
       en: "Create new Network ACL..."
-      zh: "创建新的访问控制表..."
+      zh: "创建新的网络 ACL..."
 
     SUBNET_ACL_LBL_RULE:
       en: "rules"
@@ -742,11 +742,11 @@ module.exports =
 
     SUBNET_ACL_TIP_DETAIL:
       en: "Go to Network ACL Details"
-      zh: "查看访问控制表详情"
+      zh: "查看网络 ACL 详情"
 
     SUBNET_APP_ID:
       en: "Subnet ID"
-      zh: "子网标识"
+      zh: "子网 ID"
 
     SUBNET_APP_STATE:
       en: "State"
@@ -758,15 +758,15 @@ module.exports =
 
     SUBNET_APP_AVAILABLE_IP:
       en: "Available IPs"
-      zh: "可用IP"
+      zh: "可用 IP"
 
     SUBNET_APP_VPC_ID:
       en: "VPC ID"
-      zh: "VPC标识"
+      zh: "VPC ID"
 
     SUBNET_APP_RT_ID:
       en: "Route Table ID"
-      zh: "路由表标识"
+      zh: "路由表 ID"
 
     VPC_TIP_EG_10_0_0_0_16:
       en: "e.g. 10.0.0.0/16"
@@ -786,7 +786,7 @@ module.exports =
 
     VPC_TIP_ENTER_UP_TO_4_NETBIOS:
       en: "Enter up to 4 NetBIOS server IP addresses"
-      zh: "输入最多4个NetBIOS服务器地址"
+      zh: "输入最多4个 NetBIOS 服务器地址"
 
     VPC_TIP_EG_172_16_16_16:
       en: "e.g. 172.16.16.16"
@@ -926,7 +926,7 @@ module.exports =
 
     ACL_BTN_CREATE_NEW_RULE:
       en: "Create new Network ACL Rule"
-      zh: "创建新的访问控制表"
+      zh: "创建新的网络 ACL"
 
     ACL_RULE_SORT_BY:
       en: "Sort by"
@@ -986,7 +986,7 @@ module.exports =
 
     ACL_APP_ID:
       en: "Network ACL ID"
-      zh: "访问控制表标识"
+      zh: "网络 ACL标识"
 
     ACL_APP_IS_DEFAULT:
       en: "Default"
@@ -1554,11 +1554,11 @@ module.exports =
 
     ASG_SUMMARY:
       en: "Auto Scaling Group Summary"
-      zh: "自动伸缩组摘要"
+      zh: "Auto Scaling 组摘要"
 
     ASG_DETAILS:
       en: "Auto Scaling Group Details"
-      zh: "自动伸缩组配置"
+      zh: "Auto Scaling 组配置"
 
     ASG_NAME:
       en: "Name"
@@ -1622,7 +1622,7 @@ module.exports =
 
     ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
-      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, 自动伸缩组将此实例标记为不健康。 且一旦一个实例被标记为不健康, 自动伸缩组将结束此实例。"
+      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, Auto Scaling 组将此实例标记为不健康。 且一旦一个实例被标记为不健康, Auto Scaling 组将结束此实例。"
 
     ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -1866,7 +1866,7 @@ module.exports =
 
     ASG_ARN:
       en: "Auto Scaling Group ARN"
-      zh: "自动伸缩组 ARN"
+      zh: "Auto Scaling 组 ARN"
 
     LC_TITLE:
       en: "Launch Configuation"
@@ -1974,15 +1974,15 @@ module.exports =
 
     DBINSTANCE_TIT_DETAIL:
       en: "DB Instance Detail"
-      zh: "数据库实例详细"
+      zh: "数据库实例详情"
 
     DBINSTANCE_APP_DBINSTANCE_ID:
       en: "DB Instance Identifier"
-      zh: "数据库实例标识"
+      zh: "数据库实例标识符"
 
     ENDPOINT:
       en: "Endpoint"
-      zh: "终点"
+      zh: "终端节点"
 
     DBINSTANCE_STATUS:
       en: "Status"
@@ -1998,7 +1998,7 @@ module.exports =
 
     DBINSTANCE_CLASS:
       en: "DB Instance Class"
-      zh: "数据库实例等级"
+      zh: "数据库实例类"
 
     DBINSTANCE_IOPS:
       en: "IOPS"
@@ -2090,18 +2090,18 @@ module.exports =
 
     DBINSTANCE_DB_INSTANCE_CLASS:
       en: "DB Instance Class"
-      zh: "数据库实例等级"
+      zh: "数据库实例类"
 
     DBINSTANCE_SOMETHING_ERROR:
-      en: "Something Error."
-      zh: "出错了。"
+      en: "Some error has occurred. Please try again."
+      zh: "出错了。请重试。"
 
     DBINSTANCE_OPTION_GROUP:
       en: "Option Group"
       zh: "选项组"
 
     DBINSTANCE_SUBNETGROUP_NOT_SETUP:
-      en: "Subnet Group %s is not correctly set up yet. Assign %s to at lease 2 availability zones."
+      en: "Subnet Group %s is not correctly set up yet. Assign %s to at least 2 availability zones."
       zh: "子网组设置不正确, 分配 %s 至少两个可用区域"
 
     DBINSTANCE_BACKUP_MAINTENANCE:
@@ -2114,7 +2114,7 @@ module.exports =
 
     DBINSTANCE_LAST_RESTORE:
       en: "Lastest Restore Time"
-      zh: "最新恢复时间"
+      zh: "最新还原时间"
 
     DBINSTANCE_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
@@ -2274,7 +2274,7 @@ module.exports =
 
     DBINSTANCE_NETWORK_AZ_DEPLOYMENT:
       en: "Network & AZ Deployment"
-      zh: "网络 & 可用区部署"
+      zh: "网络和可用区部署"
 
     DBINSTANCE_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"
@@ -2417,7 +2417,7 @@ module.exports =
 
     ASG_ADJUST_TOOLTIP_EXACT:
       en: "Change the current capacity of your Auto Scaling group to the exact value specified."
-      zh: "修改自动伸缩组的当前值为您指定的值"
+      zh: "修改Auto Scaling 组的当前值为您指定的值"
 
     ASG_ADJUST_TOOLTIP_PERCENT:
       en: "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
@@ -2729,11 +2729,11 @@ module.exports =
 
     VPC_SELECTING_DEDICATED_DESC:
       en: "Selecting 'Dedicated' forces all instances launched into this VPC to run on single-tenant hardware."
-      zh: "选择'专用'将强制所有在此 VPC 的实例运行在单租户硬件中"
+      zh: "选择“专用“将强制所有此 VPC 内的实例运行在单租户硬件中。"
 
     VPC_SELECTING_DEDICATED_LINK_TEXT:
       en: "Additional changes will apply."
-      zh: "将应用额外更改"
+      zh: "这将会产生额外费用。"
 
     VPN_STACK_STATIC:
       en: "Static"
@@ -3069,7 +3069,7 @@ module.exports =
 
     LBL_REVIEW_CHANGES_SAVE:
       en: "Review Changes & Save"
-      zh: "检查更改 & 保存"
+      zh: "检查更改并保存"
 
     LBL_APPLYING:
       en: "Applying..."

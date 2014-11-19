@@ -72,7 +72,7 @@
 
 <!-- {{toolbar.BtnLinestyle}} -->
 <div class="selectbox btn-toolbar toolbar-line-style seperator">
-  <button class="selection tooltip" data-tooltip="SecurityGroup Line Style"></button>
+  <button class="selection tooltip" data-tooltip="{{ i18n "TOOLBAR.TIP_SG_LINE_STYLE" }}"></button>
   <ul class="dropdown">
     <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOLBAR.LBL_LINESTYLE_STRAIGHT" }}</span></li>
     <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOLBAR.LBL_LINESTYLE_ELBOW" }}</span></li>

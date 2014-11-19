@@ -579,6 +579,10 @@ module.exports =
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
       zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作。 您仍然可以管理已存在的 App。 点击此处阅读详细说明。"
 
+    TIP_SG_LINE_STYLE:
+      en: "SecurityGroup Line Style"
+      zh: "安全组连线类型"
+
     TIP_LINESTYLE:
       en: "Line Style"
       zh: "连线类型"
@@ -666,4 +670,3 @@ module.exports =
     WHAT_HAVE_BEEN_CHANGED:
       en: "What have been changed:"
       zh: "已发生的更改:"
-

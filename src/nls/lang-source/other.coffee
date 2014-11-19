@@ -1635,6 +1635,66 @@ VisualOps API. You cannot UNDO this action.'
       en: "Image Size"
       zh: "映像大小"
 
+    BUBBLE_IMAGELOCATION:
+      en: "Image Location"
+      zh: "镜像地址"
+
+    BUBBLE_IMAGESTATE:
+      en: "Image State"
+      zh: "镜像状态"
+
+    BUBBLE_IMAGEOWNERID:
+      en: "Image Owner ID"
+      zh: "镜像所有者 ID"
+
+    BUBBLE_ISPUBLIC:
+      en: "Is Public"
+      zh: "是否公开"
+
+    BUBBLE_IMAGETYPE:
+      en: "Image Type"
+      zh: "镜像类型"
+
+    BUBBLE_SRIOVNETSUPPORT:
+      en: "SR-IOV Net Support"
+      zh: "SR-IOV 网络支持"
+
+    BUBBLE_NAME:
+      en: "Name"
+      zh: "名称"
+
+    BUBBLE_DESCRIPTION:
+      en: "Description"
+      zh: "描述"
+
+    BUBBLE_VIRTUALIZATIONTYPE:
+      en: "Virtualization Type"
+      zh: "虚拟类型"
+
+    BUBBLE_ID:
+      en: "ID"
+      zh: "ID"
+
+    BUBBLE_IMAGESIZE:
+      en: "Image Size"
+      zh: "镜像大小"
+
+    BUBBLE_OSTYPE:
+      en: "OS Type"
+      zh: "操作系统类型"
+
+    BUBBLE_OSFAMILY:
+      en: "OS Family"
+      zh: "操作系统组"
+
+    BUBBLE_PLATFORM:
+      en: "Platform"
+      zh: "平台"
+
+    BUBBLE_IMAGEOWNERALIAS:
+      en: "Image Owner Alias"
+      zh: "镜像所有者简称"
+
     ESTIMATED_AWS_COST:
       en: "Estimated AWS Cost"
       zh: "估计 AWS 费用"
@@ -1927,6 +1987,9 @@ VisualOps API. You cannot UNDO this action.'
       en: "Manage SSL Certificate in %s"
       zh: "管理%s区的 SSL 证书"
 
+    BgenUBBLE_XXX:
+      en: ""
+      zh: ""
 
 
 

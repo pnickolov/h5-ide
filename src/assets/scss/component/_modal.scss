@@ -114,6 +114,10 @@
 	cursor     : move;
 	display    : block;
 	color      : #999;
+  	width: 98%;
+  	text-overflow: ellipsis;
+  	overflow: hidden;
+  	white-space: nowrap;
 }
 .modal-box.panel .modal-header h3{
   cursor: default;

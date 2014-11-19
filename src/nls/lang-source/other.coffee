@@ -1325,7 +1325,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_TITLE:
       en: "Launching your app..."
-      zh: "正在启动 App ..."
+      zh: "正在启动您的App..."
 
     PROC_RLT_DONE_TITLE:
       en: "Everything went smoothly!"
@@ -1990,6 +1990,3 @@ VisualOps API. You cannot UNDO this action.'
     BgenUBBLE_XXX:
       en: ""
       zh: ""
-
-
-

@@ -33,7 +33,7 @@ module.exports =
 
     AUTOMATICALLY_CREATED_SG_FOR_LOAD_BALANCER:
       en: "Automatically created SG for load-balancer"
-      zh: "为负责均衡器自动创建的安全组"
+      zh: "Automatically created SG for load-balancer"
 
     VALIDATION_IP_IN_SUBNET_REVERSED_RANGE:
       en: "This IP address is in subnet's reserved address range"
@@ -57,6 +57,3 @@ module.exports =
     DESERIALIZE_VISITOR_GROUP_DESCRIPTION:
       en: "default VPC security group"
       zh: "默认的 VPC 安全组"
-
-
-

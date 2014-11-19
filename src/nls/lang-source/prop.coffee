@@ -1882,7 +1882,7 @@ module.exports =
 
     RT_ASSOCIATION:
       en: "This is an association of "
-      zh: "这是一条路由表关联线从"
+      zh: "路由表关联线: "
 
     RT_ASSOCIATION_TO:
       en: "to"
@@ -2816,8 +2816,8 @@ module.exports =
       zh: "创建快照"
 
     SNAPSHOT_SET_NAME:
-        en: "Snapshot Name"
-        zh: "快照名称"
+      en: "Snapshot Name"
+      zh: "快照名称"
 
     SNAPSHOT_SET_NAME_TIP:
       en: "Enter the name of the snapshot that you will create."

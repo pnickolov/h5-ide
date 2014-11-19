@@ -1,4 +1,4 @@
-define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'ami_service', "CloudResources" ], ( constant, $, MC, lang, ApiRequest, amiService, CloudResources ) ->
+define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudResources" ], ( constant, $, MC, lang, ApiRequest, CloudResources ) ->
 
 	getAZAryForDefaultVPC = (elbUID) ->
 
@@ -124,6 +124,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'ami_serv
 				callback = () ->
 
 			# get current all using ami
+			tipInfoAry = []
 			amiAry = []
 			instanceAMIMap = {}
 			_.each MC.canvas_data.component, (compObj) ->
@@ -144,90 +145,40 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'ami_serv
 
 			# get ami info from aws
 			if amiAry.length
+				cr = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
 
-				currentRegion = MC.canvas_data.region
-				amiService.DescribeImages {sender: this},
-					$.cookie( 'usercode' ),
-					$.cookie( 'session_id' ),
-					currentRegion, amiAry, null, null, null, (result) ->
+				failure = ()-> callback(null)
+				success = ()->
+					invalids = []
+					for id in amiAry
+						if cr.isInvalidAmiId( id )
+							invalids.push id
 
-						tipInfoAry = []
+					if not invalids.length then return callback(null)
 
-						if result.is_error and result.aws_error_code is 'InvalidAMIID.NotFound'
-							# get current stack all aws ami
-							awsAMIIdAryStr = result.error_message
-							awsAMIIdAryStr = awsAMIIdAryStr.replace("The image ids '[", "").replace("]' do not exist", "")
-							.replace("The image id '[", "").replace("]' does not exist", "")
+					for amiId in invalids
+						for instanceUID in instanceAMIMap[ amiId ] || []
+							instanceObj = MC.canvas_data.component[instanceUID]
 
-							awsAMIIdAry = awsAMIIdAryStr.split(',')
-							awsAMIIdAry = _.map awsAMIIdAry, (awsAMIId) ->
-								return $.trim(awsAMIId)
+							if instanceObj.type is constant.RESTYPE.LC
+								infoTagType = 'lc'
+							else
+								infoTagType = "instance"
 
-							if not awsAMIIdAry.length
-								callback(null)
-								return null
+							tipInfoAry.push({
+								level : constant.TA.ERROR
+								uid   : instanceUID
+								info  : sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, instanceObj.type, infoTagType, instanceObj.name, amiId
+							})
 
-							_.each amiAry, (amiId) ->
-								if amiId in awsAMIIdAry
-									# not exist in stack
-									instanceUIDAry = instanceAMIMap[amiId]
-									_.each instanceUIDAry, (instanceUID) ->
-										instanceObj = MC.canvas_data.component[instanceUID]
-										instanceType = instanceObj.type
-										instanceName = instanceObj.name
+					if tipInfoAry.length
+						callback(tipInfoAry)
+						console.log(tipInfoAry)
+					else
+						callback(null)
 
-										infoObjType = 'Instance'
-										infoTagType = 'instance'
-										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
-											infoTagType = 'lc'
-										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
-										tipInfoAry.push({
-											level: constant.TA.ERROR,
-											info: tipInfo,
-											uid: instanceUID
-										})
-										null
-								null
-
-						else if not result.is_error
-							descAMIIdAry = []
-							descAMIAry = result.resolved_data
-							if _.isArray descAMIAry
-								_.each descAMIAry, (amiObj) ->
-									descAMIIdAry.push(amiObj.imageId)
-									null
-							_.each amiAry, (amiId) ->
-								if amiId not in descAMIIdAry
-									# not exist in stack
-									instanceUIDAry = instanceAMIMap[amiId]
-									_.each instanceUIDAry, (instanceUID) ->
-										instanceObj = MC.canvas_data.component[instanceUID]
-										instanceType = instanceObj.type
-										instanceName = instanceObj.name
-
-										infoObjType = 'Instance'
-										infoTagType = 'instance'
-										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
-											infoTagType = 'lc'
-										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
-										tipInfoAry.push({
-											level: constant.TA.ERROR,
-											info: tipInfo,
-											uid: instanceUID
-										})
-										null
-								null
-
-						# return error valid result
-						if tipInfoAry.length
-							callback(tipInfoAry)
-							console.log(tipInfoAry)
-						else
-							callback(null)
-
-				return null
+				cr.fetchAmis( amiAry ).then success, failure
+				return
 
 			else
 				callback(null)

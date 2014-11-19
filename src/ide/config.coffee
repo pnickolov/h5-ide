@@ -164,7 +164,6 @@ require.config {
     #############################################
     'base_model'             : 'service/base_model'
     'result_vo'              : 'service/result_vo'
-    'ami_service'            : 'service/ami_service'
     'instance_service'       : 'service/instance_service'
 
     #############################################
@@ -274,7 +273,6 @@ require.config {
     "service/service" : [
       'base_model'
       'result_vo'
-      'ami_service'
       'instance_service'
     ]
 

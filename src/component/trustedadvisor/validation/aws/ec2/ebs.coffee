@@ -52,37 +52,23 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', "CloudResources" ], ( c
 						if not cr.get(id)
 							missingIds.push id
 
-					if not missingIds.length
-						callback(null)
-						return
+					if not missingIds.length then return callback(null)
 
 					for snapshotId in missingIds
 
-						instanceUIDAry = snaphostMap[snapshotId]
-						_.each instanceUIDAry, (instanceUID) ->
-							instanceObj = MC.canvas_data.component[instanceUID]
-							instanceType = instanceObj.type
-							instanceName = instanceObj.name
+						for instanceUID in snaphostMap[snapshotId] || []
+							instanceObj  = MC.canvas_data.component[instanceUID]
 
-							infoObjType = 'Instance'
-							infoTagType = 'instance'
-
-							instanceId = null
-
-							if instanceType is constant.RESTYPE.LC
-								infoObjType = 'Launch Configuration'
-								infoTagType = 'lc'
+							if instanceObj.type is constant.RESTYPE.LC
 								instanceId = instanceObj.resource.LaunchConfigurationARN
 							else
 								instanceId = instanceObj.resource.InstanceId
 
 							if not instanceId
-
-								tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, infoObjType, instanceName
 								tipInfoAry.push({
-									level: constant.TA.ERROR,
-									info: tipInfo,
-									uid: instanceUID
+									level : constant.TA.ERROR
+									uid   : instanceUID
+									info  : sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_SNAPSHOT, snapshotId, instanceObj.type, instanceObj.name
 								})
 
 							null

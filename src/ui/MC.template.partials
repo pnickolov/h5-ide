@@ -976,7 +976,7 @@ Additional Notes and Questions
     <div class="payment-wrapper-right">
         <div class="estimate clearfix">
             <div class="title">{{i18n "ESTIMATED_AWS_COST"}}</div>
-            <div class="price" id="label-total-fee"><b>{{i18n "MONEY_SYMBOL"}}{{total_fee}}</b> / month</div>
+            <div class="price" id="label-total-fee"><b>{{i18n "MONEY_SYMBOL"}}{{total_fee}}</b>{{i18n "PER_MONTH"}}</div>
         </div>
         {{#ifCond paymentState "past_due"}}
             <div class="payment-warning">

@@ -1456,7 +1456,9 @@ function program10(depth0,data) {
     + "</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>"
     + escapeExpression(helpers.i18n.call(depth0, "MONEY_SYMBOL", {hash:{},data:data}))
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        ";
+    + "</b>"
+    + escapeExpression(helpers.i18n.call(depth0, "PER_MONTH", {hash:{},data:data}))
+    + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n\n</div>";

@@ -8,11 +8,10 @@ define [ 'component/stateeditor/model',
          'component/stateeditor/template',
          'component/stateeditor/validate',
          'constant',
-         'instance_model',
          'component/stateeditor/lib/markdown',
          'ApiRequestOs'
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, instance_model, Markdown, ApiRequest) ->
+], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest) ->
 
     StateClipboard = []
 

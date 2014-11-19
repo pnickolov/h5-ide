@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model', 'kp_upload', 'Design', 'JsonExporter' ], ( PropertyView, template, lang, instance_model, kp_upload, Design, JsonExporter )->
+define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'kp_upload', 'Design', 'JsonExporter' ], ( PropertyView, template, lang, ApiRequest, kp_upload, Design, JsonExporter )->
 
     download = JsonExporter.download
 
@@ -151,24 +151,21 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model'
             false
 
         openSysLogModal : () ->
-
             instanceId = @model.get('instanceId')
-
-            that = this
-            currentRegion = Design.instance().region()
-            instance_model.GetConsoleOutput {sender: that}, $.cookie('usercode'), $.cookie('session_id'), currentRegion, instanceId
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: instanceId,
                 log_content: ''
             }, true
 
-            that.off('EC2_INS_GET_CONSOLE_OUTPUT_RETURN').on 'EC2_INS_GET_CONSOLE_OUTPUT_RETURN', (result) ->
-
-                if !result.is_error
-                    console.log(result.resolved_data)
-                that.refreshSysLog(result.resolved_data)
-
+            that = this
+            ApiRequest("ins_GetConsoleOutput",{
+                region      : Design.instance().region()
+                instance_id : instanceId
+            }).then ( data )->
+                that.refreshSysLog( data.GetConsoleOutputResponse )
+            , ()->
+                that.refreshSysLog()
             return false
 
         refreshSysLog : (result) ->

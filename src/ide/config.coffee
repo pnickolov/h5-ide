@@ -163,7 +163,6 @@ require.config {
     # deprecated service        # Merge in deploy
     #############################################
     'base_model'             : 'service/base_model'
-    'instance_model'         : 'service/instance_model'
     'result_vo'              : 'service/result_vo'
     'ami_service'            : 'service/ami_service'
     'instance_service'       : 'service/instance_service'
@@ -274,7 +273,6 @@ require.config {
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
     "service/service" : [
       'base_model'
-      'instance_model'
       'result_vo'
       'ami_service'
       'instance_service'

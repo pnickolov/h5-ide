@@ -3,14 +3,13 @@
 #############################
 
 define [ '../base/model',
-    'instance_model',
     'instance_service'
     'constant',
     'i18n!/nls/lang.js'
     'Design'
     'CloudResources'
 
-], ( PropertyModel, instance_model, instance_service, constant, lang, Design, CloudResources ) ->
+], ( PropertyModel, instance_service, constant, lang, Design, CloudResources ) ->
 
     AppInstanceModel = PropertyModel.extend {
 

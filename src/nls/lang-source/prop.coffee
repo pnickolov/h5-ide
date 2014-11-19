@@ -478,7 +478,7 @@ module.exports =
 
     STACK_LBL_ID:
       en: "Stack ID"
-      zh: "Stack标识"
+      zh: "Stack ID"
 
     APP_LBL_ID:
       en: "App ID"

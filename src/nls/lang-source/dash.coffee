@@ -273,11 +273,11 @@ module.exports =
 
     DASH_LBL_PRIVATE_IP_ADDRESS:
       en: "Private Ip Address"
-      zh: "内网IP地址"
+      zh: "内网 IP 地址"
 
     DASH_LBL_AUTOSCALING_GROUP_NAME:
       en: "Auto Scaling Group Name"
-      zh: "Auto Scaling组名"
+      zh: "Auto Scaling 组名"
 
     DASH_LBL_AUTOSCALING_GROUP_ARN:
       en: "Auto Scaling Group ARN"
@@ -332,12 +332,12 @@ module.exports =
       zh: "租赁"
 
     DASH_LBL_VGW_ID:
-      en: "VGW Id"
-      zh: "VGW Id"
+      en: "VGW ID"
+      zh: "VGW ID"
 
     DASH_LBL_CGW_ID:
-      en: "CGW Id"
-      zh: "CGW Id"
+      en: "CGW ID"
+      zh: "CGW ID"
 
     DASH_LBL_TYPE:
       en: "Type"
@@ -735,3 +735,12 @@ module.exports =
     DASH_LBL_CONNECT:
       en: "Connect"
       zh: "连接"
+
+    DASH_TIP_DUPLICATE_STACK:
+      en: "Duplicate Stack"
+      zh: "复制 Stack"
+
+    DASH_TIP_DEL_STACK:
+      en: "Delete Stack"
+      zh: "删除 Stack"
+

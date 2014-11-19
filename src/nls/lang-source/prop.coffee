@@ -2810,6 +2810,11 @@ module.exports =
     ###
     COMPONENT:
     ###
+
+    CREATE_SNAPSHOT:
+      en: "Create Snapshot"
+      zh: "创建快照"
+
     SNAPSHOT_SET_NAME:
         en: "Snapshot Name"
         zh: "快照名称"
@@ -2937,6 +2942,26 @@ module.exports =
     LBL_DELETE:
       en: "Delete"
       zh: "删除"
+
+    LBL_NAME:
+      en: "Name"
+      zh: "名称"
+
+    LBL_CAPACITY:
+      en: "Capacity"
+      zh: "大小"
+
+    LBL_STATUS:
+      en: "Status"
+      zh: "状态"
+
+    LBL_DETAIL:
+      en: "Detail"
+      zh: "详情"
+
+    LBL_DESC:
+      en: "Description"
+      zh: "描述"
 
     LBL_FILTER:
       en: "Filter: "

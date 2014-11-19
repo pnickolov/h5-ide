@@ -280,19 +280,19 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Create Snapshot'
+                    name: lang.PROP.CREATE_SNAPSHOT
                 }
                 {
                     icon: 'duplicate'
                     type: 'duplicate'
                     disabled: true
-                    name: 'Duplicate'
+                    name: lang.PROP.LBL_DUPLICATE
                 }
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: 'Delete'
+                    name: lang.PROP.LBL_DELETE
                 }
                 {
                     icon: 'refresh'
@@ -304,24 +304,24 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
                 {
                     sortable: true
                     width: "20%" # or 40%
-                    name: 'Name'
+                    name: lang.PROP.LBL_NAME
                 }
                 {
                     sortable: true
                     rowType: 'number'
                     width: "10%" # or 40%
-                    name: 'Capicity'
+                    name: lang.PROP.LBL_CAPACITY
                 }
                 {
                     sortable: true
                     rowType: 'datetime'
                     width: "40%" # or 40%
-                    name: 'status'
+                    name: lang.PROP.LBL_STATUS
                 }
                 {
                     sortable: false
                     width: "30%" # or 40%
-                    name: 'Description'
+                    name: lang.PROP.LBL_DESC
                 }
             ]
 

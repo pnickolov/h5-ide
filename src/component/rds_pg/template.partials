@@ -240,7 +240,7 @@
                         <select name="{{ParameterName}}" class="select3" {{#unless IsModifiable}}disabled="disabled"{{/unless}}>
                             {{#unless ParameterValue}}<option value="<engine-default>">&lt;engine-default&gt;</option>{{/unless}}
                             {{#each selections}}
-                                <option value="{{this}}" {{#if ../newValue}}{{#ifCond ../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
+                                <option value="{{this}}" {{#if ../../newValue}}{{#ifCond ../../newValue this}}selected="selected" {{/ifCond}}{{else}}{{#ifCond ../../ParameterValue this}}selected="selected"{{/ifCond}}{{/if}}>{{this}}</option>
                             {{/each}}
                         </select>
                     {{/ifCond}}

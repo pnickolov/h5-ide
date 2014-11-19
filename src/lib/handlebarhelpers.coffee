@@ -52,6 +52,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   # if equal
   Handlebars.registerHelper 'ifCond', ( v1, v2, options ) ->
+    console.debug "ifCond:", v1, v2
     if v1 is v2
       return options.fn(this)
     return options.inverse this

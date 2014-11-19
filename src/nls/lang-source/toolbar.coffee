@@ -666,3 +666,15 @@ module.exports =
     WHAT_HAVE_BEEN_CHANGED:
       en: "What have been changed:"
       zh: "已发生的更改:"
+
+    POP_DIFF_NEW_RES:
+      en: "New Resource"
+      zh: "新建的资源"
+
+    POP_DIFF_REMOVED_RES:
+      en: "Removed Resource"
+      zh: "删除的资源"
+
+    POP_DIFF_MODIFY_RES:
+      en: "Modified Resource"
+      zh: "修改的资源"

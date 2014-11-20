@@ -32,6 +32,7 @@ define [
             ogComp = Design.modelClassForType(constant.RESTYPE.DBOG).findWhere appId: ogm.OptionGroupName
             _.extend {}, ogm, { isDefault: !ogComp, uid: ogComp?.id or '' }
         data.description = @resModel.get("description")
+        data.name = @resModel.get 'name'
         @$el.html template.appView data
         @resModel.get 'name'
 

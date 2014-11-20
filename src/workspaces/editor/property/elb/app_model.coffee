@@ -22,6 +22,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             elb = elb.toJSON()
 
             elb.description = myElbComponent.get("description")
+            elb.name = myElbComponent.get("name")
 
             if elb.ConnectionDraining
                 if elb.ConnectionDraining.Enabled

@@ -12,6 +12,7 @@ define [ '../base/view',
     InstanceView = PropertyView.extend {
 
         events :
+            'change .instance-name'               : 'instanceNameChange'
             'change #property-res-desc'           : 'onChangeDesc'
             'change #property-instance-count'     : "countChange"
             'click #property-ami'                 : "openAmiPanel"
@@ -37,6 +38,15 @@ define [ '../base/view',
             # Return title of property
             @model.attributes.name
 
+        instanceNameChange : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "Instance" )
+                @model.setName name
+                @setTitle name
+            null
+
         openAmiPanel : ( event ) ->
             this.trigger "OPEN_AMI", $( event.currentTarget ).data("uid")
             false
@@ -59,6 +69,8 @@ define [ '../base/view',
             @model.setCount val
 
             @updateInstanceList()
+            $(".property-instance-name-wrap").toggleClass("single", val == 1)
+            $("#property-instance-name-count").text val-1
             @setEditableIP( val is 1 )
             null
 

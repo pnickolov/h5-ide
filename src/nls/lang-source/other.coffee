@@ -1789,6 +1789,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Image Owner Alias"
       zh: "镜像所有者简称"
 
+    BUBBLE_REGION:
+      en: "Region"
+      zh: "地区"
+
     ESTIMATED_AWS_COST:
       en: "Estimated AWS Cost"
       zh: "估计 AWS 费用"

@@ -10,7 +10,7 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
             'change #property-instance-enable-cloudwatch'   : 'cloudwatchSelect'
             'change #property-instance-user-data'           : 'userdataChange'
             'change #property-res-desc'                     : 'onChangeDescription'
-            'keyup #property-instance-name'                : 'checkInstanceName'
+            'change .launch-configuration-name'             : 'lcNameChange'
 
         kpModalClosed: false
 
@@ -20,6 +20,15 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
             data.name
 
         onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
+
+        lcNameChange : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "LaunchConfiguration" )
+                @model.setName name
+                @setTitle name
+            null
 
         cloudwatchSelect : ( event ) ->
             @model.setCloudWatch event.target.checked

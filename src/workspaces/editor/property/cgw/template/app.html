@@ -2,12 +2,19 @@
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP.CGW_APP_CGW_LBL_ID" }}</dt>
     <dd>{{customerGatewayId}}</dd>
+    <dt>{{ i18n "PROP.NAME" }}</dt>
+    <dd>{{emptyStr name}}</dd>
     {{#unless isEditable}}
     <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
     <dd>{{emptyStr description}}</dd>
     {{/unless}}
   </dl>
   {{#if isEditable}}
+  <div class="property-control-group clearfix">
+      <label class="left" for="property-cgw-name">{{ i18n "PROP.CGW_LBL_NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+      <input class="input" type="text" value="{{name}}" id="property-cgw-name" data-ignore="true"/>
+  </div>
   <section class="property-control-group" data-bind="true">
     <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
     <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>

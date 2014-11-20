@@ -9,7 +9,7 @@ define ['constant'], (constant) ->
             option.filterAttrMap = {
                 '*.type': true
                 '*.uid': true
-                '*.name': true
+                # '*.name': true
                 '*.index': true
                 '*.number': true
                 '*.serverGroupUid': true

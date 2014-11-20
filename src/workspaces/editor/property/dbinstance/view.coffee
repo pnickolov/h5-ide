@@ -268,12 +268,19 @@ define [ 'ApiRequest'
             that = @
 
             diff = ( oldComp, newComp ) ->
+
                 comp = that.resModel.serialize()
 
                 differ = new ResDiff({
                     old : component: that.originComp
                     new : comp
                 })
+
+                # ignore name change
+                if differ.modifiedComps and _.keys(differ.addedComps).length is 0 and _.keys(differ.removedComps).length is 0
+                    keys = _.keys(differ.modifiedComps)
+                    if keys.length is 1 and keys[0] is 'name'
+                        return false
 
                 differ.getChangeInfo().hasResChange
 

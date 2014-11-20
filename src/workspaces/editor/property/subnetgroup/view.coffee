@@ -19,7 +19,7 @@ define [ '../base/view'
 
         setName: (e) ->
             $target = $ e.currentTarget
-            if $target.parsley 'validate'
+            if $target.parsley( 'validate' ) and MC.aws.aws.checkResName( @model.get('id'), $target, "Subnet Group" )
                 @model.set 'name', $target.val()
 
         setDesc: (e) ->

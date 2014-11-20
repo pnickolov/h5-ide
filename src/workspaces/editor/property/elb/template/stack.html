@@ -41,6 +41,11 @@
 		</section>
 		{{/if}}
 	{{/if}}
+		<section class="property-control-group">
+			<label class="left" for="property-elb-name" >{{ i18n "PROP.ELB_NAME" }}</label>
+			<span class="required-input right">{{ i18n "PROP.ELB_REQUIRED" }}</span>
+			<input data-ignore="true" data-required-rollback="true" maxlength="17" class="input elb-name"  type="text" value="{{name}}" id="property-elb-name"/>
+		</section>
 		<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
 		<textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>

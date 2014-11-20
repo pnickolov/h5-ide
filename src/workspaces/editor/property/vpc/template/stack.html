@@ -17,6 +17,11 @@
       <dt>{{ i18n "PROP.VPC_APP_DEFAULT_ACL" }}</dt>
       <dd>{{defaultACL}}</dd>
     </dl>
+    <section class="property-control-group clearfix">
+      <label class="left" for="property-vpc-name">{{ i18n "PROP.VPC_DETAIL_LBL_NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+      <input class="input vpc-name" type="text" value="{{name}}" id="property-vpc-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+    </section>
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
       <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>

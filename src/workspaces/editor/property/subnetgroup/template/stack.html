@@ -5,7 +5,7 @@
    <section class="property-control-group" data-bind="true">
     <label class="left" for="property-dbinstance-name" >{{i18n "PROP.SUBNET_GROUP_NAME"}}</label>
     <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
-    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true" {{#if isAppEdit}}disabled{{/if}} />
+    <input class="input"  type="text" value="{{ name }}" id="property-subnet-name" data-ignore="true" data-required-rollback="true"/>
   </section>
 
 
@@ -22,10 +22,10 @@
 {{#each azSb}}
 <div class='option-group-category'>{{@key}}</div>
 <dl class="dl-vertical sbg-list">
-{{#each this}}             
+{{#each this}}
     <dd>{{name}}</dd>
     <dt>({{cidr}})</dt>
-{{/each}}</dl> 
+{{/each}}</dl>
 {{/each}}
 
 

@@ -62,8 +62,17 @@ define [ '../base/view',
             "click #property-asg-policies .icon-edit"      : "editScalingPolicy"
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
             'change #property-res-desc'                    : 'onChangeDescription'
+            "change #property-asg-name"                    : "setASGName"
 
         onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
+
+        setASGName : ( event ) ->
+            target = $ event.currentTarget
+            name = target.val()
+
+            if MC.aws.aws.checkResName( @model.get('uid'), target, "ASG" )
+                @model.setName name
+                @setTitle name
 
         setASGCoolDown : ( event ) ->
             $target = $ event.target

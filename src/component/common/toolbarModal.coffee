@@ -93,7 +93,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
                     $button.removeClass 'active'
                     @toggleSlide false
                     @__slide = null
-                    @trigger 'slideup', button
+                    @trigger 'slideup', button, @getChecked()
                 #slide down
                 else
                     $activeButton.removeClass 'active'

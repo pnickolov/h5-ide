@@ -108,7 +108,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'instance_model'
             if action is 'check'
                 if data
                     @__kpUpload and @__kpUpload.remove()
-                    @__kpUpload = new kp_upload()
+                    @__kpUpload = new kp_upload({type: "Private Key"})
                     @__kpUpload.on 'load', () ->
                         $("#do-kp-decrypt").prop 'disabled', false
 

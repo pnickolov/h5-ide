@@ -41,6 +41,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager = new toolbar_modal @getModalOptions()
       @manager.on 'refresh', @refresh, @
       @manager.on "slidedown", @renderSlides, @
+      @manager.on 'slideup', @slideDown, @
       @manager.on 'action', @doAction, @
       @manager.on 'close', =>
         @manager.remove()
@@ -96,6 +97,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       _.each data, (e)->
         if e.DBParameterGroupName.indexOf("default.") is 0
           e.isDefault = true
+          e
 
       dataSet =
         items: data
@@ -113,6 +115,13 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 #      else
 #        $(".slidebox").removeAttr("style")
 
+    slideDown: (param, checked)->
+      if param is "edit" and checked.length is 1
+        target = @collection.findWhere(id: checked[0].data.id)
+        parameters = target.getParameters()
+        parameters.fetch().then (result)->
+          _.each result.models, (e)->
+            if e.has("newValue") then e.unset("newValue")
 
 
     getSlides: ->
@@ -170,8 +179,9 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         tempArray = e.split(",")
         _.each tempArray, (value)->
           range = value.split('-')
-          if range.length = 2 and isNumberString(range[0]) and isNumberString(range[1])
+          if range.length == 2 and isNumberString(range[0]) and isNumberString(range[1])
             isMixed = true
+            null
         isMixed
       _.each data, (e)->
         if e.AllowedValues?.split(',').length > 1 and not isMixedValue(e.AllowedValues)
@@ -223,6 +233,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         that.filterDelay = window.setTimeout ->
           (that.getSlides().edit.bind that) template.slide_edit, checked, {filter: val,sort: sortType}
         , 200
+        null
       $("#sort-parameter-name").on 'OPTION_CHANGE', (event, value, data)->
         sortType = data?.id || value
         filter.trigger 'change'
@@ -277,6 +288,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       changeMap = {}
       _.each change, (e)->
         changeMap[e.ParameterName] = e.newValue
+        null
       _.each parameters.models, (d)->
         d.unset 'newValue' #unset newValue Attribute
       afterModify = @afterModify.bind @
@@ -351,6 +363,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           @manager.error (result.awsResult || deleteErrorCount + " DB Parameter Group(s) failed to delete, please try again later.")
           @switchAction()
           deleteErrorCount = 0
+          null
         else
           notification 'info', lang.NOTIFY.DELETE_SUCCESSFULLY
           @manager.unCheckSelectAll()
@@ -409,6 +422,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       _.each data, (e)->
         if e.DBParameterGroupName is selected
           e.selected = true
+          null
       datas = keys: data
       if keys
         datas.keys = keys

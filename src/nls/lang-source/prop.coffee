@@ -1564,8 +1564,8 @@ module.exports =
       zh: "自动伸缩组配置"
 
     ASG_NAME:
-      en: "Name"
-      zh: "名称"
+      en: "Auto Scaling Group Name"
+      zh: "Auto Scaling 组名称"
 
     ASG_REQUIRED:
       en: "Required"
@@ -1876,6 +1876,10 @@ module.exports =
       zh: "启动配置"
 
     LC_NAME:
+      en: "Name"
+      zh: "名称"
+
+    NAME:
       en: "Name"
       zh: "名称"
 

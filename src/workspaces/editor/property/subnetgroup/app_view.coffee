@@ -18,9 +18,10 @@ define [ '../base/view'
       data = @appModel.toJSON()
       data.azSb = @getAzSb()
       data.sbCount = @appModel.get('Subnets')?.length or 0
+      data.name = @model.get 'name'
 
       @$el.html template.app data
-      @model.get 'name'
+      data.name
 
     getAzSb: ->
       azSb = {}

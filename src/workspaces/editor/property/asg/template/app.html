@@ -1,4 +1,4 @@
-<article class="property-app">
+<article class="property-app" data-bind="true">
   {{#if hasData}}
   <div class="option-group-head expand">{{i18n "PROP.ASG_SUMMARY"}}</div>
   <div class="option-group">
@@ -6,12 +6,19 @@
       <dt>{{i18n "PROP.ASG_NAME"}}</dt>
       <dd>{{awsResName}}</dd>
       {{#unless isEditable}}
+      <dt>{{i18n "PROP.NAME"}}</dt>
+      <dd>{{name}}</dd>
       <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
       <dd>{{emptyStr description}}</dd>
       {{/unless}}
     </dl>
     {{#if isEditable}}
-    <section class="property-control-group" data-bind="true">
+    <section class="property-control-group">
+      <label class="left" for="property-asg-name" >{{ i18n "PROP.NAME" }}</label>
+      <span class="required-input right">{{ i18n "PROP.ASG_REQUIRED" }}</span>
+      <input class="input" type="text" value="{{name}}" id="property-asg-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+    </section>
+    <section class="property-control-group">
       <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
       <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
     </section>

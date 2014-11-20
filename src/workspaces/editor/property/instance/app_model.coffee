@@ -69,6 +69,7 @@ define [ '../base/model',
 
             if myInstanceComponent
                 @set 'description', myInstanceComponent.get("description")
+                @set 'name', myInstanceComponent.get("name")
 
             if not myInstanceComponent
                 console.warn "instance.app_model.init(): can not find InstanceModel"

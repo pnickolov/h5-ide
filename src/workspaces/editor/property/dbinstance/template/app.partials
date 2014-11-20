@@ -9,6 +9,8 @@
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP.DBINSTANCE_APP_DBINSTANCE_ID" }}</dt>
             <dd>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}<span class="highlight-status">(Pending)=>[{{PendingModifiedValues.DbinstanceIdentifier}}]</span>{{/if}}</dd>
+            <dt>{{ i18n "PROP.NAME" }}</dt>
+            <dd>{{emptyStr name}}</dd>
             <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
             <dd>{{emptyStr description}}</dd>
             <dt>{{ i18n "PROP.ENDPOINT" }}</dt>

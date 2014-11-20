@@ -1,8 +1,13 @@
-<article class="property-app">
+<article class="property-app" data-bind="true">
   <div class="option-group-head expand">{{i18n "PROP.LC_TITLE"}}</div>
   <div class="option-group">
     {{#if isEditable}}
     <section class="property-control-group" data-bind="true">
+      <label class="left" for="property-instance-name" >{{i18n "PROP.LC_NAME"}}</label>
+      <span class="required-input right">{{i18n "PROP.INSTANCE_REQUIRE"}}</span>
+      <input class="input launch-configuration-name"  type="text" value="{{name}}" name="property-instance-name" id="property-instance-name" maxlength="240" data-required-rollback="true" data-ignore="true"/>
+    </section>
+    <section class="property-control-group">
       <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
       <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
     </section>
@@ -10,6 +15,8 @@
 
     <dl class="dl-vertical">
       {{#unless isEditable}}
+      <dt>{{ i18n "PROP.NAME" }}</dt>
+      <dd>{{name}}</dd>
       <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
       <dd>{{emptyStr description}}</dd>
       {{/unless}}

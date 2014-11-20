@@ -3,13 +3,13 @@
 #############################
 
 define [ '../base/model',
-    'instance_service'
     'constant',
     'i18n!/nls/lang.js'
     'Design'
     'CloudResources'
+    "ApiRequest"
 
-], ( PropertyModel, instance_service, constant, lang, Design, CloudResources ) ->
+], ( PropertyModel, constant, lang, Design, CloudResources, ApiRequest ) ->
 
     AppInstanceModel = PropertyModel.extend {
 
@@ -161,54 +161,12 @@ define [ '../base/model',
 
             data
 
-        genPasswordHandler: ( action ) ->
-            me = this
-            ( result ) ->
-
-                region_name    = result.param[3]
-                instance_id    = result.param[4]
-                key_data       = result.param[5]
-                instance       = null
-                instance_state = null
-                win_passwd     = null
-                rdp            = null
-
-                curr_instance_id = me.get "instanceId"
-
-                # Do nothing
-                if curr_instance_id isnt instance_id
-                    return
-
-                if result.is_error
-                    notification 'error', lang.NOTIFY.ERR_GET_PASSWD_FAILED
-                    key_data = null
-                    return null
-                else
-                    if result.resolved_data
-                        win_passwd = result.resolved_data.passwordData
-
-
-                if action is 'check'
-                    me.trigger 'PASSWORD_STATE', !!win_passwd
-                else if action is 'download'
-                    me.trigger 'KEYPAIR_DOWNLOAD', true, win_passwd, result.param[ 5 ]
-                else
-                    me.trigger "PASSWORD_GOT", win_passwd
-
-
-                null
-
-        #get windows login password
-        getPasswordData : ( key_data, check ) ->
-            instance_id      = @get "instanceId"
-            #curr_keypairname = @get "keyName"
-            username = $.cookie "usercode"
-            session  = $.cookie "session_id"
-
-            handler = @genPasswordHandler if check then 'check'
-            instance_service.GetPasswordData( null, username, session, Design.instance().region(), instance_id, key_data ).then handler
-
-            null
+        getPassword : ( key_data )->
+            ApiRequest("ins_GetPasswordData", {
+                region      : Design.instance().region()
+                instance_id : @get("instanceId")
+                key_data    : key_data || undefined
+            }).then ( data )-> data.GetPasswordDataResponse.passwordData
 
         getEni : () ->
 

@@ -30,8 +30,6 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             "click #property-app-ami" : "openAmiPanel"
             "click .property-btn-get-system-log" : "openSysLogModal"
 
-        kpModalClosed : false
-
         render : () ->
             data = @model.toJSON()
             data.windows = @model.get( 'osType' ) is 'windows'
@@ -42,9 +40,6 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             @proccessKpStuff()
 
         proccessKpStuff: ( notOld ) ->
-            kpName = @model.get 'keyName'
-            isOldKp = false
-
             # if not notOld
             #     kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
             #     isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
@@ -56,19 +51,19 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             #         @model.downloadKp kpName
 
             if not isOldKp and @model.get( 'osType' ) is 'windows'
-                @decryptPassword isOldKp
+                @decryptPassword()
             else
-                @loginPrompt isOldKp
+                @loginPrompt()
 
 
 
-        loginPrompt: ( isOldKp ) ->
+        loginPrompt: () ->
             keypair = @model.get 'keyName'
 
             modal MC.template.modalDownloadKP {
                 name    : keypair
                 loginCmd: @model.get 'loginCmd'
-                isOldKp : isOldKp
+                isOldKp : false
                 windows : @model.get( 'osType' ) is 'windows'
             }
 
@@ -80,25 +75,23 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
 
             false
 
-        decryptPassword : ( isOldKp ) ->
+        decryptPassword : () ->
+            modal MC.template.modalDecryptPassword { name:@model.get('keyName'), isOldKp:false }
+            @kpModalClosed = false
+
             me = @
+            $('#modal-wrap').on "closed", ()-> me.kpModalClosed = true; return
 
-            keypair = @model.get 'keyName'
-            if not isOldKp
-                @model.getPasswordData null, 'check'
-
-            modal MC.template.modalDecryptPassword { name  : keypair, isOldKp: isOldKp }
-
-            $('#modal-wrap').on "closed", ()->
-                me.kpModalClosed = true
-                null
-
+            @model.getPassword().then ( data )->
+                @updateKPModal("check", !!data)
+            , ()->
+                notification 'error', lang.NOTIFY.ERR_GET_PASSWD_FAILED
 
             $("#do-kp-decrypt").off( 'click' ).on 'click', ( event ) ->
-                me.model.getPasswordData me.__kpUpload.getData()
-
-            this.kpModalClosed = false
-
+                me.model.getPassword( me.__kpUpload.getData() ).then ( data )->
+                    me.updateKPModal("got", data)
+                , ()->
+                    notification 'error', lang.NOTIFY.ERR_GET_PASSWD_FAILED
             false
 
         updateKPModal : ( action, data, data2, data3 ) ->

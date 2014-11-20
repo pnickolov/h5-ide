@@ -50,15 +50,6 @@ define [ "../base/main",
         setupApp : () ->
             me = this
 
-            @model.on "KEYPAIR_DOWNLOAD", ( success, data, data2 ) ->
-                me.view.updateKPModal 'download', success, data, data2
-
-            @model.on "PASSWORD_STATE", ( data ) ->
-                me.view.updateKPModal 'check', data
-
-            @model.on "PASSWORD_GOT", ( data ) ->
-                me.view.updateKPModal 'got', data
-
             @view.on "OPEN_AMI", (id) ->
                 PropertyModule.loadSubPanel "STATIC", id
 

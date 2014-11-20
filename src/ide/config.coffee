@@ -160,13 +160,6 @@ require.config {
     "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
 
     #############################################
-    # deprecated service        # Merge in deploy
-    #############################################
-    'base_model'             : 'service/base_model'
-    'result_vo'              : 'service/result_vo'
-    'instance_service'       : 'service/instance_service'
-
-    #############################################
     # component                 # Merge in deploy
     #############################################
     'AppAction'        : 'component/appactions/AppAction'
@@ -270,11 +263,6 @@ require.config {
       "UI.bubblepopup"
     ]
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
-    "service/service" : [
-      'base_model'
-      'result_vo'
-      'instance_service'
-    ]
 
     "cloudres/CrBundle"  : [ "CloudResources" ]
 

@@ -248,6 +248,22 @@ module.exports =
       en: "This VPC already has a Virtual Private Gateway."
       zh: "这个VPC已经有了一个虚拟专用网关。"
 
+    RES_TIP_DRAG_TO_DUPLICATE:
+      en: "Drag to create a read replica."
+      zh: "拖动以创建只读副本。"
+
+    RES_TIP_CANT_CREATE_MORE_REPLICA:
+      en: "Can't create more read replica."
+      zh: "无法创建更多的只读副本。"
+
+    RES_TIP_PLEASE_WAIT_AUTOBACKUP_ENABLE_TO_CREATE_REPLICA:
+      en: "Please wait Automatic Backup to be enabled to create read replica."
+      zh: "请等待自动备份启用已创建只读副本。"
+
+    RES_TIP_DRAG_TO_RESTORE:
+      en: "Drag to restore to point in time"
+      zh: "拖动以恢复到时间点"
+
     RES_MSG_INFO_ADD_AMI_FAVORITE_SUCCESS:
       en: "AMI is added to Favorite AMI"
       zh: "收藏AMI成功"

@@ -224,7 +224,7 @@ define [
 
           if m.autobackup()
 
-            tip = "Drag to create a read replica."
+            tip = lang.IDE.RES_TIP_DRAG_TO_DUPLICATE
 
             if m.category() is 'replica' and m.master() and m.master().master()
 
@@ -236,17 +236,17 @@ define [
 
               if m.get('appId') and not backup
 
-                tip = "Please wait Automatic Backup to be enabled to create read replica."
+                tip = lang.IDE.RES_TIP_PLEASE_WAIT_AUTOBACKUP_ENABLE_TO_CREATE_REPLICA
                 CanvasManager.addClass $r, "disabled"
 
           else
 
-            tip = "Drag to create a read replica."
+            tip = lang.IDE.RES_TIP_DRAG_TO_DUPLICATE
             CanvasManager.toggle $r, false
 
         else
 
-          tip = "Cannot create more read replica."
+          tip = lang.IDE.RES_TIP_CANT_CREATE_MORE_REPLICA
           CanvasManager.toggle $r, true
           CanvasManager.addClass $r, "disabled"
 
@@ -265,7 +265,7 @@ define [
 
       $r = @$el.children(".dbrestore")
       CanvasManager.toggle $r, !!m.get("appId")
-      CanvasManager.update $r, 'Drag to restore to point in time', "tooltip"
+      CanvasManager.update $r, lang.IDE.RES_TIP_DRAG_TO_RESTORE, "tooltip"
 
       appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
       if appData

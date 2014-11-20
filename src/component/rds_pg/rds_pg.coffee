@@ -456,25 +456,25 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         {
           icon: 'new-stack'
           type: 'create'
-          name: 'Create Parameter Group'
+          name: lang.PROP.LBL_CREATE_PARAMETER_GROUP
         }
         {
           icon: 'edit'
           type: 'edit'
           disabled: true
-          name: ' Edit '
+          name: lang.PROP.LBL_EDIT
         }
         {
           icon: 'reset'
           type: 'reset'
           disabled: true
-          name: 'Reset'
+          name: lang.PROP.LBL_RESET
         }
         {
           icon: 'del'
           type: 'delete'
           disabled: true
-          name: 'Delete'
+          name: lang.PROP.LBL_DELETE
         }
         {
           icon: 'refresh'
@@ -486,19 +486,19 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         {
           sortable: true
           width: "30%" # or 40%
-          name: 'Name'
           rowType: "string"
+          name: lang.PROP.NAME
         }
         {
           sortable: true
           rowType: 'string'
           width: "30%" # or 40%
-          name: 'Family'
+          name: lang.PROP.DBPG_SET_FAMILY
         }
         {
           sortable: false
           width: "40%" # or 40%
-          name: 'Description'
+          name: lang.PROP.LBL_DESC
         }
       ]
 

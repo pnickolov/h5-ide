@@ -1956,6 +1956,10 @@ module.exports =
       en: " to their defaults?"
       zh: "的所有参数为默认吗?"
 
+    DBPG_FILTER_BY_NAME:
+      en: "Filter by Parameter Name"
+      zh: "通过参数名称过滤"
+
     DBPG_APPLY_IMMEDIATELY_1:
       en: "Changes will apply "
       zh: "修改将"
@@ -3074,6 +3078,50 @@ module.exports =
     LBL_APPLYING:
       en: "Applying..."
       zh: "应用中..."
+
+    LBL_CREATE_SUBSCRIPTION:
+      en: "Create Subscription"
+      zh: "创建订阅"
+
+    LBL_TOPIC:
+      en: "Topic"
+      zh: "主题"
+
+    LBL_TOPIC_ARN:
+      en: "Topic ARN"
+      zh: "主题 ARN"
+
+    LBL_SUBSCRIPTION:
+      en: "Subscription"
+      zh: "订阅"
+
+    LBL_UPLOAD_NEW_SSL_CERTIFICATE:
+      en: "Upload New SSL Certificate"
+      zh: "上传新服务器证书"
+
+    LBL_UPLOAD_DATE:
+      en: "Upload Date"
+      zh: "上传时间"
+
+    LBL_VIEW_DETAILS:
+      en: "View Details"
+      zh: "查看详情"
+
+    LBL_CREATE_DHCP_OPTIONS_SET:
+      en: "Create DHCP Options Set"
+      zh: "创建 DHCP 选项组"
+
+    LBL_OPTIONS:
+      en: "Options"
+      zh: "选项"
+
+    LBL_CREATE_PARAMETER_GROUP:
+      en: "Create Parameter Group"
+      zh: "创建参数组"
+
+    LBL_EDIT:
+      en: " Edit "
+      zh: "编辑"
 
     DELETE_SNAPSHOT_1:
       en: "Confirm to delete "

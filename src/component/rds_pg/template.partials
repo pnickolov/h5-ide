@@ -107,7 +107,7 @@
 <!-- {{slide_edit}} -->
 <div class="clearfix" id="pg-sort-filter">
     <div class="pull-left">
-        {{i18n "PROP.LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+        {{i18n "PROP.LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="{{i18n "PROP.DBPG_FILTER_BY_NAME"}}"/>
     </div>
     <div class="pull-right">
         {{i18n "PROP.LBL_SORT_BY"}}

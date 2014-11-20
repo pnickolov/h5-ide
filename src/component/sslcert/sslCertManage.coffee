@@ -24,19 +24,19 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Upload New SSL Certificate'
+                    name: lang.PROP.LBL_UPLOAD_NEW_SSL_CERTIFICATE
                 },
                 {
                     icon: 'edit'
                     type: 'update'
                     disabled: true
-                    name: 'Update'
+                    name: lang.PROP.UPDATE
                 },
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: 'Delete'
+                    name: lang.PROP.LBL_DELETE
                 },
                 {
                     icon: 'refresh'
@@ -48,17 +48,17 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sslcert/ssl
                 {
                     sortable: true
                     width: "50%"
-                    name: 'Name'
+                    name: lang.PROP.NAME
                 }
                 {
                     sortable: true
                     rowType: 'datetime'
                     width: "33%"
-                    name: 'Upload Date'
+                    name: lang.PROP.LBL_UPLOAD_DATE
                 }
                 {
                     sortable: false
-                    name: 'View Details'
+                    name: lang.PROP.LBL_VIEW_DETAILS
                 }
             ]
 

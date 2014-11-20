@@ -2080,7 +2080,3 @@ VisualOps API. You cannot UNDO this action.'
     MANAGE_SSL_CERT_IN_AREA:
       en: "Manage SSL Certificate in %s"
       zh: "管理%s区的 SSL 证书"
-
-    BgenUBBLE_XXX:
-      en: ""
-      zh: ""

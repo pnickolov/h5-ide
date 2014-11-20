@@ -124,8 +124,8 @@
   <li data-id="{{id}}">
     <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
     <div class="region-resource-info">
-      <i class="icon-delete delete-stack tooltip" data-tooltip="DASH_TIP_DUPLICATE_STACK"></i>
-      <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="DASH_TIP_DEL_STACK"></i>
+      <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
+      <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
       <span class="truncate">{{name}}</span>
     </div>
   </li>

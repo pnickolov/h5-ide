@@ -199,7 +199,7 @@ define [
 
     exportPNG : ()->
       modal = new Modal {
-        title         : "Export PNG"
+        title         : lang.IDE.TITLE_EXPORT_PNG
         template      : OpsEditorTpl.export.PNG()
         width         : "470"
         disableFooter : true
@@ -644,7 +644,7 @@ define [
             if not instancesNoUserData
                 $switcher.removeClass 'on'
                 confirmModal = new Modal(
-                    title: "Confirm to Enable VisualOps"
+                    title: lang.IDE.TITLE_CONFIRM_TO_ENABLE_VISUALOPS
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"
@@ -672,7 +672,7 @@ define [
       if not @workspace.cancelEditMode()
         self  = @
         modal = new Modal {
-          title    : "Changes not applied"
+          title    : lang.IDE.TITLE_CHANGE_NOT_APPLIED
           template : OpsEditorTpl.modal.cancelUpdate()
           width    : "400"
           confirm  : { text : "Discard", color : "red" }

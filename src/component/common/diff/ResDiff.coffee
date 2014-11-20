@@ -47,7 +47,7 @@ define [
             okText = 'OK, got it'
             options =
                 template: template.frame()
-                title: 'App Changes'
+                title: lang.IDE.TITLE_APP_CHANGES
                 disableClose: true
                 hideClose: true
                 confirm:

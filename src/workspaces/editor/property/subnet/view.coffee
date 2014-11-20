@@ -114,7 +114,7 @@ define [ '../base/view',
                 aclName = $target.attr('data-name')
 
                 dialog_template = MC.template.modalDeleteSGOrACL {
-                    title : 'Delete Network ACL'
+                    title : lang.IDE.TITLE_DELETE_NETWORK_ACL
                     main_content : "Are you sure you want to delete #{aclName}?"
                     desc_content : "Subnets associated with #{aclName} will use DefaultACL."
                 }

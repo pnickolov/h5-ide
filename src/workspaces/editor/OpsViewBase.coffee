@@ -8,11 +8,11 @@ define [
   "./canvas/CanvasViewAws"
   "UI.modalplus"
   "event"
-
+  "i18n!/nls/lang.js"
   "./canvas/CanvasBundle"
   "backbone"
   "UI.selectbox"
-], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal, ide_event )->
+], ( OpsEditorTpl, PropertyPanel, Toolbar, ResourcePanel, Statusbar, CanvasView, Modal, ide_event, lang )->
 
   ### Monitor keypress ###
   $(window).on 'keydown', ( evt )->
@@ -163,7 +163,7 @@ define [
       name = @workspace.design.get('name')
       self = @
       modal = new Modal {
-        title    : "Confirm to close #{name}"
+        title    : sprintf lang.IDE.TITLE_CONFIRM_TO_CLOSE, name
         width    : "420"
         template : OpsEditorTpl.modal.onClose(name)
         confirm  : {text:"Close Tab", color:"red"}

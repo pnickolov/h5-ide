@@ -2100,3 +2100,59 @@ VisualOps API. You cannot UNDO this action.'
     MANAGE_SSL_CERT_IN_AREA:
       en: "Manage SSL Certificate in %s"
       zh: "管理%s区的 SSL 证书"
+
+    TITLE_CONFIRM_TO_FORGET:
+      en: "Confirm to Forget App"
+      zh: "确认释放 App"
+
+    TITLE_APP_CHANGES:
+      en: "App Changes"
+      zh: "App 变化"
+
+    TITLE_KEYPAIR_CONTENT:
+      en: "Keypair Content"
+      zh: "密钥对内容"
+
+    TITLE_CONFIRM_TO_REMOVE_APP:
+      en: "Confirm to remove the app %s ?"
+      zh: "确定要移除 App %s 吗？"
+
+    TITLE_CONFIRM_TO_CLOSE:
+      en: "Confirm to close %s ?"
+      zh: "确认要关闭 %s ?"
+
+    TITLE_LOG_AND_EVENT:
+      en: "Log & Event: %s"
+      zh: "日志和事件： %s"
+
+    TITLE_CONFIRM_PROMOTE_READ_REPLICA:
+      en: "Confirm to promote Read Replica"
+      zh: "确认要提升只读副本吗？"
+
+    TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG:
+      en: "Restore to point in time config"
+      zh: "恢复到时间点设置"
+
+    TITLE_DELETE_KEYPAIR:
+      en: "Delete Key Pair"
+      zh: "删除密钥对"
+
+    TITLE_SUBNET_RT_ASSO:
+      en: "Subnet-RT Association"
+      zh: "Subnet-RT 关联"
+
+    TITLE_DELETE_NETWORK_ACL:
+      en: "Delete Network ACL"
+      zh: "删除网络 ACL"
+
+    TITLE_EXPORT_PNG:
+      en: "Export PNG"
+      zh: "导出 PNG"
+
+    TITLE_CONFIRM_TO_ENABLE_VISUALOPS:
+      en: "Confirm to Enable VisualOps"
+      zh: "确认开启 VisualOps 功能"
+
+    TITLE_CHANGE_NOT_APPLIED:
+      en: "Changes not applied"
+      zh: "修改尚未应用"

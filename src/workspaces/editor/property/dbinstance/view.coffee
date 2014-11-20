@@ -74,7 +74,7 @@ define [ 'ApiRequest'
             else
 
                 modal = new Modal({
-                    title        : "Confirm to promote Read Replica"
+                    title        : lang.IDE.TITLE_CONFIRM_PROMOTE_READ_REPLICA
                     template     : template_component.modalPromoteConfirm({})
                     confirm      : {text : "Confirm"}
                     disableClose : true
@@ -106,7 +106,7 @@ define [ 'ApiRequest'
             if noRestore
 
                 modal = new Modal({
-                    title        : "Restore to point in time config"
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
                     template     : template_component.modalRestoreConfirm({
                         noRestore: noRestore
                     })
@@ -182,7 +182,7 @@ define [ 'ApiRequest'
                     $('.modal-db-instance-restore-config .timepicker.second').val(second)
 
                 modal = new Modal({
-                    title        : "Restore to point in time config"
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
                     template     : template_component.modalRestoreConfirm({
                         lastest: lastestRestoreTime.toString()
                         custom: not dbRestoreTime

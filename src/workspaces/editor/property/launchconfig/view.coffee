@@ -190,7 +190,7 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
 
             if using
                 data =
-                    title   : "Delete Key Pair"
+                    title   : lang.IDE.TITLE_DELETE_KEYPAIR
                     confirm : "Delete"
                     color   : "red"
                     body    : sprintf(lang.PROP.LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())

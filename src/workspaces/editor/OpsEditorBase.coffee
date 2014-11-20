@@ -23,7 +23,7 @@ define [
     showVpcNotExist : ( name, onConfirm )->
       self = @
       modal = new Modal {
-        title    : "Confirm to remove the app #{name}?"
+        title    : sprintf lang.IDE.TITLE_CONFIRM_TO_REMOVE_APP, name
         template : OpsEditorTpl.modal.confirmRemoveApp()
         confirm  : { text : lang.IDE.POP_CONFIRM_TO_REMOVE, color : "red" }
         disableClose : true

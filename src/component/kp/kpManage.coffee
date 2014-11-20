@@ -159,7 +159,7 @@ define [
                 if not blob
                     options =
                         template        : template.safari_download keypair: str
-                        title           : 'Keypair Content'
+                        title           : lang.IDE.TITLE_KEYPAIR_CONTENT
                         disableFooter   : true
                         disableClose    : true
                         width           : '855px'

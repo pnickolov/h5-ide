@@ -216,6 +216,10 @@ module.exports =
       en: "Drag to an availability zone to create a new subnet."
       zh: "拖放到一个可用区域来创建一个新子网。"
 
+    RES_TIP_DRAG_CREATE_SUBNET_GROUP:
+      en: "To create subnet group, there must to be subnets from at least %s different availability zones on canvas."
+      zh: "要创建子网组， 画布上要至少有 %s 个不同的可用区。"
+
     RES_TIP_DRAG_NEW_SUBNET_GROUP:
       en: "Drag to an availability zone to create a new subnet group."
       zh: "拖拽到一个可用区域来创建一个新的子网组。"
@@ -1168,6 +1172,9 @@ VisualOps API. You cannot UNDO this action.'
       en: "Edits with port change requires changes to be applied immediately."
       zh: "此端口的额修改需要被立即应用。"
 
+    RDS_DELETE_DB_PG_FAILED:
+      en: "%s DB Parameter Group(s) failed to delete, please try again later."
+      zh: "%s 个数据库参数组删除失败，请稍后重试。"
 
 
     ##### RDS
@@ -2156,3 +2163,11 @@ VisualOps API. You cannot UNDO this action.'
     TITLE_CHANGE_NOT_APPLIED:
       en: "Changes not applied"
       zh: "修改尚未应用"
+
+    SMS_DISPLAY_NAME_IS_REQUIRED:
+      en: "Display Name is required if subscription uses SMS protocol."
+      zh: "如果订阅使用 SMS 接口，显示名称是必须的。"
+
+    TOPIC_NAME_IS_ALREADY_TAKEN:
+      en: "Topic name is already taken"
+      zh: "主题名称已经被占用"

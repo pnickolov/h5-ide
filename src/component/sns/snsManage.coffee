@@ -342,12 +342,12 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 that.M$( '#create-display-name' ).parsley 'custom', ( value ) ->
                     selectedProto = that.M$('.dd-protocol .selected').data 'id'
                     if selectedProto is 'sms' and not value
-                        return 'Display Name is required if subscription uses SMS protocol.'
+                        return lang.IDE.SMS_DISPLAY_NAME_IS_REQUIRED
                     null
 
                 that.M$( '#create-topic-name' ).parsley 'custom', ( value ) ->
                     if that.topicCol.where( Name: value ).length
-                        return 'Topic name is already taken.'
+                        return lang.IDE.TOPIC_NAME_IS_ALREADY_TAKEN
                     null
 
 

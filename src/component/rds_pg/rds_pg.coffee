@@ -360,7 +360,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
         deleteErrorCount++
       if deleteCount is 0
         if deleteErrorCount > 0
-          @manager.error (result.awsResult || deleteErrorCount + " DB Parameter Group(s) failed to delete, please try again later.")
+          @manager.error (result.awsResult || sprintf lang.IDE.RDS_DELETE_DB_PG_FAILED, deleteErrorCount )
           @switchAction()
           deleteErrorCount = 0
           null

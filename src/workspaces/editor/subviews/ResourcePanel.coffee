@@ -342,7 +342,7 @@ define [
           minAZCount = 2
       if _.keys( az ).length < minAZCount
         disabled = true
-        tooltip  = "To create subnet group, there must to be subnets from at least #{minAZCount} different availability zones on canvas."
+        tooltip  = sprintf lang.IDE.RES_TIP_DRAG_CREATE_SUBNET_GROUP, minAZCount
         @sbg.toggleClass("disabled", true).attr("data-tooltip", )
       else
         disabled = false

@@ -2,6 +2,7 @@
 
 module.exports =
   LOGIN:
+
     login:
       en: "Log In"
       zh: "登录"
@@ -75,6 +76,14 @@ module.exports =
       en: "Log in"
       zh: "登录"
 
+    "register-firstname":
+      en: "First name"
+      zh: "名"
+
+    "register-lastname":
+      en: "Last name"
+      zh: "姓"
+
     "register-username":
       en: "Username"
       zh: "用户名"
@@ -119,6 +128,10 @@ module.exports =
       en: "Username can only include alpha-number."
       zh: "用户名只能包含字母。"
 
+    firstname_and_lastname_required:
+      en: "Both first name and last name are required."
+      zh: "请输入您的姓和名。"
+
     username_maxlength:
       en: "User name cannot be more than 40 characters."
       zh: "用户名不能超过40个字符。"
@@ -153,7 +166,7 @@ module.exports =
 
     password_shorter:
       en: "Password should at least contain 6 characters."
-      zh: "密码至少包含6个字符、数字或者特殊字符。"
+      zh: "密码至少包含6个字符。"
 
     password_required:
       en: "Password is required."
@@ -182,15 +195,15 @@ module.exports =
 
     "email-label":
       en: "Provide the email address or username you registered with VisualOps. An email with link to reset password will be sent to you soon."
-      zh: "请提供您在VisualOps注册时的邮件地址或者用户名。包含重置链接的邮件马上将会发送给您。"
+      zh: "请输入您的注册邮箱或用户名，我们会将重置链接发送到您的注册邮箱中。"
 
     "account-label":
       en: "Username or Email Address"
-      zh: "用户名 or 邮件地址"
+      zh: "用户名 / 邮件地址"
 
     "reset-btn":
       en: "Send Reset Password Email"
-      zh: "发送密码重置请求邮件"
+      zh: "发送密码重置邮件"
 
     "send-email-info":
       en: "An email with link to reset password has been sent to your registered email address."
@@ -239,3 +252,19 @@ module.exports =
     reset_error_state:
       en: "The username or email address is not registered with VisualOps."
       zh: "用户名或邮件地址还没有在VisualOps注册过。"
+
+    page_500_title:
+      en: "Oops! We have encountered some error."
+      zh: "抱歉， 我们的服务器遇到问题"
+
+    page_500_desc:
+      en: "Sorry. The service is temporarily down. Try visit us later."
+      zh: "很抱歉，服务暂时不可用， 请稍后重试。"
+
+    page_404_title:
+      en: "Oops! The page you have requested is not found."
+      zh: "抱歉， 您请求的页面未找到"
+
+    page_404_desc:
+      en: "Sorry for the inconvenience. Why not try to <a href=\"http://www.visualops.io/\">visit our homepage</a>?"
+      zh: "很抱歉给您带来的不便， <a href=\"http://www.visualops.io/\">点此返回首页</a>。"

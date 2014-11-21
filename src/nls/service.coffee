@@ -3,6 +3,7 @@
 module.exports =
 
   SERVICE:
+
     NETWORK_ERROR:
       en: "Service is temporarily unavailable. Please try again later."
       zh: "服务暂时不可用, 请稍后重试"
@@ -53,7 +54,7 @@ module.exports =
 
     ERROR_CODE_9_MESSAGE:
       en: "Sorry, your AWS credentials have not sufficient permissions."
-      zh: "对不起,您的AWS凭证没有足够的权限"
+      zh: "对不起,您的AWS证书没有足够的权限"
 
     ERROR_CODE_10_MESSAGE:
       en: ""
@@ -103,6 +104,10 @@ module.exports =
       en: "User has been blocked."
       zh: "对不起，此账号已被锁住"
 
+    ERROR_CODE_100_MESSAGE:
+      en: "Sorry, we are suffering from some technical issue, please try again later"
+      zh: "对不起,我们有一些技术问题,请稍后再试"
+
     RESET_PASSWORD_ERROR_2:
       en: "Sorry, but your url is invalid. Please Check your url and try again."
       zh: "对不起, 您的链接地址不正确, 请检查后重试"
@@ -117,20 +122,20 @@ module.exports =
 
     CONSTANT_MSG_E_SESSION:
       en: "This session has expired, please log in again"
-      zh: ""
+      zh: "会话超时，请重新登陆"
 
     CONSTANT_MSG_E_EXTERNAL:
       en: "Sorry, there seems to be a problem with AWS"
-      zh: ""
+      zh: "对不起，AWS出现了一些技术问题"
 
     CONSTANT_MSG_E_ERROR:
       en: "Sorry, we're experiencing techincal difficulty"
-      zh: ""
+      zh: "对不起，我们出现了技术问题"
 
     CONSTANT_MSG_E_UNKNOW:
       en: "Something is wrong, Please contact support@visualops.io"
-      zh: ""
+      zh: "出错了，请联系 support@visualops.io"
 
     CONSTANT_MSG_E_PARAM:
       en: "Parameter Error!"
-      zh: ""
+      zh: "参数错误！"

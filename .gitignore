@@ -5,6 +5,7 @@ gulpconfig.js
 
 node_modules/
 .sass-cache/
+.idea/
 
 #ignore everything related to deploy
 h5-ide-build/

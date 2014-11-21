@@ -220,41 +220,77 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"modal-resource-instance-detail\" style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>DnsName</dt>\n			<dd>"
+    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_DNSNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.dnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Architecture</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ARCHITECTURE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>EbsOptimized</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_EBSOPTIMIZED", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.ebsOptimized)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>GroupSet</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_GROUPSET", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.groupSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Hypervisor</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_HYPERVISOR", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.hypervisor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>ImageId</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IMAGEID", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.imageId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>InstanceState</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCESTATE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceState)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>InstanceType</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>IpAddress</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IPADDRESS", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.ipAddress)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>KernelId</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KERNELID", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.kernelId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>KeyName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KEYNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.keyName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>LaunchTime</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_LAUNCHTIME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.launchTime)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>Monitoring</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_MONITORING", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.monitoring)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>NetworkInterfaceSet</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_NETWORKINTERFACESET", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.networkInterfaceSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>AvailabilityZone</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_AVAILABILITYZONE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.availabilityZone)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>PrivateDnsName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_PRIVATEDNSNAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.privateDnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>RootDeviceName</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICENAME", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>RootDeviceType</dt>\n			<dd>"
+    + "</dd>\n			<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICETYPE", {hash:{},data:data}))
+    + "</dt>\n			<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n		</dl>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_BTN_CLOSE", {hash:{},data:data}))
@@ -272,11 +308,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"bubble-head\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Start Time:</dt>\n		<dd>"
+    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_START_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['start-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Stop Time:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_STOP_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['end-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Estimated Cost:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ESTIMATED_COST", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.cost)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -328,11 +370,17 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "-("
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ")</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>Launch Time:</dt>\n		<dd>"
+    + ")</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_LAUNCHTIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['launch-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Availability Zone:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_AVAILABILITYZONE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.az)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Instance Type:</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0['instance-type'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -348,15 +396,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"bubble-head\"></i>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>SnapshotId</dt>\n		<dd>"
+    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_SNAPSHOTID", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.snapshotId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>StartTime</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_START_TIME", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.startTime)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Status</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "STATUS", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Size</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_SIZE", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>Encrypted</dt>\n		<dd>"
+    + "</dd>\n		<dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ENCRYPTED", {hash:{},data:data}))
+    + "</dt>\n		<dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.encrypted)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -428,9 +486,13 @@ function program3(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ROOTDEVICETYPE", {hash:{},data:data}))
     + "</dt> <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Image Size</dt>    <dd>"
+    + "</dd>\n    <dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IMAGE_SIZE", {hash:{},data:data}))
+    + "</dt>    <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.imageSize)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n    <dt>Instance Type</dt> <dd>"
+    + "</dd>\n    <dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
+    + "</dt> <dd>"
     + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</dd>\n	</dl>\n</div>";
   return buffer;
@@ -602,14 +664,14 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <div class=\"payment-warning\">\n                There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\""
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">payment information</a>.\n            </div>\n        ";
+  buffer += "\n            <div class=\"payment-warning\">\n                "
+    + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url), {hash:{},data:data}))
+    + "\n            </div>\n        ";
   return buffer;
   }
 
@@ -623,11 +685,13 @@ function program1(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.STACK_VALIDATION", {hash:{},data:data}))
     + "</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.VALIDATING_STACK", {hash:{},data:data}))
-    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated AWS Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
+    + "</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix hide\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
-    + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        ";
+    + "</b> "
+    + escapeExpression(helpers.i18n.call(depth0, "PER_MONTH", {hash:{},data:data}))
+    + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "pastdue", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</section>";
@@ -713,13 +777,13 @@ function program8(depth0,data) {
 function program10(depth0,data) {
   
   
-  return "Source";
+  return escapeExpression(helpers.i18n.call(depth0, "IDE.POP_SGRULE_LBL_SOURCE", {hash:{},data:data}));
   }
 
 function program12(depth0,data) {
   
   
-  return "Destination";
+  return escapeExpression(helpers.i18n.call(depth0, "IDE.POP_SGRULE_LBL_DEST", {hash:{},data:data}));
   }
 
 function program14(depth0,data) {
@@ -792,7 +856,9 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<p>Following rule(s) will be deleted from its(their) security group:</p>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
+  buffer += "<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "SG_RULE_WILL_BE_DELETED", {hash:{},data:data}))
+    + "</p>\n<article class=\"scroll-wrap delete-sgrule-dialog\">\n<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n<div class=\"scroll-content\">\n";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n</article>";
@@ -992,12 +1058,30 @@ TEMPLATE.modalSGRule=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>Get Windows Password</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">This instance was associated with key pair: <span>"
+  buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "GET_WINDOWS_PASSWORD", {hash:{},data:data}))
+    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KEYPAIR", {hash:{},data:data}))
+    + "<span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></p>\n			<p>To access this instance remotely (e.g. Remote Desktop Connection), you will need your Windows Administrator password. A default password was created when the instance was launched and is available encrypted in the system log.</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>Decrypt Password</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\"Decripted password will appear here\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\"We recommend that you change your password to one that you will remember and know privately. Please note that passwords can persist through bundling phases and will not be retrievable through this tool. It is therefore important that you change your password to one that you will remember if you intend to bundle a new AMI from this instance.\" style=\"display: none;\">Change Password Recommendation from AWS</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				Your password is not ready. Password generation can sometimes take more than 30 minutes. Please wait at least 15 minutes after launching an instance before trying to retrieve the generated password.\n			</p>\n\n			<p>\n				If you launched this instance from your own AMI, the password is the same as for the instance from which you created the AMI, unless this setting was modified in the EC2Config service settings.\n			</p>\n		</section>\n	</div>\n</div>";
+    + "</span></p>\n			<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "TO_ACCESS_THIS_INSTANCE_REMOTELY", {hash:{},data:data}))
+    + "</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>"
+    + escapeExpression(helpers.i18n.call(depth0, "DECRYPT_PASSWORD", {hash:{},data:data}))
+    + "</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\""
+    + escapeExpression(helpers.i18n.call(depth0, "DECRYPTED_PASSWORD_WILL_APPEAR_HERE", {hash:{},data:data}))
+    + "\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "RECOMMEND_CHANGE_PASSWORD", {hash:{},data:data}))
+    + "\" style=\"display: none;\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CHANGE_PASSWORD_RECOMMENDATION_FROM_AWS", {hash:{},data:data}))
+    + "</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				"
+    + escapeExpression(helpers.i18n.call(depth0, "YOUR_PASSWORD_IS_NOT_READY", {hash:{},data:data}))
+    + "\n			</p>\n\n			<p>\n				"
+    + escapeExpression(helpers.i18n.call(depth0, "PASSWORD_OF_OWN_AMI", {hash:{},data:data}))
+    + "\n			</p>\n		</section>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
@@ -1006,7 +1090,7 @@ TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
@@ -1022,14 +1106,21 @@ function program3(depth0,data) {
 
 function program5(depth0,data) {
   
-  
-  return "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">Key Pair data is ready</p>\n				<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">Download</a>\n			</div>\n			";
+  var buffer = "";
+  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
+    + "</p>\n				<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DOWNLOAD", {hash:{},data:data}))
+    + "</a>\n			</div>\n			";
+  return buffer;
   }
 
 function program7(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major\">This instance was associated with key pair: "
+  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
+    + " "
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</p>\n			</div>\n			";
   return buffer;
@@ -1038,7 +1129,9 @@ function program7(depth0,data) {
 function program9(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">Remote Access</label>\n				<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
+  buffer += "\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
+    + "</label>\n				<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.loginCmd)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">\n			</div>\n			";
   return buffer;
@@ -1046,8 +1139,13 @@ function program9(depth0,data) {
 
 function program11(depth0,data) {
   
-  
-  return "\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">Windows Login Password</label>\n				<div id=\"keypair-login\">\n					<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n					<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">Show password</a>\n				</div>\n				<div id=\"keypair-no-pwd\"></div>\n			</div>\n			";
+  var buffer = "";
+  buffer += "\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">"
+    + escapeExpression(helpers.i18n.call(depth0, "WINDOWS_LOGIN_PASSWORD", {hash:{},data:data}))
+    + "</label>\n				<div id=\"keypair-login\">\n					<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n					<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">"
+    + escapeExpression(helpers.i18n.call(depth0, "SHOW_PASSWORD", {hash:{},data:data}))
+    + "</a>\n				</div>\n				<div id=\"keypair-no-pwd\"></div>\n			</div>\n			";
+  return buffer;
   }
 
   buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3 id='keypair-name'>"
@@ -1073,10 +1171,13 @@ TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<article>\n	<div class=\"property-control-group\">This resource is not available. It may have been deleted from other source or terminated in previous app editing.</div>\n</article>";
+  buffer += "<article>\n	<div class=\"property-control-group\">"
+    + escapeExpression(helpers.i18n.call(depth0, "MISSING_PROPERTY_PANEL", {hash:{},data:data}))
+    + "</div>\n</article>";
+  return buffer;
   };
 TEMPLATE.missingPropertyPanel=Handlebars.template(__TEMPLATE__);
 
@@ -1089,7 +1190,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<article>\n	<div class=\"property-control-group\">"
     + escapeExpression(((stack1 = (depth0 && depth0.asgName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " is deleted in stopped app. The auto scaling group will be created when the app is started.</div>\n</article>";
+    + " "
+    + escapeExpression(helpers.i18n.call(depth0, "ASG_DELETED_IN_STOPPED_APP", {hash:{},data:data}))
+    + "</div>\n</article>";
   return buffer;
   };
 TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
@@ -1098,10 +1201,12 @@ TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Set up CIDR Block</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "SET_UP_CIDR_BLOCK", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n			<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1121,13 +1226,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"modal-body\">\n	<div class=\"modal-center-align-helper\">\n		<p>"
     + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " has been automatically assigned Public IP.</p>\n		<p>If you want to attach the external network interface to "
-    + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ", the Public IP must be removed.</p>\n		<p>Do you still want to attach "
-    + escapeExpression(((stack1 = (depth0 && depth0.eni)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " to "
-    + escapeExpression(((stack1 = (depth0 && depth0.host)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " and remove the Public IP?</p>\n	</div>\n</div>";
+    + escapeExpression(helpers.i18n.call(depth0, "HOST_HAS_BEEN_ASSIGNED_PUBLIC_IP", {hash:{},data:data}))
+    + "</p>\n		<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "PUBLIC_IP_MUST_BE_REMOVED", (depth0 && depth0.host), {hash:{},data:data}))
+    + "</p>\n		<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_REMOVE_PUBLIC_IP", (depth0 && depth0.eni), (depth0 && depth0.host), {hash:{},data:data}))
+    + "</p>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
@@ -1136,14 +1240,20 @@ TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>Stack Name Already in Use</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Stack name <span class=\"resource-name-label\">"
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "STACK_NAME_ALREADY_IN_USE", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PLEASE_CHOOSE_ANOTHER_STACK_NAME", (depth0 && depth0.stack_name), {hash:{},data:data}))
+    + "</div>\n				<div class=\"modal-control-group\" data-bind=\"true\">\n					<label for=\"new-stack-name\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LABEL_STACK_NAME", {hash:{},data:data}))
+    + "</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> is already used by another stack. Please use a different name.</div>\n				<div class=\"modal-control-group\" data-bind=\"true\">\n					<label for=\"new-stack-name\">Stack Name</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">Save</button>\n	</div>\n</div>";
+    + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.SAVE", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalReinputStackName=Handlebars.template(__TEMPLATE__);
@@ -1161,7 +1271,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DELETE", {hash:{},data:data}))
+    + "</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);
@@ -1170,10 +1284,13 @@ TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>Refreshing resources...</div>\n	</div>\n</div>";
+  buffer += "<div id=\"loading-modal-wrap\">\n	<div class=\"loading-modal\" id=\"modal-box\">\n		<div class=\"loading-spinner loading-spinner-mid\"></div>\n		<div>"
+    + escapeExpression(helpers.i18n.call(depth0, "REFRESHING_RESOURCES", {hash:{},data:data}))
+    + "</div>\n	</div>\n</div>";
+  return buffer;
   };
 TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 
@@ -1190,7 +1307,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DELETE", {hash:{},data:data}))
+    + "</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalForceDeleteApp=Handlebars.template(__TEMPLATE__);
@@ -1199,10 +1320,15 @@ TEMPLATE.modalForceDeleteApp=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div>\n	<div class=\"info\">Last saved: <span class=\"stack-save-time\">-<span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">Validate</li>\n	</ul>\n</div>";
+  buffer += "<div>\n	<div class=\"info\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LAST_SAVED", {hash:{},data:data}))
+    + " <span class=\"stack-save-time\">-</span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LBL_VALIDATE", {hash:{},data:data}))
+    + "</li>\n	</ul>\n</div>";
+  return buffer;
   };
 TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
 
@@ -1223,10 +1349,18 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">Need to Restart Instance</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">To update the properties you have changed, following instances need to restart:</div>\n			<ul class=\"clearfix\">\n				";
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
+    + escapeExpression(helpers.i18n.call(depth0, "NEED_TO_RESTART_INSTANCE", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TO_UPDATE_THE_PROPERTIES_YOU_CHANGED", {hash:{},data:data}))
+    + "</div>\n			<ul class=\"clearfix\">\n				";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.instance_list), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">Continue to Update</button>\n		<button class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CONTINUE_TO_UPDATE", {hash:{},data:data}))
+    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
@@ -1260,7 +1394,9 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <section class=\"check-final-snapshot checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">Take final snapshot for DB instances.</label>\n            </section>\n            ";
+  buffer += "\n            <section class=\"check-final-snapshot checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES", {hash:{},data:data}))
+    + "</label>\n            </section>\n            ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        ";
@@ -1269,10 +1405,14 @@ function program5(depth0,data) {
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n                <p class=\"cant-snapshot\">DB Instance\n                    ";
+  buffer += "\n                <p class=\"cant-snapshot\">"
+    + escapeExpression(helpers.i18n.call(depth0, "DB_INSTANCE", {hash:{},data:data}))
+    + "\n                    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                    cannot take final snapshot.</p>\n            ";
+  buffer += "\n                    "
+    + escapeExpression(helpers.i18n.call(depth0, "CANNOT_TAKE_FINAL_SNAPSHOT", {hash:{},data:data}))
+    + "</p>\n            ";
   return buffer;
   }
 function program7(depth0,data) {
@@ -1294,28 +1434,31 @@ function program8(depth0,data) {
 
 function program10(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n            <div class=\"payment-warning\">\n                There was an issue to process payment in your account. Please update your <a href=\""
-    + escapeExpression(((stack1 = (depth0 && depth0['payment-link'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">payment\n                information</a>.\n            </div>\n        ";
+  var buffer = "";
+  buffer += "\n            <div class=\"payment-warning\">\n                "
+    + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", (depth0 && depth0['payment-link']), {hash:{},data:data}))
+    + "\n            </div>\n        ";
   return buffer;
   }
 
   buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n        ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            \n        <div class=\"scroll-wrap res_diff_tree\" id=\"app-update-summary-table\" style=\"max-height:200px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\"></div>\n        </div>\n        ";
+  buffer += "\n\n        <div class=\"scroll-wrap res_diff_tree\" id=\"app-update-summary-table\" style=\"max-height:200px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\"></div>\n        </div>\n        ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">Estimated AWS Cost</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>$"
+    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
+    + "</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>"
+    + escapeExpression(helpers.i18n.call(depth0, "MONEY_SYMBOL", {hash:{},data:data}))
     + escapeExpression(((stack1 = (depth0 && depth0.total_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        <div class=\"estimate-visualops clearfix hide\">\n            <div class=\"title\">Estimated VisualOps Cost</div>\n            <div class=\"price\" id=\"label-visualops-fee\"><b>$"
-    + escapeExpression(((stack1 = (depth0 && depth0.visualops_fee)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</b> / month</div>\n        </div>\n        ";
+    + "</b>"
+    + escapeExpression(helpers.i18n.call(depth0, "PER_MONTH", {hash:{},data:data}))
+    + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n\n</div>";
@@ -1347,10 +1490,16 @@ function program2(depth0,data) {
   return ", ";
   }
 
-  buffer += "<p class=\"modal-text-major\">DB Instance\n    ";
+  buffer += "<p class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "DB_INSTANCE", {hash:{},data:data}))
+    + "\n    ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.data), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    cannot be modified now.</p>\n<p>Wait for the DB instance(s) to be available. Then try to apply updates\n    again.</p>";
+  buffer += "\n    "
+    + escapeExpression(helpers.i18n.call(depth0, "CANNOT_BE_MODIFIED_NOW", {hash:{},data:data}))
+    + "</p>\n<p>"
+    + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_DB_THEN_UPDATE", {hash:{},data:data}))
+    + "</p>";
   return buffer;
   };
 TEMPLATE.cantUpdateApp=Handlebars.template(__TEMPLATE__);
@@ -1375,7 +1524,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div id=\"node-action-wrap\">\n	<div id=\"node-action-state\">\n		<div id=\"node-action-state-btn\">\n			<i id=\"node-state-icon\"></i>\n			<span id=\"node-state-number\">"
     + escapeExpression(((stack1 = (depth0 && depth0.state_num)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n		</div>\n		<div class=\"node-action-tooltip\">Edit State</div>\n	</div>\n</div>";
+    + "</span>\n		</div>\n		<div class=\"node-action-tooltip\">"
+    + escapeExpression(helpers.i18n.call(depth0, "EDIT_STATE", {hash:{},data:data}))
+    + "</div>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
@@ -1384,14 +1535,17 @@ TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>System Log: "
+  buffer += "<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG", {hash:{},data:data}))
     + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<section class=\"instance-sys-log-loading loading-spinner\"></section>\n		<div class=\"instance-sys-log-content font-mono\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">System log is not ready yet. Please try in a short while.</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
+    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG_NOT_READY", {hash:{},data:data}))
+    + "</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
@@ -1400,14 +1554,14 @@ TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "?</div>\n<div class=\"modal-text-minor\">Once deleted, the states of "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "'s configuration will be lost.</div>";
+  buffer += "<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_DELETE_XXX", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>\n<div class=\"modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ONCE_DELETE_STATE_CONF_LOST", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>";
   return buffer;
   };
 TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1416,14 +1570,14 @@ TEMPLATE.NodeStateRemoveConfirmation=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"modal-text-major\">Are you sure you want to delete "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "?</div>\n<div class=\"modal-text-minor\">The security group "
-    + escapeExpression(((stack1 = (depth0 && depth0.sg)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " will also be deleted. Other load balancer using this security group will be affected.</div>";
+  buffer += "<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_DELETE_XXX", (depth0 && depth0.name), {hash:{},data:data}))
+    + "</div>\n<div class=\"modal-text-minor\">"
+    + escapeExpression(helpers.i18n.call(depth0, "THE_SG_WILL_BE_DELETED", (depth0 && depth0.sg), {hash:{},data:data}))
+    + "</div>";
   return buffer;
   };
 TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
@@ -1432,10 +1586,17 @@ TEMPLATE.ElbRemoveConfirmation=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>Confirm to Enable VisualOps</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">Enable VisualOps will override your custom User Data. Are you sure to continue?</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>"
+    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_ENABLE_VISUALOPS", {hash:{},data:data}))
+    + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS_OVERRIDE_USER_DATA", {hash:{},data:data}))
+    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
+  return buffer;
   };
 TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
 
@@ -1620,7 +1781,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
     + "\" id=\"elb-ssl-cert-chain-input\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.chain)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSSLCertSetting=Handlebars.template(__TEMPLATE__);
@@ -1673,10 +1836,15 @@ TEMPLATE.experimentalVisopsTrail=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  return "<div class=\"bubble-head\">A NAT instance must meet following requirements:</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n		<li>Should have a route targeting the instance itself with destination to 0.0.0.0/0.</li>\n		<li>Should belong to a subnet which routes traffic with destination 0.0.0.0/0 to Internet Gateway.</li>\n		<li>Should disable Source/Destination Checking in \"Network Interface Details\".</li>\n		<li>Should have public IP or Elastic IP.</li>\n		<li>Should have outbound rule to the outside.</li>\n		<li>Should have inbound rule from within the VPC.</li>\n	</ul>\n</div>";
+  buffer += "<div class=\"bubble-head\">"
+    + escapeExpression(helpers.i18n.call(depth0, "NAT_INSTANCE_MEET_REQ", {hash:{},data:data}))
+    + "</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n        "
+    + escapeExpression(helpers.i18n.call(depth0, "NAT_INSTANCE_REQS", {hash:{},data:data}))
+    + "\n	</ul>\n</div>";
+  return buffer;
   };
 TEMPLATE.bubbleNATreq=Handlebars.template(__TEMPLATE__);
 
@@ -1716,7 +1884,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "?</div>\n				<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">Cancel</button>\n	</div>\n</div>";
+    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
@@ -1985,25 +2155,38 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
   
-  
-  return "<div class=\"warning-red no-change\">Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled.</div>";
+  var buffer = "";
+  buffer += "<div class=\"warning-red no-change\">"
+    + escapeExpression(helpers.i18n.call(depth0, "YOUR_ACCOUNT_IN_LIMITED_STATUS", {hash:{},data:data}))
+    + "</div>";
+  return buffer;
   }
 
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">While enjoying your free "
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " instance hours each month, provide billing information in case of running out of quota.</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " instance hours per month</td>\n            <td class=\"align-right\">Free</td>\n        </tr>\n        <tr>\n            <td>Instance hours consumed over "
-    + escapeExpression(((stack1 = (depth0 && depth0.freePointsPerMonth)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/instance hour</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">Pricing in detail</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "WHILE_ENJOYING_PROVIDE_CARD", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_PER_MONTH", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</td>\n            <td class=\"align-right\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LALEL_FREE", {hash:{},data:data}))
+    + "</td>\n        </tr>\n        <tr>\n            <td>"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_CONSUMED_OVER_XXX", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/"
+    + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
+    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
+    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Provide Billing Information <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            This will open a new window with Chargify.<br>\n            Meanwhile please keep this page open.\n        </p>\n    </div>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROVIDE_BILLING_INFORMATION", {hash:{},data:data}))
+    + " <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            "
+    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
+    + "\n        </p>\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
@@ -2012,12 +2195,18 @@ TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update  your payment information to continue managing apps with VisualOps.</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
+    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">Update Billing Information <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        This will open a new window with Chargify.<br/>\nMeanwhile please keep this page open.\n    </p>\n</div>";
+    + "\" class=\"btn btn-blue btn-xlarge\">"
+    + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
+    + " <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        "
+    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
+    + "\n    </p>\n</div>";
   return buffer;
   };
 TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);

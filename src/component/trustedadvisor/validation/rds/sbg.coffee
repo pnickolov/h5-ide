@@ -11,9 +11,13 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
         azs = _.map sbs, ( sb ) -> sb.parent()
         uniqAzCount = _.uniq( azs ).length
+        
+        if Design.instance().region() in ['cn-north-1']
+            minAZCount = 1
+        else
+            minAZCount = 2
 
-        if uniqAzCount > 1 then return null
-
+        if uniqAzCount >= minAZCount then return null
 
         Helper.message.error uid, sprintf( tmpTip, sbg.get( 'name' ) )
 

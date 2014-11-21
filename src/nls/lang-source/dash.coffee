@@ -5,20 +5,19 @@ module.exports =
 
     DASH_CREATE_NEW_STACK:
       en: "Create new stack"
-      zh: "创建模板"
+      zh: "创建 Stack"
 
     DASH_IMPORT_JSON:
       en: "Import stack"
-      zh: "导入Stack"
+      zh: "导入 Stack"
 
     DASH_VISUALIZE_VPC:
       en: "Import VPC"
-      zh: "可视化VPC"
-
+      zh: "导入 VPC"
 
     DASH_TIT_VIEW_RESOURCE_DETAIL:
       en: "View resource detail"
-      zh: ""
+      zh: "查看资源详细内容"
 
     DASH_MSG_RELOAD_AWS_RESOURCE_SUCCESS:
       en: "Status of resources is up to date."
@@ -26,7 +25,7 @@ module.exports =
 
     DASH_TIP_UNMANAGED_RESOURCE:
       en: "Unmanaged Resource"
-      zh: "非托管资源"
+      zh: "未管理资源"
 
     DASH_TIP_NO_RESOURCE_LEFT:
       en: "There is no "
@@ -34,15 +33,15 @@ module.exports =
 
     DASH_TIP_NO_RESOURCE_RIGHT:
       en: " in this region"
-      zh: ""
+      zh: " 资源"
 
     DASH_TIP_APP_CREATED_BY:
       en: "App created by "
-      zh: ""
+      zh: "App 创建者："
 
     DASH_TIP_APP_CREATED_BY_OTHER_USER:
       en: "App created by other user"
-      zh: ""
+      zh: "其他人创建的 App"
 
     DASH_BTN_GLOBAL:
       en: "Global"
@@ -50,31 +49,31 @@ module.exports =
 
     DASH_LBL_UNMANAGED:
       en: "Unmanaged"
-      zh: "非托管的"
+      zh: "未管理的"
 
     DASH_LBL_APP:
       en: "App"
-      zh: "应用"
+      zh: "App"
 
     DASH_LBL_STACK:
       en: "Stack"
-      zh: "模板"
+      zh: "Stack"
 
     DASH_LBL_RECENT_EDITED_STACK:
       en: "Recently Edited Stack"
-      zh: "最近修改的模板"
+      zh: "最近编辑的 Stack"
 
     DASH_LBL_RECENT_LAUNCHED_STACK:
       en: "Recently Launched App"
-      zh: "最近启动的实例"
+      zh: "最近启动的 App"
 
     DASH_LBL_NO_APP:
       en: "There is no app launched yet.<br />You can launch an app from a stack."
-      zh: "该地区没有应用<br />你可以通过模板创建应用"
+      zh: "该地区没有 App<br />你可以通过 Stack 启动 App"
 
     DASH_LBL_NO_STACK:
       en: "There is no stack in this region yet.<br />Create a new stack from here."
-      zh: "该地区还没有模板<br />点击这里创建新模板"
+      zh: "该地区还没有 Stack<br />点击这里创建 Stack"
 
     DASH_LBL_RUNNING_INSTANCE:
       en: "Running Instance"
@@ -90,7 +89,7 @@ module.exports =
 
     DASH_LBL_ELASTIC_IP:
       en: "Elastic IP"
-      zh: "弹性IP"
+      zh: "弹性 IP"
 
     DASH_LBL_VOLUME:
       en: "Volume"
@@ -130,7 +129,7 @@ module.exports =
 
     DASH_LBL_INSTANCE_ID:
       en: "Instance ID"
-      zh: "实例ID"
+      zh: "实例 ID"
 
     DASH_LBL_INSTANCE_NAME:
       en: "Instance Name"
@@ -162,7 +161,7 @@ module.exports =
 
     DASH_LBL_PUBLIC_IP:
       en: "Public IP"
-      zh: "IP地址"
+      zh: "IP 地址"
 
     DASH_LBL_AVAILABILITY_ZONE:
       en: "Availability Zone"
@@ -202,7 +201,7 @@ module.exports =
 
     DASH_LBL_DHCP_SETTINGS:
       en: "DHCP Settings"
-      zh: "DHCP设置"
+      zh: "DHCP 设置"
 
     DASH_LBL_VIRTUAL_PRIVATE_GATEWAY:
       en: "Virtual Private Gateway"
@@ -274,15 +273,15 @@ module.exports =
 
     DASH_LBL_PRIVATE_IP_ADDRESS:
       en: "Private Ip Address"
-      zh: "内网IP地址"
+      zh: "内网 IP 地址"
 
     DASH_LBL_AUTOSCALING_GROUP_NAME:
       en: "Auto Scaling Group Name"
-      zh: "Auto Scaling组名"
+      zh: "Auto Scaling 组名"
 
     DASH_LBL_AUTOSCALING_GROUP_ARN:
       en: "Auto Scaling Group ARN"
-      zh: "Auto Scaling组ARN"
+      zh: "Auto Scaling 组 ARN"
 
     DASH_LBL_ENABLED_METRICS:
       en: "Enabled Metrics"
@@ -298,155 +297,155 @@ module.exports =
 
     DASH_LBL_TITLE:
       en: "Title"
-      zh: ""
+      zh: "标题"
 
     DASH_LBL_DEFAULT_COOLDOWN:
       en: "Default Cooldown"
-      zh: ""
+      zh: "默认冷却"
 
     DASH_LBL_DESIRED_CAPACITY:
       en: "Desired Capacity"
-      zh: ""
+      zh: "期望数量"
 
     DASH_LBL_HEALTH_CHECK_GRACE_PERIOD:
       en: "HealthCheck Grace Period"
-      zh: ""
+      zh: "健康检查周期"
 
     DASH_LBL_HEALTH_CHECK_TYPE:
       en: "Health Check Type"
-      zh: ""
+      zh: "健康检查类型"
 
     DASH_LBL_HEALTH_CHECK:
       en: "Health Check"
-      zh: ""
+      zh: "健康检查"
 
     DASH_LBL_LISTENER_DESC:
       en: "Listener Descriptions"
-      zh: ""
+      zh: "侦听器描述"
 
     DASH_LBL_SECURITY_GROUPS:
       en: "Security Groups"
-      zh: ""
+      zh: "安全组"
 
     DASH_LBL_TENANCY:
       en: "Tenancy"
-      zh: ""
+      zh: "租赁"
 
     DASH_LBL_VGW_ID:
-      en: "VGW Id"
-      zh: ""
+      en: "VGW ID"
+      zh: "VGW ID"
 
     DASH_LBL_CGW_ID:
-      en: "CGW Id"
-      zh: ""
+      en: "CGW ID"
+      zh: "CGW ID"
 
     DASH_LBL_TYPE:
       en: "Type"
-      zh: ""
+      zh: "类型"
 
     DASH_LBL_VOLUME_ID:
       en: "Volume ID"
-      zh: ""
+      zh: "磁盘 ID"
 
     DASH_LBL_SNAPSHOT_ID:
       en: "Snapshot ID"
-      zh: ""
+      zh: "快照 ID"
 
     DASH_LBL_DELETE_ON_TERM:
       en: "Delete on Termination"
-      zh: ""
+      zh: "终止时删除"
 
     DASH_LBL_VOLUME_TYPE:
       en: "Volume Type"
-      zh: ""
+      zh: "卷类型"
 
     DASH_LBL_ATTACH_TIME:
       en: "Attach Time"
-      zh: ""
+      zh: "连接时间"
 
     DASH_LBL_MONITORING:
       en: "Monitoring"
-      zh: ""
+      zh: "监控"
 
     DASH_LBL_PRIMARY_PRIVATE_IP:
       en: "Primary Private IP"
-      zh: ""
+      zh: "主私有IP"
 
     DASH_LBL_PRIVATE_DNS:
       en: "Private DNS"
-      zh: ""
+      zh: "私有 DNS"
 
     DASH_LBL_AMI_LAUNCH_INDEX:
       en: "AMI Launch Index"
-      zh: ""
+      zh: "镜像启动索引"
 
     DASH_LBL_BLOCK_DEVICE_TYPE:
       en: "Block Device Type"
-      zh: ""
+      zh: "块储存设备类型"
 
     DASH_LBL_BLOCK_DEVICES:
       en: "Block Devices"
-      zh: ""
+      zh: "块储存设备"
 
     DASH_LBL_CATEGORY:
       en: "Category"
-      zh: ""
+      zh: "分类"
 
     DASH_LBL_STATE_REGION:
-      en: "State Reason"
-      zh: ""
+      en: "State Region"
+      zh: "状态区域"
 
     DASH_LBL_STATE_UPDATED_TIMESTAMP:
       en: "State Updated Timestamp"
-      zh: ""
+      zh: "状态更新时间戳"
 
     DASH_LBL_ENGINE:
       en: "Engine"
-      zh: ""
+      zh: "引擎"
 
     DASH_LBL_DB_NAME:
       en: "DB Name"
-      zh: ""
+      zh: "数据库名称"
 
     DASH_LBL_OPTION_GROUP:
       en: "Option Group"
-      zh: ""
+      zh: "选项组"
 
     DASH_LBL_PARAMETER_GROUP:
       en: "Parameter Group"
-      zh: ""
+      zh: "参数组"
 
     DASH_LBL_SUBNET_GROUP:
       en: "Subnet Group"
-      zh: ""
+      zh: "子网组"
 
     DASH_LBL_PUBLICLY_ACCESSIBLE:
       en: "Publicly Accessible"
-      zh: ""
+      zh: "公共访问性"
 
     DASH_LBL_IOPS:
       en: "IOPS"
-      zh: ""
+      zh: "IOPS"
 
     DASH_LBL_AUTOMATED_BACKUP:
       en: "Automated Backup"
-      zh: ""
+      zh: "自动备份"
 
     DASH_LBL_LATEST_RESTORE_TIME:
       en: "Latest Restore Time"
-      zh: ""
+      zh: "最新恢复时间"
 
     DASH_LBL_AUTO_MINOR_VERSION_UPGRADE:
       en: "Auto Minor Version Upgrade"
-      zh: ""
+      zh: "自动版本升级"
 
     DASH_LBL_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
-      zh: ""
+      zh: "管理窗口"
 
     DASH_LBL_BACKUP_WINDOW:
       en: "Backup Window"
-      zh: ""
+      zh: "备份窗口"
 
 
     DASH_LBL_MIN_SIZE:
@@ -551,19 +550,19 @@ module.exports =
 
     DASH_LBL_DBINSTANCE_NAME:
       en: "Name"
-      zh: ""
+      zh: "名称"
 
     DASH_LBL_CLASS:
       en: "Class"
-      zh: ""
+      zh: "等级"
 
     DASH_LBL_FAMILY:
       en: "Family"
-      zh: ""
+      zh: "家族"
 
     DASH_LBL_STORAGE:
       en: "Storage"
-      zh: ""
+      zh: "存储"
 
     DASH_BUB_NAME:
       en: "Name"
@@ -579,15 +578,15 @@ module.exports =
 
     DASH_BUB_IMAGELOCATION:
       en: "Image Location"
-      zh: "映像位置"
+      zh: "AMI位置"
 
     DASH_BUB_IMAGEOWNERALIAS:
       en: "Image Owner Alias"
-      zh: "映像所有者别名"
+      zh: "AMI所有者别名"
 
     DASH_BUB_IMAGEOWNERID:
       en: "Image Owner ID"
-      zh: "映像所有者ID"
+      zh: "AMI所有者ID"
 
     DASH_BUB_ISPUBLIC:
       en: "Public"
@@ -607,15 +606,15 @@ module.exports =
 
     DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN:
       en: "Create this stack in"
-      zh: "将模板创建为"
+      zh: "将Stack创建为"
 
     DASH_POP_CREATE_STACK_CREATE_STACK_ERROR:
       en: "Create stack error"
-      zh: "创建模板出错"
+      zh: "创建Stack出错"
 
     DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
       en: "Failed to load region information. Please try agian."
-      zh: "加载地区资源失败。请重试。"
+      zh: "加载地区资源失败，请重试。"
 
     DASH_POP_BTN_RETRY:
       en: "Retry"
@@ -654,16 +653,16 @@ module.exports =
       zh: "刚刚"
 
     DASH_TPL_SAMPLE_INSTRUCTION:
-      en: "This is only sample data of global resource sumary."
-      zh: ""
+      en: "This is only sample data of global resource summary."
+      zh: "这是全球资源汇总的示例数据。"
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1:
       en: "Provide your AWS Credential"
-      zh: ""
+      zh: "提供您的 AWS 证书"
 
     DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2:
       en: " to see real data"
-      zh: ""
+      zh: "以查看真实数据"
 
     DASH_TPL_NO_RECENT_APP:
       en: "No recently launched app in 30 days"
@@ -671,15 +670,15 @@ module.exports =
 
     DASH_TPL_NO_RECENT_STACK:
       en: "No recently edited stack in 30 days"
-      zh: ""
+      zh: "没有 30 天内编辑过的 Stack"
 
     DASH_TPL_PENDING_CONFIRMATION:
       en: "Pending Confirmation"
-      zh: ""
+      zh: "等待确认"
 
     DASH_TPL_LOADING_VPC_FAILED:
       en: "Oops, loading VPC failed."
-      zh: ""
+      zh: "加载VPC失败。"
 
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
@@ -691,7 +690,7 @@ module.exports =
 
     DASH_TPL_NO_VPC_TO_IMPORT:
       en: "There is no VPC to import."
-      zh: ""
+      zh: "没有可导入的VPC。"
 
     DASH_IMPORT_VPC_AS_APP:
       en: "Import Existing VPC as App"
@@ -703,36 +702,45 @@ module.exports =
 
     DASH_INVALID_SESSION:
       en: "Invalid Session"
-      zh: ""
+      zh: "登录信息已失效"
 
     DASH_INVALID_SESSION_ERROR:
       en: "Your account has signed in from other location or you last login has timed out."
-      zh: ""
+      zh: "您已在其他地方登录或者您的登录信息已失效。"
 
     DASH_INVALID_SESSION_ACTION:
       en: "Would you like to reconnect this session or close it?"
-      zh: ""
+      zh: "您要重新登录还是关闭会话？"
 
     DASH_INVALID_SESSION_WARNING:
       en: "If you have unsaved changes, close this session will cause all your change to lose."
-      zh: ""
+      zh: "如果您有未保存的修改，关闭会话将会导致所有修改丢失。"
 
     DASH_LBL_RECONNECT:
       en: "Reconnect"
-      zh: ""
+      zh: "重连"
 
     DASH_LBL_CLOSE_SESSION:
       en: "Close Session"
-      zh: ""
+      zh: "关闭会话"
 
     DASH_RECONNECT_SESSION:
       en: "Reconnect Session"
-      zh: ""
+      zh: "重新登录"
 
     DASH_PROVIDE_PASSWORD_TO_RECONNECT:
       en: "Please provide your password to reconnect:"
-      zh: ""
+      zh: "请重新输入密码："
 
     DASH_LBL_CONNECT:
       en: "Connect"
-      zh: ""
+      zh: "连接"
+
+    DASH_TIP_DUPLICATE_STACK:
+      en: "Duplicate Stack"
+      zh: "复制 Stack"
+
+    DASH_TIP_DEL_STACK:
+      en: "Delete Stack"
+      zh: "删除 Stack"
+

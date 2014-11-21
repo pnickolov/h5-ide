@@ -1,7 +1,7 @@
 <!-- {{frame}} -->
 <div class="modal-res-diff">
-	<p>Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s).</p>
-	<h5>What have been changed:</h5>
+	<p>{{i18n "TOOLBAR.RESOURCES_APP_CHANGED"}}</p>
+	<h5>{{i18n "TOOLBAR.WHAT_HAVE_BEEN_CHANGED"}}</h5>
 	<div class="scroll-wrap scroll-wrap-res-diff" style="max-height: 350px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
 		<article class="content_wrap scroll-content"></article>

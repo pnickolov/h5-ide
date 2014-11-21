@@ -10,8 +10,12 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
     if members.length is 1 then members.unshift 'IDE'
 
     t = lang[ members[0] ][ members[1] ] or lang.PROP[ members[1] ]
+    ### env:dev ###
+    t = t || text
+    ### env:dev:end ###
+
     ### env:prod ###
-    t = t || "undefined"
+    t = t || text || "undefined"
     ### env:prod:end ###
 
     # Support sprint
@@ -217,7 +221,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
               return if (v1 > v2) then options.fn(this) else options.inverse(this)
           when '>='
               return if (v1 >= v2) then options.fn(this) else options.inverse(this)
-          when 'and' 
+          when 'and'
               return if (v1 and v2) then options.fn(this) else options.inverse(this)
           when 'or'
               return if (v1 or v2) then options.fn(this) else options.inverse(this)

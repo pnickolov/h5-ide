@@ -31,7 +31,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage SNS in #{regionName}"
+            title: sprintf lang.IDE.MANAGE_SNS_IN_AREA, regionName
             classList: 'sns-manage'
             #slideable: _.bind that.denySlide, that
             context: that
@@ -39,13 +39,13 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Create Subscription'
+                    name: lang.PROP.LBL_CREATE_SUBSCRIPTION
                 }
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: 'Delete'
+                    name: lang.PROP.LBL_DELETE
                 }
                 {
                     icon: 'refresh'
@@ -57,16 +57,16 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', './component/sns/snsTpl'
                 {
                     sortable: true
                     width: "25%" # or 40%
-                    name: 'Topic'
+                    name: lang.PROP.LBL_TOPIC
                 }
                 {
                     sortable: true
-                    name: 'Topic ARN'
+                    name: lang.PROP.LBL_TOPIC_ARN
                 }
                 {
                     sortable: false
                     width: "20%" # or 40%
-                    name: 'Subscription'
+                    name: lang.PROP.LBL_SUBSCRIPTION
                 }
             ]
 

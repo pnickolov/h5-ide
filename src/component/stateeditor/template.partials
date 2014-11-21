@@ -271,7 +271,7 @@
 
 <!-- {{stateTextExpandModal}} -->
 <div id="modal-state-text-expand" style="width: 900px;">
-	<div class="modal-header"><h3>{{#if read_only}}View{{else}}Edit{{/if}} {{cmd_name}} > {{para_name}}</h3><i class="modal-close">&times;</i> </div>
+	<div class="modal-header"><h3>{{#if read_only}}{{i18n "STATE_TEXT_VIEW"}}{{else}}{{i18n "STATE_TEXT_EDIT"}}{{/if}} {{cmd_name}} > {{para_name}}</h3><i class="modal-close">&times;</i> </div>
 	<div class="modal-body">
 		<div class="editable-area text-code-editor text"></div>
 	</div>

@@ -17,11 +17,11 @@
 
 				{{else}}
 					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
-						Good job! No error here.
+						{{i18n "IDE.GOOD_JOB_NO_ERROR_HERE"}}
 					</div>
 				{{/each}}
 
-				<div class="item-error-tip"><i class="icon-info"></i>Some error validation only happens at the time to run stack.</div>
+				<div class="item-error-tip"><i class="icon-info"></i>{{i18n "IDE.SOME_ERROR_VALIDATION_ONLY_HAPPENS_AT_THE_TIME_TO_RUN_STACK"}}</div>
 
 			</div>
 			<div id="item-warning" class="content">
@@ -31,7 +31,7 @@
 					</div>
 				{{else}}
 					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
-						Good job! No warning here.
+						{{i18n "IDE.GOOD_JOB_NO_WARNING_HERE"}}
 					</div>
 				{{/each}}
 			</div>
@@ -42,7 +42,7 @@
 					</div>
 				{{else}}
 					<div class="title empty" data-key="{{ key }}" data-type="{{ type }}">
-						Good job! No notice here.
+						{{i18n "IDE.GOOD_JOB_NO_NOTICE_HERE"}}
 					</div>
 				{{/each}}
 			</div>

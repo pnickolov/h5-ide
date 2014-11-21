@@ -284,20 +284,20 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage DHCP Options in #{regionName}"
+            title: sprintf lang.IDE.MANAGE_DHCP_IN_AREA, regionName
             slideable: true
             context: that
             buttons: [
                 {
                     icon: 'new-stack'
                     type: 'create'
-                    name: 'Create DHCP Options Set'
+                    name: lang.PROP.LBL_CREATE_DHCP_OPTIONS_SET
                 }
                 {
                     icon: 'del'
                     type: 'delete'
                     disabled: true
-                    name: 'Delete'
+                    name: lang.PROP.LBL_DELETE
                 }
                 {
                     icon: 'refresh'
@@ -309,17 +309,17 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 {
                     sortable: true
                     width: "200px" # or 40%
-                    name: 'Name'
+                    name: lang.PROP.NAME
                 }
                 {
                     sortable: false
                     width: "480px" # or 40%
-                    name: 'Options'
+                    name: lang.PROP.LBL_OPTIONS
                 }
                 {
                     sortable: false
                     width: "56px"
-                    name: "Details"
+                    name: lang.PROP.LBL_DETAIL
                 }
             ]
 

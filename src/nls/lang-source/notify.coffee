@@ -6,91 +6,89 @@ module.exports =
 
     WARN_AUTH_FAILED:
       en : "Authentication failed."
-      zh : ""
+      zh : "认证失败"
 
     INFO_STATE_COPY_TO_CLIPBOARD:
       en : "State(s) copied to clipboard"
-      zh : ""
+      zh : "State(s) 已复制到剪贴板"
 
     INFO_STATE_PARSE_COMMAND_FAILED:
       en : "The states are from a different version. Some module may be incompatible."
-      zh : ""
+      zh : "发现不同版本的 states，可能导致一些模块不兼容。"
 
     INFO_STATE_PARSE_REFRENCE_FAILED:
       en : "The states contains @references which cannot pass on. Validate to see details."
-      zh : ""
+      zh : "States 包含无效引用，点击验证查看详情。"
 
     WARN_OPERATE_NOT_SUPPORT_YET:
       en : "This operation is not supported yet."
-      zh : ""
+      zh : "目前不支持此操作。"
 
     WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH:
       en : "Auto Scaling Group can only register with Load Balancer on launch."
-      zh : ""
+      zh : "Auto Scaling 组只能在初次运行时连接负载均衡器"
 
     WARN_AMI_NOT_EXIST_TRY_USE_OTHER:
-      en : "The AMI(%s) is not exist now, try to use another AMI."
-      zh : ""
+      en : "AMI %s is not available. Try to use another AMI."
+      zh : "AMI %s 不存在，请尝试使用其他 AMI。"
 
     WARN_ATTACH_VOLUME_REACH_INSTANCE_LIMIT:
       en : "Attached volume has reached instance limit."
-      zh : ""
+      zh : "此实例连接卷已达上限。"
 
     WARN_KEYPAIR_NAME_ALREADY_EXISTS:
-      en : "KeyPair with the same name already exists."
-      zh : ""
+      en : "Key pair with the same name already exists."
+      zh : "密钥对名称已存在。"
 
     FAILED_TO_DELETE_KP:
-      en: "Failed to delete keypair, please try again later."
-      zh: ""
+      en: "Failed to delete key pair. Please try again later."
+      zh: "删除密钥对失败，请稍后重试。"
 
     WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET:
-      en : "Cannot auto-assign cidr for subnets, please manually update subnets' cidr before changing vpc's cidr."
-      zh : ""
+      en : "Cannot auto assign CIDR block for subnets. Please manually update subnets' CIDR block before changing VPC's CIDR block."
+      zh : "不能为子网自动分配 CIDR，在更改 VPC 的 CIDR 之前先请手动功能新子网的 CIDR "
 
     WARN_VPC_DOES_NOT_EXIST:
       en : "VPC does not exist."
-      zh : ""
-
-
+      zh : "VPC 不存在。"
 
 
 
     INFO_APP_REFRESH_FINISH:
-      en: "Refresh resources for app( %s ) complete."
-      zh: "完成应用( %s )的资源刷新。"
+      en: "Resources for app( %s ) are refreshed."
+      zh: "完成App( %s )的资源刷新。"
 
     INFO_APP_REFRESH_FAILED:
-      en: "Refresh resources for app( %s ) falied, please click refresh tool button to retry."
-      zh: "刷新应用( %s )的资源失败, 请点击刷新按钮来重试。"
+      en: "Refreshing resources for app( %s ) falied. Please try again."
+      zh: "刷新App( %s )的资源失败, 请点击刷新按钮来重试。"
 
     INFO_APP_REFRESH_START:
-      en: "Refresh resources for app( %s ) start ..."
-      zh: "开始刷新应用( %s )的资源 ..."
+      en: "Refreshing resources for app( %s )..."
+      zh: "开始刷新App( %s )的资源 ..."
 
     ERR_CONVERT_CLOUDFORMATION:
-      en: "Convert to stack json to CloudFormation format error"
-      zh: "转换成CloudFormation出错"
+      en: "Fail to convert to CloudFormation format"
+      zh: "转换成 CloudFormation 出错"
 
     ERROR_CANT_DUPLICATE:
-      en: "Cannot duplicate the stack, please retry."
-      zh: ""
+      en: "Fail to duplicate stack. Please try again."
+      zh: "复制 Stack 失败，请重试。"
 
     ERROR_FAILED_LOAD_AWS_DATA:
-      en: "Error while loading AWS data, please try again later."
-      zh: ""
+      en: "Fail to load AWS data. Please try again later."
+      zh: "加载 AWS 数据失败，请稍后重试。"
 
     ERROR_FAILED_START:
       en: "Fail to start your app %s. (ErrorCode: %s)"
-      zh: ""
+      zh: "App %s 启动失败。（错误码：%s）"
 
     ERROR_FAILED_STOP:
       en: "Fail to stop your app %s. (ErrorCode: %s)"
-      zh: ""
+      zh: "App %s 停止失败。（错误码：%s）"
 
     ERROR_FAILED_TERMINATE:
       en: "Fail to terminate your app %s. (ErrorCode: %s)"
-      zh: ""
+      zh: "App %s 终止失败。（错误码：%s）"
 
     INFO_REQ_SUCCESS:
       en: "Sending request to %s %s..."
@@ -109,11 +107,11 @@ module.exports =
       zh: "%s %s 失败。"
 
     ERR_SAVE_FAILED:
-      en: "Save stack %s failed, please check and save it again."
+      en: "Fail to save stack %s. Please try again."
       zh: "保存模块 %s 失败，请您检查并重新保存。"
 
     ERR_SAVE_FAILED_NAME:
-      en: "The name of the stack has already been used, please change to a new one."
+      en: "The stack name has already been used. Please change to a new one."
       zh: "已存在相同名字的模块，请输入一个新的名字后重新保存。"
 
     ERR_SAVE_SUCCESS:
@@ -125,37 +123,37 @@ module.exports =
       zh: "删除 %s 成功。"
 
     ERR_DEL_STACK_FAILED:
-      en: "Delete stack %s failed."
+      en: "Fail to delete stack %s."
       zh: "删除 %s 失败。"
 
 
     FAILED_TO_DELETE_DHCP:
-      en: "%s DhcpOptions failed to delete because of: %s"
-      zh: ""
+      en: "%s DHCP Options failed to delete because of: %s"
+      zh: "DHCP 选项 %s 删除失败，失败原因：%s"
 
     DELETE_SUCCESSFULLY:
       en: "Delete Successfully"
-      zh: ""
+      zh: "删除成功"
 
     DHCP_CREATED_SUCCESSFULLY:
       en: "New DHCP Option is created successfully"
-      zh: ""
+      zh: "DHCP 选项创建成功"
 
     YOU_MUST_DOWNLOAD_THE_KEYPAIR:
-      en: "You must download the keypair."
-      zh: ""
+      en: "Make sure you have downloaded the key pair."
+      zh: "您必须下载密钥对。"
 
     XXX_IS_DELETED:
       en: "%s is deleted successfully."
-      zh: ""
+      zh: "%s 删除成功。"
 
     SELECTED_KEYPAIRS_ARE_DELETED:
       en: "Selected %s key pairs are deleted."
-      zh: ""
+      zh: "选中的密钥对 %s 删除成功。"
 
     XXX_IS_IMPORTED:
       en: "%s is imported."
-      zh: ""
+      zh: "%s 导入成功。"
 
     PARAMETER_GROUP_UPDATED_FAILED:
       en: "Parameter Group updated failed because of %s"
@@ -163,87 +161,85 @@ module.exports =
 
     PARAMETER_GROUP_IS_UPDATED:
       en: "Parameter Group is updated."
-      zh: ""
+      zh: "参数组已更新。"
 
     CREATE_FAILED_BECAUSE_OF_XXX:
       en: "Create failed because of: %s"
-      zh: ""
+      zh: "创建失败，失败原因：%s"
 
     NEW_RDS_PARAMETER_GROUP_IS_CREATED_SUCCESSFULLY:
       en: "New RDS Parameter Group is created successfully!"
-      zh: ""
+      zh: "RDS 参数组创建成功！"
 
     RDS_PARAMETER_GROUP_IS_RESET_SUCCESSFULLY:
       en: "RDS Parameter Group is reset successfully!"
-      zh: ""
-
-
+      zh: "RDS 参数组重置成功！"
 
 
 
     DB_SNAPSHOT_CREATE_FAILED:
       en: "Create failed because of : %s"
-      zh: ""
+      zh: "创建失败，失败原因：%s"
 
     DUPLICATE_FAILED_BECAUSE_OF_XXX:
       en: "Duplicate failed because of : %s"
-      zh: ""
+      zh: "复制失败，失败原因：%s"
 
     DB_SNAPSHOT_DUPLICATE_SUCCESS:
       en: "New RDS snapshot is duplicated successfully!"
-      zh: ""
+      zh: "RDS 快照复制成功！"
 
     DB_SNAPSHOT_DUPLICATE_SUCCESS_OTHER_REGION:
       en: "New RDS Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
-      zh: ""
+      zh: "RDS 快照已复制到其他地区，请切换到对应地区去检查刚创建好的快照。"
 
     XXX_SNAPSHOT_FAILED_TO_DELETE:
       en: "%s Snapshot failed to delete, Please try again later."
-      zh: " "
+      zh: "快照 %s 删除失败，请稍后重试。"
 
     DB_SNAPSHOT_DELETE_SUCCESS:
       en: "RDS Snapshot(s) Delete Successfully!"
-      zh: ""
+      zh: "RDS 快照删除成功！"
 
     NEW_SNAPSHOT_IS_CREATED_SUCCESSFULLY:
       en: "New Snapshot is created successfully!"
-      zh: ""
+      zh: "快照创建成功！"
 
     INFO_DUPLICATE_SNAPSHOT_SUCCESS:
       en: "New Snapshot is duplicated successfully"
-      zh: ""
+      zh: "快照复制成功"
 
     INFO_ANOTHER_REGION_DUPLICATE_SNAPSHOT_SUCCESS:
       en: "New Snapshot is duplicated to another region, you need to switch region to check the snapshot you just created."
-      zh: ""
+      zh: "快照已复制到其他区域，请切换到对应区域去检查刚创建好的快照。"
 
     INFO_DELETE_SNAPSHOT_SUCCESSFULLY:
       en: "Delete Successfully"
-      zh: ""
+      zh: "删除成功"
 
     REMOVE_SUBSCRIPTION_SUCCEED:
       en: "Remove Subscription Succeed."
-      zh: ""
+      zh: "删除订阅成功。"
 
     SELECTED_XXX_SNS_TOPIC_ARE_DELETED:
       en: "Selected %s SNS topic are deleted."
-      zh: ""
+      zh: "选定的 SNS 主题 %s 删除成功。"
 
     CREATE_SUBSCRIPTION_SUCCEED:
       en: "Create Subscription Succeed"
-      zh: ""
+      zh: "创建订阅成功"
 
     CERTIFICATE_NAME_XXX_IS_INVALID:
       en: "Certificate name %s is invalid"
-      zh: ""
+      zh: "证书名 %s 无效"
 
     CERTIFICATE_XXX_IS_UPLOADED:
       en: "Certificate %s is uploaded"
-      zh: ""
+      zh: "证书 %s 已更新"
 
     CANNOT_LOAD_APPLICATION_DATA:
       en: "Cannot load application data. Please reload your browser."
-      zh: ""
+      zh: "加载应用数据失败。请刷新浏览器。"
 
     SETTINGS_UPDATE_PWD_SUCCESS:
       en: "Password has been updated."
@@ -255,35 +251,35 @@ module.exports =
 
     FAIL_TO_CREATE_TOKEN:
       en: "Fail to create token, please retry."
-      zh: ""
+      zh: "令牌创建失败，请重试。"
 
     FAIL_TO_UPDATE_TOKEN:
       en: "Fail to update token, please retry."
-      zh: ""
+      zh: "更新令牌失败，请重试。"
 
     FAIL_TO_DELETE_TOKEN:
       en: "Fail to delete token, please retry."
-      zh: ""
+      zh: "删除令牌失败，请重试。"
 
     FAILED_TO_LOAD_DATA:
       en: "Failed to load data, please retry."
-      zh: ""
+      zh: "加载数据失败，请重试。"
 
     FAILED_TO_LOAD_AWS_DATA:
       en: "Failed to load aws data, please retry."
-      zh: ""
+      zh: "加载 AWS 数据失败，请重试"
 
     READ_REPLICA_MUST_BE_DROPPED_IN_THE_SAME_SBG:
       en: "Read replica must be dropped in the same subnet group with source DB instance."
-      zh: ""
+      zh: "只读副本必须与数据库实例放置在同一个子网组里。"
 
     CANNOT_CREATE_MORE_READ_REPLICA:
       en: "Cannot create more read replica."
-      zh: ""
+      zh: "只读副本达到上限。"
 
     CANNOT_CREATE_SBG_DUE_TO_INSUFFICIENT_SUBNETS:
       en: "Cannot create subnet group due to insufficient subnets."
-      zh: ""
+      zh: "子网数量不足，无法创建子网组。"
 
     ERR_GET_PASSWD_FAILED:
       en: "There was an error decrypting your password. Please ensure that you have entered your private key correctly."
@@ -291,48 +287,48 @@ module.exports =
 
     ERR_AMI_NOT_FOUND:
       en: "Can not find information for selected AMI( %s ), try to drag another AMI."
-      zh: "无法获取选中的( %s )AMI的信息，请拖拽其他的AMI。"
+      zh: "无法获取选中的( %s ) AMI的信息，请拖拽其他的AMI。"
 
     THE_ADDING_RULE_ALREADY_EXIST:
-      en: "The adding rule already exist."
-      zh: ""
+      en: "The same rule already exists."
+      zh: "该规则已存在。"
 
     UNABLE_TO_LOAD_COMMUNITY_AMIS:
       en: "Unable to load community AMIs"
-      zh: "不能加载社区映像"
+      zh: "不能加载社区AMI"
 
     FAIL_TO_EXPORT_TO_CLOUDFORMATION:
       en: "Fail to export to AWS CloudFormation Template, Error code: %s"
-      zh: ""
+      zh: "导出 AWS CloudFormation 模板失败，（错误码：%s）"
 
     RELOAD_STATE_INVALID_REQUEST:
-        en: "Sorry, but the request is not valid."
-        zh: ""
+        en: "Sorry, but the request is invalid."
+        zh: "非法请求。"
 
     RELOAD_STATE_NETWORKERROR:
-      en: "Network error, please try again later."
-      zh: ""
+      en: "Network error. Please try again later."
+      zh: "网络错误，请稍后重试。"
 
     RELOAD_STATE_INTERNAL_SERVER_ERROR:
-      en: "Sorry, Internal server error, please try again later."
-      zh: ""
+      en: "Sorry, internal server error. Please try again later."
+      zh: "内部服务器错误，请稍后重试。"
 
     RELOAD_STATE_SUCCESS:
-      en: "States reloaded successfully!"
-      zh: ""
+      en: "States reloaded successfully."
+      zh: "States 重新加载成功。"
 
     RELOAD_STATE_NOT_READY:
-      en: "App Agent is not ready yet, Please try again later."
-      zh: ""
+      en: "OpsAgent is not ready yet. Please try again later."
+      zh: "OpsAgent 还没准备好，请稍后重试。"
 
     FAILA_TO_RUN_STACK_BECAUSE_OF_XXX:
-      en: "Failed to run your stack %s because of %s"
-      zh: ""
+      en: "Fail to run your stack %s because of %s"
+      zh: "Stack %s 运行失败，失败原因：%s"
 
     UPDATED_FULLNAME_SUCCESS:
       en: "Full name Updated successfully"
-      zh: ""
+      zh: "全名更新成功"
 
     UPDATED_FULLNAME_FAIL:
-      en: "Failed to update full name, please try again later."
-      zh: ""
+      en: "Fail to update full name. Please try again later."
+      zh: "全名更新失败，请稍后重试。"

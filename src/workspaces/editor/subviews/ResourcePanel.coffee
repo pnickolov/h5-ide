@@ -336,9 +336,13 @@ define [
         az[ subnet.parent().get("name") ] = true
 
       @sbg = @$el.find(".resource-item.subnetgroup")
-      if _.keys( az ).length < 2
+      if Design.instance().region() in ['cn-north-1']
+          minAZCount = 1
+      else
+          minAZCount = 2
+      if _.keys( az ).length < minAZCount
         disabled = true
-        tooltip  = "To create subnet group, there must to be subnets from at least 2 different availability zones on canvas."
+        tooltip  = "To create subnet group, there must to be subnets from at least #{minAZCount} different availability zones on canvas."
         @sbg.toggleClass("disabled", true).attr("data-tooltip", )
       else
         disabled = false

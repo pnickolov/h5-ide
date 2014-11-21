@@ -2,7 +2,7 @@
 #  View Mode for design/property/rtb
 #############################
 
-define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyModel, Design, constant, CloudResources ) ->
+define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang.js' ], ( PropertyModel, Design, constant, CloudResources, lang ) ->
 
   RTBModel = PropertyModel.extend {
 
@@ -34,7 +34,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
 
         if subnet
           @set {
-            title : 'Subnet-RT Association'
+            title : lang.ide.TITLE_SUBNET_RT_ASSO
             association :
               subnet : subnet.get("name")
               rtb    : component.get("name")

@@ -8,7 +8,8 @@ define [
   "event"
 
   "state_status"
-], ( OpsModel, Design, template, constant, Backbone, ide_event, stateStatus )->
+  "i18n!/nls/lang.js"
+], ( OpsModel, Design, template, constant, Backbone, ide_event, stateStatus, lang )->
 
 # Just define item below and import need file above
 # name used for template, the template you put in TplStatusBar file
@@ -61,8 +62,8 @@ define [
 
       click: ( event ) ->
         btnDom = $(event.currentTarget)
-        currentText = 'Validate'
-        btnDom.text('Validating...')
+        currentText = lang.IDE.LBL_VALIDATE
+        btnDom.text(lang.IDE.VALIDATING_3DOT)
 
         setTimeout () ->
             MC.ta.validAll()

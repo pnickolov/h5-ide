@@ -90,7 +90,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 								checkResult = true
 
 					catch err
-						errInfoStr = "Stack format validation error"
+						errInfoStr = lang.TA.ERROR_STACK_FORMAT_VALID_ERROR
 				else
 					callback(null)
 
@@ -176,10 +176,10 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 										instanceType = instanceObj.type
 										instanceName = instanceObj.name
 
-										infoObjType = 'Instance'
+										infoObjType = lang.PROP.ELB_INSTANCES
 										infoTagType = 'instance'
 										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
+											infoObjType = lang.PROP.LC_TITLE
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
 										tipInfoAry.push({
@@ -206,10 +206,10 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 										instanceType = instanceObj.type
 										instanceName = instanceObj.name
 
-										infoObjType = 'Instance'
+										infoObjType = lang.PROP.ELB_INSTANCES
 										infoTagType = 'instance'
 										if instanceType is constant.RESTYPE.LC
-											infoObjType = 'Launch Configuration'
+											infoObjType = lang.PROP.LC_TITLE
 											infoTagType = 'lc'
 										tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_AUTHED_AMI, infoObjType, infoTagType, instanceName, amiId
 										tipInfoAry.push({
@@ -268,10 +268,10 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'stack_se
 					instanceType = instanceObj.type
 					instanceName = instanceObj.name
 
-					infoObjType = 'Instance'
+					infoObjType = lang.PROP.ELB_INSTANCES
 					infoTagType = 'instance'
 					if instanceType is constant.RESTYPE.LC
-						infoObjType = 'Launch Configuration'
+						infoObjType = lang.PROP.LC_TITLE
 						infoTagType = 'lc'
 					tipInfo = sprintf lang.TA.ERROR_STACK_HAVE_NOT_EXIST_AMI, infoObjType, infoTagType, instanceName, amiId
 					tipInfoAry.push({

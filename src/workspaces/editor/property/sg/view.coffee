@@ -61,9 +61,9 @@ define [ '../base/view',
 
         radioSgModalChange : (event) ->
             if $('#sg-modal-direction input:checked').val() is "inbound"
-                $('#rule-modal-ip-range').text "Source"
+                $('#rule-modal-ip-range').text lang.IDE.POP_ACLRULE_LBL_SOURCE
             else
-                $('#rule-modal-ip-range').text "Destination"
+                $('#rule-modal-ip-range').text lang.IDE.POP_ACLRULE_LBL_DEST
 
         sgModalSelectboxChange : (event, id) ->
             $('#sg-protocol-select-result').find('.show').removeClass('show')

@@ -6,15 +6,15 @@ module.exports =
 
     WARN_NOTMATCH_VOLUME:
       en: "Volumes and snapshots must be dragged to an instance or image."
-      zh: "卷和快照必须拖放到实例或映像。"
+      zh: "卷和快照必须拖放到实例或 AMI。"
 
     ERR_SERVERGROUP_VOLUME:
       en: "Detach existing volume or snapshot of instance server group is not supported yet."
-      zh: "Detach existing volume or snapshot of instance server group is not supported yet."
+      zh: "目前尚不支持断开实例组上已存在的卷或快照"
 
     ERR_SERVERGROUP_VOLUME2:
       en: "Attach existing volume from single instance to instance server group is not supported yet."
-      zh: "Attach existing volume from single instance to instance server group is not supported yet."
+      zh: "目前尚不支持把单独实例上已存在的卷连接到实例组的操作"
 
     WARN_NOTMATCH_SUBNET:
       en: "Subnets must be dragged to an availability zone."
@@ -25,16 +25,16 @@ module.exports =
       zh: "实例必须拖放到子网或Auto Scaling组。"
 
     WARN_NOTMATCH_SGP_VPC:
-      en: "Subnet Group must be dragged to a vpc."
-      zh: ""
+      en: "Subnet Group must be dragged to a VPC."
+      zh: "子网组必须拖放到 VPC 中"
 
     WARN_NOTMATCH_DBINSTANCE_SGP:
       en: "DB Instance must be dragged to a subnet group."
-      zh: ""
+      zh: "数据库实例必须拖放到子网组中"
 
     WARN_NOTMATCH_ASG:
       en: "Auto Scaling Group must be dropped in a subnet."
-      zh: "Auto Scaling组必须拖放到子网。"
+      zh: "Auto Scaling 组必须拖放到子网。"
 
     WARN_NOTMATCH_ENI:
       en: "Network interfaces must be dragged to a subnet."
@@ -74,7 +74,7 @@ module.exports =
 
     WARN_CANNOT_CONNECT_SUBNET_TO_ELB:
       en: "This subnet cannot be attached with a Load Balancer. Its CIDR mask must be smaller than /27"
-      zh: ""
+      zh: "除非此子网的CIDR小于/27，否则该子网不能连接负载均衡器"
 
     ERR_CONNECT_ENI_AMI:
       en: "Network interfaces can only be attached to an instance in the same availability zone."
@@ -130,11 +130,7 @@ module.exports =
 
     CVS_CFM_DEL_LC:
       en: "Are you sure to delete launch configuration %s?"
-      zh: ""
-
-    CVS_CFM_DEL_ASG:
-      en: "Launch configuration %s is only used by %s. By deleting %s, %s will also be deleted.<br/>Are you sure to delete asg0?"
-      zh: ""
+      zh: "确定要删除启动配置 %s？"
 
     CVS_CFM_ADD_IGW:
       en: "An Internet Gateway is Required"
@@ -146,7 +142,7 @@ module.exports =
 
     CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
       en: "Deleting <span class='resource-tag'>%s</span> will remove all read replica related to it. Are you sure to continue?"
-      zh: "%s 未创建,删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
+      zh: "%s 未创建，删除它会同时删除与之相关的所有只读副本，确定要删除它吗？"
 
     CVS_CFM_DEL_EXISTENT_DBINSTANCE:
       en: "<span class='resource-tag'>%s</span> is a live resource. Deleting it will remove not-yet-created read replica, but keep existing ones. Are you sure to continue?"
@@ -154,7 +150,7 @@ module.exports =
 
     CVS_CFM_DEL_RELATED_RESTORE_DBINSTANCE:
       en: "You are going to restore DB instance <span class='resource-tag'>%s</span> to a point in time. By deleting it, restored DB instance %s will be deleted too. Are you sure to continue?"
-      zh: ""
+      zh: "您将要还原数据库实例 <span class='resource-tag'>%s</span> 到一个时间点，如果删除此数据库实例即将还原的数据库实例也将被删除。要继续吗？"
 
     ERR_ZOOMED_DROP_ERROR:
       en: "Please reset the zoom to 100% before adding new resources."
@@ -162,69 +158,68 @@ module.exports =
 
     CVS_TIP_EXPAND_W:
       en: "Increase Canvas Width"
-      zh: "增加画板宽度"
+      zh: "增加画布宽度"
 
     CVS_TIP_SHRINK_W:
       en: "Decrease Canvas Width"
-      zh: "减少画板宽度"
+      zh: "减少画布宽度"
 
     CVS_TIP_EXPAND_H:
       en: "Increase Canvas Height"
-      zh: "增加画板高度"
+      zh: "增加画布高度"
 
     CVS_TIP_SHRINK_H:
       en: "Decrease Canvas Height"
-      zh: "减少画板宽度"
+      zh: "减少画布宽度"
 
     CVS_TIP_ASG_DRAGGER:
       en: "Expand the group by drag-and-drop in other availability zone."
-      zh: ""
+      zh: "拖放到其他可用区来扩展该Auto Scaling组。"
 
     CVS_NO_SUBNET_ASSIGNED_TO_SG:
       en: "No subnet is assigned to this subnet group yet"
-      zh: ""
+      zh: "无子网"
 
     CVS_POP_ATTACHED_VOLUMES:
       en: "Attached Volumes"
-      zh: ""
+      zh: "已连接的卷"
 
     CVS_POP_NO_ATTACHED_VOLUME:
       en: "No Attached Volumes"
-      zh: ""
+      zh: "没有被连接的卷"
 
     CVS_POP_NO_INSTANCES:
       en: "No instances"
-      zh: ""
+      zh: "没有实例"
 
     CVS_POP_NO_NETWORK_INTERFACE:
       en: "No network interface"
-      zh: ""
+      zh: "没有网络接口"
 
     CVS_ASG_DROP_LC_1:
       en: "Drop AMI from"
-      zh: ""
+      zh: "从资源面板拖放"
 
     CVS_ASG_DROP_LC_2:
       en: "resource panel to"
-      zh: ""
+      zh: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AMI来创建"
 
     CVS_ASG_DROP_LC_3:
       en: "create launch"
-      zh: ""
+      zh: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动配置"
 
     CVS_ASG_DROP_LC_4:
       en: "configuration"
-      zh: ""
+      zh: " "
 
     ATTACH_NETWORK_INTERFACE_TO_INTERFACE:
       en: "Attach Network Interface to Instance"
-      zh: ""
+      zh: "连接网络接口到实例"
 
     ATTACH_AND_REMOVE_PUBLIC_IP:
       en: "Attach and Remove Public IP"
-      zh: ""
+      zh: "连接并且删除公有IP"
 
     NETWORK_INTERFACE_ATTACHED_INTERFACE_NO_NEED_FOR_SG_RULE:
       en: "The Network Interface is attached to the instance. No need to connect them by security group rule."
-      zh: ""
-
+      zh: "此网络接口已连接到实例，不必用安全组连接。"

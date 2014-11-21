@@ -96,7 +96,7 @@
     </div>
     <div class="will-be-covered">
         <div class="header">
-            This Option Group is used for {{engineName}} {{engineVersion}}
+            {{i18n "OPTION_GROUP_USED_FOR"}}{{engineName}} {{engineVersion}}
             {{#ifCond engineType "mysql"}}
             <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
             {{/ifCond}}

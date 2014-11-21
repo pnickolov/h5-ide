@@ -99,16 +99,25 @@ define [
 
     dashboardBubbleSub: (data)->
         renderData = {}
-        renderData.data = _.clone data
+        formattedData = {}
+        _.each data, (value, key)->
+          newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
+          formattedData[newKey] = value
+        renderData.data = formattedData
         renderData.title = data.id || data.name || data._title
         delete renderData.data._title
         return tplPartials.bubbleResourceSub renderData
 
     dashboardBubble : ( data )->
       # get Resource Data
+      resourceData = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+      formattedData = {}
+      _.each resourceData, (value, key)->
+        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
+        formattedData[newKey] = value
       d = {
         id   : data.id
-        data : @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+        data : formattedData
       }
 
       # Make Boolean to String to show in handlebarsjs
@@ -357,7 +366,7 @@ define [
 
       if modal
         @visModal = modal
-        @visModal.setTitle "Import Existing VPC as App"
+        @visModal.setTitle lang.IDE.DASH_IMPORT_VPC_AS_APP
         .setContent VisualizeVpcTpl attributes
         .setWidth('770px').compact().resize()
         .on 'close', ->
@@ -366,7 +375,7 @@ define [
           return
       else
         @visModal = new Modal {
-          title         : "Import Existing VPC as App"
+          title         : lang.IDE.DASH_IMPORT_VPC_AS_APP
           width         : "770"
           template      : VisualizeVpcTpl( attributes )
           disableFooter : true

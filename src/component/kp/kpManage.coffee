@@ -42,7 +42,7 @@ define [
             region = Design.instance().get('region')
             regionName = constant.REGION_SHORT_LABEL[ region ]
 
-            title: "Manage Key Pairs in #{regionName}"
+            title:  sprintf lang.IDE.MANAGE_KP_IN_AREA, regionName
             slideable: _.bind that.denySlide, that
             context: that
             buttons: [
@@ -159,7 +159,7 @@ define [
                 if not blob
                     options =
                         template        : template.safari_download keypair: str
-                        title           : 'Keypair Content'
+                        title           : lang.IDE.TITLE_KEYPAIR_CONTENT
                         disableFooter   : true
                         disableClose    : true
                         width           : '855px'

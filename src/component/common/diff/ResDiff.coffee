@@ -4,7 +4,8 @@ define [
     'component/common/diff/resDiffTpl'
     'component/common/diff/prepare'
     'constant'
-], ( modalplus, DiffTree, template, Prepare, constant ) ->
+    'i18n!/nls/lang.js'
+], ( modalplus, DiffTree, template, Prepare, constant, lang ) ->
 
     Backbone.View.extend
 
@@ -46,7 +47,7 @@ define [
             okText = 'OK, got it'
             options =
                 template: template.frame()
-                title: 'App Changes'
+                title: lang.IDE.TITLE_APP_CHANGES
                 disableClose: true
                 hideClose: true
                 confirm:
@@ -130,19 +131,19 @@ define [
             that = this
 
             groupData = [{
-                title: 'New Resource',
+                title: lang.TOOLBAR.POP_DIFF_NEW_RES,
                 diffComps: that.addedComps,
                 closed: true,
                 type: 'added',
                 needDiff: false
             }, {
-                title: 'Removed Resource',
+                title: lang.TOOLBAR.POP_DIFF_REMOVED_RES,
                 diffComps: that.removedComps,
                 closed: true,
                 type: 'removed',
                 needDiff: false
             }, {
-                title: 'Modified Resource',
+                title: lang.TOOLBAR.POP_DIFF_MODIFY_RES,
                 diffComps: that.modifiedComps,
                 closed: false,
                 type: 'modified'

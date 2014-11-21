@@ -38,7 +38,7 @@ define [
       self = @
 
       modal = new Modal({
-        title        : "App Imported"
+        title        : lang.TOOLBAR.APP_IMPORTED
         template     : OpsEditorTpl.modal.confirmImport({ name : @workspace.opsModel.get("name") })
         confirm      : { text : "Done" }
         disableClose : true

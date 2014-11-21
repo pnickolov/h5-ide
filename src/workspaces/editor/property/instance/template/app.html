@@ -103,7 +103,7 @@
         <dt>{{i18n "PROP.VOLUME_SIZE"}}</dt>
         <dd>{{emptyStr rootDevice.size}} GB</dd>
         <dt>{{i18n "PROP.VOLUME_ENCRYPTED"}}</dt>
-        <dd>{{#if rootDevice.encrypted}}Encrypted{{else}}Not Encrypted{{/if}}</dd>
+        <dd>{{#if rootDevice.encrypted}}{{i18n "PROP.VOLUME_ENCRYPTED_STATE"}}{{else}}{{i18n "PROP.VOLUME_NOT_ENCRYPTED_STATE"}}{{/if}}</dd>
         {{#if rootDevice.iops}}
         <dt>{{i18n "PROP.INSTANCE_IOPS"}}</dt>
         <dd>{{rootDevice.iops}}</dd>

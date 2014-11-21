@@ -199,7 +199,7 @@ define [
 
     exportPNG : ()->
       modal = new Modal {
-        title         : "Export PNG"
+        title         : lang.IDE.TITLE_EXPORT_PNG
         template      : OpsEditorTpl.export.PNG()
         width         : "470"
         disableFooter : true
@@ -356,7 +356,10 @@ define [
       @renderKpDropdown(@modal)
       cost = Design.instance().getCost()
       @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
-      @modal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+      costString = "$#{cost.totalFee}"
+      if Design.instance().region() in ['cn-north-1']
+        costString = "￥#{cost.totalFee}"
+      @modal.find("#label-total-fee").find('b').text costString
       @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
       # load TA
@@ -592,8 +595,11 @@ define [
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         cost = Design.instance().getCost()
-        that.updateModal.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
-        that.updateModal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
+        costSymbol = "$"
+        if Design.instance().region() in ['cn-north-1']
+          costSymbol = "￥"
+        that.updateModal.find("#label-total-fee").find('b').text("#{costSymbol + cost.totalFee}")
+        that.updateModal.find("#label-visualops-fee").find('b').text("#{costSymbol + cost.visualOpsFee}")
         window.setTimeout ->
           that.updateModal.resize()
         ,100
@@ -638,7 +644,7 @@ define [
             if not instancesNoUserData
                 $switcher.removeClass 'on'
                 confirmModal = new Modal(
-                    title: "Confirm to Enable VisualOps"
+                    title: lang.IDE.TITLE_CONFIRM_TO_ENABLE_VISUALOPS
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
                     confirm: text: "Enable VisualOps"
@@ -666,7 +672,7 @@ define [
       if not @workspace.cancelEditMode()
         self  = @
         modal = new Modal {
-          title    : "Changes not applied"
+          title    : lang.IDE.TITLE_CHANGE_NOT_APPLIED
           template : OpsEditorTpl.modal.cancelUpdate()
           width    : "400"
           confirm  : { text : "Discard", color : "red" }

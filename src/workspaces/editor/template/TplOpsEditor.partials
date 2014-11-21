@@ -72,7 +72,7 @@
 
 <!-- {{toolbar.BtnLinestyle}} -->
 <div class="selectbox btn-toolbar toolbar-line-style seperator">
-  <button class="selection tooltip" data-tooltip="SecurityGroup Line Style"></button>
+  <button class="selection tooltip" data-tooltip="{{ i18n "TOOLBAR.TIP_SG_LINE_STYLE" }}"></button>
   <ul class="dropdown">
     <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOLBAR.LBL_LINESTYLE_STRAIGHT" }}</span></li>
     <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOLBAR.LBL_LINESTYLE_ELBOW" }}</span></li>
@@ -217,11 +217,11 @@
 
 <section style="margin:5px 5px 20px 8px;">
   <div class="checkbox"><input id="MonitorImportApp" type="checkbox" checked="checked"><label for="MonitorImportApp"></label></div>
-  <label for="MonitorImportApp">Monitor and report external resource change of this app</label>
-  <i class="icon-info tooltip" data-tooltip="If resource has been changed outside VisualOps, an email notification will be sent to you." style="color:#148BE6;vertical-align:-3px;"></i>
+  <label for="MonitorImportApp">{{i18n "TOOLBAR.MONITOR_REPORT_EXTERNAL_RESOURCE"}}</label>
+  <i class="icon-info tooltip" data-tooltip="{{i18n 'TOOLBAR.IF_RESOURCE_CHANGED_EMAIL_SENT'}}" style="color:#148BE6;vertical-align:-3px;"></i>
 </section>
 
-<p>Now you can easily manage the resources and lifecycle of the app within VisualOps.</p>
+<p>{{i18n "TOOLBAR.YOU_CAN_MANAGE_RESOURCES_LIFECYCLE"}}</p>
 
 <!-- {{modal.confirmRemoveApp}} -->
 <p class="modal-text-major">{{i18n "TOOLBAR.VPC_REMOVED_OUTSIDE_VISUALOPS"}}</p>

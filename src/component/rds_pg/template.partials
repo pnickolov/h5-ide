@@ -24,7 +24,7 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selectedId}}{{selectedId}} RDS Parameter{{else}}selected {{selectedCount}} RDS Parameter Groups{{/if}}?</div>
+    <div class="modal-text-major">{{#if selectedId}}{{i18n "CONFIRM_DELETE_PARAMETER_GROUP" selectedId}}{{else}}{{i18n "CONFIRM_DELETE_PARAMETER_GROUP_MULTY" selectedCount}}{{/if}}</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
         <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
@@ -107,7 +107,7 @@
 <!-- {{slide_edit}} -->
 <div class="clearfix" id="pg-sort-filter">
     <div class="pull-left">
-        {{i18n "PROP.LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="Filter by Parameter Name"/>
+        {{i18n "PROP.LBL_FILTER"}} <input id="pg-filter-parameter-name" class="input" type="text" placeholder="{{i18n "PROP.DBPG_FILTER_BY_NAME"}}"/>
     </div>
     <div class="pull-right">
         {{i18n "PROP.LBL_SORT_BY"}}

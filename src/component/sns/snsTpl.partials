@@ -85,7 +85,7 @@
 
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
-    <div class="modal-text-major">Confirm to delete {{#if selecteKeyName }}SNS Topic {{selecteKeyName}}{{else}}selected {{selectedCount}} SNS Topics{{/if}} and all associated subscriptions?</div>
+    <div class="modal-text-major">{{#if selecteKeyName}}{{i18n "DELETE_SNS_TOPIC_CONFIRM" selecteKeyName}}{{else}}{{i18n "DELETE_SNS_TOPIC_CONFIRM_M" selectedCount}}{{/if}}</div>
     <div class="init action">
         <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
         <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>

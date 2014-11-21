@@ -40,7 +40,7 @@ checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 
 # language detect
 langType = ->
-    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "en-us"
+    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "zh-cn"
 deepth = 'RESET'
 
 timezone = (new Date().getTimezoneOffset())/-60
@@ -112,8 +112,13 @@ loadLang = (cb)->
             goto500()
             console.log error, "error"
     }).done ->
-        #console.log('Loaded!', langsrc)
+        templates = $("[type='text/x-language-template']")
+        if templates.size() then templates.each (index, element)->
+            element = $(element)
+            template = Handlebars.compile element.html()
+            $("#"+element.data('target')).html template(window.langsrc)
         cb()
+
 window.onhashchange = ->
     init()
 

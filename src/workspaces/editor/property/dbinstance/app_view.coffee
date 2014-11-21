@@ -11,7 +11,8 @@ define [
     'toolbar_modal'
     'ApiRequest'
     'JsonExporter'
-], ( PropertyView, template, ogManageApp, constant, toolbar_modal, ApiRequest, JsonExporter ) ->
+    "i18n!/nls/lang.js"
+], ( PropertyView, template, ogManageApp, constant, toolbar_modal, ApiRequest, JsonExporter, lang ) ->
 
   CGWAppView = PropertyView.extend
 
@@ -173,7 +174,7 @@ define [
         appId = @resModel.get 'appId'
 
         options = {
-            title: "Log & Event: #{appId}"
+            title: sprintf lang.IDE.TITLE_LOG_AND_EVENT, appId
             classList: 'syslog-dbinstance'
             context: that
             noCheckbox: true

@@ -124,8 +124,8 @@
   <li data-id="{{id}}">
     <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
     <div class="region-resource-info">
-      <i class="icon-delete delete-stack"></i>
-      <i class="icon-duplicate duplicate-stack"></i>
+      <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
+      <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
       <span class="truncate">{{name}}</span>
     </div>
   </li>
@@ -182,7 +182,7 @@
           <img src="/assets/images/ide/ami/{{#awsAmiIcon imageId category}}{{/awsAmiIcon}}">
           <span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
         <td>{{instanceType}}</td>
-        <td {{#awsIsEip ipAddress category}}class="dashboard-eip tooltip" data-tooltip="Elastic IP"{{/awsIsEip}}>{{ipAddress}}</td>
+        <td {{#awsIsEip ipAddress category}}class="dashboard-eip tooltip" data-tooltip="{{i18n "DASH_LBL_ELASTIC_IP"}}"{{/awsIsEip}}>{{ipAddress}}</td>
         <td>{{placement.availabilityZone}}</td>
         <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
       </tr>{{/with}}

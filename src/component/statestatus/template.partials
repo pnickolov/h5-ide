@@ -28,10 +28,10 @@
 </div>
 <div class="state-status-item-info">
 	<div class="state-status-item-desc truncate">
-		{{#if parent}}{{parent}}'s {{/if}}{{name}} 's state {{stateId}} {{#if updated}}<s>has failed</s> is updated.{{else}}has failed{{/if}}
+		{{or parent name}}{{i18n "XXX_S_STATE"}}{{stateId}} {{#if updated}}{{i18n "IS_UPDATED"}}{{else}}{{i18n "HAS_FAILED"}}{{/if}}
 	</div>
 	<div class="timestamp">
-		{{#if updated}}State log will update after change is applied.{{else}}{{UTC time}}{{/if}}
+		{{#if updated}}{{i18n "STATE_LOG_UPDATE_AFTER_CHANGE"}}{{else}}{{UTC time}}{{/if}}
 	</div>
 </div>
 

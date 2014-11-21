@@ -74,7 +74,7 @@ define [ 'ApiRequest'
             else
 
                 modal = new Modal({
-                    title        : "Confirm to promote Read Replica"
+                    title        : lang.IDE.TITLE_CONFIRM_PROMOTE_READ_REPLICA
                     template     : template_component.modalPromoteConfirm({})
                     confirm      : {text : "Confirm"}
                     disableClose : true
@@ -106,7 +106,7 @@ define [ 'ApiRequest'
             if noRestore
 
                 modal = new Modal({
-                    title        : "Restore to point in time config"
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
                     template     : template_component.modalRestoreConfirm({
                         noRestore: noRestore
                     })
@@ -182,7 +182,7 @@ define [ 'ApiRequest'
                     $('.modal-db-instance-restore-config .timepicker.second').val(second)
 
                 modal = new Modal({
-                    title        : "Restore to point in time config"
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
                     template     : template_component.modalRestoreConfirm({
                         lastest: lastestRestoreTime.toString()
                         custom: not dbRestoreTime
@@ -618,9 +618,9 @@ define [ 'ApiRequest'
 
             # iops info
             if @resModel.isSqlserver()
-                attr.iopsInfo = 'Requires a fixed ratio of 10 IOPS / GB storage'
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_REQUIRE_10_RATIO
             else
-                attr.iopsInfo = 'Supports IOPS / GB ratios between 3 and 10'
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_IOPS_3_10_RATIO
 
             # render
             @$el.html template attr
@@ -863,7 +863,12 @@ define [ 'ApiRequest'
                 azUsedMap[azName] = true
                 null
             usedAZCount = _.size(azUsedMap)
-            if usedAZCount < 2
+
+            if Design.instance().region() in ['cn-north-1']
+                minAZCount = 1
+            else
+                minAZCount = 2
+            if usedAZCount < minAZCount
                 sgData.azNotEnough = true
 
             if multiAZCapable

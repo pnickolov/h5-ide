@@ -252,7 +252,7 @@ define [
       name = app.get("name")
       production = app.get("usage") is 'production'
       forgetConfirm = new modalPlus(
-        title: "Confirm to Forget App"
+        title: lang.IDE.TITLE_CONFIRM_TO_FORGET
         template: AppTpl.loading()
         confirm: {
           text: "Forget"

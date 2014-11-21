@@ -155,6 +155,8 @@ function fn_generate_coffee() {
 
     echo
     echo "#......................................................."
+    echo " api_type : "${api_type}
+    echo "#......................................................."
     echo "# SRC_FILE: "${__CUR_DIR}/${__CUR_FILE}
     echo "# TGT_DIR_SERVICE : "${__TGT_DIR_SERVICE}
     echo "# TGT_DIR_TEST    : "${__TGT_DIR_TEST}
@@ -352,6 +354,11 @@ function fn_generate_coffee() {
 
 
         #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
+        if [ "${_CUR_API}" == "def" ]
+        then
+            continue        
+        fi
+
         if [ "${__TYPE}" == "aws" ]
         then
             if [ "${RESOURCE}" == "EBS" ]
@@ -386,8 +393,8 @@ function fn_generate_coffee() {
             fi
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
         fi
-        
-        echo -e "\t\t${_API_NAME} : { url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
+
+        echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
     
 
         _LAST_API=${_CUR_API}
@@ -397,11 +404,15 @@ function fn_generate_coffee() {
     echo -e "\t}" >> ${OUTPUT_FILE}.js
     echo -e "" >> ${OUTPUT_FILE}.js
     echo -e "\tfor ( var i in Apis ) {" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t/* env:dev */" >> ${OUTPUT_FILE}.js
+    echo -e "\t\tif (ApiRequestDefs.Defs[ i ]){" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t\tconsole.warn('api duplicate: ' + i);" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t}" >> ${OUTPUT_FILE}.js
+    echo -e "\t\t/* env:dev:end */" >> ${OUTPUT_FILE}.js
     echo -e "\t\tApiRequestDefs.Defs[ i ] = Apis[ i ];" >> ${OUTPUT_FILE}.js
     echo -e "\t}" >> ${OUTPUT_FILE}.js
     echo -e "" >> ${OUTPUT_FILE}.js
     echo -e "});" >> ${OUTPUT_FILE}.js
-
 
     echo
 
@@ -464,7 +475,6 @@ function fn_scan_aws() {
     # SERVICE: SNS
     # SERVICE: VPC
     # SERVICE: AutoScaling
-
 
     # if [ "${SERVICE}" != "VPC" ]
     # then

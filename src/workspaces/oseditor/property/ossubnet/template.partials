@@ -1,0 +1,60 @@
+<!-- {{stack}} -->
+{{#if modeIsAppEdit}}
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>ID</dt><dd>{{emptyStr app.id}}</dd>
+        <dt>Gateway IP</dt><dd>{{emptyStr app.gateway_ip}}</dd>
+        <dt>DNS Name Server</dt>
+        {{#each app.dns_nameservers}}
+        <dd>{{emptyStr this}}</dd>
+        {{/each}}
+    </dl>
+</section>
+{{/if}}
+<section class="group required" data-bind="true">
+    <label class="name">Subnet Name</label>
+    <input class="selection string" value="{{name}}" data-target="name" data-required-rollback="true" data-ignore="true" />
+</section>
+<section class="group required">
+    <label class="name">Cidr</label>
+    <input class="selection string" value="{{cidr}}" data-target="cidr" {{#if modeIsAppEdit}}disabled{{/if}}/>
+</section>
+<section class="group">
+    <label class="name">DNS Nameservers</label>
+    <select data-target="iplist" {{#unless modeIsStack}}disabled{{/unless}} class="selection option mutil show-input item-list" value="{{nameServerList}}" data-button-tpl="button" data-option-tpl="sgOption" data-item-tpl="sgItem">
+        {{#each nameServers}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+</section>
+
+<!-- {{item}} -->
+<div class="item">
+    <span class="item-name" data-value="{{value}}">{{value}}</span>
+    <div class="item-remove icon-del"></div>
+</div>
+
+<!-- {{option}} -->
+<div class="option">
+    <div class="name">{{value}}</div>
+</div>
+
+<!-- {{addButton}} -->
+<div>Add <span class="default">by inputing IP Address...</span><span class="new"></span></div>
+
+<!-- {{app}} -->
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>CIDR</dt><dd>{{emptyStr cidr}}</dd>
+        <dt>Gateway IP</dt><dd>{{emptyStr gateway_ip}}</dd>
+        <dt>Enable DHCP</dt><dd>{{#if enable_dhcp}}true{{else}}false{{/if}}</dd>
+        <dt>DNS Name Server</dt>
+        {{#if dns_nameservers.length}}
+        {{#each dns_nameservers}}
+        <dd>{{emptyStr this}}</dd>
+        {{/each}}
+        {{else}}-{{/if}}
+    </dl>
+</section>

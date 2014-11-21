@@ -5,7 +5,7 @@
   white-space : nowrap;
   position    : relative;
   height      : 39px;
-  background  : #232226;
+  background  : #36343C;
 
   > ul {
     float : left;
@@ -102,7 +102,7 @@
   right      : 0;
   top        : 0;
   max-width  : 500px;
-  background : #232226;
+  background : #36343C;
 
   .dropdown, #support {
     position:    relative;
@@ -204,7 +204,7 @@
   padding       : 0 20px;
   color         : #ddd;
   cursor        : pointer;
-  border-bottom : 1px solid #333;
+  border-bottom : 1px solid #202020;
 }
 
 .dropdown-menu {
@@ -218,7 +218,7 @@
   box-shadow       : 0 2px 5px rgba(0, 0, 0, 0.5);
   border           : 1px solid #202020;
   border-top       : none;
-  background-color : #4f4f4f;
+  background-color : #36343C;
 
   li:hover {
     background-color: rgba(0,0,0,.2);

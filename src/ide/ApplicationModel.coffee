@@ -8,7 +8,18 @@
 
 ###
 
-define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "constant", "ThumbnailUtil" ], ( OpsCollection, OpsModel, ApiRequest, Backbone, constant, ThumbUtil )->
+define [
+  "./submodels/OpsCollection"
+  "OpsModel"
+  "ApiRequest"
+  "ApiRequestOs"
+  "backbone"
+  "constant"
+  "ThumbnailUtil"
+
+  "./submodels/OpsModelOs"
+  "./submodels/OpsModelAws"
+], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil )->
 
   Backbone.Model.extend {
 
@@ -29,15 +40,15 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
 
     getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
 
-    clearImportOps : ()-> @attributes.appList.remove @attributes.appList.find ( m )-> m.isImported()
-
-    createImportOps : ( region, vpcId )->
-      m = @attributes.appList.findWhere({importVpcId:vpcId})
+    createImportOps : ( region, cloudType, provider, msrId )->
+      m = @attributes.appList.findWhere({importMsrId:msrId})
       if m then return m
       m = new OpsModel({
-        name        : ""
-        importVpcId : vpcId
+        name        : "ImportedApp"
+        importMsrId : msrId
         region      : region
+        cloudType   : cloudType
+        provider    : provider
         state       : OpsModel.State.Running
       })
       @attributes.appList.add m
@@ -53,11 +64,12 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
-    createStack : ( region )->
-      console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
+    createStack : ( region, cloudType = "aws", provider = "amazon" )->
+      # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
-        name   : @stackList().getNewName()
-        region : region
+        region    : region
+        cloudType : cloudType
+        provider  : provider
       }, {
         initJsonData : true
       })
@@ -69,26 +81,31 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
         json.name = @stackList().getNewName( json.name )
 
       m = new OpsModel({
-        name   : json.name
-        region : json.region
+        name      : json.name
+        region    : json.region
       }, {
         jsonData : json
       })
       @attributes.stackList.add m
       m
 
-    getPriceData : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).price
-    getOsFamilyConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).osFamilyConfig
-    getInstanceTypeConfig : ( awsRegion )-> (@__appdata[ awsRegion ] || {}).instanceTypeConfig
-    getRdsData: ( awsRegion ) -> (@__appdata[ awsRegion ] || {}).rds
+    getPriceData : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).price
+    getOsFamilyConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).osFamilyConfig
+    getInstanceTypeConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).instanceTypeConfig
+    getRdsData: ( awsRegion ) -> (@__awsdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
+
+
+    getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
+    getOpenstackQuotas  : ( provider )-> @__osdata[ provider ].quota
 
 
     ###
       Internal methods
     ###
     initialize : ()->
-      @__appdata = {}
+      @__awsdata = {}
+      @__osdata  = {}
       @__stateModuleData = {}
       @__initializeNotification()
       return
@@ -100,48 +117,75 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
       ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
 
       # Load Application Data.
-      appdata = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )->
+      awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-        for i in res
-          instanceTypeConfig = {}
-
-          self.__appdata[ i.region ] = {
-            price              : i.price
-            osFamilyConfig     : i.instance_types.sort
-            instanceTypeConfig : instanceTypeConfig
-            rds                : i.rds
-          }
-
-          # Format instance type info.
-          for typeInfo in i.instance_types.info || []
-            if not typeInfo then continue
-            cpu = typeInfo.cpu || {}
-            typeInfo.name = typeInfo.description
-
-            typeInfo.formated_desc = [
-              typeInfo.name || ""
-              cpu.units + " ECUs"
-              cpu.cores + " vCPUs"
-              typeInfo.memory + " GiB memory"
-            ]
-            typeInfo.description = typeInfo.formated_desc.join(", ")
-
-            storage = typeInfo.storage
-            if storage and storage.ssd is true
-              typeInfo.description += ", #{storage.count} x #{storage.size} GiB SSD Storage Capacity"
-
-            instanceTypeConfig[ typeInfo.typeName ] = typeInfo
-
-        return
+      osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
       # When app/stack list is fetched, we first cleanup unused thumbnail. Then
       # Tell others that we are ready.
-      Q.all([ sp, ap, appdata ]).then ()->
+      Q.all([ sp, ap, awsData, osData ]).then ()->
         try
           ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
         catch e
 
         return
+
+    __parseAwsData : ( res )->
+      for i in res
+        instanceTypeConfig = {}
+
+        @__awsdata[ i.region ] = {
+          price              : i.price
+          osFamilyConfig     : i.instance_types.sort
+          instanceTypeConfig : instanceTypeConfig
+          rds                : i.rds
+        }
+
+        # Format instance type info.
+        for typeInfo in i.instance_types.info || []
+          if not typeInfo then continue
+          cpu = typeInfo.cpu || {}
+          typeInfo.name = typeInfo.description
+
+          typeInfo.formated_desc = [
+            typeInfo.name || ""
+            cpu.units + " ECUs"
+            cpu.cores + " vCPUs"
+            typeInfo.memory + " GiB memory"
+          ]
+          typeInfo.description = typeInfo.formated_desc.join(", ")
+
+          storage = typeInfo.storage
+          if storage and storage.ssd is true
+            typeInfo.description += ", #{storage.count} x #{storage.size} GiB SSD Storage Capacity"
+
+          instanceTypeConfig[ typeInfo.typeName ] = typeInfo
+
+        return
+
+    __parseOsData : ( res )->
+      self = this
+      for provider, dataset of res
+        for data in dataset
+          providerData = @__osdata[ provider ] || (@__osdata[ provider ]={})
+          providerData[ data.region ] =
+            flavors : new Backbone.Collection( _.values(data.flavor) )
+
+        #quota is user-related, need optimized when backend support multiple provider indeed
+        osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
+
+      return
+
+    __parseOsQuota : ( res )->
+      quota = {}
+      for provider, dataset of res
+        for cate, data of dataset
+          for key, q of data
+            quota[ "#{cate}::#{key}" ] = q
+
+        pd = @__osdata[ provider ] || (@__osdata[ provider ]={})
+        pd.quota = quota
+      return
 
     fetchStateModule : ( repo, tag )->
       data = @getStateModule( repo, tag )
@@ -173,6 +217,8 @@ define [ "./submodels/OpsCollection", "OpsModel", "ApiRequest", "backbone", "con
           usage      : ops.usage
           name       : ops.name
           version    : ops.version
+          cloudType  : ops.cloud_type
+          provider   : ops.provider
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)
         }

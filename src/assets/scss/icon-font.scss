@@ -90,13 +90,26 @@
 .icon-dhcp,
 .icon-pg,
 .icon-rds-snap,
-.icon-rds-restore {
+.icon-rds-restore,
+.icon-resource,
+.icon-config,
+.icon-property {
 	&:before{
 		font : 16px/1em "MCIcon";
 		font-weight : normal;
 		-webkit-font-smoothing: antialiased;
 	}
 }
+
+// .icon-resource,
+// .icon-config,
+// .icon-property {
+// 	&:before{
+// 		font : 24px/1em "MCIcon";
+// 		font-weight : normal;
+// 		-webkit-font-smoothing: antialiased;
+// 	}
+// }
 
 .icon-play:before  { content : "\F110"; }
 .icon-stop:before  { content : "\F111"; }
@@ -179,6 +192,9 @@
 .icon-pg:before {content:"\F166";}
 .icon-rds-snap:before {content:"\F167";}
 .icon-rds-restore:before {content:"\F168";}
+.icon-resource:before {content:"\F170";}
+.icon-config:before {content:"\F171";}
+.icon-property:before {content:"\F172";}
 
 // .icon-outbound:before {content:"out";}
 // .icon-inbound:before {content:"in";}

@@ -1,0 +1,65 @@
+<!-- {{stackTemplate}} -->
+{{#if modeIsAppEdit}}
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>ID</dt><dd>{{emptyStr appId}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr app.status}}</dd>
+    </dl>
+</section>
+{{/if}}
+<div class="option-group-head expand">
+    Router Detail
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Router Name</label>
+        <input data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required os-property-router-extnetwork">
+        <label class="name">External Network</label>
+        <select data-target="extNetworkId" class="selection option" value="{{extNetworkId}}">
+            <option value="none">Disable Public Network</option>
+            {{#each extnetworks}}<option value="{{this}}">{{this}}</option>{{/each}}
+        </select>
+    </section>
+    <section class="group required os-property-router-nat {{#unless extNetworkId}}hide{{/unless}}">
+        <label class="name">Enable NAT</label>
+        <select data-target="nat" class="selection bool" value="true" disabled></select>
+    </section>
+    <!-- <section class="group required">
+        <label class="name">Total Bandwidth</label>
+        <select data-target="totalBandwidth" class="selection option" value="{{totalBandwidth}}">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </section> -->
+</div>
+<div class="option-group-head expand">
+    Connected Subnet
+</div>
+<div class="option-group">
+    {{#each subnets}}
+    <section class="group">
+        <div class="main">{{name}}</div>
+        <div class="sub">({{cidr}})</div>
+    </section>
+    {{/each}}
+</div>
+
+<!-- {{appTemplate}} -->
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+        <dt>Enable NAT</dt><dd>{{#if external_gateway_info.enable_snat}}true{{else}}false{{/if}}</dd>
+    </dl>
+</section>

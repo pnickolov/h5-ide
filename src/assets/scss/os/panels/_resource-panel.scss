@@ -1,0 +1,106 @@
+.OEPanelRight.resource {
+    nav {
+        box-shadow  : 0 5px 10px rgba(0,0,0,.5);
+
+        h1 { float:left;    }
+        ul.action {
+            position : absolute;
+            right    : -2px;
+            top      : 5px;
+
+            li {
+                color       : #999;
+                float       : left;
+                text-align  : center;
+                cursor      : pointer;
+                width       : 30px;
+                height      : 24px;
+                line-height : 24px;
+
+                &:hover {
+                    color: $light-p-1;
+                }
+
+                &:before {
+                    font-size   : 12px !important;
+                }
+            }
+
+        }
+    }
+
+    .ami-type-select {
+        width: 118px;
+
+        .dropdown li {
+            padding: 4px 8px;
+        }
+    }
+
+    .dropdown-menu { top: 30px; right: 0; left: initial; width: auto;}
+
+    .resource-item {
+        height   : 30px;
+        width    : 70px;
+        margin   : 0 1px 5px 0;
+        padding  : 60px 7px 2px 7px;
+        border   : 1px solid transparent;
+        overflow : visible;
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
+
+        &:hover {
+            border-radius    : 4px;
+            border           : 1px solid $dark-p-2;
+            box-shadow       : inset 0 1px 0 rgba(255,255,255,.05), 0 0 5px rgba(0,0,0,.8);
+            background-color : desaturate($dark-p-1,10%);
+
+            @include transit($method: all, $dur:.2s);
+        }
+
+        &:active {
+            top  : -2px;
+            left : -2px;
+        }
+
+        &.osserver {
+            background-image: image-url('ide/icon-os/os-res-server.png');
+            > img {
+                width    : 30px;
+                height   : 30px;
+
+                position : absolute;
+                top      : 10px;
+                left     : 26px;
+            }
+        }
+
+
+        &.ossubnet { background-image: image-url('ide/icon-os/os-res-subnet.png'); }
+        &.osrt     { background-image: image-url('ide/icon-os/os-res-router.png'); }
+        &.osport   { background-image: image-url('ide/icon-os/os-res-port.png'); }
+        &.oselb    { background-image: image-url('ide/icon-os/os-res-lb.png'); }
+        &.osvol    { background-image: image-url('ide/icon-os/os-res-vol.png'); }
+        &.ossnapshot    { background-image: image-url('ide/icon-os/os-res-snapshot.png'); }
+        &.oslistener    { background-image: image-url('ide/icon-os/os-res-listener.png'); }
+        &.ospool        { background-image: image-url('ide/icon-os/os-res-pool.png'); }
+
+        @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
+            & { background-size : 50px 50px; }
+
+            &.osserver { background-image: image-url('ide/icon-os/os-res-server@2x.png'); }
+            &.ossubnet { background-image: image-url('ide/icon-os/os-res-subnet@2x.png'); }
+            &.osrt     { background-image: image-url('ide/icon-os/os-res-router@2x.png'); }
+            &.osport   { background-image: image-url('ide/icon-os/os-res-port@2x.png'); }
+            &.oselb    { background-image: image-url('ide/icon-os/os-res-lb@2x.png'); }
+            &.osvol    { background-image: image-url('ide/icon-os/os-res-vol@2x.png'); }
+            &.ossnapshot    { background-image: image-url('ide/icon-os/os-res-snapshot@2x.png'); }
+            &.oslistener    { background-image: image-url('ide/icon-os/os-res-listener@2x.png'); }
+            &.ospool        { background-image: image-url('ide/icon-os/os-res-pool@2x.png'); }
+        }
+    }
+
+    .ebs-size { top: -2em; }
+}

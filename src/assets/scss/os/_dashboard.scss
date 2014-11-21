@@ -1,0 +1,479 @@
+@import "compass";
+
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
+      & { @content; }
+  }
+}
+
+.dash-header {
+  padding    : 10px 0;
+  position   : absolute;
+  z-index    : 5;
+  background : $bg-p;
+  width      : 100%;
+  height     : 38px;
+
+  > .btn {
+    float       : left;
+    height      : 36px;
+    line-height : 36px;
+    overflow    : hidden;
+    text-align  : left;
+    color       : #fff;
+    font-size   : 16px;
+    padding     : 0 16px 0 0;
+    margin-left : 10px;
+
+    &:before {
+      width         : 36px;
+      height        : 36px;
+      line-height   : 36px;
+      text-align    : center;
+      float         : left;
+      background    : rgba(0,0,0,0.2);
+      border-radius : 3px 0 0 3px;
+      margin-right  : 10px;
+    }
+  }
+}
+
+#OsReloadResource {
+  font-size : 12px;
+  position  : absolute;
+  right     : 25px;
+  top       : 18px;
+  color     : #aaa;
+  display   : block;
+  cursor    : pointer;
+  -webkit-transform-origin : 12px 12px;
+     -moz-transform-origin : 12px 12px;
+          transform-origin : 12px 12px;
+
+  &:hover  { color: #148BE6; }
+  &:before {
+    margin-right: 4px;
+    font-size   : 12px;
+    line-height : 18px;
+  }
+}
+
+.icon-refresh.reloading {
+  &:before { margin : 0; }
+  -webkit-animation: rotation .6s infinite linear;
+     -moz-animation: rotation .6s infinite linear;
+       -o-animation: rotation .6s infinite linear;
+          animation: rotation .6s infinite linear;
+}
+
+
+.dash-ops-list-wrapper {
+  margin        : 68px auto 20px;
+  max-width     : 1280px;
+  padding       : 15px 0 0 0;
+  width         : 95%;
+  background    : #fff;
+  border-radius : 2px;
+
+  > nav {
+    border-bottom : 1px solid $base-grey;
+
+    .ops-list-switcher {
+      font-size : 24px;
+      color     : #999;
+      padding   : 0 15px 10px 15px;
+      cursor    : pointer;
+
+      &.on {
+        color      : $base-b;
+        box-shadow : 0 2px $base-b;
+      }
+      
+      &:hover {
+        color: $light-b;
+      }
+
+      small {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.dash-ops-list {
+  max-height: 395px;
+  overflow: auto;
+
+  > li {
+    margin-left   : 1.6%;
+    margin-top    : 15px;
+    display       : inline-block;
+    width         : 18%;
+    position      : relative;
+    cursor        : pointer;
+    background    : #323e49;
+    border-radius : 5px;
+
+    &:hover { background: darken(#323e49, 5%); }
+
+    &.disabled {
+      cursor  : default;
+      opacity : .8;
+      &:hover { background: #323e49; }
+    }
+
+    &:last-child { margin-bottom : 15px; }
+  }
+
+  .loading-spinner {
+    width    : 12px;
+    height   : 12px;
+    position : static;
+    float    : left;
+    margin   : 5px 5px 0 0;
+  }
+
+
+  .thumbnail {
+    height          : 0;
+    padding-bottom  : 65%;
+    background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
+    background-size : 100% auto;
+    overflow        : hidden;
+    border-radius   : 5px 5px 0 0;
+
+    &.app-thumbnail {
+      background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
+      background-size  : 100% auto;
+    }
+
+    img {
+      width  : 100%;
+      height : auto;
+
+      border        : 1px solid #55626e;
+      border-bottom : none;
+      border-radius : 5px 5px 0 0;
+      background    : #fff;
+
+      -webkit-box-sizing : border-box;
+         -moz-box-sizing : border-box;
+              box-sizing : border-box;
+    }
+  }
+
+
+  [class^="icon-app-type-"], [class*=" icon-app-type-"] {
+    position : absolute;
+    top      : 5px;
+    right    : 5px;
+  }
+
+  @media (max-width: 1030px) {
+    > li {
+      width : 22.5%;
+      margin-left : 2%;
+    }
+
+    .blank-widget {
+      padding  : 14.55% 0 27px 0;
+    }
+  }
+
+  .blank-widget {
+    margin   : 15px 1.6%;
+    padding  : 11.7% 0 27px 0;
+    position : relative;
+
+    > div {
+      position   : absolute;
+      top        : 50%;
+      left       : 0;
+      width      : 100%;
+      text-align : center;
+
+      -webkit-transform : translate(0, -50%);
+         -moz-transform : translate(0, -50%);
+              transform : translate(0, -50%);
+    }
+  }
+
+  .region-resource-progess {
+    position : absolute;
+    left     : 0;
+    bottom   : 0;
+    height   : 27px;
+    z-index  : 1;
+    border-radius : 0 0 0 5px;
+
+    $stripeColor1 : #ad77d7;
+    $stripeColor2 : #9e62d4;
+
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, $stripeColor1), color-stop(0.25, $stripeColor2), color-stop(0.5, $stripeColor2), color-stop(0.5, $stripeColor1), color-stop(0.75, $stripeColor1), color-stop(0.75, $stripeColor2), to($stripeColor2));
+    background-image: -webkit-linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+    background-image: -moz-linear-gradient(135deg, $stripeColor1 25%, transparent 25%, transparent 50%, $stripeColor1 50%, $stripeColor1 75%, transparent 75%, transparent);
+    background-image: linear-gradient(135deg, $stripeColor1 25%, $stripeColor2 25%, $stripeColor2 50%, $stripeColor1 50%, $stripeColor1 75%, $stripeColor2 75%, $stripeColor2);
+
+    @include background-size( 40px 40px );
+    @include transition( width .3s );
+
+    -webkit-animation: progress-bar 2s linear infinite;
+       -moz-animation: progress-bar 2s linear infinite;
+            animation: progress-bar 2s linear infinite;
+
+    + .region-resource-info {
+      position : relative;
+      z-index  : 2;
+    }
+  }
+
+  .region-resource-info {
+    padding-left  : 12px;
+    position      : relative;
+    height        : 27px;
+    line-height   : 27px;
+    color         : #eee;
+    font-size     : 12px;
+    display       : block;
+
+    &:before { font-size : 12px; margin-right : 2px; }
+
+    > i {
+      float       : right;
+      border-left : 1px solid #2d2d2d;
+      width       : 30px;
+      height      : 27px;
+      line-height : 30px;
+
+      text-align  : center;
+      color: #ddd;
+
+      &:hover {
+        background : #2d2d2d;
+        color      : #fefefe;
+      }
+
+      &:first-child { border-radius : 0 0 5px 0; }
+    }
+
+    i.icon-terminate, i.icon-forget-app, i.icon-delete { &:hover { color: #ec3c38; } }
+
+    > span {
+      max-width : 110px;
+    }
+
+    > .icon-pending:before {
+      font-size    : 10px;
+      line-height  : 10px;
+      height       : 10px;
+      color        : #999;
+      margin-right : 4px;
+    }
+
+    > .running, > .stopped {
+      padding-left : 14px;
+      background   : image-url('ide/icon-app-running-16x16.png') left center no-repeat; }
+    > .stopped {
+      background-image : image-url('ide/icon-app-stopped-16x16.png');
+    }
+  }
+}
+
+
+ /* Resource List */
+  .dash-ops-resource-list {
+    max-width : 1280px;
+    margin    : 0 auto 80px auto;
+    padding   : 0;
+    width     : 95%;
+    // background : #D0D0DA;
+
+    .os-status::before {
+      margin-left: -14px;
+      margin-top: 6px;
+    }
+
+    .resource-count {
+      padding-left : 60px;
+      font-size    : 40px;
+      background   : image-url("ide/global-region-icon2.png") left top no-repeat;
+
+      @include retina() {
+        & {
+          background     : image-url("ide/global-region-icon2@2x.png") left top no-repeat;
+          background-size : image-width("ide/global-region-icon2.png");
+        }
+      }
+
+    }
+
+    .servers    .resource-count { background-position : center -55px * 0 - 2; }
+    .volumes    .resource-count { background-position : center -55px * 2 - 2; }
+    .snaps      .resource-count { background-position : center -55px * 9 - 2; }
+    .fips       .resource-count { background-position : center -55px * 1 - 2; }
+    .rts        .resource-count { background-position : center -55px * 3 - 2; }
+    .elbs       .resource-count { background-position : center -55px * 6 - 2; }
+
+
+    .resource-list-nav {
+      // border-bottom : 1px solid #323E49;
+      margin-bottom    : -1px;
+      background       : #FFFFFF;
+      border-radius    : 2px 2px 0 0;
+
+      > .resource-tab {
+        float    : left;
+        position : relative;
+        width    : 16.5%;
+        padding  : 1.3% 0;
+        text-align: center;
+        cursor   : pointer;
+
+        .resource-count {
+          padding-left          : 0px;
+          padding-top           : 50px;
+          height                : 5px;
+          font-size             : 14px;
+          display               : block;
+          text-align            : center;
+          margin                : 0 auto 10px;
+          color                 : #6065a0;
+          position              : absolute;
+          top                   : 42px;
+          width                 : 99.5%;
+          background-position-x : center;
+        }
+
+        p.count{
+          display: inline-block;
+          font-size: 27px;
+          color: #6065a0;
+          margin: 0;
+          margin-top: -10px;
+          span.count-quota{
+            font-size: 14px;
+            color: #b1b2c3
+          }
+        }
+
+        &:first-child { margin-left : 0.5%; }
+
+        &::after {
+          position      : absolute;
+          left          : 50%;
+          bottom        : 0;
+          display       : none;
+          margin-left   : -8px;
+          border        : 8px solid transparent;
+          content       : '';
+        }
+
+        &:hover::after {
+          display : block;
+          border-bottom-color : lighten(#323E49, 40%);
+        }
+        &.on::after {
+          display: block;
+          border-bottom-color : #323E49;
+        }
+
+        .count-bubble {
+          border-radius : 4px;
+          padding       : 2px 6px;
+          background    : #F0F0F0;
+          color         : #148BE6;
+          top           : 8px;
+          left          : 50%;
+          margin-left   : 15px;
+          position      : absolute;
+          font-size     : 14px;
+          box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
+          border        : 1px solid #ccc;
+          text-shadow   : 0 1px 0 #fff;
+        }
+      }
+      .quota-chart {
+        width    : 100%;
+        height   : 141px;
+        position : relative;
+      }
+      .quota-path {
+        stroke:#E6E6E6;
+        stroke-width:6;
+        fill:none;
+        stroke-linecap:round;
+      }
+      .usage {
+        stroke:#4C92E5;
+        stroke-dasharray:589.1 589.1;
+        -webkit-transition:stroke-dashoffset .5s ease-in-out;
+           -moz-transition:stroke-dashoffset .5s ease-in-out;
+                transition:stroke-dashoffset .5s ease-in-out;
+      }
+    }
+
+    .resource-list-body {
+      min-height : 460px;
+
+      .table-app-link {
+        cursor : pointer;
+        color : #148BE6;
+        max-width : 200px;
+        float : left;
+        &:hover { text-decoration: underline; }
+      }
+      .table-app-link-wrap:after { content:" "; clear:both; display:block; }
+      .icon-detail {
+        color  : #666;
+        cursor : pointer;
+        &:hover { color: #148BE6; }
+      }
+
+      .bubble { text-decoration: underline; cursor : default; }
+
+      .scroll-wrap { 
+        height     : 420px; 
+        border     : 1px solid #ccc;
+        border-top : none;
+        background : #F4F8FC;
+      }
+
+      .table { background : #edf1f3; }
+      .table td { vertical-align: middle; }
+      .table-head th {
+        padding     : 10px 15px;
+        font-size   : 12px;
+        background  : #323e49;
+        font-weight : 500;
+        border      : none;
+      }
+
+      th:hover {
+        background : #55626e;
+      }
+
+      td {
+        padding: 15px;
+        background-color : #edf1f3 !important;
+        border: none;
+        color: #676767;
+      }
+
+      tr:nth-child(odd) > td {
+        background-color : #e8ebed !important;
+      }
+
+      .dashboard-eip {
+        background   : image-url("ide/icon/icn-eipon.png") left center no-repeat;
+        padding-left : image-width("ide/icon/icn-eipon.png") + 4;
+        color        : #148BE6;
+      }
+    }
+
+
+
+  }
+
+
+
+

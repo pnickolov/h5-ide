@@ -85,7 +85,6 @@ require.config {
     #############################################
     'MC'                 : 'js/MC.core'
     'MC.validate'        : 'js/MC.validate'
-    'MC.canvas'          : 'js/MC.canvas'
     'constant'           : 'lib/constant'
     'event'              : 'lib/ide_event'
 
@@ -115,6 +114,9 @@ require.config {
     'jqtimepicker'       : 'ui/jquery.timepicker'
     'jqdatetimepicker'   : 'ui/jquery.datetimepicker'
     'UI.modalplus'       : 'ui/UI.modalplus'
+    'UI.selectize'       : 'ui/UI.selectize'
+    'UI.selection'       : 'ui/UI.selection'
+    'UI.bubblepopup'     : 'ui/UI.bubblepopup'
 
     #############################################
     # cloud resources           # Merge in deploy
@@ -125,6 +127,7 @@ require.config {
     # api                       # Merge in deploy
     #############################################
     'ApiRequest'      : 'api/ApiRequest'
+    'ApiRequestOs'    : 'api/ApiRequestOs'
     'ApiRequestDefs'  : 'api/ApiRequestDefs'
     "ApiRequestR"     : "api/ApiRequestR"
     "ApiRequestRDefs" : "api/ApiRequestRDefs"
@@ -135,56 +138,69 @@ require.config {
     "OpsModel"  : "ide/submodels/OpsModel"
     "Workspace" : "ide/Workspace"
 
-
     #############################################
-    # opseditor                 # Merge in deploy
+    # coreeditor                # Merge in deploy
     #############################################
-    'Design'        : 'workspaces/editor/framework/Design'
-
-    #############################################
-    # deprecated service        # Merge in deploy
-    #############################################
-    'base_model'             : 'service/base_model'
-    'state_model'            : 'service/state_model'
-    'keypair_model'          : 'service/keypair_model'
-    'instance_model'         : 'service/instance_model'
-    'result_vo'              : 'service/result_vo'
-    'stack_service'          : 'service/stack_service'
-    'state_service'          : 'service/state_service'
-    'ami_service'            : 'service/ami_service'
-    'ebs_service'            : 'service/ebs_service'
-    'instance_service'       : 'service/instance_service'
-    'keypair_service'        : 'service/keypair_service'
-    'customergateway_service': 'service/customergateway_service'
+    "OpsEditor"         : "workspaces/coreeditor/OpsEditor"
+    'Design'            : 'workspaces/coreeditor/Design'
+    "ResourceModel"     : "workspaces/coreeditor/ModelResource"
+    "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
+    "ConnectionModel"   : "workspaces/coreeditor/ModelConnection"
+    "GroupModel"        : "workspaces/coreeditor/ModelGroup"
+    "CoreEditor"        : "workspaces/coreeditor/EditorCore"
+    "CoreEditorView"    : "workspaces/coreeditor/EditorView"
+    "CoreEditorApp"     : "workspaces/coreeditor/EditorCoreApp"
+    "CoreEditorViewApp" : "workspaces/coreeditor/EditorViewApp"
+    "ProgressViewer"    : "workspaces/coreeditor/ProgressViewer"
+    "CanvasElement"     : "workspaces/coreeditor/CanvasElement"
+    "CanvasLine"        : "workspaces/coreeditor/CanvasLine"
+    "CanvasView"        : "workspaces/coreeditor/CanvasView"
+    "CanvasViewLayout"  : "workspaces/coreeditor/CanvasViewLayout"
+    "CanvasManager"     : "workspaces/coreeditor/CanvasManager"
+    "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
 
     #############################################
     # component                 # Merge in deploy
     #############################################
+    'AppAction'        : 'component/appactions/AppAction'
 
-    'validation'       : 'component/trustedadvisor/exposure'
-    'TaHelper'       : 'component/trustedadvisor/lib/TA.Helper'
-    'kp_dropdown'      : 'component/kp/kpDropdown'
-    'kp_manage'        : 'component/kp/kpManage'
-    'kp_upload'        : 'component/kp/kpUpload'
-    'sns_dropdown'     : 'component/sns/snsDropdown'
-    'sns_manage'       : 'component/sns/snsManage'
-    'combo_dropdown'   : 'component/common/comboDropdown'
-    'toolbar_modal'    : 'component/common/toolbarModal'
-    'dhcp'             : 'component/dhcp/dhcp'
-    'appAction'        : 'component/AppAction/AppAction'
-    'snapshotManager'  : 'component/snapshot/snapshot'
-    'rds_pg'           : 'component/rds_pg/rds_pg'
-    'rds_snapshot'     : 'component/rds_snapshot/rds_snapshot'
-    'sslcert_manage'   : 'component/sslcert/sslCertManage'
-    'sslcert_dropdown' : 'component/sslcert/sslCertDropdown'
-    'state_status'     : 'component/statestatus/main'
+    "ResDiff"          : "component/resdiff/ResDiff"
+    "DiffTree"         : "component/resdiff/DiffTree"
+
     "ThumbnailUtil"    : "component/exporter/Thumbnail"
     "JsonExporter"     : "component/exporter/JsonExporter"
-    "ResDiff"          : "component/common/diff/ResDiff"
-    "DiffTree"         : "component/common/diff/DiffTree"
-    'og_manage'        : 'component/optiongroup/ogManage'
-    'og_manage_app'    : 'component/optiongroup/ogManageApp'
-    'og_dropdown'      : 'component/optiongroup/ogDropDown'
+
+    'validation'       : 'component/trustedadvisor/exposure'
+    'TaHelper'         : 'component/trustedadvisor/lib/TA.Helper'
+    "TaGui"            : 'component/trustedadvisor/gui/main'
+
+    "StateEditor"      : "component/stateeditor/stateeditor"
+    "StateEditorView"  : "component/stateeditor/view"
+
+    'state_status'     : 'component/statestatus/main'
+
+    'combo_dropdown'   : 'component/common/comboDropdown'
+    'toolbar_modal'    : 'component/common/toolbarModal'
+
+    'dhcp'             : 'component/awscomps/Dhcp'
+    'kp_dropdown'      : 'component/awscomps/KpDropdown'
+    'kp_manage'        : 'component/awscomps/KpManage'
+    'kp_upload'        : 'component/awscomps/KpUpload'
+    'sns_dropdown'     : 'component/awscomps/SnsDropdown'
+    'sns_manage'       : 'component/awscomps/SnsManage'
+    'snapshotManager'  : 'component/awscomps/Snapshot'
+    'rds_pg'           : 'component/awscomps/RdsPg'
+    'rds_snapshot'     : 'component/awscomps/RdsSnapshot'
+    'sslcert_manage'   : 'component/awscomps/SslCertManage'
+    'sslcert_dropdown' : 'component/awscomps/SslCertDropdown'
+    'og_manage'        : 'component/awscomps/OgManage'
+    'og_manage_app'    : 'component/awscomps/OgManageApp'
+    'og_dropdown'      : 'component/awscomps/OgDropDown'
+    'SGRulePopup'      : "component/awscomps/SGRulePopup"
+    'DbSubnetGPopup'   : "component/awscomps/DbSubnetGPopup"
+
+    'OsKp'             : 'component/oscomps/KpDropdown'
+    'OsSnapshot'       : 'component/oscomps/Snapshot'
 
   ### env:dev:end ###
   shim :
@@ -214,7 +230,6 @@ require.config {
     "lib/lib" : [
       "MC"
       "constant"
-      "MC.canvas"
       'MC.validate'
       "lib/handlebarhelpers"
       "event"
@@ -243,65 +258,86 @@ require.config {
       "jqdatetimepicker"
       "UI.modalplus"
       "UI.nanoscroller"
+      "UI.selectize"
+      "UI.selection"
+      "UI.bubblepopup"
     ]
-    "api/api" : ["ApiRequest", "ApiRequestR"]
-    "service/service" : [
-      'base_model'
-      'state_model'
-      'keypair_model'
-      'instance_model'
-      'result_vo'
-      'stack_service'
-      'state_service'
-      'ami_service'
-      'ebs_service'
-      'instance_service'
-      'keypair_service'
-      'customergateway_service'
-    ]
+    "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
 
-    "component/Exporter"                : [ "ThumbnailUtil", "JsonExporter" ]
-    "component/Validation"              : [ "validation", "component/trustedadvisor/gui/main" ]
-    "component/StateStatus"             : [ "state_status" ]
-    "component/AwsDialog"               : [ "component/sgrule/SGRulePopup", "component/dbsbgroup/DbSubnetGPopup", "appAction", 'og_manage', 'og_manage_app', 'og_dropdown' ]
-    "component/stateeditor/stateeditor" : []
+    "cloudres/CrBundle"  : [ "CloudResources" ]
 
-    "component/sharedrescomp" : [
+    "component/Exporter"    : [ "ThumbnailUtil", "JsonExporter" ]
+    "component/Validation"  : [ "validation", "TaHelper", "TaGui" ]
+    "component/StateStatus" : [ "state_status" ]
+    "component/StateEditor" : [ "StateEditor", "StateEditorView" ]
+
+    "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
+    "component/Common"    : [ "combo_dropdown", "toolbar_modal" ]
+
+    "component/AwsComps" : [
+      'dhcp'
       'kp_dropdown'
       'kp_manage'
       'kp_upload'
       'sns_dropdown'
       'sns_manage'
-      'combo_dropdown'
-      'toolbar_modal'
-      'dhcp'
       'snapshotManager'
+      'rds_pg'
+      'rds_snapshot'
       'sslcert_manage'
       'sslcert_dropdown'
-      'ResDiff'
-      'DiffTree'
-      "rds_pg"
-      "rds_snapshot"
+      'og_manage'
+      'og_manage_app'
+      'og_dropdown'
+      'SGRulePopup'
+      'DbSubnetGPopup'
     ]
 
-    "cloudres/CrBundle"  : [ "CloudResources" ]
+    "component/OsComps" : [
+      'OsKp'
+      'OsSnapshot'
+    ]
+
+    "component/AppAction" : [ "AppAction" ]
+
     "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
 
-    "workspaces/Dashboard" : []
+    "workspaces/dashboard/Dashboard"     : []
+    "workspaces/osdashboard/DashboardOs" : []
 
-    "workspaces/editor/PropertyPanel" : [ "workspaces/editor/subviews/PropertyPanel" ]
-    "workspaces/editor/framework/DesignBundle" : [ "Design" ]
-    "workspaces/OpsEditor" : []
+    "workspaces/coreeditor/CoreEditorBundle" : [
+      "OpsEditor"
+      "Design"
+      "ResourceModel"
+      "ComplexResModel"
+      "ConnectionModel"
+      "GroupModel"
+      "CoreEditor"
+      "CoreEditorView"
+      "CoreEditorApp"
+      "CoreEditorViewApp"
+      "ProgressViewer"
+      "CanvasElement"
+      "CanvasLine"
+      "CanvasView"
+      "CanvasViewLayout"
+      "CanvasManager"
+      "CanvasPopup"
+    ]
+
+    "workspaces/awseditor/EditorAws" : []
+    "workspaces/oseditor/EditorOs"  : []
+
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
-    "component/AwsDialog" : [ "Design" ]
-    "component/stateeditor/stateeditor" : ["Design"]
-    "component/sharedrescomp"  : [ "Design" ]
-    "component/Validation" : ["Design"]
+    "component/StateEditor" : [ "Design", "OpsModel" ]
+    "component/Validation"  : [ "Design" ]
+    "component/AwsComps"    : [ "Design", "OpsModel" ]
+    "component/OsComps"     : [ "Design", "OpsModel" ]
 
-    "workspaces/editor/PropertyPanel" : [ "Design" ]
-    "workspaces/editor/framework/DesignBundle" : []
-    "workspaces/editor/subviews/PropertyPanel" : [ "component/sgrule/SGRulePopup" ]
+    "component/AppAction"                : [ "Design" ] # Workaround for messy deps
+    "workspaces/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
+    "workspaces/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
 
   ### env:prod:end ###
 }
@@ -319,25 +355,35 @@ requirejs.onError = ( err )->
     console.error "[RequireJS Error]", err, err.stack
 
 
+# Define what locale we support.
+# This file will be read and processed by gulp. In that environment, `define` is undefined
+if window.define
+  define "/nls/lang.js", [], {
+    'en-us' : true
+    'zh-cn' : true
+  }
 
 
 require [
   'ide/Application'
   "cloudres/CrBundle"
-  "workspaces/Dashboard"
-  "workspaces/OpsEditor"
+  "workspaces/dashboard/Dashboard"
+  "OpsEditor"
   "ide/Router"
   "MC"
-  "MC.canvas"
   'lib/aws'
+
+  # Extra Workspaces
+  "workspaces/awseditor/EditorAws"
+  "workspaces/oseditor/EditorOs"
 ], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
 
   ###########
   # IDE Init
   ###########
-  # There's an issue of requirejs dependency. In order to avoid that, we need to export OpsEditor as an Global Object.
-  window.Router    = new Router()
   window.OpsEditor = OpsEditor
+
+  window.Router    = new Router()
   (new Application()).initialize().then ()->
     window.Router.start()
     window.Dashboard = new Dashboard()

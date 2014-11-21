@@ -1,6 +1,6 @@
 
 define [
-  "../CrCommonCollection"
+  "./CrCommonCollection"
   "../CrCollection"
   "../CrModel"
   "./CrModelElb"

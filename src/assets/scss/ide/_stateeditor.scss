@@ -1,10 +1,8 @@
 #state-editor {
-	/*font-family: "Lucida Console", "Monaco", monospace !important;*/
 	font-size: 12px !important;
 }
 
 #state-editor .parameter-value {
-	/*font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace  !important;*/
 	font-size: 12px !important;
 	color: #ff6a38;
 }
@@ -33,10 +31,6 @@
 #state-editor .parameter-item .parameter-container:hover .parameter-text-expand {
 	display: block;
 }
-
-// #state-editor .parameter-item.dict .editable-area.value:hover + .parameter-text-expand {
-// 	display: block;
-// }
 
 #state-editor .parameter-item .parameter-text-expand:hover {
 	color: #fff;
@@ -93,7 +87,7 @@
 
 #state-editor, .ace_autocomplete_tip {
 	overflow-y: auto;
-	width: 654px;
+	width: 656px;
 	background: #27292C;
 	font-size: 13px;
 	position: absolute;
@@ -101,11 +95,11 @@
 }
 
 #state-editor, .ace_autocomplete {
-	font-family: "Monaco","Consolas","Ubuntu Mono", monospace !important;
+	@include font-mono;
 }
 
 #modal-state-text-expand .editable-area {
-	font-family: "Monaco","Consolas","Ubuntu Mono", monospace !important;
+	@include font-mono;
 }
 
 #state-editor.full {
@@ -127,7 +121,7 @@
 	max-height   : 96%;
 	width        : 400px;
 
-	box-shadow   : 0 0 20px rgba(0,0,0,.4);
+	// box-shadow   : 0 0 20px rgba(0,0,0,.4);
 	border       : 1px solid #222;
 	border-radius: 4px 0 0 4px;
 
@@ -486,18 +480,22 @@
 	left:          0;
 	right:         0;
 	top:           0;
-	height:        36px;
+	height:        38px;
+	.icon-label {
+		float: left;
+		margin-top: -1px;
+	}
 }
 
 .state-editor-toolbar a {
 	padding:      10px 8px 10px 9px;
 	border-right: 1px solid #131313;
-	font-size:    14px;
+	font-size:    12px;
 	line-height:  16px;
 	color:        #999;
 	float:        left;
 	cursor:       pointer;
-
+	height:       19px;
 	-webkit-transition: background .2s;
 	-moz-transition:    background .2s;
 	-ms-transition:     background .2s;
@@ -750,6 +748,14 @@
 	border: none;
 	width : 8px;
 	margin-right: 3px;
+}
+
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line {
+	display: none;
+}
+
+#state-editor .parameter-dict-item .parameter-value.value .ace_content .ace_line:first-child {
+	display: block;
 }
 
 #state-editor .comment .command-view-value,
@@ -1066,9 +1072,9 @@
 #state-log .state-log-item-status {
 	color: #aaa;
 	position: absolute;
-	font-size: 12px;
+	font-size: 15px;
 	top: 12px;
-	right: 6px;
+	right: 14px;
 	font-style: italic;
 	font-variant: small-caps;
 }
@@ -1492,11 +1498,6 @@
     margin-right: 3px;
     vertical-align: middle;
     line-height: 1;
-}
-.switch-input {
-	position: absolute;
-	top: 0;
-	left: 0;
 }
 
 .switch-label {

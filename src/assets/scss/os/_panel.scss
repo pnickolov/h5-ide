@@ -1,0 +1,130 @@
+
+.openstack .OEPanelRight {
+
+    width: 288px;
+    font-size: 12px;
+
+    @include font-mono;
+
+    h1.title {
+        font-size   : 14px;
+        padding     : 5px 9px;
+        color       : $dark-grey;
+        height      : 22px;
+        line-height : 22px;
+        background  : $bg-p;
+        // width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 35px;
+    }
+
+    .panel-body {
+        & > div > div {
+            position: absolute;
+            top: 32px;
+            bottom: 0;
+            height: auto;
+            width: 100%;
+            overflow: auto;
+            padding-bottom: 30px;
+        }
+    }
+
+    &.state {
+        width: 655px;
+        .panel-body {
+            & > div > div {
+                overflow: visible;
+            }
+        }
+    }
+
+    &.hidden .panel-float { display: none }
+
+    .panel-float {
+        border-right : 1px #101010 solid;
+        position     : absolute;
+        top          : 0;
+        bottom       : 0;
+        overflow     : auto;
+        right        : 288px;
+        background   : $bg-p;
+        z-index      : -1;
+
+        min-width: 270px;
+
+        @include transit($method:right,$dur:.2s);
+        @include font-mono;
+
+        button, input, textarea {
+            @include font-mono;
+        }
+
+        // Rewrite below values to customise floating-panel
+        & > div { width: 280px; }
+
+        &.hidden { right: -500px; }
+
+        h1 {
+            border-bottom: 1px solid #000;
+        }
+    }
+
+    .panel-body section {
+
+        header {
+            background: $dark-p-1;
+            color: white;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            padding: 0 8px;
+            aside {
+                position: absolute;
+                top: 0;
+                right: 0;
+                .selection {
+                    background: $dark-p-1;
+                    color: #F3F3F3;
+                    height: 28px;
+                    padding: 0 20px 0 8px;
+                    border: none;
+                    border-left: 1px solid $dark-p-2;
+                    border-radius: 0;
+                    box-shadow: none;
+                    box-sizing: border-box;
+
+                    &::after {
+                        border-top-color: white;
+                    }
+                }
+                .dropdown { right: 0; min-width: 0; }
+            }
+
+        }
+
+        article {
+            padding: 10px;
+
+            .resource-item {
+                cursor: pointer;
+            }
+
+            & > ul::after {
+                content : "";
+                display : block;
+                height  : 0;
+                clear   : both;
+            }
+        }
+
+        .full-width{
+          width: 100%;
+        }
+    }
+}
+
+@import "panels/resource-panel";
+@import "panels/property-panel";
+@import "panels/state-panel";

@@ -1,0 +1,37 @@
+<div class="scroll-wrap scrollbar-auto-hide" style="height:500px;">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<div id="VisualizeVpcDialog" class="scroll-content">
+{{#if fail}}
+<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_LOADING_APP_FAILED"}}
+	<button class="btn btn-blue" id="VisualizeReload">{{i18n "DASH_POP_BTN_RETRY"}}</button>
+</div>
+<div class="loading-spinner hide"></div>
+{{else}}
+	{{#unless ready}}<div class="loading-spinner"></div>{{else}}
+		{{#each data}}<section>
+			<header class="region-header"><span class="region-name">{{name}}</span><span class="vpc-count">{{apps.length}}</span></header>
+
+			<ul class="region-group clearfix" data-region="{{region}}">
+				{{#each apps}}
+				<li class="visualize-vpc">
+					<h5>{{id}}</h5>
+					<ol class="tac">
+						<li class="visualize-res"><div class="vis-res-num">{{subnet}}</div><span class="vis-res-name">{{i18n "DASH_LBL_SUBNETS"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{router}}</div><span class="vis-res-name">{{i18n "DASH_LBL_OSROUTER"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{server}}</div><span class="vis-res-name">{{i18n "DASH_LBL_OSSERVER"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{fip}}</div><span class="vis-res-name">{{i18n "DASH_LBL_OSFIP"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{listener}}</div><span class="vis-res-name">{{i18n "DASH_LBL_OSLISTENER"}}</span></li>
+						<li class="visualize-res"><div class="vis-res-num">{{pool}}</div><span class="vis-res-name">{{i18n "DASH_LBL_OSPOOL"}}</span></li>
+					</ol>
+					<button class="btn btn-blue visualize-vpc-btn" data-id="{{id}}">{{i18n "DASH_TPL_TO_IMPORT"}}</button>
+				</li>
+				{{/each}}
+			</ul>
+		</sectio
+		{{else}}<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_NO_APP_TO_IMPORT"}}</div>{{/each}}
+	{{/unless}}
+
+{{/if}}
+
+	</div>
+</div>

@@ -84,7 +84,10 @@
 .icon-dhcp:before,
 .icon-pg:before,
 .icon-rds-snap:before,
-.icon-rds-restore:before {
+.icon-rds-restore:before,
+.icon-resource:before,
+.icon-config:before,
+.icon-property:before {
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
@@ -328,3 +331,12 @@
 
 .icon-rds-restore:before {
   content: "\F168"; }
+
+.icon-resource:before {
+  content: "\F170"; }
+
+.icon-config:before {
+  content: "\F171"; }
+
+.icon-property:before {
+  content: "\F172"; }

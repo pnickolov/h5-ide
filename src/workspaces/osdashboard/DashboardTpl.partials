@@ -1,0 +1,118 @@
+<!-- {{frame}} -->
+<div>
+
+<header class="dash-header">
+  <button class="icon-refresh" id="OsReloadResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
+  <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}</button>
+
+  <button id="ImportStack" class="btn btn-primary icon-import" data-analytics-plus="import_json">{{i18n "DASH_IMPORT_JSON"}}</button>
+
+  <button id="VisualizeApp" class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_APP"}}
+  </button>
+
+</header>
+
+<div class="dash-body nano"> <div class="nano-content">
+
+  <section class="dash-ops-list-wrapper">
+    <nav>
+      <button class="on stack ops-list-switcher"><span class="count"></span> <small>{{i18n "DASH_LBL_STACK"}}</small></button>
+      <button class="ops-list-switcher"><span class="count">0</span> <small>{{i18n "DASH_LBL_APP"}}</small></button>
+    </nav>
+    <ul class="clearfix dash-ops-list"></ul>
+  </section>
+  <section class="dash-ops-resource-list"></section>
+
+</div></div>
+
+</div>
+
+<!-- {{appList}} -->
+{{#each this}}<li data-id="{{id}}">{{#if progressing}}
+  <div class="thumbnail app-thumbnail"></div>
+  <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
+  <div class="region-resource-info truncate">
+      <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
+  </div>
+{{else}}
+  {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+  <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+  <div class="region-resource-info">
+    <i class="icon-terminate terminate-app"></i>
+    {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+  </div>
+{{/if}}</li>
+{{else}}
+  <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
+{{/each}}
+
+<!-- {{stackList}} -->
+{{#each this}}<li data-id="{{id}}">
+    <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+    <div class="region-resource-info">
+      <i class="icon-delete delete-stack"></i>
+      <i class="icon-duplicate duplicate-stack"></i>
+      <span class="truncate">{{name}}</span>
+    </div>
+  </li>
+{{else}}
+  <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
+{{/each}}
+
+<!-- {{importJSON}} -->
+<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
+<div id="import-json-error"></div>
+
+<!-- {{resourceList}} -->
+<nav class="clearfix resource-list-nav">
+  <div class="resource-tab servers on" data-type="OSSERVER">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Server</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+  <div class="resource-tab volumes" data-type="OSVOL">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Volume</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+  <div class="resource-tab snaps" data-type="OSSNAP">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Snapshot</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+  <div class="resource-tab fips" data-type="OSFIP">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Floating IP</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+  <div class="resource-tab rts" data-type="OSRT">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Router</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+  <div class="resource-tab elbs" data-type="OSLISTENER">
+    <svg class="quota-chart" viewbox="0 0 282 282">
+      <path class="quota-path" d="M48.6 221.4a125 125 0 1 1 176.8 0"/>
+      <path class="quota-path usage" d="M48.6 221.4a125 125 0 1 1 176.8 0" stroke-dashoffset="589.1"/>
+    </svg>
+    <span class="resource-count">Load Balancer</span>
+    <p class="count"><span class="count-usage">-</span><span class="count-quota">-</span></p>
+  </div>
+</nav>
+<div class="resource-list-body table-head-fix"></div>

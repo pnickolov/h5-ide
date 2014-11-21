@@ -1,0 +1,77 @@
+@font-face
+{
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/LatoRegular.woff') format('woff');
+}
+
+@font-face
+{
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/LatoBold.woff') format('woff');
+}
+
+@font-face
+{
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 300;
+	src: local('Lato Light'), local('Lato-Light'), url('../fonts/LatoLight.woff') format('woff');
+}
+
+@mixin font-mono {
+	font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
+}
+
+@mixin font-major {
+	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;;
+	color       : desaturate(lighten($light-p, 30%),10%);
+	font-size   : 14px;
+}
+
+a {
+	color: $base-b;
+	text-decoration: none;
+
+	&:hover {
+		color: adjust_hue(lighten($base-b,20%),-10deg);
+	}
+}
+
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.2em;
+}
+
+h4 {
+	font-size: 1.1em;
+}
+
+p {
+	font-size: 1em;
+}
+
+code, {
+	background : #000;
+	color      : $dark-g;
+	font-size  : 14px;
+	font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
+}
+
+pre {
+	background : #000;
+}

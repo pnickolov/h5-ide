@@ -48,7 +48,6 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       dbparameterGroups    : "DBParameterGroups"
       dbsecurityGroups     : "DBSecurityGroups"
       dbsubnetGroup        : "DBSubnetGroup"
-      dbname               : "DBName"
 
     # All resource type will be replaced in below list
     ALL:
@@ -108,7 +107,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       @__lastFetchError = null
 
       self = @
-      @__fetchPromise = @doFetch().then ( data )->
+      @__fetchPromise = @doFetch()?.then? ( data )->
 
         if not self.__selfParseData
           try
@@ -199,10 +198,10 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
 
     # This method is used by CloudResources to provide an external api to parse data coming from aws.
     # It parse data and the cached them in this collection and returns parsed models.
-    __parseExternalData : ( awsData, extraAttr, category )->
+    __parseExternalData : ( awsData, extraAttr, category, dataCollection )->
       try
         if @parseExternalData
-          awsData = @parseExternalData( awsData, category )
+          awsData = @parseExternalData( awsData, category, dataCollection )
         else if @parseFetchData
           awsData = @parseFetchData( awsData )
       catch e
@@ -331,6 +330,31 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
           delete obj[camelKey]
 
         @camelToPascal value
+
+      obj
+
+    camelToUnderscore: ( obj ) ->
+      exceptionList = []
+      self = @
+      if not _.isObject obj then return obj
+      if _.isArray obj
+        return _.map obj, ( arr ) -> self.camelToUnderscore arr
+
+      for camelKey, value of obj
+        if not (obj.hasOwnProperty camelKey) then continue
+
+        if not _.isArray( obj )  and camelKey not in exceptionList and '::' not in camelKey
+          underscoreKey = _.map camelKey, ( char, index ) ->
+            if index is 0 then return char
+            if 65 <= char.charCodeAt() <= 90 then return "_#{char.toLowerCase()}"
+            char
+          .join( '' )
+
+          if underscoreKey isnt camelKey
+            obj[underscoreKey] = value
+            delete obj[camelKey]
+
+        self.camelToUnderscore value
 
       obj
 

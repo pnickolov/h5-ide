@@ -10,22 +10,18 @@ npm install
 ```
 
 ### Gulp Commands
-* `gulp` - Build CoffeeScripts in dev mode, and then runs a static file server and live reload server. This is the same as running `gulp dev;gulp watch`
-* `gulp watch` - Compile files when they're modified, and starts a local server @localhost:3000.
-* `gulp dev` - Build CoffeeScripts and SCSS in dev mode.
-
-* `gulp release` - (Git version >= 1.9.0) Build the project in release mode(Concat & Minify). And push to h5-ide-build/master
-* `gulp public`  - (Git version >= 1.9.0) The same as `gulp release`, except that it doesn't include https redirect.
-* `gulp debug`   - (Git version >= 1.9.0) The same as `gulp release`, except that source code are not minimized. And are push to h5-ide-build/develop
-* `gulp qa`      - The same as `gulp debug`, except that it doesn't push code to remote. And starts a local server. Since the build is almost like the release version. It is recommanded to use this command to create a local version of IDE to test.
-* `gulp help`    - Print help message of gulp tasks.
+Type `gulp help` in the terminal
 
 
 ### Custom Gulp Config
-Copy `gulpconfig-default.js` to `gulpconfig.js`. Then modify `gulpconfig.js`
+Copy `gulpconfig.default` to `gulpconfig.js`. Then modify `gulpconfig.js`
 
 
-### Automated Test
+### Modifying gulp tasks
+`gulptasks` folder is not watched by the gulp process anymore. You need to manually compile coffees inside `gulptasks` after you modify the file.
+
+
+### Automated Test ( disabled )
 `gulp release` `gulp debug` `gulp qa` will try to run test suit if `zombie` is available. In order to install `zombie`, one need to install an C++ compiler in the system and then run `npm install zombie`
 
 

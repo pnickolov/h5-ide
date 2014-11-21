@@ -24,7 +24,7 @@
 						<li class="visualize-res"><div class="vis-res-num">{{eip.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span></li>
 						<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span></li>
 					</ol>
-					<button class="btn btn-blue visualize-vpc-btn{{#if username}} tooltip disabled{{/if}}" {{#if username}}data-tooltip="This VPC was imported by {{username}}"{{/if}} data-vpcid="{{id}}">{{#if username}}{{i18n "DASH_TPL_ALREADY_IMPORTED"}}{{else}}{{i18n "DASH_TPL_TO_IMPORT"}}{{/if}}</button>
+					<button class="btn btn-blue visualize-vpc-btn{{#if username}} tooltip disabled{{/if}}" {{#if username}}data-tooltip="This VPC has been imported by {{username}}"{{/if}} data-vpcid="{{id}}">{{#if username}}{{i18n "DASH_TPL_ALREADY_IMPORTED"}}{{else}}{{i18n "DASH_TPL_TO_IMPORT"}}{{/if}}</button>
 				</li>
 				{{/each}}
 			</ul>

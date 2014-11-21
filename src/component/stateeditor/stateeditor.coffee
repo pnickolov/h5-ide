@@ -2,7 +2,7 @@
 #  pop-up for component/stateeditor module
 ####################################
 
-define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], ( ide_event, View, Model ) ->
+define [ 'event', 'StateEditorView', 'component/stateeditor/model', 'component/stateeditor/lib/ace', 'UI.modal', 'jquerysort' ], ( ide_event, View, Model ) ->
 
     #private
     loadModule = ( allCompData, uid, resId, force ) ->
@@ -20,7 +20,7 @@ define [ 'event', './view', './model', './lib/ace', 'UI.modal', 'jquerysort' ], 
         else
             model = new Backbone.Model()
 
-        view  = new View({
+        view = new View({
             model: model
         })
 

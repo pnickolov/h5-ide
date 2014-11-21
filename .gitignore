@@ -2,13 +2,11 @@
 *.map
 gulpconfig.js
 
-#ignore node_modules
-node_modules/
 
+node_modules/
 .sass-cache/
 
 #ignore everything related to deploy
-qa/
 h5-ide-build/
 deploy/
 build/
@@ -20,11 +18,7 @@ src/**/*.js
 !src/vender/**/*.js
 !src/component/stateeditor/lib/**/*.js
 
-#ignore MC.template.js
 src/ui/MC.template.js
-
-#ignore test
-src/test/**/*.js
 
 #ignore util
 util/gen_service/out.tmp
@@ -34,6 +28,4 @@ util/gen_model/**/*.js
 util/gen_apilist/out.tmp
 util/gen_apilist/**/*.js
 
-.idea/*
-*.styl
-src/ui/UI.modalplus.js
+

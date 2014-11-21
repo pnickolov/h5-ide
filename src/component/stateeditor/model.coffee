@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone', 'jquery', 'underscore' ], (MC, constant, state_model, CloudResources, Design) ->
+define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore' ], (MC, constant, CloudResources, Design, ApiRequest) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -12,9 +12,26 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			stateLogDataAry: []
 		},
 
-		initialize: () ->
+		initialize: (options) ->
 
 			that = this
+
+			resUID = options.resUID
+
+			resModel = Design.instance().component(resUID)
+
+			return if not (resModel and resModel.serialize)
+
+			resId = resModel.get('appId')
+			compData = resModel.serialize().component
+			allCompData = Design.instance().serialize().component
+
+			that.set({
+				resModel: resModel,
+				resId: resId,
+				compData: compData,
+				allCompData: allCompData
+			})
 
 			stateModuel = Design.instance().get('agent').module
 			moduleDataObj = App.model.getStateModule( stateModuel.repo, stateModuel.tag )
@@ -28,10 +45,9 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			else
 				that.set('isWindowsPlatform', false)
 
-			currentCompData = that.get('compData')
-			comp = Design.instance().component( currentCompData.uid )
-			osType = (comp.getAmi() || comp.get("cachedAmi")).osType
-			if osType is 'windows'
+			# osType = (resModel.getAmi() || resModel.get("cachedAmi")).osType
+			# if osType is 'windows'
+			if osPlatformDistro is 'windows'
 				that.set('isWindowsPlatform', true)
 
 			that.set('amiExist', platformInfo.amiExist)
@@ -124,8 +140,10 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			that.genStateRefList(allCompData)
 
-			resAttrDataAry = MC.aws.aws.genAttrRefList(currentCompData, allCompData)
+			resAttrDataAry = MC.aws.aws.genAttrRefList(compData, allCompData)
 			that.set('resAttrDataAry', resAttrDataAry)
+
+			that.genResAttrDataMap()
 
 			that.genAttrRefRegexList()
 
@@ -134,6 +152,17 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			# Diffrent view
 			that.set('currentState', Design.instance().mode())
+
+		genResAttrDataMap: () ->
+
+			nameToUIDRefMap = {}
+			uidToNameRefMap = {}
+			resAttrDataAry = @get('resAttrDataAry')
+			_.each resAttrDataAry, (data) ->
+				nameToUIDRefMap["@{#{data.name}}"] = "@{#{data.uid}}"
+				uidToNameRefMap["@{#{data.uid}}"] = "@{#{data.name}}"
+			@set('nameToUIDRefMap', nameToUIDRefMap)
+			@set('uidToNameRefMap', uidToNameRefMap)
 
 		sortParaList: (cmdAllParaAry, paraName) ->
 
@@ -156,9 +185,17 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 		getResPlatformInfo: () ->
 
 			that = this
-			compData = that.get('compData')
-			imageId = compData.resource.ImageId
-			imageObj = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get(imageId)
+
+			resModel = that.get('resModel')
+			imageId = resModel.get('imageId')
+
+			isAWSAMI = true
+			isAWSAMI = false if resModel.type is constant.RESTYPE.OSSERVER
+
+			if isAWSAMI
+				imageObj = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(imageId)
+			else
+				imageObj = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
 
 			osPlatform = null
 			osPlatformDistro = null
@@ -166,12 +203,15 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 			amiExist = true
 
 			layoutOSType = ''
-			cachedAmi = Design.instance().component(compData.uid).get('cachedAmi')
+			cachedAmi = resModel.get('cachedAmi')
 			layoutOSType = cachedAmi.osType if cachedAmi
 
 			if imageObj
 
-				osType = imageObj.get('osType') or layoutOSType
+				if isAWSAMI
+					osType = imageObj.get('osType') or layoutOSType
+				else
+					osType = imageObj.get('os_type')
 
 				# linuxDistroRange = ['centos', 'redhat',  'rhel', 'ubuntu', 'debian', 'fedora', 'gentoo', 'opensuse', 'suse', 'sles', 'amazon', 'amaz']
 				linuxDistroRange = ['centos', 'redhat', 'ubuntu', 'rhel', 'debian', 'amazon', 'amaz']
@@ -245,19 +285,19 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 		setStateData: (stateData) ->
 
 			that = this
-			compData = that.get('compData')
 			resModel = that.get('resModel')
 			resModel.setStateData(stateData)
 
 		getStateData: () ->
 
 			that = this
-			compData = that.get('compData')
 			resModel = that.get('resModel')
-			if compData
-				stateData = resModel.getStateData()
-				if _.isArray(stateData)
-					return stateData
+
+			return null if not (resModel and resModel.getStateData)
+
+			stateData = resModel.getStateData()
+			if _.isArray(stateData)
+				return stateData
 
 			return null
 
@@ -459,8 +499,7 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			that = this
 
-			currentCompData = that.get('compData')
-			currentCompUID = currentCompData.uid
+			currentCompUID = that.get('compData').uid
 
 			allCompData = that.get('allCompData')
 
@@ -470,27 +509,46 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			newParaValue = paraValue
 
-			_.each refMatchAry, (refMatchStr) ->
+			cloudType = Design.instance().get('cloud_type')
 
-				uidMatchAry = refMatchStr.match(uidRegex)
-				resUID = uidMatchAry[0]
+			if cloudType is 'aws'
 
-				# if resUID is currentCompUID
-				# 	resName = 'self'
-				# else
-				compData = allCompData[resUID]
-				if compData
-					resName = compData.name
-					if compData.type is constant.RESTYPE.INSTANCE
-						if compData.number and compData.number > 1
-							resName = compData.serverGroupName
-				else
-					resName = 'unknown'
+				# for aws
+				_.each refMatchAry, (refMatchStr) ->
 
-				newRefStr = refMatchStr.replace(resUID, resName)
-				newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+					uidMatchAry = refMatchStr.match(uidRegex)
+					resUID = uidMatchAry[0]
 
-				null
+					# if resUID is currentCompUID
+					# 	resName = 'self'
+					# else
+					compData = allCompData[resUID]
+					if compData
+						resName = compData.name
+						if compData.type is constant.RESTYPE.INSTANCE
+							if compData.number and compData.number > 1
+								resName = compData.serverGroupName
+					else
+						resName = 'unknown'
+
+					newRefStr = refMatchStr.replace(resUID, resName)
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
+					null
+
+			else
+
+				# openstack
+				_.each refMatchAry, (refMatchStr) ->
+
+					uidMatchAry = refMatchStr.match(uidRegex)
+					resUID = uidMatchAry[0]
+
+					uidToNameRefMap = that.get('uidToNameRefMap')
+					newRefStr = uidToNameRefMap[refMatchStr]
+					if not newRefStr
+						newRefStr = refMatchStr.replace(resUID, 'unknown')
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
 
 			return newParaValue
 
@@ -505,23 +563,39 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 
 			newParaValue = paraValue
 
-			_.each refMatchAry, (refMatchStr) ->
+			cloudType = Design.instance().get('cloud_type')
 
-				resName = refMatchStr.replace('@{', '').split('.')[0]
-				if resName isnt 'self'
-					resUID = that.getUIDByResName(resName)
-					if resUID
-						newUIDStr = refMatchStr.replace(resName, resUID)
-						newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
-				null
+			if cloudType is 'aws'
+
+				# for aws
+				_.each refMatchAry, (refMatchStr) ->
+
+					resName = refMatchStr.replace('@{', '').split('.')[0]
+					if resName isnt 'self'
+						resUID = that.getUIDByResName(resName)
+						if resUID
+							newUIDStr = refMatchStr.replace(resName, resUID)
+							newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
+					null
+
+			else
+
+				# for open stack
+				_.each refMatchAry, (refMatchStr) ->
+
+					resName = refMatchStr.replace('@{', '').split('.')[0]
+					if resName isnt 'self'
+						nameToUIDRefMap = that.get('nameToUIDRefMap')
+						newUIDStr = nameToUIDRefMap[refMatchStr]
+						newParaValue = newParaValue.replace(refMatchStr, newUIDStr) if newUIDStr
+					null
 
 			return newParaValue
 
 		getUIDByResName: (resName) ->
 
 			that = this
-			currentCompData = that.get('compData')
-			currentCompUID = currentCompData.uid
+			currentCompUID = that.get('compData').uid
 			allCompData = that.get('allCompData')
 
 			# if resName is 'self'
@@ -546,18 +620,30 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 		getResState: (resId) ->
 
 			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
-			resModel = CloudResources('AWS.EC2.Instance').get(resId)
-			resState = 'unknown'
-			if resModel
-				resState = resModel.get('instanceState')?.name
-			@set('resState', resState)
-			null
+
+			cloudType = Design.instance().get('cloud_type')
+
+			if cloudType is 'aws'
+
+				resModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(resId)
+				resState = 'unknown'
+				if resModel
+					resState = resModel.get('instanceState')?.name
+				@set('resState', resState)
+
+			else
+
+				resModel = CloudResources(constant.RESTYPE.OSSERVER, Design.instance().region()).get(resId)
+				resState = 'unknown'
+				if resModel
+					resState = resModel.get('status')
+				@set('resState', resState)
 
 		genStateLogData: (resId, callback) ->
 
 			that = this
 
-			appId = Design.instance().get("id")
+			appId = Design.instance().get('id')
 
 			if not (appId and resId)
 
@@ -577,14 +663,14 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 				}
 			agentStatus = 'pending'
 
-			state_model.log {sender: that}, $.cookie('usercode'), $.cookie('session_id'), appId, resId
+			ApiRequest('state_log', {
+				app_id: appId,
+				res_id: resId
+			}).then (data) ->
 
-			that.off('STATE_LOG_RETURN')
-			that.on 'STATE_LOG_RETURN', ( result ) ->
+				if data
 
-				if !result.is_error
-
-					statusDataAry = result.resolved_data
+					statusDataAry = data
 
 					if statusDataAry and statusDataAry[0]
 
@@ -610,7 +696,11 @@ define [ 'MC', 'constant', 'state_model', 'CloudResources', "Design", 'backbone'
 					that.set('stateLogDataAry', originStatusDataAry)
 					that.set('agentStatus', agentStatus)
 
-					if callback then callback()
+				if callback then callback()
+
+			, (err) ->
+
+				if callback then callback()
 
 		getCurrentResUID: () ->
 

@@ -1,0 +1,127 @@
+<!-- {{stackTemplate}} -->
+<div class="option-group-head expand">
+    Server Details
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label for="property-os-server-name" class="name">Server Name</label>
+        <input id="property-os-server-name" data-target="name" class="selection string" value="{{name}}"/>
+    </section>
+    <section class="group required">
+        <label for="property-os-server-image" class="name">Server Image</label>
+        <select class="selection option" value="{{imageId}}" data-target="imageId" id="property-os-server-image" data-option-tpl="imageSelect" data-item-tpl="imageValue" {{#if isAppEdit}}disabled="disabled"{{/if}}>
+            {{#each imageList}}
+                <option value='{{id}}' {{#ifCond id ../imageId}}selected='selected'{{/ifCond}}>{{name}}</option>
+            {{/each}}
+        </select>
+    </section>
+    <section class="group required">
+        <label for="property-os-server-volsize" class="name">Volume Size (GB)</label>
+        <input id="property-os-server-volsize" data-target="volumeSize" class="selection number" type="text" value="{{volumeSize}}"/>
+    </section>
+    <section class="group required">
+        <label for="property-os-server-CPU" class="name">CPU</label>
+        <select class="selection option"  data-target="CPU" id="property-os-server-CPU"></select>
+    </section>
+    <section class="group required">
+        <label for="property-os-server-RAM" class="name">RAM</label>
+        <select class="selection option required" data-target="RAM" id="property-os-server-RAM"></select>
+    </section>
+    <section class="group">
+        <label for="property-os-server-credential" class="name">Credential</label>
+        <select id="property-os-server-credential" data-target="credential" class="selection option" {{#if isAppEdit}}disabled="disabled"{{/if}}>
+            <option value="keypair" {{#ifCond credential 'keypair'}}selected="selected"{{/ifCond}}>KeyPair</option>
+            <option value="adminPass" {{#ifCond credential 'keypair'}}{{else}}selected="selected"{{/ifCond}}>Password</option>
+        </select>
+    </section>
+    <section class="group required"  {{#ifCond credential "keypair"}}style="display: none"{{/ifCond}}>
+        <label class="name">Admin Password</label>
+        <input id="property-os-server-adminPass" data-target="adminPass" type="password" class="selection string" value="{{adminPass}}" placeholder="Password of the Image" {{#if isAppEdit}}disabled="disabled"{{/if}}/>
+    </section>
+    <section class="group required" {{#ifCond credential "keypair"}}{{else}}style="display: none"{{/ifCond}}>
+        <label class="name">Key Pair</label>
+        <div id="property-os-server-keypair">
+        </div>
+    </section>
+    <section class="group">
+        <label class="name">User Data</label>
+        <textarea id="property-os-server-userdata" data-target="userData" type="text" class="selection string" {{#if isAppEdit}}disabled="disabled"{{/if}} {{#if agentEnabled}}disabled="disabled" placeholder="User Data is disabled to allow installing OpsAgent for VisualOps."{{/if}}>{{userData}}</textarea>
+    </section>
+</div>
+<div class="option-group-head expand">
+    Port Details
+</div>
+<div class="option-group">
+    <section class="group required">
+        <label class="name">Fixed IP</label>
+        <input class="selection" id="property-os-server-fip" data-target="fixedIp" value="{{fixedIp}}"/>
+    </section>
+    <section class="group required">
+        <label class="name tooltip">Associate Floating IP</label>
+        <select class="selection bool" id="property-os-server-aip" data-target="associateFip" value="{{#if floatingIp}}true{{else}}false{{/if}}"></select>
+    </section>
+</div>
+
+<!--{{imageListKey}}-->
+<div><img class="property-os-image-icon" width="30" height="30" src="/assets/images/ide/ami-os/{{distro}}@2x.png" alt=""/><p class="property-os-image-text">{{or name text}}<span class="uid">{{or id value}}</span></p></div>
+
+<!--{{imageValue}}-->
+<div><img class="property-os-image-icon" width="30" height="30" src="/assets/images/ide/ami-os/{{distro}}@2x.png" alt=""/>{{name}}</div>
+
+<!--{{kpButton}}-->
+<button class="btn btn-primary dropdown-list-btn">Manage KeyPairs</button>
+
+<!--{{kpSelection}}-->
+<select class="selection option" name="kpDropdown" data-button-tpl="kpButton" {{#if isAppEdit}}disabled="disabled"{{/if}}></select>
+
+<!-- {{appTemplate}} -->
+<div class="option-group-head expand">
+    Server Details<a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="Get System Log"></a>
+</div>
+<div class="option-group">
+    <dl class="dl-vertical">
+        <dt>Name</dt><dd>{{emptyStr name}}</dd>
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>Status</dt><dd class="os-status os-status-{{status}}">{{emptyStr status}}</dd>
+        <dt>Image</dt><dd>
+            <div class="os-server-image-info">
+                <img class="property-os-image-icon" src="/assets/images/ide/ami-os/{{system_metadata.image_os_distro}}.{{system_metadata.image_architecture}}@2x.png" alt=""/>
+                <p class="property-os-image-text">{{emptyStr image_name}}<span class="uid">{{emptyStr image_id}}</span></p>
+            </div>
+        </dd>
+        <dt>Volume Size</dt><dd>{{emptyStr volumeSize}}</dd>
+        <dt>Fixed IP</dt><dd>{{emptyStr fixedIp}}</dd>
+        <dt>MAC Address</dt><dd>{{emptyStr macAddress}}</dd>
+        <dt>Floating IP</dt><dd>{{emptyStr floatingIp}}</dd>
+        <dt>Flavor</dt><dd>{{emptyStr flavor_id}} (CPU: {{emptyStr vcpus}}, RAM: {{emptyStr ram}}G)</dd>
+        <dt>Availability Zone</dt><dd>{{emptyStr availability_zone}}</dd>
+        <dt>Key Name</dt><dd>{{emptyStr key_name}}</dd>
+        <dt>Launched at</dt><dd>{{timeStr launch_at}}</dd>
+    </dl>
+</div>
+
+<!-- {{imageTemplate}} -->
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>ID</dt><dd>{{emptyStr image_id}}</dd>
+        <dt>Distro</dt><dd>{{emptyStr image_os_distro}}</dd>
+        <dt>Version</dt><dd>{{emptyStr image_os_version}}</dd>
+        <dt>Arichitecture</dt><dd>{{emptyStr image_architecture}}</dd>
+        <dt>Volume Size</dt><dd>{{emptyStr image_vol_size}} GB</dd>
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+        <dt>Created</dt><dd>{{emptyStr created_at}}</dd>
+    </dl>
+</section>
+
+<!-- {{volumeTemplate}} -->
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>Device Name</dt><dd>{{emptyStr device_name}}</dd>
+        <dt>ID</dt><dd>{{emptyStr id}}</dd>
+        <dt>Status</dt><dd>{{emptyStr status}}</dd>
+        <dt>Description</dt><dd>{{emptyStr description}}</dd>
+        <dt>Size</dt><dd>{{emptyStr size}}</dd>
+        <dt>Bootable</dt><dd>{{emptyStr bootable}}</dd>
+        <dt>Created at</dt><dd>{{emptyStr created}}</dd>
+    </dl>
+</section>

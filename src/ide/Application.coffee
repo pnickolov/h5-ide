@@ -20,8 +20,8 @@ define [
   "OpsModel"
   "JsonExporter"
   "constant"
-  "underscore"
   "i18n!/nls/lang.js"
+  "underscore"
 ], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang )->
 
   VisualOps = ()->
@@ -111,7 +111,7 @@ define [
   VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
 
   VisualOps.prototype.discardAwsCache = ()->
-    App.model.clearImportOps()
+    # App.model.clearImportOps()
     CloudResources.invalidate()
 
   # Creates a stack from the "json" and open it.
@@ -151,9 +151,9 @@ define [
     editor
 
   # This is a convenient method to create a stack and then open an editor for it.
-  VisualOps.prototype.createOps = ( region )->
+  VisualOps.prototype.createOps = ( region, cloudType, provider )->
     if not region then return
-    editor = new OpsEditor( @model.createStack(region) )
+    editor = new OpsEditor( @model.createStack(region, cloudType, provider) )
     editor.activate()
     editor
 

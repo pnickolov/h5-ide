@@ -42,6 +42,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     # A short version
     RESTYPE =
+        # AWS RESOURCE
         AZ           : "AWS.EC2.AvailabilityZone"
         INSTANCE     : "AWS.EC2.Instance"
         KP           : "AWS.EC2.KeyPair"
@@ -82,8 +83,30 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         DBOG         : 'AWS.RDS.OptionGroup'
         DBENGINE     : 'AWS.RDS.DBEngineVersion'
 
+        # Openstack Resource
+        OSSERVER   : "OS::Nova::Server"
+        OSNETWORK  : "OS::Neutron::Network"
+        OSSUBNET   : "OS::Neutron::Subnet"
+        OSPORT     : "OS::Neutron::Port"
+        OSSG       : "OS::Neutron::SecurityGroup"
+        OSSGRULE   : "OS::Neutron::SecurityGroupRule"
+        OSRT       : "OS::Neutron::Router"
+        OSFIP      : "OS::Neutron::FloatingIP"
+        OSELB      : "OS::Elb"  # Custom type, there's no such type in openstack
+        OSLISTENER : "OS::Neutron::VIP"
+        OSPOOL     : "OS::Neutron::Pool"
+        OSHM       : "OS::Neutron::HealthMonitor"
+        OSVOL      : "OS::Cinder::Volume"
+        OSFLAVOR   : "OS::Nova::Flavor"
+        OSKP       : "OS::Nova::KeyPair"
+        OSIMAGE    : "OS::Image"
+        OSSNAP     : "OS::Snapshot"
+        OSNQ       : "OS::Neutron::Quota"
+        OSCQ       : "OS::Cinder::Quota"
+
 
     RESNAME =
+
         AZ           : "Availability Zone"
         INSTANCE     : "Instance"
         KP           : "Key Pair"
@@ -112,6 +135,24 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         CW           : 'Cloud Watch'
         SUBSCRIPTION : 'Subscription'
         TOPIC        : 'Topic'
+
+        OSSERVER     : "Server"
+        OSNETWORK    : "Network"
+        OSSUBNET     : "Subnet"
+        OSPORT       : "Port"
+        OSSG         : "Security Group"
+        OSSGRULE     : "Security Group Rule"
+        OSRT         : "Router"
+        OSFIP        : "Floating IP"
+        OSELB        : "Load Balancer"
+        OSLISTENER   : "Listener"
+        OSPOOL       : "Pool"
+        OSHM         : "Health Monitor"
+        OSVOL        : "Volume"
+        OSFLAVOR     : "Flavor"
+        OSKP         : "Key Pair"
+        OSIMAGE      : "Image"
+        OSSNAP       : "Snapshot"
 
 
     #private
@@ -229,33 +270,54 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     #private
-    #REGION_KEYS = [ 'us-east-1', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'sa-east-1' ]
-    REGION_KEYS = [ 'cn-north-1' ]
+    REGION_KEYS = [
+        'cn-north-1'
+        ###
+        # aws
+        'us-east-1'
+        'us-west-1'
+        'us-west-2'
+        'eu-west-1'
+        'ap-southeast-1'
+        'ap-southeast-2'
+        'ap-northeast-1'
+        'sa-east-1'
+        # openstack - awcloud
+        'guangzhou'
+        'beijing'
+        ###
+    ]
 
     #private
     REGION_LABEL =
         'cn-north-1'     : lang.IDE[ 'IDE_LBL_REGION_NAME_cn-north-1' ]
-        # 'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
-        # 'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
-        # 'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
-        # 'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
-        # 'eu-central-1'   : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-central-1' ]
-        # 'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
-        # 'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
-        # 'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
-        # 'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
+        # aws
+        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
+        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
+        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
+        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
+        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
+        # openstack - awcloud
+        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_guangzhou']
+        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_beijing']
 
     REGION_SHORT_LABEL =
         'cn-north-1'     : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_cn-north-1']
-        # 'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
-        # 'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
-        # 'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
-        # 'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
-        # 'eu-central-1'   : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-central-1' ]
-        # 'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
-        # 'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
-        # 'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
-        # 'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+        # aws
+        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+        # openstack - awcloud
+        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_guangzhou']
+        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_beijing']
 
     #private
     RETURN_CODE =
@@ -367,6 +429,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
             Address          : true
             Port             : true
 
+
     #public
     AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
     INSTANCE_STATES         : INSTANCE_STATES
@@ -396,4 +459,3 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_ENGINTYPE            : DB_ENGINTYPE
     DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
-

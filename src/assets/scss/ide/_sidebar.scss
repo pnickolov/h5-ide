@@ -16,6 +16,10 @@ $dndDuration : .2s;
   color         : #d0d0d0;
   background    : #000;
 
+  &.open {
+      display: block;
+  }
+
   > li {
     border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
     padding          : 15px 5px;
@@ -114,7 +118,7 @@ $dndDuration : .2s;
   float: left;
 }
 
-.resource-list-ami {
+.resourcetem-list-ami {
   position : relative;
 
   .blank-slate {
@@ -273,9 +277,9 @@ $dndDuration : .2s;
 
 #DndItem {
   position         : absolute;
-  background-color : rgba(255,255,255,0.3);
+  background-color : rgba(#D8DAEB,0.2);
   z-index          : 100;
-  border-radius    : 4px;
+  border-radius    : 16px;
   color            : transparent;
 
   cursor: -webkit-grabbing;
@@ -284,7 +288,8 @@ $dndDuration : .2s;
 
   margin  : 0;
   padding : 0;
-  height  : 70px;
+  height  : 80px;
+  width   : 80px;
 
   background-position : center;
 
@@ -295,6 +300,44 @@ $dndDuration : .2s;
   -webkit-transition-property : line-height, padding-left, width, height, color;
      -moz-transition-property : line-height, padding-left, width, height, color;
           transition-property : line-height, padding-left, width, height, color;
+
+  -webkit-background-size : 80px;
+     -moz-background-size : 80px;
+          background-size : 80px;
+
+  &.oslistener { background-image: image-url("ide/icon-os/res-dg-listener.png"); }
+  &.ospool     { background-image: image-url("ide/icon-os/res-dg-pool.png"); }
+  &.osrt       { background-image: image-url("ide/icon-os/res-dg-rt.png"); }
+  &.osport     { background-image: image-url("ide/icon-os/res-dg-port.png"); }
+  &.osserver   {
+    background-image: image-url("ide/icon-os/res-dg-server.png");
+    > img {
+      width    : 30px;
+      height   : 30px;
+      position : relative;
+      top      : 10px;
+    }
+  }
+  &.osvol      { background-image: image-url('ide/icon-os/res-dg-volume.png'); }
+  &.ossnapshot { background-image: image-url('ide/icon-os/res-dg-snapshot.png'); }
+
+  &.oselb {
+    width : 170px;
+    background-image: image-url("ide/icon-os/res-dg-listener.png");
+    background-position: left top;
+    &:after {
+      position : absolute;
+      right    : 0;
+      top      : 0;
+      content  : " ";
+      background : image-url("ide/icon-os/res-dg-pool.png");
+      width : 80px;
+      height : 80px;
+      -webkit-background-size : 80px;
+         -moz-background-size : 80px;
+              background-size : 80px;
+    }
+  }
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
   &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
@@ -312,10 +355,9 @@ $dndDuration : .2s;
     display : none;
   }
 
-  &.az, &.asg,  &.subnet, &.subnetgroup {
+  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet {
     background-image : none;
     color        : #eee;
-    position     : relative;
     line-height  : 1em;
     margin-top   : 0;
     width        : 70px;
@@ -356,6 +398,11 @@ $dndDuration : .2s;
         height : 166px;
       }
     }
+  }
+
+  &.ossubnet {
+    &:before { border-color: #A3A6CA; }
+    &.dragOver { color : #595974; }
   }
 
   &.az {

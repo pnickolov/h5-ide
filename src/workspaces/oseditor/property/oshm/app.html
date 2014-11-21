@@ -1,0 +1,16 @@
+<h1 class="title">{{name}}</h1>
+<section class="group">
+    <dl class="dl-vertical">
+        <dt>Name</dt><dd>{{name}}</dd>
+        <dt>ID</dt><dd>{{id}}</dd>
+        <dt>Type</dt><dd>{{type}}</dd>
+        <dt>Delay</dt><dd>{{delay}}</dd>
+        <dt>Timeout</dt><dd>{{timeout}}</dd>
+        <dt>Max Retries</dt><dd>{{max_retries}}</dd>
+    {{#if url_path}}
+        <dt>URL Path</dt><dd>{{url_path}}</dd>
+    {{/if}}
+    {{#if expected_codes}}
+        <dt>Expected Codes</dt><dd>{{expected_codes}}</dd></dl>
+    {{/if}}
+</section>

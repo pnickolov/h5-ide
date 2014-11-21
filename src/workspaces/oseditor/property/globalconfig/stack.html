@@ -1,0 +1,17 @@
+<section class="group required">
+    <label class="name">{{#if modeIsAppEdit}}App{{else}}Stack{{/if}} Name</label>
+    <input data-target="name" class="selection string" value="{{name}}"/>
+</section>
+
+<section class="group">
+    <label class="name">{{#if modeIsAppEdit}}App{{else}}Stack{{/if}} Description</label>
+    <input data-target="description" class="selection string" value="{{description}}"/>
+</section>
+
+<section class="group">
+    <dl class="dl-horizontal">
+        <dt>Platform</dt><dd>{{platform}}</dd>
+        <dt>Region</dt><dd>{{region}}</dd>
+        <dt>{{#if modeIsAppEdit}}App{{else}}Stack{{/if}} ID</dt><dd>{{id}}</dd>
+    </dl>
+</section>

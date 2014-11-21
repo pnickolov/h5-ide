@@ -16,7 +16,6 @@ define(["jquery"], function(){
 		if (event.type === 'mouseleave')
 		{
 			bubble.clear();
-
 			return false;
 		}
 

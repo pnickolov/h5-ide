@@ -1,0 +1,76 @@
+/* Light Purple */
+$light-p: #4D4E8C;
+
+
+/* Base Purple */
+$base-p: #363B76;
+$base-p-l: saturate(lighten($base-p,30%),15%);
+
+$light-p-1: desaturate(lighten($base-p, 20%), 20%);
+$light-p-2: desaturate(lighten($base-p, 10%), 10%);
+
+$dark-p-1: desaturate(darken($base-p, 10%), 10%);
+$dark-p-2: desaturate(darken($base-p, 20%), 20%);
+
+
+/* Dark Purple */
+$dark-p: #25254C;
+
+/* Background Purple */
+$bg-p: #202027;
+
+/* Base Blue */
+$base-b: #4A90E2;
+
+// $base-b-1: desaturate(lighten($base-b, 20%), 20%);
+// $base-b-2: desaturate(lighten($base-b, 10%), 10%);
+
+// $base-b-4: desaturate(darken($base-b, 10%), 10%);
+// $base-b-5: desaturate(darken($base-b, 20%), 20%);
+
+
+/* Light Blue: */
+$light-b: desaturate(lighten($base-b, 10%), 10%);
+
+
+/* Dark Blue: */
+$dark-b: #3970AF;
+
+
+/* Base Green: */
+$base-g: #11C568;
+$dark-g: saturate(darken($base-g,10%),10%);
+
+@mixin bgg-g {
+	background-color: #17c249;
+	background-image: -webkit-linear-gradient(bottom, #17a03a, #17c249);
+	background-image: -moz-linear-gradient(bottom, #17a03a, #17c249);
+	background-image: -o-linear-gradient(bottom, #17a03a, #17c249);
+	background-image: -ms-linear-gradient(bottom, #17a03a, #17c249);
+	background-image: linear-gradient(to top, #17a03a, #17c249);
+}
+
+/* Orange */
+$orange: #ff9c00;
+
+/* Yellow */
+$yellow: #FFBB0D;
+
+@mixin bgg-y {
+	background-color: #ffa740;
+	background-image: -webkit-linear-gradient(bottom, #ff8330, #ffa740);
+	background-image: -moz-linear-gradient(bottom, #ff8330, #ffa740);
+	background-image: -o-linear-gradient(bottom, #ff8330, #ffa740);
+	background-image: -ms-linear-gradient(bottom, #ff8330, #ffa740);
+	background-image: linear-gradient(to top, #ff8330, #ffa740);
+}
+
+
+/* Red */
+$base-r: #A42B2B;
+$light-r: desaturate(lighten($base-r, 10%), 10%);
+$dark-r: saturate(darken($base-r, 20%), 20%);
+
+/* Grey */
+$base-grey: desaturate(lighten($base-p, 60%), 30%);
+$dark-grey: desaturate(lighten($base-p, 30%), 10%);

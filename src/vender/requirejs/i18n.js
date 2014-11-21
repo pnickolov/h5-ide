@@ -6,6 +6,11 @@
 /*jslint regexp: true */
 /*global require: false, navigator: false, define: false */
 
+
+/**
+ Modified version of i18n, /nls/lang.js will no longer be deps of i18n
+**/
+
 /**
  * This plugin handles i18n! prefixed modules. It does the following:
  *
@@ -134,7 +139,7 @@
                 if (config.isBuild) {
                     //Check for existence of all locale possible files and
                     //require them if exist.
-                    toLoad.push(masterName);
+                    /////// toLoad.push(masterName);
                     addIfExists(req, "root", toLoad, prefix, suffix);
                     for (i = 0; i < parts.length; i++) {
                         part = parts[i];

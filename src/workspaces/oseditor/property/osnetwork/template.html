@@ -1,0 +1,11 @@
+{{#unless modeIsApp}}
+{{#if modeIsAppEdit}}
+<dl class="dl-vertical"><dt>ID</dt><dd>{{app.id}}</dd></dl>
+{{/if}}
+<section class="group required">
+    <label class="name">Name</label>
+    <input data-target="name" class="selection string" value="{{name}}"/>
+</section>
+{{else}}
+<dl class="dl-vertical"><dt>Name</dt><dd>{{name}}</dd><dt>ID</dt><dd>{{id}}</dd></dl>
+{{/unless}}

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 .canvas-view {
   position   : relative;
-  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
+  font-size  : 0; /* A hack to make sure #canvas_body.scrollHeight is correct. */
   background : #fff image-url('ide/grid_x1.png');
 
   &[data-scale="1.2"] { background-image : image-url('ide/grid_x1.2.png'); }
@@ -43,6 +43,42 @@
     }
     .dbreplicate { display:none; }
     .dbrestore { display:none; }
+
+    .cvs-hover {
+      cursor : default;
+      > .hover  { display : none; }
+      > .normal { display : block; }
+    }
+
+    .fip-status { pointer-events:none; }
+  }
+
+  .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
+    > .node-background {
+      fill-opacity: .6;
+      fill : #D8DAEB;
+      stroke: $base-b;
+      stroke-width: 2;
+    }
+  }
+  .canvasel.selected {
+    > .node-label-name-bg {
+      fill:#659FFF;
+      ~ .node-label {
+        fill:#fff;
+      }
+    }
+  }
+
+  &[data-mode="stack"], &[data-mode="appedit"] {
+    .port:hover, .port.connectable {
+      .port-fill {
+        fill:#F2F8FF;
+      }
+      .port-border {
+        stroke-width:4;
+      }
+    }
   }
 }
 
@@ -94,8 +130,14 @@
   fill: none;
 }
 
-.group, .node-background {
-  fill:transparent;
+.group {
+  fill: transparent;
+}
+
+ .node-background {
+  fill-opacity : 0.2;
+  fill         : #D8DAEB;
+  @include transit($method:fill-opacity, $dur:.3s);
 }
 
 .group-resizer {
@@ -115,18 +157,20 @@
 }
 
 .canvasel:hover > .node-background {
-  fill-opacity: 0.5;
-  fill: #F2F8FF;
+  fill-opacity: .6;
+  fill: #D8DAEB;
 }
 
 .canvas-view {
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {
     > .node-background {
-      fill-opacity : .5;
-      fill         : rgba(242, 248, 255, 1) !important;
-      stroke-width : 1 !important;
-      stroke       : #659FFF !important;
+      fill-opacity: .6;
+      fill : #D8DAEB;
+      // stroke: $light-p-2;
+      // #B4B8DF
+      stroke: $base-b;
+      stroke-width: 1;
     }
   }
   .canvasel.selected {
@@ -156,6 +200,14 @@
   cursor: pointer;
 }
 
+.cvs-hover {
+  cursor: pointer;
+  > .hover  { display : none; }
+
+  &:hover > .normal { display : none; }
+  &:hover > .hover  { display : block; }
+}
+
 .dbreplcate {
   cursor: pointer;
   cursor: -moz-grab;
@@ -165,7 +217,8 @@
 
 /* port style */
 .port {
-  stroke-width:0;
+  stroke-width : 0;
+  cursor       : pointer;
 }
 .port-blue {
   fill: #6DAEFE;
@@ -187,12 +240,21 @@
   stroke: #bebebe;
 }
 
-.canvas-view[data-mode="stack"], .canvas-view[data-mode="appedit"] {
-  .port:hover, .port.connectable {
-    fill: #F2F8FF;
-    stroke-width: 2;
-    cursor  : pointer;
-  }
+.port-fill {
+  stroke-width:8;
+  stroke-opacity:0.01;
+  -webkit-transition: fill .3s ease-in-out;
+     -moz-transition: fill .3s ease-in-out;
+       -o-transition: fill .3s ease-in-out;
+          transition: fill .3s ease-in-out;
+}
+
+.port-border {
+  stroke-width:0;
+  -webkit-transition: stroke-width .3s ease-in-out;
+     -moz-transition: stroke-width .3s ease-in-out;
+       -o-transition: stroke-width .3s ease-in-out;
+          transition: stroke-width .3s ease-in-out;
 }
 
 .AWS-VPC-VPC {
@@ -734,19 +796,111 @@ g.shadow { opacity : 0.8; pointer-events: none; }
 .res-state {
   opacity : 0.8;
 
-  &.unknown
+  &.unknown,&.SHUTOFF
   { fill: #a0a0a0; background: #a0a0a0; }
   // green
-  &.running, &.ok, &.attached, &.available
+  &.running, &.ok, &.attached, &.available,&.ACTIVE
   { fill: #17c249; background: #17c249; }
   // yellow
   &.shuttingdown, &.stopping, &.pending, &.insufficient-data, &.attaching, &.detaching,
   &.backing-up, &.creating, &.deleting, &.incompatible-restore, &.incompatible-parameters,
-  &.modifying, &.rebooting, &.resetting-master-credentials
+  &.modifying, &.rebooting, &.resetting-master-credentials,&.BUILD
   { fill: #ffa740; background: #ffa740; }
   // red
-  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full
+  &.stopped, &.terminated, &.impaired, &.detached, &.deleted, &.failed, &.storage-full,&.ERROR
   { fill: #ec3c38; background: #ec3c38; }
 
 }
 
+
+// OpenStack
+.OS--Neutron--Network {
+  .group {
+    stroke: #dcdcdc;
+    stroke-linejoin: round;
+    stroke-dasharray: none;
+    stroke-width: 4;
+  }
+
+  &:hover .group { stroke: #C6C4C4; }
+
+  .group-label {
+    fill:#aaa;
+  }
+
+  .canvas-view &.selected .group {
+    stroke: #C6C4C4;
+    fill: rgba(255, 255, 255, 0);
+    stroke-width: 5;
+  }
+}
+
+.OS--Neutron--Subnet {
+  .group {
+    fill: rgba(195, 198, 231, 0.1);
+    stroke: #C3C6E7;
+    stroke-linejoin: round;
+    stroke-dasharray: 16, 6;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    .group { stroke: #A3A6CA; }
+  }
+
+  &.selected {
+    .group { stroke: #A3A6CA; stroke-width: 3;}
+  }
+
+  .group-label {
+    fill: #595974;
+  }
+}
+
+.draw-line {
+  &.route { stroke:#d8d7d6; }
+  &.pool  { stroke:#6DAEFE; }
+  &.server, &.elb { stroke:#12CD4F; }
+}
+marker {
+  &.route { fill:#d8d7d6; }
+  &.pool  { fill:#6DAEFE; }
+  &.server, &.elb { fill:#12CD4F; }
+}
+
+.OsListenerAsso, .OsPortUsage {
+  stroke:#12CD4F;
+}
+.OsPoolMembership {
+  stroke:#6daefe;
+}
+.OsRouterAsso {
+  stroke:#d8d7d6;
+}
+
+#hlArea {
+  fill-opacity:0.5;
+}
+
+.canvas-message {
+  position      : absolute;
+  left          : 50%;
+  top           : 8px;
+  background    : rgba(0,0,0,.8);
+  padding       : 5px 8px;
+  border-radius : 4px;
+  color         : #eee;
+  max-width     : 400px;
+  font-size     : 16px;
+
+  -webkit-transform : translateX(-50%);
+     -moz-transform : translateX(-50%);
+       -o-transform : translateX(-50%);
+          transform : translateX(-50%);
+
+  &:empty { display : none; }
+
+  &:before, &:after { content : ""; }
+
+  &[data-type="bottom"] { top : auto; bottom : 8px; }
+}

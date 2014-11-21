@@ -1,0 +1,5 @@
+@mixin transit($method:all, $dur:.2s) {
+	-webkit-transition: $method $dur ease-in-out;
+	-o-transition: $method $dur ease-in-out;
+	transition: $method $dur ease-in-out;
+}

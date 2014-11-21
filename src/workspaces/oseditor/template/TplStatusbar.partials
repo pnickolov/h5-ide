@@ -1,0 +1,13 @@
+<!-- {{frame}} -->
+<ul class="status-bar"></ul>
+<div class="status-bar-modal" style="display: none;"></div>
+
+<!-- {{lastSaved}} -->
+Last saved: <span class="stack-save-time">-<span>
+
+<!-- {{state}} -->
+<span class="state-success"><i class="status status-green icon-label"></i><b>{{successCount}}</b></span>
+<span class="state-failed"><i class="status status-red icon-label"></i><b>{{failCount}}</b></span>
+
+<!-- {{ta}} -->
+Validate

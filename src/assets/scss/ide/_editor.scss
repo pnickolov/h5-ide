@@ -1,8 +1,7 @@
 @import "compass";
-@import "color";
 
 $LeftPanelWidth       : 246px;
-$RightPanelWidth      : 280px;
+$RightPanelWidth      : 288px;
 $RightStatePanelWidth : 654px;
 $TopPanelHeight       : 40px;
 $BottomPanelHeight    : 24px;
@@ -26,14 +25,15 @@ $BottomPanelHeight    : 24px;
 // Sidebar and Layout
 .OEPanelLeft, .OEPanelRight {
   position   : absolute;
-  height     : 100%;
   z-index    : 3;
   background : $bg-p;
+  top        : 0;
+  bottom     : 0;
 }
 
 .OEPanelLeft {
-  width      : $LeftPanelWidth;
-  left       : 0;
+  width : $LeftPanelWidth;
+  left  : 0;
 
   @include slide(left);
 
@@ -78,6 +78,7 @@ $BottomPanelHeight    : 24px;
   &::selection {
     background: transparent;
   }
+
 }
 
 .OEMiddleWrap {
@@ -101,7 +102,10 @@ $BottomPanelHeight    : 24px;
   min-width  : 610px;
   background : lighten($bg-p, 5%);
 
-  ~ .OEPanelCenter {
+  position: absolute;
+  z-index: 3;
+
+  + .OEPanelRight {
     top : $TopPanelHeight;
   }
 }
@@ -160,7 +164,6 @@ $BottomPanelHeight    : 24px;
   font-size   : 16px;
   line-height : 39px;
   color       : #b0b0b0;
-  text-shadow : 0 1px #333;
 
   background-color : lighten($bg-p, 5%);
   border-bottom    : 1px solid darken($bg-p, 5%);

@@ -1,0 +1,4 @@
+<!-- {{title}} -->
+<h1 class="title">{{title}}</h1>
+<!-- {{empty}} -->
+<div class="os-property-res-inexist">Select a resource on canvas to view property</div>

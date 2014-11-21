@@ -10,6 +10,45 @@
 
 define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"], ( ApiRequest, constant, CloudResources, ThumbUtil )->
 
+  KnownOpsModelClass = {}
+
+  __detailExtend = Backbone.Model.extend
+
+  ### env:dev ###
+  __detailExtend = ( protoProps, staticProps )->
+    ### jshint -W061 ###
+
+    parent = this
+
+    funcName = protoProps.type
+    childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
+
+    if protoProps and protoProps.hasOwnProperty "constructor"
+      cstr = protoProps.constructor
+    else
+      cstr = ()-> return parent.apply( this, arguments )
+
+    child = childSpawner( cstr )
+
+    _.extend(child, parent, staticProps)
+
+    funcName = "PROTO_" + funcName
+    prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
+
+    Surrogate = prototypeSpawner( child )
+    Surrogate.prototype = parent.prototype
+    child.prototype = new Surrogate()
+
+    if protoProps
+      _.extend(child.prototype, protoProps)
+
+    child.__super__ = parent.prototype
+    ### jshint +W061 ###
+
+    child
+  ### env:dev:end ###
+
+
   OpsModelState =
     UnRun        : 0
     Running      : 1
@@ -28,6 +67,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   OpsModel = Backbone.Model.extend {
 
+    type : "GenericOps"
+
     defaults : ()->
       updateTime : +(new Date())
       region     : ""
@@ -35,14 +76,35 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
       version    : OpsModelLastestVersion
+      cloudType  : ""
+      provider   : ""
 
       # usage          : ""
       # terminateFail  : false
       # progress       : 0
       # opsActionError : ""
-      # importVpcId    : ""
+      # importMsrId    : ""
       # requestId      : ""
       # sampleId       : ""
+
+    constructor : ( attr, opts )->
+      attr = attr || {}
+      opts = opts || {}
+      if this.type is "GenericOps"
+        # Finds out the concrete opsmodel
+        if opts.jsonData
+          cloudType = opts.jsonData.cloud_type
+
+        cloudType = cloudType || attr.cloudType || "aws"
+        type = cloudType.replace(/[a-z]/, (w)->w.toUpperCase()) + "Ops"
+
+        console.assert( KnownOpsModelClass[type], "Cannot find specific OpsModel for cloudType: " + cloudType )
+
+        Model = KnownOpsModelClass[ type ]
+        return new Model( attr, opts )
+
+      Backbone.Model.apply this, arguments
+      return
 
     initialize : ( attr, options )->
       if options
@@ -67,7 +129,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
-    isImported : ()-> !!@attributes.importVpcId
+    isImported : ()-> !!@attributes.importMsrId
 
     # Payment restricted
     isPMRestricted : ()-> @get("version") >= "2014-11-11" and @isApp()
@@ -98,14 +160,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       !!(@get("id") && state isnt OpsModelState.Destroyed)
 
-    getVpcId : ()->
-      if @get("importVpcId") then return @get("importVpcId")
-      if not @__jsonData then return undefined
-      for uid, comp of @__jsonData.component
-        if comp.type is constant.RESTYPE.VPC
-          return comp.resource.VpcId
-
-      undefined
+    # Get the Most Significant Resource id.
+    getMsrId : ()-> @get("importMsrId") || undefined
 
     getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
     saveThumbnail : ( thumb )->
@@ -151,9 +207,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getVpcId() ).init( @get("region") ).fetchForceDedup().then ()-> self.__onFjdImported()
+      CloudResources( "OpsResource", @getMsrId() ).init( @get("region"), @get("provider") ).fetchForceDedup().then ()-> self.__onFjdImported()
 
-    generateJsonFromRes : ()-> CloudResources( 'OpsResource', @getVpcId() ).generatedJson
+    generateJsonFromRes : ()->
+      json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+      if not json.agent.module.repo
+        json.agent.module =
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
+      json
 
     __onFjdImported : ()->
       json = @generateJsonFromRes()
@@ -314,6 +376,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           state         : OpsModelState.Initializing
           progress      : 0
           region        : region
+          cloudType     : toRunJson.cloud_type
+          provider      : toRunJson.provider
           usage         : toRunJson.usage
           version       : toRunJson.version
           updateTime    : +(new Date())
@@ -331,6 +395,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       attr       = $.extend true, {}, @attributes, {
         name       : name
         updateTime : +(new Date())
+        cloudType  : @get("cloudType")
+        provider   : @get("provider")
       }
       collection = @collection
 
@@ -372,20 +438,22 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw err
 
     # Terminate the app, returns a promise
-    terminate : ( force = false , create_db_snapshot = false)->
+    terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()
       oldState = @get("state")
       @set("state", OpsModelState.Terminating)
       @attributes.progress = 0
       @attributes.terminateFail = false
       self = @
-      ApiRequest("app_terminate", {
-        region_name : @get("region")
-        app_id      : @get("id")
-        app_name    : @get("name")
-        flag        : force
-        create_snapshot: create_db_snapshot
-      }).then ()->
+
+      options = $.extend {
+        region_name     : @get("region")
+        app_id          : @get("id")
+        app_name        : @get("name")
+        flag            : force
+      }, ( extraOption || {} )
+
+      ApiRequest("app_terminate", options).then ()->
         # Force Termination will immediately returns sucess / failure.
         # Normal Termination will returns its status by Websockt.
         if force then self.__destroy()
@@ -434,7 +502,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__jsonData = null
         self.fetchJsonData().then ()->
           self.__updateAppDefer = null
-          self.importVpcId = undefined # Mark as not imported once we've finish saving.
+          self.importMsrId = undefined # Mark as not imported once we've finish saving.
           self.set {
             name  : newJson.name
             state : OpsModelState.Running
@@ -476,7 +544,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("app_save_info", {spec:newJson}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
-        self.attributes.importVpcId = undefined
+        self.attributes.importMsrId = undefined
         return
       , ( error )->
         self.__saveAppDefer.reject( error )
@@ -605,8 +673,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ThumbUtil.remove( @get("id") )
 
       # Cleanup CloudResources if we are an app
-      if @getVpcId()
-        CloudResources( "OpsResource", @getVpcId() )?.destroy()
+      msrId = @getMsrId()
+      if msrId
+        CloudResources( "OpsResource", msrId )?.destroy()
 
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
@@ -628,8 +697,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       version     : @get("version")
       resource_diff: true
       component   : {}
+      cloud_type  : @get("cloudType")
+      provider    : @get("provider")
       layout      : { size : [240, 240] }
-      agent :
+      agent       :
         enabled : true
         module  :
           repo : App.user.get("repo")
@@ -637,139 +708,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       property :
         stoppable : true
 
-    __initJsonData : ()->
-      json   = @__createRawJson()
-      vpcId  = MC.guid()
-      vpcRef = "@{#{vpcId}.resource.VpcId}"
-
-      layout =
-        VPC :
-          coordinate : [5,3]
-          size       : [60,60]
-        RTB :
-          coordinate : [50,5]
-          groupUId   : vpcId
-
-      component =
-        KP :
-          type : "AWS.EC2.KeyPair"
-          name : "DefaultKP"
-          resource : {
-            KeyName : "DefaultKP"
-            KeyFingerprint : ""
-          }
-        SG :
-          type : "AWS.EC2.SecurityGroup"
-          name : "DefaultSG"
-          resource :
-            IpPermissions: [{
-              IpProtocol : "tcp",
-              IpRanges   : "0.0.0.0/0",
-              FromPort   : "22",
-              ToPort     : "22",
-            }],
-            IpPermissionsEgress : [{
-              FromPort: "0",
-              IpProtocol: "-1",
-              IpRanges: "0.0.0.0/0",
-              ToPort: "65535"
-            }],
-            Default          : true
-            GroupId          : ""
-            GroupName        : "DefaultSG"
-            GroupDescription : 'default VPC security group'
-            VpcId            : vpcRef
-        ACL :
-          type : "AWS.VPC.NetworkAcl"
-          name : "DefaultACL"
-          resource :
-            AssociationSet : []
-            Default        : true
-            NetworkAclId   : ""
-            VpcId          : vpcRef
-            EntrySet : [
-              {
-                RuleAction : "allow"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : true
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 100
-              }
-              {
-                RuleAction : "allow"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : false
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 100
-              }
-              {
-                RuleAction : "deny"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : true
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 32767
-              }
-              {
-                RuleAction : "deny"
-                Protocol   : -1
-                CidrBlock  : "0.0.0.0/0"
-                Egress     : false
-                IcmpTypeCode : { Type : "", Code : "" }
-                PortRange    : { To   : "", From : "" }
-                RuleNumber   : 32767
-              }
-            ]
-        VPC :
-          type : "AWS.VPC.VPC"
-          name : "vpc"
-          resource :
-            VpcId              : ""
-            CidrBlock          : "10.0.0.0/16"
-            DhcpOptionsId      : ""
-            EnableDnsHostnames : false
-            EnableDnsSupport   : true
-            InstanceTenancy    : "default"
-        RTB :
-          type : "AWS.VPC.RouteTable"
-          name : "RT-0"
-          resource :
-            VpcId : vpcRef
-            RouteTableId: ""
-            AssociationSet : [{
-              Main:"true"
-              SubnetId : ""
-              RouteTableAssociationId : ""
-            }]
-            PropagatingVgwSet:[]
-            RouteSet : [{
-              InstanceId           : ""
-              NetworkInterfaceId   : ""
-              Origin               : 'CreateRouteTable'
-              GatewayId            : 'local'
-              DestinationCidrBlock : '10.0.0.0/16'
-            }]
-
-      # Generate new GUID for each component
-      for id, comp of component
-        if id is "VPC"
-          comp.uid = vpcId
-        else
-          comp.uid = MC.guid()
-        json.component[ comp.uid ] = comp
-        if layout[ id ]
-          l = layout[id]
-          l.uid = comp.uid
-          json.layout[ comp.uid ] = l
-
-      @__jsonData = json
-      return
-    }
+    __initJsonData : ()-> @__jsonData = @__createRawJson(); return
+  }, {
+    extend : ( protoProps, staticProps ) ->
+      # Create subclass
+      subClass = __detailExtend.call( this, protoProps, staticProps )
+      KnownOpsModelClass[ protoProps.type ] = subClass
+      subClass
+  }
 
   OpsModel.State = OpsModelState
   OpsModel.LatestVersion = OpsModelLastestVersion

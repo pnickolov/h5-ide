@@ -1,28 +1,5 @@
 @charset "UTF-8";
-@import "color";
-
-@font-face {
-	font-family: 'Lato';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/Lato-regular.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Lato';
-	font-style: normal;
-	font-weight: 700;
-	src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.woff') format('woff');
-}
-
-.font-mono {
-	font-family: "Monaco","Consolas", monospace;
-	/*font-family: "Lucida Console", "Monaco", monospace;*/
-}
-
-.font-normal {
-	font-family  : 'Lato', 'Helvetica Neue', Arial, sans-serif;
-}
+@import "utility";
 
 
 /* CSS reset */
@@ -64,7 +41,7 @@ textarea {
 	margin: 0;
 	font-size: 100%;
 	vertical-align: middle;
-	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	@include font-major;
 }
 
 button,
@@ -230,8 +207,6 @@ abbr {
 
 body {
 	margin: 0;
-	font-size: 14px;
-	font-family: Arial, sans-serif;
 }
 
 /* Hack custom fonts loading */
@@ -1068,7 +1043,6 @@ td.table-action a.btn {
 	display : inline-block;
 	width   : 30px;
 	height  : 30px;
-	line-height : 30px;
 	text-align  : center;
 	position    : absolute;
 	right       : 0;
@@ -3774,7 +3748,6 @@ div.modal-text-highlight{
 }
 
 .OEPanelRight .state-empty {
-	background: #313131;
 	height: 100%;
 	text-align: center;
 	padding-top: 30%;
@@ -3783,7 +3756,7 @@ div.modal-text-highlight{
 #state-editor-model {
 	border-left: 1px solid #999;
 	position: absolute;
-	top: 41px;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -4088,10 +4061,12 @@ div.modal-text-highlight{
 .manager-content-sub{
     color: #999999;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .manager-content-main{
     color: #dadada;
-    line-height: 1;
 }
 .modal-toolbar .slidebox .combo-dd.selectbox .combo-dd-filter{
     width: 232px;
@@ -4240,3 +4215,7 @@ div.modal-text-highlight{
 @import "ide/stateeditor";
 @import "ide/individual_modals";
 @import "ide/payment";
+@import "os/panel";
+@import "os/toolbar";
+@import "os/component";
+@import "os/dashboard";

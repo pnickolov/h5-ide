@@ -144,26 +144,16 @@ module.exports =
       zh: "您必须下载密钥对。"
 
     XXX_IS_DELETED:
-<<<<<<< HEAD:src/nls/lang-source/notify.coffee
       en: "%s is deleted successfully."
       zh: "%s 删除成功。"
-=======
-      en: "Keypair %s is deleted successfully"
-      zh: ""
->>>>>>> feature/openstack:src/nls/notify.coffee
 
     SELECTED_KEYPAIRS_ARE_DELETED:
       en: "Selected %s key pairs are deleted."
       zh: "选中的密钥对 %s 删除成功。"
 
     XXX_IS_IMPORTED:
-<<<<<<< HEAD:src/nls/lang-source/notify.coffee
       en: "%s is imported."
       zh: "%s 导入成功。"
-=======
-      en: "Keypair %s is imported successfully"
-      zh: ""
->>>>>>> feature/openstack:src/nls/notify.coffee
 
     PARAMETER_GROUP_UPDATED_FAILED:
       en: "Parameter Group updated failed because of %s"
@@ -312,13 +302,8 @@ module.exports =
       zh: "导出 AWS CloudFormation 模板失败，（错误码：%s）"
 
     RELOAD_STATE_INVALID_REQUEST:
-<<<<<<< HEAD:src/nls/lang-source/notify.coffee
         en: "Sorry, but the request is invalid."
         zh: "非法请求。"
-=======
-      en: "Sorry, but the request is not valid."
-      zh: ""
->>>>>>> feature/openstack:src/nls/notify.coffee
 
     RELOAD_STATE_NETWORKERROR:
       en: "Network error. Please try again later."

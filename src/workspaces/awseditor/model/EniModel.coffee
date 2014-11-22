@@ -168,7 +168,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
         obj = {
           hasEip       : ip.hasEip
           autoAssign   : ip.autoAssign
-          editable     : not ( isServergroup or ip.fixedIpInApp )
+          editable     : not ( isServergroup or (ip.fixedIpInApp and ip.ip isnt "x.x.x.x") )
           prefix       : prefixSuffixAry[0]
         }
 

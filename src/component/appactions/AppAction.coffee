@@ -287,8 +287,8 @@ define [
               hasInstanceStore = false
               amiRes.each (e)->
                 if e.id in toFetchArray and e.get("rootDeviceType") is 'instance-store'
-                  return hasInstanceStore = true
-
+                  hasInstanceStore = true
+                  null
               hasEC2Instance = (_.filter comp, (e)->
                 e.type == constant.RESTYPE.INSTANCE)?.length
 
@@ -416,7 +416,7 @@ define [
       name = app.get("name")
       production = app.get("usage") is 'production'
       forgetConfirm = new modalPlus(
-        title: "Confirm to Forget App"
+        title: lang.IDE.TITLE_CONFIRM_TO_FORGET
         template: AppTpl.loading()
         confirm: {
           text: "Forget"
@@ -460,11 +460,48 @@ define [
 
         forgetConfirm.on "confirm", ()->
           forgetConfirm.close()
-          app.terminate(true).fail ( err )->
+          app.terminate(true, false).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
           return
         return
+
+
+    showPayment: (elem)->
+      showPaymentDefer = Q.defer()
+
+      # check should Show.
+      paymentState = App.user.get("paymentState")
+
+      if not App.user.shouldPay()
+        showPaymentDefer.resolve({})
+      else
+        result = {
+          first_name: App.user.get("firstName")
+          last_name: App.user.get("lastName")
+          url: App.user.get("paymentUrl")
+          card: App.user.get("creditCard")
+        }
+        updateDom = MC.template.paymentUpdate  result
+        if elem
+          $(elem).html updateDom
+          $(elem).trigger 'paymentRendered'
+        else
+          paymentModal = new modalPlus(
+            title: lang.IDE.PAYMENT_INVALID_BILLING
+            template: updateDom
+            disableClose: true
+            confirm:
+              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              disabled: true
+          )
+          paymentModal.find('.modal-footer').hide()
+
+          paymentModal.listenTo App.user, "paymentUpdate", ()->
+            if paymentModal.isClosed then return false
+            if not App.user.shouldPay()
+              showPaymentDefer.resolve({result: result, modal: paymentModal})
+      showPaymentDefer.promise
 
 
   new AppAction()

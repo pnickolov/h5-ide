@@ -676,6 +676,20 @@ module.exports =
       en: 'just now'
       zh: "刚刚"
 
+    MINUTES_AGO:
+      en: " minutes ago"
+      zh: " 分钟以前"
+
+    HOURS_AGO:
+      en: " hours ago"
+      zh: " 小时以前"
+
+    DAYS_AGO:
+      en: " days ago"
+      zh: " 天以前"
+
+
+
     DASH_TPL_SAMPLE_INSTRUCTION:
       en: "This is only sample data of global resource summary."
       zh: "这是全球资源汇总的示例数据。"

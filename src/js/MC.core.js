@@ -10,7 +10,7 @@
 */
 
 /* Define as MC module */
-define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics ) {
+define( "MC", [ "ui/MC.template", "q", "lib/IntercomAnalytics", 'i18n!/nls/lang.js', "lib/handlebarhelpers", "jquery", "sprintf" ], function ( template, Q, Analytics, lang ) {
 
 var tz = (new Date().getTimezoneOffset())/-60;
 if (tz >= 0) { tz = "+" + tz; }
@@ -391,7 +391,7 @@ var MC = {
 		}
 	 	else
 	 	{
-			return days > 0 ? days + ' days ago' : hours > 0 ? hours + ' hours ago' : minute > 0 ? minute + ' minutes ago' : 'just now';
+			return days > 0 ? days + lang.IDE.DAYS_AGO : hours > 0 ? hours + lang.IDE.HOURS_AGO : minute > 0 ? minute + ' minutes ago' : lang.IDE.DASH_TPL_JUST_NOW;
 	 	}
 	},
 

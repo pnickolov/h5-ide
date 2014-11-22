@@ -2489,7 +2489,7 @@ module.exports =
 
     ELB_INSTANCE_PROTOCOL:
       en: "Instance Protocol"
-      zh: "实力协议"
+      zh: "实例协议"
 
     ENI_NETWORK_INTERFACE_DETAIL:
       en: "Network Interface Details"
@@ -2530,6 +2530,10 @@ module.exports =
     INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimized"
       zh: "EBS 优化的"
+
+    INSTANCE_IOPS:
+      en: "IOPS"
+      zh: "IOPS"
 
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
@@ -2790,6 +2794,18 @@ module.exports =
     RDS_RESTORE_DB_TIP:
       en: "You are creating a new DB Instance from a source DB Instance at a specified time. This new DB Instance will have the default DB Security Group and DB Parameter Groups."
       zh: "您正在从一个源数据库实例的指定时间创建新的数据库实例，此新实例将关联默认数据库安全组和数据库参数组"
+
+    RDS_RESTORE_USE_LASTEST_TIME:
+      en: "Use Latest Restorable Time"
+      zh: "使用最近可还原时间"
+
+    RDS_RESTORE_USE_CUSTOM_TIME:
+      en: "Use Custom Restore Time"
+      zh: "使用自定义还原时间"
+
+    RDS_RESTORE:
+      en: "Restore"
+      zh: "还原"
 
     ###
     COMPONENT:

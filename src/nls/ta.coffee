@@ -228,6 +228,10 @@ module.exports =
       en: "<span class='validation-tag tag-instance'>%s</span>'s State <span class='validation-tag tag-state'>%s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
       zh: "<span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s [%s]</span> 必须使用正确格式来引用 State。例如，<span class='validation-tag'>@{host1.state.3}</span>。"
 
+    ERROR_STATE_EDITOR_INEXISTENT_OSSERVER:
+      en: "Server <span class='validation-tag tag-osserver'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
+      zh: ""
+
     # State
     ERROR_NOT_CONNECT_OUT:
       en: "Subnet <span class='validation-tag tag-subnet'>%s</span> must be connected to internet directly or via a NAT instance. "

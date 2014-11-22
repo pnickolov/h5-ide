@@ -232,13 +232,13 @@
         <h5 class="modal-text-major">{{i18n "PROP.RDS_RESTORE_DB_TIP"}}</h5>
 
         <div class="modal-db-instance-restore-option">
-            <label class="title">Use Latest Restorable Time</label>
+            <label class="title">{{i18n "PROP.RDS_RESTORE_USE_LASTEST_TIME"}}</label>
             <input id="modal-db-instance-restore-radio-latest" type="radio" value="latest" name="modal-db-instance-restore-radio" {{#if custom}}checked="checked"{{/if}}>
             <label for="modal-db-instance-restore-radio-latest">{{lastest}}</label>
         </div>
 
         <div class="modal-db-instance-restore-option">
-            <label class="title">Use Custom Restore Time</label>
+            <label class="title">{{i18n "PROP.RDS_RESTORE_USE_CUSTOM_TIME"}}</label>
             <input id="modal-db-instance-restore-radio-custom" type="radio" value="custom" name="modal-db-instance-restore-radio" {{#unless custom}}checked="checked"{{/unless}}>
             <div class="datetimepicker">
                 <input class="input datepicker" type="text" >

@@ -189,7 +189,7 @@ define [ 'ApiRequest'
                         timezone: timezone
                         noRestore: noRestore
                     })
-                    confirm      : {text : "Restore"}
+                    confirm      : {text : lang.PROP.RDS_RESTORE}
                     disableClose : true
                     width        : "580"
                     onConfirm : ()->
@@ -212,6 +212,8 @@ define [ 'ApiRequest'
                 _setDefaultSelectedTime()
 
                 # bind datetime picker event
+                dateLang = 'en'
+                dateLang = 'ch' if language is 'zh-cn'
                 $('.modal-db-instance-restore-config .datepicker').datetimepicker({
                     timepicker: false,
                     defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
@@ -219,7 +221,8 @@ define [ 'ApiRequest'
                     closeOnDateSelect: true,
                     format: 'm/d/Y',
                     formatDate:'m/d/Y',
-                    value: "#{customMonthStr}/#{customDayStr}/#{customYearStr}"
+                    value: "#{customMonthStr}/#{customDayStr}/#{customYearStr}",
+                    lang: dateLang,
                     onSelectDate: () ->
                         selectedDate = _getCurrentSelectedTime()
                         if selectedDate > lastestRestoreTime

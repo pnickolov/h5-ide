@@ -145,12 +145,12 @@ define [ 'component/stateeditor/model',
         __renderEmpty: ( type ) ->
 
             tipSet =
-                disalbed : 'Instance State is disabled.'
-                void     : "Edit Instance State by selecting."
-                group    : 'View states and log by selecting individual instance.'
-                default  : 'No state editor here.'
-                group_in_app : 'View states and log by selecting individual instance.'
-                is_windows : 'Editing state is only available for Linux platform.'
+                disalbed : lang.IDE.STATE_TIP_VP_DISABLED
+                void     : lang.IDE.STATE_TIP_NO_SE
+                group    : lang.IDE.STATE_TIP_GROUP
+                default  : lang.IDE.STATE_TIP_DEFAULT
+                group_in_app : lang.IDE.STATE_TIP_GROUP_IN_APP
+                is_windows : lang.IDE.STATE_TIP_IS_WINDOWS
 
             tip = type and tipSet[ type ] or tipSet.default
 

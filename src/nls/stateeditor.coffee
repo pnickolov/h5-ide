@@ -35,6 +35,30 @@ module.exports =
       en: "Select All States"
       zh: "选择所有 State"
 
+    STATE_TIP_VP_DISABLED:
+      en: "VisualOps is disabled."
+      zh: "VisualOps 已禁用"
+    
+    STATE_TIP_NO_SE:
+      en: "The component does'nt have state editor."
+      zh: "该组件不支持 State 编辑器"
+
+    STATE_TIP_GROUP:
+      en: "View states and log by selecting individual instance."
+      zh: "选择单独的 Instance 查看 State 及其日志"
+    
+    STATE_TIP_DEFAULT:
+      en: "No state editor here."
+      zh: "不支持 State 编辑"
+
+    STATE_TIP_GROUP_IN_APP:
+      en: "View states and log by selecting individual instance."
+      zh: "选择单独的 Instance 查看 State 及其日志"
+    
+    STATE_TIP_IS_WINDOWS:
+      en: "Editing state is only available for Linux platform."
+      zh: "State 编辑仅限于 Linux 平台"
+
     ## State Editor Special State
 
     STATE_UNKNOWN_DISTRO_LBL:

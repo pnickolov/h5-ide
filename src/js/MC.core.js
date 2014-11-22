@@ -391,7 +391,7 @@ var MC = {
 		}
 	 	else
 	 	{
-			return days > 0 ? days + lang.IDE.DAYS_AGO : hours > 0 ? hours + lang.IDE.HOURS_AGO : minute > 0 ? minute + ' minutes ago' : lang.IDE.DASH_TPL_JUST_NOW;
+			return days > 0 ? days + lang.IDE.DAYS_AGO : hours > 0 ? hours + lang.IDE.HOURS_AGO : minute > 0 ? minute + lang.IDE.MINUTES_AGO : lang.IDE.DASH_TPL_JUST_NOW;
 	 	}
 	},
 

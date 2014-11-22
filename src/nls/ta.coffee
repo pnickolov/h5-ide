@@ -213,7 +213,6 @@ module.exports =
 
     # State Editor
     ERROR_STATE_EDITOR_INEXISTENT_INSTANCE:
-<<<<<<< HEAD:src/nls/lang-source/ta.coffee
       en: "Instance <span class='validation-tag tag-instance'>%s</span> State <span class='validation-tag tag-state'>%s</span> has referenced the inexistent <span class='validation-tag tag-state-ref'>%s</span>."
       zh: "实例 <span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s</span> 使用了不存在的引用 <span class='validation-tag tag-state-ref'>%s</span>。"
 
@@ -228,26 +227,6 @@ module.exports =
     ERROR_STATE_EDITOR_INVALID_FORMAT:
       en: "<span class='validation-tag tag-instance'>%s</span>'s State <span class='validation-tag tag-state'>%s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
       zh: "<span class='validation-tag tag-instance'>%s</span> 的 State <span class='validation-tag tag-state'>%s [%s]</span> 必须使用正确格式来引用 State。例如，<span class='validation-tag'>@{host1.state.3}</span>。"
-=======
-      en: "Instance <span class='validation-tag tag-instance'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
-      zh: ""
-
-    ERROR_STATE_EDITOR_INEXISTENT_ASG:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
-      zh: ""
-
-    ERROR_STATE_EDITOR_INEXISTENT_OSSERVER:
-      en: "Server <span class='validation-tag tag-osserver'>%s</span> state <span class='validation-tag tag-state'>%s</span> has referenced the inexistent %s."
-      zh: ""
-
-    ERROR_STATE_EDITOR_EMPTY_REQUIED_PARAMETER:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s</span> is missing required parameter <span class='validation-tag tag-parameter'>%s</span>."
-      zh: ""
-
-    ERROR_STATE_EDITOR_INVALID_FORMAT:
-      en: "<span class='validation-tag tag-instance'>%s</span>'s state <span class='validation-tag tag-state'>%s [%s]</span> should reference a state in correct format. For example, <span class='validation-tag'>@{host1.state.3}</span>."
-      zh: ""
->>>>>>> feature/openstack:src/nls/ta.coffee
 
     # State
     ERROR_NOT_CONNECT_OUT:

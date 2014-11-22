@@ -117,23 +117,23 @@ module.exports =
 
     DASH_LBL_OSROUTER:
       en: "Router"
-      zh: ""
+      zh: "路由"
 
     DASH_LBL_OSSERVER:
       en: "Server"
-      zh: ""
+      zh: "服务器"
 
     DASH_LBL_OSFIP:
       en: "FIP"
-      zh: ""
+      zh: "FIP"
 
     DASH_LBL_OSLISTENER:
       en: "Listener"
-      zh: ""
+      zh: "监听器"
 
     DASH_LBL_OSPOOL:
       en: "Pool"
-      zh: ""
+      zh: "连接池"
 
     DASH_LBL_AUTO_SCALING_GROUP:
       en: "Auto Scaling Group"
@@ -706,7 +706,7 @@ module.exports =
 
     DASH_TPL_LOADING_APP_FAILED:
       en: "Oops, loading apps failed."
-      zh: ""
+      zh: "加载 Apps 失败"
 
     DASH_TPL_ALREADY_IMPORTED:
       en: "Already Imported"
@@ -722,7 +722,7 @@ module.exports =
 
     DASH_TPL_NO_APP_TO_IMPORT:
       en: "There is no app to import."
-      zh: ""
+      zh: "没有可导入的 App"
 
     DASH_IMPORT_VPC_AS_APP:
       en: "Import Existing VPC as App"

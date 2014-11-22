@@ -15,13 +15,10 @@ module.exports =
       en: "Done"
       zh: "完成"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     LBL_CANCEL:
       en: "Cancel"
       zh: "取消"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     LBL_LOADING:
       en: "Loading..."
       zh: "加载中..."
@@ -2223,13 +2220,10 @@ module.exports =
       en: "(Pending Apply)"
       zh: "(等待应用)"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     DBINSTANCE_NAME:
       en: "DB Instance Name"
       zh: "数据库实例名称"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     DBINSTANCE_AUTO_MINOR_VERSION_UPDATE:
       en: "Auto Minor Version Update"
       zh: "自动版本升级"
@@ -2314,7 +2308,6 @@ module.exports =
       en: "day(s)"
       zh: "天"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     DBINSTANCE_BACKUP_WINDOW:
       en: "Backup Window"
       zh: "备份窗口"
@@ -2327,8 +2320,6 @@ module.exports =
       en: "Select Window"
       zh: "选择窗口"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     DBINSTANCE_START_TIME:
       en: "Start Time:"
       zh: "开始时间:"
@@ -2349,13 +2340,10 @@ module.exports =
       en: "Maintenance Options"
       zh: "维护选项"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     DBINSTANCE_MAINTENANCE_WINDOW:
       en: "Maintenance Window"
       zh: "维护窗口"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     DBINSTANCE_MAINTENANCE_START_DAY:
       en: "Start Day"
       zh: "开始日"
@@ -2519,13 +2507,10 @@ module.exports =
       en: "Load Balancer Protocol"
       zh: "负载均衡协议"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     ELB_INSTANCE_PROTOCOL:
       en: "Instance Protocol"
       zh: "实力协议"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     ENI_NETWORK_INTERFACE_DETAIL:
       en: "Network Interface Details"
       zh: "网络接口详情"
@@ -2562,7 +2547,6 @@ module.exports =
       en: "View content"
       zh: "查看内容"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     INSTANCE_EBS_OPTIMIZED:
       en: "EBS Optimized"
       zh: "EBS 优化的"
@@ -2571,8 +2555,6 @@ module.exports =
       en: "IOPS"
       zh: "IOPS"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
       zh: "<p class='modal-text-major'>您确定要删除 %s 吗?</p><p class='modal-text-minor'>使用此密钥对的资源将自动改为使用默认密钥对</p>"
@@ -2821,7 +2803,6 @@ module.exports =
       en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
       zh: "提升过程需要花费几分钟完成，当提升一个只读副本时，复制会被停止，只读副本会重启。重启完成后，只读副本可用并独立成为一个单可用区域的数据库实例"
 
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
     RDS_READ_AWS_DOC:
       en: "Read AWS Document"
       zh: "阅读 AWS 文档"
@@ -2834,8 +2815,6 @@ module.exports =
       en: "You are creating a new DB Instance from a source DB Instance at a specified time. This new DB Instance will have the default DB Security Group and DB Parameter Groups."
       zh: "您正在从一个源数据库实例的指定时间创建新的数据库实例，此新实例将关联默认数据库安全组和数据库参数组"
 
-=======
->>>>>>> feature/openstack:src/nls/prop.coffee
     ###
     COMPONENT:
     ###
@@ -2846,11 +2825,7 @@ module.exports =
 
     SNAPSHOT_SET_NAME:
       en: "Snapshot Name"
-<<<<<<< HEAD:src/nls/lang-source/prop.coffee
       zh: "快照名称"
-=======
-      zh: ""
->>>>>>> feature/openstack:src/nls/prop.coffee
 
     SNAPSHOT_SET_NAME_TIP:
       en: "Enter the name of the snapshot that you will create."

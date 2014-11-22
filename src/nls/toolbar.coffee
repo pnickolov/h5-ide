@@ -485,15 +485,15 @@ module.exports =
 
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"
-      zh: "销毁App"
+      zh: "终结App"
 
     POP_TIT_TERMINATE_APP:
       en: "Confirm to Terminate App"
-      zh: "确认销毁"
+      zh: "确认终结"
 
     POP_BODY_TERMINATE_APP_LEFT:
       en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
-      zh: "本操作将销毁App中的相关资源，您确认销毁当前App"
+      zh: "本操作将终结App中的相关资源，您确认终结当前App"
 
     POP_BODY_TERMINATE_APP_RIGHT:
       en: "?"
@@ -501,11 +501,11 @@ module.exports =
 
     POP_BTN_TERMINATE_APP:
       en: "Terminate"
-      zh: "销毁"
+      zh: "终结"
 
     POP_TIT_TERMINATE_PRD_APP:
       en: "Confirm to Terminate App for Production"
-      zh: "确认销毁生产环境App"
+      zh: "确认终结生产环境App"
 
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
@@ -537,7 +537,7 @@ module.exports =
 
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
-      zh: "销毁App"
+      zh: "终结App"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
       en: "Convert to CloudFormation template"

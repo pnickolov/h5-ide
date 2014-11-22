@@ -6,8 +6,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
-
+  
+  
   return "<i class=\"notification_close\">&times;</i>";
   }
 
@@ -70,7 +70,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n			<div class=\"modal-text-wraper\">\n				<div class=\"modal-center-align-helper\">\n					";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.input), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
@@ -79,7 +79,7 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n						<div class=\"modal-control-group\">\n							<label class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -90,7 +90,7 @@ function program2(depth0,data) {
   }
 
 function program4(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n						<div class=\"modal-text-major\">\n							";
   stack1 = ((stack1 = (depth0 && depth0.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -102,7 +102,7 @@ function program4(depth0,data) {
   return buffer;
   }
 function program5(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n							<div class=\"modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_ASG", {hash:{},data:data}))
@@ -111,7 +111,7 @@ function program5(depth0,data) {
   }
 
 function program7(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n			<div class=\"terminate-pro-app-confirm\">\n				";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_stop), {hash:{},inverse:self.program(11, program11, data),fn:self.program(8, program8, data),data:data});
@@ -122,7 +122,7 @@ function program7(depth0,data) {
   return buffer;
   }
 function program8(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n					<p><b>"
     + escapeExpression(((stack1 = (depth0 && depth0.app_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -138,7 +138,7 @@ function program8(depth0,data) {
   return buffer;
   }
 function program9(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n							"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_ASG", {hash:{},data:data}))
@@ -147,7 +147,7 @@ function program9(depth0,data) {
   }
 
 function program11(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n					<p><b>"
     + escapeExpression(((stack1 = (depth0 && depth0.app_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -162,8 +162,8 @@ function program11(depth0,data) {
   }
 
 function program13(depth0,data) {
-
-
+  
+  
   return "disabled";
   }
 
@@ -428,7 +428,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n    <dt>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_IMAGEOWNERALIAS", {hash:{},data:data}))
@@ -439,7 +439,7 @@ function program1(depth0,data) {
   }
 
 function program3(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n    <dt>"
     + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_IMAGEOWNERID", {hash:{},data:data}))
@@ -498,6 +498,58 @@ function program3(depth0,data) {
   return buffer;
   };
 TEMPLATE.bubbleAMIInfo=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"bubble-head\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>Distro</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Version</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.os_version)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>"
+    + escapeExpression(helpers.i18n.call(depth0, "DASH_BUB_ARCHITECTURE", {hash:{},data:data}))
+    + "</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Volume Size</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "GB</dd>\n        <dt>id</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Created</dt><dd>"
+    + escapeExpression(helpers.timeStr.call(depth0, (depth0 && depth0.created_at), {hash:{},data:data}))
+    + "</dd>\n    </dl>\n</div>";
+  return buffer;
+  };
+TEMPLATE.bubbleOsAmiInfo=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"bubble-head\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n<div class=\"bubble-content\">\n    <dl class=\"dl-horizontal\">\n        <dt>Status</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>UUID</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Parent Volume</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.volume_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</dd>\n        <dt>Volume Size</dt><dd>"
+    + escapeExpression(((stack1 = (depth0 && depth0.vol_size)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "GB</dd>\n        <dt>Created</dt><dd>"
+    + escapeExpression(helpers.timeStr.call(depth0, (depth0 && depth0.created_at), {hash:{},data:data}))
+    + "</dd>\n    </dl>\n</div>";
+  return buffer;
+  };
+TEMPLATE.bubbleOsSnapshotInfo=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -568,7 +620,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n\nIPSec Tunnel #"
     + escapeExpression(((stack1 = (depth0 && depth0.number)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -623,7 +675,7 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n#4: Static Routing Configuration:\n\nTo route traffic between your internal network and your VPC,\nyou will need a static route added to your router.\n\nStatic Route Configuration Options:\n\n  - Next hop                      : "
     + escapeExpression(((stack1 = (depth0 && depth0.next_hop)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -632,7 +684,7 @@ function program2(depth0,data) {
   }
 
 function program4(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n#4: Border Gateway Protocol (BGP) Configuration:\n\nThe Border Gateway Protocol (BGPv4) is used within the tunnel, between the inside\nIP addresses, to exchange routes from the VPC to your home network. Each\nBGP router has an Autonomous System Number (ASN). Your ASN was provided\nto AWS when the Customer Gateway was created.\n\nBGP Configuration Options:\n  - Customer Gateway ASN	          : "
     + escapeExpression(((stack1 = (depth0 && depth0.customer_gateway_bgp_asn)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -667,7 +719,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n            <div class=\"payment-warning\">\n                "
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url), {hash:{},data:data}))
@@ -706,7 +758,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data,depth1) {
-
+  
   var buffer = "", stack1;
   buffer += "\n";
   stack1 = helpers['if'].call(depth0, (depth1 && depth1.deletable), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
@@ -738,7 +790,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 function program2(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n<li data-uid=\""
     + escapeExpression(((stack1 = (depth0 && depth0.ruleSetId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -757,37 +809,37 @@ function program2(depth0,data) {
   }
 
 function program4(depth0,data) {
-
-
+  
+  
   return "\n<li class=\"sg-create-rule-item modal-list-body\">\n";
   }
 
 function program6(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_INBOUND", {hash:{},data:data}));
   }
 
 function program8(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_OUTBOUND", {hash:{},data:data}));
   }
 
 function program10(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "IDE.POP_SGRULE_LBL_SOURCE", {hash:{},data:data}));
   }
 
 function program12(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "IDE.POP_SGRULE_LBL_DEST", {hash:{},data:data}));
   }
 
 function program14(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "<span class=\"sg-color\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -796,7 +848,7 @@ function program14(depth0,data) {
   }
 
 function program16(depth0,data) {
-
+  
   var buffer = "";
   buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip\" data-tooltip='"
     + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_REMOVE_RULE", {hash:{},data:data}))
@@ -817,7 +869,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n<h3 class=\"truncate sg-create-group\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -843,7 +895,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "<ul>\n<header class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -873,7 +925,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n<li class=\"input-ip-item\">\n  <div class=\"name tooltip\" data-tooltip=\"";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.autoAssign), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
@@ -902,44 +954,44 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_2", {hash:{},data:data}));
   }
 
 function program4(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_1", {hash:{},data:data}));
   }
 
 function program6(depth0,data) {
-
-
+  
+  
   return "disabled=\"disabled\"";
   }
 
 function program8(depth0,data) {
-
-
+  
+  
   return " associated";
   }
 
 function program10(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_4", {hash:{},data:data}));
   }
 
 function program12(depth0,data) {
-
-
+  
+  
   return escapeExpression(helpers.i18n.call(depth0, "PROP.INSTANCE_IP_MSG_3", {hash:{},data:data}));
   }
 
 function program14(depth0,data) {
-
-
+  
+  
   return "<div class=\"icon-remove\"></div>";
   }
 
@@ -956,7 +1008,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n				<div class=\"modal-text-minor\" style=\"margin-top:10px;\"><i class=\"icon-inbound\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
@@ -965,7 +1017,7 @@ function program1(depth0,data) {
   }
 
 function program3(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n			<div class=\"radio-group-horizontal\">\n				<div class=\"radio\">\n					<input id=\"radio_inbound\" type=\"radio\" name=\"sg-direction\" checked=\"checked\" value=\"inbound\" />\n					<label for=\"radio_inbound\"></label>\n				</div>\n				<label for=\"radio_inbound\" ><i class=\"icon-inbound icon-label\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
@@ -976,7 +1028,7 @@ function program3(depth0,data) {
   }
 
 function program5(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n					<li class=\"item truncate\" data-id=\"sg\" data-uid=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -989,13 +1041,13 @@ function program5(depth0,data) {
   }
 
 function program7(depth0,data) {
-
-
+  
+  
   return "\n							";
   }
 
 function program9(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n							<li class=\"item\" data-id=\"custom\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_CUSTOM", {hash:{},data:data}))
@@ -1006,8 +1058,8 @@ function program9(depth0,data) {
   }
 
 function program11(depth0,data) {
-
-
+  
+  
   return "\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n						<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"0-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n					</div>\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n						Port Range:<span>0-65535</span>\n					</div>\n				";
   }
 
@@ -1093,19 +1145,19 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
-
-
+  
+  
   return "\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		";
   }
 
 function program3(depth0,data) {
-
-
+  
+  
   return "class=\"hide\"";
   }
 
 function program5(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">"
     + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
@@ -1116,7 +1168,7 @@ function program5(depth0,data) {
   }
 
 function program7(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
@@ -1127,7 +1179,7 @@ function program7(depth0,data) {
   }
 
 function program9(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">"
     + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
@@ -1138,7 +1190,7 @@ function program9(depth0,data) {
   }
 
 function program11(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">"
     + escapeExpression(helpers.i18n.call(depth0, "WINDOWS_LOGIN_PASSWORD", {hash:{},data:data}))
@@ -1339,7 +1391,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n				<li>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1369,56 +1421,74 @@ TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n            <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING", {hash:{},data:data}))
-    + "</h3>\n        ";
+    + "</h3>\n	    ";
   return buffer;
   }
 
 function program3(depth0,data) {
-
+  
   var buffer = "";
   buffer += "\n            <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</h3>\n\n            <p class=\"modal-text-minor\"\n               style=\"margin-top:10px;\">"
+    + "</h3>\n            <p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</p>\n        ";
+    + "</p>\n	    ";
   return buffer;
   }
 
 function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <ul class=\"error-message-wrapper\">\n			    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.notification), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n            </ul>\n	    ";
+  return buffer;
+  }
+function program6(depth0,data) {
+  
+  var buffer = "";
+  buffer += "\n                    <li class=\"error-message\">"
+    + escapeExpression((typeof depth0 === functionType ? depth0.apply(depth0) : depth0))
+    + "</li>\n			    ";
+  return buffer;
+  }
 
+function program8(depth0,data) {
+  
   var buffer = "", stack1;
   buffer += "\n            <section class=\"check-final-snapshot checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES", {hash:{},data:data}))
     + "</label>\n            </section>\n            ";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        ";
   return buffer;
   }
-function program6(depth0,data) {
-
+function program9(depth0,data) {
+  
   var buffer = "", stack1;
   buffer += "\n                <p class=\"cant-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "DB_INSTANCE", {hash:{},data:data}))
     + "\n                    ";
-  stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                    "
     + escapeExpression(helpers.i18n.call(depth0, "CANNOT_TAKE_FINAL_SNAPSHOT", {hash:{},data:data}))
     + "</p>\n            ";
   return buffer;
   }
-function program7(depth0,data) {
-
+function program10(depth0,data) {
+  
   var buffer = "", stack1;
-  stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "(<span\n                            class=\"db-stop-status\">"
@@ -1426,14 +1496,14 @@ function program7(depth0,data) {
     + "</span>)";
   return buffer;
   }
-function program8(depth0,data) {
-
-
+function program11(depth0,data) {
+  
+  
   return ", ";
   }
 
-function program10(depth0,data) {
-
+function program13(depth0,data) {
+  
   var buffer = "";
   buffer += "\n            <div class=\"payment-warning\">\n                "
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", (depth0 && depth0['payment-link']), {hash:{},data:data}))
@@ -1441,11 +1511,14 @@ function program10(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n        ";
+  buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n	    ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        <div class=\"scroll-wrap res_diff_tree\" id=\"app-update-summary-table\" style=\"max-height:200px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\"></div>\n        </div>\n        ";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  buffer += "\n        <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n            </div>\n        </div>\n	    ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.notification), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        ";
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
@@ -1459,7 +1532,7 @@ function program10(depth0,data) {
     + "</b>"
     + escapeExpression(helpers.i18n.call(depth0, "PER_MONTH", {hash:{},data:data}))
     + "</div>\n        </div>\n        ";
-  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n\n</div>";
   return buffer;
@@ -1473,7 +1546,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1485,8 +1558,8 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-
-
+  
+  
   return ", ";
   }
 
@@ -1508,7 +1581,7 @@ TEMPLATE.cantUpdateApp=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-
+  
 
 
   return "<div class=\"loading-spinner\"></div>";
@@ -1898,13 +1971,13 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
-
+  
+  
   return " unread";
   }
 
 function program3(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-error\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1917,7 +1990,7 @@ function program3(depth0,data) {
   }
 
 function program5(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Sending request to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1930,7 +2003,7 @@ function program5(depth0,data) {
   }
 
 function program7(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Processing request to "
     + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1943,7 +2016,7 @@ function program7(depth0,data) {
   }
 
 function program9(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n      <i class=\"icon-success\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
     + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1956,7 +2029,7 @@ function program9(depth0,data) {
   }
 
 function program11(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "<div class=\"notification-details\">"
     + escapeExpression(((stack1 = (depth0 && depth0.error)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1998,7 +2071,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -2025,43 +2098,43 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
 function program1(depth0,data) {
-
-
+  
+  
   return " panel";
   }
 
 function program3(depth0,data) {
-
+  
   var buffer = "";
   return buffer;
   }
 
 function program5(depth0,data) {
-
-
+  
+  
   return " class=\"modal-wrapper-fix\"";
   }
 
 function program7(depth0,data) {
-
-
+  
+  
   return "<i class=\"modal-close\">×</i>";
   }
 
 function program9(depth0,data) {
-
-
+  
+  
   return " scroll-wrap scrollbar-auto-hide";
   }
 
 function program11(depth0,data) {
-
-
+  
+  
   return " style=\"padding: 0;\"";
   }
 
 function program13(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                <div class=\"scroll-content\" ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
@@ -2074,7 +2147,7 @@ function program13(depth0,data) {
   }
 
 function program15(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n            ";
   stack1 = ((stack1 = (depth0 && depth0.template)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -2084,7 +2157,7 @@ function program15(depth0,data) {
   }
 
 function program17(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "\n        <div class=\"modal-footer\">\n            ";
   stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
@@ -2096,7 +2169,7 @@ function program17(depth0,data) {
   return buffer;
   }
 function program18(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-confirm btn-"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -2109,13 +2182,13 @@ function program18(depth0,data) {
   return buffer;
   }
 function program19(depth0,data) {
-
-
+  
+  
   return " disabled ";
   }
 
 function program21(depth0,data) {
-
+  
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-close btn-silver\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -2158,7 +2231,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
 
 function program1(depth0,data) {
-
+  
   var buffer = "";
   buffer += "<div class=\"warning-red no-change\">"
     + escapeExpression(helpers.i18n.call(depth0, "YOUR_ACCOUNT_IN_LIMITED_STATUS", {hash:{},data:data}))

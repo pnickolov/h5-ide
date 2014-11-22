@@ -302,8 +302,8 @@ module.exports =
       zh: "导出 AWS CloudFormation 模板失败，（错误码：%s）"
 
     RELOAD_STATE_INVALID_REQUEST:
-        en: "Sorry, but the request is invalid."
-        zh: "非法请求。"
+      en: "Sorry, but the request is invalid."
+      zh: "非法请求。"
 
     RELOAD_STATE_NETWORKERROR:
       en: "Network error. Please try again later."

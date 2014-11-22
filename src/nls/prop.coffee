@@ -23,10 +23,6 @@ module.exports =
       en: "Loading..."
       zh: "加载中..."
 
-    LBL_CAPACITY:
-      en: "Capacity"
-      zh: "大小"
-
     LBL_VALIDATION:
       en: "Validation"
       zh: "验证"
@@ -126,10 +122,6 @@ module.exports =
     INSTANCE_CLOUDWATCH_DETAILED_MONITORING:
       en: "CloudWatch Detailed Monitoring"
       zh: "CloudWatch 详细监控"
-
-    INSTANCE_EBS_OPTIMIZED:
-      en: "EBS Optimized"
-      zh: "EBS 优化"
 
     INSTANCE_TENANCY:
       en: "Tenancy"
@@ -1504,10 +1496,6 @@ module.exports =
       en: "Port"
       zh: "端口"
 
-    ELB_INSTANCE_PROTOCOL:
-      en: "Instance Protocol"
-      zh: "实例协议"
-
     ELB_INSTANCES:
       en: "Instances"
       zh: "实例"
@@ -1876,10 +1864,6 @@ module.exports =
       en: "Name"
       zh: "名称"
 
-    NAME:
-      en: "Name"
-      zh: "名称"
-
     LC_CREATE_TIME:
       en: "Create Time"
       zh: "创建时间"
@@ -2123,10 +2107,6 @@ module.exports =
     DBINSTANCE_LAST_RESTORE:
       en: "Lastest Restore Time"
       zh: "最新还原时间"
-
-    DBINSTANCE_MAINTENANCE_WINDOW:
-      en: "Maintenance Window"
-      zh: "管理窗口"
 
     DBINSTANCE_SECURITY_GROUP:
       en: "Security Group"
@@ -2551,10 +2531,6 @@ module.exports =
       en: "EBS Optimized"
       zh: "EBS 优化的"
 
-    INSTANCE_IOPS:
-      en: "IOPS"
-      zh: "IOPS"
-
     LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM:
       en: "<p class='modal-text-major'>Are you sure to delete %s?</p><p class='modal-text-minor'>Resources using this key pair will change automatically to use DefaultKP.</p>"
       zh: "<p class='modal-text-major'>您确定要删除 %s 吗?</p><p class='modal-text-minor'>使用此密钥对的资源将自动改为使用默认密钥对</p>"
@@ -2978,10 +2954,6 @@ module.exports =
     LBL_SORT_BY:
       en: "Sort by: "
       zh: "排序: "
-
-    LBL_CANCEL:
-      en: "Cancel"
-      zh: "取消"
 
     LBL_CREATING:
       en: "Creating..."

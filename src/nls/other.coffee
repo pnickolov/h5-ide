@@ -1101,10 +1101,6 @@ VisualOps API. You cannot UNDO this action.'
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
       zh: " 终止此 App 将导致服务不可用， 所有的Auto Scaling 组都将被删除。"
 
-    POP_CONFIRM_STOP_PROD_APP_MSG:
-      en: " Stopping it will make your service unavailable."
-      zh: "停止此 App 将会导致您的服务不可用。"
-
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
       zh: "请输入此 APP 的名字来确认终止。"
@@ -2075,10 +2071,6 @@ VisualOps API. You cannot UNDO this action.'
     PROVIDE_BILLING_INFORMATION:
       en: "Provide Billing Information"
       zh: "提供账单信息"
-
-    UPDATE_BILLING_INFORMATION:
-      en: "Update Billing Information"
-      zh: "更新账单信息"
 
     WHILE_ENJOYING_PROVIDE_CARD:
       en: "While enjoying your free %s instance hours each month, provide billing information in case of running out of quota."

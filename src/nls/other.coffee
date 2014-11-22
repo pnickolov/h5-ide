@@ -871,17 +871,16 @@ VisualOps API. You cannot UNDO this action.'
       en: "South America"
       zh: "南美洲"
 
-<<<<<<< HEAD:src/nls/lang-source/other.coffee
     "IDE_LBL_REGION_NAME_SHORT_cn-north-1":
       en: "Beijing"
-=======
+      zh: "北京"
+
     "IDE_LBL_REGION_NAME_guangzhou":
       en: "Guangzhou"
       zh: "广州"
 
     "IDE_LBL_REGION_NAME_beijing":
       en: "BeiJing"
->>>>>>> feature/openstack:src/nls/other.coffee
       zh: "北京"
 
     "IDE_LBL_REGION_NAME_SHORT_us-east-1":
@@ -1008,19 +1007,11 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_C:
       en: 'Connect to route table to create route'
-<<<<<<< HEAD:src/nls/lang-source/other.coffee
       zh: '连接到路由表来创建路由。'
 
     PORT_TIP_D:
       en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
       zh: '连接到实例、 Auto Scaling 组、 网络接口或者负载均衡器来创建安全组规则。'
-=======
-      zh: ''
-
-    PORT_TIP_D:
-      en: 'Connect to instance, auto scaling group, network interface or load balancer to create security group rule.'
-      zh: ''
->>>>>>> feature/openstack:src/nls/other.coffee
 
     PORT_TIP_E:
       en: 'Connect to network interface to attach.'
@@ -1110,13 +1101,10 @@ VisualOps API. You cannot UNDO this action.'
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
       zh: " 终止此 App 将导致服务不可用， 所有的Auto Scaling 组都将被删除。"
 
-<<<<<<< HEAD:src/nls/lang-source/other.coffee
     POP_CONFIRM_STOP_PROD_APP_MSG:
       en: " Stopping it will make your service unavailable."
       zh: "停止此 App 将会导致您的服务不可用。"
 
-=======
->>>>>>> feature/openstack:src/nls/other.coffee
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
       zh: "请输入此 APP 的名字来确认终止。"
@@ -1442,7 +1430,6 @@ VisualOps API. You cannot UNDO this action.'
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
       en: "Provide AWS Credential <br/> to manage key pairs"
-<<<<<<< HEAD:src/nls/lang-source/other.coffee
       zh: "提供 AWS 证书来管理密钥对。"
 
     PAYMENT_PAYMENT_NEEDED:
@@ -1849,8 +1836,6 @@ VisualOps API. You cannot UNDO this action.'
       en: "Unhealthy Threshold"
       zh: "不健康阈值"
 
-
-
     BUBBLE_IMAGESIZE:
       en: "Image Size"
       zh: "镜像大小"
@@ -2230,63 +2215,59 @@ VisualOps API. You cannot UNDO this action.'
     TOPIC_NAME_IS_ALREADY_TAKEN:
       en: "Topic name is already taken"
       zh: "主题名称已经被占用"
-=======
-      zh: ""
 
     DRAG_AND_DROP_IN_NETOWRK_TO_CREATE_SUBNET:
-      en: "Drag and drop in Netowrk to create subnet"
-      zh: ""
+      en: "Drag and drop in Network to create subnet"
+      zh: "拖拽到网络里创建子网"
 
     DRAG_AND_DROP_OUTSIDE_NETOWRK_TO_CREATE_ROUTER:
-      en: "Drag and drop outside Netowrk to create router"
-      zh: ""
+      en: "Drag and drop outside Network to create router"
+      zh: "拖拽到网络外以创建路由"
 
     DRAG_AND_DROP_IN_SUBNET_TO_CREATE_PORT:
       en: "Drag and drop in subnet to create port"
-      zh: ""
+      zh: "拖拽到子网里以创建端口"
 
     DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LOAD_BALANCE:
       en: "Drag and drop in subnet to create Load Balance"
-      zh: ""
+      zh: "拖拽到子网里以创建负载均衡"
 
     DRAG_AND_DROP_IN_SUBNET_TO_CREATE_LISTENER:
       en: "Drag and drop in subnet to create listener"
-      zh: ""
+      zh: "拖拽到子网里以创建"
 
     DRAG_AND_DROP_IN_SUBNET_TO_CREATE_POOL:
       en: "Drag and drop in subnet to create pool"
-      zh: ""
+      zh: "拖拽到子网以创建连接池"
 
     DRAG_AND_DROP_ON_SERVER_TO_ATTACH_VOLUME:
       en: "Drag and drop on server to attach volume"
-      zh: ""
+      zh: "拖拽到服务器上以添加卷"
 
     LBL_OSSUBNET:
       en: "Subnet"
-      zh: ""
+      zh: "子网"
 
     LBL_OSRT:
       en: "Router"
-      zh: ""
+      zh: "路由"
 
     LBL_OSPORT:
       en: "Port"
-      zh: ""
+      zh: "端口"
 
     LBL_OSELB:
       en: "Load Balancer"
-      zh: ""
+      zh: "负载均衡"
 
     LBL_OSLISTENER:
       en: "Listener"
-      zh: ""
+      zh: "监听器"
 
     LBL_OSPOOL:
       en: "Pool"
-      zh: ""
+      zh: "连接池"
 
     LBL_OSVOL:
       en: "Volume"
-      zh: ""
-
->>>>>>> feature/openstack:src/nls/other.coffee
+      zh: "卷"

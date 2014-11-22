@@ -388,10 +388,6 @@ module.exports =
       en: "Get Windows Password"
       zh: "获取 Windows 密码"
 
-    INSTANCE_IOPS:
-      en: "IOPS"
-      zh: "IOPS"
-
     AMI_STACK_NOT_AVAILABLE:
       en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
       zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享。 </p><p>请选择其他的 AMI。</p>"

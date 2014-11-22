@@ -264,14 +264,8 @@ body {
 
 html,
 body {
-<<<<<<< HEAD
-	min-height: 100%;
-	min-width: 600px;
-}
-=======
   height: 100%;
   min-width: 600px; }
->>>>>>> feature/openstack
 
 #body {
   color: #222;
@@ -371,25 +365,6 @@ header {
 .control-group {
   position: relative; }
 
-.control-group.fullname{
-    margin-bottom: 20px;
-}
-
-.half-group{
-    display: inline-block;
-    width: 47%;
-    margin-right: 10px;
-}
-
-.half-group:nth-child(even) {
-    margin-right: 0;
-    margin-left: 10px;
-}
-
-.half-group .account-input{
-    width: 88%;
-}
-
 .account-label {
   color: #999; }
 
@@ -432,12 +407,7 @@ header {
   background: #000; }
 
 .control-group {
-<<<<<<< HEAD
-	margin: 10px 0 30px 0;
-}
-=======
   margin: 10px 0 40px 0; }
->>>>>>> feature/openstack
 
 .control-group.error label {
   color: #DB4E47 !important; }
@@ -540,25 +510,6 @@ header {
   font-size: 14px; }
 
 footer {
-<<<<<<< HEAD
-	width: 100%;
-	bottom: 0;
-	position: absolute;
-	color: #ccc;
-	text-align: center;
-	font-size: 12px;
-}
-
-#arn {
-	background      : url('../images/login/arn-dark.png') center no-repeat;
-	background-size : 261px 85px;
-	width           : 261px;
-	height          : 85px;
-	margin          : auto;
-	opacity         : .8;
-	padding         : 40px 0;
-}
-=======
   width: 100%;
   bottom: 0;
   position: absolute;
@@ -574,7 +525,6 @@ footer {
   height: 85px;
   margin: 40px auto;
   opacity: .8; }
->>>>>>> feature/openstack
 
 /* 500 */
 #body-500 {

@@ -430,8 +430,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( 
         if end.x > 0
           return [{x:end.x,y:start.y}]
 
-        x = start.itemRect.x + 20
-        y = end.itemRect.y + 20
+        x = start.itemRect.x2 + 20
+        y = end.itemRect.y2 + 20
 
         [{x:x, y:start.y},{x:x,y:y},{x:end.x,y:y}]
 

@@ -271,55 +271,51 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     #private
     REGION_KEYS = [
+        # # aws
+        # 'us-east-1'
+        # 'us-west-1'
+        # 'us-west-2'
+        # 'eu-west-1'
+        # 'ap-southeast-1'
+        # 'ap-southeast-2'
+        # 'ap-northeast-1'
+        # 'sa-east-1'
+        # # openstack - awcloud
+        # 'guangzhou'
+        # 'beijing'
         'cn-north-1'
-#        # aws
-#        'us-east-1'
-#        'us-west-1'
-#        'us-west-2'
-#        'eu-west-1'
-#        'ap-southeast-1'
-#        'ap-southeast-2'
-#        'ap-northeast-1'
-#        'sa-east-1'
-#        # openstack - awcloud
-#        'guangzhou'
-#        'beijing'
     ]
 
     #private
     REGION_LABEL =
+        # # aws
+        # 'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
+        # 'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
+        # 'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
+        # 'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
+        # 'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+        # 'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+        # 'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+        # 'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
+        # # openstack - awcloud
+        # 'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_guangzhou']
+        # 'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_beijing']
         'cn-north-1'     : lang.IDE[ 'IDE_LBL_REGION_NAME_cn-north-1' ]
-        ###
-        # aws
-        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
-        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
-        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
-        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
-        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
-        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
-        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
-        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
-        # openstack - awcloud
-        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_guangzhou']
-        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_beijing']
-        ###
 
     REGION_SHORT_LABEL =
+        # # aws
+        # 'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+        # 'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+        # 'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+        # 'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+        # 'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+        # 'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+        # 'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+        # 'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+        # # openstack - awcloud
+        # 'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_guangzhou']
+        # 'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_beijing']
         'cn-north-1'     : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_cn-north-1']
-        ###
-        # aws
-        'us-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
-        'us-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
-        'us-west-2'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
-        'eu-west-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
-        'ap-southeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
-        'ap-southeast-2' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
-        'ap-northeast-1' : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
-        'sa-east-1'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
-        # openstack - awcloud
-        'guangzhou'      : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_guangzhou']
-        'beijing'        : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_beijing']
-        ###
 
     #private
     RETURN_CODE =

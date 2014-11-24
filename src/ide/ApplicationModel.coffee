@@ -161,7 +161,7 @@ define [
 
           instanceTypeConfig[ typeInfo.typeName ] = typeInfo
 
-        return
+      return
 
     __parseOsData : ( res )->
       self = this

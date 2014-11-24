@@ -64,7 +64,7 @@ define [
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
-    createStack : ( region, cloudType = "aws", provider = "amazon" )->
+    createStack : ( region, cloudType = "aws", provider = "aws" )->
       # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
         region    : region

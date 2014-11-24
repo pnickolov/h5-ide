@@ -1,13 +1,18 @@
 
 define [
   "CoreEditorApp"
+  "./AwsViewApp"
+  "./model/DesignAws"
   "./AwsEditorStack"
   "OpsModel"
   "CloudResources"
   "constant"
-], ( CoreEditorApp, StackEditor, OpsModel, CloudResources, constant )->
+], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant )->
 
   class AppEditor extends CoreEditorApp
+
+    viewClass   : AppView
+    designClass : DesignAws
 
     fetchAdditionalData : ()->
       self = @
@@ -36,7 +41,8 @@ define [
 
       throw err
 
-    fetchAmiData : StackEditor.prototype.fetchAmiData
-    fetchRdsData : StackEditor.prototype.fetchRdsData
+    fetchAmiData  : StackEditor.prototype.fetchAmiData
+    fetchRdsData  : StackEditor.prototype.fetchRdsData
+    isRdsDisabled : StackEditor.prototype.isRdsDisabled
 
   AppEditor

@@ -8,15 +8,10 @@ define [ 'event', 'StateEditorView', 'component/stateeditor/model', 'component/s
     loadModule = ( allCompData, uid, resId, force ) ->
 
         compData = allCompData[uid]
-        resModel = Design.instance().component(uid)
+        # resModel = Design.instance().component(uid)
 
         if compData
-            model = new Model({
-                compData: compData,
-                resModel: resModel,
-                resId: resId,
-                allCompData: allCompData
-            })
+            model = new Model({resUID: uid})
         else
             model = new Backbone.Model()
 

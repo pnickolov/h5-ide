@@ -37,6 +37,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         private_key    : @get("PrivateKey")
         cert_chain     : @get("CertificateChain")
         path           : @get("Path")
+        region_name    : Design.instance().region()
       }).then ( res )->
         # Empty the private data.
         self.attributes.CertificateChain = ""

@@ -23,8 +23,8 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 			return if not (resModel and resModel.serialize)
 
 			resId = resModel.get('appId')
-			compData = resModel.serialize().component
 			allCompData = Design.instance().serialize().component
+			compData = allCompData[resUID]
 
 			that.set({
 				resModel: resModel,

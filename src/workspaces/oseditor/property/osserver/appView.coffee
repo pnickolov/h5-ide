@@ -73,7 +73,7 @@ define [
             reqApi = "ins_GetConsoleOutput" # for aws
             ApiRequest(reqApi, {
                 region : region
-                server_id    : serverId
+                instance_id    : serverId
             }).then @refreshSysLog, @refreshSysLog
 
         modal MC.template.modalInstanceSysLog {

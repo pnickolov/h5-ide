@@ -407,6 +407,24 @@ header {
 .control-group {
 	margin: 10px 0 40px 0;
 }
+.control-group.fullname{
+  margin-bottom: 20px;
+}
+
+.half-group{
+  display: inline-block;
+  width: 47%;
+  margin-right: 10px;
+}
+
+.half-group:nth-child(even) {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.half-group .account-input{
+  width: 88%;
+}
 
 .control-group.error label {
 	color: #DB4E47 !important;

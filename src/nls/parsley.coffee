@@ -3,6 +3,9 @@
 module.exports =
 
   PARSLEY:
+    THIS_VALUE_IS_REQUIRED:
+      en: "This value is required."
+      zh: "此字段必填。"
 
     MUST_BE_A_VALID_FORMAT_OF_NUMBER:
       en: "Must be a valid format of number."

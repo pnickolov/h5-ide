@@ -177,7 +177,7 @@ module.exports =
 
     CLOUD_RESOURCE_AUTO_SCALING_GROUP:
       en: "Auto Scaling Group "
-      zh: "自动收缩组"
+      zh: "Auto Scaling 组"
 
     BTN_RUN_STACK:
       en: "Run Stack"

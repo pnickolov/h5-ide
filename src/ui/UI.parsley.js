@@ -8,7 +8,7 @@
 # (c) Copyright 2013 Madeiracloud  All Rights Reserved
 # **********************************************************
 */
-define(["jquery"], function(){
+define(["i18n!/nls/lang.js", "jquery"], function(lang){
 
 !function($) {
 
@@ -231,7 +231,7 @@ define(["jquery"], function(){
         }
       , notnull:        "This value should not be null."
       , notblank:       "This value should not be blank."
-      , required:       "This value is required."
+      , required:       lang.PARSLEY.THIS_VALUE_IS_REQUIRED
       , regexp:         "This value seems to be invalid."
       , min:            "This value should be greater than or equal to %s."
       , max:            "This value should be lower than or equal to %s."

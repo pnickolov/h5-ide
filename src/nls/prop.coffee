@@ -3382,3 +3382,19 @@ module.exports =
     EXPAND:
       en: "Expand"
       zh: "展开"
+
+    EG_MINUS_1:
+      en: "eg. -1"
+      zh: "例如： -1"
+
+    EG_5:
+      en: "eg. 5"
+      zh: "例如：5"
+
+    EG_MINUS_30:
+      en: "eg. -30"
+      zh: "例如：-30"
+
+
+
+

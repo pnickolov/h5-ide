@@ -12,14 +12,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
   AwsOpsModel = OpsModel.extend {
 
-    type : "AwsOps"
-
-    initialize : ( attr, opts )->
-      OpsModel.prototype.initialize.apply this, arguments
-      @attributes.cloudType = "aws"
-      if not @get("provider")
-        @attributes.provider = "global"
-      return
+    type : OpsModel.Type.Amazon
 
     getMsrId : ()->
       msrId = OpsModel.prototype.getMsrId.call this
@@ -162,6 +155,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
       @__jsonData = json
       return
+  }, {
+    supportedProviders : ["aws::china", "aws::global"]
   }
 
   AwsOpsModel

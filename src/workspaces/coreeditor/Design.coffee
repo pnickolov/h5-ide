@@ -290,7 +290,7 @@ define [
       else
         @attributes[key]
 
-    type   : ()-> Design.TYPE.Vpc
+    type   : ()-> @__opsModel.type
     region : ()-> @attributes.region
 
     modeIsStack   : ()->  @__mode == Design.MODE.Stack

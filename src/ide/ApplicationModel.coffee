@@ -40,14 +40,13 @@ define [
 
     getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
 
-    createImportOps : ( region, cloudType, provider, msrId )->
+    createImportOps : ( region, provider, msrId )->
       m = @attributes.appList.findWhere({importMsrId:msrId})
       if m then return m
       m = new OpsModel({
         name        : "ImportedApp"
         importMsrId : msrId
         region      : region
-        cloudType   : cloudType
         provider    : provider
         state       : OpsModel.State.Running
       })
@@ -64,11 +63,10 @@ define [
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
-    createStack : ( region, cloudType = "aws", provider = "aws" )->
+    createStack : ( region, provider = "aws::china" )->
       # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
       m = new OpsModel({
         region    : region
-        cloudType : cloudType
         provider  : provider
       }, {
         initJsonData : true
@@ -217,7 +215,6 @@ define [
           usage      : ops.usage
           name       : ops.name
           version    : ops.version
-          cloudType  : ops.cloud_type
           provider   : ops.provider
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)

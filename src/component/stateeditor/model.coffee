@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore' ], (MC, constant, CloudResources, Design, ApiRequest) ->
+define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore', "OpsModel" ], (MC, constant, CloudResources, Design, ApiRequest, OpsModel ) ->
 
 	StateEditorModel = Backbone.Model.extend {
 
@@ -509,9 +509,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 			newParaValue = paraValue
 
-			cloudType = Design.instance().get('cloud_type')
-
-			if cloudType is 'aws'
+			if Design.instance().type() is OpsModel.Type.Amazon
 
 				# for aws
 				_.each refMatchAry, (refMatchStr) ->
@@ -563,9 +561,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 			newParaValue = paraValue
 
-			cloudType = Design.instance().get('cloud_type')
-
-			if cloudType is 'aws'
+			if Design.instance().type() is OpsModel.Type.Amazon
 
 				# for aws
 				_.each refMatchAry, (refMatchStr) ->
@@ -619,11 +615,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 		getResState: (resId) ->
 
-			# CloudResources(@get("resModel").type, Design.instance().region()).get(resId)?.attributes
-
-			cloudType = Design.instance().get('cloud_type')
-
-			if cloudType is 'aws'
+			if Design.instance().type() is OpsModel.Type.Amazon
 
 				resModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(resId)
 				resState = 'unknown'

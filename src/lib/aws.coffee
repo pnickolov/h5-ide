@@ -1,4 +1,4 @@
-define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js' ], ( MC, constant, _, $, Design, lang ) ->
+define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js', "OpsModel" ], ( MC, constant, _, $, Design, lang, OpsModel ) ->
 
     getCompByResIdForState = ( resId ) ->
 
@@ -51,11 +51,9 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
     genAttrRefList = (currentCompData, allCompData) ->
 
-        cloudType = Design.instance().get('cloud_type')
-
         resAttrDataAry = []
 
-        if cloudType is 'aws'
+        if Design.instance().type() is OpsModel.Type.Amazon
 
             _getSelectedASGModelByLC = () ->
 

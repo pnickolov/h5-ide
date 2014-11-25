@@ -318,7 +318,7 @@ define [
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )->
       $tgt = $( event.currentTarget )
-      App.createOps( $tgt.attr("data-region") || @region, $tgt.attr("data-cloud"), $tgt.attr("data-provider") )
+      App.createOps( $tgt.attr("data-region") || @region, $tgt.attr("data-provider") )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 

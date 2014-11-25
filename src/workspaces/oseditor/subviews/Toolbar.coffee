@@ -136,7 +136,7 @@ define [
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
     createStack    : ()->
       opsModel = @workspace.opsModel
-      App.createOps( opsModel.get("region"), "openstack", opsModel.get("provider") )
+      App.createOps( opsModel.get("region"), opsModel.get("provider") )
       return
 
     duplicateStack : ()->
@@ -456,7 +456,7 @@ define [
         that.updateModal?.resize()
 
     applyAppEdit    : ()->
-      if Design.instance().get("cloud_type") is 'openstack'
+      if Design.instance().type() is OpsModel.Type.OpenStack
         @applyOpenstackAppEdit()
         return false
       that = @

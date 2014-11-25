@@ -48,6 +48,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     child
   ### env:dev:end ###
 
+  OpsModelType =
+    OpenStack : "OpenstackOps"
+    Amazon    : "AwsOps"
 
   OpsModelState =
     UnRun        : 0
@@ -76,7 +79,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       stoppable  : true # If the app has instance_store_ami, stoppable is false
       name       : ""
       version    : OpsModelLastestVersion
-      cloudType  : ""
       provider   : ""
 
       # usage          : ""
@@ -90,18 +92,17 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     constructor : ( attr, opts )->
       attr = attr || {}
       opts = opts || {}
+
       if this.type is "GenericOps"
-        # Finds out the concrete opsmodel
         if opts.jsonData
-          cloudType = opts.jsonData.cloud_type
+          provider = opts.jsonData.provider
+        provider = provider || attr.provider
 
-        cloudType = cloudType || attr.cloudType || "aws"
-        type = cloudType.replace(/[a-z]/, (w)->w.toUpperCase()) + "Ops"
+        console.assert( KnownOpsModelClass[provider], "Cannot find specific OpsModel for provider '#{attr.provider}'" )
 
-        console.assert( KnownOpsModelClass[type], "Cannot find specific OpsModel for cloudType: " + cloudType )
-
-        Model = KnownOpsModelClass[ type ]
-        return new Model( attr, opts )
+        Model = KnownOpsModelClass[ provider ]
+        if Model
+          return new Model( attr, opts )
 
       Backbone.Model.apply this, arguments
       return
@@ -376,7 +377,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           state         : OpsModelState.Initializing
           progress      : 0
           region        : region
-          cloudType     : toRunJson.cloud_type
           provider      : toRunJson.provider
           usage         : toRunJson.usage
           version       : toRunJson.version
@@ -395,7 +395,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       attr       = $.extend true, {}, @attributes, {
         name       : name
         updateTime : +(new Date())
-        cloudType  : @get("cloudType")
         provider   : @get("provider")
       }
       collection = @collection
@@ -697,7 +696,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       version     : @get("version")
       resource_diff: true
       component   : {}
-      cloud_type  : @get("cloudType")
       provider    : @get("provider")
       layout      : { size : [240, 240] }
       agent       :
@@ -711,12 +709,17 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __initJsonData : ()-> @__jsonData = @__createRawJson(); return
   }, {
     extend : ( protoProps, staticProps ) ->
+
       # Create subclass
       subClass = __detailExtend.call( this, protoProps, staticProps )
-      KnownOpsModelClass[ protoProps.type ] = subClass
+
+      for provider in staticProps.supportedProviders
+        KnownOpsModelClass[ provider ] = subClass
+
       subClass
   }
 
+  OpsModel.Type  = OpsModelType
   OpsModel.State = OpsModelState
   OpsModel.LatestVersion = OpsModelLastestVersion
 

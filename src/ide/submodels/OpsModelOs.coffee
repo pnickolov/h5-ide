@@ -10,16 +10,9 @@
 
 define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, ApiRequest, constant, CloudResources )->
 
-  AwsOpsModel = OpsModel.extend {
-    type : "OpenstackOps"
+  OsOpsModel = OpsModel.extend {
 
-    initialize : ( attr, options )->
-      OpsModel.prototype.initialize.call this, attr, options
-
-      @attributes.cloudType = "openstack"
-      if not @get("provider")
-        @attributes.provider = if options.jsonData.provider then options.jsonData.provider else App.user.get("default_provider")
-      return
+    type : OpsModel.Type.OpenStack
 
     getMsrId : ()->
       msrId = OpsModel.prototype.getMsrId.call this
@@ -96,6 +89,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
 
       @__jsonData = json
       return
+  }, {
+    supportedProviders : ["os::awcloud_bj"]
   }
 
-  AwsOpsModel
+  OsOpsModel

@@ -59,7 +59,13 @@ define({
 
         openstack: {}
 
-    get: ( key, platform = Design.instance().get( 'cloud_type' ) ) ->
+    get: ( key, platform ) ->
+
+        if Design.instance().type() is "AwsOps"
+            platform = "aws"
+        else
+            platform = "openstack"
+
         @[ key ]?[ platform ] or @[ key ]['aws']
 
 

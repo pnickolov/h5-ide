@@ -151,9 +151,9 @@ define [
     editor
 
   # This is a convenient method to create a stack and then open an editor for it.
-  VisualOps.prototype.createOps = ( region, cloudType, provider )->
+  VisualOps.prototype.createOps = ( region, provider )->
     if not region then return
-    editor = new OpsEditor( @model.createStack(region, cloudType, provider) )
+    editor = new OpsEditor( @model.createStack(region, provider) )
     editor.activate()
     editor
 

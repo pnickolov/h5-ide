@@ -4,12 +4,6 @@
 
 define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Design ) ->
 
-  typeMap =
-    'ec2-classic' : 'EC2 Classic'
-    'ec2-vpc'     : 'EC2 VPC'
-    'default-vpc' : 'Default VPC'
-    'custom-vpc'  : 'Custom VPC'
-
   StackModel = PropertyModel.extend {
 
     init : () ->
@@ -26,7 +20,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         id        : design.get("id")
         usage     : design.get("usage")
         description: design.get('description')
-        type      : typeMap[ design.type() ]
+        type      : "EC2 VPC"
         region    : constant.REGION_SHORT_LABEL[ design.region() ]
         isApp     : @isApp
         isAppEdit : @isAppEdit

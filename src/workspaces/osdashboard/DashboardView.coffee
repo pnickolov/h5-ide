@@ -185,7 +185,7 @@ define [
       $(".resource-list-body").html( tpl )
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )-> App.createOps( @model.region, "openstack", @model.provider )
+    createStack : ( event )-> App.createOps( @model.region, @model.provider )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 

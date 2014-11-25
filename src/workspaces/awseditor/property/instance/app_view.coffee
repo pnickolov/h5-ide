@@ -40,15 +40,15 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             @proccessKpStuff()
 
         proccessKpStuff: ( notOld ) ->
-            # if not notOld
-            #     kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
-            #     isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
-            #     isOldOtherKp = kp and not kp.isDefault()
+            if not notOld
+                kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
+                isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
+                isOldOtherKp = kp and not kp.isDefault()
 
-            #     isOldKp = isOldDefaultKp or isOldOtherKp
+                isOldKp = isOldDefaultKp or isOldOtherKp
 
-            #     if isOldKp
-            #         @model.downloadKp kpName
+                if isOldKp
+                    @model.downloadKp kpName
 
             if not isOldKp and @model.get( 'osType' ) is 'windows'
                 @decryptPassword()

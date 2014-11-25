@@ -256,6 +256,12 @@
   &:before { top: 27px; left: -11px; }
 }
 
+#cn-north-1 {
+  top  : 131px;
+  left : 602px;
+  &:before { top: 27px; left: -11px; }
+}
+
 #global-region-map-wrap {
   padding: 80px 0 10px;
   width   : 100%;
@@ -279,7 +285,7 @@
   width      : image-width('ide/global-dotted-map.png');
   height     : image-height("ide/global-dotted-map.png");
   background : image-url('ide/global-dotted-map.png') no-repeat;
-  margin  : 24px 0 10px 48px;
+  margin     : 24px 0 10px 48px;
 }
 
 #global-region-status-widget {

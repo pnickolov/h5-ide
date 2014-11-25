@@ -73,10 +73,6 @@ pre {
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
-  .modal-toolbar .container.optiongroup {
-    position: absolute;
-    top: 111px;
-    bottom: 64px; }
   .modal-toolbar .no-credential {
     color: #F5F5F5;
     margin: 55px auto; }
@@ -1037,41 +1033,41 @@ li.error-message {
     border: 1px #363b76 solid;
     color: #fff; }
 
-.selection {
+.openstack .selection {
   width: 100%;
   background-color: #27272b;
   border: 0; }
-  .selection::selection {
+  .openstack .selection::selection {
     background: #4a90e2 !important; }
-  .selection input::-webkit-input-placeholder {
+  .openstack .selection input::-webkit-input-placeholder {
     /* WebKit browsers */
     color: #555;
     font-style: italic; }
-  .selection input:-moz-placeholder {
+  .openstack .selection input:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: #555;
     font-style: italic; }
-  .selection input::-moz-placeholder {
+  .openstack .selection input::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: #555;
     font-style: italic; }
-  .selection input:-ms-input-placeholder {
+  .openstack .selection input:-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: #555;
     font-style: italic; }
-  .selection::-webkit-input-placeholder {
+  .openstack .selection::-webkit-input-placeholder {
     /* WebKit browsers */
     color: #555;
     font-style: italic; }
-  .selection:-moz-placeholder {
+  .openstack .selection:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: #555;
     font-style: italic; }
-  .selection::-moz-placeholder {
+  .openstack .selection::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: #555;
     font-style: italic; }
-  .selection:-ms-input-placeholder {
+  .openstack .selection:-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: #555;
     font-style: italic; }
@@ -2452,11 +2448,9 @@ select.select3.disabled {
   padding: 6px;
   color: #d0d0d0;
   background: #2b2b35;
-  -webkit-transition: background .2s;
-  -moz-transition: background .2s;
-  -ms-transition: background .2s;
-  -o-transition: background .2s;
-  transition: background .2s; }
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out; }
   .selectbox .selection:hover {
     background: #32323d; }
 
@@ -2475,7 +2469,6 @@ select.select3.disabled {
 .selectbox .dropdown {
   display: none;
   position: absolute;
-  /*left      : 0;*/
   width: 100%;
   min-width: 160px;
   margin-top: 1px;
@@ -4155,7 +4148,6 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .xdsoft_scroller_box {
   position: relative; }
 
-<<<<<<< HEAD
 .warning-red {
   display: block;
   text-align: center;
@@ -4168,7 +4160,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   .warning-red a {
     color: #ffffff;
     text-decoration: underline; }
-=======
+
 /* custom scrollbar */
 *::-webkit-scrollbar {
   width: 8px;
@@ -4180,4 +4172,3 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   border-radius: 8px; }
   *::-webkit-scrollbar-thumb:hover {
     background: rgba(100, 100, 100, 0.5); }
->>>>>>> feature/openstack

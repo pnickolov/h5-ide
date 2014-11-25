@@ -170,7 +170,7 @@
     <tbody> {{#each this}}{{#with attributes}}<tr>
         <td>
         {{#doubleIf visopsTag visopsTag.app }}
-          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
         {{else}}
           <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
@@ -261,7 +261,7 @@
                 <td>
                     {{#doubleIf visopsTag visopsTag.app }}
                         <div class="table-app-link-wrap"><span
-                                class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip"
+                                class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
                                 data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
                                 data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
                     {{else}}
@@ -315,7 +315,7 @@
     <tbody>{{#each this}}{{#with attributes}} <tr>
         <td>
         {{#doubleIf visopsTag visopsTag.app }}
-          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
         {{else}}
           <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
         {{/doubleIf}}
@@ -363,7 +363,7 @@
       <tr>
         <td>
           {{#doubleIf visopsTag visopsTag.app }}
-            <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+            <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
           {{else}}
             <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
           {{/doubleIf}}
@@ -451,7 +451,7 @@
                     <td>
                         {{#doubleIf visopsTag visopsTag.app }}
                             <div class="table-app-link-wrap"><span
-                                    class="{{#if visopsTag.isOwner}}table-app-link{{/if}} truncate tooltip"
+                                    class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
                                     data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
                                     data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
                         {{else}}

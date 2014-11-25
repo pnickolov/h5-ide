@@ -2,21 +2,21 @@
 // SG ACL Property
 
 #security-group-select {
-	position: absolute;
-	top: 0;
-	right: 0;
-}
+	position : absolute;
+	top      : 0;
+	right    : 0;
 
-#security-group-select .dropdown-toggle {
-	width: 36px;
-	height: 36px;
-	background-color: #EEE;
-	display: inline-block;
-}
+	.dropdown-toggle {
+		width: 36px;
+		height: 36px;
+		background-color: #EEE;
+		display: inline-block;
+	}
 
-#security-group-select .dropdown-menu {
-	top: 38px;
-	left: -120px;
+	.dropdown-menu {
+		top: 38px;
+		left: -120px;
+	}
 }
 
 #security-group-select .dropdown-menu li a div.truncate {
@@ -61,100 +61,99 @@
 	}
 }
 
-.acl-sg-info-list.property-list > li {
-	height  : 52px;
-	padding : 8px 0 16px 10px;
-	width   : auto;
-	position: relative;
-}
-
 .acl-sg-info-list.property-list {
 	border-top: none;
-}
 
-.acl-sg-info-list.property-list li:last-child {
-	border-bottom: none;
-}
+	> li {
+		height  : 52px;
+		padding : 8px 0 16px 10px;
+		width   : auto;
+		position: relative;
 
-.acl-info-list.property-list > li {
-	height  : 38px;
-}
+		&:last-child {
+			border-bottom: none;
+		}
+	} 
+	
+	.col1 {
+		margin-right: 15px;
+		width       : 15px;
+		float       : left;
+		margin-top  : 13px;
 
-.acl-sg-info-list .col1 {
-	margin-right: 15px;
-	width       : 15px;
-	float       : left;
-	margin-top  : 13px;
-}
+		&.checkbox-wrap {
+			margin-top  : 20px;
+		}
+	}
 
-.acl-sg-info-list .col1.checkbox-wrap {
-	margin-top  : 20px;
-}
+	.col2 {
+		width     : 170px;
+		float     : left;
+		word-wrap : break-word;
 
-.acl-sg-info-list .col2 {
-	width     : 170px;
-	float     : left;
-	word-wrap : break-word;
-}
+		> div {
+			width: 210px;
+		}
 
-.acl-sg-info-list .col2 > div {
-	width: 210px;
-}
+		.col2-1 {
+			color: #e0e0e0;
+			margin-bottom: 8px;
+		}
+		.col2-2 {
+			color: #bbb;
+			font-size: 12px;
+		}
+		.col2-3 {
+			color: #999;
+			font-size: 12px;
+		}
+	}
 
-.acl-sg-info-list .col2 .col2-1 {
-	color: #e0e0e0;
-	margin-bottom: 8px;
-}
-.acl-sg-info-list .col2 .col2-2 {
-	color: #bbb;
-	font-size: 12px;
-}
-.acl-sg-info-list .col2 .col2-3 {
-	color: #999;
-	font-size: 12px;
-}
-.acl-sg-info-list .col3 {
-	float        : right;
-	margin-top   : -8px;
-	position     : relative;
+	.col3 {
+		float        : right;
+		margin-top   : -8px;
+		position     : relative;
 
-	text-align : center;
+		text-align : center;
 
-	cursor      : pointer;
-	width       : 40px;
-	height      : 76px;
-	line-height : 76px;
+		cursor      : pointer;
+		width       : 40px;
+		height      : 76px;
+		line-height : 76px;
+
+		@include transit($method:background,$dur:.2s);
+
+		&:hover {
+			background-color: rgba(0,0,0,.2);
+		}
+	}
+	
+	&.acl-info-list {
+		> li {
+			height  : 38px;
+		}
+
+		.col3 {
+			height      : 62px;
+			line-height : 62px;
+		}
+	}
+
+	.sg-list-association-check {
+		float: left;
+		margin-right: 10px;
+
+		&.hide {
+			display: none;
+		}
+	}
+
+	.sg-list-delete-btn {
+		cursor       : pointer;
+	}
 
 
-	-webkit-transition : background .2s;
-	-moz-transition    : background .2s;
-	-ms-transition     : background .2s;
-	-o-transition      : background .2s;
-	transition         : background .2s;
-}
-
-.acl-info-list .col3 {
-	height      : 62px;
-	line-height : 62px;
-}
-
-.acl-sg-info-list .col3:hover {
-	background-color: rgba(0,0,0,.2);
-}
-
-.acl-sg-info-list .sg-list-association-check {
-	float: left;
-	margin-right: 10px;
-}
-
-.acl-sg-info-list .sg-list-association-check.hide {
-	display: none;
-}
-
-.acl-sg-info-list .sg-list-delete-btn {
-	cursor       : pointer;
-
-}
+} 
 
 .icon-btn-details {
 	width  : 16px;
@@ -183,7 +182,6 @@
 
 		border-top    : 1px solid darken($bg-p,5%);
 		border-bottom : 1px solid darken($bg-p,5%);
-		// box-shadow    : inset 0 1px 0 rgba(255,255,255,.05), 0 2px 2px rgba(0,0,0,.1);
 	}
 }
 
@@ -199,44 +197,49 @@
 	display    : inline-block;
 }
 
-.acl-rule-allow-cb.icon-allow {
-	color: #17c249;
+.icon-allow {
+	color: $base-g;
 }
 
-.acl-rule-allow-cb.icon-deny {
-	color: #F74A48;
+.icon-deny {
+	color: $light-r;
 }
 
-#modal-acl-rule .sg-protocol-option-input.show {
-	display: block;
-}
+/* Add ACL Rule Modal */
 
-#modal-acl-rule .sg-protocol-option-input {
-	display: none;
-}
+#modal-acl-rule {
+	.sg-protocol-option-input {
+		display: none;
 
-#modal-acl-rule .simple-protocol-select {
-	list-style: none;
-	margin-left: 95px;
-	margin-top: 20px;
-	border: 1px dashed;
-	padding: 5px;
-	width: 325px;
-}
+		&.show {
+			display: block;
+		}
+	}
 
-#modal-acl-rule .simple-protocol-select li {
-	cursor: pointer;
-	color: #148BE6;
-	font-size: 12px;
-	padding: 5px 0;
-	display: inline-block;
-	text-align: center;
-	width: 79px;
-}
+	.simple-protocol-select {
+		list-style  : none;
+		margin-left : 95px;
+		margin-top  : 20px;
+		border      : 1px dashed;
+		padding     : 5px;
+		width       : 325px;
 
-#modal-acl-rule .simple-protocol-select li:hover {
-	text-decoration: underline;
-}
+		li {
+			cursor     : pointer;
+			color      : $base-b;
+			font-size  : 12px;
+			padding    : 5px 0;
+			display    : inline-block;
+			text-align : center;
+			width      : 79px;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+} 
+
 
 // RDS Instance Property
 

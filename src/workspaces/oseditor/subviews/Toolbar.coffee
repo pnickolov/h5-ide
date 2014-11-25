@@ -426,7 +426,7 @@ define [
         hasScroll: true
         maxHeight: "450px"
         cancel: "Close"
-      cloudType = that.workspace.opsModel.get('cloudType')
+      cloudType = that.workspace.opsModel.type
       that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
       if hasNewServer then appAction.renderKpDropdown(that.updateModal, cloudType)
       that.updateModal.on 'confirm', ->

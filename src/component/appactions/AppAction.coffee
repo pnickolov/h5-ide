@@ -16,12 +16,13 @@ define [
   'kp_dropdown'
   'OsKp'
   'TaGui'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA )->
+  'OpsModel'
+], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
   AppAction = Backbone.View.extend
 
     runStack: (event, workspace)->
       @workspace = workspace
-      cloudType = @workspace.opsModel.get('cloudType')
+      cloudType = @workspace.opsModel.type
       that = @
       if $(event.currentTarget).attr('disabled')
         return false
@@ -33,7 +34,7 @@ define [
         confirm:
           text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
           disabled: true
-      if cloudType is 'openstack'
+      if cloudType is OpsModel.Type.OpenStack
         @modal.find(".estimate").hide()
         @modal.resize()
       @renderKpDropdown(@modal, cloudType)
@@ -80,7 +81,7 @@ define [
         App.user.off 'change:credential'
 
     renderKpDropdown: (modal, cloudType)->
-      if cloudType is 'openstack'
+      if cloudType is OpsModel.Type.OpenStack
         unless OsKp::hasResourceWithDefaultKp()
           return false
         osKeypair = new OsKp()
@@ -107,7 +108,7 @@ define [
       selector.hide()
 
     defaultKpIsSet: (cloudType)->
-      if cloudType is 'openstack'
+      if cloudType is OpsModel.Type.OpenStack
         if OsKp::hasResourceWithDefaultKp() and OsKp::defaultKpNotSet()
           @showError('kp', lang.IDE.RUN_STACK_MODAL_KP_WARNNING)
           return false
@@ -193,9 +194,9 @@ define [
 
     checkBeforeStart: (app)->
       comp = null
-      cloudType = app.get("cloudType")
+      cloudType = app.type
       defer = new Q.defer()
-      if cloudType is "openstack"
+      if cloudType is OpsModel.Type.OpenStack
         console.log "CloudType is OpenStack"
         defer.resolve({})
       else
@@ -224,8 +225,8 @@ define [
       defer.promise
 
     checkBeforeStop: (app)->
-      cloudType = app.get('cloudType')
-      if cloudType is "openstack"
+      cloudType = app.type
+      if cloudType is OpsModel.Type.OpenStack
         console.log "CloudType is OpenStack"
         defer = new Q.defer()
         defer.resolve()
@@ -238,7 +239,7 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
       that = this
-      cloudType = app.get('cloudType')
+      cloudType = app.type
       isProduction = app.get('usage') is "production"
       appName = app.get('name')
       stopModal = new modalPlus {
@@ -264,7 +265,7 @@ define [
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
 
-        if cloudType is 'openstack'
+        if cloudType is OpsModel.Type.OpenStack
           stopModal.tpl.find(".modal-footer").show()
           stopModal.tpl.find('.modal-body').css('padding', "0").html AppTpl.stopAppConfirm {isProduction, appName}
           stopModal.resize()
@@ -340,8 +341,8 @@ define [
         }
         disableClose: true
       )
-      cloudType = app.get('cloudType')
-      if cloudType is 'openstack'
+      cloudType = app.type
+      if cloudType is OpsModel.Type.OpenStack
         @__terminateApp(id, null, terminateConfirm)
         return false
 
@@ -361,11 +362,11 @@ define [
       app  = App.model.appList().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
-      cloudType = app.get('cloudType')
+      cloudType = app.type
       # renderLoading
 
       fetchJsonData = ->
-        if cloudType is 'openstack'
+        if cloudType is OpsModel.Type.OpenStack
           defer = new Q.defer()
           defer.resolve()
           defer.promise
@@ -373,7 +374,7 @@ define [
           app.fetchJsonData()
 
       fetchJsonData().then ->
-        if cloudType is 'openstack'
+        if cloudType is OpsModel.Type.OpenStack
           hasDBInstance = null
           notReadyDB = []
         else

@@ -6,9 +6,10 @@ define [
     'underscore'
     'OsKp'
     '../ossglist/view'
+    'ApiRequest'
     'ApiRequestOs'
     'OpsModel'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, OpsModel ) ->
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, ApiRequestOs, OpsModel ) ->
 
   OsPropertyView.extend {
 
@@ -62,14 +63,18 @@ define [
         that = this
         region = Design.instance().region()
 
-        reqApi = "ins_GetConsoleOutput" # for aws
         if Design.instance().type() is OpsModel.Type.OpenStack
             reqApi = "os_server_GetConsoleOutput" # for openstack
-
-        ApiRequest(reqApi, {
-            region : region
-            server_id    : serverId
-        }).then @refreshSysLog, @refreshSysLog
+            ApiRequestOs(reqApi, {
+                region : region
+                server_id    : serverId
+            }).then @refreshSysLog, @refreshSysLog
+        else
+            reqApi = "ins_GetConsoleOutput" # for aws
+            ApiRequest(reqApi, {
+                region : region
+                server_id    : serverId
+            }).then @refreshSysLog, @refreshSysLog
 
         modal MC.template.modalInstanceSysLog {
             instance_id: serverId,

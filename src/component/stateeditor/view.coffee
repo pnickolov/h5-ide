@@ -9,10 +9,11 @@ define [ 'component/stateeditor/model',
          'component/stateeditor/validate',
          'constant',
          'component/stateeditor/lib/markdown',
+         'ApiRequest'
          'ApiRequestOs'
          'OpsModel'
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, OpsModel) ->
+], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, ApiRequestOs, OpsModel) ->
 
     StateClipboard = []
 
@@ -3362,14 +3363,18 @@ define [ 'component/stateeditor/model',
 
             region = Design.instance().region()
 
-            reqApi = "ins_GetConsoleOutput" # for aws
             if Design.instance().type() is OpsModel.Type.OpenStack
                 reqApi = "os_server_GetConsoleOutput" # for openstack
-
-            ApiRequest(reqApi, {
-                region: region
-                server_id: serverId
-            }).then @refreshSysLog, @refreshSysLog
+                ApiRequestOs(reqApi, {
+                    region: region
+                    server_id: serverId
+                }).then @refreshSysLog, @refreshSysLog
+            else
+                reqApi = "ins_GetConsoleOutput" # for aws
+                ApiRequest(reqApi, {
+                    region: region
+                    server_id: serverId
+                }).then @refreshSysLog, @refreshSysLog
 
             modal MC.template.modalInstanceSysLog {
                 instance_id: serverId,

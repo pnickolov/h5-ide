@@ -90,6 +90,8 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             console.error err
 
         renderKeys: ( data ) ->
+            if not @collection.isReady()
+                return false
             if data and arguments.length is 1
                 data =  keys: data, hideDefaultNoKey: true
             else
@@ -102,10 +104,8 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
                     data.defaultKey = true
 
             data.isRunTime = @__mode is 'runtime'
-
-            if data.keys.length
-                @dropdown.setContent template.keys data
-                @dropdown.toggleControls true
+            @dropdown.setContent template.keys data
+            @dropdown.toggleControls true
             @
 
         renderDropdown: () ->

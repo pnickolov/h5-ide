@@ -63,13 +63,8 @@ define [ '../base/view',
             "click #property-asg-policies .icon-del"       : "delScalingPolicy"
             'change #property-res-desc'                    : 'onChangeDescription'
 
-        render     : () ->
-            selectTopicName = @model.getNotificationTopicName()
-
-            @snsNotiDropdown = new snsDropdown selection: selectTopicName
-            @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
-
-            @addSubView @snsNotiDropdown
+        render: () ->
+            @createSnsNotiDropdown @model.getNotificationTopicName()
 
             data = @model.toJSON()
 
@@ -87,6 +82,13 @@ define [ '../base/view',
 
             data.name
 
+        createSnsNotiDropdown: ( selection ) ->
+            params = if selection then selection: selection else {}
+            @snsNotiDropdown = new snsDropdown params
+            @snsNotiDropdown.on 'change', @model.setNotificationTopic, @model
+            @addSubView @snsNotiDropdown
+            @snsNotiDropdown
+
         onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
         wheatherHasNoti: ->
@@ -102,7 +104,7 @@ define [ '../base/view',
                 @$( '#sns-placeholder' ).html @snsNotiDropdown.render( true ).el
                 @$( '.sns-group' ).show()
             else if originHasNoti and not hasNoti
-                @snsNotiDropdown = new snsDropdown()
+                @createSnsNotiDropdown()
                 @model.removeTopic()
                 @$( '.sns-group' ).hide()
 

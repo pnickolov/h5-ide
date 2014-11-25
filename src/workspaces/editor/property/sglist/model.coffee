@@ -49,7 +49,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 				if not needShow
 					continue
 
-				if sg.isDefault() or readonly or sg.get("appId")
+				if sg.isDefault() or readonly
 					deletable = false
 				else
 					deletable = true

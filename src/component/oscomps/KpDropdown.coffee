@@ -167,7 +167,8 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       if not @collection.isReady()
         return false
       data = keys : @collection.toJSON()
-      @modal.setContent template.keys data
+      if data.keys.length
+        @modal.setContent template.keys data
       @
 
     __events:

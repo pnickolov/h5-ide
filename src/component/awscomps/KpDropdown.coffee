@@ -103,8 +103,9 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
 
             data.isRunTime = @__mode is 'runtime'
 
-            @dropdown.setContent template.keys data
-            @dropdown.toggleControls true
+            if data.keys.length
+                @dropdown.setContent template.keys data
+                @dropdown.toggleControls true
             @
 
         renderDropdown: () ->

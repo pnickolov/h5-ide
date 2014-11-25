@@ -29,9 +29,9 @@ define [ '../base/view',
       "PercentChangeInCapacity" : lang.PROP.ASG_ADD_POLICY_ADJUSTMENT_PERCENT
 
     adjustdefault =
-      "ChangeInCapacity"        : "eg. -1"
-      "ExactCapacity"           : "eg. 5"
-      "PercentChangeInCapacity" : "eg. -30"
+      "ChangeInCapacity"        : lang.PROP.EG_MINUS_1
+      "ExactCapacity"           : lang.PROP.EG_5
+      "PercentChangeInCapacity" : lang.PROP.EG_MINUS_30
 
     adjustTooltip =
       "ChangeInCapacity"        : lang.PROP.ASG_ADJUST_TOOLTIP_CHANGE

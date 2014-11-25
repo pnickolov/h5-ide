@@ -177,7 +177,7 @@ define [
       ])
 
       if @model.get('engine') is constant.DB_ENGINE.MYSQL
-        svgEl.add( svg.use("port_diamond").attr({'data-name' : 'replica'}), 0 )
+        svgEl.add( svg.use("port_diamond").attr({"class":"port", 'data-name' : 'replica'}), 0 )
         if @model.master()
           svgEl.add( svg.plain("REPLICA").move(45,60).classes("replica-text") )
           svgEl.add( svg.use("replica_dragger").attr({"class" : "dbreplicate tooltip"}) )
@@ -216,7 +216,7 @@ define [
 
         appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
         if appData
-          backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
+          backup = "" + appData.get('BackupRetentionPeriod') isnt "0"
 
         if m.slaves().length < 5
 

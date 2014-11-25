@@ -4,6 +4,10 @@ module.exports =
 
   IDE:
 
+    COMMA:
+      en: ", "
+      zh: "，"
+
     NAV_TIT_DASHBOARD:
       en: "Dashboard"
       zh: "仪表板"
@@ -2115,6 +2119,26 @@ VisualOps API. You cannot UNDO this action.'
     GOOD_JOB_NO_NOTICE_HERE:
       en: "Good job! No notice here."
       zh: "真棒！没有提示。"
+
+    GREAT_JOB_NO_ERROR_WARNING_NOTICE_HERE:
+      en: "Great job! No error, warning or notice here."
+      zh: "真棒！没有错误，警告和提示。"
+
+    NO_ERROR_WARNING_OR_NOTICE:
+      en: "No error, warning or notice."
+      zh: "没有错误、警告和提示。"
+
+    LENGTH_ERROR:
+      en: "%s error(s), "
+      zh: "%s 个错误"
+
+    LENGTH_WARNING:
+      en: "%s warning(s)"
+      zh: "%s 个警告"
+
+    LENGTH_NOTICE:
+      en: "%s notice(s)"
+      zh: "%s 个提示"
 
     SOME_ERROR_VALIDATION_ONLY_HAPPENS_AT_THE_TIME_TO_RUN_STACK:
       en: "Some error validation only happens at the time to run stack."

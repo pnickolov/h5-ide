@@ -2,10 +2,10 @@
 #  View(UI logic) for component/trustedadvisor
 #############################
 
-define [ 'event',
+define [ 'event', 'i18n!/nls/lang.js',
          './tpl/template', './tpl/modal_template',
          'backbone', 'jquery', 'handlebars'
-], ( ide_event, template, modal_template ) ->
+], ( ide_event, lang, template, modal_template ) ->
 
     TrustedAdvisorView = Backbone.View.extend {
 
@@ -47,7 +47,7 @@ define [ 'event',
             else if notice.length
                 $tabs.eq( 2 ).click()
             else
-                @$el.find( '.validation-content' ).text 'Great job! No error, warning or notice here.'
+                @$el.find( '.validation-content' ).text lang.IDE.GREAT_JOB_NO_ERROR_WARNING_NOTICE_HERE
                 @$el.find( '.validation-content' ).addClass 'empty'
 
         processDetails: () ->
@@ -61,21 +61,21 @@ define [ 'event',
             $summary = $details.find 'summary'
 
             processNutshell = ( notShow ) ->
-                content = ''
+                contentArr = []
                 if error.length
-                    content += "#{error.length} error(s), "
+                    contentArr.push sprintf lang.IDE.LENGTH_ERROR, error.len
                     _.defer () ->
                         modal.position()
 
                 if warning.length
-                    content += "#{warning.length} warning(s), "
+                    contentArr.push sprintf lang.IDE.LENGTH_WARNING, warning.length
                 if notice.length
-                    content += "#{notice.length} notice(s), "
+                    contentArr.push sprintf lang.IDE.LENGTH_NOTICE, notice.length
 
-                if not content
-                    content = 'No error, warning or notice.'
+                if not contentArr.length
+                    content = lang.IDE.NO_ERROR_WARNING_OR_NOTICE
                 else
-                    content = content.slice 0, -2
+                    content = contentArr.join lang.IDE.COMMA
 
                 $nutshell.find( 'label' ).text content
                 $nutshell.click () ->

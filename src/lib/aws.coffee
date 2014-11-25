@@ -53,7 +53,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
         resAttrDataAry = []
 
-        if Design.instance().type() is OpsModel.Type.Amazon
+        if Design.instance().type() isnt OpsModel.Type.OpenStack
 
             _getSelectedASGModelByLC = () ->
 

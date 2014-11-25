@@ -509,7 +509,21 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 			newParaValue = paraValue
 
-			if Design.instance().type() is OpsModel.Type.Amazon
+			if Design.instance().type() is OpsModel.Type.OpenStack
+
+				# openstack
+				_.each refMatchAry, (refMatchStr) ->
+
+					uidMatchAry = refMatchStr.match(uidRegex)
+					resUID = uidMatchAry[0]
+
+					uidToNameRefMap = that.get('uidToNameRefMap')
+					newRefStr = uidToNameRefMap[refMatchStr]
+					if not newRefStr
+						newRefStr = refMatchStr.replace(resUID, 'unknown')
+					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
+
+			else
 
 				# for aws
 				_.each refMatchAry, (refMatchStr) ->
@@ -534,20 +548,6 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 					null
 
-			else
-
-				# openstack
-				_.each refMatchAry, (refMatchStr) ->
-
-					uidMatchAry = refMatchStr.match(uidRegex)
-					resUID = uidMatchAry[0]
-
-					uidToNameRefMap = that.get('uidToNameRefMap')
-					newRefStr = uidToNameRefMap[refMatchStr]
-					if not newRefStr
-						newRefStr = refMatchStr.replace(resUID, 'unknown')
-					newParaValue = newParaValue.replace(refMatchStr, newRefStr)
-
 			return newParaValue
 
 		replaceParaNameToUID: (paraValue) ->
@@ -561,7 +561,19 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 
 			newParaValue = paraValue
 
-			if Design.instance().type() is OpsModel.Type.Amazon
+			if Design.instance().type() is OpsModel.Type.OpenStack
+
+				# for open stack
+				_.each refMatchAry, (refMatchStr) ->
+
+					resName = refMatchStr.replace('@{', '').split('.')[0]
+					if resName isnt 'self'
+						nameToUIDRefMap = that.get('nameToUIDRefMap')
+						newUIDStr = nameToUIDRefMap[refMatchStr]
+						newParaValue = newParaValue.replace(refMatchStr, newUIDStr) if newUIDStr
+					null
+
+			else
 
 				# for aws
 				_.each refMatchAry, (refMatchStr) ->
@@ -572,18 +584,6 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone',
 						if resUID
 							newUIDStr = refMatchStr.replace(resName, resUID)
 							newParaValue = newParaValue.replace(refMatchStr, newUIDStr)
-					null
-
-			else
-
-				# for open stack
-				_.each refMatchAry, (refMatchStr) ->
-
-					resName = refMatchStr.replace('@{', '').split('.')[0]
-					if resName isnt 'self'
-						nameToUIDRefMap = that.get('nameToUIDRefMap')
-						newUIDStr = nameToUIDRefMap[refMatchStr]
-						newParaValue = newParaValue.replace(refMatchStr, newUIDStr) if newUIDStr
 					null
 
 			return newParaValue

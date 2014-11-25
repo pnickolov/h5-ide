@@ -2,7 +2,7 @@
 #  View Mode for component/stateeditor
 #############################
 
-define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", 'backbone', 'jquery', 'underscore', "OpsModel" ], (MC, constant, CloudResources, Design, ApiRequest, OpsModel ) ->
+define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel", 'backbone', 'jquery', 'underscore' ], (MC, constant, CloudResources, Design, ApiRequest, OpsModel ) ->
 
 	StateEditorModel = Backbone.Model.extend {
 

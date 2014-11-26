@@ -3372,7 +3372,7 @@ define [ 'component/stateeditor/model',
             else
                 reqApi = "ins_GetConsoleOutput" # for aws
                 ApiRequest(reqApi, {
-                    region: region
+                    region_name: region
                     instance_id: serverId
                 }).then @refreshSysLog, @refreshSysLog
 
@@ -3387,17 +3387,23 @@ define [ 'component/stateeditor/model',
 
             $('#modal-instance-sys-log .instance-sys-log-loading').hide()
 
-            if result and result.output
+            if result
 
-                logContent = Base64.decode(result.output)
-                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+                output = result.GetConsoleOutputResponse?.output
+                if Design.instance().type() is OpsModel.Type.OpenStack
+                    output = result.output
 
-                $contentElem.html MC.template.convertBreaklines({content:logContent})
-                $contentElem.show()
+                if output
 
-            else
+                    logContent = Base64.decode(output)
+                    $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
 
-                $('#modal-instance-sys-log .instance-sys-log-info').show()
+                    $contentElem.html MC.template.convertBreaklines({content:logContent})
+                    $contentElem.show()
+                    modal.position()
+                    return
+
+            $('#modal-instance-sys-log .instance-sys-log-info').show()
 
             modal.position()
 

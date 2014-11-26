@@ -153,7 +153,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
 
             that = this
             ApiRequest("ins_GetConsoleOutput",{
-                region      : Design.instance().region()
+                region_name : Design.instance().region()
                 instance_id : instanceId
             }).then ( data )->
                 that.refreshSysLog( data.GetConsoleOutputResponse )

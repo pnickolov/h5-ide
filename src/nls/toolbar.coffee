@@ -483,9 +483,13 @@ module.exports =
       en: "Discard Updates"
       zh: "取消应用更新"
 
+    TIP_FORGET_APP:
+      en: "Forget the App, but keep all Resources"
+      zh: "移除App, 但保留所有AWS资源"
+
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"
-      zh: "终结App"
+      zh: "终结App, 将删除所有属于此App的AWS资源"
 
     POP_TIT_TERMINATE_APP:
       en: "Confirm to Terminate App"

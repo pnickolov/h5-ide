@@ -394,8 +394,10 @@ function fn_generate_coffee() {
             _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
         fi
 
-        echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
-    
+        if [ "${_CUR_API}" != "del_account" ]
+        then
+            echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
+        fi
 
         _LAST_API=${_CUR_API}
 

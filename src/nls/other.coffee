@@ -1732,6 +1732,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Name"
       zh: "名称"
 
+    BUBBLE_VALUE:
+      en: "Value"
+      zh: "值"
+
     BUBBLE_DESCRIPTION:
       en: "Description"
       zh: "描述"

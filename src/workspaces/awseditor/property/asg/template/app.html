@@ -199,20 +199,21 @@
   <div class="option-group" id="property-asg-sns">
 
     {{#unless isEditable}}
-      <div class="property-asg-notification-wrap property-control-group">
+      <dl class="dl-vertical">
         {{#if sendNotify}}
-        <label>{{i18n "PROP.ASG_LBL_SEND_NOTIFICATION"}}</label>
-        <section>
-          {{#if notifies.[0]}}<p>{{i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_LAUNCH"}}</p>{{/if}}
-          {{#if notifies.[1]}}<p>{{i18n "PROP.ASG_LBL_FAILED_INSTANCES_LAUNCH"}}</p>{{/if}}
-          {{#if notifies.[2]}}<p>{{i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_TERMINATE"}}</p>{{/if}}
-          {{#if notifies.[3]}}<p>{{i18n "PROP.ASG_LBL_FAILED_INSTANCES_TERMINATE"}}</p>{{/if}}
-          {{#if notifies.[4]}}<p>{{i18n "PROP.ASG_LBL_VALIDATE_SNS"}}</p>{{/if}}
-        </section>
+        <dt>{{i18n "PROP.ASG_LBL_SEND_NOTIFICATION"}}</dt>
+          {{#if notifies.[0]}}<dd>{{i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_LAUNCH"}}</dd>{{/if}}
+          {{#if notifies.[1]}}<dd>{{i18n "PROP.ASG_LBL_FAILED_INSTANCES_LAUNCH"}}</dd>{{/if}}
+          {{#if notifies.[2]}}<dd>{{i18n "PROP.ASG_LBL_SUCCESS_INSTANCES_TERMINATE"}}</dd>{{/if}}
+          {{#if notifies.[3]}}<dd>{{i18n "PROP.ASG_LBL_FAILED_INSTANCES_TERMINATE"}}</dd>{{/if}}
+          {{#if notifies.[4]}}<dd>{{i18n "PROP.ASG_LBL_VALIDATE_SNS"}}</dd>{{/if}}
         {{else}}
-        <p class="property-info tac">{{i18n "PROP.ASG_MSG_NO_NOTIFICATION_WARN"}}</p>
+        <dd class="property-info tac">{{i18n "PROP.ASG_MSG_NO_NOTIFICATION_WARN"}}</dd>
         {{/if}}
-      </div>
+
+        <dt>{{i18n "PROP.SNS_TOPIC"}}</dt>
+        <dd>{{notiTopicName}}</dd>
+      </dl>
 
     {{else}}
       <div class="property-control-group property-asg-notification-wrap">

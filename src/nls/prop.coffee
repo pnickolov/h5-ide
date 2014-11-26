@@ -3314,6 +3314,9 @@ module.exports =
       en: "Create SNS Topic"
       zh: "创建 SNS 主题"
 
+    SNS_TOPIC:
+      en: "SNS Topic"
+      zh: "SNS 主题"
 
     NO_SNS_TOPIC_IN_XXX:
       en: "No SNS Topic in %s."

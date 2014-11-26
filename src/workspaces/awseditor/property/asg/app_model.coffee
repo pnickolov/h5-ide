@@ -42,6 +42,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'cooldown', asg_data.DefaultCooldown
             @set 'healCheckType', asg_data.HealthCheckType
             @set 'healthCheckGracePeriod', asg_data.HealthCheckGracePeriod
+            @set 'notiTopicName', @getNotificationTopicName()
 
             @handlePolicy asg_comp, asg_data
             @handleNotify asg_comp, asg_data

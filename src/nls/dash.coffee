@@ -451,6 +451,10 @@ module.exports =
       en: "IOPS"
       zh: "IOPS"
 
+    DASH_LBL_MULTI_AZ:
+      en: "Multiple AZ"
+      zh: "多可用区"
+
     DASH_LBL_AUTOMATED_BACKUP:
       en: "Automated Backup"
       zh: "自动备份"

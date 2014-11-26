@@ -106,9 +106,9 @@
 
       <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
 
-      <li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>
+      {{#if hasVGW}}<li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>{{/if}}
 
-      <li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>
+      {{#if hasCGW}}<li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>{{/if}}
 
       <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
     </ul>

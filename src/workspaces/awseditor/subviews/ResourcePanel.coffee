@@ -15,11 +15,12 @@ define [
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
+  'OpsModel'
   "backbone"
   'UI.radiobuttons'
   "UI.nanoscroller"
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -146,8 +147,15 @@ define [
 
     render : ()->
 
+      hasVGW = hasCGW = true
+
+      if Design.instance().region() is 'cn-north-1'
+          hasVGW = hasCGW = false
+
       @$el.html( LeftPanelTpl.panel({
-        rdsDisabled : @workspace.isRdsDisabled()
+        rdsDisabled : @workspace.isRdsDisabled(),
+        hasVGW: hasVGW,
+        hasCGW: hasCGW
       }) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)

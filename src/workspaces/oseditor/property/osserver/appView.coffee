@@ -8,8 +8,7 @@ define [
     '../ossglist/view'
     'ApiRequest'
     'ApiRequestOs'
-    'OpsModel'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, ApiRequestOs, OpsModel ) ->
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, ApiRequestOs ) ->
 
   OsPropertyView.extend {
 

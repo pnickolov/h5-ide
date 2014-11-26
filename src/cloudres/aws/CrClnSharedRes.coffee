@@ -62,7 +62,7 @@ define [
     model : CrSslcertModel
 
     doFetch : ()-> ApiRequest("iam_ListServerCertificates", {
-        region_name : Design.instance().region()
+        region_name : @region()
     })
     trAwsXml : (res)-> res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList?.member
     parseFetchData : (res)->

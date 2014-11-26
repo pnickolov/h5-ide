@@ -636,7 +636,7 @@ module.exports =
       zh: "启动 App"
 
     CONNECTION_LOST_TO_RECONNECT:
-      en: "Connection lost。 Attempting to reconnect..."
+      en: "Connection lost. Attempting to reconnect..."
       zh: "连接丢失。 正在尝试重连..."
 
     CHANGES_MAY_NOT_BE_SAVED:

@@ -25,7 +25,7 @@ module.exports =
 
     APP_ROllBACK_DESC:
       en: "The state of your app has been rolled back, except for the already deleted resources."
-      zh: "您的 App 状态已回滚, 除了已经删除的资源。"
+      zh: "您的 App 状态已回滚，除了已经删除的资源。"
 
     LBL_DONE:
       en: "Done"
@@ -33,11 +33,11 @@ module.exports =
 
     CONFIRM_ENABLE_STATE:
       en: "Enable VisualOps will override your custom User Data. Are you sure to continue?"
-      zh: "开启 VisualOps 将覆盖您的 User Data, 确定继续么?"
+      zh: "开启 VisualOps 将覆盖您的 User Data，确定继续么?"
 
     EXPORT_CLOUDFORMATION_WARNNING:
       en: "DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be used instead."
-      zh: "数据库实例的自定义选项组在 CloudFormation 里不支持, 将使用默认的选项组。"
+      zh: "数据库实例的自定义选项组在 CloudFormation 里不支持，将使用默认的选项组。"
 
     STACK_VALIDATION:
       en: "Stack Validation"
@@ -81,7 +81,7 @@ module.exports =
 
     IMPORT_SUCCESSFULLY_WELL_DONE:
       en: "Well done! Your VPC %s has been successfully imported as VisualOps app."
-      zh: "很好! 您的 VPC 已经成功导入为 VisualOps App。"
+      zh: "很好！您的 VPC 已经成功导入为 VisualOps App。"
 
     MONITOR_REPORT_EXTERNAL_RESOURCE:
       en: "Monitor and report external resource change of this app"
@@ -121,7 +121,7 @@ module.exports =
 
     CONFIRM_REMOVE_APP:
       en: "Do you want to remove the app?"
-      zh: "您确认要移除此 App 吗?"
+      zh: "您确认要移除此 App 吗？"
 
     CLOUD_RESOURCE_KEY_PAIR:
       en: "Key Pair"
@@ -209,7 +209,7 @@ module.exports =
 
     POP_BODY_DELETE_STACK:
       en: "Do you confirm to delete stack '%s'?"
-      zh: "确认删除 Stack '%s' 吗?"
+      zh: "确认删除 Stack '%s' 吗？"
 
     POP_BTN_DELETE_STACK:
       en: "Delete"
@@ -245,11 +245,11 @@ module.exports =
 
     POP_BODY_DUPLICATE_STACK:
       en: "New Stack Name:"
-      zh: "Stack 名称:"
+      zh: "Stack 名称："
 
     POP_BODY_APP_To_STACK:
       en: "New Stack Name:"
-      zh: "Stack 名称:"
+      zh: "Stack 名称："
 
     POP_BTN_DUPLICATE_STACK:
       en: "Duplicate"
@@ -304,19 +304,19 @@ module.exports =
       zh: "替换原始 Stack"
 
     POP_REPLACE_STACK_INTRO:
-      en: "This app is launched from stack"
-      zh: "此 App 是从 stack"
+      en: "This app is launched from Stack"
+      zh: "此 App 是从 Stack"
 
     POP_REPLACE_STACK_INTRO_END:
       en: ". Entirely replace the stack with current app design."
-      zh: "启动的,。用当前配置完全替换该 Stack。"
+      zh: "启动的。用当前配置完全替换该 Stack。"
 
     POP_SAVE_NEW_STACK:
-      en: "Save as new stack"
+      en: "Save as new Stack"
       zh: "另存为新 Stack"
 
     POP_SAVE_STACK_INSTRUCTION:
-      en: "Specify a name for new stack:"
+      en: "Specify a name for new Stack:"
       zh: "指定新 Stack 的名字"
 
     POP_STACK_NAME_ERROR:
@@ -352,7 +352,7 @@ module.exports =
       zh: "确认暂停"
 
     POP_BODY_STOP_APP_LEFT:
-      en: "Do you confirm to stop app"
+      en: "Do you confirm to stop App"
       zh: "本操作将暂停 App 中的相关资源，您确认暂停当前App"
 
     POP_BODY_STOP_APP_RIGHT:
@@ -377,7 +377,7 @@ module.exports =
 
     POP_BODY_START_APP:
       en: "Do you confirm that you would like to start the app?"
-      zh: "本操作将恢复 App 中的相关资源，您确认恢复当前 App 吗?"
+      zh: "本操作将恢复 App 中的相关资源，您确认恢复当前 App 吗？"
 
     POP_START_CONFIRM_LIST_1:
       en: "EC2 instances will be started."
@@ -425,7 +425,7 @@ module.exports =
 
     POP_START_MISSING_SNAPSHOT_2:
       en: "'s final snapshot is missing. This DB instance cannot be restored."
-      zh: "的最终快照不存在， 此数据库实例将无法恢复。"
+      zh: "的最终快照不存在，此数据库实例将无法恢复。"
 
     POP_ESTIMATED_COST_WHEN_STOP:
       en: "Estimated Cost When Stopped"
@@ -445,7 +445,7 @@ module.exports =
 
     POP_CANT_STOP_2:
       en: "Wait for the DB instance(s) to be available. Then try to stop the app again."
-      zh: "请等到数据库实例状态可用时, 再重试停止 App"
+      zh: "请等到数据库实例状态可用时，再重试停止 App"
 
     POP_TAKE_DB_SNAPSHOT:
       en: "Take final snapshot for DB Instances."
@@ -465,7 +465,7 @@ module.exports =
 
     POP_FORCE_TERMINATE_CONTENT:
       en: "The app %s failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
-      zh: "App %s 种植失败, 您要强制删除它吗? 强制删除后, 您需要在 AWS 控制台里手动管理资源。"
+      zh: "App %s 种植失败，您要强制删除它吗? 强制删除后，您需要在 AWS 控制台里手动管理资源。"
 
     POP_BTN_START_APP:
       en: "Start"
@@ -473,7 +473,7 @@ module.exports =
 
     TIP_UPDATE_APP:
       en: "Edit App"
-      zh: "编辑App"
+      zh: "编辑 App"
 
     TIP_SAVE_UPDATE_APP:
       en: "Apply Updates"
@@ -485,11 +485,11 @@ module.exports =
 
     TIP_FORGET_APP:
       en: "Forget the App, but keep all Resources"
-      zh: "移除App, 但保留所有AWS资源"
+      zh: "移除App，但保留所有AWS资源"
 
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"
-      zh: "终结App, 将删除所有属于此App的AWS资源"
+      zh: "终结App，将删除所有属于此App的AWS资源"
 
     POP_TIT_TERMINATE_APP:
       en: "Confirm to Terminate App"
@@ -509,7 +509,7 @@ module.exports =
 
     POP_TIT_TERMINATE_PRD_APP:
       en: "Confirm to Terminate App for Production"
-      zh: "确认终结生产环境App"
+      zh: "确认终结生产环境 App"
 
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
@@ -533,15 +533,15 @@ module.exports =
 
     TOOLBAR_HANDLE_START_APP:
       en: "Start app"
-      zh: "恢复App"
+      zh: "恢复 App"
 
     TOOLBAR_HANDLE_STOP_APP:
       en: "Stop app"
-      zh: "暂停App"
+      zh: "暂停 App"
 
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
-      zh: "终结App"
+      zh: "终结 App"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
       en: "Convert to CloudFormation template"
@@ -573,11 +573,11 @@ module.exports =
 
     TIP_NO_CLASSIC_DATA_STACK:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can export existing stacks as CloudFormation template or as a PNG file. Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作。你可以将已存在的Stack导出为 CloudFormation 模板或者是 PNG 文件。点击此处阅读详细说明。"
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。我们已经禁止了在这些平台上的创建Stack，运行 App，和修改 App 操作。你可以将已存在的Stack导出为 CloudFormation 模板或者是 PNG 文件。点击此处阅读详细说明。"
 
     TIP_NO_CLASSIC_DATA_APP:
       en: "We will drop support for EC2 Classic and Default VPC soon. We have disabled create new stack, run app or edit app in those platforms. You can still manage the lifecycle of existing apps.  Click to read detailed announcement."
-      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。 我们已经禁止了在这些平台上的创建Stack, 运行 App, 和修改 App 操作。 您仍然可以管理已存在的 App。 点击此处阅读详细说明。"
+      zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。 我们已经禁止了在这些平台上的创建Stack，运行 App，和修改 App 操作。 您仍然可以管理已存在的 App。 点击此处阅读详细说明。"
 
     TIP_SG_LINE_STYLE:
       en: "SecurityGroup Line Style"
@@ -636,7 +636,7 @@ module.exports =
       zh: "启动 App"
 
     CONNECTION_LOST_TO_RECONNECT:
-      en: "Connection lost. Attempting to reconnect..."
+      en: "Connection lost。 Attempting to reconnect..."
       zh: "连接丢失。 正在尝试重连..."
 
     CHANGES_MAY_NOT_BE_SAVED:
@@ -653,23 +653,23 @@ module.exports =
 
     FORGET_VISUALOPS_CANT:
       en: "This app is created by Visualops with state, do not support forget currently"
-      zh: "此 App 是用 VisualOps 创建的, 里面有 State, 目前不支持释放。"
+      zh: "此 App 是用 VisualOps 创建的，里面有 State，目前不支持释放。"
 
     FORGET_CONFIRM_INSTRUCTION:
       en: "Forget it will not make your service unavailable. but Visualops will stop ensure your state in all instances."
-      zh: "释放 App 不会让您的停止, 但是 VisualOps 将不再对其进行资源监控。"
+      zh: "释放 App 不会让您的停止，但是 VisualOps 将不再对其进行资源监控。"
 
     FORGET_APP_CONFIRM:
       en: "Only remove app info from Visualops, all resources in the app will not be deleted. <br/>Do you confirm to forget app?"
-      zh: "仅在 VisualOps 里删除, 不会删除任何资源。<br/> 您确定要释放 App 吗?"
+      zh: "仅在 VisualOps 里删除，不会删除任何资源。<br/> 您确定要释放 App 吗?"
 
     RESOURCES_APP_CHANGED:
       en: "Resources of this App have been changed externally. This has been synced to your App. The diagram may be re-generated to reflect the change(s)."
-      zh: "此App 的资源在外部已经变化, 并且已经同步到App, 图表也将重新渲染以适用更改。"
+      zh: "此 App 的资源在外部已经变化，并且已经同步到App，图表也将重新渲染以适用更改。"
 
     WHAT_HAVE_BEEN_CHANGED:
       en: "What have been changed:"
-      zh: "已发生的更改:"
+      zh: "已发生的更改："
 
     POP_DIFF_NEW_RES:
       en: "New Resource"

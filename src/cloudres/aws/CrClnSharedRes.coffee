@@ -61,7 +61,9 @@ define [
     type  : constant.RESTYPE.IAM
     model : CrSslcertModel
 
-    doFetch : ()-> ApiRequest("iam_ListServerCertificates")
+    doFetch : ()-> ApiRequest("iam_ListServerCertificates", {
+        region_name : Design.instance().region()
+    })
     trAwsXml : (res)-> res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList?.member
     parseFetchData : (res)->
       for i in res

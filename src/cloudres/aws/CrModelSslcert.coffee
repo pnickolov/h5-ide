@@ -22,6 +22,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         servercer_name     : @get("Name")
         new_servercer_name : newAttr.Name
         new_path           : newAttr.Path
+        region_name    : Design.instance().region()
       }).then ( res )->
         oldArn = self.get('Arn')
         newArn = "#{oldArn.split('/')[0]}/#{newAttr.Name}"
@@ -62,5 +63,8 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
         self
 
-    doDestroy : ()-> ApiRequest("iam_DeleteServerCertificate", { servercer_name:@get("Name") })
+    doDestroy : ()-> ApiRequest("iam_DeleteServerCertificate", {
+        servercer_name: @get("Name"),
+        region_name: Design.instance().region()
+    })
   }

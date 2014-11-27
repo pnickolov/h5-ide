@@ -76,7 +76,7 @@ define [ 'ApiRequest'
                 modal = new Modal({
                     title        : lang.IDE.TITLE_CONFIRM_PROMOTE_READ_REPLICA
                     template     : template_component.modalPromoteConfirm({})
-                    confirm      : {text : "Confirm"}
+                    confirm      : {text : lang.PROP.DB_CONFIRM_PROMOTE}
                     disableClose : true
                     onConfirm : ()->
                         that.setPromote()

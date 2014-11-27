@@ -2126,7 +2126,7 @@ module.exports =
 
     DBINSTANCE_PROMOTE_CONFIRM_MAJOR:
       en: "The following steps show the general process for promoting a read replica to a Single-AZ DB instance."
-      zh: "以下几步展示了将一个制度副本提升为单 AZ 的数据库实例的一般过程"
+      zh: "以下几步展示了将一个只读副本提升为单 AZ 的数据库实例的一般过程"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1:
       en: "Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica."
@@ -2931,6 +2931,10 @@ module.exports =
       en: "Please update your Account Number with number"
       zh: "请更新您的 Account Number"
 
+    DB_CONFIRM_PROMOTE:
+      en: "Confirm"
+      zh: "确认"
+
     LBL_DELETING:
       en: "Deleting..."
       zh: "删除中..."
@@ -3397,7 +3401,3 @@ module.exports =
     EG_MINUS_30:
       en: "eg. -30"
       zh: "例如：-30"
-
-
-
-

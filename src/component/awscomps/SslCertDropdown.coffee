@@ -1,6 +1,5 @@
 define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'component/awscomps/SslCertTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, sslCertManage, comboDropdown, template, lang ) ->
 
-
     Backbone.View.extend
 
         tagName: 'section'

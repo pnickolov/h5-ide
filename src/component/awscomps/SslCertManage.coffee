@@ -145,11 +145,11 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
         delete: ( invalid, checked ) ->
             count = checked.length
-
+            that = @
             onDeleteFinish = @genDeleteFinish count
             @switchAction 'processing'
             _.each checked, ( c ) ->
-                m = @sslCertCol.get c.data.id
+                m = that.sslCertCol.get c.data.id
                 m?.destroy().then onDeleteFinish, onDeleteFinish
 
         update: ( invalid, checked ) ->
@@ -198,7 +198,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
             that = this
             sslCertId = data.id
-            sslCertData = sslCertCol.get(sslCertId).toJSON()
+            sslCertData = @sslCertCol.get(sslCertId).toJSON()
             sslCertData.Expiration = MC.dateFormat(new Date(sslCertData.Expiration), 'yyyy-MM-dd hh:mm:ss')
 
             detailTpl = template['detail_info']

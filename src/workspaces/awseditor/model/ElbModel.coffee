@@ -7,9 +7,9 @@ define [ "Design",
          "./SslCertModel",
          "./connection/SgAsso"
          "i18n!/nls/lang.js"
+         "CloudResources"
          "./connection/ElbAsso"
-
-], ( Design, constant, ResourceModel, ComplexResModel, SgModel, SslCertModel, SgAsso, lang )->
+], ( Design, constant, ResourceModel, ComplexResModel, SgModel, SslCertModel, SgAsso, lang, CloudResources )->
 
   Model = ComplexResModel.extend {
 
@@ -133,6 +133,7 @@ define [ "Design",
 
       if idx >= 0
 
+        sslCertCol = CloudResources constant.RESTYPE.IAM
         listeners = @get("listeners")
         sslCertData = sslCertCol.get(sslCertId)
         listeners[idx].sslCert = SslCertModel.createNew(sslCertData)

@@ -2291,3 +2291,23 @@ VisualOps API. You cannot UNDO this action.'
     LBL_OSVOL:
       en: "Volume"
       zh: "卷"
+
+    STARTING_YOUR_APP:
+      en: "Starting your app..."
+      zh: "正在启动 App ..."
+
+    TERMINATING_YOUR_APP:
+      en: "Terminating your app..."
+      zh: "正在终结 App ..."
+
+    STOPPING_YOUR_APP :
+      en: "Stopping your app..."
+      zh: "正在停止 App ..."
+
+    APPLYING_CHANGES_TO_YOUR_APP :
+      en: "Applying changes to your app..."
+      zh: "正在应用 App 的修改..."
+
+    PROCESSING_YOUR_REQUEST:
+      en: "Processing your request..."
+      zh: "正在处理请求 ..."

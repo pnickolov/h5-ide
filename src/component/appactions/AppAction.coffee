@@ -420,7 +420,7 @@ define [
         title: lang.IDE.TITLE_CONFIRM_TO_FORGET
         template: AppTpl.loading()
         confirm: {
-          text: "Forget"
+          text: lang.TOOLBAR.BTN_FORGET_CONFIRM
           color: "red"
           disabled: production
         }

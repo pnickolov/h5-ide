@@ -485,7 +485,11 @@ module.exports =
 
     TIP_FORGET_APP:
       en: "Forget the App, but keep all Resources"
-      zh: "移除App，但保留所有AWS资源"
+      zh: "释放App，但保留所有AWS资源"
+
+    BTN_FORGET_CONFIRM:
+      en: "Forget"
+      zh: "释放"
 
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"

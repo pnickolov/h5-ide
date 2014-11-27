@@ -95,16 +95,16 @@ define [
 
       switch opsModel.get("state")
         when OpsModel.State.Starting
-          text = "Starting your app..."
+          text = lang.IDE.STARTING_YOUR_APP
         when OpsModel.State.Stopping
-          text = "Stopping your app..."
+          text = lang.IDE.STOPPING_YOUR_APP
         when OpsModel.State.Terminating
-          text = "Terminating your app.."
+          text = lang.IDE.TERMINATING_YOUR_APP
         when OpsModel.State.Updating
-          text = "Applying changes to your app..."
+          text = lang.IDE.APPLYING_CHANGES_TO_YOUR_APP
         else
           console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
-          text = "Processing your request..."
+          text = lang.IDE.PROCESSING_YOUR_REQUEST
 
       @__progress = 0
 

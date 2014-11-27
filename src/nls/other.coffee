@@ -1121,18 +1121,18 @@ VisualOps API. You cannot UNDO this action.'
 
     POP_IMPORT_SELECT_LBL:
       en: " select a file."
-      zh: " 选择一个文件。"
+      zh: " 或者选择一个文件。"
 
     POP_IMPORT_ERROR:
       en: "An error occured when reading the file. Please try again."
       zh: "读取文件出错，请重试。"
 
     POP_IMPORT_FORMAT_ERROR:
-      en: "The json file is malformed."
+      en: "The JSON file is malformed."
       zh: "此 JSON 格式不正确。"
 
     POP_IMPORT_MODIFIED_ERROR:
-      en: "We do not support user modified json."
+      en: "User modified JSON is not supported."
       zh: "我们不支持用户修改过的文件。"
 
     ##### Modal Confirm Update
@@ -1414,7 +1414,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PROC_RLT_FAILED_SUB_TITLE:
       en: "Please fix the following issues and try again:"
-      zh: "请先解决以下下问题，然后重试。"
+      zh: "请先解决以下问题，然后重试。"
 
     PROC_ERR_INFO:
       en: "Error Details"

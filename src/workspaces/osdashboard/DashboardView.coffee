@@ -287,7 +287,7 @@ define [
       region = $tgt.closest("ul").attr("data-region")
 
       @visModal.close()
-      App.openOps App.model.createImportOps( region, "openstack", @model.provider, id )
+      App.openOps App.model.createImportOps( region, @model.provider, id )
       false
 
 

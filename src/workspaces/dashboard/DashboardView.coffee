@@ -401,7 +401,7 @@ define [
         id = $tgt.attr("data-vpcid")
         region = $tgt.closest("ul").attr("data-region")
         self.visModal.close()
-        App.openOps App.model.createImportOps( region, id )
+        App.openOps App.model.createImportOps( region, "aws::china", id )
         false
       return
 

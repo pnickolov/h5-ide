@@ -22,7 +22,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 
 			return if not (resModel and resModel.serialize)
 
-			resId = resModel.get('appId')
+			resId = options.resId or resModel.get('appId')
 			allCompData = Design.instance().serialize().component
 			compData = allCompData[resUID]
 

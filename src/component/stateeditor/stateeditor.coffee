@@ -11,7 +11,7 @@ define [ 'event', 'StateEditorView', 'component/stateeditor/model', 'component/s
         # resModel = Design.instance().component(uid)
 
         if compData
-            model = new Model({resUID: uid})
+            model = new Model({resUID: uid, resId: resId})
         else
             model = new Backbone.Model()
 

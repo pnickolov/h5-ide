@@ -44,7 +44,7 @@ define [
             that = this
 
             # popup modal
-            okText = 'OK, got it'
+            okText = lang.PROP.APP_DIFF_CHANGE_CONFIRM
             options =
                 template: template.frame()
                 title: lang.IDE.TITLE_APP_CHANGES

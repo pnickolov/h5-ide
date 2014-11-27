@@ -488,6 +488,10 @@ module.exports =
       en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
       zh: "如果资源在 VisualOps 外发生变化, 将会给您发送一封通知邮件"
 
+    APP_DIFF_CHANGE_CONFIRM:
+      en: "OK, got it"
+      zh: "确定"
+
     STACK_LBL_USAGE:
       en: "Usage"
       zh: "用途"

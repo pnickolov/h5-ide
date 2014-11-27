@@ -329,7 +329,7 @@ define [
       $("#RefreshResource").addClass("reloading").text("")
       @model.clearVisualizeData()
       App.discardAwsCache().done ()->
-        $("#RefreshResource").removeClass("reloading").text("just now")
+        $("#RefreshResource").removeClass("reloading").text(lang.IDE.DASH_TPL_JUST_NOW)
       return
 
     deleteStack    : (event)-> appAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false

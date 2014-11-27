@@ -195,7 +195,7 @@ define [
 
       $("#OsReloadResource").addClass("reloading").text("")
       App.discardAwsCache().done ()->
-        $("#OsReloadResource").removeClass("reloading").text("just now")
+        $("#OsReloadResource").removeClass("reloading").text(lang.IDE.DASH_TPL_JUST_NOW)
       return
 
     deleteStack    : (event)-> appAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false

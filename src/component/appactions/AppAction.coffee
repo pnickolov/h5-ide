@@ -205,7 +205,7 @@ define [
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
         .then ->
-          name = App.model.appList().get( id ).get("name")
+          name = App.model.appList().get( app.get("id") ).get("name")
           hasEC2Instance =!!( _.filter comp, (e)->
             e.type is constant.RESTYPE.INSTANCE).length
           hasDBInstance = !!(_.filter comp, (e)->

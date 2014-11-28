@@ -1135,6 +1135,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "User modified JSON is not supported."
       zh: "我们不支持用户修改过的文件。"
 
+    POP_IMPORT_CFM_ERROR:
+      en: "Failed to import the CloudFormation. Please try another file."
+      zh: "无法导入此CloudFormation文件。请尝试导入其他的文件。"
+
     ##### Modal Confirm Update
 
     POP_CONFIRM_UPDATE_TIT:

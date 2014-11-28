@@ -96,7 +96,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if this.type is "GenericOps"
         if opts.jsonData
           provider = opts.jsonData.provider
-        provider = provider || attr.provider
+        provider = provider || attr.provider || "aws::global" # Set default provider
 
         console.assert( KnownOpsModelClass[provider], "Cannot find specific OpsModel for provider '#{attr.provider}'" )
 

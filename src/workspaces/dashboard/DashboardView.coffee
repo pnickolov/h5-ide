@@ -8,13 +8,15 @@ define [
   "i18n!/nls/lang.js"
   'AppAction'
   "CloudResources"
+  "ApiRequest"
+  "JsonExporter"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
   "UI.nanoscroller"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources, ApiRequest, JsonExporter )->
 
   Handlebars.registerHelper "awsAmiIcon", ( amiId, region )->
     ami = CloudResources( constant.RESTYPE.AMI, region ).get( amiId )
@@ -278,6 +280,31 @@ define [
 
       reader = new FileReader()
       reader.onload = ( evt )->
+
+        result = JsonExporter.importJson reader.result
+        if _.isString result
+          $("#import-json-error").html error
+          return
+
+        if result.AWSTemplateFormatVersion
+          modal.tpl.find(".loading-spinner").show()
+          $("#import-json-error, #modal-import-json-dropzone").hide()
+
+          console.log reader.result
+          ApiRequest("stack_import_cloudformation", {
+            cf_template : reader.result
+          }).then ( data )->
+            data.provider   = "aws::china"
+            data.region     = "cn-north-1"
+            data.autoLayout = true
+            App.importJson( data )
+            modal.close()
+          , ()->
+            modal.tpl.find(".loading-spinner").hide()
+            $("#import-json-error, #modal-import-json-dropzone").show()
+            $("#import-json-error").html( lang.IDE.POP_IMPORT_CFM_ERROR )
+          return
+
         error = App.importJson( reader.result )
         if _.isString error
           $("#import-json-error").html error

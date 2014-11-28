@@ -118,9 +118,11 @@ define [
   # If it cannot import the json data, returns a string to represent the result.
   # otherwise it returns the workspace that works on the model
   VisualOps.prototype.importJson = ( json )->
-    result = JsonExporter.importJson json
-
-    if _.isString result then return result
+    if _.isString json
+      result = JsonExporter.importJson json
+      if _.isString result then return result
+    else
+      result = json
 
     @openOps( @model.createStackByJson(result) )
 

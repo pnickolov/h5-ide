@@ -200,6 +200,9 @@ define [
       return
 
     initEditor : ()->
+      if @opsModel.get("autoLayout")
+        @view.canvas.autoLayout()
+      return
 
     saveThumbnail : ()->
       if @opsModel.isPersisted()

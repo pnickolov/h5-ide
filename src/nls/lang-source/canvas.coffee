@@ -228,3 +228,7 @@ module.exports =
       en: "The Network Interface is attached to the instance. No need to connect them by security group rule."
       zh: ""
 
+    LAUNCH_CONFIGURATION_MUST_BE_CREATED_FROM_AMI_IN_RESOURCE_PANEL:
+      en: "Launch Configuration must be created from AMI in Resource Panel"
+      zh: "启动配置只能从通过资源面板拖拽 AMI 来创建"
+

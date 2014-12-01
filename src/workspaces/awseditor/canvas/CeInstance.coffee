@@ -8,6 +8,7 @@ define [
   "i18n!/nls/lang.js"
   "CloudResources"
   "event"
+  "UI.notification"
 ], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, ide_event )->
 
   CanvasElement.extend {
@@ -260,6 +261,10 @@ define [
           return CanvasElement.createResource( type, attr, option )
 
         when constant.RESTYPE.ASG, "ExpandedAsg"
+          if option.cloneSource # Deny copy instance to an asg.
+            notification 'error', lang.CANVAS.LAUNCH_CONFIGURATION_MUST_BE_CREATED_FROM_AMI_IN_RESOURCE_PANEL
+            return
+
           TYPE_LC = constant.RESTYPE.LC
           return CanvasElement.getClassByType( TYPE_LC ).createResource( TYPE_LC, attr, option )
 

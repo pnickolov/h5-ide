@@ -228,6 +228,10 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
           VpcId            : @getVpcRef()
           IpPermissions       : []
           IpPermissionsEgress : []
+          Tags : [{
+            Key   : "visops_default"
+            Value : if @isDefault() then "true" else "false"
+          }]
 
       { component : component }
   }, {

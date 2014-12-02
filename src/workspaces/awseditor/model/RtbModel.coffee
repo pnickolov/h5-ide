@@ -73,6 +73,11 @@ define [ "ComplexResModel", "Design", "./connection/Route", "./connection/RtbAss
             NetworkInterfaceId   : ""
             GatewayId            : "local"
           }]
+          Tags : [{
+            Key   : "visops_default"
+            Value : if @get("main") then "true" else "false"
+          }]
+
 
       if @get("main")
         component.resource.AssociationSet.push {

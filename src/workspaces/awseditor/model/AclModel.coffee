@@ -152,6 +152,10 @@ define [ "ComplexResModel", "ConnectionModel", "constant" ], ( ComplexResModel, 
           EntrySet       : ruleSet
           NetworkAclId   : @get("appId")
           VpcId          : vpc.createRef( "VpcId" )
+          Tags : [{
+            Key   : "visops_default"
+            Value : if @isDefault() then "true" else "false"
+          }]
 
       for rule in @get("rules")
         r = {

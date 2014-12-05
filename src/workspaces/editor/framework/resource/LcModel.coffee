@@ -225,7 +225,7 @@ define [ "../ComplexResModel", "./InstanceModel", "Design", "constant", "./Volum
 
       # Create Volume for
       for volume in data.resource.BlockDeviceMapping || []
-        if rd and volume.DeviceName is rd.DeviceName
+        if (rd and volume.DeviceName is rd.DeviceName) or (not rd and volume.DeviceName in ['/dev/xvda','/dev/sda1'])
           model.set "rdSize", volume.Ebs.VolumeSize
           model.set "rdIops", volume.Ebs.Iops
           model.set "rdType", volume.Ebs.VolumeType

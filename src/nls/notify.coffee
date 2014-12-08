@@ -295,7 +295,7 @@ module.exports =
 
     UNABLE_TO_LOAD_COMMUNITY_AMIS:
       en: "Unable to load community AMIs"
-      zh: "不能加载社区AMI"
+      zh: "不能加载社区 AMI"
 
     FAIL_TO_EXPORT_TO_CLOUDFORMATION:
       en: "Fail to export to AWS CloudFormation Template, Error code: %s"

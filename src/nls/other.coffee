@@ -194,7 +194,7 @@ module.exports =
 
     RES_BTN_BROWSE_COMMUNITY_AMI:
       en: "Browse Community Images"
-      zh: "浏览AMI"
+      zh: "浏览社区 AMI"
 
     RES_TIP_TOGGLE_RESOURCE_PANEL:
       en: "Show/Hide Resource Panel"
@@ -749,7 +749,7 @@ VisualOps API. You cannot UNDO this action.'
 
     AMI_LBL_COMMUNITY_AMIS:
       en: "Community AMIs"
-      zh: "社区AMI"
+      zh: "社区 AMI"
 
     AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID:
       en: "Search AMI by name or ID"

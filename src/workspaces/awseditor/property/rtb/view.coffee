@@ -139,7 +139,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
                 return
 
             dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : 'Remove Route'
+                remove_content : lang.PROP.REMOVE_ROUTE
                 main_content : mainContent
                 desc_content : descContent
             }

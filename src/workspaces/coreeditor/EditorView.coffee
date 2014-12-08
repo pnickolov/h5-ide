@@ -189,7 +189,7 @@ define [
         title    : sprintf lang.IDE.TITLE_CONFIRM_TO_CLOSE, name
         width    : "420"
         template : OpsEditorTpl.modal.onClose(name)
-        confirm  : {text:"Close Tab", color:"red"}
+        confirm  : {text:lang.TOOLBAR.TIT_CLOSE_TAB, color:"red"}
         onConfirm  : ()->
           modal.close()
           self.workspace.remove()

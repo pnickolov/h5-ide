@@ -3405,3 +3405,9 @@ module.exports =
     EG_MINUS_30:
       en: "eg. -30"
       zh: "例如：-30"
+
+    REMOVE_ROUTE:
+      en: "Remove Route"
+      zh: "删除路由"
+
+

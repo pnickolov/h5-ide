@@ -465,7 +465,7 @@ module.exports =
 
     POP_FORCE_TERMINATE_CONTENT:
       en: "The app %s failed to terminate. Do you want to force deleting it? After force deleting it, you need to manually manage the resource in aws console."
-      zh: "App %s 种植失败，您要强制删除它吗? 强制删除后，您需要在 AWS 控制台里手动管理资源。"
+      zh: "App %s 终止失败，您要强制删除它吗? 强制删除后，您需要在 AWS 控制台里手动管理资源。"
 
     POP_BTN_START_APP:
       en: "Start"

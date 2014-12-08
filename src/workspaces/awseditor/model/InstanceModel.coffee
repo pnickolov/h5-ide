@@ -670,7 +670,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       if kp
         if kp.isDefault() then '$DefaultKeyPair' else kp.get('name')
       else
-         @get( 'keyName' ) or 'No Key Pair'
+         @get( 'keyName' ) or lang.PROP.INSTANCE_NO_KP
 
     isDefaultKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]

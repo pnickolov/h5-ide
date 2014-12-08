@@ -113,7 +113,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
               keyName: if @resModel then @resModel.getKeyName() else ""
             if @data.keyName is '$DefaultKeyPair'
                 @data.defaultKey = true
-            else if @data.keyName is 'No Key Pair'
+            else if @data.keyName is lang.PROP.INSTANCE_NO_KP
                 @data.noKey = true
 
             @data.isRunTime = @__mode is 'runtime'

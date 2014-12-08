@@ -43,7 +43,7 @@
 
       <dt>{{i18n "PROP.INSTANCE_KEY_PAIR"}}</dt>
       {{#if app_view}}
-      <dd>{{#if keyName}}{{keyName}}{{else}}No Key Pair{{/if}}</dd>
+      <dd>{{#if keyName}}{{keyName}}{{else}}{{i18n "PROP.INSTANCE_NO_KP"}}{{/if}}</dd>
       {{else}}
       <dd>
         {{#if keyName}}
@@ -54,7 +54,7 @@
                 <a href="#" id="property-app-keypair">{{keyName}}</a>
             {{/if}}
         {{else}}
-          No Key Pair
+          {{i18n "PROP.INSTANCE_NO_KP"}}
         {{/if}}
       </dd>
       {{/if}}

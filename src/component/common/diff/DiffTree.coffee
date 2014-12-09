@@ -45,6 +45,7 @@ define ['constant'], (constant) ->
 
             option.noDiffArrayAttrMap = {
                 '*.state': true
+                '*.resource.TerminationPolicies': true
                 # '*.resource.RouteSet': true
             }
 

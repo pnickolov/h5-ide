@@ -112,7 +112,7 @@ module.exports =
       zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有规则正在使用端口 <span class='validation-tag tag-port'>22</span>，要确保安全，建议使用其它端口。"
     WARNING_SG_RULE_HAVE_FULL_ZERO_OUTBOUND:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has outbound rule towards <span class='validation-tag tag-ip'>0.0.0.0/0</span>. Suggest to change to more specific range."
-      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有朝 <span class='validation-tag tag-ip'>0.0.0.0/0</span> 的出口规则，建议更改到更明确的范围。"
+      zh: "安全组 <span class='validation-tag tag-sg'>%s</span> 有指向 <span class='validation-tag tag-ip'>0.0.0.0/0</span> 的出口规则，建议更改到更明确的范围。"
     ERROR_RESOURCE_ASSOCIATED_SG_EXCEED_LIMIT:
       en: "%s <span class='validation-tag tag-%s'>%s</span>'s associated Security Group exceed max %s limit."
       zh: "%s <span class='validation-tag tag-%s'>%s</span> 分配的安全组超过最大 %s 条限制。"

@@ -2905,7 +2905,7 @@ Node.prototype.updateDom = function (options) {
   }
 
   //add by xjimmy
-  if ( domField && this.value )
+  if ( domField && this.value && $.type(this.value) == "string" )
   {
 	  if (this.value.indexOf(", required")!=-1)
 	  {//required property

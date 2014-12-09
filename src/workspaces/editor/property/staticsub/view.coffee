@@ -16,7 +16,8 @@ define [ '../base/view', './template/stack' ], ( PropertyView, template ) ->
 
         self = @
         $("#changeAmiDropZone").on "addItem_drop", ( evt, data )-> self.onDropAmi( data )
-        return
+
+        @model.id
 
     showChangeAmiPanel : ()->
       $("#changeAmiPanel").show().siblings(".property-ami-info").hide()

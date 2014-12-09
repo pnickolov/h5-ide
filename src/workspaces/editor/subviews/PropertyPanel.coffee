@@ -113,7 +113,7 @@ define [
       @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())
       @$el.find(".property-second-panel").show().animate({left:"0%"}, 200)
       @$el.find(".property-first-panel").animate {left:"-30%"}, 200, ()=>
-        @$el.find(".property-first-panel").hide()
+      @$el.find(".property-first-panel").hide()
 
     immShowSecondPanel : ( type , id )->
       @$el.find(".HideSecondPanel").data("tooltip", "Back to " + @$el.find(".property-title").text())

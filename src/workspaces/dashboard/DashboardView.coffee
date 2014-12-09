@@ -296,8 +296,7 @@ define [
           }).then ( data )->
             data.provider   = "aws::china"
             data.region     = "cn-north-1"
-            data.autoLayout = true
-            App.importJson( data )
+            App.importJson( data, true )
             modal.close()
           , ()->
             modal.tpl.find(".loading-spinner").hide()

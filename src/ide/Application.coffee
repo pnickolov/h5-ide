@@ -117,14 +117,14 @@ define [
   # Creates a stack from the "json" and open it.
   # If it cannot import the json data, returns a string to represent the result.
   # otherwise it returns the workspace that works on the model
-  VisualOps.prototype.importJson = ( json )->
+  VisualOps.prototype.importJson = ( json, updateLayout )->
     if _.isString json
       result = JsonExporter.importJson json
       if _.isString result then return result
     else
       result = json
 
-    @openOps( @model.createStackByJson(result) )
+    @openOps( @model.createStackByJson(result, updateLayout) )
 
   # This is a convenient method to open an editor for the ops model.
   VisualOps.prototype.openOps = ( opsModel, refresh )->

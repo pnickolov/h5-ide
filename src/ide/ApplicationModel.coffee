@@ -74,13 +74,14 @@ define [
       @attributes.stackList.add m
       m
 
-    createStackByJson : ( json )->
+    createStackByJson : ( json, updateLayout = false )->
       if not @attributes.stackList.isNameAvailable( json.name )
         json.name = @stackList().getNewName( json.name )
 
       m = new OpsModel({
-        name      : json.name
-        region    : json.region
+        name       : json.name
+        region     : json.region
+        autoLayout : updateLayout
       }, {
         jsonData : json
       })

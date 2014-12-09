@@ -4385,7 +4385,7 @@ div.modal-text-highlight {
     left: -11px; }
 
 #global-region-map-wrap {
-  padding: 60px 0 20px;
+  padding: 80px 0 10px;
   width: 100%;
   background-color: #465061;
   background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
@@ -5122,6 +5122,10 @@ button#property-app-keypair {
   height: 468px;
   font-size: 12px; }
 
+#modal-option-group .container.optiongroup {
+  position: absolute;
+  top: 111px;
+  bottom: 64px; }
 #modal-option-group .og-name {
   text-transform: lowercase; }
 #modal-option-group .header .icon-info {
@@ -5821,6 +5825,9 @@ button#property-app-keypair {
 
 .volume-image, .eip-status {
   cursor: pointer; }
+
+.canvas-view[data-mode="app"] .eip-status {
+  cursor: default; }
 
 .dbreplcate {
   cursor: pointer;
@@ -7134,8 +7141,7 @@ g.shadow {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

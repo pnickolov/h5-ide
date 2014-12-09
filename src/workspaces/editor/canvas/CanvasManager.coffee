@@ -1,5 +1,5 @@
 
-define ['CloudResources'], (CloudResources)->
+define [ 'CloudResources', 'constant' ], ( CloudResources, constant )->
 
   CanvasManager = {
 
@@ -67,6 +67,14 @@ define ['CloudResources'], (CloudResources)->
 
     updateEip : ( node, targetModel )->
       if node.length then node = node[0]
+
+      # Hide EIP globe when ENI not connected to an instance.
+      if targetModel and targetModel.type is constant.RESTYPE.ENI
+        unless targetModel.connections( "EniAttachment" ).length
+          $( node ).hide()
+          return
+        else
+          $( node ).show()
 
       toggle = targetModel.hasPrimaryEip()
 

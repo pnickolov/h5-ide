@@ -152,9 +152,8 @@
   fill: #74B1FD;
   pointer-events:none;
 }
-.volume-image, .eip-status {
-  cursor: pointer;
-}
+.volume-image, .eip-status { cursor: pointer; }
+.canvas-view[data-mode="app"] .eip-status { cursor: default; }
 
 .dbreplcate {
   cursor: pointer;

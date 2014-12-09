@@ -7,7 +7,7 @@ module.exports =
       en: "Required"
       zh: "必填"
 
-    LBL_DEFAULT:
+    DEFAULT:
       en: "Default"
       zh: "默认"
 
@@ -1708,21 +1708,21 @@ module.exports =
       en: "Drag to sort policy"
       zh: "拖拽以便调整顺序"
 
-    ASG_TERMINATION_POLICY_OLDEST:
+    OLDESTINSTANCE:
       en: "OldestInstance"
       zh: "最旧的实例"
 
-    ASG_TERMINATION_POLICY_NEWEST:
+    NEWESTINSTANCE:
       en: "NewestInstance"
       zh: "最新的实例"
 
-    ASG_TERMINATION_POLICY_OLDEST_LAUNCH:
+    OLDESTLAUNCHCONFIGURATION:
       en: "OldestLaunchConfiguration"
-      zh: "最旧的LaunchConfiguration"
+      zh: "最旧的启动配置"
 
-    ASG_TERMINATION_POLICY_CLOSEST:
+    CLOSESTTONEXTINSTANCEHOUR:
       en: "ClosestToNextInstanceHour"
-      zh: "最近下一个实力时钟"
+      zh: "下一个实例时钟"
 
     ASG_ADD_POLICY_TITLE_ADD:
       en: "Add"

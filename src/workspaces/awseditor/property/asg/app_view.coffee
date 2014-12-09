@@ -97,12 +97,12 @@ define [ '../base/view',
                 if policy is "Default"
                     data.useDefault = true
                 else
-                    data.push { name : policy, checked : true }
+                    data.push { name : policy, checked : true, text: policy }
                     checked[ policy ] = true
 
-            for p in [lang.PROP.ASG_TERMINATION_POLICY_OLDEST, lang.PROP.ASG_TERMINATION_POLICY_NEWEST, lang.PROP.ASG_TERMINATION_POLICY_OLDEST_LAUNCH, lang.PROP.ASG_TERMINATION_POLICY_CLOSEST]
+            for p in [ 'OldestInstance', 'NewestInstance', 'OldestLaunchConfiguration', 'ClosestToNextInstanceHour' ]
                 if not checked[ p ]
-                    data.push { name : p, checked : false }
+                    data.push { name : p, checked : false, text: p }
 
             modal term_template(data), true
 
@@ -134,13 +134,13 @@ define [ '../base/view',
             $("#property-term-list .list-name").each ()->
                 $this = $(this)
                 if $this.closest("li").hasClass("enabled")
-                    data.push $this.text()
+                    data.push $this.data 'name'
                 null
 
             if $("#property-asg-term-def").is(":checked")
                 data.push "Default"
 
-            $(".termination-policy-brief").text( data.join(" > ") )
+            $(".termination-policy-brief").text @getTerminationPoliciesText data
 
             @model.setTerminatePolicy data
 
@@ -459,7 +459,7 @@ define [ '../base/view',
                     p.adjustmentType = adjustMap[ p.adjustmentType ]
                     p.isNew = not p.appId
 
-                data.term_policy_brief = data.terminationPolicies.join(" > ")
+                data.term_policy_brief = @getTerminationPoliciesText data.terminationPolicies
                 data.can_add_policy = data.policies.length < 25
 
             console.debug data
@@ -468,6 +468,8 @@ define [ '../base/view',
             @processNotiTopic null, true
 
             data.name
+
+        getTerminationPoliciesText: ( policies ) -> _.map(policies, (p) -> p).join(" > ")
 
         wheatherHasNoti: ->
             n = @model.notiObject?.toJSON()

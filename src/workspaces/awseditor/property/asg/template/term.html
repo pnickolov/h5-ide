@@ -14,7 +14,7 @@
               <input id="property-asg-term{{@index}}" type="checkbox" {{#if checked}}checked="checked"{{/if}}/>
               <label for="property-asg-term{{@index}}"></label>
             </div>
-            <label for="property-asg-term{{@index}}" class="list-name">{{name}}</label>
+            <label for="property-asg-term{{@index}}" class="list-name" data-name="{{name}}">{{text}}</label>
             <span class="drag-handle tooltip icon-sort" data-tooltip="{{ i18n 'PROP.ASG_TERMINATION_MSG_DRAG' }}"></span>
           </li>
           {{/each}}
@@ -26,7 +26,7 @@
               <input id="property-asg-term-def" type="checkbox" {{#if useDefault}}checked="checked"{{/if}}/>
               <label for="property-asg-term-def"></label>
             </div>
-            <span>{{i18n "PROP.LBL_DEFAULT"}}</span>
+            <span>{{i18n "PROP.DEFAULT"}}</span>
           </li>
         </ul>
       </div>

@@ -51,6 +51,9 @@
     }
 
     .fip-status { pointer-events:none; }
+    .eip-status { pointer-events:none; }
+    .server-number { text-decoration: underline; cursor:pointer; }
+    .server-number-bg { cursor:pointer; }
   }
 
   .canvasel.selected, .canvasel.connectable, .canvasel.droppable {

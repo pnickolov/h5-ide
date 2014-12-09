@@ -5635,6 +5635,9 @@ button#property-app-keypair {
 .volume-image, .eip-status {
   cursor: pointer; }
 
+.canvas-view[data-mode="app"] .eip-status {
+  cursor: default; }
+
 .cvs-hover {
   cursor: pointer; }
   .cvs-hover > .hover {

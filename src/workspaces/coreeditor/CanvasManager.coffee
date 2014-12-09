@@ -68,6 +68,13 @@ define ["constant"], (constant)->
     updateEip : ( node, targetModel )->
       if node.length then node = node[0]
 
+      if targetModel # Hide EIP globe when ENI not connected to an instance.
+        unless targetModel.connections( "EniAttachment" ).length
+          $( node ).hide()
+          return
+        else
+          $( node ).show()
+
       toggle = targetModel.hasPrimaryEip()
 
       if toggle

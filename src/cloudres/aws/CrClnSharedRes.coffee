@@ -76,9 +76,6 @@ define [
 
     #parseExternalData :( res ) ->
       #TODO map attribute
-
-  }, {
-    category : ()-> "" # SslCert is global-wise.
   }
 
 

@@ -5,7 +5,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         tagName: 'section'
 
         initCol: ->
-            @sslCertCol = CloudResources constant.RESTYPE.IAM
+            region = Design.instance().region()
+            @sslCertCol = CloudResources constant.RESTYPE.IAM, region
             if App.user.hasCredential()
                 @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @

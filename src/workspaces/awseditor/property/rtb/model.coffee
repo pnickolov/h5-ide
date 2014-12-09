@@ -34,7 +34,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
 
         if subnet
           @set {
-            title : lang.ide.TITLE_SUBNET_RT_ASSO
+            title : lang.IDE.TITLE_SUBNET_RT_ASSO
             association :
               subnet : subnet.get("name")
               rtb    : component.get("name")

@@ -166,7 +166,7 @@ module.exports =
 
     CVS_CFM_ADD_IGW_MSG:
       en: "Automatically add an internet gateway for using Elastic IP or public IP"
-      zh: "为设置EIP，自动添加了一个互联网网关"
+      zh: "为设置EIP或公网IP，自动添加了一个互联网网关"
 
     CVS_CFM_DEL_NONEXISTENT_DBINSTANCE:
       en: "Deleting <span class='resource-tag'>%s</span> will remove all read replica related to it. Are you sure to continue?"
@@ -255,4 +255,3 @@ module.exports =
     LAUNCH_CONFIGURATION_MUST_BE_CREATED_FROM_AMI_IN_RESOURCE_PANEL:
       en: "Launch Configuration must be created from AMI in Resource Panel"
       zh: "启动配置只能从通过资源面板拖拽 AMI 来创建"
-

@@ -16,10 +16,11 @@ define [
   "backbone"
   "constant"
   "ThumbnailUtil"
+  "i18n!/nls/lang.js"
 
   "./submodels/OpsModelOs"
   "./submodels/OpsModelAws"
-], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil )->
+], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil, lang )->
 
   Backbone.Model.extend {
 
@@ -328,9 +329,9 @@ define [
           if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
             duration = time_end - time_begin
             if duration < 60
-              request.duration = "Took #{duration} sec."
+              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
             else
-              request.duration = "Took #{Math.round(duration/60)} min."
+              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
 
       request
 

@@ -719,6 +719,15 @@ module.exports =
       en: "terminate"
       zh: "终结"
 
+    TOOK_XXX_SEC:
+      en: "Took %s sec."
+      zh: "花费 %s 秒"
+
+    TOOK_XXX_MIN:
+      en: "Took %s min."
+      zh: "花费 %s 分钟"
+
+
 
 
 

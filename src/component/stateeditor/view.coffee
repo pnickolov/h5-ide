@@ -481,8 +481,8 @@ define [ 'component/stateeditor/model',
                     }, true)
 
                 # create new array/state input box
-                $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value:last').toArray()
-                $lastStateInputListAry = $stateItemList.find('.parameter-item.state .parameter-value:last').toArray()
+                $lastArrayInputListAry = $stateItemList.find('.parameter-item.array .parameter-value').toArray()
+                $lastStateInputListAry = $stateItemList.find('.parameter-item.state .parameter-value').toArray()
 
                 $lastInputListAry = $lastArrayInputListAry.concat($lastStateInputListAry)
 

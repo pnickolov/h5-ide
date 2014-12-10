@@ -83,6 +83,14 @@
       }
     }
   }
+
+  &[data-mode="stack"], &[data-mode="appedit"] {
+    .port:hover, .port.connectable {
+      fill         : #F2F8FF;
+      stroke-width : 2;
+      cursor       : pointer;
+    }
+  }
 }
 
 .svg_resizer {

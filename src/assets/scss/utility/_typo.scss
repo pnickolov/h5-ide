@@ -27,11 +27,13 @@
 }
 
 @mixin font-major {
-	font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'Lato', 'Helvetica Neue', Arial, "Hiragino Sans GB", "Microsoft YaHei",
+             "WenQuanYi Micro Hei", sans-serif;
 }
 
 body {
-	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, sans-serif;;
+	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei",
+             "WenQuanYi Micro Hei", sans-serif;;
 	color       : desaturate(lighten($light-p, 30%),10%);
 	font-size   : 14px;
 }

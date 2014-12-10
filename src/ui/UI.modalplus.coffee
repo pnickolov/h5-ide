@@ -69,7 +69,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 hideClose   : @option.hideClose
                 template    : if typeof @option.template is "object" then "" else @option.template
                 confirm:
-                    text    : @option.confirm?.text || "Submit"
+                    text    : @option.confirm?.text || lang.IDE.LBL_SUBMIT
                     color   : @option.confirm?.color || "blue"
                     disabled: @option.confirm?.disabled
                     hide    : @option.confirm?.hide

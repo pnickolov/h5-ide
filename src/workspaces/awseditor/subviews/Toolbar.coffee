@@ -646,7 +646,7 @@ define [
                     title: lang.IDE.TITLE_CONFIRM_TO_ENABLE_VISUALOPS
                     width: "420px"
                     template: OpsEditorTpl.confirm.enableState()
-                    confirm: text: "Enable VisualOps"
+                    confirm: text: lang.IDE.ENABLE_VISUALOPS
                     onConfirm: ->
                         agent.enabled = true
                         confirmModal.close()

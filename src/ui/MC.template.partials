@@ -1071,7 +1071,7 @@ Additional Notes and Questions
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-stack-agent-enable-confirm" style="width:145px;" class="btn modal-confirm btn-blue">Enable VisualOps</button>
+		<button id="modal-stack-agent-enable-confirm" style="width:145px;" class="btn modal-confirm btn-blue">{{i18n "ENABLE_VISUALOPS"}}</button>
 		<button id="modal-stack-agent-enable-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
 	</div>
 </div>

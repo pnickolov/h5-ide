@@ -1666,7 +1666,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_ENABLE_VISUALOPS", {hash:{},data:data}))
     + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS_OVERRIDE_USER_DATA", {hash:{},data:data}))
-    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">Enable VisualOps</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">"
+    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">"
+    + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS", {hash:{},data:data}))
+    + "</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
     + "</button>\n	</div>\n</div>";
   return buffer;

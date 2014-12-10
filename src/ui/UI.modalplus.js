@@ -26,7 +26,7 @@
           hideClose: this.option.hideClose,
           template: typeof this.option.template === "object" ? "" : this.option.template,
           confirm: {
-            text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || "Submit",
+            text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || lang.IDE.LBL_SUBMIT,
             color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
             disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0,
             hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0

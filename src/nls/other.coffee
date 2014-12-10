@@ -2008,6 +2008,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Confirm to Enable VisualOps"
       zh: "确认开启 VisualOps"
 
+    ENABLE_VISUALOPS:
+      en: "Enable VisualOps"
+      zh: "开启 VisualOps"
+
     ENABLE_VISUALOPS_OVERRIDE_USER_DATA:
       en: "Enable VisualOps will override your custom User Data. Are you sure to continue?"
       zh: "启用 VisualOps 将会覆盖用户自定义数据， 您确定要继续吗？"
@@ -2296,6 +2300,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Volume"
       zh: "卷"
 
+    LBL_SUBMIT:
+      en: "Submit"
+      zh: "提交"
+
     STARTING_YOUR_APP:
       en: "Starting your app..."
       zh: "正在启动 App ..."
@@ -2315,3 +2323,7 @@ VisualOps API. You cannot UNDO this action.'
     PROCESSING_YOUR_REQUEST:
       en: "Processing your request..."
       zh: "正在处理请求 ..."
+
+    YOU_CAN_LATER_UPDATE_PROFILE:
+      en: "You can later update this information in <em>Settings &gt; Account</em>"
+      zh: "您可稍后在 <em> 设置 &gt; 账号</em> 里修改此信息。"

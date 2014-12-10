@@ -3232,7 +3232,7 @@ module.exports =
 
     CONFIRM_CHANGE_AMI:
       en: "Confirm Change AMI"
-      zh: "确认更换　AMI"
+      zh: "确认更换 AMI"
 
     ROLLING_BACK:
       en: "Rolling back..."

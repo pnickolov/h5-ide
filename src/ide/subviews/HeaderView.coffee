@@ -42,7 +42,8 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
         updateNotification : ()->
             console.log "Notification Updated, Websocket isReady:", App.WS.isReady()
 
-            notification = App.model.get "notification"
+            notification = _.map App.model.get( "notification" ), ( n ) ->
+                _.extend {}, n, { operation: lang.TOOLBAR[n.operation.toUpperCase()] or n.operation }
 
             html = ""
             unread_num = 0

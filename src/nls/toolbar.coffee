@@ -686,3 +686,40 @@ module.exports =
     POP_DIFF_MODIFY_RES:
       en: "Modified Resource"
       zh: "修改的资源"
+
+    NOTI_FAILED:
+      en: '<span class="resource-name-label">%s</span> failed to %s in %s.'
+      zh: '<span class="resource-name-label">%s</span> %s失败（%s）'
+
+    NOTI_SENDING:
+      en: 'Sending request to %s <span class="resource-name-label">%s</span> in %s.'
+      zh: '正在发送%s <span class="resource-name-label">%s</span> 的请求（%s）'
+
+    NOTI_PROCESSING:
+      en: 'Processing request to %s <span class="resource-name-label">%s</span> in %s.'
+      zh: '正在%s <span class="resource-name-label">%s</span>（%s）'
+
+    NOTI_SUCCESSFULLY:
+      en: '<span class="resource-name-label">%s </span>%s successfully in %s.'
+      zh: '<span class="resource-name-label">%s</span> %s成功（%s）'
+
+    LAUNCH:
+      en: "launch"
+      zh: "启动"
+
+    START:
+      en: "start"
+      zh: "启动"
+
+    STOP:
+      en: "stop"
+      zh: "停止"
+
+    TERMINATE:
+      en: "terminate"
+      zh: "终结"
+
+
+
+
+

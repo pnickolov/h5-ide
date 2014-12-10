@@ -1314,19 +1314,19 @@ Additional Notes and Questions
   <div class="notification-message">
     {{#if state.failed}}
       <i class="icon-error"></i>
-      <div class="content"><span class="resource-name-label">{{targetName}}</span> failed to {{operation}} in {{region}}.</div>
+      <div class="content">{{i18n "TOOLBAR.NOTI_FAILED" targetName operation region}}</div>
     {{/if}}
     {{#if state.pending}}
       <i class="icon-pending"></i>
-      <div class="content">Sending request to {{operation}} <span class="resource-name-label">{{targetName}}</span> in {{region}}.</div>
+      <div class="content">{{i18n "TOOLBAR.NOTI_SENDING" operation targetName region}}</div>
     {{/if}}
     {{#if state.processing}}
       <i class="icon-pending"></i>
-      <div class="content">Processing request to {{operation}} <span class="resource-name-label">{{targetName}}</span> in {{region}}.</div>
+      <div class="content">{{i18n "TOOLBAR.NOTI_PROCESSING" operation targetName region}}</div>
     {{/if}}
     {{#if state.completed}}
       <i class="icon-success"></i>
-      <div class="content"><span class="resource-name-label">{{targetName}} </span>{{operation}} successfully in {{region}}.</div>
+      <div class="content">{{i18n "TOOLBAR.NOTI_SUCCESSFULLY" targetName operation region}}</div>
     {{/if}}
   </div>
 

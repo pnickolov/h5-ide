@@ -1970,7 +1970,7 @@ TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
@@ -1980,53 +1980,37 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n      <i class=\"icon-error\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> failed to "
-    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".</div>\n    ";
+  var buffer = "";
+  buffer += "\n      <i class=\"icon-error\"></i>\n      <div class=\"content\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.NOTI_FAILED", (depth0 && depth0.targetName), (depth0 && depth0.operation), (depth0 && depth0.region), {hash:{},data:data}))
+    + "</div>\n    ";
   return buffer;
   }
 
 function program5(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Sending request to "
-    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".</div>\n    ";
+  var buffer = "";
+  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.NOTI_SENDING", (depth0 && depth0.operation), (depth0 && depth0.targetName), (depth0 && depth0.region), {hash:{},data:data}))
+    + "</div>\n    ";
   return buffer;
   }
 
 function program7(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">Processing request to "
-    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".</div>\n    ";
+  var buffer = "";
+  buffer += "\n      <i class=\"icon-pending\"></i>\n      <div class=\"content\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.NOTI_PROCESSING", (depth0 && depth0.operation), (depth0 && depth0.targetName), (depth0 && depth0.region), {hash:{},data:data}))
+    + "</div>\n    ";
   return buffer;
   }
 
 function program9(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n      <i class=\"icon-success\"></i>\n      <div class=\"content\"><span class=\"resource-name-label\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.targetName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " </span>"
-    + escapeExpression(((stack1 = (depth0 && depth0.operation)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " successfully in "
-    + escapeExpression(((stack1 = (depth0 && depth0.region)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".</div>\n    ";
+  var buffer = "";
+  buffer += "\n      <i class=\"icon-success\"></i>\n      <div class=\"content\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.NOTI_SUCCESSFULLY", (depth0 && depth0.targetName), (depth0 && depth0.operation), (depth0 && depth0.region), {hash:{},data:data}))
+    + "</div>\n    ";
   return buffer;
   }
 

@@ -369,10 +369,11 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
 
       null
 
-    onParentChanged : () ->
+    onParentChanged : (oldParent) ->
 
-      for ipObj, idx in @get("ips")
-        @setIp( idx, null, true, ipObj.hasEip )
+      if oldParent
+        for ipObj, idx in @get("ips")
+          @setIp( idx, null, true, ipObj.hasEip )
 
     generateJSON : ( index, servergroupOption, eniIndex )->
 

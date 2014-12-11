@@ -1536,7 +1536,7 @@ VisualOps API. You cannot UNDO this action.'
       en: "is updated."
       zh: "已经更新。"
 
-    has_failed:
+    HAS_FAILED:
       en: "has failed."
       zh: "运行失败。"
 

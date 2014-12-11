@@ -715,6 +715,10 @@ module.exports =
       en: "stop"
       zh: "停止"
 
+    UPDATE:
+      en: "update"
+      zh: "更新"
+
     TERMINATE:
       en: "terminate"
       zh: "终结"

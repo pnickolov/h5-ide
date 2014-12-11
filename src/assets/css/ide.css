@@ -556,7 +556,8 @@ a {
   font-size: 13px;
   height: 20px;
   cursor: pointer;
-  display: inline-block; }
+  display: inline-block;
+  float: none; }
 .property-control-group .input {
   width: 230px; }
 .property-control-group textarea {

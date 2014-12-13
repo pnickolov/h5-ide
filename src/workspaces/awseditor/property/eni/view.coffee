@@ -60,7 +60,7 @@ define [ '../base/view',
                 tooltip = lang.PROP.INSTANCE_IP_MSG_4
             else
                 tooltip = lang.PROP.INSTANCE_IP_MSG_3
-            $target.toggleClass("associated", attach).data("tooltip", tooltip)
+            $target.toggleClass("associated", attach).attr("data-tooltip", tooltip)
 
             @model.attachEip index, attach
             null

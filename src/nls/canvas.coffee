@@ -255,3 +255,20 @@ module.exports =
     LAUNCH_CONFIGURATION_MUST_BE_CREATED_FROM_AMI_IN_RESOURCE_PANEL:
       en: "Launch Configuration must be created from AMI in Resource Panel"
       zh: "启动配置只能从通过资源面板拖拽 AMI 来创建"
+
+    DETACH_ELASTIC_IP_FROM_PRIMARY_IP:
+      en: "Detach Elastic IP from primary IP"
+      zh: "取消关联弹性 IP"
+
+    ASSOCIATE_ELASTIC_IP_TO_PRIMARY_IP:
+      en: "Associate Elastic IP to primary IP"
+      zh: "关联弹性 IP"
+
+
+
+
+
+
+
+
+

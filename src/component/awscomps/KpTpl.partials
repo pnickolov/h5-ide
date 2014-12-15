@@ -3,7 +3,7 @@
     {{#if keyName}}
         {{keyName}}
     {{else}}
-        Select Key Pair as $DefaultKeyPair
+        {{i18n "COMPONENT_SELECT_KEYPAIR"}}
     {{/if}}
 {{else}}
     {{keyName}}

@@ -17,7 +17,7 @@ module.exports =
 
     COMPONENT_SELECT_KEYPAIR:
       en: "Select Key Pair as $DefaultKeyPair"
-      zh: ""
+      zh: "选择作为 $DefaultKeyPair 的密钥对"
 
     COMPONENT_KEY_PAIR_COL_NAME:
       en: "Name"

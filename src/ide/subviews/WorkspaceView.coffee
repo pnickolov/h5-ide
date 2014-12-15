@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "backbone", "jquerysort" ], () ->
+define [ 'i18n!/nls/lang.js', "backbone", "jquerysort" ], (lang) ->
 
     Backbone.View.extend {
 
@@ -56,7 +56,7 @@ define [ "backbone", "jquerysort" ], () ->
         $parent = if fixed then $("#ws-fixed-tabs") else $("#ws-tabs")
         tpl = "<li class='#{data.klass}' id='#{data.id}' title='#{data.title}'><span class='truncate'>#{data.title}</span>"
         if data.closable
-          tpl += '<i class="icon-close" title="Close Tab"></i>'
+          tpl += '<i class="icon-close" title="' + lang.TOOLBAR.TIT_CLOSE_TAB + '"></i>'
 
         $tgt = $parent.children().eq( index )
         if $tgt.length

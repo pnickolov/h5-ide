@@ -158,6 +158,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           itemBegin = ( current_page - 1 ) * 50 + 1
           itemEnd = itemBegin + pageSize - 1
           itemEnd = total if itemEnd > total
+          itemBegin = 0 if itemEnd is 0
 
           $( '.page-tip' ).text sprintf lang.IDE.AMI_LBL_PAGEINFO, itemBegin, itemEnd, total
 

@@ -594,11 +594,9 @@ define [
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         cost = Design.instance().getCost()
-        costSymbol = "$"
-        if Design.instance().region() in ['cn-north-1']
-          costSymbol = "￥"
-        that.updateModal.find("#label-total-fee").find('b').text("#{costSymbol + cost.totalFee}")
-        that.updateModal.find("#label-visualops-fee").find('b').text("#{costSymbol + cost.visualOpsFee}")
+        currency = Design.instance().getCurrency()
+        that.updateModal.find("#label-total-fee").find('b').text("#{currency + cost.totalFee}")
+        that.updateModal.find("#label-visualops-fee").find('b').text("#{currency + cost.visualOpsFee}")
         window.setTimeout ->
           that.updateModal.resize()
         ,100

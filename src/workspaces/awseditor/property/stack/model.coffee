@@ -40,6 +40,7 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
 
 
       @set Design.instance().getCost()
+      @set "currency", Design.instance().getCurrency()
       null
 
     createAcl : ()->

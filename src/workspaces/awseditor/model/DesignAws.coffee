@@ -87,6 +87,12 @@ define [
         costList = _.sortBy costList, "resource"
 
       { costList : costList, totalFee : Math.round(totalFee * 100) / 100 }
+
+    getCurrency: ->
+      currency = "$"
+      if Design.instance().region() in ["cn-north-1"]
+        currency = "￥"
+      currency
   }
 
   AwsDesign

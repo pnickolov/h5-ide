@@ -40,7 +40,8 @@ define [
       @renderKpDropdown(@modal, cloudType)
       cost = Design.instance().getCost()
       @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-      @modal.tpl.find("#label-total-fee").find('b').text("$#{cost.totalFee}")
+      currency = Design.instance().getCurrency()
+      @modal.tpl.find("#label-total-fee").find('b').text("#{currency + cost.totalFee}")
 
       # load TA
       TA.loadModule('stack').then ()=>

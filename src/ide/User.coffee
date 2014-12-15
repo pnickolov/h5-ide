@@ -78,9 +78,9 @@ define [ "ApiRequest", "ApiRequestR", "backbone" ], ( ApiRequest, ApiRequestR )-
         has_card        : !!paymentInfo.has_card
         paymentUrl      : selfPage.url
         creditCard      : selfPage.card
-        billingEnd      : new Date( selfPage.current_period_ends_at    || null )
-        billingStart    : new Date( selfPage.current_period_started_at || null )
-        renewDate       : if paymentInfo then new Date(paymentInfo.next_reset_time * 1000) else new Date()
+        billingEnd      : new Date( selfPage.current_period_ends_at    || new Date() )
+        billingStart    : new Date( selfPage.current_period_started_at || new Date() )
+        renewDate       : if paymentInfo.next_reset_time then new Date(paymentInfo.next_reset_time * 1000 ) else new Date()
         paymentState    : paymentInfo.state || ""
         awsAccessKey    : result.access_key
         awsSecretKey    : result.secret_key

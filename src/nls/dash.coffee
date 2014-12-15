@@ -632,6 +632,38 @@ module.exports =
       en: "Root Device Type"
       zh: "根设备类型"
 
+    DASH_BUB_VOLUMEID:
+      en: "Volume ID"
+      zh: "卷 ID"
+
+    DASH_BUB_STATUS:
+      en: "Status"
+      zh: "状态"
+
+    DASH_BUB_STARTTIME:
+      en: "Start Time"
+      zh: "启动时间"
+
+    DASH_BUB_PROGRESS:
+      en: "Progress"
+      zh: "进度"
+
+    DASH_BUB_VOLUMESIZE:
+      en: "Volume Size"
+      zh: "卷大小"
+
+    DASH_BUB_ENCRYPTED:
+      en: "Encrypted"
+      zh: "加密"
+
+    DASH_BUB_ID:
+      en: "ID"
+      zh: "ID"
+
+    DASH_BUB_OWNERID:
+      en: "Owner ID"
+      zh: "所有者 ID"
+
     DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN:
       en: "Create this stack in"
       zh: "将Stack创建为"

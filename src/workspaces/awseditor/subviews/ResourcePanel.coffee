@@ -65,8 +65,11 @@ define [
 
     ss = CloudResources( constant.RESTYPE.SNAP, data.region ).get( data.id )
     if not ss then return
-
-    LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
+    newData = {}
+    _.each ss.toJSON(), (value, key)->
+      newKey = lang.IDE["DASH_BUB_"+ key.toUpperCase()] || key
+      newData[newKey] = value
+    LeftPanelTpl.resourcePanelBubble( newData )
 
 
 

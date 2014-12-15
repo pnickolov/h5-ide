@@ -157,5 +157,5 @@
 </div>{{i18n "TOOLBAR.CLOUD_RESOURCE_AUTO_SCALING_GROUP"}} ({{name}})
 
 <!-- {{resourcePanelBubble}} -->
-<div class="bubble-head">{{id}}</div>
+<div class="bubble-head">{{or id ID}}</div>
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

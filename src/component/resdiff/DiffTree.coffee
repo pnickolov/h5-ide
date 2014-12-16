@@ -40,6 +40,8 @@ define ['constant'], (constant) ->
                 'ASG.resource.PolicyARN': true
                 # 'VOL.resource.AttachmentSet.Device': true
 
+                '*.resource.Tags': true #SG,ACL,RT
+
                 # for openstack
                 '*.resource.adminPass': true
                 '*.resource.key_name': true

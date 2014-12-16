@@ -84,11 +84,14 @@ define [ 'ApiRequest'
                         modal.close()
                 })
 
-        openRestoreConfigModal: () ->
+        openRestoreConfigModal: (defaultRes) ->
+
+            if not (defaultRes and defaultRes.type is constant.RESTYPE.DBINSTANCE)
+                defaultRes = @resModel
 
             that = @
 
-            sourceDbModel = @resModel.getSourceDBForRestore()
+            sourceDbModel = defaultRes.getSourceDBForRestore()
             sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
 
             if sourceDbAppModel
@@ -116,16 +119,16 @@ define [ 'ApiRequest'
                     disableConfirm: true
                     width        : "580"
                     onCancel: () ->
-                        that.resModel.remove()
+                        defaultRes.remove()
                     onClose: () ->
-                        that.resModel.remove()
+                        defaultRes.remove()
                 })
 
             else
 
                 lastestRestoreTime = new Date(sourceDbAppModel.get('LatestRestorableTime'))
 
-                dbRestoreTime = @resModel.get('dbRestoreTime')
+                dbRestoreTime = defaultRes.get('dbRestoreTime')
 
                 if dbRestoreTime
                     currentTime = new Date(dbRestoreTime)
@@ -196,17 +199,17 @@ define [ 'ApiRequest'
                         isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
                         if isCustomTime
                             selectedDate = _getCurrentSelectedTime()
-                            that.resModel.set('dbRestoreTime', selectedDate.toISOString())
+                            defaultRes.set('dbRestoreTime', selectedDate.toISOString())
                         else
-                            that.resModel.set('dbRestoreTime', '')
-                        that.resModel.isRestored = true
+                            defaultRes.set('dbRestoreTime', '')
+                        defaultRes.isRestored = true
                         modal.close()
                     onCancel: () ->
-                        if not that.resModel.isRestored
-                            that.resModel.remove()
+                        if not defaultRes.isRestored
+                            defaultRes.remove()
                     onClose: () ->
-                        if not that.resModel.isRestored
-                            that.resModel.remove()
+                        if not defaultRes.isRestored
+                            defaultRes.remove()
                 })
 
                 _setDefaultSelectedTime()
@@ -671,7 +674,7 @@ define [ 'ApiRequest'
             attr.name
 
             if @resModel.getSourceDBForRestore() and not @resModel.isRestored
-                @openRestoreConfigModal()
+                @openRestoreConfigModal(@resModel)
 
         bindParsley: ->
 

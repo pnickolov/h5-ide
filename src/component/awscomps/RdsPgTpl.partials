@@ -81,7 +81,7 @@
         </section>
         <div class="init action">
             <button class="btn btn-blue do-action" data-action="create" disabled>{{i18n "PROP.LBL_CREATE"}}</button>
-            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CREATE"}}</button>
+            <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CLOSE"}}</button>
         </div>
         <div class="processing action" style="display:none;">
             <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>

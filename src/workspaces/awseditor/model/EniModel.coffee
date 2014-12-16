@@ -75,19 +75,24 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
       return @__groupMembers
 
     updateName : ()->
-      instance = @__embedInstance
-      if instance
-        name = "eni0"
-      else
-        attachment = @connections( "EniAttachment" )[0]
-        if attachment
-          name = "eni" + attachment.get("index")
-        else
-          name = "eni"
+      @trigger "change:name"
+      @trigger "change"
 
-      @set "name", name
-      null
+    get : ( attr )->
+      if attr is "name"
+        return @getName()
 
+      @attributes[attr]
+
+    getName : ()->
+      if @__embedInstance
+        return "eni0"
+
+      attachment = @connections( "EniAttachment" )[0]
+      if attachment
+        return "eni" + attachment.get("index")
+
+      "eni"
 
     isReparentable : ( newParent )->
       if newParent.type is constant.RESTYPE.SUBNET
@@ -691,7 +696,6 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
 
 
       if embed
-        attr.name = "eni0"
         option = { instance : instance }
       else
         attr.parent = resolve( layout_data.groupUId )

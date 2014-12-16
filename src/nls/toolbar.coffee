@@ -501,7 +501,7 @@ module.exports =
 
     POP_BODY_TERMINATE_APP_LEFT:
       en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
-      zh: "本操作将终结App中的相关资源，您确认终结当前App"
+      zh: "本操作将终结 App 中的相关资源，您确认终结当前 App"
 
     POP_BODY_TERMINATE_APP_RIGHT:
       en: "?"

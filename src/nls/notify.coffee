@@ -195,7 +195,7 @@ module.exports =
 
     XXX_SNAPSHOT_FAILED_TO_DELETE:
       en: "%s Snapshot failed to delete, Please try again later."
-      zh: "快照 %s 删除失败，请稍后重试。"
+      zh: "%s 个快照删除失败，请稍后重试。"
 
     DB_SNAPSHOT_DELETE_SUCCESS:
       en: "RDS Snapshot(s) Delete Successfully!"

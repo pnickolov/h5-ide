@@ -33,7 +33,7 @@ module.exports =
 
     CUSTOM_OPTION_GROUP_FOR_ENGINE:
       en: "custom option group for %s %s"
-      zh: "为 %s %s 定制的选项组"
+      zh: "custom option group for %s %s"
 
     AUTOMATICALLY_CREATED_SG_FOR_LOAD_BALANCER:
       en: "Automatically created SG for load-balancer"

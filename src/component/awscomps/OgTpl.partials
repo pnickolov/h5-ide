@@ -98,13 +98,13 @@
         <div class="header">
             {{i18n "OPTION_GROUP_USED_FOR"}}{{engineName}} {{engineVersion}}
             {{#ifCond engineType "mysql"}}
-            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.MySQL.Options.html" data-tooltip="{{i18n "READ_AWS_DOCUMENT"}}" target="_blank"></a>
             {{/ifCond}}
             {{#ifCond engineType "oracle"}}
-            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Oracle.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Oracle.Options.html" data-tooltip="{{i18n "READ_AWS_DOCUMENT"}}" target="_blank"></a>
             {{/ifCond}}
             {{#ifCond engineType "sqlserver"}}
-            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="Read AWS documentation…" target="_blank"></a>
+            <a class="tooltip icon-info" href="http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.SQLServer.Options.html" data-tooltip="{{i18n "READ_AWS_DOCUMENT"}}" target="_blank"></a>
             {{/ifCond}}
         </div>
         <div class="container optiongroup">

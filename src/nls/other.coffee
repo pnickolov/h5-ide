@@ -1492,6 +1492,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "This Option Group is used for "
       zh: "此选项组适用于 "
 
+    READ_AWS_DOCUMENT:
+      en: "Read AWS Document."
+      zh: "阅读 AWS 文档。"
+
     CONFIRM_DELETE_PARAMETER_GROUP:
       en: "Confirm to delete  RDS Parameter Groups %s?"
       zh: "您确认要删除 RDS 参数组 %s 吗？"

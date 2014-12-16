@@ -651,6 +651,14 @@ module.exports =
       en: "Reload States"
       zh: "刷新 States"
 
+    RELOAD_STATE_TOOLTIP:
+      en: "Instantly rerun all states in this app."
+      zh: "立即重新运行此 App 里的所有 States"
+
+    INITIATING:
+      en: "Initiating"
+      zh: "初始化"
+
     SHOW_UNUSED_REGIONS:
       en: "Show unused regions"
       zh: "显示未使用的地区"

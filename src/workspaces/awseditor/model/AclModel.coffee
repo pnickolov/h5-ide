@@ -201,6 +201,7 @@ define [ "ComplexResModel", "ConnectionModel", "constant" ], ( ComplexResModel, 
       acl = resolve( data.uid )
 
       for asso in data.resource.AssociationSet || []
+        asso.NetworkAclAssociationId = ""
         subnet = resolve( MC.extractID(asso.SubnetId) )
         if not subnet then continue
 

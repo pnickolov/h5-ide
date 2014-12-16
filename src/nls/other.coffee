@@ -266,7 +266,7 @@ module.exports =
 
     RES_TIP_PLEASE_WAIT_AUTOBACKUP_ENABLE_TO_CREATE_REPLICA:
       en: "Please wait Automatic Backup to be enabled to create read replica."
-      zh: "请等待自动备份启用已创建只读副本。"
+      zh: "请等待自动备份启用以创建只读副本。"
 
     RES_TIP_DRAG_TO_RESTORE:
       en: "Drag to restore to point in time"

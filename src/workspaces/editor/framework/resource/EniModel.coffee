@@ -689,7 +689,6 @@ define [ "../ComplexResModel", "Design", "../connection/SgAsso", "../connection/
 
 
       if embed
-        attr.name = "eni0"
         option = { instance : instance }
       else
         attr.parent = resolve( layout_data.groupUId )

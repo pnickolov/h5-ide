@@ -2331,3 +2331,11 @@ VisualOps API. You cannot UNDO this action.'
     YOU_CAN_LATER_UPDATE_PROFILE:
       en: "You can later update this information in <em>Settings &gt; Account</em>"
       zh: "您可稍后在 <em> 设置 &gt; 账号</em> 里修改此信息。"
+
+    LBL_LOG:
+      en: "Log"
+      zh: "日志"
+
+    LBL_EVENT:
+      en: "Event"
+      zh: "事件"

@@ -184,13 +184,13 @@ define [
                 {
                     icon: 'unknown'
                     type: 'log'
-                    name: 'Log'
+                    name: lang.IDE.LBL_LOG
                     active: true
                 }
                 {
                     icon: 'unknown'
                     type: 'event'
-                    name: 'Event'
+                    name: lang.IDE.LBL_EVENT
                 }
             ]
 

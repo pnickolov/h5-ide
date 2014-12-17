@@ -315,7 +315,7 @@ module.exports =
 
     RELOAD_STATE_SUCCESS:
       en: "States reloaded successfully."
-      zh: "States 重新加载成功。"
+      zh: "State 重运行成功。"
 
     RELOAD_STATE_NOT_READY:
       en: "OpsAgent is not ready yet. Please try again later."

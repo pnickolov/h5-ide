@@ -649,11 +649,11 @@ module.exports =
 
     RELOAD_STATES:
       en: "Reload States"
-      zh: "刷新 States"
+      zh: "重运行 State"
 
-    RELOAD_STATE_TOOLTIP:
+    INSTANTLY_RERUN_ALL_STATES_IN_THIS_APP:
       en: "Instantly rerun all states in this app."
-      zh: "立即重新运行此 App 里的所有 States"
+      zh: "立即重运行此 App 中的所有 State"
 
     INITIATING:
       en: "Initiating"

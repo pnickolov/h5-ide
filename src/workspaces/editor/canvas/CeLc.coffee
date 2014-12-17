@@ -23,6 +23,37 @@ define [ "./CanvasElement", "constant", "./CanvasManager", "i18n!/nls/lang.js", 
       "click .volume-image"            : "suppressEvent"
       "click .server-number-group"     : "suppressEvent"
 
+    # Bring LC's view up when hovering, so that it won't
+    # be blocked by lines.
+    hover      : ( evt )->
+      $lc    = $( evt.currentTarget )
+      $asg   = $lc.parent()
+      asgPos = $asg[0].instance.transform()
+
+      if not CanvasManager.hasClass( $asg, "AWS-AutoScaling-Group" ) and not CanvasManager.hasClass( $asg, "ExpandedAsg" )
+        return
+
+      $lcLayer = @canvas.getLayer("layer_lc")
+      $lcLayer.attr {
+        "transform" : "translate(#{asgPos.x} #{asgPos.y})"
+        "data-id"   : $asg.attr("data-id")
+      }
+      $lcLayer.append( $lc )
+      return
+
+    hoverOut   : ( evt )->
+      $lc = $( evt.currentTarget )
+      $layer = $lc.parent()
+
+      if not CanvasManager.hasClass( $layer, "layer_lc" )
+        return
+
+      id = $layer.attr("data-id")
+      $layer.attr("data-id", "")
+
+      @canvas.getItem( id ).$el.children().eq(0).after( $lc[0] )
+      return
+
     suppressEvent : ()-> false
 
     listenModelEvents : ()->

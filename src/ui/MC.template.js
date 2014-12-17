@@ -1214,7 +1214,9 @@ function program11(depth0,data) {
   buffer += "\n			";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(11, program11, data),fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
+  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);
@@ -1618,7 +1620,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG_NOT_READY", {hash:{},data:data}))
-    + "</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">Close</button>\n	</div>\n</div>";
+    + "</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
+    + "</button>\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);

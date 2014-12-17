@@ -819,7 +819,7 @@ Additional Notes and Questions
 	</div>
 
 	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">Close</button>
+		<button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CLOSE"}}</button>
 	</div>
 </div>
 
@@ -1048,7 +1048,7 @@ Additional Notes and Questions
 		<div class="instance-sys-log-info modal-text-minor">{{i18n "SYSTEM_LOG_NOT_READY"}}</div>
 	</div>
 	<div class="modal-footer">
-		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">Close</button>
+		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CLOSE"}}</button>
 	</div>
 </div>
 

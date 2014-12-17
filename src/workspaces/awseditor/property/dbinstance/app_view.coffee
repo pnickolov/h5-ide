@@ -206,29 +206,29 @@ define [
         [
             {
                 sortable: true
-                name: 'Name'
+                name: lang.PROP.LBL_NAME
             }
             {
                 sortable: true
                 rowType: 'datetime'
-                name: 'Last Written'
+                name: lang.IDE.LBL_LAST_WRITTEN
                 width: "28%"
             }
             {
                 sortable: true
                 rowType: 'number'
                 width: "10%"
-                name: 'Size(B)'
+                name: lang.IDE.LBL_SIZE_B
             }
             {
                 sortable: false
                 width: "10%"
-                name: 'View'
+                name: lang.PROP.LBL_VIEW
             }
             {
                 sortable: false
                 width: "10%"
-                name: 'Download'
+                name: lang.PROP.LBL_DOWNLOAD
             }
         ]
 

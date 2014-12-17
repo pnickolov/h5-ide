@@ -2339,3 +2339,13 @@ VisualOps API. You cannot UNDO this action.'
     LBL_EVENT:
       en: "Event"
       zh: "事件"
+
+    LBL_LAST_WRITTEN:
+      en: "Last Written"
+      zh: "上次写入"
+
+    LBL_SIZE_B:
+      en: "Size(B)"
+      zh: "大小(B)"
+
+

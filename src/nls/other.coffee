@@ -1115,6 +1115,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Import Stack from JSON file"
       zh: "从 JSON 文件导入 Stack"
 
+    POP_IMPORT_CF_TIT:
+      en: "Import CloudFormation"
+      zh: "导入CloudFormation"
+
     POP_IMPORT_DROP_LBL:
       en: "Drop JSON file here or "
       zh: "拖拽 JSON 文件到这里。"

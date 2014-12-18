@@ -9,14 +9,14 @@ define [
   'AppAction'
   "CloudResources"
   "ApiRequest"
-  "JsonExporter"
+  "./ImportDialog"
   "backbone"
   "UI.scrollbar"
   "UI.tooltip"
   "UI.table"
   "UI.bubble"
   "UI.nanoscroller"
-], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources, ApiRequest, JsonExporter )->
+], ( template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources, ApiRequest, ImportDialog )->
 
   Handlebars.registerHelper "awsAmiIcon", ( amiId, region )->
     ami = CloudResources( constant.RESTYPE.AMI, region ).get( amiId )
@@ -270,76 +270,7 @@ define [
       @updateRegionResources()
       return
 
-    importJson : ()->
-      modal = new Modal {
-        title         : lang.IDE.POP_IMPORT_JSON_TIT
-        template      : tplPartials.importJSON()
-        width         : "470"
-        disableFooter : true
-      }
-
-      reader = new FileReader()
-      reader.onload = ( evt )->
-
-        result = JsonExporter.importJson reader.result
-        if _.isString result
-          $("#import-json-error").html error
-          return
-
-        if result.AWSTemplateFormatVersion
-          modal.tpl.find(".loading-spinner").show()
-          $("#import-json-error, #modal-import-json-dropzone").hide()
-
-          console.log reader.result
-          ApiRequest("stack_import_cloudformation", {
-            cf_template : reader.result
-          }).then ( data )->
-            data.provider   = "aws::china"
-            data.region     = "cn-north-1"
-            App.importJson( data, true )
-            modal.close()
-          , ()->
-            modal.tpl.find(".loading-spinner").hide()
-            $("#import-json-error, #modal-import-json-dropzone").show()
-            $("#import-json-error").html( lang.IDE.POP_IMPORT_CFM_ERROR )
-          return
-
-        error = App.importJson( reader.result )
-        if _.isString error
-          $("#import-json-error").html error
-        else
-          modal.close()
-          reader = null
-        null
-
-      reader.onerror = ()->
-        $("#import-json-error").html lang.IDE.POP_IMPORT_ERROR
-        null
-
-      hanldeFile = ( evt )->
-        evt.stopPropagation()
-        evt.preventDefault()
-
-        $("#modal-import-json-dropzone").removeClass("dragover")
-        $("#import-json-error").html("")
-
-        evt = evt.originalEvent
-        files = (evt.dataTransfer || evt.target).files
-        if not files or not files.length then return
-        reader.readAsText( files[0] )
-        null
-
-      $("#modal-import-json-file").on "change", hanldeFile
-      zone = $("#modal-import-json-dropzone").on "drop", hanldeFile
-      zone.on "dragenter", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", true)
-      zone.on "dragleave", ()-> $(this).closest("#modal-import-json-dropzone").toggleClass("dragover", false)
-      zone.on "dragover", ( evt )->
-        dt = evt.originalEvent.dataTransfer
-        if dt then dt.dropEffect = "copy"
-        evt.stopPropagation()
-        evt.preventDefault()
-        null
-      null
+    importJson : ()-> new ImportDialog()
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )->

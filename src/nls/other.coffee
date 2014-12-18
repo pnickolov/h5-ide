@@ -221,8 +221,8 @@ module.exports =
       zh: "拖放到一个可用区域来创建一个新子网。"
 
     RES_TIP_DRAG_CREATE_SUBNET_GROUP:
-      en: "To create subnet group, there must to be subnets from at least %s different availability zones on canvas."
-      zh: "要创建子网组， 画布上要至少有 %s 个不同的可用区。"
+      en: "To create subnet group, there must to be subnets from at least %s different subnets cross availability zones on canvas."
+      zh: "要创建子网组，画布上要至少有 %s 个跨不同可用区的子网。"
 
     RES_TIP_DRAG_NEW_SUBNET_GROUP:
       en: "Drag to an availability zone to create a new subnet group."

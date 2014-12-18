@@ -323,6 +323,10 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
         console.error "deserialize failed"
         return null
 
+      # Drop wrong volume component created for cloudformation by backend.
+      if instance.getAmiRootDeviceName() is ( data.serverGroupName or data.name )
+        return null
+
       attr =
         id    : data.uid
         name  : data.serverGroupName or data.name

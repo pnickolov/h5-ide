@@ -237,17 +237,17 @@ define [
             {
                 sortable: true
                 rowType: 'datetime'
-                name: 'Time'
+                name: lang.IDE.LBL_TIME
                 width: "28%"
             }
             {
                 sortable: true
                 width: "20%"
-                name: 'Source'
+                name: lang.PROP.LBL_SOURCE
             }
             {
                 sortable: false
-                name: 'System Notes'
+                name: lang.IDE.LBL_SYSTEM_NOTES
             }
         ]
 

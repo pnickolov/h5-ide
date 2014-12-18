@@ -2348,4 +2348,11 @@ VisualOps API. You cannot UNDO this action.'
       en: "Size(B)"
       zh: "大小(B)"
 
+    LBL_TIME:
+      en: "Time"
+      zh: "时间"
+
+    LBL_SYSTEM_NOTES:
+      en: "System Notes"
+      zh: "系统通知"
 

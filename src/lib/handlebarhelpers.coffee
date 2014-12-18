@@ -111,28 +111,31 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
      `function formatDate (dateStr, format, utc){
         var date = new Date(dateStr);
-        var MMMM = ["\x00", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        var MMM = ["\x01", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var dddd = ["\x02", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var ddd = ["\x03", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        var MMMM = lang.IDE.DATE_FORMAT_MONTHS.split(", ");
+        var MMM  = lang.IDE.DATE_FORMAT_MON.split(", ");
+        var dddd = lang.IDE.DATE_FORMAT_WEEK.split(", ");
+        var ddd  = lang.IDE.DATE_FORMAT_WEK.split(", ");
+        var daySuffix = lang.IDE.DATE_FORMAT_DAY;
+        var yearSuffix = lang.IDE.DATE_FORMAT_YEAR;
+        var monthSuffix = lang.IDE.DATE_FORMAT_MONTH;
         function ii(i, len) { var s = i + ""; len = len || 2; while (s.length < len) s = "0" + s; return s; }
 
         var y = utc ? date.getUTCFullYear() : date.getFullYear();
-        format = format.replace(/(^|[^\\])yyyy+/g, "$1" + y);
+        format = format.replace(/(^|[^\\])yyyy+/g, "$1" + y + yearSuffix);
         format = format.replace(/(^|[^\\])yy/g, "$1" + y.toString().substr(2, 2));
-        format = format.replace(/(^|[^\\])y/g, "$1" + y);
+        format = format.replace(/(^|[^\\])y/g, "$1" + y + yearSuffix);
 
         var M = (utc ? date.getUTCMonth() : date.getMonth()) + 1;
         format = format.replace(/(^|[^\\])MMMM+/g, "$1" + MMMM[0]);
         format = format.replace(/(^|[^\\])MMM/g, "$1" + MMM[0]);
-        format = format.replace(/(^|[^\\])MM/g, "$1" + ii(M));
-        format = format.replace(/(^|[^\\])M/g, "$1" + M);
+        format = format.replace(/(^|[^\\])MM/g, "$1" + ii(M) + monthSuffix);
+        format = format.replace(/(^|[^\\])M/g, "$1" + M + monthSuffix);
 
         var d = utc ? date.getUTCDate() : date.getDate();
         format = format.replace(/(^|[^\\])dddd+/g, "$1" + dddd[0]);
         format = format.replace(/(^|[^\\])ddd/g, "$1" + ddd[0]);
-        format = format.replace(/(^|[^\\])dd/g, "$1" + ii(d));
-        format = format.replace(/(^|[^\\])d/g, "$1" + d);
+        format = format.replace(/(^|[^\\])dd/g, "$1" + ii(d) + daySuffix);
+        format = format.replace(/(^|[^\\])d/g, "$1" + d + daySuffix);
 
         var H = utc ? date.getUTCHours() : date.getHours();
         format = format.replace(/(^|[^\\])HH+/g, "$1" + ii(H));
@@ -157,7 +160,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
         f = Math.round(f / 10);
         format = format.replace(/(^|[^\\])f/g, "$1" + f);
 
-        var T = H < 12 ? "AM" : "PM";
+        var T = H < 12 ? lang.IDE.DATE_FORMAT_AM : lang.IDE.DATE_FORMAT_PM;
         format = format.replace(/(^|[^\\])TT+/g, "$1" + T);
         format = format.replace(/(^|[^\\])T/g, "$1" + T.charAt(0));
 

@@ -2356,3 +2356,38 @@ VisualOps API. You cannot UNDO this action.'
       en: "System Notes"
       zh: "系统通知"
 
+    DATE_FORMAT_MONTHS:
+      en: "\x04, January, February, March, April, May, June, July, August, September, October, November, December"
+      zh: "\x04, 一月, 二月, 三月, 四月, 五月, 六月, 七月, 八月, 九月, 十月, 十一月, 十二月"
+
+    DATE_FORMAT_MON:
+      en: "\x01, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+      zh: "\x01, 一月, 二月, 三月, 四月, 五月, 六月, 七月, 八月, 九月, 十月, 十一月, 十二月"
+
+    DATE_FORMAT_WEEK:
+      en: "\x02, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+      zh: "\x02, 周日, 周一, 周二, 周三, 周四, 周五, 周六"
+
+    DATE_FORMAT_WEK:
+      en: "\x03, Sun, Mon, Tue, Wed, Thu, Fri, Sat"
+      zh: "\x03, 周日, 周一, 周二, 周三, 周四, 周五, 周六"
+
+    DATE_FORMAT_MONTH:
+      en: ""
+      zh: "月"
+
+    DATE_FORMAT_DAY:
+      en: ""
+      zh: "日"
+
+    DATE_FORMAT_YEAR:
+      en: ""
+      zh: "年"
+
+    DATE_FORMAT_AM:
+      en: "AM"
+      zh: "上午"
+
+    DATE_FORMAT_PM:
+      en: "PM"
+      zh: "下午"

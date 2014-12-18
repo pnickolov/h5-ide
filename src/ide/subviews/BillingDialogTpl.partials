@@ -22,7 +22,7 @@
                     <a class="btn btn-blue update-payment" href="{{paymentUpdate.url}}" target="_blank">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></a>
                 </div>
             </div>
-            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.billingEnd "MMMM d, yyyy"}}</span></h5>
+            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.billingEnd "yyyy-MM-d"}}</span></h5>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                 <table class="table-head">
@@ -58,7 +58,7 @@
                             <tbody class="t-m-content">
                             {{#each paymentHistory}}
                                 <tr class="item" data-id="{{@index}}">
-                                    <td>{{formatTime updated_at "MMMM d, yyyy"}}</td>
+                                    <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
                                     <td>$ {{or ending_balance total_balance}}</td>
                                     <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
                                     <td>
@@ -78,7 +78,7 @@
         </section>
         <section id="UsageTab" class="hide">
             <p class="warning-red"></p>
-            <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}{{formatTime paymentUpdate.last_billing_time "d MMM yyyy"}}{{i18n "PAYMENT_CURRENT_USAGE_SPAN"}}</h5>
+            <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}{{formatTime paymentUpdate.last_billing_time "yyyy-MM-d"}}{{i18n "PAYMENT_CURRENT_USAGE_SPAN"}}</h5>
             <div class="usage-wrapper">
                 <div class="used-points">
                     <div class="usage-number">

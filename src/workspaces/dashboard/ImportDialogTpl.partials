@@ -11,6 +11,7 @@
       <ul class="dropdown" tabindex="-1">
         {{#each regions}}<li class="item{{#unless @index}} selected{{/unless}}" data-id="{{this}}">{{this}}</li>{{/each}}
       </ul>
+      </ul>
     </div>
   </section>
 
@@ -18,21 +19,22 @@
   <section> Specify parameters for template:
   <div class="scroll-wrap scrollbar-auto-hide cf-params-wrap">
     <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <ul class="cf-params scroll-content">
-      {{#each parameters}}<li data-type="{{Type}}" data-name="{{Name}}">
+    <ul class="cf-params scroll-content" id="import-cf-params">
+      {{#each parameters}}<li data-type="{{Type}}" data-name="{{Name}}" {{#if NoEcho}}data-echo="false"{{/if}}>
       <span class="cf-name">{{Name}}</span>
       <span class="cf-input-wrap">
         <input class="input cf-input" {{#if NoEcho}}type="password"{{else}}type="text"{{/if}} value="{{Default}}">
       </span>
       <span class="cf-type">{{Type}}</span>
-      <span class="cf-desc">{{Description}}</span>
+      <div class="cf-desc"><p>{{Description}}</p>{{#if __Constraint}}<p>{{__Constraint}}</p>{{/if}}</div>
       <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}Parameter value does not meet its constraint.{{/if}}</span>
       </li>{{/each}}
     </ul>
-    <div class="loader"><div class="loading-spinner loading-spinner-small"></div></div>
   </div>
   </section>
   {{/if}}
+
+  <div class="loader"><div class="loading-spinner loading-spinner-small"></div></div>
 
   <div class="modal-footer">
     <span class="param-error hide">Please provide valid value for each parameter.</span>

@@ -117,6 +117,8 @@ require.config {
     'UI.selectize'       : 'ui/UI.selectize'
     'UI.selection'       : 'ui/UI.selection'
     'UI.bubblepopup'     : 'ui/UI.bubblepopup'
+    "UI.typeahead"       : "ui/typeahead"
+    "UI.tokenfield"      : "ui/tokenfield"
 
     #############################################
     # cloud resources           # Merge in deploy
@@ -261,6 +263,8 @@ require.config {
       "UI.selectize"
       "UI.selection"
       "UI.bubblepopup"
+      "UI.typeahead"
+      "UI.tokenfield"
     ]
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
 

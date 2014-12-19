@@ -304,7 +304,7 @@ define [
             import: ( tpl, checked ) ->
                 modal.setSlide tpl
                 that.__upload and that.__upload.remove()
-                that.__upload = new upload()
+                that.__upload = new upload({type: lang.IDE.LBL_PUBLIC_KEY})
                 that.__upload.on 'load', that.afterImport, @
                 that.M$( '.import-zone' ).html that.__upload.render().el
 

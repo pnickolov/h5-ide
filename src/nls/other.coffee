@@ -2391,3 +2391,11 @@ VisualOps API. You cannot UNDO this action.'
     DATE_FORMAT_PM:
       en: "PM"
       zh: "下午"
+
+    LBL_PUBLIC_KEY:
+      en: "Public Key"
+      zh: "公钥"
+
+    LBL_DROP:
+      en: "Drop %s,"
+      zh: "拖拽%s到此，"

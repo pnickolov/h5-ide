@@ -67,7 +67,7 @@
 <!-- {{upload}} -->
 <div class="upload-kp-component drop-zone">
     <p class="upload-stuff">
-        Drop {{type}},
+        {{i18n "LBL_DROP" type}}
         <label for="modal-import" class="select-file-link">{{i18n "PROP.KP_SELECT_A_FILE"}}</label>
         <span class="display-empty">{{i18n "PROP.KP_OR_PASTE_KEY_CONTENT"}}</span>
         <span class="display-filled" style="display:none;">{{i18n "PROP.KP_OR_PASTE_TO_UPDATE"}}</span>

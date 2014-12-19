@@ -28,17 +28,12 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
     type : constant.RESTYPE.OSFLAVOR
 
     doFetch : ()->
-      # region = @region()
-      # ApiRequest("os_flavor_List", {region : region}).then (res)->
-      #   ApiRequest("os_flavor_Info", {
-      #     region : region
-      #     ids    : _.pluck( res.flavors, "id" )
-      #   })
-
-      #cache(temp)
-      tempDefer = Q.defer()
-      tempDefer.resolve()
-      tempDefer.promise
+      region = @region()
+      ApiRequest("os_flavor_List", {region : region}).then (res)->
+        ApiRequest("os_flavor_Info", {
+          region : region
+          ids    : _.pluck( res.flavors, "id" )
+        })
 
     parseFetchData : (res)-> _.values(res)
   }

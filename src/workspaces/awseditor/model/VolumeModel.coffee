@@ -250,6 +250,8 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
 
       @ensureEnoughMember()
 
+      volumeName = (serverGroupOption.instanceName or "") + @get("name")
+
       appId = ""
 
       if index > 0
@@ -267,7 +269,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
       {
         uid             : uid
         type            : @type
-        name            : @get("name")
+        name            : volumeName
         serverGroupUid  : @id
         serverGroupName : @get("name")
         index           : index
@@ -324,7 +326,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
         return null
 
       # Drop wrong volume component created for cloudformation by backend.
-      if instance.getAmiRootDeviceName() is ( data.serverGroupName or data.name )
+      if instance.getAmiRootDeviceName() is attachment.Device
         return null
 
       attr =

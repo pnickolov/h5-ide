@@ -27,6 +27,10 @@ define [
 
       "OPTION_CHANGE #import-cf-region" : "onRegionChange"
 
+      "change .cf-input" : "ensureCorrectValue"
+      "typeahead:selected .cf-input" : "ensureCorrectValue"
+      "tokenfield:createtoken .cf-input" : "ensureCorrectToken"
+
     initialize : ()->
       @modal = new Modal {
         title         : lang.IDE.POP_IMPORT_JSON_TIT
@@ -133,16 +137,72 @@ define [
       @onRegionChange()
       return
 
+    ensureCorrectValue : ( evt )->
+      $ipt    = $( evt.currentTarget )
+      $wrapper = $ipt.closest(".cf-input-entry")
+      if not $wrapper.length then return
+
+      name = $wrapper.attr("data-name")
+      type = $wrapper.attr("data-type")
+      val  = $ipt.val()
+
+      if type is "CommaDelimitedList" or type is "List<Number>"
+        # These are handled by token field.
+        return
+
+      for param in @parameters
+        if param.Name is name
+
+          if param.AllowedValues
+            for av in param.AllowedValues
+              if av + "" is val
+                allowed = true
+                break
+
+            # User has enter un-allowed value
+            # Revert to last value.
+            if not allowed
+              $ipt.typeahead( "val", param.Default )
+            else
+              param.Default = val
+            break
+          else
+            return
+
+      return
+
+    ensureCorrectToken : ( evt )->
+      $ipt    = $( evt.currentTarget )
+      $wrapper = $ipt.closest(".cf-input-entry")
+      if not $wrapper.length then return
+
+      name = $wrapper.attr("data-name")
+      type = $wrapper.attr("data-type")
+      val  = $ipt.val()
+
+      for param in @parameters
+        if param.Name is name
+
+          if param.AllowedValues
+            for av in param.AllowedValues
+              if av + "" is evt.attrs.value
+                allowed = true
+                break
+
+            if not allowed
+              evt.attrs.value = evt.attrs.label = ""
+              return
+            break
+          else
+            return
+      return
+
     initInputs : ()->
 
       self = @
       typeaheadOption =
-        hint      : false
+        hint      : true
         minLength : 0
-
-      typeaheadKpDataset =
-        name   : 'importcf'
-        source : (q, cb)-> self.typeaheadMatch(q, cb, self.currentRegionKps )
 
       $inputs = $("#import-cf-params").children()
       for param in @parameters
@@ -153,20 +213,29 @@ define [
         ipt = $inputs.filter("[data-name='#{param.Name}']").find("input")
 
         if param.Type is "AWS::EC2::KeyPair::KeyName"
-          ipt.typeahead( typeaheadOption, typeaheadKpDataset )
+          ipt.typeahead( typeaheadOption, {
+            name   : "importcf"
+            source : @createTypeaheadMatch( param )
+          } )
           continue
 
         if param.AllowedValues
           if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
             ipt.tokenfield({
+              showAutocompleteOnFocus : true
+              createTokensOnBlur : true
               typeahead : [ typeaheadOption, {
                 name   : "importcf"
-                source : @createTypeaheadMatch( param.AllowedValues )
+                source : @createTypeaheadMatch( param )
               }]
             })
             continue
 
           else if param.Type is "String" or param.Type is "Number"
+            ipt.typeahead( typeaheadOption, {
+              name   : "importcf"
+              source : @createTypeaheadMatch( param )
+            } )
             continue
         else
           if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
@@ -188,7 +257,10 @@ define [
       $("#import-cf-form .loader").show()
       CloudResources( constant.RESTYPE.KP, currentRegion ).fetch().then ()->
         $("#import-cf-form .loader").hide()
-        self.currentRegionKps = CloudResources( constant.RESTYPE.KP, currentRegion ).pluck( "id" )
+        currentRegionKps = CloudResources( constant.RESTYPE.KP, currentRegion ).pluck( "id" )
+        for param in self.parameters
+          if param.Type is "AWS::EC2::KeyPair::KeyName"
+            param.AllowedValues = currentRegionKps
         return
 
       return
@@ -209,7 +281,7 @@ define [
 
     createTypeaheadMatch : ( source )->
       self = @
-      ( query, cb )-> self.typeaheadMatch( query, cb, source )
+      ( query, cb )-> self.typeaheadMatch( query, cb, source.AllowedValues )
 
     extractUserInput : ( $li )->
       type  = $li.attr("data-type")
@@ -244,8 +316,11 @@ define [
       # Check AllowedValues
       if param.AllowedValues
         for v in valueArray
-          if param.AllowedValues.indexOf( v ) < 0
-            return false
+          for av in param.AllowedValues || []
+            if av + "" is v
+              allowed = true
+              break
+          if not allowed then return false
 
       if type is "String" or type is "Number"
         value = valueArray[0]
@@ -268,6 +343,7 @@ define [
           $li.toggleClass("error", true)
         else
           @cfJson.Parameters[ result.name ].Default = result.value
+          $li.toggleClass("error", false)
 
       return not error
 
@@ -291,7 +367,7 @@ define [
           region_name : $("#import-cf-region").find(".selected").attr("data-id")
           cf_template : JSON.stringify( @cfJson )
           parameters  : {
-            az : _.pluck CloudResources( constant.RESTYPE.AZ, region ).where({category:region}), id
+            az : _.pluck CloudResources( constant.RESTYPE.AZ, region ).where({category:region}), "id"
           }
         }).then ( data )->
           self.modal.close()

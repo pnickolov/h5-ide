@@ -359,7 +359,7 @@ define [
       @modal.tpl.closest(".modal-box").find(".modal-close").hide()
       $("#import-cf-form").hide()
 
-      region = $("#import-cf-region").val()
+      region = $("#import-cf-region").find(".selected").attr("data-id")
 
       CloudResources( constant.RESTYPE.AZ, region ).fetch().then ()->
 

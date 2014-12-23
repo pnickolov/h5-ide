@@ -365,7 +365,7 @@ define [
 
         ApiRequest("stack_import_cloudformation", {
           region_name : $("#import-cf-region").find(".selected").attr("data-id")
-          cf_template : JSON.stringify( @cfJson )
+          cf_template : self.cfJson
           parameters  : {
             az : _.pluck CloudResources( constant.RESTYPE.AZ, region ).where({category:region}), "id"
           }

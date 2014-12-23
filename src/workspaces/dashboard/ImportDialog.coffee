@@ -285,7 +285,7 @@ define [
 
     extractUserInput : ( $li )->
       type  = $li.attr("data-type")
-      value = $li.find("input").val()
+      value = $li.find("input:not(.tt-hint)").val()
       name  = $li.attr("data-name")
       param = @cfJson.Parameters[ name ]
 

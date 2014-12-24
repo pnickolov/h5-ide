@@ -38,7 +38,7 @@
 
   <div class="modal-footer">
     <span class="param-error hide">Please provide valid value for each parameter.</span>
-    <button class="btn btn-red" id="import-cf-import">Import</button>
+    <button class="btn btn-blue" id="import-cf-import">Import</button>
     <button class="btn btn-silver" id="import-cf-cancel">Cancel</button>
   </div>
 </div>

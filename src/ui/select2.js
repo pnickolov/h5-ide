@@ -18,7 +18,7 @@ Apache License or the GPL License is distributed on an "AS IS" BASIS, WITHOUT WA
 CONDITIONS OF ANY KIND, either express or implied. See the Apache License and the GPL License for
 the specific language governing permissions and limitations under the Apache License and the GPL License.
 */
-(function ($) {
+define(["jquery"], function($) {
     if(typeof $.fn.each2 == "undefined") {
         $.extend($.fn, {
             /*
@@ -36,9 +36,7 @@ the specific language governing permissions and limitations under the Apache Lic
             }
         });
     }
-})(jQuery);
 
-(function ($, undefined) {
     "use strict";
     /*global document, window, jQuery, console */
 
@@ -67,6 +65,7 @@ the specific language governing permissions and limitations under the Apache Lic
         END: 35,
         BACKSPACE: 8,
         DELETE: 46,
+        COMMA: 188,
         isArrow: function (k) {
             k = k.which ? k.which : k;
             switch (k) {
@@ -612,10 +611,12 @@ the specific language governing permissions and limitations under the Apache Lic
                 token = opts.createSearchChoice.call(this, token, selection);
                 if (token !== undefined && token !== null && opts.id(token) !== undefined && opts.id(token) !== null) {
                     dupe = false;
-                    for (i = 0, l = selection.length; i < l; i++) {
-                        if (equal(opts.id(token), opts.id(selection[i]))) {
-                            dupe = true; break;
-                        }
+                    if ( !opts.allowDuplicate ) {
+                       for (i = 0, l = selection.length; i < l; i++) {
+                           if (equal(opts.id(token), opts.id(selection[i]))) {
+                               dupe = true; break;
+                           }
+                       }
                     }
 
                     if (!dupe) selectCallback(token);
@@ -1761,7 +1762,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     window.setTimeout(function() { self.loadMoreIfNeeded(); }, 10);
                 }
 
-                this.postprocessResults(data, initial);
+                this.postprocessResults(data, initial, undefined, this.opts.allowDuplicate );
 
                 postRender();
 
@@ -2654,6 +2655,10 @@ the specific language governing permissions and limitations under the Apache Lic
                 var next = selected.next(".select2-search-choice:not(.select2-locked)");
                 var pos = getCursorInfo(this.search);
 
+                if ( this.opts.selectOnComma && e.which == KEY.COMMA ) {
+                    e.which = KEY.ENTER;
+                }
+
                 if (selected.length &&
                     (e.which == KEY.LEFT || e.which == KEY.RIGHT || e.which == KEY.BACKSPACE || e.which == KEY.DELETE || e.which == KEY.ENTER)) {
                     var selectedChoice = selected;
@@ -3068,20 +3073,23 @@ the specific language governing permissions and limitations under the Apache Lic
         },
 
         // multi
-        postprocessResults: function (data, initial, noHighlightUpdate) {
+        postprocessResults: function (data, initial, noHighlightUpdate, allowDuplicate ) {
             var val = this.getVal(),
                 choices = this.results.find(".select2-result"),
                 compound = this.results.find(".select2-result-with-children"),
                 self = this;
 
-            choices.each2(function (i, choice) {
-                var id = self.id(choice.data("select2-data"));
-                if (indexOf(id, val) >= 0) {
-                    choice.addClass("select2-selected");
-                    // mark all children of the selected parent as selected
-                    choice.find(".select2-result-selectable").addClass("select2-selected");
-                }
-            });
+            if ( !allowDuplicate ) {
+                choices.each2(function (i, choice) {
+                    var id = self.id(choice.data("select2-data"));
+                    if (indexOf(id, val) >= 0) {
+                        choice.addClass("select2-selected");
+                        // mark all children of the selected parent as selected
+                        choice.find(".select2-result-selectable").addClass("select2-selected");
+                    }
+                });
+            }
+
 
             compound.each2(function(i, choice) {
                 // hide an optgroup if it doesn't have any selectable children

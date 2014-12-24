@@ -8,8 +8,7 @@ define [
   "ApiRequest"
   "JsonExporter"
   "backbone"
-  "UI.typeahead"
-  "UI.tokenfield"
+  "UI.select2"
 ], ( tplPartials, Modal, constant, lang, CloudResources, ApiRequest, JsonExporter )->
 
   Backbone.View.extend {
@@ -26,10 +25,6 @@ define [
       "keypress .cf-input" : "onFocusInput"
 
       "OPTION_CHANGE #import-cf-region" : "onRegionChange"
-
-      "change .cf-input" : "ensureCorrectValue"
-      "typeahead:selected .cf-input" : "ensureCorrectValue"
-      "tokenfield:createtoken .cf-input" : "ensureCorrectToken"
 
     initialize : ()->
       @modal = new Modal {
@@ -137,72 +132,22 @@ define [
       @onRegionChange()
       return
 
-    ensureCorrectValue : ( evt )->
-      $ipt    = $( evt.currentTarget )
-      $wrapper = $ipt.closest(".cf-input-entry")
-      if not $wrapper.length then return
-
-      name = $wrapper.attr("data-name")
-      type = $wrapper.attr("data-type")
-      val  = $ipt.val()
-
-      if type is "CommaDelimitedList" or type is "List<Number>"
-        # These are handled by token field.
-        return
-
-      for param in @parameters
-        if param.Name is name
-
-          if param.AllowedValues
-            for av in param.AllowedValues
-              if av + "" is val
-                allowed = true
-                break
-
-            # User has enter un-allowed value
-            # Revert to last value.
-            if not allowed
-              $ipt.typeahead( "val", param.Default )
-            else
-              param.Default = val
-            break
-          else
-            return
-
-      return
-
-    ensureCorrectToken : ( evt )->
-      $ipt    = $( evt.currentTarget )
-      $wrapper = $ipt.closest(".cf-input-entry")
-      if not $wrapper.length then return
-
-      name = $wrapper.attr("data-name")
-      type = $wrapper.attr("data-type")
-      val  = $ipt.val()
-
-      for param in @parameters
-        if param.Name is name
-
-          if param.AllowedValues
-            for av in param.AllowedValues
-              if av + "" is evt.attrs.value
-                allowed = true
-                break
-
-            if not allowed
-              evt.attrs.value = evt.attrs.label = ""
-              return
-            break
-          else
-            return
-      return
-
     initInputs : ()->
 
       self = @
-      typeaheadOption =
-        hint      : true
-        minLength : 0
+      kpQuery = ( options )->
+        options.callback {
+          more    : false
+          results : self.currentRegionKps
+        }
+
+      kpInitSelection = ( element, callback )->
+        def = element.select2("val")
+        callback( { id : def, text : def } )
+
+      numberCreateSC = ( term )->
+        if isNaN( Number(term) ) then return
+        { id : term, text : term }
 
       $inputs = $("#import-cf-params").children()
       for param in @parameters
@@ -210,36 +155,41 @@ define [
         # NoEcho ( Do nothing for NoEcho type )
         if param.NoEcho then continue
 
+        select2 = false
+
         ipt = $inputs.filter("[data-name='#{param.Name}']").find("input")
 
+        select2Option =
+          allowClear : true
+          data : []
+
+        if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
+          select2 = true
+          select2Option.multiple = true
+          select2Option.allowDuplicate = true
+
+          if not param.AllowedValues
+            select2Option.tags = []
+            select2Option.data = undefined
+            select2Option.tokenSeparators = [","]
+
+        if param.Type is "List<Number>"
+          select2Option.createSearchChoice = numberCreateSC
+
         if param.Type is "AWS::EC2::KeyPair::KeyName"
-          ipt.typeahead( typeaheadOption, {
-            name   : "importcf"
-            source : @createTypeaheadMatch( param )
-          } )
-          continue
+          select2 = true
+          select2Option.query = kpQuery
+          select2Option.initSelection = kpInitSelection
 
         if param.AllowedValues
-          if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
-            ipt.tokenfield({
-              showAutocompleteOnFocus : true
-              createTokensOnBlur : true
-              typeahead : [ typeaheadOption, {
-                name   : "importcf"
-                source : @createTypeaheadMatch( param )
-              }]
-            })
-            continue
+          select2 = true
+          avs = []
+          for av in param.AllowedValues
+            avs.push { id : "" + av, text : "" + av }
+          select2Option.data = avs
+          select2Option.selectOnComma = true
 
-          else if param.Type is "String" or param.Type is "Number"
-            ipt.typeahead( typeaheadOption, {
-              name   : "importcf"
-              source : @createTypeaheadMatch( param )
-            } )
-            continue
-        else
-          if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
-            ipt.tokenfield()
+        if select2 then ipt.select2( select2Option )
 
       return
 
@@ -257,35 +207,27 @@ define [
       $("#import-cf-form .loader").show()
       CloudResources( constant.RESTYPE.KP, currentRegion ).fetch().then ()->
         $("#import-cf-form .loader").hide()
-        currentRegionKps = CloudResources( constant.RESTYPE.KP, currentRegion ).pluck( "id" )
+        self.currentRegionKps = []
+        for kp in CloudResources( constant.RESTYPE.KP, currentRegion ).models
+          self.currentRegionKps.push { id : kp.id, text : kp.id }
+
+        $inputs = $("#import-cf-params").children()
         for param in self.parameters
           if param.Type is "AWS::EC2::KeyPair::KeyName"
-            param.AllowedValues = currentRegionKps
+            $ipt = $inputs.filter("[data-name='#{param.Name}']").find("input.cf-input")
+            $ipt.select2 "val", ( $ipt.select2("val") or param.Default )
+
         return
 
       return
 
-    typeaheadMatch : ( query, cb, source )->
-      matches  = []
-      queryReg = new RegExp( query, "i" )
-
-      for i in source
-        if queryReg.test( i )
-          matches.push { value : "" + i }
-
-      if matches.length is 0
-        for i in source
-          matches.push { value : "" + i }
-
-      cb( matches )
-
-    createTypeaheadMatch : ( source )->
-      self = @
-      ( query, cb )-> self.typeaheadMatch( query, cb, source.AllowedValues )
-
     extractUserInput : ( $li )->
       type  = $li.attr("data-type")
-      value = $li.find("input:not(.tt-hint)").val()
+      $input = $li.find("input.cf-input")
+      if $input.siblings(".select2-container").length
+        value = $input.select2("val")
+      else
+        value = $li.find("input.cf-input").val()
       name  = $li.attr("data-name")
       param = @cfJson.Parameters[ name ]
 
@@ -295,7 +237,10 @@ define [
       if type is "Number" or type is "String"
         valueArray = [ value ]
       else
-        valueArray = value.split(",")
+        if _.isArray( value )
+          valueArray = value
+        else
+          valueArray = value.split(",")
 
       if type is "Number" or type is "List<Number>"
         for v, idx in valueArray
@@ -309,18 +254,25 @@ define [
         if param.AllowedPattern
           AllowedPattern = new RegExp(param.AllowedPattern)
         for v, idx in valueArray
-          if param.MinLength and Number( param.MinLength ) > value.length then return false
-          if param.MaxLength and Number( param.MaxLength ) < value.length then return false
-          if AllowedPattern and not AllowedPattern.test( value ) then return false
+          if param.MinLength and Number( param.MinLength ) > v.length then return false
+          if param.MaxLength and Number( param.MaxLength ) < v.length then return false
+          if AllowedPattern and not AllowedPattern.test( v ) then return false
 
       # Check AllowedValues
       if param.AllowedValues
         for v in valueArray
           for av in param.AllowedValues || []
-            if av + "" is v
+            if "" + av is "" + v
               allowed = true
               break
           if not allowed then return false
+
+      if param.Type is "AWS::EC2::KeyPair::KeyName"
+        for kp in @currentRegionKps
+          if kp.id is value
+            allowed = true
+
+        if not allowed then return false
 
       if type is "String" or type is "Number"
         value = valueArray[0]

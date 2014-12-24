@@ -149,6 +149,8 @@ define [
         if isNaN( Number(term) ) then return
         { id : term, text : term }
 
+      formatNoMatches = ()-> ""
+
       $inputs = $("#import-cf-params").children()
       for param in @parameters
 
@@ -162,6 +164,7 @@ define [
         select2Option =
           allowClear : true
           data : []
+          formatNoMatches : formatNoMatches
 
         if param.Type is "CommaDelimitedList" or param.Type is "List<Number>"
           select2 = true

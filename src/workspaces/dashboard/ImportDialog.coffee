@@ -339,7 +339,7 @@ define [
           }
         }).then ( data )->
           self.modal.close()
-          data.provider = "aws::china"
+          data.provider = "aws::global"
           App.importJson( data, true )
         , ()->
           self.modal.close()

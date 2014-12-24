@@ -9,6 +9,7 @@ define [
   "JsonExporter"
   "backbone"
   "UI.select2"
+  "UI.nanoscroller"
 ], ( tplPartials, Modal, constant, lang, CloudResources, ApiRequest, JsonExporter )->
 
   Backbone.View.extend {
@@ -27,18 +28,19 @@ define [
       "OPTION_CHANGE #import-cf-region" : "onRegionChange"
 
     initialize : ()->
+      self = @
       @modal = new Modal {
         title         : lang.IDE.POP_IMPORT_JSON_TIT
         template      : tplPartials.importJSON()
         width         : "470"
         disableFooter : true
+        onClose       : ()-> self.onModalClose()
       }
 
       @setElement @modal.tpl
 
       @regionForceFetchMap = {}
 
-      self = @
       @reader = new FileReader()
       @reader.onload  = ( evt )-> self.onReaderLoader( evt )
       @reader.onerror = @onReaderError
@@ -128,8 +130,18 @@ define [
       @modal.setWidth "570"
       @modal.setTitle lang.IDE.POP_IMPORT_CF_TIT
 
+      @modal.tpl.find(".cf-params-wrap").nanoScroller()
+
       @initInputs()
       @onRegionChange()
+      return
+
+    onModalClose : ()->
+      for ipt in @modal.tpl.find("#import-cf-params").children().find("input.cf-input")
+        select2 = $( ipt ).data( "select2" )
+        if select2
+          $( ipt ).select2( "destroy" )
+
       return
 
     initInputs : ()->

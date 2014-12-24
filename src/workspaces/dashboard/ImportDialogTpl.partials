@@ -17,9 +17,9 @@
 
   {{#if parameters.length}}
   <section> Specify parameters for template:
-  <div class="scroll-wrap scrollbar-auto-hide cf-params-wrap">
-    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <ul class="cf-params scroll-content" id="import-cf-params">
+
+  <div class="nano cf-params-wrap">
+    <ul class="cf-params nano-content" id="import-cf-params">
       {{#each parameters}}<li class="cf-input-entry" data-type="{{Type}}" data-name="{{Name}}" {{#if NoEcho}}data-echo="false"{{/if}}>
       <span class="cf-name">{{Name}}</span>
       <span class="cf-input-wrap">

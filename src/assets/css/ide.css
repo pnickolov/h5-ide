@@ -9418,7 +9418,7 @@ h5.billing_usage_title {
 .cf-params-wrap {
   border-radius: 4px;
   background: #333;
-  max-height: 300px; }
+  height: 300px; }
 
 .cf-params > li {
   padding: 10px;

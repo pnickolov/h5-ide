@@ -136,9 +136,15 @@ define [
 
       self = @
       kpQuery = ( options )->
+        kps = []
+        term = options.term.toLowerCase()
+        for kp in self.currentRegionKps
+          if kp.toLowerCase().indexOf( term ) >= 0
+            kps.push { id:kp, text:kp }
+
         options.callback {
           more    : false
-          results : self.currentRegionKps
+          results : kps
         }
 
       kpInitSelection = ( element, callback )->
@@ -210,9 +216,7 @@ define [
       $("#import-cf-form .loader").show()
       CloudResources( constant.RESTYPE.KP, currentRegion ).fetch().then ()->
         $("#import-cf-form .loader").hide()
-        self.currentRegionKps = []
-        for kp in CloudResources( constant.RESTYPE.KP, currentRegion ).models
-          self.currentRegionKps.push { id : kp.id, text : kp.id }
+        self.currentRegionKps = CloudResources( constant.RESTYPE.KP, currentRegion ).pluck("id")
 
         $inputs = $("#import-cf-params").children()
         for param in self.parameters
@@ -271,11 +275,8 @@ define [
           if not allowed then return false
 
       if param.Type is "AWS::EC2::KeyPair::KeyName"
-        for kp in @currentRegionKps
-          if kp.id is value
-            allowed = true
-
-        if not allowed then return false
+        if @currentRegionKps.indexOf( value ) < 0
+          return false
 
       if type is "String" or type is "Number"
         value = valueArray[0]

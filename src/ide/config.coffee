@@ -262,8 +262,7 @@ require.config {
       "UI.selectize"
       "UI.selection"
       "UI.bubblepopup"
-      "UI.typeahead"
-      "UI.tokenfield"
+      "UI.select2"
     ]
     "api/api" : ["ApiRequest", "ApiRequestR", "ApiRequestOs"]
 

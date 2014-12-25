@@ -326,7 +326,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
         return null
 
       # Drop wrong volume component created for cloudformation by backend.
-      if instance.getAmiRootDeviceName() is attachment.Device
+      if not instance or instance.getAmiRootDeviceName() is attachment.Device
         return null
 
       attr =

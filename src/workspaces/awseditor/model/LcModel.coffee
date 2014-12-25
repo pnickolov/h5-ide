@@ -230,16 +230,18 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
           model.set "rdIops", volume.Ebs.Iops
           model.set "rdType", volume.Ebs.VolumeType
         else
-          _attr =
-            name       : volume.DeviceName
-            snapshotId : volume.Ebs.SnapshotId
-            volumeSize : volume.Ebs.VolumeSize
-            volumeType : volume.Ebs.VolumeType
-            iops       : volume.Ebs.Iops
-            owner      : model
-            # encrypted  : volume.Ebs.Encrypted
+          #skip instance-stored volume
+          if volume.Ebs
+            _attr =
+              name       : volume.DeviceName
+              snapshotId : volume.Ebs.SnapshotId
+              volumeSize : volume.Ebs.VolumeSize
+              volumeType : volume.Ebs.VolumeType
+              iops       : volume.Ebs.Iops
+              owner      : model
+              # encrypted  : volume.Ebs.Encrypted
 
-          new VolumeModel(_attr, {noNeedGenName:true})
+            new VolumeModel(_attr, {noNeedGenName:true})
 
       # Asso SG
       SgAsso = Design.modelClassForType( "SgAsso" )

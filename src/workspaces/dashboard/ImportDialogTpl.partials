@@ -5,8 +5,8 @@
 
 <!-- {{importCF}} -->
 <div id="import-cf-form">
-  <section> Region:
-    <div class="selectbox selectbox-mega" id="import-cf-region">
+  <section class="modal-control-group clearfix"> <label class="label">Region:</label>
+    <div class="selectbox combo-dd" id="import-cf-region">
       <div class="selection">{{regions.[0]}}</div>
       <ul class="dropdown" tabindex="-1">
         {{#each regions}}<li class="item{{#unless @index}} selected{{/unless}}" data-id="{{this}}">{{this}}</li>{{/each}}
@@ -16,25 +16,30 @@
   </section>
 
   {{#if parameters.length}}
-  <section> Specify parameters for template:
+  <section class="modal-control-group"> <h5>Specify parameters for template:</h5>
 
   <div class="nano cf-params-wrap">
     <ul class="cf-params nano-content" id="import-cf-params">
       {{#each parameters}}<li class="cf-input-entry" data-type="{{Type}}" data-name="{{Name}}" {{#if NoEcho}}data-echo="false"{{/if}}>
-      <span class="cf-name">{{Name}}</span>
-      <span class="cf-input-wrap">
-        <input class="input cf-input" {{#if NoEcho}}type="password"{{else}}type="text"{{/if}} value="{{Default}}">
-      </span>
-      <span class="cf-type">{{Type}}</span>
-      <div class="cf-desc"><p>{{Description}}</p>{{#if __Constraint}}<p>{{__Constraint}}</p>{{/if}}</div>
-      <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}Parameter value does not meet its constraint.{{/if}}</span>
+      <div class="cf-left">
+        <span class="cf-name">{{Name}}</span>
+        <span class="cf-type">{{Type}}</span>
+      </div>
+      <div class="cf-right">
+        <span class="cf-input-wrap">
+          <input class="input cf-input" {{#if NoEcho}}type="password"{{else}}type="text"{{/if}} value="{{Default}}">
+        </span>
+        
+        <div class="cf-desc"><p>{{Description}}</p>{{#if __Constraint}}<p>{{__Constraint}}</p>{{/if}}</div>
+        <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}Parameter value does not meet its constraint.{{/if}}</span>
+      </div>
       </li>{{/each}}
     </ul>
   </div>
   </section>
   {{/if}}
 
-  <div class="loader"><div class="loading-spinner loading-spinner-small"></div></div>
+  <div class="loader"><div class="loading-spinner"></div></div>
 
   <div class="modal-footer">
     <span class="param-error hide">Please provide valid value for each parameter.</span>
@@ -42,4 +47,4 @@
     <button class="btn btn-silver" id="import-cf-cancel">Cancel</button>
   </div>
 </div>
-<div class="loading-spinner loading-spinner-small hide"></div>
+<div class="loading-spinner hide"></div>

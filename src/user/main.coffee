@@ -40,7 +40,7 @@ checkAllCookie = -> !!($.cookie('usercode') and $.cookie('session_id'))
 
 # language detect
 langType = ->
-    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || "zh-cn"
+    document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || (if navigator.language and navigator.language.toLowerCase() is "zh-cn" then "zh-cn" else "en-us")
 deepth = 'RESET'
 
 timezone = (new Date().getTimezoneOffset())/-60

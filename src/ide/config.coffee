@@ -48,7 +48,7 @@
       break
   if window.version is '#{version}' then window.version = "dev"
 
-  window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || (if navigator.language and navigator.language is "zh-cn" then "zh-cn" else "en-us")
+  window.language = document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + "lang\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1") || (if navigator.language and navigator.language.toLowerCase() is "zh-cn" then "zh-cn" else "en-us")
   null
 )()
 

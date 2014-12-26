@@ -4,6 +4,13 @@ module.exports =
   TA:
 
    ##### Trust Advisor
+    INSTANCE:
+      en: "Instance"
+      zh: "实例"
+
+    LAUNCH_CONFIGURATION:
+      en: "Launch Configuration"
+      zh: "启动配置"
 
     # VPC
     WARNING_NOT_VPC_CAN_CONNECT_OUTSIDE:

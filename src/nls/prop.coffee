@@ -1857,7 +1857,7 @@ module.exports =
       zh: "Auto Scaling 组 ARN"
 
     LC_TITLE:
-      en: "Launch Configuation"
+      en: "Launch Configuration"
       zh: "启动配置"
 
     LC_NAME:

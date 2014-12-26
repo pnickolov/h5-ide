@@ -30,10 +30,10 @@ define [
 				instanceStr += "<span class='validation-tag tag-#{tag}'>#{instance.get 'name'}</span>, "
 
 		if instanceStr
-			message += 'Instance ' + instanceStr
+			message += i18n.INSTANCE + ' ' + instanceStr
 
 		if lcStr
-			message += 'Launch Configuration' + lcStr
+			message += i18n.LAUNCH_CONFIGURATION + " " + lcStr
 
 		message = message.slice 0, - 2
 		Helper.message.error uid, i18n.ERROR_INSTANCE_REF_OLD_KEYPAIR, message, kp.get('name')

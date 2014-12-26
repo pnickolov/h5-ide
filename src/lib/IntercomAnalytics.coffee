@@ -7,6 +7,7 @@ define [ "jquery" ], ()->
 
   IntercomKeys =
     import_json    : true
+    import_cf      : true
     export_json    : true
     visualize_vpc  : true
     sg_line_style  : true

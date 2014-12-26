@@ -1120,8 +1120,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: "导入CloudFormation"
 
     POP_IMPORT_DROP_LBL:
-      en: "Drop JSON file here or "
+      en: "Drop a JSON file here or "
       zh: "拖拽 JSON 文件到这里。"
+
+    POP_IMPORT_DROP_CF_LBL:
+      en: "Drop a CloudFormation template here or"
+      zh: "拖拽 CloudFormation 模板到这里。"
 
     POP_IMPORT_SELECT_LBL:
       en: " select a file."

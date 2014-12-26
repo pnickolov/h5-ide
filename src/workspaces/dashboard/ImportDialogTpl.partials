@@ -4,6 +4,11 @@
 <div id="import-json-error"></div>
 
 <!-- {{importCF}} -->
+<div class="loading-spinner loading-spinner-small hide"></div>
+<div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_CF_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
+<div id="import-json-error"></div>
+
+<!-- {{importCFConfirm}} -->
 <div id="import-cf-form">
   <section class="modal-control-group clearfix"> <label class="label">Region:</label>
     <div class="selectbox combo-dd" id="import-cf-region">
@@ -29,7 +34,7 @@
         <span class="cf-input-wrap">
           <input class="input cf-input" {{#if NoEcho}}type="password"{{else}}type="text"{{/if}} value="{{Default}}">
         </span>
-        
+
         <div class="cf-desc"><p>{{Description}}</p>{{#if __Constraint}}<p>{{__Constraint}}</p>{{/if}}</div>
         <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}Parameter value does not meet its constraint.{{/if}}</span>
       </div>

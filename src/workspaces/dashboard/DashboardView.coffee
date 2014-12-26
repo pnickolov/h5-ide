@@ -55,12 +55,17 @@ define [
       'click .resource-tab'             : 'switchResource'
       "click .global-resource-li"       : "gotoRegionResource"
 
-      'click #ImportStack'     : 'importJson'
       'click #VisualizeVPC'    : 'visualizeVPC'
       'click .show-credential' : 'showCredential'
       'click #RefreshResource' : 'reloadResource'
       "click .icon-detail"     : "showResourceDetail"
 
+      "mouseenter .hovermenu" : "showMenu"
+      "mouseleave .hovermenu" : "hideMenu"
+      'click #ImportStack li' : 'importJson'
+
+    showMenu : ( evt )-> $( evt.currentTarget ).children(".dropdown-menu").show()
+    hideMenu : ( evt )-> $( evt.currentTarget ).children(".dropdown-menu").hide()
 
     initialize : ()->
       @regionOpsTab = "stack"
@@ -270,7 +275,7 @@ define [
       @updateRegionResources()
       return
 
-    importJson : ()-> new ImportDialog()
+    importJson : ( evt )-> new ImportDialog({ type : $(evt.currentTarget).attr("data-type") })
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
     createStack : ( event )->

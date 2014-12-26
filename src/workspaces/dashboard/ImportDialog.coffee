@@ -27,11 +27,12 @@ define [
 
       "OPTION_CHANGE #import-cf-region" : "onRegionChange"
 
-    initialize : ()->
+    initialize : ( attr )->
       self = @
+      this.type = attr.type
       @modal = new Modal {
-        title         : lang.IDE.POP_IMPORT_JSON_TIT
-        template      : tplPartials.importJSON()
+        title         : if @type is "stack" then lang.IDE.POP_IMPORT_JSON_TIT else lang.IDE.POP_IMPORT_CF_TIT
+        template      : if @type is "stack" then tplPartials.importJSON() else tplPartials.importCF()
         width         : "470"
         disableFooter : true
         onClose       : ()-> self.onModalClose()
@@ -44,6 +45,7 @@ define [
       @reader = new FileReader()
       @reader.onload  = ( evt )-> self.onReaderLoader( evt )
       @reader.onerror = @onReaderError
+
       return
 
     onDragenter : ()-> @$el.find("#modal-import-json-dropzone").toggleClass("dragover", true)
@@ -74,11 +76,18 @@ define [
         $("#import-json-error").html result
         return
 
-      if result.AWSTemplateFormatVersion
-        @handleCFTemplate( result )
-        return
+      if @type is "stack" and result.AWSTemplateFormatVersion
+        error = lang.IDE.POP_IMPORT_FORMAT_ERROR
+      else if @type is "cf" and not result.AWSTemplateFormatVersion
+        error = lang.IDE.POP_IMPORT_FORMAT_ERROR
 
-      error = App.importJson( @reader.result )
+      if not error
+        if result.AWSTemplateFormatVersion
+          @handleCFTemplate( result )
+          return
+        else
+          error = App.importJson( @reader.result )
+
       if _.isString error
         $("#import-json-error").html error
       else
@@ -126,7 +135,7 @@ define [
         parameters : parameters
       }
 
-      @modal.setContent tplPartials.importCF(data)
+      @modal.setContent tplPartials.importCFConfirm(data)
       @modal.setWidth "570"
       @modal.setTitle lang.IDE.POP_IMPORT_CF_TIT
 
@@ -167,7 +176,7 @@ define [
         if isNaN( Number(term) ) then return
         { id : term, text : term }
 
-      formatNoMatches = ()-> ""
+      formatNoMatches = ()-> "Invalid input"
 
       $inputs = $("#import-cf-params").children()
       for param in @parameters

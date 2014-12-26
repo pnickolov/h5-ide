@@ -16,8 +16,12 @@
   width: 100%;
   height: 38px;
 
-  > .btn {
-    float : left;
+  > .btn, > .hovermenu {
+    float       : left;
+    margin-left : 10px;
+  }
+
+  > .btn, .hovermenu > .btn {
     height      : 36px;
     line-height : 36px;
     overflow    : hidden;
@@ -27,7 +31,6 @@
     font-size  : 16px;
 
     padding : 0 16px 0 0;
-    margin-left : 10px;
 
     &[disabled] { color: #999; }
     &:before {
@@ -41,35 +44,36 @@
       margin-right  : 10px;
     }
   }
-}
 
-/* Create Stack */
+  .dropdown-menu {
+    position   : static;
+    margin-top : 3px;
 
-#global-region-create-stack-list {
-  position : absolute;
-  left     : 10px;
-  top      : 49px;
+    border        : none;
+    box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);
+    border-radius : 2px;
+    color         : #666;
+    font-size     : 14px;
+    background    : #f8f8f8;
 
-  width         : 216px;
-  border        : 1px solid #ccc;
-  box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);
-  border-radius : 2px;
-  color         : #666;
-  font-size     : 14px;
-  background    : #f8f8f8;
+    li {
+      padding       : 12px 0 12px 12px;
+      border-bottom : 1px solid #ddd;
+      cursor        : pointer;
 
-  li {
-    padding       : 12px 15px;
-    border-bottom : 1px solid #ddd;
-    cursor        : pointer;
+      &:last-child {
+        border-bottom : none;
+        border-radius : 0 0 2px 2px;
+      }
 
-    &:last-child {
-      border-bottom : none;
-    }
+      &:first-child {
+        border-radius : 2px 2px 0 0;
+      }
 
-    &:hover {
-      background: #eee;
-      color: #148BE6;
+      &:hover {
+        background: #eee;
+        color: #148BE6;
+      }
     }
   }
 }

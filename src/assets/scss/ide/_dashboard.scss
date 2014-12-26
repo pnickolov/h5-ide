@@ -19,6 +19,7 @@
   > .btn, > .hovermenu {
     float       : left;
     margin-left : 10px;
+    position    : relative;
   }
 
   > .btn, .hovermenu > .btn {
@@ -46,8 +47,9 @@
   }
 
   .dropdown-menu {
-    position   : static;
-    margin-top : 3px;
+    position : absolute;
+    left     : 0;
+    top      : 37px;
 
     border        : none;
     box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);

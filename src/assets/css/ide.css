@@ -3958,7 +3958,8 @@ div.modal-text-highlight {
   height: 38px; }
   #global-region-header > .btn, #global-region-header > .hovermenu {
     float: left;
-    margin-left: 10px; }
+    margin-left: 10px;
+    position: relative; }
   #global-region-header > .btn, #global-region-header .hovermenu > .btn {
     height: 36px;
     line-height: 36px;
@@ -3979,8 +3980,9 @@ div.modal-text-highlight {
       border-radius: 3px 0 0 3px;
       margin-right: 10px; }
   #global-region-header .dropdown-menu {
-    position: static;
-    margin-top: 3px;
+    position: absolute;
+    left: 0;
+    top: 37px;
     border: none;
     box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.5);
     border-radius: 2px;

@@ -176,7 +176,11 @@ define [
         if isNaN( Number(term) ) then return
         { id : term, text : term }
 
-      formatNoMatches = ()-> "Invalid input"
+      formatNoMatches = ( term )->
+        if not term
+          "Input value..."
+        else
+          "Invalid input"
 
       $inputs = $("#import-cf-params").children()
       for param in @parameters

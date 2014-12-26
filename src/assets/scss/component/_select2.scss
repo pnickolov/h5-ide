@@ -618,3 +618,7 @@ html[dir="rtl"] .select2-search-choice-close {
 .select2-with-searchbox {
     margin-top : -34px;
 }
+
+.select2-results::empty {
+    display : none;
+}

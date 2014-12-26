@@ -7,6 +7,13 @@
 <div class="loading-spinner loading-spinner-small hide"></div>
 <div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_CF_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
 <div id="import-json-error"></div>
+<ul class="import-cf-notice">
+  <li>Currently only templates meet following requirements can be imported:</li>
+  <li>Must be in VPC platform. EC2 Classic template is not supported.</li>
+  <li>Must not include reference to existing VPC, Subnet or Security Group. <br> These components must be defined as complete new resources.</li>
+  <li>Resources used in template must be already <u>supported by VisualOps.</u> <br> Unsupported resources will be ignored.</li>
+  <li>All DependsOn attribute will be ignored.</li>
+</ul>
 
 <!-- {{importCFConfirm}} -->
 <div id="import-cf-form">

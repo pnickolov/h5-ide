@@ -78,8 +78,22 @@
   }
 }
 
-/* Import JSON */
+.import-cf-notice {
+  color      : #FFB500;
+  font-size  : 12px;
 
+  > li {
+    list-style  : disc;
+    margin-left : 16px;
+  }
+
+  > li:first-child {
+    list-style  : none;
+    margin-left : 0;
+  }
+}
+
+/* Import JSON */
 #modal-import-json-dropzone {
   border        : 3px dashed #3A3A3A;
   background    : #141212;

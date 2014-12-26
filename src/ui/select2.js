@@ -1750,7 +1750,9 @@ define(["jquery"], function($) {
                 }
 
                 if (data.results.length === 0 && checkFormatter(opts.formatNoMatches, "formatNoMatches")) {
-                    render("<li class='select2-no-results'>" + evaluate(opts.formatNoMatches, search.val()) + "</li>");
+                    var nomaches = evaluate(opts.formatNoMatches, search.val());
+                    if (nomaches)
+                        render("<li class='select2-no-results'>" + nomaches + "</li>");
                     return;
                 }
 
@@ -1910,8 +1912,7 @@ define(["jquery"], function($) {
                 "       <input type='text' autocomplete='off' autocorrect='off' autocapitalize='off' spellcheck='false' class='select2-input' role='combobox' aria-expanded='true'",
                 "       aria-autocomplete='list' />",
                 "   </div>",
-                "   <ul class='select2-results' role='listbox'>",
-                "   </ul>",
+                "   <ul class='select2-results' role='listbox'></ul>",
                 "</div>"].join(""));
             return container;
         },
@@ -2519,8 +2520,7 @@ define(["jquery"], function($) {
                 "  </li>",
                 "</ul>",
                 "<div class='select2-drop select2-drop-multi select2-display-none'>",
-                "   <ul class='select2-results'>",
-                "   </ul>",
+                "   <ul class='select2-results'></ul>",
                 "</div>"].join(""));
             return container;
         },

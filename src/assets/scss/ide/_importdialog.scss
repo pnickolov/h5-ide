@@ -83,6 +83,7 @@
 
   .cf-desc p {
     margin-bottom: -4px;
+    word-break:break-all;
   }
 
   .cf-input {
@@ -96,8 +97,8 @@
     .cf-error { display : block; }
   }
 
-  .cf-error { 
-    display   : none; 
+  .cf-error {
+    display   : none;
     font-size : 12px;
     color     : $base-r;
     margin-top: 4px;

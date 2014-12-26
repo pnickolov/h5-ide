@@ -175,7 +175,7 @@ define [
           notification "error", message
         return
 
-    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
+    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize({duplicateStack: true}) )

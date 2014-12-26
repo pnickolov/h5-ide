@@ -280,6 +280,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # The version will be updated after serialize
       if (json.version or "").split("-").length < 3 then json.version = OpsModelLastestVersion
 
+      if not json.provider and @get("provider")
+        json.provider = @get("provider")
+
       @__jsonData = json
 
       if @attributes.name isnt json.name

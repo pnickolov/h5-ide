@@ -2105,7 +2105,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "享受您的 %s 个免费实例*时的同时，请提供账单信息以防免费额度用尽。"
 
     YOUR_ACCOUNT_IN_LIMITED_STATUS:
-      en: "Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled."
+      en: "Your account is in limited status now. <br>Import VPC, app operation, monitoring and state ensuring are disabled."
       zh: "您的账户已经处于受限状态。 导入 App，App 操作，管理和资源监控已被禁用。"
 
     INSTANCE_HOURS_PER_MONTH:

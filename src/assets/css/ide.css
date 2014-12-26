@@ -9405,6 +9405,8 @@ h5.billing_usage_title {
 
 #import-cf-form {
   position: relative; }
+  #import-cf-form .modal-footer {
+    padding: 0 13px; }
   #import-cf-form .loader {
     position: absolute;
     width: 100%;
@@ -9415,6 +9417,8 @@ h5.billing_usage_title {
     left: 0;
     top: 0;
     display: none; }
+    #import-cf-form .loader .loading-spinner {
+      margin: 30% auto; }
   #import-cf-form .modal-control-group label {
     width: 187px; }
   #import-cf-form section h5 {
@@ -9460,13 +9464,22 @@ h5.billing_usage_title {
   width: 300px;
   line-height: 18px; }
 .cf-params > li.error {
-  background: red; }
+  box-shadow: inset 4px 0 0 #a42b2b; }
   .cf-params > li.error .cf-error {
     display: block; }
 .cf-params .cf-error {
   display: none;
   font-size: 12px;
+<<<<<<< HEAD
   color: #A42B2B; }
+=======
+  color: #a42b2b;
+  margin-top: 4px; }
+
+.param-error {
+  color: #a42b2b;
+  float: left; }
+>>>>>>> [develop] update style
 
 .cf-input.select2-container {
   padding: 0;

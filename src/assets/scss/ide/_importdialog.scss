@@ -3,6 +3,8 @@
 #import-cf-form {
   position: relative;
 
+  .modal-footer { padding: 0 13px; }
+
   .loader {
     position      : absolute;
     width         : 100%;
@@ -13,6 +15,10 @@
     left          : 0;
     top           : 0;
     display       : none;
+
+    .loading-spinner {
+      margin: 30% auto;
+    }
   }
 
   .modal-control-group label {
@@ -85,7 +91,7 @@
   }
 
   > li.error {
-    background : red;
+    box-shadow: inset 4px 0 0 $base-r;
 
     .cf-error { display : block; }
   }
@@ -94,7 +100,13 @@
     display   : none; 
     font-size : 12px;
     color     : $base-r;
+    margin-top: 4px;
   }
+}
+
+.param-error {
+    color     : $base-r;
+    float     : left;
 }
 
 .cf-input.select2-container {

@@ -365,7 +365,7 @@ textarea[readonly]  {
 .input:focus {
 	background-color : #000;
 	color            : #EEE;
-	border           : 1px solid #161616;
+	border           : 1px solid $base-b;
 }
 
 .input.disabled,

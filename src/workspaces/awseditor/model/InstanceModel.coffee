@@ -749,7 +749,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       data = App.model.getOsFamilyConfig( region )
       try
         data = data[ ami.osFamily ] || data[ constant.OS_TYPE_MAPPING[ami.osType] ]
-        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance store']
+        data = if ami.rootDeviceType  is "ebs" then data.ebs else data['instance_store']
         data = data[ ami.architecture ]
         data = data[ ami.virtualizationType || "paravirtual" ]
       catch e

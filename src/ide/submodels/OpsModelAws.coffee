@@ -156,7 +156,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
       @__jsonData = json
       return
   }, {
-    supportedProviders : ["aws::global", "aws::global"]
+    supportedProviders : ["aws::global", "aws::china"]
   }
 
   AwsOpsModel

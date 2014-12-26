@@ -137,7 +137,12 @@ define [
         @view = null
 
       if @isAwake() and not @__inited
-        @__initEditor()
+        try
+          @__initEditor()
+        catch e
+          console.error e
+          notification "error", "Failed to open the stack/app, please contact our support team."
+          @remove()
       return
 
     awake : ()->

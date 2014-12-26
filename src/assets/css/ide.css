@@ -9456,8 +9456,7 @@ h5.billing_usage_title {
   width: 34%;
   margin-right: 2%; }
 .cf-params .cf-name, .cf-params .cf-type {
-  height: 2em;
-  line-height: 1.2em;
+  height: 30px;
   box-sizing: border-box;
   word-break: break-all;
   display: block;

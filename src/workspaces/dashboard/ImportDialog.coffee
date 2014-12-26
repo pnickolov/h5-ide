@@ -335,6 +335,7 @@ define [
       @modal.tpl.find(".loading-spinner").show()
       @modal.tpl.closest(".modal-box").find(".modal-close").hide()
       $("#import-cf-form").hide()
+      @modal.resize()
 
       region = $("#import-cf-region").find(".selected").attr("data-id")
 

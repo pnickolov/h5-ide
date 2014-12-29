@@ -3984,8 +3984,8 @@ div.modal-text-highlight {
   #global-region-header .dropdown-menu {
     position: absolute;
     left: 0;
-    top: 37px;
     width: 250px;
+    top: 36px;
     border: none;
     color: #666;
     font-size: 14px;
@@ -4010,14 +4010,19 @@ div.modal-text-highlight {
         color: #148BE6; }
 
 .import-cf-notice {
-  color: #FFB500;
+  color: #ffbb0d;
   font-size: 12px; }
   .import-cf-notice > li {
     list-style: disc;
     margin-left: 16px; }
   .import-cf-notice > li:first-child {
     list-style: none;
-    margin-left: 0; }
+    margin-left: 0;
+    font-size: 14px;
+    margin-bottom: 6px; }
+  .import-cf-notice .tooltip {
+    text-decoration: underline;
+    cursor: help; }
 
 /* Import JSON */
 #modal-import-json-dropzone {

@@ -11,7 +11,7 @@
   <li>Currently only templates meet following requirements can be imported:</li>
   <li>Must be in VPC platform. EC2 Classic template is not supported.</li>
   <li>Must not include reference to existing VPC, Subnet or Security Group. <br> These components must be defined as complete new resources.</li>
-  <li>Resources used in template must be already <u>supported by VisualOps.</u> <br> Unsupported resources will be ignored.</li>
+  <li>Resources used in template must be already <span class="tooltip" data-tooltip="EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS">supported by VisualOps.</span> <br> Unsupported resources will be ignored.</li>
   <li>All DependsOn attribute will be ignored.</li>
 </ul>
 

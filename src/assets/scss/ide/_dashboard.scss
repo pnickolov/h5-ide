@@ -53,7 +53,7 @@
   .dropdown-menu {
     position : absolute;
     left     : 0;
-    top      : 37px;
+    top      : 36px;
 
     width : 250px;
 
@@ -93,7 +93,7 @@
 }
 
 .import-cf-notice {
-  color      : #FFB500;
+  color      : $yellow;
   font-size  : 12px;
 
   > li {
@@ -104,6 +104,13 @@
   > li:first-child {
     list-style  : none;
     margin-left : 0;
+    font-size: 14px;
+    margin-bottom: 6px
+  }
+
+  .tooltip {
+    text-decoration: underline;
+    cursor: help;
   }
 }
 

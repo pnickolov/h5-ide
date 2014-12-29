@@ -121,6 +121,14 @@ define [
       @listenTo @canvas, "doubleclick",  @onCanvasDoubleClick
 
       @initialize()
+
+      if @workspace.opsModel.get("__________itsshitdontsave")
+        @propertyPanel.$el.remove()
+        @statusbar.$el.remove()
+        @$el.find(".canvas-view").css("pointer-events","none")
+        @canvas.updateSize()
+        @toolbar.xxxxxx()
+        @resourcePanel.$el.addClass("force-hidden")
       return
 
     onItemSelected      : ( type, id )->

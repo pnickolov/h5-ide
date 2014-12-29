@@ -215,7 +215,7 @@ define [
         Thumbnail.generate( @view.getSvgElement() ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     isRemovable : ()->
-      if not @__inited or not @isModified()
+      if not @__inited or not @isModified() or @opsModel.get("__________itsshitdontsave")
         return true
 
       @view.showCloseConfirm()

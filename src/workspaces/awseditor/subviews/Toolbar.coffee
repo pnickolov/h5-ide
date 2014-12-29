@@ -84,7 +84,7 @@ define [
       #delay
       that = @
       setTimeout(() ->
-        that.updateTbBtns()
+        if not that.workspace.isRemoved() then that.updateTbBtns()
       , 1000)
 
       @updateZoomButtons()
@@ -679,4 +679,9 @@ define [
             return
         }
       return false
+
+
+    xxxxxx : ()->
+      @setElement @parent.$el.find(".OEPanelTop").html( OpsEditorTpl.toolbar.BtnActionPng() )
+
   }

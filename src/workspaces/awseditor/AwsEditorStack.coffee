@@ -108,4 +108,8 @@ define [
       if not @opsModel.isPersisted() then return true
       @design && @design.isModified()
 
+    fetchJsonData : ()->
+      opsModel = @opsModel
+      opsModel.fetchJsonData().then ()-> if not opsModel.isPersisted() and not opsModel.get("__________itsshitdontsave") then return opsModel.save()
+
   StackEditor

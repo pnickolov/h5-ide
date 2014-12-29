@@ -83,6 +83,7 @@ define [
         name       : json.name
         region     : json.region
         autoLayout : updateLayout
+        __________itsshitdontsave : updateLayout
       }, {
         jsonData : json
       })

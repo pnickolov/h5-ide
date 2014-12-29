@@ -288,9 +288,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if @attributes.name isnt json.name
         @set "name", json.name
 
-      if json.autoLayout
-        @set "autoLayout", json.autoLayout
-
       @
 
     # Save the stack in server, returns a promise

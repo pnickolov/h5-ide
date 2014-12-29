@@ -263,7 +263,11 @@ define [
       name  = $li.attr("data-name")
       param = @cfJson.Parameters[ name ]
 
-      if not value then return false
+      if not value
+        return {
+          name  : name
+          value : ""
+        }
 
       # The string might contain ",", so we need to treat string differently.
       if type is "Number" or type is "String"
@@ -315,7 +319,9 @@ define [
 
     checkCFParameter : ()->
       $entries = @modal.tpl.find(".cf-params").children()
-      error = false
+      error    = false
+      hasEmpty = false
+
       for li in $entries
         $li = $(li)
         result = @extractUserInput( $li )
@@ -323,15 +329,29 @@ define [
           error = true
           $li.toggleClass("error", true)
         else
+          if not result.value
+            hasEmpty = true
+
           @cfJson.Parameters[ result.name ].Default = result.value
           $li.toggleClass("error", false)
+
+      @modal.tpl.find(".param-error").hide()
+      @modal.tpl.find(".param-empty").hide()
+
+      if error
+        @modal.tpl.find(".param-error").show()
+        @emptyParamConfirm = false
+      else if hasEmpty
+        @modal.tpl.find(".param-empty").show()
+
+        if not @emptyParamConfirm
+          error = @emptyParamConfirm = true
 
       return not error
 
     doImport : ()->
 
       if not @checkCFParameter()
-        @modal.tpl.find(".param-error").show()
         return
 
       self = @

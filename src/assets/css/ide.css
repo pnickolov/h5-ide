@@ -9496,6 +9496,13 @@ h5.billing_usage_title {
   color: #A42B2B;
   float: left; }
 
+.param-empty {
+  float: left;
+  width: 320px;
+  text-align: left;
+  font-size: 12px;
+  color: #FFBB0D; }
+
 .cf-input.select2-container {
   padding: 0;
   border: none;

@@ -102,16 +102,20 @@ define [
       _.extend this, options
 
       @setElement $( @template() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
+      return
 
+    # There are chances that things inside __initialize() will fail, to make sure constructor
+    # will never fail, we split it from construtor into __initialize()
+    __initialize : ()->
       opt =
         workspace : @workspace
         parent    : @
 
-      @toolbar       = new (options.TopPanel    || Backbone.View)(opt)
-      @propertyPanel = new (options.RightPanel  || Backbone.View)(opt)
-      @resourcePanel = new (options.LeftPanel   || Backbone.View)(opt)
-      @statusbar     = new (options.BottomPanel || Backbone.View)(opt)
-      @canvas        = new options.CanvasView(opt)
+      @toolbar       = new (this.TopPanel    || Backbone.View)(opt)
+      @propertyPanel = new (this.RightPanel  || Backbone.View)(opt)
+      @resourcePanel = new (this.LeftPanel   || Backbone.View)(opt)
+      @statusbar     = new (this.BottomPanel || Backbone.View)(opt)
+      @canvas        = new this.CanvasView(opt)
 
       @listenTo @canvas, "itemSelected", @onItemSelected
       @listenTo @canvas, "doubleclick",  @onCanvasDoubleClick

@@ -192,6 +192,7 @@ define [
       @listenTo @design, "change:name", @updateTab
 
       @view = new @viewClass({ workspace : @ })
+      @view.__initialize()
 
       @initEditor()
 

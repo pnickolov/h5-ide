@@ -230,11 +230,11 @@ module.exports =
 
     CVS_ASG_DROP_LC_2:
       en: "resource panel to"
-      zh: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AMI来创建"
+      zh: "AMI来创建"
 
     CVS_ASG_DROP_LC_3:
       en: "create launch"
-      zh: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启动配置"
+      zh: "启动配置"
 
     CVS_ASG_DROP_LC_4:
       en: "configuration"

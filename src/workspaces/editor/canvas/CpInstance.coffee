@@ -30,7 +30,7 @@ define [ "./CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "Clou
 
       id = $(evt.currentTarget).addClass("selected").attr("data-id")
       type = constant.RESTYPE.INSTANCE
-      if id.indexOf('eni-') == 0
+      if id and id.indexOf('eni-') == 0
           type = constant.RESTYPE.ENI
       ide_event.trigger ide_event.OPEN_PROPERTY, type, $( evt.currentTarget ).addClass("selected").attr("data-id")
       false

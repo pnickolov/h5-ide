@@ -61,7 +61,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js" ], ( Compl
         id     : data.uid
         name   : data.name
         appId  : data.resource.InternetGatewayId
-        parent : resolve( data.resource.AttachmentSet[0].VpcId )
+        parent : resolve( MC.extractID data.resource.AttachmentSet[0].VpcId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

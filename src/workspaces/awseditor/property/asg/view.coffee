@@ -171,9 +171,6 @@ define [ '../base/view',
         constantCheck: (val) ->
             val = +val
 
-            if val < 1
-                return sprintf lang.PARSLEY.VALUE_MUST_BE_GREATERTHAN_VAR, 1
-
             if val > 65534
                 return sprintf lang.PARSLEY.VALUE_MUST_BE_LESSTHAN_VAR, 65534
 

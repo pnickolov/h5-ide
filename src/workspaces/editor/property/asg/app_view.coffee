@@ -494,32 +494,38 @@ define [ '../base/view',
 
 
         setSizeGroup: ( event ) ->
+            that        = @
             $min        = @$el.find '#property-asg-min'
             $max        = @$el.find '#property-asg-max'
             $capacity   = @$el.find '#property-asg-capacity'
 
             $min.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.PARSLEY.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val > + $max.val()
                     return lang.PARSLEY.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                that.constantCheck val
 
             $max.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.PARSLEY.ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1
                 if + val < + $min.val()
                     return lang.PARSLEY.MINIMUM_SIZE_MUST_BE_LESSTHAN_MAXIMUM_SIZE
+                that.constantCheck val
 
             $capacity.parsley 'custom', ( val ) ->
-                if + val < 1
-                    return lang.PARSLEY.DESIRED_CAPACITY_EQUAL_OR_GREATER_1
                 if + val < + $min.val() or + val > + $max.val()
                     return lang.PARSLEY.DESIRED_CAPACITY_IN_ALLOW_SCOPE
+                that.constantCheck val
 
             if $( event.currentTarget ).parsley 'validateForm'
                 @model.setASGMin $min.val()
                 @model.setASGMax $max.val()
                 @model.setASGDesireCapacity $capacity.val()
+
+        constantCheck: (val) ->
+            val = +val
+
+            if val > 65534
+                return sprintf lang.PARSLEY.VALUE_MUST_BE_LESSTHAN_VAR, 65534
+
+            null
     }
 
     new ASGAppEditView()

@@ -31,7 +31,7 @@ define [ "ComplexResModel", "Design", "constant" ], ( ComplexResModel, Design, c
         id     : data.uid
         name   : data.name
         appId  : data.resource.VpnGatewayId
-        parent : resolve( layout_data.groupUId )
+        parent : resolve( data.resource.Attachments[0].VpcId )
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

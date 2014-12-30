@@ -4012,11 +4012,17 @@ div.modal-text-highlight {
   .import-cf-notice > li {
     list-style: disc;
     margin-left: 16px; }
-  .import-cf-notice > li:first-child {
+  .import-cf-notice > li:first-child, .import-cf-notice li:last-child {
     list-style: none;
     margin-left: 0;
     font-size: 14px;
     margin-bottom: 6px; }
+  .import-cf-notice > li:last-child {
+    color: #888; }
+    .import-cf-notice > li:last-child a {
+      color: #4a90e2; }
+    .import-cf-notice > li:last-child a:hover {
+      text-decoration: underline; }
   .import-cf-notice .tooltip {
     text-decoration: underline;
     cursor: help; }

@@ -101,11 +101,17 @@
     margin-left : 16px;
   }
 
-  > li:first-child {
+  > li:first-child, li:last-child {
     list-style  : none;
     margin-left : 0;
     font-size: 14px;
     margin-bottom: 6px
+  }
+
+  >li:last-child {
+    color: #888;
+    a {color: $base-b;}
+    a:hover {text-decoration: underline;}
   }
 
   .tooltip {

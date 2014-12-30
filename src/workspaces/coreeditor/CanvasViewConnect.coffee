@@ -1,12 +1,5 @@
 
-define [
-  "Design"
-  "CanvasView"
-  "CanvasManager"
-  "CanvasElement"
-  "i18n!/nls/lang.js"
-  "UI.modalplus"
-], ( Design, CanvasView, CanvasManager, CanvasElement, lang, Modal )->
+define [ "./CanvasView", "Design", "./CanvasManager",  "./CanvasElement", "i18n!/nls/lang.js", "UI.modalplus" ], ( CanvasView, Design, CanvasManager, CanvasElement, lang, Modal )->
 
   CanvasViewProto = CanvasView.prototype
 
@@ -206,7 +199,7 @@ define [
       self = @
       modal = new Modal {
         title    : res.title
-        width    : "420"
+        width    : "450"
         template : res.template
         confirm  : {text:res.action, color:"blue"}
         onConfirm  : ()->

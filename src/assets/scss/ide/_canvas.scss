@@ -336,8 +336,9 @@
 }
 #asg_prompt {
   fill: #16B4F9;
-  font-size: 12px;
+  font-size: 11px;
   pointer-events:none;
+  text-anchor: middle;
 }
 
 .asg-dragger {
@@ -430,6 +431,10 @@
       stroke-width: 4;
     }
   }
+}
+.AWS-AutoScaling-LaunchConfiguration .node-background {
+  fill : #f6faf9;
+  fill-opacity : 1 !important;
 }
 .AWS-AutoScaling-LaunchConfiguration ~ .asg-prompt {
   display : none;

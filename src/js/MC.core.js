@@ -266,10 +266,6 @@ var MC = {
 	extractID: function (uid)
 	{
 		if (!uid) { return ""; }
-		if (uid.indexOf("@{") != 0)
-		{
-			return uid
-		}
 		var result = _extractIDRegex.exec(uid);
 		return result ? result[1] : uid;
 	},

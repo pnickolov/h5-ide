@@ -29,6 +29,7 @@ define [
         @svg.group().classes("layer_asg")
         @svg.group().classes("layer_line")
         @svg.group().classes("layer_sgline")
+        @svg.group().classes("layer_lc")
         @svg.group().classes("layer_node")
       ])
       return

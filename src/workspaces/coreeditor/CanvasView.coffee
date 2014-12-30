@@ -105,6 +105,7 @@ define [
 
     appendLine   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
+    getLayer     : ( layerName )-> $( @svg.node ).children( "." + layerName )
 
     switchMode : ( mode )->
       console.assert( "stack app appedit".indexOf( mode ) >= 0 )

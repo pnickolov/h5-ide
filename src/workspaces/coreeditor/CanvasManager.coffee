@@ -1,3 +1,4 @@
+
 define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, constant, lang )->
 
   CanvasManager = {

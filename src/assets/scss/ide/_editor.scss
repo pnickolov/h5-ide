@@ -146,7 +146,7 @@ $BottomPanelHeight    : 24px;
   }
 }
 
-.OEPanelRight:not(.hidden) ~ .OEMiddleWrap { right : $RightPanelWidth; }
+.OEPanelRight:not(.state):not(.hidden) ~ .OEMiddleWrap { right : $RightPanelWidth; }
 .OEPanelRight:not(.hidden).state ~ .OEMiddleWrap { right : $RightStatePanelWidth; }
 .OEPanelLeft:not(.hidden)  ~ .OEMiddleWrap { left  : $LeftPanelWidth; }
 .OEPanelLeft.force-hidden  ~ .OEMiddleWrap {

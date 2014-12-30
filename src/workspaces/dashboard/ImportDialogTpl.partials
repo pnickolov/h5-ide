@@ -8,16 +8,12 @@
 <div id="modal-import-json-dropzone">{{i18n "POP_IMPORT_DROP_CF_LBL"}}<label for="modal-import-json-file" class="select-file-link">{{i18n "POP_IMPORT_SELECT_LBL"}}</label><input type="file" id="modal-import-json-file"></div>
 <div id="import-json-error"></div>
 <ul class="import-cf-notice">
-  <li>Currently only templates meet following requirements can be imported:</li>
-  <li>Must be in VPC platform. EC2 Classic template is not supported.</li>
-  <li>Must not include reference to existing VPC, Subnet or Security Group. <br> These components must be defined as complete new resources.</li>
-  <li>Resources used in template must be already <span class="tooltip" data-tooltip="EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS">supported by VisualOps.</span> <br> Unsupported resources will be ignored.</li>
-  <li>All DependsOn attribute will be ignored.</li>
+{{i18n "IMPORT_CF_NOTICE"}}
 </ul>
 
 <!-- {{importCFConfirm}} -->
 <div id="import-cf-form">
-  <section class="modal-control-group clearfix"> <label class="label">Region:</label>
+  <section class="modal-control-group clearfix"> <label class="label">{{i18n "PROP.STACK_LBL_REGION"}}:</label>
     <div class="selectbox combo-dd" id="import-cf-region">
       <div class="selection">{{regions.[0]}}</div>
       <ul class="dropdown" tabindex="-1">
@@ -28,7 +24,7 @@
   </section>
 
   {{#if parameters.length}}
-  <section class="modal-control-group"> <h5>Specify parameters for template:</h5>
+  <section class="modal-control-group"> <h5>{{i18n "SPECIFY_PARAMETERS_FOR_TEMPLATE"}}</h5>
 
   <div class="nano cf-params-wrap">
     <ul class="cf-params nano-content" id="import-cf-params">
@@ -43,7 +39,7 @@
         </span>
 
         <div class="cf-desc"><p>{{Description}}</p>{{#if __Constraint}}<p>{{__Constraint}}</p>{{/if}}</div>
-        <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}Parameter value does not meet its constraint.{{/if}}</span>
+        <span class="cf-error">{{#if ConstraintDescription}}{{ConstraintDescription}}{{else}}{{i18n "IMPORT_CF_NOT_MEET_CONSTRAINT"}}{{/if}}</span>
       </div>
       </li>{{/each}}
     </ul>
@@ -54,10 +50,10 @@
   <div class="loader"><div class="loading-spinner"></div></div>
 
   <div class="modal-footer">
-    <span class="param-error hide">Please provide valid value for each parameter.</span>
-    <span class="param-empty hide">Some paramters are left empty. If you are sure they should be empty, click Import button again to proceed.</span>
-    <button class="btn btn-blue" id="import-cf-import">Import</button>
-    <button class="btn modal-close btn-silver" id="import-cf-cancel">Cancel</button>
+    <span class="param-error hide">{{i18n "IMPORT_CF_PARAMS_ERROR"}}</span>
+    <span class="param-empty hide">{{i18n "IMPORT_CF_PARAMS_EMPTY"}}</span>
+    <button class="btn btn-blue" id="import-cf-import">{{i18n "PROP.LBL_IMPORT"}}</button>
+    <button class="btn modal-close btn-silver" id="import-cf-cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
   </div>
 </div>
 <div class="loading-spinner hide"></div>

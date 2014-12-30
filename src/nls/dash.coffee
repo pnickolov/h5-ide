@@ -830,3 +830,39 @@ module.exports =
       en: "Delete Stack"
       zh: "删除 Stack"
 
+    IMPORT_CF_NOTICE:
+      en: """  <li>Currently only templates meet following requirements can be imported:</li>
+        <li>Must be in VPC platform. EC2 Classic template is not supported.</li>
+        <li>Must not include reference to existing VPC, Subnet or Security Group. <br> These components must be defined as complete new resources.</li>
+        <li>Resources used in template must be already <span class="tooltip" data-tooltip="EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS">supported by VisualOps.</span> <br> Unsupported resources will be ignored.</li>
+        <li>All DependsOn attribute will be ignored.</li>"""
+      zh: """
+        <li>当前只有符合以下要求的模板可以被导入:</li>
+        <li>必须在 VPC 平台内。EC2 传统模板不会被支持。</li>
+        <li>必须不包含对已存在 VPC，子网或安全组的引用。<br/>这些组件都必须定义为全新的资源。</li>
+        <li>模板里的资源必须是 <span class="tooltip" data-tooltip='EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS'>VisualOps 已支持的资源</span>。<br/>不支持的资源将被忽略。</li>
+        <li>所有依赖属性将被忽略。</li>"""
+
+    SPECIFY_PARAMETERS_FOR_TEMPLATE:
+      en: "Specify parameters for template:"
+      zh: "指定模板参数："
+
+    IMPORT_CF_PARAMS_ERROR:
+      en: "Please provide valid value for each parameter."
+      zh: "请为每个参数提供有效的值。"
+
+    IMPORT_CF_PARAMS_EMPTY:
+      en: "Some parameters are left empty. If you are sure they should be empty, click Import button again to proceed."
+      zh: "一些参数值是空的。如果您确定他们应该为空，请再次点击 导入 按钮以继续。"
+
+    IMPORT_CF_NOT_MEET_CONSTRAINT:
+      en: "Parameter value does not meet its constraint."
+      zh: "参数值不符合限制要求。"
+
+    IMPORT_FORM_STACK_JSON:
+      en: "Import form Stack JSON"
+      zh: "从 Stack JSON 导入"
+
+    IMPORT_FORM_CLOUDFORMATION:
+      en: "Import form CloudFormation"
+      zh: "从 CloudFormation 导入"

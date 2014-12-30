@@ -67,6 +67,7 @@ define [
       evt = evt.originalEvent
       files = (evt.dataTransfer || evt.target).files
       if not files or not files.length then return
+      @filename = (files[0].name || "").split(".")[0]
       @reader.readAsText( files[0] )
       null
 
@@ -374,6 +375,8 @@ define [
         }).then ( data )->
           self.modal.close()
           data.provider = "aws::global"
+          if self.filename
+            data.name = self.filename
           App.importJson( data, true )
         , ()->
           self.modal.close()

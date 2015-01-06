@@ -1474,9 +1474,19 @@ a.action-link:hover {
 }
 
 /* property-rt */
+.property-list.route-list {
+	> li {
+		width   : auto;
+		padding : 0;
 
-.route-list li {
-	border-bottom: 1px solid #333;
+		> table {
+			width : 100%;
+		}
+	}
+
+	.route-readonly {
+		color : #777;
+	}
 }
 
 .route-target {
@@ -1485,27 +1495,17 @@ a.action-link:hover {
 }
 
 .route-label {
-	background: rgba(0,0,0,.05);
-	border-right: 1px solid #4b4b4b;
-	width: 79px;
-	padding: 10px;
-	font-size: 13px;
-	color: #999;
+	background     : rgba(0,0,0,.05);
+	border-right   : 1px solid #4b4b4b;
+	width          : 70px;
+	padding        : 5px 8px;
+	font-size      : 13px;
+	color          : #999;
+	vertical-align : top;
 }
 
-.route-destination .route-label {
-	vertical-align: top;
-	padding: 16px 10px;
-}
-
-.route-target-resource,
-.route-destination-input {
-	width: 170px;
-	padding: 0 10px;
-}
-
-.route-destination-input {
-	padding: 5px 5px 2px 5px;
+.route-target-resource, .route-destination-input {
+	padding: 5px 10px;
 }
 
 .property-routetable .multi-input {

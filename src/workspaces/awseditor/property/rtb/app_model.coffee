@@ -9,7 +9,7 @@ define [ '../base/model', 'constant', 'Design', 'CloudResources' ], ( PropertyMo
         processTarget : ( rtb )->
 
           rtb.routeSet = _.map rtb.routeSet, ( item ) ->
-            item.target = item.instanceId || item.networkInterfaceId || item.gatewayId
+            item.target = item.instanceId || item.networkInterfaceId || item.gatewayId || item.vpcPeeringConnectionId
 
             if item.target isnt "local"
               Design.instance().eachComponent ( component )->

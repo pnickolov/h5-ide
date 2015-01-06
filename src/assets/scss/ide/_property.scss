@@ -73,8 +73,8 @@
 		&:last-child {
 			border-bottom: none;
 		}
-	} 
-	
+	}
+
 	.col1 {
 		margin-right: 15px;
 		width       : 15px;
@@ -127,7 +127,7 @@
 			background-color: rgba(0,0,0,.2);
 		}
 	}
-	
+
 	&.acl-info-list {
 		> li {
 			height  : 38px;
@@ -153,7 +153,7 @@
 	}
 
 
-} 
+}
 
 .icon-btn-details {
 	width  : 16px;
@@ -238,7 +238,7 @@
 			}
 		}
 	}
-} 
+}
 
 
 // RDS Instance Property
@@ -472,15 +472,6 @@
 
 .property-list li:hover {
 	background : lighten($bg-p, 10%);
-}
-
-.property-list-no-padding {
-	border: none;
-}
-
-.property-list.property-list-no-padding li {
-	width   : 280px;
-	padding : 0;
 }
 
 .syslog-dbinstance {

@@ -64,6 +64,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
           name     : theOtherPort.get("name")
           type     : theOtherPort.type
           ref      : cn.id
+          readonly : theOtherPort.type is "ExternalVpcRouteTarget"
           isVgw    : theOtherPort.type is res_type.VGW
           isProp   : cn.get("propagate")
           cidr_set : cn.get("routes")

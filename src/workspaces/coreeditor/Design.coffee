@@ -312,7 +312,9 @@ define [
     use : ()-> __instance = @; @
     unuse : ()-> if __instance is @ then __instance = null; return
 
-    component : ( uid )-> @__componentMap[ uid ]
+    component : ( uid )->
+      if not uid then return null
+      @__componentMap[ uid ]
 
     componentsOfType : ( type )->
       @classCacheForCid( Design.modelClassForType(type).prototype.classId ).slice(0)

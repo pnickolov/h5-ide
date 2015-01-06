@@ -35,18 +35,14 @@ define [ "ComplexResModel", "Design", "./connection/Route", "./connection/RtbAss
 
     addRoute : ( targetId, r, propagating )->
 
-      # If the target is an ENI, and it's embeded.
-      # We connect to its Instance
-      component = Design.instance().component( targetId )
+      if _.isString targetId
+        component = Design.instance().component( targetId )
+      else
+        component = new Route.VpcRouteTarget( targetId )
 
-      # component might be null, because the targetId is not UUID
-      # This happens in deserializing `Resource Import` data.
       if not component then return
 
-      if component.type is constant.RESTYPE.ENI and component.embedInstance()
-        component = component.embedInstance()
-
-      # Find out if we already have one connection between this rtb to targetId
+      # Get the Route component between these two components.
       connection = new Route( this, component )
       connection.addRoute( r )
 
@@ -127,7 +123,8 @@ define [ "ComplexResModel", "Design", "./connection/Route", "./connection/RtbAss
 
       rtb = resolve( data.uid )
 
-      # A fix for subnet
+      # Because we don't know if the vpc is created prior to the rtb.preDeserialize()
+      # So we add the rtb to vpc here.
       vpc = resolve( layout_data.groupUId )
       VpcModel = Design.modelClassForType( constant.RESTYPE.VPC )
       if not vpc then vpc = VpcModel.theVPC()
@@ -158,17 +155,11 @@ define [ "ComplexResModel", "Design", "./connection/Route", "./connection/RtbAss
         # Find out which route is propagating
         propagateMap = {}
         for ref in data.resource.PropagatingVgwSet || []
-          propagateMap[ MC.extractID(ref) ] = true
+          propagateMap[ ref ] = true
 
-
-        # The first RouteSet is always local, so we don't deserialize it
-        i = 0
-        while i < routes.length
-          r  = routes[i]
-          if r.GatewayId isnt "local"
-            id = MC.extractID( r.GatewayId || r.InstanceId || r.NetworkInterfaceId )
-            rtb.addRoute( id, r.DestinationCidrBlock, propagateMap[id] )
-          ++i
+        for r in routes
+          if r.GatewayId is "local" then continue
+          rtb.addRoute( r, r.DestinationCidrBlock, propagateMap[ r.GatewayId ] )
       null
   }
 

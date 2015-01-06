@@ -1,9 +1,80 @@
 
-define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constant, ConnectionModel, ComplexResModel, Design )->
+
+  # This model is used to represent objects that are outside of this vpc.
+  VpcRouteTarget = ComplexResModel.extend {
+
+    type : "ExternalVpcRouteTarget"
+
+    defaults :
+      targetId   : ""
+      targetType : ""
+
+    ###
+    This model is initialized by a something like:
+    {
+      GatewayId              : ""
+      InstanceId             : ""
+      NetworkInterfaceId     : ""
+      VpcPeeringConnectionId : ""
+    }
+    If either of above attributes is reference, make sure the referencing
+    component has already been created ( a.k.a can be retrieve by Design.instance().component() )
+    ###
+    constructor : ( attr )->
+
+      console.assert(
+        attr.GatewayId || attr.InstanceId || attr.NetworkInterfaceId || attr.VpcPeeringConnectionId,
+        "Invalid attributes for creating Route Target"
+      )
+
+      id = MC.extractID( attr.GatewayId || attr.InstanceId || attr.NetworkInterfaceId )
+      if id
+        # If we can find a existing component for this attr, return it instead of creating a new VpcRouteTarget
+        internalVpcRouteTarget = Design.instance().component( id )
+        if internalVpcRouteTarget
+          return internalVpcRouteTarget
+
+      for i in ["GatewayId", "InstanceId", "NetworkInterfaceId", "VpcPeeringConnectionId"]
+        if attr[ i ]
+          realAttr =
+            name       : attr[i]
+            targetId   : attr[i]
+            targetType : i
+          break
+
+      if realAttr
+        # Find if there's a VpcRouteTarget that is already represent the id.
+        for vrt in VpcRouteTarget.allObjects()
+          if vrt.get("targetId") is realAttr.targetId and vrt.get("targetType") is realAttr.targetType
+            return vrt
+
+        # Create a new object
+        return ComplexResModel.call this, realAttr
+  }
+
 
   C = ConnectionModel.extend {
 
     type : "RTB_Route"
+
+    # The route is only visible if it is not routing to external resources.
+    isVisual : ()-> !@getTarget( "ExternalVpcRouteTarget" )
+
+    constructor : ( p1Comp, p2Comp, attr, option )->
+      # If the target is an ENI, and it's embeded. Rtb will connect to its Instance
+      if p1Comp.type is constant.RESTYPE.ENI
+        eniComp = p1Comp
+        rtbComp = p2Comp
+      else if p2Comp.type is constant.RESTYPE.ENI
+        eniComp = p2Comp
+        rtbComp = p1Comp
+
+      if eniComp and eniComp.embedInstance()
+        p1Comp = eniComp.embedInstance()
+        p2Comp = rtbComp
+
+      ConnectionModel.call this, p1Comp, p2Comp, attr, option
 
     defaults : ()->
       routes : []
@@ -11,12 +82,13 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
     initialize : ( attr, option )->
       igw = @getTarget( constant.RESTYPE.IGW )
 
-      if igw and not attr.routes
+      if igw and option and option.createByUser
         # By default add an "0.0.0.0/0" route for IGW
         @get("routes").push "0.0.0.0/0"
       null
 
     addRoute : ( route )->
+      if not route then return
       routes = @get("routes")
 
       idx = _.indexOf routes, route
@@ -28,6 +100,7 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
       true
 
     removeRoute : ( route )->
+      if not route then return
       routes = @get("routes")
 
       idx = _.indexOf routes, route
@@ -74,6 +147,9 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
         when TYPE.INSTANCE
           r_temp.NetworkInterfaceId = otherTarget.getEmbedEni().createRef( "NetworkInterfaceId" )
 
+        when "ExternalVpcRouteTarget"
+          r_temp[ otherTarget.get("targetType") ] = otherTarget.get("targetId")
+
       for r in @get("routes")
         d = { "DestinationCidrBlock" : r }
         rtb_data.resource.RouteSet.push $.extend( d, r_temp )
@@ -113,6 +189,14 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
           name : "rtb-tgt"
           type : constant.RESTYPE.RT
       }
+      {
+        port1 :
+          name : ""
+          type : constant.RESTYPE.RT
+        port2 :
+          name : ""
+          type : "ExternalVpcRouteTarget"
+      }
     ]
 
 
@@ -127,6 +211,8 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
         return false
 
       true
+
+    VpcRouteTarget : VpcRouteTarget
   }
 
   C

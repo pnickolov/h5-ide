@@ -23,10 +23,9 @@ define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constan
     ###
     constructor : ( attr )->
 
-      console.assert(
-        attr.GatewayId || attr.InstanceId || attr.NetworkInterfaceId || attr.VpcPeeringConnectionId,
-        "Invalid attributes for creating Route Target"
-      )
+      if not ( attr.GatewayId || attr.InstanceId || attr.NetworkInterfaceId || attr.VpcPeeringConnectionId )
+        console.error "Invalid attributes for creating Route Target"
+        return
 
       id = MC.extractID( attr.GatewayId || attr.InstanceId || attr.NetworkInterfaceId )
       if id

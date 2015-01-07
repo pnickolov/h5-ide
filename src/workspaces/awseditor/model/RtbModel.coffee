@@ -40,7 +40,9 @@ define [ "ComplexResModel", "Design", "./connection/Route", "./connection/RtbAss
       else
         component = new Route.VpcRouteTarget( targetId )
 
-      if not component then return
+      if not component or not component.id
+        console.warn "Ignoring adding route:", targetId, r
+        return
 
       # Get the Route component between these two components.
       connection = new Route( this, component )

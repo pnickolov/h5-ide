@@ -34,18 +34,6 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
       description : "Custom Security Group"
       groupName   : ""
 
-    constructor : ()->
-      ComplexResModel.apply this, arguments
-
-      # If we are deserializing, we don't want to update sgline when are deserializing.
-      # We will thoroughly update sg line at the moment we finish deserialize.
-      design = @design()
-      if not design.__sgmodelregdes and design.initializing()
-        design.__sgmodelregdes = true
-        design.on Design.EVENT.Deserialized, Model.updateSgLines
-
-      return
-
     initialize : ( attributes, option )->
       @color = @generateColor()
 
@@ -269,10 +257,6 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
 
     updateSgLines : ()->
 
-      design = Design.instance()
-      console.assert( design.__sgmodelregdes )
-      delete design.__sgmodelregdes
-
       connectableMap = {}
       for ruleset in SgRuleSet.allObjects()
         sg1 = ruleset.port1Comp()
@@ -346,5 +330,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
         (new SgRuleSet( group, ruleTarget )).addRawRule( group.id, dir, attr )
       null
   }
+
+  Design.on Design.EVENT.Deserialized, Model.updateSgLines
 
   Model

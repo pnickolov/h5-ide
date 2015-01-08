@@ -229,6 +229,8 @@ define [
       ####################
       @__initializing = false
       Backbone.Events.trigger.call @, Design.EVENT.Deserialized
+      Design.trigger Design.EVENT.Deserialized, @
+
 
       # Only at this point, we are finally deserialized.
       @trigger = Backbone.Events.trigger
@@ -549,5 +551,7 @@ define [
 
       @__lineModelClasses
   }
+
+  _.extend Design, Backbone.Events
 
   Design

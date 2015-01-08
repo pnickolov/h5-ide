@@ -25,24 +25,24 @@
     <div class="ami-option-group">
       <h5>{{i18n "AMI_LBL_VISIBILITY"}}</h5>
       <div class="ami-option-wrap" id="filter-ami-type">
-        <button type="button" class="btn active" data-radio="Public">{{i18n "AMI_LBL_PUBLIC"}}</button>
-        <button type="button" class="btn" data-radio="Private">{{i18n "AMI_LBL_PRIVATE"}}</button>
+        <button type="button" class="btn active" data-value="true">{{i18n "AMI_LBL_PUBLIC"}}</button>
+        <button type="button" class="btn" data-value="false">{{i18n "AMI_LBL_PRIVATE"}}</button>
       </div>
     </div>
 
     <div class="ami-option-group">
       <h5>{{i18n "AMI_LBL_ARCHITECTURE"}}</h5>
       <div class="ami-option-wrap" id="filter-ami-32bit-64bit">
-        <button type="button" class="btn active" data-radio="32bit">{{i18n "AMI_LBL_32_BIT"}}</button>
-        <button type="button" class="btn" data-radio="64bit">{{i18n "AMI_LBL_64_BIT"}}</button>
+        <button type="button" class="btn active" data-value="32-bit">{{i18n "AMI_LBL_32_BIT"}}</button>
+        <button type="button" class="btn" data-value="64-bit">{{i18n "AMI_LBL_64_BIT"}}</button>
       </div>
     </div>
 
     <div class="ami-option-group">
       <h5>{{i18n "AMI_LBL_ROOT_DEVICE_TYPE"}}</h5>
       <div class="ami-option-wrap" id="filter-ami-EBS-Instance">
-        <button type="button" class="btn active" data-radio="EBS">{{i18n "AMI_LBL_EBS"}}</button>
-        <button type="button" class="btn" data-radio="Instance Store">{{i18n "AMI_LBL_INSTANCE_STORE"}}</button>
+        <button type="button" class="btn active" data-value="EBS">{{i18n "AMI_LBL_EBS"}}</button>
+        <button type="button" class="btn" data-value="Instance Store">{{i18n "AMI_LBL_INSTANCE_STORE"}}</button>
       </div>
     </div>
 

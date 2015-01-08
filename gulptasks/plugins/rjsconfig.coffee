@@ -105,7 +105,7 @@ getConfig = ( debugMode = true, outputPath = "./deploy", traceMode = false )->
     {
       name   : "ui/ui"
       create : true
-      include : ["UI.tooltip","UI.scrollbar","UI.tabbar","UI.bubble","UI.modal","UI.table","UI.tablist","UI.selectbox","UI.searchbar","UI.filter","UI.radiobuttons","UI.notification","UI.multiinputbox","UI.canvg","UI.sortable","UI.parsley","UI.errortip"]
+      include : ["UI.tooltip","UI.scrollbar"]
       exclude : [ "vender/vender" ]
     }
   ]

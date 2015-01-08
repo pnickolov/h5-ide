@@ -60,27 +60,22 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           @renderAmiLoading()
           name = $("#community-ami-input").val()
           platform = $('#selectbox-ami-platform').find('.selected').data('id')
-          isPublic = 'true'
-          architecture = '32-bit'
-          rootDeviceType = "EBS"
-          if $('#filter-ami-type').find('.active').length is 1
-            visibility      = radiobuttons.data($('#filter-ami-type'))
-            isPublic = if visibility is 'Private' then 'false' else 'true'
-          else if $('#filter-ami-type').find('.active').length is 2
-            isPublic = null
 
-          if $('#filter-ami-32bit-64bit').find('.active').length is 1
-            if radiobuttons.data($('#filter-ami-32bit-64bit')).slice(0, 2) is '32'
-              architecture = '32-bit'
-            else
-              architecture = '64-bit'
-          else if $('#filter-ami-32bit-64bit').find('.active').length is 2
-            architecture = null
+          isPublic       = null
+          architecture   = null
+          rootDeviceType = null
 
-          if $('#filter-ami-EBS-Instance').find('.active').length is 1
-            rootDeviceType = radiobuttons.data($('#filter-ami-EBS-Instance'))
-          else if $('#filter-ami-EBS-Instance').find('.active').length is 2
-            rootDeviceType = null
+          $buttonGroup = $("#filter-ami-type").find(".active")
+          if $buttonGroup.length is 1
+            isPublic = $buttonGroup.attr("data-value")
+
+          $buttonGroup = $('#filter-ami-32bit-64bit').find('.active')
+          if $buttonGroup.length is 1
+            architecture = $buttonGroup.attr("data-value")
+
+          $buttonGroup = $('#filter-ami-EBS-Instance').find('.active')
+          if $buttonGroup.length is 1
+            rootDeviceType = $buttonGroup.attr("data-value")
 
           perPageNum = parseInt(perPage||50, 10)
           returnPage = parseInt(pageNum, 10)

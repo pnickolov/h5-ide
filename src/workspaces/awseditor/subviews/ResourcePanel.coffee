@@ -17,7 +17,6 @@ define [
   'ApiRequest'
   'OpsModel'
   "backbone"
-  'UI.radiobuttons'
   "UI.nanoscroller"
   "UI.dnd"
 ], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->

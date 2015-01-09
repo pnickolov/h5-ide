@@ -1464,6 +1464,9 @@ define [ 'component/stateeditor/model',
                     if not cmdName
                         throw new Error('command')
 
+                    if not that.cmdModuleMap[cmdName]?.support
+                        throw new Error('command')
+
                     paraModelObj = that.cmdParaObjMap[cmdName]
 
                     paraListObj = state.parameter
@@ -1883,8 +1886,8 @@ define [ 'component/stateeditor/model',
                     singleLine: editorSingleLine,
                     enableTab: enableTab,
                     useSoftTabs: false,
-                    tabSize: 4,
-                    lineHeight: 90
+                    tabSize: 4
+                    # lineHeight: 90
                 })
 
                 # move cursor to last
@@ -2053,9 +2056,12 @@ define [ 'component/stateeditor/model',
                 if that.readOnlyMode
                     editor.setReadOnly(true)
 
-            # if $editorElem.hasClass('command-value')
-
-            _initEditor()
+            if $editorElem.hasClass('command-value') or $editorElem.hasClass('text-code-editor')
+                _initEditor()
+            else
+                setTimeout () ->
+                    _initEditor()
+                , 0
 
         highlightParaDesc: (paraName) ->
 
@@ -2870,8 +2876,8 @@ define [ 'component/stateeditor/model',
                 return false
 
             # Disable default delete event [delete/backspace]
-            if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
-                return false
+            # if metaKey is false and shiftKey is false and altKey is false and is_input is false and (keyCode is 46 or keyCode is 8)
+            #     return false
 
         onUndo: () ->
 

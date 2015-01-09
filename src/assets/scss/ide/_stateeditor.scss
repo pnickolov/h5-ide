@@ -817,6 +817,15 @@
 	margin-left: 6px;
 }
 
+#state-editor .parameter-list .parameter-item.dict {
+	.parameter-value.value {
+		margin-left: 10px;
+	}
+	.parameter-value.value.ace_editor {
+		margin-left: 0px;
+	}
+}
+
 #state-editor .parameter-view-list .parameter-name {
 	float: left;
 	width: auto;

@@ -14,15 +14,11 @@ define [
   "./ApplicationView"
   "./ApplicationModel"
   "./User"
-  "./subviews/SettingsDialog"
-  "CloudResources"
-  "./WorkspaceManager"
-  "OpsModel"
-  "JsonExporter"
+  "./SceneManager"
   "constant"
   "i18n!/nls/lang.js"
   "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SettingsDialog, CloudResources, WorkspaceManager, OpsModel, JsonExporter, constant, lang )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SceneManager, constant, lang )->
 
   VisualOps = ()->
     if window.App
@@ -38,7 +34,7 @@ define [
     @__createUser()
     @__createWebsocket()
 
-    @workspaces = new WorkspaceManager()
+    @sceneManager = new SceneManager()
 
     # view / model depends on User and Websocket
     @model  = new ApplicationModel()
@@ -59,8 +55,6 @@ define [
       console.info "Websocket Status changed, isConnected:", isConnected
       if App.__view then App.__view.toggleWSStatus( isConnected )
 
-    @WS.on "userStateChange", ( idx, dag )-> App.user.onWsUserStateChange( dag )
-
     return
 
   VisualOps.prototype.__createUser = ()->
@@ -72,9 +66,6 @@ define [
 
       # The Websockets subscription will be lost if we have an invalid session.
       @WS.subscribe()
-
-    @user.on "change:credential", ()=> @discardAwsCache()
-
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
@@ -94,72 +85,6 @@ define [
     return
 
   # Return true if the ide can quit now.
-  VisualOps.prototype.canQuit = ()-> !@workspaces.hasUnsaveSpaces()
-
-
-  VisualOps.prototype.showSettings = ( tab )-> new SettingsDialog({ defaultTab:tab })
-  VisualOps.prototype.showSettings.TAB = SettingsDialog.TAB
-
-  # Show a popup to ask the user to enter a credential
-  VisualOps.prototype.askForAwsCredential = ()-> @__view.askForAwsCredential()
-
-  # These functions are for consistent behavoir of managing stacks/apps
-  VisualOps.prototype.deleteStack    = (id, name)-> @__view.deleteStack(id, name)
-  VisualOps.prototype.duplicateStack = (id)-> @__view.duplicateStack(id)
-  VisualOps.prototype.startApp       = (id)-> @__view.startApp(id)
-  VisualOps.prototype.stopApp        = (id)-> @__view.stopApp(id)
-  VisualOps.prototype.terminateApp   = (id)-> @__view.terminateApp(id)
-
-  VisualOps.prototype.discardAwsCache = ()->
-    # App.model.clearImportOps()
-    CloudResources.invalidate()
-
-  # Creates a stack from the "json" and open it.
-  # If it cannot import the json data, returns a string to represent the result.
-  # otherwise it returns the workspace that works on the model
-  VisualOps.prototype.importJson = ( json, updateLayout )->
-    if _.isString json
-      result = JsonExporter.importJson json
-      if _.isString result then return result
-    else
-      result = json
-
-    @openOps( @model.createStackByJson(result, updateLayout) )
-
-  # This is a convenient method to open an editor for the ops model.
-  VisualOps.prototype.openOps = ( opsModel, refresh )->
-    if not opsModel then return
-
-    if _.isString( opsModel )
-      opsModel = @model.getOpsModelById( opsModel )
-
-    if not opsModel
-      console.warn "The OpsModel is not found when opening."
-      return
-
-    if opsModel.testState( OpsModel.State.Destroyed )
-      console.error "The OpsModel is destroyed", opsModel
-      return
-
-    editor = @workspaces.find( opsModel )
-    if editor and refresh
-      editor.remove()
-      editor = null
-
-    if not editor
-      editor = new OpsEditor(opsModel)
-
-    editor.activate()
-    editor
-
-  # This is a convenient method to create a stack and then open an editor for it.
-  VisualOps.prototype.createOps = ( region, provider )->
-    if not region then return
-    editor = new OpsEditor( @model.createStack(region, provider) )
-    editor.activate()
-    editor
-
-
-    return
+  VisualOps.prototype.canQuit = ()-> !@sceneManager.hasUnsaveScenes()
 
   VisualOps

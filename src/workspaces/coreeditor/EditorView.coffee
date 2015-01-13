@@ -3,11 +3,12 @@ define [
   "workspaces/coreeditor/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
+  "AppAction"
   "backbone"
   "UI.selectbox"
   "backbone"
   "UI.selectbox"
-], ( OpsEditorTpl, Modal, lang )->
+], ( OpsEditorTpl, Modal, lang, appAction )->
 
   ### Monitor keypress ###
   $(window).on 'keydown', ( evt )->
@@ -207,6 +208,13 @@ define [
           self.workspace.remove()
           return
       }
+      $(OpsEditorTpl.modal.saveAndCloseBtn()).prependTo(modal.$(".modal-footer")).click ()->
+        saveIcon = $("#OpsEditor .icon-save")
+        modal.find("button:not(.btn-silver)").attr("disabled", "disabled")
+        $(@).text($(@).data("pending"))
+        appAction.saveStack(saveIcon, self).then ()->
+          modal.close()
+          self.workspace.remove()
       return
 
     getSvgElement : ()->

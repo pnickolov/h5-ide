@@ -35,6 +35,9 @@
     </div>
 </div>
 
+<!-- {{ modal.saveAndCloseBtn }} -->
+<button id="saveAndCloseBtn" data-pending="{{i18n "TOOLBAR.SAVING_BTN"}}" class="btn btn-blue">{{i18n "TOOLBAR.SAVE_AND_CLOSE_BTN"}}</button>
+
 <!-- {{modal.confirmRemoveApp}} -->
 <p class="modal-text-major">{{i18n "TOOLBAR.VPC_REMOVED_OUTSIDE_VISUALOPS"}}</p>
 <p class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_REMOVE_APP"}}</p>

@@ -8,6 +8,7 @@
 define [
   "backbone"
   "component/appactions/template"
+  "ThumbnailUtil"
   'i18n!/nls/lang.js'
   'CloudResources'
   'constant'
@@ -17,9 +18,32 @@ define [
   'OsKp'
   'TaGui'
   'OpsModel'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
+], ( Backbone, AppTpl, Thumbnail, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
   AppAction = Backbone.View.extend
 
+    saveStack : ( dom, self )->
+
+      $( dom ).attr("disabled", "disabled")
+
+      self.__saving = true
+
+      newJson = self.workspace.design.serialize()
+      Thumbnail.generate( (self.parent||self).getSvgElement() ).catch( ()->
+        return null
+      ).then ( thumbnail )->
+        self.workspace.opsModel.save( newJson, thumbnail ).then ()->
+          self.__saving = false
+          $( dom ).removeAttr("disabled")
+          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
+        , ( err )->
+          self.__saving = false
+          $( dom ).removeAttr("disabled")
+
+          if err.error is 252
+            message = lang.NOTIFY.ERR_SAVE_FAILED_NAME
+          else
+            message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
+          notification "error", message
     runStack: (event, workspace)->
       @workspace = workspace
       cloudType = @workspace.opsModel.type

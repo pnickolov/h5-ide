@@ -67,6 +67,14 @@ module.exports =
       en: "has unsaved changes."
       zh: "有未保存变更。"
 
+    SAVE_AND_CLOSE_BTN:
+      en: "Save & Close"
+      zh: "保存并关闭"
+
+    SAVING_BTN:
+      en: "Saving..."
+      zh: "保存中..."
+
     CLOSE_CONFIRM:
       en: "Do you confirm to close it?"
       zh: "您确认要关闭吗?"

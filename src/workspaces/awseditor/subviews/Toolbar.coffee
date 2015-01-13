@@ -149,31 +149,7 @@ define [
       @parent.canvas.toggleSgLine( show )
       return
 
-    saveStack : ( evt )->
-      $( evt.currentTarget ).attr("disabled", "disabled")
-
-      self = @
-      @__saving = true
-
-      newJson = @workspace.design.serialize()
-
-      Thumbnail.generate( @parent.getSvgElement() ).catch( ()->
-        return null
-      ).then ( thumbnail )->
-        self.workspace.opsModel.save( newJson, thumbnail ).then ()->
-          self.__saving = false
-          $( evt.currentTarget ).removeAttr("disabled")
-          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
-        , ( err )->
-          self.__saving = false
-          $( evt.currentTarget ).removeAttr("disabled")
-
-          if err.error is 252
-            message = lang.NOTIFY.ERR_SAVE_FAILED_NAME
-          else
-            message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
-          notification "error", message
-        return
+    saveStack : ( evt )-> appAction.saveStack(evt.currentTarget, @)
 
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )

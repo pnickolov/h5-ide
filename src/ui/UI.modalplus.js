@@ -55,7 +55,7 @@
         }
         this.tpl.appendTo(this.wrap);
         modalGroup.push(this);
-        if (modalGroup.length === 1 || this.option.mode === "panel") {
+        if (modalGroup.length === 1 || this.abnormal()) {
           this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
@@ -170,7 +170,7 @@
             }
           };
         })(this));
-        if (!(this.option.disableDrag || (this.option.mode === 'panel'))) {
+        if (!(this.option.disableDrag || this.abnormal())) {
           diffX = 0;
           diffY = 0;
           dragable = false;
@@ -239,7 +239,7 @@
 
       Modal.prototype.resize = function(slideIn) {
         var height, left, top, width, windowHeight, windowWidth, _ref, _ref1, _ref2, _ref3;
-        if (this.option.mode === 'panel') {
+        if (this.abnormal()) {
           this.trigger('resize', this);
           return false;
         }
@@ -385,7 +385,7 @@
       };
 
       Modal.prototype._fadeOut = function() {
-        if (this.option.mode === 'panel') {
+        if (this.abnormal()) {
           return false;
         }
         return this.tpl.animate({
@@ -394,7 +394,7 @@
       };
 
       Modal.prototype._fadeIn = function() {
-        if (this.option.mode === 'panel') {
+        if (this.abnormal()) {
           return false;
         }
         return this.tpl.animate({
@@ -403,7 +403,7 @@
       };
 
       Modal.prototype._slideIn = function() {
-        if (this.option.mode === 'panel') {
+        if (this.abnormal()) {
           return false;
         }
         return this.tpl.animate({
@@ -412,7 +412,7 @@
       };
 
       Modal.prototype._slideOut = function() {
-        if (this.option.mode === 'panel') {
+        if (this.abnormal()) {
           return false;
         }
         return this.tpl.animate({
@@ -431,6 +431,11 @@
       Modal.prototype.setTitle = function(title) {
         this.tpl.find(".modal-header h3").text(title);
         return this;
+      };
+
+      Modal.prototype.abnormal = function() {
+        var _ref;
+        return (_ref = this.option.mode) === "panel" || _ref === "fullscreen";
       };
 
       return Modal;

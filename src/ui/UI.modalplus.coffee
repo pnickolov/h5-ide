@@ -86,7 +86,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @option.width then body.parent().width( @option.width )
             @tpl.appendTo @wrap
             modalGroup.push(@)
-            if modalGroup.length == 1 or @option.mode is "panel"
+            if modalGroup.length == 1 or @abnormal()
                 @tpl.addClass('bounce')
                 window.setTimeout =>
                     @tpl.removeClass('bounce')
@@ -148,7 +148,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     if @?.getFirst()?
                         e.preventDefault()
                         @?.getFirst()?.back()
-            if not (@option.disableDrag or (@option.mode is 'panel'))
+            if not (@option.disableDrag or @abnormal())
                 diffX = 0
                 diffY = 0
                 dragable = false
@@ -192,7 +192,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     diffY = 0
                     null
         resize: (slideIn)->
-            if @option.mode is 'panel'
+            if @abnormal()
               @trigger 'resize', @
               return false
             windowWidth = $(window).width()
@@ -282,22 +282,22 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
           @tpl.find('.modal-body').css(padding: 0)
           @
         _fadeOut: ->
-            if @option.mode is 'panel' then return false
+            if @abnormal() then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 100
         _fadeIn: ->
-            if @option.mode is 'panel' then return false
+            if @abnormal() then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 100
         _slideIn: ->
-            if @option.mode is 'panel' then return false
+            if @abnormal() then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 300
         _slideOut: ->
-            if @option.mode is 'panel' then return false
+            if @abnormal() then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300
@@ -308,4 +308,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         setTitle: (title)->
           @tpl.find(".modal-header h3").text(title)
           @
+        abnormal: ()->
+            @option.mode in ["panel", "fullscreen"]
     Modal

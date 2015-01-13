@@ -1350,7 +1350,7 @@ Additional Notes and Questions
 {{/each}}
 
 <!-- {{modalTemplate}} -->
-<div class="modal-box{{#ifCond mode "panel"}} panel{{/ifCond}}">
+<div class="modal-box {{ mode }}">
     <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}}>
         <div class="modal-header">
             <h3>{{ title }}</h3>

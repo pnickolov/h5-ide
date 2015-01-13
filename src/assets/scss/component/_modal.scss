@@ -47,6 +47,28 @@
   right: -50%;
 }
 
+.modal-box.fullscreen{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow: auto;
+  .modal-wrapper-fix{
+	width: 100%!important;
+  }
+  .modal-header{
+	h3{
+	  display: none;
+	}
+	i.modal-close{
+	  font-size: 30px;
+	  padding: 10px;
+	}
+  }
+  .modal-footer{
+	display: none;
+  }
+}
+
 .modal-wrapper-fix{
   width: 480px;
 }

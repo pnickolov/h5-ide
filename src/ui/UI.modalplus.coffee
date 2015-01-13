@@ -28,7 +28,7 @@
 #      onConfirm: function to exec then the confirm button is clicked   [Function]
 #      onCancel: function to exec when the cancel button is clicked     [Function]
 #      onShow: function to exec then the modal is shown.                [Function]
-#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal"]
+#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal", "fullscreen"]
 #      compact: if modal-body has padding.                              [Default: false]
 #   Event:
 #       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
@@ -55,6 +55,7 @@ modalGroup = []
 define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
     class Modal
         constructor: (@option)->
+            self = @
             _.extend @, Backbone.Events
             isFirst = false
             if $('#modal-wrap').size() > 0
@@ -85,12 +86,14 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @option.maxHeight then body.css("max-height":@option.maxHeight)
             if @option.width then body.parent().width( @option.width )
             @tpl.appendTo @wrap
+            window.setTimeout ()=>
+                self.wrap.addClass("show")
+            ,0
             modalGroup.push(@)
             if modalGroup.length == 1 or @abnormal()
-                @tpl.addClass('bounce')
                 window.setTimeout =>
-                    @tpl.removeClass('bounce')
-                ,1
+                    @tpl.addClass('bounce')
+                ,0
                 @trigger "show", @
                 @trigger 'shown', @
             @show()
@@ -107,17 +110,16 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 modalGroup = []
                 @trigger 'close',@
                 @option.onClose?(@)
-                @tpl.addClass('bounce')
+                @tpl.removeClass('bounce')
+                @wrap.removeClass("show")
                 window.setTimeout =>
                     @tpl.remove()
                     @wrap.remove()
                     @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
                 ,@option.delay||300
-                @wrap.fadeOut(@option.delay || 300)
 
             null
         show: ()->
-            @wrap.removeClass("hide")
             if modalGroup.length > 1
                 @getLast().resize(1)
                 @getLast()._slideIn()
@@ -251,8 +253,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 @getLastButOne()._fadeIn()
                 @getLast()._slideOut()
                 toRemove = modalGroup.pop()
-                if toRemove.option.mode is 'panel'
-                    toRemove.tpl.addClass('bounce')
+                if toRemove.abnormal()
+                    toRemove.tpl.removeClass('bounce')
                 toRemove.isClosed = true
                 @getLast().childModal = null
                 toRemove.option.onClose?()

@@ -7,8 +7,9 @@
     var Modal;
     Modal = (function() {
       function Modal(option) {
-        var body, isFirst, _ref, _ref1, _ref2, _ref3;
+        var body, isFirst, self, _ref, _ref1, _ref2, _ref3;
         this.option = option;
+        self = this;
         _.extend(this, Backbone.Events);
         isFirst = false;
         if ($('#modal-wrap').size() > 0) {
@@ -54,14 +55,18 @@
           body.parent().width(this.option.width);
         }
         this.tpl.appendTo(this.wrap);
+        window.setTimeout((function(_this) {
+          return function() {
+            return self.wrap.addClass("show");
+          };
+        })(this), 0);
         modalGroup.push(this);
         if (modalGroup.length === 1 || this.abnormal()) {
-          this.tpl.addClass('bounce');
           window.setTimeout((function(_this) {
             return function() {
-              return _this.tpl.removeClass('bounce');
+              return _this.tpl.addClass('bounce');
             };
-          })(this), 1);
+          })(this), 0);
           this.trigger("show", this);
           this.trigger('shown', this);
         }
@@ -86,7 +91,8 @@
           if (typeof (_base = this.option).onClose === "function") {
             _base.onClose(this);
           }
-          this.tpl.addClass('bounce');
+          this.tpl.removeClass('bounce');
+          this.wrap.removeClass("show");
           window.setTimeout((function(_this) {
             return function() {
               _this.tpl.remove();
@@ -94,14 +100,12 @@
               return _this.trigger('closed', _this);
             };
           })(this), this.option.delay || 300);
-          this.wrap.fadeOut(this.option.delay || 300);
         }
         return null;
       };
 
       Modal.prototype.show = function() {
         var _base;
-        this.wrap.removeClass("hide");
         if (modalGroup.length > 1) {
           this.getLast().resize(1);
           this.getLast()._slideIn();
@@ -331,8 +335,8 @@
           this.getLastButOne()._fadeIn();
           this.getLast()._slideOut();
           toRemove = modalGroup.pop();
-          if (toRemove.option.mode === 'panel') {
-            toRemove.tpl.addClass('bounce');
+          if (toRemove.abnormal()) {
+            toRemove.tpl.removeClass('bounce');
           }
           toRemove.isClosed = true;
           this.getLast().childModal = null;

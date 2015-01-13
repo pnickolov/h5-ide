@@ -2407,3 +2407,7 @@ VisualOps API. You cannot UNDO this action.'
     LBL_DROP:
       en: "Drop %s,"
       zh: "拖拽%s到此，"
+
+    SAVING_STACK:
+      en: "Saving stack..."
+      zh: "正在保存模板..."

@@ -201,6 +201,7 @@ define [
       modal = new Modal {
         title    : sprintf lang.IDE.TITLE_CONFIRM_TO_CLOSE, name
         width    : "420"
+        disableClose: true
         template : OpsEditorTpl.modal.onClose(name)
         confirm  : {text:lang.TOOLBAR.TIT_CLOSE_TAB, color:"red"}
         onConfirm  : ()->
@@ -210,8 +211,10 @@ define [
       }
       $(OpsEditorTpl.modal.saveAndCloseBtn()).prependTo(modal.$(".modal-footer")).click ()->
         saveIcon = $("#OpsEditor .icon-save")
-        modal.find("button:not(.btn-silver)").attr("disabled", "disabled")
-        $(@).text($(@).data("pending"))
+        modal.setContent(MC.template.loadingSpiner()).setTitle(lang.IDE.SAVING_STACK)
+        .$(".modal-footer").hide().end()
+        .find(".modal-header .modal-close")
+        .off("click")
         appAction.saveStack(saveIcon, self).then ()->
           modal.close()
           self.workspace.remove()

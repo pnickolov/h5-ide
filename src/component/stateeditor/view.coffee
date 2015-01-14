@@ -12,8 +12,9 @@ define [ 'component/stateeditor/model',
          'ApiRequest'
          'ApiRequestOs'
          'OpsModel'
+         "UI.modalplus"
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, ApiRequestOs, OpsModel) ->
+], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, ApiRequestOs, OpsModel, modalPlus) ->
 
     StateClipboard = []
 
@@ -3382,10 +3383,12 @@ define [ 'component/stateeditor/model',
                     instance_id: serverId
                 }).then @refreshSysLog, @refreshSysLog
 
-            modal MC.template.modalInstanceSysLog {
-                instance_id: serverId,
-                log_content: ''
-            }, true
+            new modalPlus({
+                template:MC.template.modalInstanceSysLog {log_content: ''}
+                width: 900
+                title: lang.IDE.SYSTEM_LOG + serverId
+                confirm: hide: true
+            }).tpl.attr("id", "modal-instance-sys-log")
 
             false
 

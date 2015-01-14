@@ -1040,17 +1040,9 @@ Additional Notes and Questions
 </div>
 
 <!-- {{modalInstanceSysLog}} -->
-<div id="modal-instance-sys-log" style="width: 900px;">
-	<div class="modal-header"><h3>{{i18n "SYSTEM_LOG"}}{{instance_id}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<section class="instance-sys-log-loading loading-spinner"></section>
-		<div class="instance-sys-log-content font-mono">{{log_content}}</div>
-		<div class="instance-sys-log-info modal-text-minor">{{i18n "SYSTEM_LOG_NOT_READY"}}</div>
-	</div>
-	<div class="modal-footer">
-		<button id="modal-instance-sys-log-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CLOSE"}}</button>
-	</div>
-</div>
+<section class="instance-sys-log-loading loading-spinner"></section>
+<div class="instance-sys-log-content font-mono">{{log_content}}</div>
+<div class="instance-sys-log-info modal-text-minor">{{i18n "SYSTEM_LOG_NOT_READY"}}</div>
 
 <!-- {{NodeStateRemoveConfirmation}} -->
 <div class="modal-text-major">{{i18n "CONFIRM_TO_DELETE_XXX" name}}</div>

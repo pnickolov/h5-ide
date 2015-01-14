@@ -1610,19 +1610,14 @@ TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG", {hash:{},data:data}))
-    + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<section class=\"instance-sys-log-loading loading-spinner\"></section>\n		<div class=\"instance-sys-log-content font-mono\">"
+  buffer += "<section class=\"instance-sys-log-loading loading-spinner\"></section>\n<div class=\"instance-sys-log-content font-mono\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">"
+    + "</div>\n<div class=\"instance-sys-log-info modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG_NOT_READY", {hash:{},data:data}))
-    + "</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+    + "</div>";
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);

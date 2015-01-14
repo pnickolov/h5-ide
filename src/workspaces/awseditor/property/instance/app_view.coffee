@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instance(app)
 #############################
 
-define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'kp_upload', 'Design', 'JsonExporter' ], ( PropertyView, template, lang, ApiRequest, kp_upload, Design, JsonExporter )->
+define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'kp_upload', 'Design', 'JsonExporter', "UI.modalplus" ], ( PropertyView, template, lang, ApiRequest, kp_upload, Design, JsonExporter, modalPlus )->
 
     download = JsonExporter.download
 
@@ -146,10 +146,12 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         openSysLogModal : () ->
             instanceId = @model.get('instanceId')
 
-            modal MC.template.modalInstanceSysLog {
-                instance_id: instanceId,
-                log_content: ''
-            }, true
+            new modalPlus({
+                template:MC.template.modalInstanceSysLog {log_content: ''}
+                width: 900
+                title: lang.IDE.SYSTEM_LOG + instanceId
+                confirm: hide: true
+            }).tpl.attr("id", "modal-instance-sys-log")
 
             that = this
             ApiRequest("ins_GetConsoleOutput",{

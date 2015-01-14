@@ -6,8 +6,9 @@ define [ '../base/view',
          './template/stack',
          './template/app',
          'constant',
-         'i18n!/nls/lang.js'
-], ( PropertyView, template, app_template, constant, lang ) ->
+         'i18n!/nls/lang.js',
+         "UI.modalplus"
+], ( PropertyView, template, app_template, constant, lang, modalPlus ) ->
 
     SgView = PropertyView.extend {
 
@@ -47,15 +48,21 @@ define [ '../base/view',
             $('#sg-rule-list').html MC.template.sgRuleList( rules )
 
         showCreateRuleModal : (event) ->
+            self = @
             # get sg list
-            modal MC.template.modalSGRule @model.createSGRuleData()
+            @modal = new modalPlus {
+                title: lang.IDE.POP_SGRULE_TITLE_ADD
+                template: MC.template.modalSGRule self.model.createSGRuleData()
+                confirm: text: lang.IDE.POP_SGRULE_BTN_SAVE
+            }
+            @modal.tpl.attr("id", "modal-sg-rule")
+            @modal.on "confirm", self.saveSgModal.bind self
 
             # Bind events
             $("#sg-modal-direction").on("click", "input", @radioSgModalChange )
             $("#modal-protocol-select").on("OPTION_CHANGE", @sgModalSelectboxChange )
             $("#protocol-icmp-main-select").on("OPTION_CHANGE", @icmpMainSelect )
             $("#sg-protocol-select-result").on("OPTION_CHANGE", ".protocol-icmp-sub-select", @icmpSubSelect )
-            $("#sg-modal-save").on("click", _.bind( @saveSgModal, @ ))
             $("#sg-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected)
             return false
 
@@ -224,7 +231,7 @@ define [ '../base/view',
                 notification 'warning', lang.NOTIFY.THE_ADDING_RULE_ALREADY_EXIST
             else
                 @refreshSgruleList()
-                modal.close()
+                @modal.close()
     }
 
     new SgView()

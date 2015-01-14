@@ -1010,98 +1010,92 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "";
-  buffer += "\n				<div class=\"modal-text-minor\" style=\"margin-top:10px;\"><i class=\"icon-inbound\"></i>"
+  buffer += "\n		<div class=\"modal-text-minor\" style=\"margin-top:10px;\"><i class=\"icon-inbound\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
-    + "</div>\n			";
+    + "</div>\n	";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = "";
-  buffer += "\n			<div class=\"radio-group-horizontal\">\n				<div class=\"radio\">\n					<input id=\"radio_inbound\" type=\"radio\" name=\"sg-direction\" checked=\"checked\" value=\"inbound\" />\n					<label for=\"radio_inbound\"></label>\n				</div>\n				<label for=\"radio_inbound\" ><i class=\"icon-inbound icon-label\"></i>"
+  buffer += "\n	<div class=\"radio-group-horizontal\">\n		<div class=\"radio\">\n			<input id=\"radio_inbound\" type=\"radio\" name=\"sg-direction\" checked=\"checked\" value=\"inbound\" />\n			<label for=\"radio_inbound\"></label>\n		</div>\n		<label for=\"radio_inbound\" ><i class=\"icon-inbound icon-label\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
-    + "</label>\n			</div>\n\n			<div class=\"radio-group-horizontal\">\n				<div class=\"radio\">\n					<input id=\"radio_outbound\" type=\"radio\" name=\"sg-direction\" value=\"outbound\"/>\n					<label for=\"radio_outbound\"></label>\n				</div>\n				<label for=\"radio_outbound\"><i class=\"icon-outbound icon-label\"></i>"
+    + "</label>\n	</div>\n	<div class=\"radio-group-horizontal\">\n		<div class=\"radio\">\n			<input id=\"radio_outbound\" type=\"radio\" name=\"sg-direction\" value=\"outbound\"/>\n			<label for=\"radio_outbound\"></label>\n		</div>\n		<label for=\"radio_outbound\"><i class=\"icon-outbound icon-label\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_OUTBOUND", {hash:{},data:data}))
-    + "</label>\n			</div>\n			";
+    + "</label>\n	</div>\n	";
   return buffer;
   }
 
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n					<li class=\"item truncate\" data-id=\"sg\" data-uid=\""
+  buffer += "\n			<li class=\"item truncate\" data-id=\"sg\" data-uid=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"><span class=\"sg-color\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</li>\n					";
+    + "</li>\n			";
   return buffer;
   }
 
 function program7(depth0,data) {
   
   
-  return "\n							";
+  return "\n				";
   }
 
 function program9(depth0,data) {
   
   var buffer = "";
-  buffer += "\n							<li class=\"item\" data-id=\"custom\">"
+  buffer += "\n				<li class=\"item\" data-id=\"custom\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_CUSTOM", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"all\">"
+    + "</li>\n				<li class=\"item\" data-id=\"all\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_ALL", {hash:{},data:data}))
-    + "</li>\n							";
+    + "</li>\n				";
   return buffer;
   }
 
 function program11(depth0,data) {
   
   
-  return "\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n						<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"0-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n					</div>\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n						Port Range:<span>0-65535</span>\n					</div>\n				";
+  return "\n			<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n				<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"0-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n			</div>\n			<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n				Port Range:<span>0-65535</span>\n			</div>\n		";
   }
 
-  buffer += "<div id=\"modal-sg-rule\" data-bind=\"true\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_TITLE_ADD", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\">"
+  buffer += "<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n	<label class=\"label-short\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_DIRECTION", {hash:{},data:data}))
-    + "</label>\n\n			<div id=\"sg-modal-direction\">\n			";
+    + "</label>\n	<div id=\"sg-modal-direction\">\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</div>\n		</div>\n\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\" for=\"securitygroup-modal-description\" id=\"rule-modal-ip-range\">"
+  buffer += "\n	</div>\n</div>\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label-short\" for=\"securitygroup-modal-description\" id=\"rule-modal-ip-range\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_SOURCE", {hash:{},data:data}))
-    + "</label>\n			<div class=\"selectbox\" id=\"sg-add-model-source-select\">\n				<div class=\"selection\">IP...</div>\n				<ul class=\"dropdown\">\n					<li class=\"item selected\" data-id=\"custom\">IP...</li>\n					";
+    + "</label>\n	<div class=\"selectbox\" id=\"sg-add-model-source-select\">\n		<div class=\"selection\">IP...</div>\n		<ul class=\"dropdown\">\n			<li class=\"item selected\" data-id=\"custom\">IP...</li>\n			";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.sgList), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n				</ul>\n			</div>\n			<input class=\"input\" type=\"text\" id=\"securitygroup-modal-description\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9./]*$\" data-required=\"true\" placeholder='"
+  buffer += "\n		</ul>\n	</div>\n	<input class=\"input\" type=\"text\" id=\"securitygroup-modal-description\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9./]*$\" data-required=\"true\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_SOURCE", {hash:{},data:data}))
-    + "'>\n		</div>\n\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\" >"
+    + "'>\n</div>\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label-short\" >"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_PROTOCOL", {hash:{},data:data}))
-    + "</label>\n				<div class=\"modal-protocol-select\">\n					<div class=\"selectbox\" id=\"modal-protocol-select\"  data-protocal-type=\"tcp\">\n						<div class=\"selection\">"
+    + "</label>\n	<div class=\"modal-protocol-select\">\n		<div class=\"selectbox\" id=\"modal-protocol-select\"  data-protocal-type=\"tcp\">\n			<div class=\"selection\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_TCP", {hash:{},data:data}))
-    + "</div>\n						<ul class=\"dropdown\" tabindex=\"-1\">\n							<li class=\"selected item\" data-id=\"tcp\">"
+    + "</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-id=\"tcp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_TCP", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"udp\">"
+    + "</li>\n				<li class=\"item\" data-id=\"udp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_UDP", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"icmp\">"
+    + "</li>\n				<li class=\"item\" data-id=\"icmp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_ICMP", {hash:{},data:data}))
-    + "</li>\n							";
+    + "</li>\n				";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n						</ul>\n					</div>\n				</div>\n			<div id=\"sg-protocol-select-result\">\n				<div class=\"sg-protocol-option-input show\" id=\"sg-protocol-tcp\">\n					<input class=\"input\" type=\"text\" placeholder='"
+  buffer += "\n			</ul>\n		</div>\n	</div>\n	<div id=\"sg-protocol-select-result\">\n		<div class=\"sg-protocol-option-input show\" id=\"sg-protocol-tcp\">\n			<input class=\"input\" type=\"text\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_PORT_RANGE", {hash:{},data:data}))
-    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\"  data-required=\"true\"/>\n				</div>\n				<div class=\"sg-protocol-option-input\" id=\"sg-protocol-udp\">\n					<input class=\"input\" type=\"text\" placeholder='"
+    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\"  data-required=\"true\"/>\n		</div>\n		<div class=\"sg-protocol-option-input\" id=\"sg-protocol-udp\">\n			<input class=\"input\" type=\"text\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_PORT_RANGE", {hash:{},data:data}))
-    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\" data-required=\"true\"/>\n				</div>\n\n				<div class=\"sg-protocol-option-input\" id=\"sg-protocol-icmp\">\n					<div class=\"selectbox\" id=\"protocol-icmp-main-select\" data-protocal-main=\"0\"  data-protocal-sub=\"-1\">\n					<div class=\"selection\">Echo Reply(0)</div>\n					<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n						<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n						<ul tabindex=\"-1\" class=\"scroll-content\">\n							<li class=\"item selected\" data-id=\"0\">Echo Reply(0)</li>\n							<li class=\"item\" data-id=\"3\">Destination Unreachable(3) ...</li>\n							<li class=\"item\" data-id=\"4\">Source Quench(4)</li>\n							<li class=\"item\" data-id=\"5\">Redirect Message(5) ...</li>\n							<li class=\"item\" data-id=\"6\">Alternate Host Address(6)</li>\n							<li class=\"item\" data-id=\"8\">Echo Request(8)</li>\n							<li class=\"item\" data-id=\"9\">Router Advertisement(9)</li>\n							<li class=\"item\" data-id=\"10\">Router Solicitation(10)</li>\n							<li class=\"item\" data-id=\"11\">Time Exceeded(11) ...</li>\n							<li class=\"item\" data-id=\"12\">Parameter Problem: Bad IP header(12) ...</li>\n							<li class=\"item\" data-id=\"13\">Timestamp(13)</li>\n							<li class=\"item\" data-id=\"14\">Timestamp Reply(14)</li>\n							<li class=\"item\" data-id=\"15\">Information Request(15)</li>\n							<li class=\"item\" data-id=\"16\">Information Reply(16)</li>\n							<li class=\"item\" data-id=\"17\">Address Mask Request(17)</li>\n							<li class=\"item\" data-id=\"18\">Address Mask Reply(18)</li>\n							<li class=\"item\" data-id=\"30\">Traceroute(30)</li>\n							<li class=\"item\" data-id=\"31\">Datagram Conversion Error(31)</li>\n							<li class=\"item\" data-id=\"32\">Mobile Host Redirect(32)</li>\n							<li class=\"item\" data-id=\"33\">Where Are You(33)</li>\n							<li class=\"item\" data-id=\"34\">Here I Am(34)</li>\n							<li class=\"item\" data-id=\"35\">Mobile Registration Request(35)</li>\n							<li class=\"item\" data-id=\"36\">Mobile Registration Reply(36)</li>\n							<li class=\"item\" data-id=\"37\">Domain Name Request(37)</li>\n							<li class=\"item\" data-id=\"38\">Domain Name Reply(38)</li>\n							<li class=\"item\" data-id=\"39\">SKIP Algorithm Discovery Protocol(39)</li>\n							<li class=\"item\" data-id=\"40\">Photuris Security Failures(40)</li>\n							<li class=\"item\" data-id=\"-1\">All(-1)</li>\n						</ul>\n					</div>\n					</div>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-3\">\n					<div class=\"selection\">All(-1)</div>\n					<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n						<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n						<ul class=\"scroll-content\" tabindex=\"-1\">\n							<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n							<li class=\"item\" data-id=\"0\">destination network unreachable(0)</li>\n							<li class=\"item\" data-id=\"1\">destination host unreachable(1)</li>\n							<li class=\"item\" data-id=\"2\">destination protocol unreachable(2)</li>\n							<li class=\"item\" data-id=\"3\">destination port unreachable(3)</li>\n							<li class=\"item\" data-id=\"4\">fragmentation required and DF flag set(4)</li>\n							<li class=\"item\" data-id=\"5\">source route failed(5)</li>\n							<li class=\"item\" data-id=\"6\">destination network unknown(6)</li>\n							<li class=\"item\" data-id=\"7\">destination host unknown(7)</li>\n							<li class=\"item\" data-id=\"8\">source host isolated(8)</li>\n							<li class=\"item\" data-id=\"9\">network administratively prohibited(9)</li>\n							<li class=\"item\" data-id=\"10\">host administratively prohibited(10)</li>\n							<li class=\"item\" data-id=\"11\">network unreachable for TOS(11)</li>\n							<li class=\"item\" data-id=\"12\">host unreachable for TOS(12)</li>\n							<li class=\"item\" data-id=\"13\">communication administratively prohibited(13)</li>\n						</ul>\n					</div>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-5\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" tabindex=\"-1\">\n						<li class=\"selected item\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">redirect datagram for the network(0)</li>\n						<li class=\"item\" data-id=\"1\">redirect datagram for the host(1)</li>\n						<li class=\"item\" data-id=\"2\">redirect datagram for the TOS & network(2)</li>\n						<li class=\"item\" data-id=\"3\">redirect datagram for the TOS & host(3)</li>\n					</ul>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-11\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" tabindex=\"-1\">\n						<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">TTL expired transit(0)</li>\n						<li class=\"item\" data-id=\"1\">fragmentation reasembly time exceeded(1)</li>\n					</ul>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-12\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" role=\"menu\">\n						<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">pointer indicates the error(0)</li>\n						<li class=\"item\" data-id=\"1\">missing a required option(1)</li>\n						<li class=\"item\" data-id=\"2\">bad length(2)</li>\n					</ul>\n				</div>\n\n				";
+    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\" data-required=\"true\"/>\n		</div>\n\n		<div class=\"sg-protocol-option-input\" id=\"sg-protocol-icmp\">\n			<div class=\"selectbox\" id=\"protocol-icmp-main-select\" data-protocal-main=\"0\"  data-protocal-sub=\"-1\">\n			<div class=\"selection\">Echo Reply(0)</div>\n			<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n				<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n				<ul tabindex=\"-1\" class=\"scroll-content\">\n					<li class=\"item selected\" data-id=\"0\">Echo Reply(0)</li>\n					<li class=\"item\" data-id=\"3\">Destination Unreachable(3) ...</li>\n					<li class=\"item\" data-id=\"4\">Source Quench(4)</li>\n					<li class=\"item\" data-id=\"5\">Redirect Message(5) ...</li>\n					<li class=\"item\" data-id=\"6\">Alternate Host Address(6)</li>\n					<li class=\"item\" data-id=\"8\">Echo Request(8)</li>\n					<li class=\"item\" data-id=\"9\">Router Advertisement(9)</li>\n					<li class=\"item\" data-id=\"10\">Router Solicitation(10)</li>\n					<li class=\"item\" data-id=\"11\">Time Exceeded(11) ...</li>\n					<li class=\"item\" data-id=\"12\">Parameter Problem: Bad IP header(12) ...</li>\n					<li class=\"item\" data-id=\"13\">Timestamp(13)</li>\n					<li class=\"item\" data-id=\"14\">Timestamp Reply(14)</li>\n					<li class=\"item\" data-id=\"15\">Information Request(15)</li>\n					<li class=\"item\" data-id=\"16\">Information Reply(16)</li>\n					<li class=\"item\" data-id=\"17\">Address Mask Request(17)</li>\n					<li class=\"item\" data-id=\"18\">Address Mask Reply(18)</li>\n					<li class=\"item\" data-id=\"30\">Traceroute(30)</li>\n					<li class=\"item\" data-id=\"31\">Datagram Conversion Error(31)</li>\n					<li class=\"item\" data-id=\"32\">Mobile Host Redirect(32)</li>\n					<li class=\"item\" data-id=\"33\">Where Are You(33)</li>\n					<li class=\"item\" data-id=\"34\">Here I Am(34)</li>\n					<li class=\"item\" data-id=\"35\">Mobile Registration Request(35)</li>\n					<li class=\"item\" data-id=\"36\">Mobile Registration Reply(36)</li>\n					<li class=\"item\" data-id=\"37\">Domain Name Request(37)</li>\n					<li class=\"item\" data-id=\"38\">Domain Name Reply(38)</li>\n					<li class=\"item\" data-id=\"39\">SKIP Algorithm Discovery Protocol(39)</li>\n					<li class=\"item\" data-id=\"40\">Photuris Security Failures(40)</li>\n					<li class=\"item\" data-id=\"-1\">All(-1)</li>\n				</ul>\n			</div>\n			</div>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-3\">\n			<div class=\"selection\">All(-1)</div>\n			<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n				<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n				<ul class=\"scroll-content\" tabindex=\"-1\">\n					<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n					<li class=\"item\" data-id=\"0\">destination network unreachable(0)</li>\n					<li class=\"item\" data-id=\"1\">destination host unreachable(1)</li>\n					<li class=\"item\" data-id=\"2\">destination protocol unreachable(2)</li>\n					<li class=\"item\" data-id=\"3\">destination port unreachable(3)</li>\n					<li class=\"item\" data-id=\"4\">fragmentation required and DF flag set(4)</li>\n					<li class=\"item\" data-id=\"5\">source route failed(5)</li>\n					<li class=\"item\" data-id=\"6\">destination network unknown(6)</li>\n					<li class=\"item\" data-id=\"7\">destination host unknown(7)</li>\n					<li class=\"item\" data-id=\"8\">source host isolated(8)</li>\n					<li class=\"item\" data-id=\"9\">network administratively prohibited(9)</li>\n					<li class=\"item\" data-id=\"10\">host administratively prohibited(10)</li>\n					<li class=\"item\" data-id=\"11\">network unreachable for TOS(11)</li>\n					<li class=\"item\" data-id=\"12\">host unreachable for TOS(12)</li>\n					<li class=\"item\" data-id=\"13\">communication administratively prohibited(13)</li>\n				</ul>\n			</div>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-5\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">redirect datagram for the network(0)</li>\n				<li class=\"item\" data-id=\"1\">redirect datagram for the host(1)</li>\n				<li class=\"item\" data-id=\"2\">redirect datagram for the TOS & network(2)</li>\n				<li class=\"item\" data-id=\"3\">redirect datagram for the TOS & host(3)</li>\n			</ul>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-11\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">TTL expired transit(0)</li>\n				<li class=\"item\" data-id=\"1\">fragmentation reasembly time exceeded(1)</li>\n			</ul>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-12\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" role=\"menu\">\n				<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">pointer indicates the error(0)</li>\n				<li class=\"item\" data-id=\"1\">missing a required option(1)</li>\n				<li class=\"item\" data-id=\"2\">bad length(2)</li>\n			</ul>\n		</div>\n\n		";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn btn-blue\" id='sg-modal-save'>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_SAVE", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn btn-silver modal-close\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+  buffer += "\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSGRule=Handlebars.template(__TEMPLATE__);

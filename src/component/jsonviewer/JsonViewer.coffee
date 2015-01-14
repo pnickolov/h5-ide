@@ -1,4 +1,4 @@
-define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tplDiff, tplView, jsond )->
+define ["event", "./diff", "./view", "./JsonDiffLib", "UI.modalplus", "./jqUi" ], (ide_event, tplDiff, tplView, jsond, modalPlus )->
 
   componentData = null
   selectedComponetUid = "."
@@ -104,21 +104,26 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
 
   {
     showDiffDialog : ( json1, json2 )->
-      modal tplDiff()
+      modal = new modalPlus {
+        title: "JSON Diff"
+        compact: true,
+        template: tplDiff()
+      }
 
-      $("#modal-box").css({
+      modal.tpl.css({
         width  : "98%"
         height : "98%"
         top    : "1%"
         left   : "1%"
       })
+      modal.setWidth("100%")
 
       $("#diffTextarea1").val(JSON.stringify(json1))
       $("#diffTextarea2").val(JSON.stringify(json2))
 
       jsond.compare( json1, json2, "CanvasData", $("#jsondiffContainer")[0] )
 
-      $("#modal-box").on "click", "ul", ( e )->
+      modal.tpl.on "click", "ul", ( e )->
         if e.target.tagName and e.target.tagName.toUpperCase() is "UL"
           $(e.target).toggleClass("closed")
         false

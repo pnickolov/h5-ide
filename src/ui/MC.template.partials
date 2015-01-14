@@ -1053,11 +1053,7 @@ Additional Notes and Questions
 </div>
 
 <!-- {{shortkey}} -->
-<div style="width:640px" id="modal-key-short">
-	<div class="modal-header"><h3>{{i18n "KEY_MOD_TIT"}}</h3><i class="modal-close">&times;</i></div>
-	<div class="modal-body scroll-wrap">
-		<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-		<div class="scroll-content" style="height: 560px">
+
 			<section class="key-stack-app">
 				<h3 class="title">{{i18n "KEY_TIT_STACK_APP_OP"}}</h3>
 				<ul class="keys">
@@ -1092,10 +1088,10 @@ Additional Notes and Questions
 						<div class="key pc font-mono">{{i18n "KEY_SCRL_KEY_PC"}}</div>
 						<div class="action">{{i18n "KEY_SCRL_ACTION"}}</div>
 					</li>
-          <li class="key-item">
-            <div class="key">← ↑ → ↓</div>
-            <div class="action">{{i18n "KEY_NUDGE_ITEM_ACTION"}}</div>
-          </li>
+					<li class="key-item">
+						<div class="key">← ↑ → ↓</div>
+						<div class="action">{{i18n "KEY_NUDGE_ITEM_ACTION"}}</div>
+					</li>
 				</ul>
 			</section>
 			<section class="key-state">
@@ -1195,12 +1191,6 @@ Additional Notes and Questions
 					</li>
 				</ul>
 			</section>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">{{i18n "KEY_MODAL_BTN_CLOSE"}}</button>
-	</div>
-</div>
 
 <!-- {{modalSSLCertSetting}} -->
 <div style="width:343px" id="modal-ssl-cert-setting">

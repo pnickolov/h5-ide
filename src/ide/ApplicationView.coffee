@@ -59,7 +59,15 @@ define [
           event.preventDefault()
           return
         when 191
-          modal MC.template.shortkey(), true
+#          modal MC.template.shortkey(), true
+          new modalPlus({
+            title: lang.IDE.KEY_MOD_TIT
+            width: 640
+            maxHeight: 560
+            template: MC.template.shortkey()
+            disableClose: true
+            confirm: hide: true
+          }).tpl.attr("id", "modal-key-short")
           return false
 
       return

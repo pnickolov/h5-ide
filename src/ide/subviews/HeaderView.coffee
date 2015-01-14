@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang ) ->
+define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'UI.modalplus', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang, modalPlus ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -24,7 +24,15 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
 
         logout : () -> App.logout()
 
-        shortcuts : ()-> modal MC.template.shortkey()
+        shortcuts : ()->
+            new modalPlus({
+                title: lang.IDE.KEY_MOD_TIT
+                width: 640
+                maxHeight: 560
+                template: MC.template.shortkey()
+                disableClose: true
+                confirm: hide: true
+            }).tpl.attr("id", "modal-key-short")
 
         settings : ()-> new SettingsDialog()
 

@@ -128,11 +128,15 @@ define [
     askForForceTerminate : ( model )->
       if not model.get("terminateFail") then return
 
-      modal AppTpl.forceTerminateApp {
-        name : model.get("name")
-      }
-
-      $("#forceTerminateApp").on "click", ()->
+#      modal AppTpl.forceTerminateApp {
+#        name : model.get("name")
+#      }
+      new modalPlus({
+        title: lang.TOOLBAR.POP_FORCE_TERMINATE
+        width: 390
+        template: AppTpl.forceTerminateApp {name: model.get("name")}
+        confirm: {text: lang.TOOLBAR.POP_BTN_DELETE_STACK,  color: "red"}
+      }).on "confirm", ()->
         model.terminate( true ).fail (err)->
           error = if err.awsError then err.error + "." + err.awsError else err.error
           notification sprintf lang.NOTIFY.ERROR_FAILED_TERMINATE, name, error

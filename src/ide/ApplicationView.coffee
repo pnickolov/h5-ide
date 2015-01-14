@@ -128,9 +128,6 @@ define [
     askForForceTerminate : ( model )->
       if not model.get("terminateFail") then return
 
-#      modal AppTpl.forceTerminateApp {
-#        name : model.get("name")
-#      }
       new modalPlus({
         title: lang.TOOLBAR.POP_FORCE_TERMINATE
         width: 390

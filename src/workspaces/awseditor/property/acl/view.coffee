@@ -8,8 +8,9 @@ define [ '../base/view',
          './template/stack',
          './template/rule_item',
          './template/dialog',
-         'i18n!/nls/lang.js'
-], ( PropertyView, Design, constant, htmlTpl, ruleTpl, rulePopupTpl, lang ) ->
+         'i18n!/nls/lang.js',
+         'UI.modalplus'
+], ( PropertyView, Design, constant, htmlTpl, ruleTpl, rulePopupTpl, lang, modalPlus ) ->
 
     ACLView = PropertyView.extend {
 
@@ -70,9 +71,14 @@ define [ '../base/view',
             }
 
             modal rulePopupTpl( data )
+            new modalPlus({
+                title: lang.IDE.POP_ACLRULE_TITLE_ADD
+                width: 450
+                template: rulePopupTpl data
+                confirm: text: lang.IDE.POP_ACLRULE_BTN_SAVE
+            }).on("confirm", _.bind( @saveRule, @ ))
 
             # Bind Modal Events
-            $("#acl-modal-rule-save-btn").on("click", _.bind( @saveRule, @ ))
             $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )
             $("#modal-protocol-select").on("OPTION_CHANGE", @modalRuleProtocolSelected )
             $("#protocol-icmp-main-select").on("OPTION_CHANGE", @modalRuleICMPSelected )

@@ -8,7 +8,8 @@ define [
     '../ossglist/view'
     'ApiRequest'
     'ApiRequestOs'
-], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, ApiRequestOs ) ->
+    'i18n!/nls/lang.js'
+], ( constant, OsPropertyView, template, CloudResources, _, OsKp, SgListView, ApiRequest, ApiRequestOs, lang ) ->
 
   OsPropertyView.extend {
 
@@ -68,10 +69,12 @@ define [
             server_id    : serverId
         }).then @refreshSysLog, @refreshSysLog
 
-        modal MC.template.modalInstanceSysLog {
-            instance_id: serverId,
-            log_content: ''
-        }, true
+        new modalPlus({
+            template:MC.template.modalInstanceSysLog {log_content: ''}
+            width: 900
+            title: lang.IDE.SYSTEM_LOG + serverId
+            confirm: hide: true
+        }).tpl.attr("id", "modal-instance-sys-log")
 
         false
 

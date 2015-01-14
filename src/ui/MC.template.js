@@ -1249,18 +1249,14 @@ TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "SET_UP_CIDR_BLOCK", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
+  buffer += "<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n	<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			<div class=\"modal-text-minor\">"
+    + "</div>\n	<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"cidr-remove\" class=\"link-red left link-modal-danger\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.remove_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n		<button id=\"cidr-return\" class=\"btn modal-close btn-blue\">OK</button>\n	</div>\n</div>";
+    + "</div>\n</div> </div>";
   return buffer;
   };
 TEMPLATE.setupCIDRConfirm=Handlebars.template(__TEMPLATE__);

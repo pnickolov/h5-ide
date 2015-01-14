@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/cgw
 #############################
 
-define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "Design" ], ( lang, PropertyView, template, constant, Design ) ->
+define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "Design", 'UI.modalplus' ], ( lang, PropertyView, template, constant, Design, modalPlus ) ->
 
     CGWView = PropertyView.extend {
 
@@ -91,19 +91,27 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             }
 
             that = this
-            modal dialog_template, false, () ->
-
-                $('.modal-close').click () -> $('#property-cgw-ip').focus()
-
-                $('#cidr-remove').click () ->
-                    Design.instance().component( that.model.get("uid") ).remove()
-
-                    that.disabledAllOperabilityArea(false)
-                    modal.close()
-
-            , {
-                $source: $(event.target)
+            modal = new modalPlus {
+                template: dialog_template,
+                title: lang.IDE.SET_UP_CIDR_BLOCK
+                width: 420
+                confirm: text: "OK", color: "blue"
+                cancel: hide: true
             }
+
+            removeLink = $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+            .appendTo(modal.find(".modal-footer"))
+            modal.on "confirm", ()->
+                modal.close()
+            modal.on "close", ()->
+                $('#property-cgw-ip').focus()
+            modal.find("#cidr-removed").on "click",(e)->
+                e.preventDefault()
+                console.log "Not Work....."
+                Design.instance().component( that.model.get("uid") ).remove()
+                that.disabledAllOperabilityArea(false)
+                modal.close()
+
     }
 
     new CGWView()

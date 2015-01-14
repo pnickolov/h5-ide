@@ -818,19 +818,10 @@ Additional Notes and Questions
 </article>
 
 <!-- {{setupCIDRConfirm}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{i18n "SET_UP_CIDR_BLOCK"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper"> <div class="modal-center-align-helper">
-			<div class="modal-text-major">{{main_content}}</div>
-			<div class="modal-text-minor">{{desc_content}}</div>
-		</div> </div>
-	</div>
-	<div class="modal-footer">
-		<a id="cidr-remove" class="link-red left link-modal-danger">{{remove_content}}</a>
-		<button id="cidr-return" class="btn modal-close btn-blue">OK</button>
-	</div>
-</div>
+<div class="modal-text-wraper"> <div class="modal-center-align-helper">
+	<div class="modal-text-major">{{main_content}}</div>
+	<div class="modal-text-minor">{{desc_content}}</div>
+</div> </div>
 
 <!-- {{modalAttachingEni}} -->
 <div class="modal-body">

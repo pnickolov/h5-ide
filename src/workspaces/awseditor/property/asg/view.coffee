@@ -9,7 +9,7 @@ define [ '../base/view',
          'i18n!/nls/lang.js'
          'sns_dropdown'
          'UI.modalplus'
-], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalplus ) ->
+], ( PropertyView, template, policy_template, term_template, lang, snsDropdown, modalPlus ) ->
 
     metricMap =
       "CPUUtilization"             : lang.PROP.ASG_POLICY_CPU
@@ -204,9 +204,18 @@ define [ '../base/view',
                 if not checked[ p ]
                     data.push { name : p, checked : false, text: p }
 
-            modal term_template(data), true
+            modal = new modalPlus({
+                title: lang.PROP.ASG_TERMINATION_EDIT
+                width: 420
+                template: term_template data
+                confirm: text: lang.PROP.LBL_DONE
+            })
 
             self = this
+            modal.on "confirm", ->
+                self.onEditTermPolicy()
+                modal.close()
+
 
             # Bind event to the popup
             $("#property-asg-term").on "click", "input", ()->
@@ -217,10 +226,6 @@ define [ '../base/view',
                 $this = $(this)
                 checked = $this.is(":checked")
                 $this.closest("li").toggleClass("enabled", checked)
-
-            $("#property-asg-term-done").on "click", ()->
-                self.onEditTermPolicy()
-                modal.close()
 
             $("#property-asg-term").on "mousedown", ".drag-handle", ()->
                 $(this).trigger("mouseleave")
@@ -331,15 +336,15 @@ define [ '../base/view',
                 confirm         :
                     text        : lang.PROP.LBL_DONE
 
-            modalPlus = new modalplus options
+            modal = new modalPlus options
             that = @
-            modalPlus.on 'confirm', () ->
+            modal.on 'confirm', () ->
 
                 result = $("#asg-termination-policy").parsley("validate")
                 if result is false
                     return false
                 that.onPolicyDone()
-                modalPlus.close()
+                modal.close()
 
             ,@
 

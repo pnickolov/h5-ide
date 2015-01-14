@@ -70,7 +70,6 @@ define [ '../base/view',
                     }
             }
 
-            modal rulePopupTpl( data )
             new modalPlus({
                 title: lang.IDE.POP_ACLRULE_TITLE_ADD
                 width: 450

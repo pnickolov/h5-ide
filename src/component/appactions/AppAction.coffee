@@ -165,11 +165,16 @@ define [
     deleteStack : ( id, name ) ->
       name = name || App.model.stackList().get( id ).get( "name" )
 
-      modal AppTpl.removeStackConfirm {
-        msg : sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name
-      }
-
-      $("#confirmRmStack").on "click", ()->
+      modal = new modalPlus({
+        title: lang.TOOLBAR.TIP_DELETE_STACK
+        width: 390
+        confirm:
+          text: lang.TOOLBAR.POP_BTN_DELETE_STACK
+          color: "red"
+        template: AppTpl.removeStackConfirm {msg:  sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name}
+      })
+      modal.on "confirm", ()->
+        modal.close()
         opsModel = App.model.stackList().get( id )
         p = opsModel.remove()
         if opsModel.isPersisted()
@@ -177,7 +182,6 @@ define [
             notification "info", sprintf(lang.NOTIFY.ERR_DEL_STACK_SUCCESS, name)
           , ()->
             notification "error", sprintf(lang.NOTIFY.ERR_DEL_STACK_FAILED, name)
-      return
 
     duplicateStack : (id) ->
       opsModel = App.model.stackList().get(id)

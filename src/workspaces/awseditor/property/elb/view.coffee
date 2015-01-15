@@ -512,65 +512,6 @@ define [ '../base/view',
             that.model.changeCert(certUID)
             ide_event.trigger ide_event.REFRESH_PROPERTY
 
-        popSSLCertModal : (isEdit, certUID) ->
-
-            that = this
-
-            modal MC.template.modalSSLCertSetting {}, true
-
-            $certName = $('#elb-ssl-cert-name-input')
-            $certPrikey = $('#elb-ssl-cert-privatekey-input')
-            $certPubkey = $('#elb-ssl-cert-publickey-input')
-            $certChain = $('#elb-ssl-cert-chain-input')
-            currentCertName = ''
-
-            if isEdit and certUID
-                certModel = Design.instance().component(certUID)
-                if certModel
-                    currentCertName = certModel.get('name')
-                    $certName.val(currentCertName)
-                    $certPrikey.val(certModel.get('key'))
-                    $certPubkey.val(certModel.get('body'))
-                    $certChain.val(certModel.get('chain'))
-
-            otherCertNameAry = that.model.getOtherCertName(currentCertName)
-
-            $("#elb-ssl-cert-confirm").off('click').on('click', ()->
-
-                isCorrect = false
-
-                $certName.parsley 'custom', (val) ->
-                    if val in otherCertNameAry
-                        return lang.PARSLEY.THIS_NAME_IS_ALREADY_IN_USING
-                    null
-
-                valid1 = $certName.parsley('validate')
-                valid2 = $certPrikey.parsley('validate')
-                valid3 = $certPubkey.parsley('validate')
-
-                if valid1 and valid2 and valid3
-                    isCorrect = true
-
-                if isCorrect
-
-                    certObj = {
-                        name  : $certName.val()
-                        key   : $certPrikey.val()
-                        body  : $certPubkey.val()
-                        chain : $certChain.val()
-                    }
-
-                    if isEdit and certUID
-                        that.model.updateCert(certUID, certObj)
-                    else
-                        that.model.addCert(certObj)
-
-                    ide_event.trigger ide_event.REFRESH_PROPERTY
-                    modal.close()
-
-                null
-            )
-
         elbConnectionDrainSelectChange : (event) ->
 
             that = this

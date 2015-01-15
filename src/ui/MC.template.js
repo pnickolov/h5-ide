@@ -1107,27 +1107,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "GET_WINDOWS_PASSWORD", {hash:{},data:data}))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">"
+  buffer += "<section class=\"password-hint\">\n	<p class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KEYPAIR", {hash:{},data:data}))
     + "<span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></p>\n			<p>"
+    + "</span></p>\n	<p>"
     + escapeExpression(helpers.i18n.call(depth0, "TO_ACCESS_THIS_INSTANCE_REMOTELY", {hash:{},data:data}))
-    + "</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>"
+    + "</p>\n</section>\n<section class=\"import-zone\">\n	<div id='keypair-loading' class=\"loading-spinner\"></div>\n</section>\n<section class=\"decrypt-action\" style=\"display: none;\">\n	<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>"
     + escapeExpression(helpers.i18n.call(depth0, "DECRYPT_PASSWORD", {hash:{},data:data}))
-    + "</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\""
+    + "</button>\n	<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\""
     + escapeExpression(helpers.i18n.call(depth0, "DECRYPTED_PASSWORD_WILL_APPEAR_HERE", {hash:{},data:data}))
-    + "\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\""
+    + "\">\n	<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "RECOMMEND_CHANGE_PASSWORD", {hash:{},data:data}))
     + "\" style=\"display: none;\">"
     + escapeExpression(helpers.i18n.call(depth0, "CHANGE_PASSWORD_RECOMMENDATION_FROM_AWS", {hash:{},data:data}))
-    + "</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				"
+    + "</div>\n</section>\n<section class=\"no-password\" style=\"display: none;\">\n	<p>\n		"
     + escapeExpression(helpers.i18n.call(depth0, "YOUR_PASSWORD_IS_NOT_READY", {hash:{},data:data}))
-    + "\n			</p>\n\n			<p>\n				"
+    + "\n	</p>\n\n	<p>\n		"
     + escapeExpression(helpers.i18n.call(depth0, "PASSWORD_OF_OWN_AMI", {hash:{},data:data}))
-    + "\n			</p>\n		</section>\n	</div>\n</div>";
+    + "\n	</p>\n</section>";
   return buffer;
   };
 TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
@@ -1141,76 +1139,63 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		";
+  return "class=\"hide\"";
   }
 
 function program3(depth0,data) {
   
-  
-  return "class=\"hide\"";
+  var buffer = "";
+  buffer += "\n	<div class=\"keypair-download clearfix modal-control-group\">\n		<p class=\"modal-text-major left\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
+    + "</p>\n		<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DOWNLOAD", {hash:{},data:data}))
+    + "</a>\n	</div>\n	";
+  return buffer;
   }
 
 function program5(depth0,data) {
   
-  var buffer = "";
-  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
-    + "</p>\n				<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DOWNLOAD", {hash:{},data:data}))
-    + "</a>\n			</div>\n			";
+  var buffer = "", stack1;
+  buffer += "\n	<div class=\"keypair-download clearfix modal-control-group\">\n		<p class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
+    + " "
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n	</div>\n	";
   return buffer;
   }
 
 function program7(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
-    + " "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n			</div>\n			";
+  buffer += "\n	<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n		<label for=\"keypair-cmd\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
+    + "</label>\n		<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.loginCmd)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n	</div>\n	";
   return buffer;
   }
 
 function program9(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
-    + "</label>\n				<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.loginCmd)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n			</div>\n			";
-  return buffer;
-  }
-
-function program11(depth0,data) {
-  
   var buffer = "";
-  buffer += "\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">"
+  buffer += "\n	<div class=\"modal-control-group clearfix\">\n		<label style=\"width:100%;\">"
     + escapeExpression(helpers.i18n.call(depth0, "WINDOWS_LOGIN_PASSWORD", {hash:{},data:data}))
-    + "</label>\n				<div id=\"keypair-login\">\n					<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n					<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">"
+    + "</label>\n		<div id=\"keypair-login\">\n			<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n			<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">"
     + escapeExpression(helpers.i18n.call(depth0, "SHOW_PASSWORD", {hash:{},data:data}))
-    + "</a>\n				</div>\n				<div id=\"keypair-no-pwd\"></div>\n			</div>\n			";
+    + "</a>\n		</div>\n		<div id=\"keypair-no-pwd\"></div>\n	</div>\n	";
   return buffer;
   }
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3 id='keypair-name'>"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		";
+  buffer += "<section id=\"keypair-body\" ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		<section id=\"keypair-body\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  buffer += ">\n	";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">\n			";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.program(7, program7, data),fn:self.program(5, program5, data),data:data});
+  buffer += "\n	";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(11, program11, data),fn:self.program(9, program9, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+  buffer += "\n\n</section>";
   return buffer;
   };
 TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);

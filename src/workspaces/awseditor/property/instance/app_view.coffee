@@ -60,13 +60,15 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         loginPrompt: () ->
             keypair = @model.get 'keyName'
 
-            modal MC.template.modalDownloadKP {
-                name    : keypair
-                loginCmd: @model.get 'loginCmd'
-                isOldKp : false
-                windows : @model.get( 'osType' ) is 'windows'
+            new modalPlus {
+                title: keypair,
+                width: 420
+                template: MC.template.modalDownloadKP {
+                    loginCmd: @model.get "loginCmd"
+                    windows: @model.get("osType") is "windows"
+                }
+                confirm: hide: true
             }
-
             me = this
             $( '#keypair-cmd' ).off( 'click' ).on 'click', ( event )->
                 if event.currentTarget.select
@@ -76,14 +78,16 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             false
 
         decryptPassword : () ->
-            modal MC.template.modalDecryptPassword { name:@model.get('keyName'), isOldKp:false }
-            @kpModalClosed = false
-
+            #modal MC.template.modalDecryptPassword { name:@model.get('keyName'), isOldKp:false }
             me = @
-            $('#modal-wrap').on "closed", ()-> me.kpModalClosed = true; return
-
+            @kpModal = new modalPlus {
+                title: lang.IDE.GET_WINDOWS_PASSWORD
+                width: 500
+                template: MC.template.modalDecryptPassword { name:@model.get('keyName'), isOldKp:false }
+                disableFooter: true
+            }
             @model.getPassword().then ( data )->
-                @updateKPModal("check", !!data)
+                me.updateKPModal("check", !!data)
             , ()->
                 notification 'error', lang.NOTIFY.ERR_GET_PASSWD_FAILED
 
@@ -95,7 +99,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             false
 
         updateKPModal : ( action, data, data2, data3 ) ->
-            if this.kpModalClosed
+            if @kpModal.isClosed
                 return
 
             if action is 'check'
@@ -105,11 +109,11 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
                     @__kpUpload.on 'load', () ->
                         $("#do-kp-decrypt").prop 'disabled', false
 
-                    $( '#modal-box .import-zone' ).html @__kpUpload.render().el
-                    $( '#modal-box .decrypt-action' ).show()
+                    @kpModal.$( '.import-zone' ).html @__kpUpload.render().el
+                    @kpModal.$( '.decrypt-action' ).show()
                 else
-                    $( '#modal-box .import-zone' ).html ''
-                    $( '#modal-box .no-password' ).show()
+                    @kpModal.$( '.import-zone' ).html ''
+                    @kpModal.$( '.no-password' ).show()
 
 
             else if action is 'got'

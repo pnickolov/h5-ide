@@ -76,19 +76,31 @@ define [ '../base/view',
             if mainContent
                 that = this
 
-                modal MC.template.setupCIDRConfirm({
+                cidrModal = MC.template.setupCIDRConfirm({
                     main_content   : mainContent
                     desc_content   : descContent
                     remove_content : removeInfo
-                }), false, null, {
-                    $source: $(event.target)
+                })
+
+                modal = new modalPlus {
+                    title: lang.IDE.SET_UP_CIDR_BLOCK
+                    width: 420
+                    template: cidrModal
+                    confirm: text: "OK", color: "blue"
+                    disableClose: true
+                    cancel: hide: true
                 }
 
-                $('.modal-close').click () -> $('#property-cidr-block').focus()
-                $('#cidr-remove').click () ->
+                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+                .appendTo(modal.find(".modal-footer"))
+
+                modal.on "confirm", ()-> modal.close()
+                modal.on "close", () -> inputElem.focus()
+                modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component( that.model.get("uid") ).remove()
                     that.disabledAllOperabilityArea(false)
                     modal.close()
+
             else
                 @model.setCidr subnetCIDR
                 @disabledAllOperabilityArea(false)

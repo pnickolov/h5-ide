@@ -9,14 +9,13 @@
 ###
 
 define [
-  "./submodels/OpsCollection"
   "OpsModel"
   "ApiRequest"
   "ApiRequestOs"
   "backbone"
   "constant"
   "i18n!/nls/lang.js"
-], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
+], ( OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
 
   Backbone.Model.extend {
 

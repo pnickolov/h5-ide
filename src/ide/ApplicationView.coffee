@@ -12,7 +12,7 @@ define [
   "./subviews/FullnameSetup"
   'i18n!/nls/lang.js'
   'constant'
-], ( Backbone, SessionDialog,  AppTpl, FullnameSetup, lang, constant )->
+], ( Backbone, SessionDialog, AppTpl, FullnameSetup, lang, constant )->
 
   Backbone.View.extend {
 

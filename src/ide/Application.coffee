@@ -9,14 +9,13 @@
 ###
 
 define [
-  "ApiRequest"
   "./Websocket"
   "./ApplicationView"
   "./ApplicationModel"
   "./User"
   "./SceneManager"
   "i18n!/nls/lang.js"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SceneManager, lang )->
+], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, lang )->
 
   VisualOps = ()->
     if window.App

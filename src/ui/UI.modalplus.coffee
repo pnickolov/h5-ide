@@ -60,7 +60,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             isFirst = false
 
             if @option.mode is 'fullscreen'
-                @option.disableFooter = @option.disableHeader = true
+                @option.disableFooter = true
 
             if $('#modal-wrap').size() > 0
                 isFirst = false

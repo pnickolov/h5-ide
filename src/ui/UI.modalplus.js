@@ -13,7 +13,7 @@
         _.extend(this, Backbone.Events);
         isFirst = false;
         if (this.option.mode === 'fullscreen') {
-          this.option.disableFooter = this.option.disableHeader = true;
+          this.option.disableFooter = true;
         }
         if ($('#modal-wrap').size() > 0) {
           isFirst = false;

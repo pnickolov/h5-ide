@@ -27,7 +27,6 @@ define [ '../base/view',
 
             'OPTION_CHANGE #keypair-select'      : "setKP"
             'EDIT_UPDATE #keypair-select'        : "addKP"
-            'click #keypair-select .icon-remove' : "deleteKP"
             "EDIT_FINISHED #keypair-select"      : "updateKPSelect"
 
             'click .toggle-eip'                         : 'setEip'

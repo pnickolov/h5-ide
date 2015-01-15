@@ -56,10 +56,6 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
 			kp = new KpModel( { name : kp_name } )
 			kp.id
 
-		deleteKP : ( kp_uid ) ->
-			Design.instance().component( kp_uid ).remove()
-			null
-
 		setKP : ( kp_uid ) ->
 			design  = Design.instance()
 			instance = design.component( @get("uid") )

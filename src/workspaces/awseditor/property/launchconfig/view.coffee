@@ -170,40 +170,6 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             @trigger "OPEN_AMI", $("#property-ami").attr("data-uid")
             null
 
-        deleteKP : ( event ) ->
-            me = this
-            $li = $(event.currentTarget).closest("li")
-
-            selected = $li.hasClass("selected")
-            using = if using is "true" then true else selected
-
-            removeKP = () ->
-
-                $li.remove()
-                # If deleting selected kp, select the first one
-                if selected
-                    $("#keypair-select").find(".item").eq(0).click()
-
-
-                me.model.deleteKP $li.attr("data-id")
-
-
-            if using
-                data =
-                    title   : lang.IDE.TITLE_DELETE_KEYPAIR
-                    confirm : "Delete"
-                    color   : "red"
-                    body    : sprintf(lang.PROP.LC_DELETE_CUSTUME_KEY_PAIR_CONFIRM, $li.text())
-                # Ask for confirm
-                modal MC.template.modalApp data
-                $("#btn-confirm").one "click", ()->
-                    removeKP()
-                    modal.close()
-            else
-                removeKP()
-
-            return false
-
         disableUserDataInput : ( flag ) ->
 
             $userDataInput = $('#property-instance-user-data')

@@ -1,6 +1,66 @@
-define [ 'i18n!/nls/lang.js', "./template/TplProject", "backbone" ], ( lang, TplProject ) ->
+define [
+    'i18n!/nls/lang.js'
+    './template/TplProject'
+    './projectSubViews/BasicSettingsView'
+    './projectSubViews/AccessTokenView'
+    './projectSubViews/BillingView'
+    './projectSubViews/MemberView'
+    './projectSubViews/ProviderCredentialView'
+    './projectSubViews/UsageReportView'
+    'backbone'
+], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, MemberView, ProviderCredentialView, UsageReportView ) ->
+
+    subViewMap = {
+        BasicSettings       : BasicSettingsView
+        AccessToken         : AccessTokenView
+        Billing             : BillingView
+        Member              : MemberView
+        ProviderCredential  : ProviderCredentialView
+        UsageReport         : UsageReportView
+    }
+
+    subViewNameMap = {
+        BasicSettings       : 'Basic Settings'
+        AccessToken         : 'Access Token'
+        Billing             : 'Billing'
+        Member              : 'Member'
+        ProviderCredential  : 'Provider Credential'
+        UsageReport         : 'Usage Report'
+    }
+
     ProjectView = Backbone.View.extend
+        events:
+            'click .function-list a': 'loadSub'
+
         initialize: () ->
-        render: () ->
+
+        render: ( tab = 'BasicSettings' ) ->
+            @$el.html TplProject { tab: tab }
+            @$('.project-subview').html @renderSub( tab ).el
+            @
+
+        loadSub: ( e ) -> @renderSub $( e.currentTarget ).data 'id'
+
+        renderSub: ( tab ) ->
+            @setTitle tab
+            @activeTab tab
+
+            @subView and @subView.remove()
+            @subView = new subViewMap[ tab ]()
+            @subView.render()
+
+        setTitle: ( tab ) ->
+            projectName = "Paula's Project"
+            tabName = subViewNameMap[ tab ]
+            @$('.project-title').html "#{projectName} / #{tabName}"
+
+        activeTab: ( tab ) ->
+            @$('.function-list a').each () ->
+                if $(@).data( 'id' ) is tab
+                    $(@).addClass 'active'
+                else
+                    $(@).removeClass 'active'
+
+
 
     ProjectView

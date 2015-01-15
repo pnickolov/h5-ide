@@ -2,16 +2,25 @@ define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSe
     SettingsView = Backbone.View.extend {
         events:
             'click .project-list a': 'loadProject'
+            'click .back-settings': 'renderSettings'
 
         className: 'fullpage-settings'
 
         initialize: ( options ) ->
-            @render()
+            if options
+                @tab = options.tab
+                @projectId = options.projectId
+
+            @render(@tab)
 
 
-        render: (renderSettings = true) ->
+        render: ( tab = SettingsView.TAB.Account ) ->
             that = @
-            @renderSettings()
+            if tab is SettingsView.TAB.Account
+                @renderSettings()
+            else
+                @renderProject projectId, tab
+
             @modal = new Modal
                 template: that.el
                 mode: 'fullscreen'
@@ -27,11 +36,8 @@ define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSe
             projectId = $(e.currentTarget).data 'id'
             @renderProject projectId
 
-        renderProject: ( projectId) ->
-            #@$el.html new ProjectView( model: projectModel ).render().el
-            console.error 'TODO'
-
-        renderRight: () ->
+        renderProject: ( projectId, tab ) ->
+            @$el.html new ProjectView().render(tab).el
 
         remove: ->
             @model and @model.close()
@@ -41,9 +47,14 @@ define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSe
     }
 
     SettingsView.TAB =
-        CredentialInvalid : -1
-        Normal            : 0
-        Credential        : 1
-        Token             : 2
+        Account: 'Account'
+        Project:
+            BasicSettings: 'BasicSettings'
+            AccessToken: 'AccessToken'
+            Billing: 'Billing'
+            Member: "Member"
+            ProviderCredential: 'ProviderCredential'
+            UsageReport: 'UsageReport'
+
 
     SettingsView

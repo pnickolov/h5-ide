@@ -10422,6 +10422,10 @@ h5.billing_usage_title {
   margin-left: 2px;
   font-size: 12px; }
 
+.fullpage-settings a {
+  cursor: pointer; }
+.fullpage-settings a.active {
+  color: blue; }
 .fullpage-settings nav {
   width: 220px;
   float: left;
@@ -10432,12 +10436,11 @@ h5.billing_usage_title {
     padding: 8px 0; }
   .fullpage-settings nav > section a {
     display: block;
-    cursor: pointer;
     padding: 5px 0; }
-.fullpage-settings > section {
+.fullpage-settings section.setting-content {
   margin-left: 300px;
   padding: 50px 0 0 0; }
-  .fullpage-settings > section header {
+  .fullpage-settings section.setting-content header {
     color: white;
     padding-bottom: 5px;
     font-size: 22px;

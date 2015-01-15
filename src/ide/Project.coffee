@@ -3,14 +3,14 @@ define [
   "./submodels/OpsCollection"
   "./Credential"
   "backbone"
-], ( OpsCollection )->
+], ( OpsCollection, Credential )->
 
-  admin | collaborator | observer
 
   MEMBERROLE =
     ADMIN    : "admin"
     MEMBER   : "collaborator"
     OBSERVER : "observer"
+
 
   Backbone.Model.extend {
 
@@ -118,6 +118,62 @@ define [
             t.name = newName
             break
 
+
+
+
+        createImportOps : ( region, provider, msrId )->
+      m = @attributes.appList.findWhere({importMsrId:msrId})
+      if m then return m
+      m = new OpsModel({
+        name        : "ImportedApp"
+        importMsrId : msrId
+        region      : region
+        provider    : provider
+        state       : OpsModel.State.Running
+      })
+      @attributes.appList.add m
+      m
+
+
+    # OpsModel Related.
+
+    # This method creates a new stack in IDE, and returns that model.
+    # The stack is not automatically stored in server.
+    # You need to call save() after that.
+    createStack : ( region, provider = Credential.PROVIDER.AWSGLOBAL )->
+      @stacks().add( new OpsModel({
+        region   : region
+        provider : provider
+      }, {
+        initJsonData : true
+      }) )
+
+    createStackByJson : ( json, updateLayout = false )->
+      @stacks().add( new OpsModel({
+        name       : json.name
+        region     : json.region
+        autoLayout : updateLayout
+        __________itsshitdontsave : updateLayout
+      }, {
+        jsonData : json
+      }) )
+
+    __parseListRes : ( res )->
+      r = []
+
+      for ops in res
+        r.push {
+          id         : ops.id
+          updateTime : ops.time_update
+          region     : ops.region
+          usage      : ops.usage
+          name       : ops.name
+          version    : ops.version
+          provider   : ops.provider
+          state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
+          stoppable  : not (ops.property and ops.property.stoppable is false)
+        }
+      r
 
     __checkMyRole : ( members )->
       username = App.user.get("username")

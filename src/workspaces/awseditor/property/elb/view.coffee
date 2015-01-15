@@ -60,10 +60,7 @@ define [ '../base/view',
 
             'change #elb-cross-az-select' : 'elbCrossAZSelect'
 
-            'click .editbtn' : 'elbSSLCertAdd'
             'click #sslcert-select .item' : 'changeSSLCert'
-            'click #sslcert-select .item .icon-edit' : 'elbSSLCertEdit'
-            'click #sslcert-select .item .icon-remove' : 'elbSSLCertRemove'
             'click #elb-connection-draining-select' : 'elbConnectionDrainSelectChange'
             'change #elb-connection-draining-input' : 'elbConnectionDrainTimeoutChange'
 
@@ -505,41 +502,6 @@ define [ '../base/view',
             @model.setElbCrossAZ event.target.checked
             null
 
-        elbSSLCertAdd : (event) ->
-
-            that = this
-            that.popSSLCertModal(false)
-            return false
-
-        elbSSLCertEdit : (event) ->
-
-            that = this
-            $certEditItem = $(event.currentTarget)
-            $certItem = $certEditItem.parents('.item')
-            certUID = $certItem.attr('data-id')
-            if certUID
-                that.popSSLCertModal(true, certUID)
-            return false
-
-        elbSSLCertRemove : (event) ->
-
-            that = this
-            $certEditItem = $(event.currentTarget)
-            $certItem = $certEditItem.parents('.item')
-            certUID = $certItem.attr('data-id')
-            certModel = Design.instance().component(certUID)
-
-            if certModel
-
-                certName = certModel.get('name')
-                modal MC.template.modalDeleteELBCert {cert_name: certName}, true
-
-                $("#modal-confirm-elb-cert-delete").one 'click', ()->
-                    that.model.removeCert(certUID)
-                    ide_event.trigger ide_event.REFRESH_PROPERTY
-                    modal.close()
-
-            return false
 
         changeSSLCert : (event) ->
 

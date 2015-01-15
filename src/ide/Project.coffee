@@ -28,12 +28,14 @@ define [
       history      : new Backbone.Collection()
       audits       : new Backbone.Collection()
       myRole       : "observer"
+      private      : false
 
     initialize : ( attr )->
       # Normal attr
       @set {
-        id   : attr.id
-        name : attr.name
+        id      : attr.id
+        name    : attr.name or "Private Project"
+        private : !attr.name
       }
 
       # Token
@@ -69,6 +71,7 @@ define [
 
 
     # Convenient Methods
+    isPrivate     : ()-> @get("private")
     hasCredential : ()-> @get("credentials").length > 0
 
     amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN

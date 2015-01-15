@@ -92,11 +92,10 @@ define [ '../base/view',
                     cancel: hide: true
                 }
 
-                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
                 .appendTo(modal.find(".modal-footer"))
 
                 modal.on "confirm", ()-> modal.close()
-                modal.on "close", () -> inputElem.focus()
                 modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component( that.model.get("uid") ).remove()
                     that.disabledAllOperabilityArea(false)

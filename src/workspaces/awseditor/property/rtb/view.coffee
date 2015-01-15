@@ -155,7 +155,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
                 cancel: hide: true
             }
 
-            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.REMOVE_ROUTE}</a>""")
             .appendTo(modal.find(".modal-footer"))
 
             modal.on "confirm", ()-> modal.close()

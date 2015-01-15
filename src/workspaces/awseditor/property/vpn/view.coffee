@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/vpn
 #############################
 
-define [ '../base/view', './template/stack','i18n!/nls/lang.js' ], ( PropertyView, template, lang ) ->
+define [ '../base/view', './template/stack','i18n!/nls/lang.js',"UI.modalplus" ], ( PropertyView, template, lang, modalPlus ) ->
 
     VPNView = PropertyView.extend {
         events   :
@@ -89,17 +89,25 @@ define [ '../base/view', './template/stack','i18n!/nls/lang.js' ], ( PropertyVie
             }
 
             that = this
-            modal dialog_template, false, () ->
-                $('.modal-close').click () -> inputElem.focus()
 
-                $('#cidr-remove').click () ->
-                    Design.instance().component( that.model.get("uid") ).remove()
-
-                    that.disabledAllOperabilityArea(false)
-                    modal.close()
-            , {
-                $source: $(event.target)
+            modal = new modalPlus {
+                title: lang.IDE.VPN_REMOVE_CONNECTION
+                width: 420
+                template: dialog_template
+                confirm: text: "OK", color: "blue"
+                disableClose: true
+                cancel: hide: true
             }
+
+            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.VPN_REMOVE_CONNECTION}</a>""")
+            .appendTo(modal.find(".modal-footer"))
+
+            modal.on "confirm", ()-> modal.close()
+            modal.on "close", () -> inputElem.focus()
+            modal.find("#cidr-removed").on "click", () ->
+                Design.instance().component( that.model.get("uid") ).remove()
+                that.disabledAllOperabilityArea(false)
+                modal.close()
     }
 
     new VPNView()

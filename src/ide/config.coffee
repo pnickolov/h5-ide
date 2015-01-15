@@ -361,7 +361,7 @@ if window.define
 
 
 require [
-  'ide/Application'
+  'ide/AppBundle'
   "cloudres/CrBundle"
   "workspaces/dashboard/Dashboard"
   "OpsEditor"

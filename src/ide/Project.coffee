@@ -5,47 +5,75 @@ define [
   "backbone"
 ], ( OpsCollection )->
 
+  admin | collaborator | observer
+
+  MEMBERROLE =
+    ADMIN    : "admin"
+    MEMBER   : "collaborator"
+    OBSERVER : "observer"
+
   Backbone.Model.extend {
 
     ###
     # Possible events that will trigger on this model:
-
     `change:credential`
     ###
     defaults : ()->
       name         : ""
-      tokens       : []
       billingState : ""
+      tokens       : []
+      credentials  : []
+      stacks       : new OpsCollection()
+      apps         : new OpsCollection()
       history      : new Backbone.Collection()
       audits       : new Backbone.Collection()
+      myRole       : "observer"
 
     initialize : ( attr )->
-      # Credential
-      self = @
-      @attributes.credential = new Credential( attr.credential )
-      @listenTo @attributes.credential "change", ()-> self.trigger("change:credential")
-
-      # App / Stack
-      @attributes.stacks = new OpsCollection()
-      @attributes.apps   = new OpsCollection()
+      # Normal attr
+      @set {
+        id   : attr.id
+        name : attr.name
+      }
 
       # Token
       for t, idx in attr.tokens
         if not t.name
           @attributese.defaultToken = t.token
-          attr.tokens.splice idx, 1
-          break
-      @attributes.tokens = attr.tokens
+        else
+          @attributes.tokens.push t
+
+      # Credential
+      self  = @
+      onCredChange = ()-> self.trigger "change:credential", @
+
+      opts  = { project : @ }
+      for cred in attr.credential
+        credObj = new Credential( cred, opts )
+        credObj.on "change", onCredChange
+        @attributes.credentials.push credObj
+
+      # Check my role
+      @__checkMyRole( attr.members )
       return
+
 
     # Getters.
     stacks       : ()-> @get("stacks")
     apps         : ()-> @get("apps")
-    credential   : ()-> @get("credential")
+    credentials  : ()-> @get("credentials")
     history      : ()-> @get("history")
     audits       : ()-> @get("audits")
     tokens       : ()-> @get("tokens")
     defaultToken : ()-> @get("defaultToken")
+
+
+    # Convenient Methods
+    hasCredential : ()-> @get("credentials").length > 0
+
+    amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN
+    amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
+    amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
 
     # Token related. Unlike credential,
@@ -89,4 +117,14 @@ define [
           if t.token is token
             t.name = newName
             break
+
+
+    __checkMyRole : ( members )->
+      username = App.user.get("username")
+      for m in members
+        if m.id is username
+          @set "myRole", m.role
+          return
+  }, {
+    MEMBERROLE : MEMBERROLE
   }

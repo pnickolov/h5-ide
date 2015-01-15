@@ -7111,8 +7111,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10422,3 +10421,24 @@ h5.billing_usage_title {
   color: #aaa;
   margin-left: 2px;
   font-size: 12px; }
+
+.fullpage-settings nav {
+  width: 220px;
+  float: left;
+  padding: 50px 15px 15px 15px; }
+  .fullpage-settings nav > section header {
+    font-size: 18px;
+    color: white;
+    padding: 8px 0; }
+  .fullpage-settings nav > section a {
+    display: block;
+    cursor: pointer;
+    padding: 5px 0; }
+.fullpage-settings > section {
+  margin-left: 300px;
+  padding: 50px 0 0 0; }
+  .fullpage-settings > section header {
+    color: white;
+    padding-bottom: 5px;
+    font-size: 22px;
+    border-bottom: 1px solid #4d4e8c; }

@@ -1,0 +1,32 @@
+.fullpage-settings {
+    nav {
+        width: 220px;
+        float: left;
+        padding: 50px 15px 15px 15px;
+
+        & > section {
+            header {
+                font-size: 18px;
+                color: white;
+                padding: 8px 0;
+            }
+            a {
+                display: block;
+                cursor: pointer;
+                padding: 5px 0;
+            }
+        }
+
+    }
+    & > section {
+        margin-left: 300px;
+        padding: 50px 0 0 0;
+
+        header {
+            color: white;
+            padding-bottom: 5px;
+            font-size: 22px;
+            border-bottom: 1px solid #4d4e8c;
+        }
+    }
+}

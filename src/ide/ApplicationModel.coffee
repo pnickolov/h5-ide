@@ -4,7 +4,7 @@
   The Model for application
 ----------------------------
 
-  This model holds all the data of the user in our database. For example, stack list / app list / notification things and extra.
+  ApplicationModel holds the data / settings of VisualOps. It also provides some convenient methods.
 
 ###
 
@@ -15,95 +15,45 @@ define [
   "ApiRequestOs"
   "backbone"
   "constant"
-  "ThumbnailUtil"
   "i18n!/nls/lang.js"
-
-  "./submodels/OpsModelOs"
-  "./submodels/OpsModelAws"
-], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil, lang )->
+], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
 
   Backbone.Model.extend {
 
-    defaults : ()->
-      __websocketReady : false
-      notification     : [] # An array holding the notification data
-      stackList        : new OpsCollection()
-      appList          : new OpsCollection()
-
-    markNotificationRead : ()->
-      for i in @attributes.notification
-        i.readed = true
-      return
-
-    # Convenient method to get the stackList and appList
-    stackList : ()-> @attributes.stackList
-    appList   : ()-> @attributes.appList
-
-    getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
-
-    createImportOps : ( region, provider, msrId )->
-      m = @attributes.appList.findWhere({importMsrId:msrId})
-      if m then return m
-      m = new OpsModel({
-        name        : "ImportedApp"
-        importMsrId : msrId
-        region      : region
-        provider    : provider
-        state       : OpsModel.State.Running
-      })
-      @attributes.appList.add m
-      m
-
-    createSampleOps : ( sampleId )->
-      m = new OpsModel({
-        sampleId : sampleId
-      })
-      @attributes.stackList.add m
-      m
-
-    # This method creates a new stack in IDE, and returns that model.
-    # The stack is not automatically stored in server.
-    # You need to call save() after that.
-    createStack : ( region, provider = "aws::global" )->
-      # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
-      m = new OpsModel({
-        region    : region
-        provider  : provider
-      }, {
-        initJsonData : true
-      })
-      @attributes.stackList.add m
-      m
-
-    createStackByJson : ( json, updateLayout = false )->
-      if not @attributes.stackList.isNameAvailable( json.name )
-        json.name = @stackList().getNewName( json.name )
-
-      m = new OpsModel({
-        name       : json.name
-        region     : json.region
-        autoLayout : updateLayout
-        __________itsshitdontsave : updateLayout
-      }, {
-        jsonData : json
-      })
-      @attributes.stackList.add m
-      m
-
+    # AppData Related.
     getPriceData : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).price
     getOsFamilyConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).osFamilyConfig
     getInstanceTypeConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).instanceTypeConfig
     getRdsData: ( awsRegion ) -> (@__awsdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
 
-
     getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
     getOpenstackQuotas  : ( provider )-> @__osdata[ provider ].quota
+
+
+    # Project Related.
+    projects : ()-> @get("projects")
+    getOpsModelById : ( opsModelId )->
+      for p in @get("projects")
+        ops = p.stacks().get( opsModelId ) or p.apps().get( opsModelId )
+        if ops then return ops
+      return null
+
+
+
 
 
     ###
       Internal methods
     ###
+    defaults : ()->
+      notification : [] # An array holding the notification data
+
+    markNotificationRead : ()->
+      for i in @attributes.notification
+        i.readed = true
+      return
+
     initialize : ()->
       @__awsdata = {}
       @__osdata  = {}
@@ -114,22 +64,14 @@ define [
     # Fetches user's stacks and apps from the server, returns a promise
     fetch : ()->
       self = this
-      sp = ApiRequest("stack_list", {region_name:null}).then (res)-> self.get("stackList").set self.__parseListRes( res )
-      ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
+      # Load user's projects.
 
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-      osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
+      # osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
-      # When app/stack list is fetched, we first cleanup unused thumbnail. Then
-      # Tell others that we are ready.
-      Q.all([ sp, ap, awsData, osData ]).then ()->
-        try
-          ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
-        catch e
-
-        return
+      Q.all([ awsData ])
 
     __parseAwsData : ( res )->
       for i in res
@@ -173,7 +115,7 @@ define [
             flavors : new Backbone.Collection( _.values(data.flavor) )
 
         #quota is user-related, need optimized when backend support multiple provider indeed
-        osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
+        # osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
 
       return
 
@@ -207,24 +149,8 @@ define [
         self.__stateModuleData[ repo + ":" + tag ] = d
         d
 
-    __parseListRes : ( res )->
-      r = []
 
-      for ops in res
-        r.push {
-          id         : ops.id
-          updateTime : ops.time_update
-          region     : ops.region
-          usage      : ops.usage
-          name       : ops.name
-          version    : ops.version
-          provider   : ops.provider
-          state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
-          stoppable  : not (ops.property and ops.property.stoppable is false)
-        }
-      r
-
-    # In the previous version, Websocket emits changes of request things (AKA, the notification). Websocket actually holds a copy of the request things. And the request things is process by module/design/toolbar ( ridiculous, but whatever ). There's no place to actually store the notification ( Well, it's stored in module/header, But I think the notification is a data source of the Application ). So now, we store the notification here.
+    # Request Changes is observed by app model.
     __initializeNotification : ()->
       # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
       self = this

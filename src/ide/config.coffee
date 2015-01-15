@@ -363,27 +363,17 @@ if window.define
 require [
   'ide/AppBundle'
   "cloudres/CrBundle"
-  "workspaces/dashboard/Dashboard"
-  "OpsEditor"
   "ide/Router"
   "MC"
   'lib/aws'
 
-  # Extra Workspaces
-  "workspaces/awseditor/EditorAws"
-  "workspaces/oseditor/EditorOs"
-], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
+], ( Application, CrBundle, Router ) ->
 
   ###########
   # IDE Init
   ###########
-  window.OpsEditor = OpsEditor
-
-  window.Router    = new Router()
-  (new Application()).initialize().then ()->
-    window.Router.start()
-    window.Dashboard = new Dashboard()
-    return
+  window.Router = new Router()
+  (new Application()).initialize().then ()-> window.Router.start()
 
 , ( err )->
   err = err || { requireType : "timeout" }

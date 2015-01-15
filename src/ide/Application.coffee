@@ -41,7 +41,7 @@ define [
     fetchModel = @model.fetch().fail ( err )->
       notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
       throw err
-    Q.all [ @user.fetch(), fetchModel ]
+    Q.all [ @user.fetch(), fetchModel ].then ()-> App.view.hideGlobalLoading()
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()

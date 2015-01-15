@@ -58,7 +58,7 @@ define [ '../base/view',
             cidrSuffix = $("#property-cidr-block").val()
             subnetCIDR = cidrPrefix + cidrSuffix
 
-            removeInfo = 'Remove Subnet'
+            removeInfo = lang.PROP.REMOVE_SUBNET
 
             if !cidrSuffix
                 mainContent = lang.PROP.SUBNET_CIDR_VALIDATION_REQUIRED

@@ -543,6 +543,11 @@ pre {
       right: 0;
       top: 0;
       font-weight: 400; }
+  .modal-box.fullscreen .modal-body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto; }
   .modal-box.fullscreen .modal-footer {
     display: none; }
 

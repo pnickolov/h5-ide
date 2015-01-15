@@ -2,7 +2,7 @@
 #  View(UI logic) for dialog
 #############################
 
-define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.js', 'UI.modalplus', 'backbone', "UI.selectbox" ], ( tmpl, SettingsDialog, BillingDialog, lang, modalPlus ) ->
+define [ "./HeaderTpl", "../settings/SettingsView", './BillingDialog', 'i18n!/nls/lang.js', 'UI.modalplus', 'backbone', "UI.selectbox" ], ( tmpl, Settings, BillingDialog, lang, modalPlus ) ->
 
     HeaderView = Backbone.View.extend {
 
@@ -34,7 +34,7 @@ define [ "./HeaderTpl", "./SettingsDialog", './BillingDialog', 'i18n!/nls/lang.j
                 confirm: hide: true
             }).tpl.attr("id", "modal-key-short")
 
-        settings : ()-> new SettingsDialog()
+        settings : ()-> new Settings()
 
         update : ()->
             $quota = $("#header").children(".voquota")

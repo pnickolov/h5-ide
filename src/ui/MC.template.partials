@@ -829,21 +829,12 @@ Additional Notes and Questions
 </div>
 
 <!-- {{modalDeleteSGOrACL}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper">
-			 <div class="modal-center-align-helper">
-				<div class="modal-text-major">{{main_content}}</div>
-				<div class="modal-text-minor">{{desc_content}}</div>
-			</div>
-		 </div>
+<div class="modal-text-wraper">
+	 <div class="modal-center-align-helper">
+		<div class="modal-text-major">{{main_content}}</div>
+		<div class="modal-text-minor">{{desc_content}}</div>
 	</div>
-	<div class="modal-footer">
-		<button id="modal-confirm-delete" class="btn btn-red">{{i18n "PROP.LBL_DELETE"}}</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
-	</div>
-</div>
+ </div>
 
 <!-- {{loadingTransparent}} -->
 <div id="loading-modal-wrap">

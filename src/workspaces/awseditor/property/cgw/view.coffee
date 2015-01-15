@@ -94,6 +94,7 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
             modal = new modalPlus {
                 template: dialog_template,
                 title: lang.IDE.SET_UP_CIDR_BLOCK
+                disableClose: true
                 width: 420
                 confirm: text: "OK", color: "blue"
                 cancel: hide: true

@@ -151,6 +151,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
                 width: 420
                 template: dialog_template
                 confirm: text: "OK", color: "blue"
+                disableClose: true
                 cancel: hide: true
             }
 

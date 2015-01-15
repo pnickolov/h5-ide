@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/sglist
 #############################
 
-define [ './template/stack',  'i18n!/nls/lang.js' ], ( template, lang ) ->
+define [ './template/stack',  'i18n!/nls/lang.js', "UI.modalplus"], ( template, lang, modalPlus ) ->
 
 	SGListView = Backbone.View.extend {
 
@@ -68,11 +68,17 @@ define [ './template/stack',  'i18n!/nls/lang.js' ], ( template, lang ) ->
 					main_content : mainContent,
 					desc_content : descContent
 				}
-				modal tpl, false, () ->
-					$('#modal-confirm-delete').click () ->
-						that.model.deleteSG sgUID
-						that.render()
-						modal.close()
+
+				modal = new modalPlus {
+					title: lang.PROP.SGLIST_DELETE_SG_TITLE
+					width: 420
+					template: tpl
+					confirm: {text: lang.PROP.LBL_DELETE, color: "red"}
+				}
+				modal.on "confirm", ()->
+					that.model.deleteSG sgUID
+					that.render()
+					modal.close()
 			else
 				@model.deleteSG sgUID
 				@render()

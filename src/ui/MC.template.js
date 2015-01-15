@@ -1294,17 +1294,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+  buffer += "<div class=\"modal-text-wraper\">\n	 <div class=\"modal-center-align-helper\">\n		<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n				<div class=\"modal-text-minor\">"
+    + "</div>\n		<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DELETE", {hash:{},data:data}))
-    + "</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+    + "</div>\n	</div>\n </div>";
   return buffer;
   };
 TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);

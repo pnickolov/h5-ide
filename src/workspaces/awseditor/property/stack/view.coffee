@@ -109,12 +109,19 @@ define [ '../base/view',
                     main_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_CONTENT, aclName
                     desc_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_DESC, aclName
                 }
-                modal dialog_template, false, () ->
-                    $('#modal-confirm-delete').click () ->
-                        that.model.removeAcl( aclUID )
-                        that.model.getNetworkACL()
-                        that.refreshACLList()
-                        modal.close()
+
+                modal = new modalPlus {
+                      title: lang.PROP.STACK_DELETE_NETWORK_ACL_TITLE
+                      width: 420
+                      template: dialog_template
+                      confirm: {text: lang.PROP.LBL_DELETE, color: "red"}
+                }
+
+                modal.on "confirm", ()->
+                    that.model.removeAcl( aclUID )
+                    that.model.getNetworkACL()
+                    that.refreshACLList()
+                    modal.close()
             else
                 @model.removeAcl( aclUID )
                 @model.getNetworkACL()

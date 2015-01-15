@@ -15,10 +15,8 @@ define [
   "./ApplicationModel"
   "./User"
   "./SceneManager"
-  "constant"
   "i18n!/nls/lang.js"
-  "underscore"
-], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SceneManager, constant, lang )->
+], ( ApiRequest, Websocket, ApplicationView, ApplicationModel, User, SceneManager, lang )->
 
   VisualOps = ()->
     if window.App
@@ -38,7 +36,7 @@ define [
 
     # view / model depends on User and Websocket
     @model  = new ApplicationModel()
-    @__view = new ApplicationView()
+    @view = new ApplicationView()
 
     # This function returns a promise
     fetchModel = @model.fetch().fail ( err )->
@@ -53,23 +51,18 @@ define [
 
     @WS.on "StatusChanged", ( isConnected )->
       console.info "Websocket Status changed, isConnected:", isConnected
-      if App.__view then App.__view.toggleWSStatus( isConnected )
+      if App.view then App.view.toggleWSStatus( isConnected )
 
     return
 
   VisualOps.prototype.__createUser = ()->
     @user = new User()
-
-    @user.on "SessionUpdated", ()=>
-      # In the previous version of IDE, we update the applist and dashboard when the
-      # session is updated. But I don't think it's necessary.
-
-      # The Websockets subscription will be lost if we have an invalid session.
-      @WS.subscribe()
+    # The Websockets subscription will be lost if we have an invalid session.
+    @user.on "SessionUpdated", ()=> @WS.reconnect()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session
-  VisualOps.prototype.acquireSession = ()-> @__view.showSessionDialog()
+  VisualOps.prototype.acquireSession = ()-> @view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
     App.user.logout()

@@ -1,10 +1,11 @@
 
 define [
   "./Application"
-  "OpsModel"
-  "Workspace"
   "./Router"
+  "./Project"
 
+  "OpsModel"
   "./submodels/OpsModelAws"
   "./submodels/OpsModelOs"
+
 ], ( Application )-> Application

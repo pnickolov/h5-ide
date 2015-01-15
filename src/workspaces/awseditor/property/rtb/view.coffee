@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/rtb
 #############################
 
-define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyView, template, lang ) ->
+define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus" ], ( PropertyView, template, lang, modalPlus ) ->
 
     RTBView = PropertyView.extend {
 
@@ -145,21 +145,24 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
             }
 
             that = this
-            modal dialog_template, false, () ->
 
-                $('.modal-close').click () -> inputElem.focus()
-
-                $('#cidr-remove').click () ->
-                    Design.instance().component( dataRef ).remove()
-                    that.disabledAllOperabilityArea(false)
-                    modal.close()
-
-            , {
-                $source: $(event.target)
+            modal = new modalPlus {
+                title: lang.IDE.SET_UP_CIDR_BLOCK
+                width: 420
+                template: dialog_template
+                confirm: text: "OK", color: "blue"
+                cancel: hide: true
             }
 
-            null
+            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+            .appendTo(modal.find(".modal-footer"))
 
+            modal.on "confirm", ()-> modal.close()
+            modal.on "close", () -> inputElem.focus()
+            modal.find("#cidr-removed").on "click", () ->
+                Design.instance().component( dataRef ).remove()
+                that.disabledAllOperabilityArea(false)
+                modal.close()
     }
 
     new RTBView()

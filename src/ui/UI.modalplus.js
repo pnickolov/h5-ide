@@ -12,6 +12,9 @@
         self = this;
         _.extend(this, Backbone.Events);
         isFirst = false;
+        if (this.option.mode === 'fullscreen') {
+          this.option.disableFooter = this.option.disableHeader = true;
+        }
         if ($('#modal-wrap').size() > 0) {
           isFirst = false;
           this.wrap = $("#modal-wrap");
@@ -38,6 +41,7 @@
             text: lang.IDE.POP_LBL_CANCEL
           },
           hasFooter: !this.option.disableFooter,
+          hasHeader: !this.option.disableHeader,
           hasScroll: !!this.option.maxHeight || this.option.hasScroll,
           compact: this.option.compact,
           mode: this.option.mode || "normal"

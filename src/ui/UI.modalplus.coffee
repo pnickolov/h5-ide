@@ -58,6 +58,10 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             self = @
             _.extend @, Backbone.Events
             isFirst = false
+
+            if @option.mode is 'fullscreen'
+                @option.disableFooter = @option.disableHeader = true
+
             if $('#modal-wrap').size() > 0
                 isFirst = false
                 @wrap = $("#modal-wrap")
@@ -76,6 +80,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     hide    : @option.confirm?.hide
                 cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.IDE.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: lang.IDE.POP_LBL_CANCEL}
                 hasFooter   : !@option.disableFooter
+                hasHeader   : !@option.disableHeader
                 hasScroll   : !!@option.maxHeight || @option.hasScroll
                 compact     : @option.compact
                 mode        : @option.mode || "normal"

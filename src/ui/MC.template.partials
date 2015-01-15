@@ -1277,10 +1277,12 @@ Additional Notes and Questions
 <!-- {{modalTemplate}} -->
 <div class="modal-box {{ mode }}">
     <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}}>
+        {{#if hasHeader}}
         <div class="modal-header">
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
         </div>
+        {{/if}}
         <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}"{{#if compact}} style="padding: 0;"{{/if}} >
             {{#if hasScroll}}
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>

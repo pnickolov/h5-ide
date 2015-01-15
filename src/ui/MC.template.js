@@ -2134,7 +2134,9 @@ function program17(depth0,data) {
 function program19(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<button class=\"btn modal-close btn-silver\">"
+  buffer += "<button class=\"btn modal-close btn-"
+    + escapeExpression(helpers.or.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.color), "silver", {hash:{},data:data}))
+    + "\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;

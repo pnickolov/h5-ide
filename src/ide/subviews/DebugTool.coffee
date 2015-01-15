@@ -15,21 +15,22 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
 """
 
   ApiDialog = """
-<div class="modal-header"> <h3>Api Debugger</h3> <i class="modal-close">×</i> </div>
-<div id="diffWrap"><div id="ApiDebugger">
-<button class="btn btn-blue" id="ApiDebugSend">Send Request</button>
-<section><label>Api : </label><select id="ApiSelect" data-placeholder="Select an api"></select></section>
-<section><label>Parameters :</label><section id="ApiParamsWrap" class="clearfix"></section></section>
-<section><label>Result :</label><pre id="ApiResult"></pre></section>
-</div></div>
+  <div id="diffWrap">
+    <div id="ApiDebugger">
+      <button class="btn btn-blue" id="ApiDebugSend">Send Request</button>
+      <section><label>Api : </label><select id="ApiSelect" data-placeholder="Select an api"></select></section>
+      <section><label>Parameters :</label><section id="ApiParamsWrap" class="clearfix"></section></section>
+      <section><label>Result :</label><pre id="ApiResult"></pre></section>
+    </div>
+  </div>
   """
-
+#<div class="modal-header"> <h3>Share Session</h3> <i class="modal-close">×</i> </div>
   SessionDialog = """
-<div class="modal-header"> <h3>Share Session</h3> <i class="modal-close">×</i> </div>
-<div class="modal-body" style="width:500px">
-  <h5>Paste & run this code to share session.</h5>
-  <textarea id="DebugShareSession" spellcheck="false"></textarea>
-</div>"""
+  <div class="modal-body" style="width:500px">
+    <h5>Paste & run this code to share session.</h5>
+    <textarea id="DebugShareSession" spellcheck="false"></textarea>
+  </div>
+  """
 
   DebugTool = ()->
     $("head").append('<link rel="stylesheet" href="/assets/css/debugger.css"></link>')
@@ -67,7 +68,13 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
     return
 
   debugApi = ()->
-    modal ApiDialog
+    modal = new Modal {
+      title: "Api Debugger"
+      width: "99%"
+      maxHeight: "99%"
+      template: ApiDialog
+      disableFooter: true
+    }
 
     option = "<option></option>"
     group  = {}
@@ -165,7 +172,13 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
   debugSession = ()->
     session = "(function(){var o = {expires:30,path:'/'}, a = #{JSON.stringify($.cookie())},k;for (k in a) { $.cookie(k,a[k],o); } window.location.href = window.location.protocol + '//' + window.location.host + '#{window.location.pathname}'; })();"
 
-    modal SessionDialog
+    new Modal {
+      title: "Api Debugger"
+      width: 400
+      template: SessionDialog
+      disableFooter: true
+    }
+
     $("#DebugShareSession").html(session).select()
     return
 

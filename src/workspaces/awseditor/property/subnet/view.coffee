@@ -8,7 +8,8 @@ define [ '../base/view',
          'event',
          "Design"
          'i18n!/nls/lang.js'
-], ( PropertyView, template, acl_template, ide_event, Design, lang ) ->
+         "UI.modalplus"
+], ( PropertyView, template, acl_template, ide_event, Design, lang, modalPlus ) ->
 
     SubnetView = PropertyView.extend {
 
@@ -127,14 +128,19 @@ define [ '../base/view',
 
                 dialog_template = MC.template.modalDeleteSGOrACL {
                     title : lang.IDE.TITLE_DELETE_NETWORK_ACL
-                    main_content : "Are you sure you want to delete #{aclName}?"
-                    desc_content : "Subnets associated with #{aclName} will use DefaultACL."
+                    main_content : sprintf(lang.PROP.STACK_DELETE_NETWORK_ACL_CONTENT, aclName)
+                    desc_content : sprintf lang.PROP.STACK_DELETE_NETWORK_ACL_DESC, aclName
                 }
-                modal dialog_template, false, () ->
-                    $('#modal-confirm-delete').click () ->
-                        that.model.removeAcl( aclUID )
-                        that.refreshACLList()
-                        modal.close()
+                modal = new modalPlus {
+                      title: lang.PROP.TITLE_DELETE_NETWORK_ACL
+                      width: 420
+                      template: dialog_template
+                      confirm: {text: lang.PROP.LBL_DELETE, color: "red"}
+                }
+                modal.on "confirm", ()->
+                    that.model.removeAcl( aclUID )
+                    that.refreshACLList()
+                    modal.close()
             else
                 @model.removeAcl( aclUID )
                 @refreshACLList()

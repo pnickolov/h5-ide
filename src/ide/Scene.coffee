@@ -1,5 +1,7 @@
 
 # A Scene is used to represent the whole window at a time.
+# It's best to add the view's dom to "div#scenes"
+
 define ["backbone"], ()->
 
   sid = 0

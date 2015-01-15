@@ -1,5 +1,5 @@
 
-define [ "Backbone" ], ()->
+define [ "backbone" ], ()->
 
   class SceneManager
 
@@ -66,4 +66,4 @@ define [ "Backbone" ], ()->
 
     hasUnsaveScenes : ()-> @__scenes.some ( s )-> s.isRemovable()
 
-  WorkspaceManager
+  SceneManager

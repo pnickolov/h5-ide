@@ -507,6 +507,7 @@ pre {
   .modal-box.fullscreen .modal-wrapper-fix {
     width: 100% !important; }
   .modal-box.fullscreen .modal-header {
+    z-index: 1;
     padding: 0; }
     .modal-box.fullscreen .modal-header h3 {
       display: none; }

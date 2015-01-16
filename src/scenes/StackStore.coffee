@@ -2,14 +2,14 @@
 
 define ["Scene", "./TestView"], ( Scene, TestView )->
 
-  class Settings extends Scene
+  class StackStore extends Scene
 
     ###
       Methods that should be override
     ###
     # Override this method to perform custom initialization
     initialize : ( attributes )->
-      @view = new TestView( { title : "Settings" } )
+      @view = new TestView( { title : "StackStore" } )
       @activate()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
@@ -26,4 +26,4 @@ define ["Scene", "./TestView"], ( Scene, TestView )->
     cleanup : ()-> Scene.prototype.cleanup.call this
 
     # Override this method so that we can locate a particular scene. The info can be anything.
-    isWorkingOn : ( info )-> info is "AppSettings"
+    isWorkingOn : ( info )-> false

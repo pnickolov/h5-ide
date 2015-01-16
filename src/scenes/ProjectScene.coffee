@@ -1,6 +1,6 @@
 
 
-define ["Scene"], ( Scene )->
+define ["Scene", "./TestView"], ( Scene, TestView )->
 
   class ProjectScene extends Scene
 
@@ -9,6 +9,8 @@ define ["Scene"], ( Scene )->
     ###
     # Override this method to perform custom initialization
     initialize : ( attributes )->
+      @view = new TestView( { title : "ProjectScene" } )
+      @activate()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

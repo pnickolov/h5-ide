@@ -135,6 +135,7 @@ require.config {
     #############################################
     "OpsModel"  : "ide/submodels/OpsModel"
     "Workspace" : "ide/Workspace"
+    "Scene"     : "ide/Scene"
 
     #############################################
     # coreeditor                # Merge in deploy

@@ -39,9 +39,12 @@ define [
         if ops then return ops
       return null
 
-
-
-
+    # Create a new project. It returns a promise.
+    # The promise will be fulfilled when the project is created successfully with the new project
+    # as the fulfillment.
+    createProject : ( projectName )->
+      d = Q.defer()
+      d.promise
 
     ###
       Internal methods

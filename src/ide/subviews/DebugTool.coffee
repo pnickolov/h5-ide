@@ -24,12 +24,9 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
     </div>
   </div>
   """
-#<div class="modal-header"> <h3>Share Session</h3> <i class="modal-close">×</i> </div>
   SessionDialog = """
-  <div class="modal-body" style="width:500px">
-    <h5>Paste & run this code to share session.</h5>
-    <textarea id="DebugShareSession" spellcheck="false"></textarea>
-  </div>
+  <h5>Paste & run this code to share session.</h5>
+  <textarea id="DebugShareSession" spellcheck="false"></textarea>
   """
 
   DebugTool = ()->
@@ -174,7 +171,7 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
 
     new Modal {
       title: "Api Debugger"
-      width: 400
+      width: 500
       template: SessionDialog
       disableFooter: true
     }

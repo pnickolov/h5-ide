@@ -8,7 +8,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
     init : ( uid ) ->
 
-        asg_comp = component = Design.instance().component( uid )
+        asg_comp = Design.instance().component( uid )
 
         data =
           uid        : uid

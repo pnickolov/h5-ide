@@ -63,8 +63,6 @@ define [
 		if not needValidate.length
 			callback null
 		else
-			username = $.cookie "usercode"
-			session  = $.cookie "session_id"
 			region = Design.instance().region()
 
 			kpCollection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))

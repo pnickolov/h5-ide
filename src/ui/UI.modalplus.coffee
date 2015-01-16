@@ -95,10 +95,10 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 self.wrap.addClass("show")
             ,0
             modalGroup.push(@)
+            window.setTimeout =>
+                @tpl.addClass('bounce')
+            ,0
             if modalGroup.length == 1 or @abnormal()
-                window.setTimeout =>
-                    @tpl.addClass('bounce')
-                ,0
                 @trigger "show", @
                 window.setTimeout =>
                     @trigger 'shown', @

@@ -65,12 +65,12 @@
           };
         })(this), 0);
         modalGroup.push(this);
+        window.setTimeout((function(_this) {
+          return function() {
+            return _this.tpl.addClass('bounce');
+          };
+        })(this), 0);
         if (modalGroup.length === 1 || this.abnormal()) {
-          window.setTimeout((function(_this) {
-            return function() {
-              return _this.tpl.addClass('bounce');
-            };
-          })(this), 0);
           this.trigger("show", this);
           window.setTimeout((function(_this) {
             return function() {

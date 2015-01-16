@@ -1,7 +1,7 @@
 
 define [
-  "./submodels/OpsCollection"
-  "./Credential"
+  "ide/submodels/OpsCollection"
+  "Credential"
   "backbone"
 ], ( OpsCollection, Credential )->
 

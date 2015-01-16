@@ -100,7 +100,9 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     @tpl.addClass('bounce')
                 ,0
                 @trigger "show", @
-                @trigger 'shown', @
+                window.setTimeout =>
+                    @trigger 'shown', @
+                ,300
             @show()
             @bindEvent()
             @

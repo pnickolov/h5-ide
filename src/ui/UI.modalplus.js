@@ -72,7 +72,11 @@
             };
           })(this), 0);
           this.trigger("show", this);
-          this.trigger('shown', this);
+          window.setTimeout((function(_this) {
+            return function() {
+              return _this.trigger('shown', _this);
+            };
+          })(this), 300);
         }
         this.show();
         this.bindEvent();

@@ -67,12 +67,17 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
   debugApi = ()->
     modal = new Modal {
       title: "Api Debugger"
-      width: "99%"
-      maxHeight: "99%"
+      width: "100%"
       template: ApiDialog
       disableFooter: true
+      compact: true
     }
-
+    modal.tpl.css {
+      width: "98%"
+      height: "98%"
+      top: "1%"
+      left: "1%"
+    }
     option = "<option></option>"
     group  = {}
     for defName, def of ApiRequestDefs.Defs
@@ -90,18 +95,19 @@ define [ "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "UI.modalplus", "UI.sel
         option += "<option value='#{gg}'>#{gg}</option>"
       option += "</optgrouop>"
 
-    $("#ApiSelect").html(option).select2({width:400}).on "change", ()->
-      val = $("#ApiSelect").select2("val")
-      apiDef = ApiRequestDefs.Defs[ val ]
-      $("#ApiResult").empty()
-      $("#ApiSelect").siblings("label").text "Api : '#{val}'"
-      if not apiDef then return $("#ApiParamsWrap").empty()
-      phtml = ""
-      for p in apiDef.params
-        v = ApiRequestDefs.AutoFill(p)
-        if v is null then v = ""
-        phtml += "<input placeholder='#{p}' class='diffInput tooltip' value='#{v}' data-tooltip='#{p}'/>"
-      $("#ApiParamsWrap").html phtml
+    modal.on "shown", ->
+      $("#ApiSelect").html(option).select2({width:400}).on "change", ()->
+        val = $("#ApiSelect").select2("val")
+        apiDef = ApiRequestDefs.Defs[ val ]
+        $("#ApiResult").empty()
+        $("#ApiSelect").siblings("label").text "Api : '#{val}'"
+        if not apiDef then return $("#ApiParamsWrap").empty()
+        phtml = ""
+        for p in apiDef.params
+          v = ApiRequestDefs.AutoFill(p)
+          if v is null then v = ""
+          phtml += "<input placeholder='#{p}' class='diffInput tooltip' value='#{v}' data-tooltip='#{p}'/>"
+        $("#ApiParamsWrap").html phtml
 
     $("#ApiDebugSend").click ()->
       api = $("#ApiSelect").select2("val")

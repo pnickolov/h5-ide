@@ -133,8 +133,9 @@ require.config {
     #############################################
     # ide                       # Merge in deploy
     #############################################
-    "OpsModel"  : "ide/submodels/OpsModel"
+    "Project"   : "ide/Project"
     "Scene"     : "ide/Scene"
+    "OpsModel"  : "ide/submodels/OpsModel"
 
     #############################################
     # coreeditor                # Merge in deploy

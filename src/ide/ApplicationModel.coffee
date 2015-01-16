@@ -10,12 +10,13 @@
 
 define [
   "OpsModel"
+  "Project"
   "ApiRequest"
   "ApiRequestOs"
   "backbone"
   "constant"
   "i18n!/nls/lang.js"
-], ( OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
+], ( OpsModel, Project, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
 
   Backbone.Model.extend {
 
@@ -47,6 +48,7 @@ define [
     ###
     defaults : ()->
       notification : [] # An array holding the notification data
+      projects : []
 
     markNotificationRead : ()->
       for i in @attributes.notification
@@ -64,6 +66,7 @@ define [
     fetch : ()->
       self = this
       # Load user's projects.
+      projects.push( new Project() ) # Create a dummy project. Will be removed after the api is ready.
 
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )

@@ -8,17 +8,11 @@
 define [
   "backbone"
   "./subviews/SessionDialog"
-  "./subviews/HeaderView"
-  "./subviews/WelcomeDialog"
-  "./subviews/SettingsDialog"
-  "./subviews/Navigation"
   "./subviews/AppTpl"
   "./subviews/FullnameSetup"
   'i18n!/nls/lang.js'
-  'CloudResources'
   'constant'
-  'UI.modalplus'
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, FullnameSetup, lang, CloudResources, constant, modalPlus )->
+], ( Backbone, SessionDialog, AppTpl, FullnameSetup, lang, constant )->
 
   Backbone.View.extend {
 
@@ -28,14 +22,6 @@ define [
       "click .click-select" : "selectText"
 
     initialize : ()->
-      @header = new HeaderView()
-
-      new Navigation()
-
-      @listenTo App.user, "change:state", @toggleWelcome
-
-      @listenTo App.model.appList(), "change:terminateFail", @askForForceTerminate
-
       ### env:dev ###
       require ["./ide/subviews/DebugTool"], (DT)-> new DT()
       ### env:dev:end ###
@@ -45,9 +31,13 @@ define [
 
       $(window).on "beforeunload", @checkUnload
       $(window).on 'keydown', @globalKeyEvent
+
+      if not App.user.fullnameNotSet() then new FullnameSetup()
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE
+
+    hideGlobalLoading : ()-> $("#GlobalLoading").remove()
 
     globalKeyEvent: (event) ->
       nodeName = event.target.nodeName.toLowerCase()
@@ -97,17 +87,7 @@ define [
             return
           return
 
-    toggleWelcome : ()->
-      if App.user.isFirstVisit()
-        new WelcomeDialog()
-      else if App.user.fullnameNotSet()
-        new FullnameSetup()
-      return
-
-    askForAwsCredential : ()-> new WelcomeDialog({ askForCredential : true })
-
-    showSessionDialog : ()->
-      (new SessionDialog()).promise()
+    showSessionDialog : ()-> (new SessionDialog()).promise()
 
     # This is use to select text when clicking on the text.
     selectText : ( event )->

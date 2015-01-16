@@ -135,6 +135,7 @@ require.config {
     #############################################
     "OpsModel"  : "ide/submodels/OpsModel"
     "Workspace" : "ide/Workspace"
+    "Scene"     : "ide/Scene"
 
     #############################################
     # coreeditor                # Merge in deploy
@@ -296,7 +297,7 @@ require.config {
 
     "component/AppAction" : [ "AppAction" ]
 
-    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
+    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel" ]
 
     "workspaces/dashboard/Dashboard"     : []
     "workspaces/osdashboard/DashboardOs" : []
@@ -361,29 +362,13 @@ if window.define
 
 
 require [
-  'ide/Application'
+  'ide/AppBundle'
   "cloudres/CrBundle"
-  "workspaces/dashboard/Dashboard"
-  "OpsEditor"
-  "ide/Router"
   "MC"
   'lib/aws'
+], ( Application, CrBundle ) ->
 
-  # Extra Workspaces
-  "workspaces/awseditor/EditorAws"
-  "workspaces/oseditor/EditorOs"
-], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
-
-  ###########
-  # IDE Init
-  ###########
-  window.OpsEditor = OpsEditor
-
-  window.Router    = new Router()
-  (new Application()).initialize().then ()->
-    window.Router.start()
-    window.Dashboard = new Dashboard()
-    return
+  (new Application()).initialize()
 
 , ( err )->
   err = err || { requireType : "timeout" }

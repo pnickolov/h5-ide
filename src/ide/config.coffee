@@ -134,7 +134,6 @@ require.config {
     # ide                       # Merge in deploy
     #############################################
     "OpsModel"  : "ide/submodels/OpsModel"
-    "Workspace" : "ide/Workspace"
     "Scene"     : "ide/Scene"
 
     #############################################

@@ -1,4 +1,11 @@
-define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSettings', 'backbone' ], ( lang, Modal, ProjectView, TplSettings ) ->
+define [
+    'i18n!/nls/lang.js'
+    'UI.modalplus'
+    './ProjectView'
+    './template/TplSettings'
+
+    'backbone'
+], ( lang, Modal, ProjectView, TplSettings ) ->
     SettingsView = Backbone.View.extend {
         events:
             'click .project-list a': 'loadProject'
@@ -29,7 +36,10 @@ define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSe
             @
 
         renderSettings: () ->
-            @$el.html TplSettings
+            data = _.extend {}, App.user.toJSON()
+            data.gravatar = App.user.gravatar()
+
+            @$el.html TplSettings data
             @
 
         loadProject: ( e ) ->
@@ -42,6 +52,9 @@ define [ 'i18n!/nls/lang.js', 'UI.modalplus', './ProjectView', './template/TplSe
         remove: ->
             @model and @model.close()
             Backbone.View.prototype.remove.apply arguments
+
+
+
 
 
     }

@@ -10424,12 +10424,14 @@ h5.billing_usage_title {
 
 .fullpage-settings a {
   cursor: pointer; }
-.fullpage-settings a.active {
-  color: blue; }
+.fullpage-settings a.active, .fullpage-settings a:hover {
+  color: #5da4e5; }
 .fullpage-settings nav {
   width: 220px;
   float: left;
   padding: 50px 15px 15px 15px; }
+  .fullpage-settings nav .back-settings {
+    font-size: 18px; }
   .fullpage-settings nav > section header {
     font-size: 18px;
     color: white;
@@ -10445,3 +10447,22 @@ h5.billing_usage_title {
     padding-bottom: 5px;
     font-size: 22px;
     border-bottom: 1px solid #4d4e8c; }
+  .fullpage-settings section.setting-content dl dt {
+    float: left;
+    line-height: 30px; }
+  .fullpage-settings section.setting-content dl dd {
+    padding-left: 77px;
+    line-height: 30px; }
+  .fullpage-settings section.setting-content .avatar img {
+    width: 80px;
+    height: 80px; }
+  .fullpage-settings section.setting-content .change-photo {
+    height: 91px; }
+    .fullpage-settings section.setting-content .change-photo #change-photo {
+      margin: 49px 0 0 0; }
+  .fullpage-settings section.setting-content #AccountEmail, .fullpage-settings section.setting-content #AccountFullName {
+    color: #148BE6; }
+  .fullpage-settings section.setting-content #AccountPwd {
+    color: #148BE6;
+    padding: 3px 0;
+    margin-left: 0; }

@@ -12,4 +12,71 @@
 </nav>
 <section class="setting-content">
     <header>Account</header>
+    <dl>
+        <dt class="avatar"><img src="{{gravatar}}"></dt>
+        <dd class="change-photo">
+            <button id="change-photo" class="btn btn-blue">Change Photo</button>
+        </dd>
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}</dt>
+        <dd>
+            <div>{{firstName}} {{lastName}} <button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}' id="AccountFullName"></button></div>
+            <div id="AccountFullNameWrap" class="accountEditWrap">
+                <dl class="dl-horizontal">
+                    <dt>{{ i18n "FIRST_NAME" }}</dt>
+                    <dd><input type="text" class="input" id="AccountFirstName"/></dd>
+                    <dt>{{ i18n "LAST_NAME" }}</dt>
+                    <dd><input type="text" class="input" id="AccountLastName"/></dd>
+                </dl>
+                <div id="AccountFullNameInfo" class="empty-hide"></div>
+                <div class="accountPwdBtns">
+                    <button class="btn btn-blue" id="AccountUpdateFullName" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+                    <span id="AccountCancelFullName" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+                </div>
+            </div>
+        </dd>
+
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt>
+        <dd>
+            <div>{{email}} <button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_NEW_EMAIL" }}' id="AccountEmail"></button></div>
+            <div id="AccountEmailWrap" class="accountEditWrap">
+                <dl class="dl-horizontal">
+                    <dt>{{ i18n "HEAD_LABEL_NEW_EMAIL" }}</dt>
+                    <dd><input type="string" class="input" id="AccountNewEmail" /></dd>
+
+                    <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+                    <dd><input type="password" class="input" id="AccountEmailPwd" /></dd>
+                </dl>
+
+                <div id="AccountEmailInfo" class="empty-hide"></div>
+
+                <div class="accountPwdBtns">
+                    <button class="btn btn-blue" id="AccountUpdateEmail" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+                    <span id="AccountCancelEmail" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+                </div>
+            </div>
+        </dd>
+        <dt>
+            <button id="AccountPwd" class="link-style">{{ i18n "HEAD_LABEL_CHANGE_PASSWORD" }}</button>
+        </dt>
+        <dd>
+            <div id="AccountPwdWrap" class="accountEditWrap">
+
+                <dl class="dl-horizontal">
+                    <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+                    <dd><input type="password" class="input" id="AccountCurrentPwd" /></dd>
+
+                    <dt>{{ i18n "HAED_LABEL_NEW_PASSWORD" }}</dt>
+                    <dd><input type="password" class="input" id="AccountNewPwd" /></dd>
+                </dl>
+
+                <div id="AccountInfo" class="empty-hide"></div>
+
+                <div class="accountPwdBtns">
+                    <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+                    <span id="AccountCancelPwd" class="link-style">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+                </div>
+            </div>
+        </dd>
+    </dl>
 </section>

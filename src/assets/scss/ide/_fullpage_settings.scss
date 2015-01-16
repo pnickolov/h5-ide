@@ -1,11 +1,13 @@
 .fullpage-settings {
     a { cursor: pointer; }
-    a.active { color: blue; }
+    a.active, a:hover { color: #5da4e5; }
 
     nav {
         width: 220px;
         float: left;
         padding: 50px 15px 15px 15px;
+
+        .back-settings { font-size: 18px; }
 
         & > section {
             header {
@@ -30,5 +32,27 @@
             font-size: 22px;
             border-bottom: 1px solid #4d4e8c;
         }
+
+        dl {
+            dt { float: left; line-height: 30px; }
+            dd { padding-left: 77px; line-height: 30px; }
+        }
+
+        .avatar img { width: 80px; height: 80px; }
+        .change-photo {
+            height: 91px;
+            #change-photo { margin: 49px 0 0 0; }
+        }
+
+        #AccountEmail, #AccountFullName {
+            color : #148BE6;
+        }
+
+        #AccountPwd {
+            color       : #148BE6;
+            padding     : 3px 0;
+            margin-left : 0;
+        }
+
     }
 }

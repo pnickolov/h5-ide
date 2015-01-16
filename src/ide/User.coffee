@@ -7,7 +7,7 @@
 ----------------------------
 ###
 
-define [ "ApiRequest", "backbone" ], ( ApiRequest )->
+define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
 
   UserState =
     NotFirstTime : 2
@@ -158,4 +158,84 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         defer.reject(err)
 
       defer.promise
+<<<<<<< HEAD
+=======
+
+
+    validateCredential : ( accessKey, secretKey )->
+      ApiRequest("account_validate_credential", {
+        access_key : accessKey
+        secret_key : secretKey
+      })
+
+    changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
+      self = this
+      ApiRequest("account_set_credential", {
+        access_key   : accessKey
+        secret_key   : secretKey
+        account_id   : account
+        force_update : force
+      }).then ()->
+        attr =
+          account      : account
+          awsAccessKey : accessKey
+          awsSecretKey : secretKey
+
+        if attr.awsAccessKey.length > 6
+          attr.awsAccessKey = (new Array(accessKey.length-6)).join("*")+accessKey.substr(-6)
+        if attr.awsSecretKey.length > 6
+          attr.awsSecretKey = (new Array(secretKey.length-6)).join("*")+secretKey.substr(-6)
+
+        self.set attr
+
+        self.trigger "change:credential"
+        return
+
+    createToken : ()->
+      tmpl = "MyToken"
+      base = 1
+      nameMap = {}
+      for t in @attributes.tokens
+        nameMap[ t.name ] = true
+
+      while true
+        newName = tmpl + base
+        if nameMap[ newName ]
+          base += 1
+        else
+          break
+
+      self = this
+      ApiRequest("token_create", {token_name:newName}).then (res)->
+        self.attributes.tokens.splice 0, 0, {
+          name  : res[0]
+          token : res[1]
+        }
+        return
+
+    removeToken : (token)->
+      for t, idx in @attributes.tokens
+        if t.token is token
+          break
+
+      self = this
+      ApiRequest("token_remove", {token:token,token_name:t.name}).then ( res )->
+        idx = self.attributes.tokens.indexOf t
+        if idx >= 0
+          self.attributes.tokens.splice idx, 1
+        return
+
+    updateToken : ( token, newName )->
+      self = this
+      ApiRequest("token_update", {token:token, new_token_name:newName}).then ( res )->
+        for t, idx in self.attributes.tokens
+          if t.token is token
+            t.name = newName
+            break
+        return
+
+    gravatar: ->
+      email = CryptoJS.MD5(@get("email").trim().toLowerCase()).toString()
+      "https://www.gravatar.com/avatar/#{email}"
+>>>>>>> [feature/team-account] Display of Account Setting
   }

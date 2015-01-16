@@ -34,7 +34,7 @@ define ["backbone"], ()->
       Methods that should be override
     ###
     # Override this method to perform custom initialization
-    initialize : ( attributes )->
+    initialize : ( attributes )-> @activate()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.
     isRemovable : ()-> true

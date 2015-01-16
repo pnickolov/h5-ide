@@ -39,7 +39,7 @@ define [
       }
 
       # Token
-      for t, idx in attr.tokens
+      for t, idx in attr.tokens || []
         if not t.name
           @attributese.defaultToken = t.token
         else
@@ -50,7 +50,7 @@ define [
       onCredChange = ()-> self.trigger "change:credential", @
 
       opts  = { project : @ }
-      for cred in attr.credential
+      for cred in attr.credential || []
         credObj = new Credential( cred, opts )
         credObj.on "change", onCredChange
         @attributes.credentials.push credObj
@@ -180,7 +180,7 @@ define [
 
     __checkMyRole : ( members )->
       username = App.user.get("username")
-      for m in members
+      for m in members || []
         if m.id is username
           @set "myRole", m.role
           return

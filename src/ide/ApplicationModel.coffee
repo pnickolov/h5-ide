@@ -66,7 +66,7 @@ define [
     fetch : ()->
       self = this
       # Load user's projects.
-      projects.push( new Project() ) # Create a dummy project. Will be removed after the api is ready.
+      @attributes.projects.push( new Project({}) ) # Create a dummy project. Will be removed after the api is ready.
 
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )

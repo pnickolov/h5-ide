@@ -680,22 +680,6 @@ module.exports =
       en: "Retry"
       zh: "重试"
 
-    DASH_POP_CREATE_STACK_CLASSIC:
-      en: "Classic"
-      zh: "传统模式"
-
-    DASH_POP_CREATE_STACK_CLASSIC_INTRO:
-      en: "Resources will be created into the Classic platform"
-      zh: "资源将被创建在传统的平台中"
-
-    DASH_POP_CREATE_STACK_VPC:
-      en: "VPC"
-      zh: "VPC模式"
-
-    DASH_POP_CREATE_STACK_VPC_INTRO:
-      en: "Resources will be created into a newly created VPC"
-      zh: "资源将被创建在新创建的VPC中"
-
     DASH_POP_CREATE_STACK_DEFAULT_VPC:
       en: "Default VPC"
       zh: "默认VPC"

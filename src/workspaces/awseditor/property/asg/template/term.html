@@ -1,38 +1,27 @@
-<div style="width:420px">
-   <div class="modal-header">
-      <h3>{{ i18n "PROP.ASG_TERMINATION_EDIT" }}</h3>
-      <i class="modal-close">&times;</i>
-   </div>
-   <div class="modal-body" id="property-asg-term">
-
-      <p class="modal-text-minor">{{ i18n "PROP.ASG_TERMINATION_TEXT_WARN" }}</p>
-      <div class="drag-sort-list-wrap">
+<div id="property-asg-term">
+    <p class="modal-text-minor">{{ i18n "PROP.ASG_TERMINATION_TEXT_WARN" }}</p>
+    <div class="drag-sort-list-wrap">
         <ul class="drag-sort-list" id="property-term-list">
-          {{#each this}}
-          <li {{#if checked}}class="enabled"{{/if}}>
+            {{#each this}}
+            <li {{#if checked}}class="enabled" {{/if}}  data-name="{{name}}">
             <div class="checkbox">
-              <input id="property-asg-term{{@index}}" type="checkbox" {{#if checked}}checked="checked"{{/if}}/>
-              <label for="property-asg-term{{@index}}"></label>
+                <input id="property-asg-term{{@index}}" type="checkbox" {{#if checked}}checked="checked" {{/if}}/>
+                <label for="property-asg-term{{@index}}"></label>
             </div>
             <label for="property-asg-term{{@index}}" class="list-name" data-name="{{name}}">{{text}}</label>
             <span class="drag-handle tooltip icon-sort" data-tooltip="{{ i18n 'PROP.ASG_TERMINATION_MSG_DRAG' }}"></span>
-          </li>
-          {{/each}}
+            </li>
+            {{/each}}
         </ul>
 
         <ul class="drag-sort-list">
-          <li {{#if useDefault}}class="enabled"{{/if}}>
+            <li {{#if useDefault}}class="enabled" {{/if}}>
             <div class="checkbox">
-              <input id="property-asg-term-def" type="checkbox" {{#if useDefault}}checked="checked"{{/if}}/>
-              <label for="property-asg-term-def"></label>
+                <input id="property-asg-term-def" type="checkbox" {{#if useDefault}}checked="checked" {{/if}}/>
+                <label for="property-asg-term-def"></label>
             </div>
             <span>{{i18n "PROP.DEFAULT"}}</span>
-          </li>
+            </li>
         </ul>
-      </div>
-   </div>
-   <div class="modal-footer">
-      <button id="property-asg-term-done" class="btn btn-blue">{{i18n "PROP.LBL_DONE"}}</button>
-      <button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
-   </div>
+    </div>
 </div>

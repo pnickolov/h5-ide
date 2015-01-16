@@ -4,179 +4,6 @@
 	{{#if should_stay}}<i class="notification_close">&times;</i>{{/if}}
 </div>
 
-
-<!-- {{modalAppToStack}} -->
-<div style="width: 520px">
-    <div class="modal-header">
-        <h3>{{title}}</h3>
-        <i class="modal-close">&times;</i>
-    </div>
-    <div class="modal-body">
-        <p class="modal-text-minor">{{intro-1}}</p>
-        <p class="modal-text-minor">{{intro-2}}</p>
-        <div class="modal-center-align-helper">
-            <div class="modal-control-group">
-                <div id="replace_stack" style="padding: 10px 0">
-                    <div class="radio">
-                        <input id="radio-replace-stack" type="radio" name="save-stack-type" checked>
-                        <label for="radio-replace-stack"></label>
-                    </div>
-                    <label class="modal-text-minor" for="radio-replace-stack">{{replace}}</label>
-                    <div style="padding: 10px 22px" class="radio-instruction">
-                        {{replace-info}} "{{input}}" {{replace-info-end}}
-                    </div>
-                </div>
-                <div id="save_new_stack">
-                   <div class="radio">
-                       <input id="radio-new-stack" type="radio" name="save-stack-type">
-                       <label for="radio-new-stack"></label>
-                   </div>
-                   <label class="modal-text-minor" for="radio-new-stack">{{save-new}}</label>
-                   <div style="padding: 10px 22px" class="radio-instruction hide">
-                       <p>{{instruction}}</p>
-                       <input class="input" id="modal-input-value" value="{{input}}" type="text" style="width: 400px"/>
-                       <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{error-message}}</div>
-                   </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button id="btn-confirm" class="btn btn-{{color}}">{{confirm}}</button>
-        <button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
-    </div>
-</div>
-
-
-<!-- {{modalApp}} -->
-<div style="width:420px">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-		{{#unless is_production}}
-			<div class="modal-text-wraper">
-				<div class="modal-center-align-helper">
-					{{#if input}}
-						<div class="modal-control-group">
-							<label class="modal-text-major">{{body}}</label>
-							<input id="modal-input-value" class="input" type="text" value="{{input}}" />
-						</div>
-					{{else}}
-						<div class="modal-text-major">
-							{{{body}}}
-						</div>
-						{{#if is_asg}}
-							<div class="modal-text-minor">{{ i18n 'POP_CONFIRM_STOP_ASG' }}</div>
-						{{/if}}
-					{{/if}}
-				</div>
-			</div>
-		{{else}}
-			<div class="terminate-pro-app-confirm">
-				{{#if is_stop}}
-					<p><b>{{app_name}}{{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_MSG' }}
-						{{#if is_asg}}
-							{{ i18n 'POP_CONFIRM_STOP_ASG' }}
-						{{/if}}
-					</p>
-					<p>{{ i18n 'POP_CONFIRM_STOP_PROD_APP_INPUT_LBL' }}</p>
-				{{else}}
-					<p><b>{{app_name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
-					<p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
-				{{/if}}
-				<p class="confirm-area"><input class="input" id="confirm-app-name" data-confirm="{{app_name}}"/></p>
-			</div>
-		{{/unless}}
-	</div>
-	<div class="modal-footer">
-		<button id="btn-confirm" class="btn btn-{{color}}" {{#if is_production}}disabled{{/if}}>{{confirm}}</button>
-		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{modalToolbar}} -->
-<div style="width:700px">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-	<div class="modal-body">
-		<textarea id="json-content"></textarea>
-	</div>
-	<div class="modal-footer">
-		<a id="btn-confirm" class="btn btn-{{color}}" href="data:text/plain;, {{{this.filecontent}}}" download="{{this.download}}">{{confirm}}</a>
-		<button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{modalResourceInstanceDetail}} -->
-<div class="modal-resource-instance-detail" style="width:420px">
-	<div class="modal-header">
-		<h3>{{title}}</h3>
-		<i class="modal-close">&times;</i>
-	</div>
-
-	<div class="modal-body">
-		<dl class="dl-horizontal">
-			<dt>{{i18n "BUBBLE_DNSNAME"}}</dt>
-			<dd>{{dnsName}}</dd>
-			<dt>{{i18n "BUBBLE_ARCHITECTURE"}}</dt>
-			<dd>{{architecture}}</dd>
-			<dt>{{i18n "BUBBLE_EBSOPTIMIZED"}}</dt>
-			<dd>{{ebsOptimized}}</dd>
-			<dt>{{i18n "BUBBLE_GROUPSET"}}</dt>
-			<dd>{{groupSet}}</dd>
-			<dt>{{i18n "BUBBLE_HYPERVISOR"}}</dt>
-			<dd>{{hypervisor}}</dd>
-			<dt>{{i18n "BUBBLE_IMAGEID"}}</dt>
-			<dd>{{imageId}}</dd>
-			<dt>{{i18n "BUBBLE_INSTANCESTATE"}}</dt>
-			<dd>{{instanceState}}</dd>
-			<dt>{{i18n "BUBBLE_INSTANCETYPE"}}</dt>
-			<dd>{{instanceType}}</dd>
-			<dt>{{i18n "BUBBLE_IPADDRESS"}}</dt>
-			<dd>{{ipAddress}}</dd>
-			<dt>{{i18n "BUBBLE_KERNELID"}}</dt>
-			<dd>{{kernelId}}</dd>
-			<dt>{{i18n "BUBBLE_KEYNAME"}}</dt>
-			<dd>{{keyName}}</dd>
-			<dt>{{i18n "BUBBLE_LAUNCHTIME"}}</dt>
-			<dd>{{launchTime}}</dd>
-			<dt>{{i18n "BUBBLE_MONITORING"}}</dt>
-			<dd>{{monitoring}}</dd>
-			<dt>{{i18n "BUBBLE_NETWORKINTERFACESET"}}</dt>
-			<dd>{{networkInterfaceSet}}</dd>
-			<dt>{{i18n "BUBBLE_AVAILABILITYZONE"}}</dt>
-			<dd>{{availabilityZone}}</dd>
-			<dt>{{i18n "BUBBLE_PRIVATEDNSNAME"}}</dt>
-			<dd>{{privateDnsName}}</dd>
-			<dt>{{i18n "BUBBLE_ROOTDEVICENAME"}}</dt>
-			<dd>{{rootDeviceName}}</dd>
-			<dt>{{i18n "BUBBLE_ROOTDEVICETYPE"}}</dt>
-			<dd>{{rootDeviceType}}</dd>
-		</dl>
-	</div>
-
-	<div class="modal-footer">
-		<button class="btn modal-close btn-silver">{{i18n "POP_BTN_CLOSE"}}</button>
-	</div>
-</div>
-
-<!-- {{bubbleTest}} -->
-<div class="bubble-head">{{title}}</div>
-<div class="bubble-content">
-	<dl class="dl-horizontal">
-		<dt>{{i18n "BUBBLE_START_TIME"}}</dt>
-		<dd>{{start-time}}</dd>
-		<dt>{{i18n "BUBBLE_STOP_TIME"}}</dt>
-		<dd>{{end-time}}</dd>
-		<dt>{{i18n "BUBBLE_ESTIMATED_COST"}}</dt>
-		<dd>{{cost}}</dd>
-	</dl>
-</div>
-
 <!-- {{bubbleAlert}} -->
 <div class="bubble-head alert">{{title}}</div>
 <div class="bubble-content">
@@ -268,71 +95,6 @@
     </dl>
 </div>
 
-<!-- {{createNewStackClassic}} -->
-<div style="width:660px">
-	<div class="modal-header">
-		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
-		<i class="modal-close">×</i>
-	</div>
-	<div class="modal-body">
-		<div id="createNewStack_wrap">
-			<ul class="clearfix">
-				<li>
-					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-classic">
-						<h4>{{i18n "DASH_POP_CREATE_STACK_CLASSIC"}}</h4>
-						<p>{{i18n "DASH_POP_CREATE_STACK_CLASSIC_INTRO"}}.</p>
-					</a>
-				</li>
-				<li>
-					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="ec2-vpc">
-						<h4>{{i18n "DASH_POP_CREATE_STACK_VPC"}}</h4>
-						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
-
-<!-- {{createNewStackErrorAndReload}} -->
-<div style="width:400px">
-	<div class="modal-header">
-		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR"}}</h3>
-		<i class="modal-close">×</i>
-	</div>
-	<div class="modal-body">
-		<div id="createNewStack_wrap" class="load-account-attr-error">
-			<p>{{i18n "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY"}}</p>
-			<button class="btn btn-blue" id="reload-account-attributes">{{i18n "DASH_POP_BTN_RETRY"}}</button>
-		</div>
-	</div>
-</div>
-
-<!-- {{createNewStackVPC}} -->
-<div style="width:660px">
-	<div class="modal-header">
-		<h3>{{i18n "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN"}}:</h3>
-		<i class="modal-close">×</i>
-	</div>
-	<div class="modal-body">
-		<div id="createNewStack_wrap">
-			<ul class="clearfix">
-				<li>
-					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="default-vpc">
-						<h4>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC"}}</h4>
-						<p>{{i18n "DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO"}}.</p>
-					</a>
-				</li>
-				<li>
-					<a class="new-stack-dialog" href="javascript:void(0)" data-supported-platform="custom-vpc">
-						<h4>{{i18n "DASH_POP_CREATE_STACK_CUSTOM_VPC"}}</h4>
-						<p>{{i18n "DASH_POP_CREATE_STACK_VPC_INTRO"}}.</p>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
 
 <!-- {{configurationDownload}} -->
 Amazon Web Services
@@ -809,24 +571,6 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<!-- {{modalReinputStackName}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{i18n "STACK_NAME_ALREADY_IN_USE"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body" style="min-height:120px;">
-		<div class="modal-text-wraper">
-			<div class="modal-center-align-helper">
-				<div class="modal-text-major">{{i18n "PLEASE_CHOOSE_ANOTHER_STACK_NAME" stack_name}}</div>
-				<div class="modal-control-group" data-bind="true">
-					<label for="new-stack-name">{{i18n "LABEL_STACK_NAME"}}</label>
-					<input id="new-stack-name" class="input modal-input-value" type="text" value="{{stack_name}}" data-ignore="true">
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button id="rename-confirm" class="btn btn-blue">{{i18n "PROP.SAVE"}}</button>
-	</div>
-</div>
 
 <!-- {{modalDeleteSGOrACL}} -->
 <div class="modal-text-wraper">
@@ -844,22 +588,6 @@ Additional Notes and Questions
 	</div>
 </div>
 
-<!-- {{modalForceDeleteApp}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{title}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper">
-			 <div class="modal-center-align-helper">
-				<div class="modal-text-major">{{main_content}}</div>
-				<div class="modal-text-minor">{{desc_content}}</div>
-			</div>
-		 </div>
-	</div>
-	<div class="modal-footer">
-		<button id="modal-confirm-delete" class="btn btn-red">{{i18n "PROP.LBL_DELETE"}}</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
-	</div>
-</div>
 
 <!-- {{statusbar}} -->
 <div>
@@ -871,26 +599,6 @@ Additional Notes and Questions
 		</li>
 		<li class="statusbar-btn btn-ta-valid">{{i18n "LBL_VALIDATE"}}</li>
 	</ul>
-</div>
-
-<!-- {{restartInstance}} -->
-<div style="width:420px">
-	<div class="modal-header"><h3 class="truncate" style="width: 380px;">{{i18n "NEED_TO_RESTART_INSTANCE"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body" style="height:150px;">
-		<div class="modal-text-wraper">
-			<div class="modal-text-major">{{i18n "TO_UPDATE_THE_PROPERTIES_YOU_CHANGED"}}</div>
-			<ul class="clearfix">
-				{{#each instance_list}}
-				<li>{{ name }}( {{ instance_id }} )</li>
-				{{/each}}
-			</ul>
-			<div id="instance-type" class="modal-text-major"></div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button id="confirm-update-app" class="btn btn-blue" style="width:160px;">{{i18n "CONTINUE_TO_UPDATE"}}</button>
-		<button class="btn modal-close btn-silver">{{i18n "PROP.LBL_CANCEL"}}</button>
-	</div>
 </div>
 
 <!-- {{updateApp}} -->
@@ -994,22 +702,6 @@ Additional Notes and Questions
 <!-- {{ElbRemoveConfirmation}} -->
 <div class="modal-text-major">{{i18n "CONFIRM_TO_DELETE_XXX" name}}</div>
 <div class="modal-text-minor">{{i18n "THE_SG_WILL_BE_DELETED" sg}}</div>
-
-<!-- {{modalStackAgentEnable}} -->
-<div style="width:420px">
-	<div class="modal-header"><h3>{{i18n "CONFIRM_TO_ENABLE_VISUALOPS"}}</h3><i class="modal-close">&times;</i></div>
-	<div class="modal-body">
-		<div class="modal-text-wraper">
-			<div class="modal-center-align-helper">
-				<div class="modal-text-major">{{i18n "ENABLE_VISUALOPS_OVERRIDE_USER_DATA"}}</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button id="modal-stack-agent-enable-confirm" style="width:145px;" class="btn modal-confirm btn-blue">{{i18n "ENABLE_VISUALOPS"}}</button>
-		<button id="modal-stack-agent-enable-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
-	</div>
-</div>
 
 <!-- {{shortkey}} -->
 
@@ -1151,58 +843,6 @@ Additional Notes and Questions
 				</ul>
 			</section>
 
-<!-- {{modalSSLCertSetting}} -->
-<div style="width:343px" id="modal-ssl-cert-setting">
-	<div class="modal-header"><h3>Server Certificate</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body" style="min-height:120px;">
-		<div class="modal-ssl-cert-item clearfix">
-			<label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_NAME"}}</label>
-			<input class="input" value="{{sslCert.name}}" type="text" data-required="true" data-ignore="true" id="elb-ssl-cert-name-input"/>
-		</div>
-		<div class="modal-ssl-cert-item clearfix">
-			<label class="left">{{ i18n "PROP.ELB_LBL_LISTENER_PRIVATE_KEY"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-privatekey-input">{{sslCert.key}}</textarea>
-		</div>
-		<div class="modal-ssl-cert-item clearfix">
-			<label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_PUBLIC_KEY"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" data-required="true" data-ignore="true" id="elb-ssl-cert-publickey-input">{{sslCert.body}}</textarea>
-		</div>
-		<div class="modal-ssl-cert-item clearfix">
-			<label class="left"  >{{ i18n "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN"}}</label>
-			<textarea class="input elb-ssl-cert-input tooltip" data-tooltip="{{i18n 'POP_TIP_PEM_ENCODED'}}" id="elb-ssl-cert-chain-input">{{sslCert.chain}}</textarea>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button id="elb-ssl-cert-confirm" class="btn btn-blue">Save</button>
-		<button id="elb-ssl-cert-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{experimentalVisops}} -->
-<div style="width:623px" id="experimental-modal">
-	<div class="modal-header">
-		<h3>{{ i18n "INVITE_MOD_TIT"}}</h3>
-		<i class="modal-close">×</i>
-	</div>
-	<div class="modal-body">
-		<h3 class="modal-body-header">{{ i18n "INVITE_MOD_INTRO"}}</h3>
-		<div class="modal-body-content">
-			<div class="modal-text-minor">{{ i18n "INVITE_MOD_INTRO_MORE"}}</div>
-			<h4 class="request-invite-header">{{ i18n "INVITE_MOD_REQUEST_TIT"}}</h4>
-			<div class="request-invite-content">{{ i18n "INVITE_MOD_REQUEST_CONTENT"}}</div>
-			<textarea id="experimental-message" class="input" style="width:95%;height:120px;" placeholder='{{ i18n "INVITE_MOD_REQUEST_PLACEHOLDER"}}' data-required="true"></textarea>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button id="experimental-visops-confirm" class="btn btn-blue">{{ i18n "INVITE_MOD_BTN_REQUEST"}}</button>
-		<button id="experimental-visops-cancel" class="btn modal-close btn-silver">{{ i18n "INVITE_MOD_BTN_CANCEL"}}</button>
-	</div>
-</div>
-
-<!-- {{experimentalVisopsTrail}} -->
-<h3 class="modal-body-header">{{ i18n "INVITE_MOD_THANK_LBL"}}</h3>
-<div class="modal-text-major tac">{{ i18n "INVITE_MOD_THANK_MORE"}}</div>
-
 <!-- {{bubbleNATreq}} -->
 <div class="bubble-head">{{i18n "NAT_INSTANCE_MEET_REQ"}}</div>
 <div class="bubble-content">
@@ -1216,23 +856,6 @@ Additional Notes and Questions
 
 <!-- {{convertBreaklines}} -->
 {{breaklines content}}
-
-<!-- {{modalDeleteELBCert}} -->
-<div style="width:420px">
-	<div class="modal-header"> <h3>{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_TITLE"}}</h3><i class="modal-close">&times;</i> </div>
-	<div class="modal-body">
-		<div class="modal-text-wraper">
-			 <div class="modal-center-align-helper">
-				<div class="modal-text-major">{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_MAIN"}}{{cert_name}}?</div>
-				<div class="modal-text-minor">{{ i18n "PROP.ELB_CERT_REMOVE_CONFIRM_SUB"}}</div>
-			</div>
-		 </div>
-	</div>
-	<div class="modal-footer">
-		<button id="modal-confirm-elb-cert-delete" class="btn btn-red">Delete</button>
-		<button id="modal-cancel" class="btn modal-close btn-silver">{{i18n "POP_LBL_CANCEL"}}</button>
-	</div>
-</div>
 
 <!-- {{headerNotifyItem}} -->
 <li class="notification-item{{#unless readed}} unread{{/unless}}">

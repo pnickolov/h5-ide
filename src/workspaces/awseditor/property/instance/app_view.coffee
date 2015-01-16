@@ -150,7 +150,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         openSysLogModal : () ->
             instanceId = @model.get('instanceId')
 
-            new modalPlus({
+            @sysLogModal = new modalPlus({
                 template:MC.template.modalInstanceSysLog {log_content: ''}
                 width: 900
                 title: lang.IDE.SYSTEM_LOG + instanceId
@@ -183,7 +183,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
 
                 $('#modal-instance-sys-log .instance-sys-log-info').show()
 
-            modal.position()
+            @sysLogModal.resize()
 
     }
 

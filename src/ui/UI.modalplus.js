@@ -80,6 +80,7 @@
         }
         this.show();
         this.bindEvent();
+        this.resize();
         this;
       }
 

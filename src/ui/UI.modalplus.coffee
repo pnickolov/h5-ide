@@ -105,6 +105,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 ,300
             @show()
             @bindEvent()
+            @resize()
             @
         close: ()->
             if @isMoving

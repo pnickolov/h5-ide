@@ -1,7 +1,6 @@
 
 define [
   "./Application"
-  "./Router"
   "./Project"
 
   "OpsModel"

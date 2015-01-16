@@ -14,15 +14,17 @@ define [
   "./ApplicationModel"
   "./User"
   "./SceneManager"
+  "./Router"
   "i18n!/nls/lang.js"
-], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, lang )->
+], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, lang )->
 
   VisualOps = ()->
     if window.App
       console.error "Application is already created."
       return
 
-    window.App = this
+    window.Router = new Router()
+    window.App    = this
     return
 
   # initialize returns a promise that will be resolve when the application is ready.
@@ -41,7 +43,10 @@ define [
     fetchModel = @model.fetch().fail ( err )->
       notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
       throw err
-    Q.all [ @user.fetch(), fetchModel ].then ()-> App.view.hideGlobalLoading()
+
+    Q.all([ @user.fetch(), fetchModel ]).then ()->
+      App.view.hideGlobalLoading()
+      window.Router.start()
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()

@@ -297,7 +297,7 @@ require.config {
 
     "component/AppAction" : [ "AppAction" ]
 
-    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
+    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel" ]
 
     "workspaces/dashboard/Dashboard"     : []
     "workspaces/osdashboard/DashboardOs" : []
@@ -364,17 +364,11 @@ if window.define
 require [
   'ide/AppBundle'
   "cloudres/CrBundle"
-  "ide/Router"
   "MC"
   'lib/aws'
+], ( Application, CrBundle ) ->
 
-], ( Application, CrBundle, Router ) ->
-
-  ###########
-  # IDE Init
-  ###########
-  window.Router = new Router()
-  (new Application()).initialize().then ()-> window.Router.start()
+  (new Application()).initialize()
 
 , ( err )->
   err = err || { requireType : "timeout" }

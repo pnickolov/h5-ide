@@ -75,7 +75,8 @@ define [ '../base/view',
                 width: 450
                 template: rulePopupTpl data
                 confirm: text: lang.IDE.POP_ACLRULE_BTN_SAVE
-            }).on("confirm", _.bind( @saveRule, @ ))
+                compact: true
+            }).on("confirm", _.bind( @saveRule, @ )).tpl.attr("id", "modal-acl-rule")
 
             # Bind Modal Events
             $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )

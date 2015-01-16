@@ -39,7 +39,7 @@ module.exports = function(path, port, autoOpen, logTask) {
     REG_RESET = /^\/reset(\?\S*)?/;
     REG_LOGIN = /^\/login(\?\S*)?/;
     REG_REGISTER = /^\/register(\?\S*)?/;
-    REG_IDE = /^\/(ops|store)\/?/;
+    REG_IDE = /^\/(project|store|settings)\/?/;
     REG_500 = /^\/500(\?\S)?/;
     request.addListener('end', function() {
       var errorHandler, filePath, url;

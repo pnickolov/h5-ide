@@ -64,6 +64,6 @@ define [ "backbone" ], ()->
 
       null
 
-    hasUnsaveScenes : ()-> @__scenes.some ( s )-> s.isRemovable()
+    hasUnsaveScenes : ()-> @__scenes.some ( s )-> !s.isRemovable()
 
   SceneManager

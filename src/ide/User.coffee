@@ -34,6 +34,7 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         intercomHash : result.intercom_secret
         firstName    : Base64.decode( result.first_name || "" )
         lastName     : Base64.decode( result.last_name || "")
+        tokens       : result.tokens
       }
 
       # Set user to already used IDE, so that next time we don't show welcome

@@ -84,4 +84,8 @@ define [
   # Return true if the ide can quit now.
   VisualOps.prototype.canQuit = ()-> !@sceneManager.hasUnsaveScenes()
 
+  # Whenever you want to navigate to other part of the application ( e.g. switching to other scene )
+  # without a link, use this method with a corresponding url.
+  VisualOps.prototype.loadUrl = ( url )-> window.Router.navigate url, {replace:true,trigger:true}
+
   VisualOps

@@ -1,6 +1,6 @@
 
 
-define ["Scene", "./TestView"], ( Scene, TestView )->
+define ["Scene", "../ide/settings/SettingsView"], ( Scene, SettingsView )->
 
   class Settings extends Scene
 
@@ -9,7 +9,7 @@ define ["Scene", "./TestView"], ( Scene, TestView )->
     ###
     # Override this method to perform custom initialization
     initialize : ( attributes )->
-      @view = new TestView( { title : "Settings" } )
+      @view = new SettingsView()
       @activate()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.

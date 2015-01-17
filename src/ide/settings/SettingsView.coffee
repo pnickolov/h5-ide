@@ -11,6 +11,65 @@ define [
             'click .project-list a': 'loadProject'
             'click .back-settings': 'renderSettings'
 
+            'click #AccountEmail'             : 'showEmail'
+            'click #AccountFullName'          : 'showFullName'
+            'click #AccountPwd'               : 'showPwd'
+            'click #AccountCancelPwd'         : 'hidePwd'
+            'click #AccountUpdatePwd'         : 'changePwd'
+
+        showEmail : ()->
+            @hideFullName()
+            $(".accountEmailRO").hide()
+            $("#AccountEmailWrap").show()
+            $("#AccountNewEmail").focus()
+            return
+
+        showFullName: ()->
+            @hideEmail()
+            $(".accountFullNameRO").hide()
+            $("#AccountFullNameWrap").show()
+            $("#AccountFirstName").val(App.user.get("firstName") || "").focus()
+            $("#AccountLastName").val(App.user.get("lastName") || "")
+            return
+
+        showPwd : ()->
+            @modal.$("#AccountPwd").hide()
+            @modal.$("#AccountPwdWrap").show()
+            @modal.$("#AccountCurrentPwd").focus()
+            return
+
+        hidePwd : ()->
+            @modal.$("#AccountPwd").show()
+            @modal.$("#AccountPwdWrap").hide()
+            @modal.$("#AccountCurrentPwd, #AccountNewPwd").val("")
+            @modal.$("#AccountInfo").empty()
+            return
+        changePwd : ()->
+            that = @
+            old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
+            new_pwd = @modal.$("#AccountNewPwd").val() || ""
+            if new_pwd.length < 6
+                @modal.$('#AccountInfo').text lang.IDE.SETTINGS_ERR_INVALID_PWD
+                return
+
+            @modal.$("#AccountInfo").empty()
+
+            @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
+
+            App.user.changePassword( old_pwd, new_pwd ).then ()->
+                notification 'info', lang.NOTIFY.SETTINGS_UPDATE_PWD_SUCCESS
+                $("#AccountCancelPwd").click()
+                return
+            , ( err )->
+                if err.error is 2
+                    that.modal.$('#AccountInfo').html "#{lang.IDE.SETTINGS_ERR_WRONG_PWD} <a href='/reset/' target='_blank'>#{lang.IDE.SETTINGS_INFO_FORGET_PWD}</a>"
+                else
+                    that.modal.$('#AccountInfo').text lang.IDE.SETTINGS_UPDATE_PWD_FAILURE
+
+                that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
+
+            return
+
         className: 'fullpage-settings'
 
         initialize: ( options ) ->
@@ -65,7 +124,7 @@ define [
             BasicSettings: 'BasicSettings'
             AccessToken: 'AccessToken'
             Billing: 'Billing'
-            Member: "Member"
+            Member: 'Member'
             ProviderCredential: 'ProviderCredential'
             UsageReport: 'UsageReport'
 

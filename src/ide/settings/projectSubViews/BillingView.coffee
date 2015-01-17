@@ -6,12 +6,15 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
             'click .update-payment'               : "_bindPaymentEvent"
 
-        className: "project-subview"
+        className: "billing-view"
 
-        initialize : ()->
+        initialize: ->
+            @$el.html template.billingLoadingFrame()
+            @$el.find("#billing-status").append MC.template.loadingSpiner()
+            @
+        render : ()->
             that = @
             paymentState = App.user.get("paymentState")
-            @render()
             @getPaymentHistory().then (paymentHistory)->
                 console.log paymentHistory
                 paymentUpdate = {
@@ -38,20 +41,19 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 that.paymentHistory = tempArray
                 that.paymentUpdate = _.clone paymentUpdate
                 billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+                that.$el.find(".loading-spinner").remove()
                 that.$el.find("#billing-status").append billingTemplate
                 unless true # todo: App.user.get("creditCard")
                     that.$el.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl"), freePointsPerMonth: App.user.get("voQuotaPerMonth"), shouldPay: false}) #todo: App.user.shouldPay()
                     that.listenTo App.user, "paymentUpdate", ->
                         that.stopListening(App.user)
-                        that.update()   # Todo: Refresh View
+                        that.updateUsage()
                 that.updateUsage()
             , ()->
                 notification 'error', "Error while getting user payment info, please try again later."
 
             @listenTo App.user, "paymentUpdate", -> that.updateUsage()
-
-        render: ()->
-            @$el.html template.billingLoadingFrame()
+            @$el
 
         getPaymentHistory: ()->
             historyDefer = new Q.defer()

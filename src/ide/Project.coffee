@@ -1,9 +1,10 @@
 
 define [
   "ide/submodels/OpsCollection"
+  "OpsModel"
   "Credential"
   "backbone"
-], ( OpsCollection, Credential )->
+], ( OpsCollection, OpsModel, Credential )->
 
 
   MEMBERROLE =
@@ -124,18 +125,18 @@ define [
 
 
 
-        createImportOps : ( region, provider, msrId )->
-      m = @attributes.appList.findWhere({importMsrId:msrId})
-      if m then return m
-      m = new OpsModel({
-        name        : "ImportedApp"
-        importMsrId : msrId
-        region      : region
-        provider    : provider
-        state       : OpsModel.State.Running
-      })
-      @attributes.appList.add m
-      m
+    # createImportOps : ( region, provider, msrId )->
+    #   m = @attributes.appList.findWhere({importMsrId:msrId})
+    #   if m then return m
+    #   m = new OpsModel({
+    #     name        : "ImportedApp"
+    #     importMsrId : msrId
+    #     region      : region
+    #     provider    : provider
+    #     state       : OpsModel.State.Running
+    #   })
+    #   @attributes.appList.add m
+    #   m
 
 
     # OpsModel Related.

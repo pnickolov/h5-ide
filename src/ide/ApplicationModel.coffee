@@ -32,13 +32,17 @@ define [
 
 
     # Project Related.
-    projects : ()-> @get("projects")
     getOpsModelById : ( opsModelId )->
       for p in @get("projects")
         ops = p.stacks().get( opsModelId ) or p.apps().get( opsModelId )
         if ops then return ops
       return null
 
+    projects : ()-> @get("projects")
+    getPrivateProject : ()->
+      for p in @get("projects")
+        if p.isPrivate() then return p
+      null
     # Create a new project. It returns a promise.
     # The promise will be fulfilled when the project is created successfully with the new project
     # as the fulfillment.

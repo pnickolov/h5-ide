@@ -10137,6 +10137,8 @@ h5.billing_usage_title {
     float: left; }
   .fullpage-settings section.setting-content .member-setting .icon-edit {
     color: white; }
+  .fullpage-settings section.setting-content .member-setting .table th, .fullpage-settings section.setting-content .member-setting .table td {
+    overflow: auto; }
   .fullpage-settings section.setting-content .member-setting .item .avatar {
     float: left; }
   .fullpage-settings section.setting-content .member-setting .item .info {

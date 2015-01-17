@@ -69,7 +69,16 @@
             <div class="mail">{{mail}}</div>
         </div>
     </td>
-    <td>{{role}}</td>
+    <td class="{{role}}">
+        <div class="selectbox">
+            <div class="selection">{{role}}</div>
+            <ul class="dropdown">
+                <li data-id="ADMIN" class="item {{#ifCond protocol 'ADMIN'}}selected{{/ifCond}}">ADMIN</li>
+                <li data-id="COLLABORATOR" class="item {{#ifCond protocol 'COLLABORATOR'}}selected{{/ifCond}}">COLLABORATOR</li>
+                <li data-id="OBSERVER" class="item {{#ifCond protocol 'OBSERVER'}}selected{{/ifCond}}">OBSERVER</li>
+            </ul>
+        </div>
+    </td>
     <td>{{status}}</td>
     <td><button class="icon-edit"></button></td>
 </tr>

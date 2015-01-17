@@ -1,4 +1,4 @@
-define ['backbone', '../template/TplMember'], (Backbone, TplMember) ->
+define ['backbone', '../template/TplMember', 'UI.selectbox'], (Backbone, TplMember) ->
 
     Backbone.View.extend
 
@@ -38,7 +38,8 @@ define ['backbone', '../template/TplMember'], (Backbone, TplMember) ->
                             name: "Edit"
                         }
                     ]
-                })
+                }
+            )
             @renderList()
             @$el
 

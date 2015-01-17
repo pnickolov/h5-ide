@@ -66,6 +66,9 @@
             .icon-edit {
                 color: white;
             }
+            .table th, .table td {
+                overflow: auto;
+            }
             .item {
                 .avatar {
                     float: left;

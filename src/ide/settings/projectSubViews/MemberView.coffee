@@ -7,13 +7,15 @@ define ['backbone', '../template/TplMember'], (Backbone, TplMember) ->
             'change #t-m-select-all': '__checkAll'
             'change .one-cb': '__checkOne'
 
+        className: 'member-setting'
+
         initialize: () ->
 
             @render()
 
         render: () ->
 
-            @$el.html TplMember(
+            @$el.html TplMember.main(
                 {
                     columns: [
                         {
@@ -37,6 +39,34 @@ define ['backbone', '../template/TplMember'], (Backbone, TplMember) ->
                         }
                     ]
                 })
+            @renderList()
+            @$el
+
+        renderList: () ->
+
+            @$el.find('.t-m-content').html TplMember.list([
+                {
+                    avatar: ""
+                    name: "John Doe"
+                    mail: "id@mc2.io"
+                    role: "ADMIN"
+                    status: "Active"
+                },
+                {
+                    avatar: ""
+                    name: "John Doe"
+                    mail: "id@mc2.io"
+                    role: "ADMIN"
+                    status: "Active"
+                },
+                {
+                    avatar: ""
+                    name: "John Doe"
+                    mail: "id@mc2.io"
+                    role: "ADMIN"
+                    status: "Active"
+                }
+            ])
 
         # follow code ref from toolbarModal
         __checkOne: ( event ) ->

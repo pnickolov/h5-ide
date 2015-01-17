@@ -56,5 +56,25 @@
             margin-left : 0;
         }
 
+        .member-setting {
+            .invite {
+                float: left;
+            }
+            .icon-edit {
+                color: white;
+            }
+            .item {
+                .avatar {
+                    float: left;
+                }
+                .info {
+                    float: left;
+                }
+            }
+            #delete {
+                float: right;
+            }
+        }
+
     }
 }

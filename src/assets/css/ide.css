@@ -7110,7 +7110,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10467,3 +10468,13 @@ h5.billing_usage_title {
     color: #148BE6;
     padding: 3px 0;
     margin-left: 0; }
+  .fullpage-settings section.setting-content .member-setting .invite {
+    float: left; }
+  .fullpage-settings section.setting-content .member-setting .icon-edit {
+    color: white; }
+  .fullpage-settings section.setting-content .member-setting .item .avatar {
+    float: left; }
+  .fullpage-settings section.setting-content .member-setting .item .info {
+    float: left; }
+  .fullpage-settings section.setting-content .member-setting #delete {
+    float: right; }

@@ -1,6 +1,8 @@
+<!-- {{main}} -->
+<h1>Member(3)</h1>
 <div class="operate">
     <div class="invite">
-        <input class="input" id="mail">
+        <input class="input" placeholder="Invite by email address or username..." id="mail">
         <button class="btn btn-blue" id="confirm">Invite Member</button>
     </div>
     <button class="btn btn-blue" id="delete">Delete</button>
@@ -50,3 +52,25 @@
     </div>
     {{/unless}}
 </div>
+
+<!-- {{list}} -->
+{{#each this}}
+<tr class="item" data-id="{{id}}">
+    <td>
+        <div class="checkbox">
+            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
+            <label for="sslcert-select-{{id}}"></label>
+        </div>
+    </td>
+    <td>
+        <img class="avatar" src="https://www.gravatar.com/avatar/a76355e01958a4013e9e0201c00452b0">
+        <div class="info">
+            <div class="name">{{name}}</div>
+            <div class="mail">{{mail}}</div>
+        </div>
+    </td>
+    <td>{{role}}</td>
+    <td>{{status}}</td>
+    <td><button class="icon-edit"></button></td>
+</tr>
+{{/each}}

@@ -17,14 +17,62 @@ define [
             'click #AccountCancelPwd'         : 'hidePwd'
             'click #AccountUpdatePwd'         : 'changePwd'
 
-            "click #AccountCancelEmail"                 : "hideEmail"
-            "click #AccountUpdateEmail"                 : "changeEmail"
-            "click #AccountCancelFullName"              : "hideFullName"
-            "change #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
-            "keyup  #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
-            "click #AccountUpdateFullName"              : "changeFullName"
-            "change #AccountFirstName, #AccountLastName": "updateFullNameBtn"
-            "keyup #AccountFirstName, #AccountLastName" : "updateFullNameBtn"
+            'click #AccountCancelEmail'                 : 'hideEmail'
+            'click #AccountUpdateEmail'                 : 'changeEmail'
+            'click #AccountCancelFullName'              : 'hideFullName'
+            'change #AccountNewEmail, #AccountEmailPwd' : 'updateEmailBtn'
+            'keyup  #AccountNewEmail, #AccountEmailPwd' : 'updateEmailBtn'
+            'click #AccountUpdateFullName'              : 'changeFullName'
+            'change #AccountFirstName, #AccountLastName': 'updateFullNameBtn'
+            'keyup #AccountFirstName, #AccountLastName' : 'updateFullNameBtn'
+
+            'change #AccountCurrentPwd, #AccountNewPwd' : 'updatePwdBtn'
+            'keyup  #AccountCurrentPwd, #AccountNewPwd' : 'updatePwdBtn'
+
+        className: 'fullpage-settings'
+
+        initialize: ( options ) ->
+            if options
+                @tab = options.tab
+                @projectId = options.projectId
+
+            @render(@tab)
+
+
+        render: ( tab = SettingsView.TAB.Account ) ->
+            that = @
+            if tab is SettingsView.TAB.Account
+                @renderSettings()
+            else
+                @renderProject projectId, tab
+
+            @modal = new Modal
+                template: that.el
+                mode: 'fullscreen'
+                disableFooter: true
+                compact: true
+            @
+
+        renderSettings: () ->
+            data = _.extend {}, App.user.toJSON()
+            data.gravatar = App.user.gravatar()
+
+            @$el.html TplSettings data
+            @
+
+        loadProject: ( e ) ->
+            projectId = $(e.currentTarget).data 'id'
+            @renderProject projectId
+
+        renderProject: ( projectId, tab ) ->
+            @$el.html new ProjectView().render(tab).el
+
+        remove: ->
+            @model and @model.close()
+            Backbone.View.prototype.remove.apply arguments
+
+
+        # Account Operation
 
         showEmail : ()->
             @hideFullName()
@@ -55,16 +103,27 @@ define [
             $("#AccountUpdateFullName").attr("disabled", false)
 
         showPwd : ()->
-            @modal.$("#AccountPwd").hide()
-            @modal.$("#AccountPwdWrap").show()
-            @modal.$("#AccountCurrentPwd").focus()
+            @$("#AccountPwd").hide()
+            @$("#AccountPwdWrap").show()
+            @$("#AccountCurrentPwd").focus()
             return
 
         hidePwd : ()->
-            @modal.$("#AccountPwd").show()
-            @modal.$("#AccountPwdWrap").hide()
-            @modal.$("#AccountCurrentPwd, #AccountNewPwd").val("")
-            @modal.$("#AccountInfo").empty()
+            @$("#AccountPwd").show()
+            @$("#AccountPwdWrap").hide()
+            @$("#AccountCurrentPwd, #AccountNewPwd").val("")
+            @$("#AccountInfo").empty()
+            return
+
+        updatePwdBtn : ()->
+            old_pwd = @$("#AccountCurrentPwd").val() || ""
+            new_pwd = @$("#AccountNewPwd").val() || ""
+
+            if old_pwd.length and new_pwd.length
+                @$("#AccountUpdatePwd").removeAttr "disabled"
+            else
+                @$("#AccountUpdatePwd").attr "disabled", "disabled"
+
             return
 
         updateEmailBtn : ()->
@@ -131,15 +190,15 @@ define [
 
         changePwd : ()->
             that = @
-            old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
-            new_pwd = @modal.$("#AccountNewPwd").val() || ""
+            old_pwd = @$("#AccountCurrentPwd").val() || ""
+            new_pwd = @$("#AccountNewPwd").val() || ""
             if new_pwd.length < 6
-                @modal.$('#AccountInfo').text lang.IDE.SETTINGS_ERR_INVALID_PWD
+                @$('#AccountInfo').text lang.IDE.SETTINGS_ERR_INVALID_PWD
                 return
 
-            @modal.$("#AccountInfo").empty()
+            @$("#AccountInfo").empty()
 
-            @modal.$("#AccountUpdatePwd").attr "disabled", "disabled"
+            @$("#AccountUpdatePwd").attr "disabled", "disabled"
 
             App.user.changePassword( old_pwd, new_pwd ).then ()->
                 notification 'info', lang.NOTIFY.SETTINGS_UPDATE_PWD_SUCCESS
@@ -154,52 +213,6 @@ define [
                 that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
             return
-
-
-        className: 'fullpage-settings'
-
-        initialize: ( options ) ->
-            if options
-                @tab = options.tab
-                @projectId = options.projectId
-
-            @render(@tab)
-
-
-        render: ( tab = SettingsView.TAB.Account ) ->
-            that = @
-            if tab is SettingsView.TAB.Account
-                @renderSettings()
-            else
-                @renderProject projectId, tab
-
-            @modal = new Modal
-                template: that.el
-                mode: 'fullscreen'
-                disableFooter: true
-                compact: true
-            @
-
-        renderSettings: () ->
-            data = _.extend {}, App.user.toJSON()
-            data.gravatar = App.user.gravatar()
-
-            @$el.html TplSettings data
-            @
-
-        loadProject: ( e ) ->
-            projectId = $(e.currentTarget).data 'id'
-            @renderProject projectId
-
-        renderProject: ( projectId, tab ) ->
-            @$el.html new ProjectView().render(tab).el
-
-        remove: ->
-            @model and @model.close()
-            Backbone.View.prototype.remove.apply arguments
-
-
-
 
 
     }

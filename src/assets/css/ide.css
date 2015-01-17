@@ -9211,7 +9211,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       color: #fff; }
 
 #PaymentBody {
-  padding: 20px 15px 0px;
   min-height: 150px; }
   #PaymentBody .dl-horizontal {
     margin: 0;
@@ -10424,21 +10423,21 @@ h5.billing_usage_title {
 
 .fullpage-settings a {
   cursor: pointer; }
-.fullpage-settings a.active, .fullpage-settings a:hover {
+.fullpage-settings a.active:not(.btn), .fullpage-settings a:hover:not(.btn) {
   color: #5da4e5; }
-.fullpage-settings nav {
+.fullpage-settings nav#settings-nav {
   width: 220px;
   position: absolute;
   top: 0;
   left: 0;
   padding: 50px 15px 15px 15px; }
-  .fullpage-settings nav .back-settings {
+  .fullpage-settings nav#settings-nav .back-settings {
     font-size: 18px; }
-  .fullpage-settings nav > section header {
+  .fullpage-settings nav#settings-nav > section header {
     font-size: 18px;
     color: white;
     padding: 8px 0; }
-  .fullpage-settings nav > section a {
+  .fullpage-settings nav#settings-nav > section a {
     display: block;
     padding: 5px 0; }
 .fullpage-settings section.setting-content {

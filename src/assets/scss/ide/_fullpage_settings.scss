@@ -25,6 +25,7 @@
 
     }
     section.setting-content {
+        min-width: 400px;
         margin-left: 300px;
         padding: 50px 0 0 0;
 
@@ -36,8 +37,10 @@
         }
 
         dl {
-            dt { float: left; line-height: 30px; }
-            dd { padding-left: 77px; line-height: 30px; }
+            line-height: 36px;
+            dt, dd { margin-top: 0; }
+            dt { float: left; }
+            dd { padding-left: 77px; min-height: 36px; }
         }
 
         .avatar img { width: 80px; height: 80px; }
@@ -74,6 +77,45 @@
             #delete {
                 float: right;
             }
+        }
+
+        .accountEditWrap {
+            display    : none;
+            .input {
+              width   : 250px;
+              padding : 5px;
+            }
+            .dl-horizontal {
+              line-height : 36px;
+            }
+        }
+
+        #AccountInfo, #AccountEmailInfo {
+            width         : 360px;
+            font-size     : 12px;
+            border-radius : 3px;
+            color         : #ec3c38;
+            height        : 30px;
+            line-height   : 30px;
+            margin        : 10px 0;
+        }
+
+        .accountPwdBtns {
+            padding-left : 130px;
+        }
+
+        #AccountUpdatePwd, #AccountUpdateEmail, #AccountUpdateFullName{
+            padding   : 5px;
+            min-width : 80px;
+            font-size : 12px;
+        }
+
+        #AccountCancelPwd, #AccountCancelEmail, #AccountCancelFullName {
+            font-size      : 12px;
+            color          : #999;
+            padding        : 3px;
+            display        : inline-block;
+            vertical-align : middle;
         }
 
     }

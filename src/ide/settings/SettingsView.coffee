@@ -17,11 +17,27 @@ define [
             'click #AccountCancelPwd'         : 'hidePwd'
             'click #AccountUpdatePwd'         : 'changePwd'
 
+            "click #AccountCancelEmail"                 : "hideEmail"
+            "click #AccountUpdateEmail"                 : "changeEmail"
+            "click #AccountCancelFullName"              : "hideFullName"
+            "change #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+            "keyup  #AccountNewEmail, #AccountEmailPwd" : "updateEmailBtn"
+            "click #AccountUpdateFullName"              : "changeFullName"
+            "change #AccountFirstName, #AccountLastName": "updateFullNameBtn"
+            "keyup #AccountFirstName, #AccountLastName" : "updateFullNameBtn"
+
         showEmail : ()->
             @hideFullName()
             $(".accountEmailRO").hide()
             $("#AccountEmailWrap").show()
             $("#AccountNewEmail").focus()
+            return
+
+        hideEmail : ()->
+            $(".accountEmailRO").show()
+            $("#AccountEmailWrap").hide()
+            $("#AccountNewEmail, #AccountEmailPwd").val("")
+            $("#AccountEmailInfo").empty()
             return
 
         showFullName: ()->
@@ -31,6 +47,12 @@ define [
             $("#AccountFirstName").val(App.user.get("firstName") || "").focus()
             $("#AccountLastName").val(App.user.get("lastName") || "")
             return
+
+        hideFullName: ()->
+            $(".accountFullNameRO").show()
+            $("#AccountFullNameWrap").hide()
+            $("#AccountFirstName, #AccountLastName").val("")
+            $("#AccountUpdateFullName").attr("disabled", false)
 
         showPwd : ()->
             @modal.$("#AccountPwd").hide()
@@ -44,6 +66,69 @@ define [
             @modal.$("#AccountCurrentPwd, #AccountNewPwd").val("")
             @modal.$("#AccountInfo").empty()
             return
+
+        updateEmailBtn : ()->
+            old_pwd = $("#AccountNewEmail").val() || ""
+            new_pwd = $("#AccountEmailPwd").val() || ""
+
+            if old_pwd.length and new_pwd.length >= 6
+                $("#AccountUpdateEmail").removeAttr "disabled"
+            else
+                $("#AccountUpdateEmail").attr "disabled", "disabled"
+            return
+
+        updateFullNameBtn: ()->
+            first_name = $("#AccountFirstName").val() || ""
+            last_name  = $("#AccountLastName").val()  || ""
+
+            if first_name.length and last_name.length
+                $("#AccountUpdateFullName").removeAttr "disabled"
+            else
+                $("#AccountUpdateFullName").attr "disabled", "disabled"
+            return
+
+        changeFullName: ()->
+            that = @
+            first_name = $("#AccountFirstName").val() || ""
+            last_name  = $("#AccountLastName").val()  || ""
+
+            if first_name and last_name
+                $("#AccountUpdateFullName").attr("disabled", true)
+                App.user.changeName( first_name, last_name ).then (result)->
+                    that.hideFullName()
+                    $(".fullNameText").text(first_name + " " + last_name)
+                    if result
+                      notification "info", lang.NOTIFY.UPDATED_FULLNAME_SUCCESS
+                , (err)->
+                    notification "error", lang.NOTIFY.UPDATED_FULLNAME_FAIL
+                    $("#AccountUpdateFullName").attr("disabled", false)
+                    console.error("Change Full name Failed due to ->", err)
+
+        changeEmail : ()->
+            email = $("#AccountNewEmail").val() || ""
+            pwd   = $("#AccountEmailPwd").val() || ""
+
+            $("#AccountEmailInfo").empty()
+            $("#AccountUpdateEmail").attr "disabled", "disabled"
+
+            App.user.changeEmail( email, pwd ).then ()->
+                notification 'info', lang.NOTIFY.SETTINGS_UPDATE_EMAIL_SUCCESS
+                $("#AccountCancelEmail").click()
+                $(".accountEmailRO").children("span").text( App.user.get("email") )
+                return
+            , ( err )->
+                switch err.error
+                    when 116
+                        text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL3
+                    when 117
+                        text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL2
+                    else
+                        text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL1
+
+                $('#AccountEmailInfo').text text
+                $("#AccountUpdateEmail").removeAttr "disabled"
+            return
+
         changePwd : ()->
             that = @
             old_pwd = @modal.$("#AccountCurrentPwd").val() || ""
@@ -69,6 +154,7 @@ define [
                 that.modal.$("#AccountUpdatePwd").removeAttr "disabled"
 
             return
+
 
         className: 'fullpage-settings'
 

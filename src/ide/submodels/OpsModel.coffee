@@ -51,7 +51,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # opsActionError : ""
       # importMsrId    : ""
       # requestId      : ""
-      # sampleId       : ""
 
     constructor : ( attr, opts )->
       attr = attr || {}
@@ -70,7 +69,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           return new Model( attr, opts )
 
       Backbone.Model.apply this, arguments
-      return
 
     initialize : ( attr, options )->
       if options
@@ -87,11 +85,21 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ### env:debug:end ###
       return
 
+    # Returns the project to which this opsmodel belongs.
+    project : ()->
+      for p in App.model.get("projects")
+        ops = p.stacks().get( @ ) or p.apps().get( @ )
+        if ops then return p
+      return null
+
     url : ()->
+      p = @project() || ""
+      if p then p = p.get("id")
+
       if @get("id")
-        "ops/#{@get('id')}"
+        "project/#{p}/ops/#{@get('id')}"
       else
-        "ops/#{@cid}/unsaved"
+        "project/#{p}/unsaved/#{@cid}"
 
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
@@ -146,29 +154,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         d.resolve @
         return d.promise
 
-      @__fjdTemplate( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
-
-    __fjdTemplate : ( self )->
-      sampleId = @get("sampleId")
-      if not sampleId then return
-
-      ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{sampleId}/#{sampleId}.json" })
-      .then (result) ->
-        try
-          j = JSON.parse( result )
-          delete j.id
-          delete j.signature
-          if not self.collection.isNameAvailable( j.name )
-            j.name = self.collection.getNewName( j.name )
-          self.attributes.region = j.region
-          self.__setJsonData j
-        catch e
-          j = null
-          self.attributes.region = "us-east-1"
-          self.__initJsonData()
-
-        if j then self.set "name", j.name
-        self
+      @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 
     __fjdImport : ( self )->
       if not @isImported() then return
@@ -548,10 +534,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     isProcessing : ()->
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
-
-    setStatusWithApiResult : ( state )->
-      console.info "OpsModel's state changes due to ApiRequest:", state, @
-      @set "state", OpsModelState[ state ]
 
     setStatusWithWSEvent : ( operation, state, error )->
       console.info "OpsModel's state changes due to WS event:", operation, state, error, @

@@ -1,6 +1,12 @@
 
 
-define ["Scene", "./TestView"], ( Scene, TestView )->
+define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notification" ], ( ApiRequest, Scene, lang )->
+
+  SSView = Backbone.View.extend {
+    initialize : ()-> @setElement $("<div class='global-loading'></div>").appendTo("#scenes")
+  }
+
+
 
   class StackStore extends Scene
 
@@ -9,21 +15,36 @@ define ["Scene", "./TestView"], ( Scene, TestView )->
     ###
     # Override this method to perform custom initialization
     initialize : ( attributes )->
-      @view = new TestView( { title : "StackStore" } )
+      @id = attributes.id
+      @view = new SSView()
+
       @activate()
+      @setTitle "Fetching Sample Stack"
 
-    # Override this method to check if the tab is closable. Return false to prevent closing.
-    isRemovable : ()-> true
+      self = @
+      ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{@id}/#{@id}.json" }).then ( res ) ->
+        try
+          j = JSON.parse( res )
+          delete j.id
+          delete j.signature
+        catch e
+          j = null
+          self.onParseError()
 
-    # This method will be called when the tab is switched to.
-    becomeActive : ()-> Scene.prototype.becomeActive.call this
+        if j then self.onParseSuccess( j )
+      , ()->
+        self.onLoadError()
 
-    # This method will be called when the tab is switched to something else.
-    becomeInactive : ()-> Scene.prototype.becomeInactive.call this
+    url : ()-> "store/#{@id}"
+    isWorkingOn : ( info )-> info is @id
 
-    # This method will be called when the scene is remove.
-    # One should override this method to do necessary cleanup.
-    cleanup : ()-> Scene.prototype.cleanup.call this
+    onParseSuccess : ( j )->
+      App.loadUrl( App.model.getPrivateProject().createStackByJson( j ).url() )
 
-    # Override this method so that we can locate a particular scene. The info can be anything.
-    isWorkingOn : ( info )-> false
+    onLoadError : ()->
+      notification "error", lang.NOTIFY.LOAD_SAMPLE_FAIL
+      @remove()
+
+    onParseError : ()->
+      notification "error", lang.NOTIFY.PARSE_SAMPLE_FAIL
+      @remove()

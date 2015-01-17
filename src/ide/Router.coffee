@@ -12,9 +12,10 @@ define [
   Backbone.Router.extend {
 
     routes :
-      ""                            : "openProject"
-      "project(/:project)"          : "openProject"
-      "project/:project/ops(/:ops)" : "openProject"
+      ""                                : "openProject"
+      "project(/:project)"              : "openProject"
+      "project/:project/ops(/:ops)"     : "openProject"
+      "project/:project/unsaved(/:ops)" : "openProject"
 
       "settings(/:page)"   : "openSettings"
       "store/:sampleId"    : "openStore"
@@ -24,8 +25,9 @@ define [
       new ProjectScene()
 
     openStore : ( id )->
-      console.log "opening store", arguments
-      new StackStore()
+      ss = App.sceneManager.find( id ) || new StackStore({ id : id })
+      ss.activate()
+      return
 
     openSettings : ()->
       console.log "opening store", arguments

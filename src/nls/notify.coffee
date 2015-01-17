@@ -332,3 +332,11 @@ module.exports =
     UPDATED_FULLNAME_FAIL:
       en: "Fail to update full name. Please try again later."
       zh: "全名更新失败，请稍后重试。"
+
+    LOAD_SAMPLE_FAIL:
+      en : "Fail to load the requested sample stack. Please try again later."
+      zh : "无法加载指定的模板，请稍后重试。"
+
+    PARSE_SAMPLE_FAIL:
+      en : "The sample stack is malformed. Please contact us for further support."
+      zh : "指定的模板格式不正确，无法加载。"

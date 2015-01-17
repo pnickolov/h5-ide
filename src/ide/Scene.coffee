@@ -25,10 +25,12 @@ define ["backbone"], ()->
       null
 
     # Call this method to activate the scene
-    activate : ()-> App.sceneManager.activate @
-    setUrl   : ( url )->   if @isActive() then Router.navigate( @url(), {replace:true} ); return
-    setTitle : ( title )-> if @isActive() then document.title = title; return
-
+    activate  : ()-> App.sceneManager.activate @
+    setTitle  : ( title )-> if @isActive() then document.title = title; return
+    updateUrl : ()->
+      url = @url()
+      if @isActive() and url then Router.navigate( url, {replace:true} )
+      return
 
     ###
       Methods that should be override
@@ -40,7 +42,9 @@ define ["backbone"], ()->
     isRemovable : ()-> true
 
     # This method will be called when the tab is switched to.
-    becomeActive : ()-> if @view then @view.$el.show()
+    becomeActive : ()->
+      if @view then @view.$el.show()
+      @updateUrl()
 
     # This method will be called when the tab is switched to something else.
     becomeInactive : ()->
@@ -62,6 +66,10 @@ define ["backbone"], ()->
 
     # Override this method so that we can locate a particular scene. The info can be anything.
     isWorkingOn : ( info )-> false
+
+    # Returns a string to indicate the url of the current scene.
+    # This url is used when the scene is being activated.
+    url : ()-> ""
 
   _.extend Scene.prototype, Backbone.Events
 

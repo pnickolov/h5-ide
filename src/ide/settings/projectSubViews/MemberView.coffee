@@ -1,2 +1,11 @@
 define [ 'backbone' ], () ->
-    Backbone.View.extend {}
+
+    Backbone.View.extend
+
+        initialize: () ->
+
+            @render()
+
+        render: () ->
+
+            @$el.html 'DGDGDGDGD'

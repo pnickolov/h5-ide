@@ -19,7 +19,6 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
       @view = new SSView()
 
       @activate()
-      @setTitle "Fetching Sample Stack"
 
       self = @
       ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{@id}/#{@id}.json" }).then ( res ) ->
@@ -35,7 +34,8 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
       , ()->
         self.onLoadError()
 
-    url : ()-> "store/#{@id}"
+    title : ()-> "Fetching Sample Stack"
+    url   : ()-> "store/#{@id}"
     isWorkingOn : ( info )-> info is @id
 
     onParseSuccess : ( j )->

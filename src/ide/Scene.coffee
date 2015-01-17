@@ -26,7 +26,11 @@ define ["backbone"], ()->
 
     # Call this method to activate the scene
     activate  : ()-> App.sceneManager.activate @
-    setTitle  : ( title )-> if @isActive() then document.title = title; return
+    updateTitle : ()->
+      title = @title()
+      if @isActive() and title then document.title = title; return
+      return
+
     updateUrl : ()->
       url = @url()
       if @isActive() and url then Router.navigate( url, {replace:true} )
@@ -45,6 +49,7 @@ define ["backbone"], ()->
     becomeActive : ()->
       if @view then @view.$el.show()
       @updateUrl()
+      @updateTitle()
 
     # This method will be called when the tab is switched to something else.
     becomeInactive : ()->
@@ -69,7 +74,8 @@ define ["backbone"], ()->
 
     # Returns a string to indicate the url of the current scene.
     # This url is used when the scene is being activated.
-    url : ()-> ""
+    url   : ()-> ""
+    title : ()-> ""
 
   _.extend Scene.prototype, Backbone.Events
 

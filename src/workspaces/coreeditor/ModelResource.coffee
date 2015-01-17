@@ -23,7 +23,6 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
     target
 
 
-  __detailExtend = Backbone.Model.extend
   __emptyObj     = {}
 
   ### env:dev ###
@@ -66,37 +65,6 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
 
     null
 
-  __detailExtend = ( protoProps, staticProps )->
-    ### jshint -W061 ###
-
-    parent = this
-
-    funcName = protoProps.type.replace(/\.|:/g, "_")
-    childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
-
-    if protoProps and protoProps.hasOwnProperty "constructor"
-      cstr = protoProps.constructor
-    else
-      cstr = ()-> return parent.apply( this, arguments )
-
-    child = childSpawner( cstr )
-
-    _.extend(child, parent, staticProps)
-
-    funcName = "PROTO_" + funcName
-    prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
-
-    Surrogate = prototypeSpawner( child )
-    Surrogate.prototype = parent.prototype
-    child.prototype = new Surrogate()
-
-    if protoProps
-      _.extend(child.prototype, protoProps)
-
-    child.__super__ = parent.prototype
-    ### jshint +W061 ###
-
-    child
   ### env:dev:end ###
 
   ###
@@ -461,7 +429,7 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
       protoProps.classId = _.uniqueId("dfc_")
 
       # Create subclass
-      subClass = __detailExtend.call( this, protoProps, staticProps )
+      subClass = (window.__detailExtend || Backbone.Model.extend).call( this, protoProps, staticProps )
 
       # Register this class, so that Design knows this class can handle resources.
       if not handleTypes then handleTypes = protoProps.type

@@ -361,6 +361,39 @@ if window.define
     'zh-cn' : true
   }
 
+### env:dev ###
+window.__detailExtend = ( protoProps, staticProps )->
+  ### jshint -W061 ###
+
+  parent = this
+
+  funcName = protoProps.type
+  childSpawner = eval( "(function(a){var #{funcName}=function(){ return a.apply(this,arguments);};return #{funcName};})" )
+
+  if protoProps and protoProps.hasOwnProperty "constructor"
+    cstr = protoProps.constructor
+  else
+    cstr = ()-> return parent.apply( this, arguments )
+
+  child = childSpawner( cstr )
+
+  _.extend(child, parent, staticProps)
+
+  funcName = "PROTO_" + funcName
+  prototypeSpawner = eval( "(function(a){var #{funcName}=function(){ this.constructor = a };return #{funcName};})" )
+
+  Surrogate = prototypeSpawner( child )
+  Surrogate.prototype = parent.prototype
+  child.prototype = new Surrogate()
+
+  if protoProps
+    _.extend(child.prototype, protoProps)
+
+  child.__super__ = parent.prototype
+  ### jshint +W061 ###
+
+  child
+### env:dev:end ###
 
 require [
   'ide/AppBundle'

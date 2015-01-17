@@ -170,13 +170,12 @@ p {
   margin: 0 0 10px;
   padding: 2px; }
 
-.clearfix {
-  *zoom: 1; }
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " "; }
 
 .clearfix:after {
-  content: "";
-  display: block;
-  height: 0;
   clear: both; }
 
 .hide {
@@ -10428,7 +10427,9 @@ h5.billing_usage_title {
   color: #5da4e5; }
 .fullpage-settings nav {
   width: 220px;
-  float: left;
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: 50px 15px 15px 15px; }
   .fullpage-settings nav .back-settings {
     font-size: 18px; }

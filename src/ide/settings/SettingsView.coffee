@@ -51,6 +51,8 @@ define [
                 mode: 'fullscreen'
                 disableFooter: true
                 compact: true
+            @modal.on "close", ->
+                Router.navigate("", {trigger: true, replace: false});
             @
 
         renderSettings: () ->

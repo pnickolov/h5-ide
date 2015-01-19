@@ -31,7 +31,7 @@ define [
 
     openSettings : ()->
       console.log "opening store", arguments
-      theSettings = App.sceneManager.find("AppSettings") || new Settings()
+      theSettings = new Settings()
       theSettings.activate()
       theSettings.view.$el.find("h1").html arguments[0] || "settings"
       return

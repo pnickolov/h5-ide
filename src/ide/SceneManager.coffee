@@ -47,6 +47,8 @@ define [ "backbone" ], ()->
 
       if scene.isRemoved() then return
 
+      scene.__isRemoved = true
+
       # Remove ref
       delete @__scenesById[scene.id]
       @__scenes.splice (@__scenes.indexOf scene), 1

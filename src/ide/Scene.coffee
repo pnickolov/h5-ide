@@ -20,7 +20,6 @@ define ["backbone"], ()->
     # Call this method to remove the scene when the scene is nolonger being used.
     remove : ()->
       if @__isRemoved then return
-      @__isRemoved = true
       App.sceneManager.remove(@, true)
       null
 

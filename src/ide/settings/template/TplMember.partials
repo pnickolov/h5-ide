@@ -1,56 +1,59 @@
 <!-- {{main}} -->
-<div class="title">Member(3)</div>
-<div class="operate">
-    <div class="invite">
-        <input class="input" placeholder="Invite by email address or username..." id="mail">
-        <button class="btn btn-blue" id="invite">Invite Member</button>
-    </div>
-    <button class="btn btn-blue" id="delete" disabled>Delete</button>
-</div>
-<div class="table-head-fix will-be-covered">
-    <table class="table-head">
-        <thead>
-            <tr>
-                {{#unless noCheckbox}}
-                <th>
-                    <div class="checkbox">
-                        <input id="t-m-select-all" type="checkbox" value="None">
-                        <label for="t-m-select-all"></label>
-                    </div>
-                </th>
-                {{/unless}}
-                {{#each columns}}
-                <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
-                {{/each}}
-            </tr>
-        </thead>
-    </table>
-    {{#unless useCustomScroll}}
-    <div style="overflow-y:auto;overflow-x:hidden;height: {{height}}px;">
-        {{else}}
-        <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
-            <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="scroll-content" style="display:block;">
-                {{/unless}}
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            {{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}
-                            {{#each columns}}
-                            <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
-                            {{/each}}
-                        </tr>
-                    </thead>
-                    <tbody class="t-m-content">
-                    </tbody>
-                </table>
-                {{#unless useCustomScroll}}
-            </div>
-            {{else}}
+<div class="loading-spinner"></div>
+<div class="hide content" data-bind="true">
+    <div class="title">Member(<span class="memlist-count"></span>)</div>
+    <div class="operate">
+        <div class="invite">
+            <input class="input" placeholder="Invite by email address or username..." id="mail">
+            <button class="btn btn-blue" id="invite">Invite Member</button>
         </div>
+        <button class="btn btn-blue" id="delete" disabled>Delete</button>
     </div>
-    {{/unless}}
+    <div class="table-head-fix will-be-covered">
+        <table class="table-head">
+            <thead>
+                <tr>
+                    {{#unless noCheckbox}}
+                    <th>
+                        <div class="checkbox">
+                            <input id="t-m-select-all" type="checkbox" value="None">
+                            <label for="t-m-select-all"></label>
+                        </div>
+                    </th>
+                    {{/unless}}
+                    {{#each columns}}
+                    <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+        </table>
+        {{#unless useCustomScroll}}
+        <div>
+            {{else}}
+            <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
+                <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content" style="display:block;">
+                    {{/unless}}
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                {{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}
+                                {{#each columns}}
+                                <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                        <tbody class="t-m-content">
+                        </tbody>
+                    </table>
+                    {{#unless useCustomScroll}}
+                </div>
+                {{else}}
+            </div>
+        </div>
+        {{/unless}}
+    </div>
 </div>
 
 <!-- {{list}} -->
@@ -71,7 +74,7 @@
     </td>
     <td class="{{role}}">
         <span class="memlist-view-mode">ADMIN</span>
-        <div class="selectbox memlist-edit-mode" id="memtype">
+        <div class="selectbox memlist-edit-mode memtype">
             <div class="selection">{{role}}</div>
             <ul class="dropdown">
                 <li data-id="ADMIN" class="item {{#ifCond protocol 'ADMIN'}}selected{{/ifCond}}">
@@ -90,10 +93,10 @@
         </div>
     </td>
     <td>{{status}}</td>
-    <td>{{#if canCancel}}<button class="btn btn-red" id="cancel">Cancel Invitation</button>{{/if}}</td>
+    <td>{{#if canCancel}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/if}}</td>
     <td>
-        <button class="btn btn-blue memlist-edit-mode" id="done">Done</button>
-        <button class="icon-edit memlist-view-mode" id="edit"></button>
+        <button class="btn btn-blue memlist-edit-mode done">Done</button>
+        <button class="icon-edit memlist-view-mode edit"></button>
     </td>
 </tr>
 {{/each}}

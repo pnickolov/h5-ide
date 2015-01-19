@@ -25,7 +25,7 @@
 
     }
     section.setting-content {
-        min-width: 400px;
+        min-width: 600px;
         margin-left: 300px;
         padding: 50px 0 0 0;
 
@@ -34,6 +34,13 @@
             padding-bottom: 5px;
             font-size: 22px;
             border-bottom: 1px solid #4d4e8c;
+        }
+
+        & > article {
+            color: white;
+            h3 { color: #999; font-size: 20px; }
+
+
         }
 
         dl {
@@ -59,15 +66,18 @@
             margin-left : 0;
         }
 
+        .icon-edit {
+            color: #909091;
+            cursor: pointer;
+            &:hover { color: #148BE6; }
+        }
+
         .member-setting {
             #mail {
                 width: 370px;
             }
             .invite {
                 float: left;
-            }
-            .icon-edit {
-                color: white;
             }
             .table th, .table td {
                 overflow: inherit;

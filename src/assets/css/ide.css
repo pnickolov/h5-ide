@@ -6773,8 +6773,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10104,7 +10103,7 @@ h5.billing_usage_title {
     display: block;
     padding: 5px 0; }
 .fullpage-settings section.setting-content {
-  min-width: 400px;
+  min-width: 600px;
   margin-left: 300px;
   padding: 50px 0 0 0; }
   .fullpage-settings section.setting-content header {
@@ -10112,6 +10111,11 @@ h5.billing_usage_title {
     padding-bottom: 5px;
     font-size: 22px;
     border-bottom: 1px solid #4d4e8c; }
+  .fullpage-settings section.setting-content > article {
+    color: white; }
+    .fullpage-settings section.setting-content > article h3 {
+      color: #999;
+      font-size: 20px; }
   .fullpage-settings section.setting-content dl {
     line-height: 36px; }
     .fullpage-settings section.setting-content dl dt, .fullpage-settings section.setting-content dl dd {
@@ -10134,12 +10138,15 @@ h5.billing_usage_title {
     color: #148BE6;
     padding: 3px 0;
     margin-left: 0; }
+  .fullpage-settings section.setting-content .icon-edit {
+    color: #909091;
+    cursor: pointer; }
+    .fullpage-settings section.setting-content .icon-edit:hover {
+      color: #148BE6; }
   .fullpage-settings section.setting-content .member-setting #mail {
     width: 370px; }
   .fullpage-settings section.setting-content .member-setting .invite {
     float: left; }
-  .fullpage-settings section.setting-content .member-setting .icon-edit {
-    color: white; }
   .fullpage-settings section.setting-content .member-setting .table th, .fullpage-settings section.setting-content .member-setting .table td {
     overflow: inherit; }
   .fullpage-settings section.setting-content .member-setting .checkbox-row {

@@ -482,7 +482,7 @@ define [
 
       @updateModal = new Modal
         title: lang.IDE.HEAD_INFO_LOADING
-        template: MC.template.loadingSpiner
+        template: MC.template.loadingSpinner
         disableClose: true
         hasScroll: true
         maxHeight: "450px"

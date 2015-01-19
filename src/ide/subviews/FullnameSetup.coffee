@@ -40,7 +40,7 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
       if not (firstname and lastname)
         return false
       @modal.find(".modal-confirm").attr('disabled', true)
-      @modal.setContent MC.template.loadingSpiner()
+      @modal.setContent MC.template.loadingSpinner()
       ApiRequest("account_update_account", { attributes : {
         first_name : firstname
         last_name  : lastname

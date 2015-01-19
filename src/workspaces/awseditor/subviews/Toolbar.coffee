@@ -529,7 +529,7 @@ define [
       DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.IDE.HEAD_INFO_LOADING
-        template: MC.template.loadingSpiner
+        template: MC.template.loadingSpinner
         disableClose: true
         cancel: "Close"
 

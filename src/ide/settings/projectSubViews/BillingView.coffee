@@ -10,7 +10,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
 
         initialize: ->
             @$el.html template.billingLoadingFrame()
-            @$el.find("#billing-status").append MC.template.loadingSpiner()
+            @$el.find("#billing-status").append MC.template.loadingSpinner()
             @
         render : ()->
             that = @

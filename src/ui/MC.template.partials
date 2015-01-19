@@ -676,7 +676,7 @@ Additional Notes and Questions
     {{i18n "CANNOT_BE_MODIFIED_NOW"}}</p>
 <p>{{i18n "WAIT_FOR_DB_THEN_UPDATE"}}</p>
 
-<!-- {{loadingSpiner}} -->
+<!-- {{loadingSpinner}} -->
 <div class="loading-spinner"></div>
 
 <!-- {{nodeAction}} -->

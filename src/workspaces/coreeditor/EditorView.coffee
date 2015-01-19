@@ -211,7 +211,7 @@ define [
       }
       $(OpsEditorTpl.modal.saveAndCloseBtn()).prependTo(modal.$(".modal-footer")).click ()->
         saveIcon = $("#OpsEditor .icon-save")
-        modal.setContent(MC.template.loadingSpiner()).setTitle(lang.IDE.SAVING_STACK)
+        modal.setContent(MC.template.loadingSpinner()).setTitle(lang.IDE.SAVING_STACK)
         .$(".modal-footer").hide().end()
         .find(".modal-header .modal-close")
         .off("click")

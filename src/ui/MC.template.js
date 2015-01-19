@@ -1116,7 +1116,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   return "<div class=\"loading-spinner\"></div>";
   };
-TEMPLATE.loadingSpiner=Handlebars.template(__TEMPLATE__);
+TEMPLATE.loadingSpinner=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {

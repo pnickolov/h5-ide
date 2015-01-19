@@ -12,7 +12,7 @@ define [
   Backbone.Router.extend {
 
     routes :
-      ""                                : "openProject"
+      ""                                : "openDefaultProject"
       "project(/:project)"              : "openProject"
       "project/:project/ops(/:ops)"     : "openProject"
       "project/:project/unsaved(/:ops)" : "openProject"
@@ -22,7 +22,7 @@ define [
 
     openDefaultProject : ()->
       console.log "opening default project", arguments
-      new ProjectScene()
+      App.sceneManager.find("DefaultProject") || new ProjectScene({id: "DefaultProject"})
 
     openStore : ( id )-> new StackStore({ id : id })
 

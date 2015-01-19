@@ -6773,7 +6773,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10151,6 +10152,8 @@ h5.billing_usage_title {
     overflow: inherit; }
   .fullpage-settings section.setting-content .member-setting .checkbox-row {
     width: 30px; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item #memtype {
+    width: 165px; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .avatar {
     float: left; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .info {
@@ -10161,8 +10164,8 @@ h5.billing_usage_title {
     display: none; }
   .fullpage-settings section.setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
     display: block; }
-  .fullpage-settings section.setting-content .member-setting .memlist-item #memtype {
-    width: 165px; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-pending {
+    color: #ff0; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .selection .desc {
     display: none; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox li {

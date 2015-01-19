@@ -73,15 +73,15 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.selectbox'
                     avatar: ""
                     name: "John Doe"
                     mail: "id@mc2.io"
-                    role: "ADMIN"
-                    status: "Active"
+                    role: "COLLABORATOR"
+                    status: "Pending"
                 },
                 {
                     id: "3"
                     avatar: ""
                     name: "John Doe"
                     mail: "id@mc2.io"
-                    role: "ADMIN"
+                    role: "OBSERVER"
                     status: "Active"
                 }
             ]

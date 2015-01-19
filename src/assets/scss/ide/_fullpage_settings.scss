@@ -86,6 +86,9 @@
                 width: 30px;
             }
             .memlist-item {
+                #memtype {
+                    width: 165px;
+                }
                 .avatar {
                     float: left;
                 }
@@ -103,8 +106,8 @@
                         display: block;
                     }
                 }
-                #memtype {
-                    width: 165px;
+                .memlist-pending {
+                    color: #ff0;
                 }
                 .selectbox {
                     .selection {

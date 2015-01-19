@@ -73,26 +73,26 @@
         </div>
     </td>
     <td class="{{role}}">
-        <span class="memlist-view-mode">ADMIN</span>
+        <span class="memlist-view-mode">{{role}}</span>
         <div class="selectbox memlist-edit-mode memtype">
             <div class="selection">{{role}}</div>
             <ul class="dropdown">
-                <li data-id="ADMIN" class="item {{#ifCond protocol 'ADMIN'}}selected{{/ifCond}}">
+                <li data-id="ADMIN" class="item {{#ifCond role 'ADMIN'}}selected{{/ifCond}}">
                     <div class="name">ADMIN</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
-                <li data-id="COLLABORATOR" class="item {{#ifCond protocol 'COLLABORATOR'}}selected{{/ifCond}}">
+                <li data-id="COLLABORATOR" class="item {{#ifCond role 'COLLABORATOR'}}selected{{/ifCond}}">
                     <div class="name">COLLABORATOR</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
-                <li data-id="OBSERVER" class="item {{#ifCond protocol 'OBSERVER'}}selected{{/ifCond}}">
+                <li data-id="OBSERVER" class="item {{#ifCond role 'OBSERVER'}}selected{{/ifCond}}">
                     <div class="name">OBSERVER</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
             </ul>
         </div>
     </td>
-    <td>{{status}}</td>
+    <td class="{{#ifCond status 'Pending'}}memlist-pending{{/ifCond}}">{{status}}</td>
     <td>{{#if canCancel}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/if}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">Done</button>

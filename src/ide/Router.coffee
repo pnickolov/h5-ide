@@ -65,19 +65,4 @@ define [
         @navigate currentUrl, { replace : true }
 
       false
-
-    # execute : ()->
-    #   @__forceReplace = true
-    #   Backbone.Router.prototype.execute.apply this, arguments
-    #   @__forceReplace = false
-    #   return
-
-    # navigate : ( fragment, options )->
-    #   if @__forceReplace
-    #     options = options || {}
-    #     options.replace = true
-
-    #   $( document ).trigger "urlroute"
-
-    #   Backbone.Router.prototype.navigate.apply this, arguments
   }

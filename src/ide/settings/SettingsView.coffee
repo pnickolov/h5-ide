@@ -52,7 +52,7 @@ define [
                 disableFooter: true
                 compact: true
             @modal.on "close", ->
-                Router.navigate("", {trigger: true, replace: false});
+                Router.navigate("", {trigger: true, replace: true});
             @
 
         renderSettings: () ->

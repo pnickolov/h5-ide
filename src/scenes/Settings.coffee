@@ -19,11 +19,11 @@ define ["Scene", "../ide/settings/SettingsView"], ( Scene, SettingsView )->
     becomeActive : ()-> Scene.prototype.becomeActive.call this
 
     # This method will be called when the tab is switched to something else.
-    becomeInactive : ()-> Scene.prototype.becomeInactive.call this
+    becomeInactive : ()-> Scene.prototype.remove.call this
 
     # This method will be called when the scene is remove.
     # One should override this method to do necessary cleanup.
-    cleanup : ()-> Scene.prototype.cleanup.call this
+    cleanup : ()-> #Scene.prototype.cleanup.call this
 
     # Override this method so that we can locate a particular scene. The info can be anything.
     isWorkingOn : ( info )-> info is "AppSettings"

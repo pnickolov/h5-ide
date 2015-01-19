@@ -10172,3 +10172,79 @@ h5.billing_usage_title {
     padding: 3px;
     display: inline-block;
     vertical-align: middle; }
+.fullpage-settings .token-table {
+  position: relative;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.1);
+  font-size: 12px; }
+  .fullpage-settings .token-table.empty > header {
+    display: none; }
+  .fullpage-settings .token-table .tokenName, .fullpage-settings .token-table .tokenToken, .fullpage-settings .token-table .tokenControl {
+    margin: 0 5px;
+    line-height: 20px;
+    padding: 5px;
+    height: 20px;
+    width: 90px;
+    float: left; }
+  .fullpage-settings .token-table .tokenToken {
+    width: 230px; }
+  .fullpage-settings .token-table .tokenControl {
+    width: 60px;
+    padding: 0;
+    margin-top: 3px; }
+    .fullpage-settings .token-table .tokenControl button.tooltip {
+      cursor: pointer;
+      padding: 0;
+      color: #666; }
+      .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit {
+        margin-right: 12px; }
+      .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit:hover {
+        color: #148BE6; }
+      .fullpage-settings .token-table .tokenControl button.tooltip.icon-delete:hover {
+        color: #ec3c38; }
+  .fullpage-settings .token-table input.tokenName {
+    line-height: 18px; }
+  .fullpage-settings .token-table input.tokenName[readonly] {
+    border: none;
+    background: none; }
+  .fullpage-settings .token-table .tokenDone {
+    display: none; }
+  .fullpage-settings .token-table .tokenDone {
+    min-width: 80px;
+    padding: 4px 0;
+    line-height: 20px; }
+  .fullpage-settings .token-table > .scroll-wrap {
+    height: 168px; }
+.fullpage-settings #TokenList:empty {
+  height: 100%; }
+  .fullpage-settings #TokenList:empty:before {
+    content: attr(data-empty);
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    top: 50%;
+    left: 0;
+    position: absolute; }
+.fullpage-settings #TokenList > li {
+  clear: both;
+  height: 30px; }
+.fullpage-settings #TokenList > li:hover .tokenControl, .fullpage-settings #TokenList > li.editing .tokenControl {
+  display: block; }
+.fullpage-settings #TokenList > li.editing .tooltip {
+  display: none; }
+.fullpage-settings #TokenList > li.editing .tokenDone {
+  display: block; }
+.fullpage-settings #TokenList .tokenToken {
+  color: #eee; }
+.fullpage-settings #TokenList .tokenName.input {
+  font-size: 12px; }
+.fullpage-settings #TokenRmConfirm h3 {
+  font-size: 18px;
+  padding: 10px 0;
+  color: #eee;
+  margin-bottom: 10px; }
+.fullpage-settings #TokenRmConfirm p {
+  color: #ccc; }
+.fullpage-settings .cred-btn-wrap {
+  margin-top: 20px; }

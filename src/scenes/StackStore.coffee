@@ -15,7 +15,7 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
         ss.activate()
         return ss
 
-      new Scene( attr )
+      return Scene.call this, attr
 
     ###
       Methods that should be override

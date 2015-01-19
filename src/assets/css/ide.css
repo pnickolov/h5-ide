@@ -10105,18 +10105,20 @@ h5.billing_usage_title {
     padding: 5px 0; }
 .fullpage-settings section.setting-content {
   min-width: 600px;
+  max-width: 800px;
   margin-left: 300px;
   padding: 50px 0 0 0; }
   .fullpage-settings section.setting-content header {
     color: white;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 22px;
     border-bottom: 1px solid #4d4e8c; }
   .fullpage-settings section.setting-content > article {
     color: white; }
     .fullpage-settings section.setting-content > article h3 {
       color: #999;
-      font-size: 20px; }
+      font-size: 16px; }
   .fullpage-settings section.setting-content dl {
     line-height: 36px; }
     .fullpage-settings section.setting-content dl dt, .fullpage-settings section.setting-content dl dd {
@@ -10144,6 +10146,34 @@ h5.billing_usage_title {
     cursor: pointer; }
     .fullpage-settings section.setting-content .icon-edit:hover {
       color: #148BE6; }
+  .fullpage-settings section.setting-content .icon-delete::before {
+    margin-right: 5px; }
+  .fullpage-settings section.setting-content .basic-settings h3 {
+    width: 500px; }
+    .fullpage-settings section.setting-content .basic-settings h3 .icon-edit {
+      float: right;
+      line-height: 40px;
+      clear: both; }
+    .fullpage-settings section.setting-content .basic-settings h3 span {
+      color: white;
+      padding-left: 30px; }
+  .fullpage-settings section.setting-content .basic-settings > div {
+    margin: 18px 0;
+    position: relative; }
+    .fullpage-settings section.setting-content .basic-settings > div::after {
+      display: block;
+      border-bottom: 1px solid #979797;
+      content: '';
+      width: 500px;
+      height: 13px; }
+    .fullpage-settings section.setting-content .basic-settings > div:last-child::after {
+      display: none; }
+    .fullpage-settings section.setting-content .basic-settings > div p {
+      padding: 0 8px; }
+    .fullpage-settings section.setting-content .basic-settings > div .icon-delete {
+      margin-top: 10px;
+      position: absolute;
+      left: 389px; }
   .fullpage-settings section.setting-content .member-setting #mail {
     width: 370px; }
   .fullpage-settings section.setting-content .member-setting .invite {

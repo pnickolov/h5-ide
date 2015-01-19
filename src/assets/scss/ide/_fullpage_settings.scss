@@ -26,19 +26,21 @@
     }
     section.setting-content {
         min-width: 600px;
+        max-width: 800px;
         margin-left: 300px;
         padding: 50px 0 0 0;
 
         header {
             color: white;
-            padding-bottom: 5px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 22px;
             border-bottom: 1px solid #4d4e8c;
         }
 
         & > article {
             color: white;
-            h3 { color: #999; font-size: 20px; }
+            h3 { color: #999; font-size: 16px; }
 
 
         }
@@ -70,6 +72,43 @@
             color: #909091;
             cursor: pointer;
             &:hover { color: #148BE6; }
+        }
+
+        .icon-delete { &::before { margin-right: 5px; } }
+
+        .basic-settings {
+            h3 {
+                width: 500px;
+                .icon-edit { float: right; line-height: 40px; clear: both; }
+                span { color: white; padding-left: 30px; }
+            }
+
+            & > div {
+                margin: 18px 0;
+                position: relative;
+
+                &::after {
+                    display: block;
+                    border-bottom: 1px solid #979797;
+                    content: '';
+                    width: 500px;
+                    height: 13px;
+                }
+
+                &:last-child::after {
+                    display: none;
+                }
+
+                p {
+                    padding: 0 8px;
+                }
+
+                .icon-delete {
+                    margin-top: 10px;
+                    position: absolute;
+                    left: 389px;
+                }
+            }
         }
 
         .member-setting {

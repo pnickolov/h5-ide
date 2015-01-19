@@ -6773,7 +6773,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10133,16 +10134,32 @@ h5.billing_usage_title {
     color: #148BE6;
     padding: 3px 0;
     margin-left: 0; }
+  .fullpage-settings section.setting-content .member-setting #mail {
+    width: 370px; }
   .fullpage-settings section.setting-content .member-setting .invite {
     float: left; }
   .fullpage-settings section.setting-content .member-setting .icon-edit {
     color: white; }
   .fullpage-settings section.setting-content .member-setting .table th, .fullpage-settings section.setting-content .member-setting .table td {
-    overflow: auto; }
-  .fullpage-settings section.setting-content .member-setting .item .avatar {
+    overflow: inherit; }
+  .fullpage-settings section.setting-content .member-setting .checkbox-row {
+    width: 30px; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .avatar {
     float: left; }
-  .fullpage-settings section.setting-content .member-setting .item .info {
+  .fullpage-settings section.setting-content .member-setting .memlist-item .info {
     float: left; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-edit-mode {
+    display: none; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item.edit .memlist-view-mode {
+    display: none; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
+    display: block; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item #memtype {
+    width: 165px; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .selection .desc {
+    display: none; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox li {
+    overflow: hidden; }
   .fullpage-settings section.setting-content .member-setting #delete {
     float: right; }
   .fullpage-settings section.setting-content .accountEditWrap {

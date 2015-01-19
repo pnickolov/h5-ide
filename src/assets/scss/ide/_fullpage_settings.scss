@@ -60,6 +60,9 @@
         }
 
         .member-setting {
+            #mail {
+                width: 370px;
+            }
             .invite {
                 float: left;
             }
@@ -67,14 +70,41 @@
                 color: white;
             }
             .table th, .table td {
-                overflow: auto;
+                overflow: inherit;
             }
-            .item {
+            .checkbox-row {
+                width: 30px;
+            }
+            .memlist-item {
                 .avatar {
                     float: left;
                 }
                 .info {
                     float: left;
+                }
+                .memlist-edit-mode {
+                    display: none;
+                }
+                &.edit {
+                    .memlist-view-mode {
+                        display: none;
+                    }
+                    .memlist-edit-mode {
+                        display: block;
+                    }
+                }
+                #memtype {
+                    width: 165px;
+                }
+                .selectbox {
+                    .selection {
+                        .desc {
+                            display: none;
+                        }
+                    }
+                    li {
+                        overflow: hidden;
+                    }
                 }
             }
             #delete {

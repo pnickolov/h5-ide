@@ -1,11 +1,11 @@
 <!-- {{main}} -->
-<h1>Member(3)</h1>
+<div class="title">Member(3)</div>
 <div class="operate">
     <div class="invite">
         <input class="input" placeholder="Invite by email address or username..." id="mail">
-        <button class="btn btn-blue" id="confirm">Invite Member</button>
+        <button class="btn btn-blue" id="invite">Invite Member</button>
     </div>
-    <button class="btn btn-blue" id="delete">Delete</button>
+    <button class="btn btn-blue" id="delete" disabled>Delete</button>
 </div>
 <div class="table-head-fix will-be-covered">
     <table class="table-head">
@@ -36,13 +36,13 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            {{#unless noCheckbox}}<th><div class="th-inner"></div></th>{{/unless}}
+                            {{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}
                             {{#each columns}}
                             <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                             {{/each}}
                         </tr>
                     </thead>
-                    <tbody class='t-m-content'>
+                    <tbody class="t-m-content">
                     </tbody>
                 </table>
                 {{#unless useCustomScroll}}
@@ -55,8 +55,8 @@
 
 <!-- {{list}} -->
 {{#each this}}
-<tr class="item" data-id="{{id}}">
-    <td>
+<tr class="item memlist-item" data-id="{{id}}">
+    <td class="checkbox-row">
         <div class="checkbox">
             <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
             <label for="sslcert-select-{{id}}"></label>
@@ -70,16 +70,30 @@
         </div>
     </td>
     <td class="{{role}}">
-        <div class="selectbox">
+        <span class="memlist-view-mode">ADMIN</span>
+        <div class="selectbox memlist-edit-mode" id="memtype">
             <div class="selection">{{role}}</div>
             <ul class="dropdown">
-                <li data-id="ADMIN" class="item {{#ifCond protocol 'ADMIN'}}selected{{/ifCond}}">ADMIN</li>
-                <li data-id="COLLABORATOR" class="item {{#ifCond protocol 'COLLABORATOR'}}selected{{/ifCond}}">COLLABORATOR</li>
-                <li data-id="OBSERVER" class="item {{#ifCond protocol 'OBSERVER'}}selected{{/ifCond}}">OBSERVER</li>
+                <li data-id="ADMIN" class="item {{#ifCond protocol 'ADMIN'}}selected{{/ifCond}}">
+                    <div class="name">ADMIN</div>
+                    <div class="desc">%explain what an admin can do.can docan do cando %</div>
+                </li>
+                <li data-id="COLLABORATOR" class="item {{#ifCond protocol 'COLLABORATOR'}}selected{{/ifCond}}">
+                    <div class="name">COLLABORATOR</div>
+                    <div class="desc">%explain what an admin can do.can docan do cando %</div>
+                </li>
+                <li data-id="OBSERVER" class="item {{#ifCond protocol 'OBSERVER'}}selected{{/ifCond}}">
+                    <div class="name">OBSERVER</div>
+                    <div class="desc">%explain what an admin can do.can docan do cando %</div>
+                </li>
             </ul>
         </div>
     </td>
     <td>{{status}}</td>
-    <td><button class="icon-edit"></button></td>
+    <td>{{#if canCancel}}<button class="btn btn-red" id="cancel">Cancel Invitation</button>{{/if}}</td>
+    <td>
+        <button class="btn btn-blue memlist-edit-mode" id="done">Done</button>
+        <button class="icon-edit memlist-view-mode" id="edit"></button>
+    </td>
 </tr>
 {{/each}}

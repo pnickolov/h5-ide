@@ -7,8 +7,15 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
   }
 
 
-
   class StackStore extends Scene
+
+    constructor : ( attr )->
+      ss = App.sceneManager.find( attr.id )
+      if ss
+        ss.activate()
+        return ss
+
+      new Scene( attr )
 
     ###
       Methods that should be override

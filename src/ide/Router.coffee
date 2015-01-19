@@ -24,10 +24,7 @@ define [
       console.log "opening default project", arguments
       new ProjectScene()
 
-    openStore : ( id )->
-      ss = App.sceneManager.find( id ) || new StackStore({ id : id })
-      ss.activate()
-      return
+    openStore : ( id )-> new StackStore({ id : id })
 
     openSettings : ()->
       console.log "opening store", arguments
@@ -37,7 +34,6 @@ define [
       return
 
     openProject : ()->
-      console.log "opening prjoject", arguments
       new ProjectScene()
 
     start : ()->

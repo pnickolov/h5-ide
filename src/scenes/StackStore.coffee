@@ -40,6 +40,7 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
 
     onParseSuccess : ( j )->
       App.loadUrl( App.model.getPrivateProject().createStackByJson( j ).url() )
+      @remove()
 
     onLoadError : ()->
       notification "error", lang.NOTIFY.LOAD_SAMPLE_FAIL

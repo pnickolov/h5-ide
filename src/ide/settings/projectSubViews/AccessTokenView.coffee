@@ -15,6 +15,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backb
             @setElement template()
             $(".project-subview").html @el
             @updateTokenTab()
+            @
 
         editToken : ( evt )->
             $t = $(evt.currentTarget)

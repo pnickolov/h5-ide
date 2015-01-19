@@ -53,7 +53,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 notification 'error', "Error while getting user payment info, please try again later."
 
             @listenTo App.user, "paymentUpdate", -> that.updateUsage()
-            @$el
+            @
 
         getPaymentHistory: ()->
             historyDefer = new Q.defer()

@@ -54,7 +54,7 @@ define ['backbone', '../template/TplMember', 'UI.selectbox'], (Backbone, TplMemb
             )
             @memList = @$el.find('.t-m-content')
             @renderList()
-            @$el
+            @
 
         renderList: () ->
 

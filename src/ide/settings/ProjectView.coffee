@@ -40,7 +40,7 @@ define [
             @
 
         loadSub: ( e ) ->
-            @$('.project-subview').html(@renderSub($(e.currentTarget).data('id')))
+            @$('.project-subview').html(@renderSub($(e.currentTarget).data('id')).el)
 
         renderSub: ( tab ) ->
             @setTitle tab

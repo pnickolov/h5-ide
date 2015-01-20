@@ -9,6 +9,8 @@ define [ "backbone" ], ()->
       @__scenes      = []
       @__scenesById  = {}
       @__activeScene = null
+
+      @__lastActivateList = []
       @
 
     scenes : ()->   @__scenes.slice 0
@@ -34,8 +36,17 @@ define [ "backbone" ], ()->
 
       @__activeScene = scene
 
+      @__removefromlastActive( scene )
+      @__lastActivateList.push scene
+
       scene.becomeActive()
       scene
+
+    __removefromlastActive : ( scene )->
+      for as, idx in @__lastActivateList
+        if as is scene
+          @__lastActivateList.splice( idx, 1 )
+          break
 
     remove : ( scene, force )->
 
@@ -52,7 +63,12 @@ define [ "backbone" ], ()->
       # Remove ref
       delete @__scenesById[scene.id]
       @__scenes.splice (@__scenes.indexOf scene), 1
-      if @__activeScene is scene then @__activeScene = null
+      @__removefromlastActive( scene )
+
+      if @__activeScene is scene
+        @__activeScene = null
+        if @__lastActivateList.length
+          @__lastActivateList[ @__lastActivateList.length - 1 ].activate()
 
       # Cleanup
       scene.stopListening()

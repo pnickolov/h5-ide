@@ -236,7 +236,7 @@
   .select2-drop.debugger .select2-results li {
     border: none; }
   .select2-drop.debugger .select2-results-dept-0 {
-    padding: 3px 0 0 8px; }
+    padding: 3px 8px 0; }
   .select2-drop.debugger .select2-results-dept-0 > .select2-result-label {
     text-align: center;
     padding: 5px 0; }

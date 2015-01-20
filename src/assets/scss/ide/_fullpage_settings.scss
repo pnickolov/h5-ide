@@ -41,8 +41,6 @@
         & > article {
             color: #999999;
             h3 { color: #999; font-size: 16px; }
-
-
         }
 
         dl {
@@ -109,6 +107,57 @@
                     left: 389px;
                 }
             }
+        }
+
+        .credential {
+            padding: 0 8px;
+
+            .instruct {
+                padding-bottom: 15px;
+            }
+
+            .setup-credential {
+                margin: 20px 0 0 180px;
+            }
+
+            .demo-note {
+                padding-top: 20px;
+            }
+
+            ul.credential-list {
+                li {
+                    width: 500px;
+                    height: 80px;
+                    border: 1px solid #7c7c83;
+                    border-radius: 3px;
+                    position: relative;
+                    &.aws-credential { border-left: 6px solid #59e5c5; }
+
+                    .credential-logo {
+                        position: absolute;
+                        left: 0;
+                        width: 80px;
+                        height: 80px;
+                        background: #f9af4e;
+                        &::before {
+                            content: "logo here";
+                            color: white;
+                        }
+                    }
+                    .credential-name {
+                        margin-left: 88px;
+                        color: white;
+                        font-size: 16px;
+                        padding: 13px 0 15px 0;
+                    }
+                    .credential-describe {
+                        margin-left: 88px;
+                    }
+                }
+
+            }
+
+
         }
 
         .member-setting {

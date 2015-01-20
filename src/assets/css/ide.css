@@ -6773,8 +6773,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10174,6 +10173,38 @@ h5.billing_usage_title {
       margin-top: 10px;
       position: absolute;
       left: 389px; }
+  .fullpage-settings section.setting-content .credential {
+    padding: 0 8px; }
+    .fullpage-settings section.setting-content .credential .instruct {
+      padding-bottom: 15px; }
+    .fullpage-settings section.setting-content .credential .setup-credential {
+      margin: 20px 0 0 180px; }
+    .fullpage-settings section.setting-content .credential .demo-note {
+      padding-top: 20px; }
+    .fullpage-settings section.setting-content .credential ul.credential-list li {
+      width: 500px;
+      height: 80px;
+      border: 1px solid #7c7c83;
+      border-radius: 3px;
+      position: relative; }
+      .fullpage-settings section.setting-content .credential ul.credential-list li.aws-credential {
+        border-left: 6px solid #59e5c5; }
+      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-logo {
+        position: absolute;
+        left: 0;
+        width: 80px;
+        height: 80px;
+        background: #f9af4e; }
+        .fullpage-settings section.setting-content .credential ul.credential-list li .credential-logo::before {
+          content: "logo here";
+          color: white; }
+      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-name {
+        margin-left: 88px;
+        color: white;
+        font-size: 16px;
+        padding: 13px 0 15px 0; }
+      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-describe {
+        margin-left: 88px; }
   .fullpage-settings section.setting-content .member-setting #mail {
     width: 280px; }
   .fullpage-settings section.setting-content .member-setting #invite {

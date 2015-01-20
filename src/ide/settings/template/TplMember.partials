@@ -100,3 +100,9 @@
     </td>
 </tr>
 {{/each}}
+
+<!-- {{deletePopup}} -->
+<div class="info">Do you confirm to delete selected %user/users%?</div>
+<div class="operate">
+    <button class="confirm btn btn-red">Delete</button>
+</div>

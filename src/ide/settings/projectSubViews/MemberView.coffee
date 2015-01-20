@@ -1,4 +1,4 @@
-define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.selectbox', 'UI.parsley', 'MC.validate'], (Backbone, TplMember, lang) ->
+define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopup', 'UI.selectbox', 'UI.parsley', 'UI.errortip', 'UI.table', 'MC.validate'], (Backbone, TplMember, lang, bubblePopup) ->
 
     Backbone.View.extend
 
@@ -106,9 +106,10 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.selectbox'
                 mail = $mail.val()
 
                 $mail.parsley 'custom', (val) ->
+                    return false if not val
                     if not MC.validate('email', val)
                         return lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
-                # return if not $mail.parsley 'validate'
+                return if not $mail.parsley 'validate'
 
                 # change button state
                 originTxt = $invite.text()
@@ -122,24 +123,29 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.selectbox'
 
         removeMember: (event) ->
 
+            that = @
+
             $delete = $(event.currentTarget)
 
             if $delete.prop('disabled') is false
 
-                memList = []
-                _.each @$el.find('.memlist-item.selected'), (item) ->
-                    memId = $(item).data('id')
-                    memList.push(memId)
+                bubblePopup $delete, TplMember.deletePopup(), {
+                    '.confirm': () ->
+                        memList = []
+                        _.each that.$el.find('.memlist-item.selected'), (item) ->
+                            memId = $(item).data('id')
+                            memList.push(memId)
 
-                # change button state
-                originTxt = $delete.text()
-                $delete.prop 'disabled', true
-                $delete.text('wait...')
+                        # change button state
+                        originTxt = $delete.text()
+                        $delete.prop 'disabled', true
+                        $delete.text('wait...')
 
-                setTimeout () ->
-                    $delete.text(originTxt)
-                    $delete.prop 'disabled', false
-                , 1000
+                        setTimeout () ->
+                            $delete.text(originTxt)
+                            $delete.prop 'disabled', false
+                        , 1000
+                }
 
         enterModify: (event) ->
 

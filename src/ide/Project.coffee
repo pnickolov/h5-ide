@@ -21,7 +21,6 @@ define [
     ###
     defaults : ()->
       name         : ""
-      billingState : ""
       tokens       : []
       credentials  : []
       stacks       : new OpsCollection()
@@ -30,8 +29,11 @@ define [
       audits       : new Backbone.Collection()
       myRole       : "observer"
       private      : false
+      billingState : ""
 
-    initialize : ( attr )->
+    constructor : ( attr )->
+      Backbone.Model.apply this
+
       # Normal attr
       @set {
         id      : attr.id
@@ -42,18 +44,17 @@ define [
       # Token
       for t, idx in attr.tokens || []
         if not t.name
-          @attributese.defaultToken = t.token
+          @attributes.defaultToken = t.token
         else
           @attributes.tokens.push t
 
       # Credential
-      self  = @
-      onCredChange = ()-> self.trigger "change:credential", @
+      onCredChange = ()-> @trigger "change:credential", @
 
       opts  = { project : @ }
-      for cred in attr.credential || []
+      for cred in attr.credentials || []
         credObj = new Credential( cred, opts )
-        credObj.on "change", onCredChange
+        @listenTo credObj, "change", onCredChange
         @attributes.credentials.push credObj
 
       # Check my role

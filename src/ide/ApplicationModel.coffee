@@ -73,14 +73,21 @@ define [
     fetch : ()->
       self = this
       # Load user's projects.
-      @attributes.projects.push( new Project({}) ) # Create a dummy project. Will be removed after the api is ready.
+      projectlist = ApiRequest("project_list").then (res)-> self.__parseProjectData( res )
 
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
+      # The api is deprecated, might update in the future.
       # osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
-      Q.all([ awsData ])
+      Q.all([ projectlist, awsData ])
+
+
+    __parseProjectData : ( res )->
+      for p in res || []
+        @attributes.projects.push( new Project( p ) )
+      return
 
     __parseAwsData : ( res )->
       for i in res

@@ -33,7 +33,8 @@ define [ "backbone" ], ()->
       awsAccessKey : ""
       awsSecretKey : ""
     ###
-    initialize : ( attr, option )->
+    constructor : ( attr, option )->
+      Backbone.Model.call this
       console.assert( option && option.project )
 
       @set {

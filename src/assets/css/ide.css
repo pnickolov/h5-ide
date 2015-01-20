@@ -10188,6 +10188,8 @@ h5.billing_usage_title {
     overflow: inherit; }
   .fullpage-settings section.setting-content .member-setting .checkbox-row {
     width: 20px; }
+    .fullpage-settings section.setting-content .member-setting .checkbox-row .checkbox {
+      margin-top: 15px; }
   .fullpage-settings section.setting-content .member-setting .memlist-item td {
     text-align: center; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .t-m-content tr {

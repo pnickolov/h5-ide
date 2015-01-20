@@ -70,7 +70,7 @@ define [
             @$el.html new ProjectView().render(tab).el
 
         remove: ->
-            @model and @model.close()
+            @model?.close()
             Backbone.View.prototype.remove.apply arguments
 
 

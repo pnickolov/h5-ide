@@ -131,6 +131,8 @@
                     border: 1px solid #7c7c83;
                     border-radius: 3px;
                     position: relative;
+                    margin-bottom: 8pxde.cs;
+
                     &.aws-credential { border-left: 6px solid #59e5c5; }
 
                     .credential-logo {
@@ -144,14 +146,21 @@
                             color: white;
                         }
                     }
+
                     .credential-name {
                         margin-left: 88px;
                         color: white;
                         font-size: 16px;
                         padding: 13px 0 15px 0;
                     }
-                    .credential-describe {
-                        margin-left: 88px;
+
+                    .credential-describe { margin-left: 88px; }
+
+                    .icon-caret-down {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        cursor: pointer;
                     }
                 }
 
@@ -416,4 +425,50 @@
         margin-top: 20px;
     }
 
+}
+
+#CredSetupWrap {
+    .icon-label {
+        float        : right;
+        margin-right : 0;
+        color        : #25a4f4;
+        line-height  : 36px;
+    }
+
+    ul {
+        li:first-child {
+            border-bottom: 1px solid #41424c;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+    }
+
+    label {
+        display       : block;
+        float: left;
+        font-size     : 13px;
+        margin-bottom : 6px;
+        line-height   : 36px;
+        width: 128px;
+    }
+
+    .input {
+        width              : 300px;
+        -webkit-box-sizing : border-box;
+        -moz-box-sizing    : border-box;
+        box-sizing         : border-box;
+        height             : 36px;
+        padding            : 10px;
+        font-size          : 13px;
+        margin-bottom      : 6px;
+    }
+}
+
+.cred-setup-msg {
+    padding          : 15px;
+    background-color : #111;
+    border-radius    : 4px;
+    color            : #ec3c38;
+    margin-bottom    : 20px;
+    width: 397px;
 }

@@ -225,13 +225,18 @@
         }
 
         .tokenToken {
-            width : 230px;
+            width : 480px;
+            font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
         }
 
         .tokenControl {
             width      : 60px;
             padding    : 0;
             margin-top : 3px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
 
             button.tooltip {
                 cursor  : pointer;
@@ -273,7 +278,7 @@
         // }
 
         > .scroll-wrap {
-            height : 168px;
+            height : 250px;
         }
     }
 

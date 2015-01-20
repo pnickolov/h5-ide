@@ -1,6 +1,7 @@
-define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backbone,template, lang) ->
+define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrollbar" ], (Backbone,template, lang) ->
     Backbone.View.extend {
 
+        className: "access-token-view"
         events:
             "click #TokenCreate"               : "createToken"
             "click .tokenControl .icon-edit"   : "editToken"
@@ -11,10 +12,11 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backb
 
         initialize: ->
             @render()
+            @
+
         render: ->
-            @setElement template()
-            $(".project-subview").html @el
-            @updateTokenTab()
+            @$el.html template()
+            @updateTokenList()
             @
 
         editToken : ( evt )->
@@ -37,7 +39,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backb
 
             self = this
             App.user.createToken().then ()->
-                self.updateTokenTab()
+                self.updateTokenList()
                 self.$el.find("#TokenCreate").removeAttr "disabled"
             , ()->
                 notification "error", lang.NOTIFY.FAIL_TO_CREATE_TOKEN
@@ -73,7 +75,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backb
 
             self = this
             App.user.removeToken( @rmToken ).then ()->
-                self.updateTokenTab()
+                self.updateTokenList()
                 self.cancelRmToken()
             , ()->
                 notification lang.NOTIFY.FAIL_TO_DELETE_TOKEN
@@ -88,7 +90,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js' ], (Backb
             @$el.find("#TokenRmConfirm").hide()
             return
 
-        updateTokenTab : ()->
+        updateTokenList : ()->
             tokens = App.user.get("tokens") || []
             @$el.find("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
             if tokens.length

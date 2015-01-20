@@ -10243,11 +10243,16 @@ h5.billing_usage_title {
     width: 90px;
     float: left; }
   .fullpage-settings .token-table .tokenToken {
-    width: 230px; }
+    width: 480px;
+    font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif; }
   .fullpage-settings .token-table .tokenControl {
     width: 60px;
     padding: 0;
-    margin-top: 3px; }
+    margin-top: 3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
     .fullpage-settings .token-table .tokenControl button.tooltip {
       cursor: pointer;
       padding: 0;
@@ -10270,7 +10275,7 @@ h5.billing_usage_title {
     padding: 4px 0;
     line-height: 20px; }
   .fullpage-settings .token-table > .scroll-wrap {
-    height: 168px; }
+    height: 250px; }
 .fullpage-settings #TokenList:empty {
   height: 100%; }
   .fullpage-settings #TokenList:empty:before {

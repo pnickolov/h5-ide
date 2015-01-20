@@ -22,19 +22,20 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
       }
       return
 
-    isFirstVisit   : ()-> !(UserState.NotFirstTime&@get("state"))
+    #isFirstVisit   : ()-> !(UserState.NotFirstTime&@get("state"))
     fullnameNotSet : ()-> !@get("firstName") or !@get("lastName")
 
     userInfoAccuired : ( result )->
       @set {
         email        : Base64.decode result.email
-        repo         : result.mod_repo
-        tag          : result.mod_tag
         state        : parseInt result.state, 10
-        intercomHash : result.intercom_secret
+        intercomHash : result.intercom_hash
         firstName    : Base64.decode( result.first_name || "" )
         lastName     : Base64.decode( result.last_name || "")
-        tokens       : result.tokens
+
+        # No time to fix this.. Hard code it here.
+        repo         : "https://github.com/MadeiraCloud/salt.git"
+        tag          : "v2014-07-18"
       }
 
       # Set user to already used IDE, so that next time we don't show welcome
@@ -159,79 +160,6 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         defer.reject(err)
 
       defer.promise
-
-
-    validateCredential : ( accessKey, secretKey )->
-      ApiRequest("account_validate_credential", {
-        access_key : accessKey
-        secret_key : secretKey
-      })
-
-    changeCredential : ( account = "", accessKey = "", secretKey = "", force = false )->
-      self = this
-      ApiRequest("account_set_credential", {
-        access_key   : accessKey
-        secret_key   : secretKey
-        account_id   : account
-        force_update : force
-      }).then ()->
-        attr =
-          account      : account
-          awsAccessKey : accessKey
-          awsSecretKey : secretKey
-
-        if attr.awsAccessKey.length > 6
-          attr.awsAccessKey = (new Array(accessKey.length-6)).join("*")+accessKey.substr(-6)
-        if attr.awsSecretKey.length > 6
-          attr.awsSecretKey = (new Array(secretKey.length-6)).join("*")+secretKey.substr(-6)
-
-        self.set attr
-
-        self.trigger "change:credential"
-        return
-
-    createToken : ()->
-      tmpl = "MyToken"
-      base = 1
-      nameMap = {}
-      for t in @attributes.tokens
-        nameMap[ t.name ] = true
-
-      while true
-        newName = tmpl + base
-        if nameMap[ newName ]
-          base += 1
-        else
-          break
-
-      self = this
-      ApiRequest("token_create", {token_name:newName}).then (res)->
-        self.attributes.tokens.splice 0, 0, {
-          name  : res[0]
-          token : res[1]
-        }
-        return
-
-    removeToken : (token)->
-      for t, idx in @attributes.tokens
-        if t.token is token
-          break
-
-      self = this
-      ApiRequest("token_remove", {token:token,token_name:t.name}).then ( res )->
-        idx = self.attributes.tokens.indexOf t
-        if idx >= 0
-          self.attributes.tokens.splice idx, 1
-        return
-
-    updateToken : ( token, newName )->
-      self = this
-      ApiRequest("token_update", {token:token, new_token_name:newName}).then ( res )->
-        for t, idx in self.attributes.tokens
-          if t.token is token
-            t.name = newName
-            break
-        return
 
     gravatar: ->
       email = CryptoJS.MD5(@get("email").trim().toLowerCase()).toString()

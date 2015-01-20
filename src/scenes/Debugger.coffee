@@ -1,6 +1,6 @@
 
 
-define ["Scene", "./DebuggerTpl", "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "backbone", "jquery", "UI.select2" ], ( Scene, Template, ApiRequest, ApiRequestOs, ApiRequestDefs )->
+define ["Scene", "./DebuggerTpl", "ApiRequest", "ApiRequestOs", "ApiRequestDefs", "backbone", "jquery", "UI.select2", "UI.tooltip" ], ( Scene, Template, ApiRequest, ApiRequestOs, ApiRequestDefs )->
 
   # App.Debugger
   AppDebugger = Backbone.View.extend {

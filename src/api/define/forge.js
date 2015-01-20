@@ -27,6 +27,11 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'opsbackend_check_app'    : { type:'forge', url:'/opsbackend/',	method:'check_app',	params:['timestamp', 'app_id']   },
 		'opsbackend_update_status' : { type:'forge', url:'/opsbackend/',	method:'update_status',	params:['app_id', 'instance_id', 'recipe_version', 'timestamp', 'statuses', 'waiting', 'agent_status', 'token']   },
 		'opsbackend_verify'       : { type:'forge', url:'/opsbackend/',	method:'verify',	params:['username', 'token']   },
+		'project_create'          : { type:'forge', url:'/project/',	method:'create',	params:['username', 'session_id', 'project_name', 'members', 'credentials']   },
+		'project_save'            : { type:'forge', url:'/project/',	method:'save',	params:['username', 'session_id', 'project_id', 'spec']   },
+		'project_remove'          : { type:'forge', url:'/project/',	method:'remove',	params:['username', 'session_id', 'project_id']   },
+		'project_list'            : { type:'forge', url:'/project/',	method:'list',	params:['username', 'session_id', 'project_ids', 'roles']   },
+		'project_check_payment'   : { type:'forge', url:'/project/',	method:'check_payment',	params:['username', 'session_id', 'project_id']   },
 		'request_init'            : { type:'forge', url:'/request/',	method:'init',	params:['username', 'session_id', 'region_name']   },
 		'request_update'          : { type:'forge', url:'/request/',	method:'update',	params:['username', 'session_id', 'region_name', 'timestamp']   },
 		'resource_change_detail'  : { type:'forge', url:'/resource/',	method:'change_detail',	params:['username', 'session_id', 'region_name', 'app_id']   },
@@ -64,7 +69,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_reset_key'       : { type:'forge', url:'/account/',	method:'reset_key',	params:['username', 'session_id', 'flag']   },
 		'account_is_invitated'    : { type:'forge', url:'/account/',	method:'is_invitated',	params:['username', 'session_id']   },
 		'account_apply_trial'     : { type:'forge', url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
-		'account_set_credential'  : { type:'forge', url:'/account/',	method:'set_credential',	params:['username', 'session_id', 'access_key', 'secret_key', 'account_id', 'force_update']   },
+		'account_set_credential'  : { type:'forge', url:'/account/',	method:'set_credential',	params:['username', 'session_id', 'project_id', 'credential']   },
 		'account_validate_credential' : { type:'forge', url:'/account/',	method:'validate_credential',	params:['username', 'session_id', 'access_key', 'secret_key']   },
 	}
 

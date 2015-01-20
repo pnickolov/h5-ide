@@ -4,7 +4,8 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'aws_public'         : { type:'aws', url:'/aws/',	method:'public',	params:['username', 'session_id', 'region_name', 'filters']   },
 		'aws_property'       : { type:'aws', url:'/aws/',	method:'property',	params:['username', 'session_id']   },
 		'aws_aws'            : { type:'aws', url:'/aws/',	method:'aws',	params:['username', 'session_id', 'region_names', 'fields', 'filters']   },
-		'aws_resource'       : { type:'aws', url:'/aws/',	method:'resource',	params:['username', 'session_id', 'region_name', 'resources', 'addition', 'retry_times']   },
+		'aws_resource'       : { type:'aws', url:'/aws/',	method:'resource',	params:['username', 'session_id', 'key_id', 'region_name', 'resources', 'addition', 'retry_times']   },
+		'aws_validate_credential' : { type:'aws', url:'/aws/',	method:'validate_credential',	params:['username', 'session_id', 'account_id', 'access_key', 'secret_key', 'project_id', 'key_id']   },
 	}
 
 	for ( var i in Apis ) {

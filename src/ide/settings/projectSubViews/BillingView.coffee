@@ -16,7 +16,6 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             that = @
             paymentState = App.user.get("paymentState")
             @getPaymentHistory().then (paymentHistory)->
-                console.log paymentHistory
                 paymentUpdate = {
                     url: App.user.get("paymentUrl")
                     card: App.user.get("creditCard")

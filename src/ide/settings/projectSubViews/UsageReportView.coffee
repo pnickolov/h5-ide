@@ -12,5 +12,6 @@ define [ 'backbone', "../template/TplBilling" ], (Backbone, template) ->
             self = @
             _.delay ->
                 self.$el.find(".loading-spinner").replaceWith(template.usage())
+            , 500
             @
     }

@@ -6773,8 +6773,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10108,14 +10107,14 @@ h5.billing_usage_title {
   max-width: 800px;
   margin-left: 300px;
   padding: 50px 0 0 0; }
-  .fullpage-settings section.setting-content header {
+  .fullpage-settings section.setting-content header.project-title {
     color: white;
     padding-bottom: 15px;
     margin-bottom: 20px;
     font-size: 22px;
     border-bottom: 1px solid #4d4e8c; }
   .fullpage-settings section.setting-content > article {
-    color: white; }
+    color: #999999; }
     .fullpage-settings section.setting-content > article h3 {
       color: #999;
       font-size: 16px; }

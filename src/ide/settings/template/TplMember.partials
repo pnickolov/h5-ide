@@ -7,7 +7,7 @@
             <input class="input" placeholder="Invite by email address or username..." id="mail">
             <button class="btn btn-blue" id="invite">Invite Member</button>
         </div>
-        <button class="btn btn-blue" id="delete" disabled>Delete</button>
+        <button class="btn btn-red" id="delete" disabled>Delete</button>
     </div>
     <div class="table-head-fix will-be-covered">
         <table class="table-head">
@@ -92,7 +92,7 @@
             </ul>
         </div>
     </td>
-    <td class="{{#ifCond status 'Pending'}}memlist-pending{{/ifCond}}">{{status}}</td>
+    <td class="memlist-status {{#ifCond status 'Pending'}}memlist-pending{{/ifCond}}">{{status}}</td>
     <td>{{#if canCancel}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/if}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">Done</button>

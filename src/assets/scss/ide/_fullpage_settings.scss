@@ -113,7 +113,15 @@
 
         .member-setting {
             #mail {
-                width: 370px;
+                width: 280px;
+            }
+            #invite {
+                margin: 15px 0 15px 0;
+                margin-left: 5px;
+            }
+            #delete {
+                float: right;
+                margin-top: 15px;
             }
             .invite {
                 float: left;
@@ -122,20 +130,38 @@
                 overflow: inherit;
             }
             .checkbox-row {
-                width: 30px;
+                width: 20px;
             }
             .memlist-item {
-                #memtype {
-                    width: 165px;
+                td {
+                    text-align: center;
+                }
+                .t-m-content tr {
+                    height: 60px;
+                }
+                .cancel, .done {
+                    margin-top: 8px;
+                }
+                .memtype {
+                    margin-top: 4px;
                 }
                 .avatar {
+                    width: 45px;
+                    color: #888;
                     float: left;
                 }
                 .info {
                     float: left;
+                    margin: 3px 0 0 8px;
+                    .mail {
+                        color: #888;
+                    }
                 }
                 .memlist-edit-mode {
                     display: none;
+                }
+                .memlist-view-mode, .memlist-status {
+                    line-height: 45px;
                 }
                 &.edit {
                     .memlist-view-mode {
@@ -158,9 +184,6 @@
                         overflow: hidden;
                     }
                 }
-            }
-            #delete {
-                float: right;
             }
         }
 

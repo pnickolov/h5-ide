@@ -29,8 +29,7 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
                         },
                         {
                             sortable: true
-                            rowType: 'datetime'
-                            width: "15%"
+                            width: "20%"
                             name: "Role"
                         },
                         {
@@ -45,7 +44,7 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
                         },
                         {
                             sortable: false
-                            width: "150px"
+                            width: "100px"
                             name: "Edit"
                         }
                     ]

@@ -71,6 +71,7 @@
           };
         })(this), 0);
         if (modalGroup.length === 1 || this.abnormal()) {
+          this.tpl.addClass("animation");
           this.trigger("show", this);
           window.setTimeout((function(_this) {
             return function() {
@@ -398,36 +399,24 @@
       };
 
       Modal.prototype._fadeOut = function() {
-        if (this.abnormal()) {
-          return false;
-        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 100);
       };
 
       Modal.prototype._fadeIn = function() {
-        if (this.abnormal()) {
-          return false;
-        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 100);
       };
 
       Modal.prototype._slideIn = function() {
-        if (this.abnormal()) {
-          return false;
-        }
         return this.tpl.animate({
           left: "-=" + $(window).width()
         }, this.option.delay || 300);
       };
 
       Modal.prototype._slideOut = function() {
-        if (this.abnormal()) {
-          return false;
-        }
         return this.tpl.animate({
           left: "+=" + $(window).width()
         }, this.option.delay || 300);

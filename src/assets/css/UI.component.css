@@ -456,15 +456,16 @@ pre {
   border-radius: 3px;
   background: rgba(32, 32, 32, 0.9);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
-  color: #999999;
-  -webkit-transition: opacity .3s, margin-top .3s;
-  -moz-transition: opacity .3s, margin-top .3s;
-  -ms-transition: opacity .3s, margin-top .3s;
-  -o-transition: opacity .3s, margin-top .3s;
-  transition: opacity .3s, margin-top .3s; }
+  color: #999999; }
   .modal-box.bounce {
     opacity: 1;
     margin-top: 0; }
+  .modal-box.animate {
+    -webkit-transition: opacity .3s, margin-top .3s;
+    -moz-transition: opacity .3s, margin-top .3s;
+    -ms-transition: opacity .3s, margin-top .3s;
+    -o-transition: opacity .3s, margin-top .3s;
+    transition: opacity .3s, margin-top .3s; }
 
 .modal-box.panel {
   margin-top: 0;

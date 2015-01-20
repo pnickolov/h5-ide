@@ -99,6 +99,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 @tpl.addClass('bounce')
             ,0
             if modalGroup.length == 1 or @abnormal()
+                @tpl.addClass("animation")
                 @trigger "show", @
                 window.setTimeout =>
                     @trigger 'shown', @
@@ -292,22 +293,22 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
           @tpl.find('.modal-body').css(padding: 0)
           @
         _fadeOut: ->
-            if @abnormal() then return false
+            #if @abnormal() then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 100
         _fadeIn: ->
-            if @abnormal() then return false
+            #if @abnormal() then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 100
         _slideIn: ->
-            if @abnormal() then return false
+            #if @abnormal() then return false
             @tpl.animate
                 left: "-="+ $(window).width()
             ,@option.delay || 300
         _slideOut: ->
-            if @abnormal() then return false
+            #if @abnormal() then return false
             @tpl.animate
                 left: "+="+ $(window).width()
             ,@option.delay || 300

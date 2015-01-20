@@ -22,13 +22,6 @@ define [
       "click .click-select" : "selectText"
 
     initialize : ()->
-      ### env:dev ###
-      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
-      ### env:dev:end ###
-      ### env:debug ###
-      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
-      ### env:debug:end ###
-
       $(window).on "beforeunload", @checkUnload
       $(window).on 'keydown', @globalKeyEvent
 

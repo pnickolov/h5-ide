@@ -404,6 +404,13 @@ require [
 
   (new Application()).initialize()
 
+  ### env:dev ###
+  require ["./scenes/Debugger"], ()->
+  ### env:dev:end ###
+  ### env:debug ###
+  require ["./scenes/Debugger"], ()->
+  ### env:debug:end ###
+
 , ( err )->
   err = err || { requireType : "timeout" }
   if err.requireType is "timeout"

@@ -87,6 +87,9 @@
 
       Modal.prototype.close = function() {
         var _base;
+        if (this.isClosed) {
+          return false;
+        }
         if (this.isMoving) {
           return false;
         }

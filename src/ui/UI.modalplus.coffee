@@ -109,6 +109,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @resize()
             @
         close: ()->
+            if @isClosed
+                return false
             if @isMoving
                 return false
             if @.parentModal

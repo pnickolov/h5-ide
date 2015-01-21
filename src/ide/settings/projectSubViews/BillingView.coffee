@@ -6,6 +6,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
             'click button.update-payment'         : "showUpdatePayment"
             "click .update-payment-done"          : "updatePaymentDone"
+            "click .update-payment-cancel"        :"updatePaymentCancel"
 
         className: "billing-view"
 
@@ -16,6 +17,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
         render : ()->
             that = @
             paymentState = App.user.get("paymentState")
+            @$el.find("#PaymentBody").remove()
             if @needUpdatePayment()
                 that.$el.find(".loading-spinner").remove()
                 that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
@@ -80,9 +82,16 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             $(".update-payment-ctrl").show()
 
         updatePaymentDone: ()->
-            @$el.find(".update-payment-wrap").remove()
-            @$el.find(".update-payment-ctrl").hide()
-            @$el.find(".update-payment").show()
+            that = @
+            @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
+            @$el.find(".update-payment-done").text("Saving...")
+            @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
+            _.delay ->
+                that.render()
+            , 500
+
+        updatePaymentCancel: ()->
+            @render()
 
         switchTab: (event)->
             target = $(event.currentTarget)

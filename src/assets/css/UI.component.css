@@ -590,6 +590,14 @@ pre {
   background: none;
   color: #666;
   box-shadow: none; }
+  .btn-silver.modal-close[disabled], .btn-silver.modal-close[disabled]:hover,
+  #close-awscredential[disabled],
+  #close-awscredential[disabled]:hover,
+  .btn-silver.btn-modal-close[disabled],
+  .btn-silver.btn-modal-close[disabled]:hover {
+    background: none;
+    color: #666666;
+    cursor: default; }
 
 .modal-box.panel .modal-header .modal-close {
   left: 15px; }

@@ -168,6 +168,12 @@
 	background: none;
 	color: #666;
 	box-shadow: none;
+  	&[disabled], &[disabled]:hover{
+	  background: none;
+	  color: #666666;
+	  cursor: default;
+	}
+
 }
 .modal-box.panel .modal-header .modal-close{
   left: 15px;

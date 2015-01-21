@@ -46,12 +46,17 @@ define [ '../template/TplCredential', 'UI.modalplus', 'UI.tooltip', 'backbone' ]
     Backbone.View.extend
         events:
             'click .setup-credential': 'setCredential'
+            'click .show-button-list': 'showButtonList'
 
         className: 'credential'
 
         render: () ->
             @$el.html TplCredential.credentialManagement
             @
+
+        showButtonList: ->
+            @$( '.button-list' ).toggle()
+            false
 
         updateCredential: ->
 

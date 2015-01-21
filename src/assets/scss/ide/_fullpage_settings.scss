@@ -125,13 +125,14 @@
             }
 
             ul.credential-list {
-                li {
+                & > li {
                     width: 500px;
                     height: 80px;
                     border: 1px solid #7c7c83;
                     border-radius: 3px;
                     position: relative;
                     margin-bottom: 8px;
+                    &::selection { background: transparent; }
 
                     &.aws-credential { border-left: 6px solid #59e5c5; }
 
@@ -161,6 +162,21 @@
                         top: 0;
                         right: 0;
                         cursor: pointer;
+                    }
+
+                    .button-list {
+                        top: 6px;
+                        right: -92px;
+
+                        i {
+                            line-height: 30px;
+                            padding: 0 6px 0 8px;
+                        }
+                        li {
+                            width: 92px;
+                            line-height: 30px;
+                            cursor: pointer;
+                        }
                     }
                 }
 

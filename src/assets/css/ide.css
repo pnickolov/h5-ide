@@ -10181,36 +10181,48 @@ h5.billing_usage_title {
       margin: 20px 0 0 180px; }
     .fullpage-settings section.setting-content .credential .demo-note {
       padding-top: 20px; }
-    .fullpage-settings section.setting-content .credential ul.credential-list li {
+    .fullpage-settings section.setting-content .credential ul.credential-list > li {
       width: 500px;
       height: 80px;
       border: 1px solid #7c7c83;
       border-radius: 3px;
       position: relative;
       margin-bottom: 8px; }
-      .fullpage-settings section.setting-content .credential ul.credential-list li.aws-credential {
+      .fullpage-settings section.setting-content .credential ul.credential-list > li::selection {
+        background: transparent; }
+      .fullpage-settings section.setting-content .credential ul.credential-list > li.aws-credential {
         border-left: 6px solid #59e5c5; }
-      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-logo {
+      .fullpage-settings section.setting-content .credential ul.credential-list > li .credential-logo {
         position: absolute;
         left: 0;
         width: 80px;
         height: 80px;
         background: #f9af4e; }
-        .fullpage-settings section.setting-content .credential ul.credential-list li .credential-logo::before {
+        .fullpage-settings section.setting-content .credential ul.credential-list > li .credential-logo::before {
           content: "logo here";
           color: white; }
-      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-name {
+      .fullpage-settings section.setting-content .credential ul.credential-list > li .credential-name {
         margin-left: 88px;
         color: white;
         font-size: 16px;
         padding: 13px 0 15px 0; }
-      .fullpage-settings section.setting-content .credential ul.credential-list li .credential-describe {
+      .fullpage-settings section.setting-content .credential ul.credential-list > li .credential-describe {
         margin-left: 88px; }
-      .fullpage-settings section.setting-content .credential ul.credential-list li .icon-caret-down {
+      .fullpage-settings section.setting-content .credential ul.credential-list > li .icon-caret-down {
         position: absolute;
         top: 0;
         right: 0;
         cursor: pointer; }
+      .fullpage-settings section.setting-content .credential ul.credential-list > li .button-list {
+        top: 6px;
+        right: -92px; }
+        .fullpage-settings section.setting-content .credential ul.credential-list > li .button-list i {
+          line-height: 30px;
+          padding: 0 6px 0 8px; }
+        .fullpage-settings section.setting-content .credential ul.credential-list > li .button-list li {
+          width: 92px;
+          line-height: 30px;
+          cursor: pointer; }
   .fullpage-settings section.setting-content .member-setting #mail {
     width: 280px; }
   .fullpage-settings section.setting-content .member-setting #invite {

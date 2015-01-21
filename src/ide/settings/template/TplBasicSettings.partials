@@ -1,0 +1,44 @@
+<!--{{basicSettings}}-->
+<div class="project-item project-name-zone">
+    <h3>Project Name
+        <div class="normal-mode">
+            <span class="project-name">Paula’s Project</span>
+        </div>
+        <div class="edit-mode">
+            <input type="text" class="input" id="project-name">
+            <div class="edit-actions">
+                <button class="btn btn-blue" id="update-name">Update</button>
+                <a id="cance-update-name" class="cancel-button">Cancel</a>
+            </div>
+        </div>
+        <button class="icon-edit edit-button"></button>
+    </h3>
+</div>
+<!--
+<div class="project-item">
+    <h3>Project Email Notification <button class="icon-edit edit-notification"></button></h3>
+    <p>Do not send email notification for this project</p>
+</div>
+-->
+<div class="project-item">
+    <h3>Delete Project</h3>
+
+    <div>
+        <p>Once the project is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are).</p>
+        <p>You can export stacks to JSON before deleting the project.</p>
+
+        <button class="btn btn-red icon-delete" id="delete-project">Delete Project</button>
+    </div>
+
+</div>
+
+<!--{{confirmToDelete}}-->
+<p>This action CANNOT be reverted.<br/>Type the project name below to confirm deleting the project.</p>
+<input type="text" class="input" id="confirm-project-name"/>
+
+<!--{{confirmToLeave}}-->
+<p>This action CANNOT be reverted.<br/>Are you sure you want to leave this project?</p>
+
+
+
+

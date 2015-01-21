@@ -30,7 +30,7 @@ define [
 
     ProjectView = Backbone.View.extend
         events:
-            'click .function-list a': 'loadSub'
+            'click .function-list a'    : 'loadSub'
 
         initialize: () ->
 

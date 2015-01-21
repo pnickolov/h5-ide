@@ -9749,32 +9749,56 @@ h5.billing_usage_title {
       color: #148BE6; }
   .fullpage-settings section.setting-content .icon-delete::before {
     margin-right: 5px; }
-  .fullpage-settings section.setting-content .basic-settings h3 {
-    width: 500px; }
-    .fullpage-settings section.setting-content .basic-settings h3 .icon-edit {
-      float: right;
-      line-height: 40px;
-      clear: both; }
-    .fullpage-settings section.setting-content .basic-settings h3 span {
-      color: white;
-      padding-left: 30px; }
-  .fullpage-settings section.setting-content .basic-settings > div {
+  .fullpage-settings section.setting-content .basic-settings > div.project-item {
     margin: 18px 0;
-    position: relative; }
-    .fullpage-settings section.setting-content .basic-settings > div::after {
+    position: relative;
+    padding-bottom: 13px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item.project-name-zone {
+      height: 42px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item h3 {
+      width: 500px;
+      position: relative; }
+      .fullpage-settings section.setting-content .basic-settings > div.project-item h3 .icon-edit {
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: 40px; }
+      .fullpage-settings section.setting-content .basic-settings > div.project-item h3 span {
+        color: white;
+        padding-left: 30px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item::after {
       display: block;
       border-bottom: 1px solid #979797;
       content: '';
       width: 500px;
-      height: 13px; }
-    .fullpage-settings section.setting-content .basic-settings > div:last-child::after {
+      height: 13px;
+      position: absolute;
+      bottom: 0; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item:last-child::after {
       display: none; }
-    .fullpage-settings section.setting-content .basic-settings > div p {
+    .fullpage-settings section.setting-content .basic-settings > div.project-item p {
       padding: 0 8px; }
-    .fullpage-settings section.setting-content .basic-settings > div .icon-delete {
+    .fullpage-settings section.setting-content .basic-settings > div.project-item .icon-delete {
       margin-top: 10px;
       position: absolute;
       left: 389px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item #project-name {
+      margin-left: 30px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item .edit-actions {
+      display: inline;
+      margin-left: 8px; }
+      .fullpage-settings section.setting-content .basic-settings > div.project-item .edit-actions a, .fullpage-settings section.setting-content .basic-settings > div.project-item .edit-actions button {
+        padding: 5px;
+        min-width: 80px;
+        font-size: 12px; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item .edit-mode {
+      display: none; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item .normal-mode {
+      display: inline; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item.edit .edit-mode {
+      display: inline; }
+    .fullpage-settings section.setting-content .basic-settings > div.project-item.edit .normal-mode {
+      display: none; }
   .fullpage-settings section.setting-content .credential {
     padding: 0 8px; }
     .fullpage-settings section.setting-content .credential .instruct {

@@ -75,22 +75,33 @@
         .icon-delete { &::before { margin-right: 5px; } }
 
         .basic-settings {
-            h3 {
-                width: 500px;
-                .icon-edit { float: right; line-height: 40px; clear: both; }
-                span { color: white; padding-left: 30px; }
-            }
 
-            & > div {
+            & > div.project-item {
                 margin: 18px 0;
                 position: relative;
+                padding-bottom: 13px;
 
+                &.project-name-zone { height: 42px; }
+
+                h3 {
+                    width: 500px;
+                    position: relative;
+                    .icon-edit {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        line-height: 40px;
+                    }
+                    span { color: white; padding-left: 30px; }
+                }
                 &::after {
                     display: block;
                     border-bottom: 1px solid #979797;
                     content: '';
                     width: 500px;
                     height: 13px;
+                    position: absolute;
+                    bottom: 0;
                 }
 
                 &:last-child::after {
@@ -105,6 +116,29 @@
                     margin-top: 10px;
                     position: absolute;
                     left: 389px;
+                }
+
+                #project-name {
+                    margin-left: 30px;
+                }
+
+                .edit-actions {
+                    display: inline;
+                    margin-left: 8px;
+
+                    a, button {
+                        padding: 5px;
+                        min-width: 80px;
+                        font-size: 12px;
+                    }
+                }
+
+                .edit-mode { display: none; }
+                .normal-mode { display: inline; }
+
+                &.edit {
+                    .edit-mode { display: inline; }
+                    .normal-mode { display: none; }
                 }
             }
         }

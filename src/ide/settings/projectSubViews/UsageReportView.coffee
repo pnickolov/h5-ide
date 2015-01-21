@@ -1,4 +1,4 @@
-define [ 'backbone', "../template/TplBilling" ], (Backbone, template) ->
+define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, template, ApiRequestR) ->
     Backbone.View.extend {
 
         className: "usage-report-view"
@@ -10,8 +10,15 @@ define [ 'backbone', "../template/TplBilling" ], (Backbone, template) ->
 
         render : ()->
             self = @
-            _.delay ->
+            @getUsage().then (result)->
+                console.log result
                 self.$el.find(".loading-spinner").replaceWith(template.usage())
-            , 500
+            , ()->
+                notification 'error', "Error while getting user payment info, please try again later."
             @
+
+        getUsage: ()->
+            projectId = "XXX"
+            ApiRequestR("payment_usage", {project_id: projectId})
+
     }

@@ -84,7 +84,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
         updatePaymentDone: ()->
             that = @
             @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
-            @$el.find(".update-payment-done").text("Saving...")
+            @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
             @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
             _.delay ->
                 that.render()
@@ -108,7 +108,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
 
             current_quota = App.user.get("voQuotaCurrent")
 
-            @$el.find(".payment-number").text(App.user.get("creditCard") || "No Card")
+            @$el.find(".payment-number").text(App.user.get("creditCard") || lang.IDE.NO_CARD)
             @$el.find(".payment-username").text("#{App.user.get("cardFirstName")} #{App.user.get("cardLastName")}")
             @$el.find(".used-points .usage-number").text(current_quota)
 

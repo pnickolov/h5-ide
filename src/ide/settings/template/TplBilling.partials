@@ -23,7 +23,7 @@
                 <button class="btn btn-blue update-payment">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
                 <div class="update-payment-ctrl hide">
                     <button class="btn btn-blue update-payment-done">{{i18n "LBL_DONE"}}</button>
-                    <button class="btn btn-silver modal-close update-payment-cancel">Cancel</button>
+                    <button class="btn btn-silver modal-close update-payment-cancel">{{i18n "LBL_CANCEL"}}</button>
                 </div>
             </div>
         </div>

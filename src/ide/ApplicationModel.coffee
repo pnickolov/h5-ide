@@ -33,14 +33,14 @@ define [
 
     # Project Related.
     getOpsModelById : ( opsModelId )->
-      for p in @get("projects")
+      for p in @get("projects").models
         ops = p.stacks().get( opsModelId ) or p.apps().get( opsModelId )
         if ops then return ops
       return null
 
     projects : ()-> @get("projects")
     getPrivateProject : ()->
-      for p in @get("projects")
+      for p in @get("projects").models
         if p.isPrivate() then return p
       null
     # Create a new project. It returns a promise.
@@ -55,7 +55,7 @@ define [
     ###
     defaults : ()->
       notification : [] # An array holding the notification data
-      projects : []
+      projects : new Backbone.Collection()
 
     markNotificationRead : ()->
       for i in @attributes.notification
@@ -86,7 +86,7 @@ define [
 
     __parseProjectData : ( res )->
       for p in res || []
-        @attributes.projects.push( new Project( p ) )
+        @attributes.projects.add( new Project( p ) )
       return
 
     __parseAwsData : ( res )->

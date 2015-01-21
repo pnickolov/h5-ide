@@ -1,5 +1,5 @@
 
-define [ "backbone" ], ()->
+define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
   __maskString = ( text )->
     if text.length > 6
@@ -21,7 +21,7 @@ define [ "backbone" ], ()->
     AWSCHINA  : "aws::china"
 
 
-  Backbone.Model.extend {
+  Credential = Backbone.Model.extend {
 
     ###
     attr :
@@ -52,44 +52,64 @@ define [ "backbone" ], ()->
     isDemo   : ()-> !!@get("isDemo")
     platform : ()-> @get("platform")
 
-    # __update : ( attr, forceUpdate )->
-    #   p = __platformFromAttr( attr )
+    __update : ( cred, forceUpdate )->
+      ApiRequest( "project_update_credential", {
+        project_id   : @get("project").id
+        key_id       : @id
+        credential   : {
+          account_id : cred.awsAccount
+          access_key : cred.awsAccessKey
+          secret_key : cred.awsSecretKey
+        }
+        force_update : forceUpdate
+      } )
 
-    #   if p is "AWS" or p is "UNKOWN"
-    #     return ApiRequest( "account_set_credential", {
-    #       account_id   : attr.awsAccount
-    #       access_key   : attr.awsAccessKey
-    #       secret_key   : attr.awsSecretKey
-    #       force_update : forceUpdate
-    #     } )
-    #   null
+    ###
+    cred : {
+      provider     : ""
+      awsAccount   : ""
+      awsAccessKey : ""
+      awsSecretKey : ""
+    }
+    ###
+    validate : ( cred )->
+      cred = $.extend {}, cred
+      cred.provider = @get("provider")
+      Credential.validate( cred )
 
-    # # attr should be like the `attr` in initialize()
-    # validate : ( attr )->
-    #   p = __platformFromAttr( attr )
-
-    #   if p is "AWS" or p is "UNKOWN"
-    #     return ApiRequest("account_validate_credential", {
-    #       access_key : attr.awsAccessKey
-    #       secret_key : attr.awsSecretKey
-    #     })
-
-    #   null
-
-    update : ( attr, forceUpdate = false, valid = true )->
+    ###
+    cred : {
+      awsAccount   : ""
+      awsAccessKey : ""
+      awsSecretKey : ""
+    }
+    ###
+    update : ( cred, forceUpdate = false, valid = true )->
       self = @
       if valid
-        p = @validate( attr ).then ()-> self.__update( attr, forceUpdate )
+        p = @validate( cred ).then ()-> self.__update( cred, forceUpdate )
       else
-        p = @__update( attr, forceUpdate )
+        p = @__update( cred, forceUpdate )
 
-      p.then ()->
+      p.then ( res )->
         self.set {
-          awsAccount   : attr.awsAccount
-          awsAccessKey : __maskString( attr.awsAccessKey )
-          awsSecretKey : __maskString( attr.awsSecretKey )
+          awsAccount   : cred.awsAccount
+          awsAccessKey : __maskString( cred.awsAccessKey )
+          awsSecretKey : __maskString( cred.awsSecretKey )
         }
   }, {
     PLATFORM : PLATFORM
     PROVIDER : PROVIDER
+
+    ###
+    credential : {
+      provider     : ""
+      awsAccount   : ""
+      awsAccessKey : ""
+      awsSecretKey : ""
+    }
+    ###
+    validate : ( credential )-> ApiRequest( "project_validate_credential", {credential:credential} )
   }
+
+  Credential

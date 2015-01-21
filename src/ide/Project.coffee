@@ -181,9 +181,9 @@ define [
       r
 
     __checkMyRole : ( members )->
-      username = App.user.get("username")
+      username = App.user.get("usercode")
       for m in members || []
-        if m.id is username
+        if m.username is username
           @set "myRole", m.role
           return
   }, {

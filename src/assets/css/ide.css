@@ -10285,6 +10285,21 @@ h5.billing_usage_title {
     padding: 3px;
     display: inline-block;
     vertical-align: middle; }
+  .fullpage-settings section.setting-content .current-usage-block {
+    display: block;
+    width: 180px;
+    padding: 10px 10px 5px 10px;
+    text-align: center;
+    background: #000;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px; }
+    .fullpage-settings section.setting-content .current-usage-block h3 {
+      font-size: 36px;
+      color: #91D21E; }
+  .fullpage-settings section.setting-content #UsageTab .table-head-fix {
+    background: #000;
+    height: 234px; }
 .fullpage-settings .token-table {
   position: relative;
   height: 200px;

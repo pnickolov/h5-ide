@@ -286,6 +286,24 @@
             display        : inline-block;
             vertical-align : middle;
         }
+        .current-usage-block{
+            display: block;
+            width: 180px;
+            padding: 10px 10px 5px 10px;
+            text-align: center;
+            background: #000;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            h3{
+                font-size: 36px;
+                color: #91D21E;
+            }
+        }
+        #UsageTab .table-head-fix{
+            background: #000;
+            height: 234px;
+        }
 
     }
 

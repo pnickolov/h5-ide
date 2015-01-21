@@ -1608,6 +1608,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s free instance hour will be renewed in %s days."
       zh: "%s 个免费实例*小时将在 %s 天后刷新。"
 
+    PAYMENT_USAGE:
+      en: "Usage"
+      zh: "用量"
+
+    NO_USAGE_REPORT:
+      en: "No available usage report"
+      zh: "无可用的用量报告"
+
     NO_BILLING_EVENT:
       en: "No billing event yet."
       zh: "无付费事件。"

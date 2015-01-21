@@ -325,6 +325,39 @@
         }
 
     }
+    .update-payment-wrap{
+        position: relative;
+        h5{
+            width: 100%;
+            span{
+                display: inline-block;
+                &.card-number{
+                    width: 230px;
+                }
+                &.cvv{
+                    width: 75px;
+                }
+                &.expiration{
+                    width: 100px;
+                }
+            }
+        }
+        .input{
+            width: 200px;
+            &.first-name, &.last-name{
+                width: 90px;
+            }
+            &.cvv{
+                width: 50px;
+            }
+            &.expiration{
+                width: 80px;
+            }
+        }
+
+
+
+    }
 
     .token-table {
         position   : relative;

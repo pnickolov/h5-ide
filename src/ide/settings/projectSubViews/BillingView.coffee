@@ -4,7 +4,8 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
         events :
             "click #PaymentNav span"              : "switchTab"
             'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
-            'click .update-payment'               : "_bindPaymentEvent"
+            'click button.update-payment'         : "showUpdatePayment"
+            "click .update-payment-done"          : "updatePaymentDone"
 
         className: "billing-view"
 
@@ -15,6 +16,11 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
         render : ()->
             that = @
             paymentState = App.user.get("paymentState")
+            if @needUpdatePayment()
+                that.$el.find(".loading-spinner").remove()
+                that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
+                @updateUsage()
+                return @
             @getPaymentHistory().then (paymentHistory)->
                 paymentUpdate = {
                     url: App.user.get("paymentUrl")
@@ -56,7 +62,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
 
         getPaymentHistory: ()->
             historyDefer = new Q.defer()
-            unless App.user.get("creditCard")
+            unless @needUpdatePayment()
                 historyDefer.resolve({})
             else
                 ApiRequestR("payment_statement").then (paymentHistory)->
@@ -65,6 +71,19 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                     historyDefer.reject(err)
             historyDefer.promise
 
+        needUpdatePayment: ()->
+            true
+
+        showUpdatePayment: (evt)->
+            @$el.find("#PaymentBillingTab").append template.updatePayment()
+            $(evt.currentTarget).hide()
+            $(".update-payment-ctrl").show()
+
+        updatePaymentDone: ()->
+            @$el.find(".update-payment-wrap").remove()
+            @$el.find(".update-payment-ctrl").hide()
+            @$el.find(".update-payment").show()
+
         switchTab: (event)->
             target = $(event.currentTarget)
             console.log "Switching Tabs"
@@ -72,19 +91,6 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @$el.find(".tabContent > section").addClass("hide")
             $("#"+ target.addClass("selected").data('target')).removeClass("hide")
             @updateUsage()
-
-        _bindPaymentEvent: (event)->
-            that = @
-            event.preventDefault()
-            window.open $(event.currentTarget).attr("href"), ""
-            @listenTo App.user, 'change:paymentState', ->
-                paymentState = App.user.get 'paymentState'
-                if paymentState is 'active'
-                    that._renderBillingDialog()
-            return false
-
-        _renderBillingDialog: ()->
-            new BillingDialog()
 
         updateUsage: ()->
             shouldPay = false

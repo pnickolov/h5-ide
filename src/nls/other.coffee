@@ -1612,6 +1612,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Usage"
       zh: "用量"
 
+    PAYMENT_BILLING_EMAIL:
+      en: "Billing Email"
+      zh: "账单邮箱"
+
     NO_USAGE_REPORT:
       en: "No available usage report"
       zh: "无可用的用量报告"

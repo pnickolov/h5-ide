@@ -9900,6 +9900,26 @@ h5.billing_usage_title {
     height: 234px; }
     .fullpage-settings section.setting-content #UsageTab .table-head-fix .table-head {
       background: #363636; }
+.fullpage-settings .update-payment-wrap {
+  position: relative; }
+  .fullpage-settings .update-payment-wrap h5 {
+    width: 100%; }
+    .fullpage-settings .update-payment-wrap h5 span {
+      display: inline-block; }
+      .fullpage-settings .update-payment-wrap h5 span.card-number {
+        width: 230px; }
+      .fullpage-settings .update-payment-wrap h5 span.cvv {
+        width: 75px; }
+      .fullpage-settings .update-payment-wrap h5 span.expiration {
+        width: 100px; }
+  .fullpage-settings .update-payment-wrap .input {
+    width: 200px; }
+    .fullpage-settings .update-payment-wrap .input.first-name, .fullpage-settings .update-payment-wrap .input.last-name {
+      width: 90px; }
+    .fullpage-settings .update-payment-wrap .input.cvv {
+      width: 50px; }
+    .fullpage-settings .update-payment-wrap .input.expiration {
+      width: 80px; }
 .fullpage-settings .token-table {
   position: relative;
   height: 200px;

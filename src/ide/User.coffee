@@ -80,29 +80,29 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         ### env:prod:end ###
         return
 
-      , ( err )->
+      # , ( err )->
 
-        # We might want to do some error handling here.
-        # If any error occurs while fetching user infomation. It might because the server is down or somthing.
-        # But we should we do?
+      #   # We might want to do some error handling here.
+      #   # If any error occurs while fetching user infomation. It might because the server is down or somthing.
+      #   # But we should we do?
 
-        if err.error < 0
-          if err.error is ApiRequest.Errors.Network500
-            # Server down
-            # Actually this logic should be done in Application, not in User
-            # But we don't have a unified api to get the user's global data,
-            # thus the Application do no fetching.
-            # So we can only handle this situation here.
-            # TODO : Maybe we should move this to ApiRequest's global handling.
-            window.location = "/500"
-          else
-            # Network Error, Try reloading
-            window.location.reload()
-        else
-          # If there's service error. I think we need to logout, because I guess it's because the session is not right.
-          App.logout()
+      #   if err.error < 0
+      #     if err.error is ApiRequest.Errors.Network500
+      #       # Server down
+      #       # Actually this logic should be done in Application, not in User
+      #       # But we don't have a unified api to get the user's global data,
+      #       # thus the Application do no fetching.
+      #       # So we can only handle this situation here.
+      #       # TODO : Maybe we should move this to ApiRequest's global handling.
+      #       window.location = "/500"
+      #     else
+      #       # Network Error, Try reloading
+      #       window.location.reload()
+      #   else
+      #     # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+      #     App.logout()
 
-        throw err
+      #   throw err
 
     # Send a request to acquire a new session
     acquireSession : ( password )->

@@ -15,8 +15,9 @@ define [
   "./User"
   "./SceneManager"
   "./Router"
+  "ApiRequest"
   "i18n!/nls/lang.js"
-], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, lang )->
+], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
 
   VisualOps = ()->
     if window.App
@@ -36,17 +37,33 @@ define [
     @sceneManager = new SceneManager()
 
     # view / model depends on User and Websocket
-    @model  = new ApplicationModel()
-    @view = new ApplicationView()
+    @model = new ApplicationModel()
+    @view  = new ApplicationView()
 
     # This function returns a promise
-    fetchModel = @model.fetch().fail ( err )->
-      notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
-      throw err
+    self = @
+    jobs = @user.fetch().then ()->
+      self.model.fetch().fail ( err )->
+        notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
+        throw err
 
-    Q.all([ @user.fetch(), fetchModel ]).then ()->
+    jobs.then ()->
       App.view.hideGlobalLoading()
       window.Router.start()
+    , ( err )->
+
+      # If userdata/appdata fails to load
+      # We might want to do some error handling here.
+      if err.error < 0
+        if err.error is ApiRequest.Errors.Network500
+          # Server down
+          window.location = "/500"
+        else
+          # Network Error, Try reloading
+          window.location.reload()
+      else
+        # If there's service error. I think we need to logout, because I guess it's because the session is not right.
+        App.logout()
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()

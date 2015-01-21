@@ -61,6 +61,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
 
             if @option.mode is 'fullscreen'
                 @option.disableFooter = true
+                @option.disableClose = true
 
             if $('#modal-wrap').size() > 0
                 isFirst = false
@@ -91,12 +92,14 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @option.maxHeight then body.css("max-height":@option.maxHeight)
             if @option.width then body.parent().width( @option.width )
             @tpl.appendTo @wrap
-            window.setTimeout ()=>
-                self.wrap.addClass("show")
-            ,0
+
             modalGroup.push(@)
+            @show()
             window.setTimeout =>
                 @tpl.addClass('bounce')
+            ,0
+            window.setTimeout ()=>
+                self.wrap.addClass("show")
             ,0
             if modalGroup.length == 1 or @abnormal()
                 @tpl.addClass("animation")
@@ -104,9 +107,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 window.setTimeout =>
                     @trigger 'shown', @
                 ,300
-            @show()
             @bindEvent()
-            @resize()
             @
         close: ()->
             if @isClosed

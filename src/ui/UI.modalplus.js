@@ -14,6 +14,7 @@
         isFirst = false;
         if (this.option.mode === 'fullscreen') {
           this.option.disableFooter = true;
+          this.option.disableClose = true;
         }
         if ($('#modal-wrap').size() > 0) {
           isFirst = false;
@@ -59,15 +60,16 @@
           body.parent().width(this.option.width);
         }
         this.tpl.appendTo(this.wrap);
-        window.setTimeout((function(_this) {
-          return function() {
-            return self.wrap.addClass("show");
-          };
-        })(this), 0);
         modalGroup.push(this);
+        this.show();
         window.setTimeout((function(_this) {
           return function() {
             return _this.tpl.addClass('bounce');
+          };
+        })(this), 0);
+        window.setTimeout((function(_this) {
+          return function() {
+            return self.wrap.addClass("show");
           };
         })(this), 0);
         if (modalGroup.length === 1 || this.abnormal()) {
@@ -79,9 +81,7 @@
             };
           })(this), 300);
         }
-        this.show();
         this.bindEvent();
-        this.resize();
         this;
       }
 

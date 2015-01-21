@@ -1,0 +1,24 @@
+
+<!-- {{frame}} -->
+<div class="project-scene">
+  <header class="project-header">
+    <button class="ph-nav-btn project-list"></button>
+    <button class="ph-nav-btn icon-menu asset-list"></button>
+    <div class="ws-tabbar"><ul class="ws-fixed-tabs"></ul><ul class="ws-tabs"></ul></div>
+    <nav>
+      <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a>
+      <button class="ph-nav-btn icon-notification"></button>
+      <button class="ph-nav-btn user-menu"></button>
+    </nav>
+  </header>
+
+  <section class="ws-content"></section>
+</div>
+
+<!-- {{assetList}} -->
+
+<!-- {{projectList}} -->
+<div></div>
+
+<!-- {{usermenu}} -->
+<div></div>

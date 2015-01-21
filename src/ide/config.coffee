@@ -139,6 +139,12 @@ require.config {
     "OpsModel"   : "ide/submodels/OpsModel"
 
     #############################################
+    # workspace                 # Merge in deploy
+    #############################################
+    "Workspace"  : "workspaces/Workspace"
+    "WSManager"  : "workspaces/WorkspaceManager"
+
+    #############################################
     # coreeditor                # Merge in deploy
     #############################################
     "OpsEditor"         : "workspaces/coreeditor/OpsEditor"

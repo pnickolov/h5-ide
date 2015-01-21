@@ -308,30 +308,6 @@ a {
 	/*display: inline-block;*/
 }
 
-/* Main */
-#main {
-	position : absolute;
-	left     : 0;
-	top      : 49px;
-	right    : 0;
-	bottom   : 0;
-	border-top: 1px solid #202020;
-}
-
-/* Wrapper */
-#wrapper {
-	position : absolute;
-	width    : 100%;
-	top      : 0;
-	bottom   : 0;
-
-	-webkit-transition : -webkit-transform 0.21s ease-in;
-	   -moz-transition : -moz-transform 0.21s ease-in;
-	     -o-transition : -o-transform 0.21s ease-in;
-					transition : transform 0.21s ease-in;
-}
-
-
 .global-region-status-content {
 	position: relative;
 }
@@ -343,13 +319,6 @@ a {
 	-ms-transition: -ms-transform .1s;
 	-o-transition: -o-transform, .1s;
 	transition: transform .1s;
-}
-
-/* Main Content */
-#main > div {
-	display : none;
-	height  : 100%;
-	width   : 100%;
 }
 
 /* Browse Community AMI Modal */
@@ -3898,8 +3867,6 @@ div.modal-text-highlight{
 }
 
 
-@import "ide/header";
-@import "ide/navigation";
 @import "ide/dashboard";
 @import "sharedres/kp";
 @import "sharedres/optiongroup";
@@ -3921,4 +3888,5 @@ div.modal-text-highlight{
 @import "os/toolbar";
 @import "os/component";
 @import "os/dashboard";
-@import "ide/fullpage_settings"
+@import "ide/fullpage_settings";
+@import "ide/project";

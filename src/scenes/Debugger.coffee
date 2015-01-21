@@ -148,7 +148,10 @@ define ["Scene", "./DebuggerTpl", "ApiRequest", "ApiRequestOs", "ApiRequestDefs"
           option += "<option value='#{gg}'>#{gg}</option>"
         option += "</optgrouop>"
 
-      $("#ApiSelect").html(option).select2({dropdownCssClass:"debugger"})
+      $("#ApiSelect").html(option).select2({
+        dropdownCssClass:"debugger"
+        matcher:(term, text, opt)-> text.match(new RegExp(term.replace(/\s+/g, '').split('').join('.*'), 'i'))
+      })
 
     onApiChange : ()->
       val = $("#ApiSelect").select2("val")

@@ -142,7 +142,9 @@
   position: absolute;
   background: #F9F5EF;
   box-sizing: border-box;
-  padding: 50px; }
+  padding: 50px;
+  top: 0;
+  left: 0; }
   #ApiDebuggerScene #ApiDebuggerLeft {
     width: 40%;
     float: left;

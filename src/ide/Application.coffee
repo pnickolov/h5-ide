@@ -17,6 +17,7 @@ define [
   "./Router"
   "ApiRequest"
   "i18n!/nls/lang.js"
+  "UI.notification"
 ], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
 
   VisualOps = ()->
@@ -44,8 +45,10 @@ define [
     self = @
     jobs = @user.fetch().then ()->
       self.model.fetch().fail ( err )->
-        notification lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA
-        throw err
+        notification "error", lang.NOTIFY.CANNOT_LOAD_APPLICATION_DATA, false
+        # Returns a promise that will never fulfilled, so that we will stay in loading forever.
+        d = Q.defer()
+        d.promise
 
     jobs.then ()->
       App.view.hideGlobalLoading()

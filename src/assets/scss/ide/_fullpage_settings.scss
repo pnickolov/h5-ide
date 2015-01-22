@@ -30,7 +30,7 @@
         margin-left: 300px;
         padding: 50px 0 0 0;
 
-        header.project-title {
+        & > header {
             color: white;
             padding-bottom: 15px;
             margin-bottom: 20px;
@@ -201,6 +201,7 @@
                     .button-list {
                         top: 6px;
                         right: -92px;
+                        position: absolute;
 
                         i {
                             line-height: 30px;

@@ -47,11 +47,11 @@ define [
             @activeTab tab
 
             @subView and @subView.remove()
-            @subView = new subViewMap[ tab ]()
+            @subView = new subViewMap[ tab ]( model: @model )
             @subView.render()
 
         setTitle: ( tab ) ->
-            projectName = "Paula's Project"
+            projectName = @model.get 'name'
             tabName = subViewNameMap[ tab ]
             @$('.project-title').html "#{projectName} / #{tabName}"
 

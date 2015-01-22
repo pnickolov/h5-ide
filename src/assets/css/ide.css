@@ -9709,7 +9709,7 @@ h5.billing_usage_title {
   max-width: 800px;
   margin-left: 300px;
   padding: 50px 0 0 0; }
-  .fullpage-settings section.setting-content header.project-title {
+  .fullpage-settings section.setting-content > header {
     color: white;
     padding-bottom: 15px;
     margin-bottom: 20px;
@@ -9841,7 +9841,8 @@ h5.billing_usage_title {
         cursor: pointer; }
       .fullpage-settings section.setting-content .credential ul.credential-list > li .button-list {
         top: 6px;
-        right: -92px; }
+        right: -92px;
+        position: absolute; }
         .fullpage-settings section.setting-content .credential ul.credential-list > li .button-list i {
           line-height: 30px;
           padding: 0 6px 0 8px; }

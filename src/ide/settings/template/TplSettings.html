@@ -5,9 +5,9 @@
     </section>
     <section class="project-list">
         <header>Manage Project</header>
-        <a data-id="xxx">Admin Project</a>
-        <a>Collaborator Project</a>
-        <a>Observor Project</a>
+        {{#each projects}}
+        <a data-id="{{id}}">{{name}}</a>
+        {{/each}}
     </section>
 </nav>
 <section class="setting-content">

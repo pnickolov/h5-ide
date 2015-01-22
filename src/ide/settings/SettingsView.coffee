@@ -36,6 +36,7 @@ define [
                 @tab = options.tab
                 @projectId = options.projectId
 
+            @projects = App.model.projects()
             @render(@tab)
 
 
@@ -58,16 +59,18 @@ define [
         renderSettings: () ->
             data = _.extend {}, App.user.toJSON()
             data.gravatar = App.user.gravatar()
+            data.projects = @projects.toJSON()
 
             @$el.html TplSettings data
             @
 
         loadProject: ( e ) ->
             projectId = $(e.currentTarget).data 'id'
-            @renderProject projectId
+            project = @projects.get projectId
+            @renderProject project
 
-        renderProject: ( projectId, tab ) ->
-            @$el.html new ProjectView().render(tab).el
+        renderProject: ( project, tab ) ->
+            @$el.html new ProjectView( model: project ).render(tab).el
 
         remove: ->
             @model?.close()

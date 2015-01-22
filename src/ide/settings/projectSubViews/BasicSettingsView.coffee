@@ -51,7 +51,7 @@ define [ '../template/TplBasicSettings', 'UI.modalplus', 'backbone' ], ( TplBasi
         className: 'basic-settings'
 
         render: () ->
-            @$el.html TplBasicSettings.basicSettings
+            @$el.html TplBasicSettings.basicSettings @model.toJSON()
             @
 
         edit: ( e ) -> $( e.currentTarget ).closest( '.project-item' ).addClass 'edit'

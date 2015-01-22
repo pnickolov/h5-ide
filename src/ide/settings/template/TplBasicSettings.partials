@@ -2,7 +2,7 @@
 <div class="project-item project-name-zone">
     <h3>Project Name
         <div class="normal-mode">
-            <span class="project-name">Paula’s Project</span>
+            <span class="project-name">{{name}}</span>
         </div>
         <div class="edit-mode">
             <input type="text" class="input" id="project-name">

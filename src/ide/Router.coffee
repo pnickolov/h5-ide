@@ -12,17 +12,13 @@ define [
   Backbone.Router.extend {
 
     routes :
-      ""                                : "openDefaultProject"
+      ""                                : "openProject"
       "project(/:project)"              : "openProject"
       "project/:project/ops(/:ops)"     : "openProject"
       "project/:project/unsaved(/:ops)" : "openProject"
 
       "settings(/:page)"   : "openSettings"
       "store/:sampleId"    : "openStore"
-
-    openDefaultProject : ()->
-      console.log "opening default project", arguments
-      App.sceneManager.find("DefaultProject") || new ProjectScene({id: "DefaultProject"})
 
     openStore : ( id )-> new StackStore({ id : id })
 
@@ -33,8 +29,7 @@ define [
       theSettings.view.$el.find("h1").html arguments[0] || "settings"
       return
 
-    openProject : ()->
-      new ProjectScene()
+    openProject : ( projectId, opsModelId )-> new ProjectScene( projectId, opsModelId )
 
     start : ()->
       if not Backbone.history.start({pushState:true})

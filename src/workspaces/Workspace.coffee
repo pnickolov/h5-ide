@@ -8,39 +8,38 @@ define ["backbone"], ()->
 
   class Workspace
 
-    constructor : ( attributes )->
-      # Find out if there's any workspace already working on this data.
-      for ws in App.workspaces.spaces()
-        if ws instanceof this.constructor and ws.isWorkingOn( attributes )
-          console.info "Found a workspace that is working on, ", attributes, ws
-          return ws
+    constructor : ( attributes, option )->
 
-      @id = "space_" + (++wsid)
-      @initialize attributes
-      App.workspaces.add @
+      console.assert option and option.scene
+
+      @id    = "space_" + (++wsid)
+      @scene = option.scene
+      @initialize( attributes, option )
+
+      @scene.addSpace( @ )
 
       return @
 
-    isAwake : ()-> App.workspaces.getAwakeSpace() is this
+    isAwake : ()-> @scene.getAwakeSpace() is this
 
     # Returns the index of current tab.
-    index : ()-> App.workspaces.spaces().indexOf @
+    index : ()-> @scene.spaces().indexOf @
 
     # Set the index of the current tab.
-    setIndex : ( idx )-> App.workspaces.setIndex @, idx
+    setIndex : ( idx )-> @scene.moveSpace @, idx
 
     # Call this method to remove the workspace from the ide.
     isRemoved : ()-> !!@__isRemoved
     remove : ()->
       if @__isRemoved then return
       @__isRemoved = true
-      App.workspaces.remove(@, true)
+      @scene.remove(@, true)
 
     # Call this method to update the tab's data.
-    updateTab : ()-> App.workspaces.update @
+    updateTab : ()-> @scene.updateSpace @
 
     # Call this method to activate/awake the workspace
-    activate : ()-> App.workspaces.awakeWorkspace @
+    activate : ()-> @scene.awakeSpace @
 
     ###
       Methods that should be override
@@ -88,10 +87,7 @@ define ["backbone"], ()->
     # The attributes should be the same as the initialize(), but can also be anything.
     isWorkingOn : ( attributes )-> false
 
-    updateUrl : ()->
-      if @isAwake()
-        Router.navigate( @url(), {replace:true} )
-      return
+    updateUrl : ()-> @scene.updateSpace( @ )
 
   _.extend Workspace.prototype, Backbone.Events
 

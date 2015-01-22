@@ -67,13 +67,6 @@
     .project-list {
       width : 100px; // The size of .project-list affects the margin of the .ws-tabbar
     }
-
-    .ws-tabbar {
-      height      : 100%;
-      margin-left : 166px;
-
-      background : red;
-    }
   }
 
   .ws-content {
@@ -86,3 +79,99 @@
     background : yellow;
   }
 }
+
+.ws-tabbar {
+  margin-left : 166px;
+
+  padding     : 10px 0 0 10px;
+  width       : 10000px;
+  white-space : nowrap;
+  position    : relative;
+  height      : 39px;
+
+  > ul {
+    float : left;
+  }
+
+  > ul > li {
+    float       : left;
+    height      : 39px;
+    line-height : 39px;
+
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    color : #8b8b8b;
+    background-color : #404040;
+    background-position : 4px 9px;
+
+    padding    : 0 0 0 32px;
+
+    border        : 1px solid #010101;
+    border-bottom : none;
+    border-left   : none;
+    cursor        : pointer;
+
+    -webkit-transition: background-color .2s, box-shadow .2s;
+    -moz-transition:    background-color .2s, box-shadow .2s;
+    -ms-transition:     background-color .2s, box-shadow .2s;
+    -o-transition:      background-color .2s, box-shadow .2s;
+    transition:         background-color .2s, box-shadow .2s;
+
+    &.active,
+    &.active:hover {
+      background-color : #202020;
+      color            : #fff;
+      font-weight      : bold;
+      box-shadow       : inset 0 3px 0 #9F62D1;
+    }
+
+    &.active, &:hover {
+      .icon-close { visibility: inherit; }
+    }
+
+    &:hover {
+      background-color: #494949;
+    }
+
+    .icon-close {
+      position    : absolute;
+      right       : 3px;
+      top         : 12px;
+      width       : 16px;
+      height      : 16px;
+      line-height : 16px;
+      float       : right;
+      visibility  : hidden;
+      color       : #999;
+      cursor      : pointer;
+
+      &:hover {
+        color : #F09595;
+      }
+    }
+
+    &[data-placeholder] {
+      background : none;
+      border     : none;
+    }
+  }
+
+  .truncate {
+    margin-right : 12px;
+  }
+
+  .ws-fixed-tabs { border-left : 1px solid #010101; }
+
+  .ws-tabs > li {
+    position : relative;
+    cursor   : pointer !important;
+
+    .truncate {
+      display : block;
+      margin-right : 22px;
+    }
+  }
+}
+

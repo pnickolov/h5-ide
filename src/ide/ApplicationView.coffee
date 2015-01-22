@@ -30,7 +30,7 @@ define [
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE
 
-    hideGlobalLoading : ()-> $("#GlobalLoading").remove()
+    hideGlobalLoading : ()-> $("#GlobalLoading").hide()
 
     globalKeyEvent: (event) ->
       nodeName = event.target.nodeName.toLowerCase()

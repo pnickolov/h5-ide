@@ -87,13 +87,7 @@
 
       Modal.prototype.close = function() {
         var _base;
-        if (this.isClosed) {
-          return false;
-        }
-        if (this.isMoving) {
-          return false;
-        }
-        if (this.parentModal) {
+        if (this.isClosed || this.isMoving || this.parentModal) {
           return false;
         }
         if (modalGroup.length > 1) {
@@ -121,8 +115,8 @@
         var _base;
         if (modalGroup.length > 1) {
           this.getLast().resize(1);
-          this.getLast()._slideIn();
-          this.getLastButOne()._fadeOut();
+          this.getLast().animate("slideIn");
+          this.getLastButOne().animate("fadeOut");
         } else {
           this.resize();
         }
@@ -319,10 +313,8 @@
           if ((_ref1 = lastModal.parentModal) != null) {
             _ref1.option.disableClose = true;
           }
-          this.isMoving = true;
           window.setTimeout((function(_this) {
             return function() {
-              _this.isMoving = false;
               newModal.trigger('shown', newModal);
               return null;
             };
@@ -345,8 +337,8 @@
           return false;
         } else {
           this.getLast().trigger("close", this.getLast());
-          this.getLastButOne()._fadeIn();
-          this.getLast()._slideOut();
+          this.getLastButOne().animate("fadeIn");
+          this.getLast().animate("slideOut");
           toRemove = modalGroup.pop();
           if (toRemove.abnormal()) {
             toRemove.tpl.removeClass('bounce');
@@ -356,10 +348,8 @@
           if (typeof (_base = toRemove.option).onClose === "function") {
             _base.onClose();
           }
-          this.isMoving = true;
           return window.setTimeout((function(_this) {
             return function() {
-              _this.isMoving = false;
               toRemove.tpl.remove();
               return toRemove.trigger('closed', toRemove);
             };
@@ -401,28 +391,24 @@
         return this;
       };
 
-      Modal.prototype._fadeOut = function() {
+      Modal.prototype.animate = function(animate) {
+        var delayOption, symbol, that, windowWidth;
+        symbol = "+=";
+        delayOption = 300;
+        that = this;
+        if (animate === "fadeOut" || animate === "fadeIn") {
+          delayOption = 100;
+        }
+        if (animate === "fadeOut" || animate === "slideIn") {
+          symbol = "-=";
+        }
+        windowWidth = $(window).width();
+        that.isMoving = true;
         return this.tpl.animate({
-          left: "-=" + $(window).width()
-        }, this.option.delay || 100);
-      };
-
-      Modal.prototype._fadeIn = function() {
-        return this.tpl.animate({
-          left: "+=" + $(window).width()
-        }, this.option.delay || 100);
-      };
-
-      Modal.prototype._slideIn = function() {
-        return this.tpl.animate({
-          left: "-=" + $(window).width()
-        }, this.option.delay || 300);
-      };
-
-      Modal.prototype._slideOut = function() {
-        return this.tpl.animate({
-          left: "+=" + $(window).width()
-        }, this.option.delay || 300);
+          left: symbol + windowWidth
+        }, this.option.delay || delayOption, function() {
+          return that.isMoving = false;
+        });
       };
 
       Modal.prototype.find = function(selector) {

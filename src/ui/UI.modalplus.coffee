@@ -110,11 +110,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @bindEvent()
             @
         close: ()->
-            if @isClosed
-                return false
-            if @isMoving
-                return false
-            if @.parentModal
+            if @isClosed or @isMoving or @parentModal
                 return false
             if modalGroup.length > 1
                 @.back()
@@ -134,8 +130,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         show: ()->
             if modalGroup.length > 1
                 @getLast().resize(1)
-                @getLast()._slideIn()
-                @getLastButOne()._fadeOut()
+                @getLast().animate "slideIn"
+                @getLastButOne().animate "fadeOut"
             else
                 @resize()
             @option.onShow?(@)
@@ -243,9 +239,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 newModal.parentModal = lastModal
                 lastModal.childModal = newModal
                 lastModal.parentModal?.option.disableClose = true
-                @isMoving = true
                 window.setTimeout ()=>
-                    @isMoving = false
                     newModal.trigger 'shown', newModal
                     null
                 ,@option.delay || 300
@@ -262,17 +256,15 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 return false
             else
                 @getLast().trigger "close", @getLast()
-                @getLastButOne()._fadeIn()
-                @getLast()._slideOut()
+                @getLastButOne().animate "fadeIn"
+                @getLast().animate "slideOut"
                 toRemove = modalGroup.pop()
                 if toRemove.abnormal()
                     toRemove.tpl.removeClass('bounce')
                 toRemove.isClosed = true
                 @getLast().childModal = null
                 toRemove.option.onClose?()
-                @isMoving = true
                 window.setTimeout ()=>
-                    @isMoving = false
                     toRemove.tpl.remove()
                     toRemove.trigger 'closed', toRemove
                 ,@option.delay || 300
@@ -295,26 +287,21 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         compact: ()->
           @tpl.find('.modal-body').css(padding: 0)
           @
-        _fadeOut: ->
-            #if @abnormal() then return false
+
+        animate: (animate)->
+            symbol = "+="
+            delayOption = 300
+            that = @
+            if animate in ["fadeOut", "fadeIn"]
+                delayOption = 100
+            if animate in ["fadeOut", "slideIn"]
+                symbol = "-="
+            windowWidth = $(window).width()
+            that.isMoving = true
             @tpl.animate
-                left: "-="+ $(window).width()
-            ,@option.delay || 100
-        _fadeIn: ->
-            #if @abnormal() then return false
-            @tpl.animate
-                left: "+="+ $(window).width()
-            ,@option.delay || 100
-        _slideIn: ->
-            #if @abnormal() then return false
-            @tpl.animate
-                left: "-="+ $(window).width()
-            ,@option.delay || 300
-        _slideOut: ->
-            #if @abnormal() then return false
-            @tpl.animate
-                left: "+="+ $(window).width()
-            ,@option.delay || 300
+                left: symbol + windowWidth
+            , @option.delay || delayOption
+            , -> that.isMoving = false
         find: (selector)->
           @tpl.find(selector)
         $   :(selector)->

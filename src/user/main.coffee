@@ -74,11 +74,11 @@ api = (option)->
             params: option.data || {}
         )
         success: (res)->
-            option.success(res.result[1], res.result[0])
+            option.success?(res.result[1], res.result[0])
         error: (xhr,status,error)->
             #console.log error
             if status!='abort'
-                option.error(status, -1)
+                option.error?(status, -1)
     xhr
 
 # register i18n handlebars helper
@@ -155,6 +155,22 @@ init = ->
       $("header").after "<div id='unsupported-browser'><p>#{langsrc.LOGIN.browser_not_support_1}</p> <p>#{langsrc.LOGIN.browser_not_support_2}<a href='https://www.google.com/intl/en/chrome/browser/' target='_blank'>Chrome</a>, <a href='http://www.mozilla.org/en-US/firefox/all/' target='_blank'>Firefox</a> or <a href='http://windows.microsoft.com/en-us/internet-explorer/download-ie' target='_blank'>IE</a>#{langsrc.LOGIN.browser_not_support_3}</p></div>"
 
     userRoute(
+        "invite": ( pathArray, hashArray ) ->
+            deepth = 'INVITE'
+            hashTarget = hashArray[0]
+            unless hashTarget is 'member' then return
+
+            checkInviteKey( hashArray[ 1 ] ).then ( result ) ->
+                console.log result
+                if result.result[ 0 ] isnt 200
+                    render '#expire-template'
+                else
+                    location.href '/'
+            , () ->
+                render '#expire-template'
+
+
+
         "reset": (pathArray, hashArray)->
             deepth = 'RESET'
             hashTarget = hashArray[0]
@@ -482,6 +498,13 @@ checkPassKey = (keyToValid,fn)->
             handleNetError(status)
             false
     )
+
+checkInviteKey = ( key ) ->
+    api {
+        url: '/project/'
+        method: 'check_invitation'
+        data: [ key ]
+    }
 
 setCredit = (result)->
     # Clear any cookie that's not ours

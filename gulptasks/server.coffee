@@ -13,15 +13,17 @@ module.exports = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort
 
   file = new nstatic.Server( path, { cache : false, headers : defaultHeader } )
 
-  redirectRegex = /(login|ide|register|reset)\.html$/
+  redirectRegex = /(login|ide|register|reset|invite)\.html$/
 
   server = http.createServer ( request, response )->
 
+    INVITE       = /^\/invite(\?\S*)?/
     REG_RESET    = /^\/reset(\?\S*)?/
     REG_LOGIN    = /^\/login(\?\S*)?/
     REG_REGISTER = /^\/register(\?\S*)?/
     REG_IDE      = /^\/(project|store|settings|debug)\/?/
     REG_500      = /^\/500(\?\S)?/
+
     request.addListener 'end', ()->
       url = request.url
 
@@ -35,6 +37,8 @@ module.exports = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort
         response.writeHead 301, { "Location" : url.replace(".html", "") }
         response.end()
         return
+      else if INVITE.test( url )
+        filePath = "/invite.html"
       else if REG_RESET.test( url )
         filePath = "/reset.html"
       else if REG_REGISTER.test( url )

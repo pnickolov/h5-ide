@@ -136,12 +136,12 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
         @view.hideLoading()
       return
 
-    removeSpace : ( workspace )->
+    removeSpace : ( workspace, force )->
       if not workspace then return
 
       if _.isString(workspace) then workspace = @__spacesById[workspace]
 
-      if not force and not workspace.isModified() then return
+      if not force and not workspace.isRemovable() then return
 
       id = workspace.id
 

@@ -162,10 +162,10 @@ init = ->
 
             checkInviteKey( hashArray[ 1 ] ).then ( result ) ->
                 console.log result
-                if result.result[ 0 ] isnt 200
+                if result.result[ 0 ] isnt 0
                     render '#expire-template'
                 else
-                    location.href '/'
+                    location.href = '/'
             , () ->
                 render '#expire-template'
 

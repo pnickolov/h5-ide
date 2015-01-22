@@ -1,4 +1,14 @@
-define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopup', 'UI.selectbox', 'UI.parsley', 'UI.errortip', 'UI.table', 'MC.validate'], (Backbone, TplMember, lang, bubblePopup) ->
+define ['backbone',
+    '../template/TplMember',
+    'i18n!/nls/lang.js',
+    'UI.bubblepopup',
+    'ApiRequest',
+    'UI.selectbox',
+    'UI.parsley',
+    'UI.errortip',
+    'UI.table',
+    'MC.validate'
+], (Backbone, TplMember, lang, bubblePopup, ApiRequest) ->
 
     Backbone.View.extend
 
@@ -16,6 +26,7 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
 
         initialize: () ->
 
+            @projectId = @model.get('id')
             @render()
 
         render: () ->
@@ -57,38 +68,27 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
         loadMemList: () ->
 
             that = @
-            data = [
-                {
-                    id: "1"
-                    avatar: ""
-                    name: "John Doe"
-                    mail: "id@mc2.io"
-                    role: "ADMIN"
-                    status: "Active"
-                    canCancel: true
-                },
-                {
-                    id: "2"
-                    avatar: ""
-                    name: "John Doe"
-                    mail: "id@mc2.io"
-                    role: "COLLABORATOR"
-                    status: "Pending"
-                },
-                {
-                    id: "3"
-                    avatar: ""
-                    name: "John Doe"
-                    mail: "id@mc2.io"
-                    role: "OBSERVER"
-                    status: "Active"
-                }
-            ]
-            setTimeout () ->
+            data = []
+            currentUserName = App.user.get('username')
+            ApiRequest('project_list_member', {
+                project_id: @projectId
+            }).then (members)->
+                _.each members, (member) ->
+                    userName = Base64.decode(member.username)
+                    data.push({
+                        id: member.id,
+                        me: userName is currentUserName,
+                        avatar: '',
+                        username: userName,
+                        email: Base64.decode(member.email),
+                        role: member.role,
+                        state: member.state
+                    })
+            .done () ->
                 that.$el.find('.content').removeClass('hide')
                 that.$el.find('.loading-spinner').addClass('hide')
                 that.renderList(data)
-            , 1000
+                that.__processDelBtn()
 
         renderList: (data) ->
 
@@ -96,6 +96,8 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
             @$el.find('.memlist-count').text(data.length)
 
         inviteMember: () ->
+
+            that = @
 
             $invite = @$el.find('#invite')
 
@@ -115,10 +117,21 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
                 $invite.prop 'disabled', true
                 $invite.text('wait...')
 
-                setTimeout () ->
+                ApiRequest('project_invite', {
+                    project_id: @projectId,
+                    member_email: mail,
+                    member_role: 'collaborator',
+                }).then ()->
+                    $mail.val('')
+                    that.loadMemList()
+                .fail (data) ->
+                    if data.error is ApiRequest.Errors.UserNoUser
+                        notification 'error', 'User Not Found'
+                    else
+                        notification 'error', data.result
+                .done (data) ->
                     $invite.text(originTxt)
                     $invite.prop 'disabled', false
-                , 1000
 
         removeMember: (event) ->
 
@@ -140,10 +153,15 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
                         $delete.prop 'disabled', true
                         $delete.text('wait...')
 
-                        setTimeout () ->
+                        ApiRequest('project_delete_members', {
+                            project_id: that.projectId,
+                            member_ids: memList
+                        }).then ()->
+                            that.loadMemList()
+                        .fail (data) ->
+                            notification 'error', data.result
+                        .done (data) ->
                             $delete.text(originTxt)
-                            $delete.prop 'disabled', false
-                        , 1000
                 }
 
         enterModify: (event) ->
@@ -153,26 +171,37 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
 
         doneModify: (event) ->
 
+            that = @
+
             $done = $(event.currentTarget)
 
             if $done.prop('disabled') is false
 
                 $memItem = $(event.currentTarget).parents('.memlist-item')
                 memId = $memItem.data('id')
-                role = $memItem.find('.memtype li.selected').data('id')
+                newRole = $memItem.find('.memtype li.selected').data('id')
 
                 # change button state
                 originTxt = $done.text()
                 $done.prop 'disabled', true
                 $done.text('wait...')
 
-                setTimeout () ->
+                ApiRequest('project_update_role', {
+                    project_id: that.projectId,
+                    member_id: memId,
+                    new_role: newRole
+                }).then ()->
+                    that.loadMemList()
+                .fail (data) ->
+                    notification 'error', data.result
+                .done (data) ->
                     $done.text(originTxt)
                     $done.prop 'disabled', false
                     $memItem.removeClass('edit')
-                , 1000
 
         cancelInvite: (event) ->
+
+            that = @
 
             $cancel = $(event.currentTarget)
 
@@ -186,10 +215,16 @@ define ['backbone', '../template/TplMember', 'i18n!/nls/lang.js', 'UI.bubblepopu
                 $cancel.prop 'disabled', true
                 $cancel.text('wait...')
 
-                setTimeout () ->
+                ApiRequest('project_cancel_invitation', {
+                    project_id: that.projectId,
+                    member_id: memId
+                }).then ()->
+                    that.loadMemList()
+                .fail (data) ->
+                    notification 'error', data.result
+                .done (data) ->
                     $cancel.text(originTxt)
                     $cancel.prop 'disabled', false
-                , 1000
 
         # follow code ref from toolbarModal
         __checkOne: ( event ) ->

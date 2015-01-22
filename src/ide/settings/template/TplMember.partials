@@ -60,16 +60,18 @@
 {{#each this}}
 <tr class="item memlist-item" data-id="{{id}}">
     <td class="checkbox-row">
+        {{#unless me}}
         <div class="checkbox">
-            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" data-name="{{Name}}" class="one-cb">
+            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" class="one-cb">
             <label for="sslcert-select-{{id}}"></label>
         </div>
+        {{/unless}}
     </td>
     <td>
-        <img class="avatar" src="https://www.gravatar.com/avatar/a76355e01958a4013e9e0201c00452b0">
+        <img class="avatar" src="{{avatar}}">
         <div class="info">
-            <div class="name">{{name}}</div>
-            <div class="mail">{{mail}}</div>
+            <div class="name">{{username}}</div>
+            <div class="mail">{{email}}</div>
         </div>
     </td>
     <td class="{{role}}">
@@ -77,23 +79,23 @@
         <div class="selectbox memlist-edit-mode memtype">
             <div class="selection">{{role}}</div>
             <ul class="dropdown">
-                <li data-id="ADMIN" class="item {{#ifCond role 'ADMIN'}}selected{{/ifCond}}">
+                <li data-id="admin" class="item {{#ifCond role 'admin'}}selected{{/ifCond}}">
                     <div class="name">ADMIN</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
-                <li data-id="COLLABORATOR" class="item {{#ifCond role 'COLLABORATOR'}}selected{{/ifCond}}">
+                <li data-id="collaborator" class="item {{#ifCond role 'collaborator'}}selected{{/ifCond}}">
                     <div class="name">COLLABORATOR</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
-                <li data-id="OBSERVER" class="item {{#ifCond role 'OBSERVER'}}selected{{/ifCond}}">
+                <li data-id="observer" class="item {{#ifCond role 'observer'}}selected{{/ifCond}}">
                     <div class="name">OBSERVER</div>
                     <div class="desc">%explain what an admin can do.can docan do cando %</div>
                 </li>
             </ul>
         </div>
     </td>
-    <td class="memlist-status {{#ifCond status 'Pending'}}memlist-pending{{/ifCond}}">{{status}}</td>
-    <td>{{#if canCancel}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/if}}</td>
+    <td class="memlist-status {{#ifCond state 'inactive'}}memlist-pending{{/ifCond}}">{{state}}</td>
+    <td>{{#ifCond state 'inactive'}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/ifCond}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">Done</button>
         <button class="icon-edit memlist-view-mode edit"></button>

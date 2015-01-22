@@ -5,7 +5,7 @@
             <span class="project-name">{{name}}</span>
         </div>
         <div class="edit-mode">
-            <input type="text" class="input" id="project-name">
+            <input type="text" class="input" id="project-name" value="{{name}}">
             <div class="edit-actions">
                 <button class="btn btn-blue" id="update-name">Update</button>
                 <a id="cance-update-name" class="cancel-button">Cancel</a>

@@ -9689,6 +9689,8 @@ h5.billing_usage_title {
 
 .fullpage-settings a {
   cursor: pointer; }
+.fullpage-settings a.active:not(.btn), .fullpage-settings a:hover:not(.btn) {
+  color: #5da4e5; }
 .fullpage-settings nav#settings-nav {
   width: 220px;
   position: absolute;
@@ -9703,7 +9705,7 @@ h5.billing_usage_title {
     padding: 8px 0; }
   .fullpage-settings nav#settings-nav > section a {
     display: block;
-    padding: 5px 0; }
+    padding: 5px 0 5px 10px; }
 .fullpage-settings section.setting-content {
   min-width: 600px;
   max-width: 800px;

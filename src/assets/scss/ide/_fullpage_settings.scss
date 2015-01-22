@@ -1,6 +1,6 @@
 .fullpage-settings {
     a { cursor: pointer; }
-    // a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
+    a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
 
     nav#settings-nav {
         width: 220px;
@@ -19,7 +19,7 @@
             }
             a {
                 display: block;
-                padding: 5px 0;
+                padding: 5px 0 5px 10px;
             }
         }
 

@@ -43,6 +43,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         provider     : attr.provider
         platform     : attr.cloud_type
         isDemo       : attr.is_demo
+        alias        : attr.alias
         awsAccount   : attr.account_id
         awsAccessKey : attr.access_key
         awsSecretKey : attr.secret_key
@@ -57,6 +58,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         project_id   : @get("project").id
         key_id       : @id
         credential   : {
+          alias      : cred.alias
           account_id : cred.awsAccount
           access_key : cred.awsAccessKey
           secret_key : cred.awsSecretKey
@@ -77,6 +79,22 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       cred.provider = @get("provider")
       Credential.validate( cred )
 
+    add: ->
+      projectId = @get( 'project' ).id
+      model = @
+
+      ApiRequest( "project_add_credential", {
+        project_id: projectId
+        credential: {
+          alias      : @get 'alias'
+          account_id : @get 'awsAccount'
+          access_key : @get 'awsAccessKey'
+          secret_key : @get 'awsSecretKey'
+        }
+      }).then (res) ->
+        model.set 'id', res[ 1 ]
+        res
+
     ###
     cred : {
       awsAccount   : ""
@@ -93,10 +111,25 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
       p.then ( res )->
         self.set {
+          alias        : cred.alias
           awsAccount   : cred.awsAccount
           awsAccessKey : __maskString( cred.awsAccessKey )
           awsSecretKey : __maskString( cred.awsSecretKey )
         }
+
+    save: ->
+      if @id
+        @update()
+      else
+        @add()
+
+    destroy: ( options ) ->
+      model = @
+      projectId = @get( 'project' ).id
+      ApiRequest( "project_remove_credential", { project_id: projectId, key_id: @id } ).then ( res )->
+        model.trigger 'destroy', model, model.collection, options
+        res
+
   }, {
     PLATFORM : PLATFORM
     PROVIDER : PROVIDER

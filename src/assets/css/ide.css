@@ -2923,58 +2923,6 @@ div.modal-text-highlight {
   top: 50%;
   margin-top: -8px; }
 
-/* Keyboard Shortcuts Cheatsheet */
-#modal-key-short .modal-body {
-  padding: 0; }
-
-#modal-key-short .title {
-  font-size: 18px;
-  color: #999;
-  border-bottom: 1px solid #1d1d1d;
-  padding: 0 15px; }
-
-/*#modal-key-short section {
-	margin-bottom: 40px;
-}*/
-#modal-key-short .key-item {
-  color: #ccc;
-  padding: 10px 24px 10px 24px; }
-
-#modal-key-short .key-item:nth-child(2n+1) {
-  background: rgba(255, 255, 255, 0.02); }
-
-#modal-key-short .key-item > div {
-  display: inline-block;
-  font-size: 14px; }
-
-#modal-key-short .keys {
-  background: #232224;
-  padding: 0; }
-
-#modal-key-short .key {
-  width: 220px;
-  margin-right: 20px;
-  color: green;
-  /*text-align: right;*/ }
-
-#modal-key-short .action {
-  position: relative; }
-
-#modal-key-short .meta {
-  font-size: 12px;
-  position: absolute;
-  color: #aaa;
-  display: none; }
-
-#modal-key-short .key.mac {
-  display: none; }
-
-.mac #modal-key-short .key.mac {
-  display: inline-block !important; }
-
-.mac #modal-key-short .key.pc {
-  display: none !important; }
-
 #sslcert-select .selection .icon-remove {
   display: none; }
 
@@ -10210,3 +10158,151 @@ h5.billing_usage_title {
     .ws-tabbar .ws-tabs > li .truncate {
       display: block;
       margin-right: 22px; }
+
+.header-popup {
+  position: absolute;
+  background: #36343C;
+  left: 0;
+  top: 50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #ddd;
+  font-size: 12px; }
+  .header-popup > li {
+    padding: 5px 10px; }
+  .header-popup li > a {
+    display: block; }
+  .header-popup li {
+    line-height: 39px;
+    height: 40px;
+    padding: 0 20px;
+    border-bottom: 1px solid #202020;
+    cursor: pointer; }
+  .header-popup li:hover {
+    background: rgba(0, 0, 0, 0.2); }
+
+.hp-project-list {
+  border-right: 1px solid #202020; }
+
+.hp-asset-list {
+  width: 260px;
+  background: #232224;
+  bottom: 0; }
+  .hp-asset-list > nav {
+    background: #111;
+    height: 50px; }
+  .hp-asset-list .hp-asset-list-wrap {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: scroll; }
+  .hp-asset-list .off-canvas-tab {
+    float: left;
+    height: 100%;
+    width: 50%;
+    color: #ccc;
+    cursor: pointer; }
+    .hp-asset-list .off-canvas-tab:hover {
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff; }
+    .hp-asset-list .off-canvas-tab.selected {
+      border-bottom: 3px solid #4A90E2;
+      color: #4A90E2; }
+  .hp-asset-list .nav-empty {
+    margin: 5px auto;
+    padding: 15px;
+    width: 200px;
+    color: #AAA;
+    background: #111;
+    border-radius: 5px;
+    font-size: 12px; }
+
+.hp-usermenu {
+  left: auto;
+  right: 0;
+  border-left: 1px solid #202020; }
+
+.cheatsheet {
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8); }
+  .cheatsheet .icon-close-circle {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+    background: #888;
+    color: #E5E4E0;
+    border-radius: 50%;
+    text-shadow: none; }
+    .cheatsheet .icon-close-circle:hover {
+      background: #555; }
+    .cheatsheet .icon-close-circle:before {
+      font-size: 20px;
+      line-height: 22px; }
+  .cheatsheet .cheatsheet-wrap {
+    position: absolute;
+    margin: auto;
+    height: 80%;
+    width: 90%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #E5E4E0;
+    color: #383315;
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap; }
+    .cheatsheet .cheatsheet-wrap > section {
+      display: inline-block;
+      vertical-align: top;
+      height: 100%;
+      border-right: 1px dashed #B8B7A7;
+      width: 330px;
+      padding-left: 15px;
+      padding-right: 20px; }
+      .cheatsheet .cheatsheet-wrap > section:last-child {
+        border: none; }
+  .cheatsheet .shortcut-item {
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 14px; }
+    .cheatsheet .shortcut-item .shortcuts {
+      float: left;
+      text-align: right;
+      width: 80px;
+      font-size: 12px;
+      line-height: 14px;
+      font-weight: bold; }
+    .cheatsheet .shortcut-item .shortcut {
+      display: block; }
+      .cheatsheet .shortcut-item .shortcut.mac {
+        display: none; }
+    .cheatsheet .shortcut-item .shortcut-desc {
+      margin-left: 95px; }
+    .cheatsheet .shortcut-item:after {
+      content: " ";
+      clear: both;
+      display: block; }
+  .cheatsheet h3.title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold; }
+
+.mac .shortcut.mac {
+  display: block !important; }
+
+.mac .shortcut.pc {
+  display: none !important; }

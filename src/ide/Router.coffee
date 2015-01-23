@@ -3,8 +3,9 @@ define [
   "scenes/ProjectScene"
   "scenes/Settings"
   "scenes/StackStore"
+  "scenes/Cheatsheet"
   "backbone"
-], ( ProjectScene, Settings, StackStore )->
+], ( ProjectScene, Settings, StackStore, Cheatsheet )->
 
   ###########
   # Routers
@@ -20,6 +21,8 @@ define [
       "settings(/:page)"   : "openSettings"
       "store/:sampleId"    : "openStore"
 
+      "cheatsheet" : "openCheatsheet"
+
     openStore : ( id )-> new StackStore({ id : id })
 
     openSettings : ()->
@@ -30,6 +33,8 @@ define [
       return
 
     openProject : ( projectId, opsModelId )-> new ProjectScene( projectId, opsModelId )
+
+    openCheatsheet : ()-> new Cheatsheet()
 
     start : ()->
       if not Backbone.history.start({pushState:true})

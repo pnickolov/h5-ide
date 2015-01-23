@@ -53,7 +53,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @option = _.extend _.clone(defaultOptions), option
             @option.cancel.text ||= lang.IDE.POP_LBL_CANCEL
             @option.confirm.text ||= lang.IDE.LBL_SUBMIT
-            console.log @option
             @render()
 
         render: ()->
@@ -67,7 +66,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @tpl.appendTo @wrap
             @resize()
             modals.push @
-            console.log modals.length
             if modals.length > 1
                 modals[modals.length - 1].resize(1)
                 modals[modals.length - 1].animate "slideIn"
@@ -96,7 +94,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             modal.trigger "close", @
             modal.option.onClose?(@)
 
-            console.log modals.length, "Close", modals
             if modals.length > 1
                 if modal.option.mode is "panel"
                     modal.tpl.removeClass("bounce")

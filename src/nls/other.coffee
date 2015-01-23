@@ -587,6 +587,14 @@ VisualOps API. You cannot UNDO this action.'
       en : "Fail to remove your credential, please retry."
       zh : "移除凭据失败，请重试。"
 
+    SETTINGS_ERR_PROJECT_REMOVE:
+      en : "Fail to remove your project, please retry."
+      zh : "删除项目失败，请重试。"
+
+    SETTINGS_ERR_PROJECT_LEAVE:
+      en : "Fail to leave the project, please retry."
+      zh : "离开项目失败，请重试。"
+
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
       zh : "<span>系统中存在正在运行或已经停止的 App。</span>确定要更新 AWS 证书吗？"

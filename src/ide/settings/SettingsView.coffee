@@ -70,7 +70,7 @@ define [
             @renderProject project
 
         renderProject: ( project, tab ) ->
-            @$el.html new ProjectView( model: project ).render(tab).el
+            @$el.html new ProjectView( model: project, settingsView: @ ).render(tab).el
 
         remove: ->
             @model?.close()

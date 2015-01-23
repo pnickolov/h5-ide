@@ -1,10 +1,11 @@
 
 define [
+  "ApiRequest"
   "ide/submodels/OpsCollection"
   "OpsModel"
   "Credential"
   "backbone"
-], ( OpsCollection, OpsModel, Credential )->
+], ( ApiRequest, OpsCollection, OpsModel, Credential )->
 
 
   MEMBERROLE =
@@ -123,6 +124,14 @@ define [
             t.name = newName
             break
 
+    destroy: ( options ) ->
+      model = @
+      ApiRequest("project_remove", { project_id: @id }).then ( res )->
+        model.trigger 'destroy', model, model.collection, options
+        res
+
+    leave: ->
+      ApiRequest("project_delete_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
 
 
 

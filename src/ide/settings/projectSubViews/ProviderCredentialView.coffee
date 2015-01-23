@@ -1,11 +1,12 @@
 define [
     'constant'
+    'i18n!/nls/lang.js'
     '../template/TplCredential'
     'UI.modalplus'
     'UI.tooltip'
     'UI.notification'
     'backbone'
-], ( constant, TplCredential, Modal ) ->
+], ( constant, lang, TplCredential, Modal ) ->
 
     credentialFormView = Backbone.View.extend
         events:
@@ -31,6 +32,7 @@ define [
 
             @modal.on 'confirm', ->
                 @trigger 'confirm'
+            , @
 
             @
 

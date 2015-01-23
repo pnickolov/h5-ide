@@ -21,13 +21,23 @@
 </div>
 -->
 <div class="project-item">
-    <h3>Delete Project</h3>
-
+    <h3>{{#if displayDelete}}Delete{{else}}Leave{{/if}} Project</h3>
     <div>
-        <p>Once the project is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are).</p>
-        <p>You can export stacks to JSON before deleting the project.</p>
+        {{#if private}}
 
-        <button class="btn btn-red icon-delete" id="delete-project">Delete Project</button>
+        <p>This is your default project which cannot be deleted.</p>
+
+        {{else}}
+            {{#if isAdmin}}
+            <p>Once the project is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are).</p>
+            <p>You can export stacks to JSON before deleting the project.</p>
+            <button class="btn btn-red icon-delete" id="delete-project">Delete Project</button>
+            {{/if}}
+            {{#if isMember}}
+            <p>By leaving this project, you won’t have access to project assets any more.</p>
+            <button class="btn btn-red icon-delete" id="leave-project">Leave Project</button>
+            {{/if}}
+        {{/if}}
     </div>
 
 </div>
@@ -39,6 +49,7 @@
 <!--{{confirmToLeave}}-->
 <p>This action CANNOT be reverted.<br/>Are you sure you want to leave this project?</p>
 
-
+<!--{{loading}}-->
+<div class="loading-spinner"></div>
 
 

@@ -32,7 +32,8 @@ define [
         events:
             'click .function-list a'    : 'loadSub'
 
-        initialize: () ->
+        initialize: ( options ) ->
+            @settingsView = options.settingsView
 
         render: ( tab = 'BasicSettings' ) ->
             @$el.html TplProject { tab: tab }
@@ -47,7 +48,7 @@ define [
             @activeTab tab
 
             @subView and @subView.remove()
-            @subView = new subViewMap[ tab ]( model: @model )
+            @subView = new subViewMap[ tab ]( model: @model, settingsView: @settingsView )
             @subView.render()
 
         setTitle: ( tab ) ->

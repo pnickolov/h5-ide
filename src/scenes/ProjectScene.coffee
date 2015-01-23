@@ -154,7 +154,7 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
 
       if @__awakeSpace is workspace
         @__awakeSpace = null
-        @awakeWorkspace( @__spaces[ @__spaces.length - 1 ] )
+        @awakeSpace( @__spaces[ @__spaces.length - 1 ] )
 
       workspace
 

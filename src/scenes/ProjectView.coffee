@@ -89,7 +89,7 @@ define [ "./ProjectTpl", "i18n!/nls/lang.js" , "backbone", "jquerysort" ], ( Pro
       false
 
     removeSpace : ( id )->
-      $tgt = @$tabbar.getTabElementById(id)
+      $tgt = @getTabElementById(id)
       @tabsWidth -= $tgt.outerWidth()
       $tgt.remove()
       @ensureTabSize()

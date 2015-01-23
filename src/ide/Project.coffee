@@ -124,14 +124,20 @@ define [
             t.name = newName
             break
 
+    updateName: ( name ) ->
+      model = @
+      ApiRequest( "project_save", { project_id: @id, spec: { name: name } } ).then ( res ) ->
+        model.set 'name', name
+        res
+
     destroy: ( options ) ->
       model = @
-      ApiRequest("project_remove", { project_id: @id }).then ( res )->
+      ApiRequest( "project_remove", { project_id: @id } ).then ( res )->
         model.trigger 'destroy', model, model.collection, options
         res
 
     leave: ->
-      ApiRequest("project_delete_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
+      ApiRequest( "project_delete_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
 
 
 

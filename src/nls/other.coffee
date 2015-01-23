@@ -591,6 +591,10 @@ VisualOps API. You cannot UNDO this action.'
       en : "Fail to remove your project, please retry."
       zh : "删除项目失败，请重试。"
 
+    SETTINGS_ERR_PROJECT_RENAME:
+      en : "Fail to rename your project, please retry."
+      zh : "项目改名失败，请重试。"
+
     SETTINGS_ERR_PROJECT_LEAVE:
       en : "Fail to leave the project, please retry."
       zh : "离开项目失败，请重试。"

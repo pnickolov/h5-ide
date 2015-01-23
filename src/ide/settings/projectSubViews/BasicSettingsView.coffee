@@ -27,7 +27,7 @@ define [
 
             @$el.html tpl
 
-            if @model then return @
+            if @modal then return @
 
             @modal = new Modal
                 title: title
@@ -63,8 +63,12 @@ define [
             'click #update-name'        : 'updateName'
             'click #delete-project'     : 'confirmDelete'
             'click #leave-project'      : 'confirmLeave'
+            'keyup #project-name'       : 'checkName'
 
         className: 'basic-settings'
+
+        initialize: () ->
+            @listenTo @model, 'change:name', @changeNameOnView
 
         render: () ->
             data = @model.toJSON()
@@ -83,35 +87,64 @@ define [
         edit: ( e ) -> $( e.currentTarget ).closest( '.project-item' ).addClass 'edit'
         cancelEdit: ( e ) -> $( e.currentTarget ).closest( '.project-item' ).removeClass 'edit'
 
+        checkName: ( e ) ->
+            $updateBtn = @$ '#update-name'
+            if e.currentTarget.value.length > 0
+                $updateBtn.prop 'disabled', false
+            else
+                $updateBtn.prop 'disabled', true
+
         updateName: ( e ) ->
-            console.log 'update name'
+            that = @
+            newName = @$( '#project-name' ).val()
+
+            @updateNameLoading e
+            @model.updateName( newName ).then ->
+                that.updateNameLoading e, true
+                that.cancelEdit e
+            , ->
+                that.updateNameLoading e, true
+                notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_RENAME
+
+        changeNameOnView: -> @$( '.project-name' ).text @model.get 'name'
+
+        updateNameLoading: ( e, stop = false ) ->
+            $projectItem = $( e.currentTarget ).closest( '.project-item' )
+            $editZone = $projectItem.find '.edit-actions'
+            $loadingZone = $projectItem.find '.loading-spinner'
+
+            $editZone.toggle stop
+            $loadingZone.toggle !stop
+
 
         confirmDelete: ->
+            that = @
             @confirmModal?.remove()
             @confirmModal = new confirmModalView( projectName: @model.get( 'name' ) ).render()
             @confirmModal.on 'confirm', ->
                 @confirmModal.renderLoading()
-                @model.destroy().then =>
-                    @remove()
-                    @settingsView.remove()
-                , =>
+                @model.destroy().then ->
+                    that.remove()
+                    that.settingsView.remove()
+                , ->
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
-                    @confirmModal.render()
+                    that.confirmModal.render()
             , @
 
             @
 
         confirmLeave: ->
+            that = @
             @confirmModal?.remove()
             @confirmModal = new confirmModalView().render()
             @confirmModal.on 'confirm', =>
                 @confirmModal.renderLoading()
                 @model.leave().then ->
-                    @remove()
-                    @settingsView.remove()
-                , =>
+                    that.remove()
+                    that.settingsView.remove()
+                , ->
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
-                    @confirmModal.render()
+                    that.confirmModal.render()
             , @
 
             @

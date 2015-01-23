@@ -10,6 +10,7 @@
                 <button class="btn btn-blue" id="update-name">Update</button>
                 <a id="cance-update-name" class="cancel-button">Cancel</a>
             </div>
+            <div class="loading-spinner" style="display: none;"></div>
         </div>
         <button class="icon-edit edit-button"></button>
     </h3>

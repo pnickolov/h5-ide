@@ -175,3 +175,93 @@
   }
 }
 
+.header-popup {
+  position   : absolute;
+  background : #36343C;
+  left       : 0;
+  top        : 50px;
+
+  box-shadow : 0 2px 5px rgba(0, 0, 0, 0.5);
+  border     : none;
+  color      : #ddd;
+
+  font-size : 12px;
+
+  > li {
+    padding : 5px 10px;
+  }
+
+  li > a {
+    display : block;
+  }
+
+  li {
+    line-height   : 39px;
+    height        : 40px;
+    padding       : 0 20px;
+    border-bottom : 1px solid #202020;
+    cursor        : pointer;
+  }
+
+  li:hover {
+    background : rgba(0,0,0,.2);
+  }
+}
+
+.hp-project-list {
+  border-right : 1px solid #202020;
+}
+
+.hp-asset-list {
+  width      : 260px;
+  background : #232224;
+  bottom     : 0;
+
+  > nav {
+    background  : #111;
+    height      : 50px;
+  }
+
+  .hp-asset-list-wrap {
+    position   : absolute;
+    top        : 60px;
+    bottom     : 0;
+    width      : 100%;
+    overflow-y : scroll;
+    overflow-x : scroll;
+  }
+
+  .off-canvas-tab {
+    float : left;
+    height: 100%;
+    width : 50%;
+    color : #ccc;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255,255,255,.02);
+      color     : #fff;
+    }
+
+    &.selected {
+      border-bottom: 3px solid $base-b;
+      color: $base-b;
+    }
+  }
+
+  .nav-empty {
+    margin        : 5px auto;
+    padding       : 15px;
+    width         : 200px;
+    color         : #AAA;
+    background    : #111;
+    border-radius : 5px;
+    font-size     : 12px;
+  }
+}
+
+.hp-usermenu {
+  left  : auto;
+  right : 0;
+  border-left : 1px solid #202020;
+}

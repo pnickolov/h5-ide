@@ -37,6 +37,9 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
       return
 
     becomeActive : ()->
+      @view.$el.show()
+      @updateUrl()
+      @updateTitle()
       # # Remove all other projects
       # for s in App.sceneManager.scenes()
       #   if s.type is "ProjectScene" and s is @
@@ -48,6 +51,9 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
     cleanup        : ()-> Scene.prototype.cleanup.call this
 
     isWorkingOn : ( projectId )-> @project.id is projectId
+
+    title : ()-> "ProjectScene"
+    url   : ()-> "/"
 
 
 

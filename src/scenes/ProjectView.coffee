@@ -1,12 +1,11 @@
 
 
-define [ "./ProjectTpl", "i18n!/nls/lang.js" , "backbone", "jquerysort" ], ( ProjectTpl, lang )->
+define [ "./ProjectTpl", "i18n!/nls/lang.js", "constant", "backbone", "jquerysort" ], ( ProjectTpl, lang, constant )->
 
   Backbone.View.extend {
 
-    events :
-      "click .ws-tabbar li"          : "onTabClick"
-      "click .ws-tabbar .icon-close" : "onTabClose"
+    # Don't use backbone.view's event here. Because we should bind the event handler
+    # directly to the header.
 
     initialize : ( attr )->
 
@@ -28,10 +27,75 @@ define [ "./ProjectTpl", "i18n!/nls/lang.js" , "backbone", "jquerysort" ], ( Pro
           self.updateTabOrder()
       }
 
+      $header = @$header = @$el.find(".project-header")
+      $header.on "click", ".ws-tabbar li",          ( evt )-> self.onTabClick( evt )
+      $header.on "click", ".ws-tabbar .icon-close", ( evt )-> self.onTabClose( evt )
+      $header.on "click", ".popuptrigger", ( evt )-> self[ $( evt.currentTarget ).attr("data-popup") ]( evt.currentTarget )
+
+      $header.on "click", ".icon-support", ()->
+        if window.Intercom
+          window.Intercom('showNewMessage')
+          return false
+        return
+
     render : ()->
       @$el.find(".project-list").text( @scene.project.get("name") )
       @$el.find(".user-menu").text( App.user.get("username") )
       return
+
+    ### -----------------
+    # Header Related
+    ----------------- ###
+    showPopup : ( template, ignoreClicked )->
+      $overlay = $( template ).appendTo( "body" )
+
+      oneTimeClicked = ( evt )->
+        if ignoreClicked and ignoreClicked( evt.target ) then return
+
+        console.log "popupclosed"
+        $("body")[0].removeEventListener("click", oneTimeClicked, true)
+        $overlay.remove()
+
+      $("body")[0].addEventListener("click", oneTimeClicked, true)
+      return $overlay
+
+    popupProject : ()->
+      projects = []
+      for p in App.model.projects().models
+        if p is @scene.project
+          projects.push { id : p.id, name : p.get("name") }
+
+      projects = _.sortBy projects, ( p )-> p.name
+
+      $popup = @showPopup( ProjectTpl.projectList( projects ) )
+      $popup.on "click", "createNewProject", ()-> # TODO : Create new project
+      return
+
+    popupAsset  : ()->
+      $popup = @showPopup( ProjectTpl.assetList({
+        apps   : @scene.project.apps().groupByRegion()
+        stacks : @scene.project.stacks().groupByRegion()
+      }), ( target )->
+        $target = $( target )
+        if $target.closest(".hp-asset-list").length
+          return !$target.hasClass("route")
+        false
+      )
+
+      $popup.children("nav").on("click", ".off-canvas-tab", ( evt )->
+        $tgt = $(evt.currentTarget)
+        $tgt.parent().children().removeClass("selected")
+        $tgt.addClass("selected")
+        $popup.children(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{$tgt.attr('data-id')}']" ).show()
+      )
+      return
+
+    popupUser : ()->
+      @showPopup( ProjectTpl.usermenu() ).on "mouseup", ".logout", ()-> App.logout()
+      return
+
+    popupNotify : ()->
+
 
 
     ### ------------------

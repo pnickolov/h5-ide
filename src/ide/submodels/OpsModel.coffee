@@ -117,6 +117,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       o = Backbone.Model.prototype.toJSON.call( this )
       o.stateDesc  = OpsModelStateDesc[ o.state ]
       o.regionName = constant.REGION_SHORT_LABEL[ o.region ]
+      o.url        = @url()
       if @isProcessing() then o.progressing = true
 
       if options

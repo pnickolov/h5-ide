@@ -62,7 +62,6 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         email     : @get("email")
         username  : @get("username")
         user_hash : @get("intercomHash")
-        widget    : {'activator':'#support'}
       }
       return
 

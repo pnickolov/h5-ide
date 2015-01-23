@@ -63,6 +63,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @
 
         getPaymentHistory: ()->
+
             historyDefer = new Q.defer()
             unless @needUpdatePayment()
                 historyDefer.resolve({})

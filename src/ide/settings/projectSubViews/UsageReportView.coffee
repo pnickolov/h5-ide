@@ -18,7 +18,7 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
             @
 
         getUsage: ()->
-            projectId = "XXX"
-            ApiRequestR("payment_usage", {project_id: projectId})
+            projectId = @model.get("id")
+            ApiRequestR("payment_usage", {projectId})
 
     }

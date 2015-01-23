@@ -21,7 +21,7 @@ module.exports = ( path = "./src", port = GLOBAL.gulpConfig.staticFileServerPort
     REG_RESET    = /^\/reset(\?\S*)?/
     REG_LOGIN    = /^\/login(\?\S*)?/
     REG_REGISTER = /^\/register(\?\S*)?/
-    REG_IDE      = /^\/(project|store|settings|debug)\/?/
+    REG_IDE      = /^\/(project|store|settings|debug|cheatsheet)\/?/
     REG_500      = /^\/500(\?\S)?/
 
     request.addListener 'end', ()->

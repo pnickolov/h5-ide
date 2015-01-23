@@ -1,294 +1,239 @@
-#
-# *********************************************************
-# Filename: UI.modalplus
-# Creator: Cyril Hou
-# Description: UI.modalplus
-# Date: 2014-05-23
-# **********************************************************
-# (c) Copyright 2014 MadeiraCloud  All Rights Reserved
-# **********************************************************
-#
-# Usage:
-#   modal = new UI.modalplus option
-#   subModal = modal.next option
-#
-#   option:
-#      title: Modal.header title                                        [required]
-#      template: Modal.body content                                     [required]
-#      width: set the width of modal                                    [default: 520px]
-#      maxHeight: set the Modal body "max-height" css attribute.        [default: 400px]
-#      delay: animate delay time.                                       [default: 300ms]
-#      disableClose: if can be closed when it's a single modal.         [default: false]
-#      disableFooter: if this Modal has footer.                         [default: false]
-#      disableDrag: if the modal is dragAble                               [default: false]
-#      hideClose: if the close button on the right corner is hidden.    [default: false]
-#      cancel: cancel button of Modal                                   [default: "Cancel"/ {text: 'Cancel', hide: false} Both String and Object are accepted]
-#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false, hide: false}] (color-support: "blue, red, silver")
-#      onClose: function to exec then the modal close.                  [Function]
-#      onConfirm: function to exec then the confirm button is clicked   [Function]
-#      onCancel: function to exec when the cancel button is clicked     [Function]
-#      onShow: function to exec then the modal is shown.                [Function]
-#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal", "fullscreen"]
-#      compact: if modal-body has padding.                              [Default: false]
-#   Event:
-#       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
-#   Method:
-#       next( option )  ====> return new subModal
-#       back()          ====> remove Last modal, back to the last but one modal.
-#       getLast()       ====> return the last modal in modalGroup
-#       getFirst()      ====> return the first modal in modalGroup
-#       getLastButOne() ====> return the last but one modal in modalGroup
-#       isOpen()        ====> return if the modal is Opened(exist)
-#       isCurrent()     ====> return if the modal is current modal.
-#       toggleConfirm   ====> toggle if the confirm button is disabled.
-#   Property:
-#       tpl             ====> the jQuery Dom element of the modal
-#       modalGroup      ====> the modalGroup
-#
-#   Example:
-#       modal = new UI.modalplus
-#           title: "Modal Title"
-#           template:   "<h1>Here Goes Modal Body</h1>"
-#           width: "600px"
-#
-modalGroup = []
+modals = []
+defaultOptions = {
+    title: ""
+    mode: "normal" # ["normal", "panel", "fullscreen"]
+    template: ""
+    width: 520
+    maxHeight: null
+    delay: 300
+    compact: false
+    disableClose: false
+    disableFooter: false
+    disableDrag: false
+    hideClose: false
+    hasScroll: false
+    hasHeader: true
+    hasFooter: true
+    cancel: {
+        text: ""
+        hide: false
+    }
+    confirm: {
+        text: ""
+        color: "blue" # ["blue", "red", "silver"]
+        disabled: false
+        hide: false
+    }
+    onClose: null
+    onConfirm: null
+    onShow: null
+}
+
 define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
-    class Modal
-        constructor: (@option)->
+    class Modal extends Backbone.View
+        events:
+            "click .modal-confirm": "confirm"
+            "click .btn.modal-close": "cancel"
+            "click i.modal-close": "close"
+
+        constructor: (option)->
+            if typeof option.cancel is "string"
+                option.cancel = {text: option.cancel}
+            if typeof option.confirm is "string"
+                option.confirm = {text: option.confirm}
+            if option.mode is "fullscreen"
+                option.disableClose = true
+                option.disableFooter = true
+            option.hasFooter = !option.disableFooter
+
+            @wrap = $("#modal-wrap")
+            if @wrap.size() is 0
+                @wrap = $("<div id='modal-wrap'></div>").appendTo $("body")
+
+            @option = _.extend _.clone(defaultOptions), option
+            @option.cancel.text ||= lang.IDE.POP_LBL_CANCEL
+            @option.confirm.text ||= lang.IDE.LBL_SUBMIT
+            console.log @option
+            @render()
+
+        render: ()->
             self = @
-            _.extend @, Backbone.Events
-            isFirst = false
-
-            if @option.mode is 'fullscreen'
-                @option.disableFooter = true
-                @option.disableClose = true
-
-            if $('#modal-wrap').size() > 0
-                isFirst = false
-                @wrap = $("#modal-wrap")
-            else
-                isFirst = true
-                @wrap = $("<div id='modal-wrap'>").appendTo $('body')
-            if isFirst then modalGroup = []
-            @tpl = $(MC.template.modalTemplate
-                title       : @option.title || ""
-                hideClose   : @option.hideClose
-                template    : if typeof @option.template is "object" then "" else @option.template
-                confirm:
-                    text    : @option.confirm?.text || lang.IDE.LBL_SUBMIT
-                    color   : @option.confirm?.color || "blue"
-                    disabled: @option.confirm?.disabled
-                    hide    : @option.confirm?.hide
-                cancel      : if _.isString @option.cancel then {text: @option.cancel|| lang.IDE.POP_LBL_CANCEL} else if _.isObject @option.cancel then @option.cancel else {text: lang.IDE.POP_LBL_CANCEL}
-                hasFooter   : !@option.disableFooter
-                hasHeader   : !@option.disableHeader
-                hasScroll   : !!@option.maxHeight || @option.hasScroll
-                compact     : @option.compact
-                mode        : @option.mode || "normal"
-            )
-            body = @tpl.find(".modal-body")
             if typeof @option.template is "object"
-                body.html(@option.template)
-            if @option.maxHeight then body.css("max-height":@option.maxHeight)
-            if @option.width then body.parent().width( @option.width )
+                @option.$template = @option.template
+                @option.template = ""
+            @tpl = $(MC.template.modalTemplate @option)
+            @tpl.find(".modal-body").html @option.$template
+            @setElement @tpl
             @tpl.appendTo @wrap
-
-            modalGroup.push(@)
-            @show()
-            window.setTimeout =>
-                @tpl.addClass('bounce')
-            ,0
-            window.setTimeout ()=>
-                self.wrap.addClass("show")
-            ,0
-            if modalGroup.length == 1 or @abnormal()
-                @tpl.addClass("animation")
+            @resize()
+            modals.push @
+            console.log modals.length
+            if modals.length > 1
+                modals[modals.length - 1].resize(1)
+                modals[modals.length - 1].animate "slideIn"
+                modals[modals.length - 2].animate "fadeOut"
+                modals[modals.length - 1].tpl.addClass("bounce")
+            else
+                @tpl.addClass "animate"
                 @trigger "show", @
-                window.setTimeout =>
-                    @trigger 'shown', @
-                ,300
+                @option.onShow?(@)
+                _.defer ->
+                    self.wrap.addClass "show"
+                    self.tpl.addClass("bounce")
+                _.delay ->
+                    self.trigger "shown", @
+                , 300
+
             @bindEvent()
             @
-        close: ()->
-            if @isClosed or @isMoving or @parentModal
-                return false
-            if modalGroup.length > 1
-                @.back()
-            else if modalGroup.length <= 1
-                modalGroup = []
-                @trigger 'close',@
-                @option.onClose?(@)
-                @tpl.removeClass('bounce')
-                @wrap.removeClass("show")
-                window.setTimeout =>
-                    @tpl.remove()
-                    @wrap.remove()
-                    @trigger 'closed', @ # Last Modal doesn't support Animation. when trigger close, it's closed.
-                ,@option.delay||300
 
-            null
-        show: ()->
-            if modalGroup.length > 1
-                @getLast().resize(1)
-                @getLast().animate "slideIn"
-                @getLastButOne().animate "fadeOut"
+        close: ()->
+            self = @
+            if @pending then return false
+            @pending = true
+            if @isClosed or @isMoving then return false
+            modal = modals[modals.length - 1]
+            modal.trigger "close", @
+            modal.option.onClose?(@)
+
+            console.log modals.length, "Close", modals
+            if modals.length > 1
+                if modal.option.mode is "panel"
+                    modal.tpl.removeClass("bounce")
+                else
+                    modal.animate "slideOut"
+                modals[modals.length - 2].animate "fadeIn"
             else
-                @resize()
-            @option.onShow?(@)
+                modal.wrap.removeClass "show"
+                modal.tpl.removeClass("bounce")
+            _.delay ->
+                modal.tpl.remove()
+                modal.trigger "closed", @
+                self.pending = false
+                if modals.length > 1
+                    modals.pop()
+                else
+                    modal.wrap.remove()
+                    modals = []
+            , modal.option.delay || 300
+            modal.isClosed = true
             @
+
+
+        confirm: (evt)->
+            if $(evt.currentTarget).is(":disabled")
+                return false
+            @trigger "confirm", @
+            @option.onConfirm?()
+            @
+
+        cancel: ()->
+            @trigger "cancel", @
+            @close()
+            @option.onCancel?(@)
+            @
+
         bindEvent: ()->
-            @tpl.find('.modal-confirm').click (e)=>
-                @option.onConfirm?(@tpl,e)
-                @.trigger 'confirm', @
-            @tpl.find('.btn.modal-close').click (e)=>
-                @option.onCancel?(@tpl,e)
-                @.trigger 'cancel', @
-                if not @option.preventClose then modalGroup[0]?.back()
-            @tpl.find("i.modal-close").click (e)->
-                modalGroup[0]?.back()
-            if(!@option.disableClose)
-                @getFirst().wrap.off 'click'
-                @getFirst().wrap.on 'click', (e)=>
-                    if(e.target == e.currentTarget)
-                        @getFirst()?.back()
+            #@tpl.draggable({ handle: ".modal-header h3" })
+            self = @
+            disableClose = false
+            _.each modals, (modal)->
+                if modal.option.disableClose
+                    disableClose = true
+            if not disableClose
+                @wrap.off "click"
+                @wrap.on "click", (e)->
+                    if e.target is e.currentTarget
+                        self.close()
             $(window).resize =>
-                @?.getLast()?.resize()
-            $(document).keyup (e)=>
-                if (e.which == 27 and not @option.disableClose)
-                    if @?.getFirst()?
-                        e.preventDefault()
-                        @?.getFirst()?.back()
-            if not (@option.disableDrag or @abnormal())
+                modals[modals.length - 1].resize()
+
+            $(document).keyup (e)->
+                if e.which is 27 and not @option.disableClose
+                    e.preventDefault()
+                    self.close()
+            modal = modals[modals.length - 1]
+            if not @option.disableDrag or @option.mode isnt "normal" and modal
                 diffX = 0
                 diffY = 0
-                dragable = false
-                @tpl.find(".modal-header h3").mousedown (e)=>
-                    dragable = true
-                    originalLayout = @getLast().tpl.offset()
+                draggable = false
+                modal.find(".modal-header h3").mousedown (e)->
+                    draggable = true
+                    originalLayout = modal.tpl.offset()
                     diffX = originalLayout.left - e.clientX
                     diffY = originalLayout.top - e.clientY
-                    null
-                $(document).mousemove (e)=>
-                    if(dragable and @getLast())
-                        @getLast().tpl.css
-                            top: e.clientY + diffY
+                $(document).mousemove (e)->
+                    if draggable
+                        modal.tpl.css
                             left: e.clientX + diffX
+                            top: e.clientY + diffY
                         if window.getSelection
-                            if window.getSelection().empty
-                                window.getSelection().empty()
-                            else if window.getSelection().removeAllRanges
-                                window.getSelection().removeAllRanges()
-                            else if (document.selection)
-                                document.selection.empty()
-                $(document).mouseup (e)=>
-                    if dragable
-                        top = e.clientY + diffY
+                            window.getSelection().empty?()
+                            window.getSelection().removeAllRanges?()
+                            document.selection?.empty?()
+
+                $(document).mouseup (e)->
+                    if draggable
                         left = e.clientX + diffX
-                        maxHeight = $(window).height() - @.getLast().tpl.height()
-                        maxRight = $(window).width() - @.getLast().tpl.width()
-                        if  top < 0
-                            top = 0
-                        if left < 0
-                            left = 0
-                        if top > maxHeight
-                            top = maxHeight
-                        if left > maxRight
-                            left = maxRight
-                        @getLast().tpl.css
-                            top: top
-                            left: left
-                    dragable =false
-                    diffX = 0
-                    diffY = 0
-                    null
-        resize: (slideIn)->
-            if @abnormal()
-              @trigger 'resize', @
-              return false
+                        top = e.clientY + diffY
+                        maxHeight = $(window).height() - modal.tpl.height()
+                        maxRight = $(window).width() - modal.tpl.width()
+                        if top < 0 then top = 0
+                        if left < 0 then left = 0
+                        if top > maxHeight then top = maxHeight
+                        if left > maxRight then left = maxRight
+                        modal.tpl.animate {top, left}, 100
+                    draggable = false
+                    diffX = diffX = 0
+
+        resize: (isSlideIn)->
+            if @option.mode isnt "normal"
+                @trigger "resize", @
+                return false
+
             windowWidth = $(window).width()
             windowHeight = $(window).height()
             width = @option.width?.toString()?.toLowerCase().replace('px','') || @tpl.width()
-            height= @option.height?.toString()?.toLowerCase().replace('px','') || @tpl.height()
+            height = @option.height?.toString()?.toLowerCase().replace('px','') || @tpl.height()
             top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
-            if slideIn
+            if top < 0 then top = 10
+            if isSlideIn
                 left = windowWidth + left
-            @tpl.css
-                top:  if top > 0 then top else 10
-                left: left
-            @.trigger 'resize', {top: top, left: left}
-        getFirst: ->
-            return modalGroup?[0]
-        getLast: ->
-            return modalGroup[modalGroup.length - 1]
-        getLastButOne: ->
-            if @.parentModal
-                return @.parentModal.getLastButOne()
-            else
-                return modalGroup[modalGroup.length - 2]
+            @tpl.css {top, left}
+            @trigger "resize", {top, left}
+            @
+
         isOpen: ()->
-            return !@isClosed
-        isCurrent: ()->
-            return @ == @getLast()
-        next: (optionConfig)->
-            if modalGroup?.length >= 1
-                newModal = new Modal optionConfig
-                @trigger "next", @
-                lastModal = @.getLastButOne()
-                @.getFirst()?.option.onNext?()
-                newModal.parentModal = lastModal
-                lastModal.childModal = newModal
-                lastModal.parentModal?.option.disableClose = true
-                window.setTimeout ()=>
-                    newModal.trigger 'shown', newModal
-                    null
-                ,@option.delay || 300
-                newModal
-            else
-                return false
-        back: ()->
-            if @parentModal or @isMoving
-                return false
-            if modalGroup.length == 1
-                modalGroup.pop()
-                @close()
-                @isClosed = true
-                return false
-            else
-                @getLast().trigger "close", @getLast()
-                @getLastButOne().animate "fadeIn"
-                @getLast().animate "slideOut"
-                toRemove = modalGroup.pop()
-                if toRemove.abnormal()
-                    toRemove.tpl.removeClass('bounce')
-                toRemove.isClosed = true
-                @getLast().childModal = null
-                toRemove.option.onClose?()
-                window.setTimeout ()=>
-                    toRemove.tpl.remove()
-                    toRemove.trigger 'closed', toRemove
-                ,@option.delay || 300
+            !@isClosed
+
+        next: (option)->
+            newModal = new Modal(option)
+            @trigger "next", newModal
+            newModal
+            @
         toggleConfirm: (disabled)->
-            @.tpl.find(".modal-confirm").attr('disabled', !!disabled)
+            @tpl.find(".modal-confirm").attr("disabled", !!disabled)
             @
         setContent: (content)->
-            if @option.hasScroll or @option.maxHeight
-              selector = ".scroll-content"
+            if @option.maxHeight or @option.hasScroll
+                selector = ".scroll-content"
             else
-              selector = ".modal-body"
-            @tpl.find(selector).html(content)
+                selector = ".modal-body"
+            @tpl.find(selector).html content
             @resize()
             @
-        setWidth: (width)->
-          body = @.tpl.find('.modal-body')
-          body.parent().css( width: width )
-          @.resize()
-          @
         compact: ()->
-          @tpl.find('.modal-body').css(padding: 0)
-          @
-
+            @tpl.find(".modal-body").css(padding: 0)
+            @
         animate: (animate)->
+            if @option.mode is "fullscreen" and animate is "slideIn"
+                return false
+            if @option.mode is "panel"
+                return false
+            if @isMoving
+                console.warn "It's animating."
+                return false
             symbol = "+="
             delayOption = 300
             that = @
@@ -302,13 +247,14 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 left: symbol + windowWidth
             , @option.delay || delayOption
             , -> that.isMoving = false
+            @
         find: (selector)->
-          @tpl.find(selector)
+            @tpl.find(selector)
         $   :(selector)->
-          @tpl.find(selector)
+            @tpl.find(selector)
         setTitle: (title)->
-          @tpl.find(".modal-header h3").text(title)
-          @
+            @tpl.find(".modal-header h3").text(title)
+            @
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
     Modal

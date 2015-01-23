@@ -1,257 +1,272 @@
 (function() {
-  var modalGroup;
+  var defaultOptions, modals,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  modalGroup = [];
+  modals = [];
+
+  defaultOptions = {
+    title: "",
+    mode: "normal",
+    template: "",
+    width: 520,
+    maxHeight: null,
+    delay: 300,
+    compact: false,
+    disableClose: false,
+    disableFooter: false,
+    disableDrag: false,
+    hideClose: false,
+    hasScroll: false,
+    hasHeader: true,
+    hasFooter: true,
+    cancel: {
+      text: "",
+      hide: false
+    },
+    confirm: {
+      text: "",
+      color: "blue",
+      disabled: false,
+      hide: false
+    },
+    onClose: null,
+    onConfirm: null,
+    onShow: null
+  };
 
   define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
     var Modal;
-    Modal = (function() {
-      function Modal(option) {
-        var body, isFirst, self, _ref, _ref1, _ref2, _ref3;
-        this.option = option;
-        self = this;
-        _.extend(this, Backbone.Events);
-        isFirst = false;
-        if (this.option.mode === 'fullscreen') {
-          this.option.disableFooter = true;
-          this.option.disableClose = true;
-        }
-        if ($('#modal-wrap').size() > 0) {
-          isFirst = false;
-          this.wrap = $("#modal-wrap");
-        } else {
-          isFirst = true;
-          this.wrap = $("<div id='modal-wrap'>").appendTo($('body'));
-        }
-        if (isFirst) {
-          modalGroup = [];
-        }
-        this.tpl = $(MC.template.modalTemplate({
-          title: this.option.title || "",
-          hideClose: this.option.hideClose,
-          template: typeof this.option.template === "object" ? "" : this.option.template,
-          confirm: {
-            text: ((_ref = this.option.confirm) != null ? _ref.text : void 0) || lang.IDE.LBL_SUBMIT,
-            color: ((_ref1 = this.option.confirm) != null ? _ref1.color : void 0) || "blue",
-            disabled: (_ref2 = this.option.confirm) != null ? _ref2.disabled : void 0,
-            hide: (_ref3 = this.option.confirm) != null ? _ref3.hide : void 0
-          },
-          cancel: _.isString(this.option.cancel) ? {
-            text: this.option.cancel || lang.IDE.POP_LBL_CANCEL
-          } : _.isObject(this.option.cancel) ? this.option.cancel : {
-            text: lang.IDE.POP_LBL_CANCEL
-          },
-          hasFooter: !this.option.disableFooter,
-          hasHeader: !this.option.disableHeader,
-          hasScroll: !!this.option.maxHeight || this.option.hasScroll,
-          compact: this.option.compact,
-          mode: this.option.mode || "normal"
-        }));
-        body = this.tpl.find(".modal-body");
-        if (typeof this.option.template === "object") {
-          body.html(this.option.template);
-        }
-        if (this.option.maxHeight) {
-          body.css({
-            "max-height": this.option.maxHeight
-          });
-        }
-        if (this.option.width) {
-          body.parent().width(this.option.width);
-        }
-        this.tpl.appendTo(this.wrap);
-        modalGroup.push(this);
-        this.show();
-        window.setTimeout((function(_this) {
-          return function() {
-            return _this.tpl.addClass('bounce');
-          };
-        })(this), 0);
-        window.setTimeout((function(_this) {
-          return function() {
-            return self.wrap.addClass("show");
-          };
-        })(this), 0);
-        if (modalGroup.length === 1 || this.abnormal()) {
-          this.tpl.addClass("animation");
-          this.trigger("show", this);
-          window.setTimeout((function(_this) {
-            return function() {
-              return _this.trigger('shown', _this);
-            };
-          })(this), 300);
-        }
-        this.bindEvent();
-        this;
-      }
+    Modal = (function(_super) {
+      __extends(Modal, _super);
 
-      Modal.prototype.close = function() {
-        var _base;
-        if (this.isClosed || this.isMoving || this.parentModal) {
-          return false;
-        }
-        if (modalGroup.length > 1) {
-          this.back();
-        } else if (modalGroup.length <= 1) {
-          modalGroup = [];
-          this.trigger('close', this);
-          if (typeof (_base = this.option).onClose === "function") {
-            _base.onClose(this);
-          }
-          this.tpl.removeClass('bounce');
-          this.wrap.removeClass("show");
-          window.setTimeout((function(_this) {
-            return function() {
-              _this.tpl.remove();
-              _this.wrap.remove();
-              return _this.trigger('closed', _this);
-            };
-          })(this), this.option.delay || 300);
-        }
-        return null;
+      Modal.prototype.events = {
+        "click .modal-confirm": "confirm",
+        "click .btn.modal-close": "cancel",
+        "click i.modal-close": "close"
       };
 
-      Modal.prototype.show = function() {
-        var _base;
-        if (modalGroup.length > 1) {
-          this.getLast().resize(1);
-          this.getLast().animate("slideIn");
-          this.getLastButOne().animate("fadeOut");
-        } else {
-          this.resize();
+      function Modal(option) {
+        var _base, _base1;
+        if (typeof option.cancel === "string") {
+          option.cancel = {
+            text: option.cancel
+          };
         }
-        if (typeof (_base = this.option).onShow === "function") {
-          _base.onShow(this);
+        if (typeof option.confirm === "string") {
+          option.confirm = {
+            text: option.confirm
+          };
+        }
+        if (option.mode === "fullscreen") {
+          option.disableClose = true;
+          option.disableFooter = true;
+        }
+        option.hasFooter = !option.disableFooter;
+        this.wrap = $("#modal-wrap");
+        if (this.wrap.size() === 0) {
+          this.wrap = $("<div id='modal-wrap'></div>").appendTo($("body"));
+        }
+        this.option = _.extend(_.clone(defaultOptions), option);
+        (_base = this.option.cancel).text || (_base.text = lang.IDE.POP_LBL_CANCEL);
+        (_base1 = this.option.confirm).text || (_base1.text = lang.IDE.LBL_SUBMIT);
+        console.log(this.option);
+        this.render();
+      }
+
+      Modal.prototype.render = function() {
+        var self, _base;
+        self = this;
+        if (typeof this.option.template === "object") {
+          this.option.$template = this.option.template;
+          this.option.template = "";
+        }
+        this.tpl = $(MC.template.modalTemplate(this.option));
+        this.tpl.find(".modal-body").html(this.option.$template);
+        this.setElement(this.tpl);
+        this.tpl.appendTo(this.wrap);
+        this.resize();
+        modals.push(this);
+        console.log(modals.length);
+        if (modals.length > 1) {
+          modals[modals.length - 1].resize(1);
+          modals[modals.length - 1].animate("slideIn");
+          modals[modals.length - 2].animate("fadeOut");
+          modals[modals.length - 1].tpl.addClass("bounce");
+        } else {
+          this.tpl.addClass("animate");
+          this.trigger("show", this);
+          if (typeof (_base = this.option).onShow === "function") {
+            _base.onShow(this);
+          }
+          _.defer(function() {
+            self.wrap.addClass("show");
+            return self.tpl.addClass("bounce");
+          });
+          _.delay(function() {
+            return self.trigger("shown", this);
+          }, 300);
+        }
+        this.bindEvent();
+        return this;
+      };
+
+      Modal.prototype.close = function() {
+        var modal, self, _base;
+        self = this;
+        if (this.pending) {
+          return false;
+        }
+        this.pending = true;
+        if (this.isClosed || this.isMoving) {
+          return false;
+        }
+        modal = modals[modals.length - 1];
+        modal.trigger("close", this);
+        if (typeof (_base = modal.option).onClose === "function") {
+          _base.onClose(this);
+        }
+        console.log(modals.length, "Close", modals);
+        if (modals.length > 1) {
+          if (modal.option.mode === "panel") {
+            modal.tpl.removeClass("bounce");
+          } else {
+            modal.animate("slideOut");
+          }
+          modals[modals.length - 2].animate("fadeIn");
+        } else {
+          modal.wrap.removeClass("show");
+          modal.tpl.removeClass("bounce");
+        }
+        _.delay(function() {
+          modal.tpl.remove();
+          modal.trigger("closed", this);
+          self.pending = false;
+          if (modals.length > 1) {
+            return modals.pop();
+          } else {
+            modal.wrap.remove();
+            return modals = [];
+          }
+        }, modal.option.delay || 300);
+        modal.isClosed = true;
+        return this;
+      };
+
+      Modal.prototype.confirm = function(evt) {
+        var _base;
+        if ($(evt.currentTarget).is(":disabled")) {
+          return false;
+        }
+        this.trigger("confirm", this);
+        if (typeof (_base = this.option).onConfirm === "function") {
+          _base.onConfirm();
+        }
+        return this;
+      };
+
+      Modal.prototype.cancel = function() {
+        var _base;
+        this.trigger("cancel", this);
+        this.close();
+        if (typeof (_base = this.option).onCancel === "function") {
+          _base.onCancel(this);
         }
         return this;
       };
 
       Modal.prototype.bindEvent = function() {
-        var diffX, diffY, dragable;
-        this.tpl.find('.modal-confirm').click((function(_this) {
-          return function(e) {
-            var _base;
-            if (typeof (_base = _this.option).onConfirm === "function") {
-              _base.onConfirm(_this.tpl, e);
-            }
-            return _this.trigger('confirm', _this);
-          };
-        })(this));
-        this.tpl.find('.btn.modal-close').click((function(_this) {
-          return function(e) {
-            var _base, _ref;
-            if (typeof (_base = _this.option).onCancel === "function") {
-              _base.onCancel(_this.tpl, e);
-            }
-            _this.trigger('cancel', _this);
-            if (!_this.option.preventClose) {
-              return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
-            }
-          };
-        })(this));
-        this.tpl.find("i.modal-close").click(function(e) {
-          var _ref;
-          return (_ref = modalGroup[0]) != null ? _ref.back() : void 0;
+        var diffX, diffY, disableClose, draggable, modal, self;
+        self = this;
+        disableClose = false;
+        _.each(modals, function(modal) {
+          if (modal.option.disableClose) {
+            return disableClose = true;
+          }
         });
-        if (!this.option.disableClose) {
-          this.getFirst().wrap.off('click');
-          this.getFirst().wrap.on('click', (function(_this) {
-            return function(e) {
-              var _ref;
-              if (e.target === e.currentTarget) {
-                return (_ref = _this.getFirst()) != null ? _ref.back() : void 0;
-              }
-            };
-          })(this));
+        if (!disableClose) {
+          this.wrap.off("click");
+          this.wrap.on("click", function(e) {
+            if (e.target === e.currentTarget) {
+              return self.close();
+            }
+          });
         }
         $(window).resize((function(_this) {
           return function() {
-            var _ref;
-            return _this != null ? (_ref = _this.getLast()) != null ? _ref.resize() : void 0 : void 0;
+            return modals[modals.length - 1].resize();
           };
         })(this));
-        $(document).keyup((function(_this) {
-          return function(e) {
-            var _ref;
-            if (e.which === 27 && !_this.option.disableClose) {
-              if ((_this != null ? _this.getFirst() : void 0) != null) {
-                e.preventDefault();
-                return _this != null ? (_ref = _this.getFirst()) != null ? _ref.back() : void 0 : void 0;
-              }
-            }
-          };
-        })(this));
-        if (!(this.option.disableDrag || this.abnormal())) {
+        $(document).keyup(function(e) {
+          if (e.which === 27 && !this.option.disableClose) {
+            e.preventDefault();
+            return self.close();
+          }
+        });
+        modal = modals[modals.length - 1];
+        if (!this.option.disableDrag || this.option.mode !== "normal" && modal) {
           diffX = 0;
           diffY = 0;
-          dragable = false;
-          this.tpl.find(".modal-header h3").mousedown((function(_this) {
-            return function(e) {
-              var originalLayout;
-              dragable = true;
-              originalLayout = _this.getLast().tpl.offset();
-              diffX = originalLayout.left - e.clientX;
-              diffY = originalLayout.top - e.clientY;
-              return null;
-            };
-          })(this));
-          $(document).mousemove((function(_this) {
-            return function(e) {
-              if (dragable && _this.getLast()) {
-                _this.getLast().tpl.css({
-                  top: e.clientY + diffY,
-                  left: e.clientX + diffX
-                });
-                if (window.getSelection) {
-                  if (window.getSelection().empty) {
-                    return window.getSelection().empty();
-                  } else if (window.getSelection().removeAllRanges) {
-                    return window.getSelection().removeAllRanges();
-                  } else if (document.selection) {
-                    return document.selection.empty();
-                  }
+          draggable = false;
+          modal.find(".modal-header h3").mousedown(function(e) {
+            var originalLayout;
+            draggable = true;
+            originalLayout = modal.tpl.offset();
+            diffX = originalLayout.left - e.clientX;
+            return diffY = originalLayout.top - e.clientY;
+          });
+          $(document).mousemove(function(e) {
+            var _base, _base1, _ref;
+            if (draggable) {
+              modal.tpl.css({
+                left: e.clientX + diffX,
+                top: e.clientY + diffY
+              });
+              if (window.getSelection) {
+                if (typeof (_base = window.getSelection()).empty === "function") {
+                  _base.empty();
                 }
+                if (typeof (_base1 = window.getSelection()).removeAllRanges === "function") {
+                  _base1.removeAllRanges();
+                }
+                return (_ref = document.selection) != null ? typeof _ref.empty === "function" ? _ref.empty() : void 0 : void 0;
               }
-            };
-          })(this));
-          return $(document).mouseup((function(_this) {
-            return function(e) {
-              var left, maxHeight, maxRight, top;
-              if (dragable) {
-                top = e.clientY + diffY;
-                left = e.clientX + diffX;
-                maxHeight = $(window).height() - _this.getLast().tpl.height();
-                maxRight = $(window).width() - _this.getLast().tpl.width();
-                if (top < 0) {
-                  top = 0;
-                }
-                if (left < 0) {
-                  left = 0;
-                }
-                if (top > maxHeight) {
-                  top = maxHeight;
-                }
-                if (left > maxRight) {
-                  left = maxRight;
-                }
-                _this.getLast().tpl.css({
-                  top: top,
-                  left: left
-                });
+            }
+          });
+          return $(document).mouseup(function(e) {
+            var left, maxHeight, maxRight, top;
+            if (draggable) {
+              left = e.clientX + diffX;
+              top = e.clientY + diffY;
+              maxHeight = $(window).height() - modal.tpl.height();
+              maxRight = $(window).width() - modal.tpl.width();
+              if (top < 0) {
+                top = 0;
               }
-              dragable = false;
-              diffX = 0;
-              diffY = 0;
-              return null;
-            };
-          })(this));
+              if (left < 0) {
+                left = 0;
+              }
+              if (top > maxHeight) {
+                top = maxHeight;
+              }
+              if (left > maxRight) {
+                left = maxRight;
+              }
+              modal.tpl.animate({
+                top: top,
+                left: left
+              }, 100);
+            }
+            draggable = false;
+            return diffX = diffX = 0;
+          });
         }
       };
 
-      Modal.prototype.resize = function(slideIn) {
+      Modal.prototype.resize = function(isSlideIn) {
         var height, left, top, width, windowHeight, windowWidth, _ref, _ref1, _ref2, _ref3;
-        if (this.abnormal()) {
-          this.trigger('resize', this);
+        if (this.option.mode !== "normal") {
+          this.trigger("resize", this);
           return false;
         }
         windowWidth = $(window).width();
@@ -260,111 +275,43 @@
         height = ((_ref2 = this.option.height) != null ? (_ref3 = _ref2.toString()) != null ? _ref3.toLowerCase().replace('px', '') : void 0 : void 0) || this.tpl.height();
         top = (windowHeight - height) * 0.4;
         left = (windowWidth - width) / 2;
-        if (slideIn) {
+        if (top < 0) {
+          top = 10;
+        }
+        if (isSlideIn) {
           left = windowWidth + left;
         }
         this.tpl.css({
-          top: top > 0 ? top : 10,
-          left: left
-        });
-        return this.trigger('resize', {
           top: top,
           left: left
         });
-      };
-
-      Modal.prototype.getFirst = function() {
-        return modalGroup != null ? modalGroup[0] : void 0;
-      };
-
-      Modal.prototype.getLast = function() {
-        return modalGroup[modalGroup.length - 1];
-      };
-
-      Modal.prototype.getLastButOne = function() {
-        if (this.parentModal) {
-          return this.parentModal.getLastButOne();
-        } else {
-          return modalGroup[modalGroup.length - 2];
-        }
+        this.trigger("resize", {
+          top: top,
+          left: left
+        });
+        return this;
       };
 
       Modal.prototype.isOpen = function() {
         return !this.isClosed;
       };
 
-      Modal.prototype.isCurrent = function() {
-        return this === this.getLast();
-      };
-
-      Modal.prototype.next = function(optionConfig) {
-        var lastModal, newModal, _base, _ref, _ref1;
-        if ((modalGroup != null ? modalGroup.length : void 0) >= 1) {
-          newModal = new Modal(optionConfig);
-          this.trigger("next", this);
-          lastModal = this.getLastButOne();
-          if ((_ref = this.getFirst()) != null) {
-            if (typeof (_base = _ref.option).onNext === "function") {
-              _base.onNext();
-            }
-          }
-          newModal.parentModal = lastModal;
-          lastModal.childModal = newModal;
-          if ((_ref1 = lastModal.parentModal) != null) {
-            _ref1.option.disableClose = true;
-          }
-          window.setTimeout((function(_this) {
-            return function() {
-              newModal.trigger('shown', newModal);
-              return null;
-            };
-          })(this), this.option.delay || 300);
-          return newModal;
-        } else {
-          return false;
-        }
-      };
-
-      Modal.prototype.back = function() {
-        var toRemove, _base;
-        if (this.parentModal || this.isMoving) {
-          return false;
-        }
-        if (modalGroup.length === 1) {
-          modalGroup.pop();
-          this.close();
-          this.isClosed = true;
-          return false;
-        } else {
-          this.getLast().trigger("close", this.getLast());
-          this.getLastButOne().animate("fadeIn");
-          this.getLast().animate("slideOut");
-          toRemove = modalGroup.pop();
-          if (toRemove.abnormal()) {
-            toRemove.tpl.removeClass('bounce');
-          }
-          toRemove.isClosed = true;
-          this.getLast().childModal = null;
-          if (typeof (_base = toRemove.option).onClose === "function") {
-            _base.onClose();
-          }
-          return window.setTimeout((function(_this) {
-            return function() {
-              toRemove.tpl.remove();
-              return toRemove.trigger('closed', toRemove);
-            };
-          })(this), this.option.delay || 300);
-        }
+      Modal.prototype.next = function(option) {
+        var newModal;
+        newModal = new Modal(option);
+        this.trigger("next", newModal);
+        newModal;
+        return this;
       };
 
       Modal.prototype.toggleConfirm = function(disabled) {
-        this.tpl.find(".modal-confirm").attr('disabled', !!disabled);
+        this.tpl.find(".modal-confirm").attr("disabled", !!disabled);
         return this;
       };
 
       Modal.prototype.setContent = function(content) {
         var selector;
-        if (this.option.hasScroll || this.option.maxHeight) {
+        if (this.option.maxHeight || this.option.hasScroll) {
           selector = ".scroll-content";
         } else {
           selector = ".modal-body";
@@ -374,18 +321,8 @@
         return this;
       };
 
-      Modal.prototype.setWidth = function(width) {
-        var body;
-        body = this.tpl.find('.modal-body');
-        body.parent().css({
-          width: width
-        });
-        this.resize();
-        return this;
-      };
-
       Modal.prototype.compact = function() {
-        this.tpl.find('.modal-body').css({
+        this.tpl.find(".modal-body").css({
           padding: 0
         });
         return this;
@@ -393,6 +330,16 @@
 
       Modal.prototype.animate = function(animate) {
         var delayOption, symbol, that, windowWidth;
+        if (this.option.mode === "fullscreen" && animate === "slideIn") {
+          return false;
+        }
+        if (this.option.mode === "panel") {
+          return false;
+        }
+        if (this.isMoving) {
+          console.warn("It's animating.");
+          return false;
+        }
         symbol = "+=";
         delayOption = 300;
         that = this;
@@ -404,11 +351,12 @@
         }
         windowWidth = $(window).width();
         that.isMoving = true;
-        return this.tpl.animate({
+        this.tpl.animate({
           left: symbol + windowWidth
         }, this.option.delay || delayOption, function() {
           return that.isMoving = false;
         });
+        return this;
       };
 
       Modal.prototype.find = function(selector) {
@@ -431,7 +379,7 @@
 
       return Modal;
 
-    })();
+    })(Backbone.View);
     return Modal;
   });
 

@@ -899,14 +899,14 @@ Additional Notes and Questions
 
 <!-- {{modalTemplate}} -->
 <div class="modal-box {{ mode }}">
-    <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}}>
+    <div{{#ifCond mode "panel"}}{{else}} class="modal-wrapper-fix"{{/ifCond}} {{#if width}}style="width: {{width}};"{{/if}}>
         {{#if hasHeader}}
         <div class="modal-header">
             <h3>{{ title }}</h3>
             {{#unless hideClose}}<i class="modal-close">×</i>{{/unless}}
         </div>
         {{/if}}
-        <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}"{{#if compact}} style="padding: 0;"{{/if}} >
+	    <div class="modal-body context-wrap{{#if hasScroll}} scroll-wrap scrollbar-auto-hide{{/if}}" style="{{#if compact}}padding: 0;{{/if}}{{#if maxHeight}} max-height: {{maxHeight}}{{/if}}" >
             {{#if hasScroll}}
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                 <div class="scroll-content" {{#if compact}} style="padding: 0;"{{/if}}>

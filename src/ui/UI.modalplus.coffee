@@ -1,3 +1,57 @@
+#
+# *********************************************************
+# Filename: UI.modalplus
+# Creator: Cyril Hou
+# Description: UI.modalplus
+# Date: 2014-05-23
+# **********************************************************
+# (c) Copyright 2014 MadeiraCloud  All Rights Reserved
+# **********************************************************
+#
+# Usage:
+#   modal = new UI.modalplus option
+#   subModal = modal.next option
+#
+#   option:
+#      title: Modal.header title                                        [required]
+#      template: Modal.body content                                     [required]
+#      width: set the width of modal                                    [default: 520px]
+#      maxHeight: set the Modal body "max-height" css attribute.        [default: 400px]
+#      delay: animate delay time.                                       [default: 300ms]
+#      disableClose: if can be closed when it's a single modal.         [default: false]
+#      disableFooter: if this Modal has footer.                         [default: false]
+#      disableDrag: if the modal is dragAble                               [default: false]
+#      hideClose: if the close button on the right corner is hidden.    [default: false]
+#      cancel: cancel button of Modal                                   [default: "Cancel"/ {text: 'Cancel', hide: false} Both String and Object are accepted]
+#      confirm: confirm button of Modal footer.                         [default: {text: :"Submit", color: "blue", disabled: false, hide: false}] (color-support: "blue, red, silver")
+#      onClose: function to exec then the modal close.                  [Function]
+#      onConfirm: function to exec then the confirm button is clicked   [Function]
+#      onCancel: function to exec when the cancel button is clicked     [Function]
+#      onShow: function to exec then the modal is shown.                [Function]
+#      mode: change to another mode.                                    [Default: "normal", optional: "panel", "normal", "fullscreen"]
+#      compact: if modal-body has padding.                              [Default: false]
+#   Event:
+#       on "show","next", "next", "close", "confirm", "cancel", "shown", "closed"
+#   Method:
+#       next( option )  ====> return new subModal
+#       back()          ====> remove Last modal, back to the last but one modal.
+#       getLast()       ====> return the last modal in modalGroup
+#       getFirst()      ====> return the first modal in modalGroup
+#       getLastButOne() ====> return the last but one modal in modalGroup
+#       isOpen()        ====> return if the modal is Opened(exist)
+#       isCurrent()     ====> return if the modal is current modal.
+#       toggleConfirm   ====> toggle if the confirm button is disabled.
+#   Property:
+#       tpl             ====> the jQuery Dom element of the modal
+#       modalGroup      ====> the modalGroup
+#
+#   Example:
+#       modal = new UI.modalplus
+#           title: "Modal Title"
+#           template:   "<h1>Here Goes Modal Body</h1>"
+#           width: "600px"
+#
+
 modals = []
 defaultOptions = {
     title: ""

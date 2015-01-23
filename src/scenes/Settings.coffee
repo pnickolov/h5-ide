@@ -9,7 +9,7 @@ define ["Scene", "../ide/settings/SettingsView"], ( Scene, SettingsView )->
     ###
     # Override this method to perform custom initialization
     initialize : ( attributes )->
-      @view = new SettingsView()
+      @view = new SettingsView( attributes, { scene : @ } )
       @activate()
 
     # Override this method to check if the tab is closable. Return false to prevent closing.

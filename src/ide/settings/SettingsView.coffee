@@ -31,10 +31,12 @@ define [
 
         className: 'fullpage-settings'
 
-        initialize: ( options ) ->
-            if options
-                @tab = options.tab
-                @projectId = options.projectId
+        initialize: ( attr, options ) ->
+            if attr
+                @tab = attr.tab
+                @projectId = attr.projectId
+
+            @scene = options.scene
 
             @projects = App.model.projects()
             @render(@tab)
@@ -52,8 +54,7 @@ define [
                 mode: 'fullscreen'
                 disableFooter: true
                 compact: true
-            @modal.on "close", ->
-                Router.navigate("", {trigger: true, replace: true});
+            @modal.on "close", -> that.scene.remove()
             @
 
         renderSettings: () ->

@@ -1320,9 +1320,9 @@ function program1(depth0,data) {
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ACCESS_TOKEN_EDIT_TIP", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_EDIT_TIP", {hash:{},data:data}))
     + "\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ACCESS_TOKEN_DELETE_TIP", {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_DELETE_TIP", {hash:{},data:data}))
     + "\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))
     + "</button>\n	</span>\n</li>\n";

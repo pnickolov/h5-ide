@@ -750,8 +750,8 @@ Additional Notes and Questions
 	<input class="tokenName input" value="{{name}}" readonly/>
 	<span class="tokenToken click-select truncate tooltip" data-tooltip="{{ i18n 'PROP.ELB_TIP_CLICK_TO_SELECT_ALL'}}">{{token}}</span>
 	<span class="tokenControl">
-		<button class="tooltip icon-edit" data-tooltip="{{i18n "PROP.ACCESS_TOKEN_EDIT_TIP"}}"></button>
-		<button class="tooltip icon-delete" data-tooltip="{{i18n "PROP.ACCESS_TOKEN_DELETE_TIP"}}"></button>
+		<button class="tooltip icon-edit" data-tooltip="{{i18n "ACCESS_TOKEN_EDIT_TIP"}}"></button>
+		<button class="tooltip icon-delete" data-tooltip="{{i18n "ACCESS_TOKEN_DELETE_TIP"}}"></button>
 		<button class="btn btn-blue tokenDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
 	</span>
 </li>

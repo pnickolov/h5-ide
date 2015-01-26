@@ -2443,3 +2443,11 @@ VisualOps API. You cannot UNDO this action.'
     SAVING_STACK:
       en: "Saving stack..."
       zh: "正在保存模板..."
+
+    ACCESS_TOKEN_EDIT_TIP:
+      en: "Edit"
+      zh: "编辑"
+
+    ACCESS_TOKEN_DELETE_TIP:
+      en: "Delete"
+      zh: "删除"

@@ -18,7 +18,18 @@ define [
 
     ###
     # Possible events that will trigger on this model:
-    `change:credential`
+    `change:credential` :
+        Convenient event for someone that is interested in the credentials of the project.
+        Fires when one of the credential of this project is updated.
+
+    `change:app` :
+        Convenient event for someone that is interested in the apps of the project.
+        Fires when one of the app is updated. The same as listen to the change event of the app collection.
+
+    `change:stack`
+        Convenient event for someone that is interested in the stacks of the project.
+        Fires when one of the stack is updated. The same as listen to the change event of the stacks collection.
+
     ###
     defaults : ()->
       name         : ""
@@ -50,7 +61,7 @@ define [
           @attributes.tokens.push t
 
       # Credential
-      onCredChange = ()-> @trigger "change:credential", @
+      onCredChange = ()-> @trigger "update:credential", @
 
       opts  = { project : @ }
       for cred in attr.credentials || []
@@ -60,6 +71,9 @@ define [
 
       # Check my role
       @__checkMyRole( attr.members )
+
+      @listenTo @stacks(), "change", ()-> @trigger "change:stack"
+      @listenTo @apps(),   "change", ()-> @trigger "change:app"
       return
 
 

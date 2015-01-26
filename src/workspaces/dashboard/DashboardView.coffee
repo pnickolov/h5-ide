@@ -1,11 +1,11 @@
 
-define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template )->
+define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDialog )->
 
   Backbone.View.extend {
 
     events :
       "click .dashboard-header .create-stack"   : "createStack"
-      "click .dashboard-header .icon-import li" : "importStack"
+      "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
 
     initialize : ()->
@@ -27,7 +27,12 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template )->
       @model.scene.loadSpace( opsModel )
       return
 
-    importStack : ( evt )-> new ImportDialog({ type : $(evt.currentTarget).attr("data-type") })
+    importStack : ( evt )->
+      new ImportDialog({
+        type    : $(evt.currentTarget).attr("data-type")
+        project : @model.scene.project
+      })
+      false
 
     importApp : ()->
 

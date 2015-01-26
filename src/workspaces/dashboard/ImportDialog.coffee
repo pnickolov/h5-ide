@@ -29,7 +29,10 @@ define [
 
     initialize : ( attr )->
       self = @
-      this.type = attr.type
+
+      this.type    = attr.type
+      this.project = attr.project
+
       @modal = new Modal {
         title         : if @type is "stack" then lang.IDE.POP_IMPORT_JSON_TIT else lang.IDE.POP_IMPORT_CF_TIT
         template      : if @type is "stack" then tplPartials.importJSON() else tplPartials.importCF()
@@ -45,7 +48,6 @@ define [
       @reader = new FileReader()
       @reader.onload  = ( evt )-> self.onReaderLoader( evt )
       @reader.onerror = @onReaderError
-
       return
 
     onDragenter : ()-> @$el.find("#modal-import-json-dropzone").toggleClass("dragover", true)
@@ -86,14 +88,12 @@ define [
         if result.AWSTemplateFormatVersion
           @handleCFTemplate( result )
           return
-        else
-          error = App.importJson( @reader.result )
 
-      if _.isString error
-        $("#import-json-error").html error
-      else
-        @modal.close()
-        @reader = null
+      opsModel = @project.createStackByJson( result )
+      App.loadUrl( opsModel.url() )
+
+      @model.close()
+      @model = @project = @reader = null
       null
 
     onReaderError : ()-> $("#import-json-error").html lang.IDE.POP_IMPORT_ERROR

@@ -20,6 +20,7 @@ define [
   "UI.notification"
 ], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
 
+
   VisualOps = ()->
     if window.App
       console.error "Application is already created."

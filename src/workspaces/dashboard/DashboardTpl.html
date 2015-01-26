@@ -6,7 +6,7 @@
   <div class="hovermenu">
     <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
     <div class="dropdown-menu">
-    {{#each providers}}<ul data-provider="{{id}}">{{#each regions}}<li data-region="{{id}}">{{name}} - {{alias}}</li>{{/each}}</ul>{{/each}}
+    {{#each providers}}<ul data-provider="{{id}}">{{#each regions}}<li data-region="{{id}}" class="create-stack">{{name}} - {{alias}}</li>{{/each}}</ul>{{/each}}
     </div>
   </div>
 

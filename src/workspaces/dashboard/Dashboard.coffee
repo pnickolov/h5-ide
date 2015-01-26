@@ -16,7 +16,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
 
     isReadOnly : ()-> false
 
-    isWorkingOn : ( attr )-> attr is "Dashboard"
+    isWorkingOn : ( attr )-> attr.type is "Dashboard"
 
     supportedProviders : ()->
       [{
@@ -72,6 +72,6 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
 
   }, {
 
-    canHandle : ( attr )-> attr is "Dashboard"
+    canHandle : ( attr )-> attr.type is "Dashboard"
 
   }

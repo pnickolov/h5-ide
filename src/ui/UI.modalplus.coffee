@@ -296,7 +296,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             that.isMoving = true
             @tpl.animate
                 left: symbol + windowWidth
-            , @option.delay || delayOption
+            , delayOption
             , -> that.isMoving = false
             @
         find: (selector)->
@@ -308,4 +308,5 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
+    window.Modal = Modal
     Modal

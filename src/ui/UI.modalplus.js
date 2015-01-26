@@ -350,7 +350,7 @@
         that.isMoving = true;
         this.tpl.animate({
           left: symbol + windowWidth
-        }, this.option.delay || delayOption, function() {
+        }, delayOption, function() {
           return that.isMoving = false;
         });
         return this;
@@ -377,6 +377,7 @@
       return Modal;
 
     })(Backbone.View);
+    window.Modal = Modal;
     return Modal;
   });
 

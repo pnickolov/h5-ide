@@ -408,6 +408,7 @@ require [
 
   # Workspace deps here as plugin
   "workspaces/dashboard/Dashboard"
+  "workspaces/progress/ProgressViewer"
 
 ], ( Application, CrBundle ) ->
 

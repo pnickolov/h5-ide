@@ -97,49 +97,6 @@ define [
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
-
-    # Token related. Unlike credential,
-    # token is managed through project object. Since they are really lightweight.
-    createToken : ()->
-      tmpl = "MyToken"
-      base = 1
-      nameMap = {}
-      for t in @attributes.tokens
-        nameMap[ t.name ] = true
-
-      while true
-        newName = tmpl + base
-        if nameMap[ newName ]
-          base += 1
-        else
-          break
-
-      self = this
-      ApiRequest("token_create", {token_name:newName}).then (res)->
-        self.attributes.tokens.splice 0, 0, {
-          name  : res[0]
-          token : res[1]
-        }
-
-    removeToken : (token)->
-      for t, idx in @attributes.tokens
-        if t.token is token
-          break
-
-      self = this
-      ApiRequest("token_remove", {token:token,token_name:t.name}).then ( res )->
-        idx = self.attributes.tokens.indexOf t
-        if idx >= 0
-          self.attributes.tokens.splice idx, 1
-
-    updateToken : ( token, newName )->
-      self = this
-      ApiRequest("token_update", {token:token, new_token_name:newName}).then ( res )->
-        for t, idx in self.attributes.tokens
-          if t.token is token
-            t.name = newName
-            break
-
     updateName: ( name ) ->
       model = @
       ApiRequest( "project_save", { project_id: @id, spec: { name: name } } ).then ( res ) ->

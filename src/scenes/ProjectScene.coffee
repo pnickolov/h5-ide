@@ -63,7 +63,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       if @getAwakeSpace()
         basic += @getAwakeSpace().url()
 
-      basic.replace "/+$", ""
+      basic.replace /\/+$/, ""
 
 
     ### -------------------------------
@@ -71,17 +71,24 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
     ------------------------ ###
     # Load a workspace to work with the specified opsmodel.
     loadSpace : ( opsModelOrId )->
-      if not opsModelOrId then return
-      space = @findSpace( opsModelOrId ) or new TestWorkspace( opsModelOrId, { scene : @ } )
-      space.activate()
+      if not opsModelOrId
+        return @loadDashboard()
+
+      attr = {
+        opsModel : if _.isString(opsModelOrId) then @project.getOpsModel(opsModelOrId) else opsModelOrId
+      }
+
+      if not attr.opsModel then return
+
+      (@createSpace(attr)).activate()
       return
 
-    loadDashboard : ()->
-      space = @findSpace( "Dashboard" ) or @createSpace( "Dashboard" )
-      space.activate()
-      return
+    loadDashboard : ()-> (@createSpace({type:"Dashboard"})).activate()
 
     createSpace : ( data )->
+      existing = @findSpace(data)
+      if existing then return existing
+
       SpaceClass = Workspace.findSuitableSpace( data )
       new SpaceClass( data, {scene:@} )
 
@@ -190,4 +197,6 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
         if not space.isFixed() and ( not filter or filter(space) )
           @removeSpace( space, true )
       return
+
+  ProjectScene
 

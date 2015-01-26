@@ -101,6 +101,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       else
         "project/#{p}/unsaved/#{@cid}"
 
+    relativeUrl : ()->
+      if @get("id")
+        "ops/#{@get('id')}"
+      else
+        "unsaved/#{@cid}"
+
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importMsrId

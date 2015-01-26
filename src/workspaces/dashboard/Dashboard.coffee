@@ -1,73 +1,77 @@
 
-define ["Workspace", "./DashboardView", "./DashboardModel", 'i18n!/nls/lang.js'], ( Workspace, DashboardView, DashboardModel, lang )->
+define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, DashboardView, lang )->
 
-  class Dashboard extends Workspace
+  Workspace.extend {
+
+    type : "WS_Dashboard"
 
     isFixed  : ()-> true
     tabClass : ()-> "icon-dashboard"
     title    : ()-> lang.IDE.NAV_TIT_DASHBOARD
     url      : ()-> "/"
 
-
     initialize : ()->
-      @model = new DashboardModel()
-      @view  = new DashboardView({model:@model})
-
-      # For consistent, put every event listening here.
-      # So that the view doesn't depend on any other modules.
-      # Notice that the dependencies are not reduced, just transferred.
-
-      # Watch changes in applist/stacklist
-      self = @
-      @listenTo App.model.stackList(), "update", ()-> self.__renderControl "updateOpsList"
-      @listenTo App.model.appList(),   "update", ()-> self.__renderControl "updateOpsList"
-
-      @listenTo App.model.stackList(), "change", ()-> self.__renderControl "updateRegionList", arguments
-      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateRegionList", arguments
-      @listenTo App.model.appList(),   "change", ()-> self.__renderControl "updateOpsList"
-
-      @view.listenTo App.model.appList(), "change:progress", @view.updateAppProgress
-
-      # Watch changes in aws resources
-      @listenTo @model, "change:globalResources", ()->
-        self.view.markUpdated()
-        self.__renderControl "updateGlobalResources"
-
-      @listenTo @model, "change:regionResources", ()->
-        self.view.markUpdated()
-        self.__renderControl "updateRegionResources"
-
-      # Watch updates of visualize unmanaged vpc
-      @listenTo @model, "change:visualizeData", ()-> self.__renderControl "updateVisModel"
-
-      # Watch changes in user
-      @listenTo App.user, "change:credential", ()->
-        self.model.clearVisualizeData()
-        self.model.fetchAwsResources()
-        self.view.updateDemoView()
-
-      @model.fetchAwsResources()
-
-      @__renderControlMap = {}
+      @view = new DashboardView({model:@})
       return
 
-    sleep : ()->
-      @__renderControlMap = {}
-      @view.sleep()
-      return
+    isReadOnly : ()-> false
 
-    awake : ()->
-      @view[method]() for method of @__renderControlMap
-      @__renderControlMap = null
-      @view.awake()
-      return
+    isWorkingOn : ( attr )-> attr is "Dashboard"
 
-    __renderControl : ( method, args )->
-      if @__renderControlMap
-        console.log "DashboardView's render is throttled, method name: #{method}"
-        @__renderControlMap[ method ] = true
-      else
-        @view[method].apply(@view, args)
-      return
+    supportedProviders : ()->
+      [{
+          id : "aws::global"
+          regions : [
+            {
+              id    : "us-east-1"
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_us-east-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-east-1']
+            }
+            {
+              id    : "us-west-1"
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-1']
+            }
+            {
+              id    : "us-west-2"
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_us-west-2']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_us-west-2']
+            }
+            {
+              id    : "eu-west-1"
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-west-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-west-1']
+            }
+            {
+              id    : 'eu-central-1'
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_eu-central-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_eu-central-1']
+            }
+            {
+              id    : 'ap-southeast-2'
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-2']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-2']
+            }
+            {
+              id    : 'ap-northeast-1'
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-northeast-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-northeast-1']
+            }
+            {
+              id    : 'ap-southeast-1'
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_ap-southeast-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_ap-southeast-1']
+            }
+            {
+              id    : 'sa-east-1'
+              name  : lang.IDE[ 'IDE_LBL_REGION_NAME_sa-east-1']
+              alias : lang.IDE[ 'IDE_LBL_REGION_NAME_SHORT_sa-east-1']
+            }
+          ]
+      }]
 
-  Dashboard
+  }, {
+
+    canHandle : ( attr )-> attr is "Dashboard"
+
+  }

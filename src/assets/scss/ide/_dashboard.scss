@@ -7,7 +7,7 @@
 }
 
 /* Wrapper and header */
-#global-region-header {
+.dashboard-header {
   padding: 10px 0;
   position: absolute;
   z-index: 5;
@@ -50,6 +50,10 @@
     }
   }
 
+  .hovermenu:hover .dropdown-menu {
+    display : block;
+  }
+
   .dropdown-menu {
     position : absolute;
     left     : 0;
@@ -62,6 +66,8 @@
     font-size  : 14px;
     background : none;
     box-shadow : none;
+
+    display : none;
 
     > ul {
       float         : left;
@@ -90,6 +96,36 @@
       }
     }
   }
+
+  .icon-refresh {
+    font-size : 12px;
+    position  : absolute;
+    right     : 25px;
+    top       : 18px;
+    color     : #aaa;
+    display   : block;
+    cursor    : pointer;
+    -webkit-transform-origin : 12px 12px;
+       -moz-transform-origin : 12px 12px;
+            transform-origin : 12px 12px;
+
+    &:hover  { color: #148BE6; }
+    &:before {
+      margin-right: 4px;
+      font-size   : 12px;
+      line-height : 18px;
+    }
+
+    &.reloading {
+      &:before { margin : 0; }
+      -webkit-animation: rotation .6s infinite linear;
+         -moz-animation: rotation .6s infinite linear;
+           -o-animation: rotation .6s infinite linear;
+              animation: rotation .6s infinite linear;
+    }
+  }
+
+
 }
 
 .import-cf-notice {
@@ -157,34 +193,6 @@
 }
 
 /* Refresh Resource */
-
-#RefreshResource {
-  font-size : 12px;
-  position  : absolute;
-  right     : 25px;
-  top       : 18px;
-  color     : #aaa;
-  display   : block;
-  cursor    : pointer;
-  -webkit-transform-origin : 12px 12px;
-     -moz-transform-origin : 12px 12px;
-          transform-origin : 12px 12px;
-
-  &:hover  { color: #148BE6; }
-  &:before {
-    margin-right: 4px;
-    font-size   : 12px;
-    line-height : 18px;
-  }
-}
-
-.icon-refresh.reloading {
-  &:before { margin : 0; }
-  -webkit-animation: rotation .6s infinite linear;
-     -moz-animation: rotation .6s infinite linear;
-       -o-animation: rotation .6s infinite linear;
-          animation: rotation .6s infinite linear;
-}
 
 #global-region-wrap {
   background : #f0f0f0;

@@ -405,6 +405,10 @@ require [
   "cloudres/CrBundle"
   "MC"
   'lib/aws'
+
+  # Workspace deps here as plugin
+  "workspaces/dashboard/Dashboard"
+
 ], ( Application, CrBundle ) ->
 
   (new Application()).initialize()

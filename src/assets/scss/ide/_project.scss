@@ -16,6 +16,7 @@
     height        : 49px;
     border-bottom : 1px solid #202020;
     position      : relative;
+    z-index       : 5;
 
     > nav {
       position   : absolute;
@@ -75,8 +76,7 @@
     bottom   : 0;
     left     : 0;
     right    : 0;
-
-    background : yellow;
+    z-index  : 3;
   }
 }
 
@@ -180,6 +180,7 @@
   background : #36343C;
   left       : 0;
   top        : 50px;
+  z-index    : 100;
 
   box-shadow : 0 2px 5px rgba(0, 0, 0, 0.5);
   border     : none;

@@ -1,4 +1,4 @@
-define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrollbar" ], (Backbone,template, lang) ->
+define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequest", "UI.scrollbar" ], (Backbone,template, lang, ApiRequest) ->
     Backbone.View.extend {
 
         className: "access-token-view"
@@ -11,12 +11,18 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
             "click #TokenRmCancel"             : "cancelRmToken"
 
         initialize: ->
-            @render()
+            @tokens = []
             @
 
         render: ->
-            @$el.html template()
-            @updateTokenList()
+            self = @
+            @$el.html MC.template.loadingSpinner()
+            ApiRequest("token_list").then (res)->
+              console.log res
+              self.$el.html template()
+              self.tokens = res[0].tokens
+              self.updateTokenList()
+
             @
 
         editToken : ( evt )->
@@ -36,9 +42,21 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
 
         createToken : ()->
             @$el.find("#TokenCreate").attr "disabled", "disabled"
-
             self = this
-            App.user.createToken().then ()->
+            tmpl = "MyToken"
+            base = 1
+            nameMap = {}
+            for t in @tokens
+                nameMap[ t.name ] = true
+            while true
+                newName = tmpl + base
+                if nameMap[ newName ]
+                    base += 1
+                else
+                    break
+            ApiRequest("token_create", {token_name:newName}).then (res)->
+                [name, token] = res
+                self.tokens.push {name, token}
                 self.updateTokenList()
                 self.$el.find("#TokenCreate").removeAttr "disabled"
             , ()->
@@ -53,7 +71,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
             token        = $p.children(".tokenToken").text()
             newTokenName = $p.children(".tokenName").val()
 
-            for t in  App.user.get("tokens")
+            for t in  @tokens
                 if t.token is token
                     oldName = t.name
                 else if t.name is newTokenName
@@ -63,7 +81,13 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
                 $p.children(".tokenName").val( oldName )
                 return
 
-            App.user.updateToken( token, newTokenName ).fail ()->
+            self = this
+            ApiRequest("token_update", {token:token, new_token_name:newTokenName}).then ( res )->
+                for t, idx in self.tokens
+                    if t.token is token
+                        t.name = newTokenName
+                        break
+            ,()->
                 # If anything goes wrong, revert the name
                 oldName = ""
                 $p.children(".tokenName").val( oldName )
@@ -72,9 +96,15 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
 
         confirmRmToken : ()->
             @$el.find("#TokenRemove").attr "disabled", "disabled"
-
             self = this
-            App.user.removeToken( @rmToken ).then ()->
+            for t, idx in @tokens
+              if t.token is @rmToken
+                break
+            self = this
+            ApiRequest("token_remove", {token:self.rmToken,token_name:t.name}).then ( res )->
+              idx = self.tokens.indexOf t
+              if idx >= 0
+                self.tokens.splice idx, 1
                 self.updateTokenList()
                 self.cancelRmToken()
             , ()->
@@ -91,7 +121,7 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js',"UI.scrol
             return
 
         updateTokenList : ()->
-            tokens = App.user.get("tokens") || []
+            tokens = @tokens
             @$el.find("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
             if tokens.length
                 @$el.find("#TokenList").html MC.template.accessTokenTable( tokens )

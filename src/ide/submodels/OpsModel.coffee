@@ -150,10 +150,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     hasJsonData : ()-> !!@__jsonData
     getJsonData : ()-> @__jsonData
     fetchJsonData : ()->
-      if @__jsonData
-        d = Q.defer()
-        d.resolve @
-        return d.promise
+
+      # Always fetch the json
+
+      # if @__jsonData
+      #   d = Q.defer()
+      #   d.resolve @
+      #   return d.promise
 
       @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 

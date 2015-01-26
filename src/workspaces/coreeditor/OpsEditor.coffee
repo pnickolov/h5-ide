@@ -12,7 +12,7 @@
 ###
 
 define [
-  "ProgressViewer"
+  "Workspace"
 
   "Design"
 
@@ -38,7 +38,7 @@ define [
 
   "workspaces/coreeditor/TplOpsEditor"
   "workspaces/coreeditor/TplSvgDef"
-], ( ProgressViewer, Design )->
+], ( Workspace, Design )->
 
   ### env:dev ###
   require ["workspaces/coreeditor/DesignDebugger"], ()->
@@ -51,20 +51,25 @@ define [
 
   registeredEditors = []
 
-  OpsEditor = ( opsmodel )->
-    if not opsmodel
-      throw new Error("Cannot find opsmodel while openning workspace.")
+  Workspace.extend {
 
-    if opsmodel.isProcessing()
-      return new ProgressViewer opsmodel
+    type : "OpsEditor"
 
-    for e in registeredEditors
-      if e.handler( opsmodel )
-        return new e.editor( opsmodel )
+    constructor : ( opsmodel )->
+      if not opsmodel
+        throw new Error("Cannot find opsmodel while openning workspace.")
 
-    console.error "Cannot find editor to edit OpsModel: ", opsmodel
+      if opsmodel.isProcessing()
+        return new ProgressViewer opsmodel
 
-  OpsEditor.registerEditors = ( editor, handler )->
-    registeredEditors.push { editor : editor, handler : handler }
+      for e in registeredEditors
+        if e.handler( opsmodel )
+          return new e.editor( opsmodel )
 
-  OpsEditor
+      console.error "Cannot find editor to edit OpsModel: ", opsmodel
+      return
+  }, {
+    canHandle : ()->
+    registerEditors : ( editor, handler )->
+      registeredEditors.push { editor : editor, handler : handler }
+  }

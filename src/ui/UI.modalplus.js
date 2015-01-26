@@ -377,7 +377,6 @@
       return Modal;
 
     })(Backbone.View);
-    window.Modal = Modal;
     return Modal;
   });
 

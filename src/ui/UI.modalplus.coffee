@@ -308,5 +308,4 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
-    window.Modal = Modal
     Modal

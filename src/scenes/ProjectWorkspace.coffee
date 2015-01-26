@@ -14,12 +14,11 @@ define ["backbone"], ()->
 
       console.assert option and option.scene
 
-      attr    = attr || {}
-      attr.id = "space_" + (++wsid)
-
       @scene = option.scene
 
       Backbone.Model.apply this, arguments
+
+      @set "id", "space_" + (++wsid)
 
       @scene.addSpace( @ )
       return
@@ -96,11 +95,14 @@ define ["backbone"], ()->
   }, {
 
     findSuitableSpace : ( data )->
+      s = null
+      # We should test again all the Space instead of finding the first capatable Space
+      # In such a way, we should avoid some bug.
       for Space in SubWorkspaces
         if Space.canHandle( data )
-          return Space
+          s = Space
 
-      null
+      s
 
     # This method is used to find out which workspace to be create for a particular piece of data.
     canHandle : ( data )-> false

@@ -104,7 +104,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @wrap.size() is 0
                 @wrap = $("<div id='modal-wrap'></div>").appendTo $("body")
 
-            @option = _.extend _.clone(defaultOptions), option
+            @option = $.extend true, _.clone(defaultOptions), option
             @option.cancel.text ||= lang.IDE.POP_LBL_CANCEL
             @option.confirm.text ||= lang.IDE.LBL_SUBMIT
             @render()

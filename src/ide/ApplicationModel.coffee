@@ -34,7 +34,7 @@ define [
     # Project Related.
     getOpsModelById : ( opsModelId )->
       for p in @get("projects").models
-        ops = p.stacks().get( opsModelId ) or p.apps().get( opsModelId )
+        ops = p.getOpsMOdel( opsModelId )
         if ops then return ops
       return null
 

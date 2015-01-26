@@ -86,6 +86,8 @@ define [
     tokens       : ()-> @get("tokens")
     defaultToken : ()-> @get("defaultToken")
 
+    getOpsModel  : ( id )-> @get("stacks").get( id ) or @get("apps").get( id )
+
 
     # Convenient Methods
     isPrivate     : ()-> @get("private")

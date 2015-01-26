@@ -191,7 +191,8 @@
         }
         $(window).resize((function(_this) {
           return function() {
-            return modals[modals.length - 1].resize();
+            var _ref;
+            return (_ref = modals[modals.length - 1]) != null ? _ref.resize() : void 0;
           };
         })(this));
         $(document).keyup(function(e) {

@@ -197,7 +197,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     if e.target is e.currentTarget
                         self.close()
             $(window).resize =>
-                modals[modals.length - 1].resize()
+                modals[modals.length - 1]?.resize()
 
             $(document).keyup (e)->
                 if e.which is 27 and not @option.disableClose

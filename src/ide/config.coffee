@@ -141,8 +141,7 @@ require.config {
     #############################################
     # workspace                 # Merge in deploy
     #############################################
-    "Workspace"  : "workspaces/Workspace"
-    "WSManager"  : "workspaces/WorkspaceManager"
+    "Workspace"  : "scenes/ProjectWorkspace"
 
     #############################################
     # coreeditor                # Merge in deploy

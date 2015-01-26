@@ -1,6 +1,6 @@
 
 
-define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectView, TestWorkspace )->
+define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace )->
 
   # The ProjectScene work with Workspace objects. It's a Workspace Manager itself.
 
@@ -52,9 +52,18 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
 
     isWorkingOn : ( projectId )-> @project.id is projectId
 
-    title : ()-> "ProjectScene"
-    url   : ()-> "/"
+    title : ()->
+      name = @project.get("name")
+      if @getAwakeSpace()
+        name = @getAwakeSpace().title() + " on " + name
+      name
 
+    url   : ()->
+      basic = "/project/#{@project.id}/"
+      if @getAwakeSpace()
+        basic += @getAwakeSpace().url()
+
+      basic.replace "/+$", ""
 
 
     ### -------------------------------
@@ -67,7 +76,14 @@ define ["Scene", "./ProjectView", "workspaces/TestWorkspace"], ( Scene, ProjectV
       space.activate()
       return
 
-    loadDashboard : ()-> new TestWorkspace( "dashboard", { scene : @ } )
+    loadDashboard : ()->
+      space = @findSpace( "Dashboard" ) or @createSpace( "Dashboard" )
+      space.activate()
+      return
+
+    createSpace : ( data )->
+      SpaceClass = Workspace.findSuitableSpace( data )
+      new SpaceClass( data, {scene:@} )
 
     spaceParentElement : ()-> @view.$wsparent
 

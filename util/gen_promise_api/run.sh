@@ -668,8 +668,8 @@ echo "define([ ${_DEFINE_} ],function(){})" > ${TGT_BASE_DIR}/ApiBundle.js
 echo
 echo "##############################################################"
 echo "copy new api define to target dir"
-cp -rf ${TGT_BASE_DIR}/service/forge.js ${SH_BASE_DIR}/../../src/api/define/forge.js
-cp -rf ${TGT_BASE_DIR}/service/aws/* ${SH_BASE_DIR}/../../src/api/define/aws/
+\cp ${TGT_BASE_DIR}/service/forge.js ${SH_BASE_DIR}/../../src/api/define/forge.js
+\cp ${TGT_BASE_DIR}/service/aws/* ${SH_BASE_DIR}/../../src/api/define/aws/
 cd ${SH_BASE_DIR}/../../
 echo "current dir: `pwd`"
 echo

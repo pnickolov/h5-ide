@@ -2,11 +2,10 @@
 define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest", "ApiRequestR" ], (Backbone, template, lang, ApiRequest, ApiRequestR ) ->
     Backbone.View.extend {
         events :
-            "click #PaymentNav span"              : "switchTab"
             'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
             'click button.update-payment'         : "showUpdatePayment"
             "click .update-payment-done"          : "updatePaymentDone"
-            "click .update-payment-cancel"        :"updatePaymentCancel"
+            "click .update-payment-cancel"        : "updatePaymentCancel"
 
         className: "billing-view"
 
@@ -15,68 +14,57 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @$el.find("#billing-status").append MC.template.loadingSpinner()
             @
         render : ()->
+            projectId = @model.get "id"
             that = @
-            paymentState = App.user.get("paymentState")
             @$el.find("#PaymentBody").remove()
-            if @needUpdatePayment()
-                that.$el.find(".loading-spinner").remove()
-                that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
-                @updateUsage()
-                return @
-            @getPaymentHistory().then (paymentHistory)->
-                console.log paymentHistory
-                paymentUpdate = {
-                    url: App.user.get("paymentUrl")
-                    card: App.user.get("creditCard")
-                    billingEnd: App.user.get("billingEnd")
-                    current_quota: App.user.get("voQuotaCurrent")
-                    max_quota:  App.user.get("voQuotaPerMonth")
-                    renewRemainDays: Math.round( (App.user.get("renewDate") - ( new Date() ))/(1000*60*60*24) )
-                    last_billing_time: App.user.get("billingStart") || new Date()
+            paymentState = App.user.get("paymentState")
+            ApiRequestR "payment_self", {projectId}
+            .then (result)->
+                formattedResult = {
+                    cardNumber  :result.card
+                    lastName :result.last_name
+                    firstName  :result.first_name
+                    periodEnd  :result.current_period_ends_at
+                    periodStart  :result.current_period_started_at
+                    maxQuota :result.max_quota
+                    currentQuota :result.current_quota
+                    nextPeriod :result.next_assessment_at
+                    paymentState :result.state
                 }
-                billable_quota = App.user.get("voQuotaCurrent") - App.user.get("voQuotaPerMonth")
-                paymentUpdate.billable_quota = if billable_quota > 0 then billable_quota else 0
-
-                hasPaymentHistory = (_.keys paymentHistory).length
-                tempArray = []
-                _.each paymentHistory, (e)->
-                    e.ending_balance = e.ending_balance_in_cents/100
-                    e.total_balance = e.total_in_cents / 100
-                    e.start_balance = e.starting_balance_in_cents / 100
-                    tempArray.push(e)
-                tempArray.reverse()
-                paymentHistory = tempArray
-                that.paymentHistory = tempArray
-                that.paymentUpdate = _.clone paymentUpdate
-                billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-                that.$el.find(".loading-spinner").remove()
-                that.$el.find("#billing-status").append billingTemplate
-                unless true # todo: App.user.get("creditCard")
-                    that.$el.find("#PaymentBillingTab").html(MC.template.paymentSubscribe {url: App.user.get("paymentUrl"), freePointsPerMonth: App.user.get("voQuotaPerMonth"), shouldPay: false}) #todo: App.user.shouldPay()
-                    that.listenTo App.user, "paymentUpdate", ->
-                        that.stopListening(App.user)
-                        that.updateUsage()
-                that.updateUsage()
+                that.model.set("payment", formattedResult)
+                if result.card and result.current_quota < result.max_quota and state is "active" or "pastdue"
+                    that.getPaymentHistory().then (paymentHistory)->
+                        console.log paymentHistory
+                        hasPaymentHistory = (_.keys paymentHistory).length
+                        tempArray = []
+                        _.each paymentHistory, (e)->
+                            e.endding_balance = e.ending_balance_in_cents/ 100
+                            e.total_balance = e.total_balance_in_cents/ 100
+                            e.start_balance = e.starting_balance_in_cents/ 100
+                            tempArray.push e
+                        tempArray.reverse()
+                        paymentHistory = tempArray
+                        paymentUpdate = that.model.get("payment")
+                        billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+                        that.$el.find(".loading-spinner").remove()
+                        that.$el.find("#billing-status").append billingTemplate
+                else
+                  that.$el.find(".loading-spinner").remove()
+                  that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
+                  @updateUsage()
+                  return @
             , ()->
                 notification 'error', "Error while getting user payment info, please try again later."
-
-            @listenTo App.user, "paymentUpdate", -> that.updateUsage()
             @
 
         getPaymentHistory: ()->
             projectId = @model.get("id")
             historyDefer = new Q.defer()
-            unless @needUpdatePayment()
-                historyDefer.resolve({})
-            else
-                ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
-                    historyDefer.resolve(paymentHistory)
-                , (err)->
-                    historyDefer.reject(err)
+            ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
+                historyDefer.resolve(paymentHistory)
+            , (err)->
+                historyDefer.reject(err)
             historyDefer.promise
-
-        needUpdatePayment: ()->
-            true
 
         showUpdatePayment: (evt)->
             @$el.find("#PaymentBillingTab").append template.updatePayment()
@@ -94,33 +82,6 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
 
         updatePaymentCancel: ()->
             @render()
-
-        switchTab: (event)->
-            target = $(event.currentTarget)
-            console.log "Switching Tabs"
-            @$el.find("#PaymentNav").find("span").removeClass("selected")
-            @$el.find(".tabContent > section").addClass("hide")
-            $("#"+ target.addClass("selected").data('target')).removeClass("hide")
-            @updateUsage()
-
-        updateUsage: ()->
-            shouldPay = false
-            @$el.find(".usage-block").toggleClass("error", shouldPay)
-            @$el.find(".used-points").toggleClass("error", shouldPay)
-
-            current_quota = App.user.get("voQuotaCurrent")
-
-            @$el.find(".payment-number").text(App.user.get("creditCard") || lang.IDE.NO_CARD)
-            @$el.find(".payment-username").text("#{App.user.get("cardFirstName")} #{App.user.get("cardLastName")}")
-            @$el.find(".used-points .usage-number").text(current_quota)
-
-            if false # todo: App.user.shouldPay()
-                @$el.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_PROVIDE_UPDATE_CREDITCARD,  App.user.get("paymentUrl"), (if App.user.get("creditCard") then "Update" else "Provide")
-            else if false # todo： App.user.isUnpaid()
-                @$el.find(".warning-red").not(".no-change").show().html sprintf lang.IDE.PAYMENT_UNPAID_BUT_IN_FREE_QUOTA, App.user.get("paymentUrl")
-            else
-                @$el.find(".warning-red").not(".no-change").hide()
-
 
         viewPaymentReceipt: (event)->
             $target = $(event.currentTarget)

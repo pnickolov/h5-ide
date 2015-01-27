@@ -79,20 +79,27 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       cred.provider = @get("provider")
       Credential.validate( cred )
 
-    add: ->
-      projectId = @get( 'project' ).id
+    formatCredForRequest: ( cred ) ->
+      {
+        alias      : cred.alias
+        account_id : cred.awsAccount
+        access_key : cred.awsAccessKey
+        secret_key : cred.awsSecretKey
+        provider   : cred.provider or PROVIDER.AWSGLOBAL
+      }
+
+    add: () ->
       model = @
+      credential = @formatCredForRequest @toJSON()
+      project = @get( 'project' )
 
       ApiRequest( "project_add_credential", {
-        project_id: projectId
-        credential: {
-          alias      : @get 'alias'
-          account_id : @get 'awsAccount'
-          access_key : @get 'awsAccessKey'
-          secret_key : @get 'awsSecretKey'
-        }
-      }).then (res) ->
+        project_id: project.id
+        credential: credential
+      }).then ( res ) ->
         model.set 'id', res[ 1 ]
+        project.credentials().push model
+
         res
 
     ###
@@ -102,12 +109,10 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       awsSecretKey : ""
     }
     ###
-    update : ( cred, forceUpdate = false, valid = true )->
+    update : ( cred, forceUpdate = false )->
       self = @
-      if valid
-        p = @validate( cred ).then ()-> self.__update( cred, forceUpdate )
-      else
-        p = @__update( cred, forceUpdate )
+      credential = @formatCredForRequest cred
+      p = @__update( credential, forceUpdate )
 
       p.then ( res )->
         self.set {
@@ -117,11 +122,13 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
           awsSecretKey : __maskString( cred.awsSecretKey )
         }
 
-    save: ->
+    save: ( cred, forceUpdate = false, valid = true ) ->
+      cred = @toJSON() unless cred
+
       if @id
-        @update()
+        @update cred, forceUpdate, valid
       else
-        @add()
+        @add cred, valid
 
     destroy: ( options ) ->
       model = @
@@ -142,7 +149,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       awsSecretKey : ""
     }
     ###
-    validate : ( credential )-> ApiRequest( "project_validate_credential", {credential:credential} )
+    #validate : ( credential )-> ApiRequest( "project_validate_credential", {credential:credential} )
   }
 
   Credential

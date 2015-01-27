@@ -2,11 +2,12 @@ define [
     'constant'
     'i18n!/nls/lang.js'
     '../template/TplCredential'
+    'Credential'
     'UI.modalplus'
     'UI.tooltip'
     'UI.notification'
     'backbone'
-], ( constant, lang, TplCredential, Modal ) ->
+], ( constant, lang, TplCredential, Credential, Modal ) ->
 
     credentialFormView = Backbone.View.extend
         events:
@@ -14,14 +15,15 @@ define [
 
         render: ( credential ) ->
             if credential
+                data = credential.toJSON()
                 title = 'Update Cloud Credential'
                 confirmText = 'Update'
             else
-                credential = {}
+                data = {}
                 title = 'Add Cloud Credential'
                 confirmText = 'Add'
 
-            @$el.html TplCredential.credentialForm credential
+            @$el.html TplCredential.credentialForm data
 
             @modal = new Modal
                 title: title
@@ -36,6 +38,12 @@ define [
 
             @
 
+        loading: ->
+            @content = @$el.html()
+            @$el.html TplCredential.credentialLoading 'Add'
+
+        loadingEnd: -> @$el.html @content
+
         remove: ->
             @modal?.close()
             Backbone.View.prototype.remove.apply @, arguments
@@ -43,7 +51,7 @@ define [
         updateSubmitBtn : ()->
             d = @getData()
 
-            if d.alias.length and d.account.length and d.accesskey.length and d.privatekey.length
+            if d.alias.length and d.awsAccount.length and d.awsAccessKey.length and d.awsSecretKey.length
                 @modal.toggleConfirm false
             else
                 @modal.toggleConfirm true
@@ -52,10 +60,10 @@ define [
         getData: ->
             that = @
 
-            alias      : that.$( '#CredSetupAlias' ).val()
-            account    : that.$( '#CredSetupAccount' ).val()
-            accesskey  : that.$( '#CredSetupAccessKey' ).val()
-            privatekey : that.$( '#CredSetupSecretKey' ).val()
+            alias         : that.$( '#CredSetupAlias' ).val()
+            awsAccount    : that.$( '#CredSetupAccount' ).val()
+            awsAccessKey  : that.$( '#CredSetupAccessKey' ).val()
+            awsSecretKey  : that.$( '#CredSetupSecretKey' ).val()
 
 
 
@@ -92,19 +100,57 @@ define [
             credential = @getCredentialById credentialId
             @showSettingModal credential
 
-        addCredential: ( provider, credential ) ->
+        addCredential: ( data ) ->
+            that = @
+            credentialData = {
+                alias : data.alias
+                account_id: data.awsAccount
+                access_key: data.awsAccessKey
+                secret_key: data.awsSecretKey
+            }
+            credentialData.provider = data.provider or constant.PROVIDER.AWSGLOBAL
+
+            credential = new Credential credentialData, { project: @model }
+
+            @settingModalView.loading()
+            credential.save().then () ->
+                that.settingModalView.remove()
+            , ( error ) ->
+                if error.error is 293
+                    msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
+                else
+                    msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
+
+                that.settingModalView.loadingEnd()
+                that.settingModalView.$( '.cred-setup-msg' ).text msg
+
 
         updateCredential: ( credential, newData ) ->
+            that = @
+            @updateConfirmView.setContent TplCredential.credentialLoading { action: 'Update' }
+
+            credential.save( newData ).then () ->
+                that.updateConfirmView.close()
+                that.settingModalView.remove()
+            , () ->
+                that.updateConfirmView.setContent TplCredential.removeConfirm
+                if error.error is 293
+                    msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
+                else
+                    msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
+                that.updateConfirmView.find( '.cred-setup-msg' ).text msg
 
         removeCredential: ( credential ) ->
+            that = @
             @removeConfirmView.setContent TplCredential.credentialLoading { action: 'Remove' }
-            credential.destroy().then () ->
-                @removeConfirmView?.close()
-            , ( error ) ->
-                @removeConfirmView.setContent TplCredential.removeConfirm
-                @removeConfirm.find( '#CredDeletepMsg' ).text lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
-        showUpdateConfirmModel: ->
+            credential.destroy().then () ->
+                that.removeConfirmView?.close()
+            , ( error ) ->
+                that.removeConfirmView.setContent TplCredential.removeConfirm
+                that.removeConfirm.find( '.cred-setup-msg' ).text lang.IDE.SETTINGS_ERR_CRED_REMOVE
+
+        showUpdateConfirmModel: ( credential, newData ) ->
             @updateConfirmView?.close()
             @updateConfirmView = new Modal {
                 title: 'Update Cloud Credential'
@@ -112,9 +158,11 @@ define [
                 confirm:
                     text: 'Confirm to Update'
             }
-            @updateConfirmView.on 'confirm', updateCredential, @
+            @updateConfirmView.on 'confirm', ->
+                @updateCredential credential, newData
+            , @
 
-        showRemoveConfirmModel: ->
+        showRemoveConfirmModel: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'
             credential = @getCredentialById credentialId
 
@@ -126,15 +174,19 @@ define [
                     text: 'Remove Credential'
             }
 
-            @removeConfirmView.on 'confirm', () -> @removeCredential credential
+            @removeConfirmView.on 'confirm', () ->
+                @removeCredential credential
+            , @
 
         showSettingModal:( credential, provider ) ->
             @settingModalView = new credentialFormView( provider:provider ).render credential
             @settingModalView.on 'confirm', ->
                 if credential
-                    @updateCredential credential, @showSettingModal.getData()
+                    @showUpdateConfirmModel credential, @settingModalView.getData()
                 else
-                    @addCredential null, @showSettingModal.getData()
+                    @addCredential @settingModalView.getData()
+            , @
+
             @
 
         remove: ->

@@ -97,6 +97,10 @@ define [
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
+    addCredential: ( cred ) ->
+      @credentials().push cred
+      @trigger 'change:credentials'
+
     updateName: ( name ) ->
       model = @
       ApiRequest( "project_save", { project_id: @id, spec: { name: name } } ).then ( res ) ->

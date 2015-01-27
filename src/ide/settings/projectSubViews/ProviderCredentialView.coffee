@@ -41,11 +41,13 @@ define [
 
         loading: ->
             @$( '#CredSetupWrap' ).hide()
-            @$el.append( TplCredential.credentialLoading { action: 'Add' } ).find( '.modal-footer' ).hide()
+            @$el.append( TplCredential.credentialLoading { action: 'Add' } )
+            @modal.$el.find( '.modal-footer' ).hide()
 
         loadingEnd: ->
-            @$el.find( '.modal-footer' ).show().end().find('.loading-zone').remove()
+            @$('.loading-zone').remove()
             @$( '#CredSetupWrap' ).show()
+            @modal.$el.find( '.modal-footer' ).show()
 
         remove: ->
             @modal?.close()
@@ -79,6 +81,9 @@ define [
             'click .delete-link'     : 'showRemoveConfirmModel'
 
         className: 'credential'
+
+        initialize: ->
+            @listenTo @model, 'change:credentials', @render
 
         render: () ->
             data = @model.toJSON()

@@ -3,7 +3,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
   __maskString = ( text )->
     if text.length > 6
-      return (new Array(text-6)).join("*")+text.substr(-6)
+      return (new Array(text.length-6)).join("*")+text.substr(-6)
     else
       return text
 
@@ -57,27 +57,9 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       ApiRequest( "project_update_credential", {
         project_id   : @get("project").id
         key_id       : @id
-        credential   : {
-          alias      : cred.alias
-          account_id : cred.awsAccount
-          access_key : cred.awsAccessKey
-          secret_key : cred.awsSecretKey
-        }
+        credential   : cred
         force_update : forceUpdate
       } )
-
-    ###
-    cred : {
-      provider     : ""
-      awsAccount   : ""
-      awsAccessKey : ""
-      awsSecretKey : ""
-    }
-    ###
-    validate : ( cred )->
-      cred = $.extend {}, cred
-      cred.provider = @get("provider")
-      Credential.validate( cred )
 
     formatCredForRequest: ( cred ) ->
       {
@@ -90,7 +72,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
     add: () ->
       model = @
-      credential = @formatCredForRequest @toJSON()
+      credential = @formatCredForRequest @attributes
       project = @get( 'project' )
 
       ApiRequest( "project_add_credential", {
@@ -98,7 +80,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         credential: credential
       }).then ( res ) ->
         model.set 'id', res[ 1 ]
-        project.credentials().push model
+        project.addCredential model
 
         res
 
@@ -118,12 +100,12 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         self.set {
           alias        : cred.alias
           awsAccount   : cred.awsAccount
-          awsAccessKey : __maskString( cred.awsAccessKey )
-          awsSecretKey : __maskString( cred.awsSecretKey )
+          awsAccessKey : cred.awsAccessKey
+          awsSecretKey : cred.awsSecretKey
         }
 
     save: ( cred, forceUpdate = false, valid = true ) ->
-      cred = @toJSON() unless cred
+      cred = @attributes unless cred
 
       if @id
         @update cred, forceUpdate, valid
@@ -136,6 +118,12 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       ApiRequest( "project_remove_credential", { project_id: projectId, key_id: @id } ).then ( res )->
         model.trigger 'destroy', model, model.collection, options
         res
+
+    toJSON: ->
+      _.extend {}, @attributes, {
+        awsAccessKey: __maskString(@attributes.awsAccessKey)
+        awsSecretKey: __maskString(@attributes.awsSecretKey)
+      }
 
   }, {
     PLATFORM : PLATFORM

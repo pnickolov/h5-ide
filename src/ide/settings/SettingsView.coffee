@@ -9,7 +9,7 @@ define [
     SettingsView = Backbone.View.extend {
         events:
             'click .project-list a': 'loadProject'
-            'click .back-settings': 'renderSettings'
+            'click .back-settings': 'backToSettings'
 
             'click #AccountEmail'             : 'showEmail'
             'click #AccountFullName'          : 'showFullName'
@@ -68,7 +68,13 @@ define [
         loadProject: ( e ) ->
             projectId = $(e.currentTarget).data 'id'
             project = @projects.get projectId
+
+            @navigate SettingsView.TAB.Project.BasicSettings, projectId
             @renderProject project
+
+        backToSettings: ->
+            @navigate()
+            @renderSettings()
 
         renderProject: ( project, tab ) ->
             @$el.html new ProjectView( model: project, settingsView: @ ).render(tab).el
@@ -76,6 +82,15 @@ define [
         remove: ->
             @model?.close()
             Backbone.View.prototype.remove.apply arguments
+
+        navigate: ( tab, projectId ) ->
+            url = @url tab, projectId
+            console.log url
+            Router.navigate url
+
+        url: ( tab, projectId ) ->
+            unless tab then return '/settings'
+            return "/settings/#{tab}/#{projectId}"
 
 
         # Account Operation

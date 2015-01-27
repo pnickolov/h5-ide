@@ -41,7 +41,9 @@ define [
             @
 
         loadSub: ( e ) ->
-            @$('.project-subview').html(@renderSub($(e.currentTarget).data('id')).el)
+            tab = $(e.currentTarget).data('id')
+            @settingsView.navigate tab, @model.id
+            @$('.project-subview').html(@renderSub(tab).el)
 
         renderSub: ( tab ) ->
             @setTitle tab

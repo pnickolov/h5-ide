@@ -32,21 +32,27 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                     paymentState :result.state
                 }
                 that.model.set("payment", formattedResult)
+                paymentUpdate = that.model.get("payment")
+                billingTemplate = template.billingTemplate {paymentUpdate}
+
+                that.$el.find(".loading-spinner").remove()
+                that.$el.find("#billing-status").append billingTemplate
+                that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
                 if result.card and result.current_quota < result.max_quota and state is "active" or "pastdue"
                     that.getPaymentHistory().then (paymentHistory)->
                         console.log paymentHistory
                         hasPaymentHistory = (_.keys paymentHistory).length
                         tempArray = []
                         _.each paymentHistory, (e)->
-                            e.endding_balance = e.ending_balance_in_cents/ 100
-                            e.total_balance = e.total_balance_in_cents/ 100
-                            e.start_balance = e.starting_balance_in_cents/ 100
+                            e.total_balance = e.total_balance_in_cents / 100
+                            e.start_balance = e.starting_balance_in_cents / 100
                             tempArray.push e
                         tempArray.reverse()
                         paymentHistory = tempArray
+                        that.model.set("paymentHistory", paymentHistory)
                         paymentUpdate = that.model.get("payment")
                         billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-                        that.$el.find(".loading-spinner").remove()
+                        that.$el.find("#PaymentBody").remove()
                         that.$el.find("#billing-status").append billingTemplate
                 else
                   that.$el.find(".loading-spinner").remove()
@@ -86,7 +92,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
         viewPaymentReceipt: (event)->
             $target = $(event.currentTarget)
             id = $target.parent().parent().data("id")
-            paymentHistory = @paymentHistory[id]
+            paymentHistory = @model.get("paymentHistory")[id]
             cssToInsert = """
                 .billing_statement_section {
                     display: block;

@@ -27,43 +27,53 @@ define ['backbone',
         initialize: () ->
 
             @projectId = @model.get('id')
+            @isAdmin = false
             @render()
 
         render: () ->
 
-            @$el.html TplMember.main(
-                {
-                    columns: [
-                        {
-                            sortable: true
-                            name: "Member"
-                        },
-                        {
-                            sortable: true
-                            width: "20%"
-                            name: "Role"
-                        },
-                        {
-                            sortable: true
-                            width: "10%"
-                            name: "Status"
-                        },
-                        {
-                            sortable: false
-                            width: "20%"
-                            name: ""
-                        },
-                        {
-                            sortable: false
-                            width: "100px"
-                            name: "Edit"
-                        }
-                    ]
-                }
-            )
-            @memList = @$el.find('.t-m-content')
+            @$el.html TplMember.loading()
             @loadMemList()
             @
+
+        renderMain: () ->
+
+            that = @
+
+            columns = [
+                {
+                    sortable: true
+                    name: "Member"
+                },
+                {
+                    sortable: true
+                    width: "20%"
+                    name: "Role"
+                },
+                {
+                    sortable: true
+                    width: "10%"
+                    name: "Status"
+                }
+            ]
+            if that.isAdmin
+                columns = columns.concat([
+                    {
+                        sortable: false
+                        width: "20%"
+                        name: ""
+                    },
+                    {
+                        sortable: false
+                        width: "100px"
+                        name: "Edit"
+                    }
+                ])
+            that.$el.html TplMember.main({
+                columns: columns,
+                admin: that.isAdmin
+            })
+            that.memList = that.$el.find('.t-m-content')
 
         loadMemList: (callback) ->
 
@@ -75,9 +85,15 @@ define ['backbone',
             }).then (members)->
                 _.each members, (member) ->
                     userName = Base64.decode(member.username)
+                    isMe = userName is currentUserName
+                    if isMe
+                        if member.role is 'admin'
+                            that.isAdmin = true
+                        else
+                            that.isAdmin = false
                     data.push({
                         id: member.id,
-                        me: userName is currentUserName,
+                        me: isMe,
                         avatar: '',
                         username: userName,
                         email: Base64.decode(member.email),
@@ -85,6 +101,7 @@ define ['backbone',
                         state: member.state
                     })
             .done () ->
+                that.renderMain()
                 that.$el.find('.content').removeClass('hide')
                 that.$el.find('.loading-spinner').addClass('hide')
                 that.renderList(data)
@@ -93,7 +110,11 @@ define ['backbone',
 
         renderList: (data) ->
 
-            @memList.html TplMember.list(data)
+            that = @
+            @memList.html TplMember.list({
+                admin: that.isAdmin,
+                memlist: data
+            })
             @$el.find('.memlist-count').text(data.length)
 
         inviteMember: () ->

@@ -1,7 +1,10 @@
-<!-- {{main}} -->
+<!-- {{loading}} -->
 <div class="loading-spinner"></div>
+
+<!-- {{main}} -->
 <div class="hide content" data-bind="true">
     <div class="title">Member(<span class="memlist-count"></span>)</div>
+    {{#if admin}}
     <div class="operate">
         <div class="invite">
             <input class="input" placeholder="Invite by email address or username..." id="mail">
@@ -9,17 +12,20 @@
         </div>
         <button class="btn btn-red" id="delete" disabled>Delete</button>
     </div>
+    {{/if}}
     <div class="table-head-fix will-be-covered">
         <table class="table-head">
             <thead>
                 <tr>
                     {{#unless noCheckbox}}
+                    {{#if admin}}
                     <th>
                         <div class="checkbox">
                             <input id="t-m-select-all" type="checkbox" value="None">
                             <label for="t-m-select-all"></label>
                         </div>
                     </th>
+                    {{/if}}
                     {{/unless}}
                     {{#each columns}}
                     <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
@@ -38,7 +44,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                {{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}
+                                {{#if admin}}{{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}{{/if}}
                                 {{#each columns}}
                                 <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
                                 {{/each}}
@@ -57,8 +63,9 @@
 </div>
 
 <!-- {{list}} -->
-{{#each this}}
+{{#each memlist}}
 <tr class="item memlist-item" data-id="{{id}}">
+    {{#if ../admin}}
     <td class="checkbox-row">
         {{#unless me}}
         <div class="checkbox">
@@ -67,6 +74,7 @@
         </div>
         {{/unless}}
     </td>
+    {{/if}}
     <td>
         <img class="avatar" src="{{avatar}}">
         <div class="info">
@@ -99,11 +107,13 @@
         {{#ifCond state 'normal'}}Active{{/ifCond}}
         {{#ifCond state 'inactive'}}Pending{{/ifCond}}
     </td>
+    {{#if ../admin}}
     <td>{{#ifCond state 'inactive'}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/ifCond}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">Done</button>
         {{#unless me}}<button class="icon-edit memlist-view-mode edit"></button>{{/unless}}
     </td>
+    {{/if}}
 </tr>
 {{/each}}
 

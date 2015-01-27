@@ -33,7 +33,7 @@ define [
 
         initialize: ( attr, options ) ->
             if attr
-                @tab = attr.tab
+                @tab = attr.tab or SettingsView.TAB.Account
                 @projectId = attr.projectId
 
             @scene = options.scene
@@ -42,12 +42,12 @@ define [
             @render(@tab)
 
 
-        render: ( tab = SettingsView.TAB.Account ) ->
+        render: ( tab = @tab ) ->
             that = @
             if tab is SettingsView.TAB.Account
                 @renderSettings()
             else
-                @renderProject projectId, tab
+                @renderProject @projects.get( @projectId ), tab
 
             @modal = new Modal
                 template: that.el

@@ -18,16 +18,17 @@ define [
       "project/:project/ops(/:ops)"     : "openProject"
       "project/:project/unsaved(/:ops)" : "openProject"
 
-      "settings(/:page)"   : "openSettings"
-      "store/:sampleId"    : "openStore"
+      "settings(/:page/:projectId)"     : "openSettings"
+      "store/:sampleId"                 : "openStore"
 
-      "cheatsheet" : "openCheatsheet"
+      "cheatsheet"                      : "openCheatsheet"
 
     openStore : ( id )-> new StackStore({ id : id })
 
-    openSettings : ()->
+    openSettings : ( page, projectId )->
       console.log "opening store", arguments
-      theSettings = new Settings()
+
+      theSettings = new Settings { tab: page, projectId: projectId }
       theSettings.activate()
       theSettings.view.$el.find("h1").html arguments[0] || "settings"
       return

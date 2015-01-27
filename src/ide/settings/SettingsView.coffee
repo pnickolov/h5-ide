@@ -33,7 +33,7 @@ define [
 
         initialize: ( attr, options ) ->
             if attr
-                @tab = attr.tab.toLowerCase() or SettingsView.TAB.Account
+                @tab = attr.tab?.toLowerCase() or SettingsView.TAB.Account
                 @projectId = attr.projectId
 
             @scene = options.scene

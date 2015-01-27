@@ -5526,8 +5526,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9149,9 +9148,11 @@ h5.billing_usage_title {
     width: 90px;
     float: left; }
   .fullpage-settings .token-table .tokenToken {
-    width: 600px;
+    width: auto;
     font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif; }
   .fullpage-settings .token-table .tokenControl {
+    position: absolute;
+    right: 0;
     width: 60px;
     padding: 0;
     margin-top: 4px;

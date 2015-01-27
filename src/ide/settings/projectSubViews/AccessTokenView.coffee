@@ -17,7 +17,8 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
         render: ->
             self = @
             @$el.html MC.template.loadingSpinner()
-            ApiRequest("token_list").then (res)->
+            project_id = @model.get("id")
+            ApiRequest("token_list", {project_id}).then (res)->
               console.log res
               self.$el.html template()
               self.tokens = res[0].tokens
@@ -49,12 +50,13 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             for t in @tokens
                 nameMap[ t.name ] = true
             while true
-                newName = tmpl + base
-                if nameMap[ newName ]
+                token_name = tmpl + base
+                if nameMap[ token_name ]
                     base += 1
                 else
                     break
-            ApiRequest("token_create", {token_name:newName}).then (res)->
+            project_id = @model.get("id")
+            ApiRequest("token_create", {token_name, project_id}).then (res)->
                 [name, token] = res
                 self.tokens.push {name, token}
                 self.updateTokenList()
@@ -65,27 +67,26 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             return
 
         doneEditToken : ( evt )->
+            self = this
             $p = $(evt.currentTarget).closest("li").removeClass("editing")
             $p.children(".tokenName").attr "readonly", true
-
             token        = $p.children(".tokenToken").text()
-            newTokenName = $p.children(".tokenName").val()
+            new_token_name = $p.children(".tokenName").val()
 
             for t in  @tokens
                 if t.token is token
                     oldName = t.name
-                else if t.name is newTokenName
+                else if t.name is new_token_name
                     duplicate = true
 
-            if not newTokenName or duplicate
+            if not new_token_name or duplicate
                 $p.children(".tokenName").val( oldName )
                 return
-
-            self = this
-            ApiRequest("token_update", {token:token, new_token_name:newTokenName}).then ( res )->
+            project_id = @model.get("id")
+            ApiRequest("token_update", {token, new_token_name, project_id}).then ( res )->
                 for t, idx in self.tokens
                     if t.token is token
-                        t.name = newTokenName
+                        t.name = new_token_name
                         break
             ,()->
                 # If anything goes wrong, revert the name
@@ -100,8 +101,10 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             for t, idx in @tokens
               if t.token is @rmToken
                 break
-            self = this
-            ApiRequest("token_remove", {token:self.rmToken,token_name:t.name}).then ( res )->
+            project_id = @model.get("id")
+            token = @rmToken
+            token_name = t.name
+            ApiRequest("token_remove", {project_id, token, token_name}).then ( res )->
               idx = self.tokens.indexOf t
               if idx >= 0
                 self.tokens.splice idx, 1

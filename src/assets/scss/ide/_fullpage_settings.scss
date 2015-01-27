@@ -441,11 +441,13 @@
         }
 
         .tokenToken {
-            width : 600px;
+            width : auto;
             font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
         }
 
         .tokenControl {
+            position: absolute;
+            right:     0;
             width      : 60px;
             padding    : 0;
             margin-top : 4px;

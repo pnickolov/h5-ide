@@ -24,6 +24,7 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 @updateUsage()
                 return @
             @getPaymentHistory().then (paymentHistory)->
+                console.log paymentHistory
                 paymentUpdate = {
                     url: App.user.get("paymentUrl")
                     card: App.user.get("creditCard")
@@ -63,12 +64,12 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @
 
         getPaymentHistory: ()->
-
+            projectId = @model.get("id")
             historyDefer = new Q.defer()
             unless @needUpdatePayment()
                 historyDefer.resolve({})
             else
-                ApiRequestR("payment_statement").then (paymentHistory)->
+                ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
                     historyDefer.resolve(paymentHistory)
                 , (err)->
                     historyDefer.reject(err)

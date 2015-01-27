@@ -67,7 +67,7 @@
         if (this.wrap.size() === 0) {
           this.wrap = $("<div id='modal-wrap'></div>").appendTo($("body"));
         }
-        this.option = $.extend(true, _.clone(defaultOptions), option);
+        this.option = $.extend(true, {}, defaultOptions, option);
         (_base = this.option.cancel).text || (_base.text = lang.IDE.POP_LBL_CANCEL);
         (_base1 = this.option.confirm).text || (_base1.text = lang.IDE.LBL_SUBMIT);
         this.render();

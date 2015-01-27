@@ -90,7 +90,8 @@ define [
 
         url: ( tab, projectId ) ->
             unless tab then return '/settings'
-            return "/settings/#{tab}/#{projectId}"
+            tab = tab.toLowerCase()
+            return "/settings/#{projectId}/#{tab}"
 
 
         # Account Operation
@@ -239,14 +240,14 @@ define [
     }
 
     SettingsView.TAB =
-        Account: 'Account'
+        Account: 'account'
         Project:
-            BasicSettings: 'BasicSettings'
-            AccessToken: 'AccessToken'
-            Billing: 'Billing'
-            Member: 'Member'
-            ProviderCredential: 'ProviderCredential'
-            UsageReport: 'UsageReport'
+            BasicSettings: 'basicsettings'
+            AccessToken: 'accesstoken'
+            Billing: 'billing'
+            Member: 'member'
+            ProviderCredential: 'credential'
+            UsageReport: 'usagereport'
 
 
     SettingsView

@@ -11,21 +11,21 @@ define [
 ], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, MemberView, ProviderCredentialView, UsageReportView ) ->
 
     subViewMap = {
-        BasicSettings       : BasicSettingsView
-        AccessToken         : AccessTokenView
-        Billing             : BillingView
-        Member              : MemberView
-        ProviderCredential  : ProviderCredentialView
-        UsageReport         : UsageReportView
+        basicsettings       : BasicSettingsView
+        accesstoken         : AccessTokenView
+        billing             : BillingView
+        member              : MemberView
+        credential          : ProviderCredentialView
+        usagereport         : UsageReportView
     }
 
     subViewNameMap = {
-        BasicSettings       : 'Basic Settings'
-        AccessToken         : 'Access Token'
-        Billing             : 'Billing'
-        Member              : 'Member'
-        ProviderCredential  : 'Provider Credential'
-        UsageReport         : 'Usage Report'
+        basicsettings       : 'Basic Settings'
+        accesstoken         : 'Access Token'
+        billing             : 'Billing'
+        member              : 'Member'
+        credential          : 'Provider Credential'
+        usagereport         : 'Usage Report'
     }
 
     ProjectView = Backbone.View.extend
@@ -35,7 +35,7 @@ define [
         initialize: ( options ) ->
             @settingsView = options.settingsView
 
-        render: ( tab = 'BasicSettings' ) ->
+        render: ( tab = 'basicsettings' ) ->
             @$el.html TplProject _.extend @model.toJSON(), { tab: tab }
             @$('.project-subview').html @renderSub( tab ).el
             @

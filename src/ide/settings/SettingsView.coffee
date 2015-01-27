@@ -33,7 +33,7 @@ define [
 
         initialize: ( attr, options ) ->
             if attr
-                @tab = attr.tab or SettingsView.TAB.Account
+                @tab = attr.tab.toLowerCase() or SettingsView.TAB.Account
                 @projectId = attr.projectId
 
             @scene = options.scene
@@ -90,7 +90,6 @@ define [
 
         url: ( tab, projectId ) ->
             unless tab then return '/settings'
-            tab = tab.toLowerCase()
             return "/settings/#{projectId}/#{tab}"
 
 

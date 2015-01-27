@@ -12,7 +12,7 @@ define [
 
     credentialFormView = Backbone.View.extend
         events:
-            'keyup  #CredSetupAccount, #CredSetupAccessKey, #CredSetupSecretKey' : 'updateSubmitBtn'
+            'keyup input' : 'updateSubmitBtn'
 
         render: ( credential ) ->
             if credential

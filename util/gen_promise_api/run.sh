@@ -627,7 +627,7 @@ then
         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/forge.tmp
     done
     #cat ${TGT_BASE_DIR}/service/.tmp
-    sed '/session_set_credential/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
+    sed '/logout/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
     rm -rf ${TGT_BASE_DIR}/service/*.js
     mv ${TGT_BASE_DIR}/service/forge.rlt ${TGT_BASE_DIR}/service/forge.js
     rm -rf ${TGT_BASE_DIR}/service/*.tmp

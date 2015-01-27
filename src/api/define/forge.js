@@ -2,7 +2,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	var Apis = {
 		'session_login'           : { type:'forge', url:'/session/',	method:'login',	params:['username', 'password', 'option']   },
 		'session_logout'          : { type:'forge', url:'/session/',	method:'logout',	params:['username', 'session_id']   },
-		'session_set_credential'  : { type:'forge', url:'/session/',	method:'set_credential',	params:['username', 'session_id', 'access_key', 'secret_key', 'account_id']   },
 		'app_create'              : { type:'forge', url:'/app/',	method:'create',	params:['username', 'session_id', 'key_id', 'region_name', 'spec']   },
 		'app_update'              : { type:'forge', url:'/app/',	method:'update',	params:['username', 'session_id', 'key_id', 'region_name', 'spec', 'app_id', 'fast_update', 'create_snapshot']   },
 		'app_rename'              : { type:'forge', url:'/app/',	method:'rename',	params:['username', 'session_id', 'region_name', 'app_id', 'new_name', 'app_name']   },
@@ -27,7 +26,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'opsbackend_check_app'    : { type:'forge', url:'/opsbackend/',	method:'check_app',	params:['timestamp', 'app_id']   },
 		'opsbackend_update_status' : { type:'forge', url:'/opsbackend/',	method:'update_status',	params:['app_id', 'instance_id', 'recipe_version', 'timestamp', 'statuses', 'waiting', 'agent_status', 'token']   },
 		'opsbackend_verify'       : { type:'forge', url:'/opsbackend/',	method:'verify',	params:['username', 'token']   },
-		'project_create'          : { type:'forge', url:'/project/',	method:'create',	params:['username', 'session_id', 'project_name', 'members', 'credentials', 'credit_card']   },
+		'project_create'          : { type:'forge', url:'/project/',	method:'create',	params:['username', 'session_id', 'project_name', 'email', 'first_name', 'last_name', 'credit_card']   },
 		'project_save'            : { type:'forge', url:'/project/',	method:'save',	params:['username', 'session_id', 'project_id', 'spec']   },
 		'project_remove'          : { type:'forge', url:'/project/',	method:'remove',	params:['username', 'session_id', 'project_id']   },
 		'project_list'            : { type:'forge', url:'/project/',	method:'list',	params:['username', 'session_id', 'project_ids']   },
@@ -65,10 +64,10 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'state_module'            : { type:'forge', url:'/state/',	method:'module',	params:['username', 'session_id', 'mod_repo', 'mod_tag']   },
 		'state_status'            : { type:'forge', url:'/state/',	method:'status',	params:['username', 'session_id', 'app_id']   },
 		'state_log'               : { type:'forge', url:'/state/',	method:'log',	params:['username', 'session_id', 'app_id', 'res_id']   },
-		'token_create'            : { type:'forge', url:'/token/',	method:'create',	params:['username', 'session_id', 'token_name']   },
-		'token_update'            : { type:'forge', url:'/token/',	method:'update',	params:['username', 'session_id', 'token', 'new_token_name']   },
-		'token_remove'            : { type:'forge', url:'/token/',	method:'remove',	params:['username', 'session_id', 'token', 'token_name']   },
-		'token_list'              : { type:'forge', url:'/token/',	method:'list',	params:['username', 'session_id', 'token_names']   },
+		'token_create'            : { type:'forge', url:'/token/',	method:'create',	params:['username', 'session_id', 'project_id', 'token_name']   },
+		'token_update'            : { type:'forge', url:'/token/',	method:'update',	params:['username', 'session_id', 'project_id', 'token', 'new_token_name']   },
+		'token_remove'            : { type:'forge', url:'/token/',	method:'remove',	params:['username', 'session_id', 'project_id', 'token', 'token_name']   },
+		'token_list'              : { type:'forge', url:'/token/',	method:'list',	params:['username', 'session_id', 'project_id', 'token_names']   },
 		'account_register'        : { type:'forge', url:'/account/',	method:'register',	params:['username', 'password', 'email', 'attributes']   },
 		'account_update_account'  : { type:'forge', url:'/account/',	method:'update_account',	params:['username', 'session_id', 'attributes']   },
 		'account_reset_password'  : { type:'forge', url:'/account/',	method:'reset_password',	params:['username']   },
@@ -78,8 +77,6 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_reset_key'       : { type:'forge', url:'/account/',	method:'reset_key',	params:['username', 'session_id', 'flag']   },
 		'account_is_invitated'    : { type:'forge', url:'/account/',	method:'is_invitated',	params:['username', 'session_id']   },
 		'account_apply_trial'     : { type:'forge', url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
-		'account_set_credential'  : { type:'forge', url:'/account/',	method:'set_credential',	params:['username', 'session_id', 'project_id', 'credential']   },
-		'account_validate_credential' : { type:'forge', url:'/account/',	method:'validate_credential',	params:['username', 'session_id', 'access_key', 'secret_key']   },
 	}
 
 	for ( var i in Apis ) {

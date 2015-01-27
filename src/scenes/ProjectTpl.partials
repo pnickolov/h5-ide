@@ -45,8 +45,8 @@
 
 <!-- {{projectList}} -->
 <ul class="header-popup hp-project-list">
-  {{#each projects}}<li><a href="/project/{{id}}">{{name}}</a></li>{{/each}}
-  <li class="createNewProject">Create New Project</li>
+  {{#each this}}<li><a class="route" href="{{url}}">{{name}}</a><a class="route icon-info" href="settings/{{id}}/member"></a></li>{{/each}}
+  <li class="create-new-project padding">Create New Project</li>
 </ul>
 
 
@@ -55,7 +55,39 @@
   <li><a class="route" href="/cheatsheet">Keyboard Shortcuts</a></li>
   <li><a href="http://docs.visualops.io" target="_blank">Documentation</a></li>
   <li><a class="route" href="/settings">Settings</a></li>
-  <li class="logout">Log Out</li>
+  <li class="logout padding">Log Out</li>
 </ul>
 <div></div>
 
+
+<!-- {{newProject}} -->
+<section>
+  <span>Project Name</span> <input type="text" class="input new-project-name">
+  <div>Project Billing</div>
+  <div class="new-project-info"> Provide billing information to create a collaborative project. <br> You will only be charged when instance hour is comsumed in this project.
+  </div>
+  <div>
+    <span>Billing Owner</span>
+    <span>Billing Email</span>
+  </div>
+  <div>
+    <input class="input new-project-fn" type="text" placeholder="First Name">
+    <input class="input new-project-ln" type="text" placeholder="Last Name">
+    <input class="input new-project-email" type="text">
+  </div>
+  <div>
+    <span>Card Number</span>
+    <span>CVV</span>
+    <span>Expriation Date</span>
+  </div>
+  <div>
+    <input class="input new-project-card" type="text">
+    <input class="input new-project-cvv"  type="text">
+    <input class="input new-project-date" type="text" placeholder="MM/YYYY">
+  </div>
+  <div>Secure Payment Powered by Chargify</div>
+  <div>
+    <button class="btn btn-blue new-project-create">Create</button>
+    <button class="new-project-cancel">Cancel</button>
+  </div>
+</section>

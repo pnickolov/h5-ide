@@ -43,12 +43,35 @@ define [
       for p in @get("projects").models
         if p.isPrivate() then return p
       null
+
     # Create a new project. It returns a promise.
-    # The promise will be fulfilled when the project is created successfully with the new project
-    # as the fulfillment.
-    createProject : ( projectName )->
-      d = Q.defer()
-      d.promise
+    # The promise will be fulfilled when the project is created successfully with the new project as the fulfillment.
+    # attr : {
+    #   name       : ""
+    #   firstname  : ""
+    #   lastname   : ""
+    #   email      : ""
+    #   card       : {
+    #      number : ""
+    #      expire : ""
+    #      cvv    : ""
+    #   }
+    # }
+    #
+    createProject : ( attr )->
+      ApiRequest( "project_create", {
+        project_name : attr.name
+        first_name   : attr.firstnmae
+        last_name    : attr.lastname
+        email        : attr.email
+        credit_card  : {
+          full_number      : attr.card.number
+          expiration_month : attr.card.expire.split("/")[0]
+          expiration_year  : attr.card.expire.split("/")[1]
+          cvv              : attr.cvv
+        }
+      }).then ( projectObj )->
+
 
     ###
       Internal methods

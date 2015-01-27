@@ -88,6 +88,8 @@ define [
 
     getOpsModel  : ( id )-> @get("stacks").get( id ) or @get("apps").get( id )
 
+    url : ()-> "project/" + @get("id")
+
 
     # Convenient Methods
     isPrivate     : ()-> @get("private")

@@ -59,7 +59,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       name
 
     url   : ()->
-      basic = "/project/#{@project.id}/"
+      basic = @project.url() + "/"
       if @getAwakeSpace()
         basic += @getAwakeSpace().url()
 

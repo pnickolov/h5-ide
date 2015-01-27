@@ -188,24 +188,37 @@
 
   font-size : 12px;
 
-  > li {
-    padding : 5px 10px;
-  }
-
   li > a {
     display : block;
+    padding : 0 20px;
   }
 
-  li {
+  li > a + a {
+    position    : absolute;
+    right       : 10px;
+    top         : 10px;
+    width       : 20px;
+    height      : 20px;
+    text-align  : center;
+    line-height : 26px;
+    padding     : 0;
+  }
+
+  > li {
+    padding       : 0;
     line-height   : 39px;
     height        : 40px;
-    padding       : 0 20px;
     border-bottom : 1px solid #202020;
     cursor        : pointer;
+    position      : relative;
   }
 
   li:hover {
     background : rgba(0,0,0,.2);
+  }
+
+  li.padding {
+    padding : 0 20px;
   }
 }
 

@@ -1,6 +1,6 @@
 
 
-define [ "./ProjectTpl", "i18n!/nls/lang.js", "constant", "backbone", "jquerysort" ], ( ProjectTpl, lang, constant )->
+define [ "ApiRequest", "./ProjectTpl", "UI.modalplus", "i18n!/nls/lang.js", "constant", "backbone", "jquerysort" ], ( ApiRequest, ProjectTpl, Modal, lang, constant )->
 
   Backbone.View.extend {
 
@@ -62,13 +62,45 @@ define [ "./ProjectTpl", "i18n!/nls/lang.js", "constant", "backbone", "jquerysor
     popupProject : ()->
       projects = []
       for p in App.model.projects().models
-        if p is @scene.project
-          projects.push { id : p.id, name : p.get("name") }
+        if p isnt @scene.project
+          projects.push {
+            id   : p.id
+            url  : p.url()
+            name : p.get("name")
+          }
 
       projects = _.sortBy projects, ( p )-> p.name
 
       $popup = @showPopup( ProjectTpl.projectList( projects ) )
-      $popup.on "click", "createNewProject", ()-> # TODO : Create new project
+      $popup.on "mouseup", ".create-new-project", ()->
+        modal = new Modal {
+          template      : ProjectTpl.newProject()
+          title         : "Create new project"
+          disableClose  : true
+          disableFooter : true
+          width         : 530
+        }
+        modal.tpl.on "click", ".new-project-cancel", ()->
+          modal.close()
+
+        modal.tpl.on "click", ".new-project-create", ()->
+          App.model.createProject({
+            name      : modal.tpl.find(".new-project-name").val()
+            firstname : modal.tpl.find(".new-project-fn").val()
+            lastname  : modal.tpl.find(".new-project-ln").val()
+            email     : modal.tpl.find(".new-project-email").val()
+            card      : {
+              number : modal.tpl.find(".new-project-card").val()
+              expire : modal.tpl.find(".new-project-date").val()
+              cvv    : modal.tpl.find(".new-project-cvv").val()
+            }
+          }).then ( project )->
+            modal.close()
+            App.loadUrl( project.url() )
+          , ( error )->
+            modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
+            return
+
       return
 
     popupAsset  : ()->

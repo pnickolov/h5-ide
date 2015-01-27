@@ -114,9 +114,11 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
     destroy: ( options ) ->
       model = @
-      projectId = @get( 'project' ).id
-      ApiRequest( "project_remove_credential", { project_id: projectId, key_id: @id } ).then ( res )->
+      project = @get 'project'
+      ApiRequest( "project_remove_credential", { project_id: project.id, key_id: @id } ).then ( res )->
         model.trigger 'destroy', model, model.collection, options
+        project.removeCredential model
+
         res
 
     toJSON: ->

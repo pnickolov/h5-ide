@@ -99,7 +99,18 @@ define [
 
     addCredential: ( cred ) ->
       @credentials().push cred
-      @trigger 'change:credentials'
+      @trigger 'change:credentials', @, cred
+
+    removeCredential: ( cred ) ->
+      credentials = @credentials()
+      index = credentials.indexOf cred
+
+      if index > -1
+        credentials.splice index, 1
+        @trigger 'change:credentials', @, cred
+
+
+
 
     updateName: ( name ) ->
       model = @

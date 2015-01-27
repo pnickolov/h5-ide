@@ -71,11 +71,12 @@
         <img class="avatar" src="{{avatar}}">
         <div class="info">
             <div class="name">{{username}}</div>
+            {{#if me}}<span class="you">(You)</span>{{/if}}
             <div class="mail">{{email}}</div>
         </div>
     </td>
     <td class="{{role}}">
-        <span class="memlist-view-mode">{{role}}</span>
+        <span class="memlist-view-mode role">{{role}}</span>
         <div class="selectbox memlist-edit-mode memtype">
             <div class="selection">{{role}}</div>
             <ul class="dropdown">
@@ -94,17 +95,20 @@
             </ul>
         </div>
     </td>
-    <td class="memlist-status {{#ifCond state 'inactive'}}memlist-pending{{/ifCond}}">{{state}}</td>
+    <td class="memlist-status {{#ifCond state 'inactive'}}memlist-pending{{/ifCond}}">
+        {{#ifCond state 'normal'}}Active{{/ifCond}}
+        {{#ifCond state 'inactive'}}Pending{{/ifCond}}
+    </td>
     <td>{{#ifCond state 'inactive'}}<button class="btn btn-red cancel">Cancel Invitation</button>{{/ifCond}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">Done</button>
-        <button class="icon-edit memlist-view-mode edit"></button>
+        {{#unless me}}<button class="icon-edit memlist-view-mode edit"></button>{{/unless}}
     </td>
 </tr>
 {{/each}}
 
 <!-- {{deletePopup}} -->
-<div class="info">Do you confirm to delete selected %user/users%?</div>
+<div class="info">Do you confirm to delete selected {{count}} user(s)?</div>
 <div class="operate">
     <button class="confirm btn btn-red">Delete</button>
 </div>

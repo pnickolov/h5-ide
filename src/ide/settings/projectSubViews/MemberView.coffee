@@ -65,7 +65,7 @@ define ['backbone',
             @loadMemList()
             @
 
-        loadMemList: () ->
+        loadMemList: (callback) ->
 
             that = @
             data = []
@@ -89,6 +89,7 @@ define ['backbone',
                 that.$el.find('.loading-spinner').addClass('hide')
                 that.renderList(data)
                 that.__processDelBtn()
+                callback() if callback
 
         renderList: (data) ->
 
@@ -104,13 +105,14 @@ define ['backbone',
             if $invite.prop('disabled') is false
 
                 $mail = @$el.find('#mail')
-                mail = $mail.val()
+                mail = $.trim($mail.val())
 
-                $mail.parsley 'custom', (val) ->
-                    return false if not val
-                    if not MC.validate('email', val)
-                        return lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
-                return if not $mail.parsley 'validate'
+                # $mail.parsley 'custom', (val) ->
+                #     return false if not val
+                #     if not MC.validate('email', val)
+                #         return lang.IDE.HEAD_MSG_ERR_UPDATE_EMAIL3
+                # return if not $mail.parsley 'validate'
+                return if not mail
 
                 # change button state
                 originTxt = $invite.text()
@@ -123,13 +125,14 @@ define ['backbone',
                     member_role: 'collaborator',
                 }).then ()->
                     $mail.val('')
-                    that.loadMemList()
+                    that.loadMemList () ->
+                        $invite.text(originTxt)
+                        $invite.prop 'disabled', false
                 .fail (data) ->
                     if data.error is ApiRequest.Errors.UserNoUser
                         notification 'error', 'User Not Found'
                     else
                         notification 'error', data.result
-                .done (data) ->
                     $invite.text(originTxt)
                     $invite.prop 'disabled', false
 
@@ -141,12 +144,15 @@ define ['backbone',
 
             if $delete.prop('disabled') is false
 
-                bubblePopup $delete, TplMember.deletePopup(), {
+                memList = []
+                _.each that.$el.find('.memlist-item.selected'), (item) ->
+                    memId = $(item).data('id')
+                    memList.push(memId)
+
+                bubblePopup $delete, TplMember.deletePopup({
+                    count: memList.length
+                }), {
                     '.confirm': () ->
-                        memList = []
-                        _.each that.$el.find('.memlist-item.selected'), (item) ->
-                            memId = $(item).data('id')
-                            memList.push(memId)
 
                         # change button state
                         originTxt = $delete.text()
@@ -157,11 +163,12 @@ define ['backbone',
                             project_id: that.projectId,
                             member_ids: memList
                         }).then ()->
-                            that.loadMemList()
+                            that.loadMemList () ->
+                                $delete.text(originTxt)
                         .fail (data) ->
                             notification 'error', data.result
-                        .done (data) ->
                             $delete.text(originTxt)
+                            $delete.prop 'disabled', false
                 }
 
         enterModify: (event) ->
@@ -191,10 +198,12 @@ define ['backbone',
                     member_id: memId,
                     new_role: newRole
                 }).then ()->
-                    that.loadMemList()
+                    that.loadMemList () ->
+                        $done.text(originTxt)
+                        $done.prop 'disabled', false
+                        $memItem.removeClass('edit')
                 .fail (data) ->
                     notification 'error', data.result
-                .done (data) ->
                     $done.text(originTxt)
                     $done.prop 'disabled', false
                     $memItem.removeClass('edit')
@@ -219,10 +228,11 @@ define ['backbone',
                     project_id: that.projectId,
                     member_id: memId
                 }).then ()->
-                    that.loadMemList()
+                    that.loadMemList () ->
+                        $cancel.text(originTxt)
+                        $cancel.prop 'disabled', false
                 .fail (data) ->
                     notification 'error', data.result
-                .done (data) ->
                     $cancel.text(originTxt)
                     $cancel.prop 'disabled', false
 

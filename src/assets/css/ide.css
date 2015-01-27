@@ -5526,7 +5526,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9040,7 +9041,13 @@ h5.billing_usage_title {
   .fullpage-settings section.setting-content .member-setting .memlist-item .info {
     float: left;
     margin: 3px 0 0 8px; }
+    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name {
+      float: left;
+      text-align: left; }
+    .fullpage-settings section.setting-content .member-setting .memlist-item .info .you {
+      color: #888; }
     .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
+      width: 100%;
       color: #888; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-edit-mode {
     display: none; }
@@ -9052,8 +9059,15 @@ h5.billing_usage_title {
     display: block; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-pending {
     color: #ff0; }
-  .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .selection .desc {
-    display: none; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .role {
+    text-transform: uppercase; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .selection {
+    text-transform: uppercase; }
+    .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .selection .desc {
+      display: none; }
+  .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox .dropdown {
+    width: 217px;
+    text-align: left; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .selectbox li {
     overflow: hidden; }
   .fullpage-settings section.setting-content .accountEditWrap {

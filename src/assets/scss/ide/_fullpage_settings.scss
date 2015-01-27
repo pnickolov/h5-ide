@@ -276,7 +276,15 @@
                 .info {
                     float: left;
                     margin: 3px 0 0 8px;
+                    .name {
+                        float: left;
+                        text-align: left;
+                    }
+                    .you {
+                        color: #888;
+                    }
                     .mail {
+                        width: 100%;
                         color: #888;
                     }
                 }
@@ -297,11 +305,19 @@
                 .memlist-pending {
                     color: #ff0;
                 }
+                .role {
+                    text-transform: uppercase;
+                }
                 .selectbox {
                     .selection {
+                        text-transform: uppercase;
                         .desc {
                             display: none;
                         }
+                    }
+                    .dropdown {
+                        width: 217px;
+                        text-align: left;
                     }
                     li {
                         overflow: hidden;

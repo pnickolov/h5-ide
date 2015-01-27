@@ -91,6 +91,9 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             "click i.modal-close": "close"
 
         constructor: (option)->
+            if modals.length and modals[modals.length - 1].isMoving
+              console.warn "Sorry, But we are moving..."
+              return false
             if typeof option.cancel is "string"
                 option.cancel = {text: option.cancel}
             if typeof option.confirm is "string"
@@ -197,10 +200,14 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     if e.target is e.currentTarget
                         self.close()
             $(window).resize =>
-                modals[modals.length - 1]?.resize()
+                unless self.isClosed
+                  if self is modals[modals.length-1]
+                    self.resize()
+                  else
+                    self.resize(-1)
 
             $(document).keyup (e)->
-                if e.which is 27 and not @option.disableClose
+                if e.which is 27 and not self.option.disableClose
                     e.preventDefault()
                     self.close()
             modal = modals[modals.length - 1]
@@ -238,20 +245,31 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     diffX = diffX = 0
 
         resize: (isSlideIn)->
-            if @option.mode isnt "normal"
+            self = @
+            if not isSlideIn
+                @tpl.show()
+            if @option.mode is "panel" and not isSlideIn
                 @trigger "resize", @
                 return false
-
+            if @option.mode is "fullscreen" and not isSlideIn
+                @tpl.removeAttr("style")
+                return false
             windowWidth = $(window).width()
             windowHeight = $(window).height()
-            width = @option.width?.toString()?.toLowerCase().replace('px','') || @tpl.width()
-            height = @option.height?.toString()?.toLowerCase().replace('px','') || @tpl.height()
+            width = @tpl.width()
+            height = @tpl.height()
             top = (windowHeight - height) * 0.4
             left = (windowWidth - width) / 2
-            if top < 0 then top = 10
             if isSlideIn
+                @tpl.removeClass("animate")
+            if top < 0 then top = 10
+            if isSlideIn is 1
                 left = windowWidth + left
-            @tpl.css {top, left}
+            if isSlideIn is -1
+                left = -windowWidth + left
+            self.tpl.css {top, left}
+            if isSlideIn
+                self.tpl.hide()
             @trigger "resize", {top, left}
             @
 
@@ -278,6 +296,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @tpl.find(".modal-body").css(padding: 0)
             @
         animate: (animate)->
+            @tpl.show()
+            that = @
             if @option.mode is "fullscreen" and animate is "slideIn"
                 return false
             if @option.mode is "panel"
@@ -285,19 +305,17 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @isMoving
                 console.warn "It's animating."
                 return false
-            symbol = "+="
+            windowWidth = $(window).width()
+            offset = @tpl.offset()
+            left = offset.left + windowWidth
             delayOption = 300
-            that = @
             if animate in ["fadeOut", "fadeIn"]
                 delayOption = 100
+                left = +offset.left + windowWidth
             if animate in ["fadeOut", "slideIn"]
-                symbol = "-="
-            windowWidth = $(window).width()
+                left = +offset.left - windowWidth
             that.isMoving = true
-            @tpl.animate
-                left: symbol + windowWidth
-            , delayOption
-            , -> that.isMoving = false
+            @tpl.animate {left}, delayOption , -> that.isMoving = false
             @
         find: (selector)->
             @tpl.find(selector)

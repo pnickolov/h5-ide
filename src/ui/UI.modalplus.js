@@ -48,6 +48,10 @@
 
       function Modal(option) {
         var _base, _base1;
+        if (modals.length && modals[modals.length - 1].isMoving) {
+          console.warn("Sorry, But we are moving...");
+          return false;
+        }
         if (typeof option.cancel === "string") {
           option.cancel = {
             text: option.cancel
@@ -191,12 +195,17 @@
         }
         $(window).resize((function(_this) {
           return function() {
-            var _ref;
-            return (_ref = modals[modals.length - 1]) != null ? _ref.resize() : void 0;
+            if (!self.isClosed) {
+              if (self === modals[modals.length - 1]) {
+                return self.resize();
+              } else {
+                return self.resize(-1);
+              }
+            }
           };
         })(this));
         $(document).keyup(function(e) {
-          if (e.which === 27 && !this.option.disableClose) {
+          if (e.which === 27 && !self.option.disableClose) {
             e.preventDefault();
             return self.close();
           }
@@ -262,27 +271,44 @@
       };
 
       Modal.prototype.resize = function(isSlideIn) {
-        var height, left, top, width, windowHeight, windowWidth, _ref, _ref1, _ref2, _ref3;
-        if (this.option.mode !== "normal") {
+        var height, left, self, top, width, windowHeight, windowWidth;
+        self = this;
+        if (!isSlideIn) {
+          this.tpl.show();
+        }
+        if (this.option.mode === "panel" && !isSlideIn) {
           this.trigger("resize", this);
+          return false;
+        }
+        if (this.option.mode === "fullscreen" && !isSlideIn) {
+          this.tpl.removeAttr("style");
           return false;
         }
         windowWidth = $(window).width();
         windowHeight = $(window).height();
-        width = ((_ref = this.option.width) != null ? (_ref1 = _ref.toString()) != null ? _ref1.toLowerCase().replace('px', '') : void 0 : void 0) || this.tpl.width();
-        height = ((_ref2 = this.option.height) != null ? (_ref3 = _ref2.toString()) != null ? _ref3.toLowerCase().replace('px', '') : void 0 : void 0) || this.tpl.height();
+        width = this.tpl.width();
+        height = this.tpl.height();
         top = (windowHeight - height) * 0.4;
         left = (windowWidth - width) / 2;
+        if (isSlideIn) {
+          this.tpl.removeClass("animate");
+        }
         if (top < 0) {
           top = 10;
         }
-        if (isSlideIn) {
+        if (isSlideIn === 1) {
           left = windowWidth + left;
         }
-        this.tpl.css({
+        if (isSlideIn === -1) {
+          left = -windowWidth + left;
+        }
+        self.tpl.css({
           top: top,
           left: left
         });
+        if (isSlideIn) {
+          self.tpl.hide();
+        }
         this.trigger("resize", {
           top: top,
           left: left
@@ -327,7 +353,9 @@
       };
 
       Modal.prototype.animate = function(animate) {
-        var delayOption, symbol, that, windowWidth;
+        var delayOption, left, offset, that, windowWidth;
+        this.tpl.show();
+        that = this;
         if (this.option.mode === "fullscreen" && animate === "slideIn") {
           return false;
         }
@@ -338,19 +366,20 @@
           console.warn("It's animating.");
           return false;
         }
-        symbol = "+=";
+        windowWidth = $(window).width();
+        offset = this.tpl.offset();
+        left = offset.left + windowWidth;
         delayOption = 300;
-        that = this;
         if (animate === "fadeOut" || animate === "fadeIn") {
           delayOption = 100;
+          left = +offset.left + windowWidth;
         }
         if (animate === "fadeOut" || animate === "slideIn") {
-          symbol = "-=";
+          left = +offset.left - windowWidth;
         }
-        windowWidth = $(window).width();
         that.isMoving = true;
         this.tpl.animate({
-          left: symbol + windowWidth
+          left: left
         }, delayOption, function() {
           return that.isMoving = false;
         });

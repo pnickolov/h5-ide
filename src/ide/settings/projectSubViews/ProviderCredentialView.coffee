@@ -3,11 +3,12 @@ define [
     'i18n!/nls/lang.js'
     '../template/TplCredential'
     'Credential'
+    'ApiRequest'
     'UI.modalplus'
     'UI.tooltip'
     'UI.notification'
     'backbone'
-], ( constant, lang, TplCredential, Credential, Modal ) ->
+], ( constant, lang, TplCredential, Credential, ApiRequest, Modal ) ->
 
     credentialFormView = Backbone.View.extend
         events:
@@ -39,10 +40,12 @@ define [
             @
 
         loading: ->
-            @content = @$el.html()
-            @$el.html TplCredential.credentialLoading 'Add'
+            @$( '#CredSetupWrap' ).hide()
+            @$el.append( TplCredential.credentialLoading { action: 'Add' } ).find( '.modal-footer' ).hide()
 
-        loadingEnd: -> @$el.html @content
+        loadingEnd: ->
+            @$el.find( '.modal-footer' ).show().end().find('.loading-zone').remove()
+            @$( '#CredSetupWrap' ).show()
 
         remove: ->
             @modal?.close()
@@ -79,8 +82,10 @@ define [
 
         render: () ->
             data = @model.toJSON()
+            data.isAdmin = @model.amIAdmin()
             data.credentials = _.map @model.credentials(), ( c ) ->
                 json = c.toJSON()
+                json.isAdmin = data.isAdmin
                 json.name = constant.PROVIDER_NAME[json.provider]
                 json
 
@@ -116,7 +121,7 @@ define [
             credential.save().then () ->
                 that.settingModalView.remove()
             , ( error ) ->
-                if error.error is 293
+                if error.error is ApiRequest.Errors.UserInvalidCredentia
                     msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
                 else
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
@@ -132,9 +137,9 @@ define [
             credential.save( newData ).then () ->
                 that.updateConfirmView.close()
                 that.settingModalView.remove()
-            , () ->
+            , ( error ) ->
                 that.updateConfirmView.setContent TplCredential.removeConfirm
-                if error.error is 293
+                if error.error is ApiRequest.Errors.UserInvalidCredentia
                     msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
                 else
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE

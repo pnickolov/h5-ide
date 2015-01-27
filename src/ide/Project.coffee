@@ -93,7 +93,7 @@ define [
     isPrivate     : ()-> @get("private")
     hasCredential : ()-> @get("credentials").length > 0
 
-    amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN
+    amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN or @isPrivate()
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 

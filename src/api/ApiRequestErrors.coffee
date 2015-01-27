@@ -79,6 +79,7 @@ define [], ()->
     StackIsDisabled       : 255 # Stack {0} is already disabled
     StackVerifyFailed     : 256 # Verify stack {0} exception {1}
     StateErrorModule      : 260 # The version of this stack is no longer supported, please contact with our support for details
+    UserInvalidCredentia  : 293 # Invalid credential
 
     # handler:  3*
     RequestNotSend        : 300 # Send request failed
@@ -88,7 +89,6 @@ define [], ()->
     UserInvalidOperation  : 323 # Unsupported operation {0}
     UserExistedUser       : 324 # Existed username or email
     UserExistedApp        : 325 # {0} app exists
-    UserInvalidCredentia  : 326 # Invalid credential
     TokenCreateFailed     : 330 # Create user {0} token failed
     TokenNoneToken        : 331 # User {0} hasnot any token
     TokenMismatchedToken  : 332 # Mismatched user {0} and token {1}

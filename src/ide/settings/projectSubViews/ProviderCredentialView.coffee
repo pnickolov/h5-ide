@@ -42,12 +42,12 @@ define [
         loading: ->
             @$( '#CredSetupWrap' ).hide()
             @$el.append( TplCredential.credentialLoading { action: 'Add' } )
-            @modal.$el.find( '.modal-footer' ).hide()
+            @modal.toggleFooter false
 
         loadingEnd: ->
             @$('.loading-zone').remove()
             @$( '#CredSetupWrap' ).show()
-            @modal.$el.find( '.modal-footer' ).show()
+            @modal.toggleFooter true
 
         remove: ->
             @modal?.close()

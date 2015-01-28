@@ -1,7 +1,8 @@
 (function() {
   var defaultOptions, modals,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   modals = [];
 
@@ -113,17 +114,32 @@
         return this;
       };
 
-      Modal.prototype.close = function() {
-        var modal, self, _base;
+      Modal.prototype.close = function(number) {
+        var callback, modal, nextModal, self, _base;
         self = this;
-        if (this.pending) {
+        if (__indexOf.call(modals, this) < 0) {
           return false;
         }
-        this.pending = true;
-        if (this.isClosed || this.isMoving) {
+        if (number) {
+          if (modals[modals.length - 1].pending) {
+            callback = function() {
+              return self.close();
+            };
+          } else {
+            callback = function() {};
+          }
+        } else {
+          number = 1;
+        }
+        if (modals[modals.length - 1].pending) {
+          return false;
+        }
+        if (this.isClosed) {
           return false;
         }
         modal = modals[modals.length - 1];
+        nextModal = modals[modals.length - (1 + number)];
+        modal.pending = true;
         modal.trigger("close", this);
         if (typeof (_base = modal.option).onClose === "function") {
           _base.onClose(this);
@@ -134,7 +150,7 @@
           } else {
             modal.animate("slideOut");
           }
-          modals[modals.length - 2].animate("fadeIn");
+          nextModal.animate("fadeIn");
         } else {
           modal.wrap.removeClass("show");
           modal.tpl.removeClass("bounce");
@@ -142,13 +158,14 @@
         _.delay(function() {
           modal.tpl.remove();
           modal.trigger("closed", this);
-          self.pending = false;
+          modal.pending = false;
           if (modals.length > 1) {
-            return modals.pop();
+            modals.length = modals.length - number;
           } else {
             modal.wrap.remove();
-            return modals = [];
+            modals = [];
           }
+          return typeof callback === "function" ? callback() : void 0;
         }, modal.option.delay || 300);
         modal.isClosed = true;
         return this;
@@ -402,10 +419,6 @@
       Modal.prototype.setTitle = function(title) {
         this.tpl.find(".modal-header h3").text(title);
         return this;
-      };
-
-      Modal.prototype.toggleFooter = function(show) {
-        return this.tpl.find(".modal-footer").toggle(show);
       };
 
       Modal.prototype.abnormal = function() {

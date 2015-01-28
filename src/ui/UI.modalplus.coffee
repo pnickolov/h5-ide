@@ -142,12 +142,23 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @bindEvent()
             @
 
-        close: ()->
+        close: (number)->
             self = @
-            if @pending then return false
-            @pending = true
-            if @isClosed or @isMoving then return false
+            if @ not in modals
+              return false
+            if number
+              if modals[modals.length - 1].pending
+                callback = -> self.close()
+              else
+                callback = ->
+            else
+              number = 1
+            if modals[modals.length - 1].pending
+              return false
+            if @isClosed then return false
             modal = modals[modals.length - 1]
+            nextModal = modals[modals.length - (1+number)]
+            modal.pending = true
             modal.trigger "close", @
             modal.option.onClose?(@)
 
@@ -156,19 +167,20 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     modal.tpl.removeClass("bounce")
                 else
                     modal.animate "slideOut"
-                modals[modals.length - 2].animate "fadeIn"
+                nextModal.animate "fadeIn"
             else
                 modal.wrap.removeClass "show"
                 modal.tpl.removeClass("bounce")
             _.delay ->
                 modal.tpl.remove()
                 modal.trigger "closed", @
-                self.pending = false
+                modal.pending = false
                 if modals.length > 1
-                    modals.pop()
+                    modals.length = modals.length - number
                 else
                     modal.wrap.remove()
                     modals = []
+                callback?()
             , modal.option.delay || 300
             modal.isClosed = true
             @
@@ -328,8 +340,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         setTitle: (title)->
             @tpl.find(".modal-header h3").text(title)
             @
-        toggleFooter: (show)->
-            @tpl.find(".modal-footer").toggle show
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
     Modal

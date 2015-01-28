@@ -1,8 +1,6 @@
 
 define [ "./DashboardTpl",
          "./ImportDialog",
-         "backbone",
-         './OldDashboardTpl'   # Old
          './DashboardTplData'
          './VisualizeVpcTpl'
          "UI.modalplus"
@@ -11,12 +9,13 @@ define [ "./DashboardTpl",
          'AppAction'
          "CloudResources"
          "ApiRequest"
+         "backbone",
          "UI.scrollbar"
          "UI.tooltip"
          "UI.table"
          "UI.bubble"
          "UI.nanoscroller"
-], ( Template, ImportDialog, Backbone, template, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources, ApiRequest )->
+], ( Template, ImportDialog, tplPartials, VisualizeVpcTpl, Modal, constant, lang, appAction, CloudResources, ApiRequest )->
 
   Handlebars.registerHelper "awsAmiIcon", ( amiId, region )->
     ami = CloudResources( constant.RESTYPE.AMI, region ).get( amiId )
@@ -68,7 +67,7 @@ define [ "./DashboardTpl",
       'click #ImportStack li' : 'importJson'
 
     initialize : ()->
-      @setElement $( Template({
+      @setElement $( Template.header({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
@@ -81,7 +80,7 @@ define [ "./DashboardTpl",
         shortName = constant.REGION_SHORT_LABEL[id]
         {id, name, shortName}
 
-      @setElement $(template data).appendTo (".ws-content>div")
+      @setElement $(Template.body data).appendTo (".ws-content>div")
 
       @updateOpsList()
       @updateDemoView()

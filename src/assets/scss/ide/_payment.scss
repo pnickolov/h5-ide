@@ -103,6 +103,13 @@ $navHeight : 38px;
     }
   }
 }
+#billing-status .table-head-fix .full-space{
+  height: 234px;
+  display: inline-block;
+  line-height: 234px;
+  text-align: center;
+  width: 100%;
+}
 .no-payment-card-info{
   width: 400px;
   margin-bottom: 30px;

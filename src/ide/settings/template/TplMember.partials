@@ -8,6 +8,7 @@
     <div class="operate">
         <div class="invite">
             <input class="input" placeholder="Invite by email address or username..." id="mail">
+            <div class="search"></div>
             <button class="btn btn-blue" id="invite">Invite Member</button>
         </div>
         <button class="btn btn-red" id="delete" disabled>Delete</button>
@@ -122,3 +123,10 @@
 <div class="operate">
     <button class="confirm btn btn-red">Delete</button>
 </div>
+
+<!-- {{match}} -->
+<div class="name">{{name}}</div>
+<div class="mail">{{mail}}</div>
+
+<!-- {{nomatch}} -->
+<span>There is no user "{{name}}"</span>

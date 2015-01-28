@@ -22,10 +22,54 @@ define ['backbone',
             'click .edit': 'enterModify'
             'click .cancel': 'cancelInvite'
 
+            'focus #mail': 'focusMail'
+            'blur #mail': 'blurMail'
+            'keyup #mail': 'keyupMail'
+            'keypress #mail': 'keypressMail'
+
+        focusMail: () ->
+
+            # @$el.find('.search').show()
+
+        blurMail: () ->
+
+            @$el.find('.search').hide()
+
+        keyupMail: () ->
+
+            @keyupHandle()
+
+        keyupHandle : () ->
+
+            that = @
+            mail = that.$el.find('#mail').val()
+            $search = that.$el.find('.search')
+            if mail.length > 0
+                ApiRequest('account_get_userinfo', {
+                    user_email: mail
+                }).then (data)->
+                    $search.html TplMember.match({
+                        name: Base64.decode(data.username),
+                        mail: Base64.decode(data.email)
+                    })
+                .fail () ->
+                    $search.html TplMember.nomatch({
+                        name: mail
+                    })
+                .done () ->
+                    $search.show()
+            else
+                $search.hide()
+
+        keypressMail: (event) ->
+
+            @$el.find('#invite').click() if event.keyCode is 13
+
         className: 'member-setting'
 
         initialize: () ->
 
+            @keyupHandle = _.throttle(@keyupHandle, 1000)
             @projectId = @model.get('id')
             @isAdmin = false
             @render()
@@ -79,6 +123,7 @@ define ['backbone',
 
             that = @
             data = []
+            currentMember = null
             currentUserName = App.user.get('username')
             ApiRequest('project_list_member', {
                 project_id: @projectId
@@ -87,6 +132,7 @@ define ['backbone',
                     userName = Base64.decode(member.username)
                     isMe = userName is currentUserName
                     if isMe
+                        currentMember = member
                         if member.role is 'admin'
                             that.isAdmin = true
                         else
@@ -102,6 +148,9 @@ define ['backbone',
                     })
             .done () ->
                 that.renderMain()
+                # refresh project model
+                if currentMember
+                    that.model.set('myRole', currentMember.role)
                 that.$el.find('.content').removeClass('hide')
                 that.$el.find('.loading-spinner').addClass('hide')
                 that.renderList(data)
@@ -180,7 +229,7 @@ define ['backbone',
                         $delete.prop 'disabled', true
                         $delete.text('wait...')
 
-                        ApiRequest('project_delete_members', {
+                        ApiRequest('project_remove_members', {
                             project_id: that.projectId,
                             member_ids: memList
                         }).then ()->

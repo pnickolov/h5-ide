@@ -235,6 +235,24 @@
             #mail {
                 width: 280px;
             }
+            .search {
+                display: none;
+                position: absolute;
+                width: 308px;
+                border: 1px #333 solid;
+                z-index: 2;
+                background-color: #000;
+                /* padding: 10px; */
+                margin-top: -14px;
+                span {
+                    text-align: center;
+                    margin: 10px;
+                }
+                .name, .mail {
+                    margin: 5px;
+                    // text-align: left;
+                }
+            }
             #invite {
                 margin: 15px 0 15px 0;
                 margin-left: 5px;

@@ -8,7 +8,7 @@
 
 ###
 
-define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, ApiRequest, constant, CloudResources )->
+define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant )->
 
   AwsOpsModel = OpsModel.extend {
 
@@ -23,8 +23,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           return comp.resource.VpcId
       undefined
 
-    __initJsonData : ()->
-      json   = @__createRawJson()
+    __createRawJson : ()->
+      json   = OpsModel.prototype.__createRawJson.call this
       vpcId  = MC.guid()
       vpcRef = "@{#{vpcId}.resource.VpcId}"
 
@@ -153,8 +153,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           l.uid = comp.uid
           json.layout[ comp.uid ] = l
 
-      @__jsonData = json
-      return
+      json
   }, {
     supportedProviders : ["aws::global", "aws::china"]
   }

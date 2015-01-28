@@ -71,11 +71,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       Backbone.Model.apply this, arguments
 
     initialize : ( attr, options )->
-      if options
-        if options.initJsonData
-          @__initJsonData()
-        if options.jsonData
-          @__setJsonData options.jsonData
+      if options and options.jsonData
+        @__setJsonData options.jsonData
 
       ### env:dev ###
       @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
@@ -148,18 +145,22 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         ThumbUtil.save( @get("id"), "" )
       return
 
-    hasJsonData : ()-> !!@__jsonData
-    getJsonData : ()-> @__jsonData
-    fetchJsonData : ()->
+    hasJsonData   : ()-> !!@__jsonData
+    getJsonData   : ()-> @__jsonData
+    fetchJsonData : ()-> @__fdjLocalInit( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 
-      # Always fetch the json
+    __fdjLocalInit : ()->
+      if @isPersisted() then return
 
-      # if @__jsonData
-      #   d = Q.defer()
-      #   d.resolve @
-      #   return d.promise
+      if not @__jsonData
+        @__setJsonData( @__createRawJson() )
 
-      @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
+      if @get("__________itsshitdontsave")
+        d = Q.defer()
+        d.resolve @
+        d.promise
+      else
+        @save()
 
     __fjdImport : ( self )->
       if not @isImported() then return
@@ -223,13 +224,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         size : []
       }
       ###
-      if json.layout and json.layout.component
-        newLayout      = $.extend {}, json.layout.component.node, json.layout.component.group
-        newLayout.size = json.layout.size
-        json.layout    = newLayout
+      if json.layout
+        if json.layout.component
+          newLayout      = $.extend {}, json.layout.component.node, json.layout.component.group
+          newLayout.size = json.layout.size
+          json.layout    = newLayout
 
-      if json.layout and not json.layout.size
-        json.layout.size = [240, 240]
+        if not json.layout.size
+          json.layout.size = [240, 240]
 
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
@@ -310,14 +312,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         d.resolve()
         return d.promise
 
+      collection = @collection
       self = @
+
       ApiRequest("stack_remove",{
         region_name : @get("region")
         stack_id    : @get("id")
       }).fail ()->
         @set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
-        App.model.stackList().add self
+        collection.add self
 
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson, appName )->
@@ -326,12 +330,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # Ensure the json has correct id.
       toRunJson.id = @get("id") || ""
 
+      project = @project()
       ApiRequest("stack_run_v2",{
         region_name : region
         stack       : toRunJson
         app_name    : appName
       }).then ( res )->
-        m = new OpsModel({
+        project.apps().add new OpsModel({
           name          : appName
           requestId     : res[0]
           state         : OpsModelState.Initializing
@@ -344,8 +349,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           stoppable     : toRunJson.property.stoppable
           resource_diff : false
         })
-        App.model.appList().add m
-        m
 
     # Duplicate the stack
     duplicate : ( name )->
@@ -612,7 +615,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         @set "state", toState
       return
 
-
     ###
      Internal Methods
     ###
@@ -662,7 +664,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       property :
         stoppable : true
 
-    __initJsonData : ()-> @__jsonData = @__createRawJson(); return
   }, {
     extend : ( protoProps, staticProps ) ->
 

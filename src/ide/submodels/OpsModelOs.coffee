@@ -8,7 +8,7 @@
 
 ###
 
-define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, ApiRequest, constant, CloudResources )->
+define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant )->
 
   OsOpsModel = OpsModel.extend {
 
@@ -23,8 +23,8 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
           return comp.resource.id
       undefined
 
-    __initJsonData : ()->
-      json = @__createRawJson()
+    __createRawJson : ()->
+      json = OpsModel.prototype.__createRawJson.call this
 
       layout =
         "NETWORK" :
@@ -87,8 +87,7 @@ define ["OpsModel", "ApiRequest", "constant", "CloudResources" ], ( OpsModel, Ap
         else if comp.type is "OS::Neutron::Router"
           comp.resource.router_interface = [{ subnet_id : "@{#{subnetId}.resource.id}"}]
 
-      @__jsonData = json
-      return
+      json
   }, {
     supportedProviders : ["os::awcloud_bj"]
   }

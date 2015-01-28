@@ -151,12 +151,10 @@ define [
     # The stack is not automatically stored in server.
     # You need to call save() after that.
     createStack : ( region, provider = Credential.PROVIDER.AWSGLOBAL )->
-      @stacks().add( new OpsModel({
+      @stacks().add new OpsModel({
         region   : region
         provider : provider
-      }, {
-        initJsonData : true
-      }) )
+      })
 
     createStackByJson : ( json, updateLayout = false )->
       @stacks().add( new OpsModel({

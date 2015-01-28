@@ -78,7 +78,7 @@ define [
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
-      @setElement( $(template(data)).eq(0).appendTo(".ws-content div") )
+      @setElement( $(template(data)).appendTo(".ws-content>div") )
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()

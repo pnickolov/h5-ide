@@ -34,7 +34,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'project_invite'          : { type:'forge', url:'/project/',	method:'invite',	params:['username', 'session_id', 'project_id', 'member_email', 'member_role']   },
 		'project_check_invitation' : { type:'forge', url:'/project/',	method:'check_invitation',	params:['key']   },
 		'project_cancel_invitation' : { type:'forge', url:'/project/',	method:'cancel_invitation',	params:['username', 'session_id', 'project_id', 'member_id']   },
-		'project_delete_members'  : { type:'forge', url:'/project/',	method:'delete_members',	params:['username', 'session_id', 'project_id', 'member_ids']   },
+		'project_remove_members'  : { type:'forge', url:'/project/',	method:'remove_members',	params:['username', 'session_id', 'project_id', 'member_ids']   },
 		'project_update_role'     : { type:'forge', url:'/project/',	method:'update_role',	params:['username', 'session_id', 'project_id', 'member_id', 'new_role']   },
 		'project_list_member'     : { type:'forge', url:'/project/',	method:'list_member',	params:['username', 'session_id', 'project_id']   },
 		'project_add_credential'  : { type:'forge', url:'/project/',	method:'add_credential',	params:['username', 'session_id', 'project_id', 'credential']   },
@@ -77,6 +77,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_reset_key'       : { type:'forge', url:'/account/',	method:'reset_key',	params:['username', 'session_id', 'flag']   },
 		'account_is_invitated'    : { type:'forge', url:'/account/',	method:'is_invitated',	params:['username', 'session_id']   },
 		'account_apply_trial'     : { type:'forge', url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
+		'account_get_userinfo'    : { type:'forge', url:'/account/',	method:'get_userinfo',	params:['username', 'session_id', 'user_id']   },
 	}
 
 	for ( var i in Apis ) {

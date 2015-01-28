@@ -1,6 +1,6 @@
 
 define [
-  './DashboardTpl'
+  './OldDashboardTpl'
   './DashboardTplData'
   './VisualizeVpcTpl'
   "UI.modalplus"
@@ -78,7 +78,7 @@ define [
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
 
-      @setElement( $(template(data)).eq(0).appendTo("#main") )
+      @setElement( $(template(data)).eq(0).appendTo(".ws-content div") )
 
       # Need to do a init update because the data might arrive first
       @updateOpsList()
@@ -144,13 +144,14 @@ define [
       rendering
     ###
     updateOpsList : ()->
+      that = @
       # Update Map.
       regionsMap = {}
-      for r in App.model.stackList().groupByRegion()
+      for r in that.model.scene.project.stacks().groupByRegion()
           regionsMap[ r.region ] = r
           r.stack = r.data.length
           r.app   = 0
-      for r in App.model.appList().groupByRegion()
+      for r in that.model.scene.project.apps().groupByRegion()
           if not regionsMap[ r.region ]
               regionsMap[ r.region ] = r
               r.stack = 0
@@ -159,15 +160,15 @@ define [
       $("#global-region-spot").html tplPartials.globalMap regionsMap
 
       # Update Recent List
-      stacks = App.model.stackList().filterRecent(true)
-      apps   = App.model.appList().filterRecent(true)
+      stacks = that.model.scene.project.stacks().filterRecent(true)
+      apps   = that.model.scene.project.apps().filterRecent(true)
 
       if stacks.length > 5 then stacks.length = 5
       if apps.length > 5   then apps.length = 5
 
       $tabs = $("#global-region-status-widget").find(".global-region-status-tab")
-      $tabs.eq(0).children("span").text App.model.appList().length
-      $tabs.eq(1).children("span").text App.model.stackList().length
+      $tabs.eq(0).children("span").text that.model.scene.project.apps().length
+      $tabs.eq(1).children("span").text that.model.scene.project.stacks().length
 
       isStack = $tabs.filter(".on").hasClass("stack")
 
@@ -193,6 +194,7 @@ define [
         return
 
     updateRegionAppStack : ()->
+      that = @
       attr = { apps:[], stacks:[], region : @region }
       attr[ @regionOpsTab ] = true
 
@@ -201,8 +203,8 @@ define [
         filter = (f)-> f.get("region") is region && f.isExisting()
         tojson = {thumbnail:true}
 
-        attr.stacks = App.model.stackList().filter(filter).map (m)-> m.toJSON(tojson)
-        attr.apps   = App.model.appList().filter(filter).map   (m)-> m.toJSON(tojson)
+        attr.stacks = that.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
+        attr.apps   = that.model.scene.project.apps().filter(filter).map   (m)-> m.toJSON(tojson)
 
       $('#region-app-stack-wrap').html( tplPartials.region_app_stack(attr) )
       return
@@ -368,7 +370,7 @@ define [
       return
 
     updateDemoView : ()->
-      if App.user.hasCredential()
+      if @model.scene.project.hasCredential()
         $("#dashboard-data-wrap").removeClass("demo")
         $("#VisualizeVPC").removeAttr "disabled"
       else

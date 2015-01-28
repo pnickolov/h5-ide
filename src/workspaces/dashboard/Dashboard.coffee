@@ -1,5 +1,5 @@
 
-define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, DashboardView, lang )->
+define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", "constant" ], ( Workspace, DashboardView, lang, CloudResources, constant )->
 
   Workspace.extend {
 
@@ -17,6 +17,38 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
     isReadOnly : ()-> false
 
     isWorkingOn : ( attr )-> attr.type is "Dashboard"
+
+    isAwsResReady : ( region, type )->
+      if not region
+        globalReady = true
+        datasource = [
+          CloudResources( constant.RESTYPE.INSTANCE )
+          CloudResources( constant.RESTYPE.EIP )
+          CloudResources( constant.RESTYPE.VOL )
+          CloudResources( constant.RESTYPE.ELB )
+          CloudResources( constant.RESTYPE.VPN )
+        ]
+        for e in constant.REGION_KEYS
+          globalReady = false unless CloudResources( constant.RESTYPE.DBINSTANCE, e).isReady()
+
+        for i in datasource
+          globalReady = false unless i.isReady()
+        return globalReady
+
+      switch type
+        when constant.RESTYPE.SUBSCRIPTION
+          return CloudResources( type, region ).isReady()
+        when constant.RESTYPE.VPC
+          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.DHCP, region ).isReady()
+        when constant.RESTYPE.INSTANCE
+          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.EIP, region ).isReady()
+        when constant.RESTYPE.VPN
+          return CloudResources( type ).isReady() && CloudResources( constant.RESTYPE.VGW , region ).isReady() && CloudResources( constant.RESTYPE.CGW , region).isReady()
+        when constant.RESTYPE.DBINSTANCE
+          return CloudResources( type, region ).isReady()
+        else
+          return CloudResources( type ).isReady()
+      return
 
     supportedProviders : ()->
       [{

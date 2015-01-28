@@ -1,5 +1,5 @@
 
-define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDialog )->
+define [ "./DashboardTpl", "./ImportDialog", "backbone", "./OldDashboardView", "./OldDashboardModel" ], ( Template, ImportDialog, Backbone, OldDashboardView, OldDashboardModel )->
 
   Backbone.View.extend {
 
@@ -12,6 +12,9 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       @setElement $( Template({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
+      #Todo : Will Remove Old Dashboard Later.
+      oldView = new OldDashboardView({model: @model})
+      console.log oldView
       return
 
     render : ()->

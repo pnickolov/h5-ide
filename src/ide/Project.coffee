@@ -92,8 +92,15 @@ define [
 
 
     # Convenient Methods
-    isPrivate     : ()-> @get("private")
-    hasCredential : ()-> @get("credentials").length > 0
+    isPrivate        : ()-> @get("private")
+    hasCredential    : ()-> @get("credentials").length > 0
+    credIdOfProvider : ( CredentialProvider )-> @credOfProvider( CredentialProvider ).id
+    credOfProvider   : ( CredentialProvider )->
+      for cred in @get("credentials")
+        if cred.get("provider") is CredentialProvider
+          return cred
+      return null
+
 
     amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN or @isPrivate()
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER

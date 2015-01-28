@@ -12,10 +12,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
   # One can obtain the particular credential of a project, then update it with the
   # credential's method.
   ###
-  PLATFORM =
-    AWS       : "aws"
-    OPENSTACK : "openstack"
-
   PROVIDER =
     AWSGLOBAL : "aws::global"
     AWSCHINA  : "aws::china"
@@ -26,7 +22,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     ###
     attr :
       id           : ""
-      platform     : ""
       provider     : ""
       isDemo       : ""
       awsAccount   : ""
@@ -41,7 +36,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         project      : option.project
         id           : attr.id
         provider     : attr.provider
-        platform     : attr.cloud_type
         isDemo       : attr.is_demo
         alias        : attr.alias
         awsAccount   : attr.account_id
@@ -51,7 +45,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       return
 
     isDemo   : ()-> !!@get("isDemo")
-    platform : ()-> @get("platform")
 
     __update : ( cred, forceUpdate )->
       ApiRequest( "project_update_credential", {
@@ -128,18 +121,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       }
 
   }, {
-    PLATFORM : PLATFORM
     PROVIDER : PROVIDER
-
-    ###
-    credential : {
-      provider     : ""
-      awsAccount   : ""
-      awsAccessKey : ""
-      awsSecretKey : ""
-    }
-    ###
-    #validate : ( credential )-> ApiRequest( "project_validate_credential", {credential:credential} )
   }
 
   Credential

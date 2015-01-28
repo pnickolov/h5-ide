@@ -5,7 +5,7 @@
 <!--{{billingTemplate}}-->
 <div class="tabContent" id="PaymentBody">
     <section id="PaymentBillingTab">
-        <p class="warning-red"></p>
+        <p class="warning-red hide"></p>
         <h5>{{i18n "PAYMENT_BILLING_EMAIL"}}</h5>
         <p>{{paymentUpdate.email}}</p>
         <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>

@@ -88,24 +88,27 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
 
         updatePaymentDone: ()->
             that = @
-            @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
-            @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
-            @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
-            project_id = @model.get("id")
-            $wrap = $(".update-payment-wrap")
+            $wrap = @$el.find(".update-payment-wrap")
             attributes = {
                 first_name: $wrap.find(".first-name").val()
                 last_name:  $wrap.find(".last-name").val()
                 full_number:$wrap.find("input.card-number").val()
-                expiration_month: $wrap.find("input.expiration").val()
-                expiration_year: $wrap.find("input.expiration").val()
+                expiration_month: $wrap.find("input.expiration").val().slice(0,2)
+                expiration_year: $wrap.find("input.expiration").val().slice(2,4)
                 cvv:       $wrap.find("input.cvv").val()
             }
+            @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
+            @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
+            @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
+            project_id = @model.get("id")
             ApiRequest "project_update_payment", {project_id, attributes}
             .then ()->
                 that.set("payment", null)
                 that.set("paymentHistory", null)
                 that.render()
+            , (err)->
+              notification "error", "Error while updating user payment info, please try again later."
+              that.render()
 
         updatePaymentCancel: ()->
             @renderCache()

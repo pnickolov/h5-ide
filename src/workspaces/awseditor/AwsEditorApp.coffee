@@ -7,6 +7,8 @@ define [
   "OpsModel"
   "CloudResources"
   "constant"
+
+  "./AwsDeps"
 ], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant )->
 
   class AppEditor extends CoreEditorApp

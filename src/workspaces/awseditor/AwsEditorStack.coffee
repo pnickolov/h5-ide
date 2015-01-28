@@ -1,39 +1,27 @@
 
 define [
   "CoreEditor"
+  "OpsModel"
   "./AwsViewStack"
   "./model/DesignAws"
   "CloudResources"
   "constant"
-], ( CoreEditor, StackView, DesignAws, CloudResources, constant )->
+
+  "./AwsDeps"
+], ( CoreEditor, OpsModel, StackView, DesignAws, CloudResources, constant )->
+
 
   ###
     StackEditor is mainly for editing a stack
   ###
-  class StackEditor extends CoreEditor
+  CoreEditor.extend {
+
+    type : "AwsEditorStack"
 
     viewClass   : StackView
     designClass : DesignAws
 
     title : ()-> (@design || @opsModel).get("name") + " - stack"
-
-    isReady : ()->
-      if @__hasAdditionalData then return true
-      if not @opsModel.hasJsonData() or not @opsModel.isPersisted() then return false
-
-      region      = @opsModel.get("region")
-      stateModule = @opsModel.getJsonData().agent.module
-
-      CloudResources( constant.RESTYPE.AZ, region ).isReady()   &&
-      CloudResources( constant.RESTYPE.SNAP, region ).isReady() &&
-      CloudResources( constant.RESTYPE.DBENGINE, region ).isReady() &&
-      CloudResources( constant.RESTYPE.DBOG, region ).isReady() &&
-      CloudResources( constant.RESTYPE.DBSNAP,   region ).isReady() &&
-      CloudResources( "QuickStartAmi",       region ).isReady() &&
-      CloudResources( "MyAmi",               region ).isReady() &&
-      CloudResources( "FavoriteAmi",         region ).isReady() &&
-      !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
-      @hasAmiData()
 
     fetchData : ()->
       region      = @opsModel.get("region")
@@ -51,18 +39,6 @@ define [
       ]
 
       Q.all(jobs)
-
-    hasAmiData : ()->
-      json = @opsModel.getJsonData()
-      cln  = CloudResources( constant.RESTYPE.AMI, @opsModel.get("region") )
-
-      for uid, comp of json.component
-        if comp.type is constant.RESTYPE.INSTANCE or comp.type is constant.RESTYPE.LC
-          imageId = comp.resource.ImageId
-          if imageId and not cln.get( imageId ) and not cln.isInvalidAmiId( imageId )
-            return false
-
-      true
 
     fetchAmiData : ()->
       json = @opsModel.getJsonData()
@@ -105,11 +81,10 @@ define [
         throw error
 
     isModified : ()->
-      if not @opsModel.isPersisted() then return true
+      if not @opsModel.isPersisted() then return false
       @design && @design.isModified()
-
-    fetchJsonData : ()->
-      opsModel = @opsModel
-      opsModel.fetchJsonData().then ()-> if not opsModel.isPersisted() and not opsModel.get("__________itsshitdontsave") then return opsModel.save()
-
-  StackEditor
+  }, {
+    canHandle : ( data )->
+      if not data.opsModel then return false
+      return data.opsModel.type is OpsModel.Type.Amazon and data.opsModel.isStack()
+  }

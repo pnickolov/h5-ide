@@ -1,18 +1,5 @@
 
-###
-  OpsEditor is a workspace for working on an OpsModel
-  This class is implemented as a class cluster. Actually implementation is seperated in
-  other concrete class :
-
-  ProgressViewer  : For starting app.
-###
-
 define [
-  "OpsEditor" # Dependency
-
-  "./AwsEditorStack"
-  "./AwsEditorApp"
-
   # Extra Includes
   './model/connection/EniAttachment'
   './model/connection/VPNConnection'
@@ -71,15 +58,4 @@ define [
   "./canvas/CeDbInstance"
   "./canvas/CeDbSubnetGroup"
 
-], ( OpsEditor, StackEditor, AppEditor )->
-
-  # OpsEditor defination
-  AwsEditor = ( opsModel )->
-    if opsModel.isStack()
-      return new StackEditor opsModel
-    else
-      return new AppEditor opsModel
-
-  OpsEditor.registerEditors AwsEditor, ( model )-> model.type is "AwsOps"
-
-  AwsEditor
+], ()->

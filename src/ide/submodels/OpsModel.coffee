@@ -652,6 +652,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       platform    : "ec2-vpc"
       state       : "Enabled"
       version     : @get("version")
+      revision    : 0
       resource_diff: true
       component   : {}
       provider    : @get("provider")

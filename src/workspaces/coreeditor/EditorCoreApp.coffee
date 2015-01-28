@@ -7,9 +7,11 @@ define [
   "Design"
   "CloudResources"
   "constant"
+
+  "workspace/coreeditor/EditorDeps"
 ], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant )->
 
-  class AppEditor extends StackEditor
+  StackEditor.extend {
 
     viewClass : AppView
 
@@ -27,12 +29,6 @@ define [
     isAppEditMode : ()-> @design?.modeIsAppEdit()
     isModified    : ()-> @design and @design.modeIsAppEdit() and @design.isModified()
 
-
-    fetchAdditionalData : ()->
-      d = Q.defer()
-      d.resolve()
-      d.promise
-
     initEditor : ()->
       # Special treatment for import app
       if @opsModel.isImported()
@@ -41,11 +37,12 @@ define [
         @view.confirmImport()
         return
 
-      if App.user.shouldPay() and @opsModel.isPMRestricted()
-        @view.showUnpayUI()
-      else
-        @diff()
-      @view.listenToPayment()
+      # if App.user.shouldPay() and @opsModel.isPMRestricted()
+      #   @view.showUnpayUI()
+      # else
+      #   @diff()
+      # @view.listenToPayment()
+      @diff()
       return
 
     diff : ()->
@@ -195,5 +192,4 @@ define [
       @view.canvas.update()
       @view.toggleProcessing()
       return
-
-  AppEditor
+  }

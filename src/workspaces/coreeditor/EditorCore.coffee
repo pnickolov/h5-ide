@@ -13,12 +13,14 @@ define [
   "ApiRequest"
   "UI.modalplus"
   "i18n!/nls/lang.js"
+
+  "workspaces/coreeditor/EditorDeps"
 ], ( Workspace, CoreEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal, lang )->
 
   # A view that used to show loading state of editor
   LoadingView = Backbone.View.extend {
     isLoadingView : true
-    initialize : ( options )-> @setElement $(OpsEditorTpl.loading()).appendTo("#main").show()[0]
+    initialize : ( attr )-> @setElement $(OpsEditorTpl.loading()).appendTo( attr.workspace.scene.spaceParentElement() ).show()[0]
     setText : ( text )-> @$el.find(".processing").text( text )
     showVpcNotExist : ( name, onConfirm )->
       self = @
@@ -41,18 +43,20 @@ define [
 
     Every OpsEditor's View should enforce these rules:
       1. Its element must be #OpsEditor
-      2. Its have a render() method which will create and set its element to #OpsEditor.
+      2. It has a render() method which will create and set its element to #OpsEditor.
       3. It needs to re-bind every events in render()
   ###
-  class OpsEditorBase extends Workspace
+  Workspace.extend {
+
+    type : "Editor"
 
     ###
       Override these methods to implement subclasses.
     ###
     title       : ()-> @opsModel.get("name")
     tabClass    : ()-> "icon-stack-tabbar"
-    url         : ()-> @opsModel.url()
-    isWorkingOn : ( att )-> @opsModel is att
+    url         : ()-> @opsModel.relativeUrl()
+    isWorkingOn : ( data )-> @opsModel is att
 
     viewClass   : CoreEditorView
     designClass : Design
@@ -82,12 +86,12 @@ define [
       if @design then @design.set("id", @opsModel.get("id"))
       return
 
-    constructor : ( opsModel )->
-      if not opsModel
+    constructor : ( attr )->
+      if not attr.opsModel
         @remove()
         throw new Error("Cannot find opsmodel while openning workspace.")
 
-      @opsModel = opsModel
+      @opsModel = attr.opsModel
       # OpsModel's State
       # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
       @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
@@ -95,15 +99,13 @@ define [
       @listenTo @opsModel, "change:name",  @updateTab
       @listenTo @opsModel, "change:id",    @onModelIdChange
 
+      delete attr.opsModel
+
       # Load Datas
       s = @
-      @fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
+      @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
 
       Workspace.apply @, arguments
-
-    fetchJsonData : ()->
-      opsModel = @opsModel
-      opsModel.fetchJsonData().then ()-> if not opsModel.isPersisted() then return opsModel.save()
 
     jsonLoadFailed : ( err )->
       if @isRemoved() then return
@@ -118,16 +120,16 @@ define [
       if @isRemoved() then return
 
       self = @
-      @fetchAdditionalData().then (()-> self.additionalDataLoaded()), (()-> self.additionalDataLoadFailed())
+      @fetchData().then (()-> self.dataLoaded()), (()-> self.dataLoadFailed())
       return
 
-    additionalDataLoadFailed : ()->
+    dataLoadFailed : ()->
       if @isRemoved() then return
 
       notification "error", lang.NOTIFY.FAILED_TO_LOAD_AWS_DATA
       @remove()
 
-    additionalDataLoaded : ()->
+    dataLoaded : ()->
       if @isRemoved() then return
 
       @__hasAdditionalData = true
@@ -149,7 +151,7 @@ define [
       if not @isReady()
         # If we are in Loading state, ensure we have a LoadingView
         if not @view
-          @view = new LoadingView()
+          @view = new LoadingView({workspace:@})
         else
           @view.$el.show()
         return
@@ -180,7 +182,7 @@ define [
         @design = null
 
       # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
-      if not @opsModel.isPersisted()
+      if not @opsModel.isPersisted() and not @opsModel.testState( OpsModelState.Saving )
         @opsModel.remove()
       return
 
@@ -215,10 +217,11 @@ define [
         Thumbnail.generate( @view.getSvgElement() ).then ( thumbnail )=> @opsModel.saveThumbnail( thumbnail )
 
     isRemovable : ()->
-      if not @__inited or not @isModified() or @opsModel.get("__________itsshitdontsave")
+      if not @__inited or not @isModified() or not @opsModel.isPersisted()
         return true
 
       @view.showCloseConfirm()
       false
-
-  OpsEditorBase
+  }, {
+    canHandle : ()-> false
+  }

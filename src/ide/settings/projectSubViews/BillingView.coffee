@@ -13,43 +13,21 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @$el.html template.billingLoadingFrame()
             @$el.find("#billing-status").append MC.template.loadingSpinner()
             @
-        render : ()->
-            projectId = @model.get "id"
+        render: ()->
             that = @
             @$el.find("#PaymentBody").remove()
             paymentState = App.user.get("paymentState")
-            ApiRequestR "payment_self", {projectId}
-            .then (result)->
-                formattedResult = {
-                    cardNumber  :result.card
-                    lastName :result.last_name
-                    firstName  :result.first_name
-                    periodEnd  :result.current_period_ends_at
-                    periodStart  :result.current_period_started_at
-                    maxQuota :result.max_quota
-                    currentQuota :result.current_quota
-                    nextPeriod :result.next_assessment_at
-                    paymentState :result.state
-                }
-                that.model.set("payment", formattedResult)
+            if @model.get("payment")
+              that.renderCache()
+              return @
+            @getPaymentState().then ()->
                 paymentUpdate = that.model.get("payment")
                 billingTemplate = template.billingTemplate {paymentUpdate}
-
-                that.$el.find(".loading-spinner").remove()
-                that.$el.find("#billing-status").append billingTemplate
+                that.$el.find("#billing-status").html billingTemplate
                 that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
-                if result.card and result.current_quota < result.max_quota and state is "active" or "pastdue"
+                if paymentUpdate.cardNumber and paymentUpdate.currentQuota < paymentUpdate.maxQuota and paymentUpdate.paymentState is "active" or "pastdue"
                     that.getPaymentHistory().then (paymentHistory)->
                         hasPaymentHistory = (_.keys paymentHistory).length
-                        tempArray = []
-                        _.each paymentHistory, (e)->
-                            e.ending_balance = e.ending_balance_in_cents / 100
-                            e.total_balance = e.total_in_cents / 100
-                            e.start_balance = e.starting_balance_in_cents / 100
-                            tempArray.push e
-                        tempArray.reverse()
-                        paymentHistory = tempArray
-                        that.model.set("paymentHistory", paymentHistory)
                         paymentUpdate = that.model.get("payment")
                         billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
                         that.$el.find("#PaymentBody").remove()
@@ -63,10 +41,40 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 notification 'error', "Error while getting user payment info, please try again later."
             @
 
+
+        getPaymentState: ()->
+          that = @
+          projectId = @model.get "id"
+          ApiRequestR "payment_self", {projectId}
+          .then (result)->
+            formattedResult = {
+              cardNumber  :result.card
+              lastName :result.last_name
+              firstName  :result.first_name
+              periodEnd  :result.current_period_ends_at
+              periodStart  :result.current_period_started_at
+              maxQuota :result.max_quota
+              currentQuota :result.current_quota
+              nextPeriod :result.next_assessment_at
+              paymentState :result.state
+            }
+            that.model.set("payment", formattedResult)
+            return formattedResult
+
         getPaymentHistory: ()->
             projectId = @model.get("id")
             historyDefer = new Q.defer()
+            that = @
             ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
+                tempArray = []
+                _.each paymentHistory, (e)->
+                    e.ending_balance = e.ending_balance_in_cents / 100
+                    e.total_balance = e.total_in_cents / 100
+                    e.start_balance = e.starting_balance_in_cents / 100
+                    tempArray.push e
+                tempArray.reverse()
+                paymentHistory = tempArray
+                that.model.set("paymentHistory", paymentHistory)
                 historyDefer.resolve(paymentHistory)
             , (err)->
                 historyDefer.reject(err)
@@ -83,19 +91,39 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
             @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
             @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
-            _.delay ->
-                that.renderCache()
-            , 500
+            project_id = @model.get("id")
+            $wrap = $(".update-payment-wrap")
+            attributes = {
+                first_name: $wrap.find(".first-name").val()
+                last_name:  $wrap.find(".last-name").val()
+                full_number:$wrap.find("input.card-number").val()
+                expiration_month: $wrap.find("input.expiration").val()
+                expiration_year: $wrap.find("input.expiration").val()
+                cvv:       $wrap.find("input.cvv").val()
+            }
+            ApiRequest "project_update_payment", {project_id, attributes}
+            .then ()->
+                that.set("payment", null)
+                that.set("paymentHistory", null)
+                that.render()
 
         updatePaymentCancel: ()->
             @renderCache()
 
         renderCache: ()->
-            paymentHistory = @model.get("paymentHistory")
+            that = @
+            paymentHistory = @model.get("paymentHistory")||[]
             paymentUpdate = @model.get("payment")
-            hasPaymentHistory = paymentHistory.length
-            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-            @$el.html billingTemplate
+            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
+            that.$el.find("#billing-status").html billingTemplate
+            if not paymentHistory.length
+                that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
+                @getPaymentHistory().then ()->
+                    paymentHistory = that.model.get("paymentHistory")
+                    billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
+                    that.$el.find("#billing-status").empty().append billingTemplate
+
+            @
 
 
 

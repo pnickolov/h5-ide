@@ -333,6 +333,11 @@
         return this;
       };
 
+      Modal.prototype.toggleFooter = function(visible) {
+        this.tpl.find(".modal-footer").toggle(!!visible);
+        return this;
+      };
+
       Modal.prototype.setContent = function(content) {
         var selector;
         if (this.option.maxHeight || this.option.hasScroll) {

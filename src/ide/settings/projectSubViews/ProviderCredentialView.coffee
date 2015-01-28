@@ -88,10 +88,14 @@ define [
         render: () ->
             data = @model.toJSON()
             data.isAdmin = @model.amIAdmin()
+            applist = @model.apps()
+
             data.credentials = _.map @model.credentials(), ( c ) ->
                 json = c.toJSON()
                 json.isAdmin = data.isAdmin
                 json.name = constant.PROVIDER_NAME[json.provider]
+                json.needed = _.some applist, ( app ) -> app.get( 'provider' ) is json.provider
+
                 json
 
             @$el.html TplCredential.credentialManagement data
@@ -102,6 +106,20 @@ define [
             false
 
         getCredentialById: ( id ) -> _.findWhere @model.credentials(), { id: id }
+
+        makeModalLoading: ( modal, action ) ->
+            modal
+                .setContent( TplCredential.credentialLoading { action: action } )
+                .toggleFooter false
+            @
+
+        stopModalLoading: ( modal, originContent ) ->
+            modal
+                .setContent( originContent )
+                .toggleFooter true
+            @
+
+        showModalError: ( modal, message ) -> modal.find( '.cred-setup-msg' ).text message
 
         showSetForm: -> @showSettingModal()
 
@@ -137,34 +155,41 @@ define [
 
         updateCredential: ( credential, newData ) ->
             that = @
-            @updateConfirmView.setContent TplCredential.credentialLoading { action: 'Update' }
+            @makeModalLoading @updateConfirmView, 'Update'
+            redConfirm = @updateConfirmView.find('.modal-confirm').hasClass 'btn-red' # red confirm = force update
 
-            credential.save( newData ).then () ->
+            credential.save( newData, redConfirm ).then () ->
                 that.updateConfirmView.close()
                 that.settingModalView.remove()
             , ( error ) ->
-                that.updateConfirmView.setContent TplCredential.removeConfirm
+                that.stopModalLoading that.updateConfirmView, TplCredential.updateConfirm
+
                 if error.error is ApiRequest.Errors.UserInvalidCredentia
                     msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
+                else if error.error is ApiRequest.Errors.ChangeCredConfirm
+                    that.updateConfirmView.setContent TplCredential.runningAppConfirm
+                    # paint confirm button red color
+                    that.updateConfirmView.find('.modal-confirm').removeClass('btn-blue').addClass('btn-red')
                 else
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
-                that.updateConfirmView.find( '.cred-setup-msg' ).text msg
+
+                that.showModalError that.updateConfirmView, msg
 
         removeCredential: ( credential ) ->
             that = @
-            @removeConfirmView.setContent TplCredential.credentialLoading { action: 'Remove' }
+            @makeModalLoading @removeConfirmView, 'Remove'
 
             credential.destroy().then () ->
                 that.removeConfirmView?.close()
             , ( error ) ->
-                that.removeConfirmView.setContent TplCredential.removeConfirm
-                that.removeConfirmView.find( '.cred-setup-msg' ).text lang.IDE.SETTINGS_ERR_CRED_REMOVE
+                that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm
+                that.showModalError that.removeConfirmView, lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
         showUpdateConfirmModel: ( credential, newData ) ->
             @updateConfirmView?.close()
             @updateConfirmView = new Modal {
                 title: 'Update Cloud Credential'
-                template: TplCredential.removeConfirm
+                template: TplCredential.updateConfirm
                 confirm:
                     text: 'Confirm to Update'
             }

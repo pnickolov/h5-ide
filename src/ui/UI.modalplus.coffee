@@ -284,6 +284,10 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         toggleConfirm: (disabled)->
             @tpl.find(".modal-confirm").attr("disabled", !!disabled)
             @
+        toggleFooter: ( visible ) ->
+            @tpl.find(".modal-footer").toggle !!visible
+            @
+
         setContent: (content)->
             if @option.maxHeight or @option.hasScroll
                 selector = ".scroll-content"

@@ -15,7 +15,7 @@ define [], ()->
     Network404 : -404
     Network500 : -500
 
-    ChangeCredConfirm : 325 # Occurs when an user try to change credential with running apps.
+    ChangeCredConfirm : 296 # Occurs when an user try to change credential with running apps.
     InvalidCred       : 326 # Ocurrs when the aws credential is invalid.
 
     # common:  1*

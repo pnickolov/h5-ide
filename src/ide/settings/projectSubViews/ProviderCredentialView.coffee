@@ -158,7 +158,7 @@ define [
                 that.removeConfirmView?.close()
             , ( error ) ->
                 that.removeConfirmView.setContent TplCredential.removeConfirm
-                that.removeConfirm.find( '.cred-setup-msg' ).text lang.IDE.SETTINGS_ERR_CRED_REMOVE
+                that.removeConfirmView.find( '.cred-setup-msg' ).text lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
         showUpdateConfirmModel: ( credential, newData ) ->
             @updateConfirmView?.close()

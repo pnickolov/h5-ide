@@ -159,7 +159,7 @@ define [
             redConfirm = @updateConfirmView.find('.modal-confirm').hasClass 'btn-red' # red confirm = force update
 
             credential.save( newData, redConfirm ).then () ->
-                that.updateConfirmView.close()
+                that.updateConfirmView.close( 2 )
                 that.settingModalView.remove()
             , ( error ) ->
                 that.stopModalLoading that.updateConfirmView, TplCredential.updateConfirm

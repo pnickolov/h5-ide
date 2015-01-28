@@ -16,7 +16,6 @@ define [
       ""                                : "openProject"
       "project(/:project)"              : "openProject"
       "project/:project/ops(/:ops)"     : "openProject"
-      "project/:project/unsaved(/:ops)" : "openProject"
 
       "settings(/:projectId/:tab)"     : "openSettings"
       "store/:sampleId"                 : "openStore"
@@ -25,13 +24,7 @@ define [
 
     openStore : ( id )-> new StackStore({ id : id })
 
-    openSettings : ( projectId, tab )->
-      console.log "opening store", arguments
-
-      theSettings = new Settings { tab: tab, projectId: projectId }
-      theSettings.activate()
-      theSettings.view.$el.find("h1").html arguments[0] || "settings"
-      return
+    openSettings : ( projectId, tab )-> new Settings { tab: tab, projectId: projectId }
 
     openProject : ( projectId, opsModelId )-> new ProjectScene( projectId, opsModelId )
 
@@ -44,6 +37,10 @@ define [
 
       self = @
       $( document ).on "click", "a.route", ( evt )-> self.onRouteClicked( evt )
+
+      # Add additional routes here.
+      # These routes are diabled when the IDE is loading.
+      @route "project/:project/unsaved(/:ops)", "openProject"
       return
 
     onRouteClicked : ( evt )->

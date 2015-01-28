@@ -6,7 +6,7 @@ define ["backbone"], ()->
 
   wsid = 0
 
-  SubWorkspaces = []
+  SubWorkspaces = {}
 
   Workspace = Backbone.Model.extend {
 
@@ -34,7 +34,7 @@ define ["backbone"], ()->
     remove : ()->
       if @__isRemoved then return
       @__isRemoved = true
-      @scene.remove(@, true)
+      @scene.removeSpace(@, true)
 
     # Call this method when the url has been changed.
     updateUrl : ()-> @scene.updateSpace( @ )
@@ -98,7 +98,7 @@ define ["backbone"], ()->
       s = null
       # We should test again all the Space instead of finding the first capatable Space
       # In such a way, we should avoid some bug.
-      for Space in SubWorkspaces
+      for type, Space of SubWorkspaces
         if Space.canHandle( data )
           s = Space
 
@@ -112,7 +112,7 @@ define ["backbone"], ()->
       # Create subclass
       subClass = (window.__detailExtend || Backbone.Model.extend).call( this, protoProps, staticProps )
 
-      SubWorkspaces.push subClass
+      SubWorkspaces[ protoProps.type ] = subClass
 
       subClass
 

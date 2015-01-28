@@ -6215,8 +6215,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -8301,7 +8300,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
       width: 100%; }
 
 .warning-red {
-  display: block;
   text-align: center;
   color: #eee;
   background: #a42b2b;
@@ -9963,6 +9961,17 @@ h5.billing_usage_title {
   color: #ec3c38;
   margin-bottom: 20px;
   width: 397px; }
+
+.billing-email {
+  margin-bottom: 30px; }
+  .billing-email .billing-email-title {
+    width: 200px; }
+  .billing-email .billing-email-text {
+    width: 400px;
+    margin: 0; }
+
+.billing-history {
+  margin-top: 30px; }
 
 #scenes {
   width: 100%;

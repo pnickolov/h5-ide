@@ -6,8 +6,7 @@
 <div class="tabContent" id="PaymentBody">
     <section id="PaymentBillingTab">
         <p class="warning-red hide"></p>
-        <h5>{{i18n "PAYMENT_BILLING_EMAIL"}}</h5>
-        <p>{{paymentUpdate.email}}</p>
+        <h5 class="clearfix billing-email"><span class="billing-email-title left">{{i18n "PAYMENT_BILLING_EMAIL"}}</span><p class="billing-email-text left">{{or paymentUpdate.email "Email not set"}}</p><span class="right"><i class="icon-edit"></i></span></h5>
         <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
         <div class="clearfix">
             <div class="left clearfix">

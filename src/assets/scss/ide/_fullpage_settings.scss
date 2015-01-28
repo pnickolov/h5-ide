@@ -627,3 +627,18 @@
     margin-bottom    : 20px;
     width: 397px;
 }
+
+.billing-email{
+  margin-bottom: 30px;
+  .billing-email-title{
+    width: 200px;
+  }
+  .billing-email-text{
+    width: 400px;
+    margin: 0;
+  }
+}
+
+.billing-history{
+  margin-top: 30px;
+}

@@ -144,8 +144,6 @@ define [
 
   }, {
     canHandle : ( data )->
-      return !!data.opsModel
-      return ops.isStack
-      if not ops then return false
-      return ops.isApp and ops.isProcessing and ops.isApp() and ops.isProcessing()
+      if not data.opsModel then return false
+      return data.opsModel.isApp() and data.opsModel.isProcessing()
   }

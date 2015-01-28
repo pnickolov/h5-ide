@@ -3,7 +3,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
 
   Workspace.extend {
 
-    type : "WS_Dashboard"
+    type : "Dashboard"
 
     isFixed  : ()-> true
     tabClass : ()-> "icon-dashboard"

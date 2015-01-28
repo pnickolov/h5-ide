@@ -13,7 +13,7 @@ define [
     viewClass : AppView
     designClass : DesignOs
 
-    fetchAdditionalData : ()->
+    fetchData : ()->
       self = @
 
       region      = @opsModel.get("region")

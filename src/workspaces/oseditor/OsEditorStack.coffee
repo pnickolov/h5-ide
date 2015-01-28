@@ -30,7 +30,7 @@ define [
       CloudResources( constant.RESTYPE.OSSNAP,    region ).isReady() &&
       !!App.model.getStateModule( stateModule.repo, stateModule.tag )
 
-    fetchAdditionalData : ()->
+    fetchData : ()->
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
 

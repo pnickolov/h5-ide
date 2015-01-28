@@ -14,7 +14,7 @@ define [
     viewClass   : AppView
     designClass : DesignAws
 
-    fetchAdditionalData : ()->
+    fetchData : ()->
       self = @
 
       region      = @opsModel.get("region")

@@ -35,7 +35,7 @@ define [
       !!App.model.getStateModule( stateModule.repo, stateModule.tag ) &&
       @hasAmiData()
 
-    fetchAdditionalData : ()->
+    fetchData : ()->
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
 

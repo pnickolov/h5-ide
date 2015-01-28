@@ -109,7 +109,14 @@ define [
       # The api is deprecated, might update in the future.
       # osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
-      Q.all([ projectlist, awsData ])
+      Q.all([ projectlist, awsData ]).then ()->
+        # Cleans up unused thumbnails.
+        ids = []
+        for p in self.projects().models
+          ids = ids.concat p.stacks().pluck("id"), p.apps().pluck("id")
+
+        console.warn "Thumbnail is not cleanup when launching ide.", ids
+        return
 
 
     __parseProjectData : ( res )->

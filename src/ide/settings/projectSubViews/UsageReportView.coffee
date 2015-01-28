@@ -17,8 +17,22 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
                 notification 'error', "Error while getting user payment info, please try again later."
             @
 
-        getUsage: ()->
+        getUsage: (startDate = new Date() - 30*24*3600*1000, endDate = new Date())->
             projectId = @model.get("id")
-            ApiRequestR("payment_usage", {projectId})
+            startDate = @formatDate new Date(startDate)
+            endDate = @formatDate new Date(endDate)
+            ApiRequestR("payment_usage", {projectId, startDate, endDate})
+
+        formatDate: (date)->
+          year = date.getFullYear()
+          month = date.getMonth() + 1
+          if month < 10 then month = "0"+month
+          day = date.getDate()
+          if day < 10 then day = "0"+day
+          hour = date.getHours()
+          if hour < 10 then hour = "0"+hour
+          console.log year, month, day
+          "" + year + month + day + hour
+
 
     }

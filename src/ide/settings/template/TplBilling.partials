@@ -7,7 +7,7 @@
     <section id="PaymentBillingTab">
         <p class="warning-red"></p>
         <h5>{{i18n "PAYMENT_BILLING_EMAIL"}}</h5>
-        <p>{{payment_email}}</p>
+        <p>{{paymentUpdate.email}}</p>
         <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
         <div class="clearfix">
             <div class="left clearfix">
@@ -15,8 +15,8 @@
 
                 </div>
                 <div class="left">
-                    <p class="payment-number">{{#if paymentUpdate.card}}{{paymentUpdate.card}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
-                    {{#if paymentUpdate.forst_name}}<p class="payment-username">{{paymentUpdate.first_name}} {{paymentUpdate.last_name}}</p>{{/if}}
+                    <p class="payment-number">{{#if paymentUpdate.cardNumber}}{{paymentUpdate.cardNumber}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
+                    {{#if paymentUpdate.firstName}}<p class="payment-username">{{paymentUpdate.firstName}} {{paymentUpdate.lastName}}</p>{{/if}}
                 </div>
             </div>
             <div class="right">
@@ -30,7 +30,7 @@
         {{#if needUpdatePayment}}
 
         {{else}}
-            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.billingEnd "yyyy-MM-d"}}</span></h5>
+            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></h5>
             <div class="table-head-fix">
                 {{#if hasPaymentHistory}}
                     <table class="table-head">

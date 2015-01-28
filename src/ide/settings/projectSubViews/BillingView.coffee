@@ -40,11 +40,11 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
                 if result.card and result.current_quota < result.max_quota and state is "active" or "pastdue"
                     that.getPaymentHistory().then (paymentHistory)->
-                        console.log paymentHistory
                         hasPaymentHistory = (_.keys paymentHistory).length
                         tempArray = []
                         _.each paymentHistory, (e)->
-                            e.total_balance = e.total_balance_in_cents / 100
+                            e.ending_balance = e.ending_balance_in_cents / 100
+                            e.total_balance = e.total_in_cents / 100
                             e.start_balance = e.starting_balance_in_cents / 100
                             tempArray.push e
                         tempArray.reverse()

@@ -73,9 +73,10 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             historyDefer.promise
 
         showUpdatePayment: (evt)->
-            @$el.find("#PaymentBillingTab").append template.updatePayment()
-            $(evt.currentTarget).hide()
             $(".update-payment-ctrl").show()
+            @$el.find(".billing-history").replaceWith template.updatePayment()
+            $(evt.currentTarget).hide()
+
 
         updatePaymentDone: ()->
             that = @
@@ -83,11 +84,20 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
             @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
             @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
             _.delay ->
-                that.render()
+                that.renderCache()
             , 500
 
         updatePaymentCancel: ()->
-            @render()
+            @renderCache()
+
+        renderCache: ()->
+            paymentHistory = @model.get("paymentHistory")
+            paymentUpdate = @model.get("payment")
+            hasPaymentHistory = paymentHistory.length
+            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+            @$el.html billingTemplate
+
+
 
         viewPaymentReceipt: (event)->
             $target = $(event.currentTarget)

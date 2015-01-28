@@ -95,11 +95,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     url : ()->
       p = @project() || ""
       if p then p = p.get("id")
-
-      if @get("id")
-        "project/#{p}/ops/#{@get('id')}"
-      else
-        "project/#{p}/unsaved/#{@cid}"
+      "project/#{p}/" + @relativeUrl()
 
     relativeUrl : ()->
       if @get("id")
@@ -126,9 +122,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       o.url        = @url()
       if @isProcessing() then o.progressing = true
 
-      if options
-        if options.thumbnail
-          o.thumbnail = ThumbUtil.fetch(o.id)
+      if options and options.thumbnail
+        o.thumbnail = ThumbUtil.fetch(o.id)
       o
 
     # Return true if the stack is saved in the server.

@@ -30,7 +30,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'project_save'            : { type:'forge', url:'/project/',	method:'save',	params:['username', 'session_id', 'project_id', 'spec']   },
 		'project_remove'          : { type:'forge', url:'/project/',	method:'remove',	params:['username', 'session_id', 'project_id']   },
 		'project_list'            : { type:'forge', url:'/project/',	method:'list',	params:['username', 'session_id', 'project_ids']   },
-		'project_check_payment'   : { type:'forge', url:'/project/',	method:'check_payment',	params:['username', 'session_id', 'project_id']   },
+		'project_update_payment'  : { type:'forge', url:'/project/',	method:'update_payment',	params:['username', 'session_id', 'project_id', 'attributes']   },
 		'project_invite'          : { type:'forge', url:'/project/',	method:'invite',	params:['username', 'session_id', 'project_id', 'member_email', 'member_role']   },
 		'project_check_invitation' : { type:'forge', url:'/project/',	method:'check_invitation',	params:['key']   },
 		'project_cancel_invitation' : { type:'forge', url:'/project/',	method:'cancel_invitation',	params:['username', 'session_id', 'project_id', 'member_id']   },

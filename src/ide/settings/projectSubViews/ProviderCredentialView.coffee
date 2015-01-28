@@ -86,17 +86,32 @@ define [
             @listenTo @model, 'change:credentials', @render
 
         render: () ->
+            credentials = @model.credentials()
+
             data = @model.toJSON()
             data.isAdmin = @model.amIAdmin()
+
+            # Only support provider aws::global for now.
+            # so if a non-demo credential exsit, the user can not add another credential then.
+
+            # Only admin can add, update or remove credential
+            if data.isAdmin
+                if credentials.length is 0
+                    data.addable = true
+                else
+                    data.addable = not _.some credentials, ( cred ) ->
+                        not cred.isDemo()
+
             applist = @model.apps()
 
-            data.credentials = _.map @model.credentials(), ( c ) ->
+            data.credentials = _.map credentials, ( c ) ->
                 json = c.toJSON()
                 json.isAdmin = data.isAdmin
                 json.name = constant.PROVIDER_NAME[json.provider]
                 json.needed = _.some applist, ( app ) -> app.get( 'provider' ) is json.provider
 
                 json
+
 
             @$el.html TplCredential.credentialManagement data
             @

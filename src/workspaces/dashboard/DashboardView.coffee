@@ -38,7 +38,6 @@ define [ "./DashboardTpl",
       "click .dashboard-header .create-stack"   : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
-
       "click .global-map-item"                                       : "gotoRegionFromMap"
       "click .global-map-item .app"                                  : "gotoRegionFromMap"
       'click .recent-list-item, .region-resource-list li'            : 'openItem'
@@ -61,13 +60,12 @@ define [ "./DashboardTpl",
       'click .show-credential' : 'showCredential'
       'click #RefreshResource' : 'reloadResource'
       "click .icon-detail"     : "showResourceDetail"
-
       "mouseenter .hovermenu" : "showMenu"
       "mouseleave .hovermenu" : "hideMenu"
       'click #ImportStack li' : 'importJson'
 
     initialize : ()->
-      @setElement $( Template.header({
+      $( Template.header({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
@@ -80,7 +78,9 @@ define [ "./DashboardTpl",
         shortName = constant.REGION_SHORT_LABEL[id]
         {id, name, shortName}
 
-      @setElement $(Template.body data).appendTo (".ws-content>div")
+      $(Template.body data).appendTo (".ws-content>div")
+
+      @setElement (".ws-content>div")
 
       @updateOpsList()
       @updateDemoView()
@@ -275,9 +275,6 @@ define [ "./DashboardTpl",
     importJson : ( evt )-> new ImportDialog({ type : $(evt.currentTarget).attr("data-type") })
 
     openItem    : ( event )-> App.openOps( $(event.currentTarget).attr("data-id") )
-    createStack : ( event )->
-      $tgt = $( event.currentTarget )
-      App.createOps( $tgt.attr("data-region") || @region, $tgt.attr("data-provider") )
 
     markUpdated : ()-> @lastUpdate = +(new Date()); return
 

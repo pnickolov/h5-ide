@@ -399,6 +399,10 @@
         return this;
       };
 
+      Modal.prototype.toggleFooter = function(show) {
+        return this.tpl.find(".modal-footer").toggle(show);
+      };
+
       Modal.prototype.abnormal = function() {
         var _ref;
         return (_ref = this.option.mode) === "panel" || _ref === "fullscreen";

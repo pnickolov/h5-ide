@@ -324,6 +324,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         setTitle: (title)->
             @tpl.find(".modal-header h3").text(title)
             @
+        toggleFooter: (show)->
+            @tpl.find(".modal-footer").toggle show
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
     Modal

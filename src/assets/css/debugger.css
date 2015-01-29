@@ -76,7 +76,7 @@
   z-index: 9996;
   background: transparent;
   transition: background 0.25s linear; }
-  #DebugQuestion + #scenes {
+  #DebugQuestion ~ #scenes {
     transition: all 0.25s linear;
     -webkit-filter: blur(0px); }
   #DebugQuestion.ready {
@@ -95,11 +95,11 @@
     left: 50%;
     top: 0;
     border-radius: 0 0 3px 3px; }
-  #DebugQuestion.ready + #scenes {
+  #DebugQuestion.ready ~ #scenes {
     -webkit-filter: blur(3px); }
   #DebugQuestion.ready > article {
     transform: translate(-50%, 0%); }
-  #DebugQuestion.quick + #scenes {
+  #DebugQuestion.quick ~ #scenes {
     transition: all 0.1s linear; }
   #DebugQuestion.quick > article {
     transition: all 0.1s linear; }

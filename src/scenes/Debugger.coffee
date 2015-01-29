@@ -211,13 +211,13 @@ define [
       @debug_q_close()
 
     debug_q_clear_all_stack : ()->
-      for p in App.model.projects()
+      for p in App.model.projects().models
         for m in p.stacks().slice(0)
           m.remove()
       @debug_q_close()
 
     debug_q_clear_all_app   : ()->
-      for p in App.model.projects()
+      for p in App.model.projects().models
         for m in p.apps().slice(0)
           m.terminate()
       @debug_q_close()

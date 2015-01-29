@@ -107,7 +107,7 @@
   background : rgba(0,0,0,0);
   transition: background 0.25s linear;
 
-  + #scenes {
+  ~ #scenes {
     transition: all 0.25s linear;
     -webkit-filter: blur(0px);
   }
@@ -132,10 +132,10 @@
     border-radius : 0 0 3px 3px;
   }
 
-  &.ready + #scenes { -webkit-filter: blur(3px); }
+  &.ready ~ #scenes { -webkit-filter: blur(3px); }
   &.ready > article { transform : translate(-50%, 0%); }
 
-  &.quick + #scenes { transition: all 0.1s linear; }
+  &.quick ~ #scenes { transition: all 0.1s linear; }
   &.quick > article { transition: all 0.1s linear; }
 
   div {

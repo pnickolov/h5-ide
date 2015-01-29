@@ -9882,7 +9882,7 @@ h5.billing_usage_title {
     right: 0;
     width: 90px;
     padding: 0;
-    margin-top: 4px;
+    line-height: 30px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

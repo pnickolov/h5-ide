@@ -69,6 +69,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       ApiRequestR "payment_self", {projectId}
       .then (result)->
         formattedResult = {
+          email       : result.email
           cardNumber  : result.card
           lastName    : result.last_name
           firstName   : result.first_name

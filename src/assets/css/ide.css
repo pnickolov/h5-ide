@@ -9599,7 +9599,11 @@ h5.billing_usage_title {
   .fullpage-settings section.setting-content .change-photo {
     height: 91px; }
     .fullpage-settings section.setting-content .change-photo #change-photo {
-      margin: 49px 0 0 0; }
+      margin: 49px 0 0 0;
+      color: #148BE6;
+      display: inline-block; }
+      .fullpage-settings section.setting-content .change-photo #change-photo:hover {
+        text-decoration: underline; }
   .fullpage-settings section.setting-content #AccountEmail, .fullpage-settings section.setting-content #AccountFullName {
     color: #148BE6; }
   .fullpage-settings section.setting-content #AccountPwd {

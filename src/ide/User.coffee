@@ -160,6 +160,10 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
 
     gravatar: ->
       email = CryptoJS.MD5(@get("email").trim().toLowerCase()).toString()
-      "https://www.gravatar.com/avatar/#{email}"
+
+      image: "https://www.gravatar.com/avatar/#{email}"
+      profile: "https://www.gravatar.com/#{email}"
+
+
 
   }

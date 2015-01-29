@@ -53,7 +53,13 @@
         .avatar img { width: 80px; height: 80px; }
         .change-photo {
             height: 91px;
-            #change-photo { margin: 49px 0 0 0; }
+            #change-photo {
+                margin: 49px 0 0 0;
+                color: #148BE6;
+                display: inline-block;
+                &:hover { text-decoration: underline; }
+            }
+
         }
 
         #AccountEmail, #AccountFullName {

@@ -161,11 +161,11 @@ init = ->
             unless hashTarget is 'member' then return
 
             checkInviteKey( hashArray[ 1 ] ).then ( result ) ->
-                console.log result
                 if result.result[ 0 ] isnt 0
                     render '#expire-template'
                 else
-                    location.href = '/'
+                    projectId = atob( hashArray[ 1 ] ).split( '&' )[ 0 ]
+                    location.href = "/project/#{projectId}"
             , () ->
                 render '#expire-template'
 

@@ -150,6 +150,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       project_id = @model.get "id"
       that = @
       @$el.find(".editEmailControl button").attr("disabled", "disabled")
+      @$el.find(".billing-email-text>input").attr("disabled", "disabled")
       @$el.find(".editEmailControl .editEmailDone").text(lang.IDE.LBL_SAVING)
       @$el.find(".editEmailControl .editEmailCancel").hide()
       email = @$el.find(".billing-email-text input").val()

@@ -15,7 +15,7 @@
             <span class="right">
                 <span class="editEmailControl hide">
                     <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
-                    <button class="btn btn-silver editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
+                    <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
                 </span>
                 <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit your payment Email"></button>
             </span>

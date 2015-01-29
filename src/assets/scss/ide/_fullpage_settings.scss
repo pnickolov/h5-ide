@@ -650,7 +650,13 @@
     }
   }
 }
-
+.update-payment-ctrl{
+  button.btn{
+    min-width: 80px;
+    padding: 4px 0;
+    line-height: 20px;
+  }
+}
 .billing-history{
   margin-top: 30px;
 }

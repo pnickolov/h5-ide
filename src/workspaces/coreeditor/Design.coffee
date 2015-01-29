@@ -295,6 +295,9 @@ define [
     type   : ()-> @__opsModel.type
     region : ()-> @attributes.region
 
+    credential   : ()-> @__opsModel.credential()
+    credentialId : ()-> @__opsModel.credentialId()
+
     modeIsStack   : ()->  @__mode == Design.MODE.Stack
     modeIsApp     : ()->  @__mode == Design.MODE.App
     modeIsAppView : ()->  false

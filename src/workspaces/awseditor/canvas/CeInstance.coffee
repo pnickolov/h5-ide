@@ -45,7 +45,7 @@ define [
 
       if not ami
         m = @model
-        instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        instance = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
         if instance
           instance = instance.attributes
           if instance.platform and instance.platform is "windows"
@@ -181,7 +181,7 @@ define [
         CanvasManager.toggle numberGroup, false
 
         if statusIcon.length
-          instance = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+          instance = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
           state    = instance?.get("instanceState").name || "unknown"
           statusIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
@@ -214,7 +214,7 @@ define [
       # Only show server group list in app mode.
       if not @canvas.design.modeIsApp() then return
 
-      insCln = CloudResources( @type, @model.design().region() )
+      insCln = CloudResources( @model.design().credentialId(), @type, @model.design().region() )
       members = (@model.groupMembers() || []).slice(0)
       members.unshift( { appId : @model.get("appId") } )
 

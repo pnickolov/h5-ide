@@ -1,5 +1,5 @@
 
-define [ "./CpInstance", "./TplPopup", "event", "constant", "CloudResources" ], ( InstancePopup, TplPopup, ide_event, constant, CloudResources )->
+define [ "./CpInstance", "./TplPopup", "constant" ], ( InstancePopup, TplPopup, constant )->
 
   InstancePopup.extend {
     content : ()->

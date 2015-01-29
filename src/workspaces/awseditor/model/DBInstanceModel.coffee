@@ -49,7 +49,7 @@ define [
     __cachedSpecifications: null
 
     # Source of Snapshot Instance
-    source: -> CloudResources(constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
+    source: -> CloudResources(@design().credentialId(), constant.RESTYPE.DBSNAP, @design().region()).get( @get('snapshotId') )
 
     # -------- Master and Slave -------- #
     slaveIndependentAttr: "id|appId|x|y|width|height|name|\
@@ -293,8 +293,8 @@ define [
 
     setDefaultOptionGroup: ( origEngineVersion ) ->
       # set default option group
-      regionName  = Design.instance().region()
-      engineCol   = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      regionName  = @design().region()
+      engineCol   = CloudResources(@design().credentialId(), constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
       if origEngineVersion
         origDefaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), origEngineVersion
@@ -318,8 +318,8 @@ define [
 
     setDefaultParameterGroup:( origEngineVersion ) ->
       #set default parameter group
-      regionName = Design.instance().region()
-      engineCol = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      regionName = @design().region()
+      engineCol = CloudResources(@design().credentialId(), constant.RESTYPE.DBENGINE, regionName)
       defaultInfo = engineCol.getDefaultByNameVersion regionName, @get('engine'), @get('engineVersion')
 
       if defaultInfo and defaultInfo.defaultPGName
@@ -583,7 +583,7 @@ define [
       if @master() then 'replica' else 'instance'
 
     getSnapshotModel: ( snapshotId ) ->
-      CloudResources(constant.RESTYPE.DBSNAP, Design.instance().region()).findWhere {
+      CloudResources(@design().credentialId(), constant.RESTYPE.DBSNAP, @design().region()).findWhere {
         id: snapshotId or @get( 'snapshotId' )
       }
 

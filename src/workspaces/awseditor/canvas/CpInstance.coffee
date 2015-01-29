@@ -38,13 +38,13 @@ define [ "CanvasPopup", "./TplPopup", "./CpVolume", "event", "constant", "CloudR
     showVolume : ( evt )->
       region = @canvas.design.region()
       $ins = $( evt.currentTarget ).closest(".vpp-instance")
-      ins  = CloudResources( constant.RESTYPE.INSTANCE, region ).get( $ins.attr("data-id") )
+      ins  = CloudResources( @canvas.design.credentialId(), constant.RESTYPE.INSTANCE, region ).get( $ins.attr("data-id") )
 
       if not ins then return
 
       ins = ins.attributes
 
-      volCln = CloudResources( constant.RESTYPE.VOL, region )
+      volCln = CloudResources( @canvas.design.credentialId(), constant.RESTYPE.VOL, region )
 
       vols = []
       for bdm in ins.blockDeviceMapping

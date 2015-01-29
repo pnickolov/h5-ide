@@ -187,7 +187,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       @$el.children(".server-number-group").hide()
       if m.design().modeIsApp()
         @$el.children(".server-number-group").show()
-        asgCln = CloudResources( constant.RESTYPE.ASG, m.design().region() )
+        asgCln = CloudResources( m.design().credentialId(), constant.RESTYPE.ASG, m.design().region() )
         for el in @$el
           asg = @canvas.getItem( el.parentNode.getAttribute("data-id") ).model
           asg = asgCln.get (asg.get("originalAsg") || asg).get("appId")
@@ -232,7 +232,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       false
 
     showGroup : ( evt )->
-      insCln  = CloudResources( constant.RESTYPE.INSTANCE, @model.design().region() )
+      insCln  = CloudResources( @model.design().credentialId(), constant.RESTYPE.INSTANCE, @model.design().region() )
 
       name = @model.get("name")
       gm   = []

@@ -132,9 +132,7 @@ define [ "Design",
     setSSLCert : ( idx, sslCertId ) ->
 
       if idx >= 0
-
-        region = Design.instance().region()
-        sslCertCol = CloudResources(constant.RESTYPE.IAM, region)
+        sslCertCol = CloudResources(@design().credentialId(), constant.RESTYPE.IAM, @design().region())
         listeners = @get("listeners")
         sslCertData = sslCertCol.get(sslCertId)
         listeners[idx].sslCert = SslCertModel.createNew(sslCertData)

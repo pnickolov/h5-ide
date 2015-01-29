@@ -21,15 +21,16 @@ define [
 
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
+      credId      = @opsModel.credentialId()
 
       Q.all([
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
-        CloudResources( constant.RESTYPE.AZ,       region ).fetch()
-        CloudResources( constant.RESTYPE.SNAP,     region ).fetch()
-        CloudResources( constant.RESTYPE.DHCP,     region ).fetch()
-        CloudResources( "QuickStartAmi",           region ).fetch()
-        CloudResources( "MyAmi",                   region ).fetch()
-        CloudResources( "FavoriteAmi",             region ).fetch()
+        CloudResources( credId, constant.RESTYPE.AZ,       region ).fetch()
+        CloudResources( credId, constant.RESTYPE.SNAP,     region ).fetch()
+        CloudResources( credId, constant.RESTYPE.DHCP,     region ).fetch()
+        CloudResources( credId, "QuickStartAmi",           region ).fetch()
+        CloudResources( credId, "MyAmi",                   region ).fetch()
+        CloudResources( credId, "FavoriteAmi",             region ).fetch()
         @loadVpcResource()
         @fetchAmiData()
         @fetchRdsData( false )

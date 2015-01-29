@@ -58,7 +58,7 @@ define [
       stateIcon  = @$el.children(".res-state")
 
       if stateIcon
-        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        appData = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
         state    = appData?.get("DBInstanceStatus") || "unknown"
         stateIcon.data("tooltip", state).attr("data-tooltip", state).attr("class", "res-state tooltip #{state}")
 
@@ -72,7 +72,7 @@ define [
       if not @canvas.design.modeIsApp() and @model.slaves().length < 5
 
         # for level 2 replica
-        appData = CloudResources( @model.type, @model.design().region() ).get( @model.get("appId") )
+        appData = CloudResources( @model.design().credentialId(), @model.type, @model.design().region() ).get( @model.get("appId") )
         if appData
           backup = (appData.get('BackupRetentionPeriod') not in [0, '0'])
         if @model.autobackup() and @model.get('appId') and not backup
@@ -214,7 +214,7 @@ define [
         # If mysql DB instance has disabled "Automatic Backup", then hide the create read replica button.
         $r = @$el.children(".dbreplicate")
 
-        appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+        appData = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
         if appData
           backup = "" + appData.get('BackupRetentionPeriod') isnt "0"
 
@@ -267,7 +267,7 @@ define [
       CanvasManager.toggle $r, !!m.get("appId")
       CanvasManager.update $r, lang.IDE.RES_TIP_DRAG_TO_RESTORE, "tooltip"
 
-      appData = CloudResources( m.type, m.design().region() ).get( m.get("appId") )
+      appData = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
       if appData
         penddingObj = appData.get('PendingModifiedValues')
         if (appData.get('BackupRetentionPeriod') in [0, '0']) or (penddingObj and penddingObj.BackupRetentionPeriod in [0, '0'])

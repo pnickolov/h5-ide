@@ -133,7 +133,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
       # Only show server group list in app mode.
       if not @canvas.design.modeIsApp() then return
 
-      insCln = CloudResources( @type, @model.design().region() )
+      insCln = CloudResources( @model.design().credentialId(), @type, @model.design().region() )
       members = (@model.groupMembers() || []).slice(0)
       members.unshift( {
         appId : @model.get("appId")

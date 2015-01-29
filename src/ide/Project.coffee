@@ -2,10 +2,11 @@
 define [
   "ApiRequest"
   "ide/submodels/OpsCollection"
+  "ide/settings/projectSubModels/MemberCollection"
   "OpsModel"
   "Credential"
   "backbone"
-], ( ApiRequest, OpsCollection, OpsModel, Credential )->
+], ( ApiRequest, OpsCollection, MemberCollection, OpsModel, Credential )->
 
 
   MEMBERROLE =
@@ -39,6 +40,7 @@ define [
       apps         : new OpsCollection()
       history      : new Backbone.Collection()
       audits       : new Backbone.Collection()
+      members      : null
       myRole       : "observer"
       private      : false
       billingState : ""
@@ -51,6 +53,7 @@ define [
         id      : attr.id
         name    : attr.name or "Private Project"
         private : !attr.name
+        members : new MemberCollection({projectId: attr.id})
       }
 
       # Token

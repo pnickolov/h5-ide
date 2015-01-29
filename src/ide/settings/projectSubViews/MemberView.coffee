@@ -70,6 +70,8 @@ define ['backbone',
         initialize: () ->
 
             @keyupHandle = _.throttle(@keyupHandle, 1000)
+            @project = @model
+            @memberCol = @project.get('members')
             @projectId = @model.get('id')
             @isAdmin = false
             @render()
@@ -125,27 +127,9 @@ define ['backbone',
             data = []
             currentMember = null
             currentUserName = App.user.get('username')
-            ApiRequest('project_list_member', {
-                project_id: @projectId
-            }).then (members)->
-                _.each members, (member) ->
-                    userName = Base64.decode(member.username)
-                    isMe = userName is currentUserName
-                    if isMe
-                        currentMember = member
-                        if member.role is 'admin'
-                            that.isAdmin = true
-                        else
-                            that.isAdmin = false
-                    data.push({
-                        id: member.id,
-                        me: isMe,
-                        avatar: '',
-                        username: userName,
-                        email: Base64.decode(member.email),
-                        role: member.role,
-                        state: member.state
-                    })
+            @memberCol.fetch().then () ->
+                that.isAdmin = that.memberCol.getCurrent()?.get('role') is 'admin'
+                data = that.memberCol.toJSON()
             .done () ->
                 that.renderMain()
                 # refresh project model
@@ -189,11 +173,7 @@ define ['backbone',
                 $invite.prop 'disabled', true
                 $invite.text('wait...')
 
-                ApiRequest('project_invite', {
-                    project_id: @projectId,
-                    member_email: mail,
-                    member_role: 'collaborator',
-                }).then ()->
+                @memberCol.invite(mail).then ()->
                     $mail.val('')
                     that.loadMemList () ->
                         $invite.text(originTxt)
@@ -229,10 +209,7 @@ define ['backbone',
                         $delete.prop 'disabled', true
                         $delete.text('wait...')
 
-                        ApiRequest('project_remove_members', {
-                            project_id: that.projectId,
-                            member_ids: memList
-                        }).then ()->
+                        that.memberCol.remove(memList).then ()->
                             that.loadMemList () ->
                                 $delete.text(originTxt)
                         .fail (data) ->
@@ -263,11 +240,8 @@ define ['backbone',
                 $done.prop 'disabled', true
                 $done.text('wait...')
 
-                ApiRequest('project_update_role', {
-                    project_id: that.projectId,
-                    member_id: memId,
-                    new_role: newRole
-                }).then ()->
+                memberModel = that.memberCol.get(memId)
+                memberModel.updateRole(newRole).then ()->
                     that.loadMemList () ->
                         $done.text(originTxt)
                         $done.prop 'disabled', false
@@ -294,10 +268,8 @@ define ['backbone',
                 $cancel.prop 'disabled', true
                 $cancel.text('wait...')
 
-                ApiRequest('project_cancel_invitation', {
-                    project_id: that.projectId,
-                    member_id: memId
-                }).then ()->
+                memberModel = that.memberCol.get(memId)
+                memberModel.cancelInvite().then ()->
                     that.loadMemList () ->
                         $cancel.text(originTxt)
                         $cancel.prop 'disabled', false

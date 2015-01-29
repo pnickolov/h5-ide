@@ -1,140 +1,161 @@
 #./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus", "ApiRequestR", "backbone"
-define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest", "ApiRequestR" ], (Backbone, template, lang, ApiRequest, ApiRequestR ) ->
-    Backbone.View.extend {
-        events :
-            'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
-            'click button.update-payment'         : "showUpdatePayment"
-            "click .update-payment-done"          : "updatePaymentDone"
-            "click .update-payment-cancel"        : "updatePaymentCancel"
+define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
+        "ApiRequestR"], (Backbone, template, lang, ApiRequest, ApiRequestR) ->
+  Backbone.View.extend {
+    events:
+      'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
+      'click button.update-payment'         : "showUpdatePayment"
+      "click .update-payment-done"          : "updatePaymentDone"
+      "click .update-payment-cancel"        : "updatePaymentCancel"
+      "click .editEmailBtn"                 : "updatePaymentEmail"
+      "click .editEmailDone"                : "updateEmailDone"
+      "click .editEmailCancel"              : "updateEmailCancel"
 
-        className: "billing-view"
+    className: "billing-view"
 
-        initialize: ->
-            @$el.html template.billingLoadingFrame()
-            @$el.find("#billing-status").append MC.template.loadingSpinner()
-            @
-        render: ()->
-            that = @
-            @$el.find("#PaymentBody").remove()
-            paymentState = App.user.get("paymentState")
-            if @model.get("payment")
-              that.renderCache()
-              return @
-            @getPaymentState().then ()->
-                paymentUpdate = that.model.get("payment")
-                billingTemplate = template.billingTemplate {paymentUpdate}
-                that.$el.find("#billing-status").html billingTemplate
-                that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
-                if paymentUpdate.cardNumber and paymentUpdate.currentQuota < paymentUpdate.maxQuota and paymentUpdate.paymentState is "active" or "pastdue"
-                    that.getPaymentHistory().then (paymentHistory)->
-                        hasPaymentHistory = (_.keys paymentHistory).length
-                        paymentUpdate = that.model.get("payment")
-                        billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-                        that.$el.find("#PaymentBody").remove()
-                        that.$el.find("#billing-status").append billingTemplate
-                else
-                  that.$el.find(".loading-spinner").remove()
-                  that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
-                  @updateUsage()
-                  return @
-            , ()->
-                notification 'error', "Error while getting user payment info, please try again later."
-            @
+    initialize: ->
+      @
 
 
-        getPaymentState: ()->
-          that = @
-          projectId = @model.get "id"
-          ApiRequestR "payment_self", {projectId}
-          .then (result)->
-            formattedResult = {
-              cardNumber  :result.card
-              lastName :result.last_name
-              firstName  :result.first_name
-              periodEnd  :result.current_period_ends_at
-              periodStart  :result.current_period_started_at
-              maxQuota :result.max_quota
-              currentQuota :result.current_quota
-              nextPeriod :result.next_assessment_at
-              paymentState :result.state
-            }
-            that.model.set("payment", formattedResult)
-            return formattedResult
-
-        getPaymentHistory: ()->
-            projectId = @model.get("id")
-            historyDefer = new Q.defer()
-            that = @
-            ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
-                tempArray = []
-                _.each paymentHistory, (e)->
-                    e.ending_balance = e.ending_balance_in_cents / 100
-                    e.total_balance = e.total_in_cents / 100
-                    e.start_balance = e.starting_balance_in_cents / 100
-                    tempArray.push e
-                tempArray.reverse()
-                paymentHistory = tempArray
-                that.model.set("paymentHistory", paymentHistory)
-                historyDefer.resolve(paymentHistory)
-            , (err)->
-                historyDefer.reject(err)
-            historyDefer.promise
-
-        showUpdatePayment: (evt)->
-            $(".update-payment-ctrl").show()
-            @$el.find(".billing-history").replaceWith template.updatePayment()
-            $(evt.currentTarget).hide()
+    render    : ()->
+      @$el.html template.billingLoadingFrame()
+      @$el.find("#billing-status").append MC.template.loadingSpinner()
+      that = @
+      @$el.find("#PaymentBody").remove()
+      paymentState = App.user.get("paymentState")
+      if @model.get("payment")
+        that.renderCache()
+        return @
+      @getPaymentState().then ()->
+        paymentUpdate = that.model.get("payment")
+        billingTemplate = template.billingTemplate {paymentUpdate}
+        that.$el.find("#billing-status").html billingTemplate
+        that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
+        if paymentUpdate.cardNumber and paymentUpdate.currentQuota < paymentUpdate.maxQuota and paymentUpdate.paymentState is "active" or "pastdue"
+          that.getPaymentHistory().then (paymentHistory)->
+            hasPaymentHistory = (_.keys paymentHistory).length
+            paymentUpdate = that.model.get("payment")
+            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+            that.$el.find("#PaymentBody").remove()
+            that.$el.find("#billing-status").append billingTemplate
+        else
+          that.$el.find(".loading-spinner").remove()
+          that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
+          @updateUsage()
+          return @
+      , ()->
+        notification 'error', "Error while getting user payment info, please try again later."
+      @
 
 
-        updatePaymentDone: ()->
-            that = @
-            $wrap = @$el.find(".update-payment-wrap")
-            attributes = {
-                first_name: $wrap.find(".first-name").val()
-                last_name:  $wrap.find(".last-name").val()
-                full_number:$wrap.find("input.card-number").val()
-                expiration_month: $wrap.find("input.expiration").val().slice(0,2)
-                expiration_year: $wrap.find("input.expiration").val().slice(2,4)
-                cvv:       $wrap.find("input.cvv").val()
-            }
-            @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
-            @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
-            @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
-            project_id = @model.get("id")
-            ApiRequest "project_update_payment", {project_id, attributes}
-            .then ()->
-                that.set("payment", null)
-                that.set("paymentHistory", null)
-                that.render()
-            , (err)->
-              notification "error", "Error while updating user payment info, please try again later."
-              that.render()
-
-        updatePaymentCancel: ()->
-            @renderCache()
-
-        renderCache: ()->
-            that = @
-            paymentHistory = @model.get("paymentHistory")||[]
-            paymentUpdate = @model.get("payment")
-            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
-            that.$el.find("#billing-status").html billingTemplate
-            if not paymentHistory.length
-                that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
-                @getPaymentHistory().then ()->
-                    paymentHistory = that.model.get("paymentHistory")
-                    billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
-                    that.$el.find("#billing-status").empty().append billingTemplate
-
-            @
+    renderCache: ()->
+      that = @
+      paymentHistory = @model.get("paymentHistory") || []
+      paymentUpdate = @model.get("payment")
+      billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
+      that.$el.find("#billing-status").html billingTemplate
+      if not paymentHistory.length
+        that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
+        @getPaymentHistory().then ()->
+          paymentHistory = that.model.get("paymentHistory")
+          billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
+          that.$el.find("#billing-status").empty().append billingTemplate
+      @
 
 
+      getPaymentState: ()->
+        that = @
+        projectId = @model.get "id"
+        ApiRequestR "payment_self", {projectId}
+        .then (result)->
+          formattedResult = {
+            cardNumber  : result.card
+            lastName    : result.last_name
+            firstName   : result.first_name
+            periodEnd   : result.current_period_ends_at
+            periodStart : result.current_period_started_at
+            maxQuota    : result.max_quota
+            currentQuota: result.current_quota
+            nextPeriod  : result.next_assessment_at
+            paymentState: result.state
+          }
+          that.model.set("payment", formattedResult)
+          return formattedResult
 
-        viewPaymentReceipt: (event)->
-            $target = $(event.currentTarget)
-            id = $target.parent().parent().data("id")
-            paymentHistory = @model.get("paymentHistory")[id]
-            cssToInsert = """
+
+      getPaymentHistory: ()->
+        projectId = @model.get("id")
+        historyDefer = new Q.defer()
+        that = @
+        ApiRequestR("payment_statement", {projectId}).then (paymentHistory)->
+          tempArray = []
+          _.each paymentHistory, (e)->
+            e.ending_balance = e.ending_balance_in_cents / 100
+            e.total_balance = e.total_in_cents / 100
+            e.start_balance = e.starting_balance_in_cents / 100
+            tempArray.push e
+          tempArray.reverse()
+          paymentHistory = tempArray
+          that.model.set("paymentHistory", paymentHistory)
+          historyDefer.resolve(paymentHistory)
+        , (err)->
+          historyDefer.reject(err)
+        historyDefer.promise
+
+
+      showUpdatePayment: (evt)->
+        $(".update-payment-ctrl").show()
+        @$el.find(".billing-history").replaceWith template.updatePayment()
+        $(evt.currentTarget).hide()
+
+
+      updatePaymentDone: ()->
+        that = @
+        $wrap = @$el.find(".update-payment-wrap")
+        attributes = {
+          first_name      : $wrap.find(".first-name").val()
+          last_name       : $wrap.find(".last-name").val()
+          full_number     : $wrap.find("input.card-number").val()
+          expiration_month: $wrap.find("input.expiration").val().slice(0, 2)
+          expiration_year : $wrap.find("input.expiration").val().slice(2, 4)
+          cvv             : $wrap.find("input.cvv").val()
+        }
+        @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
+        @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
+        @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
+        project_id = @model.get("id")
+        ApiRequest "project_update_payment", {project_id, attributes}
+        .then ()->
+          that.model.set("payment", null)
+          that.model.set("paymentHistory", null)
+          that.render()
+        , (err)->
+          notification "error", "Error while updating user payment info, please try again later."
+          that.render()
+
+
+      updatePaymentCancel: ()->
+        @render()
+
+
+      updatePaymentEmail: ()->
+        @$el.find(".billing-email-text p").hide()
+        @$el.find(".billing-email-text input").show()
+        @$el.find(".editEmailControl").show()
+
+
+      updateEmailCancel: ()->
+        @render()
+
+      updateEmailDone: ()->
+        
+
+
+      viewPaymentReceipt: (event)->
+        $target = $(event.currentTarget)
+        id = $target.parent().parent().data("id")
+        paymentHistory = @model.get("paymentHistory")[id]
+        cssToInsert = """
                 .billing_statement_section {
                     display: block;
                     position: relative;
@@ -225,19 +246,21 @@ define [ 'backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest"
                 }
                 body {font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;}
             """
-            makeNewWindow = ()->
-                newWindow = window.open("", "")
-                newWindow.focus()
-                content = paymentHistory.html
-                newWindow.document.write(content)
-                headTag = newWindow.document.head || newWindow.document.getElementsByTagName('head')[0]
-                styleTag = document.createElement('style')
-                styleTag.type = 'text/css'
-                if (styleTag.styleSheet)
-                    styleTag.styleSheet.cssText = cssToInsert
-                else
-                    styleTag.appendChild(document.createTextNode(cssToInsert))
-                headTag.appendChild(styleTag)
-                newWindow.document.close()
-            makeNewWindow()
-    }
+        makeNewWindow = ()->
+          newWindow = window.open("", "")
+          newWindow.focus()
+          content = paymentHistory.html
+          newWindow.document.write(content)
+          headTag = newWindow.document.head || newWindow.document.getElementsByTagName('head')[0]
+          styleTag = document.createElement('style')
+          styleTag.type = 'text/css'
+          if (styleTag.styleSheet)
+            styleTag.styleSheet.cssText = cssToInsert
+          else
+            styleTag.appendChild(document.createTextNode(cssToInsert))
+          headTag.appendChild(styleTag)
+          newWindow.document.close()
+        makeNewWindow()
+
+
+  }

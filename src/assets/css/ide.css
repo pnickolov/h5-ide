@@ -9862,7 +9862,7 @@ h5.billing_usage_title {
   .fullpage-settings .token-table .tokenControl {
     position: absolute;
     right: 0;
-    width: 60px;
+    width: 90px;
     padding: 0;
     margin-top: 4px;
     -webkit-user-select: none;
@@ -9967,8 +9967,9 @@ h5.billing_usage_title {
   .billing-email .billing-email-title {
     width: 200px; }
   .billing-email .billing-email-text {
-    width: 400px;
-    margin: 0; }
+    width: 400px; }
+    .billing-email .billing-email-text p {
+      margin: 0; }
 
 .billing-history {
   margin-top: 30px; }

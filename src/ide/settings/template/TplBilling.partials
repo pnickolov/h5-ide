@@ -6,7 +6,20 @@
 <div class="tabContent" id="PaymentBody">
     <section id="PaymentBillingTab">
         <p class="warning-red hide"></p>
-        <h5 class="clearfix billing-email"><span class="billing-email-title left">{{i18n "PAYMENT_BILLING_EMAIL"}}</span><p class="billing-email-text left">{{or paymentUpdate.email "Email not set"}}</p><span class="right"><i class="icon-edit"></i></span></h5>
+        <h5 class="clearfix billing-email">
+            <span class="billing-email-title left">{{i18n "PAYMENT_BILLING_EMAIL"}}</span>
+            <span class="billing-email-text left">
+                <p>{{or paymentUpdate.email "Email not set"}}</p>
+                <input class="input hide" type="text"/>
+            </span>
+            <span class="right">
+                <span class="editEmailControl hide">
+                    <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
+                    <button class="btn btn-silver editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
+                </span>
+                <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit your payment Email"></button>
+            </span>
+        </h5>
         <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
         <div class="clearfix">
             <div class="left clearfix">

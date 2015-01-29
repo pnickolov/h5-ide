@@ -11,6 +11,9 @@ define ["cloudres/CrCollection"], ( CrCollection )->
 
   CloudResources = ( credentialId, resourceType, category )->
 
+    console.assert credentialId, "Crendential is needed to create a CloudResource"
+    console.assert resourceType, "Resource Type is neede to create a CloudResource"
+
     Collection = CrCollection.getClassByType( resourceType )
     if not Collection
       console.error "Can't find Cloud Resource Collection for type:", resourceType
@@ -24,7 +27,8 @@ define ["cloudres/CrCollection"], ( CrCollection )->
     if not c
       c = credCached[cid] = new Collection()
       c.id = cid
-      c.credential = credentialId
+      c.category     = category
+      c.__credential = credentialId
       c.on "destroy", onCollectionDestroy
     c
 

@@ -1070,3 +1070,26 @@
    #GlobalView, #regionResourceNav, #RegionResourceData, #RegionViewWrap { display : none !important; }
    #DashboardDemo { display : block; }
 }
+
+.dropdown-menu {
+  display          : none;
+  line-height      : normal;
+  font-size        : 12px;
+  position         : absolute;
+  top              : 50px;
+  right            : 0;
+  z-index          : 3;
+  box-shadow       : 0 2px 5px rgba(0, 0, 0, 0.5);
+  border           : 1px solid #202020;
+  border-top       : none;
+  background-color : #36343C;
+
+  li:hover {
+    background-color: rgba(0,0,0,.2);
+  }
+
+}
+
+.open > .dropdown-menu {
+  display: block;
+}

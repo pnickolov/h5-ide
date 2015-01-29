@@ -85,7 +85,8 @@ api = (option)->
 Handlebars.registerHelper 'i18n', (str)->
     i18n?(str) || str
 
-loadPageVar = (sVar) -> decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"))
+loadPageVar = (sVar) ->
+    decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1")) + location.hash
 
 getRef = ()->
     ref = loadPageVar('ref')
@@ -93,6 +94,11 @@ getRef = ()->
         ref
     else
         "/"
+
+gotoRef = ->
+    ref = location.pathname + location.hash
+    location.href = "/login?ref=#{ref}"
+
 getSearch = -> (window.location.search || "")
 # init the page . load i18n source file
 loadLang = (cb)->
@@ -156,6 +162,10 @@ init = ->
 
     userRoute(
         "invite": ( pathArray, hashArray ) ->
+            if !checkAllCookie()
+                gotoRef()
+                return
+
             deepth = 'INVITE'
             hashTarget = hashArray[0]
             unless hashTarget is 'member' then return

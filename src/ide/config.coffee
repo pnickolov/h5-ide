@@ -372,7 +372,7 @@ window.__detailExtend = ( protoProps, staticProps )->
 
   parent = this
 
-  funcName = protoProps.type.replace(/\./g,"_")
+  funcName = (protoProps.ClassName||protoProps.type).replace(/\./g,"_")
   childSpawner = eval( "(function(a){var #{funcName}=function(){ return a.apply(this,arguments);};return #{funcName};})" )
 
   if protoProps and protoProps.hasOwnProperty "constructor"

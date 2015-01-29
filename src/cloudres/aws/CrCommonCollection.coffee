@@ -64,7 +64,7 @@ define ["ApiRequest", "../CrCollection", "../CrModel", "constant"], ( ApiRequest
 
       self = @
 
-      ApiRequest("aws_resource", {
+      @sendRequest( "aws_resource", {
         region_name : null
         resources   : param
         addition    : "all"

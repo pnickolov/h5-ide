@@ -164,9 +164,8 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       self = @
 
       # Do fetch.
-      ApiRequest("ami_DescribeImages", {
-        region_name : @region()
-        ami_ids     : toFetch
+      @sendRequest( "ami_DescribeImages", {
+        ami_ids : toFetch
       }).then ( res )->
         res = res.DescribeImagesResponse.imagesSet?.item
         if res
@@ -213,7 +212,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     getModels : ()->
       ms = []
-      col = CloudResources( constant.RESTYPE.AMI, @region() )
+      col = CloudResources( @credential(), constant.RESTYPE.AMI, @region() )
       for id in @__models
         ms.push col.get( id )
       ms
@@ -234,7 +233,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     type  : "QuickStartAmi"
 
-    doFetch : ()-> ApiRequest("aws_quickstart", {region_name : @region()})
+    doFetch : ()-> @sendRequest("aws_quickstart")
 
     parseFetchData : ( data )->
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
@@ -247,7 +246,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         savedAmis.push ami
         amiIds.push id
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
   }
@@ -265,18 +264,16 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     doFetch : ()->
       selfParam1 =
-        region_name   : @region()
         executable_by : ["self"]
         filters       : [{ Name : "is-public", Value : false }]
       selfParam2 =
-        region_name   : @region()
         owners        : ["self"]
 
       self = @
 
       Q.allSettled([
-        ApiRequest("ami_DescribeImages", selfParam1)
-        ApiRequest("ami_DescribeImages", selfParam2)
+        @sendRequest( "ami_DescribeImages", selfParam1 )
+        @sendRequest( "ami_DescribeImages", selfParam2 )
       ]).spread ( d1, d2 )->
         d1 = d1.value.DescribeImagesResponse.imagesSet?.item || []
         d2 = d2.value.DescribeImagesResponse.imagesSet?.item || []
@@ -292,7 +289,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     onFetch : ( amiArray )->
       @__models = fixDescribeImages( amiArray )
-      CloudResources( constant.RESTYPE.AMI, @region() ).add amiArray
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add amiArray
       return
 
     parseFetchData : ( data )->
@@ -307,7 +304,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
           amiIds.push ami.id
         catch e
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
   }
@@ -324,8 +321,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     type  : "FavoriteAmi"
 
     doFetch : ()->
-      ApiRequest("favorite_info", {
-        region_name : @region()
+      @sendRequest("favorite_info", {
         provider    : "AWS"
         service     : "EC2"
         resource    : "AMI"
@@ -342,7 +338,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         savedAmis.push ami
         favAmiId.push ami.id
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = favAmiId
       return
 
@@ -354,8 +350,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         d.resolve()
         return d.promise
 
-      ApiRequest("favorite_remove", {
-        region_name : self.region()
+      @sendRequest("favorite_remove", {
         resource_ids : [id]
       }).then ()->
         idx = self.__models.indexOf id
@@ -372,14 +367,13 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         imageId = ami.id
 
       self = @
-      ApiRequest("favorite_add", {
-        region_name : self.region()
+      @sendRequest("favorite_add", {
         resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
         self.__models.push imageId
 
         if ami
-          CloudResources( constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
+          CloudResources( @credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
 
         self.trigger "update"
         self

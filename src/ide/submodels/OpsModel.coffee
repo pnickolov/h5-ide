@@ -100,6 +100,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       else
         "unsaved/#{@cid}"
 
+    # Returns a credential of a project that is capable of handling this opsmodel
+    credential   : ()-> @project().credOfProvider( @get("provider") )
+    credentialId : ()-> (@credential() || {}).id
+
     isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importMsrId

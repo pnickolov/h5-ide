@@ -94,7 +94,7 @@ define [
     # Convenient Methods
     isPrivate        : ()-> @get("private")
     hasCredential    : ()-> @get("credentials").length > 0
-    credIdOfProvider : ( CredentialProvider )-> @credOfProvider( CredentialProvider ).id
+    credIdOfProvider : ( CredentialProvider )-> (@credOfProvider( CredentialProvider ) || {}).id
     credOfProvider   : ( CredentialProvider )->
       for cred in @get("credentials")
         if cred.get("provider") is CredentialProvider

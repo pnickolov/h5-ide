@@ -6,9 +6,10 @@ define [
   "./model/DesignAws"
   "CloudResources"
   "constant"
+  "Credential"
 
   "./AwsDeps"
-], ( CoreEditor, OpsModel, StackView, DesignAws, CloudResources, constant )->
+], ( CoreEditor, OpsModel, StackView, DesignAws, CloudResources, constant, Credential )->
 
 
   ###
@@ -26,14 +27,15 @@ define [
     fetchData : ()->
       region      = @opsModel.get("region")
       stateModule = @opsModel.getJsonData().agent.module
+      credId      = @opsModel.credentialId()
 
       jobs = [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
-        CloudResources( constant.RESTYPE.AZ,   region ).fetch()
-        CloudResources( constant.RESTYPE.SNAP, region ).fetch()
-        CloudResources( "QuickStartAmi",       region ).fetch()
-        CloudResources( "MyAmi",               region ).fetch()
-        CloudResources( "FavoriteAmi",         region ).fetch()
+        CloudResources( credId, constant.RESTYPE.AZ,   region ).fetch()
+        CloudResources( credId, constant.RESTYPE.SNAP, region ).fetch()
+        CloudResources( credId, "QuickStartAmi",       region ).fetch()
+        CloudResources( credId, "MyAmi",               region ).fetch()
+        CloudResources( credId, "FavoriteAmi",         region ).fetch()
         @fetchAmiData()
         @fetchRdsData( false )
       ]
@@ -48,7 +50,7 @@ define [
           imageId = comp.resource.ImageId
           if imageId then toFetch[ imageId ] = true
 
-      CloudResources( constant.RESTYPE.AMI, @opsModel.get("region") ).fetchAmis( _.keys toFetch )
+      CloudResources( @opsModel.credentialId(), constant.RESTYPE.AMI, @opsModel.get("region") ).fetchAmis( _.keys toFetch )
 
     isRdsDisabled : ()-> !!@__disableRds
     fetchRdsData : ( isForce = true )->
@@ -60,10 +62,12 @@ define [
       else
         method = "fetch"
 
+      credId = @opsModel.credentialId()
+
       Q.all([
-        CloudResources( constant.RESTYPE.DBENGINE, region )[method]()
-        CloudResources( constant.RESTYPE.DBOG,     region )[method]()
-        CloudResources( constant.RESTYPE.DBSNAP,   region )[method]()
+        CloudResources( credId, constant.RESTYPE.DBENGINE, region )[method]()
+        CloudResources( credId, constant.RESTYPE.DBOG,     region )[method]()
+        CloudResources( credId, constant.RESTYPE.DBSNAP,   region )[method]()
       ]).then ()->
         if self.__disableRds isnt false
           self.__disableRds = false

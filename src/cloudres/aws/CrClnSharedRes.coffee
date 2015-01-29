@@ -163,7 +163,7 @@ define [
       @__pollingStatus = _.bind @__pollingStatus, @
       return
 
-    doFetch : ()-> ApiRequest("ebs_DescribeSnapshots", {region_name:@region(), owners:["self"]})
+    doFetch : ()-> @sendRequest("ebs_DescribeSnapshots", {owners:["self"]})
     trAwsXml : (res)-> res.DescribeSnapshotsResponse.snapshotSet?.item
     parseFetchData : (res)->
       for i in res
@@ -190,8 +190,7 @@ define [
 
     __pollingStatus : ()->
       self = @
-      ApiRequest("ebs_DescribeSnapshots", {
-        region_name : @region()
+      @sendRequest("ebs_DescribeSnapshots", {
         owners      : ["self"]
         filters     : [{"Name":"status","Value":["pending"]}]
       }).then ( res )->

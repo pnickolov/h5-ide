@@ -257,14 +257,18 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       m
 
     region     : ()-> @category
-    credential : ()-> @credential
+    credential : ()-> @__credential
 
     # A convenient method to call ApiRequest
     sendRequest : ( api, params )->
       params = params || {}
       if params.key_id is undefined
         params.key_id = @credential()
-      if params.region_name is undefined
+
+      if params.region_name is undefined and @region()
+        # If the region is empty, we DONT assign the empty region to region_name
+        # Since ApiRequest will fill a region for us. In such case the region_name
+        # is actually useless, but the backend needs it to bypass somekind of check.
         params.region_name = @region()
 
       ApiRequest( api, params )

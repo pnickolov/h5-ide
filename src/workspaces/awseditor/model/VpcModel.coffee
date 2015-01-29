@@ -1,5 +1,5 @@
 
-define [ "constant", "GroupModel", "./DhcpModel" ], ( constant, GroupModel, DhcpModel )->
+define [ "constant", "GroupModel", "./DhcpModel", "Design" ], ( constant, GroupModel, DhcpModel, Design )->
 
   Model = GroupModel.extend {
 

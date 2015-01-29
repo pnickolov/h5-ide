@@ -130,6 +130,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
         that.model.set("paymentHistory", null)
         that.render()
       , (err)->
+        console.warn err
         notification "error", "Error while updating user payment info, please try again later."
         that.render()
 
@@ -139,16 +140,29 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
 
 
     updatePaymentEmail: ()->
-      @$el.find(".billing-email-text p").hide()
-      @$el.find(".billing-email-text input").show()
-      @$el.find(".editEmailControl").show()
-
+      @$el.find(".billing-email-text>p,.editEmailBtn").hide()
+      @$el.find(".editEmailControl,.billing-email-text>input").show()
 
     updateEmailCancel: ()->
       @render()
 
     updateEmailDone: ()->
-
+      project_id = @model.get "id"
+      that = @
+      @$el.find(".editEmailControl button").attr("disabled", "disabled")
+      @$el.find(".editEmailControl .editEmailDone").text(lang.IDE.LBL_SAVING)
+      @$el.find(".editEmailControl .editEmailCancel").hide()
+      email = @$el.find(".billing-email-text input").val()
+      attributes = {email}
+      ApiRequest "project_update_payment", {project_id, attributes}
+      .then ()->
+        that.model.set("payment", null)
+        that.model.set("paymentHistory", null)
+        that.render()
+      , (err)->
+        console.warn err
+        notification "error", "Error while updating user payment info, please try again later."
+        that.render()
 
 
     viewPaymentReceipt: (event)->

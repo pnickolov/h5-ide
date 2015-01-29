@@ -84,7 +84,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # Returns the project to which this opsmodel belongs.
     project : ()->
-      for p in App.model.get("projects")
+      for p in App.model.projects().models
         ops = p.stacks().get( @ ) or p.apps().get( @ )
         if ops then return p
       return null

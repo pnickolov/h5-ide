@@ -28,7 +28,7 @@ define [
 
   "./TplOpsEditor"
   "./TplSvgDef"
-], ( Workspace, Design )->
+], ( Design )->
 
   window.Design = Design
   return

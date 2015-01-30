@@ -14,9 +14,12 @@ define [
         events:
             'keyup input' : 'updateSubmitBtn'
 
-        render: ( credential ) ->
-            if credential
-                data = credential.toJSON()
+        initialize: ( options ) ->
+            _.extend @, options
+
+        render: ->
+            if @credential
+                data = @credential.toJSON()
                 title = 'Update Cloud Credential'
                 confirmText = 'Update'
             else
@@ -41,7 +44,8 @@ define [
 
         loading: ->
             @$( '#CredSetupWrap' ).hide()
-            @$el.append( TplCredential.credentialLoading { action: 'Add' } )
+            action =  if @credential then 'Update' else 'Add'
+            @$el.append( TplCredential.credentialLoading { action: action } )
             @modal.toggleFooter false
 
         loadingEnd: ->
@@ -75,7 +79,7 @@ define [
 
     Backbone.View.extend
         events:
-            'click .setup-credential': 'showSetForm'
+            'click .setup-credential': 'showAddForm'
             'click .update-link'     : 'showUpdateForm'
             'click .show-button-list': 'showButtonList'
             'click .delete-link'     : 'showRemoveConfirmModel'
@@ -134,14 +138,14 @@ define [
                 .toggleFooter true
             @
 
-        showModalError: ( modal, message ) -> modal.find( '.cred-setup-msg' ).text message
+        showModalError: ( modal, message ) -> modal.$( '.cred-setup-msg' ).text message
 
-        showSetForm: -> @showSettingModal()
+        showAddForm: -> @showFormModal()
 
         showUpdateForm: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'
             credential = @getCredentialById credentialId
-            @showSettingModal credential
+            @showFormModal credential
 
         addCredential: ( data ) ->
             that = @
@@ -165,30 +169,27 @@ define [
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
 
                 that.formView.loadingEnd()
-                that.formView.$( '.cred-setup-msg' ).text msg
+                that.showModalError that.formView, msg
 
 
-        updateCredential: ( credential, newData ) ->
+        updateCredential: ( credential, newData, force ) ->
             that = @
-            @makeModalLoading @updateConfirmView, 'Update'
-            redConfirm = @updateConfirmView.find('.modal-confirm').hasClass 'btn-red' # red confirm = force update
+            @formView.loading()
 
-            credential.save( newData, redConfirm ).then () ->
+            credential.save( newData, force ).then () ->
                 that.updateConfirmView.close( 2 )
                 that.formView.remove()
             , ( error ) ->
-                that.stopModalLoading that.updateConfirmView, TplCredential.updateConfirm
+                that.formView.loadingEnd()
 
                 if error.error is ApiRequest.Errors.UserInvalidCredentia
                     msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
                 else if error.error is ApiRequest.Errors.ChangeCredConfirm
-                    that.updateConfirmView.setContent TplCredential.runningAppConfirm
-                    # paint confirm button red color
-                    that.updateConfirmView.find('.modal-confirm').removeClass('btn-blue').addClass('btn-red')
+                    that.showUpdateConfirmModel credential, newData
                 else
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
 
-                that.showModalError that.updateConfirmView, msg
+                msg and that.showModalError that.formView, msg
 
         removeCredential: ( credential ) ->
             that = @
@@ -207,9 +208,11 @@ define [
                 template: TplCredential.updateConfirm
                 confirm:
                     text: 'Confirm to Update'
+                    color: 'red'
             }
+
             @updateConfirmView.on 'confirm', ->
-                @updateCredential credential, newData
+                @updateCredential credential, newData, true
             , @
 
         showRemoveConfirmModel: ( e ) ->
@@ -228,11 +231,11 @@ define [
                 @removeCredential credential
             , @
 
-        showSettingModal:( credential, provider ) ->
-            @formView = new credentialFormView( provider:provider ).render credential
+        showFormModal:( credential, provider ) ->
+            @formView = new credentialFormView( provider:provider, credential: credential ).render()
             @formView.on 'confirm', ->
                 if credential
-                    @showUpdateConfirmModel credential, @formView.getData()
+                    @updateCredential credential, @formView.getData()
                 else
                     @addCredential @formView.getData()
             , @

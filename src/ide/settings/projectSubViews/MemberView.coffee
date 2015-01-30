@@ -78,8 +78,17 @@ define ['backbone',
 
         render: () ->
 
-            @$el.html TplMember.loading()
-            @loadMemList()
+            isPrivateProject = @model.get('private')
+
+            if isPrivateProject
+
+                @$el.html TplMember.defaultProject()
+
+            else
+
+                @$el.html TplMember.loading()
+                @loadMemList()
+
             @
 
         renderMain: () ->
@@ -130,6 +139,9 @@ define ['backbone',
             @memberCol.fetch().then () ->
                 that.isAdmin = that.memberCol.getCurrent()?.get('role') is 'admin'
                 data = that.memberCol.toJSON()
+            .fail (data) ->
+                notification 'error', data.result
+                that.$el.find('.loading-spinner').addClass('hide')
             .done () ->
                 that.renderMain()
                 # refresh project model

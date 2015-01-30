@@ -130,3 +130,7 @@
 
 <!-- {{nomatch}} -->
 <span>There is no user "{{name}}"</span>
+
+<!-- {{defaultProject}} -->
+<div>You are the only member in your default project.</div>
+<div>To invite member and collaborate with other user, <a href="">create a new project</a>.</div>

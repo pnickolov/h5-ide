@@ -48,7 +48,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'resource_check_change'   : { type:'forge', url:'/resource/',	method:'check_change',	params:['username', 'session_id', 'region_name', 'app_id']   },
 		'resource_generate_json'  : { type:'forge', url:'/resource/',	method:'generate_json',	params:['username', 'session_id', 'key_id', 'app_id']   },
 		'resource_region_resource' : { type:'forge', url:'/resource/',	method:'region_resource',	params:['username', 'session_id', 'key_id']   },
-		'stack_create'            : { type:'forge', url:'/stack/',	method:'create',	params:['username', 'session_id', 'region_name', 'spec']   },
+		'stack_create'            : { type:'forge', url:'/stack/',	method:'create',	params:['username', 'session_id', 'project_id', 'region_name', 'spec']   },
 		'stack_remove'            : { type:'forge', url:'/stack/',	method:'remove',	params:['username', 'session_id', 'region_name', 'stack_id', 'stack_name']   },
 		'stack_save'              : { type:'forge', url:'/stack/',	method:'save',	params:['username', 'session_id', 'region_name', 'spec']   },
 		'stack_rename'            : { type:'forge', url:'/stack/',	method:'rename',	params:['username', 'session_id', 'region_name', 'stack_id', 'new_name', 'stack_name']   },

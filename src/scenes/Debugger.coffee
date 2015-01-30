@@ -133,9 +133,8 @@ define [
   window.man = "
   d()          Return the current Design instance \n
   dds()        Print JSON \n
-  copy(dds())  Copy JSON
-  debug        A object contains some debug functions.
-  "
+  copy(dds())  Copy JSON \n
+  debug        A object contains some debug functions"
   null
 
 

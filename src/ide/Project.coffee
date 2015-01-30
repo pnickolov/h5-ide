@@ -75,6 +75,10 @@ define [
       # Check my role
       @__checkMyRole( attr.members )
 
+      # Stack / App
+      @stacks().set @__parseListRes( attr.stacks )
+      @apps().set   @__parseListRes( attr.apps )
+
       @listenTo @stacks(), "change", ()-> @trigger "change:stack"
       @listenTo @apps(),   "change", ()-> @trigger "change:app"
       return

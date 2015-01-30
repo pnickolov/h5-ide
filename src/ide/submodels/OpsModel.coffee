@@ -265,7 +265,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         d.reject(McError( ApiRequest.Errors.StackRepeatedStack, "Stack name has already been used." ))
         return d.promise
 
-      api = if @get("id") then "stack_save" else "stack_create"
+      attr = {
+        region : @get("region")
+        spec   : newJson
+      }
+
+      if @get("id")
+        api = "stack_save"
+      else
+        api = "stack_create"
+        attr.project_id = @project().id
 
       if newJson.state isnt "Enabled"
         console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
@@ -274,10 +283,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       newJson.id = @get("id")
 
       self = @
-      ApiRequest(api, {
-        region_name : @get("region")
-        spec        : newJson
-      }).then ( res )->
+      ApiRequest(api, attr).then ( res )->
 
         attr = {
           name       : newJson.name

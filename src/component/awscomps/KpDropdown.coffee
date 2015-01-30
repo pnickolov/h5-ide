@@ -56,7 +56,9 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
 
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
-            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            credentialId = Design.instance().credentialId()
+
+            @collection = CloudResources(credentialId, constant.RESTYPE.KP, Design.instance().get("region"))
             @listenTo @collection, 'update', @renderKeys
             @listenTo @collection, 'change', @renderKeys
             if not @resModel

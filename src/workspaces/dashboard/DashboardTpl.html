@@ -2,7 +2,6 @@
 
   <header class="dashboard-header">
     <button class="icon-refresh">{{i18n "DASH_TPL_JUST_NOW"}}</button>
-
     <div class="hovermenu">
       <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
       <div class="dropdown-menu">
@@ -19,7 +18,10 @@
     </div>
 
     <button class="btn btn-blue icon-visualize" data-analytics-plus="visualize_vpc">{{i18n "DASH_VISUALIZE_VPC"}}</button>
-
   </header>
 
+  <div class="dashboard-wrapper">
+    <article class="dashboard-content"></article>
+    <aside class="dashboard-sidebar"></aside>
+  </div>
 </div>

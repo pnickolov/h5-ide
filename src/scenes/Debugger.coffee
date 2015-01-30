@@ -21,23 +21,23 @@ define [
     stacks : ()->
       s = {}
       for p in App.model.projects().models
-        s[id] = {
-          name   : p.name
+        s[p.id] = {
+          name   : p.get("name")
           stacks : []
         }
         for m in p.stacks().models
-          s[id].stacks.push m
+          s[p.id].stacks.push m
       s
 
     apps : ()->
       s = {}
       for p in App.model.projects().models
-        s[id] = {
-          name : p.name
+        s[p.id] = {
+          name : p.get("name")
           apps : []
         }
         for m in p.apps().models
-          s[id].apps.push m
+          s[p.id].apps.push m
       s
 
     selectedComp : ()->
@@ -90,7 +90,7 @@ define [
 
     designDiff : ()->
       if Design.instance()
-        JsonViewer.showDiffDialog( Design.instance().__opsModel.getJsonData(), d.serialize() )
+        JsonViewer.showDiffDialog( Design.instance().__opsModel.getJsonData(), Design.instance().serialize() )
       return
 
     designView : ()->

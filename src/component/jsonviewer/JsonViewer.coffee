@@ -90,7 +90,7 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "UI.modalplus", "./jqUi" ]
 
     selectOptions = "<option value='.'>All</option><option value='selected' selected='selected'>Selected Component</option><option value='.'>----------</option>"
 
-    selectedComponetUid = App.workspaces.getAwakeSpace().getSelectedComponent()?.id or "."
+    selectedComponetUid = debug.selectedComp()?.id or "."
 
     for type in typeArr.sort()
       selectOptions += "<option value='#{type}'>#{type}</option>"

@@ -91,9 +91,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             "click i.modal-close": "close"
 
         constructor: (option)->
-            if modals.length and modals[modals.length - 1].isMoving
-              console.warn "Sorry, But we are moving..."
-              return false
+            @nextOptions = []
+            @nextCloses = []
             if typeof option.cancel is "string"
                 option.cancel = {text: option.cancel}
             if typeof option.confirm is "string"
@@ -120,6 +119,10 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @tpl = $(MC.template.modalTemplate @option)
             @tpl.find(".modal-body").html @option.$template
             @setElement @tpl
+            if modals.length and modals[modals.length - 1].isMoving
+                console.warn "Sorry, But we are moving..."
+                modals[modals.length - 1].nextOptions.push @option
+                return @
             @tpl.appendTo @wrap
             @resize()
             modals.push @
@@ -138,25 +141,22 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 _.delay ->
                     self.trigger "shown", @
                 , 300
-
+            _.delay ->
+                self.nextOptions.forEach (option)->
+                    new Modal(option)
+            , (@option.delay||300)+10
             @bindEvent()
             @
 
         close: (number)->
             self = @
-            if @ not in modals
-              return false
-            if number
-              if modals[modals.length - 1].pending
-                callback = -> self.close()
-              else
-                callback = ->
-            else
-              number = 1
-            if modals[modals.length - 1].pending
-              return false
-            if @isClosed then return false
             modal = modals[modals.length - 1]
+            if modal.pending
+                modal.nextCloses.push @
+                return false
+            if not number or typeof number isnt "number"
+                number = 1
+            if @isClosed then return false
             nextModal = modals[modals.length - (1+number)]
             modal.pending = true
             modal.trigger "close", @
@@ -180,8 +180,11 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 else
                     modal.wrap.remove()
                     modals = []
-                callback?()
-            , modal.option.delay || 300
+            , modal.option.delay||300
+            _.delay ->
+                modal.nextCloses.forEach (modalToClose)->
+                  modalToClose.close()
+            , (modal.option.delay||300)+10
             modal.isClosed = true
             @
 

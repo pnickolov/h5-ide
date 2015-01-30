@@ -1,8 +1,7 @@
 (function() {
   var defaultOptions, modals,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   modals = [];
 
@@ -49,10 +48,8 @@
 
       function Modal(option) {
         var _base, _base1;
-        if (modals.length && modals[modals.length - 1].isMoving) {
-          console.warn("Sorry, But we are moving...");
-          return false;
-        }
+        this.nextOptions = [];
+        this.nextCloses = [];
         if (typeof option.cancel === "string") {
           option.cancel = {
             text: option.cancel
@@ -88,6 +85,11 @@
         this.tpl = $(MC.template.modalTemplate(this.option));
         this.tpl.find(".modal-body").html(this.option.$template);
         this.setElement(this.tpl);
+        if (modals.length && modals[modals.length - 1].isMoving) {
+          console.warn("Sorry, But we are moving...");
+          modals[modals.length - 1].nextOptions.push(this.option);
+          return this;
+        }
         this.tpl.appendTo(this.wrap);
         this.resize();
         modals.push(this);
@@ -110,34 +112,29 @@
             return self.trigger("shown", this);
           }, 300);
         }
+        _.delay(function() {
+          return self.nextOptions.forEach(function(option) {
+            return new Modal(option);
+          });
+        }, (this.option.delay || 300) + 10);
         this.bindEvent();
         return this;
       };
 
       Modal.prototype.close = function(number) {
-        var callback, modal, nextModal, self, _base;
+        var modal, nextModal, self, _base;
         self = this;
-        if (__indexOf.call(modals, this) < 0) {
+        modal = modals[modals.length - 1];
+        if (modal.pending) {
+          modal.nextCloses.push(this);
           return false;
         }
-        if (number) {
-          if (modals[modals.length - 1].pending) {
-            callback = function() {
-              return self.close();
-            };
-          } else {
-            callback = function() {};
-          }
-        } else {
+        if (!number || typeof number !== "number") {
           number = 1;
-        }
-        if (modals[modals.length - 1].pending) {
-          return false;
         }
         if (this.isClosed) {
           return false;
         }
-        modal = modals[modals.length - 1];
         nextModal = modals[modals.length - (1 + number)];
         modal.pending = true;
         modal.trigger("close", this);
@@ -160,13 +157,17 @@
           modal.trigger("closed", this);
           modal.pending = false;
           if (modals.length > 1) {
-            modals.length = modals.length - number;
+            return modals.length = modals.length - number;
           } else {
             modal.wrap.remove();
-            modals = [];
+            return modals = [];
           }
-          return typeof callback === "function" ? callback() : void 0;
         }, modal.option.delay || 300);
+        _.delay(function() {
+          return modal.nextCloses.forEach(function(modalToClose) {
+            return modalToClose.close();
+          });
+        }, (modal.option.delay || 300) + 10);
         modal.isClosed = true;
         return this;
       };

@@ -1,5 +1,5 @@
 
-define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+define [ "../CrModel" ], ( CrModel )->
 
   CrModel.extend {
 
@@ -9,10 +9,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     initialize : ()->
       self = @
-      ApiRequest("elb_DescribeInstanceHealth", {
-        region_name : @get("category")
-        elb_name    : @get("Name")
-      }).then ( data )-> self.onInsHealthData( data )
+      @sendRequest("elb_DescribeInstanceHealth", {elb_name:@get("Name")}).then ( data )-> self.onInsHealthData( data )
       return
 
     onInsHealthData : ( data )->

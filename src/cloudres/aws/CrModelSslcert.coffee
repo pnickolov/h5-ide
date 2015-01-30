@@ -18,11 +18,10 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doUpdate : ( newAttr )->
       self = @
-      ApiRequest("iam_UpdateServerCertificate", {
+      @sendRequest("iam_UpdateServerCertificate", {
         servercer_name     : @get("Name")
         new_servercer_name : newAttr.Name
         new_path           : newAttr.Path
-        region_name    : Design.instance().region()
       }).then ( res )->
         oldArn = self.get('Arn')
         newArn = "#{oldArn.split('/')[0]}/#{newAttr.Name}"
@@ -32,13 +31,12 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doCreate : ()->
       self = @
-      ApiRequest("iam_UploadServerCertificate", {
+      @sendRequest("iam_UploadServerCertificate", {
         servercer_name : @get("Name")
         cert_body      : @get("CertificateBody")
         private_key    : @get("PrivateKey")
         cert_chain     : @get("CertificateChain")
         path           : @get("Path")
-        region_name    : Design.instance().region()
       }).then ( res )->
         # Empty the private data.
         self.attributes.CertificateChain = ""
@@ -63,8 +61,5 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
         self
 
-    doDestroy : ()-> ApiRequest("iam_DeleteServerCertificate", {
-        servercer_name: @get("Name"),
-        region_name: Design.instance().region()
-    })
+    doDestroy : ()-> @sendRequest("iam_DeleteServerCertificate", {servercer_name: @get("Name")})
   }

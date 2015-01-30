@@ -31,8 +31,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
 
     doCreate : ()->
       self = @
-      ApiRequest("rds_snap_CreateDBSnapshot", {
-        region_name : @getCollection().region()
+      @sendRequest("rds_snap_CreateDBSnapshot", {
         source_id   : @get("DBInstanceIdentifier")
         snapshot_id   : @get("DBSnapshotIdentifier")
       }).then ( res )->
@@ -71,10 +70,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
 
     __pollingStatus : ()->
       self = @
-      ApiRequest("rds_snap_DescribeDBSnapshots", {
-        region_name : @getCollection()?.region() || Design.instance().region()
-        snapshot_id : @get("DBSnapshotIdentifier")
-      }).then ( res )->
+      @sendRequest("rds_snap_DescribeDBSnapshots", {snapshot_id : @get("DBSnapshotIdentifier")}).then ( res )->
         self.__polling = null
         self.__parsePolling( res )
         return
@@ -100,7 +96,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
     copyTo : ( destRegion, newName, description )->
        self = @
        source_id = "arn:aws:rds:#{@collection.region()}:#{App.user.attributes.account.split('-').join("")}:snapshot:#{@get('id')}"
-       ApiRequest("rds_snap_CopyDBSnapshot",{
+       @sendRequest("rds_snap_CopyDBSnapshot",{
          region_name     : destRegion
          source_id       : source_id
          target_id       : newName
@@ -120,9 +116,5 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
          model.tagResource()
          return model
 
-    doDestroy : ()->
-      ApiRequest("rds_snap_DeleteDBSnapshot", {
-        region_name : @getCollection().region()
-        snapshot_id : @get("id")
-      })
+    doDestroy : ()-> @sendRequest("rds_snap_DeleteDBSnapshot", {snapshot_id : @get("id")})
   }

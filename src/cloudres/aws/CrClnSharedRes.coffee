@@ -2,7 +2,6 @@
 define [
   "../CrCollection"
   "CloudResources"
-  "ApiRequest"
   "constant"
   "./CrModelDhcp"
   "./CrModelKeypair"
@@ -10,7 +9,7 @@ define [
   "./CrModelTopic"
   "./CrModelSubscription"
   "./CrModelSnapshot"
-], ( CrCollection, CloudResources, ApiRequest, constant, CrDhcpModel, CrKeypairModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
+], ( CrCollection, CloudResources, constant, CrDhcpModel, CrKeypairModel, CrSslcertModel, CrTopicModel, CrSubscriptionModel, CrSnapshotModel )->
 
   ### Dhcp ###
   CrCollection.extend {
@@ -21,7 +20,7 @@ define [
     type  : constant.RESTYPE.DHCP
     model : CrDhcpModel
     #modelIdAttribute : "dhcpOptionsId"
-    doFetch : ()-> ApiRequest("dhcp_DescribeDhcpOptions", {region_name : @region()})
+    doFetch : ()-> @sendRequest("dhcp_DescribeDhcpOptions")
     trAwsXml : (res)-> res.DescribeDhcpOptionsResponse.dhcpOptionsSet?.item
     parseFetchData : (res)->
       for i in res
@@ -39,7 +38,7 @@ define [
     type  : constant.RESTYPE.KP
     model : CrKeypairModel
 
-    doFetch : ()-> ApiRequest("kp_DescribeKeyPairs", {region_name : @region()})
+    doFetch : ()-> @sendRequest("kp_DescribeKeyPairs")
     trAwsXml : (res)-> res.DescribeKeyPairsResponse.keySet?.item
     parseFetchData : (res)->
       for i in res
@@ -61,9 +60,7 @@ define [
     type  : constant.RESTYPE.IAM
     model : CrSslcertModel
 
-    doFetch : ()-> ApiRequest("iam_ListServerCertificates", {
-        region_name : @region()
-    })
+    doFetch : ()-> @sendRequest("iam_ListServerCertificates")
     trAwsXml : (res)-> res.ListServerCertificatesResponse.ListServerCertificatesResult.ServerCertificateMetadataList?.member
     parseFetchData : (res)->
       for i in res
@@ -92,7 +89,7 @@ define [
       @on "remove", @__clearSubscription
       CrCollection.apply this, arguments
 
-    doFetch : ()-> ApiRequest("sns_ListTopics", {region_name : @region()})
+    doFetch : ()-> @sendRequest("sns_ListTopics")
     trAwsXml : (res)-> res.ListTopicsResponse.ListTopicsResult.Topics?.member
     parseFetchData : (res)->
       for i in res
@@ -136,7 +133,7 @@ define [
     type  : constant.RESTYPE.SUBSCRIPTION
     model : CrSubscriptionModel
 
-    doFetch : ()-> ApiRequest("sns_ListSubscriptions", {region_name : @region()})
+    doFetch : ()-> @sendRequest("sns_ListSubscriptions")
     trAwsXml : (res)-> res.ListSubscriptionsResponse.ListSubscriptionsResult.Subscriptions?.member
     parseFetchData : (res)->
       for i in res

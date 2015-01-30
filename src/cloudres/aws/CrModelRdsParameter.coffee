@@ -1,5 +1,5 @@
 
-define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResources, ApiRequest )->
+define [ "../CrModel", "CloudResources" ], ( CrModel, CloudResources )->
 
   CrModel.extend {
 

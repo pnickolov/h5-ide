@@ -4,10 +4,9 @@ define [
   "../CrCollection"
   "../CrModel"
   "./CrModelElb"
-  "ApiRequest"
   "constant"
   "CloudResources"
-], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, ApiRequest, constant, CloudResources )->
+], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, constant, CloudResources )->
 
 
 
@@ -606,7 +605,7 @@ define [
     type  : constant.RESTYPE.ENI
     #modelIdAttribute : "networkInterfaceId"
     AwsResponseType : "DescribeNetworkInterfacesResponse"
-    doFetch : ()-> ApiRequest("eni_DescribeNetworkInterfaces", {region_name : @region()})
+    doFetch : ()-> @sendRequest("eni_DescribeNetworkInterfaces")
     trAwsXml : ( data )-> data.DescribeNetworkInterfacesResponse.networkInterfaceSet?.item
     parseFetchData : ( enis )->
       # Format Object in some typical data resource.
@@ -642,7 +641,7 @@ define [
 
     type  : constant.RESTYPE.SUBNET
     #modelIdAttribute : "subnetId"
-    doFetch : ()-> ApiRequest("subnet_DescribeSubnets", {region_name : @region()})
+    doFetch : ()-> @sendRequest("subnet_DescribeSubnets")
     trAwsXml : ( data )-> data.DescribeSubnetsResponse.subnetSet?.item
     parseFetchData : ( subnets )->
       _.each subnets, (subnet, index) ->
@@ -664,7 +663,7 @@ define [
 
     type  : constant.RESTYPE.SG
     AwsResponseType : "DescribeSecurityGroupsResponse"
-    doFetch : ()-> ApiRequest("sg_DescribeSecurityGroups", {region_name : @region()})
+    doFetch : ()-> @sendRequest("sg_DescribeSecurityGroups")
     trAwsXml : ( data )-> data.DescribeSecurityGroupsResponse.securityGroupInfo?.item
     parseFetchData : ( sgs )->
       for sg in sgs

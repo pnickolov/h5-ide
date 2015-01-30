@@ -60,6 +60,20 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
 
         throw err
 
+    # A convenient method to call ApiRequest
+    sendRequest : ( api, params )->
+      params = params || {}
+      if params.key_id is undefined
+        params.key_id = @getCollection().credential()
+
+      if params.region_name is undefined and @getCollection().region()
+        # If the region is empty, we DONT assign the empty region to region_name
+        # Since ApiRequest will fill a region for us. In such case the region_name
+        # is actually useless, but the backend needs it to bypass somekind of check.
+        params.region_name = @region()
+
+      ApiRequest( api, params )
+
     # Subclass needs to override these method.
     ###
     dosave    : ()->
@@ -74,8 +88,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       if @taggable is false then return
 
       self = @
-      ApiRequest("ec2_CreateTags",{
-        region_name  : @getCollection().region()
+      @sendRequest("ec2_CreateTags",{
         resource_ids : [@get("id")]
         tags         : [{Name:"Created by",Value:App.user.get("username")}]
       }).then ()->

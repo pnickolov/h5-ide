@@ -22,8 +22,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
 
     doCreate : ()->
       self = @
-      ApiRequest("ebs_CreateSnapshot", {
-        region_name  : @getCollection().region()
+      @sendRequest("ebs_CreateSnapshot", {
         volume_id    : @get("volumeId")
         description  : @get("description")
       }).then ( res )->
@@ -56,8 +55,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
     copyTo : ( destRegion, newName, description )->
       self = @
 
-      ApiRequest("ebs_CopySnapshot",{
-        region_name     : @getCollection().region()
+      @sendRequest("ebs_CopySnapshot",{
         snapshot_id     : @get("id")
         dst_region_name : destRegion
         description     : description
@@ -79,17 +77,12 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
         model.tagResource()
         return model
 
-    doDestroy : ()->
-      ApiRequest("ebs_DeleteSnapshot", {
-        region_name : @getCollection().region()
-        snapshot_id : @get("id")
-      })
+    doDestroy : ()-> @sendRequest("ebs_DeleteSnapshot", {snapshot_id : @get("id") })
 
     # Tags this resource. It should only called right after the resource is created.
     tagResource : ()->
       self = @
-      ApiRequest("ec2_CreateTags", {
-        region_name  : @getCollection().region()
+      @sendRequest("ec2_CreateTags", {
         resource_ids : [@get("id")]
         tags         : [
           {Name:"Created by", Value:App.user.get("username")}

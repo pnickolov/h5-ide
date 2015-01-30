@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequest, CrCollection, constant, CloudResources )->
+define ["./CrCollection", "constant", "CloudResources"], ( CrCollection, constant, CloudResources )->
 
   ### This Connection is used to fetch all the resource of an vpc ###
   CrCollection.extend {
@@ -37,7 +37,7 @@ define ["ApiRequest", "./CrCollection", "constant", "CloudResources"], ( ApiRequ
       CloudResources.clearWhere ((m)-> m.RES_TAG is self.category), @__region
 
       console.assert( @__region && @__provider, "CrOpsCollection's region is not set before fetching data. Need to call init() first" )
-      ApiRequest("resource_get_resource", {
+      @sendRequest("resource_get_resource", {
         region_name : @__region
         provider    : @__provider
         res_id      : @category

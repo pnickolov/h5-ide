@@ -155,17 +155,17 @@ define [
 
             credential = new Credential credentialData, { project: @model }
 
-            @settingModalView.loading()
+            @formView.loading()
             credential.save().then () ->
-                that.settingModalView.remove()
+                that.formView.remove()
             , ( error ) ->
                 if error.error is ApiRequest.Errors.UserInvalidCredentia
                     msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
                 else
                     msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
 
-                that.settingModalView.loadingEnd()
-                that.settingModalView.$( '.cred-setup-msg' ).text msg
+                that.formView.loadingEnd()
+                that.formView.$( '.cred-setup-msg' ).text msg
 
 
         updateCredential: ( credential, newData ) ->
@@ -175,7 +175,7 @@ define [
 
             credential.save( newData, redConfirm ).then () ->
                 that.updateConfirmView.close( 2 )
-                that.settingModalView.remove()
+                that.formView.remove()
             , ( error ) ->
                 that.stopModalLoading that.updateConfirmView, TplCredential.updateConfirm
 
@@ -229,18 +229,18 @@ define [
             , @
 
         showSettingModal:( credential, provider ) ->
-            @settingModalView = new credentialFormView( provider:provider ).render credential
-            @settingModalView.on 'confirm', ->
+            @formView = new credentialFormView( provider:provider ).render credential
+            @formView.on 'confirm', ->
                 if credential
-                    @showUpdateConfirmModel credential, @settingModalView.getData()
+                    @showUpdateConfirmModel credential, @formView.getData()
                 else
-                    @addCredential @settingModalView.getData()
+                    @addCredential @formView.getData()
             , @
 
             @
 
         remove: ->
-            @settingModalView?.remove()
+            @formView?.remove()
             @updateConfirmView?.close()
             @removeConfirmView?.close()
             Backbone.View.prototype.remove.apply @, arguments

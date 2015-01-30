@@ -137,7 +137,7 @@ define [
         res
 
     leave: ->
-      ApiRequest( "project_delete_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
+      ApiRequest( "project_remove_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
 
 
 

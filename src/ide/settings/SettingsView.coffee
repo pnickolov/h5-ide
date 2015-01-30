@@ -80,8 +80,8 @@ define [
             @$el.html new ProjectView( model: project, settingsView: @ ).render(tab).el
 
         remove: ->
-            @model?.close()
-            Backbone.View.prototype.remove.apply arguments
+            @modal?.close()
+            Backbone.View.prototype.remove.apply @, arguments
 
         navigate: ( tab, projectId ) ->
             url = @url tab, projectId

@@ -1,5 +1,5 @@
 
-define [ "GroupModel", "constant", "i18n!/nls/lang.js", "Design", "CloudResources" ], ( GroupModel, constant, lang, Design, CloudResources )->
+define [ "GroupModel", "constant", "i18n!/nls/lang.js", "Design" ], ( GroupModel, constant, lang, Design )->
 
   Model = GroupModel.extend {
 
@@ -68,18 +68,6 @@ define [ "GroupModel", "constant", "i18n!/nls/lang.js", "Design", "CloudResource
         height : layout_data.size[1]
       })
       null
-
-    # Get all az, including unused az.
-    allPossibleAZ : ()->
-      azMap = {}
-      for az in Model.allObjects()
-        azMap[ az.get("name") ] = az.id
-
-      CloudResources( constant.RESTYPE.AZ, region ).where({category:region}).map (az)->
-        {
-          name : az.attributes.id
-          id   : azMap[ az.attributes.id ] || ""
-        }
 
     getAzByName : ( name )->
       for az in Model.allObjects()

@@ -32,41 +32,6 @@ define [ '../base/model', "Design", 'constant', 'sslcert_dropdown', "CloudResour
                     attr.showCert = true
                     break
 
-            # Get AZ List
-            if not attr.isVpc
-
-                AzModel = Design.modelClassForType( constant.RESTYPE.AZ )
-
-                connectedAzMap = {}
-                for ami in component.connectionTargets("ElbAmiAsso")
-                    if ami.parent().type is constant.RESTYPE.ASG
-                        az = ami.parent().parent()
-                    else
-                        az = ami.parent()
-                    connectedAzMap[ az.get("name") ] = true
-
-                reg = /-[\w]/g
-                replaceFunc = (g)-> " " + g[1].toUpperCase()
-                filterFunc  = (ch)-> ch.type is constant.RESTYPE.INSTANCE
-
-                azArr = AzModel.allPossibleAZ()
-                for az in azArr
-                    if connectedAzMap[ az.name ]
-                        az.disabled = connectedAzMap[ az.name ]
-                        az.selected = true
-                    else
-                        az.disabled = false
-                        az.selected = attr.AvailabilityZones.indexOf( az.name ) isnt -1
-
-                    az.displayName = az.name.replace reg, replaceFunc
-                    az.displayName = az.displayName[0].toUpperCase() + az.displayName.substr(1)
-
-                    if az.id
-                        azComp = Design.instance().component( az.id )
-                        az.instanceCount = _.filter( azComp.children(), filterFunc ).length
-
-                attr.azArray = azArr
-
             # Get SSL Cert List
             currentSSLCert = component.connectionTargets("SslCertUsage")[0]
             allCertModelAry = Design.modelClassForType(constant.RESTYPE.IAM).allObjects()

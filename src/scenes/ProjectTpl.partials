@@ -36,7 +36,7 @@
       {{#each stacks}}<li>
         <h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
         <ul class="nav-item-list">
-        {{#each data}}<li><a class="route icon-stack-nav truncate nav-truncate" href="{{url}}">{{name}}</li>{{/each}}
+        {{#each data}}<li><a class="route icon-stack-nav truncate nav-truncate" href="{{url}}">{{name}}</a></li>{{/each}}
         </ul>
       </li>{{else}}<div class="nav-empty">{{ i18n "DASH_LBL_NO_STACK" }}</div>{{/each}}
     </ul>

@@ -114,6 +114,8 @@ define [
                 json.name = constant.PROVIDER_NAME[json.provider]
                 json.needed = _.some applist, ( app ) -> app.get( 'provider' ) is json.provider
 
+                if json.isDemo then data.hasDemo = true
+
                 json
 
 

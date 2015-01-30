@@ -52,8 +52,8 @@ define [
                 @modal.toggleConfirm true
 
 
-        remove: ( count ) ->
-            @modal?.close( count )
+        remove: () ->
+            @modal?.close()
             Backbone.View.prototype.remove.apply @, arguments
 
     Backbone.View.extend
@@ -125,7 +125,7 @@ define [
             @confirmModal.on 'confirm', ->
                 @confirmModal.renderLoading()
                 @model.destroy().then ->
-                    that.remove 2
+                    that.remove()
                     that.settingsView.remove()
                 , ->
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
@@ -141,7 +141,7 @@ define [
             @confirmModal.on 'confirm', =>
                 @confirmModal.renderLoading()
                 @model.leave().then ->
-                    that.remove 2
+                    that.remove()
                     that.settingsView.remove()
                 , ->
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
@@ -150,8 +150,8 @@ define [
 
             @
 
-        remove: ( count ) ->
-            @confirmModal?.remove count
+        remove: () ->
+            @confirmModal?.remove()
             Backbone.View.prototype.remove.apply @, arguments
 
 

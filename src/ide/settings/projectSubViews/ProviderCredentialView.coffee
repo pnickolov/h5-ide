@@ -179,7 +179,7 @@ define [
             @formView.loading()
 
             credential.save( newData, force ).then () ->
-                that.updateConfirmView.close( 2 )
+                that.updateConfirmView?.close()
                 that.formView.remove()
             , ( error ) ->
                 that.formView.loadingEnd()

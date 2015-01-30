@@ -137,7 +137,7 @@ define ['backbone',
             currentMember = null
             currentUserName = App.user.get('username')
             @memberCol.fetch().then () ->
-                that.isAdmin = that.memberCol.getCurrent()?.get('role') is 'admin'
+                that.isAdmin = that.memberCol.getCurrentMember()?.get('role') is 'admin'
                 data = that.memberCol.toJSON()
             .fail (data) ->
                 notification 'error', data.result
@@ -185,7 +185,7 @@ define ['backbone',
                 $invite.prop 'disabled', true
                 $invite.text('wait...')
 
-                @memberCol.invite(mail).then ()->
+                @memberCol.inviteMember(mail).then ()->
                     $mail.val('')
                     that.loadMemList () ->
                         $invite.text(originTxt)
@@ -221,7 +221,7 @@ define ['backbone',
                         $delete.prop 'disabled', true
                         $delete.text('wait...')
 
-                        that.memberCol.remove(memList).then ()->
+                        that.memberCol.removeMember(memList).then ()->
                             that.loadMemList () ->
                                 $delete.text(originTxt)
                         .fail (data) ->

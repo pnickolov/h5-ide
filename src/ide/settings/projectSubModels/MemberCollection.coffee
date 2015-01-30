@@ -20,19 +20,22 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
 
         updateRole: (newRole) ->
 
+            that = @
             ApiRequest('project_update_role', {
                 project_id: @get('projectId'),
                 member_id: @id,
                 new_role: newRole
             }).then ()->
-                @role = newRole
+                that.set('role', newRole)
 
         cancelInvite: () ->
 
+            that = @
             ApiRequest('project_cancel_invitation', {
                 project_id: @get('projectId'),
                 member_id: @id
-            })
+            }).then () ->
+                that.collection?.remove(that)
 
     })
 
@@ -57,11 +60,13 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
                 models = _.map members, (member) ->
                     userName = Base64.decode(member.username)
                     currentUserName = App.user.get('username')
+                    email = Base64.decode(member.email)
+                    avatar = CryptoJS.MD5(email.trim().toLowerCase()).toString()
                     return new that.model({
                         id: member.id,
-                        avatar: '',
+                        avatar: "https://www.gravatar.com/avatar/#{avatar}",
                         username: userName,
-                        email: Base64.decode(member.email),
+                        email: email,
                         role: member.role,
                         state: member.state,
                         me: userName is currentUserName
@@ -73,22 +78,26 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
                     })
                 that.reset(models)
 
-        remove: (memIds) ->
+        removeMember: (memIds) ->
 
+            that = @
             ApiRequest('project_remove_members', {
                 project_id: @projectId,
                 member_ids: memIds
-            })
+            }).then () ->
+                that.remove(memIds)
 
-        invite: (email) ->
+        inviteMember: (email) ->
 
+            that = @
             ApiRequest('project_invite', {
                 project_id: @projectId,
                 member_email: email,
                 member_role: 'collaborator',
-            })
+            }).then () ->
+                that.push(new that.model())
 
-        getCurrent: () ->
+        getCurrentMember: () ->
 
             return @findWhere({
                 username: App.user.get('username')

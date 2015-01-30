@@ -34,7 +34,7 @@ define [
   MC.template.resPanelAmiInfo = ( data )->
     if not data.region or not data.imageId then return
 
-    ami = CloudResources( constant.RESTYPE.AMI, data.region ).get( data.imageId )
+    ami = CloudResources( data.credential, constant.RESTYPE.AMI, data.region ).get( data.imageId )
     if not ami then return
 
     ami = ami.toJSON()
@@ -54,7 +54,7 @@ define [
   MC.template.resPanelDbSnapshot = ( data )->
     if not data.region or not data.id then return
 
-    ss = CloudResources( constant.RESTYPE.DBSNAP, data.region ).get( data.id )
+    ss = CloudResources( data.credential, constant.RESTYPE.DBSNAP, data.region ).get( data.id )
     if not ss then return
 
     LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
@@ -62,7 +62,7 @@ define [
   MC.template.resPanelSnapshot = ( data )->
     if not data.region or not data.id then return
 
-    ss = CloudResources( constant.RESTYPE.SNAP, data.region ).get( data.id )
+    ss = CloudResources( data.credential, constant.RESTYPE.SNAP, data.region ).get( data.id )
     if not ss then return
     newData = {}
     _.each ss.toJSON(), (value, key)->
@@ -123,11 +123,13 @@ define [
 
       @subViews = []
 
-      region = @workspace.opsModel.get("region")
-      @listenTo CloudResources( "MyAmi",               region ), "update", @updateMyAmiList
-      @listenTo CloudResources( constant.RESTYPE.AZ,   region ), "update", @updateAZ
-      @listenTo CloudResources( constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
-      @listenTo CloudResources( constant.RESTYPE.DBSNAP, region ), "update", @updateRDSSnapshotList
+      region       = @workspace.design.region()
+      credentialId = @workspace.design.credentialId()
+
+      @listenTo CloudResources( credentialId, "MyAmi",               region ), "update", @updateMyAmiList
+      @listenTo CloudResources( credentialId, constant.RESTYPE.AZ,   region ), "update", @updateAZ
+      @listenTo CloudResources( credentialId, constant.RESTYPE.SNAP, region ), "update", @updateSnapshot
+      @listenTo CloudResources( credentialId, constant.RESTYPE.DBSNAP, region ), "update", @updateRDSSnapshotList
 
       design = @workspace.design
       @listenTo design, Design.EVENT.ChangeResource, @onResChanged
@@ -260,11 +262,11 @@ define [
 
       if resModel and resModel.type isnt constant.RESTYPE.AZ then return
 
-      region = @workspace.opsModel.get("region")
+      region = @workspace.design.region()
       usedAZ = ( az.get("name") for az in @workspace.design.componentsOfType(constant.RESTYPE.AZ) || [] )
 
       availableAZ = []
-      for az in CloudResources( constant.RESTYPE.AZ, region ).where({category:region}) || []
+      for az in CloudResources( @workspace.design.credentialId(), constant.RESTYPE.AZ, region ).where({category:region}) || []
         if usedAZ.indexOf(az.id) is -1
           availableAZ.push(az.id)
 
@@ -272,8 +274,8 @@ define [
       return
 
     updateSnapshot : ()->
-      region     = @workspace.opsModel.get("region")
-      cln        = CloudResources( constant.RESTYPE.SNAP, region ).where({category:region}) || []
+      region     = @workspace.design.region()
+      cln        = CloudResources( @workspace.design.credentialId(), constant.RESTYPE.SNAP, region ).where({category:region}) || []
       cln.region = if cln.length then region else constant.REGION_SHORT_LABEL[region]
 
       @$el.find(".resource-list-snapshot").html LeftPanelTpl.snapshot( cln )
@@ -289,12 +291,12 @@ define [
       return
 
     updateRDSList : () ->
-      cln = CloudResources( constant.RESTYPE.DBENGINE, @workspace.opsModel.get("region") ).groupBy("DBEngineDescription")
+      cln = CloudResources( @workspace.design.credentialId(), constant.RESTYPE.DBENGINE, @workspace.design.region() ).groupBy("DBEngineDescription")
       @$el.find(".resource-list-rds").html LeftPanelTpl.rds( cln )
 
     updateRDSSnapshotList : () ->
-      region     = @workspace.opsModel.get("region")
-      cln        = CloudResources( constant.RESTYPE.DBSNAP, region ).toJSON()
+      region     = @workspace.design.region()
+      cln        = CloudResources( @workspace.design.credentialId(), constant.RESTYPE.DBSNAP, region ).toJSON()
       cln.region = if cln.length then region else constant.REGION_SHORT_LABEL[region]
 
       @$el.find(".resource-list-rds-snapshot").html LeftPanelTpl.rds_snapshot( cln )
@@ -307,7 +309,7 @@ define [
       return
 
     updateAmi : ()->
-      ms = CloudResources( @__amiType, @workspace.opsModel.get("region") ).getModels().sort ( a, b )->
+      ms = CloudResources( @workspace.design.credentialId(), @__amiType, @workspace.design.region() ).getModels().sort ( a, b )->
         a = a.attributes
         b = b.attributes
         if a.osType is "windows" and b.osType isnt "windows" then return 1
@@ -370,7 +372,7 @@ define [
 
     toggleFav : ( evt )->
       $tgt = $( evt.currentTarget ).toggleClass("fav")
-      amiCln = CloudResources( "FavoriteAmi", @workspace.opsModel.get("region") )
+      amiCln = CloudResources( @workspace.design.credentialId(), "FavoriteAmi", @workspace.design.region() )
       if $tgt.hasClass("fav")
         amiCln.fav( $tgt.attr("data-id") )
       else
@@ -435,34 +437,36 @@ define [
       this.updateAccordion( { currentTarget : $target[0] }, true )
 
     browseCommunityAmi : ()->
-      region = @workspace.opsModel.get("region")
+      region     = @workspace.design.region()
+      credential = @workspace.design.credentialId()
       # Start listening fav update.
-      @listenTo CloudResources( "FavoriteAmi", region ), "update", @updateFavList
+      @listenTo CloudResources( credential, "FavoriteAmi", region ), "update", @updateFavList
 
-      amiBrowser = new AmiBrowser({ region : region })
+      amiBrowser = new AmiBrowser({ region : region, credential : credential })
       amiBrowser.onClose = ()=>
-        @stopListening CloudResources( "FavoriteAmi", region ), "update", @updateFavList
+        @stopListening CloudResources( credential, "FavoriteAmi", region ), "update", @updateFavList
       return false
 
     manageEbsSnapshot : ()-> new EbsSnapshotManager().render()
-    manageRdsSnapshot: ()->new RdsSnapshotManager().render()
+    manageRdsSnapshot : ()-> new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
       $tgt = $( evt.currentTarget )
       if $tgt.hasClass("reloading") then return
 
       $tgt.addClass("reloading")
-      region = @workspace.opsModel.get("region")
+      region     = @workspace.design.region()
+      credential = @workspace.design.credentialId()
 
       jobs = [
-        CloudResources( "MyAmi", region ).fetchForce()
-        CloudResources( constant.RESTYPE.SNAP, region ).fetchForce()
+        CloudResources( credential, "MyAmi", region ).fetchForce()
+        CloudResources( credential, constant.RESTYPE.SNAP, region ).fetchForce()
       ]
 
       if @workspace.isRdsDisabled()
         jobs.push @workspace.fetchRdsData()
       else
-        jobs.push CloudResources( constant.RESTYPE.DBSNAP, region ).fetchForce()
+        jobs.push CloudResources( credential, constant.RESTYPE.DBSNAP, region ).fetchForce()
 
       Q.all(jobs).done ()-> $tgt.removeClass("reloading")
       return

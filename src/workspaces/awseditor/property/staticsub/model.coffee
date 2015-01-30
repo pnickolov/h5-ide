@@ -13,7 +13,7 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
       InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
 
       # If this uid is ami uid
-      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( uid )
+      ami = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, Design.instance().region() ).get( uid )
       if ami
         ami = ami.toJSON()
         @set ami
@@ -28,7 +28,7 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
 
       @set "name", uid
       # If this uid is snapshot uid
-      item = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() ).get( uid )
+      item = CloudResources( Design.instance().credentialId(), constant.RESTYPE.SNAP, Design.instance().region() ).get( uid )
       if not item then return false
       @set item.attributes
       true
@@ -36,7 +36,7 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
     canChangeAmi : ( amiId )->
       component = Design.instance().component( PropertyModule.activeModule().uid )
       oldAmi = component.getAmi() || component.get("cachedAmi")
-      newAmi = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
+      newAmi = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
       if newAmi then newAmi = newAmi.toJSON()
 
       if not oldAmi and not newAmi then return lang.PROP.STATICSUB_VALIDATION_AMI_INFO_MISSING
@@ -55,7 +55,7 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
       true
 
     getAmiPngName : ( amiId ) ->
-      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
+      ami = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
       if not ami
         "ami-not-available"
       else
@@ -63,7 +63,7 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
         "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}"
 
     getAmiName : ( amiId )->
-      ami = CloudResources( constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
+      ami = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, Design.instance().region() ).get( amiId )
       if ami then ami.get("name") else ""
 
     changeAmi : ( amiId )->

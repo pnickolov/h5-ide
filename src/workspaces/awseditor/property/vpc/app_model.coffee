@@ -10,8 +10,8 @@ define [ '../base/model', "Design", 'constant', 'CloudResources' ], ( PropertyMo
 
           myVPCComponent = Design.instance().component( vpc_uid )
 
-          vpc = CloudResources(constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))?.attributes
-          appData = CloudResources(constant.RESTYPE.DHCP, Design.instance().region())
+          vpc = CloudResources( Design.instance().credentialId(), constant.RESTYPE.VPC, Design.instance().region()).get(myVPCComponent.get('appId'))?.attributes
+          appData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.DHCP, Design.instance().region())
           if not vpc then return false
 
           vpc = $.extend true, {}, vpc

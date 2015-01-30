@@ -30,7 +30,7 @@ define [ '../base/model', 'Design', 'constant', "CloudResources" ], ( PropertyMo
           else
             myEniComponentJSON = myEniComponent?.toJSON()
 
-          appData = CloudResources(constant.RESTYPE.ENI,Design.instance().region())
+          appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ENI,Design.instance().region())
 
           if @isGroupMode
             group = [ myEniComponentJSON ].concat myEniComponent.groupMembers()

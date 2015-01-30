@@ -92,7 +92,7 @@ define [ 'ApiRequest'
             that = @
 
             sourceDbModel = defaultRes.getSourceDBForRestore()
-            sourceDbAppModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
+            sourceDbAppModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
 
             if sourceDbAppModel
 
@@ -517,7 +517,7 @@ define [ 'ApiRequest'
 
         isPromoted: () ->
 
-            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            dbModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
             if dbModel
                 originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
                 return (@isAppEdit and originReplicaId and not @resModel.master())
@@ -525,7 +525,7 @@ define [ 'ApiRequest'
 
         isCanPromote: () ->
 
-            dbModel = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            dbModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
             if dbModel
                 originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
                 return (@isAppEdit and originReplicaId and @resModel.master())
@@ -539,7 +539,7 @@ define [ 'ApiRequest'
 
         unsetPromote: () ->
 
-            srcDBId = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
+            srcDBId = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
             if srcDBId
                 srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
                 @resModel.setMaster(srcDBModel) if srcDBModel
@@ -788,7 +788,7 @@ define [ 'ApiRequest'
             attr             = @getModelJSON()
             attr.canCustomOG = false
             attr.ogName = @resModel.getOptionGroupName()
-            engineCol     = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+            engineCol     = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBENGINE, regionName)
             engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
             ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
             defaultInfo = engineCol.getDefaultByNameVersion(regionName, attr.engine, attr.engineVersion)
@@ -1320,7 +1320,7 @@ define [ 'ApiRequest'
 
             dbId = that.resModel.get('appId')
 
-            currentResModel = CloudResources(constant.RESTYPE.DBINSTANCE, region).get(dbId)
+            currentResModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, region).get(dbId)
 
             if currentResModel
 

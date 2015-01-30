@@ -19,9 +19,9 @@ define [ '../base/model',
         setOsTypeAndLoginCmd: ( appId ) ->
 
             region = Design.instance().region()
-            instance_data = CloudResources(constant.RESTYPE.INSTANCE, region).get(appId)?.toJSON()
+            instance_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, region).get(appId)?.toJSON()
             if instance_data
-                os_type = CloudResources( constant.RESTYPE.AMI, region ).get( instance_data.imageId )?.toJSON()
+                os_type = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, region ).get( instance_data.imageId )?.toJSON()
 
                 if os_type then os_type = os_type.osType
             # below code are based on os_type
@@ -71,7 +71,7 @@ define [ '../base/model',
             if not myInstanceComponent
                 console.warn "instance.app_model.init(): can not find InstanceModel"
 
-            app_data = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
+            app_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
 
             if app_data?.get(instance_id)?.toJSON()
                 instance = $.extend true, {}, app_data.get(instance_id)?.toJSON()
@@ -91,7 +91,7 @@ define [ '../base/model',
 
                     #RootDevice Data
                     if rootDevice
-                        volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId)?.toJSON()
+                        volume = CloudResources(Design.instance().credentialId(), constant.RESTYPE.VOL, Design.instance().region()).get(rootDevice.ebs.volumeId)?.toJSON()
                         if volume
                             if volume.attachmentSet
                                 volume.name = volume.attachmentSet[0].device
@@ -142,7 +142,7 @@ define [ '../base/model',
                     component = eni
                     break
 
-            appData = CloudResources(constant.RESTYPE.ENI, Design.instance().region())
+            appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ENI, Design.instance().region())
 
             if not appData.get(id)
                 # Use data inside networkInterfaceSet

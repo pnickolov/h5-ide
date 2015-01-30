@@ -89,7 +89,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
 
       component = Design.instance().component(uid)
 
-      appData = CloudResources(constant.RESTYPE.RT, Design.instance().region()).get(component.get('appId'))?.toJSON()
+      appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.RT, Design.instance().region()).get(component.get('appId'))?.toJSON()
       aws_rt_is_main = false
 
       if appData and appData.associationSet and appData.associationSet.length

@@ -19,7 +19,7 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
 
           appId   = component.get("appId")
 
-          data = CloudResources(component.type, Design.instance().region()).get(appId)?.toJSON()
+          data = CloudResources(Design.instance().credentialId(), component.type, Design.instance().region()).get(appId)?.toJSON()
 
         if data
           if data.attachments and data.attachments.length

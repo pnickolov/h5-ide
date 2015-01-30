@@ -22,7 +22,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         @set data
 
         region = Design.instance().region()
-        asg_data = CloudResources(constant.RESTYPE.ASG, region).get(asg_comp.get('appId'))?.toJSON()
+        asg_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ASG, region).get(asg_comp.get('appId'))?.toJSON()
 
         if asg_data
             @set 'hasData', true
@@ -116,7 +116,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
     handleNotify: ( asg_comp, asg_data ) ->
         # Get notifications
         region       = Design.instance().region()
-        notification = CloudResources(constant.RESTYPE.NC, region).findWhere({AutoScalingGroupName:asg_data.AutoScalingGroupName})
+        notification = CloudResources(Design.instance().credentialId(), constant.RESTYPE.NC, region).findWhere({AutoScalingGroupName:asg_data.AutoScalingGroupName})
 
         sendNotify = false
         nc_array = [false, false, false, false, false]
@@ -141,8 +141,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         cloudWatchPolicyMap = {}
 
         region = Design.instance().region()
-        spCln  = CloudResources(constant.RESTYPE.SP, region)
-        cwCln  = CloudResources(constant.RESTYPE.CW, region)
+        spCln  = CloudResources(Design.instance().credentialId(), constant.RESTYPE.SP, region)
+        cwCln  = CloudResources(Design.instance().credentialId(), constant.RESTYPE.CW, region)
 
         for sp in asg_comp.get("policies")
             policy_data = spCln.get( sp.get 'appId' )?.toJSON()

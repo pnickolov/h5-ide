@@ -56,7 +56,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
         null
 
       if Design.instance().modeIsAppEdit()
-        resource_list = CloudResources(constant.RESTYPE.LC, Design.instance().region()).toJSON()
+        resource_list = CloudResources( @design().credentialId(), constant.RESTYPE.LC, @design().region()).toJSON()
         for id, rl of resource_list
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
@@ -87,7 +87,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
 
     # Use by CanvasElement(change members to groupMembers)
     groupMembers : ()->
-      resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
+      resource_list = CloudResources( @design().credentialId(), constant.RESTYPE.ASG, @design().region())
       if not resource_list then return []
 
       resource = resource_list.get(@connectionTargets("LcUsage")[0].get("appId"))?.toJSON()

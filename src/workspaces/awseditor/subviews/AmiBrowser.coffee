@@ -44,7 +44,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
         toggleFav: (event)->
           amiElem = $(event.target)
           that = this
-          favAmis = CloudResources "FavoriteAmi", @region
+          favAmis = CloudResources @credential, "FavoriteAmi", @region
           promise = null
           id = amiElem.closest("tr").attr("data-id")
           if amiElem.hasClass('fav')
@@ -85,7 +85,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           amiId = name.trim()
           if amiId and reg_ami.test(amiId)
             #search by ami id
-            amiRes = CloudResources( "AWS.EC2.AMI", self.region )
+            amiRes = CloudResources( @credential, "AWS.EC2.AMI", self.region )
             amiRes.fetchAmis( [amiId] ).then ->
               amiData = amiRes.where({id:amiId})
               result =
@@ -127,7 +127,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           @doSearch()
 
         addFavStar: (result)->
-          favAmis = CloudResources("FavoriteAmi",@region).getModels() || []
+          favAmis = CloudResources( @credential, "FavoriteAmi",@region).getModels() || []
           dumpObj = _.clone result.ami.result
           favIds = _.pluck (_.pluck favAmis, "attributes"), "id"
           _.each dumpObj, (e,k)->

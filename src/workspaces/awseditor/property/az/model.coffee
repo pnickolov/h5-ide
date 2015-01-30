@@ -10,7 +10,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources" ], ( PropertyMo
 
             design = Design.instance()
 
-            az_list = CloudResources( constant.RESTYPE.AZ, Design.instance().region() ).where({category:design.get("region")})
+            az_list = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AZ, Design.instance().region() ).where({category:design.get("region")})
 
             component = design.component( id )
 

@@ -102,7 +102,7 @@ define [
     constructor : ( options )->
       _.extend this, options
 
-      @setElement $( @template() ).appendTo("#main").attr("data-ws", @workspace.id).show()[0]
+      @setElement $( @template() ).appendTo( @workspace.scene.spaceParentElement() ).attr("data-ws", @workspace.id).show()[0]
       return
 
     # There are chances that things inside __initialize() will fail, to make sure constructor

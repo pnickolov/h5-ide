@@ -302,7 +302,7 @@ define [
         return false
       if not uid then uid = PropertyBaseModule.activeModule().uid
       design = @workspace.design
-      comp   = design.component( uid ) or CloudResources(CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.toJSON()
+      comp   = design.component( uid ) or CloudResources( Desin.instance().credentialId(), CONST.RESTYPE.INSTANCE, Design.instance().get('region')).findWhere(id: uid)?.toJSON()
       if not comp then return
       if not comp.type then comp.type = CONST.RESTYPE.INSTANCE
 

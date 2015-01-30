@@ -133,7 +133,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         return "linux"
 
       if ami.osFamily then return ami.osFamily
-      CloudResources( constant.RESTYPE.AMI, @design.region() ).getOSFamily( ami.id )
+      CloudResources( @design.credentialId(), constant.RESTYPE.AMI, @design.region() ).getOSFamily( ami.id )
 
     initInstanceType : ()->
       for i in @getInstanceTypeList()
@@ -308,7 +308,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       null
 
     getAmi : ()->
-      ami = CloudResources( constant.RESTYPE.AMI, @design().region() ).get( @get("imageId") )
+      ami = CloudResources( @design().credentialId(), constant.RESTYPE.AMI, @design().region() ).get( @get("imageId") )
       if ami
         ami.toJSON()
       else
@@ -761,7 +761,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     # parameter could be uid or aws id
     # return uid and mid( memberId )
     getEffectiveId : ( instance_id ) ->
-      design = Design.instance()
+      design = @design()
 
       # The instance_id might be component uid or aws id
       if design.component( instance_id ) then return {uid:instance_id, mid:null}
@@ -777,7 +777,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
             if member and member.appId is instance_id
               return { uid : instance.id, mid : "#{member.id}_#{index + 1}" }
 
-      resource_list = CloudResources(constant.RESTYPE.ASG, Design.instance().region())
+      resource_list = CloudResources( design.credentialId(), constant.RESTYPE.ASG, design.region())
       for asg in Design.modelClassForType( constant.RESTYPE.ASG ).allObjects()
         data = resource_list.get(asg.get('appId'))?.toJSON()
         if not data or not data.Instances then continue

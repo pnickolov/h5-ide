@@ -51,7 +51,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             # Snapshot
             if volume_detail.snapshot_id
-                snapshot = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() ).get( volume_detail.snapshot_id )
+                snapshot = CloudResources( Design.instance().credentialId(), constant.RESTYPE.SNAP, Design.instance().region() ).get( volume_detail.snapshot_id )
                 if snapshot
                     volume_detail.snapshot_size = snapshot.get('volumeSize')
                     volume_detail.snapshot_desc = snapshot.get('description')

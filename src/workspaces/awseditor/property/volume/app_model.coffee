@@ -10,8 +10,8 @@ define [ '../base/model', 'Design', 'CloudResources', 'constant' ], ( PropertyMo
       deviceName = volComp.get 'name'
       appId = representMember.appId
 
-      instanceList = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
-      volumeList = CloudResources(constant.RESTYPE.VOL, Design.instance().region())
+      instanceList = CloudResources( Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
+      volumeList = CloudResources( Design.instance().credentialId(), constant.RESTYPE.VOL, Design.instance().region())
 
       if not instanceList then return null
 
@@ -49,7 +49,7 @@ define [ '../base/model', 'Design', 'CloudResources', 'constant' ], ( PropertyMo
           if not appId and myVolumeComponent.get( 'owner' ).type is constant.RESTYPE.LC
             volume = getVolRes myVolumeComponent
           else
-            volume = CloudResources(constant.RESTYPE.VOL, Design.instance().region()).get(appId)
+            volume = CloudResources( Design.instance().credentialId(), constant.RESTYPE.VOL, Design.instance().region()).get(appId)
             volume = volume.attributes
 
           if volume

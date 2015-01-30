@@ -25,7 +25,7 @@ define [ '../base/view'
 
     getAzSb: ->
       azSb = {}
-      sbAppResources = CloudResources(constant.RESTYPE.SUBNET, Design.instance().region())
+      sbAppResources = CloudResources(Design.instance().credentialId(), constant.RESTYPE.SUBNET, Design.instance().region())
 
       _.each @appModel.get('Subnets'), (sb) ->
           az = sb.SubnetAvailabilityZone.Name

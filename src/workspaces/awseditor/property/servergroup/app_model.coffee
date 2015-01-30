@@ -75,8 +75,8 @@ define [ '../base/model',
 			uid = @get( 'uid' )
 
 			comp          = Design.instance().component( uid )
-			resource_list = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region())
-			appData       = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(comp.get('appId'))?.toJSON()
+			resource_list = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
+			appData       = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region()).get(comp.get('appId'))?.toJSON()
 			name          = comp.get("name")
 
 			group = [{

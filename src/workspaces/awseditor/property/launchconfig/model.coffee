@@ -180,7 +180,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         true
 
     getAppLaunch : ( uid ) ->
-      lc_data = CloudResources(constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))?.toJSON()
+      lc_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))?.toJSON()
 
       this.set "ebsOptimized", @lc.get("ebsOptimized") + ""
       this.set 'name', @lc.get 'name'

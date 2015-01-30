@@ -16,7 +16,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             myElbComponent = Design.instance().component( uid )
 
-            elb = CloudResources(constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))
+            elb = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ELB, Design.instance().region()).get(myElbComponent.get("appId"))
             if not elb then return false
 
             elb = elb.toJSON()
@@ -118,7 +118,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                             regionName = regionComp.get('name')
 
                     if not regionName
-                        instanceModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(instanceId)
+                        instanceModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region()).get(instanceId)
                         if instanceModel
                             regionName = instanceModel.get('placement').availabilityZone if instanceModel.get('placement')
 

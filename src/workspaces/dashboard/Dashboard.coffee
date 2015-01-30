@@ -14,7 +14,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
       @view = new DashboardView({model:@})
       return
 
-    isReadOnly : ()-> false
+    isReadOnly : ()-> @scene.project.amIObserver()
 
     isWorkingOn : ( attr )-> attr.type is "Dashboard"
 

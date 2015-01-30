@@ -94,7 +94,7 @@ define [
             options = {} if not options
             @model = options.model
             @resModel = options.resModel
-            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.KP, Design.instance().get("region")
             @initModal()
             @modal.render()
             if App.user.hasCredential()

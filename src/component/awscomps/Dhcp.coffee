@@ -22,7 +22,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
     dhcpView = Backbone.View.extend
         constructor:(options)->
             @resModel = options?.resModel
-            @collection = CloudResources constant.RESTYPE.DHCP, Design.instance().region()
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
             @listenTo @collection, 'change', -> @renderManager()

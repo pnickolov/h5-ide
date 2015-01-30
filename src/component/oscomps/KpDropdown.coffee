@@ -11,7 +11,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       @template = selectTemplate
       @resModel = resModel
 
-      @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
+      @collection = CloudResources(Design.instance().credentialId(), constant.RESTYPE.OSKP, Design.instance().region())
       @listenTo @collection, 'update', @updateOption.bind(@)
 
       @

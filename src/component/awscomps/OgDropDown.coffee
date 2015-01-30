@@ -45,7 +45,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
 
             that = this
             regionName = Design.instance().region()
-            engineCol  = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+            engineCol  = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBENGINE, regionName
             ogComps    = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
 
             # only show default og from aws and custom og from stack

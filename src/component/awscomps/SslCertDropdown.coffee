@@ -6,7 +6,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
 
         initCol: ->
             region = Design.instance().region()
-            @sslCertCol = CloudResources constant.RESTYPE.IAM, region
+            @sslCertCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.IAM, region
             @sslCertCol.on 'update', @processCol, @
 
         initDropdown: ->

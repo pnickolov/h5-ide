@@ -6,8 +6,8 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
 
         initCol: ->
             region = Design.instance().region()
-            @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
-            @topicCol = CloudResources constant.RESTYPE.TOPIC, region
+            @subCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.SUBSCRIPTION, region
+            @topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
 
             @listenTo @topicCol, 'update', @processCol
             @listenTo @topicCol, 'change', @processCol

@@ -243,7 +243,7 @@ define [
             e.type is constant.RESTYPE.ASG).length
           dbInstance = _.filter comp, (e)->
             e.type is constant.RESTYPE.DBINSTANCE
-          snapshots = CloudResources(constant.RESTYPE.DBSNAP, app.get("region"))
+          snapshots = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBSNAP, app.get("region")
           awsError = null
           snapshots.fetchForce().fail (error)->
             awsError = error.awsError
@@ -261,7 +261,7 @@ define [
         defer.resolve()
         return defer.promise
       else
-        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         resourceList.fetchForce()
 
     stopApp : ( id )->
@@ -288,7 +288,7 @@ define [
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
-        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         if awsError and awsError isnt 403
           stopModal.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
@@ -312,7 +312,7 @@ define [
                 imageId = com.resource.ImageId
                 if imageId then toFetch[ imageId ] = true
             toFetchArray  = _.keys toFetch
-            amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
+            amiRes = CloudResources Design.instance().credentialId(), constant.RESTYPE.AMI, app.get("region")
             amiRes.fetchAmis( _.keys toFetch ).then ->
               hasInstanceStore = false
               amiRes.each (e)->
@@ -377,7 +377,7 @@ define [
 
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+      resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then (result)->
         self.__terminateApp(id, resourceList, terminateConfirm)
       .fail (error)->

@@ -6,8 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         initCol: ->
             region = Design.instance().region()
-            @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
-            @topicCol = CloudResources constant.RESTYPE.TOPIC, region
+            @subCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.SUBSCRIPTION, region
+            @topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
             @topicCol.on 'update', @processCol, @
             @subCol.on 'update', @processSubUpdate, @
 

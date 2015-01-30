@@ -6,7 +6,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     regionsMark = {}
     Backbone.View.extend
         constructor: ()->
-            @collection = CloudResources constant.RESTYPE.OSSNAP, Design.instance().region()
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.OSSNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
             @
@@ -24,7 +24,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
         bindVolumeSelection: ()->
             that = @
-            @volumes = CloudResources constant.RESTYPE.OSVOL, Design.instance().region()
+            @volumes = CloudResources Design.instance().credentialId(), constant.RESTYPE.OSVOL, Design.instance().region()
             @manager.$el.on 'select_change', "#snapshot-volume-choose", ->
               that.selectSnapshot()
             @manager.$el.on 'select_initialize', "#snapshot-volume-choose",->

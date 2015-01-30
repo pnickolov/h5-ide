@@ -14,107 +14,128 @@ define [
   "UI.tooltip"
 ], ( Scene, Template, ApiRequest, ApiRequestOs, ApiRequestDefs, Design, JsonViewer )->
 
-  # Design.Debugger
-  Design.debug = ()->
-    if not Design.instance() then return
+  window.d   = ()-> Design.instance()
+  window.dds = ()-> debug.designSerialize()
 
-    checkedMap   = {
-      "line"            : {}
-      "node"            : {}
-      "group"           : {}
-      "otherResource"   : {}
-      "otherConnection" : {}
-    }
-    for id, a of Design.instance().__componentMap
-      if a.node_group
-        checkedMap.group[ a.id ] = a
-      else if a.node_line
-        if a.isVisual()
-          checkedMap.line[ a.id ] = a
-        else
-          checkedMap.otherConnection[ a.id ] = a
-      else
-        if a.isVisual()
-          checkedMap.node[ a.id ] = a
-        else
-          checkedMap.otherResource[ a.id ] = a
+  window.debug = {
+    stacks : ()->
+      s = {}
+      for p in App.model.projects().models
+        s[id] = {
+          name   : p.name
+          stacks : []
+        }
+        for m in p.stacks().models
+          s[id].stacks.push m
+      s
 
-    checkedMap
+    apps : ()->
+      s = {}
+      for p in App.model.projects().models
+        s[id] = {
+          name : p.name
+          apps : []
+        }
+        for m in p.apps().models
+          s[id].apps.push m
+      s
 
-  Design.debug.selectedComp = ()->
-    s = App.sceneManager.activeScene()
-    if s.getAwakeSpace
-      s = s.getAwakeSpace()
-      if s.getSelectedComponent
-        return s.getSelectedComponent()
-    null
-
-  Design.debug.selectedCompState = ()->
-    comp = Design.debug.selectedComp()?.serialize()[1]
-    if comp and comp.component and comp.component.state
-      '{\n\t"component": {\n\t\t"init" : {\n\t\t\t"state": ' + JSON.stringify(comp.component.state) + '\n\t\t}\n\t}\n}\n'
-    else
-      "no state for selected component"
-
-  Design.debug.diff = ( e )->
-    if Design.instance()
-      JsonViewer.showDiffDialog( Design.instance().__opsModel.getJsonData(), d.serialize() )
-    return
-
-  Design.debug.json = ()->
-    if not Design.instance() then return
-
-    data = Design.instance().serialize()
-    console.log( data )
-    return JSON.stringify( data )
-
-  Design.debug.export = ()->
-    if not Design.instance() then return
-
-    filename = 'CanvasData.json'
-    data     = Design.debug.json()
-
-    blob = new Blob([data], {type: 'text/json'})
-    e    = document.createEvent('MouseEvents')
-    a    = document.createElement('a')
-
-    a.download = filename
-    a.href = window.URL.createObjectURL(blob)
-    a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
-    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-    a.dispatchEvent(e)
-    null
-
-  Design.debug.view = ()->
-    if not Design.instance() then return
-    JsonViewer.showViewDialog( Design.instance().serialize() )
-    return
-
-  Design.debug.checkValidDesign = ()->
-    d().eachComponent ( comp )->
-      if comp.design() is D.instance()
-        console.log "Valid design"
-      else
-        console.log "Invalid design"
+    selectedComp : ()->
+      s = App.sceneManager.activeScene()
+      if s.getAwakeSpace
+        s = s.getAwakeSpace()
+        if s.getSelectedComponent
+          return s.getSelectedComponent()
       null
-    null
 
-  Design.debug.autoLayout = ()->
-    App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+    selectedCompState : ()->
+      comp = debug.selectedComp()?.serialize()[1]
+      if comp and comp.component and comp.component.state
+        '{\n\t"component": {\n\t\t"init" : {\n\t\t\t"state": ' + JSON.stringify(comp.component.state) + '\n\t\t}\n\t}\n}\n'
+      else
+        "no state for selected component"
 
-  window.d    = ()-> Design.instance()
-  window.dd   = Design.debug
-  window.dget = ( a )-> Design.instance().get(a)
-  window.dset = ( a, b )-> Design.instance().set(a,b)
-  window.dds  = ()-> Design.debug.json()
+    designSerialize : ()->
+      if not Design.instance() then return
+
+      data = Design.instance().serialize()
+      console.log( data )
+      return JSON.stringify( data )
+
+    designCheckValid : ()->
+      Design.instance().eachComponent ( comp )->
+        if comp.design() is Design.instance()
+          console.log "Valid design"
+        else
+          console.log "Invalid design"
+        null
+      null
+
+    designExportToFile : ()->
+      if not Design.instance() then return
+
+      filename = 'CanvasData.json'
+      data     = Design.debug.json()
+
+      blob = new Blob([data], {type: 'text/json'})
+      e    = document.createEvent('MouseEvents')
+      a    = document.createElement('a')
+
+      a.download = filename
+      a.href = window.URL.createObjectURL(blob)
+      a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
+      e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+      a.dispatchEvent(e)
+      null
+
+    designDiff : ()->
+      if Design.instance()
+        JsonViewer.showDiffDialog( Design.instance().__opsModel.getJsonData(), d.serialize() )
+      return
+
+    designView : ()->
+      if not Design.instance() then return
+      JsonViewer.showViewDialog( Design.instance().serialize() )
+      return
+
+    designLayout : ()-> App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+
+    designSet : ( a, b )-> Design.instance()?.set(a,b)
+    designGet : ( a )->    Design.instance()?.get(a)
+
+    designComps : ()->
+      if not Design.instance() then return
+
+      checkedMap   = {
+        "line"            : {}
+        "node"            : {}
+        "group"           : {}
+        "otherResource"   : {}
+        "otherConnection" : {}
+      }
+      for id, a of Design.instance().__componentMap
+        if a.node_group
+          checkedMap.group[ a.id ] = a
+        else if a.node_line
+          if a.isVisual()
+            checkedMap.line[ a.id ] = a
+          else
+            checkedMap.otherConnection[ a.id ] = a
+        else
+          if a.isVisual()
+            checkedMap.node[ a.id ] = a
+          else
+            checkedMap.otherResource[ a.id ] = a
+
+      checkedMap
+  }
 
   window.man = "
   d()          Return the current Design instance \n
-  dd()         Print all components in current Design \n
-  dget(a)      Design att getter \n
-  dset(a,b)    Design att setter \n
   dds()        Print JSON \n
-  copy(dds())  Copy JSON"
+  copy(dds())  Copy JSON
+  debug        A object contains some debug functions.
+  "
   null
 
 
@@ -140,9 +161,9 @@ define [
       , 18
       return
 
-    DtDiff : ()-> dd.diff()
+    DtDiff : ()-> debug.designDiff()
 
-    DtView : ()-> dd.view()
+    DtView : ()-> debug.designView()
 
     DtApi  : ()-> new ApiDebugger()
 
@@ -195,7 +216,7 @@ define [
       else
         p = App.model.getPrivateProject()
 
-      for m in p.stacks().slice(0)
+      for m in p.stacks().models.slice(0)
         m.remove()
       @debug_q_close()
 
@@ -206,19 +227,19 @@ define [
       else
         p = App.model.getPrivateProject()
 
-      for m in p.apps().slice(0)
+      for m in p.apps().models.slice(0)
         m.remove()
       @debug_q_close()
 
     debug_q_clear_all_stack : ()->
       for p in App.model.projects().models
-        for m in p.stacks().slice(0)
+        for m in p.stacks().models.slice(0)
           m.remove()
       @debug_q_close()
 
     debug_q_clear_all_app   : ()->
       for p in App.model.projects().models
-        for m in p.apps().slice(0)
+        for m in p.apps().models.slice(0)
           m.terminate()
       @debug_q_close()
 

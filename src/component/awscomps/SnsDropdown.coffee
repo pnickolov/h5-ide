@@ -32,7 +32,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
                 @selection = options.selection
             @initCol()
             @initDropdown()
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @topicCol.fetch()
                 @subCol.fetch()
 
@@ -97,7 +97,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @topicCol.fetch()
                 @subCol.fetch()
                 if not @dropdown.$( '.item' ).length

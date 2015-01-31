@@ -326,7 +326,7 @@ define [
           width: '665px'
           compact: true
           confirm:
-            text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+            text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
 
       @renderKpDropdown(@modal)
@@ -351,7 +351,7 @@ define [
       self = @
       @modal.on 'confirm', ()=>
         @hideError()
-        if not App.user.hasCredential()
+        if not Design.instance().credential()
           App.showSettings App.showSettings.TAB.Credential
           return false
         # setUsage
@@ -371,7 +371,7 @@ define [
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
       @modal.listenTo App.user, 'change:credential', ->
-        if App.user.hasCredential() and that.modal.isOpen()
+        if Design.instance().credential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->
         that.modal.stopListening(App.user)
@@ -567,7 +567,7 @@ define [
           removeList: removeList
         })
         that.updateModal.tpl.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
-        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         cost = Design.instance().getCost()
         currency = Design.instance().getCurrency()
@@ -582,7 +582,7 @@ define [
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
         that.updateModal.on 'confirm', ->
-          if not App.user.hasCredential()
+          if not Design.instance().credential()
             App.showSettings App.showSettings.TAB.Credential
             return false
 

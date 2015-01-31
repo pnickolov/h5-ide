@@ -40,6 +40,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             @dropdown.on 'change', @setDHCP, @
             @dropdown.on 'filter', @filter, @
             @
+        initialize: ( options ) -> _.extend @, options
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @
@@ -52,7 +53,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 return false
             @renderDropdown()
         show: ->
-            if App.user.hasCredential()
+            if @workspace.opsModel.credential()
                 @render()
             else
                 @renderNoCredential()
@@ -126,7 +127,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetched = false
             @renderManager()
         renderManager: ->
-            if not App.user.hasCredential()
+            if not @workspace.opsModel.credential()
                 @manager?.render 'nocredential'
                 return false
             initManager = @initManager.bind @

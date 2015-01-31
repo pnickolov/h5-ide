@@ -427,10 +427,10 @@ define [
         maxHeight: "450px"
         cancel: "Close"
       cloudType = that.workspace.opsModel.type
-      that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+      that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
       if hasNewServer then appAction.renderKpDropdown(that.updateModal, cloudType)
       that.updateModal.on 'confirm', ->
-        if not App.user.hasCredential()
+        if not Design.instance().credential()
           App.showSettings App.showSettings.TAB.Credential
           return false
 
@@ -521,7 +521,7 @@ define [
           removeList: removeList
         })
         that.updateModal.setTitle(lang.IDE.UPDATE_APP_MODAL_TITLE)
-        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if App.user.hasCredential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+        that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
         window.setTimeout ->
           that.updateModal.resize()
@@ -532,7 +532,7 @@ define [
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
         that.updateModal.on 'confirm', ->
-          if not App.user.hasCredential()
+          if not Design.instance().credential()
             App.showSettings App.showSettings.TAB.Credential
             return false
 

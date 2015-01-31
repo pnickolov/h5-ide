@@ -91,24 +91,24 @@ define [
 
 
         initialize: ( options ) ->
-            options = {} if not options
-            @model = options.model
-            @resModel = options.resModel
+            _.extend @, options
+
             @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.KP, Design.instance().get("region")
             @initModal()
             @modal.render()
-            if App.user.hasCredential()
+
+            if Design.instance().credential()
                 that = @
                 @collection.fetch().then ->
-                  that.renderKeys()
+                    that.renderKeys()
             else
-              @modal.render 'nocredential'
+                @modal.render 'nocredential'
 
             @collection.on 'update', @renderKeys, @
 
         renderKeys: () ->
             if not @collection.isReady()
-              return false
+                return false
             data = keys : @collection.toJSON()
             @modal.setContent template.keys data
             @

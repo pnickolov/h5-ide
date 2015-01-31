@@ -59,7 +59,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
         $("#WelcomeSkipWarning").hide()
 
       skipDone : ()->
-        if not App.user.hasCredential()
+        if not Design.instance().credential()
           @done()
           return
 
@@ -76,7 +76,7 @@ define [ "./WelcomeTpl", "UI.modalplus", 'i18n!/nls/lang.js', "backbone" ], ( We
       done : ()->
         $("#WelcomeSettings, #WelcomeSkipWarning, #WelcomeCredUpdate").hide()
         $("#WelcomeDoneWrap").show()
-        if App.user.hasCredential()
+        if Design.instance().credential()
           $("#WelcomeDoneTitDemo").hide()
           $("#WelcomeDoneTit").children("span").text( App.user.get("account") )
         else

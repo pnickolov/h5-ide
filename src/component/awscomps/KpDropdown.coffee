@@ -67,7 +67,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             @initDropdown()
 
         show: () ->
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 def = null
                 if not regions[Design.instance().get("region")] and @collection.isReady()
                     regions[Design.instance().get("region")] = true

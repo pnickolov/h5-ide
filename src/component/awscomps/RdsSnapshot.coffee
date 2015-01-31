@@ -119,7 +119,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'checked', @processDuplicate, @
 
             @manager.render()
-            if not App.user.hasCredential()
+            if not Design.instance().credential()
                 @manager?.render 'nocredential'
                 return false
             @initManager()

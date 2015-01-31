@@ -7,7 +7,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         initCol: ->
             region = Design.instance().region()
             @sslCertCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.IAM, region
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @
             @sslCertCol.on 'change', @processCol, @
@@ -228,7 +228,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         render: ->
 
             @modal.render()
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -318,7 +318,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
         show: ->
 
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @sslCertCol.fetch()
                 @processCol()
             else

@@ -49,7 +49,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager.on 'checked', @processReset, @
 
       @manager.render()
-      if not App.user.hasCredential()
+      if not Design.instance().credential()
         @manager?.render 'nocredential'
         return false
       @initManager()
@@ -395,7 +395,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @dropdown.on 'change', (@setParameterGroup.bind @), @
       @dropdown
     initDropdown: ->
-      if App.user.hasCredential()
+      if Design.instance().credential()
         @renderDefault()
       else
         @renderNoCredential()

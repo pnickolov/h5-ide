@@ -472,23 +472,29 @@ define [
       return
 
     resourcesMenuClick : (event) ->
-          $currentDom = $(event.currentTarget)
-          currentAction = $currentDom.data('action')
-          switch currentAction
-              when 'keypair'
-                  new keypairManager().render()
-              when 'snapshot'
-                  new EbsSnapshotManager().render()
-              when 'sns'
-                  new snsManager().render()
-              when 'sslcert'
-                  new sslCertManager().render()
-              when 'dhcp'
-                  (new dhcpManager()).manageDhcp()
-              when 'rdspg'
-                  new rdsPgManager().render()
-              when 'rdssnapshot'
-                  new rdsSnapshot().render()
+      $currentDom = $(event.currentTarget)
+      currentAction = $currentDom.data('action')
+
+      switch currentAction
+        when 'keypair'
+          manager = keypairManager
+        when 'snapshot'
+          manager = EbsSnapshotManager
+        when 'sns'
+          manager = snsManager
+        when 'sslcert'
+          manager = sslCertManager
+        when 'dhcp'
+          manager = dhcpManager
+        when 'rdspg'
+          manager = rdsPgManager
+        when 'rdssnapshot'
+          manager = rdsSnapshot
+
+      if manager is dhcpManager
+        new manager( workspace: @workspace ).manageDhcp()
+      else
+        new manager( workspace: @workspace ).render()
 
     startDrag : ( evt )->
       if evt.button isnt 0 then return false

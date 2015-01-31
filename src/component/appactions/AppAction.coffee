@@ -56,7 +56,7 @@ define [
         disableClose: true
         width: '450px'
         confirm:
-          text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+          text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
           disabled: true
       if cloudType is OpsModel.Type.OpenStack
         @modal.find(".estimate").hide()
@@ -80,7 +80,7 @@ define [
       self = @
       @modal.on 'confirm', ()=>
         @hideError()
-        if not App.user.hasCredential()
+        if not Design.instance().credential()
           App.showSettings App.showSettings.TAB.Credential
           return false
         # setUsage
@@ -100,7 +100,7 @@ define [
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
       App.user.on 'change:credential', ->
-        if App.user.hasCredential() and that.modal.isOpen()
+        if Design.instance().credential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->
         App.user.off 'change:credential'
@@ -522,7 +522,7 @@ define [
             template: updateDom
             disableClose: true
             confirm:
-              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
               disabled: true
           )
           paymentModal.find('.modal-footer').hide()

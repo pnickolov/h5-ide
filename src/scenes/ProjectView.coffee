@@ -95,6 +95,8 @@ define [ "ApiRequest",
 
         modal.tpl.on "click", ".new-project-create", ()->
 
+          modal.tpl.find(".new-project-err").hide()
+
           $create = modal.tpl.find(".new-project-create")
 
           $name = modal.tpl.find(".new-project-name")

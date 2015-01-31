@@ -140,7 +140,7 @@ define ['backbone',
                 that.isAdmin = that.memberCol.getCurrentMember()?.get('role') is 'admin'
                 data = that.memberCol.toJSON()
             .fail (data) ->
-                notification 'error', data.result
+                notification 'error', (data.result or data.msg)
                 that.$el.find('.loading-spinner').addClass('hide')
             .done () ->
                 that.renderMain()

@@ -82,6 +82,62 @@
       height: 100%;
     }
   }
+
+}
+
+.new-project-modal {
+  .new-project-name {
+      margin-left: 5px;
+      width: 290px;
+  }
+  .new-project-item {
+      display: block;
+      margin-top: 15px;
+      margin-right: 5px;
+      span {
+          display: block;
+          margin-bottom: 5px;
+      }
+  }
+  .new-project-item-owner {
+      input {
+          width: 80px;
+      }
+      input.new-project-fn {
+          margin-right: 5px;
+      }
+      display: inline-block;
+  }
+  .new-project-item-email {
+      display: inline-block;
+  }
+  .new-project-item-card {
+      display: inline-block;
+      input {
+          width: 195px;
+      }
+  }
+  .new-project-item-cvv {
+      display: inline-block;
+      input {
+          width: 40px;
+      }
+  }
+  .new-project-item-date {
+      display: inline-block;
+      input {
+          width: 75px;
+      }
+  }
+  .new-project-item-zip {
+      input{
+          width: 195px;
+      }
+  }
+  .new-project-support {
+      float: left;
+      margin-top: 5px;
+  }
 }
 
 .ws-tabbar {

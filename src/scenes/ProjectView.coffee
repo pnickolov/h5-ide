@@ -1,6 +1,16 @@
 
 
-define [ "ApiRequest", "./ProjectTpl", "UI.modalplus", "i18n!/nls/lang.js", "constant", "backbone", "jquerysort" ], ( ApiRequest, ProjectTpl, Modal, lang, constant )->
+define [ "ApiRequest",
+    "./ProjectTpl",
+    "UI.modalplus",
+    "i18n!/nls/lang.js",
+    "constant",
+    "backbone",
+    "jquerysort"
+    "UI.parsley",
+    "UI.errortip",
+    "MC.validate"
+], ( ApiRequest, ProjectTpl, Modal, lang, constant )->
 
   Backbone.View.extend {
 
@@ -78,28 +88,55 @@ define [ "ApiRequest", "./ProjectTpl", "UI.modalplus", "i18n!/nls/lang.js", "con
           title         : "Create new project"
           disableClose  : true
           disableFooter : true
-          width         : 530
+          width         : "500px"
         }
         modal.tpl.on "click", ".new-project-cancel", ()->
           modal.close()
 
         modal.tpl.on "click", ".new-project-create", ()->
-          App.model.createProject({
-            name      : modal.tpl.find(".new-project-name").val()
-            firstname : modal.tpl.find(".new-project-fn").val()
-            lastname  : modal.tpl.find(".new-project-ln").val()
-            email     : modal.tpl.find(".new-project-email").val()
-            card      : {
-              number : modal.tpl.find(".new-project-card").val()
-              expire : modal.tpl.find(".new-project-date").val()
-              cvv    : modal.tpl.find(".new-project-cvv").val()
-            }
-          }).then ( project )->
-            modal.close()
-            App.loadUrl( project.url() )
-          , ( error )->
-            modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
-            return
+
+          $create = modal.tpl.find(".new-project-create")
+
+          $name = modal.tpl.find(".new-project-name")
+          $firstname = modal.tpl.find(".new-project-fn")
+          $lastname = modal.tpl.find(".new-project-ln")
+          $email = modal.tpl.find(".new-project-email")
+          $number = modal.tpl.find(".new-project-card")
+          $expire = modal.tpl.find(".new-project-date")
+          $cvv = modal.tpl.find(".new-project-cvv")
+          valid = true
+
+          modal.tpl.find("input").each (idx, dom) ->
+            if not $(dom).parsley('validate')
+                valid = false
+                return false
+          if valid
+              $create.prop 'disabled', true
+              App.model.createProject({
+                name      : $name.val()
+                firstname : $firstname.val()
+                lastname  : $lastname.val()
+                email     : $email.val()
+                card      : {
+                  number : $number.val()
+                  expire : $expire.val()
+                  cvv    : $cvv.val()
+                }
+              }).then ( project )->
+                modal.close()
+                App.loadUrl( project.url() )
+              .fail ( error )->
+                try
+                  msgObj = JSON.parse(error.result)
+                  if _.isArray(msgObj.errors)
+                    _.each msgObj.errors, (msg) ->
+                      notification 'error', msg
+                catch err
+                  notification 'error', error.result
+                modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
+                return
+              .done () ->
+                $create.prop 'disabled', false
 
       return
 

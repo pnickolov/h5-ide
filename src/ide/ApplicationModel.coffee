@@ -68,8 +68,8 @@ define [
         email        : attr.email
         credit_card  : {
           full_number      : attr.card.number
-          expiration_month : attr.card.expire.split("/")[0]
-          expiration_year  : attr.card.expire.split("/")[1]
+          expiration_month : attr.card.expire.split("/")[0] or ""
+          expiration_year  : attr.card.expire.split("/")[1] or ""
           cvv              : attr.card.cvv
         }
       }).then ( projectObj )->

@@ -266,6 +266,10 @@
 
   font-size : 12px;
 
+  li > a.selected {
+    pointer-events:none;
+  }
+
   li > a {
     display : block;
     padding : 0 20px;

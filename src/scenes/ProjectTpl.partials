@@ -43,7 +43,7 @@
 
 <!-- {{projectList}} -->
 <ul class="header-popup hp-project-list">
-  {{#each this}}<li><a class="route" href="{{url}}">{{name}}</a><a class="route icon-info" href="settings/{{id}}/member"></a></li>{{/each}}
+  {{#each this}}<li><a class="route{{#if selected}} selected{{/if}}" href="{{url}}">{{name}}</a><a class="route icon-info" href="settings/{{id}}/member"></a></li>{{/each}}
   <li class="create-new-project padding">Create New Project</li>
 </ul>
 
@@ -89,10 +89,6 @@
     <span>Expriation Date</span>
     <input class="input new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
   </div>
-  <!-- <div class="new-project-item new-project-item-zip">
-    <span>Billing Zip Code</span>
-    <input class="input new-project-zip" type="text">
-  </div> -->
   <div class="modal-footer">
     <span class="new-project-support">Secure Payment Powered by Chargify</span>
     <button class="btn new-project-create btn-blue">Create</button>

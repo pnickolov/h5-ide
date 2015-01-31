@@ -72,14 +72,15 @@ define [ "ApiRequest",
     popupProject : ()->
       projects = []
       for p in App.model.projects().models
-        if p isnt @scene.project
-          projects.push {
-            id   : p.id
-            url  : p.url()
-            name : p.get("name")
-          }
+        projects.push {
+          id   : p.id
+          url  : p.url()
+          name : p.get("name")
+          selected : p is @scene.project
+          private : p.isPrivate()
+        }
 
-      projects = _.sortBy projects, ( p )-> p.name
+      projects = _.sortBy projects, ( p )-> if p.private then "*" else p.name
 
       $popup = @showPopup( ProjectTpl.projectList( projects ) )
       $popup.on "mouseup", ".create-new-project", ()->

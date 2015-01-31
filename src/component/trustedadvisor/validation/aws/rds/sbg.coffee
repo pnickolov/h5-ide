@@ -1,4 +1,4 @@
-define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant, MC, Design, Helper, CloudResources ) ->
+define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helper ) ->
     i18n = Helper.i18n.short()
 
     isSbgHasSbin2Az = ( uid ) ->
@@ -11,7 +11,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
 
         azs = _.map sbs, ( sb ) -> sb.parent()
         uniqAzCount = _.uniq( azs ).length
-        
+
         if Design.instance().region() in ['cn-north-1']
             minAZCount = 1
         else

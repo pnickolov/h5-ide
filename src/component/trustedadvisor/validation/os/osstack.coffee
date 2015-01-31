@@ -52,6 +52,8 @@ define [
             newMap = {}
             limitMap = {}
 
+            credentialId = Design.instance().credentialId()
+
             _.each [
                 constant.RESTYPE.OSPORT,
                 constant.RESTYPE.OSFIP,
@@ -61,7 +63,7 @@ define [
             ], (type) ->
 
                 typeShortMap[type] =
-                existMap[type] = CloudResources(type, region).length
+                existMap[type] = CloudResources(credentialId, type, region).length
                 newMap[type] = getNewCount(type)
 
             limitMap[constant.RESTYPE.OSPORT]       = quotaMap['Neutron::port']

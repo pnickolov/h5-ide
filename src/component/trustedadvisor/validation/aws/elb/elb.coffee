@@ -455,7 +455,7 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 			# if have cert, fetch aws cert res and check if exist
 			if haveCert
 
-				sslCertCol = CloudResources constant.RESTYPE.IAM, Design.instance().region()
+				sslCertCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.IAM, Design.instance().region()
 
 				sslCertCol.fetchForce().then (result) ->
 

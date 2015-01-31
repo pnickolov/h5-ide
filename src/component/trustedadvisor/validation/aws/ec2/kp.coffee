@@ -65,7 +65,7 @@ define [
 		else
 			region = Design.instance().region()
 
-			kpCollection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+			kpCollection = CloudResources(Design.instance().credentialId(), constant.RESTYPE.KP, Design.instance().get("region"))
 			kpCollection.fetchForce().then ( col ) ->
 				kpList = col.toJSON()
 				_.each needValidate, ( i ) ->

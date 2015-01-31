@@ -39,7 +39,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper', 'CloudResources' ], ( constant,
                 region = Design.instance().get('region')
                 regionName = constant.REGION_SHORT_LABEL[region]
 
-                ogModels = CloudResources constant.RESTYPE.DBOG, region
+                ogModels = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBOG, region
                 ogModels.fetchForce().then (ogCol) ->
                     customOgAry = ogCol.filter (model) -> model.get('id').indexOf('default:') isnt 0
                     if customOgAry.length + customOGModels.length > 20

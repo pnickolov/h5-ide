@@ -232,9 +232,14 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 draggable = false
                 modal.find(".modal-header h3").mousedown (e)->
                     draggable = true
-                    originalLayout = modal.tpl.offset()
-                    diffX = originalLayout.left - e.clientX
-                    diffY = originalLayout.top - e.clientY
+                    if e.which
+                        if e.which is 3 then draggable = false
+                    else if e.button and e.button is 2 then draggable = false
+                    console.log draggable
+                    if draggable
+                        originalLayout = modal.tpl.offset()
+                        diffX = originalLayout.left - e.clientX
+                        diffY = originalLayout.top - e.clientY
                 $(document).mousemove (e)->
                     if draggable
                         modal.tpl.css

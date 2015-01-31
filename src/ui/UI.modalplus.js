@@ -236,9 +236,19 @@
           modal.find(".modal-header h3").mousedown(function(e) {
             var originalLayout;
             draggable = true;
-            originalLayout = modal.tpl.offset();
-            diffX = originalLayout.left - e.clientX;
-            return diffY = originalLayout.top - e.clientY;
+            if (e.which) {
+              if (e.which === 3) {
+                draggable = false;
+              }
+            } else if (e.button && e.button === 2) {
+              draggable = false;
+            }
+            console.log(draggable);
+            if (draggable) {
+              originalLayout = modal.tpl.offset();
+              diffX = originalLayout.left - e.clientX;
+              return diffY = originalLayout.top - e.clientY;
+            }
           });
           $(document).mousemove(function(e) {
             var _base, _base1, _ref;

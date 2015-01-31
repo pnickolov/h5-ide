@@ -4051,3 +4051,9 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     background: rgba(100, 100, 100, 0.5); }
 *::-webkit-scrollbar-corner {
   background: none; }
+
+.dropdown-menu {
+  display: none; }
+
+.open .dropdown-menu {
+  display: block; }

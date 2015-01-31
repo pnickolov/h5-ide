@@ -104,7 +104,7 @@
 
 <!--{{usage}}-->
 <section id="UsageTab">
-    <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}{{formatTime paymentUpdate.last_billing_time "yyyy-MM-d"}}{{i18n "PAYMENT_CURRENT_USAGE_SPAN"}}</h5>
+    <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}</h5>
     <div class="current-usage-block">
         <h3>142</h3>
         <p>Instance Hour</p>

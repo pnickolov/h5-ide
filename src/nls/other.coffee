@@ -1645,12 +1645,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "无付费事件。"
 
     PAYMENT_CURRENT_USAGE:
-      en: "Current Usage <span class='billing_start_from'> Since"
-      zh: "当前用量<span class='billing_start_from'>自从"
-
-    PAYMENT_CURRENT_USAGE_SPAN:
-      en: "</span>"
-      zh: "</span>"
+      en: "Current Usage"
+      zh: "当前用量"
 
     BUBBLE_DNSNAME:
       en: "DNS Name"

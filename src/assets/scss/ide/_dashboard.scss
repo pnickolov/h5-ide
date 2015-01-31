@@ -16,17 +16,17 @@
   width: 100%;
   height: 38px;
 
-  > .hovermenu {
+  .hovermenu {
     height : 38px;
   }
 
-  > .btn, > .hovermenu {
+  .btn.icon-visualize, .hovermenu {
     float       : left;
     margin-left : 10px;
     position    : relative;
   }
 
-  > .btn, .hovermenu > .btn {
+  .btn {
     height      : 36px;
     line-height : 36px;
     overflow    : hidden;
@@ -125,7 +125,7 @@
     }
   }
 
-
+  .observer-visible { line-height: 38px; }
 }
 
 .import-cf-notice {
@@ -194,7 +194,14 @@
 
 
 /* Dashboard */
-$dashboardSidebarWidth : 400px;
+.observer-visible { display : none; }
+.observer {
+  .observer-visible { display : block; }
+  .observer-hidden  { display : none; }
+}
+
+
+$dashboardSidebarWidth : 300px;
 
 .dashboard-wrapper {
   position : absolute;

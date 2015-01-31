@@ -12,10 +12,14 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       @setElement $( Template({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
+
+      @render()
       return
 
     render : ()->
       # Update the dashboard in this method.
+      @$el.toggleClass "observer", @model.isReadOnly()
+      return
 
     createStack : ( evt )->
       $tgt = $( evt.currentTarget )

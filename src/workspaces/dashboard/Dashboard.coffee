@@ -12,6 +12,8 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
 
     initialize : ()->
       @view = new DashboardView({model:@})
+
+      @listenTo @scene.project, "change:myRole", ()-> @view.render()
       return
 
     isReadOnly : ()-> @scene.project.amIObserver()

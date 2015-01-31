@@ -3167,13 +3167,13 @@ div.modal-text-highlight {
   box-shadow: 1px 5px 5px rgba(22, 22, 23, 0.1);
   width: 100%;
   height: 38px; }
-  .dashboard-header > .hovermenu {
+  .dashboard-header .hovermenu {
     height: 38px; }
-  .dashboard-header > .btn, .dashboard-header > .hovermenu {
+  .dashboard-header .btn.icon-visualize, .dashboard-header .hovermenu {
     float: left;
     margin-left: 10px;
     position: relative; }
-  .dashboard-header > .btn, .dashboard-header .hovermenu > .btn {
+  .dashboard-header .btn {
     height: 36px;
     line-height: 36px;
     overflow: hidden;
@@ -3181,9 +3181,9 @@ div.modal-text-highlight {
     color: #fff;
     font-size: 16px;
     padding: 0 16px 0 0; }
-    .dashboard-header > .btn[disabled], .dashboard-header .hovermenu > .btn[disabled] {
+    .dashboard-header .btn[disabled] {
       color: #999; }
-    .dashboard-header > .btn:before, .dashboard-header .hovermenu > .btn:before {
+    .dashboard-header .btn:before {
       width: 36px;
       height: 36px;
       line-height: 36px;
@@ -3246,6 +3246,8 @@ div.modal-text-highlight {
       animation: rotation .6s infinite linear; }
       .dashboard-header .icon-refresh.reloading:before {
         margin: 0; }
+  .dashboard-header .observer-visible {
+    line-height: 38px; }
 
 .import-cf-notice {
   color: #ffbb0d;
@@ -3296,6 +3298,14 @@ div.modal-text-highlight {
     text-decoration: underline; }
 
 /* Dashboard */
+.observer-visible {
+  display: none; }
+
+.observer .observer-visible {
+  display: block; }
+.observer .observer-hidden {
+  display: none; }
+
 .dashboard-wrapper {
   position: absolute;
   top: 58px;
@@ -3304,7 +3314,7 @@ div.modal-text-highlight {
   right: 0; }
 
 aside.dashboard-sidebar {
-  width: 400px;
+  width: 300px;
   height: 100%;
   overflow-y: scroll;
   position: absolute;
@@ -3313,7 +3323,7 @@ aside.dashboard-sidebar {
   background: red; }
 
 article.dashboard-content {
-  margin-right: 400px;
+  margin-right: 300px;
   background: yellow;
   height: 100%; }
 
@@ -9550,8 +9560,8 @@ h5.billing_usage_title {
     top: 60px;
     bottom: 0;
     width: 100%;
-    overflow-y: scroll;
-    overflow-x: scroll; }
+    overflow-y: auto;
+    overflow-x: hidden; }
   .hp-asset-list .off-canvas-tab {
     float: left;
     height: 100%;
@@ -9572,6 +9582,26 @@ h5.billing_usage_title {
     background: #111;
     border-radius: 5px;
     font-size: 12px; }
+  .hp-asset-list ul > li:hover {
+    background: none; }
+  .hp-asset-list .nav-group-title {
+    height: 35px;
+    line-height: 35px;
+    color: #999;
+    padding: 0 17px;
+    font-size: 14px; }
+  .hp-asset-list .nav-item-list > a {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    display: block;
+    padding: 0 22px 0 48px;
+    color: #ccc;
+    font-size: 13px;
+    cursor: pointer;
+    background-position: 18px 11px; }
+    .hp-asset-list .nav-item-list > a:hover {
+      background-color: rgba(0, 0, 0, 0.5); }
 
 .hp-usermenu {
   left: auto;

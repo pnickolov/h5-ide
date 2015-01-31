@@ -43,8 +43,13 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
           @updateUsage()
           return @
-      , ()->
-        notification 'error', "Error while getting user payment info, please try again later."
+      , (err)->
+        if err.error is -404
+          noSubscription = true 
+          billingTemplate = template.billingTemplate {noSubscription}
+          that.$el.find("#billing-status").html billingTemplate
+        else
+          notification 'error', "Error while getting user payment info, please try again later."
       @
 
 

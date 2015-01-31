@@ -44,7 +44,9 @@ define [
 
             @
 
-        renderLoading: -> @$el.html TplBasicSettings.loading
+        renderLoading: ->
+            @$el.html TplBasicSettings.loading
+            @modal.toggleFooter()
 
         deferConfirmProjectName: ( e ) -> _.defer _.bind @confirmProjectName, @, e
 
@@ -127,11 +129,10 @@ define [
             @confirmModal.on 'confirm', ->
                 @confirmModal.renderLoading()
                 @model.destroy().then ->
-                    that.remove()
                     that.settingsView.remove()
                 , ->
+                    that.confirmModal.remove()
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
-                    that.confirmModal.render()
             , @
 
             @
@@ -143,11 +144,10 @@ define [
             @confirmModal.on 'confirm', =>
                 @confirmModal.renderLoading()
                 @model.leave().then ->
-                    that.remove()
                     that.settingsView.remove()
                 , ->
+                    that.confirmModal.remove()
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
-                    that.confirmModal.render()
             , @
 
             @

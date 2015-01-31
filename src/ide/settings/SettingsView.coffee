@@ -77,9 +77,12 @@ define [
             @renderSettings()
 
         renderProject: ( project, tab ) ->
-            @$el.html new ProjectView( model: project, settingsView: @ ).render(tab).el
+            @projectView?.remove()
+            @projectView = new ProjectView( model: project, settingsView: @ )
+            @$el.html @projectView.render(tab).el
 
         remove: ->
+            @projectView?.remove()
             @modal?.close()
             Backbone.View.prototype.remove.apply @, arguments
 

@@ -8,7 +8,8 @@ define [
 
     confirmModalView = Backbone.View.extend
         events:
-            'keyup  #confirm-project-name' : 'confirmProjectName'
+            'keyup #confirm-project-name' : 'confirmProjectName'
+            'paste #confirm-project-name' : 'deferConfirmProjectName'
 
         initialize: ( options ) ->
             if options and options.projectName then @projectName = options.projectName
@@ -45,12 +46,13 @@ define [
 
         renderLoading: -> @$el.html TplBasicSettings.loading
 
+        deferConfirmProjectName: ( e ) -> _.defer _.bind @confirmProjectName, @, e
+
         confirmProjectName: ( e ) ->
             if e.currentTarget.value is @projectName
                  @modal.toggleConfirm false
             else
                 @modal.toggleConfirm true
-
 
         remove: () ->
             @modal?.close()

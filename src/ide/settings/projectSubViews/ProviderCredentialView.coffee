@@ -13,6 +13,7 @@ define [
     credentialFormView = Backbone.View.extend
         events:
             'keyup input' : 'updateSubmitBtn'
+            'paste input' : 'deferUpdateSubmitBtn'
 
         initialize: ( options ) ->
             _.extend @, options
@@ -56,6 +57,8 @@ define [
         remove: ->
             @modal?.close()
             Backbone.View.prototype.remove.apply @, arguments
+
+        deferUpdateSubmitBtn: ( e ) -> _.defer _.bind @updateSubmitBtn, @, e
 
         updateSubmitBtn : ()->
             d = @getData()

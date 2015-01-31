@@ -53,7 +53,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
                 return false
             @renderDropdown()
         show: ->
-            if @workspace.opsModel.credential()
+            if Design.instance().credential()
                 @render()
             else
                 @renderNoCredential()
@@ -127,7 +127,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             fetched = false
             @renderManager()
         renderManager: ->
-            if not @workspace.opsModel.credential()
+            if not Design.instance().credential()
                 @manager?.render 'nocredential'
                 return false
             initManager = @initManager.bind @

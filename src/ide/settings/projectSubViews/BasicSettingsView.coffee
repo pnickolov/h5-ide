@@ -129,7 +129,8 @@ define [
             @confirmModal.on 'confirm', ->
                 @confirmModal.renderLoading()
                 @model.destroy().then ->
-                    that.settingsView.remove()
+                    that.remove()
+                    that.settingsView.backToSettings()
                 , ->
                     that.confirmModal.remove()
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
@@ -144,7 +145,8 @@ define [
             @confirmModal.on 'confirm', =>
                 @confirmModal.renderLoading()
                 @model.leave().then ->
-                    that.settingsView.remove()
+                    that.remove()
+                    that.settingsView.backToSettings()
                 , ->
                     that.confirmModal.remove()
                     notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE

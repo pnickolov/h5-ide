@@ -373,7 +373,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         self.__models.push imageId
 
         if ami
-          CloudResources( @credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
+          CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
 
         self.trigger "update"
         self

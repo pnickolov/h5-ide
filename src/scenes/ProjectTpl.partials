@@ -69,6 +69,7 @@
     Provide billing information to create a collaborative project. <br>
     You will only be charged when instance hour is comsumed in this project.
   </div>
+  <div class="new-project-err"></div>
   <div class="new-project-item new-project-item-owner">
     <span>Billing Owner</span>
     <input class="input new-project-fn" type="text" placeholder="First Name" data-required="true">

@@ -129,11 +129,10 @@ define [ "ApiRequest",
                 try
                   msgObj = JSON.parse(error.result)
                   if _.isArray(msgObj.errors)
-                    _.each msgObj.errors, (msg) ->
-                      notification 'error', msg
+                    modal.tpl.find(".new-project-err").show().html msgObj.errors.join('<br/>')
                 catch err
                   notification 'error', error.result
-                modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
+                # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
                 return
               .done () ->
                 $create.prop 'disabled', false

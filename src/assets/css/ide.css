@@ -9388,7 +9388,7 @@ h5.billing_usage_title {
 
 .new-project-modal .new-project-name {
   margin-left: 5px;
-  width: 290px; }
+  width: 350px; }
 .new-project-modal .new-project-item {
   display: block;
   margin-top: 15px;
@@ -9404,6 +9404,8 @@ h5.billing_usage_title {
     margin-right: 5px; }
 .new-project-modal .new-project-item-email {
   display: inline-block; }
+  .new-project-modal .new-project-item-email input {
+    width: 200px; }
 .new-project-modal .new-project-item-card {
   display: inline-block; }
   .new-project-modal .new-project-item-card input {
@@ -9411,16 +9413,29 @@ h5.billing_usage_title {
 .new-project-modal .new-project-item-cvv {
   display: inline-block; }
   .new-project-modal .new-project-item-cvv input {
-    width: 40px; }
+    width: 50px; }
 .new-project-modal .new-project-item-date {
   display: inline-block; }
   .new-project-modal .new-project-item-date input {
-    width: 75px; }
+    width: 115px; }
 .new-project-modal .new-project-item-zip input {
   width: 195px; }
 .new-project-modal .new-project-support {
   float: left;
   margin-top: 5px; }
+.new-project-modal .new-project-err {
+  background-color: red;
+  color: white;
+  border-radius: 3px;
+  padding: 5px;
+  margin-top: 10px;
+  display: none; }
+.new-project-modal .new-project-info {
+  color: #bc7300;
+  border-radius: 3px;
+  padding: 5px;
+  border: 1px #bc7300 solid;
+  margin-top: 10px; }
 
 .ws-tabbar {
   margin-left: 166px;

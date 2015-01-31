@@ -88,7 +88,7 @@
 .new-project-modal {
   .new-project-name {
       margin-left: 5px;
-      width: 290px;
+      width: 350px;
   }
   .new-project-item {
       display: block;
@@ -110,6 +110,9 @@
   }
   .new-project-item-email {
       display: inline-block;
+      input {
+          width: 200px;
+      }
   }
   .new-project-item-card {
       display: inline-block;
@@ -120,13 +123,13 @@
   .new-project-item-cvv {
       display: inline-block;
       input {
-          width: 40px;
+          width: 50px;
       }
   }
   .new-project-item-date {
       display: inline-block;
       input {
-          width: 75px;
+          width: 115px;
       }
   }
   .new-project-item-zip {
@@ -137,6 +140,21 @@
   .new-project-support {
       float: left;
       margin-top: 5px;
+  }
+  .new-project-err {
+      background-color: red;
+      color: white;
+      border-radius: 3px;
+      padding: 5px;
+      margin-top: 10px;
+      display: none;
+  }
+  .new-project-info {
+    color: #bc7300;
+    border-radius: 3px;
+    padding: 5px;
+    border: 1px #bc7300 solid;
+    margin-top: 10px;
   }
 }
 

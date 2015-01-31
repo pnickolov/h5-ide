@@ -25,19 +25,17 @@
     <ul data-id="app" class="hide">
       {{#each apps}}<li>
         <h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
-        <ul class="nav-item-list">
-        {{#each data}}
-          <li><a class="route truncate nav-truncate icon-app-{{#if progressing}}pending{{else}}{{ tolower stateDesc }}{{/if}}" href="{{url}}" title="{{name}} [{{stateDesc}}]">{{name}}{{#if usage}}<i class="icon-app-type-{{usage}}"></i></a>{{/if}}</li>
-        {{/each}}
-        </ul>
+        <nav class="nav-item-list">
+        {{#each data}}<a class="route truncate icon-app-{{#if progressing}}pending{{else}}{{ tolower stateDesc }}{{/if}}" href="{{url}}" title="{{name}} [{{stateDesc}}]">{{name}}{{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}</a>{{/each}}
+        </nav>
       </li>{{else}}<div class="nav-empty">{{ i18n "DASH_LBL_NO_APP" }}</div>{{/each}}
     </ul>
     <ul data-id="stack">
       {{#each stacks}}<li>
         <h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
-        <ul class="nav-item-list">
-        {{#each data}}<li><a class="route icon-stack-nav truncate nav-truncate" href="{{url}}">{{name}}</a></li>{{/each}}
-        </ul>
+        <nav class="nav-item-list">
+        {{#each data}}<a class="route icon-stack-nav truncate" href="{{url}}">{{name}}</a>{{/each}}
+        </nav>
       </li>{{else}}<div class="nav-empty">{{ i18n "DASH_LBL_NO_STACK" }}</div>{{/each}}
     </ul>
   </div>

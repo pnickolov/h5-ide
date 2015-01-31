@@ -319,8 +319,8 @@
     top        : 60px;
     bottom     : 0;
     width      : 100%;
-    overflow-y : scroll;
-    overflow-x : scroll;
+    overflow-y : auto;
+    overflow-x : hidden;
   }
 
   .off-canvas-tab {
@@ -349,6 +349,35 @@
     background    : #111;
     border-radius : 5px;
     font-size     : 12px;
+  }
+
+  ul > li:hover { background : none; }
+
+  .nav-group-title {
+    height      : 35px;
+    line-height : 35px;
+    color       : #999;
+    padding     : 0 17px;
+    font-size   : 14px;
+  }
+
+  .nav-item-list {
+    > a {
+      display     : block;
+      height      : 44px;
+      line-height : 44px;
+      display     : block;
+      padding     : 0 22px 0 48px;
+      color       : #ccc;
+      font-size   : 13px;
+      cursor      : pointer;
+
+      background-position : 18px 11px;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.5);
+      }
+    }
   }
 }
 

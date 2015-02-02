@@ -17,6 +17,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     AWSCHINA  : "aws::china"
 
 
+
   Credential = Backbone.Model.extend {
 
     ###
@@ -121,6 +122,10 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
   }, {
     PROVIDER : PROVIDER
+  }
+
+  Credential.Collection = Backbone.Collection.extend {
+    model : Credential
   }
 
   Credential

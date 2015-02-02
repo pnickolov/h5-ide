@@ -42,7 +42,7 @@ define [
     defaults : ()->
       name         : ""
       tokens       : []
-      credentials  : null
+      credentials  : new Credential.Collection()
       stacks       : new OpsCollection()
       apps         : new OpsCollection()
       history      : new Backbone.Collection()
@@ -117,7 +117,7 @@ define [
     hasCredential    : ()-> @get("credentials").length > 0
     credIdOfProvider : ( CredentialProvider )-> (@credOfProvider( CredentialProvider ) || {}).id
     credOfProvider   : ( CredentialProvider )->
-      for cred in @get("credentials")
+      for cred in @get("credentials").models
         if cred.get("provider") is CredentialProvider
           return cred
       return null
@@ -131,20 +131,6 @@ define [
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
-    addCredential: ( cred ) ->
-      @credentials().push cred
-      @trigger 'change:credentials', @, cred
-
-    removeCredential: ( cred ) ->
-      credentials = @credentials()
-      index = credentials.indexOf cred
-
-      if index > -1
-        credentials.splice index, 1
-        @trigger 'change:credentials', @, cred
-
-
-
 
     updateName: ( name ) ->
       model = @
@@ -153,10 +139,15 @@ define [
         res
 
     destroy: ( options ) ->
-      model = @
-      ApiRequest( "project_remove", { project_id: @id } ).then ( res )->
-        model.trigger 'destroy', model, model.collection, options
-        res
+      self = @
+      ApiRequest( "project_remove", { project_id: @id } ).then ( res )-> self.cleanup( options ); res
+
+    cleanup : ( options )->
+      if @__isRemoved then return
+      @__isRemoved = true
+      @trigger "destroy", @, @collection, options
+      App.WS.unsubscribe( @id )
+      return
 
     leave: ->
       ApiRequest( "project_remove_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })

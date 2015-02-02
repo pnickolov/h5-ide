@@ -23,9 +23,6 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       that = @
       @$el.find("#PaymentBody").remove()
       paymentState = App.user.get("paymentState")
-      if @model.get("payment")
-        that.renderCache()
-        return @
       @model.getPaymentState().then ()->
         paymentUpdate = that.model.get("payment")
         billingTemplate = template.billingTemplate {paymentUpdate}
@@ -116,11 +113,11 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       , (err)->
         console.warn err
         notification "error", "Error while updating user payment info, please try again later."
-        that.render()
+        that.renderCache()
 
 
     updatePaymentCancel: ()->
-      @render()
+      @renderCache()
 
 
     updatePaymentEmail: ()->
@@ -128,7 +125,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       @$el.find(".editEmailControl,.billing-email-text>input").show()
 
     updateEmailCancel: ()->
-      @render()
+      @renderCache()
 
     updateEmailDone: ()->
       project_id = @model.get "id"
@@ -147,7 +144,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       , (err)->
         console.warn err
         notification "error", "Error while updating user payment info, please try again later."
-        that.render()
+        that.renderCache()
 
 
     viewPaymentReceipt: (event)->

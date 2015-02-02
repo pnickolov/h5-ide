@@ -152,10 +152,10 @@ define [
       self = @
       @workspace.listenTo App.user, "paymentUpdate", ->
         if not $(".ops-apppm-wrapper").size()
-          if App.user.shouldPay()
+          if self.workspace.scene.project.shouldPay()
             self.showUnpayUI()
         else
-          unless App.user.shouldPay()
+          unless self.workspace.scene.project.shouldPay()
             self.reopenApp()
 
     reopenApp: ()->

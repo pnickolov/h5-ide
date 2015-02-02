@@ -32,11 +32,8 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )
 
       @activate()
-      @view.showLoading()
-      @project.getPaymentState().finally ->
-        self.loadDashboard()
-        self.loadSpace( attr.opsid )
-        self.view.hideLoading()
+      self.loadDashboard()
+      self.loadSpace( attr.opsid )
       return
 
     becomeActive : ()->

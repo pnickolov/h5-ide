@@ -529,7 +529,7 @@ define [
 
           paymentModal.listenTo App.user, "paymentUpdate", ()->
             if paymentModal.isClosed then return false
-            if not App.user.shouldPay()
+            if not opsModel.project().shouldPay()
               showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 

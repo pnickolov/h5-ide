@@ -80,8 +80,6 @@ define [ "ApiRequest",
           private : p.isPrivate()
         }
 
-      projects = _.sortBy projects, ( p )-> if p.private then "*" else p.name
-
       $popup = @showPopup( ProjectTpl.projectList( projects ) )
       $popup.on "mouseup", ".create-new-project", ()->
         modal = new Modal {

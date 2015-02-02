@@ -83,7 +83,10 @@ define [
     ###
     defaults : ()->
       notification : [] # An array holding the notification data
-      projects : new Backbone.Collection()
+      projects : new (Backbone.Collection.extend({
+        comparator : ( m )-> if m.isPrivate() then "" else m.get("name")
+        initialize : ()-> @on "change:name", @sort, @; return
+      }))()
 
     markNotificationRead : ()->
       for i in @attributes.notification

@@ -256,18 +256,20 @@ define [
         @set "name", wsdata.name
       if wsdata.members
         @__checkMyRole( wsdata.members )
+
+      # To many if here.. Many have bug..
       if wsdata.credentials
         creds = {}
         for cred in wsdata.credentials
-          if not @credentials().get( cred.id )
-            @credentials.add cred
+          if @credentials().get(cred.id)
+            @credentials().get(cred.id).set "isDemo", cred.is_demo
           else
-            creds[cred.id] = cred
+            @credentials.add cred, {project:@}
+
+          creds[ cred.id ] = true
 
         for cred in @credentials().models.slice(0)
-          if creds[ cred.id ]
-            cred.set "isDemo", creds[ cred.id ]
-          else
+          if not creds[ cred.id ]
             @credentials().remove( cred )
       return
 

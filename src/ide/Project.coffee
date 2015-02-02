@@ -238,9 +238,9 @@ define [
         return formattedResult
 
     __checkMyRole : ( members )->
-      username = App.user.get("usercode")
+      id = App.user.id
       for m in members || []
-        if m.username is username
+        if m.id is id
           @set "myRole", m.role
           return
   }, {

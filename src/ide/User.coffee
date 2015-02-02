@@ -27,6 +27,7 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
 
     userInfoAccuired : ( result )->
       @set {
+        id           : result.id
         email        : Base64.decode result.email
         state        : parseInt result.state, 10
         intercomHash : result.intercom_hash

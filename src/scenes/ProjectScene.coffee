@@ -33,7 +33,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
 
       @activate()
       @view.showLoading()
-      @project.getPaymentState().then ->
+      @project.getPaymentState().finally ->
         self.loadDashboard()
         self.loadSpace( attr.opsid )
         self.view.hideLoading()

@@ -18,10 +18,6 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
     initialize : ()->
       # Re-sort the collection when any model is updated.
       @on "change:updateTime", @sort, @
-      @on "add remove", @__triggerUpdate, @
-      @on "change:id",  @__triggerUpdate, @
-
-      @__debounceUpdate = _.debounce ()-> @trigger "update"
       return
 
     # Returns a new name that can be used in a model. The name is garuntee to be identical.
@@ -91,15 +87,6 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
         filters.push m
 
       filters
-
-    __triggerUpdate : ( model )->
-      if not model then return
-
-      # When a model is added to the collection, we would only trigger an "update" event
-      # if that model is visible to the list.
-      if @indexOf( model ) != -1 and not model.isExisting() then return
-      @__debounceUpdate()
-      return
 
     add : ( model )->
       if not @isNameAvailable( model.get("name") )

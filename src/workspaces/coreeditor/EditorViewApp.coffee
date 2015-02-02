@@ -144,7 +144,7 @@ define [
 
       @canvas.updateSize()
 
-      AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>").appendTo(@$el)[0] )
+      AppAction.showPayment( $("<div class='ops-apppm-wrapper'></div>", @workspace.opsModel).appendTo(@$el)[0] )
       notification "error", "Your account is limited now."
       return
 

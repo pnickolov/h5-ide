@@ -302,8 +302,8 @@ define [
       that = @
       if $(event.currentTarget).attr 'disabled'
         return false
-
-      appAction.showPayment().then (result)->
+      opsModal = @workspace.opsModel
+      appAction.showPayment(null ,opsModal).then (result)->
         paymentUpdate = result.result
         paymentModal = result.modal
         that.__runStack(paymentUpdate,paymentModal)

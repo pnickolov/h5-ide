@@ -108,6 +108,10 @@ define [
           return cred
       return null
 
+    # Project Payment
+    shouldPay       : ()->
+      payment = @get("payment")
+      not payment.cardNumber or payment.currentQuota >= payment.maxQuota
 
     amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN or @isPrivate()
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER

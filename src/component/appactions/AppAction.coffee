@@ -497,13 +497,13 @@ define [
         return
 
 
-    showPayment: (elem)->
+    showPayment: (elem, opsModel)->
       showPaymentDefer = Q.defer()
 
       # check should Show.
       paymentState = App.user.get("paymentState")
 
-      if not App.user.shouldPay()
+      if not opsModel.project().shouldPay()
         showPaymentDefer.resolve({})
       else
         result = {

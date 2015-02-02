@@ -42,7 +42,7 @@
             </div>
         </div>
         {{#if noSubscription}}
-
+            <div class="billing-history"></div>
         {{else}}
             <div class="billing-history">
                 <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></h5>

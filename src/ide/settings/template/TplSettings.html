@@ -1,21 +1,21 @@
 <nav id="settings-nav">
     <section>
-        <header>Settings</header>
-        <a class="active">Account</a>
+        <header>{{i18n "HEAD_LABEL_SETTING"}}</header>
+        <a class="active">{{i18n "HEAD_LABEL_ACCOUNT"}}</a>
     </section>
     <section class="project-list">
-        <header>Manage Project</header>
+        <header>{{i18n "MANAGE_WORKSPACE"}}</header>
         {{#each projects}}
         <a data-id="{{id}}">{{name}}</a>
         {{/each}}
     </section>
 </nav>
 <section class="setting-content">
-    <header>Account</header>
+    <header>{{i18n "HEAD_LABEL_ACCOUNT"}}</header>
     <dl class="dl-horizontal">
         <dt class="avatar"><img src="{{gravatar.image}}"></dt>
         <dd class="change-photo">
-            <a id="change-photo" href="{{gravatar.profile}}" target="_blank" >Change Photo</a>
+            <a id="change-photo" href="{{gravatar.profile}}" target="_blank" >{{i18n "CHANGE_PHOTO"}}</a>
         </dd>
     </dl>
     <dl class="dl-horizontal">

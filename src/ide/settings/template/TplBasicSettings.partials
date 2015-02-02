@@ -1,14 +1,14 @@
 <!--{{basicSettings}}-->
 <div class="project-item project-name-zone">
-    <h3>Project Name
+    <h3>{{i18n "WORKSPACE_NAME"}}
         <div class="normal-mode">
             <span class="project-name">{{name}}</span>
         </div>
         <div class="edit-mode">
             <input type="text" class="input" id="project-name" value="{{name}}">
             <div class="edit-actions">
-                <button class="btn btn-blue" id="update-name">Update</button>
-                <a id="cance-update-name" class="cancel-button">Cancel</a>
+                <button class="btn btn-blue" id="update-name">{{i18n "SETTINGS_LABEL_ACCOUNT_UPDATE"}}</button>
+                <a id="cance-update-name" class="cancel-button">{{i18n "SETTINGS_LABEL_ACCOUNT_CANCEL"}}</a>
             </div>
             <div class="loading-spinner" style="display: none;"></div>
         </div>
@@ -22,21 +22,21 @@
 </div>
 -->
 <div class="project-item">
-    <h3>{{#if displayDelete}}Delete{{else}}Leave{{/if}} Project</h3>
+    <h3>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</h3>
     <div>
         {{#if private}}
 
-        <p>This is your default project which cannot be deleted.</p>
+        <p>{{i18n "FREE_WORKSPACE_CAN_NOT_DELETE"}}</p>
 
         {{else}}
             {{#if isAdmin}}
-            <p>Once the project is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are).</p>
-            <p>You can export stacks to JSON before deleting the project.</p>
-            <button class="btn btn-red icon-delete" id="delete-project">Delete Project</button>
+            <p{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
+            <p>{{i18n "IMPORT_JSON_BEFORE_DELETE_WORKSPACE"}}</p>
+            <button class="btn btn-red icon-delete" id="delete-project">{{i18n "DELETE_WORKSPACE"}}</button>
             {{/if}}
             {{#if isMember}}
-            <p>By leaving this project, you won’t have access to project assets any more.</p>
-            <button class="btn btn-red icon-delete" id="leave-project">Leave Project</button>
+            <p>{{i18n "LEAVING_WORKSPACE_WILL_NOT_ACCESS"}}</p>
+            <button class="btn btn-red icon-delete" id="leave-project">{{i18n "LEAVE_WORKSPACE"}}</button>
             {{/if}}
         {{/if}}
     </div>
@@ -44,11 +44,11 @@
 </div>
 
 <!--{{confirmToDelete}}-->
-<p>This action CANNOT be reverted.<br/>Type the project name below to confirm deleting the project.</p>
+<p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "TYPE_THE_WORKSPACE_NAME_TO_CONFIRM"}}</p>
 <input type="text" class="input" id="confirm-project-name"/>
 
 <!--{{confirmToLeave}}-->
-<p>This action CANNOT be reverted.<br/>Are you sure you want to leave this project?</p>
+<p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_WORKSPACE"}}</p>
 
 <!--{{loading}}-->
 <div class="loading-spinner"></div>

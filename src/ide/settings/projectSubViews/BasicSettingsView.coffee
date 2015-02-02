@@ -16,13 +16,13 @@ define [
 
         render: ->
             if @projectName
-                title = 'Delete Project'
-                confirmText = 'Confirm to Delete'
+                title = lang.IDE.DELETE_WORKSPACE
+                confirmText = lang.IDE.CONFIRM_TO_DELETE
                 tpl = TplBasicSettings.confirmToDelete
                 confirmDisabled = true
             else
-                title = 'Leave Project'
-                confirmText = 'Confirm to Leave'
+                title = lang.IDE.LEAVE_PROJECT
+                confirmText = lang.IDE.CONFIRM_TO_LEAVE
                 tpl = TplBasicSettings.confirmToLeave
                 confirmDisabled = false
 

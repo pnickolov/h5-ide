@@ -58,7 +58,7 @@ define [
       # Normal attr
       @set {
         id      : attr.id
-        name    : attr.name or "Default Project"
+        name    : attr.name or "Free Workspace"
         private : !attr.name
         members : new MemberCollection({projectId: attr.id})
       }

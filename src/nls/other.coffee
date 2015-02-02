@@ -581,11 +581,11 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_ERR_CRED_UPDATE:
       en : "Fail to update your credential, please retry."
-      zh : "更新凭据失败，请重试。"
+      zh : "更新证书失败，请重试。"
 
     SETTINGS_ERR_CRED_REMOVE:
       en : "Fail to remove your credential, please retry."
-      zh : "移除凭据失败，请重试。"
+      zh : "移除证书失败，请重试。"
 
     SETTINGS_ERR_PROJECT_REMOVE:
       en : "Fail to remove your project, please retry."
@@ -2447,3 +2447,92 @@ VisualOps API. You cannot UNDO this action.'
     ACCESS_TOKEN_DELETE_TIP:
       en: "Delete"
       zh: "删除"
+
+    WORKSPACE:
+      en: "Workspace"
+      zh: "工作空间"
+
+    WORKSPACE_NAME:
+      en: "Workspace Name"
+      zh: "工作空间名称"
+
+    MANAGE_WORKSPACE:
+      en: "Manage Workspace"
+      zh: "工作空间"
+
+    CHANGE_PHOTO:
+      en: "Change Photo"
+      zh: "更改头像"
+
+    BASIC_SETTINGS:
+      en: "Basic Settings"
+      zh: "基本设置"
+
+    MEMBER:
+      en: "Member"
+      zh: "成员"
+
+    USAGE_REPORT:
+      en: "Usage Report"
+      zh: "用量报告"
+
+    PROVIDER_CREDENTIAL:
+      en: "Provider Credential"
+      zh: "证书"
+
+    LEAVE:
+      en: "Leave"
+      zh: "离开"
+
+    DELETE_WORKSPACE_WILL_FORGOT_APPS:
+      en: "Once the workspace is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are)."
+      zh: "工作空间一旦被删除，所有该工作空间下的 Stack 和 App 将被删除和释放（资源不会受到影响）。"
+
+    IMPORT_JSON_BEFORE_DELETE_WORKSPACE:
+      en: "You can export stacks to JSON before deleting the workspace."
+      zh: "您可以在删除工作空间之前将 Stack 导出 JSON 文件。"
+
+    LEAVING_WORKSPACE_WILL_NOT_ACCESS:
+      en: "By leaving this workspace, you won’t have access to workspace assets any more."
+      zh: "离开工作空间后，就不能访问工作空间了。"
+
+    THIS_ACTION_CANNOT_BE_REVERTED:
+      en: "This action CANNOT be reverted."
+      zh: "此操作不可逆。"
+
+    TYPE_THE_WORKSPACE_NAME_TO_CONFIRM:
+      en: "Type the workspace name below to confirm deleting the workspace."
+      zh: "在下面输入工作空间的名称以确认删除该工作空间。"
+
+    ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_WORKSPACE:
+      en: "Are you sure you want to leave this workspace?"
+      zh: "您确定要离开此工作空间吗？"
+
+    FREE_WORKSPACE_CAN_NOT_DELETE:
+      en: "This is your free workspace which cannot be deleted."
+      zh: "默认工作空间不能删除。"
+
+    DELETE_WORKSPACE:
+      en: "Delete Workspace"
+      zh: "删除工作空间"
+
+    LEAVE_WORKSPACE:
+      en: "Leave Workspace"
+      zh: "离开工作空间"
+
+    CONFIRM_TO_DELETE:
+      en: "Confirm to Delete"
+      zh: "确认删除"
+
+    CONFIRM_TO_LEAVE:
+      en: "Confirm to Leave"
+      zh: "确认离开"
+
+
+
+
+
+
+
+
+

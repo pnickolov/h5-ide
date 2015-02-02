@@ -122,10 +122,9 @@
       };
 
       Modal.prototype.close = function(number) {
-        var modal, nextModal, self, _base;
-        self = this;
+        var modal, nextModal, _base;
         modal = modals[modals.length - 1];
-        if (modal.pending) {
+        if (modal != null ? modal.pending : void 0) {
           modal.nextCloses.push(this);
           return false;
         }

@@ -149,9 +149,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @
 
         close: (number)->
-            self = @
             modal = modals[modals.length - 1]
-            if modal.pending
+            if modal?.pending
                 modal.nextCloses.push @
                 return false
             if not number or typeof number isnt "number"

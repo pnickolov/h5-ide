@@ -11,8 +11,8 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
         render : ()->
             self = @
             @getUsage().then (result)->
-                console.log result
-                self.$el.find(".loading-spinner").replaceWith(template.usage())
+                payment = self.model.get("payment")
+                self.$el.find(".loading-spinner").replaceWith(template.usage {result, payment})
             , ()->
                 notification 'error', "Error while getting user payment info, please try again later."
             @

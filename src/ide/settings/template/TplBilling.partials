@@ -111,12 +111,12 @@
         <h3>142</h3>
         <p>Instance Hour</p>
     </div>
-    {{#if isDefault}}
-        <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" maxQuota renewDays}}</p>
+    {{#if payment.isDefault}}
+        <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
     {{/if}}
     <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
     <div class="table-head-fix">
-        {{#if usageReport.length}}
+        {{#if result.usageReport.length}}
             <table class="table-head">
                 <thead>
                 <tr>
@@ -138,7 +138,7 @@
                             </tr>
                         </thead>
                         <tbody class="t-m-content">
-                        {{#each usageReport}}
+                        {{#each result.usageReport}}
                             <tr class="item" data-id="{{@index}}">
                                 <td>{{instanceId}}</td>
                                 <td>{{started_at}}</td>

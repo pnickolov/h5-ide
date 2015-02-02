@@ -5,8 +5,9 @@ define [
   "ide/settings/projectSubModels/MemberCollection"
   "OpsModel"
   "Credential"
+  "ApiRequestR"
   "backbone"
-], ( ApiRequest, OpsCollection, MemberCollection, OpsModel, Credential )->
+], ( ApiRequest, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
 
 
   MEMBERROLE =
@@ -200,6 +201,26 @@ define [
           stoppable  : not (ops.property and ops.property.stoppable is false)
         }
       r
+
+    getPaymentState: ()->
+      that = @
+      projectId = @get "id"
+      ApiRequestR "payment_self", {projectId}
+      .then (result)->
+        formattedResult = {
+          email       : result.email
+          cardNumber  : result.card
+          lastName    : result.last_name
+          firstName   : result.first_name
+          periodEnd   : result.current_period_ends_at
+          periodStart : result.current_period_started_at
+          maxQuota    : result.max_quota
+          currentQuota: result.current_quota
+          nextPeriod  : result.next_assessment_at
+          paymentState: result.state
+        }
+        that.set("payment", formattedResult)
+        return formattedResult
 
     __checkMyRole : ( members )->
       username = App.user.get("usercode")

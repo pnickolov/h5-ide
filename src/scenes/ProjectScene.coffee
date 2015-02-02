@@ -19,6 +19,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       return Scene.call this, { pid : projectId, opsid : opsmodelId }
 
     initialize : ( attr )->
+      self = @
       @__spaces     = []
       @__awakeSpace = null
       @__spacesById = {}
@@ -31,9 +32,11 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )
 
       @activate()
-
-      @loadDashboard()
-      @loadSpace( attr.opsid )
+      @view.showLoading()
+      @project.getPaymentState().then ->
+        self.loadDashboard()
+        self.loadSpace( attr.opsid )
+        self.view.hideLoading()
       return
 
     becomeActive : ()->

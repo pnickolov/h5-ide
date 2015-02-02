@@ -26,7 +26,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       if @model.get("payment")
         that.renderCache()
         return @
-      @getPaymentState().then ()->
+      @model.getPaymentState().then ()->
         paymentUpdate = that.model.get("payment")
         billingTemplate = template.billingTemplate {paymentUpdate}
         that.$el.find("#billing-status").html billingTemplate
@@ -66,28 +66,6 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory}
           that.$el.find("#billing-status").empty().append billingTemplate
       @
-
-
-    getPaymentState: ()->
-      that = @
-      projectId = @model.get "id"
-      ApiRequestR "payment_self", {projectId}
-      .then (result)->
-        formattedResult = {
-          email       : result.email
-          cardNumber  : result.card
-          lastName    : result.last_name
-          firstName   : result.first_name
-          periodEnd   : result.current_period_ends_at
-          periodStart : result.current_period_started_at
-          maxQuota    : result.max_quota
-          currentQuota: result.current_quota
-          nextPeriod  : result.next_assessment_at
-          paymentState: result.state
-        }
-        that.model.set("payment", formattedResult)
-        return formattedResult
-
 
     getPaymentHistory: ()->
       projectId = @model.get("id")

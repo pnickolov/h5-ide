@@ -13,14 +13,14 @@ define [
   Backbone.Router.extend {
 
     routes :
-      ""                                : "openProject"
-      "project(/:project)"              : "openProject"
-      "project/:project/ops(/:ops)"     : "openProject"
+      ""                               : "openProject"
+      "team(/:project)"                : "openProject"
+      "team/:project/ops(/:ops)"       : "openProject"
 
       "settings(/:projectId/:tab)"     : "openSettings"
-      "store/:sampleId"                 : "openStore"
+      "store/:sampleId"                : "openStore"
 
-      "cheatsheet"                      : "openCheatsheet"
+      "cheatsheet"                     : "openCheatsheet"
 
     openStore : ( id )-> new StackStore({ id : id })
 

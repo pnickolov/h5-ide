@@ -127,7 +127,7 @@ define [
 
     getOpsModel  : ( id )-> @get("stacks").get( id ) or @get("apps").get( id )
 
-    url : ()-> "project/" + @get("id")
+    url : ()-> "team/" + @get("id")
 
 
     # Convenient Methods
@@ -260,7 +260,9 @@ define [
         creds = {}
         for cred in wsdata.credentials
           if not @credentials().get( cred.id )
-          creds[cred.id] = cred
+            @credentials.add cred
+          else
+            creds[cred.id] = cred
 
         for cred in @credentials().models.slice(0)
           if creds[ cred.id ]

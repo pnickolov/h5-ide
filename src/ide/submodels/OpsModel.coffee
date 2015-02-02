@@ -91,8 +91,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     url : ()->
       p = @project() || ""
-      if p then p = p.get("id")
-      "project/#{p}/" + @relativeUrl()
+      if p then p = p.url()
+      p + "/" + @relativeUrl()
 
     relativeUrl : ()->
       if @get("id")

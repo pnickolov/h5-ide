@@ -2528,11 +2528,95 @@ VisualOps API. You cannot UNDO this action.'
       en: "Confirm to Leave"
       zh: "确认离开"
 
+    # Settings - Member
+    SETTINGS_MEMBER_COLUMN_MEMBER:
+      en: "Member"
+      zh: "成员"
 
+    SETTINGS_MEMBER_COLUMN_ROLE:
+      en: "Role"
+      zh: "角色"
 
+    SETTINGS_MEMBER_COLUMN_STATUS:
+      en: "Status"
+      zh: "状态"
 
+    SETTINGS_MEMBER_COLUMN_EDIT:
+      en: "Edit"
+      zh: "编辑"
 
+    SETTINGS_MEMBER_LABEL_MEMBER:
+      en: "Member"
+      zh: "成员"
 
+    SETTINGS_MEMBER_LABEL_INVITE_TIP:
+      en: "Invite by email address or username..."
+      zh: "通过电子邮箱或用户名邀请..."
 
+    SETTINGS_MEMBER_LABEL_INVITE_CONFIRM:
+      en: "Invite Member"
+      zh: "邀请成员"
 
+    SETTINGS_MEMBER_LABEL_REMOVE:
+      en: "Delete"
+      zh: "删除"
 
+    SETTINGS_MEMBER_LABEL_YOU:
+      en: "YOU"
+      zh: "你"
+
+    SETTINGS_MEMBER_LABEL_ADMIN:
+      en: "ADMIN"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_COLLABORATOR:
+      en: "COLLABORATOR"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_OBSERVER:
+      en: "OBSERVER"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_ADMIN_DESC:
+      en: "%explain what an admin can do.can docan do cando %"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
+      en: "%explain what an admin can do.can docan do cando %"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
+      en: "%explain what an admin can do.can docan do cando %"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_ACTIVE:
+      en: "Active"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_PENDING:
+      en: "Pending"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_CANCEL_INVITE:
+      en: "Cancel Invitation"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_DONE:
+      en: "Done"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_NO_USER:
+      en: "There is no user"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP1:
+      en: "You are the only member in your default workspace"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP2:
+      en: "To invite member and collaborate with other user"
+      zh: ""
+
+    SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE:
+      en: "create a new workspace"
+      zh: ""

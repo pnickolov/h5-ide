@@ -33,11 +33,11 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
     @collection =
       project : new Meteor.Collection "project",  opts
-      request : new Meteor.Collection "request",  opts
-      stack   : new Meteor.Collection "stack",    opts
-      app     : new Meteor.Collection "app",      opts
-      imports : new Meteor.Collection "imports",  opts
-      status  : new Meteor.Collection "status",   opts
+      # request : new Meteor.Collection "request",  opts
+      # stack   : new Meteor.Collection "stack",    opts
+      # app     : new Meteor.Collection "app",      opts
+      # imports : new Meteor.Collection "imports",  opts
+      # status  : new Meteor.Collection "status",   opts
 
     # Trigger an event when connection state changed.
     Deps.autorun ()=> @statusChanged()
@@ -83,17 +83,21 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   Websocket.prototype.subscribe = ( projectId )->
     if @projects[ projectId ] then return
 
+    self = @
     callback =
       onReady : ()-> self.__readyDefer.resolve()
-      onError : ()-> self.onError()
+      onError : (e)-> self.onError(e, projectId)
+
+    session  = App.user.get("session")
+    usercode = App.user.get("usercode")
 
     @projects[ projectId ] = [
-      @connection.subscribe "request", projectId, session, callback
-      @connection.subscribe "stack",   projectId, session, callback
-      @connection.subscribe "app",     projectId, session, callback
-      @connection.subscribe "imports", projectId, session, callback
-      @connection.subscribe "status",  projectId, session, callback
-      @connection.subscribe "project", projectId, session, callback
+      @connection.subscribe "project", usercode, session, projectId , callback
+      # @connection.subscribe "request", projectId, session, callback
+      # @connection.subscribe "stack",   projectId, session, callback
+      # @connection.subscribe "app",     projectId, session, callback
+      # @connection.subscribe "imports", projectId, session, callback
+      # @connection.subscribe "status",  projectId, session, callback
     ]
     return
 
@@ -112,12 +116,12 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # Whenever an error posted from the backend. The subscription will be removed.
   # The error is typically the "Invalid session error".
   # We notitfy the others to handle this error.
-  Websocket.prototype.onError = ( error )->
+  Websocket.prototype.onError = ( error, projectId )->
     console.error "Websocket/Meteor Error:", error
     if not @subscribeErrorState
       @subscribeErrorState = true
       try
-        @unsubscribe()
+        @unsubscribe( projectId )
       catch e
         # Not sure if Meteor throws error when calling stop() on a disconnected subscription.
         # So we use a try / catch here.
@@ -130,6 +134,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # and we can also place the watching code in the other place.
   Websocket.prototype.pipeChanges = ()->
     self = this
+
+    return
 
     # request list
     @collection.request.find().fetch()

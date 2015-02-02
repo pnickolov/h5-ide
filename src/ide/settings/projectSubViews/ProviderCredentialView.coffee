@@ -10,6 +10,12 @@ define [
     'backbone'
 ], ( constant, lang, TplCredential, Credential, ApiRequest, Modal ) ->
 
+    credentiaLoadingTips =
+        add     : lang.IDE.SETTINGS_CRED_UPDATING
+        update  : lang.IDE.SETTINGS_CRED_UPDATING
+        remove  : lang.IDE.SETTINGS_CRED_REMOVING
+
+
     credentialFormView = Backbone.View.extend
         events:
             'keyup input' : 'updateSubmitBtn'
@@ -46,7 +52,7 @@ define [
         loading: ->
             @$( '#CredSetupWrap' ).hide()
             action =  if @credential then 'Update' else 'Add'
-            @$el.append( TplCredential.credentialLoading { action: action } )
+            @$el.append( TplCredential.credentialLoading { tip: credentiaLoadingTips[ action ] } )
             @modal.toggleFooter false
 
         loadingEnd: ->
@@ -134,7 +140,7 @@ define [
 
         makeModalLoading: ( modal, action ) ->
             modal
-                .setContent( TplCredential.credentialLoading { action: action } )
+                .setContent( TplCredential.credentialLoading { tip: credentiaLoadingTips[ action ] } )
                 .toggleFooter false
             @
 
@@ -204,7 +210,8 @@ define [
             credential.destroy().then () ->
                 that.removeConfirmView?.close()
             , ( error ) ->
-                that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm
+                credName = constant.PROVIDER_NAME[credential.get 'provider']
+                that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm name: credName
                 that.showModalError that.removeConfirmView, lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
         showUpdateConfirmModel: ( credential, newData ) ->
@@ -224,11 +231,12 @@ define [
         showRemoveConfirmModel: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'
             credential = @getCredentialById credentialId
+            credName = constant.PROVIDER_NAME[credential.get 'provider']
 
             @removeConfirmView?.close()
             @removeConfirmView = new Modal {
                 title: 'Delete Cloud Credential'
-                template: TplCredential.removeConfirm
+                template: TplCredential.removeConfirm name: credName
                 confirm:
                     text: 'Remove Credential'
             }

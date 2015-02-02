@@ -701,7 +701,7 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_DONE_HINT_DEMO:
       en: "You are using a demo AWS account."
-      zh: "您正在使用 demo 账号。"
+      zh: "您正在使用测试账号。"
 
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
@@ -2493,7 +2493,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您可以在删除工作空间之前将 Stack 导出 JSON 文件。"
 
     LEAVING_WORKSPACE_WILL_NOT_ACCESS:
-      en: "By leaving this workspace, you won’t have access to workspace assets any more."
+      en: "By leaving this workspace, you won't have access to workspace assets any more."
       zh: "离开工作空间后，就不能访问工作空间了。"
 
     THIS_ACTION_CANNOT_BE_REVERTED:
@@ -2556,6 +2556,47 @@ VisualOps API. You cannot UNDO this action.'
     SETTINGS_MEMBER_LABEL_INVITE_CONFIRM:
       en: "Invite Member"
       zh: "邀请成员"
+
+    WORKSPACE_DEMO_TIP:
+      en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack
+into live resources, or import existing infrastructures."
+      zh: "当前工作空间处于测试模式，您需要设置证书才能运行 Stack 和导入已有资源。"
+
+    CREDENTIAL_LINKED_TO_THIS_WOUpdateRKSPACE:
+      en: "Following clouder provider credential is linked to this workspace:"
+      zh: "连接到此工作空间的证书："
+
+    PARENTHESES_DEMO:
+      en: "(Demo)"
+      zh: "测试模式"
+
+    DEMO_CREDENTIAL_TIP:
+      en: "This is a demo credential for designing stack only."
+      zh: "这只是个测试证书，只能用于设计 Stack。"
+
+    DEMO_CREDENTIAL_ERROR_NOTE:
+      en: "Note: Some stack you build in demo mode may report error due to resource inconsistency between different cloud accounts."
+      zh: "注意：由于两种账号之间资源的差异， 当您设置了 AWS 证书后， 一些您在测试账号时创建的 Stack 可能会报错。"
+
+    SET_UP_PROVIDER_CREDENTIAL:
+      en: "Set up Provider Credential"
+      zh: "设置证书"
+
+    CREDENTIAL_ALIAS:
+      en: "Credential Alias"
+      zh: "别名"
+
+    CREDENTIAL_AUTHORIZE_NOTE:
+      en: "Note: This credential must be linked to an account has at least read access to AWS EC2 resources, otherwise there will be issues using VisualOps."
+      zh: "注意：此证书最少必须有读取 AWS EC2 资源的权限，否则 VisualOps 会产生错误。"
+
+    ARE_YOU_SURE_YOU_WANT_TO_REMOVE_XXX:
+      en: "Are you sure you want to remove %s."
+      zh: "确定要删除 %s 吗？"
+
+    REMOVE_CREDENTIAL_CONFIRM_TIPS:
+      en: "Apps managed under this credential will be forgotten. You will not be able to run stack or import VPC. If you provide a credential later with access to different AWS resources, previous stacks may not work properly."
+      zh: "与此证书关联的 App 将被释放，且您将无法运行 Stack 和 导入 VPC 。如果您以后添加一个不同的证书，先前的 Stack 可能无法工作。"
 
     SETTINGS_MEMBER_LABEL_REMOVE:
       en: "Delete"

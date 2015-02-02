@@ -56,7 +56,9 @@ define [
         setTitle: ( tab ) ->
             projectName = @model.get 'name'
             tabName = subViewNameMap[ tab ]
-            @$('.project-title').html "#{projectName} / #{tabName}"
+            @$('#title-project-name').text projectName
+            @$('#title-tab-name').text tabName
+            @
 
         activeTab: ( tab ) ->
             @$('.function-list a').each () ->

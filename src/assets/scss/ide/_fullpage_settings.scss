@@ -12,6 +12,12 @@
         .back-settings { font-size: 18px; }
 
         & > section {
+            header, a {
+                max-width: 210px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
             header {
                 font-size: 18px;
                 color: white;
@@ -36,6 +42,19 @@
             margin-bottom: 20px;
             font-size: 22px;
             border-bottom: 1px solid #4d4e8c;
+            #title-project-name {
+                display: inline-block;
+                max-width: 350px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            #title-tab-name {
+                &::before {
+                    content: "/";
+                    padding: 0 5px;
+                }
+                display: inline-block; overflow: hidden;
+            }
         }
 
         & > article {
@@ -92,13 +111,22 @@
                 h3 {
                     width: 500px;
                     position: relative;
+                    vertical-align: top;
+
                     .icon-edit {
                         position: absolute;
                         top: 0;
                         right: 0;
                         line-height: 40px;
                     }
-                    span { color: white; padding-left: 30px; }
+                    span {
+                        color: white;
+                        padding-left: 30px;
+                        overflow: hidden;
+                        max-width: 300px;
+                        text-overflow: ellipsis;
+                        display: inline-block;
+                    }
                 }
                 &::after {
                     display: block;

@@ -11,7 +11,7 @@ define [
 ], ( constant, lang, TplCredential, Credential, ApiRequest, Modal ) ->
 
     credentiaLoadingTips =
-        add     : lang.IDE.SETTINGS_CRED_UPDATING
+        add     : lang.IDE.SETTINGS_CRED_ADDING
         update  : lang.IDE.SETTINGS_CRED_UPDATING
         remove  : lang.IDE.SETTINGS_CRED_REMOVING
 
@@ -27,12 +27,12 @@ define [
         render: ->
             if @credential
                 data = @credential.toJSON()
-                title = 'Update Cloud Credential'
-                confirmText = 'Update'
+                title = lang.IDE.UPDATE_CLOUD_CREDENTIAL
+                confirmText = lang.IDE.HEAD_BTN_UPDATE
             else
                 data = {}
-                title = 'Add Cloud Credential'
-                confirmText = 'Add'
+                title = lang.IDE.ADD_CLOUD_CREDENTIAL
+                confirmText = lang.IDE.CFM_BTN_ADD
 
             @$el.html TplCredential.credentialForm data
 

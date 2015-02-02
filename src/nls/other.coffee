@@ -563,6 +563,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
       zh: "<p>移除证书后， 您将处于 Demo 账号模式。</p><p>如果您想运行 App，您需要提供 AWS 证书。 </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行。 </p><p>如果您有已存在的 App， 将无法管理而强制删除。</p>"
 
+    SETTINGS_CRED_ADDING:
+      en : "Adding credential..."
+      zh : "正在添加证书..."
+
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
       zh : "正在移除证书..."
@@ -2562,7 +2566,7 @@ VisualOps API. You cannot UNDO this action.'
 into live resources, or import existing infrastructures."
       zh: "当前工作空间处于测试模式，您需要设置证书才能运行 Stack 和导入已有资源。"
 
-    CREDENTIAL_LINKED_TO_THIS_WOUpdateRKSPACE:
+    CREDENTIAL_LINKED_TO_THIS_WORKSPACE:
       en: "Following clouder provider credential is linked to this workspace:"
       zh: "连接到此工作空间的证书："
 
@@ -2661,3 +2665,13 @@ into live resources, or import existing infrastructures."
     SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE:
       en: "create a new workspace"
       zh: ""
+
+    ADD_CLOUD_CREDENTIAL:
+      en: "Add Cloud Credential"
+      zh: "添加证书"
+
+    UPDATE_CLOUD_CREDENTIAL:
+      en: "Update Cloud Credential"
+      zh: "更新证书"
+
+

@@ -90,10 +90,11 @@ define [
         className: 'credential'
 
         initialize: ->
-            @listenTo @model, 'change:credentials', @render
+            @listenTo @model, 'update:credential', @render
+            @listenTo @model, 'change:credential', @render
 
         render: () ->
-            credentials = @model.credentials()
+            credentials = @model.credentials().models
 
             data = @model.toJSON()
             data.isAdmin = @model.amIAdmin()

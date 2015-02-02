@@ -73,7 +73,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         credential: credential
       }).then ( res ) ->
         model.set 'id', res[ 1 ]
-        project.addCredential model
+        project.credentials().add model
 
         res
 
@@ -110,7 +110,6 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
       project = @get 'project'
       ApiRequest( "project_remove_credential", { project_id: project.id, key_id: @id } ).then ( res )->
         model.trigger 'destroy', model, model.collection, options
-        project.removeCredential model
 
         res
 

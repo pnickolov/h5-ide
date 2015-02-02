@@ -23,20 +23,26 @@ define [
     `change:credential` :
         Convenient event for someone that is interested in the credentials of the project.
         Fires when one of the credential of this project is updated.
+    `update:credential` :
+        Fires when credential is added / removed.
 
     `change:app` :
         Convenient event for someone that is interested in the apps of the project.
         Fires when one of the app is updated. The same as listen to the change event of the app collection.
+    `update:app` :
+        Fires when app is added / removed.
 
     `change:stack`
         Convenient event for someone that is interested in the stacks of the project.
         Fires when one of the stack is updated. The same as listen to the change event of the stacks collection.
+    `update:stack`
+        Fires when stack is added / removed.
 
     ###
     defaults : ()->
       name         : ""
       tokens       : []
-      credentials  : []
+      credentials  : null
       stacks       : new OpsCollection()
       apps         : new OpsCollection()
       history      : new Backbone.Collection()
@@ -65,13 +71,10 @@ define [
           @attributes.tokens.push t
 
       # Credential
-      onCredChange = ()-> @trigger "update:credential", @
-
-      opts  = { project : @ }
-      for cred in attr.credentials || []
-        credObj = new Credential( cred, opts )
-        @listenTo credObj, "change", onCredChange
-        @attributes.credentials.push credObj
+      @credentials().set attr.credentials, { project:@, silent:true }
+      @listenTo @credentials(), "change", ()-> @trigger "change:credential"
+      @listenTo @credentials(), "add",    ()-> @trigger "update:credential"
+      @listenTo @credentials(), "remove", ()-> @trigger "update:credential"
 
       # Check my role
       @__checkMyRole( attr.members )
@@ -81,7 +84,17 @@ define [
       @apps().set   @__parseListRes( attr.apps or [] )
 
       @listenTo @stacks(), "change", ()-> @trigger "change:stack"
-      @listenTo @apps(),   "change", ()-> @trigger "change:app"
+      @listenTo @stacks(), "add",    ()-> @trigger "update:stack"
+      @listenTo @stacks(), "remove", ()-> @trigger "update:stack"
+
+      @listenTo @apps(), "change", ()-> @trigger "change:app"
+      @listenTo @apps(), "add",    ()-> @trigger "update:app"
+      @listenTo @apps(), "remove", ()-> @trigger "update:app"
+
+      # Ask Websocket to watch changes for this project
+      App.WS.subscribe( @id )
+
+      OneTimeWsInit()
       return
 
 

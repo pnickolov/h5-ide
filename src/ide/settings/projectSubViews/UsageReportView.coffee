@@ -11,8 +11,9 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
         render : ()->
             self = @
             @getUsage().then (result)->
-                payment = self.model.get("payment")
-                self.$el.find(".loading-spinner").replaceWith(template.usage {result, payment})
+                self.getPaymentState().then ->
+                  payment = self.model.get("payment")
+                  self.$el.find(".loading-spinner").replaceWith(template.usage {result, payment})
             , ()->
                 notification 'error', "Error while getting user payment info, please try again later."
             @
@@ -22,6 +23,19 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
             startDate = @formatDate new Date(startDate)
             endDate = @formatDate new Date(endDate)
             ApiRequestR("payment_usage", {projectId, startDate, endDate})
+
+        getPaymentState: ()->
+            defer = new Q.defer()
+            self = @
+            payment = @model.get("payment")
+            if payment
+                defer.resolve(payment)
+            else
+                @model.getPaymentState().then ()->
+                  defer.resolve(self.model.get("payment"))
+                , (err)->
+                  defer.reject(err)
+            defer.promise
 
         formatDate: (date)->
           year = date.getFullYear()

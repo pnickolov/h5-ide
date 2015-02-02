@@ -9,6 +9,24 @@ define [
   "backbone"
 ], ( ApiRequest, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
 
+  ###
+  # One-time initializer to observe the websocket. Since the websocket is not
+  # available during the defination of the class
+  ###
+  OneTimeWsInit = ()->
+    OneTimeWsInit = ()-> return
+
+    App.WS.collection.project.find().observe {
+      # added : ()-> # Ignored
+      changed : ( newDocument, oldDocument )-> App.model.projects().get( newDocument.id ).updateWithWsData( newDocument )
+      removed : ( oldDocument )->
+        if not oldDocument then return
+        console.info "Project has been removed", oldDocument
+        App.model.projects().get( oldDocument.id ).cleanup()
+        return
+    }
+    return
+
 
   MEMBERROLE =
     ADMIN    : "admin"
@@ -234,6 +252,25 @@ define [
         if m.id is id
           @set "myRole", m.role
           return
+
+    updateWithWsData : ( wsdata )->
+      if wsdata.name
+        @set "name", wsdata.name
+      if wsdata.members
+        @__checkMyRole( wsdata.members )
+      if wsdata.credentials
+        creds = {}
+        for cred in wsdata.credentials
+          if not @credentials().get( cred.id )
+          creds[cred.id] = cred
+
+        for cred in @credentials().models.slice(0)
+          if creds[ cred.id ]
+            cred.set "isDemo", creds[ cred.id ]
+          else
+            @credentials().remove( cred )
+      return
+
   }, {
     MEMBERROLE : MEMBERROLE
   }

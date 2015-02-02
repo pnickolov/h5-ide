@@ -443,7 +443,7 @@ define [
 
         copy_name + "-" + idx
     checkAppNameRepeat: (nameVal)->
-        if App.model.appList().findWhere(name: nameVal)
+        if @workspace.scene.project.apps().findWhere(name: nameVal)
             @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
             return true
         else if not nameVal

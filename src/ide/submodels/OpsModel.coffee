@@ -343,10 +343,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       toRunJson.id = @get("id") || ""
 
       project = @project()
-      ApiRequest("stack_run_v2",{
+      ApiRequest("stack_run",{
         region_name : region
         stack       : toRunJson
         app_name    : appName
+        key_id      : @credentialId()
+        project_id  : @project().id
       }).then ( res )->
         project.apps().add new OpsModel({
           name          : appName

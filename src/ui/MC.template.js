@@ -1313,9 +1313,18 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
+  buffer += "\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.name), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <li>\n        <input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
+    + "\" readonly/>\n        <span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1325,7 +1334,7 @@ function program1(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_DELETE_TIP", {hash:{},data:data}))
     + "\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))
-    + "</button>\n	</span>\n</li>\n";
+    + "</button>\n	</span>\n    </li>\n";
   return buffer;
   }
 

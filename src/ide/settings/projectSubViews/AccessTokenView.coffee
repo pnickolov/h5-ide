@@ -123,10 +123,14 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             @$el.find("#TokenRmConfirm").hide()
             return
 
+        hasNoToken: ()->
+            @tokens.length is 0 or (@tokens.length is 1 and not @tokens[0].name)
+
         updateTokenList : ()->
             tokens = @tokens
-            @$el.find("#TokenManager").find(".token-table").toggleClass( "empty", tokens.length is 0 )
-            if tokens.length
+            hasNoToken = @hasNoToken()
+            @$el.find("#TokenManager").find(".token-table").toggleClass( "empty", hasNoToken )
+            if not hasNoToken
                 @$el.find("#TokenList").html MC.template.accessTokenTable( tokens )
             else
                 @$el.find("#TokenList").empty()

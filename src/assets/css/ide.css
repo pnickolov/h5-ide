@@ -9360,12 +9360,19 @@ h5.billing_usage_title {
 
 .usage-report-view {
   position: relative; }
+  .usage-report-view .table-head-fix {
+    padding-top: 1px; }
+  .usage-report-view .full-space {
+    margin-top: -1px; }
   .usage-report-view .usage-pagination {
     position: absolute;
     right: 0;
     margin-top: -35px; }
+    .usage-report-view .usage-pagination .usage-date {
+      display: inline-block;
+      width: 100px;
+      padding: 0 8px; }
     .usage-report-view .usage-pagination button {
-      margin-left: 120px;
       padding: 8px 0;
       min-width: 36px; }
 

@@ -242,6 +242,7 @@ define [
         }
         formattedResult.renewDays = (Math.round (new Date(formattedResult.nextPeriod) - new Date())/(24*3600*100))/10
         formattedResult.isDefault = that.get("name") is "Default Project"
+        formattedResult.failToCharge = that.shouldPay()
         that.set("payment", formattedResult)
         return formattedResult
 

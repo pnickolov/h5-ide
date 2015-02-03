@@ -106,10 +106,13 @@
 
 <!--{{usage}}-->
 <section id="UsageTab">
+    {{#if payment.failToCharge}}
+        <p class="warning-red">{{i18n "PAYMENT_ACCOUNT_IN_LIMITED_STATUS"}}</p>
+    {{/if}}
     <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}</h5>
     <div class="current-usage-block">
-        <h3>142</h3>
-        <p>Instance Hour</p>
+        <h3>{{payment.currentQuota}}</h3>
+        <p>{{i18n "PAYMENT_INSTANT_HOUR"}}</p>
     </div>
     {{#if payment.isDefault}}
         <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>

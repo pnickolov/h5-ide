@@ -136,7 +136,7 @@ define [
             @$( '.button-list' ).toggle()
             false
 
-        getCredentialById: ( id ) -> _.findWhere @model.credentials(), { id: id }
+        getCredentialById: ( id ) -> @model.credentials().findWhere { id: id }
 
         makeModalLoading: ( modal, action ) ->
             modal
@@ -161,15 +161,25 @@ define [
 
         addCredential: ( data ) ->
             that = @
-            credentialData = {
-                alias : data.alias
-                account_id: data.awsAccount
-                access_key: data.awsAccessKey
-                secret_key: data.awsSecretKey
-            }
-            credentialData.provider = data.provider or constant.PROVIDER.AWSGLOBAL
 
-            credential = new Credential credentialData, { project: @model }
+            # Temporary
+            provider = constant.PROVIDER.AWSGLOBAL
+
+            # Find credential has same provider, only update the credential, not add
+            credential = @model.credentials().findWhere provider: provider
+
+            if credential
+                credential.set data
+            else # no credential has same provider, add a new credential
+                credentialData = {
+                    alias : data.alias
+                    account_id: data.awsAccount
+                    access_key: data.awsAccessKey
+                    secret_key: data.awsSecretKey
+                }
+                credentialData.provider = data.provider or constant.PROVIDER.AWSGLOBAL
+
+                credential = new Credential credentialData, { project: @model }
 
             @formView.loading()
             credential.save().then () ->

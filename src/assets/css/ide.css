@@ -9371,7 +9371,8 @@ h5.billing_usage_title {
     .usage-report-view .usage-pagination .usage-date {
       display: inline-block;
       width: 100px;
-      padding: 0 8px; }
+      padding: 0 8px;
+      text-align: center; }
     .usage-report-view .usage-pagination button {
       padding: 8px 0;
       min-width: 36px; }

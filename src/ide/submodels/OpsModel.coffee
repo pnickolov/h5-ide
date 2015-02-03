@@ -188,7 +188,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdStack : ( self )->
       if not @isStack() then return
       ApiRequest("stack_info", {
-        project_id  : @project().id
+        key_id      : @credentialId()
         region_name : @get("region")
         stack_ids   : [@get("id")]
       }).then (ds)-> self.__setJsonData( ds[0] )

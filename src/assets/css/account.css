@@ -1,5 +1,6 @@
 /* Light Purple */
 /* Base Purple */
+/* Pink Purple */
 /* Dark Purple */
 /* Background Purple */
 /* Base Blue */
@@ -36,8 +37,6 @@ body {
 a {
   color: #4a90e2;
   text-decoration: none; }
-  a:hover {
-    color: #a2d3f0; }
 
 h1 {
   font-size: 1.6em; }

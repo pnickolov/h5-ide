@@ -84,7 +84,7 @@ define [ "ApiRequest",
       $popup.on "mouseup", ".create-new-project", ()->
         modal = new Modal {
           template      : ProjectTpl.newProject()
-          title         : "Create new project"
+          title         : lang.IDE.SETTINGS_CREATE_PROJECT_TITLE
           disableClose  : true
           disableFooter : true
           width         : "500px"

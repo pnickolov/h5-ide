@@ -365,7 +365,7 @@ define [
         @json.name = appNameDom.val()
         @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
           self.modal.close()
-          App.openOps( ops )
+          App.loadUrl ops.url()
         , (err)->
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"

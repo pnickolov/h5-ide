@@ -9467,7 +9467,8 @@ h5.billing_usage_title {
   border-radius: 3px;
   padding: 5px;
   border: 1px #bc7300 solid;
-  margin-top: 10px; }
+  margin-top: 10px;
+  text-align: center; }
 
 .ws-tabbar {
   margin-left: 166px;

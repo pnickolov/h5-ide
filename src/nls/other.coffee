@@ -2681,3 +2681,52 @@ into live resources, or import existing infrastructures."
     UPDATE_CLOUD_CREDENTIAL:
       en: "Update Cloud Credential"
       zh: "更新证书"
+
+    # Create Project Modal
+    SETTINGS_CREATE_PROJECT_NAME:
+      en: "Workspace Name"
+      zh: "工作空间名称"
+
+    SETTINGS_CREATE_PROJECT_BILLING:
+      en: "Workspace Billing"
+      zh: "工作空间支付"
+
+    SETTINGS_CREATE_PROJECT_BILLING_TIP:
+      en: "Provide billing information to create a collaborative workspace. <br/>You will only be charged when instance hour is comsumed in this workspace."
+      zh: "提供支付信息以创建一个可协作的工作空间.<br/>在此工作空间你将只需要为超出额度时间的实例付费"
+
+    SETTINGS_CREATE_PROJECT_BILLING_OWNER:
+      en: "Billing Owner"
+      zh: "账单拥有者"
+
+    SETTINGS_CREATE_PROJECT_BILLING_EMAIL:
+      en: "Billing Email"
+      zh: "账单邮箱"
+
+    SETTINGS_CREATE_PROJECT_FIRST_NAME:
+      en: "First Name"
+      zh: "姓"
+
+    SETTINGS_CREATE_PROJECT_LAST_NAME:
+      en: "Last Name"
+      zh: "名"
+
+    SETTINGS_CREATE_PROJECT_CARD_NAME:
+      en: "Card Number"
+      zh: "卡号"
+
+    SETTINGS_CREATE_PROJECT_CARD_CVV:
+      en: "CVV"
+      zh: "CVV"
+
+    SETTINGS_CREATE_PROJECT_EXPRIATION:
+      en: "Expriation Date"
+      zh: "过期日期"
+
+    SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT:
+      en: "Secure Payment Powered by Chargify"
+      zh: "安全支付由Chargify驱动"
+
+    SETTINGS_CREATE_PROJECT_TITLE:
+      en: "Create new workspace"
+      zh: "创建新工作空间"

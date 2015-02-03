@@ -60,38 +60,35 @@
 
 <!-- {{newProject}} -->
 <section class="new-project-modal" data-bind="true">
-  <span>Project Name</span>
+  <span>{{i18n "SETTINGS_CREATE_PROJECT_NAME"}}</span>
   <input type="text" class="input new-project-name" data-required="true">
-  <div>Project Billing</div>
-  <div class="new-project-info">
-    Provide billing information to create a collaborative project. <br>
-    You will only be charged when instance hour is comsumed in this project.
-  </div>
+  <div>{{i18n "SETTINGS_CREATE_PROJECT_BILLING"}}</div>
+  <div class="new-project-info">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_TIP"}}</div>
   <div class="new-project-err"></div>
   <div class="new-project-item new-project-item-owner">
-    <span>Billing Owner</span>
-    <input class="input new-project-fn" type="text" placeholder="First Name" data-required="true">
-    <input class="input new-project-ln" type="text" placeholder="Last Name" data-required="true">
+    <span>{{i18n "SETTINGS_CREATE_PROJECT_BILLING_OWNER"}}</span>
+    <input class="input new-project-fn" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_FIRST_NAME"}}" data-required="true">
+    <input class="input new-project-ln" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_LAST_NAME"}}" data-required="true">
   </div>
   <div class="new-project-item new-project-item-email">
-    <span>Billing Email</span>
+    <span>{{i18n "SETTINGS_CREATE_PROJECT_BILLING_EMAIL"}}</span>
     <input class="input new-project-email" type="text" data-required="true">
   </div>
   <div class="new-project-item new-project-item-card">
-    <span>Card Number</span>
+    <span>{{i18n "SETTINGS_CREATE_PROJECT_CARD_NAME"}}</span>
     <input class="input new-project-card" type="text" data-required="true">
   </div>
   <div class="new-project-item new-project-item-cvv">
-    <span>CVV</span>
+    <span>{{i18n "SETTINGS_CREATE_PROJECT_CARD_CVV"}}</span>
     <input class="input new-project-cvv"  type="text" data-required="true">
   </div>
   <div class="new-project-item new-project-item-date">
-    <span>Expriation Date</span>
+    <span>{{i18n "SETTINGS_CREATE_PROJECT_EXPRIATION"}}</span>
     <input class="input new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
   </div>
   <div class="modal-footer">
-    <span class="new-project-support">Secure Payment Powered by Chargify</span>
-    <button class="btn new-project-create btn-blue">Create</button>
-    <button class="btn modal-close new-project-cancel btn-silver">Cancel</button>
+    <span class="new-project-support">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
+    <button class="btn new-project-create btn-blue">{{i18n "LBL_CREATE"}}</button>
+    <button class="btn modal-close new-project-cancel btn-silver">{{i18n "LBL_CANCEL"}}</button>
   </div>
 </section>

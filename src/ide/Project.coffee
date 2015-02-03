@@ -35,20 +35,8 @@ define [
           console.log "There's an audit that is not related to any project, ignored.", newDocument
           return
 
-        project.logs().add {
-          id       : newDocument.id
-          usercode : newDocument.username
-
-          action  : newDocument.action
-          success : newDocument.result is 0
-          detail  : newDocument.detail
-
-          target   : newDocument.target
-          targetId : newDocument.target_id
-
-          time     : newDocument.time
-          duration : newDocument.duration
-        }
+        project.logs().add newDocument
+        return
 
       # changed : ()-> # Ignored
       # removed : ()-> # Ignored

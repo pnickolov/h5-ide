@@ -56,7 +56,7 @@ define [
     title       : ()-> @opsModel.get("name")
     tabClass    : ()-> "icon-stack-tabbar"
     url         : ()-> @opsModel.relativeUrl()
-    isWorkingOn : ( data )-> @opsModel is att
+    isWorkingOn : ( data )-> @opsModel is data.opsModel
 
     viewClass   : CoreEditorView
     designClass : Design

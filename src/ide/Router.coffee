@@ -40,7 +40,7 @@ define [
 
       # Add additional routes here.
       # These routes are diabled when the IDE is loading.
-      @route "project/:project/unsaved(/:ops)", "openProject"
+      @route "team/:project/unsaved(/:ops)", "openProject"
       return
 
     onRouteClicked : ( evt )->

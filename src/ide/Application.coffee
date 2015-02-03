@@ -18,6 +18,10 @@ define [
   "ApiRequest"
   "i18n!/nls/lang.js"
   "UI.notification"
+
+  # Extra depedencies
+  "./submodels/OpsModelAws"
+  "./submodels/OpsModelOs"
 ], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
 
 

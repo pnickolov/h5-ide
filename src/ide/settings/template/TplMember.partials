@@ -85,9 +85,17 @@
         </div>
     </td>
     <td class="{{role}}">
-        <span class="memlist-view-mode role">{{role}}</span>
+        <span class="memlist-view-mode role">
+            {{#ifCond role 'admin'}}{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}{{/ifCond}}
+            {{#ifCond role 'collaborator'}}{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}{{/ifCond}}
+            {{#ifCond role 'observer'}}{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER"}}{{/ifCond}}
+        </span>
         <div class="selectbox memlist-edit-mode memtype">
-            <div class="selection">{{role}}</div>
+            <div class="selection">
+                {{#ifCond role 'admin'}}{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}{{/ifCond}}
+                {{#ifCond role 'collaborator'}}{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}{{/ifCond}}
+                {{#ifCond role 'observer'}}{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER"}}{{/ifCond}}
+            </div>
             <ul class="dropdown">
                 <li data-id="admin" class="item {{#ifCond role 'admin'}}selected{{/ifCond}}">
                     <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}</div>
@@ -119,7 +127,7 @@
 {{/each}}
 
 <!-- {{deletePopup}} -->
-<div class="info">Do you confirm to delete selected {{count}} user(s)?</div>
+<div class="info">{{i18n "SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM" count}}</div>
 <div class="operate">
     <button class="confirm btn btn-red">{{i18n "SETTINGS_MEMBER_LABEL_REMOVE"}}</button>
 </div>

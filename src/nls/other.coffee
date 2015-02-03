@@ -2612,59 +2612,63 @@ into live resources, or import existing infrastructures."
 
     SETTINGS_MEMBER_LABEL_ADMIN:
       en: "ADMIN"
-      zh: ""
+      zh: "管理员"
 
     SETTINGS_MEMBER_LABEL_COLLABORATOR:
       en: "COLLABORATOR"
-      zh: ""
+      zh: "协作者"
 
     SETTINGS_MEMBER_LABEL_OBSERVER:
       en: "OBSERVER"
-      zh: ""
+      zh: "查看者"
 
     SETTINGS_MEMBER_LABEL_ADMIN_DESC:
       en: "%explain what an admin can do.can docan do cando %"
-      zh: ""
+      zh: "..."
 
     SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
       en: "%explain what an admin can do.can docan do cando %"
-      zh: ""
+      zh: "..."
 
     SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
       en: "%explain what an admin can do.can docan do cando %"
-      zh: ""
+      zh: "..."
 
     SETTINGS_MEMBER_LABEL_ACTIVE:
       en: "Active"
-      zh: ""
+      zh: "已激活"
 
     SETTINGS_MEMBER_LABEL_PENDING:
       en: "Pending"
-      zh: ""
+      zh: "等待中"
 
     SETTINGS_MEMBER_LABEL_CANCEL_INVITE:
       en: "Cancel Invitation"
-      zh: ""
+      zh: "取消邀请"
 
     SETTINGS_MEMBER_LABEL_DONE:
       en: "Done"
-      zh: ""
+      zh: "完成"
 
     SETTINGS_MEMBER_LABEL_NO_USER:
       en: "There is no user"
-      zh: ""
+      zh: "未找到用户"
 
     SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP1:
       en: "You are the only member in your default workspace"
-      zh: ""
+      zh: "你是默认工作空间中的唯一成员"
 
     SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP2:
       en: "To invite member and collaborate with other user"
-      zh: ""
+      zh: "要邀请成员并与其他用户协作"
 
     SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE:
       en: "create a new workspace"
-      zh: ""
+      zh: "请创建新的工作空间"
+
+    SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM:
+      en: "Do you confirm to delete selected %s user(s)?"
+      zh: "确定要删除选中的 %s 个用户?"
 
     ADD_CLOUD_CREDENTIAL:
       en: "Add Cloud Credential"
@@ -2673,5 +2677,3 @@ into live resources, or import existing infrastructures."
     UPDATE_CLOUD_CREDENTIAL:
       en: "Update Cloud Credential"
       zh: "更新证书"
-
-

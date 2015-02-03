@@ -1,13 +1,14 @@
 
 define [
   "ApiRequest"
+  "ide/submodels/ProjectLog"
   "ide/submodels/OpsCollection"
   "ide/settings/projectSubModels/MemberCollection"
   "OpsModel"
   "Credential"
   "ApiRequestR"
   "backbone"
-], ( ApiRequest, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
+], ( ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
 
   ###
   # One-time initializer to observe the websocket. Since the websocket is not
@@ -24,6 +25,33 @@ define [
         console.info "Project has been removed", oldDocument
         App.model.projects().get( oldDocument.id ).cleanup()
         return
+    }
+
+    App.WS.collection.history.find().observe {
+      added : ( newDocument )->
+        if not newDocument then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "There's an audit that is not related to any project, ignored.", newDocument
+          return
+
+        project.logs().add {
+          id       : newDocument.id
+          usercode : newDocument.username
+
+          action  : newDocument.action
+          success : newDocument.result is 0
+          detail  : newDocument.detail
+
+          target   : newDocument.target
+          targetId : newDocument.target_id
+
+          time     : newDocument.time
+          duration : newDocument.duration
+        }
+
+      # changed : ()-> # Ignored
+      # removed : ()-> # Ignored
     }
     return
 
@@ -63,8 +91,7 @@ define [
       credentials  : new Credential.Collection()
       stacks       : new OpsCollection()
       apps         : new OpsCollection()
-      history      : new Backbone.Collection()
-      audits       : new Backbone.Collection()
+      logs         : new ProjectLog.Collection()
       members      : null
       myRole       : "observer"
       private      : false
@@ -121,8 +148,7 @@ define [
     stacks       : ()-> @get("stacks")
     apps         : ()-> @get("apps")
     credentials  : ()-> @get("credentials")
-    history      : ()-> @get("history")
-    audits       : ()-> @get("audits")
+    logs         : ()-> @get("logs")
     tokens       : ()-> @get("tokens")
     defaultToken : ()-> @get("defaultToken")
 

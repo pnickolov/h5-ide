@@ -119,7 +119,7 @@ define [
         for p in self.projects().models
           ids = ids.concat p.stacks().pluck("id"), p.apps().pluck("id")
 
-        ThumbnailUtil.clean( ids )
+        ThumbnailUtil.cleanup( ids )
         return
 
 

@@ -2,7 +2,7 @@
 <!-- {{frame}} -->
 <div class="project-scene">
   <header class="project-header">
-    <button class="ph-nav-btn project-list popuptrigger" data-popup="popupProject"></button>
+    <button class="ph-nav-btn project-list popuptrigger truncate" data-popup="popupProject"></button>
     <button class="ph-nav-btn icon-menu asset-list popuptrigger" data-popup="popupAsset"></button>
     <div class="ws-tabbar"><ul class="ws-fixed-tabs"></ul><ul class="ws-tabs"></ul></div>
     <nav>
@@ -43,7 +43,7 @@
 
 <!-- {{projectList}} -->
 <ul class="header-popup hp-project-list">
-  {{#each this}}<li><a class="route{{#if selected}} selected{{/if}}" href="{{url}}">{{name}}</a><a class="route icon-info" href="settings/{{id}}/member"></a></li>{{/each}}
+  {{#each this}}<li><a class="route{{#if selected}} selected{{/if}}" href="{{url}}">{{name}}</a><a class="route icon-gear" href="settings/{{id}}/member"></a></li>{{/each}}
   <li class="create-new-project padding">Create New Project</li>
 </ul>
 

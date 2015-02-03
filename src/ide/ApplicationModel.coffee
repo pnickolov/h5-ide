@@ -13,10 +13,11 @@ define [
   "Project"
   "ApiRequest"
   "ApiRequestOs"
-  "backbone"
+  "ThumbnailUtil"
   "constant"
   "i18n!/nls/lang.js"
-], ( OpsModel, Project, ApiRequest, ApiRequestOs, Backbone, constant, lang )->
+  "backbone"
+], ( OpsModel, Project, ApiRequest, ApiRequestOs, ThumbnailUtil, constant, lang )->
 
   Backbone.Model.extend {
 
@@ -118,7 +119,7 @@ define [
         for p in self.projects().models
           ids = ids.concat p.stacks().pluck("id"), p.apps().pluck("id")
 
-        console.warn "Thumbnail is not cleanup when launching ide.", ids
+        ThumbnailUtil.clean( ids )
         return
 
 

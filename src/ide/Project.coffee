@@ -101,9 +101,10 @@ define [
       @stacks().set @__parseListRes( attr.stacks or [] )
       @apps().set   @__parseListRes( attr.apps or [] )
 
-      @listenTo @stacks(), "change", ()-> @trigger "change:stack"
-      @listenTo @stacks(), "add",    ()-> @trigger "update:stack"
-      @listenTo @stacks(), "remove", ()-> @trigger "update:stack"
+      @listenTo @stacks(), "change",   ()-> @trigger "change:stack"
+      @listenTo @stacks(), "change:id",()-> @trigger "update:stack"
+      @listenTo @stacks(), "add",      ()-> @trigger "update:stack"
+      @listenTo @stacks(), "remove",   ()-> @trigger "update:stack"
 
       @listenTo @apps(), "change", ()-> @trigger "change:app"
       @listenTo @apps(), "add",    ()-> @trigger "update:app"

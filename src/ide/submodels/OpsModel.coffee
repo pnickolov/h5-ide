@@ -304,10 +304,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__jsonData = res
         self.trigger "jsonDataSaved", self
 
-        # The stack is a newly created stack. We would like to trigger "update" in the collection
-        # So that other's can update their view.
-        if attr.id then self.collection.__triggerUpdate self
-
         return self
       , ( err )->
         self.set "state", OpsModelState.UnRun

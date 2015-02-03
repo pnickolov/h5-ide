@@ -254,8 +254,12 @@ define [
     updateWithWsData : ( wsdata )->
       if wsdata.name
         @set "name", wsdata.name
+
       if wsdata.members
         @__checkMyRole( wsdata.members )
+
+      if wsdata.payment
+        @set "billingState", wsdata.payment.state
 
       # To many if here.. Many have bug..
       if wsdata.credentials

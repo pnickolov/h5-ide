@@ -46,7 +46,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       #     s.remove()
       # return
 
-    isRemovable    : ()-> _.all @__spaces, ( ws )-> ws.isModified()
+    isRemovable    : ()-> _.all @__spaces, ( ws )-> !ws.isModified()
     becomeInactive : ()-> Scene.prototype.becomeInactive.call this
     cleanup        : ()-> Scene.prototype.cleanup.call this
 

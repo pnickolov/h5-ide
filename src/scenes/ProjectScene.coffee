@@ -198,5 +198,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
           @removeSpace( space, true )
       return
 
+  Scene.SetDefaultScene ProjectScene
+
   ProjectScene
 

@@ -6,6 +6,8 @@ define ["backbone"], ()->
 
   sid = 0
 
+  DefaultSceneClass = null
+
   class Scene
 
     constructor : ()->
@@ -77,5 +79,8 @@ define ["backbone"], ()->
     title : ()-> ""
 
   _.extend Scene.prototype, Backbone.Events
+
+  Scene.SetDefaultScene = (s)-> DefaultSceneClass = s
+  Scene.DefaultScene = ()-> DefaultSceneClass
 
   Scene

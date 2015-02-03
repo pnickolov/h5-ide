@@ -45,7 +45,6 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
           if day < 10 then day = "0"+day
           hour = date.getHours()
           if hour < 10 then hour = "0"+hour
-          console.log year, month, day
           "" + year + month + day + hour
 
 

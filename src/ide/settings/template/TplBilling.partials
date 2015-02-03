@@ -118,6 +118,10 @@
         <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
     {{/if}}
     <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
+    <div class="usage-pagination" data-offset="0">
+        <button class="btn"><i class="icon-caret-left"></i></button>
+        <button class="btn"><i class="icon-caret-right"></i></button>
+    </div>
     <div class="table-head-fix">
         {{#if result.usageReport.length}}
             <table class="table-head">

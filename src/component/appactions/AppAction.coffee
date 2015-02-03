@@ -44,28 +44,40 @@ define [
           else
             message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
           notification "error", message
-    runStack: (event, workspace)->
-      @workspace = workspace
+
+
+    runStack: (paymentUpdate,paymentModal,@workspace)->
       cloudType = @workspace.opsModel.type
       that = @
-      if $(event.currentTarget).attr('disabled')
-        return false
-      @modal = new modalPlus
-        title: lang.IDE.RUN_STACK_MODAL_TITLE
-        template: MC.template.modalRunStack
-        disableClose: true
-        width: '450px'
-        confirm:
-          text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
-          disabled: true
+      paymentState = App.user.get('paymentState')
+      if paymentModal
+        @modal = paymentModal
+        @modal.setTitle lang.IDE.RUN_STACK_MODAL_TITLE
+        .setWidth('665px')
+        .setContent MC.template.modalRunStack {paymentState, paymentUpdate}
+        .compact()
+        .find('.modal-footer').show()
+      else
+        @modal = new Modal
+          title: lang.IDE.RUN_STACK_MODAL_TITLE
+          template: MC.template.modalRunStack {paymentState}
+          disableClose: true
+          width: '665px'
+          compact: true
+          confirm:
+            text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+            disabled: true
+
       if cloudType is OpsModel.Type.OpenStack
         @modal.find(".estimate").hide()
         @modal.resize()
-      @renderKpDropdown(@modal, cloudType)
       cost = Design.instance().getCost()
-      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-      currency = Design.instance().getCurrency()
-      @modal.tpl.find("#label-total-fee").find('b').text("#{currency + cost.totalFee}")
+      @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
+      costString = "$#{cost.totalFee}"
+      if Design.instance().region() in ['cn-north-1']
+        costString = "￥#{cost.totalFee}"
+      @modal.find("#label-total-fee").find('b').text costString
+      @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
       # load TA
       TA.loadModule('stack').then ()=>
@@ -99,11 +111,11 @@ define [
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
-      App.user.on 'change:credential', ->
+      @modal.listenTo App.user, 'change:credential', ->
         if Design.instance().credential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->
-        App.user.off 'change:credential'
+        that.modal.stopListening(App.user)
 
     renderKpDropdown: (modal, cloudType)->
       if cloudType is OpsModel.Type.OpenStack

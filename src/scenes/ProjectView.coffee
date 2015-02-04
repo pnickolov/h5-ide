@@ -57,7 +57,7 @@ define [ "ApiRequest",
     # Header Related
     ----------------- ###
     showPopup : ( template, ignoreClicked )->
-      $overlay = $( template ).appendTo( "body" )
+      $overlay = $( "<div class='hp-popup-overlay'>#{template}</div>" ).appendTo( "body" )
 
       oneTimeClicked = ( evt )->
         if ignoreClicked and ignoreClicked( evt.target ) then return
@@ -151,11 +151,11 @@ define [ "ApiRequest",
         false
       )
 
-      $popup.children("nav").on("click", ".off-canvas-tab", ( evt )->
+      $popup.find("nav").on("click", ".off-canvas-tab", ( evt )->
         $tgt = $(evt.currentTarget)
         $tgt.parent().children().removeClass("selected")
         $tgt.addClass("selected")
-        $popup.children(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{$tgt.attr('data-id')}']" ).show()
+        $popup.find(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{$tgt.attr('data-id')}']" ).show()
       )
       return
 

@@ -154,8 +154,8 @@ define [
     deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name") )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
-      newOps = App.model.createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
-      App.openOps newOps
+      newOps = @workspace.opsModel.project().createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
+      App.loadUrl newOps.url()
       return
 
     zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
@@ -303,10 +303,10 @@ define [
       if $(event.currentTarget).attr 'disabled'
         return false
       opsModal = @workspace.opsModel
-      appAction.showPayment(null ,opsModal).then (result)->
+      appAction.showPayment(null ,opsModal).then ( result ) ->
         paymentUpdate = result.result
         paymentModal = result.modal
-        appAction.runStack(paymentUpdate,paymentModal, @workspace)
+        appAction.runStack paymentUpdate, paymentModal, that.workspace
 
     appToStack: () ->
         name = @workspace.design.attributes.name
@@ -318,7 +318,7 @@ define [
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
-                App.openOps newOps
+                App.loadUrl newOps.url()
                 return
             else
                 newJson = Design.instance().serializeAsStack()
@@ -328,7 +328,7 @@ define [
                 stack.save(newJson).then ()->
                     notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.TOOLBAR.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
-                    App.openOps stack, true
+                    App.loadUrl stack.url()
                 ,()->
                     notification 'error', sprintf lang.NOTIFY.ERR_SAVE_FAILED, newJson.name
 
@@ -385,20 +385,6 @@ define [
         else
             @hideError('appname')
             return false
-
-    renderKpDropdown: (modal)->
-        if kpDropdown.hasResourceWithDefaultKp()
-            keyPairDropdown = new kpDropdown()
-            if modal then modal.tpl.find("#kp-runtime-placeholder").html keyPairDropdown.render().el else return false
-            hideKpError = @hideError.bind @
-            keyPairDropdown.dropdown.on 'change', ->
-                hideKpError('kp')
-            modal.tpl.find('.default-kp-group').show()
-            if @modal then @modal.on 'close', ->
-              keyPairDropdown.remove()
-            if @updateModal then @updateModal.on 'close', ->
-              keyPairDropdown.remove()
-        null
 
     hideDefaultKpError: (context)->
         context.hideError 'kp'
@@ -529,7 +515,7 @@ define [
           $diffTree = differ.renderAppUpdateView()
           $('#app-update-summary-table').html $diffTree
 
-        that.renderKpDropdown(that.updateModal)
+        appAction.renderKpDropdown(that.updateModal)
         TA.loadModule('stack').then ->
           that.updateModal and that.updateModal.toggleConfirm false
           that.updateModal?.resize()

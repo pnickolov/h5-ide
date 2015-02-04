@@ -18,6 +18,10 @@ define [
   "ApiRequest"
   "i18n!/nls/lang.js"
   "UI.notification"
+
+  # Extra depedencies
+  "./submodels/OpsModelAws"
+  "./submodels/OpsModelOs"
 ], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
 
 
@@ -91,6 +95,7 @@ define [
 
   VisualOps.prototype.logout = ()->
     App.user.logout()
+    @ignoreChangesWhenQuit()
 
     p = window.location.pathname
     if p is "/"
@@ -102,8 +107,10 @@ define [
       window.location.href = "/login"
     return
 
+  VisualOps.prototype.ignoreChangesWhenQuit = ()-> @__ICWQ = true; return
+
   # Return true if the ide can quit now.
-  VisualOps.prototype.canQuit = ()-> !@sceneManager.hasUnsaveScenes()
+  VisualOps.prototype.canQuit = ()-> @__ICWQ or !@sceneManager.hasUnsaveScenes()
 
   # Whenever you want to navigate to other part of the application ( e.g. switching to other scene )
   # without a link, use this method with a corresponding url.

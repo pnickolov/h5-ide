@@ -141,7 +141,7 @@ define [
 
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize() )
-      App.openOps newOps
+      App.loadUrl newOps.url()
       return
 
     zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
@@ -261,7 +261,7 @@ define [
             if isNew
                 newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
-                App.openOps newOps
+                App.loadUrl newOps.url()
                 return
             else
                 newJson = Design.instance().serializeAsStack()
@@ -271,7 +271,7 @@ define [
                 stack.save(newJson).then ()->
                     notification "info", sprintf lang.NOTIFY.INFO_HDL_SUCCESS, lang.IDE.TOOLBAR_HANDLE_SAVE_STACK, newJson.name
                     # refresh if this stack is open
-                    App.openOps stack, true
+                    App.loadUrl stack.url()
                 ,()->
                     notification 'error', sprintf lang.NOTIFY.ERR_SAVE_FAILED, newJson.name
 

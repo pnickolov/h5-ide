@@ -20,13 +20,14 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "UI.modalplus", "backbone" ]
         title: lang.IDE.DASH_INVALID_SESSION
         width: 400
         template: template()
+        disableClose: true
+        hideClose: true
         confirm: text: lang.IDE.DASH_LBL_CONNECT
         cancel: text: lang.IDE.DASH_LBL_CLOSE_SESSION, color: "red"
       }
-      @modal.on "confirm", ->
-        self.showReconnect()
-      @modal.on "cancel", ->
-        self.closeSession()
+      @modal.on "confirm", -> self.showReconnect()
+      @modal.on "cancel",  -> self.closeSession()
+      @modal.on "close",   -> self.closeSession()
 
       @setElement $('#modal-wrap')
 
@@ -50,6 +51,9 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "UI.modalplus", "backbone" ]
       App.user.acquireSession( $("#SessionPassword").val() ).then ()=>
         @remove()
         @defer.resolve()
+
+        App.ignoreChangesWhenQuit()
+        window.location.reload()
         return
       , ( error )->
         @modal.find(".modal-confirm").removeAttr "disabled"

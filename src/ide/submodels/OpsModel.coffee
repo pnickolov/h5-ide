@@ -276,7 +276,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         api = "stack_save"
       else
         api = "stack_create"
-        attr.project_id = @project().id
+        attr.key_id = @credentialId()
 
       if newJson.state isnt "Enabled"
         console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
@@ -327,7 +327,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         region_name : @get("region")
         stack_id    : @get("id")
       }).fail ()->
-        @set "state", OpsModelState.UnRun
+        self.set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
         collection.add self
 
@@ -344,7 +344,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         stack       : toRunJson
         app_name    : appName
         key_id      : @credentialId()
-        project_id  : @project().id
       }).then ( res )->
         project.apps().add new OpsModel({
           name          : appName

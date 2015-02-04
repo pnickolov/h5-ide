@@ -401,7 +401,7 @@ window.__detailExtend = ( protoProps, staticProps )->
 ### env:dev:end ###
 
 require [
-  'ide/AppBundle'
+  'ide/Application'
   "cloudres/CrBundle"
   "MC"
   'lib/aws'

@@ -1,6 +1,10 @@
 define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, template, ApiRequestR) ->
     Backbone.View.extend {
 
+        events:
+            "click .usage-pagination .nav-left": "prevUsage"
+            "click .usage-pagination .nav-right": "nextUsage"
+
         className: "usage-report-view"
 
         initialize: ->
@@ -10,31 +14,19 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
 
         render : ()->
             self = @
-            self.getPaymentState().then ->
+            self.model.getPaymentState().then ->
                 payment = self.model.get("payment")
-                self.$el.html(template.usage {payment})
-                self.$el.find(".full-space").html $(MC.template.loadingSpinner()).css({"margin": "80px auto"})
-                #self.renderUsageData()
+                self.$el.find("#billing-status").html(template.usage {payment})
+                self.renderUsageData()
             @
 
-        getUsage: (startDate = new Date() - 30*24*3600*1000, endDate = new Date())->
+        getUsage: (date)->
+            date ||= new Date()
+            [startDate, endDate] = @getStartAndEnd(date)
             projectId = @model.get("id")
             startDate = @formatDate new Date(startDate)
             endDate = @formatDate new Date(endDate)
             ApiRequestR("payment_usage", {projectId, startDate, endDate})
-
-        getPaymentState: ()->
-            defer = new Q.defer()
-            self = @
-            payment = @model.get("payment")
-            if payment
-                defer.resolve(payment)
-            else
-                @model.getPaymentState().then ()->
-                    defer.resolve(self.model.get("payment"))
-                , (err)->
-                    defer.reject(err)
-            defer.promise
 
         getStartAndEnd: (date)->
             date = new Date(date)
@@ -44,6 +36,23 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
             lastDay = new Date(year, month+1, -1)
             console.log firstDay.toLocaleString(), lastDay.toLocaleString()
             [firstDay, lastDay]
+
+        renderUsageData: (dateString)->
+            self = @
+            dateString ||= now = new Date()
+            self.$el.find(".full-space").html $(MC.template.loadingSpinner()).css({"margin": "80px auto"})
+            self.$el.find(".usage-pagination button").prop("disabled", true)
+            @getUsage(dateString).then (result)->
+                payment = self.model.get("payment")
+                self.$el.find(".full-space").replaceWith(template.usageTable {result})
+                date = self.formatDate2(dateString)
+                self.$el.find(".usage-date").text(date.string).data("date", dateString)
+                isDisabled = self.getNewDate(1) > new Date()
+                self.$el.find(".nav-left").prop("disabled", false)
+                self.$el.find(".nav-right").prop('disabled', isDisabled);
+            ,()->
+                notification 'error', "Error while getting user payment info, please try again later."
+            @
 
         formatDate: (date)->
             year = date.getFullYear()
@@ -56,24 +65,27 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
             "" + year + month + day + hour
 
 
-        renderUsageData: ()->
-            self = @
-            @getUsage().then (result)->
-                payment = self.model.get("payment")
-                self.$el.find(".full-space").html(template.usageTable {result})
-                self.$el.find(".usage-date").text self.formatDate2().string
-            ,()->
-                notification 'error', "Error while getting user payment info, please try again later."
-            @
-
         formatDate2: (date)->
             date = new Date(date);
             months = ["January"	,"February"	,"March" ,"April"	,"May" ,"June" ,"July" ,"August" ,"September" ,"October" ,"November" ,"December"]
-            month = months[date%12]
+            month = months[date.getMonth()%12]
             year = date.getFullYear()
             console.log(month, year)
             string = "#{month}, #{year}"
             return {string, date}
 
+        getNewDate: (offset)->
+            oldDate = new Date($(".usage-date").data("date"))
+            year = oldDate.getFullYear()
+            month = oldDate.getMonth() + offset
+            new Date(year, month)
+
+        nextUsage: ()->
+            newDate = @getNewDate(1)
+            @renderUsageData newDate
+
+        prevUsage: ()->
+            newDate = @getNewDate(-1)
+            @renderUsageData newDate
 
     }

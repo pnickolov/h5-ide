@@ -55,14 +55,23 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         force_update : forceUpdate
       } )
 
-    formatCredForRequest: ( cred ) ->
-      {
-        alias      : cred.alias
-        account_id : cred.awsAccount
-        access_key : cred.awsAccessKey
-        secret_key : cred.awsSecretKey
-        provider   : cred.provider or PROVIDER.AWSGLOBAL
-      }
+    formatCredForRequest: ( cred, remove ) ->
+      if remove
+        {
+          alias      : ''
+          account_id : ''
+          access_key : ''
+          secret_key : ''
+          provider   : cred.provider or PROVIDER.AWSGLOBAL
+        }
+      else
+        {
+          alias      : cred.alias
+          account_id : cred.awsAccount
+          access_key : cred.awsAccessKey
+          secret_key : cred.awsSecretKey
+          provider   : cred.provider or PROVIDER.AWSGLOBAL
+        }
 
     add: () ->
       model = @
@@ -109,8 +118,22 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     destroy: ( options ) ->
       model = @
       project = @get 'project'
-      ApiRequest( "project_remove_credential", { project_id: project.id, key_id: @id } ).then ( res )->
-        model.trigger 'destroy', model, model.collection, options
+      credential = @formatCredForRequest @attributes, true
+
+      ApiRequest( "project_update_credential", {
+        project_id: project.id
+        key_id: @id
+        credential: credential
+        force_update: false
+      }).then ( res ) ->
+        demoAccountInfo = res[ 1 ]
+        model.set {
+          isDemo      : true
+          alias       : ''
+          awsAccount  : demoAccountInfo[ 0 ]
+          awsAccessKey: demoAccountInfo[ 1 ]
+          awsSecretKey: demoAccountInfo[ 2 ]
+        }
 
         res
 

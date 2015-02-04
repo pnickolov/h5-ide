@@ -248,7 +248,7 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     parseFetchData : ( res )-> res
 
     # Destroy the collection. Most of the collection should not be destroy.
-    destroy : ()-> @trigger "destroy", @credential, @id
+    destroy : ()-> @trigger "destroy", @credential(), @id
 
     # Returns a newly created model. The model is not saved to AWS yet, so there's no add event.
     create : ( attributes )->

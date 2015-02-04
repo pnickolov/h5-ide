@@ -1,6 +1,4 @@
-
 define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction )->
-  
   Backbone.View.extend {
 
     events :
@@ -21,7 +19,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         id   : id
         name : name
         shortName : constant.REGION_SHORT_LABEL[ id ]
-      @setElement $( Template({
+      @setElement $( Template.main({
         data : data
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
@@ -43,6 +41,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       MC.template.dashboardBubble = _.bind @dashboardBubble, @
 
       @$el.toggleClass "observer", @model.isReadOnly()
+      @switchLog()
       return
 
     createStack : ( evt )->
@@ -63,20 +62,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       false
 
     importApp : ()->
-      new VisualizeDialog({model:@model.scene.project})
-      false
-
-    switchLog: (event) ->
-
-        $btn = $(event.currentTarget)
-        $sidebar = $btn.parents('.dashboard-sidebar')
-        $sidebar.find('.dashboard-nav-log').removeClass('selected')
-        $sidebar.find('.dashboard-log').addClass('hide')
-        $btn.addClass('selected')
-        if $btn.hasClass('dashboard-nav-activity')
-            $sidebar.find('.dashboard-log-activity').removeClass('hide')
-        else
-            $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
     updateRegionAppStack : ()->
       self = @
@@ -220,4 +205,47 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
       @updateRegionResources()
       return
+
+    switchLog: (event) ->
+
+        # switch
+        if not event
+            $btn = @$el.find('.dashboard-sidebar .dashboard-nav-activity')
+        else
+            $btn = $(event.currentTarget)
+        $sidebar = $btn.parents('.dashboard-sidebar')
+        $sidebar.find('.dashboard-nav-log').removeClass('selected')
+        $sidebar.find('.dashboard-log').addClass('hide')
+        $btn.addClass('selected')
+        if $btn.hasClass('dashboard-nav-activity')
+            $sidebar.find('.dashboard-log-activity').removeClass('hide')
+        else
+            $sidebar.find('.dashboard-log-audit').removeClass('hide')
+
+        # render
+        activityModels = @model.scene.project.logs().history()
+        auditModels = @model.scene.project.logs().audit()
+
+        # render activity
+        activitys = _.map activityModels, (activity) ->
+
+            return {
+                avatar: '',
+                event: activity.get('detail'),
+                time: new Date(activity.get('time'))
+            }
+
+        $sidebar.find('.dashboard-log-activity').html Template.activityList(activitys)
+
+        # render audit
+        audits = _.map auditModels, (audit) ->
+
+            return {
+                avatar: '',
+                event: audit.get('detail'),
+                time: new Date(audit.get('time'))
+            }
+
+        $sidebar.find('.dashboard-log-audit').html Template.activityList(audits)
+
   }

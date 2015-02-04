@@ -1,3 +1,5 @@
+<!-- {{main}} -->
+
 <div>
 
   <header class="dashboard-header">
@@ -109,13 +111,22 @@
         <button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">Audit Log</button>
       </nav>
       <div class="dashboard-log-wrap">
-          <div class="dashboard-log dashboard-log-activity">
-              123
-          </div>
-          <div class="dashboard-log dashboard-log-audit hide">
-              456
-          </div>
+          <div class="dashboard-log dashboard-log-activity"></div>
+          <div class="dashboard-log dashboard-log-audit hide"></div>
       </div>
     </aside>
   </div>
 </div>
+
+<!-- {{activityList}} -->
+<ul class="dashboard-log-activity-list">
+    {{#each this}}
+    <li class="dashboard-log-activity-item">
+        <img class="avatar" src="{{avatar}}" />
+        <div class="info">
+            <div class="event">{{event}}</div>
+            <div class="time">{{time}}</div>
+        </div>
+    </li>
+    {{/each}}
+</ul>

@@ -219,7 +219,9 @@ aside.dashboard-sidebar {
   top        : 0;
   background : white;
   color: #4A90E2;
-  overflow: auto;
+  nav {
+    overflow: auto;
+  }
   .dashboard-nav-log {
         float: left;
         min-width: 100px;

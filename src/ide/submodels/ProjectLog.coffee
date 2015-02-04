@@ -15,7 +15,7 @@ define [ "constant", "backbone" ], ( constant )->
     constructor : ( attr, opt )->
       cate = attr.action.split(".")
 
-      Backbone.Model.call {
+      Backbone.Model.call this, {
         id       : attr.id
         usercode : attr.username
 

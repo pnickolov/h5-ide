@@ -327,7 +327,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         region_name : @get("region")
         stack_id    : @get("id")
       }).fail ()->
-        @set "state", OpsModelState.UnRun
+        self.set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
         collection.add self
 

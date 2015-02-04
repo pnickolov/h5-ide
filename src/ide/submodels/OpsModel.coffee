@@ -169,10 +169,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getMsrId() ).init( @get("region"), @get("provider") ).fetchForceDedup().then ()-> self.__onFjdImported()
+      CloudResources( @credentialId(), "OpsResource", @getMsrId() ).init({
+        region   : @get("region")
+        project  : @project().id
+        provider : @get("provider")
+      }).fetchForceDedup().then ()-> self.__onFjdImported()
 
     generateJsonFromRes : ()->
-      json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+      json = CloudResources( @credentialId(), 'OpsResource', @getMsrId() ).generatedJson
+
       if not json.agent.module.repo
         json.agent.module =
           repo : App.user.get("repo")
@@ -641,7 +646,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # Cleanup CloudResources if we are an app
       msrId = @getMsrId()
       if msrId
-        CloudResources( "OpsResource", msrId )?.destroy()
+        CloudResources( @credential(), "OpsResource", msrId )?.destroy()
 
       # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed

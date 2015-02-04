@@ -50,18 +50,16 @@ define ["cloudres/CrCollection"], ( CrCollection )->
   CloudResources.collectionOfCredential = ( credentialId )-> CachedCollections[ credentialId ]
 
   # Clear all the resources which attribute matches `detect`
-  CloudResources.clearWhere = ( detect, category )->
-    if _.isFunction detect
-      find = "filter"
-    else
-      find = "where"
+  CloudResources.clearWhere = ( credentialId, category, detect )->
+    find = if _.isFunction(detect) then "filter" else "where"
 
-    for id, cln of CachedCollections
+    for id, cln of CachedCollections[credentialId] || []
 
       Collection = CrCollection.getClassByType( cln.type )
       realCate   = Collection.category( category )
 
       if cln.category is realCate
+        console.log "Removing CloudResources:", cln[find](detect)
         cln.remove( cln[find](detect) )
     return
 

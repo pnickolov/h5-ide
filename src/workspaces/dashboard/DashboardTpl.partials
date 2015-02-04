@@ -48,7 +48,7 @@
     <li class="dashboard-log-activity-item">
         <img class="avatar" src="{{avatar}}" />
         <div class="info">
-            <div class="event">{{event}}</div>
+            <div class="event">{{username}} {{event}}</div>
             <div class="time">{{time}}</div>
         </div>
     </li>

@@ -58,7 +58,7 @@ define [
         .compact()
         .find('.modal-footer').show()
       else
-        @modal = new Modal
+        @modal = new modalPlus
           title: lang.IDE.RUN_STACK_MODAL_TITLE
           template: MC.template.modalRunStack {paymentState}
           disableClose: true
@@ -67,6 +67,8 @@ define [
           confirm:
             text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
+
+        @renderKpDropdown @modal, cloudType
 
       if cloudType is OpsModel.Type.OpenStack
         @modal.find(".estimate").hide()
@@ -106,7 +108,7 @@ define [
         @json.name = appNameDom.val()
         @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
           self.modal.close()
-          App.openOps( ops )
+          App.loadUrl ops.url()
         , (err)->
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
@@ -161,7 +163,7 @@ define [
       true
 
     checkAppNameRepeat: (nameVal)->
-      if App.model.appList().findWhere(name: nameVal)
+      if @workspace.opsModel.project().apps().findWhere(name: nameVal)
         @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
         return true
       else if not nameVal
@@ -175,7 +177,7 @@ define [
         $("#runtime-error-#{id}").text(msg).show()
 
     deleteStack : ( id, name ) ->
-      name = name || App.model.stackList().get( id ).get( "name" )
+      name = name || @workspace.opsModel.project().stacks().get( id ).get( "name" )
 
       modal = new modalPlus({
         title: lang.TOOLBAR.TIP_DELETE_STACK
@@ -187,7 +189,7 @@ define [
       })
       modal.on "confirm", ()->
         modal.close()
-        opsModel = App.model.stackList().get( id )
+        opsModel = @workspace.opsModel.project().stacks().get( id )
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->
@@ -196,16 +198,16 @@ define [
             notification "error", sprintf(lang.NOTIFY.ERR_DEL_STACK_FAILED, name)
 
     duplicateStack : (id) ->
-      opsModel = App.model.stackList().get(id)
+      opsModel = @workspace.opsModel.project().stacks().get(id)
       if not opsModel then return
       opsModel.fetchJsonData().then ()->
-        App.openOps( App.model.createStackByJson opsModel.getJsonData() )
+        App.loadUrl @workspace.opsModel.project().createStackByJson( opsModel.getJsonData() ).url()
       , ()->
         notification "error", lang.NOTIFY.ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
-      app = App.model.appList().get(id)
+      app = @workspace.opsModel.project().apps().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.TOOLBAR.TIP_START_APP
@@ -226,7 +228,7 @@ define [
         startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
         startAppModal.on 'confirm', ->
           startAppModal.close()
-          App.model.appList().get( id ).start().fail ( err )->
+          @workspace.opsModel.project().apps().get( id ).start().fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
             return
@@ -246,7 +248,7 @@ define [
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
         .then ->
-          name = App.model.appList().get( app.get("id") ).get("name")
+          name = @workspace.opsModel.project().apps().get( app.get("id") ).get("name")
           hasEC2Instance =!!( _.filter comp, (e)->
             e.type is constant.RESTYPE.INSTANCE).length
           hasDBInstance = !!(_.filter comp, (e)->
@@ -277,7 +279,7 @@ define [
         resourceList.fetchForce()
 
     stopApp : ( id )->
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       that = this
       cloudType = app.type
@@ -369,7 +371,7 @@ define [
 
     terminateApp : ( id )->
       self = @
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       terminateConfirm = new modalPlus(
@@ -400,7 +402,7 @@ define [
           return false
 
     __terminateApp: (id, resourceList, terminateConfirm)->
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       cloudType = app.type
@@ -454,7 +456,7 @@ define [
 
     forgetApp : ( id )->
       self = @
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       forgetConfirm = new modalPlus(
@@ -471,7 +473,7 @@ define [
       self.__forgetApp(id, forgetConfirm)
 
     __forgetApp: (id, forgetConfirm)->
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
 

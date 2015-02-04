@@ -7,6 +7,7 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       "click .dashboard-header .create-stack"   : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
+      "click .dashboard-sidebar nav buttton"    : "switchLog"
 
     initialize : ()->
       @setElement $( Template({
@@ -39,5 +40,9 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       false
 
     importApp : ()->
+
+    switchLog: () ->
+
+        null
 
   }

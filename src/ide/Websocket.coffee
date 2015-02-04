@@ -35,8 +35,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       project : new Meteor.Collection "project",  opts
       history : new Meteor.Collection "project_history",  opts
       user    : new Meteor.Collection "user", opts
+      imports : new Meteor.Collection "imports",  opts
       # request : new Meteor.Collection "request",  opts
-      # imports : new Meteor.Collection "imports",  opts
       # stack   : new Meteor.Collection "stack",    opts
       # app     : new Meteor.Collection "app",      opts
       # status  : new Meteor.Collection "status",   opts
@@ -53,12 +53,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
         @statusChanged()
     , 5000
 
-    # Subscripe user to watch if session becomes invalid.
-    @connection.subscribe "user", App.user.get("usercode"), App.user.get("session"), {
-      onReady : ()->  singleton.__readyDefer.resolve()
-      onError : (e)-> singleton.onUserSubError(e)
-    }
-
+    @appWideSubscripe()
     this
 
   # Return a promise that will be resolve when the websocket is ready.
@@ -85,15 +80,24 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
   # When the session is lost and then re-accuqired. Call this method to re-subscribe
   # everything that's previous subscribed.
-  Websocket.prototype.reconnect = ()->
-    @subscribeErrorState = false
+  # Websocket.prototype.reconnect = ()->
+  #   @subscribeErrorState = false
 
-    ps = _.keys @projects
-    @projects = {}
-    for p in ps
-      @subscribe( p )
+  #   ps = _.keys @projects
+  #   @projects = {}
+  #   for p in ps
+  #     @subscribe( p )
 
-    return
+  #   return
+
+  Websocket.prototype.appWideSubscripe = ()->
+    # Subscripe user to watch if session becomes invalid.
+    @connection.subscribe "user", App.user.get("usercode"), App.user.get("session"), {
+      onReady : ()->  singleton.__readyDefer.resolve()
+      onError : (e)-> singleton.onUserSubError(e)
+    }
+    @connection.subscribe "imports", App.user.get("usercode"), App.user.get("session")
+
 
   # Watch changes of a project, keep track of the subscribtion
   # Auto-subscribe when connection lost.
@@ -147,6 +151,12 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   Websocket.prototype.pipeChanges = ()->
     self = this
 
+    # import list
+    @collection.imports.find().observe {
+      added   : (idx, dag) -> self.trigger "visualizeUpdate", idx
+      changed : (idx, dag) -> self.trigger "visualizeUpdate", idx
+    }
+
     return
 
     # request list
@@ -156,15 +166,6 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
         self.trigger "requestChange", idx, dag
       changed : (idx, dag) ->
         self.trigger "requestChange", idx, dag
-    }
-
-    # import list
-    @collection.imports.find().fetch()
-    @collection.imports.find().observe {
-      added : (idx, dag) ->
-        self.trigger "visualizeUpdate", idx
-      changed : (idx, dag) ->
-        self.trigger "visualizeUpdate", idx
     }
 
     # state status

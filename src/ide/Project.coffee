@@ -220,6 +220,15 @@ define [
         jsonData : json
       }) )
 
+    createAppByExistingResource : ( resourceId, region, provider = Credential.PROVIDER.AWSGLOBAL )->
+      @apps().findWhere({importMsrId:resourceId}) || @apps().add( new OpsModel({
+        name        : "ImportedApp"
+        importMsrId : resourceId
+        region      : region
+        provider    : provider
+        state       : OpsModel.State.Running
+      }) )
+
     __parseListRes : ( res )->
       r = []
 

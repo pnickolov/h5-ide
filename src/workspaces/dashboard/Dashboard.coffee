@@ -1,5 +1,5 @@
 
-define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, DashboardView, lang )->
+define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "ApiRequest" ], ( Workspace, DashboardView, lang , ApiRequest )->
 
   Workspace.extend {
 
@@ -17,9 +17,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js' ], ( Workspace, Das
       return
 
     isReadOnly : ()-> @scene.project.amIObserver()
-
     isWorkingOn : ( attr )-> attr.type is "Dashboard"
-
     supportedProviders : ()->
       [{
         id : "aws::global"

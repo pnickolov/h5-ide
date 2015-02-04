@@ -1,5 +1,5 @@
 
-define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDialog )->
+define [ "./DashboardTpl", "./ImportDialog", "./VisualizeDialog", "AppAction", "backbone" ], ( Template, ImportDialog, VisualizeDialog, AppAction )->
 
   Backbone.View.extend {
 
@@ -40,6 +40,8 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       false
 
     importApp : ()->
+      new VisualizeDialog({model:@model.scene.project})
+      false
 
     switchLog: (event) ->
 

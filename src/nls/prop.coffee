@@ -2548,8 +2548,8 @@ module.exports =
       zh: "允许传播"
 
     RTB_REMOVE_VPC_PEER_ROUTE:
-      en: "Currently not supported. <button>Remove this route.</button>"
-      zh: "当前不支持，<button>删除该路由</button>"
+      en: "Currently not supported. <a>Remove this route.</a>"
+      zh: "当前不支持，<a>删除该路由</a>"
 
     RTB_CIDR_BLOCK_REQUIRED:
       en: "CIDR Block is required"

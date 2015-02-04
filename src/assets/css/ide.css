@@ -1272,15 +1272,18 @@ a.action-link:hover {
 .property-list.route-list > li {
   width: auto;
   padding: 0; }
+  .property-list.route-list > li.have-vpc-peer-route {
+    border-bottom: 1px #a42b2b solid; }
   .property-list.route-list > li > table {
     width: 100%; }
 .property-list.route-list .route-readonly {
   color: #777; }
 .property-list.route-list .remove-vpc-peer-route {
-  background-color: red;
+  font-size: 13px;
+  background-color: #a42b2b;
   color: #fff;
   padding: 3px; }
-  .property-list.route-list .remove-vpc-peer-route button {
+  .property-list.route-list .remove-vpc-peer-route a {
     color: #fff;
     cursor: pointer;
     text-decoration: underline; }
@@ -8966,7 +8969,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   word-break: break-word; }
 
 #state-description pre {
-  margin: 0; }
+  margin: 0;
+  background: transparent; }
 
 #state-description blockquote {
   margin: 0;

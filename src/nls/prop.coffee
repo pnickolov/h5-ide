@@ -2547,6 +2547,10 @@ module.exports =
       en: "Allow Propagation"
       zh: "允许传播"
 
+    RTB_REMOVE_VPC_PEER_ROUTE:
+      en: "Currently not supported. <button>Remove this route.</button>"
+      zh: "当前不支持，<button>删除该路由</button>"
+
     RTB_CIDR_BLOCK_REQUIRED:
       en: "CIDR Block is required"
       zh: "CIDR 块为必填"
@@ -3409,5 +3413,3 @@ module.exports =
     REMOVE_ROUTE:
       en: "Remove Route"
       zh: "删除路由"
-
-

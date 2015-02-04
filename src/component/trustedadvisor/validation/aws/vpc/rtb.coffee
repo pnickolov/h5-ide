@@ -54,5 +54,32 @@ define [ 'constant', 'MC', 'TaHelper', 'Design' ], ( CONST, MC, Helper, Design )
 
 		null
 
+	isRtbHaveVPCPeeringRoute = (uid) ->
+
+		if Design.instance().mode() is 'stack'
+
+			rtb = MC.canvas_data.component[uid]
+			routeSet = rtb.resource.RouteSet
+			rtbName = rtb.name
+
+			notices = []
+
+			_.each routeSet, (route, idx) ->
+
+				vpcPeringConnectId = route.VpcPeeringConnectionId
+				if vpcPeringConnectId and vpcPeringConnectId isnt ""
+
+					tipInfo = sprintf i18n.ERROR_RT_HAVE_VPC_PEERING_ROUTE, rtbName, vpcPeringConnectId
+					notices.push({
+						level: CONST.TA.ERROR
+						info: tipInfo
+						uid: uid
+					})
+
+			return notices if notices.length
+
+		null
+
 	isRtbConnectedNatAndItConnectedSubnet : isRtbConnectedNatAndItConnectedSubnet
 	isRtbHaveConflictDestination : isRtbHaveConflictDestination
+	isRtbHaveVPCPeeringRoute : isRtbHaveVPCPeeringRoute

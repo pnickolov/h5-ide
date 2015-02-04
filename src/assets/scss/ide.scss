@@ -1487,6 +1487,17 @@ a.action-link:hover {
 	.route-readonly {
 		color : #777;
 	}
+
+	.remove-vpc-peer-route {
+		background-color: red;
+		color: #fff;
+		padding: 3px;
+		button {
+			color: #fff;
+			cursor: pointer;
+			text-decoration:underline;
+		}
+	}
 }
 
 .route-target {

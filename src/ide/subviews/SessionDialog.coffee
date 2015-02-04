@@ -20,6 +20,8 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "UI.modalplus", "backbone" ]
         title: lang.IDE.DASH_INVALID_SESSION
         width: 400
         template: template()
+        disableClose: true
+        hideClose: true
         confirm: text: lang.IDE.DASH_LBL_CONNECT
         cancel: text: lang.IDE.DASH_LBL_CLOSE_SESSION, color: "red"
       }

@@ -8,7 +8,7 @@ define [
 ], ( lang, Modal, ProjectView, TplSettings ) ->
     SettingsView = Backbone.View.extend {
         events:
-            'click .project-list a': 'loadProject'
+            'click .project-list a': 'renderProject'
             'click .back-settings': 'backToSettings'
 
             'click #AccountEmail'             : 'showEmail'
@@ -45,9 +45,11 @@ define [
         render: ( tab = @tab ) ->
             that = @
             if tab is SettingsView.TAB.Account
-                @renderSettings()
+                renderResult = @renderSettings()
             else
-                @renderProject @projects.get( @projectId ), tab
+                renderResult = @renderProject @projects.get( @projectId ), tab
+
+            unless renderResult then return false
 
             @modal = new Modal
                 template: that.el
@@ -65,18 +67,22 @@ define [
             @$el.html TplSettings data
             @
 
-        loadProject: ( e ) ->
-            projectId = $(e.currentTarget).data 'id'
-            project = @projects.get projectId
-
-            @navigate SettingsView.TAB.Project.BasicSettings, projectId
-            @renderProject project
-
         backToSettings: ->
             @navigate()
             @renderSettings()
 
         renderProject: ( project, tab ) ->
+            if project and project.currentTarget # Load by dom event
+                projectId = $(project.currentTarget).data 'id'
+                project = @projects.get projectId
+
+                @navigate SettingsView.TAB.Project.BasicSettings, projectId
+            else # Load by url
+                if !project or tab not in _.values SettingsView.TAB.Project
+                    notification 'error', lang.IDE.PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST
+                    Router.navigate '/', trigger: true
+                    return false
+
             @projectView?.remove()
             @projectView = new ProjectView( model: project, settingsView: @ )
             @$el.html @projectView.render(tab).el

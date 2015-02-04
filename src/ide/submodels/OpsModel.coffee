@@ -344,7 +344,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         stack       : toRunJson
         app_name    : appName
         key_id      : @credentialId()
-        project_id  : @project().id
       }).then ( res )->
         project.apps().add new OpsModel({
           name          : appName

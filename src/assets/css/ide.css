@@ -3323,7 +3323,26 @@ aside.dashboard-sidebar {
   position: absolute;
   right: 0;
   top: 0;
-  background: red; }
+  background: white;
+  color: #4A90E2;
+  overflow: auto; }
+  aside.dashboard-sidebar .dashboard-nav-log {
+    float: left;
+    min-width: 100px;
+    text-align: center;
+    height: 38px;
+    line-height: 38px;
+    cursor: pointer;
+    position: relative;
+    padding: 0 10px;
+    font-size: 12px; }
+  aside.dashboard-sidebar .dashboard-nav-log.selected:before {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    content: '';
+    border-bottom: 2px solid #4A90E2;
+    width: 100%; }
 
 article.dashboard-content {
   margin-right: 300px;
@@ -5562,7 +5581,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

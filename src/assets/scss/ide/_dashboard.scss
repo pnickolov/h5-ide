@@ -217,7 +217,29 @@ aside.dashboard-sidebar {
   position   : absolute;
   right      : 0;
   top        : 0;
-  background : red;
+  background : white;
+  color: #4A90E2;
+  overflow: auto;
+  .dashboard-nav-log {
+        float: left;
+        min-width: 100px;
+        text-align: center;
+        // color: #999;
+        height: 38px;
+        line-height: 38px;
+        cursor: pointer;
+        position: relative;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+  .dashboard-nav-log.selected:before {
+        position: absolute;
+        left: 0;
+        bottom: 0px;
+        content: '';
+        border-bottom: 2px solid #4A90E2;
+        width: 100%;
+    }
 }
 
 article.dashboard-content {

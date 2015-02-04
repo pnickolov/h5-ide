@@ -7,7 +7,7 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
       "click .dashboard-header .create-stack"   : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
-      "click .dashboard-sidebar nav buttton"    : "switchLog"
+      "click .dashboard-sidebar .dashboard-nav-log" : "switchLog"
 
     initialize : ()->
       @setElement $( Template({
@@ -41,8 +41,16 @@ define [ "./DashboardTpl", "./ImportDialog", "backbone" ], ( Template, ImportDia
 
     importApp : ()->
 
-    switchLog: () ->
+    switchLog: (event) ->
 
-        null
+        $btn = $(event.currentTarget)
+        $sidebar = $btn.parents('.dashboard-sidebar')
+        $sidebar.find('.dashboard-nav-log').removeClass('selected')
+        $sidebar.find('.dashboard-log').addClass('hide')
+        $btn.addClass('selected')
+        if $btn.hasClass('dashboard-nav-activity')
+            $sidebar.find('.dashboard-log-activity').removeClass('hide')
+        else
+            $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
   }

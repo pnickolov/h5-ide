@@ -9594,7 +9594,8 @@ h5.billing_usage_title {
 .hp-asset-list {
   width: 210px;
   background: #232224;
-  bottom: 0; }
+  bottom: 0;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.8); }
   .hp-asset-list > nav {
     background: #111;
     height: 50px;

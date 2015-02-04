@@ -276,7 +276,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         api = "stack_save"
       else
         api = "stack_create"
-        attr.project_id = @project().id
+        attr.key_id = @credentialId()
 
       if newJson.state isnt "Enabled"
         console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson

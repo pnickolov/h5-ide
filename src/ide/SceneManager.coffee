@@ -1,5 +1,5 @@
 
-define [ "backbone" ], ()->
+define [ "Scene", "backbone" ], ( Scene )->
 
   class SceneManager
 
@@ -69,6 +69,9 @@ define [ "backbone" ], ()->
         @__activeScene = null
         if @__lastActivateList.length
           @__lastActivateList[ @__lastActivateList.length - 1 ].activate()
+        else
+          console.info "Creating default scene."
+          (new (Scene.DefaultScene())()).activate()
 
       # Cleanup
       scene.stopListening()

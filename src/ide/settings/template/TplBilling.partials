@@ -118,47 +118,58 @@
         <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
     {{/if}}
     <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
+    <div class="usage-pagination">
+        <button class="btn"><i class="icon-caret-left"></i></button>
+        <span class="usage-date" data-date="">{{i18n "PAYMENT_LOADING"}}</span>
+        <button class="btn"><i class="icon-caret-right"></i></button>
+    </div>
     <div class="table-head-fix">
-        {{#if result.usageReport.length}}
-            <table class="table-head">
-                <thead>
-                <tr>
-                    <th class="sortable desc-sort" data-row-type="string"   style="width:35%;">{{i18n "INSTANCE"}}</th>
-                    <th class="sortable desc-sort" data-row-type="datetime" style="width:35%;">{{i18n "START_TIME"}}</th>
-                    <th class="sortable desc-sort" data-row-type="number"   style="width:30%;">{{i18n "DURATION"}}</th>
-                </tr>
-                </thead>
-            </table>
-            <div class="scroll-wrap" style="max-height:200px;">
-                <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                <div class="scroll-content">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="width: 35%"><div class="th-inner"></div></th>
-                                <th style="width: 35%"><div class="th-inner"></div></th>
-                                <th style="width: 30%"><div class="th-inner"></div></th>
-                            </tr>
-                        </thead>
-                        <tbody class="t-m-content">
-                        {{#each result.usageReport}}
-                            <tr class="item" data-id="{{@index}}">
-                                <td>{{instanceId}}</td>
-                                <td>{{started_at}}</td>
-                                <td>{{duration}}</td>
-                            </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        {{else}}
             <div class="full-space">
                 {{i18n "NO_USAGE_REPORT"}}
             </div>
-        {{/if}}
     </div>
 </section>
+
+
+<!--{{usageTable}}-->
+{{#if result.usageReport.length}}
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable desc-sort" data-row-type="string"   style="width:35%;">{{i18n "INSTANCE"}}</th>
+        <th class="sortable desc-sort" data-row-type="datetime" style="width:35%;">{{i18n "START_TIME"}}</th>
+        <th class="sortable desc-sort" data-row-type="number"   style="width:30%;">{{i18n "DURATION"}}</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap" style="max-height:200px;">
+    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="scroll-content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 35%"><div class="th-inner"></div></th>
+                <th style="width: 35%"><div class="th-inner"></div></th>
+                <th style="width: 30%"><div class="th-inner"></div></th>
+            </tr>
+            </thead>
+            <tbody class="t-m-content">
+            {{#each result.usageReport}}
+                <tr class="item" data-id="{{@index}}">
+                    <td>{{instanceId}}</td>
+                    <td>{{started_at}}</td>
+                    <td>{{duration}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{else}}
+    <div class="full-space">
+        {{i18n "NO_USAGE_REPORT"}}
+    </div>
+{{/if}}
 
 
 <!--{{updatePayment}}-->

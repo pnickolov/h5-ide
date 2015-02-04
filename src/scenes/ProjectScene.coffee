@@ -46,7 +46,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       #     s.remove()
       # return
 
-    isRemovable    : ()-> _.all @__spaces, ( ws )-> ws.isModified()
+    isRemovable    : ()-> _.all @__spaces, ( ws )-> !ws.isModified()
     becomeInactive : ()-> Scene.prototype.becomeInactive.call this
     cleanup        : ()-> Scene.prototype.cleanup.call this
 
@@ -197,6 +197,8 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
         if not space.isFixed() and ( not filter or filter(space) )
           @removeSpace( space, true )
       return
+
+  Scene.SetDefaultScene ProjectScene
 
   ProjectScene
 

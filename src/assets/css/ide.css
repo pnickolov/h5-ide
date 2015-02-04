@@ -1276,6 +1276,14 @@ a.action-link:hover {
     width: 100%; }
 .property-list.route-list .route-readonly {
   color: #777; }
+.property-list.route-list .remove-vpc-peer-route {
+  background-color: red;
+  color: #fff;
+  padding: 3px; }
+  .property-list.route-list .remove-vpc-peer-route button {
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline; }
 
 .route-target {
   height: 20px;

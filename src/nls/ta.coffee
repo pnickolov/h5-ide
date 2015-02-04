@@ -162,6 +162,10 @@ module.exports =
       en:"Route Table <span class='validation-tag tag-rtb'>%s</span> has routes with conflicting CIDR blocks."
       zh:"路由表的路由规则中存在 CIDR 块冲突。"
 
+    ERROR_RT_HAVE_VPC_PEERING_ROUTE:
+      en:"Route Table <span class='validation-tag tag-rtb'>%s</span>'s route targeting <span class='validation-tag tag-rtb'>%s</span> is currently not supported in running a stack. Please manually remove the route. You may manage the peering connection in AWS console. Sorry for the inconvenience."
+      zh:"路由表 <span class='validation-tag tag-rtb'>%s</span> 中的路由目标 <span class='validation-tag tag-rtb'>%s</span> 当前在运行Stack时不支持，请手动删除该路由。你可以在AWS控制台中管理该功能，很抱歉给您带来的不便。"
+
     # AZ
     WARNING_SINGLE_AZ:
       en: "Only 1 Availability Zone is used. Multiple Availability Zone can improve fault tolerance."

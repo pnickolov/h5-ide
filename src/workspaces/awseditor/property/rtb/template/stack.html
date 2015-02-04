@@ -69,7 +69,7 @@
 			    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
 			    <td class="route-destination-input">
 			    	{{#if readonly}}
-							{{#each cidr_set}} <div class="route-readonly">{{this}}</div> {{/each}}
+							{{#each cidr_set}} <div class="route-readonly" data-ref="{{../ref}}">{{this}}</div> {{/each}}
 						{{else}}
 			    	<div class="multi-input" data-ref="{{ref}}">
 							{{#each cidr_set}}
@@ -97,7 +97,9 @@
 						{{/if}}
 			    </td>
 			  </tr>
-			</table></li>
+			</table>
+			{{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}<div class="remove-vpc-peer-route">{{i18n "PROP.RTB_REMOVE_VPC_PEER_ROUTE"}}</div>{{/ifCond}}{{/if}}
+			</li>
 			{{/each}}
 		</ul>
 	</div>

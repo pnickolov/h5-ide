@@ -67,7 +67,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       })
       false
 
-    importApp : ()->
+    importApp : ()-> new VisualizeDialog({model:@model.scene.project})
 
     updateRegionAppStack : ()->
       self = @

@@ -11,7 +11,9 @@ define [
   "./AwsDeps"
 ], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant )->
 
-  class AppEditor extends CoreEditorApp
+  CoreEditorApp.extend {
+
+    type : "AwsEditorApp"
 
     viewClass   : AppView
     designClass : DesignAws
@@ -48,4 +50,8 @@ define [
     fetchRdsData  : StackEditor.prototype.fetchRdsData
     isRdsDisabled : StackEditor.prototype.isRdsDisabled
 
-  AppEditor
+  }, {
+    canHandle : ( data )->
+      if not data.opsModel then return false
+      return data.opsModel.type is OpsModel.Type.Amazon and data.opsModel.isApp()
+  }

@@ -48,7 +48,7 @@ define [
   ###
   Workspace.extend {
 
-    type : "Editor"
+    type : "CoreEditorStack"
 
     ###
       Override these methods to implement subclasses.
@@ -182,7 +182,7 @@ define [
         @design = null
 
       # If the OpsModel doesn't exist in server, we would destroy it when the editor is closed.
-      if not @opsModel.isPersisted() and not @opsModel.testState( OpsModelState.Saving )
+      if not @opsModel.isPersisted() and not @opsModel.testState( OpsModel.State.Saving )
         @opsModel.remove()
       return
 

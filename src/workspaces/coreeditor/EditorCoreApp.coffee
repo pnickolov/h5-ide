@@ -8,10 +8,12 @@ define [
   "CloudResources"
   "constant"
 
-  "workspace/coreeditor/EditorDeps"
+  "workspaces/coreeditor/EditorDeps"
 ], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant )->
 
   StackEditor.extend {
+
+    type : "CoreEditorApp"
 
     viewClass : AppView
 
@@ -100,9 +102,11 @@ define [
       return
 
     loadVpcResource : ()->
-      CloudResources( "OpsResource", @opsModel.getMsrId() )
-        .init( @opsModel.get("region"), @opsModel.get("provider") )
-        .fetchForce()
+      CloudResources( @opsModel.credentialId(), "OpsResource", @opsModel.getMsrId() ).init({
+        region   : @opsModel.get("region")
+        provider : @opsModel.get("provider")
+        project  : @scene.project.id
+      }).fetchForce()
 
     ###
      AppEdit

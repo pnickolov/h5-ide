@@ -90,6 +90,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       if existing then return existing
 
       SpaceClass = Workspace.findSuitableSpace( data )
+      console.assert( SpaceClass, "Cannot find suitable workspace to work with the data", data )
       new SpaceClass( data, {scene:@} )
 
     spaceParentElement : ()-> @view.$wsparent

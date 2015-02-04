@@ -410,6 +410,7 @@ require [
   "workspaces/dashboard/Dashboard"
   "workspaces/progress/ProgressViewer"
   "workspaces/awseditor/AwsEditorStack"
+  "workspaces/awseditor/AwsEditorApp"
 
 ], ( Application, CrBundle ) ->
 

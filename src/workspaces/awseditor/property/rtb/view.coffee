@@ -19,7 +19,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
             "keypress .ipt-wrapper .input"      : 'onPressCIDR'
             "blur .ipt-wrapper .input"          : 'onBlurCIDR'
             'change #property-res-desc'         : 'onChangeDescription'
-            'click .remove-vpc-peer-route button'      : 'onRemoveVPCPeerRoute'
+            'click .remove-vpc-peer-route a'      : 'onRemoveVPCPeerRoute'
 
         render     : () ->
             @$el.html template @model.attributes

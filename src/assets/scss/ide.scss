@@ -1479,6 +1479,10 @@ a.action-link:hover {
 		width   : auto;
 		padding : 0;
 
+		&.have-vpc-peer-route {
+			border-bottom: 1px $base-r solid;
+		}
+
 		> table {
 			width : 100%;
 		}
@@ -1489,10 +1493,11 @@ a.action-link:hover {
 	}
 
 	.remove-vpc-peer-route {
-		background-color: red;
+		font-size: 13px;
+		background-color: $base-r;
 		color: #fff;
 		padding: 3px;
-		button {
+		a {
 			color: #fff;
 			cursor: pointer;
 			text-decoration:underline;

@@ -53,6 +53,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
         local_route : VPCModel.theVPC().get("cidr")
         routes      : routes
         isAppEdit   : @isAppEdit
+        isStack     : (Design.instance().mode() is 'stack')
 
       for cn in component.connections()
         if cn.type isnt "RTB_Route"
@@ -135,6 +136,9 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
         routes[idx] = validCIDR
       Design.instance().component( routeId ).set( "routes", routes )
       null
+
+    removeRoute : ( routeId ) ->
+      Design.instance().component( routeId )?.remove()
 
     isCidrConflict : ( inputValue, cidr )->
       Design.modelClassForType(constant.RESTYPE.SUBNET).isCidrConflict( inputValue, cidr )

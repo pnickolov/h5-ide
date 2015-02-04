@@ -19,6 +19,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
             "keypress .ipt-wrapper .input"      : 'onPressCIDR'
             "blur .ipt-wrapper .input"          : 'onBlurCIDR'
             'change #property-res-desc'         : 'onChangeDescription'
+            'click .remove-vpc-peer-route button'      : 'onRemoveVPCPeerRoute'
 
         render     : () ->
             @$el.html template @model.attributes
@@ -158,6 +159,13 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js' ], ( PropertyVi
                 $source: $(event.target)
             }
 
+            null
+
+        onRemoveVPCPeerRoute : (event) ->
+
+            $li = $(event.currentTarget).parents('li')
+            @model.removeRoute $li.find('.route-readonly').attr('data-ref')
+            $li.remove()
             null
 
     }

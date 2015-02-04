@@ -119,9 +119,9 @@
     {{/if}}
     <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
     <div class="usage-pagination">
-        <button class="btn"><i class="icon-caret-left"></i></button>
+        <button class="btn nav-left"><i class="icon-caret-left"></i></button>
         <span class="usage-date" data-date="">{{i18n "PAYMENT_LOADING"}}</span>
-        <button class="btn"><i class="icon-caret-right"></i></button>
+        <button class="btn nav-right"><i class="icon-caret-right"></i></button>
     </div>
     <div class="table-head-fix">
             <div class="full-space">

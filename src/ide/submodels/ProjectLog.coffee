@@ -70,11 +70,11 @@ define [ "constant", "backbone" ], ( constant )->
   }
 
   AuditType = {}
-  AudtiType[ ProjectLog.TYPE.PROJECT ] = true
-  AudtiType[ ProjectLog.TYPE.MEMBER ] = true
-  AudtiType[ ProjectLog.TYPE.PAYMENT ] = true
-  AudtiType[ ProjectLog.TYPE.CREDENTIAL ] = true
-  AudtiType[ ProjectLog.TYPE.TOKEN ] = true
+  AuditType[ ProjectLog.TYPE.PROJECT ] = true
+  AuditType[ ProjectLog.TYPE.MEMBER ] = true
+  AuditType[ ProjectLog.TYPE.PAYMENT ] = true
+  AuditType[ ProjectLog.TYPE.CREDENTIAL ] = true
+  AuditType[ ProjectLog.TYPE.TOKEN ] = true
   historyFilter = ( model )-> !AuditType[model.get("type")]
   auditFilter   = ( model )-> AuditType[model.get("type")]
 

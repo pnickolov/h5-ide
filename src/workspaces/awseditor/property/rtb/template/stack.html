@@ -59,7 +59,9 @@
 			</table></li>
 
 			{{#each routes}}
-			<li><table class="table-no-style">
+			<li class="{{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}have-vpc-peer-route{{/ifCond}}{{/if}}">
+			  {{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}<div class="remove-vpc-peer-route">{{i18n "PROP.RTB_REMOVE_VPC_PEER_ROUTE"}}</div>{{/ifCond}}{{/if}}
+			  <table class="table-no-style">
 			  <tr class="route-target">
 			    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
 			    <td class="route-target-resource">{{name}}</td>
@@ -98,7 +100,6 @@
 			    </td>
 			  </tr>
 			</table>
-			{{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}<div class="remove-vpc-peer-route">{{i18n "PROP.RTB_REMOVE_VPC_PEER_ROUTE"}}</div>{{/ifCond}}{{/if}}
 			</li>
 			{{/each}}
 		</ul>

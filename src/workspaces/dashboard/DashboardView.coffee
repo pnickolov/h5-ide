@@ -24,6 +24,12 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
+      # listen logs change
+      logCol = @model.scene.project.logs()
+      @activityModels = logCol.history()
+      @auditModels = logCol.audit()
+      logCol.on('change', @switchLog, this)
+
       @render()
       return
 
@@ -222,12 +228,8 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         else
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
-        # render
-        activityModels = @model.scene.project.logs().history()
-        auditModels = @model.scene.project.logs().audit()
-
         # render activity
-        activitys = _.map activityModels, (activity) ->
+        activitys = _.map @activityModels, (activity) ->
 
             return {
                 avatar: '',
@@ -235,10 +237,13 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
                 time: new Date(activity.get('time'))
             }
 
-        $sidebar.find('.dashboard-log-activity').html Template.activityList(activitys)
+        if activitys.length
+            $sidebar.find('.dashboard-log-activity').html Template.activityList(activitys)
+        else
+            $sidebar.find('.dashboard-log-activity').html Template.noActivity()
 
         # render audit
-        audits = _.map auditModels, (audit) ->
+        audits = _.map @auditModels, (audit) ->
 
             return {
                 avatar: '',
@@ -246,6 +251,9 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
                 time: new Date(audit.get('time'))
             }
 
-        $sidebar.find('.dashboard-log-audit').html Template.activityList(audits)
+        if audits.length
+            $sidebar.find('.dashboard-log-audit').html Template.activityList(audits)
+        else
+            $sidebar.find('.dashboard-log-audit').html Template.noActivity(audits)
 
   }

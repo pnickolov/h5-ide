@@ -28,83 +28,7 @@
   </header>
 
   <div class="dashboard-wrapper">
-    <article class="dashboard-content">
-        <div id="global-region-wrap" class="nano">
-            <div class="nano-content">
-                <!-- Global Map -->
-                <section id="dashboard-data-wrap">
-
-                    <nav class="pos-r">
-                        <button id="region-switch" class="js-toggle-dropdown">
-                            <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
-                        </button>
-
-                        <ul id="region-switch-list" class="dropdown-menu">
-                            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
-                            {{#each data}}
-                                <li data-region="{{id}}">{{shortName}}</li>{{/each}}
-                        </ul>
-                    </nav>
-
-                    <!-- Global view -->
-                    <ul id="GlobalView" class="clearfix" style="display:none;"></ul>
-                    <!-- Global view -->
-
-                    <!-- Region view -->
-                    <section id="RegionView" style="display:none;">
-                        <div id="region-app-stack-wrap">
-                            <div class="dashboard-loading">
-                                <div class="loading-spinner"></div>
-                            </div>
-                        </div>
-                        <div id="RegionViewWrap">
-                            <nav class="clearfix" id="RegionResourceNav">
-                                <div class="resource-tab instances on" data-type="INSTANCE">
-                                    <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab rds" data-type="DBINSTANCE">
-                                    <span class="resource-count">{{i18n "DASH_LBL_RDS"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab eips" data-type="EIP">
-                                    <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab volumes" data-type="VOL">
-                                    <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab vpcs" data-type="VPC">
-                                    <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab vpns" data-type="VPN">
-                                    <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab elbs" data-type="ELB">
-                                    <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab asgs" data-type="ASG">
-                                    <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab cloudwatches" data-type="CW">
-                                    <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span><span
-                                        class="count-bubble"></span></div>
-                                <div class="resource-tab snss" data-type="SUBSCRIPTION">
-                                    <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span><span
-                                        class="count-bubble"></span></div>
-                            </nav>
-                            <div id="RegionResourceData" class="table-head-fix"></div>
-                        </div>
-                    </section>
-                    <!-- Region view -->
-                    <div id="DashboardDemo">
-                        <div class="enter-credential">
-                            {{i18n "DASH_TPL_SAMPLE_INSTRUCTION"}}<br/>
-                            <a class="show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
-                        </div>
-                        <img src="/assets/images/ide/global-demo.png"/>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </article>
+    <article class="dashboard-content"></article>
     <aside class="dashboard-sidebar">
       <nav>
         <button class="dashboard-nav-log dashboard-nav-activity selected" data-id="activity">Activity</button>
@@ -130,3 +54,7 @@
     </li>
     {{/each}}
 </ul>
+
+<!-- {{noActivity}} -->
+<div>No activity yet.</div>
+<div>Operation of team members will appear here.</div>

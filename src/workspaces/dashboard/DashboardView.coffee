@@ -1,4 +1,5 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js", "ide/settings/projectSubModels/MemberCollection" ,"backbone"
+], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang, MemberCollection )->
   Backbone.View.extend {
 
     events :
@@ -27,10 +28,8 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       }) ).appendTo( @model.scene.spaceParentElement() )
 
       # listen logs change
-      logCol = @model.scene.project.logs()
-      @activityModels = logCol.history()
-      @auditModels = logCol.audit()
-      logCol.on('update', @switchLog, this)
+      @logCol = @model.scene.project.logs()
+      @logCol.on('change', @switchLog, this)
 
       @render()
       console.log @
@@ -245,6 +244,8 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
     switchLog: (event) ->
 
+        that = @
+
         # switch
         if not event
             $btn = @$el.find('.dashboard-sidebar .dashboard-nav-activity')
@@ -260,16 +261,21 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
         # render
-        @renderLog('activity')
-        @renderLog('audit')
+        memCol = new MemberCollection({projectId: @model.scene.project.id})
+        memCol.fetch().done () ->
+            that.renderLog('activity')
+            that.renderLog('audit')
 
     renderLog: (type) ->
 
+        activityModels = @logCol.history()
+        auditModels = @logCol.audit()
+
         if type is 'activity'
-            models = @activityModels
+            models = activityModels
             container = '.dashboard-log-activity'
-        else
-            models = @auditModels
+        else if type is 'audit'
+            models = auditModels
             container = '.dashboard-log-audit'
 
         renderMap = (origin) ->

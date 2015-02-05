@@ -3,12 +3,13 @@ define ['backbone',
     'i18n!/nls/lang.js',
     'UI.bubblepopup',
     'ApiRequest',
+    'ide/settings/projectSubModels/MemberCollection',
     'UI.selectbox',
     'UI.parsley',
     'UI.errortip',
     'UI.table',
     'MC.validate'
-], (Backbone, TplMember, lang, bubblePopup, ApiRequest) ->
+], (Backbone, TplMember, lang, bubblePopup, ApiRequest, MemberCollection) ->
 
     Backbone.View.extend
 
@@ -71,7 +72,8 @@ define ['backbone',
 
             @keyupHandle = _.throttle(@keyupHandle, 1000)
             @project = @model
-            @memberCol = @project.get('members')
+            @memberCol = new MemberCollection({projectId: @project.id})
+            # @memberCol = @project.get('members')
             @projectId = @model.get('id')
             @isAdmin = false
             @render()

@@ -22,7 +22,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'guest_access'            : { type:'forge', url:'/guest/',	method:'access',	params:['guestname', 'session_id', 'key_id', 'region_name', 'guest_id']   },
 		'guest_end'               : { type:'forge', url:'/guest/',	method:'end',	params:['guestname', 'session_id', 'key_id', 'region_name', 'guest_id']   },
 		'guest_info'              : { type:'forge', url:'/guest/',	method:'info',	params:['username', 'session_id', 'region_name', 'guest_id']   },
-		'opsbackend_render_app'   : { type:'forge', url:'/opsbackend/',	method:'render_app',	params:['timestamp', 'app_id', 'key_id', 'res_id', 'is_arrived']   },
+		'opsbackend_render_app'   : { type:'forge', url:'/opsbackend/',	method:'render_app',	params:['timestamp', 'app_id', 'res_id', 'is_arrived']   },
 		'opsbackend_check_app'    : { type:'forge', url:'/opsbackend/',	method:'check_app',	params:['timestamp', 'app_id']   },
 		'opsbackend_update_status' : { type:'forge', url:'/opsbackend/',	method:'update_status',	params:['app_id', 'instance_id', 'recipe_version', 'timestamp', 'statuses', 'waiting', 'agent_status', 'token']   },
 		'opsbackend_verify'       : { type:'forge', url:'/opsbackend/',	method:'verify',	params:['username', 'token']   },

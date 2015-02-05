@@ -235,13 +235,20 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
             models = @auditModels
             container = '.dashboard-log-audit'
 
+        renderMap = (origin) ->
+
+            return 'created' if origin is 'create'
+            return 'added' if origin is 'add'
+            return origin
+
         dataAry = _.map models, (data) ->
 
             email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase()
             avatar = CryptoJS.MD5(email).toString()
+            action = data.get('action')?.toLowerCase()
             return {
                 name: Base64.decode(data.get('usercode')),
-                action: data.get('action')?.toLowerCase(),
+                action: renderMap(action),
                 type: data.get('type')?.toLowerCase(),
                 target: data.get('target'),
                 avatar: "https://www.gravatar.com/avatar/#{avatar}",

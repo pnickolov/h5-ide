@@ -130,7 +130,6 @@
                 <span class="type">{{type}}</span>
                 <a class="target">{{target}}</a>
                 <span class="other">{{other}}</span>
-                .
             </div>
             <div class="time">{{time}}</div>
         </div>

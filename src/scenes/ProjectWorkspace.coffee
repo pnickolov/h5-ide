@@ -100,8 +100,8 @@ define ["backbone"], ()->
       # In such a way, we should avoid some bug.
       for type, Space of SubWorkspaces
         if Space.canHandle( data )
+          console.assert !s, "There's multiple workspace that can handle this data:", data
           s = Space
-
       s
 
     # This method is used to find out which workspace to be create for a particular piece of data.

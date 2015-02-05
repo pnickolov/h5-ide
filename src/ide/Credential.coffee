@@ -101,6 +101,7 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
 
       p.then ( res )->
         self.set {
+          isDemo       : false
           alias        : cred.alias
           awsAccount   : cred.awsAccount
           awsAccessKey : cred.awsAccessKey

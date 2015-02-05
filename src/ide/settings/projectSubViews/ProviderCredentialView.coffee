@@ -169,7 +169,7 @@ define [
             credential = @model.credentials().findWhere provider: provider
 
             if credential
-                credential.set data
+                credential.set data, silent: true
             else # no credential has same provider, add a new credential
                 credentialData = {
                     alias : data.alias

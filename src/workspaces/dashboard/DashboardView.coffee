@@ -1,5 +1,4 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js", "ide/settings/projectSubModels/MemberCollection" ,"backbone"
-], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang, MemberCollection )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang )->
   Backbone.View.extend {
 
     events :
@@ -16,7 +15,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       "click .region-resource-list .start-app"       : "startApp"
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
-      'click .region-resource-list>li>a'             : 'openOps'
 
 
     initialize : ()->
@@ -27,19 +25,34 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       }) ).appendTo( @model.scene.spaceParentElement() )
 
       self = @
-
       # listen logs change
       @logCol = @model.scene.project.logs()
       @logCol.on('change', @switchLog, this)
 
-      
+      @render()
       @listenTo @model.scene.project, "update:stack", ()->
         self.updateRegionAppStack("stacks", "global")
-
       @listenTo @model.scene.project, "update:app", ()->
         self.updateRegionAppStack("apps", "global")
-      
-      @render()
+      @listenTo @model.scene.project, "update:credential", ()->
+        self.updateDemoView()
+
+      @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
+      @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.EIP ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VOL ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.ELB ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPN ), "update", @onGlobalResChanged
+
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPC ), "update", @onRegionResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.ASG ), "update", @onRegionResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.CW ),  "update", @onRegionResChanged
+
+      for region in constant.REGION_KEYS
+        @listenTo CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
+        @listenTo CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, region ),  "update", @onGlobalResChanged
+
       return
 
     render : ()->
@@ -105,6 +118,12 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         $("#RegionViewWrap").hide()
       return
 
+    onGlobalResChanged: ()->
+      @updateGlobalResources()
+      @updateRegionResources()
+
+    onRegionResChanged: ()->
+      @updateRegionResources()
 
     dashboardBubbleSub: (data)->
       renderData = {}
@@ -159,7 +178,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
           @updateRegionAppStack(updateType, region)
         else if updateType is "resource"
           @region = region
-          @updateRegionResources(region)
+          @updateRegionResources()
 
     updateRegionResources : ()->
       if @region is "global"
@@ -240,12 +259,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       event.preventDefault();
       id = $( event.currentTarget ).closest("li").attr("data-id");
       (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
-      false
-
-    openOps: (event)->
-      event.preventDefault()
-      url = $(event.currentTarget).attr("href")
-      App.loadUrl url
       false
 
     switchLog: (event) ->

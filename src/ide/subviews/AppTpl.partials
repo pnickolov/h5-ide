@@ -6,8 +6,3 @@
   <div>{{i18n "TOOLBAR.CONNECTION_LOST_TO_RECONNECT"}}</div>
   <div>{{i18n "TOOLBAR.CHANGES_MAY_NOT_BE_SAVED"}}</div>
 </section>
-
-<!-- {{forceTerminateApp}} -->
-<div class="modal-center-align-helper">
-    <div class="modal-text-major">{{i18n "TOOLBAR.POP_FORCE_TERMINATE_CONTENT" name}}</div>
-</div>

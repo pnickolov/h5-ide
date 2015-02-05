@@ -18,6 +18,7 @@ define [ "constant", "backbone" ], ( constant )->
       Backbone.Model.call this, {
         id       : attr.id
         usercode : attr.username
+        email    : attr.email
 
         type    : cate[1]
         action  : cate[2]
@@ -88,4 +89,3 @@ define [ "constant", "backbone" ], ( constant )->
   }
 
   ProjectLog
-

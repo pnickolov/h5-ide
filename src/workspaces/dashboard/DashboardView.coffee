@@ -231,7 +231,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         # render activity
         activitys = _.map @activityModels, (activity) ->
 
-            email = Base64.decode(activity.email)
+            email = Base64.decode(activity.get('email'))
             return {
                 avatar: CryptoJS.MD5(email.trim().toLowerCase()).toString(),
                 username: Base64.decode(activity.get('usercode')),
@@ -247,7 +247,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         # render audit
         audits = _.map @auditModels, (audit) ->
 
-            email = Base64.decode(audit.email)
+            email = Base64.decode(audit.get('email'))
             return {
                 avatar: CryptoJS.MD5(email.trim().toLowerCase()).toString(),
                 username: Base64.decode(audit.get('usercode')),

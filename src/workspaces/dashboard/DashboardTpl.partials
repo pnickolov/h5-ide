@@ -126,7 +126,7 @@
         <img class="avatar" src="{{avatar}}" />
         <div class="info">
             <div class="event">
-                <span>{{name}}</span>
+                <span class="name">{{name}}</span>
                 <span>{{action}}</span>
                 <span>{{type}}</span>
                 <span>{{target}}</span>

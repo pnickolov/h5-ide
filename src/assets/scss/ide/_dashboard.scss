@@ -243,10 +243,10 @@ aside.dashboard-sidebar {
         width: 100%;
     }
   .dashboard-log {
-      margin-top: 20px;
+    //   margin-top: 20px;
       .dashboard-log-item {
         // margin-top: 15px;
-        padding: 10px;
+        padding: 10px 0 0 0;
         .avatar {
             display: inline-block;
             width: 40px;
@@ -257,9 +257,14 @@ aside.dashboard-sidebar {
             display: inline-block;
             max-width: 220px;
             margin-left: 10px;
+            margin-top: 2px;
+            .name {
+                text-transform : capitalize;
+            }
             .time {
                 color: #aaa;
                 margin-top: 4px;
+                font-size: 12px;
             }
         }
       }

@@ -2517,7 +2517,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您确定要离开此工作空间吗？"
 
     FREE_WORKSPACE_CAN_NOT_DELETE:
-      en: "This is your free workspace which cannot be deleted."
+      en: "This is your default workspace which cannot be deleted."
       zh: "默认工作空间不能删除。"
 
     DELETE_WORKSPACE:

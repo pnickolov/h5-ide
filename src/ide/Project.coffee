@@ -91,8 +91,8 @@ define [
       # Normal attr
       @set {
         id      : attr.id
-        name    : attr.name or "Free Workspace"
-        private : !attr.name
+        name    : attr.name or "My Workspace"
+        private : attr.id is App.user.id
         members : new MemberCollection({projectId: attr.id})
       }
 
@@ -264,7 +264,7 @@ define [
           paymentState: result.state
         }
         formattedResult.renewDays = (Math.round (new Date(formattedResult.nextPeriod) - new Date())/(24*3600*100))/10
-        formattedResult.isDefault = that.get("name") is "Free Workspace"
+        formattedResult.isDefault = that.isPrivate()
         formattedResult.failToCharge = that.shouldPay()
         that.set("payment", formattedResult)
         return formattedResult

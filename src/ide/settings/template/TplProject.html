@@ -5,8 +5,10 @@
         <a data-id="basicsettings">{{i18n "BASIC_SETTINGS"}}</a>
         <a data-id="member">{{i18n "MEMBER"}}</a>
         <a data-id="usagereport">{{i18n "USAGE_REPORT"}}</a>
+        {{#if admin}}
         <a data-id="billing">{{i18n "PAYMENT_BILLING_TAB"}}</a>
         <a data-id="credential">{{i18n "PROVIDER_CREDENTIAL"}}</a>
+        {{/if}}
         <a data-id="accesstoken">{{i18n "SETTINGS_LABEL_ACCESSTOKEN"}}</a>
     </section>
 </nav>

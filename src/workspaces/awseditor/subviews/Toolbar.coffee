@@ -312,7 +312,7 @@ define [
     appToStack: () ->
         name = @workspace.design.attributes.name
         newName = @getStackNameFromApp(name)
-        stack = App.model.stackList().get(@workspace.design.attributes.stack_id)
+        stack = @workspace.opsModel.project().stacks().get(@workspace.design.attributes.stack_id)
         onConfirm = =>
             MC.Analytics.increase("app_to_stack")
             isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").val() is "replace")
@@ -368,7 +368,7 @@ define [
           copy_name = copy_name
         else
           copy_name = copy_name + "-stack"
-        name_list = App.model.stackList().pluck("name")||[]
+        name_list = @workspace.opsModel.project().stacks().pluck("name")||[]
         idx++
         while idx <= name_list.length
           if $.inArray( (copy_name + "-" + idx), name_list ) == -1

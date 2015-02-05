@@ -79,8 +79,7 @@
     <td>
         <img class="avatar" src="{{avatar}}">
         <div class="info">
-            <div class="name">{{username}}</div>
-            {{#if me}}<span class="you">({{i18n "SETTINGS_MEMBER_LABEL_YOU"}})</span>{{/if}}
+            <div class="name">{{username}}{{#if me}}<span class="you">({{i18n "SETTINGS_MEMBER_LABEL_YOU"}})</span>{{/if}}</div>
             <div class="mail">{{email}}</div>
         </div>
     </td>

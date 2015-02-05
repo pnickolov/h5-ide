@@ -513,7 +513,7 @@ checkInviteKey = ( key ) ->
     api {
         url: '/project/'
         method: 'check_invitation'
-        data: [ key ]
+        data: [ $.cookie('session_id'), key ]
     }
 
 setCredit = (result)->

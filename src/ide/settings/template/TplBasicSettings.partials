@@ -12,7 +12,7 @@
             </div>
             <div class="loading-spinner" style="display: none;"></div>
         </div>
-        <button class="icon-edit edit-button"></button>
+        {{#if isAdmin}}<button class="icon-edit edit-button"></button>{{/if}}
     </h3>
 </div>
 <!--

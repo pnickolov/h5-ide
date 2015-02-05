@@ -29,7 +29,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
         CloudResources(@credentialId, constant.RESTYPE.ELB ).fetch()
         CloudResources(@credentialId, constant.RESTYPE.VPN ).fetch()
         _.each constant.REGION_KEYS, (e)->
-          CloudResources( constant.RESTYPE.DBINSTANCE, e).fetch()
+          CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, e).fetch()
         return
 
       CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ).fetch()

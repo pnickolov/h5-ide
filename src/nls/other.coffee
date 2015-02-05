@@ -2732,5 +2732,5 @@ into live resources, or import existing infrastructures."
       zh: "创建新工作空间"
 
     PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST:
-      en: "Page not Found(Workspace or Tab not exist)"
-      zh: "页面未找到（工作空间或标签页不存在）"
+      en: "Page not Found."
+      zh: "页面未找到。"

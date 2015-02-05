@@ -1,5 +1,6 @@
 
 define [
+  "constant"
   "ApiRequest"
   "ide/submodels/ProjectLog"
   "ide/submodels/OpsCollection"
@@ -8,7 +9,7 @@ define [
   "Credential"
   "ApiRequestR"
   "backbone"
-], ( ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
+], ( constant, ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
 
   ###
   # One-time initializer to observe the websocket. Since the websocket is not
@@ -162,6 +163,9 @@ define [
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
+    isDemoMode: ( provider = constant.PROVIDER.AWSGLOBAL ) ->
+      cred = @credentials().findWhere provider: provider
+      cred and cred.isDemo() or false
 
     updateName: ( name ) ->
       model = @

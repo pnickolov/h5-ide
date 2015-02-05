@@ -284,7 +284,6 @@
                 }
                 .name, .mail {
                     margin: 5px;
-                    // text-align: left;
                 }
             }
             #invite {
@@ -328,18 +327,25 @@
                 .info {
                     float: left;
                     margin: 3px 0 0 8px;
-                    .name {
-                        float: left;
+                    .name, .mail {
+                        // margin: 5px;
+                        width: 150px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         text-align: left;
+                    }
+                    .name {
+                        // float: left;
+                        text-align: left;
+                    }
+                    .mail {
+                        color: #888;
                     }
                     .you {
                         color: #888;
-                        float: left;
+                        // float: left;
                         margin-left: 5px;
-                    }
-                    .mail {
-                        width: 100%;
-                        color: #888;
                     }
                 }
                 .memlist-edit-mode {

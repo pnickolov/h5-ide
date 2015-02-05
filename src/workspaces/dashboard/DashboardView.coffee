@@ -1,4 +1,4 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang )->
   Backbone.View.extend {
 
     events :
@@ -8,13 +8,12 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       "click .dashboard-sidebar .dashboard-nav-log" : "switchLog"
       "click .dashboard-sidebar nav buttton"    : "switchLog"
       'click #region-switch-list li'    : 'switchRegion'
-      'click #region-resource-tab li'   : 'switchAppStack'
       'click .resource-tab'             : 'switchResource'
 
     initialize : ()->
       @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
-      @region       = "us-east-1"
+      @region       = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
@@ -65,26 +64,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
     importApp : ()-> new VisualizeDialog({model:@model.scene.project})
 
-    updateRegionAppStack : ()->
-      self = @
-      attr = { apps:[], stacks:[], region : @region }
-      attr[ @regionOpsTab ] = true
-
-      region = @region
-      data = _.map constant.REGION_LABEL, ( name, id )->
-        id   : id
-        name : name
-        shortName : constant.REGION_SHORT_LABEL[ id ]
-      if region isnt "global"
-        filter = (f)-> f.get("region") is region && f.isExisting()
-        tojson = {thumbnail:true}
-
-        attr.stacks = self.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
-        attr.apps   = self.model.scene.project.apps().filter(filter).map   (m)-> m.toJSON(tojson)
-        attr.region = data
-      $('#region-app-stack-wrap').html( dataTemplate.region_app_stack(attr) )
-      return
-
 
     updateDemoView : ()->
       if @model.scene.project.hasCredential()
@@ -108,6 +87,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       $("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"
         $("#GlobalView").show()
+        $("#RegionViewWrap").hide()
       return
 
 
@@ -148,41 +128,32 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
       return dataTemplate.bubbleResourceInfo  d
 
+    initRegion : ( )->
+      @updateRegionAppStack("stacks", "global")
+      @updateRegionAppStack("apps", "global")
+      @updateRegionResources()
 
-    initRegion : ( evt )->
-      if @region is "global"
-        resetScroller = true
-
-      $( '#region-switch').find('span').text(  )
-
-      if @region is "global"
-        $("#RegionView" ).hide()
-        $("#GlobalView" ).show()
-      else
-        # Ask model to get data for us.
-        @model.fetchAwsResources( @region )
-        $("#RegionView" ).show()
-        $("#GlobalView" ).hide()
-        @updateRegionAppStack()
-        @updateRegionResources()
-
-      if resetScroller
-        $("#global-region-wrap").nanoScroller("reset")
-      return
-
-
-    switchAppStack: ( evt ) ->
-      $target = $(evt.currentTarget)
-      if $target.hasClass("on") then return
-      $target.addClass("on").siblings().removeClass("on")
-
-      @regionOpsTab = if $target.hasClass("stack") then "stack" else "app"
-      $("#RegionView").find(".region-resource-list").hide().eq( $target.index() ).show()
-      return
-
+    switchRegion: (evt)->
+      if evt and evt.currentTarget
+        target = evt.currentTarget
+        region = $(target).data("region")
+        if region isnt "global"
+          @model.fetchAwsResources( region )
+        updateType = $(evt.currentTarget).parents(".dash-region-navigation").data("type")
+        if updateType in ["stacks", "apps"]
+          @updateRegionAppStack(updateType, region)
+        else if updateType is "resource"
+          @region = region
+          @updateRegionResources(region)
 
     updateRegionResources : ()->
-      if @region is "global" then return
+      if @region is "global"
+        @updateGlobalResources()
+        return
+      $(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
+
+      $("#RegionViewWrap" ).show()
+      $("#GlobalView" ).hide()
       @updateRegionTabCount()
       type = constant.RESTYPE[ @resourcesTab ]
       if not @model.isAwsResReady( @region, type )
@@ -191,6 +162,27 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         tpl = dataTemplate["resource#{@resourcesTab}"]( @model.getAwsResData( @region, type ) )
       $("#RegionResourceData").html( tpl )
 
+    updateRegionAppStack : (updateType="stack", region)->
+      if updateType not in ["stacks", "apps"]
+        return false
+      self = @
+      attr = { apps:[], stacks:[], region : @region }
+      attr[ @regionOpsTab ] = true
+      data = _.map constant.REGION_LABEL, ( name, id )->
+        id   : id
+        name : name
+        shortName : constant.REGION_SHORT_LABEL[ id ]
+      if region isnt "global"
+        filter = (f)-> f.get("region") is region && f.isExisting()
+      else
+        filter = ()-> true
+      tojson = {thumbnail:true}
+      attr[updateType] = self.model.scene.project[updateType]().filter(filter).map (m)-> m.toJSON(tojson)
+      attr.region = data
+      attr.projectId = self.model.scene.project.id
+      attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
+      $("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      return
 
     updateRegionTabCount : ()->
       resourceCount = @model.getResourcesCount( @region )

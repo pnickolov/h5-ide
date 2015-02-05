@@ -295,6 +295,8 @@ define [
     type   : ()-> @__opsModel.type
     region : ()-> @attributes.region
 
+    project: () -> @__opsModel.project()
+
     credential   : ()-> @__opsModel.credential()
     credentialId : ()-> @__opsModel.credentialId()
 

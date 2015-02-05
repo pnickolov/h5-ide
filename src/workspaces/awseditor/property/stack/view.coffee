@@ -74,7 +74,7 @@ define [ '../base/view',
                     # HACK, will remove after we re-write the whole property shit.
                     return
 
-                if not App.model.stackList().isNameAvailable( val )
+                if not Design.instance().project().stacks().isNameAvailable( val )
                     return sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'Stack', name
 
             if stackNameInput.parsley 'validate'

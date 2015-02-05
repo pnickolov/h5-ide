@@ -3323,8 +3323,7 @@ aside.dashboard-sidebar {
   position: absolute;
   right: 0;
   top: 0;
-  background: white;
-  color: #4A90E2; }
+  background: white; }
   aside.dashboard-sidebar nav {
     overflow: auto; }
   aside.dashboard-sidebar .dashboard-nav-log {
@@ -3344,6 +3343,27 @@ aside.dashboard-sidebar {
     content: '';
     border-bottom: 2px solid #4A90E2;
     width: 100%; }
+  aside.dashboard-sidebar .dashboard-log {
+    margin-top: 20px; }
+    aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
+      padding: 10px; }
+      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
+        display: inline-block;
+        width: 40px;
+        border-radius: 40px;
+        float: left; }
+      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info {
+        display: inline-block;
+        max-width: 220px;
+        margin-left: 10px; }
+        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .time {
+          color: #aaa;
+          margin-top: 4px; }
+  aside.dashboard-sidebar .dashboard-log-empty {
+    text-align: center;
+    padding: 15px;
+    color: #aaa;
+    margin-top: 40px; }
 
 article.dashboard-content {
   margin-right: 300px;

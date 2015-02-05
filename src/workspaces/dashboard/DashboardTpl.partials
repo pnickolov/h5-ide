@@ -120,12 +120,19 @@
 </div>
 
 <!-- {{activityList}} -->
-<ul class="dashboard-log-activity-list">
+<ul class="dashboard-log-list">
     {{#each this}}
-    <li class="dashboard-log-activity-item">
+    <li class="dashboard-log-item">
         <img class="avatar" src="{{avatar}}" />
         <div class="info">
-            <div class="event">{{username}} {{event}}</div>
+            <div class="event">
+                <span>{{name}}</span>
+                <span>{{action}}</span>
+                <span>{{type}}</span>
+                <span>{{target}}</span>
+                <span>{{other}}</span>
+                .
+            </div>
             <div class="time">{{time}}</div>
         </div>
     </li>
@@ -133,5 +140,7 @@
 </ul>
 
 <!-- {{noActivity}} -->
-<div>No activity yet.</div>
-<div>Operation of team members will appear here.</div>
+<div class="dashboard-log-empty">
+    <div>No activity yet.</div>
+    <div>Operation of team members will appear here.</div>
+</div>

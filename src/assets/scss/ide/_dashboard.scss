@@ -218,7 +218,7 @@ aside.dashboard-sidebar {
   right      : 0;
   top        : 0;
   background : white;
-  color: #4A90E2;
+  // color: #4A90E2;
   nav {
     overflow: auto;
   }
@@ -242,6 +242,34 @@ aside.dashboard-sidebar {
         border-bottom: 2px solid #4A90E2;
         width: 100%;
     }
+  .dashboard-log {
+      margin-top: 20px;
+      .dashboard-log-item {
+        // margin-top: 15px;
+        padding: 10px;
+        .avatar {
+            display: inline-block;
+            width: 40px;
+            border-radius: 40px;
+            float: left;
+        }
+        .info {
+            display: inline-block;
+            max-width: 220px;
+            margin-left: 10px;
+            .time {
+                color: #aaa;
+                margin-top: 4px;
+            }
+        }
+      }
+  }
+  .dashboard-log-empty {
+      text-align: center;
+      padding: 15px;
+      color: #aaa;
+      margin-top: 40px;
+  }
 }
 
 article.dashboard-content {

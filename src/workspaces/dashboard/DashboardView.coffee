@@ -228,36 +228,37 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         else
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
-        # render activity
-        activitys = _.map @activityModels, (activity) ->
+        # render
+        @renderLog('activity')
+        @renderLog('audit')
 
-            email = Base64.decode(activity.get('email'))
+    renderLog: (type) ->
+
+        if type is 'activity'
+            models = @activityModels
+            container = '.dashboard-log-activity'
+        else
+            models = @auditModels
+            container = '.dashboard-log-audit'
+
+        dataAry = _.map models, (data) ->
+
+            email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase()
+            avatar = CryptoJS.MD5(email).toString()
             return {
-                avatar: CryptoJS.MD5(email.trim().toLowerCase()).toString(),
-                username: Base64.decode(activity.get('usercode')),
-                event: activity.get('detail'),
-                time: new Date(activity.get('time'))
+                name: Base64.decode(data.get('usercode')),
+                action: data.get('action')?.toLowerCase(),
+                type: data.get('type')?.toLowerCase(),
+                target: data.get('target'),
+                avatar: "https://www.gravatar.com/avatar/#{avatar}",
+                time: MC.intervalDate(new Date(data.get('time')))
             }
 
-        if activitys.length
-            $sidebar.find('.dashboard-log-activity').html Template.activityList(activitys)
+        $container = @$el.find('.dashboard-sidebar').find(container)
+
+        if dataAry.length
+            $container.html Template.activityList(dataAry)
         else
-            $sidebar.find('.dashboard-log-activity').html Template.noActivity()
-
-        # render audit
-        audits = _.map @auditModels, (audit) ->
-
-            email = Base64.decode(audit.get('email'))
-            return {
-                avatar: CryptoJS.MD5(email.trim().toLowerCase()).toString(),
-                username: Base64.decode(audit.get('usercode')),
-                event: audit.get('detail'),
-                time: new Date(audit.get('time'))
-            }
-
-        if audits.length
-            $sidebar.find('.dashboard-log-audit').html Template.activityList(audits)
-        else
-            $sidebar.find('.dashboard-log-audit').html Template.noActivity(audits)
+            $container.html Template.noActivity()
 
   }

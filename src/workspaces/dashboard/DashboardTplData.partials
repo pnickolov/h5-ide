@@ -87,7 +87,7 @@
     <label class="region-resource-tab clearfix">
         <span>{{apps.length}} <small>{{i18n "DASH_LBL_APP"}}</small></span>
     </label>
-    <nav class="dash-region-navigation">
+    <nav class="dash-region-navigation" data-type="apps">
         <button id="region-switch-app" class="js-toggle-dropdown">
             <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
@@ -129,11 +129,9 @@
 <!--{{region_stacks}}-->
 <div class="dash-region-stacks-wrap">
     <label class="region-resource-tab clearfix">
-        <span class="stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small>
-            <button id="btn-create-stack" class="icon-new-stack" data-region="{{region}}" title="{{i18n 'TOOLBAR.TIP_CREATE_STACK'}}"></button>
-        </span>
+        <span class="stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small></span>
     </label>
-    <nav class="dash-region-navigation">
+    <nav class="dash-region-navigation" data-type="stacks">
         <button id="region-switch-stack" class="js-toggle-dropdown">
             <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>

@@ -13,7 +13,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
     initialize : ()->
       @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
-      @region       = "us-east-1"
+      @region       = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
@@ -87,6 +87,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       $("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"
         $("#GlobalView").show()
+        $("#RegionViewWrap").hide()
       return
 
 
@@ -128,9 +129,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       return dataTemplate.bubbleResourceInfo  d
 
     initRegion : ( )->
-      @model.fetchAwsResources( @region )
-      $("#RegionView" ).show()
-      $("#GlobalView" ).hide()
       @updateRegionAppStack("stacks", "global")
       @updateRegionAppStack("apps", "global")
       @updateRegionResources()
@@ -139,12 +137,22 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       if evt and evt.currentTarget
         target = evt.currentTarget
         region = $(target).data("region")
-        updateType = if $(evt.currentTarget).parents(".dash-region-apps-wrap").size() > 0 then "apps" else "stacks"
-        @updateRegionAppStack(updateType, region)
-        #_.defer $(target).parents("nav").find("button span").text($(target).text())
+        if region isnt "global"
+          @model.fetchAwsResources( region )
+        updateType = $(evt.currentTarget).parents(".dash-region-navigation").data("type")
+        if updateType in ["stacks", "apps"]
+          @updateRegionAppStack(updateType, region)
+        else if updateType is "resource"
+          @region = region
+          @updateRegionResources(region)
 
     updateRegionResources : ()->
-      if @region is "global" then return
+      if @region is "global"
+        @updateGlobalResources()
+        return
+
+      $("#RegionViewWrap" ).show()
+      $("#GlobalView" ).hide()
       @updateRegionTabCount()
       type = constant.RESTYPE[ @resourcesTab ]
       if not @model.isAwsResReady( @region, type )

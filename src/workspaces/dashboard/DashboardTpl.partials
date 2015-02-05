@@ -34,7 +34,7 @@
                   <!-- Global Map -->
                   <section id="dashboard-data-wrap">
                       <!-- Region view -->
-                      <section id="RegionView" style="display:none;">
+                      <section id="RegionView">
                           <div id="region-app-stack-wrap">
                               <div class="dash-region-apps-wrap">
                                   <div class="dashboard-loading">
@@ -51,7 +51,7 @@
                               <label class="region-resource-tab clearfix">
                                   <span>Resource Table</span>
                               </label>
-                              <nav class="dash-region-navigation">
+                              <nav class="dash-region-navigation" data-type="resource">
                                   <button id="region-switch-app" class="js-toggle-dropdown">
                                       <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
                                   </button>
@@ -62,6 +62,7 @@
                                       {{/each}}{{/each}}
                                   </ul>
                               </nav>
+                              <div id="GlobalView" style="display: none;"></div>
                               <div id="RegionViewWrap">
                                   <nav class="clearfix" id="RegionResourceNav">
                                       <div class="resource-tab instances on" data-type="INSTANCE">

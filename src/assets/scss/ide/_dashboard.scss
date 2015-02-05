@@ -1021,19 +1021,19 @@ article.dashboard-content {
     &:hover { color: #9C6DC0; }
 }
 
-#region-resource-stack-wrap {
-
-    .blank-widget {
-      &:after {
-        content    : " ";
-        position   : absolute;
-        top        : 0;
-        right      : 8px;
-        width      : image-width("ide/action-guide.png");
-        height     : image-height("ide/action-guide.png");
-        background : image-url("ide/action-guide.png") top right no-repeat;
-      }
+.dash-resource-wrap{
+  position: relative;
+  margin-top: 18px;
+  .region-resource-tab{
+    span{
+      text-align: left;
+      width: auto;
+      text-indent: 55px;
     }
+  }
+  .dash-region-navigation{
+    right: 0;
+  }
 }
 
 #region-switch-list {

@@ -1,4 +1,4 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang )->
   Backbone.View.extend {
 
     events :
@@ -127,31 +127,21 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
       return dataTemplate.bubbleResourceInfo  d
 
-
     initRegion : ( )->
-      resetScroller = false
-      if @region is "global"
-        resetScroller = true
-        $("#RegionView" ).hide()
-        $("#GlobalView" ).show()
-      else
-        # Ask model to get data for us.
-        @model.fetchAwsResources( @region )
-        $("#RegionView" ).show()
-        $("#GlobalView" ).hide()
-        @updateRegionAppStack("stacks", "global")
-        @updateRegionAppStack("apps", "global")
-        @updateRegionResources()
-      if resetScroller
-        $("#global-region-wrap").nanoScroller("reset")
-      return
+      @model.fetchAwsResources( @region )
+      $("#RegionView" ).show()
+      $("#GlobalView" ).hide()
+      @updateRegionAppStack("stacks", "global")
+      @updateRegionAppStack("apps", "global")
+      @updateRegionResources()
 
     switchRegion: (evt)->
       if evt and evt.currentTarget
-        region = $(evt.currentTarget).data("region")
+        target = evt.currentTarget
+        region = $(target).data("region")
         updateType = if $(evt.currentTarget).parents(".dash-region-apps-wrap").size() > 0 then "apps" else "stacks"
         @updateRegionAppStack(updateType, region)
-        $("#region-app-stack-wrap").html( dataTemplate.region_app_stack(attr))
+        #_.defer $(target).parents("nav").find("button span").text($(target).text())
 
     updateRegionResources : ()->
       if @region is "global" then return
@@ -178,9 +168,10 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       else
         filter = ()-> true
       tojson = {thumbnail:true}
-      attr[updateType] = self.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
+      attr[updateType] = self.model.scene.project[updateType]().filter(filter).map (m)-> m.toJSON(tojson)
       attr.region = data
-      $("#region-app-stack-wrap #dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
+      $("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
       return
 
     updateRegionTabCount : ()->

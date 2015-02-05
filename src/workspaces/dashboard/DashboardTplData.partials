@@ -89,7 +89,7 @@
     </label>
     <nav class="dash-region-navigation">
         <button id="region-switch-app" class="js-toggle-dropdown">
-            <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+            <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
         <ul id="region-switch-list" class="dropdown-menu">
             <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
@@ -135,7 +135,7 @@
     </label>
     <nav class="dash-region-navigation">
         <button id="region-switch-stack" class="js-toggle-dropdown">
-            <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+            <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
 
         <ul id="region-switch-list" class="dropdown-menu">

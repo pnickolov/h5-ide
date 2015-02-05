@@ -201,7 +201,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdApp : ( self )->
       if not @isApp() then return
       ApiRequest("app_info", {
-        project_id  : @project().id
+        key_id      : @credentialId()
         region_name : @get("region")
         app_ids     : [@get("id")]
       }).then (ds)-> self.__setJsonData( ds[0] )

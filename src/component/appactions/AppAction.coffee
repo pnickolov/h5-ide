@@ -244,6 +244,7 @@ define [
         defer.resolve({})
       else
         ApiRequest("app_info", {
+          key_id      : Design.instance().credentialId()
           region_name : app.get("region")
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component

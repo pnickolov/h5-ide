@@ -28,19 +28,25 @@ define [
         usagereport         : 'Usage Report'
     }
 
-    ProjectView = Backbone.View.extend
+    Backbone.View.extend
         events:
             'click .function-list a'    : 'loadSub'
-
-        className: 'project-settings'
 
         initialize: ( options ) ->
             @settingsView = options.settingsView
 
         render: ( tab = 'basicsettings' ) ->
-            @$el.html TplProject _.extend @model.toJSON(), { tab: tab, admin:@model.amIAdmin() }
+            @setElement $( TplProject _.extend @model.toJSON(), { tab: tab, admin:@model.amIAdmin() } )
             @$('.project-subview').html @renderSub( tab ).el
             @
+
+        setElement: ( element, delegate ) ->
+            if this.$el then @undelegateEvents()
+            this.$el = if element instanceof Backbone.$ then element else Backbone.$( element )
+            this.el = this.$el
+            if delegate isnt false then this.delegateEvents()
+            @
+
 
         loadSub: ( e ) ->
             tab = $(e.currentTarget).data('id')
@@ -70,5 +76,3 @@ define [
                     $(@).removeClass 'active'
 
 
-
-    ProjectView

@@ -12,6 +12,8 @@ define [ "constant", "backbone" ], ( constant )->
 
   ProjectLog = Backbone.Model.extend {
 
+    comparator  : ( m1, m2 )-> -(m1.attributes.time - m2.attributes.time)
+
     constructor : ( attr, opt )->
       cate = attr.action.split(".")
 

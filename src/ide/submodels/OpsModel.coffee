@@ -318,15 +318,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     remove : ()->
       if @isPersisted() and @isApp() then return @__returnErrorPromise()
 
+      self = @
+      collection = @collection
+
       @__destroy()
 
       if not @get("id")
         d = Q.defer()
         d.resolve()
         return d.promise
-
-      collection = @collection
-      self = @
 
       ApiRequest("stack_remove",{
         region_name : @get("region")

@@ -53,5 +53,5 @@ define [
   }, {
     canHandle : ( data )->
       if not data.opsModel then return false
-      return data.opsModel.type is OpsModel.Type.Amazon and data.opsModel.isApp()
+      return data.opsModel.type is OpsModel.Type.Amazon and data.opsModel.isApp() and not data.opsModel.isProcessing()
   }

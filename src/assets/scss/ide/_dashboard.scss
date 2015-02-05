@@ -267,17 +267,15 @@ aside.dashboard-sidebar {
             float: left;
         }
         .no-avatar {
-            display: inline-block;
             width: 40px;
             height: 40px;
-            border: 1px #eee solid;
-            border-radius: 40px;
             float: left;
-            background-color: #fff;
             text-align: center;
-            font-size: 36px;
+            border: 1px #ccc solid;
+            border-radius: 40px;
             line-height: 38px;
-            color: #ccc;
+            font-size: 36px;
+            color: #bbb;
         }
         .info {
             display: inline-block;

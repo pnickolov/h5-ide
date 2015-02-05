@@ -213,20 +213,22 @@ $dashboardSidebarWidth : 300px;
 aside.dashboard-sidebar {
   width      : $dashboardSidebarWidth;
   height     : 100%;
-  overflow-y : scroll;
   position   : absolute;
   right      : 0;
   top        : 0;
   background : white;
-  // color: #4A90E2;
+  border-left: 1px #ddd solid;
   nav {
     overflow: auto;
+    background-color: #eee;
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px #ddd solid;
   }
   .dashboard-nav-log {
         float: left;
         min-width: 100px;
         text-align: center;
-        // color: #999;
         height: 38px;
         line-height: 38px;
         cursor: pointer;
@@ -243,10 +245,10 @@ aside.dashboard-sidebar {
         width: 100%;
     }
   .dashboard-log {
-    //   margin-top: 20px;
+      margin-top: 15px;
+      padding: 0 10px 0 10px;
       .dashboard-log-item {
-        // margin-top: 15px;
-        padding: 10px 0 0 0;
+        margin-bottom: 15px;
         .avatar {
             display: inline-block;
             width: 40px;
@@ -274,6 +276,12 @@ aside.dashboard-sidebar {
       padding: 15px;
       color: #aaa;
       margin-top: 40px;
+      .main {
+          margin-bottom:15px;
+      }
+      .sub {
+          font-size: 12px;
+      }
   }
 }
 

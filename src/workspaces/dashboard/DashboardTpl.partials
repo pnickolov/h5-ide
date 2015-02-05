@@ -141,6 +141,6 @@
 
 <!-- {{noActivity}} -->
 <div class="dashboard-log-empty">
-    <div>No activity yet.</div>
-    <div>Operation of team members will appear here.</div>
+    <div class="main">No activity yet.</div>
+    <div class="sub">Operation of team members will appear here.</div>
 </div>

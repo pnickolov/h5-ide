@@ -3319,13 +3319,17 @@ div.modal-text-highlight {
 aside.dashboard-sidebar {
   width: 300px;
   height: 100%;
-  overflow-y: scroll;
   position: absolute;
   right: 0;
   top: 0;
-  background: white; }
+  background: white;
+  border-left: 1px #ddd solid; }
   aside.dashboard-sidebar nav {
-    overflow: auto; }
+    overflow: auto;
+    background-color: #eee;
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px #ddd solid; }
   aside.dashboard-sidebar .dashboard-nav-log {
     float: left;
     min-width: 100px;
@@ -3343,29 +3347,36 @@ aside.dashboard-sidebar {
     content: '';
     border-bottom: 2px solid #4A90E2;
     width: 100%; }
-  aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
-    padding: 10px 0 0 0; }
-    aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
-      display: inline-block;
-      width: 40px;
-      border-radius: 40px;
-      float: left; }
-    aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info {
-      display: inline-block;
-      max-width: 220px;
-      margin-left: 10px;
-      margin-top: 2px; }
-      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .name {
-        text-transform: capitalize; }
-      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .time {
-        color: #aaa;
-        margin-top: 4px;
-        font-size: 12px; }
+  aside.dashboard-sidebar .dashboard-log {
+    margin-top: 15px;
+    padding: 0 10px 0 10px; }
+    aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
+      margin-bottom: 15px; }
+      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
+        display: inline-block;
+        width: 40px;
+        border-radius: 40px;
+        float: left; }
+      aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info {
+        display: inline-block;
+        max-width: 220px;
+        margin-left: 10px;
+        margin-top: 2px; }
+        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .name {
+          text-transform: capitalize; }
+        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .time {
+          color: #aaa;
+          margin-top: 4px;
+          font-size: 12px; }
   aside.dashboard-sidebar .dashboard-log-empty {
     text-align: center;
     padding: 15px;
     color: #aaa;
     margin-top: 40px; }
+    aside.dashboard-sidebar .dashboard-log-empty .main {
+      margin-bottom: 15px; }
+    aside.dashboard-sidebar .dashboard-log-empty .sub {
+      font-size: 12px; }
 
 article.dashboard-content {
   margin-right: 300px;

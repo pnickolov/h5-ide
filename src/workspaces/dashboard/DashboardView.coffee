@@ -15,31 +15,51 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       "click .region-resource-list .start-app"       : "startApp"
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
-      'click .region-resource-list>li>a'             : 'openOps'
 
 
     initialize : ()->
-      @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
       @region       = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
+      self = @
       # listen logs change
-      logCol = @model.scene.project.logs()
-      @activityModels = logCol.history()
-      @auditModels = logCol.audit()
-      logCol.on('update', @switchLog, this)
+      @logCol = @model.scene.project.logs()
+      @logCol.on('change', @switchLog, this)
 
       @render()
-      console.log @
+      @listenTo @model.scene.project, "update:stack", ()->
+        self.updateRegionAppStack("stacks", "global")
+      @listenTo @model.scene.project, "update:app", ()->
+        self.updateRegionAppStack("apps", "global")
+      @listenTo @model.scene.project, "update:credential", ()->
+        self.updateDemoView()
+
+      @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
+      @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.EIP ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VOL ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.ELB ), "update", @onGlobalResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPN ), "update", @onGlobalResChanged
+
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPC ), "update", @onRegionResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.ASG ), "update", @onRegionResChanged
+      @listenTo CloudResources(@credentialId, constant.RESTYPE.CW ),  "update", @onRegionResChanged
+
+      for region in constant.REGION_KEYS
+        @listenTo CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
+        @listenTo CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, region ),  "update", @onGlobalResChanged
+
       return
 
     render : ()->
       # Update the dashboard in this method.
       @updateDemoView()
       @updateGlobalResources()
+      @model.fetchAwsResources()
       @initRegion()
       setInterval ()->
         if not $("#RefreshResource").hasClass("reloading")
@@ -86,7 +106,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
     updateGlobalResources : ()->
       if not @model.isAwsResReady()
-        if @__globalLoading then return
         @__globalLoading = true # Avoid re-rendering the global resource view.
         data = { loading : true }
       else
@@ -99,6 +118,12 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         $("#RegionViewWrap").hide()
       return
 
+    onGlobalResChanged: ()->
+      @updateGlobalResources()
+      @updateRegionResources()
+
+    onRegionResChanged: ()->
+      @updateRegionResources()
 
     dashboardBubbleSub: (data)->
       renderData = {}
@@ -153,7 +178,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
           @updateRegionAppStack(updateType, region)
         else if updateType is "resource"
           @region = region
-          @updateRegionResources(region)
+          @updateRegionResources()
 
     updateRegionResources : ()->
       if @region is "global"
@@ -176,7 +201,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         return false
       self = @
       attr = { apps:[], stacks:[], region : @region }
-      attr[ @regionOpsTab ] = true
       data = _.map constant.REGION_LABEL, ( name, id )->
         id   : id
         name : name
@@ -237,13 +261,9 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
       false
 
-    openOps: (event)->
-      event.preventDefault()
-      url = $(event.currentTarget).attr("href")
-      App.loadUrl url
-      false
-
     switchLog: (event) ->
+
+        that = @
 
         # switch
         if not event
@@ -260,16 +280,21 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
         # render
-        @renderLog('activity')
-        @renderLog('audit')
+        memCol = new MemberCollection({projectId: @model.scene.project.id})
+        memCol.fetch().done () ->
+            that.renderLog('activity')
+            that.renderLog('audit')
 
     renderLog: (type) ->
 
+        activityModels = @logCol.history()
+        auditModels = @logCol.audit()
+
         if type is 'activity'
-            models = @activityModels
+            models = activityModels
             container = '.dashboard-log-activity'
-        else
-            models = @auditModels
+        else if type is 'audit'
+            models = auditModels
             container = '.dashboard-log-audit'
 
         renderMap = (origin) ->

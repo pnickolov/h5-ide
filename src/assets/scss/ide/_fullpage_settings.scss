@@ -1,15 +1,49 @@
+.fullscreen .modal-body {
+    background: #000;
+}
+
 .fullpage-settings {
     a { cursor: pointer; }
     a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
 
-    nav#settings-nav {
-        width: 220px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 50px 15px 15px 15px;
+    &, &> div {
+        display : flex;
+        height  : 100%;
+        width   : 100%;
 
-        .back-settings { font-size: 18px; }
+        @media ( min-width: 1280px ) {
+            max-width : 1280px;
+            height    : 90vh;
+            margin    : 5vh auto;
+        }
+
+    }
+
+    #settings-nav {
+
+        min-width  : 220px;
+        width      : 25%;
+        padding    : 20px 2.5% 20px 2.5%;
+        background : transparentize($dark-p,.4);
+
+        .back-settings { 
+            font-size     : 14px;
+            display       : block;
+            width         : 44px;
+            padding       : 8px 12px;
+            border        : 1px solid $light-p-2;
+            border-radius : 3px;
+            margin-bottom : 20px;
+            color         : $light-p-2;
+            background    : transparent;
+
+            @include transit($method:background-color, $dur:.2s);
+
+            &:hover {
+                background : $light-p-2;
+                color      : #000;
+            } 
+        }
 
         & > section {
             header, a {
@@ -30,11 +64,12 @@
         }
 
     }
-    section.setting-content {
-        min-width: 600px;
-        max-width: 800px;
-        margin-left: 300px;
-        padding: 50px 0 0 0;
+
+    .setting-content {
+        min-width : 600px;
+        width     : 65%;
+        padding   : 20px 2.5% 20px 2.5%;
+        background: $bg-p;
 
         & > header {
             color: white;

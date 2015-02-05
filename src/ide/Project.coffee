@@ -3,13 +3,12 @@ define [
   "ApiRequest"
   "ide/submodels/ProjectLog"
   "ide/submodels/OpsCollection"
-  "ide/settings/projectSubModels/MemberCollection"
   "OpsModel"
   "Credential"
   "ApiRequestR"
   "constant"
   "backbone"
-], ( ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR, constant )->
+], ( ApiRequest, ProjectLog, OpsCollection, OpsModel, Credential, ApiRequestR, constant )->
 
   ###
   # One-time initializer to observe the websocket. Since the websocket is not
@@ -121,7 +120,6 @@ define [
         id      : attr.id
         name    : attr.name or "My Workspace"
         private : attr.id is App.user.id
-        members : new MemberCollection({projectId: attr.id})
       }
 
       # Token

@@ -338,7 +338,8 @@ define [
     ### env:dev:end ###
 
     initialize : ()->
-      @listenTo @, "add", ( m )-> CloudResources( constant.RESTYPE.AMI, m.attributes.category ).fetchAmi( m.attributes.imageId )
+      self = @
+      @listenTo @, "add", ( m )-> CloudResources(self.credential(), constant.RESTYPE.AMI, m.attributes.category ).fetchAmi( m.attributes.imageId )
       return
 
     type  : constant.RESTYPE.INSTANCE

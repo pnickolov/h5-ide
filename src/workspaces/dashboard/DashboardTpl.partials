@@ -119,8 +119,8 @@
         <button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">Audit Log</button>
       </nav>
       <div class="dashboard-log-wrap">
-          <div class="dashboard-log dashboard-log-activity"></div>
-          <div class="dashboard-log dashboard-log-audit hide"></div>
+          <div class="dashboard-log dashboard-log-activity"><div class="loading-spinner"></div></div>
+          <div class="dashboard-log dashboard-log-audit hide"><div class="loading-spinner"></div></div>
       </div>
     </aside>
   </div>

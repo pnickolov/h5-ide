@@ -186,7 +186,7 @@ define [
     deleteStack : ( id, name ) ->
       workspace = @workspace
       name = name || @workspace?.opsModel.project().stacks().get( id ).get( "name" ) || @model.get("name")
-
+      self = @
       modal = new modalPlus({
         title: lang.TOOLBAR.TIP_DELETE_STACK
         width: 390
@@ -197,7 +197,7 @@ define [
       })
       modal.on "confirm", ()->
         modal.close()
-        opsModel = workspace.opsModel.project().stacks().get( id ) || @model
+        opsModel = self.model || workspace.opsModel.project().stacks().get( id )
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->

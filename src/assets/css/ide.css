@@ -9923,16 +9923,19 @@ h5.billing_usage_title {
   .fullpage-settings section.setting-content .member-setting .memlist-item .info {
     float: left;
     margin: 3px 0 0 8px; }
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name {
-      float: left;
+    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name, .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
+      width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       text-align: left; }
+    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name {
+      text-align: left; }
+    .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
+      color: #888; }
     .fullpage-settings section.setting-content .member-setting .memlist-item .info .you {
       color: #888;
-      float: left;
       margin-left: 5px; }
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
-      width: 100%;
-      color: #888; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-edit-mode {
     display: none; }
   .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-view-mode, .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-status {

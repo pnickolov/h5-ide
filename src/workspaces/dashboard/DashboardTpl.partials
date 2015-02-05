@@ -130,7 +130,7 @@
 <ul class="dashboard-log-list">
     {{#each this}}
     <li class="dashboard-log-item">
-        <img class="avatar" src="{{avatar}}" />
+        {{#if avatar}}<img class="avatar" src="{{avatar}}" />{{else}}<div class="no-avatar">×</div>{{/if}}
         <div class="info">
             <div class="event">
                 <span class="name">{{name}}</span>

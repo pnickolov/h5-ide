@@ -288,14 +288,14 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
             try
 
                 email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase() if data.get('email')
-                avatar = CryptoJS.MD5(email).toString()
+                avatar = "https://www.gravatar.com/avatar/#{CryptoJS.MD5(email).toString()}" if email
                 action = data.get('action')?.toLowerCase()
                 return {
                     name: Base64.decode(data.get('usercode')),
                     action: renderMap(action),
                     type: data.get('type')?.toLowerCase(),
                     target: data.get('target'),
-                    avatar: "https://www.gravatar.com/avatar/#{avatar}",
+                    avatar: avatar,
                     time: MC.intervalDate(new Date(data.get('time')))
                 }
 

@@ -3330,6 +3330,13 @@ aside.dashboard-sidebar {
     width: 100%;
     display: inline-block;
     border-bottom: 1px #ddd solid; }
+  aside.dashboard-sidebar .dashboard-log-wrap {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    top: 40px;
+    right: 0;
+    left: 0; }
   aside.dashboard-sidebar .dashboard-nav-log {
     float: left;
     min-width: 100px;
@@ -3348,10 +3355,12 @@ aside.dashboard-sidebar {
     border-bottom: 2px solid #4A90E2;
     width: 100%; }
   aside.dashboard-sidebar .dashboard-log {
-    margin-top: 15px;
-    padding: 0 10px 0 10px; }
+    margin-top: 15px; }
     aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
-      margin-bottom: 15px; }
+      margin-bottom: 15px;
+      padding: 5px 10px 5px 10px; }
+      aside.dashboard-sidebar .dashboard-log .dashboard-log-item:hover {
+        background-color: #eee; }
       aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
         display: inline-block;
         width: 40px;
@@ -3681,6 +3690,7 @@ article.dashboard-content {
       text-shadow: 0 1px 0 #fff; }
 
 #RegionViewWrap {
+  margin-top: 18px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #bbb;
   background: #edf1f3; }
@@ -3896,8 +3906,7 @@ article.dashboard-content {
   padding: 5px 20px;
   color: #bfc0cb;
   font-size: 16px;
-  padding-right: 5px;
-  cursor: pointer; }
+  padding-right: 5px; }
   .dash-region-navigation.open #region-switch-stack, .dash-region-navigation.open #region-switch-app {
     background: #ddd;
     color: #686968; }
@@ -3919,6 +3928,7 @@ article.dashboard-content {
   position: relative;
   text-align: center;
   background: #F3F3F3;
+  cursor: pointer;
   font-size: 21px;
   color: #666;
   background: url('/assets/images/ide/global-region-app-stack-m.png') 10px top no-repeat; }
@@ -3948,16 +3958,6 @@ article.dashboard-content {
   width: 114px;
   height: 119px;
   background: url('/assets/images/ide/action-guide.png') top right no-repeat; }
-
-.dash-resource-wrap {
-  position: relative;
-  margin-top: 18px; }
-  .dash-resource-wrap .region-resource-tab span {
-    text-align: left;
-    width: auto;
-    text-indent: 55px; }
-  .dash-resource-wrap .dash-region-navigation {
-    right: 0; }
 
 #region-switch-list {
   position: absolute;

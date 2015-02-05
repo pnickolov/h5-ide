@@ -32,6 +32,8 @@ define [
         events:
             'click .function-list a'    : 'loadSub'
 
+        className: 'project-settings'
+
         initialize: ( options ) ->
             @settingsView = options.settingsView
 

@@ -179,6 +179,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       tojson = {thumbnail:true}
       attr[updateType] = self.model.scene.project[updateType]().filter(filter).map (m)-> m.toJSON(tojson)
       attr.region = data
+      attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
       $("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
       return

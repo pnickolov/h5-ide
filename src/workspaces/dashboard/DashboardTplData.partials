@@ -102,7 +102,8 @@
         <div class="scroll-content">
             <ul id="region-resource-app-wrap" class="region-resource-list clearfix">
                 {{#each apps}}
-                    <li data-id="{{id}}">{{#if progressing}}
+                    <li data-id="{{id}}">
+                        <a href="/team/{{../projectId}}/ops/{{id}}">{{#if progressing}}
                         <div class="thumbnail app-thumbnail"></div>
                         <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
                         <div class="region-resource-info truncate">
@@ -118,7 +119,8 @@
                             {{/if}}
                             <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
                         </div>
-                    {{/if}}</li>
+                        {{/if}}
+                        </a></li>
                 {{else}}
                     <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
                 {{/each}}
@@ -148,12 +150,14 @@
             <ul id="region-resource-stack-wrap" class="region-resource-list clearfix">
                 {{#each stacks}}
                     <li data-id="{{id}}">
-                        <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
-                        <div class="region-resource-info">
-                            <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
-                            <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
-                            <span class="truncate">{{name}}</span>
-                        </div>
+                        <a href="/team/{{../projectId}}/ops/{{id}}">
+                            <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+                            <div class="region-resource-info">
+                                <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
+                                <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
+                                <span class="truncate">{{name}}</span>
+                            </div>
+                        </a>
                     </li>
                 {{else}}
                     <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>

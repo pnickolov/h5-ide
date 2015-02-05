@@ -21,7 +21,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
 
     fetchAwsResources : ( region )->
       @credentialId = @scene.project.credentials().toJSON()[0].id
-
+      self = @
       if not region
         CloudResources(@credentialId, constant.RESTYPE.INSTANCE ).fetch()
         CloudResources(@credentialId, constant.RESTYPE.EIP ).fetch()
@@ -29,7 +29,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
         CloudResources(@credentialId, constant.RESTYPE.ELB ).fetch()
         CloudResources(@credentialId, constant.RESTYPE.VPN ).fetch()
         _.each constant.REGION_KEYS, (e)->
-          CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, e).fetch()
+          CloudResources(self.credentialId, constant.RESTYPE.DBINSTANCE, e).fetch()
         return
 
       CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ).fetch()

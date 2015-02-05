@@ -20,25 +20,33 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
 
     initialize : ()->
-      @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
       @region       = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
+      self = @
+
       # listen logs change
       @logCol = @model.scene.project.logs()
       @logCol.on('change', @switchLog, this)
 
+      
+      @listenTo @model.scene.project, "update:stack", ()->
+        self.updateRegionAppStack("stacks", "global")
+
+      @listenTo @model.scene.project, "update:app", ()->
+        self.updateRegionAppStack("apps", "global")
+      
       @render()
-      console.log @
       return
 
     render : ()->
       # Update the dashboard in this method.
       @updateDemoView()
       @updateGlobalResources()
+      @model.fetchAwsResources()
       @initRegion()
       setInterval ()->
         if not $("#RefreshResource").hasClass("reloading")
@@ -85,7 +93,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
     updateGlobalResources : ()->
       if not @model.isAwsResReady()
-        if @__globalLoading then return
         @__globalLoading = true # Avoid re-rendering the global resource view.
         data = { loading : true }
       else
@@ -175,7 +182,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         return false
       self = @
       attr = { apps:[], stacks:[], region : @region }
-      attr[ @regionOpsTab ] = true
       data = _.map constant.REGION_LABEL, ( name, id )->
         id   : id
         name : name

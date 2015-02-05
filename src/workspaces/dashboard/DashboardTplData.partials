@@ -82,7 +82,7 @@
 {{/if}}
 
 
-<!-- {{region_app_stack}} -->
+<!-- {{region_apps}} -->
 <div class="dash-region-apps-wrap">
     <label class="region-resource-tab clearfix">
         <span>{{apps.length}} <small>{{i18n "DASH_LBL_APP"}}</small></span>
@@ -126,7 +126,7 @@
         </div>
     </div>
 </div>
-
+<!--{{region_stacks}}-->
 <div class="dash-region-stacks-wrap">
     <label class="region-resource-tab clearfix">
         <span class="stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small>

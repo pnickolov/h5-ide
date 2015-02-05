@@ -8,7 +8,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       "click .dashboard-sidebar .dashboard-nav-log" : "switchLog"
       "click .dashboard-sidebar nav buttton"    : "switchLog"
       'click #region-switch-list li'    : 'switchRegion'
-      'click #region-resource-tab li'   : 'switchAppStack'
       'click .resource-tab'             : 'switchResource'
 
     initialize : ()->
@@ -64,26 +63,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       false
 
     importApp : ()-> new VisualizeDialog({model:@model.scene.project})
-
-    updateRegionAppStack : ()->
-      self = @
-      attr = { apps:[], stacks:[], region : @region }
-      attr[ @regionOpsTab ] = true
-
-      region = @region
-      data = _.map constant.REGION_LABEL, ( name, id )->
-        id   : id
-        name : name
-        shortName : constant.REGION_SHORT_LABEL[ id ]
-      if region isnt "global"
-        filter = (f)-> f.get("region") is region && f.isExisting()
-        tojson = {thumbnail:true}
-
-        attr.stacks = self.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
-        attr.apps   = self.model.scene.project.apps().filter(filter).map   (m)-> m.toJSON(tojson)
-        attr.region = data
-      $('#region-app-stack-wrap').html( dataTemplate.region_app_stack(attr) )
-      return
 
 
     updateDemoView : ()->
@@ -149,13 +128,10 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       return dataTemplate.bubbleResourceInfo  d
 
 
-    initRegion : ( evt )->
+    initRegion : ( )->
+      resetScroller = false
       if @region is "global"
         resetScroller = true
-
-      $( '#region-switch').find('span').text(  )
-
-      if @region is "global"
         $("#RegionView" ).hide()
         $("#GlobalView" ).show()
       else
@@ -163,23 +139,19 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         @model.fetchAwsResources( @region )
         $("#RegionView" ).show()
         $("#GlobalView" ).hide()
-        @updateRegionAppStack()
+        @updateRegionAppStack("stacks", "global")
+        @updateRegionAppStack("apps", "global")
         @updateRegionResources()
-
       if resetScroller
         $("#global-region-wrap").nanoScroller("reset")
       return
 
-
-    switchAppStack: ( evt ) ->
-      $target = $(evt.currentTarget)
-      if $target.hasClass("on") then return
-      $target.addClass("on").siblings().removeClass("on")
-
-      @regionOpsTab = if $target.hasClass("stack") then "stack" else "app"
-      $("#RegionView").find(".region-resource-list").hide().eq( $target.index() ).show()
-      return
-
+    switchRegion: (evt)->
+      if evt and evt.currentTarget
+        region = $(evt.currentTarget).data("region")
+        updateType = if $(evt.currentTarget).parents(".dash-region-apps-wrap").size() > 0 then "apps" else "stacks"
+        @updateRegionAppStack(updateType, region)
+        $("#region-app-stack-wrap").html( dataTemplate.region_app_stack(attr))
 
     updateRegionResources : ()->
       if @region is "global" then return
@@ -191,6 +163,25 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         tpl = dataTemplate["resource#{@resourcesTab}"]( @model.getAwsResData( @region, type ) )
       $("#RegionResourceData").html( tpl )
 
+    updateRegionAppStack : (updateType="stack", region)->
+      if updateType not in ["stacks", "apps"]
+        return false
+      self = @
+      attr = { apps:[], stacks:[], region : @region }
+      attr[ @regionOpsTab ] = true
+      data = _.map constant.REGION_LABEL, ( name, id )->
+        id   : id
+        name : name
+        shortName : constant.REGION_SHORT_LABEL[ id ]
+      if region isnt "global"
+        filter = (f)-> f.get("region") is region && f.isExisting()
+      else
+        filter = ()-> true
+      tojson = {thumbnail:true}
+      attr[updateType] = self.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
+      attr.region = data
+      $("#region-app-stack-wrap #dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      return
 
     updateRegionTabCount : ()->
       resourceCount = @model.getResourcesCount( @region )

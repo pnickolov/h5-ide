@@ -14,13 +14,8 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
     initialize : ()->
       @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
-      @region       = "global"
-      data = _.map constant.REGION_LABEL, ( name, id )->
-        id   : id
-        name : name
-        shortName : constant.REGION_SHORT_LABEL[ id ]
+      @region       = "us-east-1"
       @setElement $( Template.main({
-        data : data
         providers : @model.supportedProviders()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
@@ -37,6 +32,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       # Update the dashboard in this method.
       @updateDemoView()
       @updateGlobalResources()
+      @initRegion()
       setInterval ()->
         if not $("#RefreshResource").hasClass("reloading")
           $("#RefreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
@@ -75,13 +71,17 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       attr[ @regionOpsTab ] = true
 
       region = @region
+      data = _.map constant.REGION_LABEL, ( name, id )->
+        id   : id
+        name : name
+        shortName : constant.REGION_SHORT_LABEL[ id ]
       if region isnt "global"
         filter = (f)-> f.get("region") is region && f.isExisting()
         tojson = {thumbnail:true}
 
         attr.stacks = self.model.scene.project.stacks().filter(filter).map (m)-> m.toJSON(tojson)
         attr.apps   = self.model.scene.project.apps().filter(filter).map   (m)-> m.toJSON(tojson)
-
+        attr.region = data
       $('#region-app-stack-wrap').html( dataTemplate.region_app_stack(attr) )
       return
 
@@ -149,24 +149,18 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       return dataTemplate.bubbleResourceInfo  d
 
 
-    switchRegion : ( evt )->
-      target = $(evt.currentTarget)
-      region = target.attr 'data-region'
-      if @region is region then return
-
-      if @region is "global" or region is "global"
+    initRegion : ( evt )->
+      if @region is "global"
         resetScroller = true
 
-      @region = region
+      $( '#region-switch').find('span').text(  )
 
-      $( '#region-switch').find('span').text( target.text() )
-
-      if region is "global"
+      if @region is "global"
         $("#RegionView" ).hide()
         $("#GlobalView" ).show()
       else
         # Ask model to get data for us.
-        @model.fetchAwsResources( region )
+        @model.fetchAwsResources( @region )
         $("#RegionView" ).show()
         $("#GlobalView" ).hide()
         @updateRegionAppStack()

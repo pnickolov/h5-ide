@@ -541,9 +541,6 @@ article.dashboard-content {
     font-size  : 16px;
 }
 
-
-
-#GlobalView, #RegionView { margin-top : 15px; }
 #GlobalView {
 
     .dashboard-loading {
@@ -757,7 +754,7 @@ article.dashboard-content {
       margin-left   : 1.6%;
       margin-top    : 15px;
       display       : block;
-      width         : 18%;
+      width         : 31%;
       position      : relative;
       cursor        : pointer;
       background    : #323e49;
@@ -930,60 +927,69 @@ article.dashboard-content {
 
 #region-app-stack-wrap {
     position : relative;
-
+    height: 400px;
     .scroll-wrap {
       background : #fff;
       box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
       border     : 1px solid #bbb;
-      max-height : 370px;
+      max-height : 350px;
+      height     : 350px;
+    }
+    .dash-region-apps-wrap, .dash-region-stacks-wrap{
+      width: 50%;
+      position: relative;
+      float: left;
+      box-sizing: border-box;
+    }
+    .dash-region-apps-wrap{
+      padding-right: 10px;
+    }
+    .dash-region-stacks-wrap{
+      padding-left: 10px;
     }
 }
 
+#region-switch-stack, #region-switch-app{
+  height: 40px;
+  padding: 5px 20px;
+  color: #bfc0cb;
+  font-size: 16px;
+  padding-right: 5px;
+  .dash-region-navigation.open &{
+    background: #ddd;
+    color: #686968;
+  }
+}
 
-#region-resource-tab {
-    position      : absolute;
-    right         : 0;
-    top           : -49px;
-    border-radius : 5px 5px 0 0;
-    z-index       : 4;
-    box-shadow    : 3px -2px 3px rgba(0, 0, 0, 0.05);
+.dash-region-navigation{
+  text-align: right;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  .dash-region-stacks-wrap &{
+    right: 0;
+  }
+}
 
-    > li {
+.region-resource-tab {
+    > span {
+      display     : inline-block;
       float       : left;
-      width       : 170px;
+      width       : 160px;
       height      : 48px;
       line-height : 49px;
       position    : relative;
       text-align  : center;
-      border      : 1px solid #bbb;
       background  : #F3F3F3;
       cursor      : pointer;
       font-size   : 21px;
       color       : #666;
-      background  : #F3F3F3 image-url("ide/global-region-app-stack-m.png") 20px top no-repeat;
-
+      background  : image-url("ide/global-region-app-stack-m.png") 10px top no-repeat;
       > small {
-        font-size : 12px;
+        font-size : 14px;
         color : #ccc;
       }
-
-      &:first-child {
-        border-radius: 3px 0 0 0;
-      }
-
-      &:last-child {
-        border-left: none;
-        border-radius: 0 3px 0 0;
-      }
-
-      &.on {
-        background-color : #fff;
-        box-shadow       : none;
-        border-bottom    : none;
-        height           : 49px;
-      }
-
-      &.stack { background-position : 20px -50px; }
+      &.stack { background-position : 10px -50px; }
     }
 }
 
@@ -1019,12 +1025,13 @@ article.dashboard-content {
     position      : absolute;
     background    : #FFF;
     top           : 40px;
-    left          : 0;
+    right         : 0;
     z-index       : 35;
     border        : 1px solid #CCC;
     box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
     border-radius : 2px;
     width         : 163px;
+    text-align    : left;
 
     > li {
       display   : block;

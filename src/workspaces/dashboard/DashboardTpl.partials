@@ -33,23 +33,6 @@
               <div class="nano-content">
                   <!-- Global Map -->
                   <section id="dashboard-data-wrap">
-
-                      <nav class="pos-r">
-                          <button id="region-switch" class="js-toggle-dropdown">
-                              <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
-                          </button>
-
-                          <ul id="region-switch-list" class="dropdown-menu">
-                              <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
-                              {{#each data}}
-                                  <li data-region="{{id}}">{{shortName}}</li>{{/each}}
-                          </ul>
-                      </nav>
-
-                      <!-- Global view -->
-                      <ul id="GlobalView" class="clearfix" style="display:none;"></ul>
-                      <!-- Global view -->
-
                       <!-- Region view -->
                       <section id="RegionView" style="display:none;">
                           <div id="region-app-stack-wrap">

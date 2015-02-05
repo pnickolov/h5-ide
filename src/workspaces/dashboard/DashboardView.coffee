@@ -1,4 +1,4 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog )->
   Backbone.View.extend {
 
     events :

@@ -14,7 +14,7 @@ define [
   "UI.bubble"
   "UI.scrollbar"
   "UI.nanoscroller"
-], ( Template, TemplateData, ImportAppTpl, constant, lang, CloudResources, Modal, appAction )->
+], ( Template, TemplateData, ImportAppTpl, constant, lang, CloudResources, Modal, AppAction )->
 
   Backbone.View.extend {
 
@@ -40,6 +40,7 @@ define [
     initialize : ()->
       @opsListTab = "stack"
       @lastUpdate = +(new Date())
+      @appAction = new AppAction workspace: @workspace
 
       @setElement( $(Template.frame()).eq(0).appendTo("#main") )
 
@@ -198,11 +199,11 @@ define [
         $("#OsReloadResource").removeClass("reloading").text(lang.IDE.DASH_TPL_JUST_NOW)
       return
 
-    deleteStack    : (event)-> appAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    duplicateStack : (event)-> appAction.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
-    startApp       : (event)-> appAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    stopApp        : (event)-> appAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
-    terminateApp   : (event)-> appAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    deleteStack    : (event)-> @appAction.deleteStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    duplicateStack : (event)-> @appAction.duplicateStack $( event.currentTarget ).closest("li").attr("data-id"); false
+    startApp       : (event)-> @appAction.startApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    stopApp        : (event)-> @appAction.stopApp $( event.currentTarget ).closest("li").attr("data-id"); false
+    terminateApp   : (event)-> @appAction.terminateApp $( event.currentTarget ).closest("li").attr("data-id"); false
 
     importStack : ()->
       modal = new Modal {

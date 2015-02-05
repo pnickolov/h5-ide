@@ -8,7 +8,7 @@ define [
   "UI.selectbox"
   "backbone"
   "UI.selectbox"
-], ( OpsEditorTpl, Modal, lang, appAction )->
+], ( OpsEditorTpl, Modal, lang, AppAction )->
 
   ### Monitor keypress ###
   $(window).on 'keydown', ( evt )->
@@ -215,7 +215,7 @@ define [
         .$(".modal-footer").hide().end()
         .find(".modal-header .modal-close")
         .off("click")
-        appAction.saveStack(saveIcon, self).then ()->
+        new AppAction( workspace: self.workspace ).saveStack(saveIcon, self).then ()->
           modal.close()
           self.workspace.remove()
       return

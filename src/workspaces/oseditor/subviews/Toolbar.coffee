@@ -16,7 +16,7 @@ define [
   "AppAction"
   "UI.notification"
   "backbone"
-], ( OpsModel, ToolbarTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
+], ( OpsModel, ToolbarTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
 
   Backbone.View.extend {
 
@@ -47,6 +47,7 @@ define [
     initialize : ( options )->
       _.extend this, options
 
+      @appAction = new AppAction( workspace: @workspace )
       opsModel = @workspace.opsModel
 
       # Toolbar
@@ -133,11 +134,7 @@ define [
           notification "error", sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
         return
 
-    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
-    createStack    : ()->
-      opsModel = @workspace.opsModel
-      App.createOps( opsModel.get("region"), opsModel.get("provider") )
-      return
+    deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.design.get("name") )
 
     duplicateStack : ()->
       newOps = App.model.createStackByJson( @workspace.design.serialize() )
@@ -248,7 +245,7 @@ define [
 
 
     runStack: (event)->
-        appAction.runStack(event, @workspace)
+        @appAction.runStack event
         return false
 
     appToStack: () ->
@@ -364,10 +361,10 @@ define [
 
         true
 
-    startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
-    stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
-    terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
-    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
+    startApp  : ()-> @appAction.startApp( @workspace.opsModel.id ); false
+    stopApp   : ()-> @appAction.stopApp( @workspace.opsModel.id );  false
+    terminateApp    : ()-> @appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> @appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     checkDBinstance : (oldDBInstanceList)->
@@ -428,13 +425,13 @@ define [
         cancel: "Close"
       cloudType = that.workspace.opsModel.type
       that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
-      if hasNewServer then appAction.renderKpDropdown(that.updateModal, cloudType)
+      if hasNewServer then @appAction.renderKpDropdown(that.updateModal, cloudType)
       that.updateModal.on 'confirm', ->
         if not Design.instance().credential()
           App.showSettings App.showSettings.TAB.Credential
           return false
 
-        if not appAction.defaultKpIsSet(cloudType)
+        if not that.appAction.defaultKpIsSet(cloudType)
           return false
 
         newJson = that.workspace.design.serialize usage: 'updateApp'

@@ -19,19 +19,21 @@ define [
   'TaGui'
   'OpsModel'
 ], ( Backbone, AppTpl, Thumbnail, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
-  AppAction = Backbone.View.extend
+
+  Backbone.View.extend
+    initialize: ( options ) -> _.extend @, options
 
     saveStack : ( dom, self )->
-
+      workspace = @workspace
       $( dom ).attr("disabled", "disabled")
 
       self.__saving = true
 
-      newJson = self.workspace.design.serialize()
+      newJson = workspace.design.serialize()
       Thumbnail.generate( (self.parent||self).getSvgElement() ).catch( ()->
         return null
       ).then ( thumbnail )->
-        self.workspace.opsModel.save( newJson, thumbnail ).then ()->
+          workspace.opsModel.save( newJson, thumbnail ).then ()->
           self.__saving = false
           $( dom ).removeAttr("disabled")
           notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
@@ -46,7 +48,7 @@ define [
           notification "error", message
 
 
-    runStack: (paymentUpdate,paymentModal,@workspace)->
+    runStack: ( paymentUpdate,paymentModal )->
       cloudType = @workspace.opsModel.type
       that = @
       paymentState = App.user.get('paymentState')
@@ -177,6 +179,7 @@ define [
         $("#runtime-error-#{id}").text(msg).show()
 
     deleteStack : ( id, name ) ->
+      workspace = @workspace
       name = name || @workspace.opsModel.project().stacks().get( id ).get( "name" )
 
       modal = new modalPlus({
@@ -189,7 +192,7 @@ define [
       })
       modal.on "confirm", ()->
         modal.close()
-        opsModel = @workspace.opsModel.project().stacks().get( id )
+        opsModel = workspace.opsModel.project().stacks().get( id )
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->
@@ -198,16 +201,18 @@ define [
             notification "error", sprintf(lang.NOTIFY.ERR_DEL_STACK_FAILED, name)
 
     duplicateStack : (id) ->
-      opsModel = @workspace.opsModel.project().stacks().get(id)
+      workspace = @workspace
+      opsModel = workspace.opsModel.project().stacks().get(id)
       if not opsModel then return
       opsModel.fetchJsonData().then ()->
-        App.loadUrl @workspace.opsModel.project().createStackByJson( opsModel.getJsonData() ).url()
+        App.loadUrl workspace.opsModel.project().createStackByJson( opsModel.getJsonData() ).url()
       , ()->
         notification "error", lang.NOTIFY.ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
-      app = @workspace.opsModel.project().apps().get(id)
+      workspace = @workspace
+      app = workspace.opsModel.project().apps().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.TOOLBAR.TIP_START_APP
@@ -228,7 +233,7 @@ define [
         startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
         startAppModal.on 'confirm', ->
           startAppModal.close()
-          @workspace.opsModel.project().apps().get( id ).start().fail ( err )->
+          workspace.opsModel.project().apps().get( id ).start().fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
             return
@@ -236,6 +241,7 @@ define [
         return
 
     checkBeforeStart: (app)->
+      workspace = @workspace
       comp = null
       cloudType = app.type
       defer = new Q.defer()
@@ -249,7 +255,7 @@ define [
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
         .then ->
-          name = @workspace.opsModel.project().apps().get( app.get("id") ).get("name")
+          name = workspace.opsModel.project().apps().get( app.get("id") ).get("name")
           hasEC2Instance =!!( _.filter comp, (e)->
             e.type is constant.RESTYPE.INSTANCE).length
           hasDBInstance = !!(_.filter comp, (e)->
@@ -548,5 +554,3 @@ define [
               showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 
-
-  new AppAction()

@@ -16,7 +16,7 @@ define [
   "AppAction"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, appAction )->
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
 
   location = window.location
 
@@ -63,6 +63,7 @@ define [
     initialize : ( options )->
       _.extend this, options
 
+      @appAction = new AppAction workspace: @workspace
       opsModel = @workspace.opsModel
 
       # Toolbar
@@ -149,9 +150,9 @@ define [
       @parent.canvas.toggleSgLine( show )
       return
 
-    saveStack : ( evt )-> appAction.saveStack(evt.currentTarget, @)
+    saveStack : ( evt )-> @appAction.saveStack(evt.currentTarget, @)
 
-    deleteStack    : ()-> appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name") )
+    deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name"), @workspace )
     createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
     duplicateStack : ()->
       newOps = @workspace.opsModel.project().createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
@@ -303,10 +304,10 @@ define [
       if $(event.currentTarget).attr 'disabled'
         return false
       opsModal = @workspace.opsModel
-      appAction.showPayment(null ,opsModal).then ( result ) ->
+      @appAction.showPayment(null ,opsModal).then ( result ) ->
         paymentUpdate = result.result
         paymentModal = result.modal
-        appAction.runStack paymentUpdate, paymentModal, that.workspace
+        that.appAction.runStack paymentUpdate, paymentModal, that.workspace
 
     appToStack: () ->
         name = @workspace.design.attributes.name
@@ -407,10 +408,10 @@ define [
 
         true
 
-    startApp  : ()-> appAction.startApp( @workspace.opsModel.id ); false
-    stopApp   : ()-> appAction.stopApp( @workspace.opsModel.id );  false
-    terminateApp    : ()-> appAction.terminateApp( @workspace.opsModel.id ); false
-    forgetApp       : ()-> appAction.forgetApp( @workspace.opsModel.id ); false
+    startApp  : ()-> @appAction.startApp( @workspace.opsModel.id ); false
+    stopApp   : ()-> @appAction.stopApp( @workspace.opsModel.id );  false
+    terminateApp    : ()-> @appAction.terminateApp( @workspace.opsModel.id ); false
+    forgetApp       : ()-> @appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
     checkDBinstance : (oldDBInstanceList)->
@@ -515,7 +516,7 @@ define [
           $diffTree = differ.renderAppUpdateView()
           $('#app-update-summary-table').html $diffTree
 
-        appAction.renderKpDropdown(that.updateModal)
+        that.appAction.renderKpDropdown(that.updateModal)
         TA.loadModule('stack').then ->
           that.updateModal and that.updateModal.toggleConfirm false
           that.updateModal?.resize()

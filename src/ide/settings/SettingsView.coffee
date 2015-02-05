@@ -78,7 +78,7 @@ define [
 
                 @navigate SettingsView.TAB.Project.BasicSettings, projectId
             else # Load by url
-                if !project or tab not in _.values SettingsView.TAB.Project
+                if ( !project ) or ( tab not in _.values SettingsView.TAB.Project ) or ( !@auth project, tab )
                     notification 'error', lang.IDE.PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST
                     Router.navigate '/', trigger: true
                     return false
@@ -101,6 +101,8 @@ define [
             unless tab then return '/settings'
             return "/settings/#{projectId}/#{tab}"
 
+        auth: ( project, tab ) ->
+            project.amIAdmin() or tab not in [ SettingsView.TAB.Project.Billing, SettingsView.TAB.Project.ProviderCredential ]
 
         # Account Operation
 

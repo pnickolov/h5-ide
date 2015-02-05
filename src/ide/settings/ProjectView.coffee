@@ -36,7 +36,7 @@ define [
             @settingsView = options.settingsView
 
         render: ( tab = 'basicsettings' ) ->
-            @$el.html TplProject _.extend @model.toJSON(), { tab: tab }
+            @$el.html TplProject _.extend @model.toJSON(), { tab: tab, admin:@model.amIAdmin() }
             @$('.project-subview').html @renderSub( tab ).el
             @
 

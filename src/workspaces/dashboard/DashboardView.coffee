@@ -10,6 +10,14 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       'click #region-switch-list li'    : 'switchRegion'
       'click .resource-tab'             : 'switchResource'
 
+      "click .region-resource-list .delete-stack"    : "deleteStack"
+      'click .region-resource-list .duplicate-stack' : 'duplicateStack'
+      "click .region-resource-list .start-app"       : "startApp"
+      'click .region-resource-list .stop-app'        : 'stopApp'
+      'click .region-resource-list .terminate-app'   : 'terminateApp'
+      'click .region-resource-list>li>a'             : 'openOps'
+
+
     initialize : ()->
       @regionOpsTab = "stack"
       @resourcesTab = "INSTANCE"
@@ -25,6 +33,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       logCol.on('update', @switchLog, this)
 
       @render()
+      console.log @
       return
 
     render : ()->
@@ -197,6 +206,42 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
       @updateRegionResources()
       return
+
+    deleteStack    : (event)->
+      event.preventDefault();
+      id = $( event.currentTarget ).closest("li").attr("data-id");
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).deleteStack();
+      false
+
+    duplicateStack : (event)->
+      event.preventDefault();
+      id = $( event.currentTarget ).closest("li").attr("data-id");
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).duplicateStack();
+      false
+
+    startApp       : (event)->
+      event.preventDefault();
+      id = $( event.currentTarget ).closest("li").attr("data-id");
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).startApp();
+      false
+
+    stopApp        : (event)->
+      event.preventDefault();
+      id = $( event.currentTarget ).closest("li").attr("data-id");
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).stopApp();
+      false
+
+    terminateApp   : (event)->
+      event.preventDefault();
+      id = $( event.currentTarget ).closest("li").attr("data-id");
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
+      false
+
+    openOps: (event)->
+      event.preventDefault()
+      url = $(event.currentTarget).attr("href")
+      App.loadUrl url
+      false
 
     switchLog: (event) ->
 

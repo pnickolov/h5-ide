@@ -23,6 +23,11 @@ define [
   Backbone.View.extend
     initialize: ( options ) -> _.extend @, options
 
+    credentialId: ()->
+      if Design.instance()
+        Design.instance().credentialId()
+      else
+        @model.project().credIdOfProvider @model.get("provider")
     saveStack : ( dom, self )->
       workspace = @workspace
       $( dom ).attr("disabled", "disabled")
@@ -180,7 +185,7 @@ define [
 
     deleteStack : ( id, name ) ->
       workspace = @workspace
-      name = name || @workspace.opsModel.project().stacks().get( id ).get( "name" )
+      name = name || @workspace?.opsModel.project().stacks().get( id ).get( "name" ) || @model.get("name")
 
       modal = new modalPlus({
         title: lang.TOOLBAR.TIP_DELETE_STACK
@@ -192,7 +197,7 @@ define [
       })
       modal.on "confirm", ()->
         modal.close()
-        opsModel = workspace.opsModel.project().stacks().get( id )
+        opsModel = workspace.opsModel.project().stacks().get( id ) || @model
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->
@@ -202,17 +207,17 @@ define [
 
     duplicateStack : (id) ->
       workspace = @workspace
-      opsModel = workspace.opsModel.project().stacks().get(id)
+      opsModel = @model || workspace.opsModel.project().stacks().get(id)
       if not opsModel then return
       opsModel.fetchJsonData().then ()->
-        App.loadUrl workspace.opsModel.project().createStackByJson( opsModel.getJsonData() ).url()
+        App.loadUrl (opsModel.project() || workspace.opsModel.project()).createStackByJson( opsModel.getJsonData() ).url()
       , ()->
         notification "error", lang.NOTIFY.ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
       workspace = @workspace
-      app = workspace.opsModel.project().apps().get(id)
+      app = @model || workspace.opsModel.project().apps().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.TOOLBAR.TIP_START_APP
@@ -241,6 +246,7 @@ define [
         return
 
     checkBeforeStart: (app)->
+      self = @
       workspace = @workspace
       comp = null
       cloudType = app.type
@@ -250,7 +256,7 @@ define [
         defer.resolve({})
       else
         ApiRequest("app_info", {
-          key_id      : Design.instance().credentialId()
+          key_id      : @credentialId()
           region_name : app.get("region")
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
@@ -264,7 +270,7 @@ define [
             e.type is constant.RESTYPE.ASG).length
           dbInstance = _.filter comp, (e)->
             e.type is constant.RESTYPE.DBINSTANCE
-          snapshots = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBSNAP, app.get("region")
+          snapshots = CloudResources self.credentialId(), constant.RESTYPE.DBSNAP, app.get("region")
           awsError = null
           snapshots.fetchForce().fail (error)->
             awsError = error.awsError
@@ -282,11 +288,11 @@ define [
         defer.resolve()
         return defer.promise
       else
-        resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
+        resourceList = CloudResources @credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         resourceList.fetchForce()
 
     stopApp : ( id )->
-      app  = @workspace.opsModel.project().apps().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       that = this
       cloudType = app.type
@@ -309,7 +315,7 @@ define [
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
-        resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
+        resourceList = CloudResources that.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         if awsError and awsError isnt 403
           stopModal.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
@@ -333,7 +339,7 @@ define [
                 imageId = com.resource.ImageId
                 if imageId then toFetch[ imageId ] = true
             toFetchArray  = _.keys toFetch
-            amiRes = CloudResources Design.instance().credentialId(), constant.RESTYPE.AMI, app.get("region")
+            amiRes = CloudResources that.credentialId(), constant.RESTYPE.AMI, app.get("region")
             amiRes.fetchAmis( _.keys toFetch ).then ->
               hasInstanceStore = false
               amiRes.each (e)->
@@ -378,7 +384,7 @@ define [
 
     terminateApp : ( id )->
       self = @
-      app  = @workspace.opsModel.project().apps().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       terminateConfirm = new modalPlus(
@@ -398,7 +404,7 @@ define [
 
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
-      resourceList = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
+      resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then (result)->
         self.__terminateApp(id, resourceList, terminateConfirm)
       .fail (error)->
@@ -409,7 +415,7 @@ define [
           return false
 
     __terminateApp: (id, resourceList, terminateConfirm)->
-      app  = @workspace.opsModel.project().apps().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       cloudType = app.type

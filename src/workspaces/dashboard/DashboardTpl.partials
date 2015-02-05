@@ -110,10 +110,10 @@
         <div class="info">
             <div class="event">
                 <span class="name">{{name}}</span>
-                <span>{{action}}</span>
-                <span>{{type}}</span>
-                <span>{{target}}</span>
-                <span>{{other}}</span>
+                <span class="action">{{action}}</span>
+                <span class="type">{{type}}</span>
+                <a class="target">{{target}}</a>
+                <span class="other">{{other}}</span>
                 .
             </div>
             <div class="time">{{time}}</div>

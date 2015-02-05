@@ -40,40 +40,56 @@
                                   <div class="loading-spinner"></div>
                               </div>
                           </div>
-                          <div id="RegionViewWrap">
-                              <nav class="clearfix" id="RegionResourceNav">
-                                  <div class="resource-tab instances on" data-type="INSTANCE">
-                                      <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab rds" data-type="DBINSTANCE">
-                                      <span class="resource-count">{{i18n "DASH_LBL_RDS"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab eips" data-type="EIP">
-                                      <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab volumes" data-type="VOL">
-                                      <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab vpcs" data-type="VPC">
-                                      <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab vpns" data-type="VPN">
-                                      <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab elbs" data-type="ELB">
-                                      <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab asgs" data-type="ASG">
-                                      <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab cloudwatches" data-type="CW">
-                                      <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span><span
-                                          class="count-bubble"></span></div>
-                                  <div class="resource-tab snss" data-type="SUBSCRIPTION">
-                                      <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span><span
-                                          class="count-bubble"></span></div>
+                          <div class="dash-resource-wrap">
+                              <label class="region-resource-tab clearfix">
+                                  <span>Resource Table</span>
+                              </label>
+                              <nav class="dash-region-navigation">
+                                  <button id="region-switch-app" class="js-toggle-dropdown">
+                                      <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+                                  </button>
+                                  <ul id="region-switch-list" class="dropdown-menu">
+                                      <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+                                      {{#each providers}}{{#each regions}}
+                                          <li data-region="{{id}}">{{alias}}</li>
+                                      {{/each}}{{/each}}
+                                  </ul>
                               </nav>
-                              <div id="RegionResourceData" class="table-head-fix"></div>
+                              <div id="RegionViewWrap">
+                                  <nav class="clearfix" id="RegionResourceNav">
+                                      <div class="resource-tab instances on" data-type="INSTANCE">
+                                          <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab rds" data-type="DBINSTANCE">
+                                          <span class="resource-count">{{i18n "DASH_LBL_RDS"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab eips" data-type="EIP">
+                                          <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab volumes" data-type="VOL">
+                                          <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab vpcs" data-type="VPC">
+                                          <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab vpns" data-type="VPN">
+                                          <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab elbs" data-type="ELB">
+                                          <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab asgs" data-type="ASG">
+                                          <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab cloudwatches" data-type="CW">
+                                          <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span><span
+                                              class="count-bubble"></span></div>
+                                      <div class="resource-tab snss" data-type="SUBSCRIPTION">
+                                          <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span><span
+                                              class="count-bubble"></span></div>
+                                  </nav>
+                                  <div id="RegionResourceData" class="table-head-fix"></div>
+                              </div>
                           </div>
                       </section>
                       <!-- Region view -->

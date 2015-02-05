@@ -684,7 +684,6 @@ article.dashboard-content {
 }
 
 #RegionViewWrap {
-    margin-top : 18px;
     box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
     border     : 1px solid #bbb;
     background : #edf1f3;
@@ -959,6 +958,7 @@ article.dashboard-content {
   color: #bfc0cb;
   font-size: 16px;
   padding-right: 5px;
+  cursor: pointer;
   .dash-region-navigation.open &{
     background: #ddd;
     color: #686968;
@@ -985,7 +985,6 @@ article.dashboard-content {
       position    : relative;
       text-align  : center;
       background  : #F3F3F3;
-      cursor      : pointer;
       font-size   : 21px;
       color       : #666;
       background  : image-url("ide/global-region-app-stack-m.png") 10px top no-repeat;
@@ -1023,6 +1022,21 @@ article.dashboard-content {
         background : image-url("ide/action-guide.png") top right no-repeat;
       }
     }
+}
+
+.dash-resource-wrap{
+  position: relative;
+  margin-top: 18px;
+  .region-resource-tab{
+    span{
+      text-align: left;
+      width: auto;
+      text-indent: 55px;
+    }
+  }
+  .dash-region-navigation{
+    right: 0;
+  }
 }
 
 #region-switch-list {

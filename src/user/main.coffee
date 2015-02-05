@@ -175,7 +175,7 @@ init = ->
                     render '#expire-template'
                 else
                     projectId = atob( hashArray[ 1 ] ).split( '&' )[ 0 ]
-                    location.href = "/project/#{projectId}"
+                    location.href = "/team/#{projectId}"
             , () ->
                 render '#expire-template'
 

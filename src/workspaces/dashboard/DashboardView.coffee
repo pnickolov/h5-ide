@@ -150,6 +150,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       if @region is "global"
         @updateGlobalResources()
         return
+      $(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
 
       $("#RegionViewWrap" ).show()
       $("#GlobalView" ).hide()

@@ -83,22 +83,15 @@ define [
       Internal methods
     ###
     defaults : ()->
-      notification : [] # An array holding the notification data
       projects : new (Backbone.Collection.extend({
         comparator : ( m )-> if m.isPrivate() then "" else m.get("name")
         initialize : ()-> @on "change:name", @sort, @; return
       }))()
 
-    markNotificationRead : ()->
-      for i in @attributes.notification
-        i.readed = true
-      return
-
     initialize : ()->
       @__awsdata = {}
       @__osdata  = {}
       @__stateModuleData = {}
-      @__initializeNotification()
       return
 
     # Fetches user's stacks and apps from the server, returns a promise
@@ -121,7 +114,6 @@ define [
 
         ThumbnailUtil.cleanup( ids )
         return
-
 
     __parseProjectData : ( res )->
       for p in res || []
@@ -203,144 +195,4 @@ define [
           throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
         self.__stateModuleData[ repo + ":" + tag ] = d
         d
-
-
-    # Request Changes is observed by app model.
-    __initializeNotification : ()->
-      # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
-      self = this
-      App.WS.on "requestChange", (idx, dag)-> self.__processSingleNotification idx, dag
-
-    __triggerNotification : _.debounce ()->
-      @trigger "change:notification"
-    , 400
-
-    __processSingleNotification : ( idx )->
-
-      req = App.WS.collection.request.findOne({'_id':idx})
-      if not req then return
-
-      item = @__parseRequestInfo req
-      if not item then return
-
-      @__handleRequestChange( item )
-
-      if item.operation is "save" then return
-
-      info_list = @attributes.notification
-
-      # find existing request
-      for i, idx in info_list
-        if i.id is item.id
-          same_req = i
-          break
-
-      # Don't update the list if the request's state is not changed.
-      if same_req and _.isEqual( same_req.state, item.state )
-          return
-
-      # Mark the item as read if the current tab is the item's tab.
-      item.readed = not App.WS.isReady()
-
-      if not item.readed and App.workspaces and not item.state.failed
-        space = App.workspaces.getAwakeSpace()
-        ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
-        item.readed = space.isWorkingOn( ops )
-
-      # Prepend the item to the list.
-      info_list.splice idx, 1
-      info_list.splice 0, 0, item
-
-      # Limit the notificaiton queue
-      if info_list.length > 30
-        info_list.length = 30
-
-      # Notify the others that notification has changed.
-      @__triggerNotification()
-      null
-
-    __parseRequestInfo : (req)->
-      if not req.brief then return
-
-      dag = req.dag
-
-      request =
-        id         : req.id
-        region     : constant.REGION_SHORT_LABEL[ req.region ]
-        time       : req.time_end
-        operation  : constant.OPS_CODE_NAME[ req.code ]
-        targetId   : if dag and dag.spec then dag.spec.id else req.rid
-        targetName : req.brief.split(" ")[2] || ""
-        state      : { processing : true }
-        readed     : true
-
-      switch req.state
-        when constant.OPS_STATE.OPS_STATE_FAILED
-          request.error = req.data
-          request.state = { failed : true }
-        when constant.OPS_STATE.OPS_STATE_INPROCESS
-          request.time  = req.time_begin
-          request.step  = 0
-          if req.dag and req.dag.step
-            request.totalSteps = req.dag.step.length
-            for i in req.dag.step
-              if i[1] is "done" then ++request.step
-          else
-            request.totalSteps = 1
-
-        when constant.OPS_STATE.OPS_STATE_DONE
-          if request.operation is "save"
-            request.targetId = req.data
-
-          request.state = {
-            completed  : true
-            terminated : req.code is 'Forge.App.Terminate'
-          }
-        when constant.OPS_STATE.OPS_STATE_PENDING
-          # Only format time when the request is not pending
-          request.state = { pending : true }
-          request.time  = ""
-
-      if request.time
-        request.time = MC.dateFormat( new Date( request.time * 1000 ) , "hh:mm yyyy-MM-dd")
-
-        if req.state isnt constant.OPS_STATE.OPS_STATE_INPROCESS
-
-          time_begin = parseInt req.time_begin, 10
-          time_end   = parseInt req.time_end, 10
-          if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
-            duration = time_end - time_begin
-            if duration < 60
-              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
-            else
-              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
-
-      request
-
-    __handleRequestChange : ( request )->
-      # This method is used to update the state of an app OpsModel
-
-      if not App.WS.isReady() and not request.state.processing then return # only updates when WS has finished pushing the initial data.
-
-      if request.state.pending then return
-
-      theApp = @appList().get( request.targetId )
-      if not theApp
-        # If the app is newly created from an stack. It might not have an appId yet,
-        # But it should have a requestId.
-        theApp = @appList().findWhere({requestId:request.id})
-        if theApp and request.targetId
-          theApp.set "id", request.targetId
-
-      if not theApp then return
-      if not request.state.processing and not theApp.isProcessing() then return
-
-      if theApp.testState( OpsModel.State.Terminating ) and request.operation isnt "terminate"
-        console.error "We recevied a request notification, which operation is not `terminate`. But the app is terminating.", request
-        return
-
-      if request.state.processing
-        theApp.setStatusProgress( request.step, request.totalSteps )
-      else
-        theApp.setStatusWithWSEvent( request.operation, request.state, request.error )
   }

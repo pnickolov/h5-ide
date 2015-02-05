@@ -24,7 +24,6 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     singleton = @
 
     # Create a promise to notify others that Websocket is ready.
-    @__readyDefer = Q.defer()
     @connection   = Meteor.connect WEBSOCKET_URL, true
     @projects     = {}
 
@@ -36,9 +35,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       history : new Meteor.Collection "project_history",  opts
       user    : new Meteor.Collection "user", opts
       imports : new Meteor.Collection "imports",  opts
-      # request : new Meteor.Collection "request",  opts
-      # stack   : new Meteor.Collection "stack",    opts
-      # app     : new Meteor.Collection "app",      opts
+      request : new Meteor.Collection "request",  opts
       # status  : new Meteor.Collection "status",   opts
 
     # Trigger an event when connection state changed.
@@ -56,10 +53,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @appWideSubscripe()
     this
 
-  # Return a promise that will be resolve when the websocket is ready.
-  # Websocket will be ready after the first data is fetched.
-  Websocket.prototype.ready   = ()-> @__readyDefer.promise
-  Websocket.prototype.isReady = ()-> !@__readyDefer.isPending()
+  # isReady is only true for a project, when its request subscription is ready.
+  Websocket.prototype.isReady = ( projectId )-> @projects[projectId]?.ready
   Websocket.prototype.onUserSubError = ( e )->
     console.log e
     @trigger "Disconnected"
@@ -93,7 +88,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   Websocket.prototype.appWideSubscripe = ()->
     # Subscripe user to watch if session becomes invalid.
     @connection.subscribe "user", App.user.get("usercode"), App.user.get("session"), {
-      onReady : ()->  singleton.__readyDefer.resolve()
+      onReady : ()->
       onError : (e)-> singleton.onUserSubError(e)
     }
     @connection.subscribe "imports", App.user.get("usercode"), App.user.get("session")
@@ -105,19 +100,15 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     if @projects[ projectId ] then return
 
     self = @
-    callback =
-      onReady : ()-> self.__readyDefer.resolve()
-      onError : (e)-> self.onError(e, projectId)
-
     session  = App.user.get("session")
     usercode = App.user.get("usercode")
 
     @projects[ projectId ] = [
-      @connection.subscribe "project", usercode, session, projectId, callback
-      @connection.subscribe "history", usercode, session, projectId, callback
-      # @connection.subscribe "imports", usercode, session, projectId, callback
-      # @connection.subscribe "stack",   projectId, session, callback
-      # @connection.subscribe "app",     projectId, session, callback
+      @connection.subscribe "history", usercode, session, projectId
+      @connection.subscribe "project", usercode, session, projectId, {
+        onError : ( e )-> self.onError(e, projectId)
+      }
+      @connection.subscribe "request", usercode, session, projectId, ()-> self.projects[ projectId ]?.ready = true; return
       # @connection.subscribe "status",  projectId, session, callback
     ]
     return
@@ -156,17 +147,9 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       added   : (idx, dag) -> self.trigger "visualizeUpdate", idx
       changed : (idx, dag) -> self.trigger "visualizeUpdate", idx
     }
-
     return
 
-    # request list
-    @collection.request.find().fetch()
-    @collection.request.find().observeChanges {
-      added : (idx, dag) ->
-        self.trigger "requestChange", idx, dag
-      changed : (idx, dag) ->
-        self.trigger "requestChange", idx, dag
-    }
+
 
     # state status
     @collection.status.find().fetch()

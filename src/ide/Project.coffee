@@ -1,6 +1,5 @@
 
 define [
-  "constant"
   "ApiRequest"
   "ide/submodels/ProjectLog"
   "ide/submodels/OpsCollection"
@@ -8,8 +7,9 @@ define [
   "OpsModel"
   "Credential"
   "ApiRequestR"
+  "constant"
   "backbone"
-], ( constant, ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR )->
+], ( ApiRequest, ProjectLog, OpsCollection, MemberCollection, OpsModel, Credential, ApiRequestR, constant )->
 
   ###
   # One-time initializer to observe the websocket. Since the websocket is not
@@ -41,6 +41,33 @@ define [
 
       # changed : ()-> # Ignored
       # removed : ()-> # Ignored
+    }
+
+    handleRequest = ( req )->
+      if not req.project_id or req.state is constant.OPS_STATE.PENDING then return
+
+      if req.state is constant.OPS_STATE.DONE and req.code is constant.OPS_CODE_NAME.APP_SAVE
+        targetId = req.data
+      else
+        targetId = if req.dag and req.dag.spec then req.dag.spec.id else req.rid
+
+      ###
+      # Update the corresponding opsmodel.
+      ###
+      if not App.WS.isReady( req.project_id ) and req.state isnt constant.OPS_STATE.INPROCESS then return # only updates when WS has finished pushing the initial data.
+
+      TGT = App.model.projects().get( req.project_id )
+      if not TGT then return
+      TGT = TGT.apps().get( targetId ) or TGT.apps().findWhere({requestId:req.id})
+      if not TGT then return
+      if not TGT.id and targetId
+        TGT.set "id", targetId
+      TGT.updateWithWSEvent( req )
+      return
+
+    App.WS.collection.request.find().observe {
+      added   : handleRequest
+      changed : handleRequest
     }
     return
 
@@ -186,22 +213,6 @@ define [
 
     leave: ->
       ApiRequest( "project_remove_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
-
-
-
-    # createImportOps : ( region, provider, msrId )->
-    #   m = @attributes.appList.findWhere({importMsrId:msrId})
-    #   if m then return m
-    #   m = new OpsModel({
-    #     name        : "ImportedApp"
-    #     importMsrId : msrId
-    #     region      : region
-    #     provider    : provider
-    #     state       : OpsModel.State.Running
-    #   })
-    #   @attributes.appList.add m
-    #   m
-
 
     # OpsModel Related.
 

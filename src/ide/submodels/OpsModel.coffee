@@ -44,6 +44,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       name       : ""
       version    : OpsModelLastestVersion
       provider   : ""
+      opsActionError : ""
 
       # usage          : ""
       # terminateFail  : false
@@ -427,6 +428,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id          : @get("id")
         app_name        : @get("name")
         flag            : force
+        key_id          : @credentialId()
       }, ( extraOption || {} )
 
       ApiRequest("app_terminate", options).then ()->
@@ -544,40 +546,45 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set { state : oldState }
         throw error
 
-
-    setStatusProgress : ( steps, totalSteps )->
-      progress = parseInt( steps * 100.0 / totalSteps )
-      if @.attributes.progress != progress
-        # Disable Backbone's auto triggering change event. Because I don't wan't that changing progress will trigger `change:progress` and `change`
-        @attributes.progress = progress
-        @trigger "change:progress", @, progress
-      return
-
     isProcessing : ()->
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
 
-    setStatusWithWSEvent : ( operation, state, error )->
-      console.info "OpsModel's state changes due to WS event:", operation, state, error, @
-      # operation can be ["launch", "stop", "start", "update", "terminate"]
-      # state can have "completed", "failed", "progressing", "pending"
-      switch operation
-        when "launch"
-          if state.completed
-            toState = OpsModelState.Running
-          else if state.failed
-            toState = OpsModelState.Destroyed
-        when "stop"
-          if state.completed
-            toState = OpsModelState.Stopped
-          else if state.failed
-            toState = OpsModelState.Running
-        when "update"
-          if not @__updateAppDefer
-            console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
-            return
+    updateWithWSEvent : ( wsRequest )->
+      # 1. Processing
+      if wsRequest.state is constant.OPS_STATE.INPROCESS
+        step       = 0
+        totalSteps = 1
+        if wsRequest.dag and wsRequest.dag.step
+          totalSteps = wsRequest.dag.step.length
+          for i in wsRequest.dag.step
+            if i[1] is "done" then ++step
 
-          if not state.completed
+        progress = parseInt( step * 100.0 / totalSteps )
+        if @attributes.progress != progress
+          # Disable Backbone's auto triggering change event. Because I don't wan't that changing progress will trigger `change:progress` and `change`
+          @attributes.progress = progress
+          @trigger "change:progress", @, progress
+        return
+
+      # 2. Completed / Failed
+      console.info "OpsModel's state changes due to WS event:", @, wsRequest
+      completed = wsRequest.state is constant.OPS_STATE.DONE
+
+      switch wsRequest.code
+        when constant.OPS_CODE_NAME.LAUNCH
+          toState = if completed then OpsModelState.Running else OpsModelState.Destroyed
+        when constant.OPS_CODE_NAME.STOP
+          toState = if completed then OpsModelState.Stopped else OpsModelState.Running
+        when constant.OPS_CODE_NAME.START
+          toState = if completed then OpsModelState.Running else OpsModelState.Stopped
+        when constant.OPS_CODE_NAME.TERMINATE
+          toState = if completed then OpsModelState.Destroyed else OpsModelState.Stopped
+        when constant.OPS_CODE_NAME.UPDATE
+          if not @__updateAppDefer
+            return console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+
+          if not completed
             d = @__updateAppDefer
             @__updateAppDefer = null
             d.reject McError( ApiRequest.Errors.OperationFailure, error )
@@ -590,43 +597,27 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               self.__updateAppDefer = null
               d.resolve()
           return
-
-        when "save" # This is saving app.
+        when constant.OPS_CODE_NAME.APP_SAVE # This is saving app.
           if not @__saveAppDefer
-            console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
-            return
+            return console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
 
           d = @__saveAppDefer
           @__saveAppDefer = null
 
-          if state.completed
+          if completed
             d.resolve()
           else
             d.reject McError( ApiRequest.Errors.OperationFailure, error )
           return
 
-        when "terminate"
-          if state.completed
-            toState = OpsModelState.Destroyed
-          else
-            toState = OpsModelState.Stopped
-            @attributes.terminateFail = false
-            @set "terminateFail", true
-        when "start"
-          if state.completed
-            toState = OpsModelState.Running
-          else
-            toState = OpsModelState.Stopped
-
-      if error
-        @attributes.opsActionError = error
-
+      @attributes.opsActionError = if completed then "" else wsRequest.data
       if toState is OpsModelState.Destroyed
         @__destroy()
-
       else if toState
-        @attributes.progress = 0
-        @set "state", toState
+        @set {
+          state          : toState
+          progress       : 0
+        }
       return
 
     ###

@@ -36,7 +36,7 @@ define [
           console.log "There's an audit that is not related to any project, ignored.", newDocument
           return
 
-        project.logs().add newDocument
+        project.logs().unshift newDocument
         return
 
       # changed : ()-> # Ignored

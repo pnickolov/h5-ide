@@ -22,7 +22,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       logCol = @model.scene.project.logs()
       @activityModels = logCol.history()
       @auditModels = logCol.audit()
-      logCol.on('change', @switchLog, this)
+      logCol.on('update', @switchLog, this)
 
       @render()
       return
@@ -229,23 +229,34 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
         renderMap = (origin) ->
 
-            return 'created' if origin is 'create'
-            return 'added' if origin is 'add'
+            wordMap = {
+                'create': 'created',
+                'add': 'added',
+                'save': 'saved',
+                'remove': 'removed'
+            }
+            return wordMap[origin] if wordMap[origin]
             return origin
 
         dataAry = _.map models, (data) ->
 
-            email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase()
-            avatar = CryptoJS.MD5(email).toString()
-            action = data.get('action')?.toLowerCase()
-            return {
-                name: Base64.decode(data.get('usercode')),
-                action: renderMap(action),
-                type: data.get('type')?.toLowerCase(),
-                target: data.get('target'),
-                avatar: "https://www.gravatar.com/avatar/#{avatar}",
-                time: MC.intervalDate(new Date(data.get('time')))
-            }
+            try
+
+                email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase() if data.get('email')
+                avatar = CryptoJS.MD5(email).toString()
+                action = data.get('action')?.toLowerCase()
+                return {
+                    name: Base64.decode(data.get('usercode')),
+                    action: renderMap(action),
+                    type: data.get('type')?.toLowerCase(),
+                    target: data.get('target'),
+                    avatar: "https://www.gravatar.com/avatar/#{avatar}",
+                    time: MC.intervalDate(new Date(data.get('time')))
+                }
+
+            catch err
+
+                return null
 
         $container = @$el.find('.dashboard-sidebar').find(container)
 

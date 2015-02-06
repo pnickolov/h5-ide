@@ -3,13 +3,12 @@ define [ "./DashboardTpl",
          "./DashboardTplData",
          "constant",
          "./VisualizeDialog",
-         "ide/settings/projectSubModels/MemberCollection",
          "CloudResources",
          "AppAction",
          "UI.modalplus",
          "i18n!/nls/lang.js",
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, MemberCollection, CloudResources, AppAction, Modal, lang )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -540,61 +539,43 @@ define [ "./DashboardTpl",
         $btn.addClass('selected')
         if $btn.hasClass('dashboard-nav-activity')
             $sidebar.find('.dashboard-log-activity').removeClass('hide')
+            type = "activity"
         else
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
+            type = "audit"
 
         # render
-        memCol = new MemberCollection({projectId: @model.scene.project.id})
-        memCol.fetch().done () ->
-            emailMap = {}
-            _.each memCol.toJSON(), (member) ->
-                emailMap[member.username] = member.email
-            that.renderLog('activity', emailMap)
-            that.renderLog('audit', emailMap)
+        App.model.fetchUserData(_.uniq(@logCol.pluck("usercode"))).then ( userDataSet )->
+          that.renderLog(type, userDataSet)
 
-    renderLog: (type, emailMap) ->
-
-        activityModels = @logCol.history()
-        auditModels = @logCol.audit()
+    renderLog: (type, userDataSet) ->
 
         if type is 'activity'
-            models = activityModels
+            models = @logCol.history()
             container = '.dashboard-log-activity'
         else if type is 'audit'
-            models = auditModels
+            models = @logCol.audit()
             container = '.dashboard-log-audit'
 
-        renderMap = (origin) ->
-
-            wordMap = {
-                'create': 'created',
-                'add': 'added',
-                'save': 'saved',
-                'remove': 'removed'
-            }
-            return wordMap[origin] if wordMap[origin]
-            return origin
+        renderMap = {
+          'create' : 'created'
+          'add'    : 'added'
+          'save'   : 'saved'
+          'remove' : 'removed'
+        }
 
         dataAry = _.map models, (data) ->
-
-            try
-
-                name = Base64.decode(data.get('usercode'))
-                email = emailMap[name]
-                avatar = "https://www.gravatar.com/avatar/#{CryptoJS.MD5(email).toString()}" if email
-                action = data.get('action')?.toLowerCase()
-                return {
-                    name: name,
-                    action: renderMap(action),
-                    type: data.get('type')?.toLowerCase(),
-                    target: data.get('target'),
-                    avatar: avatar,
-                    time: MC.intervalDate(new Date(data.get('time')))
-                }
-
-            catch err
-
-                return null
+            userdata = userDataSet[data.get("usercode")]
+            action   = data.get('action').toLowerCase()
+            {
+              name   : data.get("username")
+              email  : userdata.email
+              avatar : userdata.avatar
+              action : renderMap[ action ] || action
+              type   : data.get('type').toLowerCase()
+              target : data.get('target')
+              time   : MC.intervalDate(new Date(data.get('time')))
+            }
 
         $container = @$el.find('.dashboard-sidebar').find(container)
 

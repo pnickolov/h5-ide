@@ -20,9 +20,10 @@ define [ "constant", "backbone" ], ( constant )->
       Backbone.Model.call this, {
         id       : attr.id
         usercode : attr.username
+        username : Base64.decode( attr.username || "" )
 
-        type    : cate[1]
-        action  : cate[2]
+        type    : cate[1] || ""
+        action  : cate[2] || ""
         success : attr.result is 0
         detail  : attr.detail
 

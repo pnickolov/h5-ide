@@ -519,7 +519,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
 
       # Send Request
-      ApiRequest("app_save_info", {spec:newJson}).then (res)->
+      ApiRequest("app_save_info", {spec:newJson, key_id: self.credentialId()}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
         self.attributes.importMsrId = undefined

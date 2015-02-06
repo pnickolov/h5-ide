@@ -46,6 +46,10 @@ define [ "ApiRequest",
       $cvv = modal.tpl.find(".new-project-cvv")
       valid = true
 
+      $expire.parsley 'custom', (val) ->
+        if val.indexOf('/') is -1
+          return lang.IDE.SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT
+
       modal.tpl.find("input").each (idx, dom) ->
         if not $(dom).parsley('validate')
           valid = false

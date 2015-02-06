@@ -2731,6 +2731,10 @@ into live resources, or import existing infrastructures."
       en: "Create new workspace"
       zh: "创建新工作空间"
 
+    SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT:
+      en: "Require format MM/YYYY"
+      zh: "要求格式 MM/YYYY"
+
     PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST:
       en: "Page not Found."
       zh: "页面未找到。"

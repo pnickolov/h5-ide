@@ -100,17 +100,17 @@ define ['backbone',
             columns = [
                 {
                     sortable: true
-                    name: lang.SETTINGS_MEMBER_COLUMN_MEMBER
+                    name: lang.IDE.SETTINGS_MEMBER_COLUMN_MEMBER
                 },
                 {
                     sortable: true
                     width: "20%"
-                    name: lang.SETTINGS_MEMBER_COLUMN_ROLE
+                    name: lang.IDE.SETTINGS_MEMBER_COLUMN_ROLE
                 },
                 {
                     sortable: true
                     width: "10%"
-                    name: lang.SETTINGS_MEMBER_COLUMN_STATUS
+                    name: lang.IDE.SETTINGS_MEMBER_COLUMN_STATUS
                 }
             ]
             if that.isAdmin
@@ -123,7 +123,7 @@ define ['backbone',
                     {
                         sortable: false
                         width: "100px"
-                        name: lang.SETTINGS_MEMBER_COLUMN_EDIT
+                        name: lang.IDE.SETTINGS_MEMBER_COLUMN_EDIT
                     }
                 ])
             that.$el.html TplMember.main({

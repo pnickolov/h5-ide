@@ -215,7 +215,7 @@ define [
       that = @
       ApiRequest( "project_remove_members", {
         project_id: @id
-        member_ids: [ App.user.get("usercode") ]
+        member_ids: [ App.user.id ]
       }).then ( res ) ->
         that.cleanup()
         res

@@ -5,7 +5,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
     Backbone.View.extend {
 
         showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance().project().showCredential()
 
         filter: ( keyword ) ->
             hitKeys = _.filter @getKey(), ( k ) ->

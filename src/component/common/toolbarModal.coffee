@@ -46,7 +46,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             null
 
         __showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance()?.project().showCredential()
 
         __sort: ->
             # detail tr will disturb the sort, so details must be removed when sort trigger

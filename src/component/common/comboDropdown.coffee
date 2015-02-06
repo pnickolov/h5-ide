@@ -42,7 +42,7 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
             false
 
         __showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance()?.project().showCredential()
 
         __filter: ( event ) ->
             @trigger 'filter', event.currentTarget.value

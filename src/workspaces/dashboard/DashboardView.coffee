@@ -52,6 +52,7 @@ define [ "./DashboardTpl",
       @region       = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
+        id: @model.scene.project.get("id")
       }) ).appendTo( @model.scene.spaceParentElement() )
 
       self = @

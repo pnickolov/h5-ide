@@ -503,7 +503,7 @@ define [
 
         that.updateModal.on 'confirm', ->
           if not Design.instance().credential()
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance().project().showCredential()
             return false
 
           if not that.defaultKpIsSet()

@@ -102,7 +102,7 @@ define [
       @modal.on 'confirm', ()=>
         @hideError()
         if Design.instance().project().isDemoMode()
-          App.loadUrl "/settings/#{Design.instance().project().get('id')}/credential"
+          Design.instance().project().showCredential()
           return false
         # setUsage
         appNameRepeated = @checkAppNameRepeat(appNameDom.val())

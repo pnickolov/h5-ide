@@ -1,7 +1,7 @@
 define [
     'i18n!/nls/lang.js'
     'UI.modalplus'
-    './ProjectView'
+    './ProjectSettings'
     './template/TplSettings'
 
     'backbone'

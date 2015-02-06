@@ -1,12 +1,12 @@
 define [
     'i18n!/nls/lang.js'
     './template/TplProject'
-    './projectSubViews/BasicSettingsView'
-    './projectSubViews/AccessTokenView'
-    './projectSubViews/BillingView'
-    './projectSubViews/MemberView'
-    './projectSubViews/ProviderCredentialView'
-    './projectSubViews/UsageReportView'
+    './views/BasicSettingsView'
+    './views/AccessTokenView'
+    './views/BillingView'
+    './views/MemberView'
+    './views/ProviderCredentialView'
+    './views/UsageReportView'
     'backbone'
 ], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, MemberView, ProviderCredentialView, UsageReportView ) ->
 

@@ -1,6 +1,6 @@
 
 
-define ["Scene", "../ide/settings/SettingsView"], ( Scene, SettingsView )->
+define ["Scene", "./settings/GenericSettings"], ( Scene, SettingsView )->
 
   class Settings extends Scene
 

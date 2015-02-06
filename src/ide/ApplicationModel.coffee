@@ -32,6 +32,35 @@ define [
     getOpenstackQuotas  : ( provider )-> @__osdata[ provider ].quota
 
 
+    # User Related.
+    # Returns a promise that will fulfilled when the user data is available.
+    fetchUserData : ( userCodeList )->
+      toFetch = []
+      result  = {}
+      for usercode in userCodeList
+        userdata = @__vousercache[usercode]
+        if userdata is undefined
+          toFetch.push usercode
+        else if userdata
+          result[usercode] = $.extend {}, userdata
+
+      if not toFetch.length
+        d = Q.defer()
+        d.resolve( result )
+        return d.promise
+
+      self = @
+      ApiRequest("account_list_user",{user_list:toFetch}).then (res)->
+        self.__vousercache[usercode] = false for usercode in toFetch
+        for d in res
+          data = self.__vousercache[d.username] = {
+            usercode : d.username
+            email    : Base64.decode( d.email || "" )
+          }
+          data.avatar = "https://www.gravatar.com/avatar/" + CryptoJS.MD5(data.email.trim().toLowerCase()).toString()
+          result[d.username] = $.extend {}, data
+        result
+
     # Project Related.
     getOpsModelById : ( opsModelId )->
       for p in @get("projects").models
@@ -92,6 +121,7 @@ define [
       @__awsdata = {}
       @__osdata  = {}
       @__stateModuleData = {}
+      @__vousercache = {}
       return
 
     # Fetches user's stacks and apps from the server, returns a promise

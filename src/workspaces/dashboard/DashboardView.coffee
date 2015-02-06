@@ -43,7 +43,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       self = @
       # listen logs change
       @logCol = @model.scene.project.logs()
-      @logCol.on('change', @switchLog, this)
+      @logCol.on('change add', @switchLog, this)
 
       @render()
       @listenTo @model.scene.project, "update:stack", ()->

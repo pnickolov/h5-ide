@@ -6375,8 +6375,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9695,467 +9694,457 @@ h5.billing_usage_title {
 .fullscreen .modal-body {
   background: #000; }
 
-.fullpage-settings a {
-  cursor: pointer; }
-.fullpage-settings a.active:not(.btn), .fullpage-settings a:hover:not(.btn) {
-  color: #5da4e5; }
-.fullpage-settings, .fullpage-settings > div {
+.fullpage-settings {
   display: flex;
   height: 100%;
   width: 100%; }
+  .fullpage-settings a {
+    cursor: pointer; }
+  .fullpage-settings a.active:not(.btn), .fullpage-settings a:hover:not(.btn) {
+    color: #5da4e5; }
   @media (min-width: 1280px) {
-    .fullpage-settings, .fullpage-settings > div {
+    .fullpage-settings {
       max-width: 1280px;
       height: 90vh;
       margin: 5vh auto; } }
-.fullpage-settings #settings-nav {
-  min-width: 220px;
-  width: 25%;
-  padding: 20px 2.5% 20px 2.5%;
-  background: rgba(37, 37, 76, 0.6); }
-  .fullpage-settings #settings-nav .back-settings {
-    font-size: 14px;
-    display: block;
-    width: 44px;
-    padding: 8px 12px;
-    border: 1px solid #51568e;
-    border-radius: 3px;
-    margin-bottom: 20px;
-    color: #51568e;
-    background: transparent;
-    -webkit-transition: background-color 0.2s ease-in-out;
-    -o-transition: background-color 0.2s ease-in-out;
-    transition: background-color 0.2s ease-in-out; }
-    .fullpage-settings #settings-nav .back-settings:hover {
-      background: #51568e;
-      color: #000; }
-  .fullpage-settings #settings-nav > section header, .fullpage-settings #settings-nav > section a {
-    max-width: 210px;
-    overflow: hidden;
-    text-overflow: ellipsis; }
-  .fullpage-settings #settings-nav > section header {
-    font-size: 18px;
-    color: white;
-    padding: 8px 0; }
-  .fullpage-settings #settings-nav > section a {
-    display: block;
-    padding: 5px 0 5px 10px; }
-.fullpage-settings .setting-content {
-  min-width: 600px;
-  width: 65%;
-  padding: 20px 2.5% 20px 2.5%;
-  background: #202027; }
-  .fullpage-settings .setting-content > header {
-    color: white;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    font-size: 22px;
-    border-bottom: 1px solid #4d4e8c; }
-    .fullpage-settings .setting-content > header #title-project-name {
-      display: inline-block;
-      max-width: 350px;
-      overflow: hidden;
-      text-overflow: ellipsis; }
-    .fullpage-settings .setting-content > header #title-tab-name {
-      display: inline-block;
-      overflow: hidden; }
-      .fullpage-settings .setting-content > header #title-tab-name::before {
-        content: "/";
-        padding: 0 5px; }
-  .fullpage-settings .setting-content > article {
-    color: #999999; }
-    .fullpage-settings .setting-content > article h3 {
-      color: #999;
-      font-size: 16px; }
-  .fullpage-settings .setting-content dl {
-    line-height: 36px; }
-    .fullpage-settings .setting-content dl dt, .fullpage-settings .setting-content dl dd {
-      margin-top: 0; }
-    .fullpage-settings .setting-content dl dt {
-      float: left; }
-    .fullpage-settings .setting-content dl dd {
-      padding-left: 77px;
-      min-height: 36px; }
-  .fullpage-settings .setting-content .avatar img {
-    width: 80px;
-    height: 80px; }
-  .fullpage-settings .setting-content .change-photo {
-    height: 91px; }
-    .fullpage-settings .setting-content .change-photo #change-photo {
-      margin: 49px 0 0 0;
-      color: #148BE6;
-      display: inline-block; }
-      .fullpage-settings .setting-content .change-photo #change-photo:hover {
-        text-decoration: underline; }
-  .fullpage-settings .setting-content #AccountEmail, .fullpage-settings .setting-content #AccountFullName {
-    color: #148BE6; }
-  .fullpage-settings .setting-content #AccountPwd {
-    color: #148BE6;
-    padding: 3px 0;
-    margin-left: 0; }
-  .fullpage-settings .setting-content .icon-edit {
-    color: #909091;
-    cursor: pointer; }
-    .fullpage-settings .setting-content .icon-edit:hover {
-      color: #148BE6; }
-  .fullpage-settings .setting-content .icon-delete::before {
-    margin-right: 5px; }
-  .fullpage-settings .setting-content .basic-settings > div.project-item {
-    margin: 18px 0;
-    position: relative;
-    padding-bottom: 13px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item.project-name-zone {
-      height: 42px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item h3 {
-      width: 500px;
-      position: relative;
-      vertical-align: top; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item h3 .icon-edit {
-        position: absolute;
-        top: 0;
-        right: 0;
-        line-height: 40px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item h3 span {
-        color: white;
-        padding-left: 30px;
-        overflow: hidden;
-        max-width: 300px;
-        text-overflow: ellipsis;
-        display: inline-block; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item::after {
+  .fullpage-settings #settings-nav {
+    min-width: 220px;
+    width: 25%;
+    padding: 20px 2.5% 20px 2.5%;
+    background: rgba(37, 37, 76, 0.6); }
+    .fullpage-settings #settings-nav .back-settings {
+      font-size: 14px;
       display: block;
-      border-bottom: 1px solid #979797;
-      content: '';
-      width: 500px;
-      height: 13px;
-      position: absolute;
-      bottom: 0; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item:last-child::after {
-      display: none; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item p {
-      padding: 0 8px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item .icon-delete {
-      margin-top: 10px;
-      position: absolute;
-      left: 389px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item #project-name {
-      margin-left: 30px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions {
-      display: inline;
-      margin-left: 8px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions a, .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions button {
-        padding: 5px;
-        min-width: 80px;
-        font-size: 12px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode {
-      display: none; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode .loading-spinner {
-        height: 10px;
-        width: 10px;
-        margin: 0;
-        position: static;
-        display: inline-block; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item .normal-mode {
-      display: inline; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item.edit .edit-mode {
-      display: inline; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item.edit .normal-mode {
-      display: none; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item.edit .icon-edit {
-      display: none; }
-  .fullpage-settings .setting-content .credential {
-    padding: 0 8px; }
-    .fullpage-settings .setting-content .credential .instruct {
-      padding-bottom: 15px; }
-    .fullpage-settings .setting-content .credential .setup-credential {
-      margin: 20px 0 0 180px; }
-    .fullpage-settings .setting-content .credential .demo-note {
-      padding-top: 20px; }
-    .fullpage-settings .setting-content .credential ul.credential-list > li {
-      width: 500px;
-      height: 80px;
-      border: 1px solid #7c7c83;
+      width: 44px;
+      padding: 8px 12px;
+      border: 1px solid #51568e;
       border-radius: 3px;
-      position: relative;
-      margin-bottom: 8px; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li::selection {
-        background: transparent; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li.aws-credential {
-        border-left: 6px solid #59e5c5; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo {
-        position: absolute;
-        left: 0;
-        width: 80px;
-        height: 80px;
-        background: #f9af4e; }
-        .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo::before {
-          content: "logo here";
-          color: white; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .credential-name {
-        margin-left: 88px;
+      margin-bottom: 20px;
+      color: #51568e;
+      background: transparent;
+      -webkit-transition: background-color 0.2s ease-in-out;
+      -o-transition: background-color 0.2s ease-in-out;
+      transition: background-color 0.2s ease-in-out; }
+      .fullpage-settings #settings-nav .back-settings:hover {
+        background: #51568e;
+        color: #000; }
+    .fullpage-settings #settings-nav > section {
+      margin-bottom: 10px; }
+      .fullpage-settings #settings-nav > section header, .fullpage-settings #settings-nav > section a {
+        max-width: 210px;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      .fullpage-settings #settings-nav > section header {
+        font-size: 18px;
         color: white;
-        font-size: 16px;
-        padding: 13px 0 15px 0; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .credential-describe {
-        margin-left: 88px; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down {
-        position: absolute;
-        top: 0;
-        right: 0;
-        cursor: pointer; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .button-list {
-        top: 6px;
-        right: -92px;
-        position: absolute; }
-        .fullpage-settings .setting-content .credential ul.credential-list > li .button-list i {
-          line-height: 30px;
-          padding: 0 6px 0 8px; }
-        .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li {
-          width: 92px;
-          line-height: 30px;
-          cursor: pointer; }
-  .fullpage-settings .setting-content .member-setting #mail {
-    width: 280px; }
-  .fullpage-settings .setting-content .member-setting .search {
-    display: none;
-    position: absolute;
-    width: 308px;
-    border: 1px #333 solid;
-    z-index: 2;
-    background-color: #000;
-    /* padding: 10px; */
-    margin-top: -14px; }
-    .fullpage-settings .setting-content .member-setting .search span {
-      text-align: center;
-      margin: 10px; }
-    .fullpage-settings .setting-content .member-setting .search .name, .fullpage-settings .setting-content .member-setting .search .mail {
-      margin: 5px; }
-  .fullpage-settings .setting-content .member-setting #invite {
-    margin: 15px 0 15px 0;
-    margin-left: 5px; }
-  .fullpage-settings .setting-content .member-setting #delete {
-    float: right;
-    margin-top: 15px; }
-  .fullpage-settings .setting-content .member-setting .invite {
-    float: left; }
-  .fullpage-settings .setting-content .member-setting .table th, .fullpage-settings .setting-content .member-setting .table td {
-    overflow: inherit; }
-  .fullpage-settings .setting-content .member-setting .checkbox-row {
-    width: 20px; }
-    .fullpage-settings .setting-content .member-setting .checkbox-row .checkbox {
-      margin-top: 15px; }
-  .fullpage-settings .setting-content .member-setting .memlist-item td {
-    text-align: center; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
-    height: 60px; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .cancel, .fullpage-settings .setting-content .member-setting .memlist-item .done {
-    margin-top: 8px; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .memtype {
-    margin-top: 4px; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .avatar {
-    width: 45px;
-    color: #888;
-    float: left; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .info {
-    float: left;
-    margin: 3px 0 0 8px; }
-<<<<<<< HEAD
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name, .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
-      width: 150px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left; }
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .name {
-      text-align: left; }
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .mail {
-      color: #888; }
-    .fullpage-settings section.setting-content .member-setting .memlist-item .info .you {
-=======
-    .fullpage-settings .setting-content .member-setting .memlist-item .info .name {
-      float: left;
-      text-align: left; }
-    .fullpage-settings .setting-content .member-setting .memlist-item .info .you {
->>>>>>> [feature/team-account] update settings style
-      color: #888;
-      margin-left: 5px; }
-<<<<<<< HEAD
-  .fullpage-settings section.setting-content .member-setting .memlist-item .memlist-edit-mode {
-=======
-    .fullpage-settings .setting-content .member-setting .memlist-item .info .mail {
-      width: 100%;
-      color: #888; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .memlist-edit-mode {
->>>>>>> [feature/team-account] update settings style
-    display: none; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .memlist-view-mode, .fullpage-settings .setting-content .member-setting .memlist-item .memlist-status {
-    line-height: 45px; }
-  .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-view-mode {
-    display: none; }
-  .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
-    display: block; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .memlist-pending {
-    color: #ff0; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .role {
-    text-transform: uppercase; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection {
-    text-transform: uppercase; }
-    .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection .desc {
-      display: none; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .dropdown {
-    width: 217px;
-    text-align: left; }
-  .fullpage-settings .setting-content .member-setting .memlist-item .selectbox li {
-    overflow: hidden; }
-  .fullpage-settings .setting-content .accountEditWrap {
-    display: none; }
-    .fullpage-settings .setting-content .accountEditWrap .input {
-      width: 250px;
-      padding: 5px; }
-    .fullpage-settings .setting-content .accountEditWrap .dl-horizontal {
+        padding: 14px 0; }
+      .fullpage-settings #settings-nav > section a {
+        display: block;
+        padding: 5px 0 5px 10px; }
+  .fullpage-settings .setting-content {
+    min-width: 600px;
+    width: 65%;
+    padding: 20px 2.5% 20px 2.5%;
+    background: #202027; }
+    .fullpage-settings .setting-content > header {
+      color: #898dbc;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      font-size: 22px;
+      border-bottom: 1px solid #0c0c0d; }
+      .fullpage-settings .setting-content > header #title-project-name {
+        display: inline-block;
+        max-width: 350px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 18px;
+        color: #555; }
+        .fullpage-settings .setting-content > header #title-project-name:after {
+          content: "/"; }
+      .fullpage-settings .setting-content > header #title-tab-name {
+        padding: 0 5px;
+        display: inline-block;
+        overflow: hidden; }
+    .fullpage-settings .setting-content > article {
+      color: #999999; }
+      .fullpage-settings .setting-content > article h3 {
+        color: #999;
+        font-size: 16px; }
+    .fullpage-settings .setting-content dl {
       line-height: 36px; }
-  .fullpage-settings .setting-content #AccountInfo, .fullpage-settings .setting-content #AccountEmailInfo {
-    width: 360px;
-    font-size: 12px;
-    border-radius: 3px;
-    color: #ec3c38;
-    height: 30px;
-    line-height: 30px;
-    margin: 10px 0; }
-  .fullpage-settings .setting-content .accountPwdBtns {
-    padding-left: 130px; }
-  .fullpage-settings .setting-content #AccountUpdatePwd, .fullpage-settings .setting-content #AccountUpdateEmail, .fullpage-settings .setting-content #AccountUpdateFullName {
-    padding: 5px;
-    min-width: 80px;
-    font-size: 12px; }
-  .fullpage-settings .setting-content #AccountCancelPwd, .fullpage-settings .setting-content #AccountCancelEmail, .fullpage-settings .setting-content #AccountCancelFullName {
-    font-size: 12px;
-    color: #999;
-    padding: 3px;
-    display: inline-block;
-    vertical-align: middle; }
-  .fullpage-settings .setting-content .current-usage-block {
-    display: block;
-    width: 180px;
-    padding: 10px 10px 5px 10px;
-    text-align: center;
-    background: #000;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px; }
-    .fullpage-settings .setting-content .current-usage-block h3 {
-      font-size: 36px;
-      color: #91D21E; }
-  .fullpage-settings .setting-content #UsageTab .table-head-fix {
-    background: #000;
-    height: 234px; }
-    .fullpage-settings .setting-content #UsageTab .table-head-fix .table-head {
-      background: #363636; }
-.fullpage-settings .update-payment-wrap {
-  margin-top: 20px;
-  position: relative; }
-  .fullpage-settings .update-payment-wrap h5 {
-    width: 100%; }
-    .fullpage-settings .update-payment-wrap h5 span {
-      display: inline-block; }
-      .fullpage-settings .update-payment-wrap h5 span.card-number {
-        width: 230px; }
-      .fullpage-settings .update-payment-wrap h5 span.cvv {
-        width: 75px; }
-      .fullpage-settings .update-payment-wrap h5 span.expiration {
-        width: 100px; }
-  .fullpage-settings .update-payment-wrap .input {
-    width: 200px; }
-    .fullpage-settings .update-payment-wrap .input.first-name, .fullpage-settings .update-payment-wrap .input.last-name {
-      width: 90px; }
-    .fullpage-settings .update-payment-wrap .input.cvv {
-      width: 50px; }
-    .fullpage-settings .update-payment-wrap .input.expiration {
-      width: 80px; }
-.fullpage-settings .token-table {
-  position: relative;
-  background: rgba(0, 0, 0, 0.1);
-  font-size: 12px; }
-  .fullpage-settings .token-table.empty > header {
-    display: none; }
-  .fullpage-settings .token-table .tokenName, .fullpage-settings .token-table .tokenToken, .fullpage-settings .token-table .tokenControl {
-    margin: 0 5px;
-    line-height: 20px;
-    padding: 5px;
-    height: 20px;
-    width: 90px;
-    float: left; }
-  .fullpage-settings .token-table .tokenToken {
-    width: auto;
-    font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif; }
-  .fullpage-settings .token-table .tokenControl {
-    position: absolute;
-    right: 0;
-    width: 90px;
-    padding: 0;
-    line-height: 30px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-    .fullpage-settings .token-table .tokenControl button.tooltip {
-      cursor: pointer;
-      padding: 0;
-      color: #666; }
-      .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit {
-        margin-right: 12px; }
-      .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit:hover {
+      .fullpage-settings .setting-content dl dt, .fullpage-settings .setting-content dl dd {
+        margin-top: 0; }
+      .fullpage-settings .setting-content dl dt {
+        float: left; }
+      .fullpage-settings .setting-content dl dd {
+        padding-left: 77px;
+        min-height: 36px; }
+    .fullpage-settings .setting-content .avatar img {
+      width: 80px;
+      height: 80px; }
+    .fullpage-settings .setting-content .change-photo {
+      height: 91px; }
+      .fullpage-settings .setting-content .change-photo #change-photo {
+        margin: 49px 0 0 0;
+        color: #148BE6;
+        display: inline-block; }
+        .fullpage-settings .setting-content .change-photo #change-photo:hover {
+          text-decoration: underline; }
+    .fullpage-settings .setting-content #AccountEmail, .fullpage-settings .setting-content #AccountFullName {
+      color: #148BE6; }
+    .fullpage-settings .setting-content #AccountPwd {
+      color: #148BE6;
+      padding: 3px 0;
+      margin-left: 0; }
+    .fullpage-settings .setting-content .icon-edit {
+      color: #909091;
+      cursor: pointer; }
+      .fullpage-settings .setting-content .icon-edit:hover {
         color: #148BE6; }
-      .fullpage-settings .token-table .tokenControl button.tooltip.icon-delete:hover {
-        color: #ec3c38; }
-  .fullpage-settings .token-table input.tokenName {
-    line-height: 18px; }
-  .fullpage-settings .token-table input.tokenName[readonly] {
-    border: none;
-    background: none; }
-  .fullpage-settings .token-table .tokenDone {
+    .fullpage-settings .setting-content .icon-delete::before {
+      margin-right: 5px; }
+    .fullpage-settings .setting-content .basic-settings > div.project-item {
+      margin: 18px 0;
+      position: relative;
+      padding-bottom: 13px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item.project-name-zone {
+        height: 42px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item h3 {
+        width: 500px;
+        position: relative;
+        vertical-align: top; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item h3 .icon-edit {
+          position: absolute;
+          top: 0;
+          right: 0;
+          line-height: 40px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item h3 span {
+          color: white;
+          padding-left: 30px;
+          overflow: hidden;
+          max-width: 300px;
+          text-overflow: ellipsis;
+          display: inline-block; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item::after {
+        display: block;
+        border-bottom: 1px solid #979797;
+        content: '';
+        width: 500px;
+        height: 13px;
+        position: absolute;
+        bottom: 0; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item:last-child::after {
+        display: none; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item p {
+        padding: 0 8px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item .icon-delete {
+        margin-top: 10px;
+        position: absolute;
+        left: 389px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item #project-name {
+        margin-left: 30px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions {
+        display: inline;
+        margin-left: 8px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions a, .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions button {
+          padding: 5px;
+          min-width: 80px;
+          font-size: 12px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode {
+        display: none; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode .loading-spinner {
+          height: 10px;
+          width: 10px;
+          margin: 0;
+          position: static;
+          display: inline-block; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item .normal-mode {
+        display: inline; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .edit-mode {
+        display: inline; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .normal-mode {
+        display: none; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .icon-edit {
+        display: none; }
+    .fullpage-settings .setting-content .credential {
+      padding: 0 8px; }
+      .fullpage-settings .setting-content .credential .instruct {
+        padding-bottom: 15px; }
+      .fullpage-settings .setting-content .credential .setup-credential {
+        margin: 20px 0 0 180px; }
+      .fullpage-settings .setting-content .credential .demo-note {
+        padding-top: 20px; }
+      .fullpage-settings .setting-content .credential ul.credential-list > li {
+        width: 500px;
+        height: 80px;
+        border: 1px solid #7c7c83;
+        border-radius: 3px;
+        position: relative;
+        margin-bottom: 8px; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li::selection {
+          background: transparent; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li.aws-credential {
+          border-left: 6px solid #59e5c5; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo {
+          position: absolute;
+          left: 0;
+          width: 80px;
+          height: 80px;
+          background: #f9af4e; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo::before {
+            content: "logo here";
+            color: white; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .credential-name {
+          margin-left: 88px;
+          color: white;
+          font-size: 16px;
+          padding: 13px 0 15px 0; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .credential-describe {
+          margin-left: 88px; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down {
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .button-list {
+          top: 6px;
+          right: -92px;
+          position: absolute; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .button-list i {
+            line-height: 30px;
+            padding: 0 6px 0 8px; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li {
+            width: 92px;
+            line-height: 30px;
+            cursor: pointer; }
+    .fullpage-settings .setting-content .member-setting #mail {
+      width: 280px; }
+    .fullpage-settings .setting-content .member-setting .search {
+      display: none;
+      position: absolute;
+      width: 308px;
+      border: 1px #333 solid;
+      z-index: 2;
+      background-color: #000;
+      /* padding: 10px; */
+      margin-top: -14px; }
+      .fullpage-settings .setting-content .member-setting .search span {
+        text-align: center;
+        margin: 10px; }
+      .fullpage-settings .setting-content .member-setting .search .name, .fullpage-settings .setting-content .member-setting .search .mail {
+        margin: 5px; }
+    .fullpage-settings .setting-content .member-setting #invite {
+      margin: 15px 0 15px 0;
+      margin-left: 5px; }
+    .fullpage-settings .setting-content .member-setting #delete {
+      float: right;
+      margin-top: 15px; }
+    .fullpage-settings .setting-content .member-setting .invite {
+      float: left; }
+    .fullpage-settings .setting-content .member-setting .table th, .fullpage-settings .setting-content .member-setting .table td {
+      overflow: inherit; }
+    .fullpage-settings .setting-content .member-setting .checkbox-row {
+      width: 20px; }
+      .fullpage-settings .setting-content .member-setting .checkbox-row .checkbox {
+        margin-top: 15px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item td {
+      text-align: center; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
+      height: 60px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .cancel, .fullpage-settings .setting-content .member-setting .memlist-item .done {
+      margin-top: 8px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .memtype {
+      margin-top: 4px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .avatar {
+      width: 45px;
+      color: #888;
+      float: left; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .info {
+      float: left;
+      margin: 3px 0 0 8px; }
+      .fullpage-settings .setting-content .member-setting .memlist-item .info .name, .fullpage-settings .setting-content .member-setting .memlist-item .info .mail {
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left; }
+      .fullpage-settings .setting-content .member-setting .memlist-item .info .name {
+        text-align: left; }
+      .fullpage-settings .setting-content .member-setting .memlist-item .info .mail {
+        color: #888; }
+      .fullpage-settings .setting-content .member-setting .memlist-item .info .you {
+        color: #888;
+        margin-left: 5px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .memlist-edit-mode {
+      display: none; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .memlist-view-mode, .fullpage-settings .setting-content .member-setting .memlist-item .memlist-status {
+      line-height: 45px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-view-mode {
+      display: none; }
+    .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
+      display: block; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .memlist-pending {
+      color: #ff0; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .role {
+      text-transform: uppercase; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection {
+      text-transform: uppercase; }
+      .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection .desc {
+        display: none; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .dropdown {
+      width: 217px;
+      text-align: left; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .selectbox li {
+      overflow: hidden; }
+    .fullpage-settings .setting-content .accountEditWrap {
+      display: none; }
+      .fullpage-settings .setting-content .accountEditWrap .input {
+        width: 250px;
+        padding: 5px; }
+      .fullpage-settings .setting-content .accountEditWrap .dl-horizontal {
+        line-height: 36px; }
+    .fullpage-settings .setting-content #AccountInfo, .fullpage-settings .setting-content #AccountEmailInfo {
+      width: 360px;
+      font-size: 12px;
+      border-radius: 3px;
+      color: #ec3c38;
+      height: 30px;
+      line-height: 30px;
+      margin: 10px 0; }
+    .fullpage-settings .setting-content .accountPwdBtns {
+      padding-left: 130px; }
+    .fullpage-settings .setting-content #AccountUpdatePwd, .fullpage-settings .setting-content #AccountUpdateEmail, .fullpage-settings .setting-content #AccountUpdateFullName {
+      padding: 5px;
+      min-width: 80px;
+      font-size: 12px; }
+    .fullpage-settings .setting-content #AccountCancelPwd, .fullpage-settings .setting-content #AccountCancelEmail, .fullpage-settings .setting-content #AccountCancelFullName {
+      font-size: 12px;
+      color: #999;
+      padding: 3px;
+      display: inline-block;
+      vertical-align: middle; }
+    .fullpage-settings .setting-content .current-usage-block {
+      display: block;
+      width: 180px;
+      padding: 10px 10px 5px 10px;
+      text-align: center;
+      background: #000;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px; }
+      .fullpage-settings .setting-content .current-usage-block h3 {
+        font-size: 36px;
+        color: #91D21E; }
+    .fullpage-settings .setting-content #UsageTab .table-head-fix {
+      background: #000;
+      height: 234px; }
+      .fullpage-settings .setting-content #UsageTab .table-head-fix .table-head {
+        background: #363636; }
+  .fullpage-settings .update-payment-wrap {
+    margin-top: 20px;
+    position: relative; }
+    .fullpage-settings .update-payment-wrap h5 {
+      width: 100%; }
+      .fullpage-settings .update-payment-wrap h5 span {
+        display: inline-block; }
+        .fullpage-settings .update-payment-wrap h5 span.card-number {
+          width: 230px; }
+        .fullpage-settings .update-payment-wrap h5 span.cvv {
+          width: 75px; }
+        .fullpage-settings .update-payment-wrap h5 span.expiration {
+          width: 100px; }
+    .fullpage-settings .update-payment-wrap .input {
+      width: 200px; }
+      .fullpage-settings .update-payment-wrap .input.first-name, .fullpage-settings .update-payment-wrap .input.last-name {
+        width: 90px; }
+      .fullpage-settings .update-payment-wrap .input.cvv {
+        width: 50px; }
+      .fullpage-settings .update-payment-wrap .input.expiration {
+        width: 80px; }
+  .fullpage-settings .token-table {
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 12px; }
+    .fullpage-settings .token-table.empty > header {
+      display: none; }
+    .fullpage-settings .token-table .tokenName, .fullpage-settings .token-table .tokenToken, .fullpage-settings .token-table .tokenControl {
+      margin: 0 5px;
+      line-height: 20px;
+      padding: 5px;
+      height: 20px;
+      width: 90px;
+      float: left; }
+    .fullpage-settings .token-table .tokenToken {
+      width: auto;
+      font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif; }
+    .fullpage-settings .token-table .tokenControl {
+      position: absolute;
+      right: 0;
+      width: 90px;
+      padding: 0;
+      line-height: 30px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+      .fullpage-settings .token-table .tokenControl button.tooltip {
+        cursor: pointer;
+        padding: 0;
+        color: #666; }
+        .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit {
+          margin-right: 12px; }
+        .fullpage-settings .token-table .tokenControl button.tooltip.icon-edit:hover {
+          color: #148BE6; }
+        .fullpage-settings .token-table .tokenControl button.tooltip.icon-delete:hover {
+          color: #ec3c38; }
+    .fullpage-settings .token-table input.tokenName {
+      line-height: 18px; }
+    .fullpage-settings .token-table input.tokenName[readonly] {
+      border: none;
+      background: none; }
+    .fullpage-settings .token-table .tokenDone {
+      display: none; }
+    .fullpage-settings .token-table .tokenDone {
+      min-width: 80px;
+      padding: 4px 0;
+      line-height: 20px; }
+    .fullpage-settings .token-table > .scroll-wrap {
+      height: 250px; }
+  .fullpage-settings #TokenList:empty {
+    height: 100%; }
+    .fullpage-settings #TokenList:empty:before {
+      content: attr(data-empty);
+      width: 100%;
+      text-align: center;
+      height: 20px;
+      line-height: 20px;
+      top: 50%;
+      left: 0;
+      position: absolute; }
+  .fullpage-settings #TokenList > li {
+    clear: both;
+    height: 30px; }
+    .fullpage-settings #TokenList > li:hover {
+      background: #25262C; }
+  .fullpage-settings #TokenList > li:hover .tokenControl, .fullpage-settings #TokenList > li.editing .tokenControl {
+    display: block; }
+  .fullpage-settings #TokenList > li.editing .tooltip {
     display: none; }
-  .fullpage-settings .token-table .tokenDone {
-    min-width: 80px;
-    padding: 4px 0;
-    line-height: 20px; }
-  .fullpage-settings .token-table > .scroll-wrap {
-    height: 250px; }
-.fullpage-settings #TokenList:empty {
-  height: 100%; }
-  .fullpage-settings #TokenList:empty:before {
-    content: attr(data-empty);
-    width: 100%;
-    text-align: center;
-    height: 20px;
-    line-height: 20px;
-    top: 50%;
-    left: 0;
-    position: absolute; }
-.fullpage-settings #TokenList > li {
-  clear: both;
-  height: 30px; }
-  .fullpage-settings #TokenList > li:hover {
-    background: #25262C; }
-.fullpage-settings #TokenList > li:hover .tokenControl, .fullpage-settings #TokenList > li.editing .tokenControl {
-  display: block; }
-.fullpage-settings #TokenList > li.editing .tooltip {
-  display: none; }
-.fullpage-settings #TokenList > li.editing .tokenDone {
-  display: block; }
-.fullpage-settings #TokenList .tokenToken {
-  color: #eee; }
-.fullpage-settings #TokenList .tokenName.input {
-  font-size: 12px; }
-.fullpage-settings #TokenRmConfirm h3 {
-  font-size: 18px;
-  padding: 10px 0;
-  color: #eee;
-  margin-bottom: 10px; }
-.fullpage-settings #TokenRmConfirm p {
-  color: #ccc; }
-.fullpage-settings .cred-btn-wrap {
-  margin-top: 20px; }
+  .fullpage-settings #TokenList > li.editing .tokenDone {
+    display: block; }
+  .fullpage-settings #TokenList .tokenToken {
+    color: #eee; }
+  .fullpage-settings #TokenList .tokenName.input {
+    font-size: 12px; }
+  .fullpage-settings #TokenRmConfirm h3 {
+    font-size: 18px;
+    padding: 10px 0;
+    color: #eee;
+    margin-bottom: 10px; }
+  .fullpage-settings #TokenRmConfirm p {
+    color: #ccc; }
+  .fullpage-settings .cred-btn-wrap {
+    margin-top: 20px; }
 
 #CredSetupWrap .icon-label {
   float: right;

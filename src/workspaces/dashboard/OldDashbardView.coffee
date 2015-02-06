@@ -413,7 +413,7 @@ define [
 
       $("#RegionResourceData").html( tpl )
 
-    formateDetail : ( type, data )->
+    formatDetail : ( type, data )->
       switch type
         when "SUBSCRIPTION"
           return {
@@ -452,9 +452,9 @@ define [
           DASH_LBL_AVAILABILITY_ZONE      : data.AvailabilityZones.join(", ")
           DASH_LBL_CREATE_TIME            : data.CreatedTime
           DASH_LBL_DNS_NAME               : data.DNSName
-          DASH_LBL_HEALTH_CHECK           : @formartDetail('HealthCheck', [data.HealthCheck], "Health Check", true)
+          DASH_LBL_HEALTH_CHECK           : @formatData('HealthCheck', [data.HealthCheck], "Health Check", true)
           DASH_LBL_INSTANCE               : data.Instances.join(", ")
-          DASH_LBL_LISTENER_DESC          : @formartDetail('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
+          DASH_LBL_LISTENER_DESC          : @formatData('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
           DASH_LBL_SECURITY_GROUPS        : data.SecurityGroups.join(", ")
           DASH_LBL_SUBNETS                : data.Subnets.join(", ")
           }
@@ -490,8 +490,8 @@ define [
           DASH_LBL_AMI_LAUNCH_INDEX   : data.amiLaunchIndex
           DASH_LBL_INSTANCE_TYPE      : data.instanceType
           DASH_LBL_BLOCK_DEVICE_TYPE  : data.rootDeviceType
-          DASH_LBL_BLOCK_DEVICES      : if data.blockDeviceMapping then @formartDetail "BlockDevice", data.blockDeviceMapping, "deviceName" else null
-          DASH_LBL_NETWORK_INTERFACE  : if data.networkInterfaceSet then @formartDetail "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
+          DASH_LBL_BLOCK_DEVICES      : if data.blockDeviceMapping then @formatData "BlockDevice", data.blockDeviceMapping, "deviceName" else null
+          DASH_LBL_NETWORK_INTERFACE  : if data.networkInterfaceSet then @formatData "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
           }
         when 'EIP'
           result = {
@@ -514,7 +514,7 @@ define [
           return {
           DASH_LBL_ALARM_NAME        : data.Name
           DASH_LBL_COMPARISON_OPERATOR: data.ComparisonOperator
-          DASH_LBL_DIMENSIONS        : @formartDetail 'Dimensions', data.Dimensions, 'Dimensions', true
+          DASH_LBL_DIMENSIONS        : @formatData 'Dimensions', data.Dimensions, 'Dimensions', true
           DASH_LBL_EVALUATION_PERIODS: data.EvaluationPeriods
           DASH_LBL_INSUFFICIENT_DATA_ACTIONS: data.InsufficientDataActions
           DASH_LBL_METRIC_NAME      : data.MetricName
@@ -553,7 +553,7 @@ define [
           }
           return json
   # some format to the data so it can show in handlebars template
-    formartDetail: (type, array, key, force)->
+    formatData: (type, array, key, force)->
       #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
       if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions','ENI'].indexOf type) > -1
         _.map array, (blockDevice, index)->

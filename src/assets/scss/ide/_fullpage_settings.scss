@@ -1,28 +1,27 @@
-.fullscreen .modal-body {
-    background: #000;
-}
-
 .fullpage-settings {
     a { cursor: pointer; }
     a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
 
-    display : flex;
-    height  : 100%;
-    width   : 100%;
+    display  : flex;
+    height   : 100%;
+    width    : 100%;
 
     @media ( min-width: 1280px ) {
-        max-width : 1280px;
-        height    : 90vh;
-        margin    : 5vh auto;
+        max-width     : 1280px;
+        height        : 90vh;
+        margin        : 5vh auto;
+        border        : 1px solid $light-p-2;
+        border-radius : 4px;
+        box-sizing    : border-box;
     }
 
     #settings-nav {
         min-width  : 220px;
         width      : 25%;
         padding    : 20px 2.5% 20px 2.5%;
-        background : transparentize($dark-p,.4);
+        background : transparentize($dark-p,.2);
 
-        .back-settings { 
+        .back-settings {
             font-size     : 14px;
             display       : block;
             width         : 44px;
@@ -38,11 +37,11 @@
             &:hover {
                 background : $light-p-2;
                 color      : #000;
-            } 
+            }
         }
 
         & > section {
-            
+
             margin-bottom: 10px;
 
             header, a {
@@ -68,7 +67,7 @@
         min-width : 600px;
         width     : 65%;
         padding   : 20px 2.5% 20px 2.5%;
-        background: $bg-p;
+        background: $dark-p-1;
 
         > header {
             color          : $dark-grey;
@@ -88,12 +87,12 @@
                 &:after {
                     content: "/";
                 }
-                    
+
             }
 
             #title-tab-name {
                 padding: 0 5px;
-                display: inline-block; 
+                display: inline-block;
                 overflow: hidden;
             }
         }
@@ -187,7 +186,7 @@
                     padding: 0 8px;
                 }
 
-                .icon-delete {
+                .leave-project-zone button {
                     margin-top: 10px;
                     position: absolute;
                     left: 389px;

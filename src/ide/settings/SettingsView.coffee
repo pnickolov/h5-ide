@@ -33,16 +33,16 @@ define [
 
         initialize: ( attr, options ) ->
             if attr
-                @tab = attr.tab?.toLowerCase() or SettingsView.TAB.Account
+                tab = attr.tab?.toLowerCase()
                 @projectId = attr.projectId
 
             @scene = options.scene
 
             @projects = App.model.projects()
-            @render(@tab)
+            @render(tab)
 
 
-        render: ( tab = @tab ) ->
+        render: ( tab = SettingsView.TAB.Account ) ->
             that = @
             if tab is SettingsView.TAB.Account
                 renderResult = @renderSettings()
@@ -94,7 +94,6 @@ define [
 
         navigate: ( tab, projectId ) ->
             url = @url tab, projectId
-            console.log url
             Router.navigate url
 
         url: ( tab, projectId ) ->

@@ -6,68 +6,19 @@ define [
     'backbone'
 ], ( lang, TplBasicSettings, Modal ) ->
 
-    confirmModalView = Backbone.View.extend
-        events:
-            'keyup #confirm-project-name' : 'confirmProjectName'
-            'paste #confirm-project-name' : 'deferConfirmProjectName'
-
-        initialize: ( options ) ->
-            if options and options.projectName then @projectName = options.projectName
-
-        render: ->
-            if @projectName
-                title = lang.IDE.DELETE_WORKSPACE
-                confirmText = lang.IDE.CONFIRM_TO_DELETE
-                tpl = TplBasicSettings.confirmToDelete
-                confirmDisabled = true
-            else
-                title = lang.IDE.LEAVE_PROJECT
-                confirmText = lang.IDE.CONFIRM_TO_LEAVE
-                tpl = TplBasicSettings.confirmToLeave
-                confirmDisabled = false
-
-            @$el.html tpl
-
-            if @modal then return @
-
-            @modal = new Modal
-                title: title
-                template: @el
-                confirm:
-                    text: confirmText
-                    disabled: confirmDisabled
-                    color: 'red'
-
-            @modal.on 'confirm', ->
-                @trigger 'confirm'
-            , @
-
-            @
-
-        renderLoading: ->
-            @$el.html TplBasicSettings.loading
-            @modal.toggleFooter()
-
-        deferConfirmProjectName: ( e ) -> _.defer _.bind @confirmProjectName, @, e
-
-        confirmProjectName: ( e ) ->
-            if e.currentTarget.value is @projectName
-                 @modal.toggleConfirm false
-            else
-                @modal.toggleConfirm true
-
-        remove: () ->
-            @modal?.close()
-            Backbone.View.prototype.remove.apply @, arguments
-
     Backbone.View.extend
         events:
             'click .edit-button'        : 'edit'
             'click .cancel-button'      : 'cancelEdit'
             'click #update-name'        : 'updateName'
-            'click #delete-project'     : 'confirmDelete'
-            'click #leave-project'      : 'confirmLeave'
+            'click #delete-project'     : 'confirmLeaveDelete'
+            'click #leave-project'      : 'confirmLeaveDelete'
             'keyup #project-name'       : 'checkName'
+
+            'keyup #confirm-project-name' : 'confirmProjectName'
+            'paste #confirm-project-name' : 'deferConfirmProjectName'
+            'click #do-delete-project'    : 'doDelete'
+            'click #do-leave-project'     : 'doLeave'
 
         className: 'basic-settings'
 
@@ -75,7 +26,7 @@ define [
             _.extend @, options
             @listenTo @model, 'change:name', @changeNameOnView
 
-        render: () ->
+        getRenderData: ->
             data = @model.toJSON()
             data.isAdmin = @model.amIAdmin()
             data.isMember = @model.amIMeber()
@@ -86,8 +37,36 @@ define [
             else
                 data.displayDelete = false
 
+            data
+
+        render: () ->
+            data = @getRenderData()
             @$el.html TplBasicSettings.basicSettings data
+            @renderLeaveZone data
             @
+
+        renderLeaveZone: ( data = @getRenderData(), confirm = false ) ->
+            if confirm
+                if data.isAdmin
+                    tpl = TplBasicSettings.confirmToDelete
+                else
+                    tpl = TplBasicSettings.confirmToLeave
+            else
+                tpl = TplBasicSettings.leaveOrDelete
+
+            @$( '.leave-project-zone' ).html tpl data
+            @
+
+        renderLoading: ->
+            @$el.html TplBasicSettings.loading
+
+        deferConfirmProjectName: ( e ) -> _.defer _.bind @confirmProjectName, @, e
+
+        confirmProjectName: ( e ) ->
+            if e.currentTarget.value is @model.get( 'name' )
+                 @$( '#do-delete-project' ).prop 'disabled', false
+            else
+                 @$( '#do-delete-project' ).prop 'disabled', true
 
         edit: ( e ) -> $( e.currentTarget ).closest( '.project-item' ).addClass 'edit'
         cancelEdit: ( e ) -> $( e.currentTarget ).closest( '.project-item' ).removeClass 'edit'
@@ -121,46 +100,28 @@ define [
             $editZone.toggle stop
             $loadingZone.toggle !stop
 
-
-        confirmDelete: ->
+        doDelete: ->
             that = @
-            @confirmModal?.remove()
-            @confirmModal = new confirmModalView( projectName: @model.get( 'name' ) ).render()
-            @confirmModal.on 'confirm', ->
-                @confirmModal.renderLoading()
-                @model.destroy().then ->
-                    that.remove()
-                    that.settingsView.backToSettings()
-                , ->
-                    that.confirmModal.remove()
-                    notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
-            , @
+            @renderLoading()
 
-            @
-
-        confirmLeave: ->
+            @model.destroy().then ->
+                that.remove()
+                that.settingsView.backToSettings()
+            , ->
+                that.render()
+                notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
+        doLeave: ->
             that = @
-            @confirmModal?.remove()
-            @confirmModal = new confirmModalView().render()
-            @confirmModal.on 'confirm', =>
-                @confirmModal.renderLoading()
-                @model.leave().then ->
-                    that.remove()
-                    that.settingsView.backToSettings()
-                , ->
-                    that.confirmModal.remove()
-                    notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
-            , @
+            @renderLoading()
 
-            @
+            @model.leave().then ->
+                that.remove()
+                that.settingsView.backToSettings()
+            , ->
+                that.render()
+                notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
 
-        remove: () ->
-            @confirmModal?.remove()
-            Backbone.View.prototype.remove.apply @, arguments
-
-
-
-
+        confirmLeaveDelete: -> @renderLeaveZone null, true
 
 
 

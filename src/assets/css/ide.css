@@ -537,19 +537,7 @@ a {
 .property-control-group .input {
   width: 230px; }
 .property-control-group textarea {
-  width: 242px;
-  padding: 7px;
-  border: 1px solid #000000;
-  background-color: #1c1c1c;
-  color: #D0D0D0;
-  height: 60px;
-  overflow: auto; }
-  .property-control-group textarea:focus {
-    background-color: #000;
-    color: #eee;
-    border: 1px solid #161616; }
-  .property-control-group textarea:hover {
-    background: #101010; }
+  width: 242px; }
 .property-control-group #property-res-desc {
   width: 242px;
   height: 20px; }
@@ -3077,47 +3065,13 @@ div.modal-text-highlight {
   margin-left: -10px;
   margin-top: 6px; }
 
-#modal-wrap .estimate-stop {
-  display: block;
-  position: relative;
-  background: #0f0f0f;
-  padding: 10px 20px; }
-
-#modal-wrap .estimate-stop div {
-  margin: 10px 0;
-  position: relative; }
-
-#modal-wrap .estimate-stop .title {
-  font-size: 16px; }
-
-#modal-wrap .estimate-stop .price {
-  float: right; }
-
 #label-total-fee b {
   font-weight: normal;
   font-size: 20px;
   color: #f8b42d; }
 
-#label-total-saving b {
-  font-weight: normal;
-  color: #8ed72b;
-  font-size: 18px; }
-
 .db-stop-status {
   color: #f8b42d; }
-
-.modal-shrink {
-  display: block;
-  background: #020202;
-  margin: 0 -15px;
-  padding: 20px; }
-
-.modal-shrink .sub-gray {
-  margin-bottom: 10px;
-  font-size: 16px; }
-
-.modal-shrink .error {
-  color: #F74A48; }
 
 .check-final-snapshot {
   padding: 10px 0;
@@ -9691,9 +9645,6 @@ h5.billing_usage_title {
   margin-left: 2px;
   font-size: 12px; }
 
-.fullscreen .modal-body {
-  background: #000; }
-
 .fullpage-settings {
   display: flex;
   height: 100%;
@@ -9706,12 +9657,15 @@ h5.billing_usage_title {
     .fullpage-settings {
       max-width: 1280px;
       height: 90vh;
-      margin: 5vh auto; } }
+      margin: 5vh auto;
+      border: 1px solid #51568e;
+      border-radius: 4px;
+      box-sizing: border-box; } }
   .fullpage-settings #settings-nav {
     min-width: 220px;
     width: 25%;
     padding: 20px 2.5% 20px 2.5%;
-    background: rgba(37, 37, 76, 0.6); }
+    background: rgba(37, 37, 76, 0.8); }
     .fullpage-settings #settings-nav .back-settings {
       font-size: 14px;
       display: block;
@@ -9745,7 +9699,7 @@ h5.billing_usage_title {
     min-width: 600px;
     width: 65%;
     padding: 20px 2.5% 20px 2.5%;
-    background: #202027; }
+    background: #2c2f4d; }
     .fullpage-settings .setting-content > header {
       color: #898dbc;
       padding-bottom: 15px;
@@ -9837,7 +9791,7 @@ h5.billing_usage_title {
         display: none; }
       .fullpage-settings .setting-content .basic-settings > div.project-item p {
         padding: 0 8px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .icon-delete {
+      .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone button {
         margin-top: 10px;
         position: absolute;
         left: 389px; }

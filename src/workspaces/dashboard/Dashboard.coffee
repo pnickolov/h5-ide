@@ -45,7 +45,6 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
 
     isAwsResReady : ( region, type )->
       @credentialId = @scene.project.credentials().toJSON()[0].id
-      console.log @scene.project
       if not region
         globalReady = true
         datasource = [
@@ -109,7 +108,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
     getAwsResDataById : ( region, type, id )->
       CloudResources(@credentialId, type, region ).get(id)
 
-
+    getResourceData : ( region, type, id )-> CloudResources( @credentialId, type, region ).get( id )
     getResourcesCount : ( region )->
       filter = { category : region }
       data = {

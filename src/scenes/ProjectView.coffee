@@ -12,6 +12,148 @@ define [ "ApiRequest",
     "MC.validate"
 ], ( ApiRequest, ProjectTpl, Modal, lang, constant )->
 
+  ProjectCreation = Backbone.View.extend {
+
+    events:
+      "click .new-project-cancel" : "cancel"
+      "click .new-project-create" : "create"
+
+    initialize : ()->
+      @modal = new Modal {
+        template      : ProjectTpl.newProject()
+        title         : lang.IDE.SETTINGS_CREATE_PROJECT_TITLE
+        disableClose  : true
+        disableFooter : true
+        width         : "500px"
+      }
+      @setElement @modal.tpl
+      return
+
+    cancel : ()-> @modal.close()
+    create : ()->
+      # credit: song
+      modal = @modal
+      modal.tpl.find(".new-project-err").hide()
+
+      $create = modal.tpl.find(".new-project-create")
+
+      $name = modal.tpl.find(".new-project-name")
+      $firstname = modal.tpl.find(".new-project-fn")
+      $lastname = modal.tpl.find(".new-project-ln")
+      $email = modal.tpl.find(".new-project-email")
+      $number = modal.tpl.find(".new-project-card")
+      $expire = modal.tpl.find(".new-project-date")
+      $cvv = modal.tpl.find(".new-project-cvv")
+      valid = true
+
+      modal.tpl.find("input").each (idx, dom) ->
+        if not $(dom).parsley('validate')
+          valid = false
+          return false
+      if valid
+        $create.prop 'disabled', true
+        App.model.createProject({
+          name      : $name.val()
+          firstname : $firstname.val()
+          lastname  : $lastname.val()
+          email     : $email.val()
+          card      : {
+            number : $number.val()
+            expire : $expire.val()
+            cvv    : $cvv.val()
+          }
+        }).then ( project )->
+          modal.close()
+          App.loadUrl( project.url() )
+        .fail ( error )->
+          try
+            msgObj = JSON.parse(error.result)
+            if _.isArray(msgObj.errors)
+              modal.tpl.find(".new-project-err").show().html msgObj.errors.join('<br/>')
+          catch err
+            notification 'error', error.result
+          # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
+          return
+        .done () ->
+          $create.prop 'disabled', false
+  }
+
+  HeaderPopup = Backbone.View.extend {
+    constructor : ( attr )->
+      @[key] = value for key, value of attr
+
+      @setElement $( "<div class='hp-popup-overlay'></div>" ).appendTo( "body" ).on("click", (evt)=> @closeOnClick(evt))
+      @render()
+
+      Backbone.View.call this
+      return
+    closeOnEvent : ()-> true
+    closeOnClick : ( evt )->
+      if evt.target is @el or ( @closeOnEvent and @closeOnEvent( evt ) )
+        @close()
+    close : ()->
+      @remove()
+      if @onClose then @onClose( @ )
+      return
+  }
+
+  UserPopup = HeaderPopup.extend {
+    events : { "click .logout" : "logout" }
+    render : ()-> @$el.html ProjectTpl.usermenu()
+    logout : ()-> App.logout()
+  }
+
+  AssetListPopup = HeaderPopup.extend {
+    events :
+      "click .off-canvas-tab" : "switchTab"
+
+    initialize : ()->
+      @listenTo @project, "change:stack", @render
+      @listenTo @project, "change:app",   @render
+      @listenTo @project, "update:stack", @render
+      @listenTo @project, "update:app",   @render
+      return
+
+    closeOnEvent : ( evt )-> $(evt.target).hasClass("route")
+
+    switchTab : ( evt )->
+      $tgt = $(evt.currentTarget)
+      $tgt.parent().children().removeClass("selected")
+      $tgt.addClass("selected")
+      id = $tgt.attr("data-id")
+      @$el.find(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{id}']" ).show()
+      @showApp = id is "app"
+      return
+
+    render : ()->
+      @$el.html ProjectTpl.assetList({
+        apps    : @project.apps().groupByRegion()
+        stacks  : @project.stacks().groupByRegion()
+        showApp : @showApp
+      })
+  }
+
+  ProjectListPopup = HeaderPopup.extend {
+
+    events:
+      "click .create-new-project" : "createProject"
+
+    render : ()->
+      projects = []
+      for p in App.model.projects().models
+        projects.push {
+          id   : p.id
+          url  : p.url()
+          name : p.get("name")
+          selected : p is @project
+          private : p.isPrivate()
+        }
+      @$el.html ProjectTpl.projectList( projects )
+
+    createProject : ()-> new ProjectCreation()
+  }
+
+
   Backbone.View.extend {
 
     # Don't use backbone.view's event here. Because we should bind the event handler
@@ -69,103 +211,10 @@ define [ "ApiRequest",
       $("body")[0].addEventListener("click", oneTimeClicked, true)
       return $overlay
 
-    popupProject : ()->
-      projects = []
-      for p in App.model.projects().models
-        projects.push {
-          id   : p.id
-          url  : p.url()
-          name : p.get("name")
-          selected : p is @scene.project
-          private : p.isPrivate()
-        }
-
-      $popup = @showPopup( ProjectTpl.projectList( projects ) )
-      $popup.on "mouseup", ".create-new-project", ()->
-        modal = new Modal {
-          template      : ProjectTpl.newProject()
-          title         : lang.IDE.SETTINGS_CREATE_PROJECT_TITLE
-          disableClose  : true
-          disableFooter : true
-          width         : "500px"
-        }
-        modal.tpl.on "click", ".new-project-cancel", ()->
-          modal.close()
-
-        modal.tpl.on "click", ".new-project-create", ()->
-
-          modal.tpl.find(".new-project-err").hide()
-
-          $create = modal.tpl.find(".new-project-create")
-
-          $name = modal.tpl.find(".new-project-name")
-          $firstname = modal.tpl.find(".new-project-fn")
-          $lastname = modal.tpl.find(".new-project-ln")
-          $email = modal.tpl.find(".new-project-email")
-          $number = modal.tpl.find(".new-project-card")
-          $expire = modal.tpl.find(".new-project-date")
-          $cvv = modal.tpl.find(".new-project-cvv")
-          valid = true
-
-          modal.tpl.find("input").each (idx, dom) ->
-            if not $(dom).parsley('validate')
-                valid = false
-                return false
-          if valid
-              $create.prop 'disabled', true
-              App.model.createProject({
-                name      : $name.val()
-                firstname : $firstname.val()
-                lastname  : $lastname.val()
-                email     : $email.val()
-                card      : {
-                  number : $number.val()
-                  expire : $expire.val()
-                  cvv    : $cvv.val()
-                }
-              }).then ( project )->
-                modal.close()
-                App.loadUrl( project.url() )
-              .fail ( error )->
-                try
-                  msgObj = JSON.parse(error.result)
-                  if _.isArray(msgObj.errors)
-                    modal.tpl.find(".new-project-err").show().html msgObj.errors.join('<br/>')
-                catch err
-                  notification 'error', error.result
-                # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
-                return
-              .done () ->
-                $create.prop 'disabled', false
-
-      return
-
-    popupAsset  : ()->
-      $popup = @showPopup( ProjectTpl.assetList({
-        apps   : @scene.project.apps().groupByRegion()
-        stacks : @scene.project.stacks().groupByRegion()
-      }), ( target )->
-        $target = $( target )
-        if $target.closest(".hp-asset-list").length
-          return !$target.hasClass("route")
-        false
-      )
-
-      $popup.find("nav").on("click", ".off-canvas-tab", ( evt )->
-        $tgt = $(evt.currentTarget)
-        $tgt.parent().children().removeClass("selected")
-        $tgt.addClass("selected")
-        $popup.find(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{$tgt.attr('data-id')}']" ).show()
-      )
-      return
-
-    popupUser : ()->
-      @showPopup( ProjectTpl.usermenu() ).on "mouseup", ".logout", ()-> App.logout()
-      return
-
-    popupNotify : ()->
-
-
+    popupProject : ()-> new ProjectListPopup({project:@scene.project})
+    popupAsset   : ()-> new AssetListPopup({project:@scene.project})
+    popupUser    : ()-> new UserPopup()
+    popupNotify  : ()->
 
     ### ------------------
     # Workspace Related

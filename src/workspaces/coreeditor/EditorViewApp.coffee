@@ -50,7 +50,7 @@ define [
             if not MC.validate 'awsName',  val
               return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
 
-            apps = App.model.appList().where({name:val})
+            apps = self.scene.project.apps().where({name:val})
             if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
               return
 

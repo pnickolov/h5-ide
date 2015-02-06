@@ -38,8 +38,9 @@ define [ '../base/view',
             null
 
         checkAppName: ( val )->
-            repeatApp = App.model.appList().findWhere(name: val)
-            if repeatApp and repeatApp.id isnt Design.instance().get('id')
+            design = Design.instance()
+            repeatApp = design.project().apps().findWhere({name:val})
+            if repeatApp and repeatApp.id isnt design.get('id')
                 return lang.PROP.MSG_WARN_REPEATED_APP_NAME
 
             null

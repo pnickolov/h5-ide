@@ -70,7 +70,7 @@
         background: $dark-p-1;
 
         > header {
-            color          : $dark-grey;
+            color          : #cce;
             padding-bottom : 15px;
             margin-bottom  : 20px;
             font-size      : 22px;
@@ -81,8 +81,8 @@
                 max-width     : 350px;
                 overflow      : hidden;
                 text-overflow : ellipsis;
-                font-size     : 18px;
-                color         : #555;
+                // font-size     : 18px;
+                color: #99c;
 
                 &:after {
                     content: "/";
@@ -244,13 +244,14 @@
             }
 
             ul.credential-list {
-                & > li {
+                > li {
                     width: 500px;
                     height: 80px;
                     border: 1px solid #7c7c83;
                     border-radius: 3px;
                     position: relative;
                     margin-bottom: 8px;
+
                     &::selection { background: transparent; }
 
                     &.aws-credential { border-left: 6px solid #59e5c5; }
@@ -261,7 +262,7 @@
                         width: 80px;
                         height: 80px;
                         background: #f9af4e;
-                        &::before {
+                        &:before {
                             content: "logo here";
                             color: white;
                         }

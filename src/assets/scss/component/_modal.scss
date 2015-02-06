@@ -84,40 +84,27 @@
 	}
 
 	i.modal-close{
-	  font-size          : 26px;
-	  padding            : 5px 20px;
-	  top                : 0;
-	  right              : 20px;
-	  width              : 70px;
-	  height             : 30px;
-	  text-align         : left;
-	  line-height        : 29px;
-	  cursor             : pointer;
-	  border-radius      : 0 0 5px 5px;
-	  background         : #646675;
-	  font-weight        : 900;
-	  color              : #d8d8d8;
+		font-size     : 26px;
+		padding       : 5px 20px;
+		top           : 0;
+		right         : 20px;
+		height        : 30px;
+		text-align    : center;
+		line-height   : 29px;
+		cursor        : pointer;
+		border-radius : 0 0 5px 5px;
+		background    : #646675;
+		font-weight   : 900;
+		color         : #d8d8d8;
 
 	  @include transit($method:background,$dur:.3s);
 	}
 
 	i.modal-close:hover{
 	  color: #fff;
-	  background: #3F414A;
+	  background: $base-p;
 	}
 
-	i.modal-close:before{
-	  display     : block;
-	  content     : "CLOSE";
-	  font-size   : 18px;
-	  text-align  : right;
-	  line-height : 20px;
-	  padding     : 10px;
-	  position    : absolute;
-	  right       : 0;
-	  top         : 0;
-	  font-weight : 400;
-	}
   }
   .modal-body{
 	position: fixed;

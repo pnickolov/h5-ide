@@ -509,9 +509,8 @@ pre {
       padding: 5px 20px;
       top: 0;
       right: 20px;
-      width: 70px;
       height: 30px;
-      text-align: left;
+      text-align: center;
       line-height: 29px;
       cursor: pointer;
       border-radius: 0 0 5px 5px;
@@ -523,18 +522,7 @@ pre {
       transition: background 0.3s ease-in-out; }
     .modal-box.fullscreen .modal-header i.modal-close:hover {
       color: #fff;
-      background: #3F414A; }
-    .modal-box.fullscreen .modal-header i.modal-close:before {
-      display: block;
-      content: "CLOSE";
-      font-size: 18px;
-      text-align: right;
-      line-height: 20px;
-      padding: 10px;
-      position: absolute;
-      right: 0;
-      top: 0;
-      font-weight: 400; }
+      background: #363b76; }
   .modal-box.fullscreen .modal-body {
     position: fixed;
     width: 100%;

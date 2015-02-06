@@ -43,7 +43,7 @@
 
 <!-- {{projectList}} -->
 <ul class="header-popup hp-project-list">
-  {{#each this}}<li><a class="route{{#if selected}} selected{{/if}}" href="{{url}}">{{name}}</a><a class="route icon-gear" href="settings/{{id}}/member"></a></li>{{/each}}
+  {{#each this}}<li><a class="route{{#if selected}} selected{{/if}}" href="{{url}}">{{name}}</a><a class="route icon-gear tooltip" href="settings/{{id}}/member" data-tooltip="Workspace Settings"></a></li>{{/each}}
   <li class="create-new-project padding">Create New Project</li>
 </ul>
 

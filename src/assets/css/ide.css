@@ -9701,7 +9701,7 @@ h5.billing_usage_title {
     padding: 20px 2.5% 20px 2.5%;
     background: #2c2f4d; }
     .fullpage-settings .setting-content > header {
-      color: #898dbc;
+      color: #cce;
       padding-bottom: 15px;
       margin-bottom: 20px;
       font-size: 22px;
@@ -9711,8 +9711,7 @@ h5.billing_usage_title {
         max-width: 350px;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 18px;
-        color: #555; }
+        color: #99c; }
         .fullpage-settings .setting-content > header #title-project-name:after {
           content: "/"; }
       .fullpage-settings .setting-content > header #title-tab-name {
@@ -9845,7 +9844,7 @@ h5.billing_usage_title {
           width: 80px;
           height: 80px;
           background: #f9af4e; }
-          .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo::before {
+          .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo:before {
             content: "logo here";
             color: white; }
         .fullpage-settings .setting-content .credential ul.credential-list > li .credential-name {

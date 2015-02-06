@@ -1,4 +1,20 @@
 define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "ide/settings/projectSubModels/MemberCollection", "CloudResources", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, MemberCollection, CloudResources, AppAction, lang )->
+
+  Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
+    ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
+    if ami
+      ami = ami.attributes
+      return ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+    else
+      return "empty.png"
+
+  Handlebars.registerHelper "awsIsEip", ( credentialId, ip, region, options )->
+    if not ip then return ""
+    for eip in CloudResources(credentialId, constant.RESTYPE.EIP, region ).models
+      if eip.get("publicIp") is ip
+        return options.fn this
+    ""
+
   Backbone.View.extend {
 
     events :

@@ -45,7 +45,6 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
 
     isAwsResReady : ( region, type )->
       @credentialId = @scene.project.credentials().toJSON()[0].id
-      console.log @scene.project
       if not region
         globalReady = true
         datasource = [

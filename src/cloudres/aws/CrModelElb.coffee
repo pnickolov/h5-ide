@@ -9,7 +9,12 @@ define [ "../CrModel" ], ( CrModel )->
 
     initialize : ()->
       self = @
-      @sendRequest("elb_DescribeInstanceHealth", {elb_name:@get("Name")}).then ( data )-> self.onInsHealthData( data )
+
+      # Needs to defer the fetch. Since the collection of this model is not defined
+      # when initailize() is called.
+      _.defer ()->
+        self.sendRequest("elb_DescribeInstanceHealth", {elb_name:self.get("Name")}).then ( data )->
+          self.onInsHealthData( data )
       return
 
     onInsHealthData : ( data )->

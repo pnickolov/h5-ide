@@ -263,3 +263,9 @@ define [
       @
 
 
+  ### Temperory disable statusbar ###
+  Backbone.View.extend {
+    renderItem : ()->
+    update     : ()->
+  }
+

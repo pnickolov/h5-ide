@@ -1,4 +1,4 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, AppAction, lang )->
+define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "ide/settings/projectSubModels/MemberCollection", "CloudResources", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, MemberCollection, CloudResources, AppAction, lang )->
   Backbone.View.extend {
 
     events :

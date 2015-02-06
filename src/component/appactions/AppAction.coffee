@@ -18,7 +18,8 @@ define [
   'OsKp'
   'TaGui'
   'OpsModel'
-], ( Backbone, AppTpl, Thumbnail, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
+  "credentialFormView"
+], ( Backbone, AppTpl, Thumbnail, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel, CredentialFormView)->
 
   Backbone.View.extend
     initialize: ( options ) -> _.extend @, options
@@ -103,7 +104,7 @@ define [
         @hideError()
         if Design.instance().project().isDemoMode()
           if Design.instance().project().amIAdmin()
-            Design.instance().project().showCredential()
+            new CredentialFormView(model: Design.instance().project()).render()
           else
             self.modal.find(".modal-body .members-only").show()
           return false

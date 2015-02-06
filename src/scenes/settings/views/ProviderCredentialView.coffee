@@ -5,86 +5,16 @@ define [
     'Credential'
     'ApiRequest'
     'UI.modalplus'
+    "credentialFormView"
     'UI.tooltip'
     'UI.notification'
     'backbone'
-], ( constant, lang, TplCredential, Credential, ApiRequest, Modal ) ->
+], ( constant, lang, TplCredential, Credential, ApiRequest, Modal, credentialFormView ) ->
 
     credentiaLoadingTips =
         add     : lang.IDE.SETTINGS_CRED_ADDING
         update  : lang.IDE.SETTINGS_CRED_UPDATING
         remove  : lang.IDE.SETTINGS_CRED_REMOVING
-
-
-    credentialFormView = Backbone.View.extend
-        events:
-            'keyup input' : 'updateSubmitBtn'
-            'paste input' : 'deferUpdateSubmitBtn'
-
-        initialize: ( options ) ->
-            _.extend @, options
-
-        render: ->
-            if @credential
-                data = @credential.toJSON()
-                title = lang.IDE.UPDATE_CLOUD_CREDENTIAL
-                confirmText = lang.IDE.HEAD_BTN_UPDATE
-            else
-                data = {}
-                title = lang.IDE.ADD_CLOUD_CREDENTIAL
-                confirmText = lang.IDE.CFM_BTN_ADD
-
-            @$el.html TplCredential.credentialForm data
-
-            @modal = new Modal
-                title: title
-                template: @el
-                confirm:
-                    text: confirmText
-                    disabled: true
-
-            @modal.on 'confirm', ->
-                @trigger 'confirm'
-            , @
-
-            @
-
-        loading: ->
-            @$( '#CredSetupWrap' ).hide()
-            action =  if @credential then 'Update' else 'Add'
-            @$el.append( TplCredential.credentialLoading { tip: credentiaLoadingTips[ action ] } )
-            @modal.toggleFooter false
-
-        loadingEnd: ->
-            @$('.loading-zone').remove()
-            @$( '#CredSetupWrap' ).show()
-            @modal.toggleFooter true
-
-        remove: ->
-            @modal?.close()
-            Backbone.View.prototype.remove.apply @, arguments
-
-        deferUpdateSubmitBtn: ( e ) -> _.defer _.bind @updateSubmitBtn, @, e
-
-        updateSubmitBtn : ()->
-            d = @getData()
-
-            if d.alias.length and d.awsAccount.length and d.awsAccessKey.length and d.awsSecretKey.length
-                @modal.toggleConfirm false
-            else
-                @modal.toggleConfirm true
-            return
-
-        getData: ->
-            that = @
-
-            alias         : that.$( '#CredSetupAlias' ).val()
-            awsAccount    : that.$( '#CredSetupAccount' ).val()
-            awsAccessKey  : that.$( '#CredSetupAccessKey' ).val()
-            awsSecretKey  : that.$( '#CredSetupSecretKey' ).val()
-
-
-
 
     Backbone.View.extend
         events:
@@ -159,60 +89,6 @@ define [
             credential = @getCredentialById credentialId
             @showFormModal credential
 
-        addCredential: ( data ) ->
-            that = @
-
-            # Temporary
-            provider = constant.PROVIDER.AWSGLOBAL
-
-            # Find credential has same provider, only update the credential, not add
-            credential = @model.credentials().findWhere provider: provider
-
-            if credential
-                credential.set data, silent: true
-            else # no credential has same provider, add a new credential
-                credentialData = {
-                    alias : data.alias
-                    account_id: data.awsAccount
-                    access_key: data.awsAccessKey
-                    secret_key: data.awsSecretKey
-                }
-                credentialData.provider = data.provider or constant.PROVIDER.AWSGLOBAL
-
-                credential = new Credential credentialData, { project: @model }
-
-            @formView.loading()
-            credential.save().then () ->
-                that.formView.remove()
-            , ( error ) ->
-                if error.error is ApiRequest.Errors.UserInvalidCredentia
-                    msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
-                else
-                    msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
-
-                that.formView.loadingEnd()
-                that.showModalError that.formView, msg
-
-
-        updateCredential: ( credential, newData, force ) ->
-            that = @
-            @formView.loading()
-
-            credential.save( newData, force ).then () ->
-                that.updateConfirmView?.close()
-                that.formView.remove()
-            , ( error ) ->
-                that.formView.loadingEnd()
-
-                if error.error is ApiRequest.Errors.UserInvalidCredentia
-                    msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
-                else if error.error is ApiRequest.Errors.ChangeCredConfirm
-                    that.showUpdateConfirmModel credential, newData
-                else
-                    msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
-
-                msg and that.showModalError that.formView, msg
-
         removeCredential: ( credential ) ->
             that = @
             @makeModalLoading @removeConfirmView, 'Remove'
@@ -256,14 +132,7 @@ define [
             , @
 
         showFormModal:( credential, provider ) ->
-            @formView = new credentialFormView( provider:provider, credential: credential ).render()
-            @formView.on 'confirm', ->
-                if credential
-                    @updateCredential credential, @formView.getData()
-                else
-                    @addCredential @formView.getData()
-            , @
-
+            @formView = new credentialFormView( provider:provider, credential: credential, model: @model ).render()
             @
 
         remove: ->

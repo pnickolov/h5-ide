@@ -186,6 +186,7 @@ require.config {
 
     'combo_dropdown'   : 'component/common/comboDropdown'
     'toolbar_modal'    : 'component/common/toolbarModal'
+    "credentialFormView":'component/common/credentialFormView'
 
     'dhcp'             : 'component/awscomps/Dhcp'
     'kp_dropdown'      : 'component/awscomps/KpDropdown'

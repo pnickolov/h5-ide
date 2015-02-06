@@ -21,7 +21,7 @@
         padding    : 20px 2.5% 20px 2.5%;
         background : transparentize($dark-p,.2);
 
-        .back-settings { 
+        .back-settings {
             font-size     : 14px;
             display       : block;
             width         : 44px;
@@ -37,11 +37,11 @@
             &:hover {
                 background : $light-p-2;
                 color      : #000;
-            } 
+            }
         }
 
         & > section {
-            
+
             margin-bottom: 10px;
 
             header, a {
@@ -87,12 +87,12 @@
                 &:after {
                     content: "/";
                 }
-                    
+
             }
 
             #title-tab-name {
                 padding: 0 5px;
-                display: inline-block; 
+                display: inline-block;
                 overflow: hidden;
             }
         }
@@ -186,7 +186,7 @@
                     padding: 0 8px;
                 }
 
-                .icon-delete {
+                .leave-project-zone button {
                     margin-top: 10px;
                     position: absolute;
                     left: 389px;

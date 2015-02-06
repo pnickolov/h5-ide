@@ -6329,8 +6329,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9792,7 +9791,7 @@ h5.billing_usage_title {
         display: none; }
       .fullpage-settings .setting-content .basic-settings > div.project-item p {
         padding: 0 8px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .icon-delete {
+      .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone button {
         margin-top: 10px;
         position: absolute;
         left: 389px; }

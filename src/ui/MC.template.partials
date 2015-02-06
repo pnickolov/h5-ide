@@ -276,6 +276,9 @@ Additional Notes and Questions
         {{/ifCond}}
     </div>
 </section>
+<section class="members-only hide">
+    {{i18n "WAIT_FOR_ADMIN_FINISH_CREDENTIAL"}}
+</section>
 
 
 <!-- {{sgRuleList}} -->

@@ -102,7 +102,10 @@ define [
       @modal.on 'confirm', ()=>
         @hideError()
         if Design.instance().project().isDemoMode()
-          Design.instance().project().showCredential()
+          if not Design.instance().project().amIAdmin()
+            Design.instance().project().showCredential()
+          else
+            self.modal.find(".modal-body .members-only").show()
           return false
         # setUsage
         appNameRepeated = @checkAppNameRepeat(appNameDom.val())

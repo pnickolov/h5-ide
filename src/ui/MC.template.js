@@ -382,7 +382,9 @@ function program1(depth0,data) {
     + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "pastdue", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n</section>";
+  buffer += "\n    </div>\n</section>\n<section class=\"members-only hide\">\n    "
+    + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_FINISH_CREDENTIAL", {hash:{},data:data}))
+    + "\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);

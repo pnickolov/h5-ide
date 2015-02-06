@@ -2734,3 +2734,7 @@ into live resources, or import existing infrastructures."
     PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST:
       en: "Page not Found."
       zh: "页面未找到。"
+
+    WAIT_FOR_ADMIN_FINISH_CREDENTIAL:
+      en: "Only project admin has the permission to set up credential. You may wait until your admin has made everything ready."
+      zh: "只有协作空间的管理员有权限设置证书, 你可以等您的管理员设置好以后再继续。"

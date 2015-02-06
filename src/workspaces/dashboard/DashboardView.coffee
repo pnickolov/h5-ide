@@ -1,4 +1,15 @@
-define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "./VisualizeDialog", "ide/settings/projectSubModels/MemberCollection", "CloudResources", "AppAction", "i18n!/nls/lang.js" ,"backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, MemberCollection, CloudResources, AppAction, lang )->
+define [ "./DashboardTpl",
+         "./ImportDialog",
+         "./DashboardTplData",
+         "constant",
+         "./VisualizeDialog",
+         "ide/settings/projectSubModels/MemberCollection",
+         "CloudResources",
+         "AppAction",
+         "UI.modalplus",
+         "i18n!/nls/lang.js",
+         "UI.bubble",
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, MemberCollection, CloudResources, AppAction, Modal, lang )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -6,6 +17,7 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       ami = ami.attributes
       return ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
     else
+      console.log credentialId, amiId, region, ami
       return "empty.png"
 
   Handlebars.registerHelper "awsIsEip", ( credentialId, ip, region, options )->
@@ -31,6 +43,9 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       "click .region-resource-list .start-app"       : "startApp"
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
+
+
+      "click .icon-detail"     : "showResourceDetail"
 
 
     initialize : ()->
@@ -69,6 +84,8 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         @listenTo CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
         @listenTo CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, region ),  "update", @onGlobalResChanged
 
+      MC.template.dashboardBubble = _.bind @dashboardBubble, @
+      MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
       return
 
     render : ()->
@@ -82,9 +99,6 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
           $("#RefreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
         return
       , 1000 * 60
-
-      MC.template.dashboardBubble = _.bind @dashboardBubble, @
-      MC.template.dashboardBubble = _.bind @dashboardBubble, @
 
       @$el.toggleClass "observer", @model.isReadOnly()
       @switchLog()
@@ -276,6 +290,243 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
       id = $( event.currentTarget ).closest("li").attr("data-id");
       (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
       false
+
+    showResourceDetail : ( evt )->
+      $tgt = $( evt.currentTarget )
+      id   = $tgt.attr("data-id")
+      type = constant.RESTYPE[ @resourcesTab ]
+
+      resModel     = @model.getResourceData( @region, type, id )
+      formattedData = @formatDetail( @resourcesTab, resModel.attributes )
+
+      if formattedData.title
+        id = formattedData.title
+        delete formattedData.title
+
+      new Modal({
+        title         : id
+        width         : "450"
+        template      : dataTemplate.resourceDetail( formattedData )
+        disableFooter : true
+      })
+      return
+
+    formatDetail : ( type, data )->
+      switch type
+        when "SUBSCRIPTION"
+          return {
+          DASH_LBL_TITLE    : data.Endpoint
+          DASH_LBL_ENDPOINT : data.Endpoint
+          DASH_LBL_OWNER   : data.Owner
+          DASH_LBL_PROTOCOL : data.Protocol
+          DASH_LBL_SUBSCRIPTION_ARN : data.SubscriptionArn
+          DASH_LBL_TOPIC_ARN : data.TopicArn
+          }
+        when "VPC"
+          return {
+          DASH_LBL_STATE   : data.state
+          DASH_LBL_CIDR    : data.cidrBlock
+          DASH_LBL_TENANCY : data.instanceTenancy
+          }
+        when "ASG"
+          return {
+          DASH_LBL_TITLE : data.Name
+          DASH_BUB_NAME : data.Name
+          DASH_LBL_AVAILABILITY_ZONE : data.AvailabilityZones.join(", ")
+          DASH_LBL_CREATE_TIME : data.CreatedTime
+          DASH_LBL_DEFAULT_COOLDOWN : data.DefaultCooldown
+          DASH_LBL_DESIRED_CAPACITY : data.DesiredCapacity
+          DASH_LBL_MAX_SIZE        : data.MaxSize
+          DASH_LBL_MIN_SIZE       : data.MinSize
+          DASH_LBL_HEALTH_CHECK_GRACE_PERIOD : data.HealthCheckGracePeriod
+          DASH_LBL_HEALTH_CHECK_TYPE : data.HealthCheckType
+          #Instance : data.Instances
+          DASH_LBL_LAUNCH_CONFIGURATION_NAME : data.LaunchConfigurationName
+          DASH_LBL_TERMINATION_POLICIES   : data.TerminationPolicies.join(", ")
+          DASH_LBL_AUTOSCALING_GROUP_ARN   : data.id
+          }
+        when "ELB"
+          return {
+          DASH_LBL_AVAILABILITY_ZONE      : data.AvailabilityZones.join(", ")
+          DASH_LBL_CREATE_TIME            : data.CreatedTime
+          DASH_LBL_DNS_NAME               : data.DNSName
+          DASH_LBL_HEALTH_CHECK           : @formatData('HealthCheck', [data.HealthCheck], "Health Check", true)
+          DASH_LBL_INSTANCE               : data.Instances.join(", ")
+          DASH_LBL_LISTENER_DESC          : @formatData('ListenerDescriptions', _.pluck(data.ListenerDescriptions.member,"Listener"), "Listener Descriptions", true)
+          DASH_LBL_SECURITY_GROUPS        : data.SecurityGroups.join(", ")
+          DASH_LBL_SUBNETS                : data.Subnets.join(", ")
+          }
+        when "VPN"
+          return {
+          DASH_LBL_STATE    : data.state
+          DASH_LBL_VGW_ID : data.vpnGatewayId
+          DASH_LBL_CGW_ID : data.customerGatewayId
+          DASH_LBL_TYPE     : data.type
+          }
+        when "VOL"
+          return {
+          DASH_LBL_VOLUME_ID        : data.id
+          DASH_LBL_DEVICE_NAME       : data.device
+          DASH_LBL_SNAPSHOT_ID       : data.snapshotId
+          DASH_LBL_VOLUME_SIZE  : data.size
+          DASH_LBL_STATUS            : data.status
+          DASH_LBL_INSTANCE_ID       : data.instanceId
+          DASH_LBL_DELETE_ON_TERM : data.deleteOnTermination
+          DASH_LBL_AVAILABILITY_ZONE : data.availabilityZone
+          DASH_LBL_VOLUME_TYPE       : data.volumeType
+          DASH_LBL_CREATE_TIME       : data.createTime
+          DASH_LBL_ATTACH_TIME       : data.attachTime
+          }
+        when "INSTANCE"
+          return {
+          DASH_LBL_STATUS             : data.instanceState.name
+          DASH_LBL_MONITORING         : data.monitoring.state
+          DASH_LBL_PRIMARY_PRIVATE_IP : data.privateIpAddress
+          DASH_LBL_PRIVATE_DNS        : data.privateDnsName
+          DASH_LBL_LAUNCH_TIME        : data.launchTime
+          DASH_LBL_AVAILABILITY_ZONE  : data.placement.availabilityZone
+          DASH_LBL_AMI_LAUNCH_INDEX   : data.amiLaunchIndex
+          DASH_LBL_INSTANCE_TYPE      : data.instanceType
+          DASH_LBL_BLOCK_DEVICE_TYPE  : data.rootDeviceType
+          DASH_LBL_BLOCK_DEVICES      : if data.blockDeviceMapping then @formatData "BlockDevice", data.blockDeviceMapping, "deviceName" else null
+          DASH_LBL_NETWORK_INTERFACE  : if data.networkInterfaceSet then @formatData "ENI", data.networkInterfaceSet, "networkInterfaceId" else null
+          }
+        when 'EIP'
+          result = {
+            DASH_LBL_PUBLIC_IP : data.publicIp
+            DASH_LBL_DOMAIN    : data.domain
+            DASH_LBL_ALLOCATION_ID : data.id
+            DASH_LBL_CATEGORY  : data.category
+            DASH_LBL_TITLE     : data.publicIp
+          }
+          if data.associationId
+            result.DASH_LBL_ASSOCIATION_ID = data.associationId
+          if data.networkInterfaceId
+            result.DASH_LBL_NETWORK_INTERFACE_ID = data.networkInterfaceId
+          if data.instanceId
+            result.DASH_LBL_INSTANCE_ID = data.instanceId
+          if data.privateIpAddresse
+            result.DASH_LBL_PRIVATE_IP_ADDRESS = data.privateIpAddresses
+          return result
+        when 'CW'
+          return {
+          DASH_LBL_ALARM_NAME        : data.Name
+          DASH_LBL_COMPARISON_OPERATOR: data.ComparisonOperator
+          DASH_LBL_DIMENSIONS        : @formatData 'Dimensions', data.Dimensions, 'Dimensions', true
+          DASH_LBL_EVALUATION_PERIODS: data.EvaluationPeriods
+          DASH_LBL_INSUFFICIENT_DATA_ACTIONS: data.InsufficientDataActions
+          DASH_LBL_METRIC_NAME      : data.MetricName
+          DASH_LBL_NAMESPACE        : data.Namespace
+          DASH_LBL_OK_ACTIONS        : data.OKActions
+          DASH_LBL_PERIOD            : data.Period
+          DASH_LBL_STATE_REGION      : data.StateReason
+          DASH_LBL_STATE_UPDATED_TIMESTAMP: data.StateUpdatedTimestamp
+          DASH_LBL_STATE_VALUE        : data.StateValue
+          DASH_LBL_STATISTIC         : data.Statistic
+          DASH_LBL_THRESHOLD         : data.Threshold
+          DASH_LBL_CATEGORY          : data.category
+          DASH_LBL_TITLE             : data.Name
+          DASH_LBL_ACTIONS_ENABLED   : if data.ActionsEnabled then "true" else 'false'
+          DASH_LBL_ALARM_ACTIONS     : data.AlarmActions.member
+          DASH_LBL_ALARM_ARN         : data.id
+          }
+        when "DBINSTANCE"
+          json =  {
+            DASH_LBL_STATUS    : data.DBInstanceStatus
+            DASH_LBL_ENDPOINT  : data.Endpoint.Address + "" + data.Endpoint.Port
+            DASH_LBL_ENGINE    : data.Engine
+            DASH_LBL_DB_NAME:    data.name || data.Name || data.DBName || "None"
+            DASH_LBL_OPTION_GROUP: data.OptionGroupMemberships?.OptionGroupMembership?.OptionGroupName || "None"
+            DASH_LBL_PARAMETER_GROUP: data.DBParameterGroups?.DBParameterGroupName || "None"
+            DASH_LBL_AVAILABILITY_ZONE : data.AvailabilityZone
+            DASH_LBL_SUBNET_GROUP: data.sbgId || "None"
+            DASH_LBL_PUBLICLY_ACCESSIBLE: data.PubliclyAccessible.toString()
+            DASH_LBL_IOPS: data.Iops || "OFF"
+            DASH_LBL_MULTI_AZ: data.MultiAZ.toString()
+            DASH_LBL_AUTOMATED_BACKUP: data.AutoMinorVersionUpgrade
+            DASH_LBL_LATEST_RESTORE_TIME: data.LatestRestorableTime
+            DASH_LBL_AUTO_MINOR_VERSION_UPGRADE: data.AutoMinorVersionUpgrade
+            DASH_LBL_MAINTENANCE_WINDOW: data.PreferredMaintenanceWindow
+            DASH_LBL_BACKUP_WINDOW: data.PreferredBackupWindow
+          }
+          return json
+    # some format to the data so it can show in handlebars template
+    formatData: (type, array, key, force)->
+      #resolve 'BlockDevice' AttachmentSet HealthCheck and so on.
+      if (['BlockDevice', "AttachmentSet","HealthCheck", "ListenerDescriptions",'Dimensions','ENI'].indexOf type) > -1
+        _.map array, (blockDevice, index)->
+          # combine ebs attribute
+          _.map blockDevice, (e, key)->
+            if key is "ebs"
+              _.extend blockDevice, e
+            # remove Object value
+            if _.isObject e
+              delete blockDevice[key]
+          # format boolean value
+          _.map blockDevice, (e, key)->
+            if _.isBoolean e
+              blockDevice[key] = e.toString()
+              null
+        _.map array , (data)->
+          if force then data._title = key else data._title  = data[key]
+          data.bubble =
+            value: if force then key else data[key] # override the value of title
+            data: (JSON.stringify data)
+            template: "dashboardBubbleSub"
+          return data
+        array.bubble = true
+        return array
+      else
+        #resolve Other resource
+        result = _.map array, (i)->
+          i.bubble = {}
+          i.bubble.value = i[key]
+          i.bubble.data = JSON.stringify {
+            type: type
+            id: i[key]
+          }
+          return i
+        result.bubble = true
+        result
+
+    dashboardBubbleSub: (data)->
+      renderData = {}
+      formattedData = {}
+      _.each data, (value, key)->
+        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
+        formattedData[newKey] = value
+      renderData.data = formattedData
+      renderData.title = data.id || data.name || data._title
+      delete renderData.data._title
+      return dataTemplate.bubbleResourceSub renderData
+
+    dashboardBubble : ( data )->
+      # get Resource Data
+      resourceData = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
+      formattedData = {}
+      _.each resourceData, (value, key)->
+        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
+        formattedData[newKey] = value
+      d = {
+        id   : data.id
+        data : formattedData
+      }
+
+      # Make Boolean to String to show in handlebarsjs
+      _.each d.data, (e,key)->
+        if _.isBoolean e
+          d.data[key] = e.toString()
+        if e == ""
+          d.data[key] = "None"
+        if (_.isArray e) and e.length is 0
+          d.data[key] = ['None']
+        if (_.isObject e) and (not _.isArray e)
+          delete d.data[key]
+
+      return dataTemplate.bubbleResourceInfo  d
+
+
+
 
     switchLog: (event) ->
 

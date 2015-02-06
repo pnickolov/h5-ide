@@ -108,7 +108,7 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
     getAwsResDataById : ( region, type, id )->
       CloudResources(@credentialId, type, region ).get(id)
 
-
+    getResourceData : ( region, type, id )-> CloudResources( @credentialId, type, region ).get( id )
     getResourcesCount : ( region )->
       filter = { category : region }
       data = {

@@ -6,60 +6,6 @@ define [
     'backbone'
 ], ( lang, TplBasicSettings, Modal ) ->
 
-    confirmModalView = Backbone.View.extend
-        events:
-            'keyup #confirm-project-name' : 'confirmProjectName'
-            'paste #confirm-project-name' : 'deferConfirmProjectName'
-
-        initialize: ( options ) ->
-            if options and options.projectName then @projectName = options.projectName
-
-        render: ->
-            if @projectName
-                title = lang.IDE.DELETE_WORKSPACE
-                confirmText = lang.IDE.CONFIRM_TO_DELETE
-                tpl = TplBasicSettings.confirmToDelete
-                confirmDisabled = true
-            else
-                title = lang.IDE.LEAVE_PROJECT
-                confirmText = lang.IDE.CONFIRM_TO_LEAVE
-                tpl = TplBasicSettings.confirmToLeave
-                confirmDisabled = false
-
-            @$el.html tpl
-
-            if @modal then return @
-
-            @modal = new Modal
-                title: title
-                template: @el
-                confirm:
-                    text: confirmText
-                    disabled: confirmDisabled
-                    color: 'red'
-
-            @modal.on 'confirm', ->
-                @trigger 'confirm'
-            , @
-
-            @
-
-        renderLoading: ->
-            @$el.html TplBasicSettings.loading
-            @modal.toggleFooter()
-
-        deferConfirmProjectName: ( e ) -> _.defer _.bind @confirmProjectName, @, e
-
-        confirmProjectName: ( e ) ->
-            if e.currentTarget.value is @model.get( 'name' )
-                 @modal.toggleConfirm false
-            else
-                @modal.toggleConfirm true
-
-        remove: () ->
-            @modal?.close()
-            Backbone.View.prototype.remove.apply @, arguments
-
     Backbone.View.extend
         events:
             'click .edit-button'        : 'edit'
@@ -176,14 +122,6 @@ define [
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
 
         confirmLeaveDelete: -> @renderLeaveZone null, true
-
-        remove: () ->
-            @confirmModal?.remove()
-            Backbone.View.prototype.remove.apply @, arguments
-
-
-
-
 
 
 

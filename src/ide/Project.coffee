@@ -210,7 +210,13 @@ define [
       return
 
     leave: ->
-      ApiRequest( "project_remove_members", { project_id: @id, member_ids: [ App.user.get("usercode") ] })
+      that = @
+      ApiRequest( "project_remove_members", {
+        project_id: @id
+        member_ids: [ App.user.get("usercode") ]
+      }).then ( res ) ->
+        that.cleanup()
+        res
 
     # OpsModel Related.
 

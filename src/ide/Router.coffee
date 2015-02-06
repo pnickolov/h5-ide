@@ -17,7 +17,8 @@ define [
       "team(/:project)"                : "openProject"
       "team/:project/ops(/:ops)"       : "openProject"
 
-      "settings(/:projectId(/:tab))"     : "openSettings"
+      "settings"                       : "openSettings"
+      "settings/:projectId(/:tab)"     : "openSettings"
       "store/:sampleId"                : "openStore"
 
       "cheatsheet"                     : "openCheatsheet"

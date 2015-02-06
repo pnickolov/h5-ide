@@ -70,6 +70,31 @@ define [ "constant", "backbone" ], ( constant )->
       ADD       : "Add"
 
     }
+    ACTION_MAP : {
+      "Create":     "created"
+      "Update":     "updated"
+      "Rename":     "renamed"
+      "Remove":     "removed"
+      "Save":       "saved"
+
+      "Terminate":  "terminated"
+      "Start":      "started"
+      "Stop":       "stopped"
+      "Reboot":     "rebooted"
+      "SaveAs":     "saved as"
+      "Clone":      "cloned"
+      "Notify":     "notified"
+      "Render":     "rendered"
+      "GetKey":     "got key"
+      "Import":     "imported"
+
+      "Run":        "ran"
+
+      "Invite":     "invited"
+
+      "Add":        "added"
+
+    }
   }
 
   AuditType = {}

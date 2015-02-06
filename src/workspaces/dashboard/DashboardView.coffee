@@ -7,8 +7,9 @@ define [ "./DashboardTpl",
          "AppAction",
          "UI.modalplus",
          "i18n!/nls/lang.js",
+         "ide/submodels/ProjectLog",
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -559,16 +560,11 @@ define [ "./DashboardTpl",
             models = @logCol.audit()
             container = '.dashboard-log-audit'
 
-        renderMap = {
-          'create' : 'created'
-          'add'    : 'added'
-          'save'   : 'saved'
-          'remove' : 'removed'
-        }
+        renderMap = ProjectLog.ACTION_MAP
 
         dataAry = _.map models, (data) ->
             userdata = userDataSet[data.get("usercode")]
-            action   = data.get('action').toLowerCase()
+            action   = data.get('action')
             {
               name   : data.get("username")
               email  : userdata.email

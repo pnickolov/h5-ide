@@ -102,7 +102,7 @@ define [
       @modal.on 'confirm', ()=>
         @hideError()
         if Design.instance().project().isDemoMode()
-          if not Design.instance().project().amIAdmin()
+          if Design.instance().project().amIAdmin()
             Design.instance().project().showCredential()
           else
             self.modal.find(".modal-body .members-only").show()

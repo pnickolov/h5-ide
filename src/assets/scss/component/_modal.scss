@@ -1,27 +1,29 @@
 /* Modal */
-#modal-box {
-	position     : absolute;
-	z-index      : 70;
-	border-radius: 3px;
-	background   : rgba(32, 32, 32, 0.9);
-	box-shadow   : 1px 1px 5px rgba(0, 0, 0, .4);
-	color        : #999;
-	/*border     : 1px solid #242424;*/
-}
+// #modal-box {
+// 	position     : absolute;
+// 	z-index      : 70;
+// 	border-radius: 3px;
+// 	background   : rgba(32, 32, 32, 0.9);
+// 	box-shadow   : 1px 1px 5px rgba(0, 0, 0, .4);
+// 	color        : #999;
+// }
 
 .modal-box{
-    position      : absolute;
-	opacity: 0;
-	margin-top: -100px;
+    position   : absolute;
+	opacity    : 0;
+	margin-top : -100px;
+
     z-index       : 70;
     border-radius : 3px;
     background    : rgba(32,32,32,0.9);
     box-shadow    : 1px 1px 5px rgba(0,0,0,0.4);
-    color         : #999999;
+    color         : #999;
+
     &.bounce {
 	  opacity       : 1;
 	  margin-top    : 0;
     }
+
   	&.animate{
 	  -webkit-transition: opacity .3s, margin-top .3s;
 	  -moz-transition: opacity .3s, margin-top .3s;
@@ -56,63 +58,65 @@
   opacity: 1;
 }
 .modal-box.fullscreen{
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  margin-top: 0;
-  overflow: auto;
-  -webkit-transform: scale(0.8);
-  -moz-transform: scale(0.8);
-  -ms-transform: scale(0.8);
-  transform: scale(0.8);
-  opacity: 0;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  width             : 100%;
+  height            : 100%;
+  position          : fixed;
+  margin-top        : 0;
+  overflow          : auto;
+  -webkit-transform : scale(0.8);
+  -moz-transform    : scale(0.8);
+  -ms-transform     : scale(0.8);
+  transform         : scale(0.8);
+  opacity           : 0;
+  
+  @include transit($method:all,$dur:.2s);
+
   .modal-wrapper-fix{
 	width: 100%!important;
   }
+
   .modal-header{
 	z-index: 1;
 	padding: 0;
+
 	h3{
 	  display: none;
 	}
+
 	i.modal-close{
-	  font-size: 26px;
-	  padding: 5px 20px;
-	  top: 0;
-	  right: 20px;
-	  width: 70px;
-	  height: 30px;
-	  text-align: left;
-	  line-height: 29px;
-	  cursor: pointer;
-	  border-radius: 0 0 5px 5px;
-	  background: #646675;
-	  font-weight: 900;
-	  color: #d8d8d8;
-	  -webkit-transition: background 0.3s;
-	  -moz-transition: background 0.3s;
-	  -ms-transition: background 0.3s;
-	  -o-transition: background 0.3s;
-	  transition: background 0.3s;
+	  font-size          : 26px;
+	  padding            : 5px 20px;
+	  top                : 0;
+	  right              : 20px;
+	  width              : 70px;
+	  height             : 30px;
+	  text-align         : left;
+	  line-height        : 29px;
+	  cursor             : pointer;
+	  border-radius      : 0 0 5px 5px;
+	  background         : #646675;
+	  font-weight        : 900;
+	  color              : #d8d8d8;
+
+	  @include transit($method:background,$dur:.3s);
 	}
+
 	i.modal-close:hover{
 	  color: #fff;
 	  background: #3F414A;
 	}
+
 	i.modal-close:before{
-	  display: block;
-	  content: "CLOSE";
-	  font-size: 18px;
-	  text-align: right;
-	  line-height: 20px;
-	  padding: 10px;
-	  position: absolute;
-	  right: 0;
-	  top: 0;
-	  font-weight: 400;
+	  display     : block;
+	  content     : "CLOSE";
+	  font-size   : 18px;
+	  text-align  : right;
+	  line-height : 20px;
+	  padding     : 10px;
+	  position    : absolute;
+	  right       : 0;
+	  top         : 0;
+	  font-weight : 400;
 	}
   }
   .modal-body{
@@ -129,17 +133,14 @@
 .modal-wrapper-fix{
   width: 480px;
 }
-#modal-box .input:focus {
-  border-color : #010101;
-}
+
 
 #modal-box #bubble-box {
 	z-index: 80;
 }
 
 .modal-header .modal-close,
-.modal-header .btn-modal-close,
-#account-setting-close {
+.modal-header .btn-modal-close {
 	position     : absolute;
 	top          : 16px;
 	right        : 10px;
@@ -168,6 +169,7 @@
 	background: none;
 	color: #666;
 	box-shadow: none;
+
   	&[disabled], &[disabled]:hover{
 	  background: none;
 	  color: #666666;
@@ -274,11 +276,8 @@
 	z-index         : 70;
 	background-color: rgba(41, 56, 71, 0.8);
   	opacity: 0;
-	-webkit-transition: opacity, 0.3s;
-	-moz-transition: opacity, 0.3s;
-	-ms-transition: opacity, 0.3s;
-	-o-transition: opacity, 0.3s;
-	transition: opacity, 0.3s;
+ 	@include transit($method : opacity,$dur:.3s);
+
   	&.show{
 	  opacity: 1;
 	}
@@ -287,10 +286,6 @@
 .modal-control-group {
 	padding       : 10px;
 	border-radius : 4px;
-}
-
-.modal-control-group-bg-blue {
-	background: #daeaf6;
 }
 
 .modal-control-group > label {
@@ -322,11 +317,9 @@
 
 .modal-body .selection {
 	border        : 1px solid #1a1a1a;
-	// box-shadow    : inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 .modal-body .selectbox .selection:hover {
-	/*background: #f8f8f8;*/
 }
 
 /* List Structure in Modal */
@@ -362,10 +355,12 @@
   padding: 15px 10px;
   margin: 0;
 }
+
 .error-message{
   color: #ff4444;
   margin: 0;
 }
+
 li.error-message{
   list-style-position: inside;
   list-style-type: disc;
@@ -373,4 +368,18 @@ li.error-message{
 
 #parameter-table{
     overflow: auto;
+}
+
+.modal-shrink {
+    display    : block;
+    background : #020202;
+    margin     : 0 -15px;
+    padding    : 20px;
+}
+.modal-shrink .sub-gray{
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+.modal-shrink .error{
+    color: #F74A48;
 }

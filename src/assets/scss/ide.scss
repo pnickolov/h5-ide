@@ -562,22 +562,6 @@ a {
 
 	textarea {
 	    width            : 242px;
-	    padding          : 7px;
-	    border           : 1px solid #000000;
-	    background-color : #1c1c1c;
-	    color            : #D0D0D0;
-	    height           : 60px;
-	    overflow         : auto;
-
-	    &:focus {
-    	    background-color: #000;
-		    color: #eee;
-		    border: 1px solid #161616;
-	    }
-
-	    &:hover {
-	    	background: #101010;
-	    }
 	}
 
 	#property-res-desc {
@@ -3706,48 +3690,16 @@ div.modal-text-highlight{
     margin-top: 6px;
 }
 
-#modal-wrap .estimate-stop{
-    display: block;
-    position: relative;
-    background: #0f0f0f;
-    padding: 10px 20px;
-}
-#modal-wrap .estimate-stop div{
-    margin: 10px 0;
-    position: relative;
-}
-#modal-wrap .estimate-stop .title{
-    font-size: 16px;
-}
-#modal-wrap .estimate-stop .price{
-    float: right;
-}
-#label-total-fee b{
+#label-total-fee b {
     font-weight: normal;
     font-size: 20px;
     color:#f8b42d;
 }
-#label-total-saving b{
-    font-weight : normal;
-    color       : #8ed72b;
-    font-size   : 18px;
-}
+
 .db-stop-status{
     color : #f8b42d;
 }
-.modal-shrink {
-    display    : block;
-    background : #020202;
-    margin     : 0 -15px;
-    padding    : 20px;
-}
-.modal-shrink .sub-gray{
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-.modal-shrink .error{
-    color: #F74A48;
-}
+
 .check-final-snapshot{
     padding   : 10px 0;
     font-size : 16px;
